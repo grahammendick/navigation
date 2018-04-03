@@ -1,4 +1,5 @@
 ﻿import Crumb from './config/Crumb';
+import EventHandlerCache from './EventHandlerCache';
 import { FluentNavigator, createFluentNavigator } from './FluentNavigator';
 import HashHistoryManager from './history/HashHistoryManager';
 import HistoryManager from './history/HistoryManager';
@@ -6,21 +7,26 @@ import State from './config/State';
 import StateInfo from './config/StateInfo';
 import StateContext from './StateContext';
 import StateHandler from './StateHandler';
+type NavigateHandler = (oldState: State, state: State, data: any, asyncData: any) => void;
+type BeforeNavigateHandler = (oldState: State, state: State, data: any, url: string) => boolean;
 
 class StateNavigator {
-    private NAVIGATE_HANDLER_ID = 'navigateHandlerId';
-    private navigateHandlerId = 1;
-    private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any, asyncData: any) => void } = {};
     private stateHandler = new StateHandler();
+    private onBeforeNavigateCache = new EventHandlerCache<BeforeNavigateHandler>('beforeNavigateHandler');
+    private onNavigateCache = new EventHandlerCache<NavigateHandler>('navigateHandler');
     stateContext = new StateContext();
     historyManager: HistoryManager;
     states: { [index: string]: State } = {};
-    
+    onBeforeNavigate = (handler: BeforeNavigateHandler) => this.onBeforeNavigateCache.onEvent(handler);
+    offBeforeNavigate = (handler: BeforeNavigateHandler) => this.onBeforeNavigateCache.offEvent(handler);
+    onNavigate = (handler: NavigateHandler) => this.onNavigateCache.onEvent(handler);
+    offNavigate = (handler: NavigateHandler) => this.onNavigateCache.offEvent(handler);
+
     constructor(states?: StateInfo[], historyManager?: HistoryManager) {
         if (states)
             this.configure(states, historyManager);
     }
-    
+
     configure(stateInfos: StateInfo[], historyManager?: HistoryManager) {
         if (this.historyManager)
             this.historyManager.stop();
@@ -58,21 +64,6 @@ class StateNavigator {
             this.stateContext.previousData = previousStateCrumb.data;
             this.stateContext.previousUrl = previousStateCrumb.url;
         }
-    }
-    
-    onNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void) {
-        if (!handler[this.NAVIGATE_HANDLER_ID]) {
-            var id = this.NAVIGATE_HANDLER_ID + this.navigateHandlerId++;
-            handler[this.NAVIGATE_HANDLER_ID] = id;
-            this.navigateHandlers[id] = handler;
-        } else {
-            throw new Error('Cannot add the same handler more than once');
-        }
-    }
-
-    offNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void) {
-        delete this.navigateHandlers[handler[this.NAVIGATE_HANDLER_ID]];
-        delete handler[this.NAVIGATE_HANDLER_ID];
     }
 
     navigate(stateKey: string, navigationData?: any, historyAction?: 'add' | 'replace' | 'none') {
@@ -119,6 +110,11 @@ class StateNavigator {
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
         var oldUrl = this.stateContext.url;
         var { state, data } = this.stateHandler.parseLink(url);
+        for (var id in this.onBeforeNavigateCache.handlers) {
+            var handler = this.onBeforeNavigateCache.handlers[id];
+            if (oldUrl !== this.stateContext.url || !handler(this.stateContext.state, state, data, url))
+                return;
+        }
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction, history);
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
@@ -129,7 +125,7 @@ class StateNavigator {
         else
             state.navigating(data, url, navigateContinuation, history);
     }
-    
+
     private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
             if (oldUrl === this.stateContext.url) {
@@ -137,9 +133,9 @@ class StateNavigator {
                 if (this.stateContext.oldState && this.stateContext.oldState !== state)
                     this.stateContext.oldState.dispose();
                 state.navigated(this.stateContext.data, asyncData);
-                for (var id in this.navigateHandlers) {
+                for (var id in this.onNavigateCache.handlers) {
                     if (url === this.stateContext.url)
-                        this.navigateHandlers[id](this.stateContext.oldState, state, this.stateContext.data, asyncData);
+                        this.onNavigateCache.handlers[id](this.stateContext.oldState, state, this.stateContext.data, asyncData);
                 }
                 if (url === this.stateContext.url) {
                     if (historyAction !== 'none')
@@ -150,7 +146,7 @@ class StateNavigator {
             }
         };
     }
-    
+
     parseLink(url: string): { state: State, data: any } {
         var { state, data } = this.stateHandler.parseLink(url);
         delete data[state.crumbTrailKey];
