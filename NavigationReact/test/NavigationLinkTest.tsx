@@ -52,6 +52,19 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Without State Navigator Navigation Link', function () {
+        it('should render', function(){
+            var wrapper = mount(
+                <NavigationLink stateKey="s">
+                    link text
+                </NavigationLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+        })
+    });
+
     describe('Invalid Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
@@ -1617,6 +1630,34 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.hash, '#/r0?x=a');
             stateNavigator.navigate('s1', {y: 'b'});
             assert.equal(link.hash, '#/r0?y=b&x=a');
+        })
+    });
+
+    describe('Context Navigate Navigation Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            stateNavigator.navigate('s0');
+            var wrapper = mount(
+                <NavigationLink
+                    stateKey="s0"
+                    navigationData={{x: 'a'}}
+                    includeCurrentData={true}>
+                    link text
+                </NavigationLink>,
+                {
+                    context: { stateNavigator: stateNavigator },
+                    childContextTypes: { stateNavigator: () => {}}
+                }
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r0?x=a');
+            stateNavigator.navigate('s1', {y: 'b'});
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r0?y=b&x=a');
         })
     });
 
