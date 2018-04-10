@@ -22,10 +22,12 @@ class AsyncStateNavigator extends StateNavigator {
     }
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false, suspendNavigation, defer = false) {
-        super.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
+        this.stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
             this.navigationHandler.setState(() => {
                 var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator); 
                 asyncNavigator.stateContext = stateContext;
+                var { oldState, state, data, asyncData } = stateContext;
+                return { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } };
             }, () => {
                 resumeNavigation();
             });
