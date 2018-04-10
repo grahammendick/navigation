@@ -25,23 +25,26 @@ class AsyncStateNavigator extends StateNavigator {
         var url = this.getNavigationLink(stateKey, navigationData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-        this.navigateLink(url, historyAction, false, defer);
+        this.navigateLink(url, historyAction, false, undefined, defer);
     }
 
-    navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false, suspendNavigation, defer = false) {
+    navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false,
+        suspendNavigation: (stateContext: StateContext, resumeNavigation: () => void) => void = (_, resumeNavigation) => resumeNavigation(), defer = false) {
         this.stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
-            var { oldState, state, data, asyncData } = stateContext;
-            if (defer)
-                this.navigationHandler.setState(({ context }) => ({ context: { ...context, nextState: state, nextData: data } }));
-            var wrapDefer = setState => defer ? ReactDOM.unstable_deferredUpdates(() => setState()) : setState();
-            wrapDefer(() => {
-                this.navigationHandler.setState(() => {
-                    var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext);
-                    return { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator, nextState: undefined, nextData: undefined } };
-                }, () => {
-                    resumeNavigation();
-                });
-            });
+            suspendNavigation(stateContext, () => {
+                var { oldState, state, data, asyncData } = stateContext;
+                if (defer)
+                    this.navigationHandler.setState(({ context }) => ({ context: { ...context, nextState: state, nextData: data } }));
+                var wrapDefer = setState => defer ? ReactDOM.unstable_deferredUpdates(() => setState()) : setState();
+                wrapDefer(() => {
+                    this.navigationHandler.setState(() => {
+                        var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext);
+                        return { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator, nextState: undefined, nextData: undefined } };
+                    }, () => {
+                        resumeNavigation();
+                    });
+                });    
+            })
         });
     }
 }
