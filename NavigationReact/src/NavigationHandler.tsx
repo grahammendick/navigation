@@ -8,8 +8,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
     constructor(props) {
         super(props);
         var { stateNavigator } = this.props;
-        var asyncNavigator = new AsyncStateNavigator(this, stateNavigator);
-        asyncNavigator.stateContext = stateNavigator.stateContext;
+        var asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
         var { oldState, state, data, asyncData } = stateNavigator.stateContext;
         this.state = { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } };
     }

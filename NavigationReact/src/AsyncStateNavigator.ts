@@ -1,16 +1,17 @@
 import NavigationHandler from './NavigationHandler';
-import { StateNavigator, HashHistoryManager } from 'navigation';
+import { StateNavigator, StateContext, HashHistoryManager } from 'navigation';
 
 class AsyncStateNavigator extends StateNavigator {
     private navigationHandler;
     private stateNavigator;
 
-    constructor(navigationHandler: NavigationHandler, stateNavigator: StateNavigator) {
+    constructor(navigationHandler: NavigationHandler, stateNavigator: StateNavigator, stateContext: StateContext) {
         var inertHistoryManager = new HashHistoryManager();
         inertHistoryManager.init = () => {};
         super(stateNavigator, inertHistoryManager);
         this.navigationHandler = navigationHandler;
         this.stateNavigator = stateNavigator;
+        this.stateContext = stateContext;
         this.historyManager = stateNavigator.historyManager;
     }
 
@@ -24,8 +25,7 @@ class AsyncStateNavigator extends StateNavigator {
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false, suspendNavigation, defer = false) {
         this.stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
             this.navigationHandler.setState(() => {
-                var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator); 
-                asyncNavigator.stateContext = stateContext;
+                var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext); 
                 var { oldState, state, data, asyncData } = stateContext;
                 return { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } };
             }, () => {
