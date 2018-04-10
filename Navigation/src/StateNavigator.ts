@@ -115,7 +115,8 @@ class StateNavigator {
         return this.stateHandler.getLink(this.stateContext.state, navigationData, crumbs, nextCrumb);
     }
 
-    navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
+    navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false,
+        suspendNavigation: (stateContext: StateContext, resumeNavigation: () => void) => void = (_, resumeNavigation) => resumeNavigation()) {
         if (history && this.stateContext.url === url)
             return;
         var oldUrl = this.stateContext.url;
@@ -126,8 +127,13 @@ class StateNavigator {
                 return;
         }
         var navigateContinuation = (asyncData?: any) => {
-            if (oldUrl === this.stateContext.url)
-                this.resumeNavigation(this.createStateContext(state, data, url, asyncData, history), historyAction);
+            var stateContext = this.createStateContext(state, data, url, asyncData, history);
+            if (oldUrl === this.stateContext.url) {
+                suspendNavigation(stateContext, () => {
+                    if (oldUrl === this.stateContext.url)
+                        this.resumeNavigation(stateContext, historyAction);
+                });
+            }
         };
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
