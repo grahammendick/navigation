@@ -34,10 +34,7 @@ class StateNavigator {
         this.historyManager.init((url = this.historyManager.getCurrentUrl()) => {
             this.navigateLink(url, undefined, true);
         });
-        function isStateInfos(stateInfos: StateInfo[] | StateNavigator): stateInfos is StateInfo[] {
-            return !(<StateNavigator> stateInfos).stateHandler;
-        };
-        if (isStateInfos(stateInfos)) {
+        if (this.isStateInfos(stateInfos)) {
             var states = this.stateHandler.buildStates(stateInfos);
             this.states = {};
             for(var i = 0; i < states.length; i++)
@@ -47,6 +44,10 @@ class StateNavigator {
             this.states = stateInfos.states;
         }
     }
+
+    private isStateInfos(stateInfos: StateInfo[] | StateNavigator): stateInfos is StateInfo[] {
+        return !(<StateNavigator> stateInfos).stateHandler;
+    };
 
     private createStateContext(state: State, data: any, url: string, asyncData: any, history: boolean): StateContext {
         var stateContext = new StateContext();
