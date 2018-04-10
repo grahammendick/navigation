@@ -45,7 +45,7 @@ class AsyncStateNavigator extends StateNavigator {
         wrapDefer(() => {
             this.navigationHandler.setState(() => {
                 var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext);
-                return { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator, nextState: undefined, nextData: undefined } };
+                return { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: asyncNavigator } };
             }, () => {
                 resumeNavigation();
             });
