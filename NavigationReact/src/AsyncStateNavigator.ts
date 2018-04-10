@@ -13,6 +13,11 @@ class AsyncStateNavigator extends StateNavigator {
         this.stateNavigator = stateNavigator;
         this.stateContext = stateContext;
         this.historyManager = stateNavigator.historyManager;
+        this.configure = stateNavigator.configure.bind(stateNavigator);
+        this.onBeforeNavigate = stateNavigator.onBeforeNavigate.bind(stateNavigator);
+        this.offBeforeNavigate = stateNavigator.offBeforeNavigate.bind(stateNavigator);
+        this.onNavigate = stateNavigator.onNavigate.bind(stateNavigator);
+        this.offNavigate = stateNavigator.offNavigate.bind(stateNavigator);
     }
 
     navigate(stateKey: string, navigationData?: any, historyAction?: 'add' | 'replace' | 'none', defer?: boolean) {
