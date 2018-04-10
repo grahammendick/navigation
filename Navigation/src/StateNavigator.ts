@@ -22,22 +22,30 @@ class StateNavigator {
     onNavigate = (handler: NavigateHandler) => this.onNavigateCache.onEvent(handler);
     offNavigate = (handler: NavigateHandler) => this.onNavigateCache.offEvent(handler);
 
-    constructor(states?: StateInfo[], historyManager?: HistoryManager) {
+    constructor(states?: StateInfo[] | StateNavigator, historyManager?: HistoryManager) {
         if (states)
             this.configure(states, historyManager);
     }
 
-    configure(stateInfos: StateInfo[], historyManager?: HistoryManager) {
+    configure(stateInfos: StateInfo[] | StateNavigator, historyManager?: HistoryManager) {
         if (this.historyManager)
             this.historyManager.stop();
         this.historyManager = historyManager ? historyManager : new HashHistoryManager();
         this.historyManager.init((url = this.historyManager.getCurrentUrl()) => {
             this.navigateLink(url, undefined, true);
         });
-        var states = this.stateHandler.buildStates(stateInfos);
-        this.states = {};
-        for(var i = 0; i < states.length; i++)
-            this.states[states[i].key] = states[i];
+        function isStateInfos(stateInfos: StateInfo[] | StateNavigator): stateInfos is StateInfo[] {
+            return !(<StateNavigator> stateInfos).stateHandler;
+        };
+        if (isStateInfos(stateInfos)) {
+            var states = this.stateHandler.buildStates(stateInfos);
+            this.states = {};
+            for(var i = 0; i < states.length; i++)
+                this.states[states[i].key] = states[i];
+        } else {
+            this.stateHandler = stateInfos.stateHandler;
+            this.states = stateInfos.states;
+        }
     }
 
     private createStateContext(state: State, data: any, url: string, asyncData: any, history: boolean): StateContext {
