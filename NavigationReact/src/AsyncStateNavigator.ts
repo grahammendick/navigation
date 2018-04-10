@@ -1,5 +1,6 @@
 import NavigationHandler from './NavigationHandler';
 import { StateNavigator, StateContext, HashHistoryManager } from 'navigation';
+import * as ReactDOM from 'react-dom';
 
 class AsyncStateNavigator extends StateNavigator {
     private navigationHandler;
@@ -29,12 +30,21 @@ class AsyncStateNavigator extends StateNavigator {
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false, suspendNavigation, defer = false) {
         this.stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
-            this.navigationHandler.setState(() => {
-                var { oldState, state, data, asyncData } = stateContext;
-                var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext); 
-                return { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } };
-            }, () => {
-                resumeNavigation();
+            if (defer) {
+                this.navigationHandler.setState(({ context }) => {
+                    var { state, data } = stateContext;
+                    return { context: { ...context, nextState: state, nextData: data } };
+                });
+            }
+            var wrapDefer = setState => defer ? ReactDOM.unstable_deferredUpdates(() => setState()) : setState();
+            wrapDefer(() => {
+                this.navigationHandler.setState(() => {
+                    var { oldState, state, data, asyncData } = stateContext;
+                    var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext); 
+                    return { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator, nextState: undefined, nextData: undefined } };
+                }, () => {
+                    resumeNavigation();
+                });
             });
         });
     }
