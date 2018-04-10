@@ -1,5 +1,5 @@
 import NavigationHandler from './NavigationHandler';
-import { StateNavigator, StateContext, HashHistoryManager } from 'navigation';
+import { StateNavigator, StateContext, HTML5HistoryManager } from 'navigation';
 import * as ReactDOM from 'react-dom';
 
 class AsyncStateNavigator extends StateNavigator {
@@ -7,7 +7,7 @@ class AsyncStateNavigator extends StateNavigator {
     private stateNavigator;
 
     constructor(navigationHandler: NavigationHandler, stateNavigator: StateNavigator, stateContext: StateContext) {
-        var inertHistoryManager = new HashHistoryManager();
+        var inertHistoryManager = new HTML5HistoryManager();
         inertHistoryManager.init = () => {};
         super(stateNavigator, inertHistoryManager);
         this.navigationHandler = navigationHandler;
