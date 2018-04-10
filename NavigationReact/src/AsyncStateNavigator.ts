@@ -30,16 +30,12 @@ class AsyncStateNavigator extends StateNavigator {
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false, suspendNavigation, defer = false) {
         this.stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
-            if (defer) {
-                this.navigationHandler.setState(({ context }) => {
-                    var { state, data } = stateContext;
-                    return { context: { ...context, nextState: state, nextData: data } };
-                });
-            }
+            var { oldState, state, data, asyncData } = stateContext;
+            if (defer)
+                this.navigationHandler.setState(({ context }) => ({ context: { ...context, nextState: state, nextData: data } }));
             var wrapDefer = setState => defer ? ReactDOM.unstable_deferredUpdates(() => setState()) : setState();
             wrapDefer(() => {
                 this.navigationHandler.setState(() => {
-                    var { oldState, state, data, asyncData } = stateContext;
                     var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext); 
                     return { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator, nextState: undefined, nextData: undefined } };
                 }, () => {
