@@ -1,7 +1,7 @@
-﻿import { StateNavigator } from 'navigation';
+﻿import AsyncStateNavigator from './AsyncStateNavigator';
 
 class LinkUtility {
-    static getData(stateNavigator: StateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string): any {
+    static getData(stateNavigator: AsyncStateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string): any {
         if (currentDataKeys || includeCurrentData) {
             var keys = includeCurrentData ? undefined : currentDataKeys.trim().split(/\s*,\s*/);
             navigationData = stateNavigator.stateContext.includeCurrentData(navigationData, keys);
@@ -9,7 +9,7 @@ class LinkUtility {
         return navigationData;
     }
 
-    static isActive(stateNavigator: StateNavigator, navigationData: any): boolean {
+    static isActive(stateNavigator: AsyncStateNavigator, navigationData: any): boolean {
         var active = true;
         for (var key in navigationData) {
             var val = navigationData[key];
@@ -48,16 +48,16 @@ class LinkUtility {
         return attr !== 'stateNavigator' && attr !== 'stateKey' && attr !== 'navigationData'
             && attr !== 'includeCurrentData' && attr !== 'currentDataKeys' && attr !== 'activeCssClass'
             && attr !== 'disableActive' && attr !== 'distance' && attr !== 'historyAction'
-            && attr !== 'acrossCrumbs' && attr !== 'navigating' && attr !== 'children';
+            && attr !== 'acrossCrumbs' && attr !== 'navigating' && attr !== 'children' && attr !== 'defer';
     }
     
-    static getOnClick(stateNavigator: StateNavigator, props: any, link: string) {
+    static getOnClick(stateNavigator: AsyncStateNavigator, props: any, link: string) {
         return e => {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (link) {
                     if (!props.navigating || props.navigating(e, link)) {
                         e.preventDefault();
-                        stateNavigator.navigateLink(link, props.historyAction);
+                        stateNavigator.navigateLink(link, props.historyAction, false, undefined, props.defer);
                     }
                 }
             }

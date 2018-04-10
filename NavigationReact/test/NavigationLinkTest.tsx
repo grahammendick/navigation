@@ -1832,4 +1832,28 @@ describe('NavigationLinkTest', function () {
             assert.equal(header.innerHTML, 'world');
         })
     });
+
+    describe('Click Deferred Navigation Link', function () {
+        it('should navigate asynchronously', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink stateKey="s" defer={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.state, null);
+            stateNavigator.onNavigate(() => {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+                done();                                
+            })
+        })
+    });
 });

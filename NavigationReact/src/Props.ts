@@ -1,11 +1,11 @@
-import { StateNavigator } from 'navigation';
+import AsyncStateNavigator from './AsyncStateNavigator';
 import { HTMLProps, MouseEvent } from 'react';
 
 interface LinkProps extends HTMLProps<HTMLAnchorElement> {
     acrossCrumbs?: boolean;
     historyAction?: 'add' | 'replace' | 'none';
     navigating?: (e: MouseEvent<HTMLAnchorElement>, link: string) => boolean;
-    stateNavigator?: StateNavigator;
+    stateNavigator?: AsyncStateNavigator;
     navigationContext?: boolean;
 }
 
