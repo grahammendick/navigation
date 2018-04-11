@@ -1937,4 +1937,32 @@ describe('NavigationLinkTest', function () {
             })
         })
     });
+
+    describe('On Before Cancel Navigation Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink stateKey="s0">
+                        link text
+                    </NavigationLink>
+                    <NavigationLink stateKey="s1">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var firstLink = container.querySelectorAll<HTMLAnchorElement>('a')[0];
+            Simulate.click(firstLink);
+            assert.equal(stateNavigator.stateContext.state.key, 's0');
+            stateNavigator.onBeforeNavigate(() => false);
+            var secondLink = container.querySelectorAll<HTMLAnchorElement>('a')[1];
+            Simulate.click(secondLink);
+            assert.equal(stateNavigator.stateContext.state.key, 's0');
+        })
+    });
 });
