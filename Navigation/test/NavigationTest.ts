@@ -5313,4 +5313,44 @@ describe('Navigation', function () {
             assert.strictEqual(history.getHref('/b'), '/a/b');
         });
     });
+
+    describe('From State Navigator', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator(new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]));
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1');
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.url, '/r1');
+                assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r0');
+                assert.equal(stateNavigator.stateContext.previousState, null);
+                assert.equal(stateNavigator.stateContext.previousUrl, null);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+            });
+        }
+    });
 });
