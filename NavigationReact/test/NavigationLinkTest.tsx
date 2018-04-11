@@ -1857,16 +1857,16 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('Deferred Navigation Link', function () {
-        it('should update current sync and next async', function(done){
+    describe('Next State and Data Deferred Navigation Link', function () {
+        it('should update', function(done){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
             var {s0, s1} = stateNavigator.states;
-            s0.renderView = (_, {hello}) => (
+            s0.renderView = (_, nextState, {hello}) => (
                 <div>
-                    <h1>{hello || 'empty'} first</h1>
+                    <h1>{hello || 'empty'} {(nextState && nextState.key) || 'first'}</h1>
                     <NavigationLink
                         stateKey="s1"
                         navigationData={{hello: 'world'}}
@@ -1881,7 +1881,7 @@ describe('NavigationLinkTest', function () {
             ReactDOM.render(
                 <NavigationHandler stateNavigator={stateNavigator}>
                     <NavigationContext.Consumer>
-                        {({state, data, nextData}) => state.renderView(data, nextData)}
+                        {({state, data, nextState, nextData}) => state.renderView(data, nextState, nextData)}
                     </NavigationContext.Consumer>
                 </NavigationHandler>,
                 container
@@ -1891,7 +1891,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(header.innerHTML, 'empty first');
             Simulate.click(link);
             header = container.querySelector<HTMLHeadingElement>('h1');
-            assert.equal(header.innerHTML, 'world first');
+            assert.equal(header.innerHTML, 'world s1');
             stateNavigator.onNavigate(() => {
                 header = container.querySelector<HTMLHeadingElement>('h1');
                 assert.equal(header.innerHTML, 'world second');
