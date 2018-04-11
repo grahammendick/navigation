@@ -32,19 +32,19 @@ class AsyncStateNavigator extends StateNavigator {
         suspendNavigation: (stateContext: StateContext, resumeNavigation: () => void) => void = (_, resumeNavigation) => resumeNavigation(), defer = false) {
         this.stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
             suspendNavigation(stateContext, () => {
-                this.suspendNavigation(stateContext, resumeNavigation, defer);
+                var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext);
+                this.suspendNavigation(asyncNavigator, resumeNavigation, defer);
             })
         });
     }
 
-    private suspendNavigation(stateContext: StateContext, resumeNavigation: () => void, defer: boolean) {
+    private suspendNavigation(asyncNavigator: AsyncStateNavigator, resumeNavigation: () => void, defer: boolean) {
         defer = defer && ReactDOM.unstable_deferredUpdates;
-        var { oldState, state, data, asyncData } = stateContext;
+        var { oldState, state, data, asyncData } = asyncNavigator.stateContext;
         if (defer)
             this.navigationHandler.setState(({ context }) => ({ context: { ...context, nextState: state, nextData: data } }));
         var wrapDefer = setState => defer ? ReactDOM.unstable_deferredUpdates(() => setState()) : setState();
         wrapDefer(() => {
-            var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext);
             this.navigationHandler.setState(() => (
                 { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: asyncNavigator } }
             ), () => {
