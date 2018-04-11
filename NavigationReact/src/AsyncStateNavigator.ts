@@ -3,8 +3,8 @@ import { StateNavigator, StateContext, HTML5HistoryManager } from 'navigation';
 import * as ReactDOM from 'react-dom';
 
 class AsyncStateNavigator extends StateNavigator {
-    private navigationHandler;
-    private stateNavigator;
+    private navigationHandler: NavigationHandler;
+    private stateNavigator: StateNavigator;
 
     constructor(navigationHandler: NavigationHandler, stateNavigator: StateNavigator, stateContext: StateContext) {
         var inertHistoryManager = new HTML5HistoryManager();
