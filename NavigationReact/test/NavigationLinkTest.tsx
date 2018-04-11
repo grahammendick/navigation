@@ -1861,6 +1861,28 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Click Navigate', function () {
+        it('should navigate async', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({stateNavigator}) => (
+                            <div onClick={() => stateNavigator.navigate('s', null, undefined, false)} />
+                        )}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var div = container.querySelector<HTMLAnchorElement>('div');
+            Simulate.click(div);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+        })
+    });
+
     describe('Click Deferred Navigation Link', function () {
         it('should navigate async', function(done){
             var stateNavigator = new StateNavigator([
@@ -1961,6 +1983,32 @@ describe('NavigationLinkTest', function () {
             assert.equal(secondLink.hash, '#/r?x=a&z=c');
             stateNavigator.onNavigate(() => {
                 assert.equal(secondLink.hash, '#/r?y=b&z=c');
+                done();                                
+            })
+        })
+    });
+
+    describe('Click Deferred Navigate', function () {
+        it('should navigate async', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({stateNavigator}) => (
+                            <div onClick={() => stateNavigator.navigate('s', null, undefined, true)} />
+                        )}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('div');
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.state, null);
+            stateNavigator.onNavigate(() => {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
                 done();                                
             })
         })
