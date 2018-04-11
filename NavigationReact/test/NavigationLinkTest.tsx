@@ -1861,6 +1861,36 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('On Before Component Cancel Navigation', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            class Blocker extends React.Component<{ stateNavigator: StateNavigator }> {
+                componentDidMount() {
+                    this.props.stateNavigator.onBeforeNavigate(() => false);
+                }
+                render() {
+                    return null;
+                }
+            }
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({ stateNavigator }) => <Blocker stateNavigator={stateNavigator} />}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            assert.equal(stateNavigator.stateContext.state.key, 's0');
+            stateNavigator.navigate('s1');
+            assert.equal(stateNavigator.stateContext.state.key, 's0');
+        })
+    });
+
     describe('Click Navigate', function () {
         it('should navigate', function(){
             var stateNavigator = new StateNavigator([
