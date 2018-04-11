@@ -22,9 +22,9 @@ class StateNavigator {
     onNavigate = (handler: NavigateHandler) => this.onNavigateCache.onEvent(handler);
     offNavigate = (handler: NavigateHandler) => this.onNavigateCache.offEvent(handler);
 
-    constructor(states?: StateInfo[] | StateNavigator, historyManager?: HistoryManager) {
-        if (states)
-            this.configure(states, historyManager);
+    constructor(stateInfos?: StateInfo[] | StateNavigator, historyManager?: HistoryManager) {
+        if (stateInfos)
+            this.configure(stateInfos, historyManager);
     }
 
     configure(stateInfos: StateInfo[] | StateNavigator, historyManager?: HistoryManager) {
