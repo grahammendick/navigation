@@ -44,10 +44,10 @@ class AsyncStateNavigator extends StateNavigator {
             this.navigationHandler.setState(({ context }) => ({ context: { ...context, nextState: state, nextData: data } }));
         var wrapDefer = setState => defer ? ReactDOM.unstable_deferredUpdates(() => setState()) : setState();
         wrapDefer(() => {
-            this.navigationHandler.setState(() => {
-                var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext);
-                return { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: asyncNavigator } };
-            }, () => {
+            var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext);
+            this.navigationHandler.setState(() => (
+                { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: asyncNavigator } }
+            ), () => {
                 resumeNavigation();
             });
         });
