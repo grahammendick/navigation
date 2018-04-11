@@ -311,7 +311,7 @@ describe('StateConfigTest', function () {
         })
     });
  
-    describe('State Navigator', function () {
+    describe('From State Navigator', function () {
         it('should configure State Info', function() {
             var stateNavigator = new StateNavigator(new StateNavigator([
                 { key: 's0', route: 'r0' },
@@ -330,7 +330,7 @@ describe('StateConfigTest', function () {
         })
     });
 
-    describe('Reload State Navigator', function () {
+    describe('Reload From State Navigator', function () {
         it('should configure State Info', function() {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
