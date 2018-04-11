@@ -1841,7 +1841,9 @@ describe('NavigationLinkTest', function () {
             var container = document.createElement('div');
             ReactDOM.render(
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink stateKey="s" defer={true}>
+                    <NavigationLink
+                        stateKey="s"
+                        defer={true}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>,
@@ -1895,6 +1897,42 @@ describe('NavigationLinkTest', function () {
             stateNavigator.onNavigate(() => {
                 header = container.querySelector<HTMLHeadingElement>('h1');
                 assert.equal(header.innerHTML, 'world second');
+                done();                                
+            })
+        })
+    });
+
+    describe('Include Current Data Deferred Navigation Link', function () {
+        it('should update async', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{y: 'b'}}
+                        defer={true}>
+                        link text
+                    </NavigationLink>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{z: 'c'}}
+                        includeCurrentData={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var firstLink = container.querySelectorAll<HTMLAnchorElement>('a')[0];
+            var secondLink = container.querySelectorAll<HTMLAnchorElement>('a')[1];
+            assert.equal(secondLink.hash, '#/r?x=a&z=c');
+            Simulate.click(firstLink);
+            assert.equal(secondLink.hash, '#/r?x=a&z=c');
+            stateNavigator.onNavigate(() => {
+                assert.equal(secondLink.hash, '#/r?y=b&z=c');
                 done();                                
             })
         })
