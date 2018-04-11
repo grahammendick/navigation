@@ -313,15 +313,14 @@ describe('StateConfigTest', function () {
  
     describe('State Navigator', function () {
         it('should configure State Info', function() {
-            var stateNavigator0 = new StateNavigator([
+            var stateNavigator = new StateNavigator(new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
-            ]);
-            var stateNavigator1 = new StateNavigator(stateNavigator0);
-            var state0 = stateNavigator1.states['s0'];
-            var state1 = stateNavigator1.states['s1'];
-            var state2 = stateNavigator1.states['s2'];
+            ]));
+            var state0 = stateNavigator.states['s0'];
+            var state1 = stateNavigator.states['s1'];
+            var state2 = stateNavigator.states['s2'];
             assert.equal(state0.key, 's0');
             assert.equal(state0.route, 'r0');
             assert.equal(state1.key, 's1');
@@ -333,19 +332,18 @@ describe('StateConfigTest', function () {
 
     describe('Reload State Navigator', function () {
         it('should configure State Info', function() {
-            var stateNavigator0 = new StateNavigator([
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.configure(new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
-            ]);
-            var stateNavigator1 = new StateNavigator([
-                { key: 's', route: 'r' }
-            ]);
-            stateNavigator1.configure(stateNavigator0);
-            var state0 = stateNavigator1.states['s0'];
-            var state1 = stateNavigator1.states['s1'];
-            var state2 = stateNavigator1.states['s2'];
-            assert.equal(Object.keys(stateNavigator1.states).length, 3);
+            ]));
+            var state0 = stateNavigator.states['s0'];
+            var state1 = stateNavigator.states['s1'];
+            var state2 = stateNavigator.states['s2'];
+            assert.equal(Object.keys(stateNavigator.states).length, 3);
             assert.equal(state0.key, 's0');
             assert.equal(state0.route, 'r0');
             assert.equal(state1.key, 's1');
