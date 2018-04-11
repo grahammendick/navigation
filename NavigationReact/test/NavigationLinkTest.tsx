@@ -2013,4 +2013,37 @@ describe('NavigationLinkTest', function () {
             })
         })
     });
+
+    describe('Multiple Deferred Navigation Link', function () {
+        it('should update async', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        defer={true}>
+                        link text
+                    </NavigationLink>
+                    <NavigationLink
+                        stateKey="s1"
+                        defer={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var firstLink = container.querySelectorAll<HTMLAnchorElement>('a')[0];
+            var secondLink = container.querySelectorAll<HTMLAnchorElement>('a')[1];
+            Simulate.click(firstLink);
+            Simulate.click(secondLink);
+            stateNavigator.onNavigate(() => {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+                done();                                
+            })
+        })
+    });
 });

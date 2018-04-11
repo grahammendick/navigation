@@ -40,7 +40,7 @@ class AsyncStateNavigator extends StateNavigator {
 
     private suspendNavigation(asyncNavigator: AsyncStateNavigator, resumeNavigation: () => void, defer: boolean) {
         defer = defer && ReactDOM.unstable_deferredUpdates;
-        var { oldState, state, data, asyncData } = asyncNavigator.stateContext;
+        var { oldState, state, data, url, asyncData } = asyncNavigator.stateContext;
         if (defer)
             this.navigationHandler.setState(({ context }) => ({ context: { ...context, nextState: state, nextData: data } }));
         var wrapDefer = setState => defer ? ReactDOM.unstable_deferredUpdates(() => setState()) : setState();
@@ -48,7 +48,8 @@ class AsyncStateNavigator extends StateNavigator {
             this.navigationHandler.setState(() => (
                 { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: asyncNavigator } }
             ), () => {
-                resumeNavigation();
+                if (this.navigationHandler.state.context.stateNavigator.stateContext.url === url)
+                    resumeNavigation();
             });
         });
     }
