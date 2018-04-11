@@ -1,5 +1,5 @@
 import NavigationHandler from './NavigationHandler';
-import { StateNavigator, StateContext, HTML5HistoryManager } from 'navigation';
+import { StateNavigator, StateContext, HTML5HistoryManager, State } from 'navigation';
 import * as ReactDOM from 'react-dom';
 
 class AsyncStateNavigator extends StateNavigator {
@@ -37,7 +37,7 @@ class AsyncStateNavigator extends StateNavigator {
         });
     }
 
-    private suspendNavigation(stateContext, resumeNavigation, defer) {
+    private suspendNavigation(stateContext: StateContext, resumeNavigation: () => void, defer: boolean) {
         defer = defer && ReactDOM.unstable_deferredUpdates;
         var { oldState, state, data, asyncData } = stateContext;
         if (defer)
