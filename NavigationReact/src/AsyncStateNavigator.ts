@@ -38,6 +38,7 @@ class AsyncStateNavigator extends StateNavigator {
     }
 
     private suspendNavigation(stateContext, resumeNavigation, defer) {
+        defer = defer && ReactDOM.unstable_deferredUpdates;
         var { oldState, state, data, asyncData } = stateContext;
         if (defer)
             this.navigationHandler.setState(({ context }) => ({ context: { ...context, nextState: state, nextData: data } }));
