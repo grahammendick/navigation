@@ -1998,7 +1998,7 @@ describe('NavigationLinkTest', function () {
                 <NavigationHandler stateNavigator={stateNavigator}>
                     <NavigationContext.Consumer>
                         {({stateNavigator}) => (
-                            <div onClick={() => stateNavigator.navigate('s', null, undefined, true)} />
+                            <div onClick={() => stateNavigator.navigate('s', null, 'add', true)} />
                         )}
                     </NavigationContext.Consumer>
                 </NavigationHandler>,
