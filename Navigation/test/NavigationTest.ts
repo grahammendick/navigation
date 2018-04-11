@@ -1,6 +1,6 @@
 ﻿import * as assert from 'assert';
 import * as mocha from 'mocha';
-import { StateNavigator, HashHistoryManager, HTML5HistoryManager } from 'navigation';
+import { StateNavigator, StateContext, HashHistoryManager, HTML5HistoryManager } from 'navigation';
 
 describe('Navigation', function () {
     describe('State', function() {
@@ -173,6 +173,7 @@ describe('Navigation', function () {
 
     describe('Transition', function() {
         var stateNavigator: StateNavigator;
+        var stateContext: StateContext;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
@@ -183,6 +184,7 @@ describe('Navigation', function () {
         describe('Navigate', function() {
             beforeEach(function() {
                 stateNavigator.navigate('s0');
+                stateContext = stateNavigator.stateContext;
                 stateNavigator.navigate('s1');
             });
             test();
@@ -192,6 +194,7 @@ describe('Navigation', function () {
             beforeEach(function() {
                 var link = stateNavigator.getNavigationLink('s0');
                 stateNavigator.navigateLink(link);
+                stateContext = stateNavigator.stateContext;
                 link = stateNavigator.getNavigationLink('s1');
                 stateNavigator.navigateLink(link);
             });
@@ -207,6 +210,9 @@ describe('Navigation', function () {
                 assert.equal(stateNavigator.stateContext.previousState, null);
                 assert.equal(stateNavigator.stateContext.previousUrl, null);
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+            });
+            it('should not mutate context', function() {
+                assert.notStrictEqual(stateNavigator.stateContext, stateContext);
             });
         }
     });
