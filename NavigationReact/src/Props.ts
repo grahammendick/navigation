@@ -1,12 +1,12 @@
 import AsyncStateNavigator from './AsyncStateNavigator';
 import { HTMLProps, MouseEvent } from 'react';
 
-interface LinkProps extends HTMLProps<HTMLAnchorElement> {
+interface LinkProps extends React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
     acrossCrumbs?: boolean;
     historyAction?: 'add' | 'replace' | 'none';
     navigating?: (e: MouseEvent<HTMLAnchorElement>, link: string) => boolean;
+    defer?: boolean;
     stateNavigator?: AsyncStateNavigator;
-    navigationContext?: boolean;
 }
 
 interface RefreshLinkProps extends LinkProps {

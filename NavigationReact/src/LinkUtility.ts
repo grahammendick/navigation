@@ -1,4 +1,5 @@
 ﻿import AsyncStateNavigator from './AsyncStateNavigator';
+import { LinkProps } from './Props';
 
 class LinkUtility {
     static getData(stateNavigator: AsyncStateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string): any {
@@ -51,13 +52,14 @@ class LinkUtility {
             && attr !== 'acrossCrumbs' && attr !== 'navigating' && attr !== 'children' && attr !== 'defer';
     }
     
-    static getOnClick(stateNavigator: AsyncStateNavigator, props: any, link: string) {
+    static getOnClick(stateNavigator: AsyncStateNavigator, props: LinkProps, link: string) {
         return e => {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (link) {
-                    if (!props.navigating || props.navigating(e, link)) {
+                    var { navigating, historyAction, defer } = props;
+                    if (!navigating || navigating(e, link)) {
                         e.preventDefault();
-                        stateNavigator.navigateLink(link, props.historyAction, false, undefined, props.defer);
+                        stateNavigator.navigateLink(link, historyAction, false, undefined, defer);
                     }
                 }
             }
