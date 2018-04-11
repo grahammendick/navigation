@@ -1862,7 +1862,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Click Navigate', function () {
-        it('should navigate async', function(){
+        it('should navigate', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
