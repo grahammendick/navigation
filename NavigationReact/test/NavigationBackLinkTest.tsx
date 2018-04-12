@@ -597,4 +597,33 @@ describe('NavigationBackLinkTest', function () {
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
         })
     });
+
+    describe('Click Deferred Navigation Back Link', function () {
+        it('should navigate async', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink
+                        distance={1}
+                        defer={true}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.onNavigate(() => {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+                done();                                
+            })
+        })
+    });
 });
