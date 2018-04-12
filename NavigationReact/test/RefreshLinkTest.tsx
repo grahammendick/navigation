@@ -1988,4 +1988,38 @@ describe('RefreshLinkTest', function () {
             })
         })
     });
+
+    describe('Multiple Deferred Refresh Link', function () {
+        it('should update async', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: 'a'}}
+                        defer={true}>
+                        link text
+                    </RefreshLink>
+                    <RefreshLink
+                        navigationData={{y: 'b'}}
+                        defer={true}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var firstLink = container.querySelectorAll<HTMLAnchorElement>('a')[0];
+            var secondLink = container.querySelectorAll<HTMLAnchorElement>('a')[1];
+            Simulate.click(firstLink);
+            Simulate.click(secondLink);
+            stateNavigator.onNavigate(() => {
+                assert.equal(stateNavigator.stateContext.data.x, null);
+                assert.equal(stateNavigator.stateContext.data.y, 'b');
+                done();
+            })
+        })
+    });
 });
