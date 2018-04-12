@@ -511,4 +511,65 @@ describe('NavigationBackLinkTest', function () {
             assert.equal(header.innerHTML, 'world');
         })
     });
+
+    describe('On Before Cancel Navigation Back Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            stateNavigator.navigate('s2');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink
+                        distance={1}
+                        acrossCrumbs={true}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelectorAll<HTMLAnchorElement>('a')[0];
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.state.key, 's1');
+            stateNavigator.onBeforeNavigate(() => false);
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.state.key, 's1');
+        })
+    });
+
+    describe('On Before Component Cancel Back Navigation', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            class Blocker extends React.Component<{ stateNavigator: StateNavigator }> {
+                componentDidMount() {
+                    this.props.stateNavigator.onBeforeNavigate(() => false);
+                }
+                render() {
+                    return null;
+                }
+            }
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({ stateNavigator }) => <Blocker stateNavigator={stateNavigator} />}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            assert.equal(stateNavigator.stateContext.state.key, 's1');
+            stateNavigator.navigateBack(1);
+            assert.equal(stateNavigator.stateContext.state.key, 's1');
+        })
+    });
 });
