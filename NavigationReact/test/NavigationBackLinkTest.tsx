@@ -774,4 +774,48 @@ describe('NavigationBackLinkTest', function () {
             })
         })
     });
+
+    describe('Next State and Data Navigate Back', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+            ]);
+            var {s0, s1, s2} = stateNavigator.states;
+            s0.renderView = () => null;
+            s1.renderView = () => null;
+            s2.renderView = (_, nextState, {hello}) => (
+                <div>
+                    <h1>{hello || 'empty'} {(nextState && nextState.key) || 'first'}</h1>
+                    <NavigationBackLink
+                        distance={1}
+                        defer={true}>
+                        link text
+                    </NavigationBackLink>
+                </div>
+            );
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1', {hello: 'world'});
+            stateNavigator.navigate('s2');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({state, data, nextState, nextData}) => state.renderView(data, nextState, nextData)}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            var header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'empty first');
+            Simulate.click(link);
+            header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'world s1');
+            stateNavigator.navigate('s2');
+            header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'empty first');
+        })
+    });
 });
