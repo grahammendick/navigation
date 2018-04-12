@@ -626,4 +626,47 @@ describe('NavigationBackLinkTest', function () {
             })
         })
     });
+
+    describe('Next State and Data Deferred Navigation Back Link', function () {
+        it('should update', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var {s0, s1} = stateNavigator.states;
+            s0.renderView = ({hello}, nextState) => <h1>{hello} {(nextState && nextState.key) || 'first'}</h1>
+            s1.renderView = (_, nextState, {hello}) => (
+                <div>
+                    <h1>{hello || 'empty'} {(nextState && nextState.key) || 'second'}</h1>
+                    <NavigationBackLink
+                        distance={1}
+                        defer={true}>
+                        link text
+                    </NavigationBackLink>
+                </div>
+            );
+            stateNavigator.navigate('s0', {hello: 'world'});
+            stateNavigator.navigate('s1');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({state, data, nextState, nextData}) => state.renderView(data, nextState, nextData)}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            var header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'empty second');
+            Simulate.click(link);
+            header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'world s0');
+            stateNavigator.onNavigate(() => {
+                header = container.querySelector<HTMLHeadingElement>('h1');
+                assert.equal(header.innerHTML, 'world first');
+                done();                                
+            })
+        })
+    });
 });

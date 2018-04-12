@@ -1919,6 +1919,7 @@ describe('RefreshLinkTest', function () {
             var header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'empty empty');
             Simulate.click(link);
+            header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'empty s world');
             stateNavigator.onNavigate(() => {
                 header = container.querySelector<HTMLHeadingElement>('h1');
@@ -2053,8 +2054,10 @@ describe('RefreshLinkTest', function () {
             var header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'empty first');
             Simulate.click(link);
+            header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'world s');
             stateNavigator.refresh({x: 'a'});
+            header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'empty first');
         })
     });

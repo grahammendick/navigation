@@ -1972,6 +1972,7 @@ describe('NavigationLinkTest', function () {
             var header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'empty first');
             Simulate.click(link);
+            header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'world s1');
             stateNavigator.onNavigate(() => {
                 header = container.querySelector<HTMLHeadingElement>('h1');
@@ -2109,8 +2110,10 @@ describe('NavigationLinkTest', function () {
             var header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'empty first');
             Simulate.click(link);
+            header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'world s1');
             stateNavigator.navigate('s0', {x: 'a'});
+            header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'empty first');
         })
     });
