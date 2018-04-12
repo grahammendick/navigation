@@ -2013,7 +2013,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(secondLink.hash, '#/r?x=a&z=c');
             stateNavigator.onNavigate(() => {
                 assert.equal(secondLink.hash, '#/r?y=b&z=c');
-                done();                                
+                done();
             })
         })
     });
@@ -2039,7 +2039,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(stateNavigator.stateContext.state, null);
             stateNavigator.onNavigate(() => {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
-                done();                                
+                done();
             })
         })
     });
@@ -2072,7 +2072,7 @@ describe('NavigationLinkTest', function () {
             Simulate.click(secondLink);
             stateNavigator.onNavigate(() => {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
-                done();                                
+                done();
             })
         })
     });
