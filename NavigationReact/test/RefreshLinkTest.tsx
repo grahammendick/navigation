@@ -1888,4 +1888,43 @@ describe('RefreshLinkTest', function () {
             })
         })
     });
+
+    describe('Next State and Data Deferred Refresh Link', function () {
+        it('should update', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' },
+            ]);
+            var {s} = stateNavigator.states;
+            s.renderView = ({hello}, nextState, {hello: nextHello}) => (
+                <div>
+                    <h1>{hello || 'empty'} {(nextState && `${nextState.key} `)}{(nextHello || 'empty')}</h1>
+                    <RefreshLink
+                        navigationData={{hello: 'world'}}
+                        defer={true}>
+                        link text
+                    </RefreshLink>
+                </div>
+            );
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({state, data, nextState, nextData}) => state.renderView(data, nextState, nextData)}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            var header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'empty empty');
+            Simulate.click(link);
+            assert.equal(header.innerHTML, 'empty s world');
+            stateNavigator.onNavigate(() => {
+                header = container.querySelector<HTMLHeadingElement>('h1');
+                assert.equal(header.innerHTML, 'world empty');
+                done();                                
+            })
+        })
+    });
 });
