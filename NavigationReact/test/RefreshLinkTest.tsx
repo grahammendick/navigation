@@ -1777,4 +1777,65 @@ describe('RefreshLinkTest', function () {
             assert.equal(header.innerHTML, 'world');
         })
     });
+
+    describe('On Before Cancel Refresh Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' },
+            ]);
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink navigationData={{x: 'a'}}>
+                        link text
+                    </RefreshLink>
+                    <RefreshLink  navigationData={{y: 'b'}}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var firstLink = container.querySelectorAll<HTMLAnchorElement>('a')[0];
+            Simulate.click(firstLink);
+            assert.equal(stateNavigator.stateContext.data.x, 'a');
+            assert.equal(stateNavigator.stateContext.data.y, null);
+            stateNavigator.onBeforeNavigate(() => false);
+            var secondLink = container.querySelectorAll<HTMLAnchorElement>('a')[1];
+            Simulate.click(secondLink);
+            assert.equal(stateNavigator.stateContext.data.x, 'a');
+            assert.equal(stateNavigator.stateContext.data.y, null);
+        })
+    });
+
+    describe('On Before Component Cancel Refresh', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' },
+            ]);
+            class Blocker extends React.Component<{ stateNavigator: StateNavigator }> {
+                componentDidMount() {
+                    this.props.stateNavigator.onBeforeNavigate(() => false);
+                }
+                render() {
+                    return null;
+                }
+            }
+            stateNavigator.navigate('s', {x: 'a'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({ stateNavigator }) => <Blocker stateNavigator={stateNavigator} />}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            assert.equal(stateNavigator.stateContext.data.x, 'a');
+            assert.equal(stateNavigator.stateContext.data.y, null);
+            stateNavigator.refresh({y: 'b'});
+            assert.equal(stateNavigator.stateContext.data.x, 'a');
+            assert.equal(stateNavigator.stateContext.data.y, null);
+        })
+    });
 });
