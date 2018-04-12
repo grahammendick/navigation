@@ -1957,7 +1957,7 @@ describe('NavigationLinkTest', function () {
                     </NavigationLink>
                 </div>
             );
-            s1.renderView = ({hello}) => <h1>{hello} second</h1>
+            s1.renderView = ({hello}, nextState) => <h1>{hello} {(nextState && nextState.key) || 'second'}</h1>
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
             ReactDOM.render(
