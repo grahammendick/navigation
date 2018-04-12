@@ -1927,4 +1927,38 @@ describe('RefreshLinkTest', function () {
             })
         })
     });
+
+    describe('Include Current Data Deferred Refresh Link', function () {
+        it('should update async', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{y: 'b'}}
+                        defer={true}>
+                        link text
+                    </RefreshLink>
+                    <RefreshLink
+                        navigationData={{z: 'c'}}
+                        includeCurrentData={true}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var firstLink = container.querySelectorAll<HTMLAnchorElement>('a')[0];
+            var secondLink = container.querySelectorAll<HTMLAnchorElement>('a')[1];
+            assert.equal(secondLink.hash, '#/r?x=a&z=c');
+            Simulate.click(firstLink);
+            assert.equal(secondLink.hash, '#/r?x=a&z=c');
+            stateNavigator.onNavigate(() => {
+                assert.equal(secondLink.hash, '#/r?y=b&z=c');
+                done();
+            })
+        })
+    });
 });
