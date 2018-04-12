@@ -778,14 +778,10 @@ describe('NavigationBackLinkTest', function () {
     describe('Next State and Data Navigate Back', function () {
         it('should update', function(){
             var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true },
-                { key: 's2', route: 'r2', trackCrumbTrail: true },
+                { key: 's', route: 'r', trackCrumbTrail: true },
             ]);
-            var {s0, s1, s2} = stateNavigator.states;
-            s0.renderView = () => null;
-            s1.renderView = () => null;
-            s2.renderView = (_, nextState, {hello}) => (
+            var {s} = stateNavigator.states;
+            s.renderView = (_, nextState, {hello}) => (
                 <div>
                     <h1>{hello || 'empty'} {(nextState && nextState.key) || 'first'}</h1>
                     <NavigationBackLink
@@ -795,9 +791,9 @@ describe('NavigationBackLinkTest', function () {
                     </NavigationBackLink>
                 </div>
             );
-            stateNavigator.navigate('s0');
-            stateNavigator.navigate('s1', {hello: 'world'});
-            stateNavigator.navigate('s2');
+            stateNavigator.navigate('s');
+            stateNavigator.navigate('s', {hello: 'world'});
+            stateNavigator.navigate('s');
             var container = document.createElement('div');
             ReactDOM.render(
                 <NavigationHandler stateNavigator={stateNavigator}>
@@ -812,8 +808,8 @@ describe('NavigationBackLinkTest', function () {
             assert.equal(header.innerHTML, 'empty first');
             Simulate.click(link);
             header = container.querySelector<HTMLHeadingElement>('h1');
-            assert.equal(header.innerHTML, 'world s1');
-            stateNavigator.navigate('s2');
+            assert.equal(header.innerHTML, 'world s');
+            stateNavigator.navigateBack(1);
             header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'empty first');
         })
