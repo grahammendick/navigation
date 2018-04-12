@@ -2076,7 +2076,7 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('Next State and Data Deferred Navigate', function () {
+    describe('Next State and Data Navigate', function () {
         it('should update', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
