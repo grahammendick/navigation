@@ -2022,4 +2022,40 @@ describe('RefreshLinkTest', function () {
             })
         })
     });
+
+    describe('Next State and Data Refresh', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var {s} = stateNavigator.states;
+            s.renderView = (_, nextState, {hello}) => (
+                <div>
+                    <h1>{hello || 'empty'} {(nextState && nextState.key) || 'first'}</h1>
+                    <RefreshLink
+                        navigationData={{hello: 'world'}}
+                        defer={true}>
+                        link text
+                    </RefreshLink>
+                </div>
+            );
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({state, data, nextState, nextData}) => state.renderView(data, nextState, nextData)}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            var header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'empty first');
+            Simulate.click(link);
+            assert.equal(header.innerHTML, 'world s');
+            stateNavigator.refresh({x: 'a'});
+            assert.equal(header.innerHTML, 'empty first');
+        })
+    });
 });
