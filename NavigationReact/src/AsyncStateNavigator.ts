@@ -28,6 +28,11 @@ class AsyncStateNavigator extends StateNavigator {
         this.navigateLink(url, historyAction, false, undefined, defer);
     }
 
+    navigateBack(distance: number, historyAction?: 'add' | 'replace' | 'none', defer?: boolean) {
+        var url = this.getNavigationBackLink(distance);
+        this.navigateLink(url, historyAction, false, undefined, defer);
+    }
+
     refresh(navigationData?: any, historyAction?: 'add' | 'replace' | 'none', defer?: boolean) {
         var url = this.getRefreshLink(navigationData);
         if (url == null)

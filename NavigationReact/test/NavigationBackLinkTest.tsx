@@ -707,4 +707,33 @@ describe('NavigationBackLinkTest', function () {
             })
         })
     });
+
+    describe('Click Deferred Navigate Back', function () {
+        it('should navigate async', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({stateNavigator}) => (
+                            <div onClick={() => stateNavigator.navigateBack(1, 'add', true)} />
+                        )}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('div');
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.onNavigate(() => {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+                done();
+            })
+        })
+    });
 });
