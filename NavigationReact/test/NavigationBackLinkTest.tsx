@@ -669,4 +669,42 @@ describe('NavigationBackLinkTest', function () {
             })
         })
     });
+
+    describe('Across Crumbs Deferred Navigation Back Link', function () {
+        it('should update async', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            stateNavigator.navigate('s2');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink
+                        distance={1}
+                        defer={true}>
+                        link text
+                    </NavigationBackLink>
+                    <NavigationBackLink
+                        distance={1}
+                        acrossCrumbs={true}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>,
+                container
+            );
+            var firstLink = container.querySelectorAll<HTMLAnchorElement>('a')[0];
+            var secondLink = container.querySelectorAll<HTMLAnchorElement>('a')[1];
+            assert.equal(secondLink.hash, '#/r1?crumb=%2Fr0');
+            Simulate.click(firstLink);
+            assert.equal(secondLink.hash, '#/r1?crumb=%2Fr0');
+            stateNavigator.onNavigate(() => {
+                assert.equal(secondLink.hash, '#/r0');
+                done();
+            })
+        })
+    });
 });
