@@ -542,7 +542,7 @@ describe('NavigationBackLinkTest', function () {
         })
     });
 
-    describe('On Before Component Cancel Back Navigation', function () {
+    describe('On Before Component Cancel Navigation Back', function () {
         it('should not navigate', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
@@ -570,6 +570,31 @@ describe('NavigationBackLinkTest', function () {
             assert.equal(stateNavigator.stateContext.state.key, 's1');
             stateNavigator.navigateBack(1);
             assert.equal(stateNavigator.stateContext.state.key, 's1');
+        })
+    });
+
+    describe('Click Navigate Back', function () {
+        it('should navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({stateNavigator}) => (
+                            <div onClick={() => stateNavigator.navigateBack(1, undefined, false)} />
+                        )}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var div = container.querySelector<HTMLAnchorElement>('div');
+            Simulate.click(div);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
         })
     });
 });
