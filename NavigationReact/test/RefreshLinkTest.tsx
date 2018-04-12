@@ -1961,4 +1961,31 @@ describe('RefreshLinkTest', function () {
             })
         })
     });
+
+    describe('Click Deferred Refresh', function () {
+        it('should navigate async', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({stateNavigator}) => (
+                            <div onClick={() => stateNavigator.refresh({x: 'a'}, 'add', true)} />
+                        )}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('div');
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.data.x, null);
+            stateNavigator.onNavigate(() => {
+                assert.equal(stateNavigator.stateContext.data.x, 'a');
+                done();
+            })
+        })
+    });
 });

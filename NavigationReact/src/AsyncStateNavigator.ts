@@ -28,6 +28,13 @@ class AsyncStateNavigator extends StateNavigator {
         this.navigateLink(url, historyAction, false, undefined, defer);
     }
 
+    refresh(navigationData?: any, historyAction?: 'add' | 'replace' | 'none', defer?: boolean) {
+        var url = this.getRefreshLink(navigationData);
+        if (url == null)
+            throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
+        this.navigateLink(url, historyAction, false, undefined, defer);
+    }
+
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false,
         suspendNavigation: (stateContext: StateContext, resumeNavigation: () => void) => void = (_, resumeNavigation) => resumeNavigation(), defer = false) {
         this.stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
