@@ -2076,4 +2076,44 @@ describe('NavigationLinkTest', function () {
             })
         })
     });
+
+    describe('Next State and Data Deferred Navigate', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            var {s0, s1} = stateNavigator.states;
+            s0.renderView = (_, nextState, {hello}) => (
+                <div>
+                    <h1>{hello || 'empty'} {(nextState && nextState.key) || 'first'}</h1>
+                    <NavigationLink
+                        stateKey="s1"
+                        navigationData={{hello: 'world'}}
+                        defer={true}>
+                        link text
+                    </NavigationLink>
+                </div>
+            );
+            s1.renderView = () => null;
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({state, data, nextState, nextData}) => state.renderView(data, nextState, nextData)}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            var header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'empty first');
+            Simulate.click(link);
+            header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'world s1');
+            stateNavigator.navigate('s0', {x: 'a'});
+            assert.equal(header.innerHTML, 'empty first');
+        })
+    });
 });
