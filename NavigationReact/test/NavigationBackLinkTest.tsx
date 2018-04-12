@@ -751,7 +751,7 @@ describe('NavigationBackLinkTest', function () {
             ReactDOM.render(
                 <NavigationHandler stateNavigator={stateNavigator}>
                     <NavigationBackLink
-                        distance={1}
+                        distance={2}
                         defer={true}>
                         link text
                     </NavigationBackLink>
