@@ -41,7 +41,7 @@ class AsyncStateNavigator extends StateNavigator {
     }
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false,
-        suspendNavigation: (stateContext: StateContext, resumeNavigation: () => void) => void, defer = false) {
+        suspendNavigation?: (stateContext: StateContext, resumeNavigation: () => void) => void, defer = false) {
         if (!suspendNavigation)
             suspendNavigation = (stateContext, resumeNavigation) => resumeNavigation();
         this.stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
