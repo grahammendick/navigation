@@ -4,37 +4,71 @@ import { StateNavigator } from 'navigation';
 
 describe('StateConfigTest', function () {
     describe('State', function () {
-        it('should configure States', function() {
-            var stateNavigator = new StateNavigator([
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0', title: 't0' },
                 { key: 's1', route: '', title: 't1' },
                 { key: 's2' }
             ]);
-            var state0 = stateNavigator.states['s0'];
-            var state1 = stateNavigator.states['s1'];
-            var state2 = stateNavigator.states['s2'];
-            assert.equal(state0.key, 's0');
-            assert.equal(state0.title, 't0');
-            assert.equal(state0.route, 'r0');
-            assert.equal(state1.key, 's1');
-            assert.equal(state1.title, 't1');
-            assert.equal(state1.route, '');
-            assert.equal(state2.key, 's2');
-            assert.equal(state2.route, 's2');
-        })
+        });
+
+        describe('Array', function() {
+            test();
+        });
+
+        describe('State Navigator', function() {
+            beforeEach(function() {
+                stateNavigator = new StateNavigator(stateNavigator);
+            });
+            test();
+        });
+
+        function test() {
+            it('should configure States', function() {
+                var state0 = stateNavigator.states['s0'];
+                var state1 = stateNavigator.states['s1'];
+                var state2 = stateNavigator.states['s2'];
+                assert.equal(state0.key, 's0');
+                assert.equal(state0.title, 't0');
+                assert.equal(state0.route, 'r0');
+                assert.equal(state1.key, 's1');
+                assert.equal(state1.title, 't1');
+                assert.equal(state1.route, '');
+                assert.equal(state2.key, 's2');
+                assert.equal(state2.route, 's2');
+            });
+        }
     });
 
     describe('Track Crumb Trail', function () {
-        it('should configure State Info', function() {
-            var stateNavigator = new StateNavigator([
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: false },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
-            assert.equal(stateNavigator.states['s0'].trackCrumbTrail, false);
-            assert.equal(stateNavigator.states['s1'].trackCrumbTrail, false);
-            assert.equal(stateNavigator.states['s2'].trackCrumbTrail, true);
-        })
+        });
+
+        describe('Array', function() {
+            test();
+        });
+
+        describe('State Navigator', function() {
+            beforeEach(function() {
+                stateNavigator = new StateNavigator(stateNavigator);
+            });
+            test();
+        });
+
+        function test() {
+            it('should configure State Info', function() {
+                assert.equal(stateNavigator.states['s0'].trackCrumbTrail, false);
+                assert.equal(stateNavigator.states['s1'].trackCrumbTrail, false);
+                assert.equal(stateNavigator.states['s2'].trackCrumbTrail, true);
+            });
+        }
     });
 
     describe('Defaults', function () {
