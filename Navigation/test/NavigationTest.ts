@@ -5321,8 +5321,12 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1' }
             ]);
             stateNavigator.states.s1.navigating = (data, url, navigate) => navigate({z: 'c'});
+            var stateNavigated = false;
+            stateNavigator.states.s1.navigated = () => stateNavigated = true;
             stateNavigator.navigate('s0', {x: 'a'});
             var link = stateNavigator.getNavigationLink('s1', {y: 'b'});
+            var navigated = false;
+            stateNavigator.onNavigate(() => navigated = true);
             stateNavigator.navigateLink(link, 'add', false, stateContext => {
                 assert.equal(stateContext.oldState, stateNavigator.states['s0']);
                 assert.equal(stateContext.oldData.x, 'a');
@@ -5339,6 +5343,8 @@ describe('Navigation', function () {
             assert.equal(stateNavigator.stateContext.data.x, 'a');
             assert.equal(stateNavigator.stateContext.asyncData, undefined);
             assert.equal(stateNavigator.stateContext.url, '/r0?x=a');
+            assert.equal(stateNavigated, false);
+            assert.equal(navigated, false);
         });
     });
 
@@ -5349,8 +5355,12 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1' }
             ]);
             stateNavigator.states.s1.navigating = (data, url, navigate) => navigate({z: 'c'});
+            var stateNavigated = false;
+            stateNavigator.states.s1.navigated = () => stateNavigated = true;
             stateNavigator.navigate('s0', {x: 'a'});
             var link = stateNavigator.getNavigationLink('s1', {y: 'b'});
+            var navigated = false;
+            stateNavigator.onNavigate(() => navigated = true);
             stateNavigator.navigateLink(link, 'add', false, (stateContext, resume) => {
                 assert.equal(stateContext.oldState, stateNavigator.states['s0']);
                 assert.equal(stateContext.oldData.x, 'a');
@@ -5368,6 +5378,8 @@ describe('Navigation', function () {
             assert.equal(stateNavigator.stateContext.data.y, 'b');
             assert.equal(stateNavigator.stateContext.asyncData.z, 'c');
             assert.equal(stateNavigator.stateContext.url, '/r1?y=b');
+            assert.equal(stateNavigated, true);
+            assert.equal(navigated, true);
         });
     });
 
