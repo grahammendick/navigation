@@ -72,14 +72,31 @@ describe('StateConfigTest', function () {
     });
 
     describe('Defaults', function () {
-        it('should configure State Info', function() {
-            var stateNavigator = new StateNavigator([
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }
             ]);
-            assert.strictEqual(stateNavigator.states['s'].defaults['string'], 'Hello');
-            assert.strictEqual(stateNavigator.states['s'].defaults['_bool'], true);
-            assert.strictEqual(stateNavigator.states['s'].defaults['number'], 1);
-        })
+        });
+
+        describe('Array', function() {
+            test();
+        });
+
+        describe('State Navigator', function() {
+            beforeEach(function() {
+                stateNavigator = new StateNavigator(stateNavigator);
+            });
+            test();
+        });
+
+        function test() {
+            it('should configure State Info', function() {
+                assert.strictEqual(stateNavigator.states['s'].defaults['string'], 'Hello');
+                assert.strictEqual(stateNavigator.states['s'].defaults['_bool'], true);
+                assert.strictEqual(stateNavigator.states['s'].defaults['number'], 1);
+            });
+        }
     });
 
     describe('Default Types', function () {
