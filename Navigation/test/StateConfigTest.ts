@@ -502,26 +502,46 @@ describe('StateConfigTest', function () {
     });
 
     describe('Reload', function () {
-        it('should configure State Info', function() {
-            var stateNavigator = new StateNavigator([
+        var stateNavigator: StateNavigator;
+        var newStates = [
+            { key: 's0', route: 'r0' },
+            { key: 's1', route: 'r1' },
+            { key: 's2', route: 'r2' }
+        ];
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            stateNavigator.configure([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-                { key: 's2', route: 'r2' }
-            ]);
-            var state0 = stateNavigator.states['s0'];
-            var state1 = stateNavigator.states['s1'];
-            var state2 = stateNavigator.states['s2'];
-            assert.equal(Object.keys(stateNavigator.states).length, 3);
-            assert.equal(state0.key, 's0');
-            assert.equal(state0.route, 'r0');
-            assert.equal(state1.key, 's1');
-            assert.equal(state1.route, 'r1');
-            assert.equal(state2.key, 's2');
-            assert.equal(state2.route, 'r2');
-        })
+        });
+
+        describe('Array', function() {
+            beforeEach(function() {
+                stateNavigator.configure(newStates);
+            });
+            test();
+        });
+
+        describe('State Navigator', function() {
+            beforeEach(function() {
+                stateNavigator.configure(new StateNavigator(newStates));
+            });
+            test();
+        });
+
+        function test() {
+            it('should configure State Info', function() {
+                var state0 = stateNavigator.states['s0'];
+                var state1 = stateNavigator.states['s1'];
+                var state2 = stateNavigator.states['s2'];
+                assert.equal(Object.keys(stateNavigator.states).length, 3);
+                assert.equal(state0.key, 's0');
+                assert.equal(state0.route, 'r0');
+                assert.equal(state1.key, 's1');
+                assert.equal(state1.route, 'r1');
+                assert.equal(state2.key, 's2');
+                assert.equal(state2.route, 'r2');
+            });
+        }
     });
 
     describe('Two Controllers', function () {
