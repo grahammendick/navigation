@@ -5339,7 +5339,7 @@ describe('Navigation', function () {
             assert.equal(stateNavigator.stateContext.data.x, 'a');
             assert.equal(stateNavigator.stateContext.asyncData, undefined);
             assert.equal(stateNavigator.stateContext.url, '/r0?x=a');
-        })
+        });
     });
 
     describe('Resume', function() {
@@ -5368,6 +5368,26 @@ describe('Navigation', function () {
             assert.equal(stateNavigator.stateContext.data.y, 'b');
             assert.equal(stateNavigator.stateContext.asyncData.z, 'c');
             assert.equal(stateNavigator.stateContext.url, '/r1?y=b');
-    })
+        });
+    });
+
+    describe('Resume Suspend Navigate', function() {
+        it('should not navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var link = stateNavigator.getNavigationLink('s1', {y: 'b'});
+            stateNavigator.navigateLink(link, 'add', false, (stateContext, resume) => {
+                assert.equal(stateContext.state, stateNavigator.states['s1']);
+                assert.equal(stateContext.data.y, 'b');
+                stateNavigator.navigate('s2', {z: 'c'});
+                resume();
+            });
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
+            assert.equal(stateNavigator.stateContext.data.z, 'c');
+        });
     });
 });
