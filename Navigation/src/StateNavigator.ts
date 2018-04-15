@@ -22,48 +22,57 @@ class StateNavigator {
     onNavigate = (handler: NavigateHandler) => this.onNavigateCache.onEvent(handler);
     offNavigate = (handler: NavigateHandler) => this.onNavigateCache.offEvent(handler);
 
-    constructor(states?: StateInfo[], historyManager?: HistoryManager) {
-        if (states)
-            this.configure(states, historyManager);
+    constructor(stateInfos?: StateInfo[] | StateNavigator, historyManager?: HistoryManager) {
+        if (stateInfos)
+            this.configure(stateInfos, historyManager);
     }
 
-    configure(stateInfos: StateInfo[], historyManager?: HistoryManager) {
+    configure(stateInfos: StateInfo[] | StateNavigator, historyManager?: HistoryManager) {
         if (this.historyManager)
             this.historyManager.stop();
         this.historyManager = historyManager ? historyManager : new HashHistoryManager();
         this.historyManager.init((url = this.historyManager.getCurrentUrl()) => {
-            if (this.stateContext.url === url)
-                return;
             this.navigateLink(url, undefined, true);
         });
-        var states = this.stateHandler.buildStates(stateInfos);
-        this.states = {};
-        for(var i = 0; i < states.length; i++)
-            this.states[states[i].key] = states[i];
+        if (this.isStateInfos(stateInfos)) {
+            var states = this.stateHandler.buildStates(stateInfos);
+            this.states = {};
+            for(var i = 0; i < states.length; i++)
+                this.states[states[i].key] = states[i];
+        } else {
+            this.stateHandler = stateInfos.stateHandler;
+            this.states = stateInfos.states;
+        }
     }
 
-    private setStateContext(state: State, data: any, url: string, asyncData: any, history: boolean) {
-        this.stateContext.oldState = this.stateContext.state;
-        this.stateContext.oldData = this.stateContext.data;
-        this.stateContext.oldUrl = this.stateContext.url;
-        this.stateContext.state = state;
-        this.stateContext.url = url;
-        this.stateContext.asyncData = asyncData;
-        this.stateContext.title = state.title;
-        this.stateContext.history = history;
-        this.stateContext.crumbs = data[state.crumbTrailKey];
+    private isStateInfos(stateInfos: StateInfo[] | StateNavigator): stateInfos is StateInfo[] {
+        return !(<StateNavigator> stateInfos).stateHandler;
+    };
+
+    private createStateContext(state: State, data: any, url: string, asyncData: any, history: boolean): StateContext {
+        var stateContext = new StateContext();
+        stateContext.oldState = this.stateContext.state;
+        stateContext.oldData = this.stateContext.data;
+        stateContext.oldUrl = this.stateContext.url;
+        stateContext.state = state;
+        stateContext.url = url;
+        stateContext.asyncData = asyncData;
+        stateContext.title = state.title;
+        stateContext.history = history;
+        stateContext.crumbs = data[state.crumbTrailKey];
         delete data[state.crumbTrailKey];
-        this.stateContext.data = data;
-        this.stateContext.nextCrumb = new Crumb(data, state, url, this.stateHandler.getLink(state, data), false);
-        this.stateContext.previousState = null;
-        this.stateContext.previousData = {};
-        this.stateContext.previousUrl = null;
-        if (this.stateContext.crumbs.length > 0) {
-            var previousStateCrumb = this.stateContext.crumbs.slice(-1)[0];
-            this.stateContext.previousState = previousStateCrumb.state;
-            this.stateContext.previousData = previousStateCrumb.data;
-            this.stateContext.previousUrl = previousStateCrumb.url;
+        stateContext.data = data;
+        stateContext.nextCrumb = new Crumb(data, state, url, this.stateHandler.getLink(state, data), false);
+        stateContext.previousState = null;
+        stateContext.previousData = {};
+        stateContext.previousUrl = null;
+        if (stateContext.crumbs.length > 0) {
+            var previousStateCrumb = stateContext.crumbs.slice(-1)[0];
+            stateContext.previousState = previousStateCrumb.state;
+            stateContext.previousData = previousStateCrumb.data;
+            stateContext.previousUrl = previousStateCrumb.url;
         }
+        return stateContext;
     }
 
     navigate(stateKey: string, navigationData?: any, historyAction?: 'add' | 'replace' | 'none') {
@@ -107,7 +116,10 @@ class StateNavigator {
         return this.stateHandler.getLink(this.stateContext.state, navigationData, crumbs, nextCrumb);
     }
 
-    navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
+    navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false,
+        suspendNavigation: (stateContext: StateContext, resumeNavigation: () => void) => void = (_, resumeNavigation) => resumeNavigation()) {
+        if (history && this.stateContext.url === url)
+            return;
         var oldUrl = this.stateContext.url;
         var { state, data } = this.stateHandler.parseLink(url);
         for (var id in this.onBeforeNavigateCache.handlers) {
@@ -115,7 +127,15 @@ class StateNavigator {
             if (oldUrl !== this.stateContext.url || !handler(this.stateContext.state, state, data, url))
                 return;
         }
-        var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction, history);
+        var navigateContinuation = (asyncData?: any) => {
+            var stateContext = this.createStateContext(state, data, url, asyncData, history);
+            if (oldUrl === this.stateContext.url) {
+                suspendNavigation(stateContext, () => {
+                    if (oldUrl === this.stateContext.url)
+                        this.resumeNavigation(stateContext, historyAction);
+                });
+            }
+        };
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
                 state.navigating(data, url, navigateContinuation, history);
@@ -125,26 +145,23 @@ class StateNavigator {
         else
             state.navigating(data, url, navigateContinuation, history);
     }
-
-    private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
-        return (asyncData?: any) => {
-            if (oldUrl === this.stateContext.url) {
-                this.setStateContext(state, data, url, asyncData, history);
-                if (this.stateContext.oldState && this.stateContext.oldState !== state)
-                    this.stateContext.oldState.dispose();
-                state.navigated(this.stateContext.data, asyncData);
-                for (var id in this.onNavigateCache.handlers) {
-                    if (url === this.stateContext.url)
-                        this.onNavigateCache.handlers[id](this.stateContext.oldState, state, this.stateContext.data, asyncData);
-                }
-                if (url === this.stateContext.url) {
-                    if (historyAction !== 'none')
-                        this.historyManager.addHistory(url, historyAction === 'replace');
-                    if (this.stateContext.title && (typeof document !== 'undefined'))
-                        document.title = this.stateContext.title;
-                }
-            }
-        };
+    
+    private resumeNavigation(stateContext: StateContext, historyAction: 'add' | 'replace' | 'none') {
+        this.stateContext = stateContext;
+        var { oldState, state, data, asyncData, url } = stateContext;
+        if (this.stateContext.oldState && this.stateContext.oldState !== state)
+            this.stateContext.oldState.dispose();
+        state.navigated(this.stateContext.data, asyncData);
+        for (var id in this.onNavigateCache.handlers) {
+            if (url === this.stateContext.url)
+            this.onNavigateCache.handlers[id](oldState, state, data, asyncData);
+        }
+        if (url === this.stateContext.url) {
+            if (historyAction !== 'none')
+                this.historyManager.addHistory(url, historyAction === 'replace');
+            if (this.stateContext.title && (typeof document !== 'undefined'))
+                document.title = this.stateContext.title;
+        }
     }
 
     parseLink(url: string): { state: State, data: any } {
@@ -157,7 +174,7 @@ class StateNavigator {
         var stateContext = !withContext ? undefined : this.stateContext;
         return createFluentNavigator(this.states, this.stateHandler, stateContext);
     }
-    
+
     start(url?: string) {
         this.navigateLink(url != null ? url : this.historyManager.getCurrentUrl());
     };

@@ -1557,8 +1557,7 @@ describe('RefreshLinkTest', function () {
                 <NavigationHandler stateNavigator={stateNavigator}>
                     <RefreshLink
                         navigationData={{x: 'a'}}
-                        includeCurrentData={true}
-                        stateNavigator={stateNavigator}>
+                        includeCurrentData={true}>
                         link text
                     </RefreshLink>
                 </NavigationHandler>,
@@ -1609,8 +1608,7 @@ describe('RefreshLinkTest', function () {
                     <RefreshLink
                         acrossCrumbs={true}
                         navigationData={{x: 'a'}}
-                        includeCurrentData={true}
-                        stateNavigator={stateNavigator}>
+                        includeCurrentData={true}>
                         link text
                     </RefreshLink>
                 </NavigationHandler>,
@@ -1661,8 +1659,7 @@ describe('RefreshLinkTest', function () {
                     <RefreshLink
                         acrossCrumbs={true}
                         navigationData={{x: 'a'}}
-                        activeCssClass="active"
-                        stateNavigator={stateNavigator}>
+                        activeCssClass="active">
                         link text
                     </RefreshLink>
                 </NavigationHandler>,
@@ -1713,8 +1710,7 @@ describe('RefreshLinkTest', function () {
                     <RefreshLink
                         acrossCrumbs={true}
                         navigationData={{x: 'a'}}
-                        disableActive={true}
-                        stateNavigator={stateNavigator}>
+                        disableActive={true}>
                         link text
                     </RefreshLink>
                 </NavigationHandler>,
@@ -1779,6 +1775,290 @@ describe('RefreshLinkTest', function () {
             Simulate.click(link);
             var header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'world');
+        })
+    });
+
+    describe('On Before Cancel Refresh Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' },
+            ]);
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink navigationData={{x: 'a'}}>
+                        link text
+                    </RefreshLink>
+                    <RefreshLink  navigationData={{y: 'b'}}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var firstLink = container.querySelectorAll<HTMLAnchorElement>('a')[0];
+            Simulate.click(firstLink);
+            assert.equal(stateNavigator.stateContext.data.x, 'a');
+            assert.equal(stateNavigator.stateContext.data.y, null);
+            stateNavigator.onBeforeNavigate(() => false);
+            var secondLink = container.querySelectorAll<HTMLAnchorElement>('a')[1];
+            Simulate.click(secondLink);
+            assert.equal(stateNavigator.stateContext.data.x, 'a');
+            assert.equal(stateNavigator.stateContext.data.y, null);
+        })
+    });
+
+    describe('On Before Component Cancel Refresh', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' },
+            ]);
+            class Blocker extends React.Component<{ stateNavigator: StateNavigator }> {
+                componentDidMount() {
+                    this.props.stateNavigator.onBeforeNavigate(() => false);
+                }
+                render() {
+                    return null;
+                }
+            }
+            stateNavigator.navigate('s', {x: 'a'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({ stateNavigator }) => <Blocker stateNavigator={stateNavigator} />}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            assert.equal(stateNavigator.stateContext.data.x, 'a');
+            assert.equal(stateNavigator.stateContext.data.y, null);
+            stateNavigator.refresh({y: 'b'});
+            assert.equal(stateNavigator.stateContext.data.x, 'a');
+            assert.equal(stateNavigator.stateContext.data.y, null);
+        })
+    });
+
+    describe('Click Refresh', function () {
+        it('should navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({stateNavigator}) => (
+                            <div onClick={() => stateNavigator.refresh({x: 'a'}, undefined, false)} />
+                        )}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var div = container.querySelector<HTMLAnchorElement>('div');
+            Simulate.click(div);
+            assert.equal(stateNavigator.stateContext.data.x, 'a');
+        })
+    });
+
+    describe('Click Deferred Refresh Link', function () {
+        it('should navigate async', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: 'a'}}
+                        defer={true}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.data.x, null);
+            stateNavigator.onNavigate(() => {
+                assert.equal(stateNavigator.stateContext.data.x, 'a');
+                done();                                
+            })
+        })
+    });
+
+    describe('Next State and Data Deferred Refresh Link', function () {
+        it('should update', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' },
+            ]);
+            var {s} = stateNavigator.states;
+            s.renderView = ({hello}, nextState, {hello: nextHello}) => (
+                <div>
+                    <h1>{hello || 'empty'} {(nextState && `${nextState.key} `)}{(nextHello || 'empty')}</h1>
+                    <RefreshLink
+                        navigationData={{hello: 'world'}}
+                        defer={true}>
+                        link text
+                    </RefreshLink>
+                </div>
+            );
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({state, data, nextState, nextData}) => state.renderView(data, nextState, nextData)}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            var header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'empty empty');
+            Simulate.click(link);
+            header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'empty s world');
+            stateNavigator.onNavigate(() => {
+                header = container.querySelector<HTMLHeadingElement>('h1');
+                assert.equal(header.innerHTML, 'world empty');
+                done();                                
+            })
+        })
+    });
+
+    describe('Include Current Data Deferred Refresh Link', function () {
+        it('should update async', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{y: 'b'}}
+                        defer={true}>
+                        link text
+                    </RefreshLink>
+                    <RefreshLink
+                        navigationData={{z: 'c'}}
+                        includeCurrentData={true}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var firstLink = container.querySelectorAll<HTMLAnchorElement>('a')[0];
+            var secondLink = container.querySelectorAll<HTMLAnchorElement>('a')[1];
+            assert.equal(secondLink.hash, '#/r?x=a&z=c');
+            Simulate.click(firstLink);
+            assert.equal(secondLink.hash, '#/r?x=a&z=c');
+            stateNavigator.onNavigate(() => {
+                assert.equal(secondLink.hash, '#/r?y=b&z=c');
+                done();
+            })
+        })
+    });
+
+    describe('Click Deferred Refresh', function () {
+        it('should navigate async', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({stateNavigator}) => (
+                            <div onClick={() => stateNavigator.refresh({x: 'a'}, 'add', true)} />
+                        )}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('div');
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.data.x, null);
+            stateNavigator.onNavigate(() => {
+                assert.equal(stateNavigator.stateContext.data.x, 'a');
+                done();
+            })
+        })
+    });
+
+    describe('Multiple Deferred Refresh Link', function () {
+        it('should update async', function(done){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: 'a'}}
+                        defer={true}>
+                        link text
+                    </RefreshLink>
+                    <RefreshLink
+                        navigationData={{y: 'b'}}
+                        defer={true}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var firstLink = container.querySelectorAll<HTMLAnchorElement>('a')[0];
+            var secondLink = container.querySelectorAll<HTMLAnchorElement>('a')[1];
+            Simulate.click(firstLink);
+            Simulate.click(secondLink);
+            stateNavigator.onNavigate(() => {
+                assert.equal(stateNavigator.stateContext.data.x, null);
+                assert.equal(stateNavigator.stateContext.data.y, 'b');
+                done();
+            })
+        })
+    });
+
+    describe('Next State and Data Refresh', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var {s} = stateNavigator.states;
+            s.renderView = (_, nextState, {hello}) => (
+                <div>
+                    <h1>{hello || 'empty'} {(nextState && nextState.key) || 'first'}</h1>
+                    <RefreshLink
+                        navigationData={{hello: 'world'}}
+                        defer={true}>
+                        link text
+                    </RefreshLink>
+                </div>
+            );
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({state, data, nextState, nextData}) => state.renderView(data, nextState, nextData)}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            var header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'empty first');
+            Simulate.click(link);
+            header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'world s');
+            stateNavigator.refresh({x: 'a'});
+            header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'empty first');
         })
     });
 });

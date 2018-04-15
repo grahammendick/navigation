@@ -1,6 +1,6 @@
 ﻿import * as assert from 'assert';
 import * as mocha from 'mocha';
-import { StateNavigator, HashHistoryManager, HTML5HistoryManager } from 'navigation';
+import { StateNavigator, StateContext, HashHistoryManager, HTML5HistoryManager } from 'navigation';
 
 describe('Navigation', function () {
     describe('State', function() {
@@ -173,6 +173,7 @@ describe('Navigation', function () {
 
     describe('Transition', function() {
         var stateNavigator: StateNavigator;
+        var stateContext: StateContext;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
@@ -183,6 +184,7 @@ describe('Navigation', function () {
         describe('Navigate', function() {
             beforeEach(function() {
                 stateNavigator.navigate('s0');
+                stateContext = stateNavigator.stateContext;
                 stateNavigator.navigate('s1');
             });
             test();
@@ -192,6 +194,7 @@ describe('Navigation', function () {
             beforeEach(function() {
                 var link = stateNavigator.getNavigationLink('s0');
                 stateNavigator.navigateLink(link);
+                stateContext = stateNavigator.stateContext;
                 link = stateNavigator.getNavigationLink('s1');
                 stateNavigator.navigateLink(link);
             });
@@ -207,6 +210,9 @@ describe('Navigation', function () {
                 assert.equal(stateNavigator.stateContext.previousState, null);
                 assert.equal(stateNavigator.stateContext.previousUrl, null);
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+            });
+            it('should not mutate context', function() {
+                assert.notStrictEqual(stateNavigator.stateContext, stateContext);
             });
         }
     });
@@ -5305,6 +5311,95 @@ describe('Navigation', function () {
             history = new HTML5HistoryManager('/a');
             assert.strictEqual(history.getHref('b'), '/a/b');
             assert.strictEqual(history.getHref('/b'), '/a/b');
+        });
+    });
+
+    describe('Suspend', function() {
+        it('should not navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            stateNavigator.states.s1.navigating = (data, url, navigate) => navigate({z: 'c'});
+            var stateNavigated = false;
+            stateNavigator.states.s1.navigated = () => stateNavigated = true;
+            stateNavigator.navigate('s0', {x: 'a'});
+            var link = stateNavigator.getNavigationLink('s1', {y: 'b'});
+            var navigated = false;
+            stateNavigator.onNavigate(() => navigated = true);
+            stateNavigator.navigateLink(link, 'add', false, stateContext => {
+                assert.equal(stateContext.oldState, stateNavigator.states['s0']);
+                assert.equal(stateContext.oldData.x, 'a');
+                assert.equal(stateContext.oldUrl, '/r0?x=a');
+                assert.equal(stateContext.state, stateNavigator.states['s1']);
+                assert.equal(stateContext.data.y, 'b');
+                assert.equal(stateContext.asyncData.z, 'c');
+                assert.equal(stateContext.url, '/r1?y=b');
+            });
+            assert.equal(stateNavigator.stateContext.oldState, null);
+            assert.equal(Object.keys(stateNavigator.stateContext.oldData).length, 0);
+            assert.equal(stateNavigator.stateContext.oldUrl, null);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.data.x, 'a');
+            assert.equal(stateNavigator.stateContext.asyncData, undefined);
+            assert.equal(stateNavigator.stateContext.url, '/r0?x=a');
+            assert.equal(stateNavigated, false);
+            assert.equal(navigated, false);
+        });
+    });
+
+    describe('Resume', function() {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            stateNavigator.states.s1.navigating = (data, url, navigate) => navigate({z: 'c'});
+            var stateNavigated = false;
+            stateNavigator.states.s1.navigated = () => stateNavigated = true;
+            stateNavigator.navigate('s0', {x: 'a'});
+            var link = stateNavigator.getNavigationLink('s1', {y: 'b'});
+            var navigated = false;
+            stateNavigator.onNavigate(() => navigated = true);
+            stateNavigator.navigateLink(link, 'add', false, (stateContext, resume) => {
+                assert.equal(stateContext.oldState, stateNavigator.states['s0']);
+                assert.equal(stateContext.oldData.x, 'a');
+                assert.equal(stateContext.oldUrl, '/r0?x=a');
+                assert.equal(stateContext.state, stateNavigator.states['s1']);
+                assert.equal(stateContext.data.y, 'b');
+                assert.equal(stateContext.asyncData.z, 'c');
+                assert.equal(stateContext.url, '/r1?y=b');
+                resume();
+            });
+            assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.oldData.x, 'a');
+            assert.equal(stateNavigator.stateContext.oldUrl, '/r0?x=a');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            assert.equal(stateNavigator.stateContext.data.y, 'b');
+            assert.equal(stateNavigator.stateContext.asyncData.z, 'c');
+            assert.equal(stateNavigator.stateContext.url, '/r1?y=b');
+            assert.equal(stateNavigated, true);
+            assert.equal(navigated, true);
+        });
+    });
+
+    describe('Resume Suspend Navigate', function() {
+        it('should not navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var link = stateNavigator.getNavigationLink('s1', {y: 'b'});
+            stateNavigator.navigateLink(link, 'add', false, (stateContext, resume) => {
+                assert.equal(stateContext.state, stateNavigator.states['s1']);
+                assert.equal(stateContext.data.y, 'b');
+                stateNavigator.navigate('s2', {z: 'c'});
+                resume();
+            });
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
+            assert.equal(stateNavigator.stateContext.data.z, 'c');
         });
     });
 });
