@@ -2,7 +2,7 @@ import AsyncStateNavigator from './AsyncStateNavigator';
 import NavigationContext from './NavigationContext';
 import { StateNavigator, StateContext, State } from 'navigation';
 import * as React from 'react';
-type NavigationHandlerState = { context: { oldState: State, state: State, data: any, asyncData: any, nextState: State, nextData: any, stateNavigator: StateNavigator } };
+type NavigationHandlerState = { context: { oldState: State, state: State, data: any, asyncData: any, nextState: State, nextData: any, stateNavigator: AsyncStateNavigator } };
 
 class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, NavigationHandlerState> {
     constructor(props) {
