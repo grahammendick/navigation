@@ -10,13 +10,15 @@ const stateNavigator = new StateNavigator([
 var People = ({ page }) => (
     <div>
         <ul>
-            <li>
-                <NavigationLink
-                    stateKey="person"
-                    navigationData={{name: 'Bob'}}>
-                    Bob
-                </NavigationLink>
-            </li>
+            {['Bob', 'Brenda'].map(name => (
+                <li>
+                    <NavigationLink
+                        stateKey="person"
+                        navigationData={{ name }}>
+                        {name}
+                    </NavigationLink>
+                </li>
+            ))}
         </ul>
         <RefreshLink
             navigationData={{ page: page++ }}
