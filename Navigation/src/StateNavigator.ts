@@ -8,7 +8,7 @@ import StateInfo from './config/StateInfo';
 import StateContext from './StateContext';
 import StateHandler from './StateHandler';
 type NavigateHandler = (oldState: State, state: State, data: any, asyncData: any) => void;
-type BeforeNavigateHandler = (oldState: State, state: State, data: any, url: string) => boolean;
+type BeforeNavigateHandler = (state: State, data: any, url: string, history: boolean) => boolean;
 
 class StateNavigator {
     private stateHandler = new StateHandler();
@@ -124,7 +124,7 @@ class StateNavigator {
         var { state, data } = this.stateHandler.parseLink(url);
         for (var id in this.onBeforeNavigateCache.handlers) {
             var handler = this.onBeforeNavigateCache.handlers[id];
-            if (oldUrl !== this.stateContext.url || !handler(this.stateContext.state, state, data, url))
+            if (oldUrl !== this.stateContext.url || !handler(state, data, url, history))
                 return;
         }
         var navigateContinuation = (asyncData?: any) => {

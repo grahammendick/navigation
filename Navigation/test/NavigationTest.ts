@@ -2818,8 +2818,8 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler = (oldState, state, data, url) => {
-                oldStates.push(oldState);
+            var beforeNavigateHandler = (state, data, url, history) => {
+                oldStates.push(stateNavigator.stateContext.state);
                 states.push(state);
                 return true;
             };
@@ -2875,8 +2875,8 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s');
-            var beforeNavigateHandler = (oldState, state, data, url) => {
-                oldStates.push(oldState);
+            var beforeNavigateHandler = (state, data, url, history) => {
+                oldStates.push(stateNavigator.stateContext.state);
                 states.push(state);
                 return true;
             };
@@ -2912,8 +2912,8 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler = (oldState, state, data, url) => {
-                oldStates.push(oldState);
+            var beforeNavigateHandler = (state, data, url, history) => {
+                oldStates.push(stateNavigator.stateContext.state);
                 states.push(state);
                 return true;
             };
@@ -2975,13 +2975,13 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler1 = (oldState, state, data, url) => {
-                oldStates.push(oldState);
+            var beforeNavigateHandler1 = (state, data, url, history) => {
+                oldStates.push(stateNavigator.stateContext.state);
                 states.push(state);
                 return true;
             };
-            var beforeNavigateHandler2 = (oldState, state, data, url) => {
-                oldStates.push(oldState);
+            var beforeNavigateHandler2 = (state, data, url, history) => {
+                oldStates.push(stateNavigator.stateContext.state);
                 states.push(state);
                 return true;
             };
@@ -3057,13 +3057,13 @@ describe('Navigation', function () {
             var oldStates2 = [];
             var states2 = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler1 = (oldState, state, data, url) => {
-                oldStates1.push(oldState);
+            var beforeNavigateHandler1 = (state, data, url, history) => {
+                oldStates1.push(stateNavigator.stateContext.state);
                 states1.push(state);
                 return true;
             };
-            var beforeNavigateHandler2 = (oldState, state, data, url) => {
-                oldStates2.push(oldState);
+            var beforeNavigateHandler2 = (state, data, url, history) => {
+                oldStates2.push(stateNavigator.stateContext.state);
                 states2.push(state);
                 return true;
             };
@@ -3143,8 +3143,8 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler = (oldState, state, data, url) => {
-                oldStates.push(oldState);
+            var beforeNavigateHandler = (state, data, url, history) => {
+                oldStates.push(stateNavigator.stateContext.state);
                 states.push(state);
                 return true;
             };
@@ -3202,13 +3202,13 @@ describe('Navigation', function () {
             var oldStates2 = [];
             var states2 = [];
             stateNavigator.navigate('s0');
-            var navigatedHandler1 = (oldState, state, data, url) => {
-                oldStates1.push(oldState);
+            var navigatedHandler1 = (state, data, url, history) => {
+                oldStates1.push(stateNavigator.stateContext.state);
                 states1.push(state);
                 return true;
             };
-            var navigatedHandler2 = (oldState, state, data, url) => {
-                oldStates2.push(oldState);
+            var navigatedHandler2 = (state, data, url, history) => {
+                oldStates2.push(stateNavigator.stateContext.state);
                 states2.push(state);
                 return true;
             };
@@ -3392,7 +3392,7 @@ describe('Navigation', function () {
             }
             var navigatedState;
             var hits = 0;
-            var beforeNavigateHandler = (oldState, state, data) => {
+            var beforeNavigateHandler = (state, data) => {
                 navigatedState = state;
                 hits++;
                 return true;
@@ -3450,8 +3450,8 @@ describe('Navigation', function () {
                 navigatingUrl = url;
                 navigating('World');
             }
-            var beforeNavigateHandler = (oldState, state, data, url) => {
-                beforeNavigateOldState = oldState;
+            var beforeNavigateHandler = (state, data, url, history) => {
+                beforeNavigateOldState = stateNavigator.stateContext.state;
                 beforeNavigateState = state;
                 beforeNavigateData = data;
                 beforeNavigateUrl = url;
@@ -3503,8 +3503,8 @@ describe('Navigation', function () {
                 navigatingUrl = url;
                 navigating('World');
             }
-            var beforeNavigateHandler = (oldState, state, data, url) => {
-                beforeNavigateOldState = oldState;
+            var beforeNavigateHandler = (state, data, url, history) => {
+                beforeNavigateOldState = stateNavigator.stateContext.state;
                 beforeNavigateState = state;
                 beforeNavigateData = data;
                 beforeNavigateUrl = url;
