@@ -3607,7 +3607,11 @@ describe('Navigation', function () {
             ]);
             stateNavigator.navigate('s0');
             var link = stateNavigator.getNavigationLink('s1');
-            var unloadingHistory, navigatingHistory;
+            var beforeNavigatingHistory, unloadingHistory, navigatingHistory;
+            stateNavigator.onBeforeNavigate((state, data, url, history) => {
+                beforeNavigatingHistory = history;
+                return true;
+            });
             stateNavigator.states['s0'].unloading = (state, data, url, unload, history) => {
                 unloadingHistory = history; 
                 unload();
@@ -3617,6 +3621,7 @@ describe('Navigation', function () {
                 navigate();
             }
             stateNavigator.navigateLink(link, undefined, true);
+            assert.strictEqual(beforeNavigatingHistory, true);
             assert.strictEqual(unloadingHistory, true);
             assert.strictEqual(navigatingHistory, true);
         });
@@ -3630,7 +3635,11 @@ describe('Navigation', function () {
             ]);
             stateNavigator.navigate('s0');
             var link = stateNavigator.getNavigationLink('s1');
-            var unloadingHistory, navigatingHistory;
+            var beforeNavigatingHistory, unloadingHistory, navigatingHistory;
+            stateNavigator.onBeforeNavigate((state, data, url, history) => {
+                beforeNavigatingHistory = history;
+                return true;
+            });
             stateNavigator.states['s0'].unloading = (state, data, url, unload, history) => {
                 unloadingHistory = history; 
                 unload();
@@ -3640,6 +3649,7 @@ describe('Navigation', function () {
                 navigate();
             }
             stateNavigator.navigateLink(link);
+            assert.strictEqual(beforeNavigatingHistory, false);
             assert.strictEqual(unloadingHistory, false);
             assert.strictEqual(navigatingHistory, false);
         });
