@@ -3202,23 +3202,23 @@ describe('Navigation', function () {
             var oldStates2 = [];
             var states2 = [];
             stateNavigator.navigate('s0');
-            var navigatedHandler1 = (state, data, url, history) => {
+            var beforeNavigateHandler1 = (state, data, url, history) => {
                 oldStates1.push(stateNavigator.stateContext.state);
                 states1.push(state);
                 return true;
             };
-            var navigatedHandler2 = (state, data, url, history) => {
+            var beforeNavigateHandler2 = (state, data, url, history) => {
                 oldStates2.push(stateNavigator.stateContext.state);
                 states2.push(state);
                 return true;
             };
-            stateNavigator.onBeforeNavigate(navigatedHandler1);
-            stateNavigator.onBeforeNavigate(navigatedHandler2);
+            stateNavigator.onBeforeNavigate(beforeNavigateHandler1);
+            stateNavigator.onBeforeNavigate(beforeNavigateHandler2);
             var link = stateNavigator.getNavigationLink('s1');
             stateNavigator.navigateLink(link);
-            stateNavigator.offBeforeNavigate(navigatedHandler1);
+            stateNavigator.offBeforeNavigate(beforeNavigateHandler1);
             stateNavigator.navigate('s2');
-            stateNavigator.offBeforeNavigate(navigatedHandler2);
+            stateNavigator.offBeforeNavigate(beforeNavigateHandler2);
             assert.equal(oldStates1[0], stateNavigator.states['s0']);
             assert.equal(states1[0], stateNavigator.states['s1']);
             assert.equal(oldStates2[0], stateNavigator.states['s0']);
