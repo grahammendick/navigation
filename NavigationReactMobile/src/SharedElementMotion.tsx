@@ -30,9 +30,12 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
     getSharedElements(sharedElements: SharedItem[]): { [name: string]: SharedItem } {
         return sharedElements.reduce((elements, element) => ({...elements, [element.name]: element}), {});
     }
+    addMeasurements(data, measurements) {
+        var { top, left, width, height } = measurements;
+        return { top, left, width, height, ...data};
+    }
     getStyle(name, {ref, data}) {
-        var { top, left, width, height } = ref.getBoundingClientRect();
-        return this.props.elementStyle(name, ref, { top, left, width, height, ...data});
+        return this.props.elementStyle(name, ref, this.addMeasurements(data, ref.getBoundingClientRect()));
     }
     getPropValue(prop, name) {
         return typeof prop === 'function' ? prop(name) : prop;
@@ -49,9 +52,11 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
                 progress={progress < 1 ? progress : 0}
                 duration={duration}>
                 {tweenStyles => (
-                    tweenStyles.map(({data: {name, oldElement, mountedElement}, style: tweenStyle}) => (
-                        children(tweenStyle, name, oldElement.data, mountedElement.data)
-                    ))
+                    tweenStyles.map(({data: {name, oldElement, mountedElement}, style, start, end}) => {
+                        var oldElementData = this.addMeasurements(oldElement.data, start);
+                        var mountedElementData = this.addMeasurements(mountedElement.data, end);
+                        return children(style, name, oldElementData, mountedElementData)
+                    })
                 )}
             </ElementMotion>
         );

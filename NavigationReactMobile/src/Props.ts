@@ -11,7 +11,7 @@ interface MotionProps<T> {
     leave?: (item: T) => any;
     onRest?: (item: T) => void;
     progress?: number;
-    children: (items: {style: any, data: T, key: string | number, progress: number }[]) => ReactElement<any>[];
+    children: (items: {style: any, data: T, key: string | number, progress: number, start: any, end: any }[]) => ReactElement<any>[];
 }
 
 interface SharedElementProps {
