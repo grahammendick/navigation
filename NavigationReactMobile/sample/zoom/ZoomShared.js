@@ -16,7 +16,10 @@ export default (props) => (
           height,
           backgroundColor: color,
           transformOrigin: 'top left',
-          transform: `translate(${style.left - left}px, ${style.top - top}px) scale(${style.width/width}, ${style.height/height})`,
+          transform: `
+            translate(${style.left - left}px, ${style.top - top}px)
+            scale(${style.width / width}, ${style.height / height})
+          `,
         }}>
       </div> : <div key={name}     
         style={{
@@ -30,7 +33,10 @@ export default (props) => (
           color: `rgb(${Array(3).fill(Math.round(fontColor)).join(',')})`,
           zIndex: 1,
           transformOrigin: 'top left',
-          transform: `translate(${style.left - left}px, ${style.top - top}px) scale(${style.width/width}, ${style.height/height})`,
+          transform: `
+            translate(${style.left - left}px, ${style.top - top}px)
+            scale(${style.width / width}, ${style.height / height})
+          `,
         }}>
           {color}
         </div>
