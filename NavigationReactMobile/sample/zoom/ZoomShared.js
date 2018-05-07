@@ -6,7 +6,7 @@ export default (props) => (
     {...props}
     onAnimating={(name, ref) => {ref.style.opacity = 0}}
     onAnimated={(name, ref) => {ref.style.opacity = 1}}>
-    {({left, top, width, height, fontSize, fontColor}, name, {color}) => (
+    {({fontColor, ...style}, name, {left, top, width, height, fontSize, color}) => (
       !name.startsWith('text') ? <div key={name}
         style={{
           position: 'absolute',
@@ -15,6 +15,8 @@ export default (props) => (
           width,
           height,
           backgroundColor: color,
+          transformOrigin: 'top left',
+          transform: `translate(${style.left - left}px, ${style.top - top}px) scale(${style.width/width}, ${style.height/height})`,
         }}>
       </div> : <div key={name}     
         style={{
@@ -27,6 +29,8 @@ export default (props) => (
           textAlign: 'center',
           color: `rgb(${Array(3).fill(Math.round(fontColor)).join(',')})`,
           zIndex: 1,
+          transformOrigin: 'top left',
+          transform: `translate(${style.left - left}px, ${style.top - top}px) scale(${style.width/width}, ${style.height/height})`,
         }}>
           {color}
         </div>
