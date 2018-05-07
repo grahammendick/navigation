@@ -12,11 +12,13 @@ export default ({color, stateNavigator}) => (
       data={{color}}>
       <div style={{backgroundColor: color}} />
     </SharedElement>
-    <SharedElement
-      name={`text${color}`}
-      data={{color, fontSize: 300, fontColor: 0}}>
-      <div>{color}</div>
-    </SharedElement>
+    <div>
+      <SharedElement
+        name={`text${color}`}
+        data={{color, fontSize: 300, fontColor: 0}}>
+        <span>{color}</span>
+      </SharedElement>
+    </div>
   </div>
 );
 
