@@ -9,10 +9,7 @@ export default (props) => (
     {({fontColor, ...style}, name, {left, top, width, height, fontSize, color}) => {
       var position = {
         position: 'absolute',
-        left,
-        top,
-        width,
-        height,
+        left, top, width, height,
         transformOrigin: 'top left',
         transform: `
           translate(${style.left - left}px, ${style.top - top}px)
