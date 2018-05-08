@@ -3,7 +3,7 @@ import { SceneProps } from './Props';
 
 class Scene extends React.Component<SceneProps, any> {
     shouldComponentUpdate(props: SceneProps) {
-        return props.crumbs === props.stateNavigator.stateContext.crumbs.length;
+        return props.index === props.crumbs;
     }
     render() {
         return this.props.children;

@@ -70,7 +70,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
             var preCrumbs = crumbsAndNext.slice(0, index);
             var {state: nextState, data: nextData} = crumbsAndNext[index + 1] || {state: undefined, data: undefined};
             var {scenes} = this.state;
-            var scene = scenes[index] ? <Scene crumbs={index} stateNavigator={stateNavigator}>{scenes[index]}</Scene> : null;
+            var scene = scenes[index] ? <Scene index={index} crumbs={crumbs.length}>{scenes[index]}</Scene> : null;
             return {key: index, state, data, url, crumbs: preCrumbs, nextState, nextData, scene, mount: url === nextCrumb.url};
         });
     }

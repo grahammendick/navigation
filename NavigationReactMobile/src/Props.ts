@@ -55,8 +55,8 @@ interface NavigationMotionProps {
 }
 
 interface SceneProps {
+    index: number;
     crumbs: number;
-    stateNavigator: StateNavigator;
 }
 
 export { MotionProps, SharedElementProps, SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProps, NavigationMotionProps, SceneProps }
