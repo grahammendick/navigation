@@ -31,8 +31,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
     }
     static getDerivedStateFromProps({stateNavigator}, {scenes: prevScenes}) {
         var {crumbs} = stateNavigator.stateContext;
-        var scenes = {...prevScenes, [crumbs.length]: true};
-        return {scenes, rest: false};
+        return {scenes: {...prevScenes, [crumbs.length]: true}, rest: false};
     }
     getSharedElements(crumbs, oldUrl) {
         if (oldUrl === null || crumbs.length === oldUrl.split('crumb=').length - 1)
