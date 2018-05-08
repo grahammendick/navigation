@@ -5,7 +5,7 @@ import Scene from './Scene';
 import SharedElementContext from './SharedElementContext';
 import withStateNavigator from './withStateNavigator';
 import { NavigationMotionProps, SharedItem } from './Props';
-type NavigationMotionState = { scenes: { [crumbs: number]: React.ReactElement<any> }, rest: boolean };
+type NavigationMotionState = { scenes: { [crumbs: number]: boolean }, rest: boolean };
 type SceneContext = { key: number, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, scene: React.ReactElement<any>, mount: boolean };
 
 class NavigationMotion extends React.Component<NavigationMotionProps, NavigationMotionState> {
@@ -24,9 +24,9 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
             },
         }
         var scenes = {};
-        var {state, data, crumbs} = this.props.stateNavigator.stateContext;
+        var {state, crumbs} = this.props.stateNavigator.stateContext;
         if (state)
-            scenes[crumbs.length] = state.renderScene(data);
+            scenes[crumbs.length] = true;
         this.state = {scenes, rest: false};
     }
     static defaultProps = {
@@ -34,7 +34,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
     }
     static getDerivedStateFromProps({stateNavigator}, {scenes: prevScenes}) {
         var {state, data, crumbs} = stateNavigator.stateContext;
-        var scenes = {...prevScenes, [crumbs.length]: state.renderScene(data)};
+        var scenes = {...prevScenes, [crumbs.length]: true};
         return {scenes, rest: false};
     }
     getSharedElements(crumbs, oldUrl) {
@@ -70,7 +70,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
             var preCrumbs = crumbsAndNext.slice(0, index);
             var {state: nextState, data: nextData} = crumbsAndNext[index + 1] || {state: undefined, data: undefined};
             var {scenes} = this.state;
-            var scene = scenes[index] ? <Scene index={index} crumbs={crumbs.length}>{scenes[index]}</Scene> : null;
+            var scene = scenes[index] ? <Scene index={index} crumbs={crumbs.length}>{state.renderScene(data)}</Scene> : null;
             return {key: index, state, data, url, crumbs: preCrumbs, nextState, nextData, scene, mount: url === nextCrumb.url};
         });
     }
