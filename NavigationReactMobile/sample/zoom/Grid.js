@@ -22,7 +22,7 @@ export default () => (
               <SharedElement
                 data={{color, fontSize: 150, fontColor: 255}}
                 name={`text${color}`}>
-                <div>{color}</div>
+                <span>{color}</span>
               </SharedElement>
             </div>
           </NavigationLink>

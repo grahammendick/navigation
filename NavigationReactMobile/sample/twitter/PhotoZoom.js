@@ -6,16 +6,18 @@ export default (props) => (
     {...props}
     onAnimating={(name, ref) => {ref.style.opacity = 0}}
     onAnimated={(name, ref) => {ref.style.opacity = 1}}>
-    {({left, top, width, height}, name, {src}) => (
+    {(style, name, {left, top, width, height, src}) => (
       <img key={name}
         src={src}
         style={{
           position: 'absolute',
-          left,
-          top,
-          width,
-          height,
-        }}/>
+          left, top, width, height,
+          transformOrigin: 'top left',
+          transform: `
+            translate(${style.left - left}px, ${style.top - top}px)
+            scale(${style.width / width}, ${style.height / height})
+          `,      
+          }}/>
     )}
   </SharedElementMotion>
 );
