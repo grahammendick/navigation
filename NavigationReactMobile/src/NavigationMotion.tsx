@@ -23,11 +23,8 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     delete this.sharedElements[scene][name];
             },
         }
-        var scenes = {};
         var {state, crumbs} = this.props.stateNavigator.stateContext;
-        if (state)
-            scenes[crumbs.length] = true;
-        this.state = {scenes, rest: false};
+        this.state = {scenes: {[crumbs.length]: !!state}, rest: false};
     }
     static defaultProps = {
         duration: 300
