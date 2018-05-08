@@ -4,7 +4,7 @@ class Scene extends React.Component<any, any> {
     private index: number;
     constructor(props) {
         super(props);
-        this.index = props.stateNavigator.stateContext.crumbs.length;
+        this.index = props.crumbs;
     }
     shouldComponentUpdate(props) {
         return this.index === props.stateNavigator.stateContext.crumbs.length;
