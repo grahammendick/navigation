@@ -52,12 +52,13 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         return sharedElements;
     }
     clearScene(index) {
-        this.setState(({rest: prevRest}) => {
+        this.setState(({scenes: prevScenes, rest: prevRest}) => {
             var scene = this.getScenes().filter(scene => scene.key === index)[0];
             if (!scene)
                 delete this.sharedElements[index];
+            var scenes = {...prevScenes, [index]: !!scene};
             var rest = prevRest || (scene && scene.mount);
-            return rest !== prevRest ? {rest} : null;
+            return !scene || rest !== prevRest ? {scenes, rest} : null;
         });
     }
     getScenes(): SceneContext[]{
