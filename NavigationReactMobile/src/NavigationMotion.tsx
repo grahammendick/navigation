@@ -90,7 +90,8 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     duration={duration}>
                     {tweenStyles => (
                         tweenStyles.map(({data: {key, state, data, url}, style: tweenStyle}) => {
-                            var scene = this.state.scenes[key] && <Scene index={key} crumbs={crumbs.length}>{state.renderScene(data)}</Scene>;
+                            var scene = this.state.scenes[key] &&
+                                <Scene index={key} crumbs={crumbs.length}>{state.renderScene(data)}</Scene>;
                             return children(tweenStyle, scene, key, crumbs.length === key, state, data)
                         }).concat(
                             sharedElementMotion && sharedElementMotion({
