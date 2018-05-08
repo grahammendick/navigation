@@ -54,5 +54,10 @@ interface NavigationMotionProps {
     children: (style: any, scene: ReactElement<any>, key: number, active: boolean, state: State, data: any) => ReactElement<any>;
 }
 
-export { MotionProps, SharedElementProps, SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProps, NavigationMotionProps }
+interface SceneProps {
+    index: number;
+    crumbs: number;
+}
+
+export { MotionProps, SharedElementProps, SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProps, NavigationMotionProps, SceneProps }
 
