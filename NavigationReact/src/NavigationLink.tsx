@@ -9,7 +9,7 @@ var NavigationLink = (props: NavigationLinkProps) => {
         if (LinkUtility.isValidAttribute(key))
             htmlProps[key] = props[key];
     }
-    var { stateKey, navigationData, includeCurrentData, currentDataKeys, stateNavigator } = props;
+    var { stateKey, navigationData, includeCurrentData, currentDataKeys, stateNavigator, children } = props;
     var { state } = stateNavigator.stateContext;
     navigationData = LinkUtility.getData(stateNavigator, navigationData, includeCurrentData, currentDataKeys);
     try {
@@ -19,7 +19,7 @@ var NavigationLink = (props: NavigationLinkProps) => {
     htmlProps.href = link && stateNavigator.historyManager.getHref(link);
     htmlProps.onClick = LinkUtility.getOnClick(stateNavigator, props, link);
     LinkUtility.setActive(active, props, htmlProps);
-    return <a {...htmlProps}>{props.children}</a>;
+    return <a {...htmlProps}>{children}</a>;
 }
 
 export default withStateNavigator(NavigationLink);
