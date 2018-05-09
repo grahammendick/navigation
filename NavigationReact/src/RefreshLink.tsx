@@ -21,5 +21,4 @@ var RefreshLink = (props: RefreshLinkProps) => {
     LinkUtility.setActive(active, props, htmlProps);
     return <a {...htmlProps}>{children}</a>;
 }
-
 export default withStateNavigator(RefreshLink);

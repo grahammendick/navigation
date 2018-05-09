@@ -21,5 +21,4 @@ var NavigationLink = (props: NavigationLinkProps) => {
     LinkUtility.setActive(active, props, htmlProps);
     return <a {...htmlProps}>{children}</a>;
 }
-
 export default withStateNavigator(NavigationLink);
