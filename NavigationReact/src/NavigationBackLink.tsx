@@ -10,7 +10,6 @@ var NavigationBackLink = (props: NavigationBackLinkProps) => {
             htmlProps[key] = props[key];
     }
     var { distance, stateNavigator, children } = props;
-    var { state } = stateNavigator.stateContext;
     try {
         var link = stateNavigator.getNavigationBackLink(distance);
     } catch {}

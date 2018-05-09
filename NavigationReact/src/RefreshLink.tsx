@@ -10,7 +10,6 @@ var RefreshLink = (props: RefreshLinkProps) => {
             htmlProps[key] = props[key];
     }
     var { navigationData, includeCurrentData, currentDataKeys, stateNavigator, children } = props;
-    var { state } = stateNavigator.stateContext;
     navigationData = LinkUtility.getData(stateNavigator, navigationData, includeCurrentData, currentDataKeys);
     try {
         var link = stateNavigator.getRefreshLink(navigationData);
