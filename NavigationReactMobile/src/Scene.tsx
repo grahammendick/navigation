@@ -6,15 +6,16 @@ type SceneState = { context: { oldState: State, state: State, data: any, asyncDa
 class Scene extends React.Component<{ stateNavigator: AsyncStateNavigator }, SceneState> {
     constructor(props) {
         super(props);
-        var { stateNavigator } = this.props;
-        var { oldState, state, data, asyncData } = stateNavigator.stateContext;
-        this.state = { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator } };
+        this.state = Scene.createContext(this.props.stateNavigator);
     }
     static getDerivedStateFromProps({ stateNavigator }, { context }) {
         if (stateNavigator.stateContext.crumbs.length !== context.stateNavigator.stateContext.crumbs.length)
             return null;
+        return Scene.createContext(stateNavigator);
+    }
+    static createContext(stateNavigator: AsyncStateNavigator) {
         var { oldState, state, data, asyncData } = stateNavigator.stateContext;
-        return { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator } };
+        return { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator } };        
     }
     shouldComponentUpdate({ stateNavigator }, { context }) {
         return stateNavigator.stateContext.crumbs.length === context.stateNavigator.stateContext.crumbs.length;
