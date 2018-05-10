@@ -75,7 +75,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         return typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData) : styleProp;
      }
     render() {
-        var {children, duration, sharedElementMotion, stateNavigator} = this.props;
+        var {children, duration, sharedElementMotion, stateNavigator, navigationEvent} = this.props;
         var {stateContext: {crumbs, oldUrl, oldState}, stateContext} = stateNavigator;
         var SceneMotion: new() => Motion<SceneContext> = Motion as any;
         return (stateContext.state &&
@@ -91,7 +91,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     {tweenStyles => (
                         tweenStyles.map(({data: {key, state, data, url}, style: tweenStyle}) => {
                             var scene = this.state.scenes[key] &&
-                                <Scene stateNavigator={stateNavigator}>{state.renderScene(data)}</Scene>;
+                                <Scene navigationEvent={navigationEvent}>{state.renderScene(data)}</Scene>;
                             return children(tweenStyle, scene, key, crumbs.length === key, state, data)
                         }).concat(
                             sharedElementMotion && sharedElementMotion({

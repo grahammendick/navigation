@@ -1,4 +1,5 @@
 import { StateNavigator, State } from 'navigation';
+import { NavigationEvent } from 'navigation-react';
 import SharedElementMotion from './SharedElementMotion';
 import { ReactElement } from 'react';
 
@@ -51,8 +52,13 @@ interface NavigationMotionProps {
     duration?: number;
     sharedElementMotion?: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
     stateNavigator?: StateNavigator;
+    navigationEvent: NavigationEvent;
     children: (style: any, scene: ReactElement<any>, key: number, active: boolean, state: State, data: any) => ReactElement<any>;
 }
 
-export { MotionProps, SharedElementProps, SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProps, NavigationMotionProps }
+interface SceneProps {
+    navigationEvent: NavigationEvent;
+}
+
+export { MotionProps, SharedElementProps, SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProps, NavigationMotionProps, SceneProps }
 

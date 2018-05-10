@@ -1,24 +1,23 @@
 import { State } from 'navigation';
-import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
+import { NavigationContext, NavigationEvent } from 'navigation-react';
 import * as React from 'react';
-type SceneState = { context: { oldState: State, state: State, data: any, asyncData: any, nextState: State, nextData: any, stateNavigator: AsyncStateNavigator } };
+import { SceneProps } from './Props';
+type SceneState = { context: NavigationEvent };
 
-class Scene extends React.Component<{ stateNavigator: AsyncStateNavigator }, SceneState> {
-    constructor(props) {
+class Scene extends React.Component<SceneProps, SceneState> {
+    constructor(props: SceneProps) {
         super(props);
-        this.state = Scene.createContext(this.props.stateNavigator);
+        this.state = {context: props.navigationEvent};
     }
-    static getDerivedStateFromProps({ stateNavigator }, { context }) {
-        if (stateNavigator.stateContext.crumbs.length !== context.stateNavigator.stateContext.crumbs.length)
+    static getDerivedStateFromProps({ navigationEvent }: SceneProps, { context }: SceneState) {
+        if (navigationEvent.stateNavigator.stateContext.crumbs.length 
+            !== context.stateNavigator.stateContext.crumbs.length)
             return null;
-        return Scene.createContext(stateNavigator);
+        return {context: navigationEvent};
     }
-    static createContext(stateNavigator: AsyncStateNavigator) {
-        var { oldState, state, data, asyncData } = stateNavigator.stateContext;
-        return { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator } };        
-    }
-    shouldComponentUpdate({ stateNavigator }, { context }) {
-        return stateNavigator.stateContext.crumbs.length === context.stateNavigator.stateContext.crumbs.length;
+    shouldComponentUpdate({ navigationEvent }: SceneProps, { context }: SceneState) {
+        return navigationEvent.stateNavigator.stateContext.crumbs.length
+            === context.stateNavigator.stateContext.crumbs.length;
     }
     render() {
         return (

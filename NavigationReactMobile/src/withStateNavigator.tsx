@@ -3,7 +3,7 @@ import * as React from 'react';
 
 export default Component => props => (
     <NavigationContext.Consumer>
-        {({stateNavigator}) => <Component stateNavigator={stateNavigator} {...props} />}
+        {(navigationEvent) => <Component stateNavigator={navigationEvent.stateNavigator} navigationEvent={navigationEvent} {...props} />}
     </NavigationContext.Consumer>
 );
   
