@@ -11,7 +11,7 @@ type SceneContext = { key: number, state: State, data: any, url: string, crumbs:
 class NavigationMotion extends React.Component<NavigationMotionProps, NavigationMotionState> {
     private sharedElements: { [scene: number]: { [name: string]: { ref: HTMLElement; data: any }; }; } = {};
     private sharedElementContext: any;
-    constructor(props) {
+    constructor(props: NavigationMotionProps) {
         super(props);
         this.sharedElementContext = {
             registerSharedElement: (scene, name, ref, data) => {
@@ -29,7 +29,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
     static defaultProps = {
         duration: 300
     }
-    static getDerivedStateFromProps({stateNavigator}, {scenes: prevScenes}) {
+    static getDerivedStateFromProps({stateNavigator}: NavigationMotionProps, {scenes: prevScenes}: NavigationMotionState) {
         var {crumbs} = stateNavigator.stateContext;
         return {scenes: {...prevScenes, [crumbs.length]: true}, rest: false};
     }
