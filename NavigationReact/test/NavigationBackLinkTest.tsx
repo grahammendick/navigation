@@ -88,7 +88,6 @@ describe('NavigationBackLinkTest', function () {
                 <NavigationHandler stateNavigator={stateNavigator}>
                     <NavigationBackLink
                         distance={1}
-                        acrossCrumbs={false}
                         historyAction='replace'
                         navigating={() => false}
                         aria-label="z"
@@ -407,30 +406,6 @@ describe('NavigationBackLinkTest', function () {
     });
 
     describe('Crumb Trail Navigate Navigation Back Link', function () {
-        it('should not update', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true }
-            ]);
-            stateNavigator.navigate('s0');
-            stateNavigator.navigate('s1');
-            var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationBackLink distance={1}>
-                        link text
-                    </NavigationBackLink>
-                </NavigationHandler>,
-                container
-            );
-            var link = container.querySelector<HTMLAnchorElement>('a');
-            assert.equal(link.hash, '#/r0');
-            stateNavigator.navigate('s1');
-            assert.equal(link.hash, '#/r0');
-        })
-    });
-
-    describe('Across Crumbs Crumb Trail Navigate Navigation Back Link', function () {
         it('should update', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
@@ -441,9 +416,7 @@ describe('NavigationBackLinkTest', function () {
             var container = document.createElement('div');
             ReactDOM.render(
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationBackLink
-                        acrossCrumbs={true}
-                        distance={1}>
+                    <NavigationBackLink distance={1}>
                         link text
                     </NavigationBackLink>
                 </NavigationHandler>,
@@ -525,9 +498,7 @@ describe('NavigationBackLinkTest', function () {
             var container = document.createElement('div');
             ReactDOM.render(
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationBackLink
-                        distance={1}
-                        acrossCrumbs={true}>
+                    <NavigationBackLink distance={1}>
                         link text
                     </NavigationBackLink>
                 </NavigationHandler>,
@@ -670,7 +641,7 @@ describe('NavigationBackLinkTest', function () {
         })
     });
 
-    describe('Across Crumbs Deferred Navigation Back Link', function () {
+    describe('Deferred Navigation Back Link', function () {
         it('should update async', function(done){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
@@ -688,9 +659,7 @@ describe('NavigationBackLinkTest', function () {
                         defer={true}>
                         link text
                     </NavigationBackLink>
-                    <NavigationBackLink
-                        distance={1}
-                        acrossCrumbs={true}>
+                    <NavigationBackLink distance={1}>
                         link text
                     </NavigationBackLink>
                 </NavigationHandler>,
@@ -757,7 +726,6 @@ describe('NavigationBackLinkTest', function () {
                     </NavigationBackLink>
                     <NavigationBackLink
                         distance={1}
-                        acrossCrumbs={true}
                         defer={true}>
                         link text
                     </NavigationBackLink>

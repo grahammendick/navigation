@@ -85,7 +85,6 @@ describe('NavigationLinkTest', function () {
                         currentDataKeys="y"
                         activeCssClass="active"
                         disableActive={true}
-                        acrossCrumbs={false}
                         historyAction='replace'
                         navigating={() => false}
                         aria-label="z"
@@ -1618,32 +1617,6 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Crumb Trail Navigate Navigation Link', function () {
-        it('should not update', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true }
-            ]);
-            stateNavigator.navigate('s0');
-            var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s0"
-                        navigationData={{x: 'a'}}
-                        includeCurrentData={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
-            var link = container.querySelector<HTMLAnchorElement>('a');
-            assert.equal(link.hash, '#/r0?x=a');
-            stateNavigator.navigate('s1', {y: 'b'});
-            assert.equal(link.hash, '#/r0?x=a');
-        })
-    });
-
-    describe('Across Crumbs Crumb Trail Navigate Navigation Link', function () {
         it('should update', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
@@ -1655,7 +1628,6 @@ describe('NavigationLinkTest', function () {
                 <NavigationHandler stateNavigator={stateNavigator}>
                     <NavigationLink
                         stateKey="s0"
-                        acrossCrumbs={true}
                         navigationData={{x: 'a'}}
                         includeCurrentData={true}>
                         link text
@@ -1671,32 +1643,6 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Active Css Class Navigate Navigation Link', function () {
-        it('should not update', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true }
-            ]);
-            stateNavigator.navigate('s0', {x: 'a'});
-            var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s0"
-                        navigationData={{x: 'a'}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
-            var link = container.querySelector<HTMLAnchorElement>('a');
-            assert.equal(link.className, 'active');
-            stateNavigator.navigate('s1');
-            assert.equal(link.className, 'active');
-        })
-    });
-
-    describe('Across Crumbs Active Css Class Navigate Navigation Link', function () {
         it('should update', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
@@ -1708,7 +1654,6 @@ describe('NavigationLinkTest', function () {
                 <NavigationHandler stateNavigator={stateNavigator}>
                     <NavigationLink
                         stateKey="s0"
-                        acrossCrumbs={true}
                         navigationData={{x: 'a'}}
                         activeCssClass="active">
                         link text
@@ -1724,32 +1669,6 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Disable Active Navigate Navigation Link', function () {
-        it('should not update', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true }
-            ]);
-            stateNavigator.navigate('s0', {x: 'a'});
-            var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s0"
-                        navigationData={{x: 'a'}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
-            var link = container.querySelector<HTMLAnchorElement>('a');
-            assert.equal(link.hash, '');
-            stateNavigator.navigate('s1');
-            assert.equal(link.hash, '');
-        })
-    });
-
-    describe('Across Crumbs Disable Active Navigate Navigation Link', function () {
         it('should update', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
@@ -1761,7 +1680,6 @@ describe('NavigationLinkTest', function () {
                 <NavigationHandler stateNavigator={stateNavigator}>
                     <NavigationLink
                         stateKey="s0"
-                        acrossCrumbs={true}
                         navigationData={{x: 'a'}}
                         disableActive={true}>
                         link text
