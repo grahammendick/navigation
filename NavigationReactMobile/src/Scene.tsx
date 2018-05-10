@@ -8,13 +8,13 @@ class Scene extends React.Component<SceneProps, SceneState> {
         super(props);
         this.state = {context: props.navigationEvent};
     }
-    static getDerivedStateFromProps({ navigationEvent }: SceneProps, { context }: SceneState) {
+    static getDerivedStateFromProps({navigationEvent}: SceneProps, {context}: SceneState) {
         if (navigationEvent.stateNavigator.stateContext.crumbs.length 
             !== context.stateNavigator.stateContext.crumbs.length)
             return null;
         return {context: navigationEvent};
     }
-    shouldComponentUpdate({ navigationEvent }: SceneProps, { context }: SceneState) {
+    shouldComponentUpdate({navigationEvent}: SceneProps, {context}: SceneState) {
         return navigationEvent.stateNavigator.stateContext.crumbs.length
             === context.stateNavigator.stateContext.crumbs.length;
     }
