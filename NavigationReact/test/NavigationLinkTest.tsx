@@ -343,7 +343,7 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('Disable Active Navigation Link', function () {
+    describe('Click Disable Active Navigation Link', function () {
         it('should not navigate', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
