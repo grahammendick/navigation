@@ -13,9 +13,8 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
     }
     static getDerivedStateFromProps(props, {items: prevItems}) {
         var tick = typeof performance !== 'undefined' ? performance.now() : 0;
-        var items = Motion.move(tick, prevItems, props);
-        var restart = items.filter(({rest}) => !rest).length !== 0;
-        return {items, restart};
+        var {items, moving} = Motion.move(tick, prevItems, props);
+        return {items, restart: moving};
     }
     componentDidUpdate() {
         if (!this.animateId && this.state.restart)
@@ -26,9 +25,9 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
     }
     animate(tick) {
         this.setState(({items: prevItems}) => {
-            var items = Motion.move(tick, prevItems, this.props);
+            var {items, moving} = Motion.move(tick, prevItems, this.props);
             this.animateId = null;
-            if (items.filter(({rest}) => !rest).length !== 0)
+            if (moving)
                 this.animateId = requestAnimationFrame(this.animate);
             return {items, restart: false};
         })
@@ -72,7 +71,7 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
                 })
             )
             .sort((a, b) => a.index - b.index);
-        return items;
+        return {items, moving: items.filter(({rest}) => !rest).length !== 0};
     }
     static areEqual(from = {}, to = {}) {
         if (Object.keys(from).length !== Object.keys(to).length)
