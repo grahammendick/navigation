@@ -35,7 +35,7 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
             return {items, restart};
         })
     }
-    static getItems(tick, prevItems, props) {
+    static getItems(tick, prevItems, props: MotionProps<any>) {
         var {data, enter, leave, update, progress, getKey, duration, onRest} = props;
         var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...(item as any), index}}), {});
         var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
