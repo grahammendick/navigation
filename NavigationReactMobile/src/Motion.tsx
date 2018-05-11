@@ -2,10 +2,10 @@ import * as React from 'react';
 import { MotionProps } from './Props';
 
 class Motion<T> extends React.Component<MotionProps<T>, any> {
-    private moveId: number;
+    private animateId: number;
     constructor(props) {
         super(props);
-        this.move = this.move.bind(this);
+        this.animate = this.animate.bind(this);
         this.state = {items: [], restart: false};
     }
     static defaultProps = {
@@ -13,29 +13,27 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
     }
     static getDerivedStateFromProps(props, {items: prevItems}) {
         var tick = typeof performance !== 'undefined' ? performance.now() : 0;
-        var {items} = Motion.getItems(tick, prevItems, props);
-        return {items, restart: true};
-    }
-    componentDidMount() {
-        this.moveId = requestAnimationFrame(this.move)
+        var items = Motion.move(tick, prevItems, props);
+        var restart = items.filter(({rest}) => !rest).length !== 0;
+        return {items, restart};
     }
     componentDidUpdate() {
-        if (!this.moveId && this.state.restart)
-            this.moveId = requestAnimationFrame(this.move);
+        if (!this.animateId && this.state.restart)
+            this.animateId = requestAnimationFrame(this.animate);
     }
     componentWillUnmount() {
-        cancelAnimationFrame(this.moveId);
+        cancelAnimationFrame(this.animateId);
     }
-    move(tick) {
+    animate(tick) {
         this.setState(({items: prevItems}) => {
-            var {items, restart} = Motion.getItems(tick, prevItems, this.props);
-            this.moveId = null;
+            var items = Motion.move(tick, prevItems, this.props);
+            this.animateId = null;
             if (items.filter(({rest}) => !rest).length !== 0)
-                this.moveId = requestAnimationFrame(this.move);
-            return {items, restart};
+                this.animateId = requestAnimationFrame(this.animate);
+            return {items, restart: false};
         })
     }
-    static getItems(tick, prevItems, props: MotionProps<any>) {
+    static move(tick, prevItems, props: MotionProps<any>) {
         var {data, enter, leave, update, progress, getKey, duration, onRest} = props;
         var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...(item as any), index}}), {});
         var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
@@ -74,7 +72,7 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
                 })
             )
             .sort((a, b) => a.index - b.index);
-        return {items, restart: false};
+        return items;
     }
     static areEqual(from = {}, to = {}) {
         if (Object.keys(from).length !== Object.keys(to).length)
