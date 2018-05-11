@@ -14,7 +14,7 @@ var NavigationBackLink = (props: NavigationBackLinkProps) => {
         var link = stateNavigator.getNavigationBackLink(distance);
     } catch {}
     htmlProps.href = link && stateNavigator.historyManager.getHref(link);
-    htmlProps.onClick = LinkUtility.getOnClick(stateNavigator, props, link);
+    htmlProps.onClick = link && LinkUtility.getOnClick(stateNavigator, props, link);
     return <a {...htmlProps}>{children}</a>;
 }
 export default withStateNavigator(NavigationBackLink);
