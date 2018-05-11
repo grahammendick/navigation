@@ -42,7 +42,7 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
                 var nextItem: any = {key: item.key, data: matchedItem || item.data, tick};
                 nextItem.end = !matchedItem ? (leave || update)(item.data) : update(matchedItem);
                 nextItem.index = !matchedItem ? data.length + index : matchedItem.index;
-                var unchanged = this.areEqual(item.end, nextItem.end);
+                var unchanged = Motion.areEqual(item.end, nextItem.end);
                 if (unchanged) {
                     nextItem.start = item.start;
                     nextItem.rest = item.progress === 1;
@@ -50,11 +50,11 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
                     nextItem.progress = Math.min(item.progress + progressDelta, 1);
                 } else {
                     nextItem.rest = false;
-                    var reverse = !unchanged && this.areEqual(item.start, nextItem.end);
+                    var reverse = !unchanged && Motion.areEqual(item.start, nextItem.end);
                     nextItem.start = reverse ? item.end : (!progress ? item.style : item.start);
                     nextItem.progress = reverse ? 1 - item.progress : progress;
                 }
-                nextItem.style = this.interpolateStyle(nextItem);
+                nextItem.style = Motion.interpolateStyle(nextItem);
                 if (onRest && nextItem.rest && !item.rest)
                     onRest(item.data);
                 return nextItem;
