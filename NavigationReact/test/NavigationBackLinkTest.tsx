@@ -100,7 +100,6 @@ describe('NavigationBackLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r0');
             assert.equal(link.innerHTML, 'link text');
-            assert.notEqual(link.onclick, null);
             assert.equal(link.getAttribute('aria-label'), 'z');
             assert.equal(link.target, '_blank');
             assert.equal(link.attributes.length, 3);

@@ -24,8 +24,10 @@ class LinkUtility {
             return;
         if (active && props.activeCssClass)
             toProps.className = (!toProps.className ? '' : toProps.className + ' ') + props.activeCssClass;
-        if (active && props.disableActive)
+        if (active && props.disableActive) {
             toProps.href = null;
+            toProps.onClick = null;
+        }
     }
 
     private static areEqual(val: any, currentVal: any): boolean {
@@ -55,12 +57,10 @@ class LinkUtility {
     static getOnClick(stateNavigator: AsyncStateNavigator, props: LinkProps, link: string) {
         return e => {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
-                if (link) {
-                    var { navigating, historyAction, defer } = props;
-                    if (!navigating || navigating(e, link)) {
-                        e.preventDefault();
-                        stateNavigator.navigateLink(link, historyAction, false, undefined, defer);
-                    }
+                var { navigating, historyAction, defer } = props;
+                if (!navigating || navigating(e, link)) {
+                    e.preventDefault();
+                    stateNavigator.navigateLink(link, historyAction, false, undefined, defer);
                 }
             }
         };
