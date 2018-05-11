@@ -97,7 +97,6 @@ describe('NavigationLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a');
             assert.equal(link.innerHTML, 'link text');
-            assert.notEqual(link.onclick, null);
             assert.equal(link.getAttribute('aria-label'), 'z');
             assert.equal(link.target, '_blank');
             assert.equal(link.attributes.length, 3);
@@ -341,6 +340,34 @@ describe('NavigationLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=b');
             assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Disable Active Navigation Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a'}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var navigated = false;
+            stateNavigator.onNavigate(() => {
+                navigated = true;
+            })
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link);
+            assert.equal(navigated, false);
         })
     });
 
