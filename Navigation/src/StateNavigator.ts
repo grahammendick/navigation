@@ -120,15 +120,14 @@ class StateNavigator {
         if (history && this.stateContext.url === url)
             return;
         var oldUrl = this.stateContext.url;
-        var { state, data } = this.stateHandler.parseLink(url);
-        var { [state.crumbTrailKey]: crumbs, ...crumblessData } = data;
+        var { state, data: { [state.crumbTrailKey]: crumbs, ...data } } = this.stateHandler.parseLink(url);
         for (var id in this.onBeforeNavigateCache.handlers) {
             var handler = this.onBeforeNavigateCache.handlers[id];
-            if (oldUrl !== this.stateContext.url || !handler(state, crumblessData, url, history))
+            if (oldUrl !== this.stateContext.url || !handler(state, data, url, history))
                 return;
         }
         var navigateContinuation = (asyncData?: any) => {
-            var stateContext = this.createStateContext(state, crumblessData, crumbs, url, asyncData, history);
+            var stateContext = this.createStateContext(state, data, crumbs, url, asyncData, history);
             if (oldUrl === this.stateContext.url) {
                 suspendNavigation(stateContext, () => {
                     if (oldUrl === this.stateContext.url)
@@ -138,12 +137,12 @@ class StateNavigator {
         };
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
-                state.navigating(crumblessData, url, navigateContinuation, history);
+                state.navigating(data, url, navigateContinuation, history);
         };
         if (this.stateContext.state)
-            this.stateContext.state.unloading(state, crumblessData, url, unloadContinuation, history);
+            this.stateContext.state.unloading(state, data, url, unloadContinuation, history);
         else
-            state.navigating(crumblessData, url, navigateContinuation, history);
+            state.navigating(data, url, navigateContinuation, history);
     }
     
     private resumeNavigation(stateContext: StateContext, historyAction: 'add' | 'replace' | 'none') {
