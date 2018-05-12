@@ -2818,8 +2818,8 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler = (state, data, url, history) => {
-                oldStates.push(stateNavigator.stateContext.state);
+            var beforeNavigateHandler = (state, data, url, history, {state: oldState}) => {
+                oldStates.push(oldState);
                 states.push(state);
                 return true;
             };
@@ -2875,8 +2875,8 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s');
-            var beforeNavigateHandler = (state, data, url, history) => {
-                oldStates.push(stateNavigator.stateContext.state);
+            var beforeNavigateHandler = (state, data, url, history, {state: oldState}) => {
+                oldStates.push(oldState);
                 states.push(state);
                 return true;
             };
@@ -2912,8 +2912,8 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler = (state, data, url, history) => {
-                oldStates.push(stateNavigator.stateContext.state);
+            var beforeNavigateHandler = (state, data, url, history, {state: oldState}) => {
+                oldStates.push(oldState);
                 states.push(state);
                 return true;
             };
@@ -2975,13 +2975,13 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler1 = (state, data, url, history) => {
-                oldStates.push(stateNavigator.stateContext.state);
+            var beforeNavigateHandler1 = (state, data, url, history, {state: oldState}) => {
+                oldStates.push(oldState);
                 states.push(state);
                 return true;
             };
-            var beforeNavigateHandler2 = (state, data, url, history) => {
-                oldStates.push(stateNavigator.stateContext.state);
+            var beforeNavigateHandler2 = (state, data, url, history, {state: oldState}) => {
+                oldStates.push(oldState);
                 states.push(state);
                 return true;
             };
@@ -3057,13 +3057,13 @@ describe('Navigation', function () {
             var oldStates2 = [];
             var states2 = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler1 = (state, data, url, history) => {
-                oldStates1.push(stateNavigator.stateContext.state);
+            var beforeNavigateHandler1 = (state, data, url, history, {state: oldState}) => {
+                oldStates1.push(oldState);
                 states1.push(state);
                 return true;
             };
-            var beforeNavigateHandler2 = (state, data, url, history) => {
-                oldStates2.push(stateNavigator.stateContext.state);
+            var beforeNavigateHandler2 = (state, data, url, history, {state: oldState}) => {
+                oldStates2.push(oldState);
                 states2.push(state);
                 return true;
             };
@@ -3143,8 +3143,8 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler = (state, data, url, history) => {
-                oldStates.push(stateNavigator.stateContext.state);
+            var beforeNavigateHandler = (state, data, url, history, {state: oldState}) => {
+                oldStates.push(oldState);
                 states.push(state);
                 return true;
             };
@@ -3202,13 +3202,13 @@ describe('Navigation', function () {
             var oldStates2 = [];
             var states2 = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler1 = (state, data, url, history) => {
-                oldStates1.push(stateNavigator.stateContext.state);
+            var beforeNavigateHandler1 = (state, data, url, history, {state: oldState}) => {
+                oldStates1.push(oldState);
                 states1.push(state);
                 return true;
             };
-            var beforeNavigateHandler2 = (state, data, url, history) => {
-                oldStates2.push(stateNavigator.stateContext.state);
+            var beforeNavigateHandler2 = (state, data, url, history, {state: oldState}) => {
+                oldStates2.push(oldState);
                 states2.push(state);
                 return true;
             };
@@ -3443,25 +3443,26 @@ describe('Navigation', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var navigatedOldState, navigatedState, navigatedData, navigatedAsyncData, navigatingData, navigatingUrl,
-                beforeNavigateOldState, beforeNavigateState, beforeNavigateData, beforeNavigateUrl;
+            var navigatedOldState, navigatedState, navigatedData, navigatedUrl, navigatedAsyncData, navigatingData,
+                navigatingUrl, beforeNavigateOldState, beforeNavigateState, beforeNavigateData, beforeNavigateUrl;
             stateNavigator.states['s'].navigating = (data, url, navigating) => {
                 navigatingData = data;
                 navigatingUrl = url;
                 navigating('World');
             }
-            var beforeNavigateHandler = (state, data, url, history) => {
-                beforeNavigateOldState = stateNavigator.stateContext.state;
+            var beforeNavigateHandler = (state, data, url, history, {state: oldState}) => {
+                beforeNavigateOldState = oldState;
                 beforeNavigateState = state;
                 beforeNavigateData = data;
                 beforeNavigateUrl = url;
                 return true;
             };
-            var navigatedHandler = (oldState, state, data, asyncData) => {
+            var navigatedHandler = (oldState, state, data, asyncData, {url}) => {
                 navigatedOldState = oldState;
                 navigatedState = state;
                 navigatedData = data;
                 navigatedAsyncData = asyncData;
+                navigatedUrl = url;
             };
             stateNavigator.onBeforeNavigate(beforeNavigateHandler);
             stateNavigator.onNavigate(navigatedHandler);
@@ -3479,6 +3480,7 @@ describe('Navigation', function () {
             assert.strictEqual(navigatedState, stateNavigator.states['s']);
             assert.strictEqual(navigatedData.s, 'Hello');
             assert.strictEqual(navigatedAsyncData, 'World');
+            assert.strictEqual(navigatedUrl, url);
             assert.strictEqual(stateNavigator.stateContext.data.s, 'Hello');
         });
     });
@@ -3487,14 +3489,15 @@ describe('Navigation', function () {
         it('should pass old State, State and Data', function() {
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' }
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var link = stateNavigator.getNavigationLink('s0');
             stateNavigator.navigateLink(link);
-            var unloadingState, unloadingUrl, navigatedOldState, navigatedState, navigatedData, navigatedAsyncData, navigatingData,
-                navigatingUrl, beforeNavigateOldState, beforeNavigateState, beforeNavigateData, beforeNavigateUrl;
+            var unloadingState, unloadingData, unloadingUrl, navigatedOldState, navigatedState, navigatedData, navigatedAsyncData, navigatedUrl,
+                navigatingData, navigatingUrl, beforeNavigateOldState, beforeNavigateState, beforeNavigateData, beforeNavigateUrl;
             stateNavigator.states['s0'].unloading = (state, data, url, unload) => {
                 unloadingState = state;
+                unloadingData = data;
                 unloadingUrl = url;
                 unload();
             }
@@ -3503,18 +3506,19 @@ describe('Navigation', function () {
                 navigatingUrl = url;
                 navigating('World');
             }
-            var beforeNavigateHandler = (state, data, url, history) => {
-                beforeNavigateOldState = stateNavigator.stateContext.state;
+            var beforeNavigateHandler = (state, data, url, history, {state: oldState}) => {
+                beforeNavigateOldState = oldState;
                 beforeNavigateState = state;
                 beforeNavigateData = data;
                 beforeNavigateUrl = url;
                 return true;
             };
-            var navigatedHandler = (oldState, state, data, asyncData) => {
+            var navigatedHandler = (oldState, state, data, asyncData, {url}) => {
                 navigatedOldState = oldState;
                 navigatedState = state;
                 navigatedData = data;
                 navigatedAsyncData = asyncData;
+                navigatedUrl = url;
             };
             stateNavigator.onBeforeNavigate(beforeNavigateHandler);
             stateNavigator.onNavigate(navigatedHandler);
@@ -3525,15 +3529,21 @@ describe('Navigation', function () {
             assert.strictEqual(beforeNavigateOldState, stateNavigator.states['s0']);
             assert.strictEqual(beforeNavigateState, stateNavigator.states['s1']);
             assert.strictEqual(beforeNavigateData.s, 'Hello');
+            assert.strictEqual(Object.keys(beforeNavigateData).length, 1);
             assert.strictEqual(beforeNavigateUrl, url);
             assert.strictEqual(unloadingState, stateNavigator.states['s1']);
+            assert.strictEqual(unloadingData.s, 'Hello');
+            assert.strictEqual(Object.keys(unloadingData).length, 1);
             assert.strictEqual(unloadingUrl, url);
             assert.strictEqual(navigatingData.s, 'Hello');
+            assert.strictEqual(Object.keys(navigatingData).length, 1);
             assert.strictEqual(navigatingUrl, url);
             assert.strictEqual(navigatedOldState, stateNavigator.states['s0']);
             assert.strictEqual(navigatedState, stateNavigator.states['s1']);
             assert.strictEqual(navigatedData.s, 'Hello');
             assert.strictEqual(navigatedAsyncData, 'World');
+            assert.strictEqual(navigatedUrl, url);
+            assert.strictEqual(Object.keys(navigatedData).length, 1);
         });
     });
 
