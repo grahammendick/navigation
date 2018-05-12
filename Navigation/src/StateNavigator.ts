@@ -8,7 +8,7 @@ import StateInfo from './config/StateInfo';
 import StateContext from './StateContext';
 import StateHandler from './StateHandler';
 type NavigateHandler = (oldState: State, state: State, data: any, asyncData: any) => void;
-type BeforeNavigateHandler = (state: State, data: any, url: string, history: boolean, stateContext: StateContext) => boolean;
+type BeforeNavigateHandler = (state: State, data: any, url: string, history: boolean, currentContext: StateContext) => boolean;
 
 class StateNavigator {
     private stateHandler = new StateHandler();
