@@ -8,7 +8,7 @@ import StateInfo from './config/StateInfo';
 import StateContext from './StateContext';
 import StateHandler from './StateHandler';
 type NavigateHandler = (oldState: State, state: State, data: any, asyncData: any) => void;
-type BeforeNavigateHandler = (state: State, data: any, url: string, history: boolean) => boolean;
+type BeforeNavigateHandler = (state: State, data: any, url: string, history: boolean, stateContext: StateContext) => boolean;
 
 class StateNavigator {
     private stateHandler = new StateHandler();
@@ -123,7 +123,7 @@ class StateNavigator {
         var { state, data: { [state.crumbTrailKey]: crumbs, ...data } } = this.stateHandler.parseLink(url);
         for (var id in this.onBeforeNavigateCache.handlers) {
             var handler = this.onBeforeNavigateCache.handlers[id];
-            if (oldUrl !== this.stateContext.url || !handler(state, data, url, history))
+            if (oldUrl !== this.stateContext.url || !handler(state, data, url, history, this.stateContext))
                 return;
         }
         var navigateContinuation = (asyncData?: any) => {
