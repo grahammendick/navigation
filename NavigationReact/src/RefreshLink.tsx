@@ -10,9 +10,9 @@ var RefreshLink = (props: RefreshLinkProps) => {
     try {
         var link = stateNavigator.getRefreshLink(navigationData);
     } catch {}
-    var active = LinkUtility.isActive(stateNavigator, navigationData);
     htmlProps.href = link && stateNavigator.historyManager.getHref(link);
     htmlProps.onClick = link && LinkUtility.getOnClick(stateNavigator, props, link);
+    var active = LinkUtility.isActive(stateNavigator, navigationData);
     LinkUtility.setActive(active, props, htmlProps);
     return <a {...htmlProps}>{children}</a>;
 }

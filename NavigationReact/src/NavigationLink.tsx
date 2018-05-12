@@ -11,9 +11,9 @@ var NavigationLink = (props: NavigationLinkProps) => {
     try {
         var link = stateNavigator.getNavigationLink(stateKey, navigationData);
     } catch {}
-    var active = state && state.key === stateKey && LinkUtility.isActive(stateNavigator, navigationData);
     htmlProps.href = link && stateNavigator.historyManager.getHref(link);
     htmlProps.onClick = link && LinkUtility.getOnClick(stateNavigator, props, link);
+    var active = state && state.key === stateKey && LinkUtility.isActive(stateNavigator, navigationData);
     LinkUtility.setActive(active, props, htmlProps);
     return <a {...htmlProps}>{children}</a>;
 }
