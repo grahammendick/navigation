@@ -4,11 +4,7 @@ import { RefreshLinkProps } from './Props';
 import * as React from 'react';
 
 var RefreshLink = (props: RefreshLinkProps) => {
-    var htmlProps: any = {};
-    for(var key in props) {
-        if (LinkUtility.isValidAttribute(key))
-            htmlProps[key] = props[key];
-    }
+    var htmlProps = LinkUtility.toHtmlProps(props);
     var { navigationData, includeCurrentData, currentDataKeys, stateNavigator, children } = props;
     navigationData = LinkUtility.getData(stateNavigator, navigationData, includeCurrentData, currentDataKeys);
     try {

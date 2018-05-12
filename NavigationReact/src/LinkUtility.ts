@@ -47,11 +47,16 @@ class LinkUtility {
         }
     }
 
-    static isValidAttribute(attr: string): boolean {
-        return attr !== 'stateNavigator' && attr !== 'stateKey' && attr !== 'navigationData'
-            && attr !== 'includeCurrentData' && attr !== 'currentDataKeys' && attr !== 'activeCssClass'
-            && attr !== 'disableActive' && attr !== 'distance' && attr !== 'historyAction'
-            && attr !== 'acrossCrumbs' && attr !== 'navigating' && attr !== 'children' && attr !== 'defer';
+    static toHtmlProps(props: any): any {
+        var htmlProps = {};
+        for(var key in props) {
+            if (key !== 'stateNavigator' && key !== 'stateKey' && key !== 'navigationData'
+                && key !== 'includeCurrentData' && key !== 'currentDataKeys' && key !== 'activeCssClass'
+                && key !== 'disableActive' && key !== 'distance' && key !== 'historyAction'
+                && key !== 'navigating' && key !== 'children' && key !== 'defer')
+                htmlProps[key] = props[key];
+        }
+        return htmlProps;
     }
     
     static getOnClick(stateNavigator: AsyncStateNavigator, props: LinkProps, link: string) {

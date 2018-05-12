@@ -4,11 +4,7 @@ import { NavigationBackLinkProps } from './Props';
 import * as React from 'react';
 
 var NavigationBackLink = (props: NavigationBackLinkProps) => {
-    var htmlProps: any = {};
-    for(var key in props) {
-        if (LinkUtility.isValidAttribute(key))
-            htmlProps[key] = props[key];
-    }
+    var htmlProps = LinkUtility.toHtmlProps(props);
     var { distance, stateNavigator, children } = props;
     try {
         var link = stateNavigator.getNavigationBackLink(distance);

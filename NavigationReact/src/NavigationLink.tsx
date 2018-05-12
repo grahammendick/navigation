@@ -4,11 +4,7 @@ import { NavigationLinkProps } from './Props';
 import * as React from 'react';
 
 var NavigationLink = (props: NavigationLinkProps) => {
-    var htmlProps: any = {};
-    for(var key in props) {
-        if (LinkUtility.isValidAttribute(key))
-            htmlProps[key] = props[key];
-    }
+    var htmlProps = LinkUtility.toHtmlProps(props);
     var { stateKey, navigationData, includeCurrentData, currentDataKeys, stateNavigator, children } = props;
     var { state } = stateNavigator.stateContext;
     navigationData = LinkUtility.getData(stateNavigator, navigationData, includeCurrentData, currentDataKeys);
