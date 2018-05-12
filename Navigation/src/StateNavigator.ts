@@ -7,7 +7,7 @@ import State from './config/State';
 import StateInfo from './config/StateInfo';
 import StateContext from './StateContext';
 import StateHandler from './StateHandler';
-type NavigateHandler = (oldState: State, state: State, data: any, asyncData: any) => void;
+type NavigateHandler = (oldState: State, state: State, data: any, asyncData: any, stateContext: StateContext) => void;
 type BeforeNavigateHandler = (state: State, data: any, url: string, history: boolean, currentContext: StateContext) => boolean;
 
 class StateNavigator {
@@ -153,7 +153,7 @@ class StateNavigator {
         state.navigated(this.stateContext.data, asyncData);
         for (var id in this.onNavigateCache.handlers) {
             if (url === this.stateContext.url)
-            this.onNavigateCache.handlers[id](oldState, state, data, asyncData);
+            this.onNavigateCache.handlers[id](oldState, state, data, asyncData, stateContext);
         }
         if (url === this.stateContext.url) {
             if (historyAction !== 'none')

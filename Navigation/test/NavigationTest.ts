@@ -3443,8 +3443,8 @@ describe('Navigation', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var navigatedOldState, navigatedState, navigatedData, navigatedAsyncData, navigatingData, navigatingUrl,
-                beforeNavigateOldState, beforeNavigateState, beforeNavigateData, beforeNavigateUrl;
+            var navigatedOldState, navigatedState, navigatedData, navigatedUrl, navigatedAsyncData, navigatingData,
+                navigatingUrl, beforeNavigateOldState, beforeNavigateState, beforeNavigateData, beforeNavigateUrl;
             stateNavigator.states['s'].navigating = (data, url, navigating) => {
                 navigatingData = data;
                 navigatingUrl = url;
@@ -3457,11 +3457,12 @@ describe('Navigation', function () {
                 beforeNavigateUrl = url;
                 return true;
             };
-            var navigatedHandler = (oldState, state, data, asyncData) => {
+            var navigatedHandler = (oldState, state, data, asyncData, {url}) => {
                 navigatedOldState = oldState;
                 navigatedState = state;
                 navigatedData = data;
                 navigatedAsyncData = asyncData;
+                navigatedUrl = url;
             };
             stateNavigator.onBeforeNavigate(beforeNavigateHandler);
             stateNavigator.onNavigate(navigatedHandler);
@@ -3479,6 +3480,7 @@ describe('Navigation', function () {
             assert.strictEqual(navigatedState, stateNavigator.states['s']);
             assert.strictEqual(navigatedData.s, 'Hello');
             assert.strictEqual(navigatedAsyncData, 'World');
+            assert.strictEqual(navigatedUrl, url);
             assert.strictEqual(stateNavigator.stateContext.data.s, 'Hello');
         });
     });
@@ -3491,7 +3493,7 @@ describe('Navigation', function () {
             ]);
             var link = stateNavigator.getNavigationLink('s0');
             stateNavigator.navigateLink(link);
-            var unloadingState, unloadingData, unloadingUrl, navigatedOldState, navigatedState, navigatedData, navigatedAsyncData,
+            var unloadingState, unloadingData, unloadingUrl, navigatedOldState, navigatedState, navigatedData, navigatedAsyncData, navigatedUrl,
                 navigatingData, navigatingUrl, beforeNavigateOldState, beforeNavigateState, beforeNavigateData, beforeNavigateUrl;
             stateNavigator.states['s0'].unloading = (state, data, url, unload) => {
                 unloadingState = state;
@@ -3511,11 +3513,12 @@ describe('Navigation', function () {
                 beforeNavigateUrl = url;
                 return true;
             };
-            var navigatedHandler = (oldState, state, data, asyncData) => {
+            var navigatedHandler = (oldState, state, data, asyncData, {url}) => {
                 navigatedOldState = oldState;
                 navigatedState = state;
                 navigatedData = data;
                 navigatedAsyncData = asyncData;
+                navigatedUrl = url;
             };
             stateNavigator.onBeforeNavigate(beforeNavigateHandler);
             stateNavigator.onNavigate(navigatedHandler);
@@ -3539,6 +3542,7 @@ describe('Navigation', function () {
             assert.strictEqual(navigatedState, stateNavigator.states['s1']);
             assert.strictEqual(navigatedData.s, 'Hello');
             assert.strictEqual(navigatedAsyncData, 'World');
+            assert.strictEqual(navigatedUrl, url);
             assert.strictEqual(Object.keys(navigatedData).length, 1);
         });
     });
