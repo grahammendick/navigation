@@ -13,11 +13,11 @@ interface FluentNavigator {
 function createFluentNavigator(states: { [index: string]: State }, stateHandler: StateHandler, stateContext = new StateContext()): FluentNavigator {
     function navigateLink(url): FluentNavigator {
         var { state, data } = stateHandler.parseLink(url);
+        var { [state.crumbTrailKey]: crumbs, ...data } = data;
         var fluentContext = new StateContext();
         fluentContext.state = state;
         fluentContext.url = url;
-        fluentContext.crumbs = data[state.crumbTrailKey];
-        delete data[state.crumbTrailKey];
+        fluentContext.crumbs = crumbs;
         fluentContext.data = data;
         fluentContext.nextCrumb = new Crumb(data, state, url, stateHandler.getLink(state, data), false);
         return createFluentNavigator(states, stateHandler, fluentContext);

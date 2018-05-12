@@ -120,7 +120,8 @@ class StateNavigator {
         if (history && this.stateContext.url === url)
             return;
         var oldUrl = this.stateContext.url;
-        var { state, data: { [state.crumbTrailKey]: crumbs, ...data } } = this.stateHandler.parseLink(url);
+        var { state, data } = this.stateHandler.parseLink(url);
+        var { [state.crumbTrailKey]: crumbs, ...data } = data;
         for (var id in this.onBeforeNavigateCache.handlers) {
             var handler = this.onBeforeNavigateCache.handlers[id];
             if (oldUrl !== this.stateContext.url || !handler(state, data, url, history, this.stateContext))
