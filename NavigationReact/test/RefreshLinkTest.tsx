@@ -24,14 +24,14 @@ describe('RefreshLinkTest', function () {
             ReactDOM.render(
                 <NavigationHandler stateNavigator={stateNavigator}>
                     <RefreshLink>
-                        link text
+                        <span>link text</span>
                     </RefreshLink>
                 </NavigationHandler>,
                 container
             );
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r');
-            assert.equal(link.innerHTML, 'link text');
+            assert.equal(link.innerHTML, '<span>link text</span>');
         })
     });
 

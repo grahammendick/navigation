@@ -23,14 +23,14 @@ describe('NavigationLinkTest', function () {
             ReactDOM.render(
                 <NavigationHandler stateNavigator={stateNavigator}>
                     <NavigationLink stateKey="s">
-                        link text
+                        <span>link text</span>
                     </NavigationLink>
                 </NavigationHandler>,
                 container
             );
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r');
-            assert.equal(link.innerHTML, 'link text');
+            assert.equal(link.innerHTML, '<span>link text</span>');
         })
     });
 

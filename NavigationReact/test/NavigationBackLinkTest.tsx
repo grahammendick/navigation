@@ -26,14 +26,14 @@ describe('NavigationBackLinkTest', function () {
             ReactDOM.render(
                 <NavigationHandler stateNavigator={stateNavigator}>
                     <NavigationBackLink distance={1}>
-                        link text
+                        <span>link text</span>
                     </NavigationBackLink>
                 </NavigationHandler>,
                 container
             );
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r0');
-            assert.equal(link.innerHTML, 'link text');
+            assert.equal(link.innerHTML, '<span>link text</span>');
         })
     });
 
