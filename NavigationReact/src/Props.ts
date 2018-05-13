@@ -11,7 +11,7 @@ interface LinkProps extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorEle
 interface RefreshLinkProps extends LinkProps {
     navigationData?: any;
     includeCurrentData?: boolean;
-    currentDataKeys?: string;
+    currentDataKeys?: string | string[];
     activeCssClass?: string;
     disableActive?: boolean;
 }
