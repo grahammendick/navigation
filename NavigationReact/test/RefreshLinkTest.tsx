@@ -193,6 +193,29 @@ describe('RefreshLinkTest', function () {
         })
     });
 
+    describe('Current Data Key Array Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {y: 'b', z: 'c'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: 'a'}}
+                        currentDataKeys={['y']}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?y=b&x=a');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
     describe('Current Data Keys Refresh Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
@@ -216,6 +239,29 @@ describe('RefreshLinkTest', function () {
         })
     });
 
+    describe('Current Data Keys Array Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: 'a'}}
+                        currentDataKeys={['y','z']}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?y=b&z=c&x=a');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
     describe('Current Data Keys Override Refresh Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
@@ -228,6 +274,29 @@ describe('RefreshLinkTest', function () {
                     <RefreshLink
                         navigationData={{y: 'a'}}
                         currentDataKeys="y,z">
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?y=a&z=c');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Current Data Keys Array Override Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{y: 'a'}}
+                        currentDataKeys={['y','z']}>
                         link text
                     </RefreshLink>
                 </NavigationHandler>,
