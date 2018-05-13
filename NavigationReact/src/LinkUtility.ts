@@ -2,9 +2,9 @@
 import { LinkProps } from './Props';
 
 class LinkUtility {
-    static getData(stateNavigator: AsyncStateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string): any {
+    static getData(stateNavigator: AsyncStateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string | string[]): any {
         if (currentDataKeys || includeCurrentData) {
-            var keys = includeCurrentData ? undefined : currentDataKeys.trim().split(/\s*,\s*/);
+            var keys = typeof currentDataKeys === 'string' ? currentDataKeys.trim().split(/\s*,\s*/) : currentDataKeys;
             navigationData = stateNavigator.stateContext.includeCurrentData(navigationData, keys);
         }
         return navigationData;
