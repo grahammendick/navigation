@@ -31,7 +31,7 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
         return sharedElements.reduce((elements, element) => ({...elements, [element.name]: element}), {});
     }
     getStyle(name, {ref, data}) {
-        var { top, left, width, height } = ref.getBoundingClientRect();
+        var {top, left, width, height} = ref.getBoundingClientRect();
         return this.props.elementStyle(name, ref, { top, left, width, height, ...data});
     }
     getPropValue(prop, name) {
