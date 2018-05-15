@@ -48,8 +48,8 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
                 update={({name, mountedElement}) => this.getStyle(name, mountedElement)}
                 progress={progress < 1 ? progress : 0}
                 duration={duration}>
-                {tweenStyles => (
-                    tweenStyles.map(({data: {name, oldElement, mountedElement}, style, start, end}) => (
+                {styles => (
+                    styles.map(({data: {name, oldElement, mountedElement}, style, start, end}) => (
                         children(style, name, {...start, ...oldElement.data}, {...end, ...mountedElement.data})
                     ))
                 )}

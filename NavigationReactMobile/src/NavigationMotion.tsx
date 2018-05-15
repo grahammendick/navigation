@@ -93,19 +93,19 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     leave={scene => this.getStyle(false, scene)}
                     onRest={({key}) => this.clearScene(key)}
                     duration={duration}>
-                    {tweenStyles => (
-                        tweenStyles.map(({data: {key, state, data, url, navigationEvent}, style: tweenStyle}) => {
+                    {styles => (
+                        styles.map(({data: {key, state, data, navigationEvent}, style}) => {
                             var scene = navigationEvent && (
                                 <Scene navigationEvent={navigationEvent} stateNavigator={stateNavigator}>
                                     {state.renderScene(data)}
                                 </Scene>
                             );
-                            return children(tweenStyle, scene, key, crumbs.length === key, state, data)
+                            return children(style, scene, key, crumbs.length === key, state, data)
                         }).concat(
                             sharedElementMotion && sharedElementMotion({
                                 key: 'sharedElements',
                                 sharedElements: !this.state.rest ? this.getSharedElements(crumbs, oldUrl) : [],
-                                progress: tweenStyles[crumbs.length] && tweenStyles[crumbs.length].progress,
+                                progress: styles[crumbs.length] && styles[crumbs.length].progress,
                                 duration,
                             })
                         )
