@@ -67,9 +67,10 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
                 .filter(item => !itemsByKey[getKey(item)])
                 .map(item => {
                     var index = dataByKey[getKey(item)].index;
-                    var newItem: any = {key: getKey(item), data: item, progress, tick, rest: false, index};
+                    var newItem: any = {key: getKey(item), data: item, tick, rest: false, index};
                     newItem.start = newItem.style = enter(item);
                     newItem.end = update(item);
+                    newItem.progress = Motion.areEqual(newItem.start, newItem.end) ? 1 : 0;
                     return newItem;
                 })
             )
