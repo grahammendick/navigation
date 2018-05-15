@@ -26,7 +26,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         }
         var {navigationEvent, stateNavigator} = this.props;
         var {state, crumbs} = stateNavigator.stateContext;
-        this.state = {scenes: {[crumbs.length]: state ? navigationEvent : null }, rest: false};
+        this.state = {scenes: {[crumbs.length]: state && navigationEvent}, rest: false};
     }
     static defaultProps = {
         duration: 300
