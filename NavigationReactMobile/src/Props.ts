@@ -21,7 +21,7 @@ interface SharedElementProps {
     unshare?: boolean;
     registerSharedElement: (scene: number, name: string, ref: HTMLElement, data: any) => void;
     unregisterSharedElement: (scene: number, name: string) => void;
-    stateNavigator?: StateNavigator;
+    stateNavigator: StateNavigator;
     children: ReactElement<any>;
 }
 
@@ -58,6 +58,7 @@ interface NavigationMotionProps {
 
 interface SceneProps {
     navigationEvent: NavigationEvent;
+    stateNavigator: StateNavigator;
 }
 
 export { MotionProps, SharedElementProps, SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProps, NavigationMotionProps, SceneProps }
