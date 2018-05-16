@@ -10,7 +10,7 @@ type NavigationMotionState = { scenes: { [crumbs: number]: NavigationEvent }, re
 type SceneContext = { key: number, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, navigationEvent: NavigationEvent, mount: boolean };
 
 class NavigationMotion extends React.Component<NavigationMotionProps, NavigationMotionState> {
-    private sharedElements: { [scene: number]: { [name: string]: { ref: HTMLElement; data: any }; }; } = {};
+    private sharedElements: { [scene: number]: { [name: string]: { ref: HTMLElement, data: any } } } = {};
     private sharedElementContext: any;
     constructor(props: NavigationMotionProps) {
         super(props);
