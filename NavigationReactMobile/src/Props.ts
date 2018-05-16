@@ -1,6 +1,7 @@
 import { StateNavigator, State } from 'navigation';
 import { NavigationEvent } from 'navigation-react';
 import SharedElementMotion from './SharedElementMotion';
+import SharedElementRegistry from './SharedElementRegistry';
 import { ReactElement } from 'react';
 
 interface MotionProps<T> {
@@ -19,8 +20,7 @@ interface SharedElementProps {
     name: string;
     data?: any;
     unshare?: boolean;
-    registerSharedElement: (scene: number, name: string, ref: HTMLElement, data: any) => void;
-    unregisterSharedElement: (scene: number, name: string) => void;
+    sharedElementRegistry: SharedElementRegistry;
     stateNavigator: StateNavigator;
     children: ReactElement<any>;
 }

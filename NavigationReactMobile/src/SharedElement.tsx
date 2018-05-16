@@ -15,21 +15,21 @@ class SharedElement extends React.Component<SharedElementProps, any> {
         this.register();
     }
     componentDidUpdate(prevProps) {
-        this.props.unregisterSharedElement(this.scene, prevProps.name);
+        this.props.sharedElementRegistry.unregisterSharedElement(this.scene, prevProps.name);
         this.register();
     }
     componentWillUnmount() {
-        this.props.unregisterSharedElement(this.scene, this.props.name);
+        this.props.sharedElementRegistry.unregisterSharedElement(this.scene, this.props.name);
     }
     register() {
         var {crumbs, oldUrl} = this.props.stateNavigator.stateContext;
         if (this.scene === crumbs.length || (oldUrl && this.scene === oldUrl.split('crumb=').length - 1)) {
-            var {unshare, name, data, registerSharedElement, unregisterSharedElement} = this.props;
+            var {unshare, name, data, sharedElementRegistry} = this.props;
             if (!unshare) {
                 if (this.ref)
-                    registerSharedElement(this.scene, name, this.ref, data);
+                    sharedElementRegistry.registerSharedElement(this.scene, name, this.ref, data);
             } else {
-                unregisterSharedElement(this.scene, name);
+                sharedElementRegistry.unregisterSharedElement(this.scene, name);
             }
         }
     }
@@ -40,10 +40,8 @@ class SharedElement extends React.Component<SharedElementProps, any> {
 
 export default withStateNavigator(props => (
     <SharedElementContext.Consumer>
-        {({registerSharedElement, unregisterSharedElement}) => (
-            <SharedElement {...props}
-                registerSharedElement={registerSharedElement}
-                unregisterSharedElement={unregisterSharedElement} />
+        {(sharedElementRegistry) => (
+            <SharedElement {...props} sharedElementRegistry={sharedElementRegistry} />
         )}
     </SharedElementContext.Consumer>
 ));
