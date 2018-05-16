@@ -6,7 +6,7 @@ import Scene from './Scene';
 import SharedElementContext from './SharedElementContext';
 import SharedElementRegistry from './SharedElementRegistry';
 import withStateNavigator from './withStateNavigator';
-import { NavigationMotionProps, SharedItem } from './Props';
+import { NavigationMotionProps } from './Props';
 type NavigationMotionState = { scenes: { [crumbs: number]: NavigationEvent }, rest: boolean };
 type SceneContext = { key: number, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, navigationEvent: NavigationEvent, mount: boolean };
 
