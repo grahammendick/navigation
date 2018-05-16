@@ -1,4 +1,4 @@
-import { NavigationContext, NavigationEvent } from 'navigation-react';
+import { NavigationContext } from 'navigation-react';
 import * as React from 'react';
 import { SceneProps } from './Props';
 
