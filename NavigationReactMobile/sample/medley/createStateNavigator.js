@@ -25,10 +25,7 @@ export default () => {
   sceneWest.renderScene = () => renderScene('West', 'black');
 
   const renderScene = (direction, color) => (
-    <Scene
-      direction={direction}
-      color={color}
-      index={stateNavigator.stateContext.crumbs.length}/>
+    <Scene direction={direction} color={color} />
   )
 
   sceneNorth.unmountedStyle = {translateY: -100};

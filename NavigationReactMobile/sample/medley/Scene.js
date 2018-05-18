@@ -1,6 +1,5 @@
 import React from 'react';
-import {NavigationLink} from 'navigation-react';
-import {NavigationBackLink} from 'navigation-react';
+import {NavigationContext, NavigationBackLink, NavigationLink} from 'navigation-react';
 
 const nextDirection = {
   North: 'East',
@@ -9,14 +8,20 @@ const nextDirection = {
   West: 'North',
 };
 
-export default ({direction, color, index}) => (
-  <div style={{backgroundColor: color}}>
-    <NavigationLink stateKey={`scene${nextDirection[direction]}`}>
-      {direction} {index}
-    </NavigationLink>
-    {index > 0 && <NavigationBackLink distance={1}>
-      Back
-    </NavigationBackLink>}
-  </div>
+export default ({direction, color}) => (
+  <NavigationContext.Consumer>
+    {({stateNavigator}) => (
+      <div style={{backgroundColor: color}}>
+        <NavigationLink stateKey={`scene${nextDirection[direction]}`}>
+          {direction} {stateNavigator.stateContext.crumbs.length}
+        </NavigationLink>
+        {stateNavigator.stateContext.crumbs.length > 0 && (
+          <NavigationBackLink distance={1}>
+            Back
+          </NavigationBackLink>
+        )}
+      </div>
+    )}
+    </NavigationContext.Consumer>
 );
 
