@@ -59,9 +59,16 @@ class Route {
         data = data || {};
         var route = '';
         var optional = true;
+        var blankEncoded = false;
         for (var i = this.segments.length - 1; i >= 0; i--) {
             var segment = this.segments[i];
-            var pathInfo = segment.build(data, this.defaults, (name, val) => urlEncode(this, name, val));
+            var pathInfo = segment.build(data, this.defaults, (name, val) => {
+                var encodedValue = urlEncode(this, name, val);
+                blankEncoded = blankEncoded || !encodedValue;
+                return encodedValue;
+            });
+            if (blankEncoded)
+                return null;
             optional = optional && pathInfo.optional;
             if (!optional) {
                 if (pathInfo.path == null)
