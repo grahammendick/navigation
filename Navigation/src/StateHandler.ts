@@ -70,10 +70,13 @@ class StateHandler {
                 var arr = arrayData[key];
                 var encodedKey = state.urlEncode(state, null, key, true);
                 if (!arr) {
-                    query.push(encodedKey + '=' + state.urlEncode(state, key, data[key], true));
+                    var encodedValue = state.urlEncode(state, key, data[key], true);
+                    query.push(encodedKey + (encodedValue ? '=' + encodedValue : ''));
                 } else {
-                    for(var i = 0; i < arr.length; i++)
-                        query.push(encodedKey + '=' + state.urlEncode(state, key, arr[i], true));
+                    for(var i = 0; i < arr.length; i++) {
+                        var encodedValue = state.urlEncode(state, key, arr[i], true);
+                        query.push(encodedKey + (encodedValue ? '=' + encodedValue : ''));
+                    }
                 }
             }
         }
