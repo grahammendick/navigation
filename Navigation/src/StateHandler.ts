@@ -93,7 +93,7 @@ class StateHandler {
         if (!match)
             throw new Error('The Url ' + url + ' is invalid' + (err || '\nNo match found'));
         var { state, data, separableData, route } = match;
-        try{
+        try {
             var navigationData = this.getNavigationData(query, state, data || {}, separableData);
         } catch(e) {
             err += '\n' + e.message;
