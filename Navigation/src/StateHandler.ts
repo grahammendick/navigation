@@ -107,7 +107,7 @@ class StateHandler {
             for (var i = 0; i < params.length; i++) {
                 var param = params[i].split('=');
                 var key = state.urlDecode(state, null, param[0], true);
-                var val = state.urlDecode(state, key, param[1], true);
+                var val = state.urlDecode(state, key, param[1] || '', true);
                 separableData[key] = true;
                 var arr = data[key];
                 if (!arr) {
