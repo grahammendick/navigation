@@ -4507,6 +4507,38 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Query String Default Boolean Blank Encode', function () {
+        var stateNavigator: StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'ab', defaults: { x: false } }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.urlEncode = (state, key, val) => val === 'true' ? '' : val
+            state.urlDecode = (state, key, val) => val === '' ? 'true' : val
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/ab?x');
+            assert.strictEqual(data.x, true);
+            var { data } = stateNavigator.parseLink('/ab');
+            assert.strictEqual(data.x, false);
+            var { data } = stateNavigator.parseLink('/ab?x&y=cd');
+            assert.strictEqual(data.x, true);
+            assert.strictEqual(data.y, 'cd');
+            var { data } = stateNavigator.parseLink('/ab?y=cd');
+            assert.strictEqual(data.x, false);
+            assert.strictEqual(data.y, 'cd');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: true }), '/ab?x');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: false }), '/ab');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: true, y: 'cd' }), '/ab?x&y=cd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: false, y: 'cd' }), '/ab?x&y=cd');
+        });
+    });
+
     describe('One Splat Param One Segment Default Type', function () {
         var stateNavigator: StateNavigator;
         beforeEach(function () {
