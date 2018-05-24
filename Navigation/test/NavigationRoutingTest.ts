@@ -4568,6 +4568,35 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Param Blank Encode', function () {
+        var stateNavigator: StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: '{x}' }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.urlEncode = (state, key, val) => val === 'cd' ? '' : val
+            state.urlDecode = (state, key, val) => val === '' ? 'cd' : val
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/efg');
+            assert.strictEqual(data.x, 'efg');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/'), /The Url .+ is invalid/);
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'efg' }), '/efg');
+        });
+
+        it('should not build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cd' }), null);
+        });
+    });
+
     describe('Optional Param Blank Encode', function () {
         var stateNavigator: StateNavigator;
         beforeEach(function () {
@@ -4576,6 +4605,60 @@ describe('MatchTest', function () {
             ]);
             var state = stateNavigator.states['s'];
             state.urlEncode = (state, key, val) => val === 'cd' ? '' : val
+            state.urlDecode = (state, key, val) => val === '' ? 'cd' : val
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateNavigator.parseLink('/efg');
+            assert.strictEqual(data.x, 'efg');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'efg' }), '/efg');
+        });
+
+        it('should not build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cd' }), null);
+        });
+    });
+
+    describe('Optional Param Null Encode', function () {
+        var stateNavigator: StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: '{x?}' }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.urlEncode = (state, key, val) => val === 'cd' ? null : val
+            state.urlDecode = (state, key, val) => val === '' ? 'cd' : val
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateNavigator.parseLink('/efg');
+            assert.strictEqual(data.x, 'efg');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'efg' }), '/efg');
+        });
+
+        it('should not build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cd' }), null);
+        });
+    });
+
+    describe('Optional Param Undefined Encode', function () {
+        var stateNavigator: StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: '{x?}' }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.urlEncode = (state, key, val) => val === 'cd' ? undefined : val
             state.urlDecode = (state, key, val) => val === '' ? 'cd' : val
         });
 
