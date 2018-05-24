@@ -4362,8 +4362,8 @@ describe('MatchTest', function () {
                 { key: 's', route: 'ab' }
             ]);
             var state = stateNavigator.states['s'];
-            state.urlEncode = (state, key, val) => val === 'cd' ? '' : val
-            state.urlDecode = (state, key, val) => val === ''? 'cd' : val
+            state.urlEncode = (state, key, val) => (key === 'y' && val === 'cd') ? '' : val
+            state.urlDecode = (state, key, val) => (key === 'y' && val === '') ? 'cd' : val
         });
 
         it('should match', function() {
