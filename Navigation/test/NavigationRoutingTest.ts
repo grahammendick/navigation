@@ -4751,6 +4751,44 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Query String Default Type Number Array Blank Index Encode', function () {
+        var stateNavigator: StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'ab', defaultTypes: { x: 'numberarray' } }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.urlEncode = (state, key, val, queryString, index) => !key ? `x[${index}]` : (val === '3' ? '' : val)
+            state.urlDecode = (state, key, val) => !key  ? 'x' : (val === '' ? '3' : val)
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/ab?x[0]');
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 3);
+            var { data } = stateNavigator.parseLink('/ab?x[0]=2&x[1]');
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 2);
+            assert.strictEqual(data.x[1], 3);
+            var { data } = stateNavigator.parseLink('/ab?x[0]&x[1]=2');
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 3);
+            assert.strictEqual(data.x[1], 2);
+            var { data } = stateNavigator.parseLink('/ab?x[0]=2&x[1]&x[2]=1&x[3]');
+            assert.strictEqual(data.x.length, 4);
+            assert.strictEqual(data.x[0], 2);
+            assert.strictEqual(data.x[1], 3);
+            assert.strictEqual(data.x[2], 1);
+            assert.strictEqual(data.x[3], 3);
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: [3] }), '/ab?x[0]');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: [2, 3] }), '/ab?x[0]=2&x[1]');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: [3, 2] }), '/ab?x[0]&x[1]=2');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: [2, 3, 1, 3] }), '/ab?x[0]=2&x[1]&x[2]=1&x[3]');
+        });
+    });
     describe('One Splat Param One Segment Default Type', function () {
         var stateNavigator: StateNavigator;
         beforeEach(function () {
