@@ -4419,11 +4419,15 @@ describe('MatchTest', function () {
             assert.strictEqual(data.y, 'cd');
             var { data } = stateNavigator.parseLink('/ab?y=efg');
             assert.strictEqual(data.y, 'efg');
+            var { data } = stateNavigator.parseLink('/ab?x=efg&y');
+            assert.strictEqual(data.x, 'efg');
+            assert.strictEqual(data.y, 'cd');
         });
 
         it('should build', function() {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'cd' }), '/ab?y');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'efg' }), '/ab?y=efg');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'efg', y: 'cd' }), '/ab?x=efg&y');
         });
     });
 
@@ -4443,11 +4447,63 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x, true);
             var { data } = stateNavigator.parseLink('/ab?x=false');
             assert.strictEqual(data.x, false);
+            var { data } = stateNavigator.parseLink('/ab?x&y=cd');
+            assert.strictEqual(data.x, true);
+            assert.strictEqual(data.y, 'cd');
         });
 
         it('should build', function() {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: true }), '/ab?x');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: false }), '/ab?x=false');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: true, y: 'cd' }), '/ab?x&y=cd');
+        });
+    });
+
+    describe('Query String Default Type Number Array Blank Encode', function () {
+        var stateNavigator: StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'ab', defaultTypes: { x: 'numberarray' } }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.urlEncode = (state, key, val) => val === '3' ? '' : val
+            state.urlDecode = (state, key, val) => !val ? '3' : val
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/ab?x');
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 3);
+            var { data } = stateNavigator.parseLink('/ab?x=1');
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 1);
+            var { data } = stateNavigator.parseLink('/ab?x&x=1');
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 3);
+            assert.strictEqual(data.x[1], 1);
+            var { data } = stateNavigator.parseLink('/ab?x=1&x');
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 1);
+            assert.strictEqual(data.x[1], 3);
+            var { data } = stateNavigator.parseLink('/ab?x=1&x&x=2&x');
+            assert.strictEqual(data.x.length, 4);
+            assert.strictEqual(data.x[0], 1);
+            assert.strictEqual(data.x[1], 3);
+            assert.strictEqual(data.x[2], 2);
+            assert.strictEqual(data.x[3], 3);
+            var { data } = stateNavigator.parseLink('/ab?x&y=cd');
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 3);
+            assert.strictEqual(data.y, 'cd');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: [3] }), '/ab?x');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: [1] }), '/ab?x=1');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: [3, 1] }), '/ab?x&x=1');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: [1, 3] }), '/ab?x=1&x');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: [1, 3, 2, 3] }), '/ab?x=1&x&x=2&x');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: [3], y: 'cd' }), '/ab?x&y=cd');
         });
     });
 
