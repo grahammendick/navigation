@@ -4411,7 +4411,7 @@ describe('MatchTest', function () {
             ]);
             var state = stateNavigator.states['s'];
             state.urlEncode = (state, key, val) => val === 'cd' ? undefined : val
-            state.urlDecode = (state, key, val) => !val ? 'cd' : val
+            state.urlDecode = (state, key, val) => val === ''? 'cd' : val
         });
 
         it('should match', function() {
@@ -4439,7 +4439,7 @@ describe('MatchTest', function () {
             ]);
             var state = stateNavigator.states['s'];
             state.urlEncode = (state, key, val) => val === 'true' ? '' : val
-            state.urlDecode = (state, key, val) => !val ? 'true' : val
+            state.urlDecode = (state, key, val) => val === '' ? 'true' : val
         });
 
         it('should match', function() {
@@ -4467,7 +4467,7 @@ describe('MatchTest', function () {
             ]);
             var state = stateNavigator.states['s'];
             state.urlEncode = (state, key, val) => val === '3' ? '' : val
-            state.urlDecode = (state, key, val) => !val ? '3' : val
+            state.urlDecode = (state, key, val) => val === '' ? '3' : val
         });
 
         it('should match', function() {
