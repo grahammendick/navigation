@@ -4379,6 +4379,54 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Query String Null Encode', function () {
+        var stateNavigator: StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'ab' }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.urlEncode = (state, key, val) => val === 'cd' ? null : val
+            state.urlDecode = (state, key, val) => !val ? 'cd' : val
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/ab?y');
+            assert.strictEqual(data.y, 'cd');
+            var { data } = stateNavigator.parseLink('/ab?y=efg');
+            assert.strictEqual(data.y, 'efg');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'cd' }), '/ab?y');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'efg' }), '/ab?y=efg');
+        });
+    });
+
+    describe('Query String Undefined Encode', function () {
+        var stateNavigator: StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'ab' }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.urlEncode = (state, key, val) => val === 'cd' ? undefined : val
+            state.urlDecode = (state, key, val) => !val ? 'cd' : val
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/ab?y');
+            assert.strictEqual(data.y, 'cd');
+            var { data } = stateNavigator.parseLink('/ab?y=efg');
+            assert.strictEqual(data.y, 'efg');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'cd' }), '/ab?y');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'efg' }), '/ab?y=efg');
+        });
+    });
+
     describe('Query String Default Type Boolean Blank Encode', function () {
         var stateNavigator: StateNavigator;
         beforeEach(function () {
