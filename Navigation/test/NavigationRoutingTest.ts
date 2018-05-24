@@ -4728,7 +4728,7 @@ describe('MatchTest', function () {
             var { data } = stateNavigator.parseLink('/ab?x[0]=2');
             assert.strictEqual(data.x.length, 1);
             assert.strictEqual(data.x[0], 2);
-            var { data } = stateNavigator.parseLink('/ab?x[0]=2&x=1');
+            var { data } = stateNavigator.parseLink('/ab?x[0]=2&x[1]=1');
             assert.strictEqual(data.x.length, 2);
             assert.strictEqual(data.x[0], 2);
             assert.strictEqual(data.x[1], 1);
@@ -4736,7 +4736,7 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x.length, 1);
             assert.strictEqual(data.x[0], 3);
             assert.strictEqual(data.y, 'cd');
-            var { data } = stateNavigator.parseLink('/ab?x[0]=2&x=1&y=cd');
+            var { data } = stateNavigator.parseLink('/ab?x[0]=2&x[1]=1&y=cd');
             assert.strictEqual(data.x.length, 2);
             assert.strictEqual(data.x[0], 2);
             assert.strictEqual(data.x[1], 1);
