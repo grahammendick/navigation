@@ -4789,6 +4789,7 @@ describe('MatchTest', function () {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: [2, 3, 1, 3] }), '/ab?x[0]=2&x[1]&x[2]=1&x[3]');
         });
     });
+
     describe('One Splat Param One Segment Default Type', function () {
         var stateNavigator: StateNavigator;
         beforeEach(function () {
