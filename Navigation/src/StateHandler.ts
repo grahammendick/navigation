@@ -68,12 +68,13 @@ class StateHandler {
         for (var key in data) {
             if (!routeInfo.data[key]) {
                 var arr = arrayData[key];
-                var encodedKey = state.urlEncode(state, null, key, true);
                 if (!arr) {
+                    var encodedKey = state.urlEncode(state, null, key, true);
                     var encodedValue = state.urlEncode(state, key, data[key], true);
                     query.push(encodedKey + (encodedValue ? '=' + encodedValue : ''));
                 } else {
                     for(var i = 0; i < arr.length; i++) {
+                        var encodedKey = state.urlEncode(state, null, key, true, i);
                         var encodedValue = state.urlEncode(state, key, arr[i], true);
                         query.push(encodedKey + (encodedValue ? '=' + encodedValue : ''));
                     }
