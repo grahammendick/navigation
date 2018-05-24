@@ -32,9 +32,7 @@ class Route {
         this.pattern = new RegExp('^' + pattern + '$', 'i');
     }
 
-    match(path: string, urlDecode?: (route: Route, name: string, val: string) => string): any {
-        if (!urlDecode)
-            urlDecode = (route, name, val) => decodeURIComponent(val); 
+    match(path: string, urlDecode: (route: Route, name: string, val: string) => string): any {
         var matches = this.pattern.exec(path);
         if (!matches)
             return null;
@@ -61,9 +59,16 @@ class Route {
         data = data || {};
         var route = '';
         var optional = true;
+        var blank = false;
         for (var i = this.segments.length - 1; i >= 0; i--) {
             var segment = this.segments[i];
-            var pathInfo = segment.build(data, this.defaults, (name, val) => urlEncode(this, name, val));
+            var pathInfo = segment.build(data, this.defaults, (name, val) => {
+                var encodedValue = urlEncode(this, name, val);
+                blank = blank || !encodedValue;
+                return encodedValue;
+            });
+            if (blank)
+                return null;
             optional = optional && pathInfo.optional;
             if (!optional) {
                 if (pathInfo.path == null)

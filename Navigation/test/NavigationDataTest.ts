@@ -6324,6 +6324,63 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Url Blank Encode Data Back', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'a', defaults: {s: false} },
+                { key: 's1', route: 'b', trackCrumbTrail: true }
+            ]);
+            var state = stateNavigator.states.s0;
+            state.urlEncode = (state, key, val) => {
+                return val === 'true' ? '' : encodeURIComponent(val);
+            }
+            state.urlDecode = (state, key, val) => {
+                return val === '' ? 'true' : decodeURIComponent(val);
+            }
+        });
+        var data = {};
+        data['s'] = true;
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0', data);
+                stateNavigator.navigate('s1');
+                stateNavigator.navigateBack(1);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0', data);
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationBackLink(1);
+                stateNavigator.navigateLink(link);
+            });            
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0', data)
+                    .navigate('s1')
+                    .navigateBack(1)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test(){
+            it('should populate data', function() {
+                assert.strictEqual(stateNavigator.stateContext.data.s, true);
+            });
+        }
+    });
     describe('Two Controllers Data', function() {
         var stateNavigator0: StateNavigator;
         var stateNavigator1: StateNavigator;

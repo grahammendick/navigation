@@ -70,10 +70,13 @@ class StateHandler {
                 var arr = arrayData[key];
                 var encodedKey = state.urlEncode(state, null, key, true);
                 if (!arr) {
-                    query.push(encodedKey + '=' + state.urlEncode(state, key, data[key], true));
+                    var encodedValue = state.urlEncode(state, key, data[key], true);
+                    query.push(encodedKey + (encodedValue ? '=' + encodedValue : ''));
                 } else {
-                    for(var i = 0; i < arr.length; i++)
-                        query.push(encodedKey + '=' + state.urlEncode(state, key, arr[i], true));
+                    for(var i = 0; i < arr.length; i++) {
+                        var encodedValue = state.urlEncode(state, key, arr[i], true);
+                        query.push(encodedKey + (encodedValue ? '=' + encodedValue : ''));
+                    }
                 }
             }
         }
@@ -90,7 +93,7 @@ class StateHandler {
         if (!match)
             throw new Error('The Url ' + url + ' is invalid' + (err || '\nNo match found'));
         var { state, data, separableData, route } = match;
-        try{
+        try {
             var navigationData = this.getNavigationData(query, state, data || {}, separableData);
         } catch(e) {
             err += '\n' + e.message;
@@ -104,7 +107,7 @@ class StateHandler {
             for (var i = 0; i < params.length; i++) {
                 var param = params[i].split('=');
                 var key = state.urlDecode(state, null, param[0], true);
-                var val = state.urlDecode(state, key, param[1], true);
+                var val = state.urlDecode(state, key, param[1] || '', true);
                 separableData[key] = true;
                 var arr = data[key];
                 if (!arr) {
