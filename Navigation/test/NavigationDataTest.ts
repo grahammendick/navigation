@@ -6341,6 +6341,7 @@ describe('Navigation Data', function () {
         });
         var data = {};
         data['s'] = true;
+        data['t'] = false;
 
         describe('Navigate', function() {
             beforeEach(function() {
@@ -6378,9 +6379,75 @@ describe('Navigation Data', function () {
         function test(){
             it('should populate data', function() {
                 assert.strictEqual(stateNavigator.stateContext.data.s, true);
+                assert.strictEqual(stateNavigator.stateContext.data.t, false);
             });
         }
     });
+
+    describe('Url Array Index Encode Data Back', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'a' },
+                { key: 's1', route: 'b', trackCrumbTrail: true }
+            ]);
+            var state = stateNavigator.states.s0;
+            state.urlEncode = (state, key, val, queryString, index) => {
+                return !key ? `${val}[${index}]` : encodeURIComponent(val);
+            }
+            state.urlDecode = (state, key, val) => {
+                return !key ? val.substring(0, 1) : decodeURIComponent(val);
+            }
+        });
+        var data = {};
+        data['s'] = [3];
+        data['t'] = [3,5,2];
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0', data);
+                stateNavigator.navigate('s1');
+                stateNavigator.navigateBack(1);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0', data);
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationBackLink(1);
+                stateNavigator.navigateLink(link);
+            });            
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0', data)
+                    .navigate('s1')
+                    .navigateBack(1)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test(){
+            it('should populate data', function() {
+                assert.strictEqual(stateNavigator.stateContext.data.s[0], 3);
+                assert.strictEqual(stateNavigator.stateContext.data.s.length, 1);
+                assert.strictEqual(stateNavigator.stateContext.data.t[0], 3);
+                assert.strictEqual(stateNavigator.stateContext.data.t[1], 5);
+                assert.strictEqual(stateNavigator.stateContext.data.t[2], 2);
+                assert.strictEqual(stateNavigator.stateContext.data.t.length, 3);
+            });
+        }
+    });
+
     describe('Two Controllers Data', function() {
         var stateNavigator0: StateNavigator;
         var stateNavigator1: StateNavigator;

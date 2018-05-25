@@ -28,7 +28,7 @@ class State implements StateInfo {
     navigated(data: any, asyncData: any) {
     };
     
-    urlEncode(state: State, key: string, val: string, queryString: boolean): string {
+    urlEncode(state: State, key: string, val: string, queryString: boolean, index?: number): string {
         return encodeURIComponent(val);
     }
     
