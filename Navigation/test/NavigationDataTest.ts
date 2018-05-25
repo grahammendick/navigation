@@ -6341,6 +6341,7 @@ describe('Navigation Data', function () {
         });
         var data = {};
         data['s'] = true;
+        data['t'] = false;
 
         describe('Navigate', function() {
             beforeEach(function() {
@@ -6378,6 +6379,7 @@ describe('Navigation Data', function () {
         function test(){
             it('should populate data', function() {
                 assert.strictEqual(stateNavigator.stateContext.data.s, true);
+                assert.strictEqual(stateNavigator.stateContext.data.t, false);
             });
         }
     });
