@@ -1851,6 +1851,62 @@ describe('RefreshLinkTest', function () {
         })
     });
 
+    describe('Active Add Style Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: 'a'}}
+                        activeCssClass="active"
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}
+                        style={{color: 'red', fontSize: '14px'}}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=a');
+            assert.equal(link.style.color, 'green');
+            assert.equal(link.style.fontWeight, 'bold');
+            assert.equal(link.style.fontSize, '14px');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Inactive Add Style Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: 'c'}}
+                        activeCssClass="active"
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}
+                        style={{color: 'red', fontSize: '14px'}}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=c');
+            assert.equal(link.style.color, 'red');
+            assert.equal(link.style.fontWeight, '');
+            assert.equal(link.style.fontSize, '14px');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
     describe('Active Add Css Class Refresh Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
