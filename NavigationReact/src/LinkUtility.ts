@@ -51,9 +51,9 @@ class LinkUtility {
         var htmlProps = {};
         for(var key in props) {
             if (key !== 'stateNavigator' && key !== 'stateKey' && key !== 'navigationData'
-                && key !== 'includeCurrentData' && key !== 'currentDataKeys' && key !== 'activeCssClass'
-                && key !== 'disableActive' && key !== 'distance' && key !== 'historyAction'
-                && key !== 'navigating' && key !== 'defer')
+                && key !== 'includeCurrentData' && key !== 'currentDataKeys'&& key !== 'activeStyle'
+                && key !== 'activeCssClass' && key !== 'disableActive' && key !== 'distance'
+                && key !== 'historyAction' && key !== 'navigating' && key !== 'defer')
                 htmlProps[key] = props[key];
         }
         return htmlProps;
