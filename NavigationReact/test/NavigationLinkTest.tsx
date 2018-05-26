@@ -494,6 +494,81 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Null Active Style Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a', y: null}}
+                        activeStyle={{color: 'green'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=a');
+            assert.equal(link.style.color, 'green');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Undefined Active Style Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a', y: undefined}}
+                        activeStyle={{color: 'green'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=a');
+            assert.equal(link.style.color, 'green');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Empty String Inactive Style Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a', y: ''}}
+                        activeStyle={{color: 'green'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=a');
+            assert.equal(link.style.color, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
     describe('Null Active Css Class Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
