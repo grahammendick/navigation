@@ -1200,6 +1200,207 @@ describe('RefreshLinkTest', function () {
         })
     });
 
+    describe('Active Array Style Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: ['a', 'b']}}
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=a&x=b');
+            assert.equal(link.style.color, 'green');
+            assert.equal(link.style.fontWeight, 'bold');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Inactive Array Style Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: ['a', 'd']}}
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=a&x=d');
+            assert.equal(link.style.color, '');
+            assert.equal(link.style.fontWeight, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Active Number Array Style Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'numberarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: [1, 2]}}
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=1&x=2');
+            assert.equal(link.style.color, 'green');
+            assert.equal(link.style.fontWeight, 'bold');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Inactive Number Array Style Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'numberarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: [1, 3]}}
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=1&x=3');
+            assert.equal(link.style.color, '');
+            assert.equal(link.style.fontWeight, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Active Boolean Array Style Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'booleanarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: [true, false], y: 'c'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: [true, false]}}
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=true&x=false');
+            assert.equal(link.style.color, 'green');
+            assert.equal(link.style.fontWeight, 'bold');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Inactive Boolean Array Style Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'booleanarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: [true, false], y: 'c'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: [true, true]}}
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=true&x=true');
+            assert.equal(link.style.color, '');
+            assert.equal(link.style.fontWeight, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+
+    describe('Active Date Array Style Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'datearray'} }
+            ]);
+            stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=2011-02-03&x=2012-03-04');
+            assert.equal(link.style.color, 'green');
+            assert.equal(link.style.fontWeight, 'bold');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Inactive Date Array Style Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'datearray'} }
+            ]);
+            stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=2011-02-03&x=2010-03-04');
+            assert.equal(link.style.color, '');
+            assert.equal(link.style.fontWeight, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
     describe('Active Array Css Class Refresh Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
