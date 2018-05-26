@@ -2318,6 +2318,34 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Active Style Navigate Navigation Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        navigationData={{x: 'a'}}
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.style.color, 'green');
+            assert.equal(link.style.fontWeight, 'bold');
+            stateNavigator.navigate('s1');
+            assert.equal(link.style.color, '');
+            assert.equal(link.style.fontWeight, '');
+        })
+    });
+
     describe('Active Css Class Navigate Navigation Link', function () {
         it('should update', function(){
             var stateNavigator = new StateNavigator([
