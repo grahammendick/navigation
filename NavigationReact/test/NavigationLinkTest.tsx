@@ -1924,7 +1924,7 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('Inactive Add Css Class Navigation Link', function () {
+    describe('Inactive Add Style Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
