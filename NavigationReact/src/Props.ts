@@ -12,7 +12,7 @@ interface RefreshLinkProps extends LinkProps {
     navigationData?: any;
     includeCurrentData?: boolean;
     currentDataKeys?: string | string[];
-    activeStyle: any;
+    activeStyle?: any;
     activeCssClass?: string;
     disableActive?: boolean;
 }
