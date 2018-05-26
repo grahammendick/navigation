@@ -83,6 +83,7 @@ describe('RefreshLinkTest', function () {
                         navigationData={{x: 'a'}}
                         includeCurrentData={true}
                         currentDataKeys="y"
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}
                         activeCssClass="active"
                         disableActive={true}
                         historyAction='replace'
@@ -304,6 +305,56 @@ describe('RefreshLinkTest', function () {
             );
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?y=a&z=c');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Active Style Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: 'a', z: 'c'}}
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=a&z=c');
+            assert.equal(link.style.color, 'green');
+            assert.equal(link.style.fontWeight, 'bold');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Inactive Style Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: 'b'}}
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=b');
+            assert.equal(link.style.color, '');
+            assert.equal(link.style.fontWeight, '');
             assert.equal(link.innerHTML, 'link text');
         })
     });
