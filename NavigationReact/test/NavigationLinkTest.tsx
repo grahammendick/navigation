@@ -83,7 +83,7 @@ describe('NavigationLinkTest', function () {
                         navigationData={{x: 'a'}}
                         includeCurrentData={true}
                         currentDataKeys="y"
-                        activeStyle={{color: 'green'}}
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}
                         activeCssClass="active"
                         disableActive={true}
                         historyAction='replace'
@@ -330,7 +330,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationLink
                         stateKey="s"
                         navigationData={{x: 'a', z: 'c'}}
-                        activeStyle={{color: 'green'}}>
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>,
@@ -339,6 +339,7 @@ describe('NavigationLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a&z=c');
             assert.equal(link.style.color, 'green');
+            assert.equal(link.style.fontWeight, 'bold');
             assert.equal(link.innerHTML, 'link text');
         })
     });
@@ -355,7 +356,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationLink
                         stateKey="s"
                         navigationData={{x: 'b'}}
-                        activeStyle={{color: 'green'}}>
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>,
@@ -506,7 +507,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationLink
                         stateKey="s"
                         navigationData={{x: 'a', y: null}}
-                        activeStyle={{color: 'green'}}>
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>,
@@ -515,6 +516,7 @@ describe('NavigationLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a');
             assert.equal(link.style.color, 'green');
+            assert.equal(link.style.fontWeight, 'bold');
             assert.equal(link.innerHTML, 'link text');
         })
     });
@@ -531,7 +533,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationLink
                         stateKey="s"
                         navigationData={{x: 'a', y: undefined}}
-                        activeStyle={{color: 'green'}}>
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>,
@@ -540,6 +542,7 @@ describe('NavigationLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a');
             assert.equal(link.style.color, 'green');
+            assert.equal(link.style.fontWeight, 'bold');
             assert.equal(link.innerHTML, 'link text');
         })
     });
@@ -556,7 +559,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationLink
                         stateKey="s"
                         navigationData={{x: 'a', y: ''}}
-                        activeStyle={{color: 'green'}}>
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>,
@@ -728,7 +731,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationLink
                         stateKey="s"
                         navigationData={{x: 1}}
-                        activeStyle={{color: 'green'}}>
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>,
@@ -737,6 +740,7 @@ describe('NavigationLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=1');
             assert.equal(link.style.color, 'green');
+            assert.equal(link.style.fontWeight, 'bold');
             assert.equal(link.innerHTML, 'link text');
         })
     });
@@ -753,7 +757,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationLink
                         stateKey="s"
                         navigationData={{x: 2}}
-                        activeStyle={{color: 'green'}}>
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>,
@@ -778,7 +782,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationLink
                         stateKey="s"
                         navigationData={{x: true}}
-                        activeStyle={{color: 'green'}}>
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>,
@@ -787,6 +791,7 @@ describe('NavigationLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=true');
             assert.equal(link.style.color, 'green');
+            assert.equal(link.style.fontWeight, 'bold');
             assert.equal(link.innerHTML, 'link text');
         })
     });
@@ -803,7 +808,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationLink
                         stateKey="s"
                         navigationData={{x: false}}
-                        activeStyle={{color: 'green'}}>
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>,
@@ -828,7 +833,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationLink
                         stateKey="s"
                         navigationData={{x: new Date(2011, 1, 3)}}
-                        activeStyle={{color: 'green'}}>
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>,
@@ -837,6 +842,7 @@ describe('NavigationLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2011-02-03');
             assert.equal(link.style.color, 'green');
+            assert.equal(link.style.fontWeight, 'bold');
             assert.equal(link.innerHTML, 'link text');
         })
     });
@@ -853,7 +859,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationLink
                         stateKey="s"
                         navigationData={{x: new Date(2010, 1, 3)}}
-                        activeStyle={{color: 'green'}}>
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>,
