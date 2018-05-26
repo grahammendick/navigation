@@ -716,6 +716,156 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Active Number Style Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'number'} }
+            ]);
+            stateNavigator.navigate('s', {x: 1, y: 'b'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 1}}
+                        activeStyle={{color: 'green'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=1');
+            assert.equal(link.style.color, 'green');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Inactive Number Style Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'number'} }
+            ]);
+            stateNavigator.navigate('s', {x: 1, y: 'b'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 2}}
+                        activeStyle={{color: 'green'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=2');
+            assert.equal(link.style.color, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Active Boolean Style Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'boolean'} }
+            ]);
+            stateNavigator.navigate('s', {x: true, y: 'b'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: true}}
+                        activeStyle={{color: 'green'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=true');
+            assert.equal(link.style.color, 'green');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Inactive Boolean Style Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'boolean'} }
+            ]);
+            stateNavigator.navigate('s', {x: true, y: 'b'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: false}}
+                        activeStyle={{color: 'green'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=false');
+            assert.equal(link.style.color, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Active Date Style Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'date'} }
+            ]);
+            stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: new Date(2011, 1, 3)}}
+                        activeStyle={{color: 'green'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=2011-02-03');
+            assert.equal(link.style.color, 'green');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Inactive Date Style Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'date'} }
+            ]);
+            stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: new Date(2010, 1, 3)}}
+                        activeStyle={{color: 'green'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=2010-02-03');
+            assert.equal(link.style.color, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
     describe('Active Number Css Class Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
