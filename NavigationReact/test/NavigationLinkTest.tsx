@@ -1847,6 +1847,32 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Inactive Array Length Style Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: ['a', 'b', 'c']}}
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=a&x=b&x=c');
+            assert.equal(link.style.color, '');
+            assert.equal(link.style.fontWeight, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
     describe('Inactive Array Length Css Class Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
