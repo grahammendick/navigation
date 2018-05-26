@@ -83,6 +83,7 @@ describe('NavigationLinkTest', function () {
                         navigationData={{x: 'a'}}
                         includeCurrentData={true}
                         currentDataKeys="y"
+                        activeStyle={{color: 'green'}}
                         activeCssClass="active"
                         disableActive={true}
                         historyAction='replace'
@@ -313,6 +314,56 @@ describe('NavigationLinkTest', function () {
             );
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?y=a&z=c');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Active Style Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a', z: 'c'}}
+                        activeStyle={{color: 'green'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=a&z=c');
+            assert.equal(link.style.color, 'green');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Inactive Style Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'b'}}
+                        activeStyle={{color: 'green'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=b');
+            assert.equal(link.style.color, '');
             assert.equal(link.innerHTML, 'link text');
         })
     });
