@@ -365,6 +365,7 @@ describe('NavigationLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=b');
             assert.equal(link.style.color, '');
+            assert.equal(link.style.fontWeight, '');
             assert.equal(link.innerHTML, 'link text');
         })
     });
@@ -568,6 +569,7 @@ describe('NavigationLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a');
             assert.equal(link.style.color, '');
+            assert.equal(link.style.fontWeight, '');
             assert.equal(link.innerHTML, 'link text');
         })
     });
@@ -766,6 +768,7 @@ describe('NavigationLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2');
             assert.equal(link.style.color, '');
+            assert.equal(link.style.fontWeight, '');
             assert.equal(link.innerHTML, 'link text');
         })
     });
@@ -817,6 +820,7 @@ describe('NavigationLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=false');
             assert.equal(link.style.color, '');
+            assert.equal(link.style.fontWeight, '');
             assert.equal(link.innerHTML, 'link text');
         })
     });
@@ -868,6 +872,7 @@ describe('NavigationLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2010-02-03');
             assert.equal(link.style.color, '');
+            assert.equal(link.style.fontWeight, '');
             assert.equal(link.innerHTML, 'link text');
         })
     });
@@ -1187,6 +1192,7 @@ describe('NavigationLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=1');
             assert.equal(link.style.color, '');
+            assert.equal(link.style.fontWeight, '');
             assert.equal(link.innerHTML, 'link text');
         })
     });
