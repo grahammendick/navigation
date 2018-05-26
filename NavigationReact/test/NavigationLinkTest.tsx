@@ -1166,6 +1166,31 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Inactive Type Style Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'number'} }
+            ]);
+            stateNavigator.navigate('s', {x: '1', y: 'b'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 1}}
+                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r?x=1');
+            assert.equal(link.style.color, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
     describe('Inactive Type Css Class Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
