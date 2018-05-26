@@ -22,6 +22,8 @@ class LinkUtility {
     static setActive(active: boolean, props: any, toProps: any) {
         if (active && props.activeCssClass)
             toProps.className = (!toProps.className ? '' : toProps.className + ' ') + props.activeCssClass;
+        if (active && props.activeStyle)
+            toProps.style = {...toProps.style, ...props.activeStyle};
         if (active && props.disableActive) {
             toProps.href = null;
             toProps.onClick = null;
