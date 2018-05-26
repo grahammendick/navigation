@@ -20,8 +20,6 @@ class LinkUtility {
     }
 
     static setActive(active: boolean, props: any, toProps: any) {
-        if (!props.activeCssClass && !props.disableActive)
-            return;
         if (active && props.activeCssClass)
             toProps.className = (!toProps.className ? '' : toProps.className + ' ') + props.activeCssClass;
         if (active && props.disableActive) {
