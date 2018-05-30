@@ -6958,4 +6958,44 @@ describe('MatchTest', function () {
             assert.strictEqual(state.key, 's1');
         });
     });
+
+    describe('Crumb Trail Crumbs', function () {
+        var stateNavigator: StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'a' },
+                { key: 's1', route: 'b', trackCrumbTrail: true },
+                { key: 's2', route: 'c', trackCrumbTrail: true },
+            ]);
+        });
+
+        it('should match', function() {
+            var { crumbs } = stateNavigator.parseLink('/a');
+            assert.strictEqual(crumbs.length, 0);
+            var link = stateNavigator.getNavigationLink('s0', { x: 0, y: '1' });
+            ({ crumbs } = stateNavigator.parseLink(link));
+            assert.strictEqual(crumbs.length, 0);
+            stateNavigator.navigateLink(link);
+            link = stateNavigator.getNavigationLink('s1', { x: 2, y: 3, z: '4' });
+            ({ crumbs } = stateNavigator.parseLink(link));
+            assert.strictEqual(crumbs.length, 1);
+            assert.strictEqual(crumbs[0].state.key, 's0');
+            assert.strictEqual(crumbs[0].data.x, 0);
+            assert.strictEqual(crumbs[0].data.y, '1');
+            assert.strictEqual(Object.keys(crumbs[0].data).length, 2);
+            stateNavigator.navigateLink(link);
+            link = stateNavigator.getNavigationLink('s2');
+            var { crumbs } = stateNavigator.parseLink(link);
+            assert.strictEqual(crumbs.length, 2);
+            assert.strictEqual(crumbs[0].state.key, 's0');
+            assert.strictEqual(crumbs[0].data.x, 0);
+            assert.strictEqual(crumbs[0].data.y, '1');
+            assert.strictEqual(Object.keys(crumbs[0].data).length, 2);
+            assert.strictEqual(crumbs[1].state.key, 's1');
+            assert.strictEqual(crumbs[1].data.x, 2);
+            assert.strictEqual(crumbs[1].data.y, 3);
+            assert.strictEqual(crumbs[1].data.z, '4');
+            assert.strictEqual(Object.keys(crumbs[1].data).length, 3);
+        });
+    });
 });
