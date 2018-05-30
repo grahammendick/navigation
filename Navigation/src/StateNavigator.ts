@@ -120,8 +120,7 @@ class StateNavigator {
         if (history && this.stateContext.url === url)
             return;
         var oldUrl = this.stateContext.url;
-        var { state, data } = this.stateHandler.parseLink(url);
-        var { [state.crumbTrailKey]: crumbs, ...data } = data;
+        var { state, data, crumbs } = this.parseLink(url);
         for (var id in this.onBeforeNavigateCache.handlers) {
             var handler = this.onBeforeNavigateCache.handlers[id];
             if (oldUrl !== this.stateContext.url || !handler(state, data, url, history, this.stateContext))
@@ -164,10 +163,10 @@ class StateNavigator {
         }
     }
 
-    parseLink(url: string): { state: State, data: any } {
+    parseLink(url: string): { state: State, data: any, crumbs: Crumb[] } {
         var { state, data } = this.stateHandler.parseLink(url);
-        delete data[state.crumbTrailKey];
-        return { state, data };
+        var { [state.crumbTrailKey]: crumbs, ...data } = data;
+        return { state, data, crumbs };
     }
 
     fluent(withContext = false): FluentNavigator {
