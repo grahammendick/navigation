@@ -18,20 +18,20 @@ class ArrayConverter extends TypeConverter {
                     if (vals[i].length !== 0)
                         arr.push(this.converter.convertFrom(vals[i].replace(/0-/g, '-')));
                     else
-                        throw Error('\'\' is not a valid array item');
+                        throw Error('Empty string is not a valid array item');
                 }
             } else {
                 if (val.length !== 0)
                     arr.push(this.converter.convertFrom(val));
                 else
-                    throw Error('\'\' is not a valid array item');
+                    throw Error('Empty string is not a valid array item');
             }
         } else {
             for(var i = 0; i < val.length; i++) {
                 if (val[i].length !== 0)
                     arr.push(this.converter.convertFrom(val[i]));
                 else
-                    throw Error('\'\' is not a valid array item');
+                    throw Error('Empty string is not a valid array item');
             }
         }
         return arr;
