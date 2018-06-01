@@ -7,7 +7,7 @@ class BooleanConverter extends TypeConverter {
 
     convertFrom(val: string): any {
         if (val !== 'true' && val !== 'false')
-            throw Error(val + ' is not a valid boolean');
+            throw new Error(val + ' is not a valid boolean');
         return val === 'true';
     }
 

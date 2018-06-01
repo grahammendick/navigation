@@ -7,7 +7,7 @@ class StringConverter extends TypeConverter {
 
     convertFrom(val: string | string[]): any {
         if (typeof val !== 'string')
-            throw Error(val + ' is not a valid string');
+            throw new Error(val + ' is not a valid string');
         return val;
     }
 
