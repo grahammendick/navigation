@@ -105,20 +105,23 @@ function rollupTask(name, input, file, globals, format) {
         })
     ));        
 }
-function buildTask(file, details) {
+function buildTask(name, input, file, globals, format, details) {
     var info = `/**
- * ${details.name} v${details.version}
+ * ${name} v${details.version}
  * (c) Graham Mendick - ${details.homepage}
  * License: ${details.license}
  */
 `;
-    return gulp.src(file)
-        .pipe(insert.prepend(info))
-        .pipe(gulp.dest('./build/dist'))
-        .pipe(rename(file.replace(/js$/, 'min.js')))
-        .pipe(uglify())
-        .pipe(insert.prepend(info))
-        .pipe(gulp.dest('.'));
+    return rollupTask(name, input, file, globals, format)
+        .then(() => (
+            gulp.src(file)
+                .pipe(insert.prepend(info))
+                .pipe(gulp.dest('./build/dist'))
+                .pipe(rename(file.replace(/js$/, 'min.js')))
+                .pipe(uglify())
+                .pipe(insert.prepend(info))
+                .pipe(gulp.dest('.'))
+        ));
 }
 var itemTasks = items.reduce((tasks, item) => {
     var packageName = item.name;
@@ -129,8 +132,8 @@ var itemTasks = items.reduce((tasks, item) => {
     var jsPackageTo = './build/npm/' + packageName + '/' + packageName.replace(/-/g, '.') + '.js';
     item.name = upperName.replace(/-/g, ' ');
     var makeRollupTask = (to, format) => rollupTask(name, tsFrom, to, item.globals || {}, format);
-    gulp.task('Rollup' + name, () => makeRollupTask(jsTo, 'iife'));
-    gulp.task('Build' + name, ['Rollup' + name], () => buildTask(jsTo, item));
+    //gulp.task('Rollup' + name, () => makeRollupTask(jsTo, 'iife'));
+    gulp.task('Build' + name, () => buildTask(name, tsFrom, jsTo, item.globals || {}, 'iife', item));
     gulp.task('Package' + name, () => makeRollupTask(jsPackageTo, 'cjs'));
     tasks.buildTasks.push('Build' + name);
     tasks.packageTasks.push('Package' + name);
