@@ -128,9 +128,10 @@ var itemTasks = items.reduce((tasks, item) => {
     var jsTo = './build/dist/' + packageName.replace(/-/g, '.') + '.js';
     var jsPackageTo = './build/npm/' + packageName + '/' + packageName.replace(/-/g, '.') + '.js';
     item.name = upperName.replace(/-/g, ' ');
-    gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo, item.globals || {}, 'iife'));
+    var makeRollupTask = (to, format) => () => rollupTask(name, tsFrom, to, item.globals || {}, format)
+    gulp.task('Rollup' + name, makeRollupTask(jsTo, 'iife'));
     gulp.task('Build' + name, ['Rollup' + name], () => buildTask(jsTo, item));
-    gulp.task('Package' + name, () => rollupTask(name, tsFrom, jsPackageTo, item.globals || {}, 'cjs'));
+    gulp.task('Package' + name, () => makeRollupTask(jsPackageTo, 'cjs'));
     tasks.buildTasks.push('Build' + name);
     tasks.packageTasks.push('Package' + name);
     return tasks;
