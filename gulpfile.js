@@ -60,7 +60,7 @@ var items = [
         require('./NavigationReact/src/tsconfig.json')),
     Object.assign({ globals: { knockout: 'ko' } },
         require('./build/npm/navigation-knockout/package.json')),
-    Object.assign({ globals: { angular: 'angular' } },
+    Object.assign({ globals: { angular: 'angular' }, reserved: ['$parse'] },
         require('./build/npm/navigation-angular/package.json')),
     Object.assign({ globals: { '@cycle/dom': 'CycleDOM', rx: 'Rx' } },
         require('./build/npm/navigation-cycle/package.json')),
@@ -103,7 +103,7 @@ function buildTask(name, input, file, globals, details) {
                 .pipe(insert.prepend(info))
                 .pipe(gulp.dest('./build/dist'))
                 .pipe(rename(file.replace(/js$/, 'min.js')))
-                .pipe(uglify({ mangle: { reserved: ['$parse'] } }))
+                .pipe(uglify({ mangle: { reserved: details.reserved } }))
                 .pipe(insert.prepend(info))
                 .pipe(gulp.dest('.'))
         ));
