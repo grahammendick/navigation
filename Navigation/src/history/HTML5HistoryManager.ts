@@ -1,7 +1,7 @@
 ﻿import HistoryManager from './HistoryManager';
 
 class HTML5HistoryManager implements HistoryManager {
-    private navigateHistory: (e: PopStateEvent) => void;
+    private navigateHistory: (e: PopStateEvent) => void = null;
     private applicationPath: string = '';
     disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);
     
@@ -10,8 +10,8 @@ class HTML5HistoryManager implements HistoryManager {
     }
 
     init(navigateHistory: (url?: string) => void) {
-        this.navigateHistory = e => navigateHistory(e.state || undefined);
-        if (!this.disabled) {
+        if (!this.disabled && !this.navigateHistory) {
+            this.navigateHistory = e => navigateHistory(e.state || undefined);
             window.addEventListener('popstate', this.navigateHistory);
         }
     }
@@ -41,8 +41,9 @@ class HTML5HistoryManager implements HistoryManager {
     }
     
     stop() {
-        if (!this.disabled)
+        if (this.navigateHistory)
             window.removeEventListener('popstate', this.navigateHistory);
+        this.navigateHistory = null;
     }
 
     private static prependSlash(url: string): string {
