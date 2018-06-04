@@ -82,7 +82,7 @@ var items = [
         require('./build/npm/navigation-react-native/package.json'),
         require('./NavigationReactNative/src/tsconfig.json')),
 ];
-function rollupTask(name, input, file, globals) {
+function rollupTask(name, input, file, globals, format) {
     return rollup.rollup({
         input,
         external: Object.keys(globals),
@@ -98,7 +98,7 @@ function rollupTask(name, input, file, globals) {
         ]
     }).then((bundle) => (
         bundle.write({
-            format: 'iife',
+            format,
             name,
             globals,
             file
@@ -132,10 +132,12 @@ var itemTasks = items.reduce((tasks, item) => {
     var name = upperName.replace(/-/g, '');
     var tsFrom = './' + name + '/src/' + name + '.ts';
     var jsTo = './build/dist/' + packageName.replace(/-/g, '.') + '.js';
+    var jsPackageTo = './build/npm/' + packageName + '/' + packageName.replace(/-/g, '.') + '.js';
     item.name = upperName.replace(/-/g, ' ');
-    gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo, item.globals || {}));
+    gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo, item.globals || {}, 'iife'));
     gulp.task('Build' + name, ['Rollup' + name], () => buildTask(jsTo, item));
-    gulp.task('Package' + name, () => packageTask(packageName, tsFrom, item));
+    gulp.task('Package' + name, () => rollupTask(name, tsFrom, jsPackageTo, item.globals || {}, 'cjs'));
+    //gulp.task('Package' + name, () => packageTask(packageName, tsFrom, item));
     tasks.buildTasks.push('Build' + name);
     tasks.packageTasks.push('Package' + name);
     return tasks;
