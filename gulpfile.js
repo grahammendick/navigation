@@ -105,14 +105,14 @@ function rollupTask(name, input, file, globals, format) {
         })
     ));        
 }
-function buildTask(name, input, file, globals, format, details) {
+function buildTask(name, input, file, globals, details) {
     var info = `/**
- * ${name} v${details.version}
+ * ${details.name} v${details.version}
  * (c) Graham Mendick - ${details.homepage}
  * License: ${details.license}
  */
 `;
-    return rollupTask(name, input, file, globals, format)
+    return rollupTask(name, input, file, globals, 'iife')
         .then(() => (
             gulp.src(file)
                 .pipe(insert.prepend(info))
@@ -131,7 +131,7 @@ var itemTasks = items.reduce((tasks, item) => {
     var jsTo = './build/dist/' + packageName.replace(/-/g, '.') + '.js';
     var jsPackageTo = './build/npm/' + packageName + '/' + packageName.replace(/-/g, '.') + '.js';
     item.name = upperName.replace(/-/g, ' ');
-    gulp.task('Build' + name, () => buildTask(name, tsFrom, jsTo, item.globals || {}, 'iife', item));
+    gulp.task('Build' + name, () => buildTask(name, tsFrom, jsTo, item.globals || {}, item));
     gulp.task('Package' + name, () => rollupTask(name, tsFrom, jsPackageTo, item.globals || {}, 'cjs'));
     tasks.buildTasks.push('Build' + name);
     tasks.packageTasks.push('Package' + name);
