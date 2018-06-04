@@ -1,11 +1,11 @@
 ﻿'use strict'
+var cleanup = require('rollup-plugin-cleanup');
 var gulp = require('gulp');
 var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
 var nodeResolve = require('rollup-plugin-node-resolve');
 var rename = require('gulp-rename');
 var rollup = require('rollup');
-var rollupCleanup = require('rollup-plugin-cleanup');
 var rollupTypescript = require('rollup-plugin-typescript');
 var typescript = require('typescript');
 var uglify = require('gulp-uglify');
@@ -94,7 +94,7 @@ function rollupTask(name, input, file, globals, format) {
                 jsx: 'react'
             }),
             nodeResolve({ jsnext: true, main: true }),
-            rollupCleanup()
+            cleanup()
         ]
     }).then((bundle) => (
         bundle.write({
