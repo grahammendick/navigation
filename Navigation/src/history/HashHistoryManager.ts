@@ -1,7 +1,7 @@
 ﻿import HistoryManager from './HistoryManager';
 
 class HashHistoryManager implements HistoryManager {
-    private navigateHistory: () => void;
+    private navigateHistory: () => void = null;
     private replaceQueryIdentifier: boolean = false;
     disabled: boolean = (typeof window === 'undefined') || !('onhashchange' in window);
     
@@ -10,8 +10,8 @@ class HashHistoryManager implements HistoryManager {
     }
 
     init(navigateHistory) {
-        this.navigateHistory = () => navigateHistory();
-        if (!this.disabled) {
+        if (!this.disabled && !this.navigateHistory) {
+            this.navigateHistory = () => navigateHistory();
             if (window.addEventListener)
                 window.addEventListener('hashchange', this.navigateHistory);
             else
@@ -44,12 +44,13 @@ class HashHistoryManager implements HistoryManager {
     }
     
     stop() {
-        if (!this.disabled) {
+        if (this.navigateHistory) {
             if (window.removeEventListener)
                 window.removeEventListener('hashchange', this.navigateHistory);
             else
                 window['detachEvent']('onhashchange', this.navigateHistory);
         }
+        this.navigateHistory = null;
     }
 
     private encode(url: string): string {
