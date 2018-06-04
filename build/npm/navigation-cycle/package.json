@@ -2,7 +2,7 @@
   "name": "navigation-cycle",
   "version": "1.0.0",
   "description": "Cycle plugin for the Navigation router",
-  "main": "navigation-cycle.js",
+  "main": "navigation.cycle.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/grahammendick/navigation"

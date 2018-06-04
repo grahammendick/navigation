@@ -2,7 +2,7 @@
   "name": "navigation-angular",
   "version": "2.0.0",
   "description": "Angular plugin for the Navigation router",
-  "main": "navigation-angular.js",
+  "main": "navigation.angular.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/grahammendick/navigation"

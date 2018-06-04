@@ -2,7 +2,7 @@
   "name": "navigation-react",
   "version": "3.1.0",
   "description": "React plugin for the Navigation router",
-  "main": "navigation-react.js",
+  "main": "navigation.react.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/grahammendick/navigation"

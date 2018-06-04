@@ -2,7 +2,7 @@
   "name": "navigation-react-native",
   "version": "2.0.0",
   "description": "React Native plugin for the Navigation router",
-  "main": "navigation-react-native.js",
+  "main": "navigation.react.native.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/grahammendick/navigation"
