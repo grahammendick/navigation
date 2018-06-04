@@ -100,7 +100,7 @@ function rollupTask(name, file, to, globals) {
         bundle.write({
             format: 'iife',
             moduleName: name,
-            globals: Object.assign({ navigation: 'Navigation'}, globals),
+            globals,
             dest: './build/dist/' + to
         });
     });        
