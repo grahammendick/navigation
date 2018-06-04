@@ -7,7 +7,6 @@ var rename = require('gulp-rename');
 var rollup = require('rollup');
 var rollupCleanup = require('rollup-plugin-cleanup');
 var rollupTypescript = require('rollup-plugin-typescript');
-var strip = require('gulp-strip-comments');
 var typescript = require('typescript');
 var uglify = require('gulp-uglify');
 
@@ -114,7 +113,6 @@ function buildTask(file, details) {
  */
 `;
     return gulp.src(file)
-        .pipe(strip())
         .pipe(insert.prepend(info))
         .pipe(gulp.dest('./build/dist'))
         .pipe(rename(file.replace(/js$/, 'min.js')))

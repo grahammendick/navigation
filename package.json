@@ -7,7 +7,6 @@
     "gulp-insert": "^0.5.0",
     "gulp-mocha": "^3.0.1",
     "gulp-rename": "^1.2.0",
-    "gulp-strip-comments": "^2.4.5",
     "gulp-uglify": "^2.0.1",
     "jsdom": "^11.10.0",
     "react": "^16.3.0",
