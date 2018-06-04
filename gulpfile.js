@@ -88,14 +88,7 @@ function rollupTask(name, input, file, globals, format) {
             nodeResolve({ jsnext: true, main: true }),
             cleanup()
         ]
-    }).then((bundle) => (
-        bundle.write({
-            format,
-            name,
-            globals,
-            file
-        })
-    ));        
+    }).then((bundle) => bundle.write({ format, name, globals, file }));
 }
 function buildTask(name, input, file, globals, details) {
     var info = `/**
