@@ -23,7 +23,7 @@ var tests = [
 ];
 function rollupTestTask(name, file, to) {
     return rollup.rollup({
-        entry: file,
+        input: file,
         external: ['assert', 'react', 'react-dom', 'react-dom/test-utils', 'jsdom' , 'tslib'],
         plugins: [
             rollupTypescript({
@@ -40,9 +40,9 @@ function rollupTestTask(name, file, to) {
             })
         ]
     }).then((bundle) => {
-        bundle.write({
+        return bundle.write({
             format: 'cjs',
-            dest: to
+            file: to
         });
     });
 }
@@ -84,7 +84,7 @@ var items = [
 ];
 function rollupTask(name, file, to, globals) {
     return rollup.rollup({
-        entry: file,
+        input: file,
         external: Object.keys(globals),
         plugins: [
             rollupTypescript({
@@ -97,11 +97,11 @@ function rollupTask(name, file, to, globals) {
             nodeResolve({ jsnext: true, main: true })
         ]
     }).then((bundle) => {
-        bundle.write({
+        return bundle.write({
             format: 'iife',
-            moduleName: name,
+            name,
             globals,
-            dest: './build/dist/' + to
+            file: './build/dist/' + to
         });
     });        
 }
