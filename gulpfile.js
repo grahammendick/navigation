@@ -20,7 +20,7 @@ var tests = [
     { name: 'NavigationBackLink', to: 'navigationBackLink.test.js', folder: 'React', ext: 'tsx' },
     { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' }
 ];
-function rollupTestTask(name, input, file) {
+function testTask(name, input, file) {
     return rollup.rollup({
         input,
         external: ['assert', 'react', 'react-dom', 'react-dom/test-utils', 'jsdom' , 'tslib'],
@@ -43,18 +43,16 @@ function rollupTestTask(name, input, file) {
             format: 'cjs',
             file
         })
+    )).then(() => (
+        gulp.src(file)
+            .pipe(mocha({ reporter: 'progress' }))
     ));
-}
-function testTask(file) {
-    return gulp.src(file)
-        .pipe(mocha({ reporter: 'progress' }));
 }
 var testTasks = tests.reduce((tasks, test) => {
     var folder = './Navigation' + (test.folder || '') + '/test/';
     var file = folder + test.name + 'Test.' + (test.ext || 'ts');
     var to = './build/dist/' + test.to;
-    gulp.task('RollupTest' + test.name, () => rollupTestTask(test.name, file, to));
-    gulp.task('Test' + test.name, ['RollupTest' + test.name], () => testTask(to));
+    gulp.task('Test' + test.name, () => testTask(test.name, file, to));
     tasks.push('Test' + test.name);
     return tasks;
 }, []);
