@@ -2,7 +2,7 @@ Navigation*/src/**/*.js
 Navigation*/test/**/*.js
 !Navigation*/sample/**/*.js
 build/dist
-build/**/lib
+build/npm/**/navigation*.js
 npm-debug.log
 node_modules
 !Navigation*/src/node_modules

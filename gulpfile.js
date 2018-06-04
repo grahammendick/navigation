@@ -1,13 +1,12 @@
 ﻿'use strict'
+var cleanup = require('rollup-plugin-cleanup');
 var gulp = require('gulp');
-var gulpTypescript = require('gulp-tsc');
 var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
 var nodeResolve = require('rollup-plugin-node-resolve');
 var rename = require('gulp-rename');
 var rollup = require('rollup');
 var rollupTypescript = require('rollup-plugin-typescript');
-var strip = require('gulp-strip-comments');
 var typescript = require('typescript');
 var uglify = require('gulp-uglify');
 
@@ -21,9 +20,9 @@ var tests = [
     { name: 'NavigationBackLink', to: 'navigationBackLink.test.js', folder: 'React', ext: 'tsx' },
     { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' }
 ];
-function rollupTestTask(name, file, to) {
+function testTask(name, input, file) {
     return rollup.rollup({
-        entry: file,
+        input,
         external: ['assert', 'react', 'react-dom', 'react-dom/test-utils', 'jsdom' , 'tslib'],
         plugins: [
             rollupTypescript({
@@ -39,23 +38,15 @@ function rollupTestTask(name, file, to) {
                 jsx: 'react'
             })
         ]
-    }).then((bundle) => {
-        bundle.write({
-            format: 'cjs',
-            dest: to
-        });
-    });
-}
-function testTask(file) {
-    return gulp.src(file)
-        .pipe(mocha({ reporter: 'progress' }));
+    })
+    .then((bundle) => bundle.write({ format: 'cjs', file }))
+    .then(() => gulp.src(file).pipe(mocha({ reporter: 'progress' })));
 }
 var testTasks = tests.reduce((tasks, test) => {
     var folder = './Navigation' + (test.folder || '') + '/test/';
     var file = folder + test.name + 'Test.' + (test.ext || 'ts');
     var to = './build/dist/' + test.to;
-    gulp.task('RollupTest' + test.name, () => rollupTestTask(test.name, file, to));
-    gulp.task('Test' + test.name, ['RollupTest' + test.name], () => testTask(to));
+    gulp.task('Test' + test.name, () => testTask(test.name, file, to));
     tasks.push('Test' + test.name);
     return tasks;
 }, []);
@@ -69,7 +60,7 @@ var items = [
         require('./NavigationReact/src/tsconfig.json')),
     Object.assign({ globals: { knockout: 'ko' } },
         require('./build/npm/navigation-knockout/package.json')),
-    Object.assign({ globals: { angular: 'angular' } },
+    Object.assign({ globals: { angular: 'angular' }, reserved: ['$parse'] },
         require('./build/npm/navigation-angular/package.json')),
     Object.assign({ globals: { '@cycle/dom': 'CycleDOM', rx: 'Rx' } },
         require('./build/npm/navigation-cycle/package.json')),
@@ -82,9 +73,9 @@ var items = [
         require('./build/npm/navigation-react-native/package.json'),
         require('./NavigationReactNative/src/tsconfig.json')),
 ];
-function rollupTask(name, file, to, globals) {
+function rollupTask(name, input, file, globals, format) {
     return rollup.rollup({
-        entry: file,
+        input,
         external: Object.keys(globals),
         plugins: [
             rollupTypescript({
@@ -94,48 +85,39 @@ function rollupTask(name, file, to, globals) {
                 module: 'es6',
                 jsx: 'react'
             }),
-            nodeResolve({ jsnext: true, main: true })
+            nodeResolve({ jsnext: true, main: true }),
+            cleanup()
         ]
-    }).then((bundle) => {
-        bundle.write({
-            format: 'iife',
-            moduleName: name,
-            globals: Object.assign({ navigation: 'Navigation'}, globals),
-            dest: './build/dist/' + to
-        });
-    });        
+    }).then((bundle) => bundle.write({ format, name, globals, file }));
 }
-function buildTask(file, details) {
+function buildTask(name, input, file, globals, details) {
     var info = `/**
  * ${details.name} v${details.version}
  * (c) Graham Mendick - ${details.homepage}
  * License: ${details.license}
  */
 `;
-    return gulp.src('./build/dist/' + file)
-        .pipe(strip())
-        .pipe(insert.prepend(info))
-        .pipe(gulp.dest('./build/dist'))
-        .pipe(rename(file.replace(/js$/, 'min.js')))
-        .pipe(uglify())
-        .pipe(insert.prepend(info))
-        .pipe(gulp.dest('./build/dist'));
-}
-function packageTask(name, file, details) {
-    return gulp.src(file)
-        .pipe(gulpTypescript(details.compilerOptions))
-        .pipe(gulp.dest('./build/npm/' + name + '/lib'));
+    return rollupTask(name, input, file, globals, 'iife')
+        .then(() => (
+            gulp.src(file)
+                .pipe(insert.prepend(info))
+                .pipe(gulp.dest('./build/dist'))
+                .pipe(rename(file.replace(/js$/, 'min.js')))
+                .pipe(uglify({ mangle: { reserved: details.reserved } }))
+                .pipe(insert.prepend(info))
+                .pipe(gulp.dest('.'))
+        ));
 }
 var itemTasks = items.reduce((tasks, item) => {
     var packageName = item.name;
     var upperName = packageName.replace(/\b./g, (val) => val.toUpperCase());
     var name = upperName.replace(/-/g, '');
     var tsFrom = './' + name + '/src/' + name + '.ts';
-    var jsTo = packageName.replace(/-/g, '.') + '.js';
+    var jsTo = './build/dist/' + packageName.replace(/-/g, '.') + '.js';
+    var jsPackageTo = './build/npm/' + packageName + '/' + packageName.replace(/-/g, '.') + '.js';
     item.name = upperName.replace(/-/g, ' ');
-    gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo, item.globals || {}));
-    gulp.task('Build' + name, ['Rollup' + name], () => buildTask(jsTo, item));
-    gulp.task('Package' + name, () => packageTask(packageName, tsFrom, item));
+    gulp.task('Build' + name, () => buildTask(name, tsFrom, jsTo, item.globals || {}, item));
+    gulp.task('Package' + name, () => rollupTask(name, tsFrom, jsPackageTo, item.globals || {}, 'cjs'));
     tasks.buildTasks.push('Build' + name);
     tasks.packageTasks.push('Package' + name);
     return tasks;
