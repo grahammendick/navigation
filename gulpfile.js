@@ -5,6 +5,7 @@ var mocha = require('gulp-mocha');
 var nodeResolve = require('rollup-plugin-node-resolve');
 var rename = require('gulp-rename');
 var rollup = require('rollup');
+var rollupCleanup = require('rollup-plugin-cleanup');
 var rollupTypescript = require('rollup-plugin-typescript');
 var strip = require('gulp-strip-comments');
 var typescript = require('typescript');
@@ -93,7 +94,8 @@ function rollupTask(name, input, file, globals, format) {
                 module: 'es6',
                 jsx: 'react'
             }),
-            nodeResolve({ jsnext: true, main: true })
+            nodeResolve({ jsnext: true, main: true }),
+            rollupCleanup()
         ]
     }).then((bundle) => (
         bundle.write({
@@ -131,7 +133,7 @@ var itemTasks = items.reduce((tasks, item) => {
     var makeRollupTask = (to, format) => () => rollupTask(name, tsFrom, to, item.globals || {}, format);
     gulp.task('Rollup' + name, makeRollupTask(jsTo, 'iife'));
     gulp.task('Build' + name, ['Rollup' + name], () => buildTask(jsTo, item));
-    gulp.task('Package' + name, () => makeRollupTask(jsPackageTo, 'cjs'));
+    gulp.task('Package' + name, makeRollupTask(jsPackageTo, 'cjs'));
     tasks.buildTasks.push('Build' + name);
     tasks.packageTasks.push('Package' + name);
     return tasks;
