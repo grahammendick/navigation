@@ -1,6 +1,5 @@
 ﻿'use strict'
 var gulp = require('gulp');
-var gulpTypescript = require('gulp-tsc');
 var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
 var nodeResolve = require('rollup-plugin-node-resolve');
@@ -121,11 +120,6 @@ function buildTask(file, details) {
         .pipe(insert.prepend(info))
         .pipe(gulp.dest('.'));
 }
-function packageTask(name, file, details) {
-    return gulp.src(file)
-        .pipe(gulpTypescript(details.compilerOptions))
-        .pipe(gulp.dest('./build/npm/' + name + '/lib'));
-}
 var itemTasks = items.reduce((tasks, item) => {
     var packageName = item.name;
     var upperName = packageName.replace(/\b./g, (val) => val.toUpperCase());
@@ -137,7 +131,6 @@ var itemTasks = items.reduce((tasks, item) => {
     gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo, item.globals || {}, 'iife'));
     gulp.task('Build' + name, ['Rollup' + name], () => buildTask(jsTo, item));
     gulp.task('Package' + name, () => rollupTask(name, tsFrom, jsPackageTo, item.globals || {}, 'cjs'));
-    //gulp.task('Package' + name, () => packageTask(packageName, tsFrom, item));
     tasks.buildTasks.push('Build' + name);
     tasks.packageTasks.push('Package' + name);
     return tasks;
