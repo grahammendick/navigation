@@ -39,12 +39,12 @@ function rollupTestTask(name, file, to) {
                 jsx: 'react'
             })
         ]
-    }).then((bundle) => {
-        return bundle.write({
+    }).then((bundle) => (
+        bundle.write({
             format: 'cjs',
             file: to
-        });
-    });
+        })
+    ));
 }
 function testTask(file) {
     return gulp.src(file)
@@ -96,14 +96,14 @@ function rollupTask(name, file, to, globals) {
             }),
             nodeResolve({ jsnext: true, main: true })
         ]
-    }).then((bundle) => {
-        return bundle.write({
+    }).then((bundle) => (
+        bundle.write({
             format: 'iife',
             name,
             globals,
             file: './build/dist/' + to
-        });
-    });        
+        })
+    ));        
 }
 function buildTask(file, details) {
     var info = `/**
