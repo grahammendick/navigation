@@ -38,15 +38,9 @@ function testTask(name, input, file) {
                 jsx: 'react'
             })
         ]
-    }).then((bundle) => (
-        bundle.write({
-            format: 'cjs',
-            file
-        })
-    )).then(() => (
-        gulp.src(file)
-            .pipe(mocha({ reporter: 'progress' }))
-    ));
+    })
+    .then((bundle) => bundle.write({ format: 'cjs', file }))
+    .then(() => gulp.src(file).pipe(mocha({ reporter: 'progress' })));
 }
 var testTasks = tests.reduce((tasks, test) => {
     var folder = './Navigation' + (test.folder || '') + '/test/';
