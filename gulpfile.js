@@ -21,9 +21,9 @@ var tests = [
     { name: 'NavigationBackLink', to: 'navigationBackLink.test.js', folder: 'React', ext: 'tsx' },
     { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' }
 ];
-function rollupTestTask(name, file, to) {
+function rollupTestTask(name, input, file) {
     return rollup.rollup({
-        input: file,
+        input,
         external: ['assert', 'react', 'react-dom', 'react-dom/test-utils', 'jsdom' , 'tslib'],
         plugins: [
             rollupTypescript({
@@ -42,7 +42,7 @@ function rollupTestTask(name, file, to) {
     }).then((bundle) => (
         bundle.write({
             format: 'cjs',
-            file: to
+            file
         })
     ));
 }
@@ -82,9 +82,9 @@ var items = [
         require('./build/npm/navigation-react-native/package.json'),
         require('./NavigationReactNative/src/tsconfig.json')),
 ];
-function rollupTask(name, file, to, globals) {
+function rollupTask(name, input, file, globals) {
     return rollup.rollup({
-        input: file,
+        input,
         external: Object.keys(globals),
         plugins: [
             rollupTypescript({
@@ -101,7 +101,7 @@ function rollupTask(name, file, to, globals) {
             format: 'iife',
             name,
             globals,
-            file: './build/dist/' + to
+            file
         })
     ));        
 }
@@ -112,14 +112,14 @@ function buildTask(file, details) {
  * License: ${details.license}
  */
 `;
-    return gulp.src('./build/dist/' + file)
+    return gulp.src(file)
         .pipe(strip())
         .pipe(insert.prepend(info))
         .pipe(gulp.dest('./build/dist'))
         .pipe(rename(file.replace(/js$/, 'min.js')))
         .pipe(uglify())
         .pipe(insert.prepend(info))
-        .pipe(gulp.dest('./build/dist'));
+        .pipe(gulp.dest('.'));
 }
 function packageTask(name, file, details) {
     return gulp.src(file)
@@ -131,7 +131,7 @@ var itemTasks = items.reduce((tasks, item) => {
     var upperName = packageName.replace(/\b./g, (val) => val.toUpperCase());
     var name = upperName.replace(/-/g, '');
     var tsFrom = './' + name + '/src/' + name + '.ts';
-    var jsTo = packageName.replace(/-/g, '.') + '.js';
+    var jsTo = './build/dist/' + packageName.replace(/-/g, '.') + '.js';
     item.name = upperName.replace(/-/g, ' ');
     gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo, item.globals || {}));
     gulp.task('Build' + name, ['Rollup' + name], () => buildTask(jsTo, item));
