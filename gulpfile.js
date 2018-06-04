@@ -103,7 +103,7 @@ function buildTask(name, input, file, globals, details) {
                 .pipe(insert.prepend(info))
                 .pipe(gulp.dest('./build/dist'))
                 .pipe(rename(file.replace(/js$/, 'min.js')))
-                .pipe(uglify())
+                .pipe(uglify({ mangle: { except: ['$parse'] } }))
                 .pipe(insert.prepend(info))
                 .pipe(gulp.dest('.'))
         ));
