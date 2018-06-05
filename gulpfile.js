@@ -10,48 +10,6 @@ var rollupTypescript = require('rollup-plugin-typescript');
 var typescript = require('typescript');
 var uglify = require('gulp-uglify');
 
-var tests = [
-    { name: 'NavigationRouting', to: 'navigationRouting.test.js' },
-    { name: 'StateConfig', to: 'stateConfig.test.js' },
-    { name: 'Navigation', to: 'navigation.test.js' },
-    { name: 'NavigationData', to: 'navigationData.test.js' },
-    { name: 'FluentNavigation', to: 'fluentNavigation.test.js' },
-    { name: 'NavigationLink', to: 'navigationLink.test.js', folder: 'React', ext: 'tsx' },
-    { name: 'NavigationBackLink', to: 'navigationBackLink.test.js', folder: 'React', ext: 'tsx' },
-    { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' }
-];
-function testTask(name, input, file) {
-    return rollup.rollup({
-        input,
-        external: ['assert', 'react', 'react-dom', 'react-dom/test-utils', 'jsdom' , 'tslib'],
-        plugins: [
-            rollupTypescript({
-                typescript: typescript,
-                baseUrl: '.',
-                paths: {
-                    navigation: ['Navigation/src/Navigation'],
-                    'navigation-react': ['NavigationReact/src/NavigationReact']
-                },
-                importHelpers: true,
-                target: 'es3',
-                module: 'es6',
-                jsx: 'react'
-            })
-        ]
-    })
-    .then((bundle) => bundle.write({ format: 'cjs', file }))
-    .then(() => gulp.src(file).pipe(mocha({ reporter: 'progress' })));
-}
-var testTasks = tests.reduce((tasks, test) => {
-    var folder = './Navigation' + (test.folder || '') + '/test/';
-    var file = folder + test.name + 'Test.' + (test.ext || 'ts');
-    var to = './build/dist/' + test.to;
-    gulp.task('Test' + test.name, () => testTask(test.name, file, to));
-    tasks.push('Test' + test.name);
-    return tasks;
-}, []);
-gulp.task('test', testTasks);
-
 var items = [
     require('./build/npm/navigation/package.json'),
     Object.assign({ globals: { navigation: 'Navigation', react: 'React',
@@ -76,7 +34,7 @@ var items = [
 function rollupTask(name, input, file, globals, format) {
     return rollup.rollup({
         input,
-        external: Object.keys(globals),
+        external: Array.isArray(globals) ? globals : Object.keys(globals),
         plugins: [
             rollupTypescript({
                 typescript: typescript,
@@ -124,3 +82,33 @@ var itemTasks = items.reduce((tasks, item) => {
 }, { buildTasks: [], packageTasks: [] });
 gulp.task('build', itemTasks.buildTasks);
 gulp.task('package', itemTasks.packageTasks);
+
+var tests = [
+    { name: 'NavigationRouting', to: 'navigationRouting.test.js' },
+    { name: 'StateConfig', to: 'stateConfig.test.js' },
+    { name: 'Navigation', to: 'navigation.test.js' },
+    { name: 'NavigationData', to: 'navigationData.test.js' },
+    { name: 'FluentNavigation', to: 'fluentNavigation.test.js' },
+    { name: 'NavigationLink', to: 'navigationLink.test.js', folder: 'React', ext: 'tsx' },
+    { name: 'NavigationBackLink', to: 'navigationBackLink.test.js', folder: 'React', ext: 'tsx' },
+    { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' }
+];
+function testTask(name, input, file) {
+    var globals = [
+        'assert', 'react', 'react-dom', 'react-dom/test-utils',
+        'jsdom', 'tslib', 'navigation', 'navigation-react'
+    ];
+    return rollupTask(name, input, file, globals, 'cjs')
+        .then(() => gulp.src(file).pipe(mocha({ reporter: 'progress' })));
+}
+var testTasks = tests.reduce((tasks, test) => {
+    var folder = './Navigation' + (test.folder || '') + '/test/';
+    var file = folder + test.name + 'Test.' + (test.ext || 'ts');
+    var to = './build/dist/' + test.to;
+    var packageDeps = ['PackageNavigation', 'PackageNavigationReact'];
+    gulp.task('Test' + test.name, packageDeps, () => testTask(test.name, file, to));
+    tasks.push('Test' + test.name);
+    return tasks;
+}, []);
+gulp.task('test', testTasks);
+
