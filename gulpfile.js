@@ -23,15 +23,10 @@ var tests = [
 function testTask(name, input, file) {
     return rollup.rollup({
         input,
-        external: ['assert', 'react', 'react-dom', 'react-dom/test-utils', 'jsdom' , 'tslib'],
+        external: ['assert', 'react', 'react-dom', 'react-dom/test-utils', 'jsdom' , 'tslib', 'navigation', 'navigation-react'],
         plugins: [
             rollupTypescript({
                 typescript: typescript,
-                baseUrl: '.',
-                paths: {
-                    navigation: ['Navigation/src/Navigation'],
-                    'navigation-react': ['NavigationReact/src/NavigationReact']
-                },
                 importHelpers: true,
                 target: 'es3',
                 module: 'es6',
@@ -46,7 +41,7 @@ var testTasks = tests.reduce((tasks, test) => {
     var folder = './Navigation' + (test.folder || '') + '/test/';
     var file = folder + test.name + 'Test.' + (test.ext || 'ts');
     var to = './build/dist/' + test.to;
-    gulp.task('Test' + test.name, () => testTask(test.name, file, to));
+    gulp.task('Test' + test.name, ['PackageNavigation', 'PackageNavigationReact'], () => testTask(test.name, file, to));
     tasks.push('Test' + test.name);
     return tasks;
 }, []);

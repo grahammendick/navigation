@@ -1,5 +1,5 @@
 {
-  "name": "navigation",
+  "name": "navigation-",
   "version": "5.0.1",
   "description": "The data-first JavaScript router",
   "devDependencies": {
@@ -9,6 +9,8 @@
     "gulp-rename": "^1.2.0",
     "gulp-uglify": "^3.0.0",
     "jsdom": "^11.10.0",
+    "navigation": "file:build/npm/navigation",
+    "navigation-react": "file:build/npm/navigation-react",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "rollup": "^0.59.4",
