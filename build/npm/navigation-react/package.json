@@ -3,6 +3,7 @@
   "version": "3.1.0",
   "description": "React plugin for the Navigation router",
   "main": "navigation.react.js",
+  "types": "navigation.react.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/grahammendick/navigation"
