@@ -1,6 +1,6 @@
 {
   "name": "navigation-",
-  "version": "5.0.1",
+  "version": "1.0.0",
   "description": "The data-first JavaScript router",
   "devDependencies": {
     "gulp": "^3.8.11",
