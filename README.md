@@ -44,7 +44,7 @@ stateNavigator.states.hello.renderView = function() {
 };
 
 stateNavigator.states.world.renderView = function(data) {
-  return  <div style={{fontSize: data.size}}>World</div>;
+  return <div style={{fontSize: data.size}}>World</div>;
 };
 
 stateNavigator.start();
