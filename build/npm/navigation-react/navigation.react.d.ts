@@ -4,55 +4,8 @@
  * License: Apache-2.0
  */
 
-import { State, StateNavigator, StateContext } from 'navigation';
+import { State, StateNavigator } from 'navigation';
 import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent } from 'react';
-
-/**
- * Makes all navigation immutable and deferrable
- */
-export class AsyncStateNavigator extends StateNavigator {
-    /**
-     * Navigates to a State
-     * @param stateKey The key of a State
-     * @param navigationData The NavigationData to be passed to the next
-     * State and stored in the StateContext
-     * @param historyAction A value determining the effect on browser history
-     * @param defer A value indicating whether to defer the React update
-     * @throws state does not match the key of a State or there is
-     * NavigationData that cannot be converted to a String
-     * @throws A mandatory route parameter has not been supplied a value
-     */
-    navigate(stateKey: string, navigationData?: any, historyAction?: 'add' | 'replace' | 'none', defer?: boolean): void;
-    /**
-     * Navigates back along the crumb trail
-     * @param distance Starting at 1, the number of Crumb steps to go back
-     * @param historyAction A value determining the effect on browser history
-     * @param defer A value indicating whether to defer the React update
-     * @throws canNavigateBack returns false for this distance
-     * @throws A mandatory route parameter has not been supplied a value
-     */
-    navigateBack(distance: number, historyAction?: 'add' | 'replace' | 'none', defer?: boolean): void;
-    /**
-     * Navigates to the current State
-     * @param navigationData The NavigationData to be passed to the current
-     * State and stored in the StateContext
-     * @param historyAction A value determining the effect on browser history
-     * @param defer A value indicating whether to defer the React update
-     * @throws There is NavigationData that cannot be converted to a String
-     * @throws A mandatory route parameter has not been supplied a value
-     */
-    refresh(navigationData?: any, historyAction?: 'add' | 'replace' | 'none', defer?: boolean): void;
-    /**
-     * Navigates to the url
-     * @param url The target location
-     * @param historyAction A value determining the effect on browser history
-     * @param history A value indicating whether browser history was used
-     * @param suspendNavigation Called before the navigation completes
-     * @param defer A value indicating whether to defer the React update
-     */
-    navigateLink(url: string, historyAction?: 'add' | 'replace' | 'none', history?: boolean,
-        suspendNavigation?: (stateContext: StateContext, resumeNavigation: () => void) => void, defer?: boolean);
-}
 
 /**
  * Navigation event data
@@ -75,17 +28,9 @@ export interface NavigationEvent {
      */
     asyncData: any;
     /**
-     * The next State to be displayed when deferred navigation completes
-     */
-    nextState: State;
-    /**
-     * The NavigationData for the next State
-     */
-    nextData: any;
-    /**
      * State navigator for the current context
      */
-    stateNavigator: AsyncStateNavigator;
+    stateNavigator: StateNavigator;
 }
 
 /**
@@ -110,10 +55,6 @@ export interface LinkProps extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAn
      * Handles Link click events
      */
     navigating?(e: MouseEvent<HTMLAnchorElement>, link: string): boolean;
-    /**
-     * Indicates whether to defer the React update
-     */
-    defer?: boolean;
 }
 
 /**
