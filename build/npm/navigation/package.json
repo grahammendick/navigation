@@ -3,6 +3,7 @@
   "version": "5.0.1",
   "description": "The data-first JavaScript router",
   "main": "navigation.js",
+  "types": "navigation.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/grahammendick/navigation"
