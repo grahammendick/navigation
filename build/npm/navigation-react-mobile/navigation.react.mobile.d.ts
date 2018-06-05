@@ -1,7 +1,8 @@
-// Type definitions for NavigationReactMobile 1.1
-// Project: http://grahammendick.github.io/navigation/
-// Definitions by: Graham Mendick <https://github.com/grahammendick>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+/**
+ * Type definitions for Navigation React Mobile v1.1.0
+ * (c) Graham Mendick - http://grahammendick.github.io/navigation/
+ * License: Apache-2.0
+ */
 
 import { State, HTML5HistoryManager } from 'navigation';
 import { Component, ReactElement } from 'react';

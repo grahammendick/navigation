@@ -1,7 +1,8 @@
-// Type definitions for NavigationReact 3.1
-// Project: http://grahammendick.github.io/navigation/
-// Definitions by: Graham Mendick <https://github.com/grahammendick>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+/**
+ * Type definitions for Navigation React v3.1.0
+ * (c) Graham Mendick - http://grahammendick.github.io/navigation/
+ * License: Apache-2.0
+ */
 
 import { State, StateNavigator, StateContext } from 'navigation';
 import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent } from 'react';

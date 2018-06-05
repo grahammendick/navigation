@@ -1,7 +1,8 @@
-// Type definitions for Navigation 5.0
-// Project: http://grahammendick.github.io/navigation/
-// Definitions by: Graham Mendick <https://github.com/grahammendick>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+/**
+ * Type definitions for Navigation v5.0.1
+ * (c) Graham Mendick - http://grahammendick.github.io/navigation/
+ * License: Apache-2.0
+ */
 
 /**
  * Defines a contract a class must implement in order to configure a State
