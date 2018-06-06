@@ -39,9 +39,8 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
     }
     render() {
         var {sharedElements, children, progress, duration} = this.props;
-        var ElementMotion: new() => Motion<SharedItem> = Motion as any;
         return (sharedElements.length !== 0 &&
-            <ElementMotion
+            <Motion<SharedItem>
                 data={sharedElements}
                 getKey={({name}) => name}
                 enter={({name, oldElement}) => this.getStyle(name, oldElement)}
@@ -53,7 +52,7 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
                         children(style, name, {...start, ...oldElement.data}, {...end, ...mountedElement.data})
                     ))
                 )}
-            </ElementMotion>
+            </Motion>
         );
     }
 }

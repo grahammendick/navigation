@@ -61,10 +61,9 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
     render() {
         var {children, duration, sharedElementMotion, stateNavigator} = this.props;
         var {stateContext: {crumbs, oldState}, stateContext} = stateNavigator;
-        var SceneMotion: new() => Motion<SceneContext> = Motion as any;
         return (stateContext.state &&
             <SharedElementContext.Provider value={this.sharedElementRegistry}>
-                <SceneMotion
+                <Motion<SceneContext>
                     data={this.getScenes()}
                     getKey={({key}) => key}
                     enter={scene => this.getStyle(!oldState, scene)}
@@ -90,7 +89,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                             })
                         )
                     )}
-                </SceneMotion>
+                </Motion>
             </SharedElementContext.Provider>
         );
     }
