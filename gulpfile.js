@@ -14,8 +14,7 @@ var items = [
     require('./build/npm/navigation/package.json'),
     Object.assign({ globals: { navigation: 'Navigation', react: 'React',
             'react-dom': 'ReactDOM' } }, 
-        require('./build/npm/navigation-react/package.json'),
-        require('./NavigationReact/src/tsconfig.json')),
+        require('./build/npm/navigation-react/package.json')),
     Object.assign({ globals: { knockout: 'ko' } },
         require('./build/npm/navigation-knockout/package.json')),
     Object.assign({ globals: { angular: 'angular' }, reserved: ['$parse'] },
@@ -24,12 +23,10 @@ var items = [
         require('./build/npm/navigation-cycle/package.json')),
     Object.assign({ globals: { navigation: 'Navigation',
             'navigation-react': 'NavigationReact', react: 'React' } },
-        require('./build/npm/navigation-react-mobile/package.json'),
-        require('./NavigationReactMobile/src/tsconfig.json')),
+        require('./build/npm/navigation-react-mobile/package.json')),
     Object.assign({ globals: { react: 'React', 'react-native': 'ReactNative',
             'd3-interpolate': 'd3', 'd3-ease': 'd3' } },
-        require('./build/npm/navigation-react-native/package.json'),
-        require('./NavigationReactNative/src/tsconfig.json')),
+        require('./build/npm/navigation-react-native/package.json')),
 ];
 function rollupTask(name, input, file, globals, format) {
     return rollup.rollup({
