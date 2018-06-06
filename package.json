@@ -17,8 +17,8 @@
     "rollup-plugin-cleanup": "^3.0.0-beta.1",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-typescript": "^0.8.1",
-    "tslib": "^1.6.0",
-    "typescript": "^2.4.2"
+    "tslib": "^1.9.2",
+    "typescript": "^2.9.1"
   },
   "scripts": {
     "test": "gulp test",
