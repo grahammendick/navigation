@@ -1,10 +1,4 @@
 /**
- * Type definitions for Navigation v5.0.1
- * (c) Graham Mendick - http://grahammendick.github.io/navigation/
- * License: Apache-2.0
- */
-
-/**
  * Defines a contract a class must implement in order to configure a State
  */
 export interface StateInfo {
