@@ -60,7 +60,7 @@ componentWillUnmount() {
             </p>
             <h2>Fetching Data</h2>
             <p>
-                You can also intercept a navigation by attaching a function to the destination <code>State's navigating</code> property. This gives you a chance to suspend the navigation until an async operation completes. In the email example, when a user opens a mail we fetch the mail data inside a <code>navigating</code> function to avoid displaying a blank screen while it loads. Once the data returns we pass it into the <code>navigate</code> continuation function.
+                You can intercept a navigation by attaching a function to the destination <code>State's navigating</code> property. This gives you a chance to suspend the navigation until an async operation, like data-fetching or code-splitting, completes. In the email example, when a user opens a mail we fetch the mail data inside a <code>navigating</code> function to avoid displaying a blank screen while the data loads. Once the data returns we pass it into the <code>navigate</code> continuation function.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.mail.navigating = function(data, url, navigate, history) {
   $.getJSON('api/mail/' + data.id, function(resp) {
