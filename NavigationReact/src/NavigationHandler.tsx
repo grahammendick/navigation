@@ -1,6 +1,6 @@
 import AsyncStateNavigator from './AsyncStateNavigator';
 import NavigationContext from './NavigationContext';
-import { StateNavigator, StateContext, State } from 'navigation';
+import { StateNavigator, State } from 'navigation';
 import * as React from 'react';
 type NavigationHandlerState = { context: { oldState: State, state: State, data: any, asyncData: any, nextState: State, nextData: any, stateNavigator: AsyncStateNavigator } };
 
