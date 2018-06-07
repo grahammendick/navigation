@@ -1,5 +1,5 @@
 import NavigationHandler from './NavigationHandler';
-import { StateNavigator, StateContext, State } from 'navigation';
+import { StateNavigator, StateContext } from 'navigation';
 import * as ReactDOM from 'react-dom';
 
 class AsyncStateNavigator extends StateNavigator {
