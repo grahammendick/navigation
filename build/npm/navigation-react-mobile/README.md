@@ -1,4 +1,4 @@
-﻿# Hello World
+# Hello World
 
 ```js
 var Navigation = require('navigation');
