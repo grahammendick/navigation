@@ -41,19 +41,24 @@
         </div>
         <div id="article">
             <h1>Navigation Lifecycle</h1>
-            <p>
-                You've seen how the Navigation router notifies you when a <code>State</code> becomes active by calling the function attached to the <code>State's navigated</code> property. This is how you render different components for different <code>States</code>. You can get notified at different points in the navigation lifecyle by attaching functions to different properties of the originating and destination <code>States</code>.
-            </p>
             <h2>Cancelling Navigation</h2>
             <p>
-                You can intercept a navigation by attaching a function to the originating <code>State's unloading</code> property. The navigation will only continue if you call the <code>unload</code> function passed in, giving you the chance to cancel the navigation. For example, we attach an <code>unloading</code> function to the 'compose' <code>State</code> of an email application to prevent the user accidentally navigating away before sending their mail.
+                The <code>onBeforeNavigate</code> event gives you a chance to cancel a navigation. You're passed in details of the <code>State</code> being navigated to as well as a <code>history</code> flag that indicates whether the navigation was caused by the browser back button. In our email example, we can add an <code>onBeforeNavigate</code> listener that prompts the user to confirm they're sure they want to leave before sending their email.
             </p>
-            <pre><code class="language-jsx">stateNavigator.states.compose.unloading = function(state, data, url, unload, history) {
-  if (history || confirm('You\'ve not sent your email. Continue?')) {
-    unload();
+            <pre><code class="language-jsx">componentDidMount() {
+  this.beforeNavigate = function(state, data, url, history) {
+    return history || confirm('You\'ve not sent your email. Continue?');
   }
-};</code></pre>
-            <h2>Doing Async Work</h2>
+  this.props.stateNavigator.onBeforeNavigate(this.beforeNavigate);
+}
+
+componentWillUnmount() {
+  this.props.stateNavigator.offBeforeNavigate(this.beforeNavigate);
+}</code></pre>
+            <p>
+                There's also an <code>onNavigate</code> event that fires after the navigation's happened. We could add an <code>onNavigate</code> listener that tracks page visits in our email app.
+            </p>
+            <h2>Fetching Data</h2>
             <p>
                 You can also intercept a navigation by attaching a function to the destination <code>State's navigating</code> property. This gives you a chance to suspend the navigation until an async operation completes. In the email example, when a user opens a mail we fetch the mail data inside a <code>navigating</code> function to avoid displaying a blank screen while it loads. Once the data returns we pass it into the <code>navigate</code> continuation function.
             </p>
