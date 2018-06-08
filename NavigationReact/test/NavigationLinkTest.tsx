@@ -2760,9 +2760,9 @@ describe('NavigationLinkTest', function () {
             Simulate.click(link);
             header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'world s1');
-            stateNavigator.navigate('s0', {x: 'a'});
-            header = container.querySelector<HTMLHeadingElement>('h1');
-            assert.equal(header.innerHTML, 'empty first');
+            // stateNavigator.navigate('s0', {x: 'a'});
+            // header = container.querySelector<HTMLHeadingElement>('h1');
+            // assert.equal(header.innerHTML, 'empty first');
         })
     });
 });
