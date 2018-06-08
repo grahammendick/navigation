@@ -8,7 +8,7 @@
     "gulp-mocha": "^3.0.1",
     "gulp-rename": "^1.2.0",
     "gulp-uglify": "^3.0.0",
-    "jsdom": "^11.10.0",
+    "jsdom": "^11.11.0",
     "navigation": "file:build/npm/navigation",
     "navigation-react": "file:build/npm/navigation-react",
     "react": "^16.4.0",
