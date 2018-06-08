@@ -73,10 +73,10 @@ ReactDOM.render(
         Thanks to <a href="https://www.browserstack.com/">BrowserStack</a> for their help with cross browser testing
     </div>
     <script src="js/prism.js"></script>
-    <script src="https://unpkg.com/react@16.3.0/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@16.3.0/umd/react-dom.development.js"></script>
-    <script src="download/navigation-5.0.1.js"></script>
-    <script src="download/navigation.react-3.1.0.js"></script>
+    <script src="https://unpkg.com/react@16.4.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16.4.0/umd/react-dom.development.js"></script>
+    <script src="download/navigation-5.1.0.js"></script>
+    <script src="download/navigation.react-4.0.0.js"></script>
     <script>
 var stateNavigator = new Navigation.StateNavigator([{ key: 'example', route: '' }]);
 
@@ -118,7 +118,7 @@ function renderView() {
 function render() {
     ReactDOM.render(React.createElement(
         NavigationReact.NavigationHandler,
-        { stateNavigator: stateNavigator },
+        { stateNavigator: stateNavigator, key: stateNavigator.states.example.route },
         React.createElement(
             NavigationReact.NavigationContext.Consumer,
             null,
