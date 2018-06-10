@@ -46,26 +46,26 @@
                 The Navigation router lets you smoothly transition between elements that are shared across two scenes when the user navigates from one scene to the other. It's a technique common to native apps, for example, zooming into an enlarged image when a user clicks on a thumbnail in a gallery. To identify elements you want to share across two scenes, you wrap each one in a <code>SharedElement</code> component and give them both the same <code>name</code>. You pass in a <code>prop</code> holding the data you want to animate as one element transitions to the other.
             </p>
             <p>
-                In our email example app, we can smooth out the navigation when a user opens an email by sharing the subject of the email between the 'inbox' scene and the 'mail' scene. We wrap the subject elements on each scene inside a <code>SharedComponent</code>. The font size of the subject is smaller in the inbox than on the open email, 14px as compared to 20px. Because we need to grow the text during the navigation, we pass these font sizes, along with the subject line, into the <code>data props</code>.
+                In our email example app, we can smooth out the navigation when a user opens an email by sharing the subject of the email between the 'inbox' scene and the 'mail' scene. We wrap the subject elements on each scene inside a <code>SharedComponent</code>. The font size of the subject is smaller in the inbox than on the open email, 14px as compared to 20px. Because we need to scale the text during the navigation, we pass these font sizes, along with the subject line, into the <code>data props</code>.
             </p>
             <pre><code class="language-jsx">// The 'inbox' scene
 &lt;NavigationReactMobile.SharedElement
   data={{size: 14, subject: mail.subject}}
   name={`mail${mail.id}`}>
-  &lt;div>{mail.subject}&lt;/div>
+  &lt;span>{mail.subject}&lt;/span>
 &lt;/NavigationReactMobile.SharedElement></code></pre>
             <pre><code class="language-jsx">// The 'mail' scene
 &lt;NavigationReactMobile.SharedElement
   data={{size: 20, subject: mail.subject}}
   name={`mail${mail.id}`}>
-  &lt;h1>{mail.subject}&lt;/h1>
+  &lt;span>{mail.subject}&lt;/span>
 &lt;/NavigationReactMobile.SharedElement></code></pre>
             <h2>Animating</h2>
             <p>
-                During a navigation, the <code>SharedElementMotion</code> component keeps track of elements that are shared between the two scenes. For each pair it finds, as the navigation progresses, it interpolates between the source and target element screen positions and <code>data prop</code> values. It calls you back with a <code>style</code> parameter containing these interpolated values so you can animate the shared element. The <code>SharedElementMotion</code> component also accepts <code>onAnimating</code> and <code>onAnimated props</code> so you can style the source and target elements when the navigation starts and finishes.
+                During a navigation, the <code>SharedElementMotion</code> component keeps track of elements that are shared between the two scenes. For each pair it finds, as the navigation progresses, it interpolates between the source and target element screen positions. It calls you back with a <code>style</code> parameter containing these interpolated values so you can animate the shared element. The <code>SharedElementMotion</code> component also accepts <code>onAnimating</code> and <code>onAnimated props</code> so you can style the source and target elements when the navigation starts and finishes.
             </p>
             <p>
-                Returning to the email example, we create a <code>MailShared</code> component that renders a <code>SharedElementMotion</code> component. Inside the child callback function we render the email subject inside a <code>div</code>. We style the <code>div</code> using the interpolated font size and coordinates. To make it look like the subject is moving out of the 'inbox' scene and into the 'mail' scene, we supply an <code>onAnimating prop</code> that hides the subject on these scenes when the navigation begins. An <code>onAnimated prop</code> restores their visibility when the navigation completes.
+                Returning to the email example, we create a <code>MailShared</code> component that renders a <code>SharedElementMotion</code> component. Inside the child callback function we render the email subject inside a <code>div</code>. We style the <code>div</code> using the interpolated coordinates. To make it look like the subject is moving out of the 'inbox' scene and into the 'mail' scene, we supply an <code>onAnimating prop</code> that hides the subject on these scenes when the navigation begins. An <code>onAnimated prop</code> restores their visibility when the navigation completes.
             </p>
             <pre><code class="language-jsx">var MailShared = function(props) {
   return (
@@ -77,12 +77,17 @@
         &lt;div
           key={name}
           style={{
-            fontSize: `${size}px`,
-            left: style.left,
-            top: style.top,
-            width: style.width,
-            height: style.height,
             position: 'absolute',
+            fontSize: `${data.size}px`,
+            left: data.left,
+            top: data.top,
+            width: data.width,
+            height: data.height,
+            transformOrigin: 'top left',
+            transform: `
+              translate(${style.left - data.left}px, ${style.top - data.top}px)
+              scale(${style.width / data.width}, ${style.height / data.height})
+            `
           }}>
           {data.subject}
         &lt;/div>
@@ -106,6 +111,10 @@
     &lt;/div>
   )}
 &lt;/NavigationReactMobile.NavigationMotion></code></pre>
+            <div class="Note">
+                <h2>Note</h2>
+                The <code>style</code> parameter of the callback contains the interpolated <code>data props</code> and screen positions. You can directly set them onto the shared element's <code>style props</code> instead of using <code>transform<code/>, but the animation might be jankier.
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
