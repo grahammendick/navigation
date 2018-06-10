@@ -113,10 +113,7 @@
 &lt;/NavigationReactMobile.NavigationMotion></code></pre>
             <div class="Note">
                 <h2>Note</h2>
-                Transform is better than animating top/left and width/height
-                But you can animate width and height directly
-                Use the interpolated values from style parameter
-                The style parameter interpolates all the data props
+                The <code>style</code> parameter of the callback contains the interpolated <code>data props</code> and screen positions. You can directly set them onto the shared element's <code>style props</code> instead of using <code>transform<code/>, but the animation might be jankier.
             </div>
         </div>
     </div>
