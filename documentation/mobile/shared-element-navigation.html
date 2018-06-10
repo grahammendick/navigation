@@ -77,12 +77,17 @@
         &lt;div
           key={name}
           style={{
-            fontSize: `${size}px`,
-            left: style.left,
-            top: style.top,
-            width: style.width,
-            height: style.height,
             position: 'absolute',
+            fontSize: `${data.size}px`,
+            left: data.left,
+            top: data.top,
+            width: data.width,
+            height: data.height,
+            transformOrigin: 'top left',
+            transform: `
+              translate(${style.left - data.left}px, ${style.top - data.top}px)
+              scale(${style.width / data.width}, ${style.height / data.height})
+            `
           }}>
           {data.subject}
         &lt;/div>
