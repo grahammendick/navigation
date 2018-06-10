@@ -52,13 +52,13 @@
 &lt;NavigationReactMobile.SharedElement
   data={{size: 14, subject: mail.subject}}
   name={`mail${mail.id}`}>
-  &lt;div>{mail.subject}&lt;/div>
+  &lt;span>{mail.subject}&lt;/span>
 &lt;/NavigationReactMobile.SharedElement></code></pre>
             <pre><code class="language-jsx">// The 'mail' scene
 &lt;NavigationReactMobile.SharedElement
   data={{size: 20, subject: mail.subject}}
   name={`mail${mail.id}`}>
-  &lt;h1>{mail.subject}&lt;/h1>
+  &lt;span>{mail.subject}&lt;/span>
 &lt;/NavigationReactMobile.SharedElement></code></pre>
             <h2>Animating</h2>
             <p>
@@ -111,6 +111,13 @@
     &lt;/div>
   )}
 &lt;/NavigationReactMobile.NavigationMotion></code></pre>
+            <div class="Note">
+                <h2>Note</h2>
+                Transform is better than animating top/left and width/height
+                But you can animate width and height directly
+                Use the interpolated values from style parameter
+                The style parameter interpolates all the data props
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
