@@ -14,7 +14,7 @@ class Scene extends React.Component {
         var {state, crumbs} = navigationEvent.stateNavigator.stateContext;
         return (state && crumbs.length === crumb) ? {navigationEvent} : null;
     }
-    shouldComponentUpdate() {
+    shouldComponentUpdate(props) {
         var {crumb, navigationEvent} = props;
         var {state, crumbs} = navigationEvent.stateNavigator.stateContext;
         return state && crumbs.length === crumb;
