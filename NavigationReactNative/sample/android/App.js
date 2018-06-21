@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import {Text} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
 import Scene from './Scene.js';
@@ -15,7 +15,12 @@ var stateNavigator = new StateNavigator([
   {key: 'scene2'},
 ]);
 var {scene1} = stateNavigator.states;
-scene1.renderScene = () => <Text>Scene One</Text>;
+
+scene1.renderScene = () => (
+  <View style={styles.container}>
+    <Text style={styles.text}>Scene One</Text>
+  </View>
+);
 stateNavigator.navigate('scene1');
 
 export default class App extends Component {
@@ -28,16 +33,16 @@ export default class App extends Component {
   }
 }
 
-/*const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
+  text: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
   },
-});*/
+});
