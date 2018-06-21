@@ -10,8 +10,8 @@ class Scene extends React.Component {
         crumb: 0
     }
     static getDerivedStateFromProps(props) {
-        var {crumb, navigationEvent, stateNavigator} = props;
-        var {state, crumbs} = stateNavigator.stateContext;
+        var {crumb, navigationEvent} = props;
+        var {state, crumbs} = navigationEvent.stateNavigator.stateContext;
         return (state && crumbs.length === crumb) ? {navigationEvent} : null;
     }
     render() {
@@ -28,6 +28,6 @@ class Scene extends React.Component {
 
 export default props => (
     <NavigationContext.Consumer>
-        {(navigationEvent) => <Scene stateNavigator={navigationEvent.stateNavigator} navigationEvent={navigationEvent} {...props} />}
+        {(navigationEvent) => <Scene navigationEvent={navigationEvent} {...props} />}
     </NavigationContext.Consumer>
 )
