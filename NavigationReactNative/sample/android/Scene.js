@@ -1,4 +1,5 @@
 import React from 'react';
+import {NavigationContext} from 'navigation-react';
 
 class Scene extends React.Component {
     constructor(props) {
@@ -25,4 +26,8 @@ class Scene extends React.Component {
     }
 }
 
-export default Scene;
+export default props => (
+    <NavigationContext.Consumer>
+        {(navigationEvent) => <Scene stateNavigator={navigationEvent.stateNavigator} navigationEvent={navigationEvent} {...props} />}
+    </NavigationContext.Consumer>
+)
