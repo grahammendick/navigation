@@ -11,6 +11,7 @@ var Page = () => (
                 </Text>
                 <TouchableHighlight
                     style={styles.button}
+                    underlayColor="#fff"
                     onPress={() => stateNavigator.navigate('scene')}>
                     <Text>Next</Text>
                 </TouchableHighlight>
