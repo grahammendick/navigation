@@ -21,14 +21,14 @@ public class Scene extends Activity implements DefaultHardwareBackBtnHandler {
         reactRootView = new ReactRootView(this);
         if (reactInstanceManager == null) {
             reactInstanceManager = ReactInstanceManager.builder()
-                    .setApplication(getApplication())
-                    .setBundleAssetName("index.android.bundle")
-                    .setJSMainModulePath("index")
-                    .addPackage(new MainReactPackage())
-                    .addPackage(new NavigationPackage())
-                    .setUseDeveloperSupport(BuildConfig.DEBUG)
-                    .setInitialLifecycleState(LifecycleState.RESUMED)
-                    .build();
+                .setApplication(getApplication())
+                .setBundleAssetName("index.android.bundle")
+                .setJSMainModulePath("index")
+                .addPackage(new MainReactPackage())
+                .addPackage(new NavigationPackage())
+                .setUseDeveloperSupport(BuildConfig.DEBUG)
+                .setInitialLifecycleState(LifecycleState.RESUMED)
+                .build();
         }
         Bundle props = new Bundle();
         props.putInt("crumb", getIntent().getIntExtra("crumb", 0));
