@@ -11,13 +11,11 @@ import Scene from './Scene.js';
 import Page from './Page.js';
 
 var stateNavigator = new StateNavigator([
-  {key: 'scene1'},
-  {key: 'scene2', trackCrumbTrail: true},
+  {key: 'scene', trackCrumbTrail: true},
 ]);
-var {scene1, scene2} = stateNavigator.states;
-scene1.renderScene = () => <Page />;
-scene2.renderScene = () => <Page />;
-stateNavigator.navigate('scene1');
+var {scene} = stateNavigator.states;
+scene.renderScene = () => <Page />;
+stateNavigator.navigate('scene');
 
 export default class App extends Component {
   render() {

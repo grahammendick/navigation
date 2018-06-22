@@ -13,7 +13,7 @@ var Page = () => (
                     </Text>
                     <TouchableHighlight
                         style={styles.button}
-                        onPress={() => stateNavigator.navigate(`scene${scene + 1}`)}>
+                        onPress={() => stateNavigator.navigate('scene')}>
                         <Text>Next</Text>
                     </TouchableHighlight>
                 </View>
