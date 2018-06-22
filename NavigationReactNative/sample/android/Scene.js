@@ -1,4 +1,5 @@
 import React from 'react';
+import {NativeModules} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 
 class Scene extends React.Component {
@@ -14,8 +15,21 @@ class Scene extends React.Component {
         var {state, crumbs} = navigationEvent.stateNavigator.stateContext;
         return (state && crumbs.length === crumb) ? {navigationEvent} : null;
     }
+    componentDidMount() {
+        var {crumb, navigationEvent: {stateNavigator}} = props;
+        if (!crumb)
+            stateNavigator.onNavigate(this.renderMotion);
+    }
     shouldComponentUpdate(props, state) {
         return state.navigationEvent === props.navigationEvent;
+    }
+    componentWillUnmount() {
+        var {crumb, navigationEvent: {stateNavigator}} = props;
+        if (!crumb)
+            stateNavigator.offNavigate(this.renderMotion);
+    }
+    renderMotion(oldState, state, data, asyncData, {crumbs}) {
+        NativeModules.NavigationMotion.render(crumbs.length);
     }
     render() {
         var {navigationEvent} = this.state;
