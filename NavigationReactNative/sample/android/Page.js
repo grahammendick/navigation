@@ -4,21 +4,18 @@ import {NavigationContext} from 'navigation-react';
 
 var Page = () => (
     <NavigationContext.Consumer>
-        {({stateNavigator}) => {
-            var scene = stateNavigator.stateContext.crumbs.length + 1;
-            return (
-                <View style={styles.container}>
-                    <Text style={styles.text}>
-                        {`Scene ${scene}`}
-                    </Text>
-                    <TouchableHighlight
-                        style={styles.button}
-                        onPress={() => stateNavigator.navigate('scene')}>
-                        <Text>Next</Text>
-                    </TouchableHighlight>
-                </View>
-            )
-        }}
+        {({stateNavigator}) => (
+            <View style={styles.container}>
+                <Text style={styles.text}>
+                    {`Scene ${stateNavigator.stateContext.crumbs.length}`}
+                </Text>
+                <TouchableHighlight
+                    style={styles.button}
+                    onPress={() => stateNavigator.navigate('scene')}>
+                    <Text>Next</Text>
+                </TouchableHighlight>
+            </View>
+        )}
     </NavigationContext.Consumer>
 );
 
