@@ -5,22 +5,18 @@
  */
 
 import React, { Component } from 'react';
-import {StyleSheet, Text, View} from 'react-native';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
 import Scene from './Scene.js';
+import Page from './Page.js';
 
 var stateNavigator = new StateNavigator([
   {key: 'scene1'},
-  {key: 'scene2'},
+  {key: 'scene2', trackCrumbTrail: true},
 ]);
-var {scene1} = stateNavigator.states;
-
-scene1.renderScene = () => (
-  <View style={styles.container}>
-    <Text style={styles.text}>Scene One</Text>
-  </View>
-);
+var {scene1, scene2} = stateNavigator.states;
+scene1.renderScene = () => <Page />;
+scene2.renderScene = () => <Page />;
 stateNavigator.navigate('scene1');
 
 export default class App extends Component {
@@ -32,17 +28,3 @@ export default class App extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  text: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-});
