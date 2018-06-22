@@ -6,6 +6,7 @@ import android.view.KeyEvent;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
@@ -20,25 +21,27 @@ public class Scene extends Activity implements DefaultHardwareBackBtnHandler {
         mReactRootView = new ReactRootView(this);
         Bundle props = new Bundle();
         props.putInt("crumb", getIntent().getIntExtra("crumb", 0));
-        mReactRootView.startReactApplication(getReactInstanceManager(), "android", props);
+        mReactRootView.startReactApplication(getReactNativeHost().getReactInstanceManager(), "android", props);
         setContentView(mReactRootView);
     }
-    private ReactInstanceManager getReactInstanceManager() {
-        return ((ReactApplication) getApplication()).getReactNativeHost().getReactInstanceManager();
+
+    private ReactNativeHost getReactNativeHost() {
+        return ((ReactApplication) getApplication()).getReactNativeHost();
     }
+
     @Override
     protected void onPause() {
         super.onPause();
-        if (getReactInstanceManager() != null) {
-            getReactInstanceManager().onHostPause(this);
+        if (getReactNativeHost().hasInstance()) {
+            getReactNativeHost().getReactInstanceManager().onHostPause(this);
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (getReactInstanceManager() != null) {
-            getReactInstanceManager().onHostResume(this, this);
+        if (getReactNativeHost().hasInstance()) {
+            getReactNativeHost().getReactInstanceManager().onHostResume(this, this);
         }
     }
 
@@ -52,8 +55,8 @@ public class Scene extends Activity implements DefaultHardwareBackBtnHandler {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU && getReactInstanceManager() != null) {
-            getReactInstanceManager().showDevOptionsDialog();
+        if (keyCode == KeyEvent.KEYCODE_MENU && getReactNativeHost().hasInstance()) {
+            getReactNativeHost().getReactInstanceManager().showDevOptionsDialog();
             return true;
         }
         return super.onKeyUp(keyCode, event);
@@ -61,8 +64,8 @@ public class Scene extends Activity implements DefaultHardwareBackBtnHandler {
 
     @Override
     public void onBackPressed() {
-        if (getReactInstanceManager() != null) {
-            getReactInstanceManager().onBackPressed();
+        if (getReactNativeHost().hasInstance()) {
+            getReactNativeHost().getReactInstanceManager().onBackPressed();
         } else {
             super.onBackPressed();
         }
