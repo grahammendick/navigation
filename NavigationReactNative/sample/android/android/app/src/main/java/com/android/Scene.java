@@ -3,6 +3,7 @@ package com.android;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.os.Bundle;
+import android.view.KeyEvent;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
@@ -29,8 +30,6 @@ public class Scene extends Activity implements DefaultHardwareBackBtnHandler {
                     .setInitialLifecycleState(LifecycleState.RESUMED)
                     .build();
         }
-        // The string here (e.g. "MyReactNativeApp") has to match
-        // the string in AppRegistry.registerComponent() in index.js
         Bundle props = new Bundle();
         props.putInt("crumb", getIntent().getIntExtra("crumb", 0));
         reactRootView.startReactApplication(reactInstanceManager, "android", props);
@@ -39,7 +38,6 @@ public class Scene extends Activity implements DefaultHardwareBackBtnHandler {
     @Override
     protected void onPause() {
         super.onPause();
-
         if (reactInstanceManager != null) {
             reactInstanceManager.onHostPause(this);
         }
@@ -48,7 +46,6 @@ public class Scene extends Activity implements DefaultHardwareBackBtnHandler {
     @Override
     protected void onResume() {
         super.onResume();
-
         if (reactInstanceManager != null) {
             reactInstanceManager.onHostResume(this, this);
         }
@@ -57,9 +54,26 @@ public class Scene extends Activity implements DefaultHardwareBackBtnHandler {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         if (reactRootView != null) {
             reactRootView.unmountReactApplication();
+        }
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU && reactInstanceManager != null) {
+            reactInstanceManager.showDevOptionsDialog();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (reactInstanceManager != null) {
+            reactInstanceManager.onBackPressed();
+        } else {
+            super.onBackPressed();
         }
     }
 
