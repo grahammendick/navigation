@@ -16,7 +16,7 @@ class Scene extends React.Component {
         return (state && crumbs.length === crumb) ? {navigationEvent} : null;
     }
     componentDidMount() {
-        var {crumb, navigationEvent: {stateNavigator}} = props;
+        var {crumb, navigationEvent: {stateNavigator}} = this.props;
         if (!crumb)
             stateNavigator.onNavigate(this.renderMotion);
     }
@@ -24,7 +24,7 @@ class Scene extends React.Component {
         return state.navigationEvent === props.navigationEvent;
     }
     componentWillUnmount() {
-        var {crumb, navigationEvent: {stateNavigator}} = props;
+        var {crumb, navigationEvent: {stateNavigator}} = this.props;
         if (!crumb)
             stateNavigator.offNavigate(this.renderMotion);
     }
