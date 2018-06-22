@@ -1,7 +1,6 @@
 package com.android;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
@@ -12,15 +11,15 @@ import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.shell.MainReactPackage;
 
 public class Scene extends Activity implements DefaultHardwareBackBtnHandler {
-    public static ReactInstanceManager reactInstanceManager;
-    private ReactRootView reactRootView;
+    public static ReactInstanceManager mReactInstanceManager;
+    private ReactRootView mReactRootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        reactRootView = new ReactRootView(this);
-        if (reactInstanceManager == null) {
-            reactInstanceManager = ReactInstanceManager.builder()
+        mReactRootView = new ReactRootView(this);
+        if (mReactInstanceManager == null) {
+            mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(getApplication())
                 .setBundleAssetName("index.android.bundle")
                 .setJSMainModulePath("index")
@@ -32,37 +31,37 @@ public class Scene extends Activity implements DefaultHardwareBackBtnHandler {
         }
         Bundle props = new Bundle();
         props.putInt("crumb", getIntent().getIntExtra("crumb", 0));
-        reactRootView.startReactApplication(reactInstanceManager, "android", props);
-        setContentView(reactRootView);
+        mReactRootView.startReactApplication(mReactInstanceManager, "android", props);
+        setContentView(mReactRootView);
     }
     @Override
     protected void onPause() {
         super.onPause();
-        if (reactInstanceManager != null) {
-            reactInstanceManager.onHostPause(this);
+        if (mReactInstanceManager != null) {
+            mReactInstanceManager.onHostPause(this);
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (reactInstanceManager != null) {
-            reactInstanceManager.onHostResume(this, this);
+        if (mReactInstanceManager != null) {
+            mReactInstanceManager.onHostResume(this, this);
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (reactRootView != null) {
-            reactRootView.unmountReactApplication();
+        if (mReactRootView != null) {
+            mReactRootView.unmountReactApplication();
         }
     }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU && reactInstanceManager != null) {
-            reactInstanceManager.showDevOptionsDialog();
+        if (keyCode == KeyEvent.KEYCODE_MENU && mReactInstanceManager != null) {
+            mReactInstanceManager.showDevOptionsDialog();
             return true;
         }
         return super.onKeyUp(keyCode, event);
@@ -70,8 +69,8 @@ public class Scene extends Activity implements DefaultHardwareBackBtnHandler {
 
     @Override
     public void onBackPressed() {
-        if (reactInstanceManager != null) {
-            reactInstanceManager.onBackPressed();
+        if (mReactInstanceManager != null) {
+            mReactInstanceManager.onBackPressed();
         } else {
             super.onBackPressed();
         }
