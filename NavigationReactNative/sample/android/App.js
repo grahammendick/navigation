@@ -23,7 +23,7 @@ export default class App extends Component {
   render() {
     return (
       <NavigationHandler stateNavigator={stateNavigator}>
-        <Scene />
+        <Scene crumb={this.props.crumb} />
       </NavigationHandler>
     );
   }
