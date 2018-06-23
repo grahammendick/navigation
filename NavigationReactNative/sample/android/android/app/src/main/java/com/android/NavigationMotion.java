@@ -2,7 +2,6 @@ package com.android;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.NavUtils;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -31,7 +30,7 @@ public class NavigationMotion extends ReactContextBaseJavaModule {
         }
         int currentCrumb = currentActivity.getIntent().getIntExtra("crumb", 0);
         if (crumb < currentCrumb) {
-            NavUtils.navigateUpTo(currentActivity, mIntents.get(crumb));
+            currentActivity.navigateUpTo(mIntents.get(crumb));
             for(int i = crumb + 1; i <= currentCrumb; i++) {
                 mIntents.remove(i);
             }
