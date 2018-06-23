@@ -28,7 +28,7 @@ public class NavigationMotion extends ReactContextBaseJavaModule {
         if (mIntents.size() == 0) {
             mIntents.put(0, currentActivity.getIntent());
         }
-        int currentCrumb = currentActivity.getIntent().getIntExtra("crumb", 0);
+        int currentCrumb = mIntents.size() - 1;
         if (crumb < currentCrumb) {
             currentActivity.navigateUpTo(mIntents.get(crumb));
             for(int i = crumb + 1; i <= currentCrumb; i++) {
