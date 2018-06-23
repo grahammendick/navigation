@@ -17,12 +17,8 @@ var {scene} = stateNavigator.states;
 scene.renderScene = () => <Page />;
 stateNavigator.navigate('scene');
 
-export default class App extends Component {
-  render() {
-    return (
-      <NavigationHandler stateNavigator={stateNavigator}>
-        <Scene crumb={this.props.crumb} />
-      </NavigationHandler>
-    );
-  }
-}
+export default ({crumb}) => (
+  <NavigationHandler stateNavigator={stateNavigator}>
+    <Scene crumb={crumb} />
+  </NavigationHandler>
+);
