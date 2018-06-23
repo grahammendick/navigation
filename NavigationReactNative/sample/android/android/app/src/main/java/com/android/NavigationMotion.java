@@ -11,6 +11,7 @@ import com.facebook.react.bridge.ReactMethod;
 import java.util.HashMap;
 
 public class NavigationMotion extends ReactContextBaseJavaModule {
+
     private HashMap<Integer, Intent> mIntents = new HashMap<>();
 
     public NavigationMotion(ReactApplicationContext reactContext) {
