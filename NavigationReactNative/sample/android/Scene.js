@@ -28,7 +28,7 @@ class Scene extends React.Component {
         if (!crumb)
             stateNavigator.offNavigate(this.renderMotion);
     }
-    renderMotion(oldState, state, data, asyncData, {crumbs}) {
+    renderMotion(_oldState, _state, _data, _asyncData, {crumbs}) {
         NativeModules.NavigationMotion.render(crumbs.length);
     }
     render() {
