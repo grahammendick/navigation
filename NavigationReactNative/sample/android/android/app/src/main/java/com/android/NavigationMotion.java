@@ -21,8 +21,14 @@ public class NavigationMotion extends ReactContextBaseJavaModule {
     @ReactMethod
     public void render(int crumb) {
         Activity currentActivity = getCurrentActivity();
-        Intent intent = new Intent(currentActivity, Scene.class);
-        intent.putExtra("crumb", crumb);
-        currentActivity.startActivity(intent);
+        int currentCrumb = currentActivity.getIntent().getIntExtra("crumb", 0);
+        if (crumb < currentCrumb) {
+            currentActivity.finish();
+        }
+        if (crumb > currentCrumb) {
+            Intent intent = new Intent(getReactApplicationContext(), Scene.class);
+            intent.putExtra("crumb", crumb);
+            currentActivity.startActivity(intent);
+        }
     }
 }
