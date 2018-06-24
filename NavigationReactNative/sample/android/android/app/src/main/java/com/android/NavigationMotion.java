@@ -23,7 +23,7 @@ public class NavigationMotion extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void render(int crumb) {
+    public void render(int crumb, String appKey) {
         Activity currentActivity = getCurrentActivity();
         if (mIntents.size() == 0) {
             mIntents.put(0, currentActivity.getIntent());
@@ -42,6 +42,7 @@ public class NavigationMotion extends ReactContextBaseJavaModule {
                 Class scene = intentCrumb % 2 == 0 ? EvenScene.class : OddScene.class;
                 Intent intent = new Intent(getReactApplicationContext(), scene);
                 intent.putExtra("crumb", intentCrumb);
+                intent.putExtra("appKey", appKey);
                 mIntents.put(intentCrumb, intent);
                 intents[i] = intent;
             }

@@ -1,5 +1,5 @@
 import React from 'react';
-import {BackHandler, NativeModules} from 'react-native';
+import {AppRegistry, BackHandler, NativeModules} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 
 class Scene extends React.Component {
@@ -38,7 +38,7 @@ class Scene extends React.Component {
         return true;
     }
     renderMotion(_oldState, _state, _data, _asyncData, {crumbs}) {
-        NativeModules.NavigationMotion.render(crumbs.length);
+        NativeModules.NavigationMotion.render(crumbs.length, AppRegistry.getAppKeys()[0]);
     }
     render() {
         var {navigationEvent} = this.state;

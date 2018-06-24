@@ -21,7 +21,8 @@ public class Scene extends Activity implements DefaultHardwareBackBtnHandler {
         mReactRootView = new ReactRootView(this);
         Bundle props = new Bundle();
         props.putInt("crumb", getIntent().getIntExtra("crumb", 0));
-        mReactRootView.startReactApplication(getReactNativeHost().getReactInstanceManager(), "android", props);
+        String appKey = getIntent().getStringExtra("appKey");
+        mReactRootView.startReactApplication(getReactNativeHost().getReactInstanceManager(), appKey, props);
         setContentView(mReactRootView);
     }
 
