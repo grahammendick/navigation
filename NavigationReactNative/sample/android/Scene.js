@@ -37,8 +37,9 @@ class Scene extends React.Component {
         NativeModules.NavigationMotion.render(crumbs.length, AppRegistry.getAppKeys()[0]);
     }
     handleBack() {
-        this.state.navigationEvent.stateNavigator.navigateBack(1);
-        return true;
+        if (this.state.navigationEvent)
+            this.state.navigationEvent.stateNavigator.navigateBack(1);
+        return !!this.state.navigationEvent;
     }
     render() {
         var {navigationEvent} = this.state;
