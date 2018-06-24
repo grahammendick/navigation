@@ -10,7 +10,6 @@ import com.facebook.react.bridge.ReactMethod;
 import java.util.HashMap;
 
 public class NavigationMotion extends ReactContextBaseJavaModule {
-
     private HashMap<Integer, Intent> mIntents = new HashMap<>();
 
     public NavigationMotion(ReactApplicationContext reactContext) {
@@ -41,8 +40,8 @@ public class NavigationMotion extends ReactContextBaseJavaModule {
                 int intentCrumb = currentCrumb + i + 1;
                 Class scene = intentCrumb % 2 == 0 ? EvenScene.class : OddScene.class;
                 Intent intent = new Intent(getReactApplicationContext(), scene);
-                intent.putExtra("crumb", intentCrumb);
-                intent.putExtra("appKey", appKey);
+                intent.putExtra(Scene.CRUMB, intentCrumb);
+                intent.putExtra(Scene.APP_KEY, appKey);
                 mIntents.put(intentCrumb, intent);
                 intents[i] = intent;
             }
