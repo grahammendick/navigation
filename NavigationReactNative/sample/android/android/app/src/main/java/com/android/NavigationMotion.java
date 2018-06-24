@@ -37,12 +37,12 @@ public class NavigationMotion extends ReactContextBaseJavaModule {
         if (crumb > currentCrumb) {
             Intent[] intents = new Intent[crumb - currentCrumb];
             for(int i = 0; i < crumb - currentCrumb; i++) {
-                int intentCrumb = currentCrumb + i + 1;
-                Class scene = intentCrumb % 2 == 0 ? Scene.class : AlternateScene.class;
+                int nextCrumb = currentCrumb + i + 1;
+                Class scene = nextCrumb % 2 == 0 ? Scene.class : AlternateScene.class;
                 Intent intent = new Intent(getReactApplicationContext(), scene);
-                intent.putExtra(Scene.CRUMB, intentCrumb);
+                intent.putExtra(Scene.CRUMB, nextCrumb);
                 intent.putExtra(Scene.APP_KEY, appKey);
-                mIntents.put(intentCrumb, intent);
+                mIntents.put(nextCrumb, intent);
                 intents[i] = intent;
             }
             currentActivity.startActivities(intents);
