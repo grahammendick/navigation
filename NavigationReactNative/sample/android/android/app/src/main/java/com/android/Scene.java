@@ -5,12 +5,9 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 
 import com.facebook.react.ReactApplication;
-import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactRootView;
-import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
-import com.facebook.react.shell.MainReactPackage;
 
 public class Scene extends Activity implements DefaultHardwareBackBtnHandler {
     private ReactRootView mReactRootView;
