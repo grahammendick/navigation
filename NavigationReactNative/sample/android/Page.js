@@ -15,6 +15,14 @@ var Page = () => (
                     onPress={() => stateNavigator.navigate('scene')}>
                     <Text>Next</Text>
                 </TouchableHighlight>
+                {!!stateNavigator.stateContext.crumbs.length &&
+                    <TouchableHighlight
+                        style={styles.button}
+                        underlayColor="#fff"
+                        onPress={() => stateNavigator.navigateBack(1)}>
+                        <Text>Back</Text>
+                    </TouchableHighlight>
+                }
             </View>
         )}
     </NavigationContext.Consumer>
