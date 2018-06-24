@@ -13,14 +13,13 @@ public class Scene extends Activity implements DefaultHardwareBackBtnHandler {
     private ReactRootView mReactRootView;
     public static final String CRUMB = "Navigation.CRUMB";
     public static final String APP_KEY = "Navigation.APP_KEY";
-    private static final int DEFAULT_CRUMB = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mReactRootView = new ReactRootView(this);
         Bundle props = new Bundle();
-        props.putInt("crumb", getIntent().getIntExtra(CRUMB, DEFAULT_CRUMB));
+        props.putInt("crumb", getIntent().getIntExtra(CRUMB, 0));
         String appKey = getIntent().getStringExtra(APP_KEY);
         mReactRootView.startReactApplication(getReactNativeHost().getReactInstanceManager(), appKey, props);
         setContentView(mReactRootView);
