@@ -28,7 +28,7 @@ RCT_EXPORT_METHOD(render:(NSInteger)crumb appKey:(NSString *)appKey)
   AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
   UINavigationController *navigationController = (UINavigationController *)[UIApplication sharedApplication].keyWindow.rootViewController;
   
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:delegate.bridge moduleName:@"ios" initialProperties:@{ @"crumb": @1 }];
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:delegate.bridge moduleName:@"ios" initialProperties:@{ @"crumb": [NSNumber numberWithInteger:crumb] }];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
   UIViewController *rootViewController = [UIViewController new];
