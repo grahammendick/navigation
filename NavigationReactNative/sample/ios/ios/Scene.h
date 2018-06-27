@@ -13,6 +13,6 @@
 @property NSNumber *crumb;
 @property NSString *appKey;
 
-  -(id)init: (NSNumber *)crumb appKey:(NSString *)appKey;
+-(id)init: (NSNumber *)crumb appKey:(NSString *)appKey;
 
 @end
