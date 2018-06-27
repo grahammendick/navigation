@@ -27,15 +27,21 @@ RCT_EXPORT_METHOD(render:(NSInteger)crumb appKey:(NSString *)appKey)
 {
   AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
   UINavigationController *navigationController = (UINavigationController *)[UIApplication sharedApplication].keyWindow.rootViewController;
-  
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:delegate.bridge moduleName:@"ios" initialProperties:@{ @"crumb": [NSNumber numberWithInteger:crumb] }];
-  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
-  UIViewController *rootViewController = [UIViewController new];
-  rootViewController.view = rootView;
-  rootViewController.title = @"Scene Two";
-  [navigationController pushViewController:rootViewController animated:true];
+  NSInteger currentCrumb = [navigationController.viewControllers count] - 1;
+  if (crumb < currentCrumb) {
+    [navigationController popToViewController:navigationController.viewControllers[crumb] animated:true];
+  }
 
+  if (crumb > currentCrumb) {
+    RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:delegate.bridge moduleName:@"ios" initialProperties:@{ @"crumb": [NSNumber numberWithInteger:crumb] }];
+    rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
+
+    UIViewController *rootViewController = [UIViewController new];
+    rootViewController.view = rootView;
+    rootViewController.title = @"Scene Two";
+    [navigationController pushViewController:rootViewController animated:true];
+  }
 }
 
 @end
