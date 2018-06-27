@@ -13,6 +13,7 @@
 #import "AppDelegate.h"
 
 #import "NavigationMotion.h"
+#import "ApplicationBridgeDelegate.h"
 
 @implementation NavigationMotion
 
@@ -25,7 +26,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(render:(NSInteger)crumb appKey:(NSString *)appKey)
 {
-  AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+  ApplicationBridgeDelegate *delegate = (ApplicationBridgeDelegate *)[[UIApplication sharedApplication] delegate];
   UINavigationController *navigationController = (UINavigationController *)[UIApplication sharedApplication].keyWindow.rootViewController;
 
   NSInteger currentCrumb = [navigationController.viewControllers count] - 1;
