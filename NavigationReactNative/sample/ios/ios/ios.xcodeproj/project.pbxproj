@@ -36,7 +36,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* iosTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* iosTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		7018813420E433450014EC3C /* Scene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7018813320E433450014EC3C /* Scene.m */; };
+		70176F9320E4E45D002C3D2B /* Scene.m in Sources */ = {isa = PBXBuildFile; fileRef = 70176F9220E4E45D002C3D2B /* Scene.m */; };
 		70CB2B9520E393EC00030FE0 /* NavigationMotion.m in Sources */ = {isa = PBXBuildFile; fileRef = 70CB2B9420E393EC00030FE0 /* NavigationMotion.m */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
@@ -343,8 +343,8 @@
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		70176F6920E4E27B002C3D2B /* ApplicationHostDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ApplicationHostDelegate.h; path = ios/ApplicationHostDelegate.h; sourceTree = "<group>"; };
-		7018813220E433160014EC3C /* Scene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
-		7018813320E433450014EC3C /* Scene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Scene.m; sourceTree = "<group>"; };
+		70176F9120E4E430002C3D2B /* Scene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Scene.h; path = ios/Scene.h; sourceTree = "<group>"; };
+		70176F9220E4E45D002C3D2B /* Scene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Scene.m; path = ios/Scene.m; sourceTree = "<group>"; };
 		70CB2B9320E393A500030FE0 /* NavigationMotion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NavigationMotion.h; path = ios/NavigationMotion.h; sourceTree = "<group>"; };
 		70CB2B9420E393EC00030FE0 /* NavigationMotion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NavigationMotion.m; path = ios/NavigationMotion.m; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -498,9 +498,9 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				70CB2B9320E393A500030FE0 /* NavigationMotion.h */,
 				70CB2B9420E393EC00030FE0 /* NavigationMotion.m */,
-				7018813220E433160014EC3C /* Scene.h */,
-				7018813320E433450014EC3C /* Scene.m */,
 				70176F6920E4E27B002C3D2B /* ApplicationHostDelegate.h */,
+				70176F9120E4E430002C3D2B /* Scene.h */,
+				70176F9220E4E45D002C3D2B /* Scene.m */,
 			);
 			name = ios;
 			sourceTree = "<group>";
@@ -1126,7 +1126,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7018813420E433450014EC3C /* Scene.m in Sources */,
+				70176F9320E4E45D002C3D2B /* Scene.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				70CB2B9520E393EC00030FE0 /* NavigationMotion.m in Sources */,

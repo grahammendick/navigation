@@ -27,7 +27,7 @@
 - (void)loadView
 {
   ApplicationHostDelegate *delegate = (ApplicationHostDelegate *)[[UIApplication sharedApplication] delegate];
-
+  
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:delegate.bridge moduleName: self.appKey initialProperties:@{ @"crumb": self.crumb }];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
   
