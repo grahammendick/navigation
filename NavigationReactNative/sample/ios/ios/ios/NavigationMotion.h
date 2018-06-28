@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 
 #import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
 
-@interface NavigationMotion : NSObject <RCTBridgeModule, UINavigationControllerDelegate>
+@interface NavigationMotion : RCTEventEmitter <RCTBridgeModule, UINavigationControllerDelegate>
 @end
