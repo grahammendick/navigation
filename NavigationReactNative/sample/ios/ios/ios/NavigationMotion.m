@@ -5,15 +5,13 @@
 //  Created by Graham Mendick on 27/06/2018.
 //  Copyright © 2018 Facebook. All rights reserved.
 //
-#import <UIKit/UIKit.h>
-
-#import <React/RCTBundleURLProvider.h>
-#import <React/RCTRootView.h>
-
 #import "AppDelegate.h"
-
 #import "NavigationMotion.h"
 #import "Scene.h"
+
+#import <UIKit/UIKit.h>
+#import <React/RCTBundleURLProvider.h>
+#import <React/RCTRootView.h>
 
 @implementation NavigationMotion
 
