@@ -13,7 +13,6 @@
 #import "AppDelegate.h"
 
 #import "NavigationMotion.h"
-#import "ApplicationBridgeDelegate.h"
 #import "Scene.h"
 
 @implementation NavigationMotion
