@@ -27,18 +27,16 @@ RCT_EXPORT_MODULE();
 RCT_EXPORT_METHOD(render:(NSInteger)crumb appKey:(NSString *)appKey)
 {
   UINavigationController *navigationController = (UINavigationController *)[UIApplication sharedApplication].keyWindow.rootViewController;
-
   NSInteger currentCrumb = [navigationController.viewControllers count] - 1;
   if (crumb < currentCrumb) {
     [navigationController popToViewController:navigationController.viewControllers[crumb] animated:true];
   }
-
   if (crumb > currentCrumb) {
     NSMutableArray *controllers = [navigationController.viewControllers mutableCopy];
     for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
       NSInteger nextCrumb = currentCrumb + i + 1;
-      Scene *scene = [[Scene alloc] init: [NSNumber numberWithInteger:nextCrumb] appKey: appKey];
-      [controllers addObject:scene];
+      UIViewController *controller = [[Scene alloc] init: [NSNumber numberWithInteger:nextCrumb] appKey: appKey];
+      [controllers addObject:controller];
     }
     [navigationController setViewControllers:controllers animated:true];
   }
