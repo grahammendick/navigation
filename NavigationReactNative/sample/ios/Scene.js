@@ -21,7 +21,7 @@ class Scene extends React.Component {
         if (!crumb) {
             stateNavigator.onNavigate(this.handleNavigate);
             var emitter = new NativeEventEmitter(NativeModules.NavigationMotion);
-            this.subscription = emitter.addListener('Navigated', ({crumb}) => {
+            this.subscription = emitter.addListener('Navigate', ({crumb}) => {
                 var {stateNavigator} = this.props.navigationEvent;
                  var distance = stateNavigator.stateContext.crumbs.length - crumb;
                  if (distance > 0)

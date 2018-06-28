@@ -21,7 +21,7 @@ RCT_EXPORT_MODULE();
 
 - (NSArray<NSString *> *)supportedEvents
 {
-  return @[@"Navigated"];
+  return @[@"Navigate"];
 }
 
 - (dispatch_queue_t)methodQueue
@@ -35,7 +35,7 @@ RCT_EXPORT_MODULE();
   if ([viewController isKindOfClass:[Scene class]]) {
        crumb = ((Scene *)viewController).crumb;
   }
-  [self sendEventWithName:@"Navigated" body:@{@"crumb": crumb}];
+  [self sendEventWithName:@"Navigate" body:@{@"crumb": crumb}];
 }
 
 RCT_EXPORT_METHOD(render:(NSInteger)crumb appKey:(NSString *)appKey)
