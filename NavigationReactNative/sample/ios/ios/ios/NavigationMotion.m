@@ -24,9 +24,17 @@ RCT_EXPORT_MODULE();
   return dispatch_get_main_queue();
 }
 
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+  
+}
+
 RCT_EXPORT_METHOD(render:(NSInteger)crumb appKey:(NSString *)appKey)
 {
   UINavigationController *navigationController = (UINavigationController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+  if (!navigationController.delegate) {
+    navigationController.delegate = self;
+  }
   NSInteger currentCrumb = [navigationController.viewControllers count] - 1;
   if (crumb < currentCrumb) {
     [navigationController popToViewController:navigationController.viewControllers[crumb] animated:true];
