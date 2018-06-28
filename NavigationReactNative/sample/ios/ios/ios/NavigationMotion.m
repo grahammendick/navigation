@@ -34,8 +34,13 @@ RCT_EXPORT_METHOD(render:(NSInteger)crumb appKey:(NSString *)appKey)
   }
 
   if (crumb > currentCrumb) {
-    Scene *scene = [[Scene alloc] init: [NSNumber numberWithInteger:crumb] appKey: @"ios"];
-    [navigationController pushViewController:scene animated:true];
+    NSMutableArray *controllers = [navigationController.viewControllers mutableCopy];
+    for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
+      NSInteger nextCrumb = currentCrumb + i + 1;
+      Scene *scene = [[Scene alloc] init: [NSNumber numberWithInteger:nextCrumb] appKey: @"ios"];
+      [controllers addObject:scene];
+    }
+    [navigationController setViewControllers:controllers animated:true];
   }
 }
 
