@@ -6,7 +6,6 @@ class Scene extends React.Component {
     constructor(props) {
         super(props);
         this.state = {navigationEvent: null};
-        this.handleBack = this.handleBack.bind(this);
     }
     static defaultProps = {
         crumb: 0
@@ -41,11 +40,6 @@ class Scene extends React.Component {
     }
     handleNavigate(_oldState, _state, _data, _asyncData, {crumbs}) {
         NativeModules.NavigationMotion.render(crumbs.length, AppRegistry.getAppKeys()[0]);
-    }
-    handleBack() {
-        if (this.state.navigationEvent)
-            this.state.navigationEvent.stateNavigator.navigateBack(1);
-        return !!this.state.navigationEvent;
     }
     render() {
         var {navigationEvent} = this.state;
