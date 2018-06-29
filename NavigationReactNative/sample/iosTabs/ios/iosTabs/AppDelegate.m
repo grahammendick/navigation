@@ -28,8 +28,11 @@
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
   rootViewController.title = @"Scene";
+  rootViewController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemSearch tag:0];
   UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-  self.window.rootViewController = navigationController;
+  UITabBarController *tabBarController = [[UITabBarController alloc] init];
+  [tabBarController setViewControllers:@[navigationController]];
+  self.window.rootViewController = tabBarController;
   [self.window makeKeyAndVisible];
   return YES;
 }

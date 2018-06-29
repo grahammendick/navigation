@@ -38,7 +38,8 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(render:(NSInteger)crumb titles:(NSArray *)titles appKey:(NSString *)appKey)
 {
-  UINavigationController *navigationController = (UINavigationController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+  UITabBarController *tabBarController = (UITabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+  UINavigationController *navigationController = (UINavigationController *)tabBarController.viewControllers[0];
   if (!navigationController.delegate) {
     navigationController.delegate = self;
   }
