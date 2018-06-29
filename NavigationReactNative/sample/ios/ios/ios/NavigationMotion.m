@@ -36,7 +36,7 @@ RCT_EXPORT_MODULE();
   [self sendEventWithName:@"Navigate" body:@{@"crumb": crumb}];
 }
 
-RCT_EXPORT_METHOD(render:(NSInteger)crumb appKey:(NSString *)appKey)
+RCT_EXPORT_METHOD(render:(NSInteger)crumb titles:(NSArray *)titles appKey:(NSString *)appKey)
 {
   UINavigationController *navigationController = (UINavigationController *)[UIApplication sharedApplication].keyWindow.rootViewController;
   if (!navigationController.delegate) {
@@ -51,6 +51,7 @@ RCT_EXPORT_METHOD(render:(NSInteger)crumb appKey:(NSString *)appKey)
     for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
       NSInteger nextCrumb = currentCrumb + i + 1;
       UIViewController *controller = [[Scene alloc] init: @(nextCrumb) appKey: appKey];
+      controller.title = titles[nextCrumb];
       [controllers addObject:controller];
     }
     [navigationController setViewControllers:controllers animated:true];

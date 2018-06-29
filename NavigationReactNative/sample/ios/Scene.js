@@ -38,8 +38,9 @@ class Scene extends React.Component {
             this.subscription.remove();
         }
     }
-    handleNavigate(_oldState, _state, _data, _asyncData, {crumbs}) {
-        NativeModules.NavigationMotion.render(crumbs.length, AppRegistry.getAppKeys()[0]);
+    handleNavigate(_oldState, _state, _data, _asyncData, {crumbs, title}) {
+        var titles = crumbs.map(({title}) => title).concat(title);
+        NativeModules.NavigationMotion.render(crumbs.length, titles, AppRegistry.getAppKeys()[0]);
     }
     render() {
         var {navigationEvent} = this.state;
