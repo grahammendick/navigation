@@ -27,7 +27,7 @@
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
-  rootViewController.title = @"Scene 0";
+  rootViewController.title = @"Scene";
   UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
   self.window.rootViewController = navigationController;
   [self.window makeKeyAndVisible];
