@@ -6,6 +6,7 @@
  */
 
 #import "AppDelegate.h"
+#import "Scene.h"
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -25,8 +26,7 @@
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
   
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *viewController = [UIViewController new];
-  viewController.view = rootView;
+  UIViewController *viewController = [[Scene alloc] init: @0 tab: @0 appKey: @"iosTabs"];
   viewController.title = @"Scene";
   viewController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemSearch tag:0];
   UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];

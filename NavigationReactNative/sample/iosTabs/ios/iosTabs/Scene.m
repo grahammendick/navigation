@@ -15,9 +15,10 @@
 
 @implementation Scene
 
-- (id)init: (NSNumber *)crumb appKey:(NSString *)appKey {
+- (id)init: (NSNumber *)crumb tab:(NSNumber *)tab appKey:(NSString *)appKey {
   if (self = [super init]) {
     self.crumb = crumb;
+    self.tab = tab;
     self.appKey = appKey;
   }
   return self;
@@ -26,7 +27,7 @@
 - (void)loadView
 {
   ApplicationHostDelegate *delegate = (ApplicationHostDelegate *)[[UIApplication sharedApplication] delegate];
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:delegate.bridge moduleName: self.appKey initialProperties:@{ @"crumb": self.crumb }];
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:delegate.bridge moduleName: self.appKey initialProperties:@{ @"crumb": self.crumb, @"tab": self.tab }];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
   self.view = rootView;
 }

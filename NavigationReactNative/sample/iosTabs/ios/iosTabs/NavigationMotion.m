@@ -36,7 +36,7 @@ RCT_EXPORT_MODULE();
   [self sendEventWithName:@"Navigate" body:@{@"crumb": crumb}];
 }
 
-RCT_EXPORT_METHOD(render:(NSInteger)crumb titles:(NSArray *)titles appKey:(NSString *)appKey)
+RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)titles appKey:(NSString *)appKey)
 {
   UITabBarController *tabBarController = (UITabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
   UINavigationController *navigationController = (UINavigationController *)tabBarController.viewControllers[0];
@@ -51,7 +51,7 @@ RCT_EXPORT_METHOD(render:(NSInteger)crumb titles:(NSArray *)titles appKey:(NSStr
     NSMutableArray *controllers = [navigationController.viewControllers mutableCopy];
     for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
       NSInteger nextCrumb = currentCrumb + i + 1;
-      UIViewController *controller = [[Scene alloc] init: @(nextCrumb) appKey: appKey];
+      UIViewController *controller = [[Scene alloc] init: @(nextCrumb) tab: @(tab) appKey: appKey];
       controller.title = titles[nextCrumb];
       [controllers addObject:controller];
     }

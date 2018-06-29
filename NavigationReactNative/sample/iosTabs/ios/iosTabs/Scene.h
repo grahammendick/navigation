@@ -11,8 +11,9 @@
 @interface Scene : UIViewController
 
 @property NSNumber *crumb;
+@property NSNumber *tab;
 @property NSString *appKey;
 
--(id)init: (NSNumber *)crumb appKey:(NSString *)appKey;
+-(id)init: (NSNumber *)crumb tab:(NSNumber *)tab appKey:(NSString *)appKey;
 
 @end

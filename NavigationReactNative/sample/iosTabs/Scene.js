@@ -6,6 +6,7 @@ class Scene extends React.Component {
     constructor(props) {
         super(props);
         this.state = {navigationEvent: null};
+        this.handleNavigate = this.handleNavigate.bind(this);
     }
     static defaultProps = {
         crumb: 0
@@ -39,8 +40,9 @@ class Scene extends React.Component {
         }
     }
     handleNavigate(_oldState, _state, _data, _asyncData, {crumbs, title}) {
+        var {tab} = this.props;
         var titles = crumbs.map(({title}) => title).concat(title);
-        NativeModules.NavigationMotion.render(crumbs.length, titles, AppRegistry.getAppKeys()[0]);
+        NativeModules.NavigationMotion.render(crumbs.length, tab, titles, AppRegistry.getAppKeys()[0]);
     }
     render() {
         var {navigationEvent} = this.state;
