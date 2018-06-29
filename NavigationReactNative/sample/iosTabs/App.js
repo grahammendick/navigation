@@ -20,8 +20,10 @@ stateNavigator.navigate('scene');
 var stateNavigatorTwo = new StateNavigator(stateNavigator);
 stateNavigatorTwo.navigate('scene');
 
+var stateNavigators = [stateNavigator, stateNavigatorTwo];
+
 export default ({crumb, tab}) => (
-  <NavigationHandler stateNavigator={!tab ? stateNavigator : stateNavigatorTwo}>
+  <NavigationHandler stateNavigator={stateNavigators[tab]}>
     <Scene crumb={crumb} tab={tab} />
   </NavigationHandler>
 );
