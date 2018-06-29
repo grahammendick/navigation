@@ -25,11 +25,11 @@
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
   
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *rootViewController = [UIViewController new];
-  rootViewController.view = rootView;
-  rootViewController.title = @"Scene";
-  rootViewController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemSearch tag:0];
-  UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+  UIViewController *viewController = [UIViewController new];
+  viewController.view = rootView;
+  viewController.title = @"Scene";
+  viewController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemSearch tag:0];
+  UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
   UITabBarController *tabBarController = [[UITabBarController alloc] init];
   [tabBarController setViewControllers:@[navigationController]];
   self.window.rootViewController = tabBarController;
