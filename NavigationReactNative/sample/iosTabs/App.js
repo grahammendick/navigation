@@ -10,17 +10,17 @@ import {NavigationHandler} from 'navigation-react';
 import Scene from './Scene.js';
 import Page from './Page.js';
 
-var stateNavigator = new StateNavigator([
+var stateNavigatorZero = new StateNavigator([
   {key: 'scene', trackCrumbTrail: true, title: 'Scene'},
 ]);
-var {scene} = stateNavigator.states;
+var {scene} = stateNavigatorZero.states;
 scene.renderScene = () => <Page />;
-stateNavigator.navigate('scene');
+stateNavigatorZero.navigate('scene');
 
-var stateNavigatorTwo = new StateNavigator(stateNavigator);
-stateNavigatorTwo.navigate('scene');
+var stateNavigatorOne = new StateNavigator(stateNavigatorZero);
+stateNavigatorOne.navigate('scene');
 
-var stateNavigators = [stateNavigator, stateNavigatorTwo];
+var stateNavigators = [stateNavigatorZero, stateNavigatorOne];
 
 export default ({crumb, tab}) => (
   <NavigationHandler stateNavigator={stateNavigators[tab]}>
