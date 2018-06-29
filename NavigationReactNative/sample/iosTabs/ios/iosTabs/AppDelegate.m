@@ -18,16 +18,18 @@
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-                                                      moduleName:@"iosTabs"
-                                               initialProperties:nil
-                                                   launchOptions:launchOptions];
+  self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation moduleProvider:nil launchOptions:launchOptions];
+  
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:self.bridge moduleName:@"iosTabs" initialProperties:nil];
+  
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
-
+  
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
-  self.window.rootViewController = rootViewController;
+  rootViewController.title = @"Scene";
+  UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+  self.window.rootViewController = navigationController;
   [self.window makeKeyAndVisible];
   return YES;
 }
