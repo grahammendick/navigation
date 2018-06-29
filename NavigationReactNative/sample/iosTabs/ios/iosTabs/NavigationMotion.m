@@ -35,7 +35,7 @@ RCT_EXPORT_MODULE();
     crumb = ((Scene *)viewController).crumb;
     tab = ((Scene *)viewController).tab;
   }
-  [self sendEventWithName:@"Navigate" body:@{@"crumb": crumb, @"tab": crumb}];
+  [self sendEventWithName:@"Navigate" body:@{@"crumb": crumb, @"tab": tab}];
 }
 
 RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)titles appKey:(NSString *)appKey)
