@@ -26,12 +26,19 @@
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
   
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *viewController = [[Scene alloc] init: @0 tab: @0 appKey: @"iosTabs"];
-  viewController.title = @"Scene";
-  viewController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemSearch tag:0];
-  UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+
+  UIViewController *viewControllerOne = [[Scene alloc] init: @0 tab: @0 appKey: @"iosTabs"];
+  viewControllerOne.title = @"Scene";
+  viewControllerOne.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemSearch tag:0];
+  UINavigationController *navigationControllerOne = [[UINavigationController alloc] initWithRootViewController:viewControllerOne];
+
+  UIViewController *viewControllerTwo = [[Scene alloc] init: @0 tab: @1 appKey: @"iosTabs"];
+  viewControllerTwo.title = @"Scene";
+  viewControllerTwo.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemTopRated tag:1];
+  UINavigationController *navigationControllerTwo = [[UINavigationController alloc] initWithRootViewController:viewControllerTwo];
+
   UITabBarController *tabBarController = [[UITabBarController alloc] init];
-  [tabBarController setViewControllers:@[navigationController]];
+  [tabBarController setViewControllers:@[navigationControllerOne, navigationControllerTwo]];
   self.window.rootViewController = tabBarController;
   [self.window makeKeyAndVisible];
   return YES;

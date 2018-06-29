@@ -21,11 +21,13 @@ class Scene extends React.Component {
         if (!crumb) {
             stateNavigator.onNavigate(this.handleNavigate);
             var emitter = new NativeEventEmitter(NativeModules.NavigationMotion);
-            this.subscription = emitter.addListener('Navigate', ({crumb}) => {
-                var {stateNavigator} = this.props.navigationEvent;
-                 var distance = stateNavigator.stateContext.crumbs.length - crumb;
-                 if (distance > 0)
-                    stateNavigator.navigateBack(distance);
+            this.subscription = emitter.addListener('Navigate', ({crumb, tab}) => {
+                if (this.props.tab === tab) {
+                    var {stateNavigator} = this.props.navigationEvent;
+                    var distance = stateNavigator.stateContext.crumbs.length - crumb;
+                    if (distance > 0)
+                        stateNavigator.navigateBack(distance);
+                }
             })
         }
     }
