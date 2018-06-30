@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 
-var Page = () => (
+var Page = ({changeTabs}) => (
     <NavigationContext.Consumer>
         {({stateNavigator}) => (
             <View style={styles.container}>
@@ -23,6 +23,12 @@ var Page = () => (
                         <Text>Back</Text>
                     </TouchableHighlight>
                 }
+                <TouchableHighlight
+                    style={styles.button}
+                    underlayColor="#fff"
+                    onPress={() => changeTabs()}>
+                    <Text>Change Tabs</Text>
+                </TouchableHighlight>
             </View>
         )}
     </NavigationContext.Consumer>

@@ -6,7 +6,6 @@ class Scene extends React.Component {
     constructor(props) {
         super(props);
         this.state = {navigationEvent: null};
-        this.handleNavigate = this.handleNavigate.bind(this);
     }
     static defaultProps = {
         crumb: 0
@@ -19,7 +18,6 @@ class Scene extends React.Component {
     componentDidMount() {
         var {crumb, navigationEvent: {stateNavigator}} = this.props;
         if (!crumb) {
-            stateNavigator.onNavigate(this.handleNavigate);
             var emitter = new NativeEventEmitter(NativeModules.NavigationMotion);
             this.subscription = emitter.addListener('Navigate', ({crumb, tab}) => {
                 if (this.props.tab === tab) {
@@ -37,22 +35,17 @@ class Scene extends React.Component {
     componentWillUnmount() {
         var {crumb, navigationEvent: {stateNavigator}} = this.props;
         if (!crumb) {
-            stateNavigator.offNavigate(this.handleNavigate);
             this.subscription.remove();
         }
     }
-    handleNavigate(_oldState, _state, _data, _asyncData, {crumbs, title}) {
-        var {tab} = this.props;
-        var titles = crumbs.map(({title}) => title).concat(title);
-        NativeModules.NavigationMotion.render(crumbs.length, tab, titles, AppRegistry.getAppKeys()[0]);
-    }
     render() {
+        var {crumb, navigationEvent, tab, ...props}  = this.props;
         var {navigationEvent} = this.state;
         if (!navigationEvent) return null;
         var {state, data} = navigationEvent.stateNavigator.stateContext;
         return (
             <NavigationContext.Provider value={navigationEvent}>
-                {state.renderScene(data)}
+                {state.renderScene(data, props)}
             </NavigationContext.Provider>
         );
     }
