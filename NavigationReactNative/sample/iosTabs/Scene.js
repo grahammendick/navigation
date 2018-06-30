@@ -1,5 +1,5 @@
 import React from 'react';
-import {AppRegistry, NativeEventEmitter, NativeModules} from 'react-native';
+import {onNavigate} from './NavigationMotion.js';
 import {NavigationContext} from 'navigation-react';
 
 class Scene extends React.Component {
@@ -16,10 +16,8 @@ class Scene extends React.Component {
         return (state && crumbs.length === crumb) ? {navigationEvent} : null;
     }
     componentDidMount() {
-        var {crumb, navigationEvent: {stateNavigator}} = this.props;
-        if (!crumb) {
-            var emitter = new NativeEventEmitter(NativeModules.NavigationMotion);
-            this.subscription = emitter.addListener('Navigate', ({crumb, tab}) => {
+        if (!this.props.crumb) {
+            this.subscription = onNavigate(({crumb, tab}) => {
                 if (this.props.tab === tab) {
                     var {stateNavigator} = this.props.navigationEvent;
                     var distance = stateNavigator.stateContext.crumbs.length - crumb;
@@ -33,8 +31,7 @@ class Scene extends React.Component {
         return state.navigationEvent === props.navigationEvent;
     }
     componentWillUnmount() {
-        var {crumb, navigationEvent: {stateNavigator}} = this.props;
-        if (!crumb) {
+        if (!this.props.crumb) {
             this.subscription.remove();
         }
     }
