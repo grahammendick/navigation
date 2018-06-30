@@ -18,7 +18,7 @@ class Scene extends React.Component {
             return {navigationEvent};
         if (state && !prevNavigationEvent && crumb < crumbs.length) {
             var {stateNavigator} = navigationEvent;
-            var tempStateNavigator = new StateNavigator(stateNavigator);
+            var tempStateNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
             var {stateContext} = tempStateNavigator;
             var {state, data, url, title} = crumbs[crumb];
             stateContext.state = state;
