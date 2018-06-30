@@ -27,15 +27,11 @@ class Scene extends React.Component {
             stateContext.title = title;
             stateContext.crumbs = crumbs.slice(0, crumb);
             stateContext.nextCrumb = crumbs[crumb];
-            var {oldState, oldData, oldUrl} = stateNavigator.stateContext;
-            stateContext.oldState = oldState;
-            stateContext.oldData = oldData;
-            stateContext.oldUrl = oldUrl;
             if (crumb > 1) {
                 var {state, data, url} = crumbs[crumb - 1];
-                stateContext.previousState = state;
-                stateContext.previousData = data;
-                stateContext.previousUrl = url;
+                stateContext.previousState = stateContext.oldState = state;
+                stateContext.previousData = stateContext.oldData = data;
+                stateContext.previousUrl = stateContext.oldUrl = url;
             }
             tempStateNavigator.configure = stateNavigator.configure;
             tempStateNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
