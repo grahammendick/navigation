@@ -7,7 +7,7 @@
 import React from 'react';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
-import {init} from './NavigationMotion.js';
+import {addNavigateHandler} from './NavigationMotion.js';
 import Scene from './Scene.js';
 import Page from './Page.js';
 
@@ -22,7 +22,7 @@ var stateNavigatorOne = new StateNavigator(stateNavigatorZero);
 stateNavigatorOne.navigate('scene');
 
 var stateNavigators = [stateNavigatorZero, stateNavigatorOne];
-init(stateNavigators);
+stateNavigators.forEach(addNavigateHandler);
 
 export default ({crumb, tab}) => (
   <NavigationHandler stateNavigator={stateNavigators[tab]}>
