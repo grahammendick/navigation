@@ -1,5 +1,6 @@
 import React from 'react';
 import {onNavigate} from './NavigationMotion.js';
+import {StateNavigator} from 'navigation';
 import {NavigationContext} from 'navigation-react';
 
 class Scene extends React.Component {
@@ -10,10 +11,42 @@ class Scene extends React.Component {
     static defaultProps = {
         crumb: 0
     }
-    static getDerivedStateFromProps(props) {
+    static getDerivedStateFromProps(props, {navigationEvent: prevNavigationEvent}) {
         var {crumb, navigationEvent} = props;
         var {state, crumbs} = navigationEvent.stateNavigator.stateContext;
-        return (state && crumbs.length === crumb) ? {navigationEvent} : null;
+        if (state && crumbs.length === crumb)
+            return {navigationEvent};
+        if (state && !prevNavigationEvent && crumb < crumbs.length) {
+            var {stateNavigator} = navigationEvent;
+            var tempStateNavigator = new StateNavigator(stateNavigator);
+            var {stateContext} = tempStateNavigator;
+            var {state, data, url, title} = crumbs[crumb];
+            stateContext.state = state;
+            stateContext.data = data;
+            stateContext.url = url;
+            stateContext.title = title;
+            stateContext.crumbs = crumbs.slice(0, crumb);
+            stateContext.nextCrumb = crumbs[crumb];
+            var {oldState, oldData, oldUrl} = stateNavigator.stateContext;
+            stateContext.oldState = oldState;
+            stateContext.oldData = oldData;
+            stateContext.oldUrl = oldUrl;
+            if (crumb > 1) {
+                var {state, data, url} = crumbs[crumb - 1];
+                stateContext.previousState = state;
+                stateContext.previousData = data;
+                stateContext.previousUrl = url;
+            }
+            tempStateNavigator.configure = stateNavigator.configure;
+            tempStateNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
+            tempStateNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
+            tempStateNavigator.onNavigate = stateNavigator.onNavigate;
+            tempStateNavigator.offNavigate = stateNavigator.offNavigate;
+            tempStateNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
+            var {oldState, state, data, asyncData} = tempStateNavigator.stateContext;
+            return {navigationEvent: {oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: tempStateNavigator}};
+        }
+        return null;
     }
     componentDidMount() {
         if (!this.props.crumb) {
