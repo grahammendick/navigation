@@ -31,9 +31,8 @@ class Scene extends React.Component {
         return state.navigationEvent === props.navigationEvent;
     }
     componentWillUnmount() {
-        if (!this.props.crumb) {
+        if (!this.props.crumb)
             this.subscription.remove();
-        }
     }
     render() {
         var {crumb, navigationEvent, tab, ...props}  = this.props;
