@@ -53,8 +53,7 @@ RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)t
     NSMutableArray *controllers = [navigationController.viewControllers mutableCopy];
     for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
       NSInteger nextCrumb = currentCrumb + i + 1;
-      UIViewController *controller = [[Scene alloc] init: nextCrumb tab: tab appKey: appKey];
-      controller.title = titles[nextCrumb];
+      UIViewController *controller = [[Scene alloc] init: nextCrumb tab: tab title: titles[nextCrumb] appKey: appKey];
       [controllers addObject:controller];
     }
     [navigationController setViewControllers:controllers animated:true];

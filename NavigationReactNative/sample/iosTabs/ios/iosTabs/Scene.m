@@ -15,10 +15,11 @@
 
 @implementation Scene
 
-- (id)init: (NSInteger)crumb tab:(NSInteger)tab appKey:(NSString *)appKey {
+- (id)init: (NSInteger)crumb tab:(NSInteger)tab title:(NSString *)title appKey:(NSString *)appKey {
   if (self = [super init]) {
     self.crumb = crumb;
     self.tab = tab;
+    self.title = title;
     self.appKey = appKey;
   }
   return self;

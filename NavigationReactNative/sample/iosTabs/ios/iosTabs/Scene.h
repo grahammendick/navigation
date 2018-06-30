@@ -14,6 +14,6 @@
 @property NSInteger tab;
 @property NSString *appKey;
 
--(id)init: (NSInteger)crumb tab:(NSInteger)tab appKey:(NSString *)appKey;
+-(id)init: (NSInteger)crumb tab:(NSInteger)tab title:(NSString *)title appKey:(NSString *)appKey;
 
 @end
