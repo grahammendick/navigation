@@ -5,9 +5,11 @@ var emitter = new NativeEventEmitter(NavigationMotion)
 
 var addNavigateHandler = (stateNavigator, tab) => {
     stateNavigator.onNavigate(() => {
-        var {crumbs, title} = stateNavigator.stateContext;
-        var titles = crumbs.map(({title}) => title).concat(title);
-        NavigationMotion.render(crumbs.length, tab, titles, AppRegistry.getAppKeys()[0]);    
+        var {crumbs, title, history} = stateNavigator.stateContext;
+        if (!history) {
+            var titles = crumbs.map(({title}) => title).concat(title);
+            NavigationMotion.render(crumbs.length, tab, titles, AppRegistry.getAppKeys()[0]);
+        }
     });        
 };
 

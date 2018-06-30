@@ -54,8 +54,10 @@ class Scene extends React.Component {
                 if (this.props.tab === tab) {
                     var {stateNavigator} = this.props.navigationEvent;
                     var distance = stateNavigator.stateContext.crumbs.length - crumb;
-                    if (distance > 0)
-                        stateNavigator.navigateBack(distance);
+                    if (distance > 0) {
+                        var url = stateNavigator.getNavigationBackLink(distance);
+                        stateNavigator.navigateLink(url, undefined, true);
+                    }
                 }
             })
         }
