@@ -40,7 +40,7 @@ class Scene extends React.Component {
             tempStateNavigator.offNavigate = stateNavigator.offNavigate;
             tempStateNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
             var {oldState, state, data, asyncData} = tempStateNavigator.stateContext;
-            return {navigationEvent: {oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: tempStateNavigator}};
+            return {navigationEvent: {oldState, state, data, asyncData, stateNavigator: tempStateNavigator}};
         }
         return null;
     }
