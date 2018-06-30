@@ -1,6 +1,6 @@
 import React from 'react';
 import {onNavigate} from './NavigationMotion.js';
-import {StateNavigator} from 'navigation';
+import {StateNavigator, StateContext} from 'navigation';
 import {NavigationContext} from 'navigation-react';
 
 class Scene extends React.Component {
@@ -18,31 +18,35 @@ class Scene extends React.Component {
             return {navigationEvent};
         if (state && !prevNavigationEvent && crumb < crumbs.length) {
             var {stateNavigator} = navigationEvent;
-            var tempStateNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
-            var {stateContext} = tempStateNavigator;
-            var {state, data, url, title} = crumbs[crumb];
-            stateContext.state = state;
-            stateContext.data = data;
-            stateContext.url = url;
-            stateContext.title = title;
-            stateContext.crumbs = crumbs.slice(0, crumb);
-            stateContext.nextCrumb = crumbs[crumb];
-            if (crumb > 1) {
-                var {state, data, url} = crumbs[crumb - 1];
-                stateContext.previousState = stateContext.oldState = state;
-                stateContext.previousData = stateContext.oldData = data;
-                stateContext.previousUrl = stateContext.oldUrl = url;
-            }
-            tempStateNavigator.configure = stateNavigator.configure;
-            tempStateNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
-            tempStateNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
-            tempStateNavigator.onNavigate = stateNavigator.onNavigate;
-            tempStateNavigator.offNavigate = stateNavigator.offNavigate;
-            tempStateNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
-            var {oldState, state, data, asyncData} = tempStateNavigator.stateContext;
-            return {navigationEvent: {oldState, state, data, asyncData, stateNavigator: tempStateNavigator}};
+            var caretakerNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
+            caretakerNavigator.stateContext = Scene.createStateContext(crumbs, crumb);
+            caretakerNavigator.configure = stateNavigator.configure;
+            caretakerNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
+            caretakerNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
+            caretakerNavigator.onNavigate = stateNavigator.onNavigate;
+            caretakerNavigator.offNavigate = stateNavigator.offNavigate;
+            caretakerNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
+            var {oldState, state, data, asyncData} = caretakerNavigator.stateContext;
+            return {navigationEvent: {oldState, state, data, asyncData, stateNavigator: caretakerNavigator}};
         }
         return null;
+    }
+    static createStateContext(crumbs, crumb) {
+        var stateContext = new StateContext();
+        var {state, data, url, title} = crumbs[crumb];
+        stateContext.state = state;
+        stateContext.data = data;
+        stateContext.url = url;
+        stateContext.title = title;
+        stateContext.crumbs = crumbs.slice(0, crumb);
+        stateContext.nextCrumb = crumbs[crumb];
+        if (crumb > 1) {
+            var {state, data, url} = crumbs[crumb - 1];
+            stateContext.previousState = stateContext.oldState = state;
+            stateContext.previousData = stateContext.oldData = data;
+            stateContext.previousUrl = stateContext.oldUrl = url;
+        }
+        return stateContext;
     }
     componentDidMount() {
         if (!this.props.crumb) {
