@@ -23,12 +23,12 @@
   
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 
-  UIViewController *viewControllerZero = [[Scene alloc] init: @0 tab: @0 appKey: @"iosTabs"];
+  UIViewController *viewControllerZero = [[Scene alloc] init: 0 tab: 0 appKey: @"iosTabs"];
   viewControllerZero.title = @"Scene";
   viewControllerZero.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemSearch tag:0];
   UINavigationController *navigationControllerZero = [[UINavigationController alloc] initWithRootViewController:viewControllerZero];
 
-  UIViewController *viewControllerOne = [[Scene alloc] init: @0 tab: @1 appKey: @"iosTabs"];
+  UIViewController *viewControllerOne = [[Scene alloc] init: 0 tab: 1 appKey: @"iosTabs"];
   viewControllerOne.title = @"Scene";
   viewControllerOne.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemTopRated tag:1];
   UINavigationController *navigationControllerOne = [[UINavigationController alloc] initWithRootViewController:viewControllerOne];

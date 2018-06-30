@@ -10,10 +10,10 @@
 
 @interface Scene : UIViewController
 
-@property NSNumber *crumb;
-@property NSNumber *tab;
+@property NSInteger crumb;
+@property NSInteger tab;
 @property NSString *appKey;
 
--(id)init: (NSNumber *)crumb tab:(NSNumber *)tab appKey:(NSString *)appKey;
+-(id)init: (NSInteger)crumb tab:(NSInteger)tab appKey:(NSString *)appKey;
 
 @end
