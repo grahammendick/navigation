@@ -27,7 +27,7 @@ RCT_EXPORT_MODULE();
   return dispatch_get_main_queue();
 }
 
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
   NSNumber *crumb = @0;
   NSNumber *tab = @0;
