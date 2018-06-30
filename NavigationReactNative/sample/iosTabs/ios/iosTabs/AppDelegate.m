@@ -21,10 +21,6 @@
 
   self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation moduleProvider:nil launchOptions:launchOptions];
   
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:self.bridge moduleName:@"iosTabs" initialProperties:nil];
-  
-  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
-  
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 
   UIViewController *viewControllerZero = [[Scene alloc] init: @0 tab: @0 appKey: @"iosTabs"];
