@@ -81,6 +81,7 @@ class Scene extends React.Component {
     }
     render() {
         var {navigationEvent} = this.state;
+        if (!navigationEvent) return null;
         var {state, data} = navigationEvent.stateNavigator.stateContext;
         return (
             <NavigationContext.Provider value={navigationEvent}>
