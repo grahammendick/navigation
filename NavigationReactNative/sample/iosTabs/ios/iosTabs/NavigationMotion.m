@@ -29,19 +29,21 @@ RCT_EXPORT_MODULE();
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-  NSInteger crumb = 0;
-  NSInteger tab = 0;
-  if ([viewController isKindOfClass:[Scene class]]) {
-    crumb = ((Scene *)viewController).crumb;
-    tab = ((Scene *)viewController).tab;
-  }
+  NSInteger crumb = ((Scene *)viewController).crumb;
+  NSInteger tab = ((Scene *)viewController).tab;
   [self sendEventWithName:@"Navigate" body:@{@"crumb": @(crumb), @"tab": @(tab)}];
 }
 
 RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)titles appKey:(NSString *)appKey)
 {
-  UITabBarController *tabBarController = (UITabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
-  UINavigationController *navigationController = (UINavigationController *)tabBarController.viewControllers[tab];
+  UINavigationController *navigationController;
+  UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+  if ([rootViewController isKindOfClass:[UITabBarController class]]) {
+    navigationController = (UINavigationController *)((UITabBarController *)rootViewController).viewControllers[tab];
+  } else {
+    navigationController = (UINavigationController *)rootViewController;
+  }
+
   if (!navigationController.delegate) {
     navigationController.delegate = self;
   }

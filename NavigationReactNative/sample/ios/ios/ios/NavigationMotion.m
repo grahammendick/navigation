@@ -27,7 +27,7 @@ RCT_EXPORT_MODULE();
   return dispatch_get_main_queue();
 }
 
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
   NSInteger crumb = ((Scene *)viewController).crumb;
   NSInteger tab = ((Scene *)viewController).tab;
@@ -36,7 +36,14 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)titles appKey:(NSString *)appKey)
 {
-  UINavigationController *navigationController = (UINavigationController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+  UINavigationController *navigationController;
+  UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+  if ([rootViewController isKindOfClass:[UITabBarController class]]) {
+    navigationController = (UINavigationController *)((UITabBarController *)rootViewController).viewControllers[tab];
+  } else {
+    navigationController = (UINavigationController *)rootViewController;
+  }
+
   if (!navigationController.delegate) {
     navigationController.delegate = self;
   }
@@ -49,7 +56,6 @@ RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)t
     for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
       NSInteger nextCrumb = currentCrumb + i + 1;
       UIViewController *controller = [[Scene alloc] init: nextCrumb tab: tab title: titles[nextCrumb] appKey: appKey];
-      controller.title = titles[nextCrumb];
       [controllers addObject:controller];
     }
     [navigationController setViewControllers:controllers animated:true];
