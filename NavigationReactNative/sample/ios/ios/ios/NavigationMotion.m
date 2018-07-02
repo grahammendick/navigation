@@ -29,14 +29,12 @@ RCT_EXPORT_MODULE();
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-  NSNumber *crumb = @0;
-  if ([viewController isKindOfClass:[Scene class]]) {
-       crumb = ((Scene *)viewController).crumb;
-  }
-  [self sendEventWithName:@"Navigate" body:@{@"crumb": crumb}];
+  NSInteger crumb = ((Scene *)viewController).crumb;
+  NSInteger tab = ((Scene *)viewController).tab;
+  [self sendEventWithName:@"Navigate" body:@{@"crumb": @(crumb), @"tab": @(tab)}];
 }
 
-RCT_EXPORT_METHOD(render:(NSInteger)crumb titles:(NSArray *)titles appKey:(NSString *)appKey)
+RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)titles appKey:(NSString *)appKey)
 {
   UINavigationController *navigationController = (UINavigationController *)[UIApplication sharedApplication].keyWindow.rootViewController;
   if (!navigationController.delegate) {
@@ -50,7 +48,7 @@ RCT_EXPORT_METHOD(render:(NSInteger)crumb titles:(NSArray *)titles appKey:(NSStr
     NSMutableArray *controllers = [navigationController.viewControllers mutableCopy];
     for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
       NSInteger nextCrumb = currentCrumb + i + 1;
-      UIViewController *controller = [[Scene alloc] init: @(nextCrumb) appKey: appKey];
+      UIViewController *controller = [[Scene alloc] init: nextCrumb tab: tab title: titles[nextCrumb] appKey: appKey];
       controller.title = titles[nextCrumb];
       [controllers addObject:controller];
     }
