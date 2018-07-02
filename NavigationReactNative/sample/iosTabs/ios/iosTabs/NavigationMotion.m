@@ -58,7 +58,6 @@ RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)t
     }
     [navigationController setViewControllers:controllers animated:true];
   }
-  tabBarController.selectedIndex = tab;
 }
 
 @end
