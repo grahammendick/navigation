@@ -19,6 +19,6 @@ stateNavigator.navigate('scene');
 
 export default ({crumb}) => (
   <NavigationHandler stateNavigator={stateNavigator}>
-    <Scene crumb={crumb} />
+    <Scene crumb={crumb} tab={0} />
   </NavigationHandler>
 );
