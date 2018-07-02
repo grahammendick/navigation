@@ -9,7 +9,8 @@ class Scene extends React.Component {
         this.state = {navigationEvent: null};
     }
     static defaultProps = {
-        crumb: 0
+        crumb: 0,
+        tab: 0
     }
     static getDerivedStateFromProps(props, {navigationEvent: prevNavigationEvent}) {
         var {crumb, navigationEvent} = props;
