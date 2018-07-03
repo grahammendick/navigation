@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.navigation.reactnative">
 
@@ -7,5 +8,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" />
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".SceneActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".AlternateSceneActivity"
+            android:launchMode="singleTop" />
+    </application>
+
 </manifest>
