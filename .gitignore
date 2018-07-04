@@ -1,6 +1,3 @@
-Navigation*/src/**/*.js
-Navigation*/test/**/*.js
-!Navigation*/sample/**/*.js
 build/dist
 build/npm/**/navigation*.js
 npm-debug.log
@@ -8,5 +5,4 @@ node_modules
 !Navigation*/src/node_modules
 !Navigation*/test/node_modules
 .DS_Store
-!NavigationReactNative/src/*.js
 
