@@ -2,5 +2,5 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 
-@interface NVNavigationModule : RCTEventEmitter <RCTBridgeModule, UINavigationControllerDelegate>
+@interface NavigationModule : RCTEventEmitter <RCTBridgeModule, UINavigationControllerDelegate>
 @end

@@ -6,7 +6,7 @@
  */
 
 #import "AppDelegate.h"
-#import "Scene.h"
+#import "NVSceneController.h"
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -22,7 +22,7 @@
   self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation moduleProvider:nil launchOptions:launchOptions];
   
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *rootViewController = [[Scene alloc] init: 0 tab: 0 title: @"Scene" appKey: @"ios"];
+  UIViewController *rootViewController = [[NVSceneController alloc] init: 0 tab: 0 title: @"Scene" appKey: @"ios"];
   UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
   self.window.rootViewController = navigationController;
   [self.window makeKeyAndVisible];

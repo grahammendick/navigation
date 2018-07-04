@@ -1,11 +1,11 @@
-#import "NVNavigationModule.h"
+#import "NavigationModule.h"
 #import "NVSceneController.h"
 
 #import <UIKit/UIKit.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
-@implementation NVNavigationModule
+@implementation NavigationModule
 
 RCT_EXPORT_MODULE();
 
@@ -21,8 +21,8 @@ RCT_EXPORT_MODULE();
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    NSInteger crumb = ((SceneController *)viewController).crumb;
-    NSInteger tab = ((SceneController *)viewController).tab;
+    NSInteger crumb = ((NVSceneController *)viewController).crumb;
+    NSInteger tab = ((NVSceneController *)viewController).tab;
     [self sendEventWithName:@"Navigate" body:@{@"crumb": @(crumb), @"tab": @(tab)}];
 }
 
@@ -47,7 +47,7 @@ RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)t
         NSMutableArray *controllers = [navigationController.viewControllers mutableCopy];
         for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
             NSInteger nextCrumb = currentCrumb + i + 1;
-            UIViewController *controller = [[SceneController alloc] init: nextCrumb tab: tab title: titles[nextCrumb] appKey: appKey];
+            UIViewController *controller = [[NVSceneController alloc] init: nextCrumb tab: tab title: titles[nextCrumb] appKey: appKey];
             [controllers addObject:controller];
         }
         [navigationController setViewControllers:controllers animated:true];

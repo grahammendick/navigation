@@ -48,16 +48,16 @@ class Scene extends React.Component {
     componentDidMount() {
         var {crumb, tab, navigationEvent: {stateNavigator}} = this.props;
         if (!crumb) {
-            var {NavigationMotion} = NativeModules;
+            var {NavigationModule} = NativeModules;
             this.handleNavigation = (_oldState, _state, _data, _asyncData, stateContext) => {
                 var {crumbs, title, history} = stateContext;
                 if (!history) {
                     var titles = crumbs.map(({title}) => title).concat(title);
-                    NavigationMotion.render(crumbs.length, tab, titles, AppRegistry.getAppKeys()[0]);
+                    NavigationModule.render(crumbs.length, tab, titles, AppRegistry.getAppKeys()[0]);
                 }
             }
             stateNavigator.onNavigate(this.handleNavigation); 
-            var emitter = new NativeEventEmitter(NavigationMotion)
+            var emitter = new NativeEventEmitter(NavigationModule)
             this.subscription = emitter.addListener('Navigate', ({crumb, tab}) => {
                 if (this.props.tab === tab) {
                     var distance = stateNavigator.stateContext.crumbs.length - crumb;
