@@ -1,6 +1,3 @@
-Navigation*/src/**/*.js
-Navigation*/test/**/*.js
-!Navigation*/sample/**/*.js
 build/dist
 build/npm/**/navigation*.js
 npm-debug.log

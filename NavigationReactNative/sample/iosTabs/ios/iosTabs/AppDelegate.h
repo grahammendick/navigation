@@ -7,9 +7,9 @@
 
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
-#import "ApplicationHostDelegate.h"
+#import "NVApplicationHostDelegate.h"
 
-@interface AppDelegate : UIResponder <ApplicationHostDelegate>
+@interface AppDelegate : UIResponder <NVApplicationHostDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) RCTBridge *bridge;
