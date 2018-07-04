@@ -57,7 +57,7 @@ class NavigationMotion extends React.Component {
                 var {crumbs, title, history} = stateContext;
                 if (!history) {
                     var titles = crumbs.map(({title}) => title).concat(title);
-                    NavigationModule.render(crumbs.length, AppRegistry.getAppKeys()[0]);
+                    NavigationModule.render(crumbs.length, tab, titles, AppRegistry.getAppKeys()[0]);
                 }
             }
             stateNavigator.onNavigate(this.handleNavigation); 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 
 import java.util.HashMap;
 
@@ -22,7 +23,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void render(int crumb, String appKey) {
+    public void render(int crumb, int tab, ReadableArray titles, String appKey) {
         Activity currentActivity = getCurrentActivity();
         if (mIntents.size() == 0) {
             mIntents.put(0, currentActivity.getIntent());
