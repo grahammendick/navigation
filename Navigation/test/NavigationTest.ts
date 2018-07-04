@@ -1408,7 +1408,7 @@ describe('Navigation', function () {
                 { key: 's', route: 'r', trackCrumbTrail: true },
             ]);
             var state = stateNavigator.states['s'];
-            state.truncateCrumbTrail = (state, data, crumbs) => [];
+            state.truncateCrumbTrail = (_state, _data, _crumbs) => [];
         });
         
         describe('Navigate', function() {
@@ -1483,7 +1483,7 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.slice(-1);
+            state.truncateCrumbTrail = (_state, _data, crumbs) => crumbs.slice(-1);
         });
         
         describe('Navigate', function() {
@@ -1647,7 +1647,7 @@ describe('Navigation', function () {
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.slice(0, 1);
+            state.truncateCrumbTrail = (_state, _data, crumbs) => crumbs.slice(0, 1);
         });
         
         describe('Navigate', function() {
@@ -1742,7 +1742,7 @@ describe('Navigation', function () {
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.slice(0, 1);
+            state.truncateCrumbTrail = (_state, _data, crumbs) => crumbs.slice(0, 1);
         });
         
         describe('Navigate', function() {
@@ -1844,12 +1844,12 @@ describe('Navigation', function () {
             stateNavigator.navigateLink(link);
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s'].unloading = (_state, _data, _url, unload) => {
                 unloading = true;
                 unload();
             }
             stateNavigator.states['s'].dispose = () => disposed = true;
-            stateNavigator.states['s'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s'].navigating = (_data, _url, navigate) => {
                 navigating = true;
                 navigate();
             }
@@ -1873,9 +1873,9 @@ describe('Navigation', function () {
             stateNavigator.navigateLink(link);
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s'].unloading = (_state, _data, _url, _unload) => unloading = true;
             stateNavigator.states['s'].dispose = () => disposed = true;
-            stateNavigator.states['s'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s'].navigated = () => navigated = true;
             stateNavigator.navigate('s');
             assert.strictEqual(validate, true);
@@ -1896,12 +1896,12 @@ describe('Navigation', function () {
             stateNavigator.navigateLink(link);
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s'].unloading = (_state, _data, _url, unload) => {
                 unloading = true;
                 unload();
             }
             stateNavigator.states['s'].dispose = () => disposed = true;
-            stateNavigator.states['s'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s'].navigated = () => navigated = true;
             stateNavigator.navigate('s');
             assert.strictEqual(validate, true);
@@ -1922,9 +1922,9 @@ describe('Navigation', function () {
             stateNavigator.navigateLink(link);
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s'].validate = () => { validate = true; return false; }
-            stateNavigator.states['s'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s'].unloading = (_state, _data, _url, _unload) => unloading = true;
             stateNavigator.states['s'].dispose = () => disposed = true;
-            stateNavigator.states['s'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s'].navigated = () => navigated = true;
             try {
                 stateNavigator.navigate('s');
@@ -1949,12 +1949,12 @@ describe('Navigation', function () {
             stateNavigator.navigateLink(link);
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s1'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s0'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s0'].unloading = (_state, _data, _url, unload) => {
                 unloading = true;
                 unload();
             }
             stateNavigator.states['s0'].dispose = () => disposed = true;
-            stateNavigator.states['s1'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s1'].navigating = (_data, _url, navigate) => {
                 navigating = true;
                 navigate();
             }
@@ -1979,9 +1979,9 @@ describe('Navigation', function () {
             stateNavigator.navigateLink(link);
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s1'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s0'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s0'].unloading = (_state, _data, _url, _unload) => unloading = true;
             stateNavigator.states['s0'].dispose = () => disposed = true;
-            stateNavigator.states['s1'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s1'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s1'].navigated = () => navigated = true;
             stateNavigator.navigate('s1');
             assert.strictEqual(validate, true);
@@ -2003,12 +2003,12 @@ describe('Navigation', function () {
             stateNavigator.navigateLink(link);
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s1'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s0'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s0'].unloading = (_state, _data, _url, unload) => {
                 unloading = true;
                 unload();
             }
             stateNavigator.states['s0'].dispose = () => disposed = true;
-            stateNavigator.states['s1'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s1'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s1'].navigated = () => navigated = true;
             stateNavigator.navigate('s1');
             assert.strictEqual(validate, true);
@@ -2030,9 +2030,9 @@ describe('Navigation', function () {
             stateNavigator.navigateLink(link);
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s1'].validate = () => { validate = true; return false; }
-            stateNavigator.states['s0'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s0'].unloading = (_state, _data, _url, _unload) => unloading = true;
             stateNavigator.states['s0'].dispose = () => disposed = true;
-            stateNavigator.states['s1'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s1'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s1'].navigated = () => navigated = true;
             try {
                 stateNavigator.navigate('s1');
@@ -2056,7 +2056,7 @@ describe('Navigation', function () {
             ]);
             var link = stateNavigator.getNavigationLink('s0');
             stateNavigator.navigateLink(link);
-            stateNavigator.states['s1'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s1'].navigating = (_data, _url, _navigate) => {
                 stateNavigator.navigate('s2');
             }
             stateNavigator.navigate('s1');
@@ -2076,12 +2076,12 @@ describe('Navigation', function () {
             stateNavigator.navigateLink(link);
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s2'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s1'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s1'].unloading = (_state, _data, _url, unload) => {
                 unloading = true;
                 unload();
             }
             stateNavigator.states['s1'].dispose = () => disposed = true;
-            stateNavigator.states['s2'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s2'].navigating = (_data, _url, navigate) => {
                 navigating = true;
                 navigate();
             }
@@ -2108,9 +2108,9 @@ describe('Navigation', function () {
             stateNavigator.navigateLink(link);
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s2'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s1'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s1'].unloading = (_state, _data, _url, _unload) => unloading = true;
             stateNavigator.states['s1'].dispose = () => disposed = true;
-            stateNavigator.states['s2'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s2'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s2'].navigated = () => navigated = true;
             stateNavigator.navigate('s2');
             assert.strictEqual(validate, true);
@@ -2134,12 +2134,12 @@ describe('Navigation', function () {
             stateNavigator.navigateLink(link);
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s2'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s1'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s1'].unloading = (_state, _data, _url, unload) => {
                 unloading = true;
                 unload();
             }
             stateNavigator.states['s1'].dispose = () => disposed = true;
-            stateNavigator.states['s2'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s2'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s2'].navigated = () => navigated = true;
             stateNavigator.navigate('s2');
             assert.strictEqual(validate, true);
@@ -2163,9 +2163,9 @@ describe('Navigation', function () {
             stateNavigator.navigateLink(link);
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s2'].validate = () => { validate = true; return false; }
-            stateNavigator.states['s1'].unloading = (state, data, url, unload) =>  unloading = true;
+            stateNavigator.states['s1'].unloading = (_state, _data, _url, _unload) =>  unloading = true;
             stateNavigator.states['s1'].dispose = () => disposed = true;
-            stateNavigator.states['s2'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s2'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s2'].navigated = () => navigated = true;
             try {
                 stateNavigator.navigate('s2');
@@ -2194,12 +2194,12 @@ describe('Navigation', function () {
             stateNavigator.navigate('s2');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s2'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s2'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s2'].unloading = (_state, _data, _url, unload) => {
                 unloading = true;
                 unload();
             }
             stateNavigator.states['s2'].dispose = () => disposed = true;
-            stateNavigator.states['s2'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s2'].navigating = (_data, _url, navigate) => {
                 navigating = true;
                 navigate();
             }
@@ -2228,9 +2228,9 @@ describe('Navigation', function () {
             stateNavigator.navigate('s2');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s2'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s2'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s2'].unloading = (_state, _data, _url, _unload) => unloading = true;
             stateNavigator.states['s2'].dispose = () => disposed = true;
-            stateNavigator.states['s2'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s2'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s2'].navigated = () => navigated = true;
             stateNavigator.refresh();
             assert.strictEqual(validate, true);
@@ -2256,12 +2256,12 @@ describe('Navigation', function () {
             stateNavigator.navigate('s2');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s2'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s2'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s2'].unloading = (_state, _data, _url, unload) => {
                 unloading = true;
                 unload();
             }
             stateNavigator.states['s2'].dispose = () => disposed = true;
-            stateNavigator.states['s2'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s2'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s2'].navigated = () => navigated = true;
             stateNavigator.refresh();
             assert.strictEqual(validate, true);
@@ -2287,9 +2287,9 @@ describe('Navigation', function () {
             stateNavigator.navigate('s2');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s2'].validate = () => { validate = true; return false; }
-            stateNavigator.states['s2'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s2'].unloading = (_state, _data, _url, _unload) => unloading = true;
             stateNavigator.states['s2'].dispose = () => disposed = true;
-            stateNavigator.states['s2'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s2'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s2'].navigated = () => navigated = true;
             try {
                 stateNavigator.refresh();
@@ -2314,12 +2314,12 @@ describe('Navigation', function () {
             stateNavigator.navigate('s1');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s0'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s1'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s1'].unloading = (_state, _data, _url, unload) => {
                 unloading = true;
                 unload();
             }
             stateNavigator.states['s1'].dispose = () => disposed = true;
-            stateNavigator.states['s0'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s0'].navigating = (_data, _url, navigate) => {
                 navigating = true;
                 navigate();
             }
@@ -2345,9 +2345,9 @@ describe('Navigation', function () {
             stateNavigator.navigate('s1');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s0'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s1'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s1'].unloading = (_state, _data, _url, _unload) => unloading = true;
             stateNavigator.states['s1'].dispose = () => disposed = true;
-            stateNavigator.states['s0'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s0'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s0'].navigated = () => navigated = true;
             var link = stateNavigator.getNavigationBackLink(1);
             stateNavigator.navigateLink(link);
@@ -2370,12 +2370,12 @@ describe('Navigation', function () {
             stateNavigator.navigate('s1');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s0'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s1'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s1'].unloading = (_state, _data, _url, unload) => {
                 unloading = true;
                 unload();
             }
             stateNavigator.states['s1'].dispose = () => disposed = true;
-            stateNavigator.states['s0'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s0'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s0'].navigated = () => navigated = true;
             var link = stateNavigator.getNavigationBackLink(1);
             stateNavigator.navigateLink(link);
@@ -2398,9 +2398,9 @@ describe('Navigation', function () {
             stateNavigator.navigate('s1');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s0'].validate = () => { validate = true; return false; }
-            stateNavigator.states['s1'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s1'].unloading = (_state, _data, _url, _unload) => unloading = true;
             stateNavigator.states['s1'].dispose = () => disposed = true;
-            stateNavigator.states['s0'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s0'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s0'].navigated = () => navigated = true;
             var link = stateNavigator.getNavigationBackLink(1);
             try {
@@ -2434,12 +2434,12 @@ describe('Navigation', function () {
             stateNavigator.navigate('s4');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s2'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s4'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s4'].unloading = (_state, _data, _url, unload) => {
                 unloading = true;
                 unload();
             }
             stateNavigator.states['s4'].dispose = () => disposed = true;
-            stateNavigator.states['s2'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s2'].navigating = (_data, _url, navigate) => {
                 navigating = true;
                 navigate();
             }
@@ -2472,9 +2472,9 @@ describe('Navigation', function () {
             stateNavigator.navigate('s4');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s2'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s4'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s4'].unloading = (_state, _data, _url, _unload) => unloading = true;
             stateNavigator.states['s4'].dispose = () => disposed = true;
-            stateNavigator.states['s2'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s2'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s2'].navigated = () => navigated = true;
             stateNavigator.navigateBack(2);
             assert.strictEqual(validate, true);
@@ -2504,12 +2504,12 @@ describe('Navigation', function () {
             stateNavigator.navigate('s4');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s2'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s4'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s4'].unloading = (_state, _data, _url, unload) => {
                 unloading = true;
                 unload();
             }
             stateNavigator.states['s4'].dispose = () => disposed = true;
-            stateNavigator.states['s2'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s2'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s2'].navigated = () => navigated = true;
             stateNavigator.navigateBack(2);
             assert.strictEqual(validate, true);
@@ -2539,9 +2539,9 @@ describe('Navigation', function () {
             stateNavigator.navigate('s4');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s2'].validate = () => { validate = true; return false; }
-            stateNavigator.states['s4'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s4'].unloading = (_state, _data, _url, _unload) => unloading = true;
             stateNavigator.states['s4'].dispose = () => disposed = true;
-            stateNavigator.states['s2'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s2'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s2'].navigated = () => navigated = true;
             try{
                 stateNavigator.navigateBack(2);
@@ -2569,12 +2569,12 @@ describe('Navigation', function () {
             stateNavigator.navigate('s2');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s1'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s2'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s2'].unloading = (_state, _data, _url, unload) => {
                 unloading = true;
                 unload();
             }
             stateNavigator.states['s2'].dispose = () => disposed = true;
-            stateNavigator.states['s1'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s1'].navigating = (_data, _url, navigate) => {
                 navigating = true;
                 navigate();
             }
@@ -2592,12 +2592,12 @@ describe('Navigation', function () {
             navigating = undefined;
             navigated = undefined;
             stateNavigator.states['s0'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s1'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s1'].unloading = (_state, _data, _url, unload) => {
                 unloading = true;
                 unload();
             }
             stateNavigator.states['s1'].dispose = () => disposed = true;
-            stateNavigator.states['s0'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s0'].navigating = (_data, _url, navigate) => {
                 navigating = true;
                 navigate();
             }
@@ -2626,9 +2626,9 @@ describe('Navigation', function () {
             stateNavigator.navigate('s2');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s1'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s2'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s2'].unloading = (_state, _data, _url, _unload) => unloading = true;
             stateNavigator.states['s2'].dispose = () => disposed = true;
-            stateNavigator.states['s1'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s1'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s1'].navigated = () => navigated = true;
             stateNavigator.navigateBack(1);
             assert.strictEqual(validate, true);
@@ -2666,12 +2666,12 @@ describe('Navigation', function () {
             stateNavigator.navigate('s2');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s1'].validate = () => { validate = true; return true; }
-            stateNavigator.states['s2'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s2'].unloading = (_state, _data, _url, unload) => {
                 unloading = true;
                 unload();
             }
             stateNavigator.states['s2'].dispose = () => disposed = true;
-            stateNavigator.states['s1'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s1'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s1'].navigated = () => navigated = true;
             stateNavigator.navigateBack(1);
             assert.strictEqual(validate, true);
@@ -2709,9 +2709,9 @@ describe('Navigation', function () {
             stateNavigator.navigate('s2');
             var validate, unloading, disposed, navigating, navigated;
             stateNavigator.states['s1'].validate = () => { validate = true; return false; }
-            stateNavigator.states['s2'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s2'].unloading = (_state, _data, _url, _unload) => unloading = true;
             stateNavigator.states['s2'].dispose = () => disposed = true;
-            stateNavigator.states['s1'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s1'].navigating = (_data, _url, _navigate) => navigating = true;
             stateNavigator.states['s1'].navigated = () => navigated = true;
             try{
                 stateNavigator.navigateBack(1);
@@ -2755,7 +2755,7 @@ describe('Navigation', function () {
             stateNavigator.navigate('s1');
             stateNavigator.navigate('s2');
             var disposed = 0, unloading, navigated10, navigated01;
-            stateNavigator.states['s2'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s2'].unloading = (_state, _data, _url, unload) => {
                 if (!unloading) {
                     unloading = true;
                     stateNavigator.navigateLink(link);
@@ -2791,7 +2791,7 @@ describe('Navigation', function () {
             stateNavigator.navigate('s2');
             var disposed = 0, navigating, navigated10, navigated01;
             stateNavigator.states['s2'].dispose = () => disposed++;
-            stateNavigator.states['s3'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s3'].navigating = (_data, _url, _navigate) => {
                 navigating = true;
                 stateNavigator.navigateLink(link);
             }
@@ -2818,7 +2818,7 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler = (state, data, url, history, {state: oldState}) => {
+            var beforeNavigateHandler = (state, _data, _url, _history, {state: oldState}) => {
                 oldStates.push(oldState);
                 states.push(state);
                 return true;
@@ -2848,7 +2848,7 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var navigatedHandler = (oldState, state, data) => {
+            var navigatedHandler = (oldState, state, _data) => {
                 oldStates.push(oldState);
                 states.push(state);
             };
@@ -2875,7 +2875,7 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s');
-            var beforeNavigateHandler = (state, data, url, history, {state: oldState}) => {
+            var beforeNavigateHandler = (state, _data, _url, _history, {state: oldState}) => {
                 oldStates.push(oldState);
                 states.push(state);
                 return true;
@@ -2893,7 +2893,7 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s');
-            var navigatedHandler = (oldState, state, data) => {
+            var navigatedHandler = (oldState, state, _data) => {
                 oldStates.push(oldState);
                 states.push(state);
             };
@@ -2912,7 +2912,7 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler = (state, data, url, history, {state: oldState}) => {
+            var beforeNavigateHandler = (state, _data, _url, _history, {state: oldState}) => {
                 oldStates.push(oldState);
                 states.push(state);
                 return true;
@@ -2944,7 +2944,7 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var navigatedHandler = (oldState, state, data) => {
+            var navigatedHandler = (oldState, state, _data) => {
                 oldStates.push(oldState);
                 states.push(state);
             };
@@ -2975,12 +2975,12 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler1 = (state, data, url, history, {state: oldState}) => {
+            var beforeNavigateHandler1 = (state, _data, _url, _history, {state: oldState}) => {
                 oldStates.push(oldState);
                 states.push(state);
                 return true;
             };
-            var beforeNavigateHandler2 = (state, data, url, history, {state: oldState}) => {
+            var beforeNavigateHandler2 = (state, _data, _url, _history, {state: oldState}) => {
                 oldStates.push(oldState);
                 states.push(state);
                 return true;
@@ -3016,11 +3016,11 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var navigatedHandler1 = (oldState, state, data) => {
+            var navigatedHandler1 = (oldState, state, _data) => {
                 oldStates.push(oldState);
                 states.push(state);
             };
-            var navigatedHandler2 = (oldState, state, data) => {
+            var navigatedHandler2 = (oldState, state, _data) => {
                 oldStates.push(oldState);
                 states.push(state);
             };
@@ -3057,12 +3057,12 @@ describe('Navigation', function () {
             var oldStates2 = [];
             var states2 = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler1 = (state, data, url, history, {state: oldState}) => {
+            var beforeNavigateHandler1 = (state, _data, _url, _history, {state: oldState}) => {
                 oldStates1.push(oldState);
                 states1.push(state);
                 return true;
             };
-            var beforeNavigateHandler2 = (state, data, url, history, {state: oldState}) => {
+            var beforeNavigateHandler2 = (state, _data, _url, _history, {state: oldState}) => {
                 oldStates2.push(oldState);
                 states2.push(state);
                 return true;
@@ -3102,11 +3102,11 @@ describe('Navigation', function () {
             var oldStates2 = [];
             var states2 = [];
             stateNavigator.navigate('s0');
-            var navigatedHandler1 = (oldState, state, data) => {
+            var navigatedHandler1 = (oldState, state, _data) => {
                 oldStates1.push(oldState);
                 states1.push(state);
             };
-            var navigatedHandler2 = (oldState, state, data) => {
+            var navigatedHandler2 = (oldState, state, _data) => {
                 oldStates2.push(oldState);
                 states2.push(state);
             };
@@ -3143,7 +3143,7 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler = (state, data, url, history, {state: oldState}) => {
+            var beforeNavigateHandler = (state, _data, _url, _history, {state: oldState}) => {
                 oldStates.push(oldState);
                 states.push(state);
                 return true;
@@ -3172,7 +3172,7 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var navigatedHandler = (oldState, state, data) => {
+            var navigatedHandler = (oldState, state, _data) => {
                 oldStates.push(oldState);
                 states.push(state);
             };
@@ -3202,12 +3202,12 @@ describe('Navigation', function () {
             var oldStates2 = [];
             var states2 = [];
             stateNavigator.navigate('s0');
-            var beforeNavigateHandler1 = (state, data, url, history, {state: oldState}) => {
+            var beforeNavigateHandler1 = (state, _data, _url, _history, {state: oldState}) => {
                 oldStates1.push(oldState);
                 states1.push(state);
                 return true;
             };
-            var beforeNavigateHandler2 = (state, data, url, history, {state: oldState}) => {
+            var beforeNavigateHandler2 = (state, _data, _url, _history, {state: oldState}) => {
                 oldStates2.push(oldState);
                 states2.push(state);
                 return true;
@@ -3245,11 +3245,11 @@ describe('Navigation', function () {
             var oldStates2 = [];
             var states2 = [];
             stateNavigator.navigate('s0');
-            var navigatedHandler1 = (oldState, state, data) => {
+            var navigatedHandler1 = (oldState, state, _data) => {
                 oldStates1.push(oldState);
                 states1.push(state);
             };
-            var navigatedHandler2 = (oldState, state, data) => {
+            var navigatedHandler2 = (oldState, state, _data) => {
                 oldStates2.push(oldState);
                 states2.push(state);
             };
@@ -3284,13 +3284,13 @@ describe('Navigation', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            stateNavigator.states['s1'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s1'].unloading = (_state, data, _url, unload) => {
                 if (data.x)
                     stateNavigator.navigate('s2');
                 unload();
             }
             var navigating;
-            stateNavigator.states['s3'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s3'].navigating = (_data, _url, navigate) => {
                 navigating = true;
                 navigate();
             }
@@ -3312,7 +3312,7 @@ describe('Navigation', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var unloading;
-            stateNavigator.states['s1'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s1'].unloading = (_state, _data, url, unload) => {
                 if (!unloading) {
                     unloading = true;
                     stateNavigator.navigateLink(url);
@@ -3320,7 +3320,7 @@ describe('Navigation', function () {
                 unload();
             }
             var navigating = 0;
-            stateNavigator.states['s2'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s2'].navigating = (_data, _url, navigate) => {
                 navigating++;
                 navigate();
             }
@@ -3342,7 +3342,7 @@ describe('Navigation', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            stateNavigator.states['s3'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s3'].navigating = (_data, _url, navigate) => {
                 stateNavigator.navigate('s2');
                 navigate();
             }
@@ -3361,7 +3361,7 @@ describe('Navigation', function () {
             ]);
             stateNavigator.navigate('s0');
             var hits = 0;
-            stateNavigator.states['s0'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s0'].unloading = (_state, _data, _url, unload) => {
                 hits++;
                 unload();
             }
@@ -3385,14 +3385,14 @@ describe('Navigation', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            stateNavigator.states['s1'].unloading = (state, data, url, unload) => {
+            stateNavigator.states['s1'].unloading = (state, _data, _url, unload) => {
                 if (state.key == 's2')
                     stateNavigator.navigate('s3');
                 unload();
             }
             var navigatedState;
             var hits = 0;
-            var beforeNavigateHandler = (state, data) => {
+            var beforeNavigateHandler = (state, _data) => {
                 navigatedState = state;
                 hits++;
                 return true;
@@ -3423,7 +3423,7 @@ describe('Navigation', function () {
             }
             var navigatedState;
             var hits = 0;
-            var navigatedHandler = (oldState, state, data) => {
+            var navigatedHandler = (_oldState, state, _data) => {
                 navigatedState = state;
                 hits++;
             };
@@ -3450,7 +3450,7 @@ describe('Navigation', function () {
                 navigatingUrl = url;
                 navigating('World');
             }
-            var beforeNavigateHandler = (state, data, url, history, {state: oldState}) => {
+            var beforeNavigateHandler = (state, data, url, _history, {state: oldState}) => {
                 beforeNavigateOldState = oldState;
                 beforeNavigateState = state;
                 beforeNavigateData = data;
@@ -3506,7 +3506,7 @@ describe('Navigation', function () {
                 navigatingUrl = url;
                 navigating('World');
             }
-            var beforeNavigateHandler = (state, data, url, history, {state: oldState}) => {
+            var beforeNavigateHandler = (state, data, url, _history, {state: oldState}) => {
                 beforeNavigateOldState = oldState;
                 beforeNavigateState = state;
                 beforeNavigateData = data;
@@ -3554,12 +3554,12 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1' }
             ]);
             var navigatedOldState, navigatedState, navigatedData, navigatedAsyncData;
-            var beforeNavigateHandler = (oldState, state, data, url) => {
+            var beforeNavigateHandler = (_oldState, _state, _data, _url) => {
                 stateNavigator.offBeforeNavigate(beforeNavigateHandler);
                 stateNavigator.navigate('s1', { s: 'Hello' });
                 return true;
             };
-            stateNavigator.states['s1'].navigating = (data, url, navigating) => {
+            stateNavigator.states['s1'].navigating = (_data, _url, navigating) => {
                 navigating('World');
             }
             var navigatedHandler = (oldState, state, data, asyncData) => {
@@ -3586,11 +3586,11 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1' }
             ]);
             var navigatedOldState, navigatedState, navigatedData, navigatedAsyncData;
-            stateNavigator.states['s0'].navigating = (data, url, navigating) => {
+            stateNavigator.states['s0'].navigating = (_data, _url, navigating) => {
                 stateNavigator.navigate('s1', { s: 'Hello' });
                 navigating();
             }
-            stateNavigator.states['s1'].navigating = (data, url, navigating) => {
+            stateNavigator.states['s1'].navigating = (_data, _url, navigating) => {
                 navigating('World');
             }
             var navigatedHandler = (oldState, state, data, asyncData) => {
@@ -3618,15 +3618,15 @@ describe('Navigation', function () {
             stateNavigator.navigate('s0');
             var link = stateNavigator.getNavigationLink('s1');
             var beforeNavigatingHistory, unloadingHistory, navigatingHistory;
-            stateNavigator.onBeforeNavigate((state, data, url, history) => {
+            stateNavigator.onBeforeNavigate((_state, _data, _url, history) => {
                 beforeNavigatingHistory = history;
                 return true;
             });
-            stateNavigator.states['s0'].unloading = (state, data, url, unload, history) => {
+            stateNavigator.states['s0'].unloading = (_state, _data, _url, unload, history) => {
                 unloadingHistory = history; 
                 unload();
             }
-            stateNavigator.states['s1'].navigating = (data, url, navigate, history) => {
+            stateNavigator.states['s1'].navigating = (_data, _url, navigate, history) => {
                 navigatingHistory = history;
                 navigate();
             }
@@ -3646,15 +3646,15 @@ describe('Navigation', function () {
             stateNavigator.navigate('s0');
             var link = stateNavigator.getNavigationLink('s1');
             var beforeNavigatingHistory, unloadingHistory, navigatingHistory;
-            stateNavigator.onBeforeNavigate((state, data, url, history) => {
+            stateNavigator.onBeforeNavigate((_state, _data, _url, history) => {
                 beforeNavigatingHistory = history;
                 return true;
             });
-            stateNavigator.states['s0'].unloading = (state, data, url, unload, history) => {
+            stateNavigator.states['s0'].unloading = (_state, _data, _url, unload, history) => {
                 unloadingHistory = history; 
                 unload();
             }
-            stateNavigator.states['s1'].navigating = (data, url, navigate, history) => {
+            stateNavigator.states['s1'].navigating = (_data, _url, navigate, history) => {
                 navigatingHistory = history;
                 navigate();
             }
@@ -3672,11 +3672,11 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1' }
             ]);
             stateNavigator.navigate('s0');
-            stateNavigator.states['s1'].navigated = (data, asyncData) => {
+            stateNavigator.states['s1'].navigated = (_data, asyncData) => {
                 assert.equal(asyncData, 'hello');
                 done();
             }
-            stateNavigator.states['s1'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s1'].navigating = (_data, _url, navigate) => {
                 setTimeout(() => navigate('hello'), 0);
             }
             stateNavigator.navigate('s1');
@@ -3690,11 +3690,11 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1' }
             ]);
             stateNavigator.navigate('s0');
-            stateNavigator.states['s1'].navigated = (data, asyncData) => {
+            stateNavigator.states['s1'].navigated = (_data, asyncData) => {
                 assert.equal(asyncData, 0);
             }
             var i = 0;
-            stateNavigator.states['s1'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s1'].navigating = (_data, _url, navigate) => {
                 ((count) => setTimeout(() => {
                     navigate(count);
                     if (count === 1)
@@ -3714,11 +3714,11 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1' }
             ]);
             stateNavigator.navigate('s0');
-            stateNavigator.states['s1'].navigated = (data, asyncData) => {
+            stateNavigator.states['s1'].navigated = (_data, asyncData) => {
                 assert.equal(asyncData, 1);
             }
             var i = 0;
-            stateNavigator.states['s1'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s1'].navigating = (_data, _url, navigate) => {
                 ((count) => setTimeout(() => { 
                     navigate(count);
                     if (count === 0)
@@ -3739,14 +3739,14 @@ describe('Navigation', function () {
                 { key: 's2', route: 'r2' }
             ]);
             stateNavigator.navigate('s0');
-            stateNavigator.states['s1'].navigated = (data, asyncData) => {
+            stateNavigator.states['s1'].navigated = (_data, _asyncData) => {
                 stateNavigator.navigate('s2');
             }
-            stateNavigator.states['s2'].navigated = (data, asyncData) => {
+            stateNavigator.states['s2'].navigated = (_data, asyncData) => {
                 assert.equal(asyncData, undefined);
                 done();
             }
-            stateNavigator.states['s1'].navigating = (data, url, navigate) => {
+            stateNavigator.states['s1'].navigating = (_data, _url, navigate) => {
                 setTimeout(() => navigate('hello'), 0);
             }
             stateNavigator.navigate('s1');
@@ -3933,7 +3933,7 @@ describe('Navigation', function () {
         beforeEach(function() {
             var historyManager = new HashHistoryManager();
             replaceHistory = undefined;
-            historyManager.addHistory = (url: string, replace: boolean) => {
+            historyManager.addHistory = (_url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateNavigator = new StateNavigator([
@@ -3971,7 +3971,7 @@ describe('Navigation', function () {
         beforeEach(function() {
             var historyManager = new HashHistoryManager();
             replaceHistory = undefined;
-            historyManager.addHistory = (url: string, replace: boolean) => {
+            historyManager.addHistory = (_url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateNavigator = new StateNavigator([
@@ -4009,7 +4009,7 @@ describe('Navigation', function () {
         beforeEach(function() {
             var historyManager = new HashHistoryManager();
             replaceHistory = undefined;
-            historyManager.addHistory = (url: string, replace: boolean) => {
+            historyManager.addHistory = (_url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateNavigator = new StateNavigator([
@@ -4047,7 +4047,7 @@ describe('Navigation', function () {
         beforeEach(function() {
             var historyManager = new HashHistoryManager();
             replaceHistory = undefined;
-            historyManager.addHistory = (url: string, replace: boolean) => {
+            historyManager.addHistory = (_url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateNavigator = new StateNavigator([
@@ -4088,7 +4088,7 @@ describe('Navigation', function () {
             stateNavigator.navigate('s');
             var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (url: string, replace: boolean) => {
+            historyManager.addHistory = (_url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateNavigator.configure(dialogs, historyManager);
@@ -4106,7 +4106,7 @@ describe('Navigation', function () {
             stateNavigator.navigate('s');
             var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (url: string, replace: boolean) => {
+            historyManager.addHistory = (_url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateNavigator.configure(dialogs, historyManager);
@@ -4124,7 +4124,7 @@ describe('Navigation', function () {
             stateNavigator.navigate('s');
             var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (url: string, replace: boolean) => {
+            historyManager.addHistory = (_url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateNavigator.configure(dialogs, historyManager);
@@ -4142,7 +4142,7 @@ describe('Navigation', function () {
             stateNavigator.navigate('s');
             var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (url: string, replace: boolean) => {
+            historyManager.addHistory = (_url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateNavigator.configure(dialogs, historyManager);
@@ -4162,7 +4162,7 @@ describe('Navigation', function () {
             stateNavigator.navigate('s1');
             var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (url: string, replace: boolean) => {
+            historyManager.addHistory = (_url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateNavigator.configure(dialogs, historyManager);
@@ -4182,7 +4182,7 @@ describe('Navigation', function () {
             stateNavigator.navigate('s1');
             var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (url: string, replace: boolean) => {
+            historyManager.addHistory = (_url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateNavigator.configure(dialogs, historyManager);
@@ -4202,7 +4202,7 @@ describe('Navigation', function () {
             stateNavigator.navigate('s1');
             var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (url: string, replace: boolean) => {
+            historyManager.addHistory = (_url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateNavigator.configure(dialogs, historyManager);
@@ -4222,7 +4222,7 @@ describe('Navigation', function () {
             stateNavigator.navigate('s1');
             var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (url: string, replace: boolean) => {
+            historyManager.addHistory = (_url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateNavigator.configure(dialogs, historyManager);
@@ -4235,7 +4235,7 @@ describe('Navigation', function () {
         it('should not call history manager', function() {
             var called = false;
             var historyManager = new HashHistoryManager();
-            historyManager.addHistory = (url: string, replace: boolean) => {
+            historyManager.addHistory = (_url: string, _replace: boolean) => {
                 called = true;
             }
             var stateNavigator = new StateNavigator([
@@ -5174,7 +5174,7 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.slice(0, 1);
+            state.truncateCrumbTrail = (_state, _data, crumbs) => crumbs.slice(0, 1);
         });
 
         describe('Navigate', function() {
@@ -5228,7 +5228,7 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.urlEncode = (state, key, val) => {
+            state.urlEncode = (_state, _key, val) => {
                 return encodeURIComponent(val).replace('%2F', '/');
             }
             stateNavigator.navigate('s0');
@@ -5340,7 +5340,7 @@ describe('Navigation', function () {
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
-            stateNavigator.states.s1.navigating = (data, url, navigate) => navigate({z: 'c'});
+            stateNavigator.states.s1.navigating = (_data, _url, navigate) => navigate({z: 'c'});
             var stateNavigated = false;
             stateNavigator.states.s1.navigated = () => stateNavigated = true;
             stateNavigator.navigate('s0', {x: 'a'});
@@ -5374,7 +5374,7 @@ describe('Navigation', function () {
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
-            stateNavigator.states.s1.navigating = (data, url, navigate) => navigate({z: 'c'});
+            stateNavigator.states.s1.navigating = (_data, _url, navigate) => navigate({z: 'c'});
             var stateNavigated = false;
             stateNavigator.states.s1.navigated = () => stateNavigated = true;
             stateNavigator.navigate('s0', {x: 'a'});
