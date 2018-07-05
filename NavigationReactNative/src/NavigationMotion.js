@@ -63,7 +63,7 @@ class NavigationMotion extends React.Component {
     handleBack() {
         var {navigationEvent} = this.state;
         if (navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
-            this.state.navigationEvent.stateNavigator.navigateBack(1);
+            navigationEvent.stateNavigator.navigateBack(1);
             return true;
         }
         return false;
