@@ -8,13 +8,26 @@
 @implementation NVSceneController
 
 - (id)init: (NSInteger)crumb tab:(NSInteger)tab title:(NSString *)title appKey:(NSString *)appKey {
+    return [self initWithModule:nil crumb:crumb tab:tab title:title appKey:appKey];
+}
+
+- (id)initWithModule: (NavigationModule *)navigationModule crumb: (NSInteger)crumb tab:(NSInteger)tab title:(NSString *)title appKey:(NSString *)appKey {
     if (self = [super init]) {
         self.crumb = crumb;
         self.tab = tab;
         self.title = title;
         self.appKey = appKey;
+        self.navigationModule = navigationModule;
     }
     return self;
+}
+
+-(void)didMoveToParentViewController:(UIViewController *)parent
+{
+    [super didMoveToParentViewController:parent];
+    if (self.navigationModule && self.navigationModule.bridge && !parent) {
+        [self.navigationModule sendEventWithName:@"Navigate" body:@{@"crumb": @(self.crumb), @"tab": @(self.tab)}];
+    }
 }
 
 - (void)loadView

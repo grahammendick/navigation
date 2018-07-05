@@ -7,7 +7,7 @@
 import React from 'react';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
-import {NavigationMotion} from 'navigation-react-native';
+import {addNavigateHandlers, NavigationMotion} from 'navigation-react-native';
 import Page from './Page.js';
 
 var stateNavigator = new StateNavigator([
@@ -16,6 +16,8 @@ var stateNavigator = new StateNavigator([
 var {scene} = stateNavigator.states;
 scene.renderScene = () => <Page />;
 stateNavigator.navigate('scene');
+
+addNavigateHandlers(stateNavigator);
 
 export default ({crumb}) => (
   <NavigationHandler stateNavigator={stateNavigator}>
