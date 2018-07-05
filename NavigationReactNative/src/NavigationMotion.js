@@ -1,5 +1,5 @@
 import React from 'react';
-import {AppRegistry, BackHandler, NativeEventEmitter, NativeModules} from 'react-native';
+import {BackHandler} from 'react-native';
 import {StateNavigator, StateContext} from 'navigation';
 import {NavigationContext} from 'navigation-react';
 
@@ -50,33 +50,10 @@ class NavigationMotion extends React.Component {
         return stateContext;
     }
     componentDidMount() {
-        var {crumb, tab, navigationEvent: {stateNavigator}} = this.props;
-        if (!crumb) {
-            var {NavigationModule} = NativeModules;
-            this.handleNavigation = (_oldState, _state, _data, _asyncData, stateContext) => {
-                var {crumbs, title, history} = stateContext;
-                if (!history) {
-                    var titles = crumbs.map(({title}) => title).concat(title);
-                    NavigationModule.render(crumbs.length, tab, titles, AppRegistry.getAppKeys()[0]);
-                }
-            }
-            stateNavigator.onNavigate(this.handleNavigation); 
-            var emitter = new NativeEventEmitter(NavigationModule)
-            this.subscription = emitter.addListener('Navigate', ({crumb, tab}) => {
-                if (this.props.tab === tab) {
-                    var distance = stateNavigator.stateContext.crumbs.length - crumb;
-                    if (distance > 0) {
-                        var url = stateNavigator.getNavigationBackLink(distance);
-                        stateNavigator.navigateLink(url, undefined, true);
-                    }
-                }
-            })
-        }
-        else {
+        if (this.props.crumb) {
             this.handleBack = () => {
-                if (this.state.navigationEvent)
-                    this.state.navigationEvent.stateNavigator.navigateBack(1);
-                return !!this.state.navigationEvent;
+                this.state.navigationEvent.stateNavigator.navigateBack(1);
+                return true;
             }
             BackHandler.addEventListener('hardwareBackPress', this.handleBack);
         }
@@ -85,12 +62,7 @@ class NavigationMotion extends React.Component {
         return state.navigationEvent === props.navigationEvent;
     }
     componentWillUnmount() {
-        var {crumb, navigationEvent: {stateNavigator}} = this.props;
-        if (!crumb) {
-            stateNavigator.offNavigate(this.handleNavigation); 
-            this.subscription.remove();
-        }
-        else
+        if (this.props.crumb)
             BackHandler.removeEventListener('hardwareBackPress', this.handleBack); 
     }
     render() {
