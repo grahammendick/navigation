@@ -10,7 +10,8 @@ class NavigationMotion extends React.Component {
     }
     static defaultProps = {
         crumb: 0,
-        tab: 0
+        tab: 0,
+        renderScene: (state, data) => state.renderScene(data)
     }
     static getDerivedStateFromProps(props, {navigationEvent: prevNavigationEvent}) {
         var {crumb, navigationEvent} = props;
@@ -71,7 +72,7 @@ class NavigationMotion extends React.Component {
         var {state, data} = navigationEvent.stateNavigator.stateContext;
         return (
             <NavigationContext.Provider value={navigationEvent}>
-                {state.renderScene(data)}
+                {this.props.renderScene(state, data)}
             </NavigationContext.Provider>
         );
     }
