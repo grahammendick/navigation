@@ -52,20 +52,21 @@ class NavigationMotion extends React.Component {
         return stateContext;
     }
     componentDidMount() {
-        if (this.props.crumb)
-            BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
     shouldComponentUpdate(props, state) {
         return state.navigationEvent === props.navigationEvent;
     }
     componentWillUnmount() {
-        if (this.props.crumb)
-            BackHandler.removeEventListener('hardwareBackPress', this.handleBack); 
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBack); 
     }
     handleBack() {
-        if (this.state.navigationEvent)
+        var {navigationEvent} = this.state;
+        if (navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
             this.state.navigationEvent.stateNavigator.navigateBack(1);
-        return !!this.state.navigationEvent;
+            return true;
+        }
+        return false;
 }
     render() {
         var {navigationEvent} = this.state;
