@@ -7,7 +7,11 @@
 
 @implementation NVSceneController
 
-- (id)init: (NSInteger)crumb tab:(NSInteger)tab title:(NSString *)title appKey:(NSString *)appKey navigationModule:(NavigationModule *)navigationModule {
+- (id)init: (NSInteger)crumb tab:(NSInteger)tab title:(NSString *)title appKey:(NSString *)appKey {
+    return [self initWithModule:nil crumb:crumb tab:tab title:title appKey:appKey];
+}
+
+- (id)initWithModule: (NavigationModule *)navigationModule crumb: (NSInteger)crumb tab:(NSInteger)tab title:(NSString *)title appKey:(NSString *)appKey {
     if (self = [super init]) {
         self.crumb = crumb;
         self.tab = tab;
