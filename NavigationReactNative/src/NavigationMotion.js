@@ -7,6 +7,7 @@ class NavigationMotion extends React.Component {
     constructor(props) {
         super(props);
         this.state = {navigationEvent: null};
+        this.handleBack = this.handleBack.bind(this);
     }
     static defaultProps = {
         crumb: 0,
@@ -51,13 +52,8 @@ class NavigationMotion extends React.Component {
         return stateContext;
     }
     componentDidMount() {
-        if (this.props.crumb) {
-            this.handleBack = () => {
-                this.state.navigationEvent.stateNavigator.navigateBack(1);
-                return true;
-            }
+        if (this.props.crumb)
             BackHandler.addEventListener('hardwareBackPress', this.handleBack);
-        }
     }
     shouldComponentUpdate(props, state) {
         return state.navigationEvent === props.navigationEvent;
@@ -66,6 +62,11 @@ class NavigationMotion extends React.Component {
         if (this.props.crumb)
             BackHandler.removeEventListener('hardwareBackPress', this.handleBack); 
     }
+    handleBack() {
+        if (this.state.navigationEvent)
+            this.state.navigationEvent.stateNavigator.navigateBack(1);
+        return !!this.state.navigationEvent;
+}
     render() {
         var {navigationEvent} = this.state;
         if (!navigationEvent) return null;
