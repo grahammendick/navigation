@@ -20,7 +20,7 @@ class NavigationMotion extends React.Component {
         if (state && !prevNavigationEvent && crumb < crumbs.length) {
             var {stateNavigator} = navigationEvent;
             var caretakerNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
-            caretakerNavigator.stateContext = Scene.createStateContext(crumbs, crumb);
+            caretakerNavigator.stateContext = NavigationMotion.createStateContext(crumbs, crumb);
             caretakerNavigator.configure = stateNavigator.configure;
             caretakerNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
             caretakerNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
