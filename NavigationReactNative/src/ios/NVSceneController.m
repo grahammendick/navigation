@@ -21,7 +21,7 @@
 -(void)didMoveToParentViewController:(UIViewController *)parent
 {
     [super didMoveToParentViewController:parent];
-    if (self.navigationModule && !parent) {
+    if (self.navigationModule && self.navigationModule.bridge && !parent) {
         [self.navigationModule sendEventWithName:@"Navigate" body:@{@"crumb": @(self.crumb), @"tab": @(self.tab)}];
     }
 }
