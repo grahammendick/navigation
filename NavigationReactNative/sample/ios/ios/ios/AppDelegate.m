@@ -22,7 +22,7 @@
   self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation moduleProvider:nil launchOptions:launchOptions];
   
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *rootViewController = [[NVSceneController alloc] init: 0 tab: 0 title: @"Scene" appKey: @"ios"];
+  UIViewController *rootViewController = [[NVSceneController alloc] init: 0 tab: 0 title: @"Scene" appKey: @"ios" navigationModule: nil];
   UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
   self.window.rootViewController = navigationController;
   [self.window makeKeyAndVisible];
