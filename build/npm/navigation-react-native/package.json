@@ -10,14 +10,13 @@
   "keywords": [
     "router",
     "navigation",
-    "react-native"
+    "react",
+    "native"
   ],
-  "dependencies": {
-    "d3-ease": "*",
-    "d3-interpolate": "*"
-  },
   "peerDependencies": {
     "navigation": "*",
+    "navigation-react": "*",
+    "react": "*",
     "react-native": "*"
   },
   "author": "Graham Mendick",
