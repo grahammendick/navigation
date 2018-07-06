@@ -64,6 +64,12 @@ function buildTask(name, input, file, globals, details) {
                 .pipe(gulp.dest('.'))
         ));
 }
+gulp.task('Native', () => {
+    var nativeFolders = ['android', 'ios']
+        .map(folder => `./NavigationReactNative/src/${folder}/**/*`);
+    return gulp.src(nativeFolders, {base: './NavigationReactNative/src'})
+        .pipe(gulp.dest('./build/npm/navigation-react-native'));
+});
 var itemTasks = items.reduce((tasks, item) => {
     var packageName = item.name;
     var upperName = packageName.replace(/\b./g, (val) => val.toUpperCase());
@@ -74,7 +80,7 @@ var itemTasks = items.reduce((tasks, item) => {
     item.name = upperName.replace(/-/g, ' ');
     var { globals = {}, format = 'cjs' } = item;
     gulp.task('Build' + name, () => buildTask(name, tsFrom, jsTo, globals, item));
-    gulp.task('Package' + name, () => rollupTask(name, tsFrom, jsPackageTo, globals, format));
+    gulp.task('Package' + name, ['Native'], () => rollupTask(name, tsFrom, jsPackageTo, globals, format));
     tasks.buildTasks.push('Build' + name);
     tasks.packageTasks.push('Package' + name);
     return tasks;
