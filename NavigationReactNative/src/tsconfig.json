@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "lib": ["es6"],
         "jsx": "react-native"
     }
 }
