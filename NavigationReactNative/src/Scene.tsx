@@ -5,7 +5,7 @@ import { NavigationContext, NavigationEvent } from 'navigation-react';
 type NavigationMotionProps = { crumb?: number, tab?: number, renderScene: (state: State, data: any) => ReactNode, navigationEvent: NavigationEvent };
 type NavigationMotionState = { navigationEvent: NavigationEvent };
 
-class NavigationMotion extends React.Component<NavigationMotionProps, NavigationMotionState> {
+class Scene extends React.Component<NavigationMotionProps, NavigationMotionState> {
     constructor(props) {
         super(props);
         this.state = {navigationEvent: null};
@@ -24,7 +24,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         if (state && !prevNavigationEvent && crumb < crumbs.length) {
             var {stateNavigator} = navigationEvent;
             var caretakerNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
-            caretakerNavigator.stateContext = NavigationMotion.createStateContext(crumbs, crumb);
+            caretakerNavigator.stateContext = Scene.createStateContext(crumbs, crumb);
             caretakerNavigator.configure = stateNavigator.configure;
             caretakerNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
             caretakerNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
@@ -84,6 +84,6 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
 
 export default props => (
     <NavigationContext.Consumer>
-        {(navigationEvent) => <NavigationMotion navigationEvent={navigationEvent} {...props} />}
+        {(navigationEvent) => <Scene navigationEvent={navigationEvent} {...props} />}
     </NavigationContext.Consumer>
 )

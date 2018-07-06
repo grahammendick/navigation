@@ -1,4 +1,4 @@
-import NavigationMotion from './NavigationMotion';
+import Scene from './Scene';
 import addNavigateHandlers from './addNavigateHandlers';
 
-export { addNavigateHandlers, NavigationMotion };
+export { addNavigateHandlers, Scene };
