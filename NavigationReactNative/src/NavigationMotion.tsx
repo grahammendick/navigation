@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {BackHandler} from 'react-native';
-import {StateNavigator, StateContext} from 'navigation';
-import {NavigationContext} from 'navigation-react';
+import {StateNavigator, StateContext, State, Crumb} from 'navigation';
+import {NavigationContext, NavigationEvent} from 'navigation-react';
+type NavigationMotionProps = { crumb?: number, tab?: number, renderScene: (state: State, data: any) => ReactNode, navigationEvent: NavigationEvent };
+type NavigationMotionState = { navigationEvent: NavigationEvent };
 
-class NavigationMotion extends React.Component {
+class NavigationMotion extends React.Component<NavigationMotionProps, NavigationMotionState> {
     constructor(props) {
         super(props);
         this.state = {navigationEvent: null};
@@ -14,7 +16,7 @@ class NavigationMotion extends React.Component {
         tab: 0,
         renderScene: (state, data) => state.renderScene(data)
     }
-    static getDerivedStateFromProps(props, {navigationEvent: prevNavigationEvent}) {
+    static getDerivedStateFromProps(props: NavigationMotionProps, {navigationEvent: prevNavigationEvent}: NavigationMotionState) {
         var {crumb, navigationEvent} = props;
         var {state, crumbs} = navigationEvent.stateNavigator.stateContext;
         if (state && crumbs.length === crumb)
@@ -34,7 +36,7 @@ class NavigationMotion extends React.Component {
         }
         return null;
     }
-    static createStateContext(crumbs, crumb) {
+    static createStateContext(crumbs: Crumb[], crumb: number) {
         var stateContext = new StateContext();
         var {state, data, url, title} = crumbs[crumb];
         stateContext.state = state;
