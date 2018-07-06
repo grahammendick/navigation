@@ -24,8 +24,9 @@ var items = [
     Object.assign({ globals: { navigation: 'Navigation',
             'navigation-react': 'NavigationReact', react: 'React' } },
         require('./build/npm/navigation-react-mobile/package.json')),
-    Object.assign({ globals: { react: 'React', 'react-native': 'ReactNative',
-            'd3-interpolate': 'd3', 'd3-ease': 'd3' } },
+    Object.assign({ globals: { navigation: 'Navigation', react: 'React',
+            'navigation-react': 'NavigationReact', 'react-native': 'ReactNative' },
+            format: 'es' },
         require('./build/npm/navigation-react-native/package.json')),
 ];
 function rollupTask(name, input, file, globals, format) {
@@ -63,6 +64,12 @@ function buildTask(name, input, file, globals, details) {
                 .pipe(gulp.dest('.'))
         ));
 }
+gulp.task('Native', () => {
+    var nativeFolders = ['android', 'ios']
+        .map(folder => `./NavigationReactNative/src/${folder}/**/*`);
+    return gulp.src(nativeFolders, {base: './NavigationReactNative/src'})
+        .pipe(gulp.dest('./build/npm/navigation-react-native'));
+});
 var itemTasks = items.reduce((tasks, item) => {
     var packageName = item.name;
     var upperName = packageName.replace(/\b./g, (val) => val.toUpperCase());
@@ -71,8 +78,9 @@ var itemTasks = items.reduce((tasks, item) => {
     var jsTo = './build/dist/' + packageName.replace(/-/g, '.') + '.js';
     var jsPackageTo = './build/npm/' + packageName + '/' + packageName.replace(/-/g, '.') + '.js';
     item.name = upperName.replace(/-/g, ' ');
-    gulp.task('Build' + name, () => buildTask(name, tsFrom, jsTo, item.globals || {}, item));
-    gulp.task('Package' + name, () => rollupTask(name, tsFrom, jsPackageTo, item.globals || {}, 'cjs'));
+    var { globals = {}, format = 'cjs' } = item;
+    gulp.task('Build' + name, () => buildTask(name, tsFrom, jsTo, globals, item));
+    gulp.task('Package' + name, ['Native'], () => rollupTask(name, tsFrom, jsPackageTo, globals, format));
     tasks.buildTasks.push('Build' + name);
     tasks.packageTasks.push('Package' + name);
     return tasks;

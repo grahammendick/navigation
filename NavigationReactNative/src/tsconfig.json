@@ -1,5 +1,7 @@
 {
     "compilerOptions": {
+        "target": "es6",
+        "allowSyntheticDefaultImports": true,
         "jsx": "react-native"
     }
 }

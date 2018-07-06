@@ -1,5 +1,7 @@
 build/dist
 build/npm/**/navigation*.js
+build/npm/**/android
+build/npm/**/ios
 npm-debug.log
 node_modules
 !Navigation*/src/node_modules
