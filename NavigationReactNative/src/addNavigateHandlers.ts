@@ -1,4 +1,4 @@
-import {AppRegistry, NativeEventEmitter, NativeModules} from 'react-native';
+import { AppRegistry, NativeEventEmitter, NativeModules } from 'react-native';
 
 var addNavigateHandlers = stateNavigators => {
     var {NavigationModule} = NativeModules;

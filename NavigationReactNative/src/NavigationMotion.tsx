@@ -1,7 +1,7 @@
-import React, {ReactNode} from 'react';
-import {BackHandler} from 'react-native';
-import {StateNavigator, StateContext, State, Crumb} from 'navigation';
-import {NavigationContext, NavigationEvent} from 'navigation-react';
+import React, { ReactNode } from 'react';
+import { BackHandler } from 'react-native';
+import { StateNavigator, StateContext, State, Crumb } from 'navigation';
+import { NavigationContext, NavigationEvent } from 'navigation-react';
 type NavigationMotionProps = { crumb?: number, tab?: number, renderScene: (state: State, data: any) => ReactNode, navigationEvent: NavigationEvent };
 type NavigationMotionState = { navigationEvent: NavigationEvent };
 
