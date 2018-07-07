@@ -3,10 +3,10 @@ import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 
 const nextDirection = {
-  North: 'East',
-  East: 'South',
-  South: 'West',
-  West: 'North',
+  north: 'east',
+  east: 'south',
+  south: 'west',
+  west: 'north',
 };
 
 export default ({direction, color}) => (
@@ -19,7 +19,7 @@ export default ({direction, color}) => (
         <TouchableHighlight
           underlayColor={color}
           onPress={() => {
-            stateNavigator.navigate(`scene${nextDirection[direction]}`);
+            stateNavigator.navigate(nextDirection[direction]);
         }}>
           <Text style={styles.text}>{direction} {crumbs.length}</Text>
         </TouchableHighlight>
@@ -28,7 +28,7 @@ export default ({direction, color}) => (
           onPress={() => {
             stateNavigator.navigateBack(1);
         }}>
-          <Text style={styles.text}>Back</Text>
+          <Text style={styles.text}>back</Text>
         </TouchableHighlight>}
       </View>
     )}

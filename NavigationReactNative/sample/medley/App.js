@@ -12,10 +12,10 @@ const stateNavigator = new StateNavigator([
 ]);
 
 const { north, east, south, west } = stateNavigator.states;
-north.renderScene = () => <Direction direction="North" color="blue" />;
-east.renderScene = () => <Direction direction="East" color="red" />;
-south.renderScene = () => <Direction direction="South" color="green" />;
-west.renderScene = () => <Direction direction="West" color="black" />;
+north.renderScene = () => <Direction direction="north" color="blue" />;
+east.renderScene = () => <Direction direction="east" color="red" />;
+south.renderScene = () => <Direction direction="south" color="green" />;
+west.renderScene = () => <Direction direction="west" color="black" />;
 
 stateNavigator.navigate('north');
 addNavigateHandlers(stateNavigator);
