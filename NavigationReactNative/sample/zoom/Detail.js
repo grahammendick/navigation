@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   detail: {
     flex: 1,
     backgroundColor: '#fff',
-    marginTop: Platform.OS ? 50 : 0,
+    marginTop: Platform.OS === 'ios' ? 50 : 0,
   },
   back: {
     height: 50,

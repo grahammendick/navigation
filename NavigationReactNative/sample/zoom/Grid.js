@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   grid: {
     flex: 1,
     backgroundColor: '#fff',
-    marginTop: Platform.OS ? 50 : 0,
+    marginTop: Platform.OS === 'ios' ? 50 : 0,
   },
   colors: {
     flexDirection: 'row',
