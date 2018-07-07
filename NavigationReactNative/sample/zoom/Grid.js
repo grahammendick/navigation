@@ -20,6 +20,7 @@ export default () => (
                   styles.color
                 ]}
                 underlayColor={color}
+                key={color}
                 onPress={() => {
                   stateNavigator.navigate('detail', {color});
                 }}>
