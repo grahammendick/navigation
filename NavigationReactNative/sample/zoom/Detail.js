@@ -2,9 +2,9 @@ import React from 'react';
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 
-export default () => (
+export default ({color}) => (
   <NavigationContext>
-    {({data: {color}, stateNavigator}) => (
+    {({stateNavigator}) => (
       <View style={styles.detail}>
         <TouchableHighlight
           underlayColor="#fff"
