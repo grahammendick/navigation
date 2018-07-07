@@ -6,8 +6,8 @@ import Grid from './Grid';
 import Detail from './Detail';
 
 var stateNavigator = new StateNavigator([
-  {key: 'grid'},
-  {key: 'detail', trackCrumbTrail: true},
+  {key: 'grid', title: 'Colors'},
+  {key: 'detail', title: 'Color', trackCrumbTrail: true},
 ]);
 
 const { grid, detail } = stateNavigator.states;
