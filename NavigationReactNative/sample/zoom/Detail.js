@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
+import {Platform, StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 
 export default ({color}) => (
@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   detail: {
     flex: 1,
     backgroundColor: '#fff',
+    marginTop: Platform.OS ? 50 : 0,
   },
   back: {
     height: 50,

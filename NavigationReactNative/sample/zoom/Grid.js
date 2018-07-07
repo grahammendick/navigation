@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
+import {Platform, StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 
 const colors = [
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
   grid: {
     flex: 1,
     backgroundColor: '#fff',
+    marginTop: Platform.OS ? 50 : 0,
   },
   colors: {
     flexDirection: 'row',
