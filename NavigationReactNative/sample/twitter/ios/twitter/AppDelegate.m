@@ -25,11 +25,11 @@
 
   UIViewController *homeViewController = [[NVSceneController alloc] init: 0 tab: 0 title: @"Home" appKey: @"twitter"];
   UINavigationController *homeController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
-  homeController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemSearch tag:0];
+  homeController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Home" image:nil tag:1];
 
   UIViewController *notificationsViewController = [[NVSceneController alloc] init: 0 tab: 1 title: @"Notifications" appKey: @"twitter"];
   UINavigationController *notificationsController = [[UINavigationController alloc] initWithRootViewController:notificationsViewController];
-  notificationsController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemTopRated tag:1];
+  notificationsController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Notifications" image:nil tag:1];
 
   UITabBarController *tabBarController = [[UITabBarController alloc] init];
   [tabBarController setViewControllers:@[homeController, notificationsController]];
