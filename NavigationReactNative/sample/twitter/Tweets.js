@@ -2,7 +2,7 @@ import React from 'react';
 import {NavigationContext} from 'navigation-react';
 import {StyleSheet, Text, Image, View, FlatList, TouchableHighlight} from 'react-native';
 
-export default ({tweets}) => (
+export default ({tweets, onTimeline}) => (
   <NavigationContext>
     {({stateNavigator}) => (
       <FlatList
@@ -18,7 +18,8 @@ export default ({tweets}) => (
               <TouchableHighlight
                 underlayColor="white"
                 onPress={() => {
-                  stateNavigator.navigate('timeline', {id: accountId});
+                  if (!onTimeline || onTimeline(accountId))
+                    stateNavigator.navigate('timeline', {id: accountId});
               }}>
                 <Image style={styles.logo} source={logo} />
               </TouchableHighlight>

@@ -19,13 +19,7 @@ export default ({timeline: {id, name, username, logo, bio,
       <Text style={styles.count}>{followers.toLocaleString()}</Text>
       <Text style={styles.interaction}>FOLLOWERS</Text>
     </View>
-    <Tweets
-      tweets={tweets}
-      onTimeline={accountId => {
-        if (accountId === id)
-          this.scrollView.scrollTo({y: 0});
-        return accountId !== id;
-      }} />
+    <Tweets tweets={tweets} onTimeline={accountId => accountId !== id} />
   </ScrollView>
 );
 

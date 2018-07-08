@@ -11,8 +11,7 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         <View>
           <View style={styles.heading}>
             <TouchableHighlight underlayColor="white" onPress={() => {
-              if (url === stateNavigator.stateContext.url)
-                stateNavigator.navigate('timeline', {id: accountId});
+              stateNavigator.navigate('timeline', {id: accountId});
             }}>
               <Image style={styles.logo} source={logo} />
             </TouchableHighlight>
