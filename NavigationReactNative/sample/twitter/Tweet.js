@@ -1,41 +1,53 @@
 import React from 'react';
 import {NavigationContext} from 'navigation-react';
-import {StyleSheet, Text, Image, ScrollView, View, TouchableHighlight} from 'react-native';
+import {StyleSheet, Text, Image, Platform, ScrollView, View, ToolbarAndroid, TouchableHighlight} from 'react-native';
 import Tweets from './Tweets';
 
 export default ({tweet: {account: {id: accountId, name, username, logo}, 
   text, time, retweets, likes, replies}}) => (
     <NavigationContext>
     {({stateNavigator}) => (
-      <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
-        <View>
-          <View style={styles.heading}>
-            <TouchableHighlight underlayColor="white" onPress={() => {
-              stateNavigator.navigate('timeline', {id: accountId});
-            }}>
-              <Image style={styles.logo} source={logo} />
-            </TouchableHighlight>
-            <View style={styles.details}>
-              <Text style={styles.name}>{name}</Text>
-              <Text>{username}</Text>
+      <>
+        <ToolbarAndroid
+          navIcon={require('./arrow.png')}
+          title="Tweet"
+          style={styles.toolbar}
+          onIconClicked={() => {
+            stateNavigator.navigateBack(1)
+          }} />
+        <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
+          <View>
+            <View style={styles.heading}>
+              <TouchableHighlight underlayColor="white" onPress={() => {
+                stateNavigator.navigate('timeline', {id: accountId});
+              }}>
+                <Image style={styles.logo} source={logo} />
+              </TouchableHighlight>
+              <View style={styles.details}>
+                <Text style={styles.name}>{name}</Text>
+                <Text>{username}</Text>
+              </View>
+            </View>
+            <Text style={styles.text}>{text}</Text>
+            <Text style={styles.time}>{time}</Text>
+            <View style={styles.interactions}>
+              <Text style={styles.count}>{retweets}</Text>
+              <Text style={styles.interaction}>RETWEETS</Text>
+              <Text style={styles.count}>{likes}</Text>
+              <Text style={styles.interaction}>LIKES</Text>
             </View>
           </View>
-          <Text style={styles.text}>{text}</Text>
-          <Text style={styles.time}>{time}</Text>
-          <View style={styles.interactions}>
-            <Text style={styles.count}>{retweets}</Text>
-            <Text style={styles.interaction}>RETWEETS</Text>
-            <Text style={styles.count}>{likes}</Text>
-            <Text style={styles.interaction}>LIKES</Text>
-          </View>
-        </View>
-        <Tweets tweets={replies} stateNavigator={stateNavigator} />
-      </ScrollView>
+          <Tweets tweets={replies} stateNavigator={stateNavigator} />
+        </ScrollView>
+      </>
     )}
   </NavigationContext>
 );
 
 const styles = StyleSheet.create({
+  toolbar: {
+    height: Platform.OS === 'android' ? 50 : 0,
+  },
   view: {
     paddingLeft: 20,
     paddingRight: 20,
