@@ -7,7 +7,7 @@ export default ({tweets}) => (
     {({stateNavigator}) => (
       <FlatList
         data={tweets}
-        renderItem={({account: {id: accountId, name, logo}, id, text}) => (
+        renderItem={({item: {account: {id: accountId, name, logo}, id, text}}) => (
           <TouchableHighlight
             underlayColor="white"
             onPress={() => {

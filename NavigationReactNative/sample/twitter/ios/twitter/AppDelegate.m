@@ -6,6 +6,7 @@
  */
 
 #import "AppDelegate.h"
+#import "NVSceneController.h"
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -18,16 +19,21 @@
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-                                                      moduleName:@"twitter"
-                                               initialProperties:nil
-                                                   launchOptions:launchOptions];
-  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
-
+  self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation moduleProvider:nil launchOptions:launchOptions];
+  
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *rootViewController = [UIViewController new];
-  rootViewController.view = rootView;
-  self.window.rootViewController = rootViewController;
+
+  UIViewController *homeViewController = [[NVSceneController alloc] init: 0 tab: 0 title: @"Home" appKey: @"twitter"];
+  UINavigationController *homeController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
+  homeController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemSearch tag:0];
+
+  UIViewController *notificationsViewController = [[NVSceneController alloc] init: 0 tab: 1 title: @"Notifications" appKey: @"twitter"];
+  UINavigationController *notificationsController = [[UINavigationController alloc] initWithRootViewController:notificationsViewController];
+  notificationsController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemTopRated tag:1];
+
+  UITabBarController *tabBarController = [[UITabBarController alloc] init];
+  [tabBarController setViewControllers:@[homeController, notificationsController]];
+  self.window.rootViewController = tabBarController;
   [self.window makeKeyAndVisible];
   return YES;
 }
