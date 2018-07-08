@@ -6,7 +6,7 @@ export default ({timeline: {id, name, username, logo, bio,
   followers, following, tweets}}) => (
   <ScrollView 
     contentInsetAdjustmentBehavior="automatic" style={styles.view}
-    ref={el => {if (el) this.scrollView = el}}>
+    ref={el => this.scrollView = el}>
     <View>
       <Image style={styles.logo} source={logo} />
       <Text style={styles.name}>{name}</Text>
