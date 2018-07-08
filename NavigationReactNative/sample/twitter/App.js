@@ -3,6 +3,7 @@ import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
 import {addNavigateHandlers, Scene} from 'navigation-react-native';
 import Home from './Home';
+import Notifications from './Notifications';
 import {getHome, getFollows, getTweet, getTimeline} from './data';
 
 var stateNavigator = new StateNavigator([
@@ -13,6 +14,7 @@ var stateNavigator = new StateNavigator([
 ]);
 const {home, notifications, tweet, timeline} = stateNavigator.states;
 home.renderScene = () => <Home tweets={getHome()} follows={getFollows()} />;
+notifications.renderScene = () => <Notifications follows={getFollows()} />;
 
 var stateNavigators = [stateNavigator, new StateNavigator(stateNavigator)];
 stateNavigator.navigate('home');
