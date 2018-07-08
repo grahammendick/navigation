@@ -9,10 +9,10 @@ import Timeline from './Timeline';
 import {getHome, getFollows, getTweet, getTimeline} from './data';
 
 var stateNavigator = new StateNavigator([
-  {key: 'home'},
-  {key: 'notifications'},
-  {key: 'tweet', trackCrumbTrail: true},
-  {key: 'timeline', trackCrumbTrail: true}
+  {key: 'home', title: 'Home'},
+  {key: 'notifications', title: 'Notifications'},
+  {key: 'tweet', title: 'Tweet', trackCrumbTrail: true},
+  {key: 'timeline', title: 'Timeline', trackCrumbTrail: true}
 ]);
 const {home, notifications, tweet, timeline} = stateNavigator.states;
 home.renderScene = () => <Home tweets={getHome()} follows={getFollows()} />;
