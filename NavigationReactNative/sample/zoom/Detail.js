@@ -1,52 +1,39 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
-import {NavigationBackHandler, SharedElement} from 'navigation-react-native';
+import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
+import {NavigationContext} from 'navigation-react';
 
-export default ({color, stateNavigator}) => {
-  const {url} = stateNavigator.stateContext;
-  return (
-    <View style={styles.detail}>
-      <NavigationBackHandler stateNavigator={stateNavigator} />
-      <TouchableHighlight
-        underlayColor="#fff"
-        onPress={() => {
-          if (url === stateNavigator.stateContext.url)
-            stateNavigator.navigateBack(1);
-        }}>
-        <Text style={styles.back}>X</Text>
-      </TouchableHighlight>
-      <SharedElement
-        name={color}
-        data={{color}}
-        stateNavigator={stateNavigator}>
-        <View
-          style={[
-            {backgroundColor: color},
-            styles.color
-          ]} />
-      </SharedElement>
-      <SharedElement
-        name={`text${color}`}
-        data={{color, fontSize: 80, fontColor: '#000'}}
-        stateNavigator={stateNavigator}>
-        <Text style={styles.text}>{color}</Text>
-      </SharedElement>
-    </View>
-  );
-};
-
+export default ({color}) => (
+  <NavigationContext>
+    {({stateNavigator}) => (
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        contentContainerStyle={{flex:1}}>
+          <TouchableHighlight
+            underlayColor="#fff"
+            onPress={() => {
+              stateNavigator.navigateBack(1);
+            }}>
+            <Text style={styles.back}>X</Text>
+          </TouchableHighlight>
+          <View
+            style={[
+              {backgroundColor: color},
+              styles.color
+            ]} />
+          <Text style={styles.text}>{color}</Text>
+      </ScrollView>
+    )}
+  </NavigationContext>
+);
+  
 const styles = StyleSheet.create({
-  detail: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
   back: {
-    height: 50,
     fontSize: 20,
     color: '#000',
     fontWeight: 'bold',
-    paddingTop: 20,
     paddingLeft: 20,
+    paddingTop: 10,
+    paddingBottom: 5,
   },
   color: {
     flex: .6,

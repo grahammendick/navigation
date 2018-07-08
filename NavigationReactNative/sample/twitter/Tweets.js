@@ -1,41 +1,38 @@
 import React from 'react';
-import {StyleSheet, Text, Image, View, ListView, TouchableHighlight} from 'react-native';
+import {NavigationContext} from 'navigation-react';
+import {StyleSheet, Text, Image, View, FlatList, TouchableHighlight} from 'react-native';
 
-export default ({tweets, onTimeline, stateNavigator}) => {
-  const {url} = stateNavigator.stateContext;
-  const dataSource = new ListView
-    .DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-    .cloneWithRows(tweets);
-  return (
-    <ListView
-      dataSource={dataSource}
-      renderRow={({account: {id: accountId, name, logo}, id, text}) => (
-        <TouchableHighlight
-          underlayColor="white"
-          onPress={() => {
-            if (url === stateNavigator.stateContext.url)
+export default ({tweets, onTimeline}) => (
+  <NavigationContext>
+    {({stateNavigator}) => (
+      <FlatList
+        data={tweets}
+        keyExtractor={item => '' + item.id}
+        renderItem={({item: {account: {id: accountId, name, logo}, id, text}}) => (
+          <TouchableHighlight
+            underlayColor="white"
+            onPress={() => {
               stateNavigator.navigate('tweet', {id});
-        }}>
-          <View style={styles.tweet}>
-            <TouchableHighlight
-              underlayColor="white"
-              onPress={() => {
-                if ((!onTimeline || onTimeline(accountId))
-                  && url === stateNavigator.stateContext.url) {
-                  stateNavigator.navigate('timeline', {id: accountId});
-                }
-            }}>
-              <Image style={styles.logo} source={logo} />
-            </TouchableHighlight>
-            <View style={styles.details}>
-              <Text style={styles.name}>{name}</Text>
-              <Text>{text}</Text>
+          }}>
+            <View style={styles.tweet}>
+              <TouchableHighlight
+                underlayColor="white"
+                onPress={() => {
+                  if (!onTimeline || onTimeline(accountId))
+                    stateNavigator.navigate('timeline', {id: accountId});
+              }}>
+                <Image style={styles.logo} source={logo} />
+              </TouchableHighlight>
+              <View style={styles.details}>
+                <Text style={styles.name}>{name}</Text>
+                <Text>{text}</Text>
+              </View>
             </View>
-          </View>
-        </TouchableHighlight>
-      )} />
-  );
-};
+          </TouchableHighlight>
+        )} />
+    )}
+  </NavigationContext>
+);
 
 const styles = StyleSheet.create({
   tweet: {

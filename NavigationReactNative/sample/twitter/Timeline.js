@@ -1,40 +1,46 @@
 import React from 'react';
-import {StyleSheet, Text, Image, ScrollView, View, TouchableHighlight} from 'react-native';
-import {NavigationBackHandler} from 'navigation-react-native';
-import Banner from './Banner';
+import {NavigationContext} from 'navigation-react';
+import {StyleSheet, Text, Image, Platform, ScrollView, ToolbarAndroid, View} from 'react-native';
 import Tweets from './Tweets';
 
 export default ({timeline: {id, name, username, logo, bio, 
-  followers, following, tweets}, stateNavigator}) => (
-  <View style={{flex: 1}}>
-    <NavigationBackHandler stateNavigator={stateNavigator} />
-    <Banner title={name} stateNavigator={stateNavigator} />
-    <ScrollView ref={el => {if (el) this.scrollView = el}} style={styles.view}>
-      <View>
-        <Image style={styles.logo} source={logo} />
-        <Text style={styles.name}>{name}</Text>
-        <Text>{username}</Text>
-        <Text style={styles.bio}>{bio}</Text>
-      </View>
-      <View style={styles.interactions}>
-        <Text style={styles.count}>{following.toLocaleString()}</Text>
-        <Text style={styles.interaction}>FOLLOWING</Text>
-        <Text style={styles.count}>{followers.toLocaleString()}</Text>
-        <Text style={styles.interaction}>FOLLOWERS</Text>
-      </View>
-      <Tweets
-        tweets={tweets}
-        onTimeline={accountId => {
-          if (accountId === id)
-            this.scrollView.scrollTo({y: 0});
-          return accountId !== id;
-        }}
-        stateNavigator={stateNavigator} />
-    </ScrollView>
-  </View>
+  followers, following, tweets}}) => (
+  <NavigationContext>
+    {({stateNavigator}) => (
+      <>
+        <ToolbarAndroid
+          navIcon={require('./arrow.png')}
+          title="Timeline"
+          style={styles.toolbar}
+          onIconClicked={() => {
+            stateNavigator.navigateBack(1)
+          }} />
+        <ScrollView 
+          contentInsetAdjustmentBehavior="automatic" style={styles.view}
+          ref={el => this.scrollView = el}>
+          <View>
+            <Image style={styles.logo} source={logo} />
+            <Text style={styles.name}>{name}</Text>
+            <Text>{username}</Text>
+            <Text style={styles.bio}>{bio}</Text>
+          </View>
+          <View style={styles.interactions}>
+            <Text style={styles.count}>{following.toLocaleString()}</Text>
+            <Text style={styles.interaction}>FOLLOWING</Text>
+            <Text style={styles.count}>{followers.toLocaleString()}</Text>
+            <Text style={styles.interaction}>FOLLOWERS</Text>
+          </View>
+          <Tweets tweets={tweets} onTimeline={accountId => accountId !== id} />
+        </ScrollView>
+      </>
+    )}
+  </NavigationContext>
 );
 
 const styles = StyleSheet.create({
+  toolbar: {
+    height: Platform.OS === 'android' ? 50 : 0,
+  },
   view: {
     paddingLeft: 20,
     paddingRight: 20,
