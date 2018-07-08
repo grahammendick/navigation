@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableHighlight, ToolbarAndroid, View, ViewPagerAndroid} from 'react-native';
+import {StyleSheet, Text, TouchableHighlight, ToolbarAndroid, View, ScrollView, ViewPagerAndroid} from 'react-native';
 import Tweets from './Tweets';
 import Notifications from './Notifications';
 
@@ -22,16 +22,23 @@ export default ({tweets, follows}) => (
     </View>
     <ViewPagerAndroid style={{flex: 1}} initialPage={0} ref={el => this.viewPager = el}>
       <View key={1}>
-        <Tweets tweets={tweets} />
+        <ScrollView style={styles.view}>
+          <Tweets tweets={tweets} />
+        </ScrollView>
       </View>
       <View key={1}>
-        <Notifications follows={follows} />
+        <ScrollView style={styles.view}>
+          <Notifications follows={follows} />
+        </ScrollView>
       </View>
     </ViewPagerAndroid>
   </View>
 );
 
 const styles = StyleSheet.create({
+  toolbar: {
+    height: 50,
+  },
   tabs: {
     height: 60,
     flexDirection: 'row',
@@ -43,7 +50,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
   },
-  toolbar: {
-    height: 50,
+  view: {
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 });
