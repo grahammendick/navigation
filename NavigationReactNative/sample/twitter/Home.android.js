@@ -20,7 +20,7 @@ export default ({tweets, follows}) => (
         <Text style={styles.text}>Notifications</Text>
       </TouchableHighlight>
     </View>
-    <ViewPagerAndroid style={{flex: 1}} initialPage={0} ref={el => this.viewPager = el}>
+    <ViewPagerAndroid style={{flex: 1}} ref={el => this.viewPager = el}>
       <View key={1}>
         <ScrollView style={styles.view}>
           <Tweets tweets={tweets} />
