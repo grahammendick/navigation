@@ -26,7 +26,7 @@ stateNavigators[1].navigate('notifications');
 
 addNavigateHandlers(stateNavigators);
 
-export default ({crumb, tab}) => (
+export default ({crumb, tab = 0}) => (
   <NavigationHandler stateNavigator={stateNavigators[tab]}>
     <Scene crumb={crumb} tab={tab} />
   </NavigationHandler>
