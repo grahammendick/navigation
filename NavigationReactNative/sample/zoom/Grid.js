@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
+import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 
 const colors = [
@@ -10,41 +10,34 @@ const colors = [
 export default () => (
   <NavigationContext>
     {({stateNavigator}) => (
-      <View style={styles.grid}>
-        <ScrollView>
-          <View style={styles.colors}>
-            {colors.map(color => (
-              <TouchableHighlight
-                style={[
-                  {backgroundColor: color},
-                  styles.color
-                ]}
-                underlayColor={color}
-                key={color}
-                onPress={() => {
-                  stateNavigator.navigate('detail', {color});
-                }}>
-                <Text style={styles.text}>{color}</Text>
-              </TouchableHighlight>
-            ))}
-          </View>
-        </ScrollView>
-      </View>
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <View style={styles.colors}>
+          {colors.map(color => (
+            <TouchableHighlight
+              style={[
+                {backgroundColor: color},
+                styles.color
+              ]}
+              underlayColor={color}
+              key={color}
+              onPress={() => {
+                stateNavigator.navigate('detail', {color});
+              }}>
+              <Text style={styles.text}>{color}</Text>
+            </TouchableHighlight>
+          ))}
+        </View>
+      </ScrollView>
     )}
   </NavigationContext>
 );
 
 const styles = StyleSheet.create({
-  grid: {
-    flex: 1,
-    backgroundColor: '#fff',
-    marginTop: Platform.OS === 'ios' ? 50 : 0,
-  },
   colors: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginTop: 50,
+    marginTop: 10,
   },
   color: {
     width: 100,
