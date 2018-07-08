@@ -21,10 +21,10 @@ export default ({tweets, follows}) => (
       </TouchableHighlight>
     </View>
     <ViewPagerAndroid style={{flex: 1}} initialPage={0} ref={el => this.viewPager = el}>
-      <View style={styles.view} key={1}>
+      <View key={1}>
         <Tweets tweets={tweets} />
       </View>
-      <View style={styles.view} key={1}>
+      <View key={1}>
         <Notifications follows={follows} />
       </View>
     </ViewPagerAndroid>
