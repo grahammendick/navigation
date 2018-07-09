@@ -1,8 +1,9 @@
 import { AppRegistry, NativeEventEmitter, NativeModules } from 'react-native';
+import { StateNavigator } from 'navigation';
 
-var addNavigateHandlers = stateNavigators => {
+var addNavigateHandlers = (stateNavigator: StateNavigator | StateNavigator[]) => {
     var {NavigationModule} = NativeModules;
-    var stateNavigators = stateNavigators.forEach ? stateNavigators : [stateNavigators];
+    var stateNavigators = isStateNavigator(stateNavigator) ? [stateNavigator] : stateNavigator;
     stateNavigators.forEach((stateNavigator, tab) => {
         stateNavigator.onNavigate(() => {
             var {crumbs, title, history} = stateNavigator.stateContext;
@@ -12,15 +13,18 @@ var addNavigateHandlers = stateNavigators => {
             }
         });
     });
-    var emitter = new NativeEventEmitter(NavigationModule)
-    emitter.addListener('Navigate', ({crumb, tab}) => {
+    new NativeEventEmitter(NavigationModule).addListener('Navigate', ({crumb, tab}) => {
         var stateNavigator = stateNavigators[tab];
         var distance = stateNavigator.stateContext.crumbs.length - crumb + 1;
-        if (distance > 0) {
+        if (stateNavigator.canNavigateBack(distance)) {
             var url = stateNavigator.getNavigationBackLink(distance);
             stateNavigator.navigateLink(url, undefined, true);
         }
     });
 }
+
+function isStateNavigator(stateNavigator: StateNavigator | StateNavigator[]): stateNavigator is StateNavigator {
+    return !!(<StateNavigator> stateNavigator).stateContext;
+};
 
 export default addNavigateHandlers;
