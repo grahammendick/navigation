@@ -3,7 +3,7 @@ import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-nati
 import {NavigationContext} from 'navigation-react';
 
 export default ({color}) => (
-  <NavigationContext>
+  <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
@@ -23,7 +23,7 @@ export default ({color}) => (
           <Text style={styles.text}>{color}</Text>
       </ScrollView>
     )}
-  </NavigationContext>
+  </NavigationContext.Consumer>
 );
   
 const styles = StyleSheet.create({

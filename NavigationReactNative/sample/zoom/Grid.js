@@ -8,7 +8,7 @@ const colors = [
 ];
 
 export default () => (
-  <NavigationContext>
+  <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View style={styles.colors}>
@@ -29,7 +29,7 @@ export default () => (
         </View>
       </ScrollView>
     )}
-  </NavigationContext>
+  </NavigationContext.Consumer>
 );
 
 const styles = StyleSheet.create({

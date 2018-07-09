@@ -5,7 +5,7 @@ import Tweets from './Tweets';
 
 export default ({timeline: {id, name, username, logo, bio, 
   followers, following, tweets}}) => (
-  <NavigationContext>
+  <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <>
         <ToolbarAndroid
@@ -34,7 +34,7 @@ export default ({timeline: {id, name, username, logo, bio,
         </ScrollView>
       </>
     )}
-  </NavigationContext>
+  </NavigationContext.Consumer>
 );
 
 const styles = StyleSheet.create({
