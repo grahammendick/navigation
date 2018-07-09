@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { BackHandler } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
-type NavigationMotionProps = { crumb?: number, tab?: number, renderScene: (state: State, data: any) => ReactNode, navigationEvent: NavigationEvent };
+type NavigationMotionProps = { crumb?: number, renderScene: (state: State, data: any) => ReactNode, navigationEvent: NavigationEvent };
 type NavigationMotionState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<NavigationMotionProps, NavigationMotionState> {
@@ -13,7 +13,6 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
     }
     static defaultProps = {
         crumb: 0,
-        tab: 0,
         renderScene: (state, data) => state.renderScene(data)
     }
     static getDerivedStateFromProps(props: NavigationMotionProps, {navigationEvent: prevNavigationEvent}: NavigationMotionState) {
