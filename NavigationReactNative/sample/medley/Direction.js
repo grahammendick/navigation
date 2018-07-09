@@ -10,7 +10,7 @@ const nextDirection = {
 };
 
 export default ({direction, color}) => (
-  <NavigationContext>
+  <NavigationContext.Consumer>
     {({stateNavigator: {stateContext: {crumbs}}, stateNavigator}) => (
       <View style={[
         styles.scene,
@@ -32,7 +32,7 @@ export default ({direction, color}) => (
         </TouchableHighlight>}
       </View>
     )}
-  </NavigationContext>
+  </NavigationContext.Consumer>
 );
 
 const styles = StyleSheet.create({

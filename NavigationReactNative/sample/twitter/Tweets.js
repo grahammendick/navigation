@@ -3,7 +3,7 @@ import {NavigationContext} from 'navigation-react';
 import {StyleSheet, Text, Image, View, FlatList, TouchableHighlight} from 'react-native';
 
 export default ({tweets, onTimeline}) => (
-  <NavigationContext>
+  <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <FlatList
         data={tweets}
@@ -31,7 +31,7 @@ export default ({tweets, onTimeline}) => (
           </TouchableHighlight>
         )} />
     )}
-  </NavigationContext>
+  </NavigationContext.Consumer>
 );
 
 const styles = StyleSheet.create({
