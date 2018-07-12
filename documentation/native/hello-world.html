@@ -61,9 +61,7 @@ var stateNavigator = new StateNavigator([
 
 hello.renderScene = () => &lt;Text>Hello&lt;/Text>;</code></pre>
             <pre><code class="language-jsx">import {NavigationHandler} from 'navigation-react';
-import {addNavigateHandlers, Scene} from 'navigation-react-native';
-
-addNavigateHandlers(stateNavigator);
+import {Scene} from 'navigation-react-native';
 
 export default ({crumb}) => (
   &lt;NavigationHandler stateNavigator={stateNavigator}>
@@ -90,6 +88,9 @@ hello.renderScene = () => (
 world.renderScene = ({size}) => (
   &lt;Text style={{fontSize: data.size}}>World&lt;/Text>
 );</code></pre>
+            <pre><code class="language-jsx">import {addNavigateHandlers} from 'navigation-react-native';
+
+addNavigateHandlers(stateNavigator);</code></pre>
             <h2>Pop</h2>
             <pre><code class="language-jsx">world.renderScene = ({size}) => (
   &lt;NavigationContext.Consumer>
