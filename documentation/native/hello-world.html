@@ -78,20 +78,22 @@ hello.renderScene = () => (
     {({stateNavigator}) => (
       &lt;TouchableHighlight
         onPress={() => {
-          stateNavigator.navigate('world');
+          stateNavigator.navigate('world', {size: 20});
         }}>
         &lt;Text>Hello&lt;/Text>
       &lt;/TouchableHighlight>
     )}
   &lt;/NavigationContext.Consumer>
 );</code></pre>
-            <h2>Pop</h2>
             <pre><code class="language-jsx">var {world} = stateNavigator.states;
 
-world.renderScene =() => (
+world.renderScene = ({size}) => &lt;Text style={{fontSize: data.size}}>World&lt;/Text>;</code></pre>
+            <h2>Pop</h2>
+            <pre><code class="language-jsx">world.renderScene = ({size}) => (
   &lt;NavigationContext.Consumer>
     {({stateNavigator}) => (
       &lt;TouchableHighlight
+        style={{fontSize: data.size}}
         onPress={() => {
           stateNavigator.navigateBack(1);
         }}>
