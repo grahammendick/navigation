@@ -48,6 +48,58 @@
         </div>
         <div id="article">
             <h1>Hello World</h1>
+            <p>All changes go in App.js. See setup for native changes. Don't call start because no browser Url, navigate instead</p>
+            <pre><code class="language-jsx">import {StateNavigator} from 'navigation';
+
+var stateNavigator = new StateNavigator([
+  {key: 'hello', title: 'Hello'},
+  {key: 'world', title: 'World', trackCrumbTrail: true}
+]);</code></pre>
+            <pre><code class="language-jsx">stateNavigator.navigate('hello');</code></pre>
+            <h2>Render</h2>
+            <pre><code class="language-jsx">var {hello} = stateNavigator.states;
+
+hello.renderScene = () => &lt;Text>Hello&lt;/Text>;</code></pre>
+            <pre><code class="language-jsx">import {NavigationHandler} from 'navigation-react';
+import {addNavigateHandlers, Scene} from 'navigation-react-native';
+
+addNavigateHandlers(stateNavigator);
+
+export default ({crumb}) => (
+  &lt;NavigationHandler stateNavigator={stateNavigator}>
+    &lt;Scene crumb={crumb} />
+  &lt;/NavigationHandler>
+);</code></pre>
+            <h2>Push</h2>
+            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+
+hello.renderScene = () => (
+  &lt;NavigationContext.Consumer>
+    {({stateNavigator}) => (
+      &lt;TouchableHighlight
+        onPress={() => {
+          stateNavigator.navigate('world');
+        }}>
+        &lt;Text>Hello&lt;/Text>
+      &lt;/TouchableHighlight>
+    )}
+  &lt;/NavigationContext.Consumer>
+);</code></pre>
+            <h2>Pop</h2>
+            <pre><code class="language-jsx">var {world} = stateNavigator.states;
+
+world.renderScene =() => (
+  &lt;NavigationContext.Consumer>
+    {({stateNavigator}) => (
+      &lt;TouchableHighlight
+        onPress={() => {
+          stateNavigator.navigateBack(1);
+        }}>
+        &lt;Text>Hello&lt;/Text>
+      &lt;/TouchableHighlight>
+    )}
+  &lt;/NavigationContext.Consumer>
+);</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
