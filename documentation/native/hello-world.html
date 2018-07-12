@@ -53,7 +53,7 @@
 
 var stateNavigator = new StateNavigator([
   {key: 'hello', title: 'Hello'},
-  {key: 'world', title: 'World', trackCrumbTrail: true}
+  {key: 'world', title: 'World'}
 ]);</code></pre>
             <pre><code class="language-jsx">stateNavigator.navigate('hello');</code></pre>
             <h2>Render</h2>
@@ -92,6 +92,10 @@ world.renderScene = ({size}) => (
 
 addNavigateHandlers(stateNavigator);</code></pre>
             <h2>Pop</h2>
+            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+  {key: 'hello', title: 'Hello'},
+  {key: 'world', title: 'World', trackCrumbTrail: true}
+]);</code></pre>
             <pre><code class="language-jsx">world.renderScene = ({size}) => (
   &lt;NavigationContext.Consumer>
     {({stateNavigator}) => (
