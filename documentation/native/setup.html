@@ -96,7 +96,9 @@ export default ({crumb}) => (
   self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation moduleProvider:nil launchOptions:launchOptions];  
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 
-  UIViewController *sceneController = [[NVSceneController alloc] init: 0 tab: 0 title: @"Title" appKey: @"appKey"];
+  NSString *title = @"Title";
+  NSString *appKey = @"appKey";
+  UIViewController *sceneController = [[NVSceneController alloc] init: 0 tab: 0 title: title appKey: appKey];
   UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sceneController];
 
   self.window.rootViewController = navigationController;
