@@ -48,7 +48,13 @@
         </div>
         <div id="article">
             <h1>Setup</h1>
+            <p>
+                The Navigation router for React Native uses the underlying native APIs to provide faithful navigation on Android and iOS. Because it contains native code you first have to eject from <code>create-react-native-app</code> or create your project using <code>react-native init</code>. Then install the three navigation packages from npm.
+            </p>
             <pre><code class="language-js">npm install navigation navigation-react navigation-react-native --save</code></pre>
+            <p>
+                You have to link the <code>navigation-react-native</code> package to get the native code to run.
+            </p>
             <pre><code class="language-js">react-native link navigation-react-native</code></pre>
             <h2>JavaScript</h2>
             <pre><code class="language-jsx">import React from 'react';
