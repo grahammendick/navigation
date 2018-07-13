@@ -49,25 +49,14 @@
         <div id="article">
             <h1>Hello World</h1>
             <p>All changes go in App.js. See setup for native changes. Don't call start because no browser Url, navigate instead</p>
-            <pre><code class="language-jsx">import {StateNavigator} from 'navigation';
-
-var stateNavigator = new StateNavigator([
+            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
   {key: 'hello', title: 'Hello'},
   {key: 'world', title: 'World', trackCrumbTrail: true}
 ]);</code></pre>
             <pre><code class="language-jsx">stateNavigator.navigate('hello');</code></pre>
-            <h2>Render</h2>
             <pre><code class="language-jsx">var {hello} = stateNavigator.states;
 
 hello.renderScene = () => &lt;Text>Hello&lt;/Text>;</code></pre>
-            <pre><code class="language-jsx">import {NavigationHandler} from 'navigation-react';
-import {Scene} from 'navigation-react-native';
-
-export default ({crumb}) => (
-  &lt;NavigationHandler stateNavigator={stateNavigator}>
-    &lt;Scene crumb={crumb} />
-  &lt;/NavigationHandler>
-);</code></pre>
             <h2>Push</h2>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
 
@@ -88,9 +77,6 @@ hello.renderScene = () => (
 world.renderScene = ({size}) => (
   &lt;Text style={{fontSize: data.size}}>World&lt;/Text>
 );</code></pre>
-            <pre><code class="language-jsx">import {addNavigateHandlers} from 'navigation-react-native';
-
-addNavigateHandlers(stateNavigator);</code></pre>
             <h2>Pop</h2>
             <pre><code class="language-jsx">world.renderScene = ({size}) => (
   &lt;NavigationContext.Consumer>
