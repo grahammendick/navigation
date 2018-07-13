@@ -49,12 +49,12 @@
         <div id="article">
             <h1>Hello World</h1>
             <p>All changes go in App.js. See setup for native changes. Don't call start because no browser Url, navigate instead</p>
-            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+            <pre><code class="language-js">var stateNavigator = new StateNavigator([
   {key: 'hello', title: 'Hello'},
   {key: 'world', title: 'World', trackCrumbTrail: true}
 ]);</code></pre>
-            <pre><code class="language-jsx">stateNavigator.navigate('hello');</code></pre>
-            <pre><code class="language-jsx">var {hello} = stateNavigator.states;
+            <pre><code class="language-js">stateNavigator.navigate('hello');</code></pre>
+            <pre><code class="language-js">var {hello} = stateNavigator.states;
 
 hello.renderScene = () => &lt;Text>Hello&lt;/Text>;</code></pre>
             <h2>Push</h2>
