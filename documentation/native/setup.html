@@ -49,14 +49,20 @@
         <div id="article">
             <h1>Setup</h1>
             <p>
-                The Navigation router for React Native uses the underlying native APIs to provide faithful navigation on Android and iOS. Because it contains native code you first have to eject from <code>create-react-native-app</code> or create your project using <code>react-native init</code>. Then install the three navigation packages from npm.
+                The Navigation router for React Native uses the underlying native APIs to provide faithful navigation on Android and iOS. Because it contains native code you first have to eject from <code>create-react-native-app</code> or create your project using <code>react-native init</code>.
+            </p>
+            <p>
+                Install the three navigation packages from npm.
             </p>
             <pre><code class="language-js">npm install navigation navigation-react navigation-react-native --save</code></pre>
             <p>
-                You have to link the <code>navigation-react-native</code> package to get the native code to run.
+                Link the <code>navigation-react-native</code> package to get the native code to run.
             </p>
             <pre><code class="language-js">react-native link navigation-react-native</code></pre>
             <h2>JavaScript</h2>
+            <p>
+                Replace the code in <code>App.js</code> with the following:
+            </p>
             <pre><code class="language-jsx">import React from 'react';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
@@ -73,11 +79,17 @@ export default ({crumb}) => (
   &lt;/NavigationHandler>
 );</code></pre>
             <h2>Android</h2>
+            <p>
+                Locate the <code>AndroidManifest.xml</code> in the Android project and add a <code>launchMode</code> of <code>singleTop</code> to the <code>MainActivity</code>.
+            </p>
             <pre><code class="language-jsx">&lt;activity
   android:name=".MainActivity"
   android:launchMode="singleTop"
   ...</code></pre>
             <h2>iOS</h2>
+            <p>
+                Locate the <code>AppDelegate.h</code> in the iOS project and replace the code with the following:
+            </p>
             <pre><code class="language-js">#import &lt;UIKit/UIKit.h>
 #import &lt;React/RCTBridge.h>
 #import "NVApplicationHostDelegate.h"
@@ -88,6 +100,9 @@ export default ({crumb}) => (
 @property (nonatomic, strong) RCTBridge *bridge;
 
 @end</code></pre>
+            <p>
+                Locate the <code>AppDelegate.m</code> in the iOS project and replace the code with the following:
+            </p>
 <pre><code class="language-js">#import "AppDelegate.h"
 #import &lt;React/RCTBundleURLProvider.h>
 #import &lt;React/RCTRootView.h>
