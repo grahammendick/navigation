@@ -54,11 +54,10 @@
   {key: 'world', title: 'World', trackCrumbTrail: true}
 ]);</code></pre>
             <pre><code class="language-js">stateNavigator.navigate('hello');</code></pre>
-            <pre><code class="language-js">var {hello} = stateNavigator.states;
-
-hello.renderScene = () => &lt;Text>Hello&lt;/Text>;</code></pre>
             <h2>Push</h2>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+
+var {hello} = stateNavigator.states;
 
 hello.renderScene = () => (
   &lt;NavigationContext.Consumer>
