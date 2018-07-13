@@ -48,6 +48,8 @@
         </div>
         <div id="article">
             <h1>Setup</h1>
+            <pre><code class="language-js">npm install navigation navigation-react navigation-react-native</code></pre>
+            <pre><code class="language-js">react-native link navigation-react-native</code></pre>
             <h2>JavaScript</h2>
             <pre><code class="language-jsx">import React from 'react';
 import {StateNavigator} from 'navigation';
@@ -70,7 +72,7 @@ export default ({crumb}) => (
   android:launchMode="singleTop"
   ...</code></pre>
             <h2>iOS</h2>
-            <pre><code class="language-jsx">#import &lt;UIKit/UIKit.h>
+            <pre><code class="language-js">#import &lt;UIKit/UIKit.h>
 #import &lt;React/RCTBridge.h>
 #import "NVApplicationHostDelegate.h"
 
@@ -80,7 +82,7 @@ export default ({crumb}) => (
 @property (nonatomic, strong) RCTBridge *bridge;
 
 @end</code></pre>
-<pre><code class="language-jsx">#import "AppDelegate.h"
+<pre><code class="language-js">#import "AppDelegate.h"
 #import "NVSceneController.h"
 
 #import &lt;React/RCTBundleURLProvider.h>
