@@ -48,7 +48,63 @@
         </div>
         <div id="article">
             <h1>Setup</h1>
-        </div>
+            <h2>JavaScript</h2>
+            <pre><code class="language-jsx">import React from 'react';
+import {StateNavigator} from 'navigation';
+import {NavigationHandler} from 'navigation-react';
+import {addNavigateHandlers, Scene} from 'navigation-react-native';
+
+var stateNavigator = new StateNavigator([
+]);
+
+addNavigateHandlers(stateNavigator);
+
+export default ({crumb}) => (
+  &lt;NavigationHandler stateNavigator={stateNavigator}>
+    &lt;Scene crumb={crumb} />
+);</code></pre>
+            <h2>Android</h2>
+            <pre><code class="language-jsx">&lt;activity
+  android:name=".MainActivity"
+  android:launchMode="singleTop"
+  ...</code></pre>
+            <h2>iOS</h2>
+            <pre><code class="language-jsx">#import &lt;UIKit/UIKit.h>
+#import &lt;React/RCTBridge.h>
+#import "NVApplicationHostDelegate.h"
+
+@interface AppDelegate : UIResponder &lt;NVApplicationHostDelegate>
+
+@property (nonatomic, strong) UIWindow *window;
+@property (nonatomic, strong) RCTBridge *bridge;
+
+@end</code></pre>
+<pre><code class="language-jsx">#import "AppDelegate.h"
+#import "NVSceneController.h"
+
+#import &lt;React/RCTBundleURLProvider.h>
+#import &lt;React/RCTRootView.h>
+
+@implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+  NSURL *jsCodeLocation;
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  
+  self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation moduleProvider:nil launchOptions:launchOptions];  
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+
+  UIViewController *sceneController = [[NVSceneController alloc] init: 0 tab: 0 title: @"Title" appKey: @"appKey"];
+  UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sceneController];
+
+  self.window.rootViewController = navigationController;
+  [self.window makeKeyAndVisible];
+  return YES;
+}
+
+@end</code></pre>
+          </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
