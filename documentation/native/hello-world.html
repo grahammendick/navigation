@@ -91,6 +91,9 @@ world.renderScene = ({size}) => (
   &lt;Text style={{fontSize: data.size}}>World&lt;/Text>
 );</code></pre>
             <h2>Pop</h2>
+            <p>
+                We pop scenes off the stack by navigating backwards. How far we navigate back determines the number of scenes popped. We'll change the 'world' scene so that it renders a button instead of plain text. Inside the <code>onPress</code> handler, we'll call the <code>navigateBack</code> function passing in a distance of 1. Because the Navigation router uses the underlying native APIs, you can also return to the 'hello' scene using the back button on Android or by swiping/pressing back on iOS.
+            </p>
             <pre><code class="language-jsx">world.renderScene = ({size}) => (
   &lt;NavigationContext.Consumer>
     {({stateNavigator}) => (
