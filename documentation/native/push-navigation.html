@@ -49,7 +49,7 @@
         <div id="article">
             <h1>Push Navigation</h1>
             <h2>Defining States</h2>
-            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
   {key: 'inbox', title: 'Inbox'},
   {key: 'mail', title: 'Mail', trackCrumbTrail: true}
 ]);</code></pre>
@@ -75,7 +75,7 @@ var Inbox = () => (
   &lt;/NavigationContext.Consumer>
 );</code></pre>
             <h2>Priming the Stack</h2>
-            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
   {key: 'inbox', title: 'Inbox'},
   {key: 'mail', title: 'Mail', trackCrumbTrail: true},
   {key: 'attachment', title: 'Attachment', trackCrumbTrail: true}
