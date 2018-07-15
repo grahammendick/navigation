@@ -49,7 +49,7 @@
         <div id="article">
             <h1>Hello World</h1>
             <p>
-                The Navigation router uses the underlying native APIs to provide faithful navigation on Android and iOS. It's the only React Native router that offers native navigation where the stack can be interrogated in JavaScript. The best of both worlds. We're going to build an example with two scenes. The first scene will show a button that says 'Hello'. Clicking the button will push a second scene onto the stack. This scene will display a button that says 'World'. Clicking it will pop the second scene off the stack and return you to the first.
+                The Navigation router uses the underlying native APIs to provide faithful navigation on Android and iOS. It's the only React Native router that offers native navigation where the stack can be interrogated in JavaScript. The best of both worlds. We're going to build an example with two scenes. The first scene will show a button that says 'Hello'. Pressing the button will push a second scene onto the stack. This scene will display a button that says 'World'. Pressing it will pop the second scene off the stack and return you to the first.
             </p>
             <p>
                 After following the <a href="setup.html">Setup instructions</a>, we'll add two <code>States</code> to the <code>StateNavigator</code> array in <code>App.js</code>. There's one <code>State</code> for the 'hello' scene and another for the 'world' scene. We'll give each scene a title that iOS will display in its navigation bar. The Navigation router manages the stack as a 'breadcrumb trail'. Named after the trail of breadcrumbs Hansel and Gretel dropped to remember their journey back, each breadcrumb in the trail represents a scene in the stack. We'll enable the breadcrumb trail by setting <code>trackCrumbTrail</code> to true on the 'world' State.
@@ -64,7 +64,7 @@
             </p>
             <pre><code class="language-js">stateNavigator.navigate('hello');</code></pre>
             <p>
-                The Navigation router displays the scene we return from the <code>renderScene</code> function of the 'hello' <code>State</code>. The scene consists of a button that says 'Hello'. When clicked, we want to push the 'world' scene onto the stack. We'll access the <code>stateNavigator</code> using the React Context API and navigate to the 'world' <code>State</code> inside the <code>onPress</code> handler. The <code>navigate</code> function accepts navigation data as the second parameter. We’ll use it to pass across a size of 20 to the 'world' scene.
+                The Navigation router displays the scene we return from the <code>renderScene</code> function of the 'hello' <code>State</code>. The scene consists of a button that says 'Hello'. When pressed, we want to push the 'world' scene onto the stack. We'll access the <code>stateNavigator</code> using the React Context API and navigate to the 'world' <code>State</code> inside the <code>onPress</code> handler. The <code>navigate</code> function accepts navigation data as the second parameter. We’ll use it to pass across a size of 20 to the 'world' scene.
             </p>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
 
