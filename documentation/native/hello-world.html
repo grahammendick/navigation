@@ -58,8 +58,14 @@
   {key: 'hello', title: 'Hello'},
   {key: 'world', title: 'World', trackCrumbTrail: true}
 ]);</code></pre>
-            <pre><code class="language-js">stateNavigator.navigate('hello');</code></pre>
             <h2>Push</h2>
+            <p>
+                We push scenes onto the stack by navigating to <code>States</code>. We want to display the 'hello' scene first so we'll start by navigating to the 'hello' <code>State</code>.
+            </p>
+            <pre><code class="language-js">stateNavigator.navigate('hello');</code></pre>
+            <p>
+                The Navigation router displays the scene we return from the <code>renderScene</code> function of the 'hello' <code>State</code>. The scene consists of a button that says 'Hello'. When clicked, we want to push the 'world' scene onto the stack. We'll access the <code>stateNavigator</code> using the React Context API and navigate to the 'world' <code>State</code> inside the <code>onPress</code> handler. The <code>navigate</code> function accepts navigation data as the second parameter. We’ll use it to pass across a size of 20 to the 'world' scene.
+            </p>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
 
 var {hello} = stateNavigator.states;
@@ -76,6 +82,9 @@ hello.renderScene = () => (
     )}
   &lt;/NavigationContext.Consumer>
 );</code></pre>
+            <p>
+                We build the 'world' scene inside the <code>renderScene</code> function of the 'world' <code>State</code>. We'll destructure the size from the incoming navigation data and assign it to <code>Text</code> component’s font size.
+            </p>
             <pre><code class="language-jsx">var {world} = stateNavigator.states;
 
 world.renderScene = ({size}) => (
