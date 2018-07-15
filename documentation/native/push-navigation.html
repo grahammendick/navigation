@@ -56,13 +56,8 @@
             <h2>Defining Scenes</h2>
             <pre><code class="language-jsx">var {inbox, mail} = stateNavigator.states;
 
-inbox.renderScene = function() {
-  return &lt;Inbox />;
-};
-
-mail.renderScene = function({id}) {
-  return &lt;Mail mailId={id} />;
-};</code></pre>
+inbox.renderScene = () => &lt;Inbox />;
+mail.renderScene = ({id}) => &lt;Mail mailId={id} />;</code></pre>
             <h2>Pushing</h2>
             <pre><code class="language-js">stateNavigator.navigate('inbox');</code></pre>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
