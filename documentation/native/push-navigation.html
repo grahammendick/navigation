@@ -70,7 +70,7 @@ inbox.renderScene = () => &lt;Inbox />;
 compose.renderScene = () => &lt;Compose />;</code></pre>
             <h2>Pushing</h2>
             <p>
-                <code>States</code> become active by navigating to them. You navigate to a <code>State</code> by passing the the <code>State key</code> to the <code>navigate</code> function of the <code>StateNavigator</code>. When our email application starts up, we navigate to the 'inbox' <code>State</code> so that the Navigation router displays the 'inbox' scene first.
+                <code>States</code> become active by navigating to them. You navigate to a <code>State</code> by passing the <code>State key</code> to the <code>navigate</code> function of the <code>StateNavigator</code>. When our email application starts up, we navigate to the 'inbox' <code>State</code> so that the Navigation router displays the 'inbox' scene first.
             </p>
             <pre><code class="language-js">stateNavigator.navigate('inbox');</code></pre>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
