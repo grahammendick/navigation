@@ -74,7 +74,7 @@ compose.renderScene = () => &lt;Compose />;</code></pre>
             </p>
             <pre><code class="language-js">stateNavigator.navigate('inbox');</code></pre>
             <p>
-                You can access the <code>StateNavigator</code> inside any component using the React Context API. In our email example, we can add a button to the 'inbox' scene that navigates to the 'compose' <code>State</code>. Pressing the button pushes the 'compose' scene onto the stack. The user can return to their inbox via the Android back button or by pressing/swiping back on iOS.
+                You can access the <code>StateNavigator</code> inside any component using the React Context API. In our email example, we can add a button to the 'inbox' scene that navigates to the 'compose' <code>State</code>. Pressing the button pushes the 'compose' scene onto the stack. The user can return to their inbox using the Android back button or by pressing/swiping back on iOS.
             </p>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
 
@@ -91,12 +91,18 @@ var Inbox = () => (
   &lt;/NavigationContext.Consumer>
 );</code></pre>
             <h2>Passing Data</h2>
+            <p>
+                You pass data between scenes via the second parameter of the <code>navigate</code> function. You can pass any data of type string, number, boolean and date; or any array of these types. When a user opens an email in our example app, we pass along the selected id to the 'mail' scene.
+            </p>
             <pre><code class="language-jsx">&lt;TouchableHighlight
   onPress={() => {
     stateNavigator.navigate('mail', {id: 12});
   }}>
   &lt;Text>Open Mail&lt;/Text>
 &lt;/TouchableHighlight></code></pre>
+            <p>
+                The Navigation router passes this navigation data into the <code>renderScene</code> function of the target <code>State</code>. In the email application, we can destructure the selected id from the incoming data and pass it as a <code>prop</code> to the <code>Mail</code> component.
+            </p>
             <pre><code class="language-jsx">var {mail} = stateNavigator.states;
 
 mail.renderScene = ({id}) => &lt;Mail mailId={id} />;</code></pre>
