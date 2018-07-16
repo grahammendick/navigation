@@ -106,6 +106,10 @@ var Inbox = () => (
             <pre><code class="language-jsx">var {mail} = stateNavigator.states;
 
 mail.renderScene = ({id}) => &lt;Mail mailId={id} />;</code></pre>
+            <div class="Note">
+                <h2>Note</h2>
+                Wrap each scene in a <code>ScrollView</code> component with <code>contentInsetAdjustmentBehavior</code> set to 'automatic' to prevent the iOS navigation bar overlapping the content
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
