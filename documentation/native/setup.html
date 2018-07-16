@@ -101,7 +101,7 @@ export default ({crumb}) => (
 
 @end</code></pre>
             <p>
-                Locate the <code>AppDelegate.m</code> in the iOS project and replace the code with that shown below. Change the <code>"Title"</code> placeholder string to the title of your first scene and change the <code>"appKey"</code> placeholder string to the name of your application (it should match the key used in the <code>registerComponent</code> call in <code>index.js</code>).
+                Locate the <code>AppDelegate.m</code> in the iOS project and replace the code with that shown below. Change the <code>"Title"</code> placeholder string to the title of your first scene. Change the <code>"appKey"</code> placeholder string to the name of your application (it should match the key used in the <code>registerComponent</code> call in <code>index.js</code>).
             </p>
 <pre><code class="language-js">#import "AppDelegate.h"
 #import &lt;React/RCTBundleURLProvider.h>
@@ -120,7 +120,7 @@ export default ({crumb}) => (
   NSString *title = @"Title";
   NSString *appKey = @"appKey";
 
-  UIViewController *sceneController = [[NVSceneController alloc] init: 0 tab: 0 title: title appKey: appKey];
+  UIViewController *sceneController = [[NVSceneController alloc] init:0 tab:0 title:title appKey:appKey];
   UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sceneController];
 
   self.window.rootViewController = navigationController;

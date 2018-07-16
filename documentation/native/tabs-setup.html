@@ -49,6 +49,97 @@
         </div>
         <div id="article">
             <h1>Tabs Setup (iOS)</h1>
+            <p>
+                The Navigation router for React Native uses the underlying native APIs to provide faithful navigation on Android and iOS. Because it contains native code you first have to eject from <code>create-react-native-app</code> or create your application using <code>react-native init</code>.
+            </p>
+            <p>
+                Install the three navigation packages from npm.
+            </p>
+            <pre><code class="language-js">npm install navigation navigation-react navigation-react-native --save</code></pre>
+            <p>
+                Link the <code>navigation-react-native</code> package.
+            </p>
+            <pre><code class="language-js">react-native link navigation-react-native</code></pre>
+            <h2>JavaScript</h2>
+            <p>
+                Replace the code in <code>App.js</code> with that shown below. This setup is for 2 tabs. For each extra tab you require add an extra <code>new StateNavigator(stateNavigator)</code> to the <code>stateNavigators</code> array.
+            </p>
+            <pre><code class="language-jsx">import React from 'react';
+import {StateNavigator} from 'navigation';
+import {NavigationHandler} from 'navigation-react';
+import {addNavigateHandlers, Scene} from 'navigation-react-native';
+
+var stateNavigator = new StateNavigator([
+]);
+
+var stateNavigators = [stateNavigator, new StateNavigator(stateNavigator)];
+
+addNavigateHandlers(stateNavigator);
+
+export default ({crumb, tab = 0}) => (
+  &lt;NavigationHandler stateNavigator={stateNavigators[tab]}>
+    &lt;Scene crumb={crumb} />
+  &lt;/NavigationHandler>
+);</code></pre>
+            <h2>Android</h2>
+            <p>
+                Locate the <code>AndroidManifest.xml</code> in the Android project and add a <code>launchMode</code> of <code>singleTop</code> to the <code>MainActivity</code>.
+            </p>
+            <pre><code class="language-jsx">&lt;activity
+  android:name=".MainActivity"
+  android:launchMode="singleTop"
+  ...</code></pre>
+            <h2>iOS</h2>
+            <p>
+                Locate the <code>AppDelegate.h</code> in the iOS project and replace the code with the following:
+            </p>
+            <pre><code class="language-js">#import &lt;UIKit/UIKit.h>
+#import &lt;React/RCTBridge.h>
+#import "NVApplicationHostDelegate.h"
+
+@interface AppDelegate : UIResponder &lt;NVApplicationHostDelegate>
+
+@property (nonatomic, strong) UIWindow *window;
+@property (nonatomic, strong) RCTBridge *bridge;
+
+@end</code></pre>
+            <p>
+                Locate the <code>AppDelegate.m</code> in the iOS project and replace the code with that shown below. This setup is for 2 tabs. For each extra tab you require add an extra item to the tabs and titles arrays. Change the <code>"Tab1"</code> and <code>"Tab2"</code> placeholder strings to the names of your tabs. Change the <code>"Title1"</code> and <code>"Title2"</code> placeholder strings to the title of your first scenes in each tab. Change the <code>"appKey"</code> placeholder string to the name of your application (it should match the key used in the <code>registerComponent</code> call in <code>index.js</code>).
+            </p>
+<pre><code class="language-js">#import "AppDelegate.h"
+#import &lt;React/RCTBundleURLProvider.h>
+#import &lt;React/RCTRootView.h>
+#import "NVSceneController.h"
+
+@implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+  NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  
+  self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation moduleProvider:nil launchOptions:launchOptions];  
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+
+  NSString *tabs = @[@"Tab1", @"Tab2"];
+  NSString *titles = @[@"Title1", @"Title2"];
+  NSString *appKey = @"appKey";
+
+  NSMutableArray *controllers = [[NSMutableArray alloc] init];
+  for(NSInteger tab = 0; tab &lt; [tabs count]; tab++) {
+    UIViewController *sceneController = [[NVSceneController alloc] init:0 tab:tab title:titles[tab] appKey:appKey];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sceneController];
+    navigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:tabs[tab] image:nil tag:tab];
+    [controllers addObject:navigationController];
+  }
+
+  UITabBarController *tabBarController = [[UITabBarController alloc] init];
+  [tabBarController setViewControllers:controllers];
+  self.window.rootViewController = tabBarController;
+  [self.window makeKeyAndVisible];
+  return YES;
+}
+
+@end</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
