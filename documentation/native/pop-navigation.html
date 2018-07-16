@@ -48,6 +48,24 @@
         </div>
         <div id="article">
             <h1>Pop Navigation</h1>
+            <h2>Popping</h2>
+            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+
+var Compose = () => (
+  &lt;NavigationContext.Consumer>
+    {({stateNavigator}) => (
+      &lt;TouchableHighlight
+        onPress={() => {
+          stateNavigator.navigateBack(1);
+        }}>
+        &lt;Text>Back to Inbox&lt;/Text>
+      &lt;/TouchableHighlight>
+    )}
+  &lt;/NavigationContext.Consumer>
+);</code></pre>
+            <h2>Popping to Top</h2>
+            <pre><code class="language-jsx">var {crumbs} = stateNavigator.stateContext;
+stateNavigator.navigateBack(crumbs.length);</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
