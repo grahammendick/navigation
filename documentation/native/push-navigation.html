@@ -53,7 +53,7 @@
                 After following the <a href="setup.html">Setup instructions</a>, you end up with an empty <code>StateNavigator</code> in <code>App.js</code>. The <code>StateNavigator</code> accepts an array of States that represent the scenes in your application. You give each scene a title that's displayed in the navigation bar in iOS. In an email application, for example, we might have <code>States</code> representing the inbox scene and the scene for reading and writing a mail. 
             </p>
             <p>
-                Both Android and iOS allow a user to navigate back through their stack of visited scenes. The Navigation router manages the stack of visited scenes by dropping a breadcrumb at each one, like the fairy-tale characters Hansel and Gretel. You enable the breadcrumb trail by setting <code>trackCrumbTrail</code> to true against each <code>State</code>. In an email application, we set <code>trackCrumbTrail</code> to on the 'mail' <code>State</code> so that the user can return to the 'inbox' scene after opening an email.
+                Both Android and iOS allow a user to navigate back through their stack of visited scenes. The Navigation router manages the stack of visited scenes by dropping a breadcrumb at each one, like the fairy-tale characters Hansel and Gretel. You enable the breadcrumb trail by setting <code>trackCrumbTrail</code> to true against each <code>State</code>. In an email application, we set <code>trackCrumbTrail</code> to true on the 'mail' <code>State</code> so that the user can return to the 'inbox' scene after opening an email.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
   {key: 'inbox', title: 'Inbox'},
