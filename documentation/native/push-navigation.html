@@ -57,8 +57,17 @@
             </p>
             <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
   {key: 'inbox', title: 'Inbox'},
-  {key: 'mail', title: 'Mail', trackCrumbTrail: true}
+  {key: 'mail', title: 'Mail', trackCrumbTrail: true},
+  {key: 'compose', title: 'Compose', trackCrumbTrail: true}
 ]);</code></pre>
+            <h2>Defining Scenes</h2>
+            <p>
+                Each <code>State</code> needs a matching scene which the Navigation router displays when that <code>State</code> is active. You define the scene in a function assigned to the <code>renderScene</code> property of the <code>State</code>. We can define two of the scenes in our email application using <code>Inbox</code> and <code>Compose</code> components.
+            </p>
+            <pre><code class="language-jsx">var {inbox, compose} = stateNavigator.states;
+
+inbox.renderScene = () => &lt;Inbox />;
+compose.renderScene = () => &lt;Compose />;</code></pre>
             <h2>Pushing</h2>
             <pre><code class="language-js">stateNavigator.navigate('inbox');</code></pre>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
@@ -68,18 +77,14 @@ var Inbox = () => (
     {({stateNavigator}) => (
       &lt;TouchableHighlight
         onPress={() => {
-          stateNavigator.navigate('mail', {id: 12});
+          stateNavigator.navigate('compose');
         }}>
-        &lt;Text>Open Mail&lt;/Text>
+        &lt;Text>Compose Mail&lt;/Text>
       &lt;/TouchableHighlight>
     )}
   &lt;/NavigationContext.Consumer>
 );</code></pre>
-            <h2>Defining Scenes</h2>
-            <pre><code class="language-jsx">var {inbox, mail} = stateNavigator.states;
-
-inbox.renderScene = () => &lt;Inbox />;
-mail.renderScene = ({id}) => &lt;Mail mailId={id} />;</code></pre>
+            <h2>Navigation Data</h2>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
