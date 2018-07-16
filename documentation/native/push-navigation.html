@@ -88,9 +88,12 @@ var Inbox = () => (
   &lt;/NavigationContext.Consumer>
 );</code></pre>
             <h2>Navigation Data</h2>
-            <pre><code class="language-jsx">onPress={() => {
-  stateNavigator.navigate('mail', {id: 12});
-}}</code></pre>
+            <pre><code class="language-jsx">&lt;TouchableHighlight
+  onPress={() => {
+    stateNavigator.navigate('mail', {id: 12});
+  }}>
+  &lt;Text>Open Mail&lt;/Text>
+&lt;/TouchableHighlight></code></pre>
             <pre><code class="language-jsx">var {mail} = stateNavigator.states;
 
 mail.renderScene = ({id}) => &lt;Mail mailId={id} />;</code></pre>
