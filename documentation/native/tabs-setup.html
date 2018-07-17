@@ -108,7 +108,7 @@ export default ({crumb, tab = 0}) => (
 
 @end</code></pre>
             <p>
-                Locate the <code>AppDelegate.m</code> in the iOS project and replace the code with that shown below. This setup is for 2 tabs. For each extra tab you require add an extra item to the tabs and titles arrays. Change the <code>"Tab1"</code> and <code>"Tab2"</code> placeholder strings to the names of your tabs. Change the <code>"Title1"</code> and <code>"Title2"</code> placeholder strings to the title of your first scenes in each tab. Change the <code>"appKey"</code> placeholder string to the name of your application (it should match the key used in the <code>registerComponent</code> call in <code>index.js</code>).
+                Locate the <code>AppDelegate.m</code> in the iOS project and replace the code with that shown below. Change the <code>"Tab1"</code> and <code>"Tab2"</code> placeholder strings to the names of your tabs. Change the <code>"appKey"</code> placeholder string to the name of your application (it should match the key used in the <code>registerComponent</code> call in <code>index.js</code>). This setup is for 2 tabs. For each extra tab you require add an extra item to the tabs array.
             </p>
 <pre><code class="language-js">#import "AppDelegate.h"
 #import &lt;React/RCTBundleURLProvider.h>
@@ -125,12 +125,11 @@ export default ({crumb, tab = 0}) => (
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 
   NSString *tabs = @[@"Tab1", @"Tab2"];
-  NSString *titles = @[@"Title1", @"Title2"];
   NSString *appKey = @"appKey";
 
   NSMutableArray *controllers = [[NSMutableArray alloc] init];
   for(NSInteger tab = 0; tab &lt; [tabs count]; tab++) {
-    UIViewController *sceneController = [[NVSceneController alloc] init:0 tab:tab title:titles[tab] appKey:appKey];
+    UIViewController *sceneController = [[NVSceneController alloc] init:0 tab:tab title:tabs[tab] appKey:appKey];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sceneController];
     navigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:tabs[tab] image:nil tag:tab];
     [controllers addObject:navigationController];
