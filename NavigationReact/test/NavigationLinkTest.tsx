@@ -2561,7 +2561,7 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('Click Deferred Navigation Link', function () {
+    /*describe('Click Deferred Navigation Link', function () {
         it('should navigate async', function(done){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
@@ -2760,9 +2760,9 @@ describe('NavigationLinkTest', function () {
             Simulate.click(link);
             header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'world s1');
-            // stateNavigator.navigate('s0', {x: 'a'});
-            // header = container.querySelector<HTMLHeadingElement>('h1');
-            // assert.equal(header.innerHTML, 'empty first');
+            stateNavigator.navigate('s0', {x: 'a'});
+            header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'empty first');
         })
-    });
+    });*/
 });
