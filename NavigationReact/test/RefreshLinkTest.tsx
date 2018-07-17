@@ -2488,7 +2488,7 @@ describe('RefreshLinkTest', function () {
         })
     });
 
-    describe('Click Deferred Refresh Link', function () {
+    /*describe('Click Deferred Refresh Link', function () {
         it('should navigate async', function(done){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
@@ -2682,9 +2682,9 @@ describe('RefreshLinkTest', function () {
             Simulate.click(link);
             header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'world s');
-            // stateNavigator.refresh({x: 'a'});
-            // header = container.querySelector<HTMLHeadingElement>('h1');
-            // assert.equal(header.innerHTML, 'empty first');
+            stateNavigator.refresh({x: 'a'});
+            header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'empty first');
         })
-    });
+    });*/
 });

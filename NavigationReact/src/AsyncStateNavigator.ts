@@ -1,6 +1,5 @@
 import NavigationHandler from './NavigationHandler';
 import { StateNavigator, StateContext } from 'navigation';
-import * as ReactDOM from 'react-dom';
 
 class AsyncStateNavigator extends StateNavigator {
     private navigationHandler: NavigationHandler;
@@ -50,7 +49,7 @@ class AsyncStateNavigator extends StateNavigator {
     }
 
     private suspendNavigation(asyncNavigator: AsyncStateNavigator, resumeNavigation: () => void, defer: boolean) {
-        defer = defer && ReactDOM.unstable_deferredUpdates;
+        defer = false;
         var { oldState, oldUrl, state, data, url, asyncData } = asyncNavigator.stateContext;
         if (defer) {
             this.navigationHandler.setState(({ context }) => {
@@ -59,14 +58,11 @@ class AsyncStateNavigator extends StateNavigator {
                 return null;
             });
         }
-        var wrapDefer = setState => defer ? ReactDOM.unstable_deferredUpdates(() => setState()) : setState();
-        wrapDefer(() => {
-            this.navigationHandler.setState(() => (
-                { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: asyncNavigator } }
-            ), () => {
-                if (url === this.navigationHandler.state.context.stateNavigator.stateContext.url)
-                    resumeNavigation();
-            });
+        this.navigationHandler.setState(() => (
+            { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: asyncNavigator } }
+        ), () => {
+            if (url === this.navigationHandler.state.context.stateNavigator.stateContext.url)
+                resumeNavigation();
         });
     }
 }
