@@ -124,7 +124,7 @@ export default ({crumb, tab = 0}) => (
   self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation moduleProvider:nil launchOptions:launchOptions];  
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 
-  NSString *tabs = @[@"Tab1", @"Tab2"];
+  NSArray *tabs = @[@"Tab1", @"Tab2"];
   NSString *appKey = @"appKey";
 
   NSMutableArray *controllers = [[NSMutableArray alloc] init];
