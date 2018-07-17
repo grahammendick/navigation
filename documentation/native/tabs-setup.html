@@ -78,7 +78,7 @@ var stateNavigator = new StateNavigator([
 
 var stateNavigators = [stateNavigator, new StateNavigator(stateNavigator)];
 
-addNavigateHandlers(stateNavigator);
+addNavigateHandlers(stateNavigators);
 
 export default ({crumb, tab = 0}) => (
   &lt;NavigationHandler stateNavigator={stateNavigators[tab]}>
