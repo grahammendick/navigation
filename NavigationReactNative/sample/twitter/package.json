@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "navigation": "^5.1.0",
-    "navigation-react": "^4.0.0",
+    "navigation-react": "^4.0.1",
+    "navigation-react-native": "^3.0.0",
     "react": "16.4.1",
     "react-native": "0.56.0"
   },
