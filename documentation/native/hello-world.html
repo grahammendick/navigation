@@ -1,0 +1,114 @@
+<html>
+<head>
+    <title>Hello World</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../css/prism.css">
+    <link rel="stylesheet" href="../../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+        <div>
+            <a href="../../index.html">Navigation</a>
+            <a href="../hello-world.html" class="selected">Docs</a>
+            <a href="../../download/index.html">Download</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <a href="../hello-world.html">Hello World</a>
+            <a href="../thinking-in-navigation.html">Thinking in Navigation</a>
+            <div class="separator"></div>
+            <h2>THE ABC</h2>
+            <a href="../state-navigation.html">A. State Navigation</a>
+            <a href="../navigation-data.html">B. Navigation Data</a>
+            <a href="../routes.html">C. Routes</a>
+            <a href="../examples.html">Examples</a>
+            <div class="separator"></div>
+            <h2>FURTHER GUIDES</h2>
+            <a href="../current-data.html">Current Data</a>
+            <a href="../html5-history.html">HTML5 History</a>
+            <a href="../navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="../reusable-components.html">Reusable Components</a>
+            <div class="separator"></div>
+            <h2>MOBILE</h2>
+            <a href="../mobile/hello-world.html">Hello World</a>
+            <a href="../mobile/animated-navigation.html">Animated Navigation</a>
+            <a href="../mobile/non-animated-navigation.html">Non-Animated Navigation</a>
+            <a href="../mobile/clean-urls.html">Clean Urls</a>
+            <a href="../mobile/shared-element-navigation.html">Shared Element Navigation</a>
+            <a href="../mobile/examples.html">Examples</a>
+            <div class="separator"></div>
+            <h2>NATIVE</h2>
+            <a href="setup.html">Setup</a>
+            <a href="hello-world.html" class="selected">Hello World</a>
+            <a href="push-navigation.html">Push Navigation</a>
+            <a href="pop-navigation.html">Pop Navigation</a>
+            <a href="tabs-setup.html">Tabs Setup (iOS)</a>
+            <a href="examples.html">Examples</a>
+        </div>
+        <div id="article">
+            <h1>Hello World</h1>
+            <p>
+                The Navigation router uses the underlying native APIs to provide faithful navigation on Android and iOS. It's the only React Native router that offers native navigation where the stack can be interrogated in JavaScript. The best of both worlds. We're going to build an example with two scenes. The first scene will show a button that says 'Hello'. Pressing the button will push a second scene onto the stack. This scene will display a button that says 'World'. Pressing it will pop the second scene off the stack and return you to the first.
+            </p>
+            <p>
+                After following the <a href="setup.html">Setup instructions</a>, we'll add two <code>States</code> to the <code>StateNavigator</code> array in <code>App.js</code>. There's one <code>State</code> for the 'hello' scene and another for the 'world' scene. We'll give each scene a title that iOS will display in its navigation bar. The Navigation router manages the stack as a 'breadcrumb trail'. Named after the trail of breadcrumbs Hansel and Gretel dropped to remember their journey back, each breadcrumb in the trail represents a scene in the stack. We'll enable the breadcrumb trail by setting <code>trackCrumbTrail</code> to true on the 'world' State.
+            </p>
+            <pre><code class="language-js">var stateNavigator = new StateNavigator([
+  {key: 'hello', title: 'Hello'},
+  {key: 'world', title: 'World', trackCrumbTrail: true}
+]);</code></pre>
+            <h2>Push</h2>
+            <p>
+                We push scenes onto the stack by navigating to <code>States</code>. We want to display the 'hello' scene first so we'll start by navigating to the 'hello' <code>State</code>.
+            </p>
+            <pre><code class="language-js">stateNavigator.navigate('hello');</code></pre>
+            <p>
+                The Navigation router displays the scene we return from the <code>renderScene</code> function of the 'hello' <code>State</code>. The scene consists of a button that says 'Hello'. When pressed, we want to push the 'world' scene onto the stack. We'll access the <code>stateNavigator</code> using the React Context API and navigate to the 'world' <code>State</code> inside the <code>onPress</code> handler. The <code>navigate</code> function accepts navigation data as the second parameter. We’ll use it to pass across a size of 20 to the 'world' scene.
+            </p>
+            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+
+var {hello} = stateNavigator.states;
+
+hello.renderScene = () => (
+  &lt;NavigationContext.Consumer>
+    {({stateNavigator}) => (
+      &lt;TouchableHighlight
+        onPress={() => {
+          stateNavigator.navigate('world', {size: 20});
+        }}>
+        &lt;Text>Hello&lt;/Text>
+      &lt;/TouchableHighlight>
+    )}
+  &lt;/NavigationContext.Consumer>
+);</code></pre>
+            <p>
+                We build the 'world' scene inside the <code>renderScene</code> function of the 'world' <code>State</code>. We'll destructure the size from the incoming navigation data and assign it to <code>Text</code> component’s font size.
+            </p>
+            <pre><code class="language-jsx">var {world} = stateNavigator.states;
+
+world.renderScene = ({size}) => (
+  &lt;Text style={{fontSize: data.size}}>World&lt;/Text>
+);</code></pre>
+            <h2>Pop</h2>
+            <p>
+                We pop scenes off the stack by navigating backwards. How far we navigate back determines the number of scenes popped. We'll change the 'world' scene so that it renders a button instead of plain text. Inside the <code>onPress</code> handler, we'll call the <code>navigateBack</code> function passing in a distance of 1. Because the Navigation router uses the underlying native APIs, you can also return to the 'hello' scene using the back button on Android or by swiping/pressing back on iOS.
+            </p>
+            <pre><code class="language-jsx">world.renderScene = ({size}) => (
+  &lt;NavigationContext.Consumer>
+    {({stateNavigator}) => (
+      &lt;TouchableHighlight        
+        onPress={() => {
+          stateNavigator.navigateBack(1);
+        }}>
+        &lt;Text style={{fontSize: size}}>World&lt;/Text>
+      &lt;/TouchableHighlight>
+    )}
+  &lt;/NavigationContext.Consumer>
+);</code></pre>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../js/prism.js"></script>
+</body>
+</html>

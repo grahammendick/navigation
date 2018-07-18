@@ -1,0 +1,118 @@
+<html>
+<head>
+    <title>Push Navigation</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../css/prism.css">
+    <link rel="stylesheet" href="../../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+        <div>
+            <a href="../../index.html">Navigation</a>
+            <a href="../hello-world.html" class="selected">Docs</a>
+            <a href="../../download/index.html">Download</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <a href="../hello-world.html">Hello World</a>
+            <a href="../thinking-in-navigation.html">Thinking in Navigation</a>
+            <div class="separator"></div>
+            <h2>THE ABC</h2>
+            <a href="../state-navigation.html">A. State Navigation</a>
+            <a href="../navigation-data.html">B. Navigation Data</a>
+            <a href="../routes.html">C. Routes</a>
+            <a href="../examples.html">Examples</a>
+            <div class="separator"></div>
+            <h2>FURTHER GUIDES</h2>
+            <a href="../current-data.html">Current Data</a>
+            <a href="../html5-history.html">HTML5 History</a>
+            <a href="../navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="../reusable-components.html">Reusable Components</a>
+            <div class="separator"></div>
+            <h2>MOBILE</h2>
+            <a href="../mobile/hello-world.html">Hello World</a>
+            <a href="../mobile/animated-navigation.html">Animated Navigation</a>
+            <a href="../mobile/non-animated-navigation.html">Non-Animated Navigation</a>
+            <a href="../mobile/clean-urls.html">Clean Urls</a>
+            <a href="../mobile/shared-element-navigation.html">Shared Element Navigation</a>
+            <a href="../mobile/examples.html">Examples</a>
+            <div class="separator"></div>
+            <h2>NATIVE</h2>
+            <a href="setup.html">Setup</a>
+            <a href="hello-world.html">Hello World</a>
+            <a href="push-navigation.html" class="selected">Push Navigation</a>
+            <a href="pop-navigation.html">Pop Navigation</a>
+            <a href="tabs-setup.html">Tabs Setup (iOS)</a>
+            <a href="examples.html">Examples</a>
+        </div>
+        <div id="article">
+            <h1>Push Navigation</h1>
+            <h2>Defining States</h2>
+            <p>
+                After following the <a href="setup.html">Setup instructions</a>, you end up with an empty <code>StateNavigator</code> in <code>App.js</code>. The <code>StateNavigator</code> accepts an array of States that represent the scenes in your application. You give each scene a title that's displayed in the navigation bar on iOS. In an email application, for example, we might have <code>States</code> representing the inbox scene and the scenes for reading and writing a mail. 
+            </p>
+            <p>
+                Both Android and iOS allow a user to navigate back through their stack of visited scenes. The Navigation router manages this stack by dropping a breadcrumb at each visited scene, like the fairy-tale characters Hansel and Gretel. You enable the breadcrumb trail by setting <code>trackCrumbTrail</code> to true against each <code>State</code>. In an email application, we set <code>trackCrumbTrail</code> to true on the 'mail' <code>State</code> so that the user can return to the 'inbox' scene after opening an email.
+            </p>
+            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+  {key: 'inbox', title: 'Inbox'},
+  {key: 'mail', title: 'Mail', trackCrumbTrail: true},
+  {key: 'compose', title: 'Compose', trackCrumbTrail: true}
+]);</code></pre>
+            <h2>Defining Scenes</h2>
+            <p>
+                Each <code>State</code> needs a matching scene which the Navigation router displays when that <code>State</code> is active. You define the scene in a function assigned to the <code>renderScene</code> property of the <code>State</code>. We can define two of the scenes in our email application using <code>Inbox</code> and <code>Compose</code> components.
+            </p>
+            <pre><code class="language-jsx">var {inbox, compose} = stateNavigator.states;
+
+inbox.renderScene = () => &lt;Inbox />;
+compose.renderScene = () => &lt;Compose />;</code></pre>
+            <h2>Pushing</h2>
+            <p>
+                <code>States</code> become active by navigating to them. You navigate to a <code>State</code> by passing the <code>State key</code> to the <code>navigate</code> function of the <code>StateNavigator</code>. When our email application starts up, we navigate to the 'inbox' <code>State</code> so that the Navigation router displays the 'inbox' scene first.
+            </p>
+            <pre><code class="language-js">stateNavigator.navigate('inbox');</code></pre>
+            <p>
+                You can access the <code>StateNavigator</code> inside any component using the React Context API. In our email example, we can add a button to the 'inbox' scene that navigates to the 'compose' <code>State</code>. Pressing the button pushes the 'compose' scene onto the stack. The user can return to their inbox using the Android back button or by pressing/swiping back on iOS.
+            </p>
+            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+
+var Inbox = () => (
+  &lt;NavigationContext.Consumer>
+    {({stateNavigator}) => (
+      &lt;TouchableHighlight
+        onPress={() => {
+          stateNavigator.navigate('compose');
+        }}>
+        &lt;Text>Compose Mail&lt;/Text>
+      &lt;/TouchableHighlight>
+    )}
+  &lt;/NavigationContext.Consumer>
+);</code></pre>
+            <h2>Passing Data</h2>
+            <p>
+                You pass data between scenes via the second parameter of the <code>navigate</code> function. You can pass any data of type string, number, boolean and date; or any array of these types. When a user opens an email in our example app, we pass along the selected id to the 'mail' scene.
+            </p>
+            <pre><code class="language-jsx">&lt;TouchableHighlight
+  onPress={() => {
+    stateNavigator.navigate('mail', {id: 12});
+  }}>
+  &lt;Text>Open Mail&lt;/Text>
+&lt;/TouchableHighlight></code></pre>
+            <p>
+                The Navigation router passes this navigation data into the <code>renderScene</code> function of the target <code>State</code>. In the email application, we can destructure the selected id from the incoming data and pass it as a <code>prop</code> to the <code>Mail</code> component.
+            </p>
+            <pre><code class="language-jsx">var {mail} = stateNavigator.states;
+
+mail.renderScene = ({id}) => &lt;Mail mailId={id} />;</code></pre>
+            <div class="Note">
+                <h2>Note</h2>
+                Wrap each scene in a <code>ScrollView</code> component with <code>contentInsetAdjustmentBehavior</code> set to 'automatic' to prevent the iOS navigation bar overlapping the content
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../js/prism.js"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+
+<html>
+<head>
+    <title>Tabs Setup (iOS)</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../css/prism.css">
+    <link rel="stylesheet" href="../../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+        <div>
+            <a href="../../index.html">Navigation</a>
+            <a href="../hello-world.html" class="selected">Docs</a>
+            <a href="../../download/index.html">Download</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <a href="../hello-world.html">Hello World</a>
+            <a href="../thinking-in-navigation.html">Thinking in Navigation</a>
+            <div class="separator"></div>
+            <h2>THE ABC</h2>
+            <a href="../state-navigation.html">A. State Navigation</a>
+            <a href="../navigation-data.html">B. Navigation Data</a>
+            <a href="../routes.html">C. Routes</a>
+            <a href="../examples.html">Examples</a>
+            <div class="separator"></div>
+            <h2>FURTHER GUIDES</h2>
+            <a href="../current-data.html">Current Data</a>
+            <a href="../html5-history.html">HTML5 History</a>
+            <a href="../navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="../reusable-components.html">Reusable Components</a>
+            <div class="separator"></div>
+            <h2>MOBILE</h2>
+            <a href="../mobile/hello-world.html">Hello World</a>
+            <a href="../mobile/animated-navigation.html">Animated Navigation</a>
+            <a href="../mobile/non-animated-navigation.html">Non-Animated Navigation</a>
+            <a href="../mobile/clean-urls.html">Clean Urls</a>
+            <a href="../mobile/shared-element-navigation.html">Shared Element Navigation</a>
+            <a href="../mobile/examples.html">Examples</a>
+            <div class="separator"></div>
+            <h2>NATIVE</h2>
+            <a href="setup.html">Setup</a>
+            <a href="hello-world.html">Hello World</a>
+            <a href="push-navigation.html">Push Navigation</a>
+            <a href="pop-navigation.html">Pop Navigation</a>
+            <a href="tabs-setup.html" class="selected">Tabs Setup (iOS)</a>
+            <a href="examples.html">Examples</a>
+        </div>
+        <div id="article">
+            <h1>Tabs Setup (iOS)</h1>
+            <p>
+                The Navigation router for React Native uses the underlying native APIs to provide faithful navigation on Android and iOS. Because it contains native code you first have to eject from <code>create-react-native-app</code> or create your application using <code>react-native init</code>.
+            </p>
+            <div class="Note">
+                <h2>Note</h2>
+                If you don't want a tabbed interface in iOS then follow the <a href="setup.html">Setup instructions</a> instead
+            </div>
+            <p>
+                Install the three navigation packages from npm.
+            </p>
+            <pre><code class="language-js">npm install navigation navigation-react navigation-react-native --save</code></pre>
+            <p>
+                Link the <code>navigation-react-native</code> package.
+            </p>
+            <pre><code class="language-js">react-native link navigation-react-native</code></pre>
+            <h2>JavaScript</h2>
+            <p>
+                Replace the code in <code>App.js</code> with that shown below. This setup is for 2 tabs. For each extra tab you require add an extra <code>new StateNavigator(stateNavigator)</code> to the <code>stateNavigators</code> array.
+            </p>
+            <pre><code class="language-jsx">import React from 'react';
+import {StateNavigator} from 'navigation';
+import {NavigationHandler} from 'navigation-react';
+import {addNavigateHandlers, Scene} from 'navigation-react-native';
+
+var stateNavigator = new StateNavigator([
+]);
+
+var stateNavigators = [stateNavigator, new StateNavigator(stateNavigator)];
+
+addNavigateHandlers(stateNavigators);
+
+export default ({crumb, tab = 0}) => (
+  &lt;NavigationHandler stateNavigator={stateNavigators[tab]}>
+    &lt;Scene crumb={crumb} />
+  &lt;/NavigationHandler>
+);</code></pre>
+            <h2>Android</h2>
+            <p>
+                Locate the <code>AndroidManifest.xml</code> in the Android project and add a <code>launchMode</code> of <code>singleTop</code> to the <code>MainActivity</code>.
+            </p>
+            <pre><code class="language-jsx">&lt;activity
+  android:name=".MainActivity"
+  android:launchMode="singleTop"
+  ...</code></pre>
+            <h2>iOS</h2>
+            <p>
+                Locate the <code>AppDelegate.h</code> in the iOS project and replace the code with the following:
+            </p>
+            <pre><code class="language-js">#import &lt;UIKit/UIKit.h>
+#import &lt;React/RCTBridge.h>
+#import "NVApplicationHostDelegate.h"
+
+@interface AppDelegate : UIResponder &lt;NVApplicationHostDelegate>
+
+@property (nonatomic, strong) UIWindow *window;
+@property (nonatomic, strong) RCTBridge *bridge;
+
+@end</code></pre>
+            <p>
+                Locate the <code>AppDelegate.m</code> in the iOS project and replace the code with that shown below. Change the <code>"Tab1"</code> and <code>"Tab2"</code> placeholder strings to the names of your tabs. Change the <code>"appKey"</code> placeholder string to the name of your application (it should match the key used in the <code>registerComponent</code> call in <code>index.js</code>). This setup is for 2 tabs. For each extra tab you require add an extra item to the <code>tabs</code> array.
+            </p>
+<pre><code class="language-js">#import "AppDelegate.h"
+#import &lt;React/RCTBundleURLProvider.h>
+#import &lt;React/RCTRootView.h>
+#import "NVSceneController.h"
+
+@implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+  NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  
+  self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation moduleProvider:nil launchOptions:launchOptions];  
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+
+  NSArray *tabs = @[@"Tab1", @"Tab2"];
+  NSString *appKey = @"appKey";
+
+  NSMutableArray *controllers = [[NSMutableArray alloc] init];
+  for(NSInteger tab = 0; tab &lt; [tabs count]; tab++) {
+    UIViewController *sceneController = [[NVSceneController alloc] init:0 tab:tab title:tabs[tab] appKey:appKey];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sceneController];
+    navigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:tabs[tab] image:nil tag:tab];
+    [controllers addObject:navigationController];
+  }
+
+  UITabBarController *tabBarController = [[UITabBarController alloc] init];
+  [tabBarController setViewControllers:controllers];
+  self.window.rootViewController = tabBarController;
+  [self.window makeKeyAndVisible];
+  return YES;
+}
+
+@end</code></pre>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../js/prism.js"></script>
+</body>
+</html>
