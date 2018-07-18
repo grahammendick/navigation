@@ -6,33 +6,32 @@
  */
 
 #import "AppDelegate.h"
-#import "NVSceneController.h"
-
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import "NVSceneController.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  NSURL *jsCodeLocation;
-
-  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-
-  self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation moduleProvider:nil launchOptions:launchOptions];
+  NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
   
+  self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation moduleProvider:nil launchOptions:launchOptions];  
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 
-  UIViewController *homeViewController = [[NVSceneController alloc] init: 0 tab: 0 title: @"Home" appKey: @"twitter"];
-  UINavigationController *homeController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
-  homeController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Home" image:nil tag:1];
+  NSArray *tabs = @[@"Home", @"Notifications"];
+  NSString *appKey = @"twitter";
 
-  UIViewController *notificationsViewController = [[NVSceneController alloc] init: 0 tab: 1 title: @"Notifications" appKey: @"twitter"];
-  UINavigationController *notificationsController = [[UINavigationController alloc] initWithRootViewController:notificationsViewController];
-  notificationsController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Notifications" image:nil tag:1];
+  NSMutableArray *controllers = [[NSMutableArray alloc] init];
+  for(NSInteger tab = 0; tab < [tabs count]; tab++) {
+    UIViewController *sceneController = [[NVSceneController alloc] init:0 tab:tab title:tabs[tab] appKey:appKey];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sceneController];
+    navigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:tabs[tab] image:nil tag:tab];
+    [controllers addObject:navigationController];
+  }
 
   UITabBarController *tabBarController = [[UITabBarController alloc] init];
-  [tabBarController setViewControllers:@[homeController, notificationsController]];
+  [tabBarController setViewControllers:controllers];
   self.window.rootViewController = tabBarController;
   [self.window makeKeyAndVisible];
   return YES;
