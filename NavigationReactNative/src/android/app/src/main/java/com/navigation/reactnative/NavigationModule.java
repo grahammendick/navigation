@@ -50,12 +50,11 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         int currentCrumb = mIntents.size() - 1;
         if (crumb < currentCrumb) {
             final Intent intent = mIntents.get(crumb);
-            currentActivity.navigateUpTo(mIntents.get(crumb));
             for(int i = crumb + 1; i <= currentCrumb; i++) {
                 mIntents.remove(i);
             }
-            final int enter = this.activityCloseEnterAnimationId;
-            final int exit = this.activityCloseExitAnimationId;
+            final int enter = this.getAnimationResourceId(null, this.activityCloseEnterAnimationId);
+            final int exit = this.getAnimationResourceId(null, this.activityCloseExitAnimationId);
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -75,8 +74,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 mIntents.put(nextCrumb, intent);
                 intents[i] = intent;
             }
-            final int enter = this.activityOpenEnterAnimationId;
-            final int exit = this.activityOpenExitAnimationId;
+            final int enter = this.getAnimationResourceId(null, this.activityOpenEnterAnimationId);
+            final int exit = this.getAnimationResourceId(null, this.activityOpenExitAnimationId);
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -85,6 +84,14 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 }
             });
         }
+    }
+
+    private int getAnimationResourceId(String animationName, int defaultId) {
+        if (animationName == null)
+            return defaultId;
+        Activity currentActivity = getCurrentActivity();
+        String packageName = currentActivity.getApplication().getPackageName();
+        return currentActivity.getResources().getIdentifier(animationName, "anim", packageName);
     }
 }
 
