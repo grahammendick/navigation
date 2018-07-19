@@ -13,10 +13,10 @@ import java.util.HashMap;
 
 public class NavigationModule extends ReactContextBaseJavaModule {
     private HashMap<Integer, Intent> mIntents = new HashMap<>();
-    private int activityOpenEnterAnimationId = 0;
-    private int activityOpenExitAnimationId = 0;
-    private int activityCloseEnterAnimationId = 0;
-    private int activityCloseExitAnimationId = 0;
+    private int activityOpenEnterAnimationId;
+    private int activityOpenExitAnimationId;
+    private int activityCloseEnterAnimationId;
+    private int activityCloseExitAnimationId;
 
     public NavigationModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -43,19 +43,29 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void render(int crumb, int tab, ReadableArray titles, String appKey) {
-        Activity currentActivity = getCurrentActivity();
+        final Activity currentActivity = getCurrentActivity();
         if (mIntents.size() == 0) {
             mIntents.put(0, currentActivity.getIntent());
         }
         int currentCrumb = mIntents.size() - 1;
         if (crumb < currentCrumb) {
+            final Intent intent = mIntents.get(crumb);
             currentActivity.navigateUpTo(mIntents.get(crumb));
             for(int i = crumb + 1; i <= currentCrumb; i++) {
                 mIntents.remove(i);
             }
+            final int enter = this.activityCloseEnterAnimationId;
+            final int exit = this.activityCloseExitAnimationId;
+            currentActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    currentActivity.navigateUpTo(intent);
+                    currentActivity.overridePendingTransition(enter, exit);
+                }
+            });
         }
         if (crumb > currentCrumb) {
-            Intent[] intents = new Intent[crumb - currentCrumb];
+            final Intent[] intents = new Intent[crumb - currentCrumb];
             for(int i = 0; i < crumb - currentCrumb; i++) {
                 int nextCrumb = currentCrumb + i + 1;
                 Class scene = nextCrumb % 2 == 0 ? SceneActivity.class : AlternateSceneActivity.class;
@@ -65,7 +75,15 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 mIntents.put(nextCrumb, intent);
                 intents[i] = intent;
             }
-            currentActivity.startActivities(intents);
+            final int enter = this.activityOpenEnterAnimationId;
+            final int exit = this.activityOpenExitAnimationId;
+            currentActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    currentActivity.startActivities(intents);
+                    currentActivity.overridePendingTransition(enter, exit);
+                }
+            });
         }
     }
 }
