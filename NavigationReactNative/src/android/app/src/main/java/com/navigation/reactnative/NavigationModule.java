@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.TypedArray;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -12,9 +13,27 @@ import java.util.HashMap;
 
 public class NavigationModule extends ReactContextBaseJavaModule {
     private HashMap<Integer, Intent> mIntents = new HashMap<>();
+    private int activityOpenEnterAnimationId = 0;
+    private int activityOpenExitAnimationId = 0;
+    private int activityCloseEnterAnimationId = 0;
+    private int activityCloseExitAnimationId = 0;
 
     public NavigationModule(ReactApplicationContext reactContext) {
         super(reactContext);
+
+        TypedArray activityStyle = getReactApplicationContext().getTheme().obtainStyledAttributes(new int[] {android.R.attr.windowAnimationStyle});
+        int windowAnimationStyleResId = activityStyle.getResourceId(0, 0);
+        activityStyle.recycle();
+
+        activityStyle = getReactApplicationContext().getTheme().obtainStyledAttributes(windowAnimationStyleResId, new int[] {
+            android.R.attr.activityOpenEnterAnimation, android.R.attr.activityOpenExitAnimation,
+            android.R.attr.activityCloseEnterAnimation, android.R.attr.activityCloseExitAnimation
+        });
+        activityOpenEnterAnimationId = activityStyle.getResourceId(0, 0);
+        activityOpenExitAnimationId = activityStyle.getResourceId(1, 0);
+        activityCloseEnterAnimationId = activityStyle.getResourceId(2, 0);
+        activityCloseExitAnimationId = activityStyle.getResourceId(3, 0);
+        activityStyle.recycle();
     }
 
     @Override
