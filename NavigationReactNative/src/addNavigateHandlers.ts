@@ -14,13 +14,13 @@ var addNavigateHandlers = (stateNavigator: StateNavigator | StateNavigator[]) =>
                 var appKey = AppRegistry.getAppKeys()[0];
                 if (oldCrumbs.length < crumbs.length) {
                     var {state: nextState, data: nextData} = crumbs.concat(nextCrumb)[oldCrumbs.length + 1];
-                    var exitAnim = oldState.getCrumbStyle && oldState.getCrumbStyle(true, oldData, oldCrumbs, nextState, nextData);
-                    var enterAnim = state.getUnmountStyle && state.getUnmountStyle(false, data, crumbs);
+                    var enterAnim = state.getUnmountStyle && state.getUnmountStyle(true, data, crumbs);
+                    var exitAnim = oldState.getCrumbStyle && oldState.getCrumbStyle(false, oldData, oldCrumbs, nextState, nextData);
                 } else {
                     var nextCrumb = new Crumb(oldData, oldState, null, null, false);
                     var {state: nextState, data: nextData} = oldCrumbs.concat(nextCrumb)[crumbs.length + 1];
-                    var exitAnim = oldState.getUnmountStyle && oldState.getUnmountStyle(true, oldData, oldCrumbs);
-                    var enterAnim = state.getCrumbStyle && state.getCrumbStyle(false, data, crumbs, nextState, nextData);
+                    var enterAnim = state.getCrumbStyle && state.getCrumbStyle(true, data, crumbs, nextState, nextData);
+                    var exitAnim = oldState.getUnmountStyle && oldState.getUnmountStyle(false, oldData, oldCrumbs);
                 }
                 NavigationModule.render(crumbs.length, tab, titles, appKey, enterAnim, exitAnim);
             }
