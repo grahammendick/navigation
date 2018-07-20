@@ -89,9 +89,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     private int getAnimationResourceId(String animationName, int defaultId) {
         if (animationName == null)
             return defaultId;
-        Activity currentActivity = getCurrentActivity();
-        String packageName = currentActivity.getApplication().getPackageName();
-        return currentActivity.getResources().getIdentifier(animationName, "anim", packageName);
+        String packageName = getReactApplicationContext().getPackageName();
+        return getReactApplicationContext().getResources().getIdentifier(animationName, "anim", packageName);
     }
 }
 
