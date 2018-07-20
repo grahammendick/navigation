@@ -42,7 +42,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void render(int crumb, int tab, ReadableArray titles, String appKey) {
+    public void render(int crumb, int tab, ReadableArray titles, String appKey, String enterAnim, String exitAnim) {
         final Activity currentActivity = getCurrentActivity();
         if (mIntents.size() == 0) {
             mIntents.put(0, currentActivity.getIntent());
@@ -53,8 +53,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             for(int i = crumb + 1; i <= currentCrumb; i++) {
                 mIntents.remove(i);
             }
-            final int enter = this.getAnimationResourceId(null, this.activityCloseEnterAnimationId);
-            final int exit = this.getAnimationResourceId(null, this.activityCloseExitAnimationId);
+            final int enter = this.getAnimationResourceId(enterAnim, this.activityCloseEnterAnimationId);
+            final int exit = this.getAnimationResourceId(exitAnim, this.activityCloseExitAnimationId);
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -74,8 +74,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 mIntents.put(nextCrumb, intent);
                 intents[i] = intent;
             }
-            final int enter = this.getAnimationResourceId(null, this.activityOpenEnterAnimationId);
-            final int exit = this.getAnimationResourceId(null, this.activityOpenExitAnimationId);
+            final int enter = this.getAnimationResourceId(enterAnim, this.activityOpenEnterAnimationId);
+            final int exit = this.getAnimationResourceId(exitAnim, this.activityOpenExitAnimationId);
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

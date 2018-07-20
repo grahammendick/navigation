@@ -1,15 +1,28 @@
 import { AppRegistry, NativeEventEmitter, NativeModules } from 'react-native';
-import { StateNavigator } from 'navigation';
+import { StateNavigator, Crumb } from 'navigation';
 
 var addNavigateHandlers = (stateNavigator: StateNavigator | StateNavigator[]) => {
     var {NavigationModule} = NativeModules;
     var stateNavigators = isStateNavigator(stateNavigator) ? [stateNavigator] : stateNavigator;
     stateNavigators.forEach((stateNavigator, tab) => {
         stateNavigator.onNavigate(() => {
-            var {crumbs, title, history} = stateNavigator.stateContext;
-            if (!history) {
+            var {crumbs, history, oldState, oldData, oldUrl} = stateNavigator.stateContext;
+            var {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
+            if (!history && crumbs.length !== oldCrumbs.length) {
+                var {state, data, title, oldData, nextCrumb} = stateNavigator.stateContext;
                 var titles = crumbs.map(({title}) => title).concat(title);
-                NavigationModule.render(crumbs.length, tab, titles, AppRegistry.getAppKeys()[0]);
+                var appKey = AppRegistry.getAppKeys()[0];
+                if (oldCrumbs.length < crumbs.length) {
+                    var {state: nextState, data: nextData} = crumbs.concat(nextCrumb)[oldCrumbs.length + 1];
+                    var exitAnim = oldState.getCrumbStyle && oldState.getCrumbStyle(true, oldData, oldCrumbs, nextState, nextData);
+                    var enterAnim = state.getUnmountStyle && state.getUnmountStyle(false, data, crumbs);
+                } else {
+                    var nextCrumb = new Crumb(oldData, oldState, null, null, false);
+                    var {state: nextState, data: nextData} = oldCrumbs.concat(nextCrumb)[crumbs.length + 1];
+                    var exitAnim = oldState.getUnmountStyle && oldState.getUnmountStyle(true, oldData, oldCrumbs);
+                    var enterAnim = state.getCrumbStyle && state.getCrumbStyle(false, data, crumbs, nextState, nextData);
+                }
+                NavigationModule.render(crumbs.length, tab, titles, appKey, enterAnim, exitAnim);
             }
         });
     });
