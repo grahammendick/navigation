@@ -20,6 +20,12 @@ notifications.renderScene = () => <Notifications follows={getFollows()} />;
 tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)}  />;
 timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)}  />;
 
+for(var key in stateNavigator.states) {
+  var state = stateNavigator.states[key];
+  state.getCrumbStyle = from => from ? 'scale_in' : 'scale_out';
+  state.getUnmountStyle = from => from ? 'slide_in' : 'slide_out';
+}
+
 var stateNavigators = [stateNavigator, new StateNavigator(stateNavigator)];
 stateNavigator.navigate('home');
 stateNavigators[1].navigate('notifications');
