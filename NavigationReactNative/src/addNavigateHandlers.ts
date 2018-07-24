@@ -11,7 +11,7 @@ var addNavigateHandlers = (stateNavigator: StateNavigator | StateNavigator[]) =>
                 return; 
             var {state, data, title, oldData, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
             var {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
-            var titles = crumbs.map(({title}) => title).concat(title);
+            var titles = crumbs.map(({data, title}) => data.sceneTitle || title).concat(data.sceneTitle || title);
             var appKey = AppRegistry.getAppKeys()[0];
             if (oldCrumbs.length < crumbs.length) {
                 var {state: nextState, data: nextData} = crumbs.concat(nextCrumb)[oldCrumbs.length + 1];
