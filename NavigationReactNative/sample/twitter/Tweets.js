@@ -19,7 +19,7 @@ export default ({tweets, onTimeline}) => (
                 underlayColor="white"
                 onPress={() => {
                   if (!onTimeline || onTimeline(accountId))
-                    stateNavigator.navigate('timeline', {id: accountId});
+                    stateNavigator.navigate('timeline', {id: accountId, sceneTitle: name});
               }}>
                 <Image style={styles.logo} source={logo} />
               </TouchableHighlight>

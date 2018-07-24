@@ -19,7 +19,7 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
           <View>
             <View style={styles.heading}>
               <TouchableHighlight underlayColor="white" onPress={() => {
-                stateNavigator.navigate('timeline', {id: accountId});
+                stateNavigator.navigate('timeline', {id: accountId, sceneTitle: name});
               }}>
                 <Image style={styles.logo} source={logo} />
               </TouchableHighlight>
