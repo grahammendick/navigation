@@ -12,7 +12,7 @@ export default ({follows}) => (
           <TouchableHighlight
             underlayColor="white"
             onPress={() => {
-              stateNavigator.navigate('timeline', {id});
+              stateNavigator.navigate('timeline', {id, sceneTitle: name});
           }}>
             <View style={styles.follow}>
               <View>
