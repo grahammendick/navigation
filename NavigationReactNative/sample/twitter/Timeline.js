@@ -10,7 +10,7 @@ export default ({timeline: {id, name, username, logo, bio,
       <>
         <ToolbarAndroid
           navIcon={require('./arrow.png')}
-          title="Timeline"
+          title={name}
           style={styles.toolbar}
           onIconClicked={() => {
             stateNavigator.navigateBack(1)
