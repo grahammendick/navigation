@@ -68,7 +68,7 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
             return true;
         }
         return false;
-}
+    }
     render() {
         var {navigationEvent} = this.state;
         if (!navigationEvent) return null;
