@@ -22,16 +22,16 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
             return {navigationEvent};
         if (state && !prevNavigationEvent && crumb < crumbs.length) {
             var {stateNavigator} = navigationEvent;
-            var caretakerNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
-            caretakerNavigator.stateContext = Scene.createStateContext(crumbs, crumb);
-            caretakerNavigator.configure = stateNavigator.configure;
-            caretakerNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
-            caretakerNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
-            caretakerNavigator.onNavigate = stateNavigator.onNavigate;
-            caretakerNavigator.offNavigate = stateNavigator.offNavigate;
-            caretakerNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
-            var {oldState, state, data, asyncData} = caretakerNavigator.stateContext;
-            return {navigationEvent: {oldState, state, data, asyncData, stateNavigator: caretakerNavigator}};
+            var stackNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
+            stackNavigator.stateContext = Scene.createStateContext(crumbs, crumb);
+            stackNavigator.configure = stateNavigator.configure;
+            stackNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
+            stackNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
+            stackNavigator.onNavigate = stateNavigator.onNavigate;
+            stackNavigator.offNavigate = stateNavigator.offNavigate;
+            stackNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
+            var {oldState, state, data, asyncData} = stackNavigator.stateContext;
+            return {navigationEvent: {oldState, state, data, asyncData, stateNavigator: stackNavigator}};
         }
         return null;
     }
