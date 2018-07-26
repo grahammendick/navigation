@@ -51,9 +51,8 @@
         <div id="article">
             <h1>Custom Animation (Android)</h1>
             <h2>Pushing</h2>
-            <pre><code class="language-js">var {mail, inbox} = stateNavigator.scenes;
+            <pre><code class="language-js">var {mail} = stateNavigator.scenes;
 mail.getUnmountStyle = from => from ? 'slide_in' : null;
-inbox.getCrumbStyle = from => from ? null : 'fade_out';
 </code></pre>
             <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
 &lt;set xmlns:android="http://schemas.android.com/apk/res/android">
@@ -62,17 +61,9 @@ inbox.getCrumbStyle = from => from ? null : 'fade_out';
     android:fromXDelta="100%"
     android:toXDelta="0" />
 &lt;/set></code></pre>
-            <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
-&lt;set xmlns:android="http://schemas.android.com/apk/res/android">
-  &lt;alpha
-    android:duration="300"
-    android:fromAlpha="1"
-    android:toAlpha="0" />
-&lt;/set></code></pre>
             <h2>Popping</h2>
-            <pre><code class="language-js">var {mail, inbox} = stateNavigator.scenes;
+            <pre><code class="language-js">var {mail} = stateNavigator.scenes;
 mail.getUnmountStyle = from => from ? 'slide_in' : 'slide_out';
-inbox.getCrumbStyle = from => from ? 'fade_in' : 'fade_out';
 </code></pre>
             <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
 &lt;set xmlns:android="http://schemas.android.com/apk/res/android">
@@ -80,6 +71,17 @@ inbox.getCrumbStyle = from => from ? 'fade_in' : 'fade_out';
     android:duration="300"
     android:fromXDelta="0"
     android:toXDelta="100%" />
+&lt;/set></code></pre>
+            <h2>Animating Crumbs</h2>
+            <pre><code class="language-js">var {inbox} = stateNavigator.scenes;
+inbox.getCrumbStyle = from => from ? 'fade_in' : 'fade_out';
+</code></pre>
+            <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;set xmlns:android="http://schemas.android.com/apk/res/android">
+  &lt;alpha
+    android:duration="300"
+    android:fromAlpha="1"
+    android:toAlpha="0" />
 &lt;/set></code></pre>
             <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
 &lt;set xmlns:android="http://schemas.android.com/apk/res/android">
