@@ -78,6 +78,9 @@ mail.getUnmountStyle = from => from ? 'slide_in' : null;
     android:fromXDelta="0"
     android:toXDelta="100%" />
 &lt;/set></code></pre>
+            <p>
+                When we navigate back from the 'mail' <code>State</code>, the Navigation router calls the <code>getUnmountStyle</code> function again. This time the <code>from</code> parameter it passes in is false. We return our resource file name and the Navigation router slides the scene out as it unmounts.
+            </p>
             <pre><code class="language-js">var {mail} = stateNavigator.scenes;
 mail.getUnmountStyle = from => from ? 'slide_in' : 'slide_out';
 </code></pre>
