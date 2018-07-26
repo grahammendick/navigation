@@ -68,6 +68,9 @@
 mail.getUnmountStyle = from => from ? 'slide_in' : null;
 </code></pre>
             <h2>Popping</h2>
+            <p>
+                By default, Android slides scenes down as they're popped off the stack. Changing this pop animation is similar to the way you change the push animation. In our email example, we want to slide the 'mail' scene back out to the right when a user returns to their inbox. We create an animation resource file called 'slide_out'. It’s the same as 'slide_in' but with the x coordinate values reversed, so that the scene goes back out the way it came in.
+            </p>
             <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
 &lt;set xmlns:android="http://schemas.android.com/apk/res/android">
   &lt;translate
