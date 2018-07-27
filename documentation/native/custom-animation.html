@@ -1,0 +1,101 @@
+<html>
+<head>
+    <title>Custom Animation (Android)</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../css/prism.css">
+    <link rel="stylesheet" href="../../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+        <div>
+            <a href="../../index.html">Navigation</a>
+            <a href="../hello-world.html" class="selected">Docs</a>
+            <a href="../../download/index.html">Download</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <a href="../hello-world.html">Hello World</a>
+            <a href="../thinking-in-navigation.html">Thinking in Navigation</a>
+            <div class="separator"></div>
+            <h2>THE ABC</h2>
+            <a href="../state-navigation.html">A. State Navigation</a>
+            <a href="../navigation-data.html">B. Navigation Data</a>
+            <a href="../routes.html">C. Routes</a>
+            <a href="../examples.html">Examples</a>
+            <div class="separator"></div>
+            <h2>FURTHER GUIDES</h2>
+            <a href="../current-data.html">Current Data</a>
+            <a href="../html5-history.html">HTML5 History</a>
+            <a href="../navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="../reusable-components.html">Reusable Components</a>
+            <div class="separator"></div>
+            <h2>MOBILE</h2>
+            <a href="../mobile/hello-world.html">Hello World</a>
+            <a href="../mobile/animated-navigation.html">Animated Navigation</a>
+            <a href="../mobile/non-animated-navigation.html">Non-Animated Navigation</a>
+            <a href="../mobile/clean-urls.html">Clean Urls</a>
+            <a href="../mobile/shared-element-navigation.html">Shared Element Navigation</a>
+            <a href="../mobile/examples.html">Examples</a>
+            <div class="separator"></div>
+            <h2>NATIVE</h2>
+            <a href="setup.html">Setup</a>
+            <a href="hello-world.html">Hello World</a>
+            <a href="push-navigation.html">Push Navigation</a>
+            <a href="pop-navigation.html">Pop Navigation</a>
+            <a href="custom-animation.html" class="selected">Custom Animation (Android)</a>
+            <a href="tabs-setup.html">Tabs Setup (iOS)</a>
+            <a href="examples.html">Examples</a>
+        </div>
+        <div id="article">
+            <h1>Custom Animation (Android)</h1>
+            <h2>Pushing</h2>
+            <p>
+                By default, Android slides new scenes up from the bottom of the screen. You can change this default animation by creating an Android animation resource file. In our example email application, we want the 'mail' scene to slide in from the right when a user opens an email. Inside Android Studio, we right click the root of our project and choose 'New -> Android Resource File'. In the pop-up dialog, we enter a name of 'slide_in', pick 'Animation' from the resource type dropdown and enter 'anim' for the directory name. We configure our 'slide_in' animation as a translation of the scene's x coordinate from 100% to 0.
+            </p>
+            <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;set xmlns:android="http://schemas.android.com/apk/res/android">
+  &lt;translate
+    android:duration="300"
+    android:fromXDelta="100%"
+    android:toXDelta="0" />
+&lt;/set></code></pre>
+            <p>
+                To get this animation to play when the mail scene starts mounting, we attach a <code>getUnmountStyle</code> function to the corresponding 'mail' <code>State</code>. When we navigate to the 'mail' <code>State</code>, the Navigation router calls this function and we return the name of our animation resource file.
+            </p>
+            <pre><code class="language-js">var {mail} = stateNavigator.scenes;
+mail.getUnmountStyle = from => from ? 'slide_in' : null;
+</code></pre>
+            <h2>Popping</h2>
+            <p>
+                By default, Android slides scenes down as they're popped off the stack. Changing this pop animation is similar to the way you change the push animation. In our email example, we want to slide the 'mail' scene back out to the right when a user returns to their inbox. We create an animation resource file called 'slide_out'. It’s the same as 'slide_in' but with the x coordinate values reversed, so that the scene goes back out the way it came in.
+            </p>
+            <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;set xmlns:android="http://schemas.android.com/apk/res/android">
+  &lt;translate
+    android:duration="300"
+    android:fromXDelta="0"
+    android:toXDelta="100%" />
+&lt;/set></code></pre>
+            <p>
+                When we navigate back from the 'mail' <code>State</code>, the Navigation router calls the <code>getUnmountStyle</code> function again. This time the <code>from</code> parameter it passes in is false. We return our resource file name and the Navigation router slides the scene out as it unmounts.
+            </p>
+            <pre><code class="language-js">var {mail} = stateNavigator.scenes;
+mail.getUnmountStyle = from => from ? 'slide_in' : 'slide_out';
+</code></pre>
+            <h2>Animating Crumbs</h2>
+            <p>
+                When you push a new scene onto the stack, you can animate the outgoing scene as well as the incoming one. The outgoing animation is empty by default, but you can provide one. We want to fade out the 'inbox' scene when the user opens an email and fade it back in when they return to their inbox. We create two animation resource files. One called 'fade_out' that changes the scene's alpha value from 1 to 0, and another called 'fade_in' that changes it back again.
+            </p>
+            <p>
+                The Navigation router calls the <code>getCrumbStyle</code> function attached to the 'inbox' <code>State</code> to find out how to animate the 'inbox' scene. When the user opens an email the Navigation router calls the function passing in 'false' and, when the user returns to their inbox, it calls the function again with 'true'.
+            </p>
+            <pre><code class="language-js">var {inbox} = stateNavigator.scenes;
+inbox.getCrumbStyle = from => from ? 'fade_in' : 'fade_out';
+</code></pre>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../js/prism.js"></script>
+</body>
+</html>
