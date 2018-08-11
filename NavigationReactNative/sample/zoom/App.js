@@ -2,6 +2,7 @@ import React from 'react';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
 import {addNavigateHandlers, Scene} from 'navigation-react-native';
+import {Linking} from 'react-native';
 import Grid from './Grid';
 import Detail from './Detail';
 
@@ -16,6 +17,15 @@ detail.renderScene = ({color}) => <Detail color={color}/>;
 
 stateNavigator.navigate('grid');
 addNavigateHandlers(stateNavigator);
+
+Linking.addEventListener('url', url => {
+  console.log('xxxx')
+  var link = stateNavigator.fluent(true)
+    .navigate('detail', {color: 'blue'})
+    .navigate('detail', {color: 'green'})
+  .url;
+  stateNavigator.navigateLink(link);
+});
 
 export default ({crumb}) => (
   <NavigationHandler stateNavigator={stateNavigator}>
