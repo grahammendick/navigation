@@ -18,20 +18,17 @@ public class LinkActivity extends Activity {
         Intent intent = getIntent();
         Uri uri = intent.getData();
         if (currentActivity == null) {
-            Intent mainIntent = getReactContext().getPackageManager()
-                    .getLaunchIntentForPackage(getReactContext().getPackageName());
+            Intent mainIntent = getReactContext().getPackageManager().getLaunchIntentForPackage(getReactContext().getPackageName());
             mainIntent.setData(uri);
             startActivity(mainIntent);
         } else {
-            DeviceEventManagerModule deviceEventManagerModule =
-                    getReactContext().getNativeModule(DeviceEventManagerModule.class);
+            DeviceEventManagerModule deviceEventManagerModule = getReactContext().getNativeModule(DeviceEventManagerModule.class);
             deviceEventManagerModule.emitNewIntentReceived(uri);
         }
         finish();
     }
 
     private ReactContext getReactContext() {
-        return ((ReactApplication) getApplication()).getReactNativeHost()
-                .getReactInstanceManager().getCurrentReactContext();
+        return ((ReactApplication) getApplication()).getReactNativeHost().getReactInstanceManager().getCurrentReactContext();
     }
 }
