@@ -18,14 +18,18 @@ detail.renderScene = ({color}) => <Detail color={color}/>;
 stateNavigator.navigate('grid');
 addNavigateHandlers(stateNavigator);
 
-Linking.addEventListener('url', url => {
-  console.log('xxxx')
-  var link = stateNavigator.fluent(true)
-    .navigate('detail', {color: 'blue'})
-    .navigate('detail', {color: 'green'})
-  .url;
-  stateNavigator.navigateLink(link);
-});
+var openLink = url => {
+  if (url) {
+    var link = stateNavigator.fluent(true)
+      .navigate('detail', {color: 'blue'})
+      .navigate('detail', {color: 'green'})
+    .url;
+    stateNavigator.navigateLink(link);
+  }
+};
+
+Linking.getInitialURL().then(openLink);
+Linking.addEventListener('url', openLink);
 
 export default ({crumb}) => (
   <NavigationHandler stateNavigator={stateNavigator}>
