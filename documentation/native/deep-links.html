@@ -52,7 +52,7 @@
         <div id="article">
             <h1>Deep Links</h1>
             <p>
-                A deep link is an external URI that, when clicked, opens a specific scene in your app. After following the setup instructions below, your app is ready to respond to deep link clicks. You create a function inside <code>App.js</code> that receives the incoming deep link and navigates to the relevant scene. You hook this function up to the <code>Linking</code> API of React Native (outside of any component). In our email example, when a user clicks a link like 'email://app?id=12' we navigate them to the 'mail' scene for that id. Follow the testing instructions below to check that the deep link behaves as expected.
+                A deep link is an external URI that, when clicked, opens a specific scene in your app. After following the <a href="#setup">setup instructions</a>, your app is ready to respond to deep link clicks. You create a function inside <code>App.js</code> that receives the incoming deep link and navigates to the relevant scene. You hook this function up to the <code>Linking</code> API of React Native (outside of any component). In our email example, when a user clicks a link like 'email://app?id=12' we navigate them to the 'mail' scene for that id. Follow the <a href="#testing">testing instructions</a> to check that the deep link behaves as expected.
             </p>
             <pre><code class="language-js">import {Linking} from 'react-native';
 
@@ -64,7 +64,7 @@ var openLink = (url) => {
 };
 Linking.getInitialURL().then(openLink);
 Linking.addEventListener('url', ({url}) => openLink(url));</code></pre>
-            <h2>Setup</h2>
+            <h2 id="setup">Setup</h2>
             <h3>Android</h3>
             <p>
                 Locate the <code>AndroidManifest.xml</code> in the Android project and add the following, replacing the scheme and host strings to match your URI pattern:
@@ -113,7 +113,7 @@ protected void onCreate(Bundle savedInstanceState) {
   return [RCTLinkingManager application:application openURL:url
              sourceApplication:sourceApplication annotation:annotation];
 }</code></pre>
-            <h2>Testing</h2>
+            <h2 id="testing">Testing</h2>
             <h3>Android</h3>
             <p>
                 Run the following command, changing the link to match your URI pattern and the namespace to match your project:
