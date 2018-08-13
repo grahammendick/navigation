@@ -64,6 +64,19 @@ var openLink = (url) => {
 };
 Linking.getInitialURL().then(openLink);
 Linking.addEventListener('url', ({url}) => openLink(url));</code></pre>
+            <h2>Priming the Stack</h2>
+            <p>
+                If the user has the app open in the background when they click a deep link, then the new scene is pushed on top of their current stack. In our email example, we can end up with two 'mail' scenes on top of the stack. The first 'mail' scene is the one the user was viewing when they last left the app and the second 'mail' scene gets pushed on top when they open the deep link. We can fix this by using the Navigation router's fluent navigation to build exact stack we want. We want the first scene in the stack to be the inbox and the second scene to be the mail from the deep link.
+            </p>
+            <pre><code class="language-js">var openLink = (url) => {
+  if (url) {
+    var id = +url.split('=')[1];
+    var link = stateNavigator.fluent()
+      .navigate('inbox')
+      .navigate('mail', {id}).url;
+    stateNavigator.navigateLink(link);
+  }
+};</code></pre>
             <h2 id="setup">Setup</h2>
             <h3>Android</h3>
             <p>
