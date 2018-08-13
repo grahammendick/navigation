@@ -52,7 +52,7 @@
         <div id="article">
             <h1>Deep Links</h1>
             <p>
-                A deep link is an external URI that, when clicked, opens a specific scene in your app. After following the setup instructions below, your app is ready to respond to deep link clicks. You create a function inside <code>App.js</code> (outside of any component) that receives the incoming deep link and navigates to the relevant scene. You hook this function up to the <code>Linking</code> API of React Native. In our email example, when a user clicks a link like 'email://app?id=12' we navigate them to the 'mail' scene for that id.
+                A deep link is an external URI that, when clicked, opens a specific scene in your app. After following the setup instructions below, your app is ready to respond to deep link clicks. You create a function inside <code>App.js</code> (outside of any component) that receives the incoming deep link and navigates to the relevant scene. You hook this function up to the <code>Linking</code> API of React Native. In our email example, when a user clicks a link like 'email://app?id=12' we navigate them to the 'mail' scene for that id. Follow the testing instructions below to check that the deep link behaves as expected.
             </p>
             <pre><code class="language-js">import {Linking} from 'react-native';
 
@@ -101,7 +101,7 @@ protected void onCreate(Bundle savedInstanceState) {
   return [RCTLinkingManager application:application openURL:url
              sourceApplication:sourceApplication annotation:annotation];
 }</code></pre>
-            <h2>Test</h2>
+            <h2>Testing</h2>
             <h3>Android</h3>
             <pre><code class="language-">adb shell am start -W -a android.intent.action.VIEW -d "email://app?id=12" com.email</code></pre>
             <h3>iOS</h3>
