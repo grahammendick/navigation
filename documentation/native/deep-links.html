@@ -56,7 +56,7 @@
 var openLink = (url) => {
   if (url) {
     //extract the id from the url, e.g., mail://app?id=12
-    var id = url.split('=')[1];
+    var id = +url.split('=')[1];
     stateNavigator.navigate('mail', {id});
   }
 };
