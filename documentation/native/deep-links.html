@@ -67,7 +67,7 @@ Linking.addEventListener('url', ({url}) => openLink(url));</code></pre>
             <h2>Setup</h2>
             <h3>Android</h3>
             <p>
-                Locate the <code>AndroidManifest.xml</code> in the Android project and add:
+                Locate the <code>AndroidManifest.xml</code> in the Android project and add the following, replacing the scheme and host strings to match your URI pattern:
             </p>
             <pre><code class="language-jsx">&lt;activity
   android:name="com.navigation.reactnative.LinkActivity"
