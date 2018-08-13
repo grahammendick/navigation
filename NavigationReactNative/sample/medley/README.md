@@ -6,3 +6,4 @@ Once you've cloned the repository, you can install the dependencies and start th
 
     npm install
     react-native run-android
+    react-native run-ios
