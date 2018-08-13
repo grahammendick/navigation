@@ -115,8 +115,14 @@ protected void onCreate(Bundle savedInstanceState) {
 }</code></pre>
             <h2>Testing</h2>
             <h3>Android</h3>
+            <p>
+                Run the following command, changing the link to match your URI pattern and the namespace to match your project:
+            </p>
             <pre><code class="language-">adb shell am start -W -a android.intent.action.VIEW -d "email://app?id=12" com.email</code></pre>
             <h3>iOS</h3>
+            <p>
+                Run the following command, changing the link to match your URI pattern:
+            </p>
             <pre><code class="language-">xcrun simctl openurl booted email://app?id=12</code></pre>
         </div>
     </div>
