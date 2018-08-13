@@ -66,6 +66,9 @@ Linking.getInitialURL().then(openLink);
 Linking.addEventListener('url', ({url}) => openLink(url));</code></pre>
             <h2>Setup</h2>
             <h3>Android</h3>
+            <p>
+                Locate the <code>AndroidManifest.xml</code> in the Android project and add:
+            </p>
             <pre><code class="language-jsx">&lt;activity
   android:name="com.navigation.reactnative.LinkActivity"
   android:launchMode="singleTask">
@@ -76,6 +79,9 @@ Linking.addEventListener('url', ({url}) => openLink(url));</code></pre>
     &lt;data android:scheme="email" android:host="app" />
   &lt;/intent-filter>
 &lt;/activity></code></pre>
+            <p>
+                Locate the <code>MainActiviy.java</code> in the Android project and add:
+            </p>
             <pre><code class="language-jsx">import android.net.Uri;
 import android.os.Bundle;
 import com.facebook.react.bridge.ReactContext;
@@ -93,6 +99,9 @@ protected void onCreate(Bundle savedInstanceState) {
   }
 }</code></pre>
             <h3>iOS</h3>
+            <p>
+                Locate the <code>AppDelegate.m</code> in the iOS project and add:
+            </p>
             <pre><code class="language-jsx">#import &lt;React/RCTLinkingManager.h>
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
