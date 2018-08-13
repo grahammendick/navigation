@@ -99,6 +99,11 @@ protected void onCreate(Bundle savedInstanceState) {
   return [RCTLinkingManager application:application openURL:url
                       sourceApplication:sourceApplication annotation:annotation];
 }</code></pre>
+            <h2>Test</h2>
+            <h3>Android</h3>
+            <pre><code class="language-">adb shell am start -W -a android.intent.action.VIEW -d "mail://app?id=12" com.mail</code></pre>
+            <h3>iOS</h3>
+            <pre><code class="language-">xcrun simctl openurl booted mail://app?id=12</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
