@@ -51,6 +51,43 @@
         </div>
         <div id="article">
             <h1>Deep Links</h1>
+            <h2>Setup</h2>
+            <h3>Android</h3>
+            <pre><code class="language-jsx">&lt;activity
+  android:name="com.navigation.reactnative.LinkActivity"
+  android:launchMode="singleTask">
+    &lt;intent-filter>
+    &lt;action android:name="android.intent.action.VIEW" />
+    &lt;category android:name="android.intent.category.DEFAULT" />
+    &lt;category android:name="android.intent.category.BROWSABLE" />
+    &lt;data android:scheme="zoom" android:host="app" />
+  &lt;/intent-filter>
+&lt;/activity></code></pre>
+            <pre><code class="language-jsx">import android.net.Uri;
+import android.os.Bundle;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+  super.onCreate(savedInstanceState);
+  Uri uri = getIntent().getData();
+  if (uri != null) {
+    ReactContext currentContext = getReactInstanceManager().getCurrentReactContext();
+    DeviceEventManagerModule deviceEventManagerModule =
+    currentContext.getNativeModule(DeviceEventManagerModule.class);
+        deviceEventManagerModule.emitNewIntentReceived(uri);
+  }
+}</code></pre>
+            <h3>iOS</h3>
+            <pre><code class="language-jsx">#import &lt;React/RCTLinkingManager.h>
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+  return [RCTLinkingManager application:application openURL:url
+                      sourceApplication:sourceApplication annotation:annotation];
+}</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
