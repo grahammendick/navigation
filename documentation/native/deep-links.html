@@ -51,6 +51,17 @@
         </div>
         <div id="article">
             <h1>Deep Links</h1>
+            <pre><code class="language-js">import {Linking} from 'react-native';
+
+var openLink = (url) => {
+  if (url) {
+    //extract the id from the url, e.g., mail://app?id=12
+    var id = url.split('=')[1];
+    stateNavigator.navigate('mail', {id});
+  }
+};
+Linking.getInitialURL().then(openLink);
+Linking.addEventListener('url', ({url}) => openLink(url));</code></pre>
             <h2>Setup</h2>
             <h3>Android</h3>
             <pre><code class="language-jsx">&lt;activity
@@ -60,7 +71,7 @@
     &lt;action android:name="android.intent.action.VIEW" />
     &lt;category android:name="android.intent.category.DEFAULT" />
     &lt;category android:name="android.intent.category.BROWSABLE" />
-    &lt;data android:scheme="zoom" android:host="app" />
+    &lt;data android:scheme="mail" android:host="app" />
   &lt;/intent-filter>
 &lt;/activity></code></pre>
             <pre><code class="language-jsx">import android.net.Uri;
