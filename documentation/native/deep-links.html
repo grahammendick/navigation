@@ -100,6 +100,9 @@ protected void onCreate(Bundle savedInstanceState) {
 }</code></pre>
             <h3>iOS</h3>
             <p>
+                Open your iOS project in Xcode, select the project in the sidebar and navigate to the info tab. Scroll down to the 'URL Types' section and add one that matches your URI pattern. In our email example, we'd enter an Identifier of 'email' and a URL Scheme of 'email'.
+            </p>
+            <p>
                 Locate the <code>AppDelegate.m</code> in the iOS project and add:
             </p>
             <pre><code class="language-jsx">#import &lt;React/RCTLinkingManager.h>
