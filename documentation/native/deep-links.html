@@ -1,0 +1,144 @@
+<html>
+<head>
+    <title>Deep Links</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../css/prism.css">
+    <link rel="stylesheet" href="../../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+        <div>
+            <a href="../../index.html">Navigation</a>
+            <a href="../hello-world.html" class="selected">Docs</a>
+            <a href="../../download/index.html">Download</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <a href="../hello-world.html">Hello World</a>
+            <a href="../thinking-in-navigation.html">Thinking in Navigation</a>
+            <div class="separator"></div>
+            <h2>THE ABC</h2>
+            <a href="../state-navigation.html">A. State Navigation</a>
+            <a href="../navigation-data.html">B. Navigation Data</a>
+            <a href="../routes.html">C. Routes</a>
+            <a href="../examples.html">Examples</a>
+            <div class="separator"></div>
+            <h2>FURTHER GUIDES</h2>
+            <a href="../current-data.html">Current Data</a>
+            <a href="../html5-history.html">HTML5 History</a>
+            <a href="../navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="../reusable-components.html">Reusable Components</a>
+            <div class="separator"></div>
+            <h2>MOBILE</h2>
+            <a href="../mobile/hello-world.html">Hello World</a>
+            <a href="../mobile/animated-navigation.html">Animated Navigation</a>
+            <a href="../mobile/non-animated-navigation.html">Non-Animated Navigation</a>
+            <a href="../mobile/clean-urls.html">Clean Urls</a>
+            <a href="../mobile/shared-element-navigation.html">Shared Element Navigation</a>
+            <a href="../mobile/examples.html">Examples</a>
+            <div class="separator"></div>
+            <h2>NATIVE</h2>
+            <a href="setup.html">Setup</a>
+            <a href="hello-world.html">Hello World</a>
+            <a href="push-navigation.html">Push Navigation</a>
+            <a href="pop-navigation.html">Pop Navigation</a>
+            <a href="custom-animation.html">Custom Animation (Android)</a>
+            <a href="deep-links.html" class="selected">Deep Links</a>
+            <a href="tabs-setup.html">Tabs Setup (iOS)</a>
+            <a href="examples.html">Examples</a>
+        </div>
+        <div id="article">
+            <h1>Deep Links</h1>
+            <p>
+                A deep link is an external URI that, when clicked, opens a specific scene in your app. After following the <a href="#configuring">configuration instructions</a>, your app is ready to respond to deep link clicks. You create a function inside <code>App.js</code> that receives the incoming deep link and navigates to the relevant scene. You hook this function up to the <code>Linking</code> API of React Native (outside of any component). In our email example, when a user clicks a link like 'email://app?id=12' we navigate them to the 'mail' scene for that id. Follow the <a href="#testing">testing instructions</a> to check that the deep link behaves as expected.
+            </p>
+            <pre><code class="language-js">import {Linking} from 'react-native';
+
+var openLink = (url) => {
+  if (url) {
+    var id = +url.split('=')[1];
+    stateNavigator.navigate('mail', {id});
+  }
+};
+Linking.getInitialURL().then(openLink);
+Linking.addEventListener('url', ({url}) => openLink(url));</code></pre>
+            <h2>Priming the Stack</h2>
+            <p>
+                If the user has the app open in the background when they click a deep link, then the new scene is pushed on top of their current stack. In our email example, we can end up with two 'mail' scenes on top of the stack. The user opens the first 'mail' scene inside the app and the second 'mail' scene is pushed on top when they click the deep link. We can fix this by using the Navigation router's fluent navigation to build the exact stack we want. We want to open the mail from the deep link directly on top of the 'inbox' scene.
+            </p>
+            <pre><code class="language-js">var openLink = (url) => {
+  if (url) {
+    var id = +url.split('=')[1];
+    var link = stateNavigator.fluent()
+      .navigate('inbox')
+      .navigate('mail', {id}).url;
+    stateNavigator.navigateLink(link);
+  }
+};</code></pre>
+            <h2 id="configuring">Configuring</h2>
+            <h3>Android</h3>
+            <p>
+                Locate the <code>AndroidManifest.xml</code> in the Android project and add the following, replacing the scheme and host strings to match your URI pattern:
+            </p>
+            <pre><code class="language-jsx">&lt;activity
+  android:name="com.navigation.reactnative.LinkActivity"
+  android:launchMode="singleTask">
+    &lt;intent-filter>
+    &lt;action android:name="android.intent.action.VIEW" />
+    &lt;category android:name="android.intent.category.DEFAULT" />
+    &lt;category android:name="android.intent.category.BROWSABLE" />
+    &lt;data android:scheme="email" android:host="app" />
+  &lt;/intent-filter>
+&lt;/activity></code></pre>
+            <p>
+                Locate the <code>MainActiviy.java</code> in the Android project and add:
+            </p>
+            <pre><code class="language-jsx">import android.net.Uri;
+import android.os.Bundle;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+  super.onCreate(savedInstanceState);
+  Uri uri = getIntent().getData();
+  if (uri != null) {
+    ReactContext currentContext = getReactInstanceManager().getCurrentReactContext();
+    DeviceEventManagerModule deviceEventManagerModule =
+    currentContext.getNativeModule(DeviceEventManagerModule.class);
+        deviceEventManagerModule.emitNewIntentReceived(uri);
+  }
+}</code></pre>
+            <h3>iOS</h3>
+            <p>
+                Open your iOS project in Xcode, select the project in the sidebar and navigate to the Info tab. Scroll down to the 'URL Types' section and add one that matches your URI pattern. In our email example, we'd enter an Identifier of 'email' and a URL Scheme of 'email'.
+            </p>
+            <p>
+                Locate the <code>AppDelegate.m</code> in the iOS project and add:
+            </p>
+            <pre><code class="language-jsx">#import &lt;React/RCTLinkingManager.h>
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+  return [RCTLinkingManager application:application openURL:url
+             sourceApplication:sourceApplication annotation:annotation];
+}</code></pre>
+            <h2 id="testing">Testing</h2>
+            <h3>Android</h3>
+            <p>
+                Run the following command, changing the link to match your URI pattern and the namespace to match your project:
+            </p>
+            <pre><code class="language-">adb shell am start -W -a android.intent.action.VIEW -d "email://app?id=12" com.email</code></pre>
+            <h3>iOS</h3>
+            <p>
+                Run the following command, changing the link to match your URI pattern:
+            </p>
+            <pre><code class="language-">xcrun simctl openurl booted email://app?id=12</code></pre>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../js/prism.js"></script>
+</body>
+</html>
