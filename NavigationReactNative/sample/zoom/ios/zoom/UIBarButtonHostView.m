@@ -1,3 +1,5 @@
+#import "UIBarButtonHostView.h"
+
 @implementation UIBarButtonHostView
 
 - (void)didMoveToWindow
@@ -6,3 +8,4 @@
 }
 
 @end
+
