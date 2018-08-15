@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
+import {UIBarButtonIOS} from 'UIBarButtonIOS';
 
 const colors = [
   'maroon', 'red', 'crimson', 'orange', 'brown', 'sienna', 'olive',
@@ -12,6 +13,7 @@ export default () => (
     {({stateNavigator}) => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View style={styles.colors}>
+          <UIBarButtonIOS />
           {colors.map(color => (
             <TouchableHighlight
               style={[
