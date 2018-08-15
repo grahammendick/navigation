@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {UIBarButtonIOS} from './UIBarButtonIOS';
+import UIBarButtonIOS from './UIBarButtonIOS';
 
 const colors = [
   'maroon', 'red', 'crimson', 'orange', 'brown', 'sienna', 'olive',
