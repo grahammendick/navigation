@@ -7,6 +7,7 @@
 - (id)init
 {
   if (self = [super init]) {
+    self.button = [[UIBarButtonItem alloc] init];
   }
   return self;
 }
@@ -14,13 +15,15 @@
 - (void)didMoveToWindow
 {
   [super didMoveToWindow];
-  UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:self.title style:UIBarButtonItemStylePlain target:self action:@selector(buttonPressed)];
-  [self.reactViewController.navigationItem setRightBarButtonItem:item animated:YES];
+  [self.reactViewController.navigationItem setRightBarButtonItem:self.button animated:YES];
 }
 
 - (void)didSetProps:(__unused NSArray<NSString *> *)changedProps
 {
-  self.reactViewController.navigationItem.rightBarButtonItem.title = self.title;
+  self.button.style = UIBarButtonItemStylePlain;
+  self.button.title = self.title;
+  self.button.target = self;
+  self.button.action = @selector(buttonPressed);
 }
 
 -(void)buttonPressed
