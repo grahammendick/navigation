@@ -30,7 +30,7 @@
 {
   [super willMoveToSuperview:newSuperview];
   if (!newSuperview) {
-    [self.reactViewController.navigationItem setRightBarButtonItem:nil animated:YES];
+    self.reactViewController.navigationItem.rightBarButtonItem = nil;
   }
 }
 
