@@ -20,6 +20,9 @@
 
 -(void)buttonPressed
 {
+  if (!!self.onPress) {
+    self.onPress(@{});
+  }
 }
 
 @end
