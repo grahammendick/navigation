@@ -15,12 +15,7 @@
 - (void)didMoveToWindow
 {
   [super didMoveToWindow];
-  NSMutableArray *buttons = [self.reactViewController.navigationItem.rightBarButtonItems mutableCopy];
-  if (!buttons)
-    buttons = [[NSMutableArray alloc] init];
-  if (![buttons containsObject:self.button])
-    [buttons insertObject:self.button atIndex:0];
-  [self.reactViewController.navigationItem setRightBarButtonItems:buttons];
+  [self.reactViewController.navigationItem setRightBarButtonItem:self.button animated:YES];
 }
 
 - (void)didSetProps:(__unused NSArray<NSString *> *)changedProps
@@ -29,6 +24,14 @@
   self.button.title = self.title;
   self.button.target = self;
   self.button.action = @selector(buttonPressed);
+}
+
+- (void)willMoveToSuperview:(nullable UIView *)newSuperview;
+{
+  [super willMoveToSuperview:newSuperview];
+  if (!newSuperview) {
+    [self.reactViewController.navigationItem setRightBarButtonItem:nil animated:YES];
+  }
 }
 
 -(void)buttonPressed
