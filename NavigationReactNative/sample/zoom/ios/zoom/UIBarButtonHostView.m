@@ -15,7 +15,12 @@
 - (void)didMoveToWindow
 {
   [super didMoveToWindow];
-  [self.reactViewController.navigationItem setRightBarButtonItem:self.button animated:YES];
+  NSMutableArray *buttons = [self.reactViewController.navigationItem.rightBarButtonItems mutableCopy];
+  if (!buttons)
+    buttons = [[NSMutableArray alloc] init];
+  if (![buttons containsObject:self.button])
+    [buttons insertObject:self.button atIndex:0];
+  [self.reactViewController.navigationItem setRightBarButtonItems:buttons];
 }
 
 - (void)didSetProps:(__unused NSArray<NSString *> *)changedProps

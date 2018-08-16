@@ -16,6 +16,8 @@ export default () => (
           <UIBarButtonIOS title={title || "Hello"} onPress={() => {
             stateNavigator.navigate('grid', {title: 'World'})
           }} />
+          <UIBarButtonIOS title="Again" />
+          <UIBarButtonIOS title="And" />
           {colors.map(color => (
             <TouchableHighlight
               style={[
