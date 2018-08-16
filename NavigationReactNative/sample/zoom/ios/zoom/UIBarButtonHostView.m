@@ -29,7 +29,7 @@
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview;
 {
   [super willMoveToSuperview:newSuperview];
-  if (!newSuperview) {
+  if (!newSuperview && self.reactViewController.navigationItem.rightBarButtonItem == self.button) {
     self.reactViewController.navigationItem.rightBarButtonItem = nil;
   }
 }
