@@ -14,7 +14,7 @@ export default () => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View style={styles.colors}>
           <UIBarButtonIOS title={title || "Hello"} onPress={() => {
-            stateNavigator.navigate('grid', {title: 'World'})
+            stateNavigator.navigate('grid', {title: title !== 'World' ? 'World' : 'Hello'})
           }} />
           <UIBarButtonIOS title="Again" />
           <UIBarButtonIOS title="And" />
