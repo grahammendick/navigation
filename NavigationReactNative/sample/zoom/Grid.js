@@ -10,10 +10,12 @@ const colors = [
 
 export default () => (
   <NavigationContext.Consumer>
-    {({stateNavigator}) => (
+    {({data: {title}, stateNavigator}) => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View style={styles.colors}>
-          <UIBarButtonIOS title="Hello" onPress={() => {throw Error('x')}} />
+          <UIBarButtonIOS title={title || "Hello"} onPress={() => {
+            stateNavigator.navigate('grid', {title: 'World'})
+          }} />
           {colors.map(color => (
             <TouchableHighlight
               style={[

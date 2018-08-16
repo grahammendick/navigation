@@ -18,6 +18,11 @@
   [self.reactViewController.navigationItem setRightBarButtonItem:item animated:YES];
 }
 
+- (void)didSetProps:(__unused NSArray<NSString *> *)changedProps
+{
+  self.reactViewController.navigationItem.rightBarButtonItem.title = self.title;
+}
+
 -(void)buttonPressed
 {
   if (!!self.onPress) {
