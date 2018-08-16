@@ -14,7 +14,7 @@
 - (void)didMoveToWindow
 {
   [super didMoveToWindow];
-  UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"Test" style:UIBarButtonItemStylePlain target:nil action:nil];
+  UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:self.title style:UIBarButtonItemStylePlain target:nil action:nil];
   [self.reactViewController.navigationItem setRightBarButtonItem:item animated:YES];
 }
 

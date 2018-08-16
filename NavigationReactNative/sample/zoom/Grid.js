@@ -13,7 +13,7 @@ export default () => (
     {({stateNavigator}) => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View style={styles.colors}>
-          <UIBarButtonIOS />
+          <UIBarButtonIOS title="Hello" />
           {colors.map(color => (
             <TouchableHighlight
               style={[

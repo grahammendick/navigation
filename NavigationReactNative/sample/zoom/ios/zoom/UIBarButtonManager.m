@@ -10,5 +10,7 @@ RCT_EXPORT_MODULE()
   return [[UIBarButtonHostView alloc] init];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(title, NSString)
+
 @end
 
