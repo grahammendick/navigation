@@ -27,9 +27,17 @@
 }
 
 - (void)didMoveToWindow
+{
+  [super didMoveToWindow];
+  [self.reactViewController.navigationItem setRightBarButtonItems:self.buttons];
+}
+
+- (void)willMoveToSuperview:(nullable UIView *)newSuperview;
  {
-   [super didMoveToWindow];
-   [self.reactViewController.navigationItem setRightBarButtonItems:self.buttons];
+   [super willMoveToSuperview:newSuperview];
+   if (!newSuperview) {
+     [self.reactViewController.navigationItem setRightBarButtonItems:nil];
+   }
 }
 
 @end
