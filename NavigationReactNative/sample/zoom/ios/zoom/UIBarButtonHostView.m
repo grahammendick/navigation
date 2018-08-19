@@ -12,12 +12,6 @@
   return self;
 }
 
-/*- (void)didMoveToWindow
-{
-  [super didMoveToWindow];
-  [self.reactViewController.navigationItem setRightBarButtonItem:self.button animated:YES];
-}*/
-
 - (void)didSetProps:(__unused NSArray<NSString *> *)changedProps
 {
   self.button.style = UIBarButtonItemStylePlain;
@@ -25,14 +19,6 @@
   self.button.target = self;
   self.button.action = @selector(buttonPressed);
 }
-
-/*- (void)willMoveToSuperview:(nullable UIView *)newSuperview;
-{
-  [super willMoveToSuperview:newSuperview];
-  if (!newSuperview && self.reactViewController.navigationItem.rightBarButtonItem == self.button) {
-    self.reactViewController.navigationItem.rightBarButtonItem = nil;
-  }
-}*/
 
 -(void)buttonPressed
 {
