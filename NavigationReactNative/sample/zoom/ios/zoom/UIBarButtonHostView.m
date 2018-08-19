@@ -20,6 +20,11 @@
   self.button.title = title;
 }
 
+- (void)setImage:(UIImage *)image
+{
+  self.button.image = image;
+}
+
 -(void)buttonPressed
 {
   if (!!self.onPress) {
