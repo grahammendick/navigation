@@ -8,16 +8,16 @@
 {
   if (self = [super init]) {
     self.button = [[UIBarButtonItem alloc] init];
+    self.button.style = UIBarButtonItemStylePlain;
+    self.button.target = self;
+    self.button.action = @selector(buttonPressed);
   }
   return self;
 }
 
-- (void)didSetProps:(__unused NSArray<NSString *> *)changedProps
+- (void)setTitle:(NSString *)title
 {
-  self.button.style = UIBarButtonItemStylePlain;
-  self.button.title = self.title;
-  self.button.target = self;
-  self.button.action = @selector(buttonPressed);
+  self.button.title = title;
 }
 
 -(void)buttonPressed
