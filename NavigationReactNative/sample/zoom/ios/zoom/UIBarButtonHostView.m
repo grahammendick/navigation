@@ -28,7 +28,7 @@
 -(void)buttonPressed
 {
   if (!!self.onPress) {
-    self.onPress(@{});
+    self.onPress(nil);
   }
 }
 
