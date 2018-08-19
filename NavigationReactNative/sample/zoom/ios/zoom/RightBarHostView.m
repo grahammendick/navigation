@@ -22,6 +22,8 @@
 - (void)removeReactSubview:(UIView *)subview
 {
   [super removeReactSubview:subview];
+  [self.buttons removeObject:((UIBarButtonHostView *) subview).button];
+  [self.reactViewController.navigationItem setRightBarButtonItems:self.buttons];
 }
 
 - (void)didMoveToWindow
