@@ -1,3 +1,3 @@
-import { requireNativeComponent } from 'react-native';
+import { requireNativeComponent, Platform } from 'react-native';
 
-export default requireNativeComponent('NVBarButton', null);
+export default Platform.OS === 'ios' ? requireNativeComponent('NVBarButton', null) : () => null;
