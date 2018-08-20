@@ -1,13 +1,4 @@
-//
-//  NVBarButtonManager.h
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 20/08/2018.
-//  Copyright © 2018 Graham Mendick. All rights reserved.
-//
+#import <React/RCTViewManager.h>
 
-#ifndef NVBarButtonManager_h
-#define NVBarButtonManager_h
-
-
-#endif /* NVBarButtonManager_h */
+@interface NVBarButtonManager : RCTViewManager
+@end

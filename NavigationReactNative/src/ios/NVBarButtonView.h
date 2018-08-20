@@ -1,13 +1,11 @@
-//
-//  NVBarButtonView.h
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 20/08/2018.
-//  Copyright © 2018 Graham Mendick. All rights reserved.
-//
+#import <UIKit/UIKit.h>
+#import <React/RCTComponent.h>
 
-#ifndef NVBarButtonView_h
-#define NVBarButtonView_h
+@interface NVBarButtonView : UIView
 
+@property UIBarButtonItem *button;
+@property (nonatomic, assign) NSString *title;
+@property (nonatomic, assign) UIImage *image;
+@property (nonatomic, copy) RCTBubblingEventBlock onPress;
 
-#endif /* NVBarButtonView_h */
+@end

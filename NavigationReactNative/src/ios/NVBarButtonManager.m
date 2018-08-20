@@ -1,9 +1,20 @@
-//
-//  NVBarButtonManager.m
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 20/08/2018.
-//  Copyright © 2018 Graham Mendick. All rights reserved.
-//
+#import "NVBarButtonManager.h"
+#import "NVBarButtonView.h"
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <React/RCTComponent.h>
+
+@implementation NVBarButtonManager
+
+RCT_EXPORT_MODULE()
+
+- (UIView *)view
+{
+    return [[NVBarButtonView alloc] init];
+}
+
+RCT_EXPORT_VIEW_PROPERTY(title, NSString)
+RCT_EXPORT_VIEW_PROPERTY(image, UIImage)
+RCT_EXPORT_VIEW_PROPERTY(onPress, RCTBubblingEventBlock)
+
+@end
