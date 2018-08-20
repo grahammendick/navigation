@@ -1,13 +1,7 @@
-//
-//  NVRightBarView.h
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 20/08/2018.
-//  Copyright © 2018 Graham Mendick. All rights reserved.
-//
+#import <UIKit/UIKit.h>
 
-#ifndef NVRightBarView_h
-#define NVRightBarView_h
+@interface NVRightBarView : UIView
 
+@property NSMutableArray *buttons;
 
-#endif /* NVRightBarView_h */
+@end
