@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
+import {StyleSheet, ScrollView, Text, View} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {RightBarIOS, BarButtonIOS} from 'navigation-react-native';
 
