@@ -36,10 +36,6 @@
 		2DCD954D1E0B4F2C00145EB5 /* zoomTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* zoomTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		7048702B2124B88E00D93C05 /* UIBarButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7048702A2124B88E00D93C05 /* UIBarButtonManager.m */; };
-		704870552124B92F00D93C05 /* UIBarButtonHostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 704870542124B92F00D93C05 /* UIBarButtonHostView.m */; };
-		7062A3732129774C0054CDC6 /* RightBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7062A3722129774C0054CDC6 /* RightBarManager.m */; };
-		7062A39C2129776E0054CDC6 /* RightBarHostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7062A39B2129776E0054CDC6 /* RightBarHostView.m */; };
 		8084E05F37C54615997C71CA /* libNavigationReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBB9A28AA9674D4AA85A2DDD /* libNavigationReactNative.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
@@ -353,14 +349,6 @@
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		630D45EE9C4949D0B71B2405 /* NavigationReactNative.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = NavigationReactNative.xcodeproj; path = "../node_modules/navigation-react-native/ios/NavigationReactNative.xcodeproj"; sourceTree = "<group>"; };
-		7048702A2124B88E00D93C05 /* UIBarButtonManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UIBarButtonManager.m; path = zoom/UIBarButtonManager.m; sourceTree = "<group>"; };
-		704870522124B8DA00D93C05 /* UIBarButtonManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UIBarButtonManager.h; path = zoom/UIBarButtonManager.h; sourceTree = "<group>"; };
-		704870532124B90800D93C05 /* UIBarButtonHostView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UIBarButtonHostView.h; path = zoom/UIBarButtonHostView.h; sourceTree = "<group>"; };
-		704870542124B92F00D93C05 /* UIBarButtonHostView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UIBarButtonHostView.m; path = zoom/UIBarButtonHostView.m; sourceTree = "<group>"; };
-		7062A3722129774C0054CDC6 /* RightBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RightBarManager.m; path = zoom/RightBarManager.m; sourceTree = "<group>"; };
-		7062A39A212977580054CDC6 /* RightBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RightBarManager.h; path = zoom/RightBarManager.h; sourceTree = "<group>"; };
-		7062A39B2129776E0054CDC6 /* RightBarHostView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RightBarHostView.m; path = zoom/RightBarHostView.m; sourceTree = "<group>"; };
-		7062A39D2129777E0054CDC6 /* RightBarHostView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RightBarHostView.h; path = zoom/RightBarHostView.h; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
@@ -512,14 +500,6 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				7048702A2124B88E00D93C05 /* UIBarButtonManager.m */,
-				704870522124B8DA00D93C05 /* UIBarButtonManager.h */,
-				704870532124B90800D93C05 /* UIBarButtonHostView.h */,
-				704870542124B92F00D93C05 /* UIBarButtonHostView.m */,
-				7062A3722129774C0054CDC6 /* RightBarManager.m */,
-				7062A39A212977580054CDC6 /* RightBarManager.h */,
-				7062A39B2129776E0054CDC6 /* RightBarHostView.m */,
-				7062A39D2129777E0054CDC6 /* RightBarHostView.h */,
 			);
 			name = zoom;
 			sourceTree = "<group>";
@@ -1174,11 +1154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				704870552124B92F00D93C05 /* UIBarButtonHostView.m in Sources */,
-				7062A39C2129776E0054CDC6 /* RightBarHostView.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				7062A3732129774C0054CDC6 /* RightBarManager.m in Sources */,
-				7048702B2124B88E00D93C05 /* UIBarButtonManager.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
