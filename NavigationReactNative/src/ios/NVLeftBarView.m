@@ -1,9 +1,12 @@
-//
-//  NVLeftBarView.m
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 20/08/2018.
-//  Copyright © 2018 Graham Mendick. All rights reserved.
-//
+#import "NVLeftBarView.h"
 
-#import <Foundation/Foundation.h>
+#import <React/UIView+React.h>
+
+@implementation NVLeftBarView
+
+-(void)setBarButtons:(NSMutableArray *)buttons
+{
+    [self.reactViewController.navigationItem setLeftBarButtonItems:self.buttons];
+}
+
+@end

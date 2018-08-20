@@ -1,9 +1,13 @@
-//
-//  NVLeftBarManager.m
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 20/08/2018.
-//  Copyright © 2018 Graham Mendick. All rights reserved.
-//
+#import "NVLeftBarManager.h"
+#import "NVLeftBarView.h"
 
-#import <Foundation/Foundation.h>
+@implementation NVLeftBarManager
+
+RCT_EXPORT_MODULE()
+
+- (UIView *)view
+{
+    return [[NVLeftBarView alloc] init];
+}
+
+@end
