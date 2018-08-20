@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
+import {RightBarIOS, BarButtonIOS} from 'navigation-react-native';
 
 export default ({color}) => (
   <NavigationContext.Consumer>
@@ -8,13 +9,11 @@ export default ({color}) => (
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{flex:1}}>
-          <TouchableHighlight
-            underlayColor="#fff"
-            onPress={() => {
+          <RightBarIOS>
+            <BarButtonIOS title="Cancel" onPress={() => {
               stateNavigator.navigateBack(1);
-            }}>
-            <Text style={styles.back}>X</Text>
-          </TouchableHighlight>
+            }} />
+          </RightBarIOS>
           <View
             style={[
               {backgroundColor: color},
@@ -27,16 +26,9 @@ export default ({color}) => (
 );
   
 const styles = StyleSheet.create({
-  back: {
-    fontSize: 20,
-    color: '#000',
-    fontWeight: 'bold',
-    paddingLeft: 20,
-    paddingTop: 10,
-    paddingBottom: 5,
-  },
   color: {
     flex: .6,
+    marginTop: 10,
     marginLeft: 15,
     marginRight: 15,
   },
