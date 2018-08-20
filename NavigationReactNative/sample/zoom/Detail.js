@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, ScrollView, Text, View} from 'react-native';
+import {StyleSheet, ScrollView, Text, View, Platform, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {RightBarIOS, BarButtonIOS} from 'navigation-react-native';
 
@@ -14,6 +14,13 @@ export default ({color}) => (
               stateNavigator.navigateBack(1);
             }} />
           </RightBarIOS>
+          {Platform.OS === 'android' && <TouchableHighlight
+            underlayColor="#fff"
+            onPress={() => {
+              stateNavigator.navigateBack(1);
+            }}>
+            <Text style={styles.back}>X</Text>
+          </TouchableHighlight>}
           <View
             style={[
               {backgroundColor: color},
@@ -26,6 +33,13 @@ export default ({color}) => (
 );
   
 const styles = StyleSheet.create({
+  back: {
+    fontSize: 20,
+    color: '#000',
+    fontWeight: 'bold',
+    paddingLeft: 20,
+    paddingTop: 10,
+  },
   color: {
     flex: .6,
     marginTop: 10,
