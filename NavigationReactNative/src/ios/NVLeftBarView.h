@@ -2,5 +2,5 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NVLetBarView : NVBarView
+@interface NVLeftBarView : NVBarView
 @end
