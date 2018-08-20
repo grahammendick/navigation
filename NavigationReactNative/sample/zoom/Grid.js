@@ -1,8 +1,7 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import UIBarButtonIOS from './UIBarButtonIOS';
-import RightBarIOS from './RightBarIOS';
+import {RightBarIOS, BarButtonIOS} from 'navigation-react-native';
 
 const colors = [
   'maroon', 'red', 'crimson', 'orange', 'brown', 'sienna', 'olive',
@@ -15,7 +14,7 @@ export default () => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View style={styles.colors}>
           <RightBarIOS>
-            <UIBarButtonIOS title={title || "Hello"} onPress={() => {
+            <BarButtonIOS title={title || "Hello"} onPress={() => {
               stateNavigator.navigate('grid', {title: 'World'})
             }} />
           </RightBarIOS>
