@@ -16,7 +16,7 @@
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
-    [self.buttons insertObject:((UIBarButtonHostView *) subview).button atIndex:atIndex];
+    [self.buttons insertObject:((NVBarButtonView *) subview).button atIndex:atIndex];
 }
 
 - (void)removeReactSubview:(UIView *)subview
