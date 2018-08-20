@@ -1,4 +1,5 @@
 import { Component, ReactNode } from 'react';
+import { ImageURISource } from 'react-native';
 import { StateNavigator, State } from 'navigation';
 
 /**
@@ -19,3 +20,27 @@ export interface SceneProps {
  * Renders the scene for the crumb
  */
 export class Scene extends Component<SceneProps> { }
+
+/**
+ * Renders buttons in the left UI bar
+ */
+export class LeftBarIOS extends Component { }
+
+/**
+ * Renders buttons in the right UI bar
+ */
+export class RightBarIOS extends Component { }
+
+/**
+ * Defines the Bar Button Props contract
+ */
+export interface BarButtonIOSProps {
+    title?: string;
+    image?: ImageURISource;
+    onPress?: () => void;
+}
+
+/**
+ * Renders a button in the UI bar
+ */
+export class BarButtonIOS extends Component<BarButtonIOSProps> { }
