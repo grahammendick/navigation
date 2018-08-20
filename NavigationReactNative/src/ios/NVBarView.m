@@ -1,9 +1,50 @@
-//
-//  NVBarView.m
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 20/08/2018.
-//  Copyright © 2018 Graham Mendick. All rights reserved.
-//
+#import "NVBarView.h"
+#import "NVBarButtonView.h"
 
-#import <Foundation/Foundation.h>
+#import <React/UIView+React.h>
+
+@implementation NVBarView
+
+- (id)init
+{
+    if (self = [super init]) {
+        self.buttons = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
+- (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
+{
+    [super insertReactSubview:subview atIndex:atIndex];
+    [self.buttons insertObject:((NVBarButtonView *) subview).button atIndex:atIndex];
+}
+
+- (void)removeReactSubview:(UIView *)subview
+{
+    [super removeReactSubview:subview];
+    [self.buttons removeObject:((NVBarButtonView *) subview).button];
+    [self setBarButtons:self.buttons];
+    //[self.reactViewController.navigationItem setRightBarButtonItems:self.buttons];
+}
+
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    [self setBarButtons:self.buttons];
+    //[self.reactViewController.navigationItem setRightBarButtonItems:self.buttons];
+}
+
+- (void)willMoveToSuperview:(nullable UIView *)newSuperview
+{
+    [super willMoveToSuperview:newSuperview];
+    if (!newSuperview) {
+        [self setBarButtons:nil];
+        //[self.reactViewController.navigationItem setRightBarButtonItems:nil];
+    }
+}
+
+-(void)setBarButtons:(NSMutableArray *)buttons
+{
+}
+
+@end

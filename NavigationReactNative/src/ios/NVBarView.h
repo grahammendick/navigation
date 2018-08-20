@@ -1,13 +1,7 @@
-//
-//  NVBarView.h
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 20/08/2018.
-//  Copyright © 2018 Graham Mendick. All rights reserved.
-//
+#import <UIKit/UIKit.h>
 
-#ifndef NVBarView_h
-#define NVBarView_h
+@interface NVBarView : UIView
 
+@property NSMutableArray *buttons;
 
-#endif /* NVBarView_h */
+@end

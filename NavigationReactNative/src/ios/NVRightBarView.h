@@ -1,7 +1,6 @@
+#import "NVBarView.h"
+
 #import <UIKit/UIKit.h>
 
-@interface NVRightBarView : UIView
-
-@property NSMutableArray *buttons;
-
+@interface NVRightBarView : NVBarView
 @end
