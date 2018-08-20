@@ -6,7 +6,7 @@
 
 -(void)setBarButtons:(NSMutableArray *)buttons
 {
-    [self.reactViewController.navigationItem setRightBarButtonItems:self.buttons];
+    [self.reactViewController.navigationItem setRightBarButtonItems:buttons];
 }
 
 @end
