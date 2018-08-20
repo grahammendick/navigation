@@ -24,14 +24,12 @@
     [super removeReactSubview:subview];
     [self.buttons removeObject:((NVBarButtonView *) subview).button];
     [self setBarButtons:self.buttons];
-    //[self.reactViewController.navigationItem setRightBarButtonItems:self.buttons];
 }
 
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
     [self setBarButtons:self.buttons];
-    //[self.reactViewController.navigationItem setRightBarButtonItems:self.buttons];
 }
 
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview
@@ -39,7 +37,6 @@
     [super willMoveToSuperview:newSuperview];
     if (!newSuperview) {
         [self setBarButtons:nil];
-        //[self.reactViewController.navigationItem setRightBarButtonItems:nil];
     }
 }
 
