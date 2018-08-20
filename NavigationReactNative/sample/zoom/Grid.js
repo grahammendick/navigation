@@ -9,7 +9,7 @@ const colors = [
 
 export default () => (
   <NavigationContext.Consumer>
-    {({data: {title}, stateNavigator}) => (
+    {({stateNavigator}) => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View style={styles.colors}>
           {colors.map(color => (
