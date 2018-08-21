@@ -31,7 +31,7 @@ var Person = ({ name }) => (
         {({stateNavigator}) => (
             <View>
                 <RightBarIOS>
-                    <BarButtonIOS title="Cancel" onPress={() => {
+                    <BarButtonIOS systemItem="cancel" onPress={() => {
                         stateNavigator.navigateBack(1)
                     }} />
                 </RightBarIOS>
