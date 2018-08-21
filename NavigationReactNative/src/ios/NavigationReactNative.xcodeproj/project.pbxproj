@@ -9,6 +9,13 @@
 /* Begin PBXBuildFile section */
 		7020F6D020ECD25F00E7A74E /* NVSceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7020F6CF20ECD25F00E7A74E /* NVSceneController.m */; };
 		7020F70A20ECD6FB00E7A74E /* NavigationModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 7020F70920ECD6FB00E7A74E /* NavigationModule.m */; };
+		70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3290212B2BC700DE0D13 /* NVRightBarView.m */; };
+		70BB3294212B2C0A00DE0D13 /* NVRightBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3293212B2C0A00DE0D13 /* NVRightBarManager.m */; };
+		70BB3298212B2C4000DE0D13 /* NVLeftBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3297212B2C4000DE0D13 /* NVLeftBarView.m */; };
+		70BB329A212B2C5100DE0D13 /* NVLeftBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3299212B2C5100DE0D13 /* NVLeftBarManager.m */; };
+		70BB329E212B2C9000DE0D13 /* NVBarButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB329D212B2C9000DE0D13 /* NVBarButtonManager.m */; };
+		70BB32A0212B2CA000DE0D13 /* NVBarButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB329F212B2CA000DE0D13 /* NVBarButtonView.m */; };
+		70BB32A4212B2D4100DE0D13 /* NVBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB32A3212B2D4100DE0D13 /* NVBarView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,6 +37,20 @@
 		7020F6CF20ECD25F00E7A74E /* NVSceneController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSceneController.m; sourceTree = "<group>"; };
 		7020F70820ECD6ED00E7A74E /* NavigationModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavigationModule.h; sourceTree = "<group>"; };
 		7020F70920ECD6FB00E7A74E /* NavigationModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavigationModule.m; sourceTree = "<group>"; };
+		70BB3290212B2BC700DE0D13 /* NVRightBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVRightBarView.m; sourceTree = "<group>"; };
+		70BB3292212B2BEB00DE0D13 /* NVRightBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVRightBarView.h; sourceTree = "<group>"; };
+		70BB3293212B2C0A00DE0D13 /* NVRightBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVRightBarManager.m; sourceTree = "<group>"; };
+		70BB3295212B2C1400DE0D13 /* NVRightBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVRightBarManager.h; sourceTree = "<group>"; };
+		70BB3296212B2C3500DE0D13 /* NVLeftBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVLeftBarView.h; sourceTree = "<group>"; };
+		70BB3297212B2C4000DE0D13 /* NVLeftBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVLeftBarView.m; sourceTree = "<group>"; };
+		70BB3299212B2C5100DE0D13 /* NVLeftBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVLeftBarManager.m; sourceTree = "<group>"; };
+		70BB329B212B2C5900DE0D13 /* NVLeftBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVLeftBarManager.h; sourceTree = "<group>"; };
+		70BB329C212B2C7B00DE0D13 /* NVBarButtonManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVBarButtonManager.h; sourceTree = "<group>"; };
+		70BB329D212B2C9000DE0D13 /* NVBarButtonManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVBarButtonManager.m; sourceTree = "<group>"; };
+		70BB329F212B2CA000DE0D13 /* NVBarButtonView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVBarButtonView.m; sourceTree = "<group>"; };
+		70BB32A1212B2CA900DE0D13 /* NVBarButtonView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVBarButtonView.h; sourceTree = "<group>"; };
+		70BB32A2212B2D3700DE0D13 /* NVBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVBarView.h; sourceTree = "<group>"; };
+		70BB32A3212B2D4100DE0D13 /* NVBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVBarView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +67,20 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				70BB32A3212B2D4100DE0D13 /* NVBarView.m */,
+				70BB32A2212B2D3700DE0D13 /* NVBarView.h */,
+				70BB32A1212B2CA900DE0D13 /* NVBarButtonView.h */,
+				70BB329F212B2CA000DE0D13 /* NVBarButtonView.m */,
+				70BB329D212B2C9000DE0D13 /* NVBarButtonManager.m */,
+				70BB329C212B2C7B00DE0D13 /* NVBarButtonManager.h */,
+				70BB329B212B2C5900DE0D13 /* NVLeftBarManager.h */,
+				70BB3299212B2C5100DE0D13 /* NVLeftBarManager.m */,
+				70BB3297212B2C4000DE0D13 /* NVLeftBarView.m */,
+				70BB3296212B2C3500DE0D13 /* NVLeftBarView.h */,
+				70BB3295212B2C1400DE0D13 /* NVRightBarManager.h */,
+				70BB3293212B2C0A00DE0D13 /* NVRightBarManager.m */,
+				70BB3292212B2BEB00DE0D13 /* NVRightBarView.h */,
+				70BB3290212B2BC700DE0D13 /* NVRightBarView.m */,
 				7020F70920ECD6FB00E7A74E /* NavigationModule.m */,
 				7020F70820ECD6ED00E7A74E /* NavigationModule.h */,
 				7020F6CF20ECD25F00E7A74E /* NVSceneController.m */,
@@ -119,8 +154,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70BB329E212B2C9000DE0D13 /* NVBarButtonManager.m in Sources */,
+				70BB3294212B2C0A00DE0D13 /* NVRightBarManager.m in Sources */,
+				70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */,
+				70BB329A212B2C5100DE0D13 /* NVLeftBarManager.m in Sources */,
+				70BB32A0212B2CA000DE0D13 /* NVBarButtonView.m in Sources */,
+				70BB32A4212B2D4100DE0D13 /* NVBarView.m in Sources */,
 				7020F6D020ECD25F00E7A74E /* NVSceneController.m in Sources */,
 				7020F70A20ECD6FB00E7A74E /* NavigationModule.m in Sources */,
+				70BB3298212B2C4000DE0D13 /* NVLeftBarView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,6 +1,6 @@
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { addNavigateHandlers, Scene } from 'navigation-react-native';
+import { addNavigateHandlers, Scene, RightBarIOS, BarButtonIOS } from 'navigation-react-native';
 import * as React from 'react';
 import { View, Text, TouchableHighlight } from 'react-native';
 
@@ -27,7 +27,18 @@ var People = () => (
 );
 
 var Person = ({ name }) => (
-    <Text>{name}</Text>
+    <NavigationContext.Consumer>
+        {({stateNavigator}) => (
+            <View>
+                <RightBarIOS>
+                    <BarButtonIOS systemItem="cancel" onPress={() => {
+                        stateNavigator.navigateBack(1)
+                    }} />
+                </RightBarIOS>
+                <Text>{name}</Text>
+            </View>
+        )}
+    </NavigationContext.Consumer>
 );
 
 var { people, person } = stateNavigator.states;
