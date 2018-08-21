@@ -10,7 +10,7 @@ export default ({color}) => (
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{flex:1}}>
           <RightBarIOS>
-            <BarButtonIOS title="Cancel" onPress={() => {
+            <BarButtonIOS systemItem="cancel" onPress={() => {
               stateNavigator.navigateBack(1);
             }} />
           </RightBarIOS>
