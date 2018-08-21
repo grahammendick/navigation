@@ -26,6 +26,11 @@
     self.button.image = image;
 }
 
+- (void)setSystemItem:(UIBarButtonSystemItem)systemItem
+{
+    self.button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem target:self action:@selector(buttonPressed)];
+}
+
 -(void)buttonPressed
 {
     if (!!self.onPress) {

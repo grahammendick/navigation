@@ -17,6 +17,7 @@
 {
     [super insertReactSubview:subview atIndex:atIndex];
     [self.buttons insertObject:((NVBarButtonView *) subview).button atIndex:atIndex];
+    [self setBarButtons:self.buttons];
 }
 
 - (void)removeReactSubview:(UIView *)subview
