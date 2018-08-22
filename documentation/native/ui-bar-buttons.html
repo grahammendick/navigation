@@ -52,7 +52,14 @@
         </div>
         <div id="article">
             <h1>UI Bar Buttons (iOS)</h1>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx">import {RightBarIOS, BarButtonIOS} from 'navigation-react-native';
+
+&lt;RightBarIOS>
+  &lt;BarButtonIOS systemItem="compose" onPress={() => {
+    stateNavigator.navigate('compose');
+  }} />
+&lt;/RightBarIOS>
+</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
