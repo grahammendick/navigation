@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Pop Navigation</title>
+    <title>UI Bar Buttons (iOS)</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="../../css/prism.css">
     <link rel="stylesheet" href="../../css/navigation.css">
@@ -43,42 +43,26 @@
             <a href="setup.html">Setup</a>
             <a href="hello-world.html">Hello World</a>
             <a href="push-navigation.html">Push Navigation</a>
-            <a href="pop-navigation.html" class="selected">Pop Navigation</a>
+            <a href="pop-navigation.html">Pop Navigation</a>
             <a href="custom-animation.html">Custom Animation (Android)</a>
-            <a href="ui-bar-buttons.html">UI Bar Buttons (iOS)</a>
+            <a href="ui-bar-buttons.html" class="selected">UI Bar Buttons (iOS)</a>
             <a href="deep-links.html">Deep Links</a>
             <a href="tabs-setup.html">Tabs Setup (iOS)</a>
             <a href="examples.html">Examples</a>
         </div>
         <div id="article">
-            <h1>Pop Navigation</h1>
-            <h2>Popping</h2>
+            <h1>UI Bar Buttons (iOS)</h1>
             <p>
-                Because the Navigation router pushes scenes using the native APIs, the user can pop them via the Android back button or swiping/pressing back on iOS. You can also programmatically pop scenes by calling the <code>navigateBack</code> function on the <code>StateNavigator</code>. The number you pass in indicates the number of scenes to pop. In our email example, we can add a button to the 'compose' scene that returns the user to the inbox.
+                The Navigation router uses the underlying native API on iOS to provide a UI Navigation Bar at the top of each scene. Alongside the scene's title and back button, you can add your own buttons to the UI Bar using the <code>BarButtonIOS</code> component. It has a <code>systemItem prop</code> that displays an <a href="https://developer.apple.com/documentation/uikit/uibarbuttonitem/systemitem">inbuilt button</a>, or you can pass your own text and image using the <code>title</code> and <code>image props</code>. Your buttons appear on the right or left of the UI Bar depending on whether you wrap them in a <code>RightBarIOS</code> or <code>LeftBarIOS</code> component. In our email example, we can add a 'compose' button to the right of the UI Bar that navigates to the compose scene.
             </p>
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+            <pre><code class="language-jsx">import {RightBarIOS, BarButtonIOS} from 'navigation-react-native';
 
-var Compose = () => (
-  &lt;NavigationContext.Consumer>
-    {({stateNavigator}) => (
-      &lt;TouchableHighlight
-        onPress={() => {
-          stateNavigator.navigateBack(1);
-        }}>
-        &lt;Text>Back to Inbox&lt;/Text>
-      &lt;/TouchableHighlight>
-    )}
-  &lt;/NavigationContext.Consumer>
-);</code></pre>
-            <h2>Popping to Top</h2>
-            <p>
-                The Navigation router is the only React Native router that navigates natively on Android and iOS where you can interrogate the stack in JavaScript. You recall that the Navigation router drops a breadcrumb at each visited scene, just like the fairy-tale characters Hansel and Gretel. The stack of visited scenes is represented in JavaScript as an array of breadcrumbs. Each crumb corresponds to a visited scene and holds the <code>State</code> and navigation data associated with it.
-            </p>
-            <p>
-                Let's use this array of crumbs to make the 'Back to Inbox' button work regardless of the route the user takes to get to the 'compose' scene. For example, if the user presses the 'Compose Mail' button after opening an email, then popping one scene off the stack goes back to the open email instead of the inbox. We ensure the 'Back to Inbox' button always pops to the top of the stack by navigating back the length of the <code>crumbs</code> array.
-            </p>
-            <pre><code class="language-jsx">var {crumbs} = stateNavigator.stateContext;
-stateNavigator.navigateBack(crumbs.length);</code></pre>
+&lt;RightBarIOS>
+  &lt;BarButtonIOS systemItem="compose" onPress={() => {
+    stateNavigator.navigate('compose');
+  }} />
+&lt;/RightBarIOS>
+</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
