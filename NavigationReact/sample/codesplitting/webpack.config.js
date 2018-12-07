@@ -5,8 +5,14 @@ module.exports = {
         filename: "app.js"
     },
     module: {
-        loaders: [
-            { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
+        rules: [
+            {
+              test: /\.js$/,
+              exclude: /node_modules/,
+              use: {
+                loader: 'babel-loader',
+              }
+            }
         ]
-    }    
+    },
 };
