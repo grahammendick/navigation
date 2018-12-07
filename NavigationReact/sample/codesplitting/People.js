@@ -1,15 +1,7 @@
-import { searchPeople } from './Data';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { NavigationLink, RefreshLink } from 'navigation-react';
 
-function registerView(stateNavigator) {
-    stateNavigator.states.people.renderView = ({pageNumber}) => (
-        <Listing people={searchPeople(pageNumber)} />
-    );
-}
-
-var Listing = ({ people }) => {
+export default ({ people }) => {
     var rows = people.map((person) => (
         <tr key={person.id}>
             <td>
@@ -49,5 +41,3 @@ var Listing = ({ people }) => {
         </div>
     );
 };
-
-export { registerView };

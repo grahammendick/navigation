@@ -1,4 +1,4 @@
-import Data from './Data';
+import { searchPeople, getPerson } from './Data';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
 import React from 'react';
@@ -9,18 +9,15 @@ var stateNavigator = new StateNavigator([
     {key: 'person', route: 'person/{id}', defaults: {id: 0 }, trackCrumbTrail: true}
 ]);
 
-stateNavigator.states.people.navigating = function(data, url, navigate) {
-    require.ensure(['./People'], function(require) {
-        require('./People').registerView(stateNavigator);
-        navigate();
-    });
-}
-stateNavigator.states.person.navigating = function(data, url, navigate) {
-    require.ensure(['./Person'], function(require) {
-        require('./Person').registerView(stateNavigator);
-        navigate();
-    });
-}
+stateNavigator.states.people.renderView = ({pageNumber}) => {
+    var Listing = React.lazy(() => import('./People'));
+    return <Listing people={searchPeople(pageNumber)} />
+};
+
+stateNavigator.states.person.renderView = ({id}) => {
+    var Details = React.lazy(() => import('./Person'));
+    return <Details person={getPerson(id)} />
+};
 
 stateNavigator.start();
 
