@@ -1,7 +1,7 @@
 import { searchPeople, getPerson } from './Data';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
 
 var stateNavigator = new StateNavigator([
@@ -10,12 +10,12 @@ var stateNavigator = new StateNavigator([
 ]);
 
 stateNavigator.states.people.renderView = ({pageNumber}) => {
-    var Listing = React.lazy(() => import('./People'));
+    var Listing = lazy(() => import('./People'));
     return <Listing people={searchPeople(pageNumber)} />
 };
 
 stateNavigator.states.person.renderView = ({id}) => {
-    var Details = React.lazy(() => import('./Person'));
+    var Details = lazy(() => import('./Person'));
     return <Details person={getPerson(id)} />
 };
 
@@ -23,9 +23,11 @@ stateNavigator.start();
 
 ReactDOM.render(
     <NavigationHandler stateNavigator={stateNavigator}>
-        <NavigationContext.Consumer>
-            {({ state, data }) => state && state.renderView(data)}
-        </NavigationContext.Consumer>        
+        <Suspense fallback={<div>Loading...</div>}>
+            <NavigationContext.Consumer>
+                {({ state, data }) => state && state.renderView(data)}
+            </NavigationContext.Consumer>
+        </Suspense>
     </NavigationHandler>,
     document.getElementById('content')
 );
