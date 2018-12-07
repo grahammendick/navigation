@@ -2,8 +2,8 @@
   "name": "navigation-code-splitting",
   "description": "Navigation React code splitting example",
   "dependencies": {
-    "babel-core": "^6.17.0",
-    "babel-loader": "^8.0.4",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-react": "^6.16.0",
     "navigation": "*",
