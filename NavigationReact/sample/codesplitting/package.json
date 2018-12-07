@@ -10,7 +10,7 @@
     "navigation-react": "*",
     "react": "*",
     "react-dom": "*",
-    "webpack": "^1.12.10"
+    "webpack": "^4.27.1"
   },
   "scripts": {
     "build": "webpack"
