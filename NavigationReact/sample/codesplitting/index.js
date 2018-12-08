@@ -3,8 +3,8 @@ import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
-var Listing = lazy(() => import('./People'));
-var Details = lazy(() => import('./Person'));
+var People = lazy(() => import('./People'));
+var Person = lazy(() => import('./Person'));
 
 var stateNavigator = new StateNavigator([
     {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1 }},
@@ -12,8 +12,8 @@ var stateNavigator = new StateNavigator([
 ]);
 
 var {people, person} = stateNavigator.states;
-people.renderView = ({pageNumber}) => <Listing people={searchPeople(pageNumber)} />;
-person.renderView = ({id}) => <Details person={getPerson(id)} />;
+people.renderView = ({pageNumber}) => <People people={searchPeople(pageNumber)} />;
+person.renderView = ({id}) => <Person person={getPerson(id)} />;
 
 stateNavigator.start();
 
