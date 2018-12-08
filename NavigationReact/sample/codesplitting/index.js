@@ -25,7 +25,7 @@ ReactDOM.render(
     <NavigationHandler stateNavigator={stateNavigator}>
         <Suspense fallback={<div>Loading...</div>}>
             <NavigationContext.Consumer>
-                {({ state, data }) => state && state.renderView(data)}
+                {({ state, data }) => state.renderView(data)}
             </NavigationContext.Consumer>
         </Suspense>
     </NavigationHandler>,
