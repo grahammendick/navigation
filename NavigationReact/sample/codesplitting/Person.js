@@ -1,15 +1,7 @@
-import { getPerson } from './Data';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { NavigationBackLink } from 'navigation-react';
 
-function registerView(stateNavigator) {
-    stateNavigator.states.person.renderView = ({id}) => (
-        <Details person={getPerson(id)} />
-    );
-}
-
-var Details = ({ person }) => (
+export default ({ person }) => (
     <div>
         <NavigationBackLink distance={1}>
             Person Search
@@ -25,5 +17,3 @@ var Details = ({ person }) => (
         </div>
     </div>
 );
-
-export { registerView };
