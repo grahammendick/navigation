@@ -117,8 +117,8 @@ var testTasks = tests.reduce((tasks, test) => {
     return tasks;
 }, []);
 var packageDeps = gulp.parallel(
-    itemTasks.packageTasks.find(task => task.displayName === 'packageNavigation'),
-    itemTasks.packageTasks.find(task => task.displayName === 'packageNavigationReact')
+    itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigation'),
+    itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigationReact')
 );
 exports.build = gulp.parallel(...itemTasks.buildTasks);
 exports.package = gulp.parallel(native, ...itemTasks.packageTasks);
