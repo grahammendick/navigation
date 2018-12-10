@@ -83,20 +83,15 @@ var itemTasks = items.reduce((tasks, item) => {
     var jsPackageTo = './build/npm/' + packageName + '/' + packageName.replace(/-/g, '.') + '.js';
     item.name = upperName.replace(/-/g, ' ');
     var { globals = {}, format = 'cjs' } = item;
-    //gulp.task('Build' + name, () => buildTask(name, tsFrom, jsTo, globals, item));
-    //gulp.task('Package' + name, ['Native'], () => rollupTask(name, tsFrom, jsPackageTo, globals, format));
     tasks.buildTasks.push(
         nameFunc(() => buildTask(name, tsFrom, jsTo, globals, item), 'build' + name));
     tasks.packageTasks.push(
         nameFunc(() => rollupTask(name, tsFrom, jsPackageTo, globals, format), 'package' + name)
     );
-    //tasks.packageTasks.push(() => rollupTask(name, tsFrom, jsPackageTo, globals, format));
     return tasks;
 }, { buildTasks: [], packageTasks: [] });
 exports.build = gulp.parallel(...itemTasks.buildTasks);
 exports.package = gulp.parallel(native, ...itemTasks.packageTasks);
-////gulp.task('build', itemTasks.buildTasks);
-//gulp.task('package', itemTasks.packageTasks);
 
 var tests = [
     { name: 'NavigationRouting', to: 'navigationRouting.test.js' },
