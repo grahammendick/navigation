@@ -90,8 +90,6 @@ var itemTasks = items.reduce((tasks, item) => {
     );
     return tasks;
 }, { buildTasks: [], packageTasks: [] });
-exports.build = gulp.parallel(...itemTasks.buildTasks);
-exports.package = gulp.parallel(native, ...itemTasks.packageTasks);
 
 var tests = [
     { name: 'NavigationRouting', to: 'navigationRouting.test.js' },
@@ -122,5 +120,7 @@ var packageDeps = gulp.parallel(
     itemTasks.packageTasks.find(task => task.displayName === 'packageNavigation'),
     itemTasks.packageTasks.find(task => task.displayName === 'packageNavigationReact')
 );
+exports.build = gulp.parallel(...itemTasks.buildTasks);
+exports.package = gulp.parallel(native, ...itemTasks.packageTasks);
 exports.test = gulp.series(packageDeps, gulp.parallel(...testTasks));
 
