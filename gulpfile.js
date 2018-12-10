@@ -64,12 +64,12 @@ function buildTask(name, input, file, globals, details) {
                 .pipe(gulp.dest('.'))
         ));
 }
-gulp.task('Native', () => {
+var native = () => {
     var nativeFolders = ['android', 'ios']
         .map(folder => `./NavigationReactNative/src/${folder}/**/*`);
     return gulp.src(nativeFolders, {base: './NavigationReactNative/src'})
         .pipe(gulp.dest('./build/npm/navigation-react-native'));
-});
+};
 var itemTasks = items.reduce((tasks, item) => {
     var packageName = item.name;
     var upperName = packageName.replace(/\b./g, (val) => val.toUpperCase());
@@ -79,14 +79,21 @@ var itemTasks = items.reduce((tasks, item) => {
     var jsPackageTo = './build/npm/' + packageName + '/' + packageName.replace(/-/g, '.') + '.js';
     item.name = upperName.replace(/-/g, ' ');
     var { globals = {}, format = 'cjs' } = item;
-    gulp.task('Build' + name, () => buildTask(name, tsFrom, jsTo, globals, item));
-    gulp.task('Package' + name, ['Native'], () => rollupTask(name, tsFrom, jsPackageTo, globals, format));
-    tasks.buildTasks.push('Build' + name);
-    tasks.packageTasks.push('Package' + name);
+    //gulp.task('Build' + name, () => buildTask(name, tsFrom, jsTo, globals, item));
+    //gulp.task('Package' + name, ['Native'], () => rollupTask(name, tsFrom, jsPackageTo, globals, format));
+    var task = () => buildTask(name, tsFrom, jsTo, globals, item);
+    task.displayName = 'Build' + name;
+    tasks.buildTasks.push(task);
+    task = () => rollupTask(name, tsFrom, jsPackageTo, globals, format);
+    task.displayName = 'Package' + name;
+    tasks.packageTasks.push(task);
+    //tasks.packageTasks.push(() => rollupTask(name, tsFrom, jsPackageTo, globals, format));
     return tasks;
 }, { buildTasks: [], packageTasks: [] });
-gulp.task('build', itemTasks.buildTasks);
-gulp.task('package', itemTasks.packageTasks);
+exports.build = gulp.parallel(...itemTasks.buildTasks);
+exports.package = gulp.parallel(native, ...itemTasks.packageTasks);
+////gulp.task('build', itemTasks.buildTasks);
+//gulp.task('package', itemTasks.packageTasks);
 
 var tests = [
     { name: 'NavigationRouting', to: 'navigationRouting.test.js' },
@@ -111,9 +118,9 @@ var testTasks = tests.reduce((tasks, test) => {
     var file = folder + test.name + 'Test.' + (test.ext || 'ts');
     var to = './build/dist/' + test.to;
     var packageDeps = ['PackageNavigation', 'PackageNavigationReact'];
-    gulp.task('Test' + test.name, packageDeps, () => testTask(test.name, file, to));
+    //gulp.task('Test' + test.name, packageDeps, () => testTask(test.name, file, to));
     tasks.push('Test' + test.name);
     return tasks;
 }, []);
-gulp.task('test', testTasks);
+//gulp.task('test', testTasks);
 
