@@ -70,6 +70,10 @@ var native = () => {
     return gulp.src(nativeFolders, {base: './NavigationReactNative/src'})
         .pipe(gulp.dest('./build/npm/navigation-react-native'));
 };
+var nameFunc = (func, name) => {
+    func.displayName = name;
+    return func;
+};
 var itemTasks = items.reduce((tasks, item) => {
     var packageName = item.name;
     var upperName = packageName.replace(/\b./g, (val) => val.toUpperCase());
@@ -81,12 +85,11 @@ var itemTasks = items.reduce((tasks, item) => {
     var { globals = {}, format = 'cjs' } = item;
     //gulp.task('Build' + name, () => buildTask(name, tsFrom, jsTo, globals, item));
     //gulp.task('Package' + name, ['Native'], () => rollupTask(name, tsFrom, jsPackageTo, globals, format));
-    var task = () => buildTask(name, tsFrom, jsTo, globals, item);
-    task.displayName = 'build' + name;
-    tasks.buildTasks.push(task);
-    task = () => rollupTask(name, tsFrom, jsPackageTo, globals, format);
-    task.displayName = 'package' + name;
-    tasks.packageTasks.push(task);
+    tasks.buildTasks.push(
+        nameFunc(() => buildTask(name, tsFrom, jsTo, globals, item), 'build' + name));
+    tasks.packageTasks.push(
+        nameFunc(() => rollupTask(name, tsFrom, jsPackageTo, globals, format), 'package' + name)
+    );
     //tasks.packageTasks.push(() => rollupTask(name, tsFrom, jsPackageTo, globals, format));
     return tasks;
 }, { buildTasks: [], packageTasks: [] });
@@ -117,9 +120,7 @@ var testTasks = tests.reduce((tasks, test) => {
     var folder = './Navigation' + (test.folder || '') + '/test/';
     var file = folder + test.name + 'Test.' + (test.ext || 'ts');
     var to = './build/dist/' + test.to;
-    var task = () => testTask(test.name, file, to);
-    task.displayName = 'test' + test.name;
-    tasks.push(task);
+    tasks.push(nameFunc(() => testTask(test.name, file, to), 'test' + test.name));
     return tasks;
 }, []);
 var packageDeps = gulp.parallel(
