@@ -119,8 +119,15 @@ var testTasks = tests.reduce((tasks, test) => {
     var to = './build/dist/' + test.to;
     var packageDeps = ['PackageNavigation', 'PackageNavigationReact'];
     //gulp.task('Test' + test.name, packageDeps, () => testTask(test.name, file, to));
-    tasks.push('Test' + test.name);
+    var task = () => testTask(test.name, file, to);
+    task.displayName = 'test' + test.name;
+    tasks.push(task);
     return tasks;
 }, []);
+var testPackages = gulp.parallel(
+    itemTasks.packageTasks.find(task => task.displayName === 'packageNavigation'),
+    itemTasks.packageTasks.find(task => task.displayName === 'packageNavigationReact')
+);
+exports.test = gulp.series(testPackages, gulp.parallel(...testTasks));
 //gulp.task('test', testTasks);
 
