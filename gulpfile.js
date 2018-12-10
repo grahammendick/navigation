@@ -82,10 +82,10 @@ var itemTasks = items.reduce((tasks, item) => {
     //gulp.task('Build' + name, () => buildTask(name, tsFrom, jsTo, globals, item));
     //gulp.task('Package' + name, ['Native'], () => rollupTask(name, tsFrom, jsPackageTo, globals, format));
     var task = () => buildTask(name, tsFrom, jsTo, globals, item);
-    task.displayName = 'Build' + name;
+    task.displayName = 'build' + name;
     tasks.buildTasks.push(task);
     task = () => rollupTask(name, tsFrom, jsPackageTo, globals, format);
-    task.displayName = 'Package' + name;
+    task.displayName = 'package' + name;
     tasks.packageTasks.push(task);
     //tasks.packageTasks.push(() => rollupTask(name, tsFrom, jsPackageTo, globals, format));
     return tasks;
