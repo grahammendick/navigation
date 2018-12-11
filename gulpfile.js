@@ -64,7 +64,7 @@ function buildTask(name, input, file, globals, details) {
                 .pipe(dest('.'))
         ));
 }
-var native = () => {
+var packageNative = () => {
     var nativeFolders = ['android', 'ios']
         .map(folder => `./NavigationReactNative/src/${folder}/**/*`);
     return src(nativeFolders, {base: './NavigationReactNative/src'})
@@ -121,6 +121,6 @@ var packageDeps = parallel(
     itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigationReact')
 );
 exports.build = parallel(...itemTasks.buildTasks);
-exports.package = parallel(native, ...itemTasks.packageTasks);
+exports.package = parallel(packageNative, ...itemTasks.packageTasks);
 exports.test = series(packageDeps, parallel(...testTasks));
 
