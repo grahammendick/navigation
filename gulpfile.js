@@ -1,6 +1,6 @@
 ﻿'use strict'
 var cleanup = require('rollup-plugin-cleanup');
-var gulp = require('gulp');
+var { src, dest, series, parallel } = require('gulp');
 var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
 var nodeResolve = require('rollup-plugin-node-resolve');
@@ -55,20 +55,20 @@ function buildTask(name, input, file, globals, details) {
 `;
     return rollupTask(name, input, file, globals, 'iife')
         .then(() => (
-            gulp.src(file)
+            src(file)
                 .pipe(insert.prepend(info))
-                .pipe(gulp.dest('./build/dist'))
+                .pipe(dest('./build/dist'))
                 .pipe(rename(file.replace(/js$/, 'min.js')))
                 .pipe(uglify({ mangle: { reserved: details.reserved } }))
                 .pipe(insert.prepend(info))
-                .pipe(gulp.dest('.'))
+                .pipe(dest('.'))
         ));
 }
 var native = () => {
     var nativeFolders = ['android', 'ios']
         .map(folder => `./NavigationReactNative/src/${folder}/**/*`);
-    return gulp.src(nativeFolders, {base: './NavigationReactNative/src'})
-        .pipe(gulp.dest('./build/npm/navigation-react-native'));
+    return src(nativeFolders, {base: './NavigationReactNative/src'})
+        .pipe(dest('./build/npm/navigation-react-native'));
 };
 var nameFunc = (func, name) => {
     func.displayName = name;
@@ -107,7 +107,7 @@ function testTask(name, input, file) {
         'jsdom', 'tslib', 'navigation', 'navigation-react'
     ];
     return rollupTask(name, input, file, globals, 'cjs')
-        .then(() => gulp.src(file).pipe(mocha({ reporter: 'progress' })));
+        .then(() => src(file).pipe(mocha({ reporter: 'progress' })));
 }
 var testTasks = tests.reduce((tasks, test) => {
     var folder = './Navigation' + (test.folder || '') + '/test/';
@@ -116,11 +116,11 @@ var testTasks = tests.reduce((tasks, test) => {
     tasks.push(nameFunc(() => testTask(test.name, file, to), 'test' + test.name));
     return tasks;
 }, []);
-var packageDeps = gulp.parallel(
+var packageDeps = parallel(
     itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigation'),
     itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigationReact')
 );
-exports.build = gulp.parallel(...itemTasks.buildTasks);
-exports.package = gulp.parallel(native, ...itemTasks.packageTasks);
-exports.test = gulp.series(packageDeps, gulp.parallel(...testTasks));
+exports.build = parallel(...itemTasks.buildTasks);
+exports.package = parallel(native, ...itemTasks.packageTasks);
+exports.test = series(packageDeps, parallel(...testTasks));
 
