@@ -107,7 +107,11 @@ function testTask(name, input, file) {
         'jsdom', 'tslib', 'navigation', 'navigation-react'
     ];
     return rollupTask(name, input, file, globals, 'cjs')
-        .then(() => src(file).pipe(mocha({ reporter: 'progress' })));
+        .then(() => 
+            src(file)
+                .pipe(mocha({ reporter: 'progress' }))
+                .on('error', err => console.log(err.message))
+        );
 }
 var testTasks = tests.reduce((tasks, test) => {
     var folder = './Navigation' + (test.folder || '') + '/test/';
