@@ -1,6 +1,6 @@
 ﻿'use strict'
 var cleanup = require('rollup-plugin-cleanup');
-var gulp = require('gulp');
+var { src, dest, series, parallel } = require('gulp');
 var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
 var nodeResolve = require('rollup-plugin-node-resolve');
@@ -55,21 +55,25 @@ function buildTask(name, input, file, globals, details) {
 `;
     return rollupTask(name, input, file, globals, 'iife')
         .then(() => (
-            gulp.src(file)
+            src(file)
                 .pipe(insert.prepend(info))
-                .pipe(gulp.dest('./build/dist'))
+                .pipe(dest('./build/dist'))
                 .pipe(rename(file.replace(/js$/, 'min.js')))
                 .pipe(uglify({ mangle: { reserved: details.reserved } }))
                 .pipe(insert.prepend(info))
-                .pipe(gulp.dest('.'))
+                .pipe(dest('.'))
         ));
 }
-gulp.task('Native', () => {
+var packageNative = () => {
     var nativeFolders = ['android', 'ios']
         .map(folder => `./NavigationReactNative/src/${folder}/**/*`);
-    return gulp.src(nativeFolders, {base: './NavigationReactNative/src'})
-        .pipe(gulp.dest('./build/npm/navigation-react-native'));
-});
+    return src(nativeFolders, {base: './NavigationReactNative/src'})
+        .pipe(dest('./build/npm/navigation-react-native'));
+};
+var nameFunc = (func, name) => {
+    func.displayName = name;
+    return func;
+};
 var itemTasks = items.reduce((tasks, item) => {
     var packageName = item.name;
     var upperName = packageName.replace(/\b./g, (val) => val.toUpperCase());
@@ -79,14 +83,13 @@ var itemTasks = items.reduce((tasks, item) => {
     var jsPackageTo = './build/npm/' + packageName + '/' + packageName.replace(/-/g, '.') + '.js';
     item.name = upperName.replace(/-/g, ' ');
     var { globals = {}, format = 'cjs' } = item;
-    gulp.task('Build' + name, () => buildTask(name, tsFrom, jsTo, globals, item));
-    gulp.task('Package' + name, ['Native'], () => rollupTask(name, tsFrom, jsPackageTo, globals, format));
-    tasks.buildTasks.push('Build' + name);
-    tasks.packageTasks.push('Package' + name);
+    tasks.buildTasks.push(
+        nameFunc(() => buildTask(name, tsFrom, jsTo, globals, item), 'build' + name));
+    tasks.packageTasks.push(
+        nameFunc(() => rollupTask(name, tsFrom, jsPackageTo, globals, format), 'package' + name)
+    );
     return tasks;
 }, { buildTasks: [], packageTasks: [] });
-gulp.task('build', itemTasks.buildTasks);
-gulp.task('package', itemTasks.packageTasks);
 
 var tests = [
     { name: 'NavigationRouting', to: 'navigationRouting.test.js' },
@@ -104,16 +107,24 @@ function testTask(name, input, file) {
         'jsdom', 'tslib', 'navigation', 'navigation-react'
     ];
     return rollupTask(name, input, file, globals, 'cjs')
-        .then(() => gulp.src(file).pipe(mocha({ reporter: 'progress' })));
+        .then(() => 
+            src(file)
+                .pipe(mocha({ reporter: 'progress' }))
+                .on('error', err => console.log(err.message))
+        );
 }
 var testTasks = tests.reduce((tasks, test) => {
     var folder = './Navigation' + (test.folder || '') + '/test/';
     var file = folder + test.name + 'Test.' + (test.ext || 'ts');
     var to = './build/dist/' + test.to;
-    var packageDeps = ['PackageNavigation', 'PackageNavigationReact'];
-    gulp.task('Test' + test.name, packageDeps, () => testTask(test.name, file, to));
-    tasks.push('Test' + test.name);
+    tasks.push(nameFunc(() => testTask(test.name, file, to), 'test' + test.name));
     return tasks;
 }, []);
-gulp.task('test', testTasks);
+var packageDeps = parallel(
+    itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigation'),
+    itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigationReact')
+);
+exports.build = parallel(...itemTasks.buildTasks);
+exports.package = parallel(packageNative, ...itemTasks.packageTasks);
+exports.test = series(packageDeps, parallel(...testTasks));
 
