@@ -16,7 +16,7 @@ public class MainActivity extends ReactActivity {
         if (uri != null) {
             ReactContext currentContext = getReactInstanceManager().getCurrentReactContext();
             DeviceEventManagerModule deviceEventManagerModule =
-                    currentContext.getNativeModule(DeviceEventManagerModule.class);
+                currentContext.getNativeModule(DeviceEventManagerModule.class);
             deviceEventManagerModule.emitNewIntentReceived(uri);
         }
     }
