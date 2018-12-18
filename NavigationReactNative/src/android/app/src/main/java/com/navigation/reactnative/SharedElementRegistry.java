@@ -13,7 +13,7 @@ public class SharedElementRegistry {
         sharedElements = new HashMap<Integer, HashSet<WeakReference<View>>>();
     }
 
-    static void registerSharedElement(int scene, View view) {
+    public static void registerSharedElement(int scene, View view) {
         if (!sharedElements.containsKey(scene) || !sharedElements.get(scene).contains(view)) {
             synchronized (SharedElementRegistry.class) {
                 if (!sharedElements.containsKey(scene)) {
@@ -22,5 +22,9 @@ public class SharedElementRegistry {
                 sharedElements.get(scene).add(new WeakReference(view));
             }
         }
+    }
+
+    public static HashSet<WeakReference<View>> getSharedElements(int scene) {
+        return sharedElements.get(scene);
     }
 }
