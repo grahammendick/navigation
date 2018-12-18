@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.os.Bundle;
 import android.util.Pair;
 
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -81,11 +82,11 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             final int enter = this.getAnimationResourceId(enterAnim, this.activityOpenEnterAnimationId);
             final int exit = this.getAnimationResourceId(exitAnim, this.activityOpenExitAnimationId);
             Pair[] sharedElements = SharedElementRegistry.getSharedElements(0);
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(currentActivity, sharedElements);
+            final Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(currentActivity, sharedElements).toBundle();
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    currentActivity.startActivities(intents, options.toBundle());
+                    currentActivity.startActivities(intents, bundle);
                     currentActivity.overridePendingTransition(enter, exit);
                 }
             });
