@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import android.annotation.SuppressLint;
+import android.util.Pair;
 import android.view.View;
 
 import java.lang.ref.WeakReference;
@@ -24,7 +26,15 @@ public class SharedElementRegistry {
         }
     }
 
-    public static HashSet<WeakReference<View>> getSharedElements(int scene) {
-        return sharedElements.get(scene);
+    @SuppressLint("NewApi")
+    public static Pair[] getSharedElements(int scene) {
+        Pair[] sharedEls = new Pair[sharedElements.get(scene).size()];
+        int size = 0;
+        for(WeakReference<View> sharedElement : sharedElements.get(scene)) {
+            Pair sharedEl = Pair.create(sharedElement.get(), sharedElement.get().getTransitionName());
+            sharedEls[size] = sharedEl;
+            size++;
+        }
+        return sharedEls;
     }
 }
