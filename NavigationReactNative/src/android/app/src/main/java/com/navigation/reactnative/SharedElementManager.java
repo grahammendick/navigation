@@ -25,5 +25,6 @@ public class SharedElementManager extends ViewGroupManager<ReactViewGroup> {
     @ReactProp(name = "name")
     public void setName(ReactViewGroup view, @Nullable String name) {
         view.setTransitionName(name);
+        SharedElementRegistry.registerSharedElement(0, view);
     }
 }
