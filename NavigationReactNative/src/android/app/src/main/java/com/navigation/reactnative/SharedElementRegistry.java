@@ -28,13 +28,12 @@ public class SharedElementRegistry {
 
     @SuppressLint("NewApi")
     public static Pair[] getSharedElements(int scene) {
-        Pair[] sharedEls = new Pair[sharedElements.get(scene).size()];
+        Pair[] sharedElementPairs = new Pair[sharedElements.get(scene).size()];
         int size = 0;
         for(WeakReference<View> sharedElement : sharedElements.get(scene)) {
-            Pair sharedEl = Pair.create(sharedElement.get(), sharedElement.get().getTransitionName());
-            sharedEls[size] = sharedEl;
+            sharedElementPairs[size] = Pair.create(sharedElement.get(), sharedElement.get().getTransitionName());
             size++;
         }
-        return sharedEls;
+        return sharedElementPairs;
     }
 }
