@@ -1,8 +1,11 @@
 package com.navigation.reactnative;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.util.Pair;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -41,6 +44,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         return "NavigationModule";
     }
 
+    @SuppressLint("NewApi")
     @ReactMethod
     public void render(int crumb, int tab, ReadableArray titles, String appKey, String enterAnim, String exitAnim) {
         final Activity currentActivity = getCurrentActivity();
@@ -76,10 +80,12 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             }
             final int enter = this.getAnimationResourceId(enterAnim, this.activityOpenEnterAnimationId);
             final int exit = this.getAnimationResourceId(exitAnim, this.activityOpenExitAnimationId);
+            Pair[] sharedElements = SharedElementRegistry.getSharedElements(0);
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(currentActivity, sharedElements);
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    currentActivity.startActivities(intents);
+                    currentActivity.startActivities(intents, options.toBundle());
                     currentActivity.overridePendingTransition(enter, exit);
                 }
             });
