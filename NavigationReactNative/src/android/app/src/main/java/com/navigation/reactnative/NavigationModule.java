@@ -62,10 +62,11 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             }
             final int enter = this.getAnimationResourceId(enterAnim, this.activityCloseEnterAnimationId);
             final int exit = this.getAnimationResourceId(exitAnim, this.activityCloseExitAnimationId);
+            final boolean backOne = currentCrumb - crumb == 1;
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (currentCrumb - crumb == 1)
+                    if (backOne)
                         currentActivity.finishAfterTransition();
                     else
                         currentActivity.navigateUpTo(intent);
@@ -86,10 +87,11 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             }
             final int enter = this.getAnimationResourceId(enterAnim, this.activityOpenEnterAnimationId);
             final int exit = this.getAnimationResourceId(exitAnim, this.activityOpenExitAnimationId);
+            final boolean forwardOne = crumb - currentCrumb == 1;
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements() : null;
+                    Pair[] sharedElements = forwardOne ? getSharedElements() : null;
                     if (sharedElements != null) {
                         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(currentActivity, sharedElements).toBundle();
                         currentActivity.startActivity(intents[0], bundle);
@@ -111,7 +113,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @SuppressLint("NewApi")
     private Pair[] getSharedElements() {
-        View rootView = getCurrentActivity().findViewById(android.R.id.content);
+        View rootView = getCurrentActivity().findViewById(android.R.id.content).getRootView();
         HashSet<View> sharedElements = (HashSet<View>) rootView.getTag(R.id.sharedElements);
         if (sharedElements == null)
             return null;
