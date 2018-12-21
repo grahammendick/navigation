@@ -20,7 +20,7 @@ public class SharedElementManager extends ViewGroupManager<FrameLayout> {
 
     @Override
     protected FrameLayout createViewInstance(ThemedReactContext reactContext) {
-        FrameLayout view = new FrameLayout(reactContext);
+        final FrameLayout view = new FrameLayout(reactContext);
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
