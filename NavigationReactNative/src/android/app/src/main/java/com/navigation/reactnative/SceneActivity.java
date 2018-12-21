@@ -28,7 +28,7 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         mReactRootView.startReactApplication(getReactNativeHost().getReactInstanceManager(), appKey, props);
         setContentView(mReactRootView);
         this.postponeEnterTransition();
-        Activity activity = this;
+        final Activity activity = this;
         mReactRootView.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
             @Override
             public void onChildViewAdded(View view, View view1) {
