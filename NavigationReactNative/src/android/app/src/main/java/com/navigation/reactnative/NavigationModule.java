@@ -1,8 +1,13 @@
 package com.navigation.reactnative;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.os.Bundle;
+import android.util.Pair;
+import android.view.View;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -10,6 +15,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class NavigationModule extends ReactContextBaseJavaModule {
     private HashMap<Integer, Intent> mIntents = new HashMap<>();
@@ -41,6 +47,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         return "NavigationModule";
     }
 
+    @SuppressLint("NewApi")
     @ReactMethod
     public void render(int crumb, int tab, ReadableArray titles, String appKey, String enterAnim, String exitAnim) {
         final Activity currentActivity = getCurrentActivity();
@@ -79,11 +86,25 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    currentActivity.startActivities(intents);
+                    Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(currentActivity, getSharedElements()).toBundle();
+                    currentActivity.startActivities(intents, bundle);
                     currentActivity.overridePendingTransition(enter, exit);
                 }
             });
         }
+    }
+
+    @SuppressLint("NewApi")
+    private Pair[] getSharedElements() {
+        View rootView = getCurrentActivity().findViewById(android.R.id.content);
+        HashSet<View> sharedElements = (HashSet<View>) rootView.getTag(R.id.sharedElements);
+        Pair[] sharedElementPairs = new Pair[sharedElements.size()];
+        int size = 0;
+        for(View sharedElement : sharedElements) {
+            sharedElementPairs[size] = Pair.create(sharedElement, sharedElement.getTransitionName());
+            size++;
+        }
+        return sharedElementPairs;
     }
 
     private int getAnimationResourceId(String animationName, int defaultId) {
