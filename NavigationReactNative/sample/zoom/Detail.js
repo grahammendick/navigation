@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, Platform, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {RightBarIOS, BarButtonIOS} from 'navigation-react-native';
+import {RightBarIOS, BarButtonIOS, SharedElementAndroid} from 'navigation-react-native';
 
 export default ({color}) => (
   <NavigationContext.Consumer>
@@ -21,11 +21,9 @@ export default ({color}) => (
             }}>
             <Text style={styles.back}>X</Text>
           </TouchableHighlight>}
-          <View
-            style={[
-              {backgroundColor: color},
-              styles.color
-            ]} />
+          <SharedElementAndroid name={color} style={styles.color}>
+            <View style={{backgroundColor: color}} />
+          </SharedElementAndroid>
           <Text style={styles.text}>{color}</Text>
       </ScrollView>
     )}
