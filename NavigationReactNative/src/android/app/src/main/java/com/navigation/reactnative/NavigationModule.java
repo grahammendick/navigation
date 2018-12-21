@@ -89,8 +89,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Pair[] sharedElements = getSharedElements();
-                    if (crumb - currentCrumb == 1 && sharedElements != null) {
+                    Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements() : null;
+                    if (sharedElements != null) {
                         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(currentActivity, sharedElements).toBundle();
                         currentActivity.startActivity(intents[0], bundle);
                     } else {
