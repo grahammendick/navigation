@@ -94,6 +94,13 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         }
     }
 
+    private int getAnimationResourceId(String animationName, int defaultId) {
+        if (animationName == null)
+            return defaultId;
+        String packageName = getReactApplicationContext().getPackageName();
+        return getReactApplicationContext().getResources().getIdentifier(animationName, "anim", packageName);
+    }
+
     @SuppressLint("NewApi")
     private Pair[] getSharedElements() {
         View rootView = getCurrentActivity().findViewById(android.R.id.content);
@@ -105,13 +112,6 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             size++;
         }
         return sharedElementPairs;
-    }
-
-    private int getAnimationResourceId(String animationName, int defaultId) {
-        if (animationName == null)
-            return defaultId;
-        String packageName = getReactApplicationContext().getPackageName();
-        return getReactApplicationContext().getResources().getIdentifier(animationName, "anim", packageName);
     }
 }
 
