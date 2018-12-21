@@ -35,4 +35,13 @@ public class SharedElementManager extends ViewGroupManager<FrameLayout> {
             sharedElements.add(view);
         view.setTransitionName(name);
     }
+
+    @Override
+    public void onDropViewInstance(FrameLayout view) {
+        View rootView = view.getRootView();
+        HashSet<View> sharedElements = (HashSet<View>) rootView.getTag(R.id.sharedElements);
+        if (sharedElements != null && sharedElements.contains(view))
+            sharedElements.remove(view);
+        super.onDropViewInstance(view);
+    }
 }
