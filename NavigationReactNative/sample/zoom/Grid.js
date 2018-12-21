@@ -14,7 +14,10 @@ export default () => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View style={styles.colors}>
           {colors.map(color => (
-            <SharedElementAndroid name={color} key={color}>
+            <SharedElementAndroid
+              key={color}
+              name={color}
+              style={styles.shared}>
               <TouchableHighlight
                 style={[
                   {backgroundColor: color},
@@ -41,12 +44,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 10,
   },
+  shared: {
+    marginLeft:10,
+    marginRight: 10,
+    marginBottom: 20,
+  },
   color: {
     width: 100,
     height: 150,
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 20,
     justifyContent: 'center',
   },
   text: {
