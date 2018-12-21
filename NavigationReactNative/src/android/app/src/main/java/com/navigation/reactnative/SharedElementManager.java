@@ -25,6 +25,5 @@ public class SharedElementManager extends ViewGroupManager<FrameLayout> {
     @ReactProp(name = "name")
     public void setName(FrameLayout view, @Nullable String name) {
         view.setTransitionName(name);
-        SharedElementRegistry.registerSharedElement(0, view);
     }
 }
