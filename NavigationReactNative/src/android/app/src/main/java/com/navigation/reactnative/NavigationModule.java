@@ -65,7 +65,10 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    currentActivity.navigateUpTo(intent);
+                    if (currentCrumb - crumb == 1)
+                        currentActivity.finishAfterTransition();
+                    else
+                        currentActivity.navigateUpTo(intent);
                     currentActivity.overridePendingTransition(enter, exit);
                 }
             });
