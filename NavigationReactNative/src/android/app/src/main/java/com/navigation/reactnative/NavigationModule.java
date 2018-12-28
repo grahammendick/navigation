@@ -50,7 +50,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @SuppressLint("NewApi")
     @ReactMethod
-    public void render(int crumb, int tab, ReadableArray titles, String appKey, final ReadableArray sharedElementNames, String enterAnim, String exitAnim) {
+    public void render(int crumb, int tab, ReadableArray titles, String appKey, ReadableArray sharedElementNames, String enterAnim, String exitAnim) {
         final Activity currentActivity = getCurrentActivity();
         if (mIntents.size() == 0) {
             mIntents.put(0, currentActivity.getIntent());
@@ -88,11 +88,10 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             }
             final int enter = this.getAnimationResourceId(enterAnim, this.activityOpenEnterAnimationId);
             final int exit = this.getAnimationResourceId(exitAnim, this.activityOpenExitAnimationId);
-            final boolean forwardOne = crumb - currentCrumb == 1;
+            final Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements(sharedElementNames) : null;
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Pair[] sharedElements = forwardOne ? getSharedElements(sharedElementNames) : null;
                     if (sharedElements != null && sharedElements.length != 0) {
                         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(currentActivity, sharedElements).toBundle();
                         currentActivity.startActivity(intents[0], bundle);
