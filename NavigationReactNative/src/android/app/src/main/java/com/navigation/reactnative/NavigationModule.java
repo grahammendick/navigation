@@ -50,7 +50,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @SuppressLint("NewApi")
     @ReactMethod
-    public void render(int crumb, int tab, ReadableArray titles, String appKey, ReadableArray sharedElementNames, String enterAnim, String exitAnim) {
+    public void render(int crumb, int tab, ReadableArray titles, String appKey, final ReadableArray sharedElementNames, String enterAnim, String exitAnim) {
         final Activity currentActivity = getCurrentActivity();
         if (mIntents.size() == 0) {
             mIntents.put(0, currentActivity.getIntent());
@@ -116,7 +116,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     private Pair[] getSharedElements(ReadableArray sharedElementNames) {
         View contentView = getCurrentActivity().findViewById(android.R.id.content);
         HashSet<View> sharedElements = SharedElementManager.getSharedElements(contentView);
-        if (sharedElements == null)
+        if (sharedElementNames == null || sharedElements == null)
             return null;
         HashMap<String, View> sharedElementMap = new HashMap<>();
         for(View sharedElement : sharedElements) {
@@ -126,7 +126,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         for(int i = 0; i < sharedElementNames.size(); i++) {
             String name = sharedElementNames.getString(i);
             if (sharedElementMap.containsKey(name))
-                sharedElementPairs.add(Pair.create(name, sharedElementMap.get(name)));
+                sharedElementPairs.add(Pair.create(sharedElementMap.get(name), name));
         }
         return sharedElementPairs.toArray(new Pair[sharedElementPairs.size()]);
     }
