@@ -128,7 +128,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             if (sharedElementMap.containsKey(name))
                 sharedElementPairs.add(Pair.create(name, sharedElementMap.get(sharedElementNames.getString(i)));
         }
-        return sharedElementPairs.toArray(new Pair[0]);
+        return sharedElementPairs.toArray(new Pair[sharedElementPairs.size()]);
     }
 }
 
