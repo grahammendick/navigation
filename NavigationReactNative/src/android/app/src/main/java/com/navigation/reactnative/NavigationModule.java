@@ -93,6 +93,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 @Override
                 public void run() {
                     if (sharedElements != null && sharedElements.length != 0) {
+                        @SuppressWarnings("unchecked")
                         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(currentActivity, sharedElements).toBundle();
                         currentActivity.startActivity(intents[0], bundle);
                     } else {
@@ -114,7 +115,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     @SuppressLint("NewApi")
     private Pair[] getSharedElements(ReadableArray sharedElementNames) {
         View contentView = getCurrentActivity().findViewById(android.R.id.content);
-        HashSet<View> sharedElements = SharedElementManager.getSharedElements(contentView);
+        HashSet<View> sharedElements = SharedElementManager.getSharedElements(contentView.getRootView());
         if (sharedElementNames == null || sharedElements == null)
             return null;
         HashMap<String, View> sharedElementMap = new HashMap<>();
