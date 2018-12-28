@@ -14,6 +14,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -92,7 +93,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 @Override
                 public void run() {
                     Pair[] sharedElements = forwardOne ? getSharedElements(sharedElementNames) : null;
-                    if (sharedElements != null) {
+                    if (sharedElements != null && sharedElements.length != 0) {
                         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(currentActivity, sharedElements).toBundle();
                         currentActivity.startActivity(intents[0], bundle);
                     } else {
@@ -117,13 +118,17 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         HashSet<View> sharedElements = SharedElementManager.getSharedElements(contentView);
         if (sharedElements == null)
             return null;
-        Pair[] sharedElementPairs = new Pair[sharedElements.size()];
-        int size = 0;
+        HashMap<String, View> sharedElementMap = new HashMap<>();
         for(View sharedElement : sharedElements) {
-            sharedElementPairs[size] = Pair.create(sharedElement, sharedElement.getTransitionName());
-            size++;
+            sharedElementMap.put(sharedElement.getTransitionName(), sharedElement);
         }
-        return sharedElementPairs;
+        ArrayList<Pair> sharedElementPairs = new ArrayList<>();
+        for(int i = 0; i < sharedElementNames.size(); i++) {
+            String name = sharedElementNames.getString(i);
+            if (sharedElementMap.containsKey(name))
+                sharedElementPairs.add(Pair.create(name, sharedElementMap.get(sharedElementNames.getString(i)));
+        }
+        return sharedElementPairs.toArray(new Pair[0]);
     }
 }
 
