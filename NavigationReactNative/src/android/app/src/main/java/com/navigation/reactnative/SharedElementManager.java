@@ -46,8 +46,7 @@ public class SharedElementManager extends ViewGroupManager<FrameLayout> {
 
     @Override
     public void onDropViewInstance(FrameLayout view) {
-        View rootView = view.getRootView();
-        HashSet<View> sharedElements = getSharedElements(rootView);
+        HashSet<View> sharedElements = getSharedElements(view.getRootView());
         if (sharedElements != null && sharedElements.contains(view))
             sharedElements.remove(view);
         super.onDropViewInstance(view);
