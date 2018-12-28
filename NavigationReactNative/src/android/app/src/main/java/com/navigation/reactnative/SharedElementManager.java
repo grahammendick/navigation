@@ -52,4 +52,9 @@ public class SharedElementManager extends ViewGroupManager<FrameLayout> {
             sharedElements.remove(view);
         super.onDropViewInstance(view);
     }
+
+    public static HashSet<View> getSharedElements(View view) {
+        View rootView = view.getRootView();
+        return (HashSet<View>) rootView.getTag(R.id.sharedElements);
+    }
 }

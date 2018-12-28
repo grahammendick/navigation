@@ -113,8 +113,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @SuppressLint("NewApi")
     private Pair[] getSharedElements(ReadableArray sharedElementNames) {
-        View rootView = getCurrentActivity().findViewById(android.R.id.content).getRootView();
-        HashSet<View> sharedElements = (HashSet<View>) rootView.getTag(R.id.sharedElements);
+        View contentView = getCurrentActivity().findViewById(android.R.id.content);
+        HashSet<View> sharedElements = SharedElementManager.getSharedElements(contentView);
         if (sharedElements == null)
             return null;
         Pair[] sharedElementPairs = new Pair[sharedElements.size()];
