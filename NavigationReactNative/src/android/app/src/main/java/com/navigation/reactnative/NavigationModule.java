@@ -49,7 +49,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @SuppressLint("NewApi")
     @ReactMethod
-    public void render(int crumb, int tab, ReadableArray titles, String appKey, String enterAnim, String exitAnim) {
+    public void render(int crumb, int tab, ReadableArray titles, String appKey, ReadableArray sharedElementNames, String enterAnim, String exitAnim) {
         final Activity currentActivity = getCurrentActivity();
         if (mIntents.size() == 0) {
             mIntents.put(0, currentActivity.getIntent());
@@ -91,7 +91,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Pair[] sharedElements = forwardOne ? getSharedElements() : null;
+                    Pair[] sharedElements = forwardOne ? getSharedElements(sharedElementNames) : null;
                     if (sharedElements != null) {
                         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(currentActivity, sharedElements).toBundle();
                         currentActivity.startActivity(intents[0], bundle);
@@ -112,7 +112,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
     @SuppressLint("NewApi")
-    private Pair[] getSharedElements() {
+    private Pair[] getSharedElements(ReadableArray sharedElementNames) {
         View rootView = getCurrentActivity().findViewById(android.R.id.content).getRootView();
         HashSet<View> sharedElements = (HashSet<View>) rootView.getTag(R.id.sharedElements);
         if (sharedElements == null)
