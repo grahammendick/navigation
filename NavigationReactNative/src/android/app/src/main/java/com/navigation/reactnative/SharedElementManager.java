@@ -35,6 +35,19 @@ public class SharedElementManager extends ViewGroupManager<FrameLayout> {
                 return true;
             }
         });
+        view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View view) {
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                view.removeOnAttachStateChangeListener(this);
+                HashSet<View> sharedElements = getSharedElements(view.getRootView());
+                if (sharedElements != null && sharedElements.contains(view))
+                    sharedElements.remove(view);
+            }
+        });
         return view;
     }
 
@@ -42,14 +55,6 @@ public class SharedElementManager extends ViewGroupManager<FrameLayout> {
     public void setName(FrameLayout view, String name) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             view.setTransitionName(name);
-    }
-
-    @Override
-    public void onDropViewInstance(FrameLayout view) {
-        HashSet<View> sharedElements = getSharedElements(view.getRootView());
-        if (sharedElements != null && sharedElements.contains(view))
-            sharedElements.remove(view);
-        super.onDropViewInstance(view);
     }
 
     @SuppressWarnings("unchecked")
