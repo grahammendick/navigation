@@ -1,7 +1,7 @@
 package com.navigation.reactnative;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,7 +17,6 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
     public static final String CRUMB = "Navigation.CRUMB";
     public static final String APP_KEY = "Navigation.APP_KEY";
 
-    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,13 +26,15 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         String appKey = getIntent().getStringExtra(APP_KEY);
         mReactRootView.startReactApplication(getReactNativeHost().getReactInstanceManager(), appKey, props);
         setContentView(mReactRootView);
-        this.postponeEnterTransition();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            this.postponeEnterTransition();
         final Activity activity = this;
         mReactRootView.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
             @Override
             public void onChildViewAdded(View view, View view1) {
                 mReactRootView.setOnHierarchyChangeListener(null);
-                activity.startPostponedEnterTransition();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    activity.startPostponedEnterTransition();
             }
 
             @Override

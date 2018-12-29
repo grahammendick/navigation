@@ -1,10 +1,10 @@
 package com.navigation.reactnative;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
@@ -48,7 +48,6 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         return "NavigationModule";
     }
 
-    @SuppressLint("NewApi")
     @ReactMethod
     public void render(int crumb, int tab, ReadableArray titles, String appKey, ReadableArray sharedElementNames, String enterAnim, String exitAnim) {
         final Activity currentActivity = getCurrentActivity();
@@ -67,7 +66,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (backOne)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && backOne)
                         currentActivity.finishAfterTransition();
                     else
                         currentActivity.navigateUpTo(intent);
@@ -92,7 +91,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (sharedElements != null && sharedElements.length != 0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null && sharedElements.length != 0) {
                         @SuppressWarnings("unchecked")
                         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(currentActivity, sharedElements).toBundle();
                         currentActivity.startActivity(intents[0], bundle);
@@ -112,11 +111,10 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         return getReactApplicationContext().getResources().getIdentifier(animationName, "anim", packageName);
     }
 
-    @SuppressLint("NewApi")
     private Pair[] getSharedElements(ReadableArray sharedElementNames) {
         View contentView = getCurrentActivity().findViewById(android.R.id.content);
         HashSet<View> sharedElements = SharedElementManager.getSharedElements(contentView.getRootView());
-        if (sharedElementNames == null || sharedElements == null)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || sharedElementNames == null || sharedElements == null)
             return null;
         HashMap<String, View> sharedElementMap = new HashMap<>();
         for(View sharedElement : sharedElements) {

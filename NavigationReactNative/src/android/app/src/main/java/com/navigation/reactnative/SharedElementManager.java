@@ -1,6 +1,6 @@
 package com.navigation.reactnative;
 
-import android.annotation.SuppressLint;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
@@ -38,10 +38,10 @@ public class SharedElementManager extends ViewGroupManager<FrameLayout> {
         return view;
     }
 
-    @SuppressLint("NewApi")
     @ReactProp(name = "name")
     public void setName(FrameLayout view, String name) {
-        view.setTransitionName(name);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            view.setTransitionName(name);
     }
 
     @Override
