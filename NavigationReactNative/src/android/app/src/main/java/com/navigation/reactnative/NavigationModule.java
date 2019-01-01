@@ -49,7 +49,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void render(int crumb, int tab, ReadableArray titles, String appKey, ReadableArray sharedElementNames, String enterAnim, String exitAnim) {
+    public void render(int crumb, int tab, ReadableArray titles, String appKey, ReadableArray sharedElementNames, ReadableArray oldSharedElementNames, String enterAnim, String exitAnim) {
         final Activity currentActivity = getCurrentActivity();
         if (mIntents.size() == 0) {
             mIntents.put(0, currentActivity.getIntent());
@@ -62,11 +62,11 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             }
             final int enter = this.getAnimationResourceId(enterAnim, this.activityCloseEnterAnimationId);
             final int exit = this.getAnimationResourceId(exitAnim, this.activityCloseExitAnimationId);
-            final boolean backOne = currentCrumb - crumb == 1;
+            final Pair[] oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementNames) : null;
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && backOne)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0)
                         currentActivity.finishAfterTransition();
                     else
                         currentActivity.navigateUpTo(intent);
