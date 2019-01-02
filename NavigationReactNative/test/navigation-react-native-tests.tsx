@@ -1,6 +1,6 @@
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { addNavigateHandlers, Scene, RightBarIOS, BarButtonIOS } from 'navigation-react-native';
+import { addNavigateHandlers, Scene, RightBarIOS, BarButtonIOS, SharedElementAndroid } from 'navigation-react-native';
 import * as React from 'react';
 import { View, Text, TouchableHighlight } from 'react-native';
 
@@ -18,7 +18,9 @@ var People = () => (
                         onPress={() => {
                             stateNavigator.navigate('person', {name});
                     }}>
-                        <Text>{name}</Text>
+                        <SharedElementAndroid name={name}>
+                            <Text>{name}</Text>
+                        </SharedElementAndroid>
                     </TouchableHighlight>
                 ))}
             </View>
@@ -35,7 +37,9 @@ var Person = ({ name }) => (
                         stateNavigator.navigateBack(1)
                     }} />
                 </RightBarIOS>
-                <Text>{name}</Text>
+                <SharedElementAndroid name={name}>
+                    <Text>{name}</Text>
+                </SharedElementAndroid>
             </View>
         )}
     </NavigationContext.Consumer>
