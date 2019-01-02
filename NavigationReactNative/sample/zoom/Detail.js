@@ -22,7 +22,7 @@ export default ({color}) => (
             <Text style={styles.back}>X</Text>
           </TouchableHighlight>}
           <SharedElementAndroid name={color} style={styles.color}>
-            <View style={{backgroundColor: color}} />
+            <View style={{backgroundColor: color, flex: 1}} />
           </SharedElementAndroid>
           <Text style={styles.text}>{color}</Text>
       </ScrollView>
