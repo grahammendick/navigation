@@ -19,7 +19,7 @@ RCT_EXPORT_MODULE();
     return dispatch_get_main_queue();
 }
 
-RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)titles appKey:(NSString *)appKey enterAnim:(NSString *)enterAnim exitAnim:(NSString *)exitAnim)
+RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)titles appKey:(NSString *)appKey sharedElementNames:(NSArray *)sharedElementNames oldSharedElementNames:(NSArray *)oldSharedElementNames enterAnim:(NSString *)enterAnim exitAnim:(NSString *)exitAnim)
 {
     UINavigationController *navigationController;
     UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
