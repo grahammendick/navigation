@@ -1,9 +1,13 @@
-//
-//  NVSharedElementManager.m
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 02/01/2019.
-//  Copyright © 2019 Graham Mendick. All rights reserved.
-//
+#import "NVSharedElementManager.h"
+#import "NVSharedElementView.h"
 
-#import <Foundation/Foundation.h>
+@implementation NVSharedElementManager
+
+RCT_EXPORT_MODULE()
+
+- (UIView *)view
+{
+    return [[NVSharedElementView alloc] init];
+}
+
+@end

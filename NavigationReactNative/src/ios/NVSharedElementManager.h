@@ -1,13 +1,4 @@
-//
-//  NVSharedElementManager.h
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 02/01/2019.
-//  Copyright © 2019 Graham Mendick. All rights reserved.
-//
+#import <React/RCTViewManager.h>
 
-#ifndef NVSharedElementManager_h
-#define NVSharedElementManager_h
-
-
-#endif /* NVSharedElementManager_h */
+@interface NVSharedElementManager : RCTViewManager
+@end
