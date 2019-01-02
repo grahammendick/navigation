@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		7020F6D020ECD25F00E7A74E /* NVSceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7020F6CF20ECD25F00E7A74E /* NVSceneController.m */; };
 		7020F70A20ECD6FB00E7A74E /* NavigationModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 7020F70920ECD6FB00E7A74E /* NavigationModule.m */; };
+		70AFBC3221DCD2CC006355EE /* NVSharedElementManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AFBC3121DCD2CC006355EE /* NVSharedElementManager.m */; };
+		70AFBC3521DCD320006355EE /* NVSharedElementView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AFBC3421DCD320006355EE /* NVSharedElementView.m */; };
 		70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3290212B2BC700DE0D13 /* NVRightBarView.m */; };
 		70BB3294212B2C0A00DE0D13 /* NVRightBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3293212B2C0A00DE0D13 /* NVRightBarManager.m */; };
 		70BB3298212B2C4000DE0D13 /* NVLeftBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3297212B2C4000DE0D13 /* NVLeftBarView.m */; };
@@ -37,6 +39,10 @@
 		7020F6CF20ECD25F00E7A74E /* NVSceneController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSceneController.m; sourceTree = "<group>"; };
 		7020F70820ECD6ED00E7A74E /* NavigationModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavigationModule.h; sourceTree = "<group>"; };
 		7020F70920ECD6FB00E7A74E /* NavigationModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavigationModule.m; sourceTree = "<group>"; };
+		70AFBC3121DCD2CC006355EE /* NVSharedElementManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSharedElementManager.m; sourceTree = "<group>"; };
+		70AFBC3321DCD2F6006355EE /* NVSharedElementManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSharedElementManager.h; sourceTree = "<group>"; };
+		70AFBC3421DCD320006355EE /* NVSharedElementView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSharedElementView.m; sourceTree = "<group>"; };
+		70AFBC3621DCD32A006355EE /* NVSharedElementView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSharedElementView.h; sourceTree = "<group>"; };
 		70BB3290212B2BC700DE0D13 /* NVRightBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVRightBarView.m; sourceTree = "<group>"; };
 		70BB3292212B2BEB00DE0D13 /* NVRightBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVRightBarView.h; sourceTree = "<group>"; };
 		70BB3293212B2C0A00DE0D13 /* NVRightBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVRightBarManager.m; sourceTree = "<group>"; };
@@ -67,6 +73,10 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				70AFBC3621DCD32A006355EE /* NVSharedElementView.h */,
+				70AFBC3421DCD320006355EE /* NVSharedElementView.m */,
+				70AFBC3321DCD2F6006355EE /* NVSharedElementManager.h */,
+				70AFBC3121DCD2CC006355EE /* NVSharedElementManager.m */,
 				70BB32A3212B2D4100DE0D13 /* NVBarView.m */,
 				70BB32A2212B2D3700DE0D13 /* NVBarView.h */,
 				70BB32A1212B2CA900DE0D13 /* NVBarButtonView.h */,
@@ -157,8 +167,10 @@
 				70BB329E212B2C9000DE0D13 /* NVBarButtonManager.m in Sources */,
 				70BB3294212B2C0A00DE0D13 /* NVRightBarManager.m in Sources */,
 				70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */,
+				70AFBC3221DCD2CC006355EE /* NVSharedElementManager.m in Sources */,
 				70BB329A212B2C5100DE0D13 /* NVLeftBarManager.m in Sources */,
 				70BB32A0212B2CA000DE0D13 /* NVBarButtonView.m in Sources */,
+				70AFBC3521DCD320006355EE /* NVSharedElementView.m in Sources */,
 				70BB32A4212B2D4100DE0D13 /* NVBarView.m in Sources */,
 				7020F6D020ECD25F00E7A74E /* NVSceneController.m in Sources */,
 				7020F70A20ECD6FB00E7A74E /* NavigationModule.m in Sources */,
