@@ -21,23 +21,17 @@ public class SharedElementManager extends ViewGroupManager<FrameLayout> {
     @Override
     protected FrameLayout createViewInstance(ThemedReactContext reactContext) {
         final FrameLayout view = new FrameLayout(reactContext);
-        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+        view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
-            public boolean onPreDraw() {
-                view.getViewTreeObserver().removeOnPreDrawListener(this);
+            public void onViewAttachedToWindow(View v) {
                 View rootView = view.getRootView();
                 HashSet<View> sharedElements = getSharedElements(rootView);
                 if (sharedElements == null) {
                     sharedElements = new HashSet<>();
                     rootView.setTag(R.id.sharedElements, sharedElements);
                 }
-                sharedElements.add(view);
-                return true;
-            }
-        });
-        view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View view) {
+                if (!sharedElements.contains(view))
+                    sharedElements.add(view);
             }
 
             @Override
