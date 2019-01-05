@@ -101,7 +101,9 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                             @Override
                             public void onSharedElementEnd(List<String> names, List<View> elements, List<View> snapshots) {
                                 for (View view : elements) {
-                                    resetReactImageVisibility(view);
+                                    View childView = ((ViewGroup) view).getChildAt(0);
+                                    if (childView instanceof ReactImageView)
+                                        ((ReactImageView) childView).getDrawable().setVisible(true, true);
                                 }
                             }
                         });
@@ -140,16 +142,6 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 sharedElementPairs.add(Pair.create(sharedElementMap.get(name), name));
         }
         return sharedElementPairs.toArray(new Pair[sharedElementPairs.size()]);
-    }
-
-    private void resetReactImageVisibility(View view) {
-        if (view instanceof ReactImageView)
-            ((ReactImageView) view).getDrawable().setVisible(true, true);
-        if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                resetReactImageVisibility(((ViewGroup) view).getChildAt(i));
-            }
-        }
     }
 }
 
