@@ -2,21 +2,26 @@ package com.navigation.reactnative;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.SharedElementCallback;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.views.image.ReactImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class NavigationModule extends ReactContextBaseJavaModule {
     private HashMap<Integer, Intent> mIntents = new HashMap<>();
@@ -92,6 +97,14 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 @Override
                 public void run() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null && sharedElements.length != 0) {
+                        currentActivity.setExitSharedElementCallback(new SharedElementCallback() {
+                            @Override
+                            public void onSharedElementEnd(List<String> names, List<View> elements, List<View> snapshots) {
+                                for (View view : elements) {
+                                    resetReactImageVisibility(view);
+                                }
+                            }
+                        });
                         @SuppressWarnings("unchecked")
                         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(currentActivity, sharedElements).toBundle();
                         currentActivity.startActivity(intents[0], bundle);
@@ -127,6 +140,16 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 sharedElementPairs.add(Pair.create(sharedElementMap.get(name), name));
         }
         return sharedElementPairs.toArray(new Pair[sharedElementPairs.size()]);
+    }
+
+    private void resetReactImageVisibility(View view) {
+        if (view instanceof ReactImageView)
+            ((ReactImageView) view).getDrawable().setVisible(true, true);
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                resetReactImageVisibility(((ViewGroup) view).getChildAt(i));
+            }
+        }
     }
 }
 
