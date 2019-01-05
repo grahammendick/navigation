@@ -99,11 +99,11 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                         currentActivity.setExitSharedElementCallback(new SharedElementCallback() {
                             @Override
                             public void onSharedElementEnd(List<String> names, List<View> elements, List<View> snapshots) {
-                            for (View view : elements) {
-                                View childView = ((ViewGroup) view).getChildAt(0);
-                                if (childView instanceof ReactImageView)
-                                    ((ReactImageView) childView).getDrawable().setVisible(true, true);
-                            }
+                                for (View view : elements) {
+                                    View childView = ((ViewGroup) view).getChildAt(0);
+                                    if (childView instanceof ReactImageView)
+                                        ((ReactImageView) childView).getDrawable().setVisible(true, true);
+                                }
                             }
                         });
                         @SuppressWarnings("unchecked")
