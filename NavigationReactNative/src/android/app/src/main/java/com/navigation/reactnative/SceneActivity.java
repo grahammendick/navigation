@@ -1,8 +1,11 @@
 package com.navigation.reactnative;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -23,6 +26,22 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         String appKey = getIntent().getStringExtra(APP_KEY);
         mReactRootView.startReactApplication(getReactNativeHost().getReactInstanceManager(), appKey, props);
         setContentView(mReactRootView);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            this.postponeEnterTransition();
+        final Activity activity = this;
+        mReactRootView.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
+            @Override
+            public void onChildViewAdded(View view, View view1) {
+                mReactRootView.setOnHierarchyChangeListener(null);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    activity.startPostponedEnterTransition();
+            }
+
+            @Override
+            public void onChildViewRemoved(View view, View view1) {
+
+            }
+        });
     }
 
     private ReactNativeHost getReactNativeHost() {

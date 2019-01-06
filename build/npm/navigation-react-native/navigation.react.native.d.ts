@@ -66,3 +66,19 @@ export interface BarButtonIOSProps {
  * Renders a button in the UI bar
  */
 export class BarButtonIOS extends Component<BarButtonIOSProps> { }
+
+
+/**
+ * Defines the Shared Element Props contract
+ */
+export interface SharedElementAndroidProps {
+    /**
+     * The name shared across scenes by the two elements
+     */
+    name: string;
+}
+
+/**
+ * Shares its child UI element between scenes during navigation
+ */
+export class SharedElementAndroid extends Component<SharedElementAndroidProps> {}

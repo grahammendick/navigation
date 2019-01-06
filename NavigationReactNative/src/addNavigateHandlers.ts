@@ -12,6 +12,8 @@ var addNavigateHandlers = (stateNavigator: StateNavigator | StateNavigator[]) =>
             var {state, data, title, oldData, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
             var appKey = AppRegistry.getAppKeys()[0];
             var titles = crumbs.map(({data, title}) => data.sceneTitle || title).concat(data.sceneTitle || title);
+            var sharedElements = data.sharedElements;
+            var oldSharedElements = oldData.sharedElements;
             var {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
             if (oldCrumbs.length < crumbs.length) {
                 var {state: nextState, data: nextData} = crumbs.concat(nextCrumb)[oldCrumbs.length + 1];
@@ -24,7 +26,7 @@ var addNavigateHandlers = (stateNavigator: StateNavigator | StateNavigator[]) =>
                 var enterAnim = state.getCrumbStyle && state.getCrumbStyle(true, data, crumbs, nextState, nextData);
                 var exitAnim = oldState.getUnmountStyle && oldState.getUnmountStyle(false, oldData, oldCrumbs);
             }
-            NavigationModule.render(crumbs.length, tab, titles, appKey, enterAnim, exitAnim);
+            NavigationModule.render(crumbs.length, tab, titles, appKey, sharedElements, oldSharedElements, enterAnim, exitAnim);
         });
     });
     new NativeEventEmitter(NavigationModule).addListener('Navigate', ({crumb, tab}) => {

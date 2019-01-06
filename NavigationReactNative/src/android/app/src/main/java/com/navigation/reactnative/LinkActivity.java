@@ -14,6 +14,11 @@ public class LinkActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        finish();
+    }
+    
+    @Override
+    protected void onDestroy() {
         Activity currentActivity = getReactContext().getCurrentActivity();
         Intent intent = getIntent();
         Uri uri = intent.getData();
@@ -25,7 +30,7 @@ public class LinkActivity extends Activity {
             DeviceEventManagerModule deviceEventManagerModule = getReactContext().getNativeModule(DeviceEventManagerModule.class);
             deviceEventManagerModule.emitNewIntentReceived(uri);
         }
-        finish();
+        super.onDestroy();
     }
 
     private ReactContext getReactContext() {
