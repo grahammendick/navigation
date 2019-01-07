@@ -57,7 +57,8 @@
     &lt;item name="android:windowSharedElementEnterTransition">@transition/move&lt;/item>
     &lt;item name="android:windowSharedElementExitTransition">@transition/move&lt;/item>
 &lt;/style></code></pre>
-            <pre><code class="language-jsx">&lt;TouchableHighlight
+            <pre><code class="language-jsx">// The 'inbox' scene
+&lt;TouchableHighlight
     onPress={() => {
         stateNavigator.navigate('mail', {id: 12, sharedElements: ['mail']});
     }}>
@@ -65,7 +66,8 @@
         &lt;Text>Meeting invite&lt;/Text>
     &lt;/SharedElementAndroid>
 &lt;/TouchableHighlight></code></pre>
-            <pre><code class="language-jsx">&lt;SharedElementAndroid name="mail">
+            <pre><code class="language-jsx">// The 'mail' scene
+&lt;SharedElementAndroid name="mail">
     &lt;Text>Meeting invite&lt;/Text>
 &lt;/SharedElementAndroid></code></pre>
         </div>
