@@ -60,6 +60,9 @@
     &lt;item name="android:windowSharedElementEnterTransition">@transition/move&lt;/item>
     &lt;item name="android:windowSharedElementExitTransition">@transition/move&lt;/item>
 &lt;/style></code></pre>
+            <p>
+                In our email example app, we can smooth out the transition when a user opens an email by sharing the subject of the email between the 'inbox' scene and the 'mail' scene. We wrap the subject elements on each scene inside a <code>SharedElementAndroid</code> component and give them both the same name. When we navigate to the 'mail' scene we pass a <code>sharedElements</code> array that contains this name.
+            </p>
             <pre><code class="language-jsx">// The 'inbox' scene
 &lt;TouchableHighlight
     onPress={() => {
