@@ -89,7 +89,7 @@ mail.getUnmountStyle = from => from ? 'slide_in' : 'slide_out';
 </code></pre>
             <h2>Animating Crumbs</h2>
             <p>
-                When you push a new scene onto the stack, you can animate the outgoing scene as well as the incoming one. The outgoing animation is empty by default, but you can provide one. We want to fade out the 'inbox' scene when the user opens an email and fade it back in when they return to their inbox. We create two animation resource files. One called 'fade_out' that changes the scene's alpha value from 1 to 0, and another called 'fade_in' that changes it back again.
+                When you push a new scene onto the stack, you can animate the outgoing scene as well as the incoming one. We want to fade out the 'inbox' scene when the user opens an email and fade it back in when they return to their inbox. We create two animation resource files. One called 'fade_out' that changes the scene's alpha value from 1 to 0, and another called 'fade_in' that changes it back again.
             </p>
             <p>
                 The Navigation router calls the <code>getCrumbStyle</code> function attached to the 'inbox' <code>State</code> to find out how to animate the 'inbox' scene. When the user opens an email the Navigation router calls the function passing in 'false' and, when the user returns to their inbox, it calls the function again with 'true'.
