@@ -57,6 +57,17 @@
     &lt;item name="android:windowSharedElementEnterTransition">@transition/move&lt;/item>
     &lt;item name="android:windowSharedElementExitTransition">@transition/move&lt;/item>
 &lt;/style></code></pre>
+            <pre><code class="language-jsx">&lt;TouchableHighlight
+    onPress={() => {
+        stateNavigator.navigate('mail', {id: 12, sharedElements: [`mail${mail.id}`]});
+    }}>
+    &lt;SharedElementAndroid name={`mail${mail.id}`}>
+        &lt;Text>{mail.subject}&lt;/Text>
+    &lt;/SharedElementAndroid>
+&lt;/TouchableHighlight></code></pre>
+            <pre><code class="language-jsx">&lt;SharedElementAndroid name={`mail${mail.id}`}>
+    &lt;Text>{mail.subject}&lt;/Text>
+&lt;/SharedElementAndroid></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
