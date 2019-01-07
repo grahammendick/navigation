@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Examples</title>
+    <title>Shared Element Transition (Android)</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="../../css/prism.css">
     <link rel="stylesheet" href="../../css/navigation.css">
@@ -45,17 +45,37 @@
             <a href="push-navigation.html">Push Navigation</a>
             <a href="pop-navigation.html">Pop Navigation</a>
             <a href="custom-animation.html">Custom Animation (Android)</a>
-            <a href="shared-element-transition.html">Shared Element Transition (Android)</a>
+            <a href="shared-element-transition.html" class="selected">Shared Element Transition (Android)</a>
             <a href="ui-bar-buttons.html">UI Bar Buttons (iOS)</a>
             <a href="deep-links.html">Deep Links</a>
             <a href="tabs-setup.html">Tabs Setup (iOS)</a>
-            <a href="examples.html" class="selected">Examples</a>
+            <a href="examples.html">Examples</a>
         </div>
         <div id="article">
-            <h1>Examples</h1>
+            <h1>Shared Element Transition (Android)</h1>
             <p>
-                You'll find examples in the <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReactNative/sample">Navigation React Native samples folder</a>. There's a <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReactNative/sample/zoom">zoom example</a> that uses the regular setup and a <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReactNative/sample/twitter">twitter example</a> that uses the iOS tabs setup.
+                Android supports shared element transitions, where you can smoothly animate between UI elements that are common across two scenes. The Navigation router exposes this functionality to React using the <code>SharedElementAndroid</code> component. To identify a pair of shareable elements, you wrap each one in a <code>SharedElementAndroid</code> component and give them both the same <code>name</code>. When you navigate between scenes you pass the names of the pairs that you want to animate during the transition. You enable this functionality by locating the <code>styles.xml</code> file in the Android project and adding the following two lines:
             </p>
+            <pre><code class="language-jsx">&lt;style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
+    &lt;item name="android:windowSharedElementEnterTransition">@transition/move&lt;/item>
+    &lt;item name="android:windowSharedElementExitTransition">@transition/move&lt;/item>
+&lt;/style></code></pre>
+            <p>
+                In our email example app, we can smooth out the transition when a user opens an email by sharing the subject of the email between the 'inbox' scene and the 'mail' scene. We wrap the subject elements on each scene inside a <code>SharedElementAndroid</code> component and give them both the same name. When we navigate to the 'mail' scene we pass a <code>sharedElements</code> array that contains this name.
+            </p>
+            <pre><code class="language-jsx">// The 'inbox' scene
+&lt;TouchableHighlight
+    onPress={() => {
+        stateNavigator.navigate('mail', {id: 12, sharedElements: ['mail']});
+    }}>
+    &lt;SharedElementAndroid name="mail">
+        &lt;Text>Meeting invite&lt;/Text>
+    &lt;/SharedElementAndroid>
+&lt;/TouchableHighlight></code></pre>
+            <pre><code class="language-jsx">// The 'mail' scene
+&lt;SharedElementAndroid name="mail">
+    &lt;Text>Meeting invite&lt;/Text>
+&lt;/SharedElementAndroid></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>

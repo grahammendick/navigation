@@ -45,6 +45,7 @@
             <a href="../native/push-navigation.html">Push Navigation</a>
             <a href="../native/pop-navigation.html">Pop Navigation</a>
             <a href="../native/custom-animation.html">Custom Animation (Android)</a>
+            <a href="../native/shared-element-transition.html">Shared Element Transition (Android)</a>
             <a href="../native/ui-bar-buttons.html">UI Bar Buttons (iOS)</a>
             <a href="../native/deep-links.html">Deep Links</a>
             <a href="../native/tabs-setup.html">Tabs Setup (iOS)</a>
@@ -57,7 +58,7 @@
                 The Navigation router lets you smoothly transition between elements that are shared across two scenes when the user navigates from one scene to the other. It's a technique common to native apps, for example, zooming into an enlarged image when a user clicks on a thumbnail in a gallery. To identify elements you want to share across two scenes, you wrap each one in a <code>SharedElement</code> component and give them both the same <code>name</code>. You pass in a <code>prop</code> holding the data you want to animate as one element transitions to the other.
             </p>
             <p>
-                In our email example app, we can smooth out the navigation when a user opens an email by sharing the subject of the email between the 'inbox' scene and the 'mail' scene. We wrap the subject elements on each scene inside a <code>SharedComponent</code>. The font size of the subject is smaller in the inbox than on the open email, 14px as compared to 20px. Because we need to scale the text during the navigation, we pass these font sizes, along with the subject line, into the <code>data props</code>.
+                In our email example app, we can smooth out the navigation when a user opens an email by sharing the subject of the email between the 'inbox' scene and the 'mail' scene. We wrap the subject elements on each scene inside a <code>SharedElement</code>. The font size of the subject is smaller in the inbox than on the open email, 14px as compared to 20px. Because we need to scale the text during the navigation, we pass these font sizes, along with the subject line, into the <code>data props</code>.
             </p>
             <pre><code class="language-jsx">// The 'inbox' scene
 &lt;NavigationReactMobile.SharedElement
