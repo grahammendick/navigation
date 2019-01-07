@@ -59,14 +59,14 @@
 &lt;/style></code></pre>
             <pre><code class="language-jsx">&lt;TouchableHighlight
     onPress={() => {
-        stateNavigator.navigate('mail', {id: 12, sharedElements: [`mail${mail.id}`]});
+        stateNavigator.navigate('mail', {id: 12, sharedElements: ['mail']});
     }}>
-    &lt;SharedElementAndroid name={`mail${mail.id}`}>
-        &lt;Text>{mail.subject}&lt;/Text>
+    &lt;SharedElementAndroid name="mail">
+        &lt;Text>Meeting invite&lt;/Text>
     &lt;/SharedElementAndroid>
 &lt;/TouchableHighlight></code></pre>
-            <pre><code class="language-jsx">&lt;SharedElementAndroid name={`mail${mail.id}`}>
-    &lt;Text>{mail.subject}&lt;/Text>
+            <pre><code class="language-jsx">&lt;SharedElementAndroid name="mail">
+    &lt;Text>Meeting invite&lt;/Text>
 &lt;/SharedElementAndroid></code></pre>
         </div>
     </div>
