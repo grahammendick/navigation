@@ -67,8 +67,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             }
             final int enter = this.getAnimationResourceId(enterAnim, this.activityCloseEnterAnimationId);
             final int exit = this.getAnimationResourceId(exitAnim, this.activityCloseExitAnimationId);
-            final HashMap<String, View> sharedElementsMap = getSharedElementsMap();
-            final Pair[] oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(sharedElementsMap, oldSharedElementNames) : null;
+            final HashMap<String, View> oldSharedElementsMap = getSharedElementsMap();
+            final Pair[] oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -81,8 +81,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                                 for(int i = 0; i < oldSharedElementNames.size(); i++) {
                                     String name = oldSharedElementNames.getString(i);
                                     names.add(name);
-                                    if (sharedElementsMap.containsKey(name))
-                                        elements.put(name, sharedElementsMap.get(name));
+                                    if (oldSharedElementsMap.containsKey(name))
+                                        elements.put(name, oldSharedElementsMap.get(name));
                                 }
                             }
                         });
