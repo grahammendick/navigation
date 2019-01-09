@@ -35,18 +35,21 @@ export default ({color}) => (
                 colors[(colors.indexOf(color) + 1) % colors.length],
                 colors[(colors.indexOf(color) + 2) % colors.length],
                 colors[(colors.indexOf(color) + 3) % colors.length]
-              ].map(subcolor => (<TouchableHighlight
-              key={subcolor}
-              style={[
-                {backgroundColor: subcolor},
-                styles.subcolor
-              ]}
-              underlayColor={subcolor}
-              onPress={() => {
-                stateNavigator.navigateBack(1);
-              }}>
-                <View />
-            </TouchableHighlight>))}
+              ].map(subcolor => (
+                <TouchableHighlight
+                  key={subcolor}
+                  style={[
+                    {backgroundColor: subcolor},
+                    styles.subcolor
+                  ]}
+                  underlayColor={subcolor}
+                  onPress={() => {
+                    stateNavigator.navigateBack(1);
+                  }}>
+                    <View />
+                </TouchableHighlight>
+              )
+            )}
           </View>
         </ScrollView>
     )}
