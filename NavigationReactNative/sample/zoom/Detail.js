@@ -31,11 +31,8 @@ export default ({color}) => (
           </SharedElementAndroid>
           <Text style={styles.text}>{color}</Text>
           <View style={styles.colors}>
-            {[
-                colors[(colors.indexOf(color) + 1) % colors.length],
-                colors[(colors.indexOf(color) + 2) % colors.length],
-                colors[(colors.indexOf(color) + 3) % colors.length]
-              ].map(subcolor => (
+            {[1,2,3].map(i => colors[(colors.indexOf(color) + i) % 15])
+              .map(subcolor => (
                 <TouchableHighlight
                   key={subcolor}
                   style={[
