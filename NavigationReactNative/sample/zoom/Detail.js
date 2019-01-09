@@ -39,13 +39,12 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   color: {
-    flex: .6,
+    height: 300,
     marginTop: 10,
     marginLeft: 15,
     marginRight: 15,
   },
   text:{
-    flex: .4,
     fontSize: 80,
     color: '#000',
     textAlign:'center',
