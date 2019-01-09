@@ -3,6 +3,11 @@ import {StyleSheet, ScrollView, Text, View, Platform, TouchableHighlight} from '
 import {NavigationContext} from 'navigation-react';
 import {RightBarIOS, BarButtonIOS, SharedElementAndroid} from 'navigation-react-native';
 
+const colors = [
+  'maroon', 'red', 'crimson', 'orange', 'brown', 'sienna', 'olive',
+  'purple', 'fuchsia', 'indigo', 'green', 'navy', 'blue', 'teal', 'black'
+];
+
 export default ({color}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
@@ -26,7 +31,11 @@ export default ({color}) => (
           </SharedElementAndroid>
           <Text style={styles.text}>{color}</Text>
           <View style={styles.colors}>
-            {['red', 'blue', 'green'].map(subcolor => (<TouchableHighlight
+            {[
+                colors[(colors.indexOf(color) + 1) % colors.length],
+                colors[(colors.indexOf(color) + 2) % colors.length],
+                colors[(colors.indexOf(color) + 3) % colors.length]
+              ].map(subcolor => (<TouchableHighlight
               key={subcolor}
               style={[
                 {backgroundColor: subcolor},
