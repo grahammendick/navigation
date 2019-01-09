@@ -18,6 +18,10 @@ detail.renderScene = ({color}) => <Detail color={color}/>;
 stateNavigator.navigate('grid');
 addNavigateHandlers(stateNavigator);
 
+detail.truncateCrumbTrail = (state, data, crumbs) => (
+  crumbs.slice(-1)[0].state === detail ? crumbs.slice(0, -1) : crumbs
+);
+
 var openLink = (url) => {
   if (url) {
     var color = url.split('=')[1];
@@ -27,10 +31,6 @@ var openLink = (url) => {
 
 Linking.getInitialURL().then(openLink);
 Linking.addEventListener('url', ({url}) => openLink(url));
-
-detail.truncateCrumbTrail = (state, data, crumbs) => (
-  crumbs.slice(-1)[0].state === detail ? crumbs.slice(0, -1) : crumbs
-);
 
 export default ({crumb}) => (
   <NavigationHandler stateNavigator={stateNavigator}>
