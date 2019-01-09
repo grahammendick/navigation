@@ -28,6 +28,10 @@ var openLink = (url) => {
 Linking.getInitialURL().then(openLink);
 Linking.addEventListener('url', ({url}) => openLink(url));
 
+detail.truncateCrumbTrail = (state, data, crumbs) => (
+  crumbs[crumbs.length - 1].state === detail ? crumbs.slice(0, -1) : crumbs
+);
+
 export default ({crumb}) => (
   <NavigationHandler stateNavigator={stateNavigator}>
     <Scene crumb={crumb} />
