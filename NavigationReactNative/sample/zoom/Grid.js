@@ -25,7 +25,9 @@ export default () => (
                 ]}
                 underlayColor={color}                
                 onPress={() => {
-                  stateNavigator.navigate('detail', {color, sharedElements: [color]});
+                  stateNavigator.navigate('detail', {
+                    color, sharedElements: [color]
+                  });
                 }}>
                 <Text style={styles.text}>{color}</Text>
               </TouchableHighlight>
