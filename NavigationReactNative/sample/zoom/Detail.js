@@ -25,7 +25,21 @@ export default ({color}) => (
             <View style={{backgroundColor: color, flex: 1}} />
           </SharedElementAndroid>
           <Text style={styles.text}>{color}</Text>
-      </ScrollView>
+          <View style={styles.colors}>
+            {['red', 'blue', 'green'].map(subcolor => (<TouchableHighlight
+              key={subcolor}
+              style={[
+                {backgroundColor: subcolor},
+                styles.subcolor
+              ]}
+              underlayColor={subcolor}
+              onPress={() => {
+                stateNavigator.navigateBack(1);
+              }}>
+                <View />
+            </TouchableHighlight>))}
+          </View>
+        </ScrollView>
     )}
   </NavigationContext.Consumer>
 );
@@ -49,5 +63,16 @@ const styles = StyleSheet.create({
     color: '#000',
     textAlign:'center',
     fontWeight: 'bold',
+  },
+  colors: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginTop: 20,
+    marginLeft: 40,
+    marginRight: 40,
+  },
+  subcolor: {
+    width: 100,
+    height: 50,
   },
 });
