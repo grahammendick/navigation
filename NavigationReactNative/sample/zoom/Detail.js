@@ -12,8 +12,7 @@ export default ({color}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{flex:1}}>
+        contentInsetAdjustmentBehavior="automatic">
           <RightBarIOS>
             <BarButtonIOS systemItem="cancel" onPress={() => {
               stateNavigator.navigateBack(1);
@@ -85,5 +84,6 @@ const styles = StyleSheet.create({
     height: 50,
     marginLeft: 4,
     marginRight: 4,
+    marginBottom: 10,
   },
 });
