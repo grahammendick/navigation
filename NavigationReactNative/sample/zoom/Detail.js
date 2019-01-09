@@ -77,13 +77,13 @@ const styles = StyleSheet.create({
   },
   colors: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     marginTop: 20,
-    marginLeft: 40,
-    marginRight: 40,
   },
   subcolor: {
     width: 100,
     height: 50,
+    marginLeft: 4,
+    marginRight: 4,
   },
 });
