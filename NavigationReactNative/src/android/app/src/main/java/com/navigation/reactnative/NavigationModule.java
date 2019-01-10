@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class NavigationModule extends ReactContextBaseJavaModule {
     private HashMap<Integer, Intent> mIntents = new HashMap<>();
@@ -53,7 +54,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void render(int crumb, int tab, ReadableArray titles, String appKey, ReadableArray sharedElementNames, ReadableArray oldSharedElementNames, String enterAnim, String exitAnim) {
+    public void render(int crumb, int tab, ReadableArray titles, String appKey, ReadableArray sharedElementNames, final ReadableArray oldSharedElementNames, String enterAnim, String exitAnim) {
         final Activity currentActivity = getCurrentActivity();
         if (mIntents.size() == 0) {
             mIntents.put(0, currentActivity.getIntent());
@@ -66,14 +67,29 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             }
             final int enter = this.getAnimationResourceId(enterAnim, this.activityCloseEnterAnimationId);
             final int exit = this.getAnimationResourceId(exitAnim, this.activityCloseExitAnimationId);
-            final Pair[] oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementNames) : null;
+            final HashMap<String, View> oldSharedElementsMap = getSharedElementsMap();
+            final Pair[] oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
+                        currentActivity.setEnterSharedElementCallback(new SharedElementCallback() {
+                            @Override
+                            public void onMapSharedElements(List<String> names, Map<String, View> elements) {
+                                names.clear();
+                                elements.clear();
+                                for(int i = 0; i < oldSharedElementNames.size(); i++) {
+                                    String name = oldSharedElementNames.getString(i);
+                                    names.add(name);
+                                    if (oldSharedElementsMap.containsKey(name))
+                                        elements.put(name, oldSharedElementsMap.get(name));
+                                }
+                            }
+                        });
                         currentActivity.finishAfterTransition();
-                    else
+                    } else {
                         currentActivity.navigateUpTo(intent);
+                    }
                     currentActivity.overridePendingTransition(enter, exit);
                 }
             });
@@ -91,7 +107,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             }
             final int enter = this.getAnimationResourceId(enterAnim, this.activityOpenEnterAnimationId);
             final int exit = this.getAnimationResourceId(exitAnim, this.activityOpenExitAnimationId);
-            final Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements(sharedElementNames) : null;
+            final HashMap<String, View> sharedElementsMap = getSharedElementsMap();
+            final Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements(sharedElementsMap, sharedElementNames) : null;
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -103,6 +120,14 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                                     View childView = ((ViewGroup) view).getChildAt(0);
                                     if (childView instanceof ReactImageView)
                                         ((ReactImageView) childView).getDrawable().setVisible(true, true);
+                                }
+                            }
+                            @Override
+                            public void onMapSharedElements(List<String> names, Map<String, View> elements) {
+                                elements.clear();
+                                for(String name : names) {
+                                    if (sharedElementsMap.containsKey(name))
+                                        elements.put(name, sharedElementsMap.get(name));
                                 }
                             }
                         });
@@ -125,15 +150,21 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         return getReactApplicationContext().getResources().getIdentifier(animationName, "anim", packageName);
     }
 
-    private Pair[] getSharedElements(ReadableArray sharedElementNames) {
+    private HashMap<String, View> getSharedElementsMap() {
         View contentView = getCurrentActivity().findViewById(android.R.id.content);
         HashSet<View> sharedElements = SharedElementManager.getSharedElements(contentView.getRootView());
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || sharedElementNames == null || sharedElements == null)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || sharedElements == null)
             return null;
         HashMap<String, View> sharedElementMap = new HashMap<>();
         for(View sharedElement : sharedElements) {
             sharedElementMap.put(sharedElement.getTransitionName(), sharedElement);
         }
+        return sharedElementMap;
+    }
+
+    private Pair[] getSharedElements(HashMap<String, View> sharedElementMap, ReadableArray sharedElementNames) {
+        if (sharedElementMap == null || sharedElementNames == null)
+            return null;
         ArrayList<Pair> sharedElementPairs = new ArrayList<>();
         for(int i = 0; i < sharedElementNames.size(); i++) {
             String name = sharedElementNames.getString(i);
