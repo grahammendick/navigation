@@ -24,9 +24,7 @@ export default () => (
                 });
               }}>
               <SharedElementAndroid name={color} style={{flex: 1}}>
-                <View style={[styles.box, {backgroundColor: color}]}>
-                  <Text style={styles.text}>{color}</Text>
-                </View>
+                <View style={{backgroundColor: color, flex: 1}} />
               </SharedElementAndroid>
             </TouchableHighlight>
           ))}
@@ -50,15 +48,4 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginBottom: 20,
   },
-  box: {
-    flex: 1,
-    justifyContent: 'center'
-  },
-  text: {
-    color: '#fff',
-    fontSize: 20,
-    lineHeight: 20,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  }
 });
