@@ -33,10 +33,7 @@ export default ({color}) => (
               .map(subcolor => (
                 <TouchableHighlight
                   key={subcolor}
-                  style={[
-                    {backgroundColor: subcolor},
-                    styles.subcolor
-                  ]}
+                  style={[styles.subcolor, {backgroundColor: subcolor}]}
                   underlayColor={subcolor}
                   onPress={() => {
                     stateNavigator.navigate('detail', {
