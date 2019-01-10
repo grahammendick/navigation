@@ -24,7 +24,7 @@ export default () => (
                 });
               }}>
               <SharedElementAndroid name={color}
-                style={{flex: 1, backgroundColor: color}}>
+                style={[styles.shared, {backgroundColor: color}]}>
                 <Text style={styles.text}>{color}</Text>
               </SharedElementAndroid>
             </TouchableHighlight>
@@ -49,9 +49,14 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginBottom: 20,
   },
+  shared: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   text: {
     color: '#fff',
     fontSize: 20,
+    lineHeight: 20,
     textAlign: 'center',
     fontWeight: 'bold',
     textAlignVertical: 'center',
