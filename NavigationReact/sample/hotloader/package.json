@@ -2,16 +2,17 @@
   "name": "navigation-hot-loader",
   "description": "Navigation React hot loader example",
   "dependencies": {
-    "babel-core": "^6.17.0",
-    "babel-loader": "^6.2.5",
-    "babel-preset-es2015": "^6.16.0",
-    "babel-preset-react": "^6.16.0",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.5",
     "navigation": "*",
     "navigation-react": "*",
     "react": "*",
     "react-dom": "*",
-    "webpack": "^1.12.10",
-    "webpack-dev-server": "^1.14.0"
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
   },
   "scripts": {
     "build": "webpack-dev-server --hot --inline"
