@@ -23,9 +23,10 @@ export default () => (
                   color, sharedElements: [color]
                 });
               }}>
-              <SharedElementAndroid name={color}
-                style={[styles.shared, {backgroundColor: color}]}>
-                <Text style={styles.text}>{color}</Text>
+              <SharedElementAndroid name={color} style={{flex: 1}}>
+                <View style={[styles.box, {backgroundColor: color}]}>
+                  <Text style={styles.text}>{color}</Text>
+                </View>
               </SharedElementAndroid>
             </TouchableHighlight>
           ))}
@@ -49,9 +50,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginBottom: 20,
   },
-  shared: {
+  box: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   text: {
     color: '#fff',
@@ -59,6 +60,5 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     textAlign: 'center',
     fontWeight: 'bold',
-    textAlignVertical: 'center',
   }
 });
