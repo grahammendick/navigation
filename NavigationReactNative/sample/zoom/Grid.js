@@ -14,24 +14,20 @@ export default () => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View style={styles.colors}>
           {colors.map(color => (
-            <SharedElementAndroid
+            <TouchableHighlight
               key={color}
-              name={color}
-              style={styles.shared}>
-              <TouchableHighlight
-                style={[
-                  {backgroundColor: color},
-                  styles.color
-                ]}
-                underlayColor={color}                
-                onPress={() => {
-                  stateNavigator.navigate('detail', {
-                    color, sharedElements: [color]
-                  });
-                }}>
+              style={styles.color}
+              underlayColor={color}                
+              onPress={() => {
+                stateNavigator.navigate('detail', {
+                  color, sharedElements: [color]
+                });
+              }}>
+              <SharedElementAndroid name={color}
+                style={{flex: 1, backgroundColor: color}}>
                 <Text style={styles.text}>{color}</Text>
-              </TouchableHighlight>
-            </SharedElementAndroid>
+              </SharedElementAndroid>
+            </TouchableHighlight>
           ))}
         </View>
       </ScrollView>
@@ -46,20 +42,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 10,
   },
-  shared: {
-    marginLeft:10,
-    marginRight: 10,
-    marginBottom: 20,
-  },
   color: {
     width: 100,
     height: 150,
-    justifyContent: 'center',
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 20,
   },
   text: {
     color: '#fff',
     fontSize: 20,
     textAlign: 'center',
     fontWeight: 'bold',
+    textAlignVertical: 'center',
   }
 });
