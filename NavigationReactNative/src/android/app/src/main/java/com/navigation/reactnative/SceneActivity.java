@@ -3,6 +3,8 @@ package com.navigation.reactnative;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +35,11 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
             @Override
             public void onChildViewAdded(View view, View view1) {
                 mReactRootView.setOnHierarchyChangeListener(null);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Transition transition = TransitionInflater.from(activity).inflateTransition(R.transition.move);
+                    getWindow().setSharedElementEnterTransition(transition);
                     activity.startPostponedEnterTransition();
+                }
             }
 
             @Override
