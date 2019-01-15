@@ -14,6 +14,8 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 
+import java.util.HashSet;
+
 public class SceneActivity extends Activity implements DefaultHardwareBackBtnHandler {
     private ReactRootView mReactRootView;
     public static final String CRUMB = "Navigation.CRUMB";
@@ -27,8 +29,13 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         Bundle props = new Bundle();
         props.putInt("crumb", getIntent().getIntExtra(CRUMB, 0));
         String appKey = getIntent().getStringExtra(APP_KEY);
+        HashSet<String> sharedElements = (HashSet<String>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
         mReactRootView.startReactApplication(getReactNativeHost().getReactInstanceManager(), appKey, props);
         setContentView(mReactRootView);
+        if (sharedElements != null ) {
+            SharedElementTransitioner transitioner = new SharedElementTransitioner(this, sharedElements);
+            mReactRootView.getRootView().setTag(R.id.sharedElementTransitioner, transitioner);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             this.postponeEnterTransition();
         final Activity activity = this;
