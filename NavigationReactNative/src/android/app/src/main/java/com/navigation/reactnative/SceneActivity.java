@@ -38,7 +38,6 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             this.postponeEnterTransition();
-        });
     }
 
     private ReactNativeHost getReactNativeHost() {
