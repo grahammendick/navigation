@@ -54,7 +54,7 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
                 View rootView = view.getRootView();
                 SharedElementTransitioner transitioner = (SharedElementTransitioner) rootView.getTag(R.id.sharedElementTransitioner);
                 if (transitioner != null)
-                    transitioner.load(view.getName());
+                    transitioner.load(view.getName(), null);
                 return true;
             }
         });
