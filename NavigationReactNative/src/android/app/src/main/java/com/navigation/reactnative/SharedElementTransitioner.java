@@ -41,7 +41,7 @@ public class SharedElementTransitioner {
             for(String key : transitions.keySet()) {
                 transitionSet.addTransition(transitions.get(key));
             }
-            activity.getWindow().setSharedElementEnterTransition(transitionSet  );
+            activity.getWindow().setSharedElementEnterTransition(transitionSet);
             activity.startPostponedEnterTransition();
             View contentView = activity.findViewById(android.R.id.content);
             contentView.getRootView().setTag(R.id.sharedElementTransitioner, null);
