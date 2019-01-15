@@ -14,6 +14,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class SceneActivity extends Activity implements DefaultHardwareBackBtnHandler {
@@ -29,11 +30,15 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         Bundle props = new Bundle();
         props.putInt("crumb", getIntent().getIntExtra(CRUMB, 0));
         String appKey = getIntent().getStringExtra(APP_KEY);
-        HashSet<String> sharedElements = (HashSet<String>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
+        ArrayList<Object> sharedElements = (ArrayList<Object>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
         mReactRootView.startReactApplication(getReactNativeHost().getReactInstanceManager(), appKey, props);
         setContentView(mReactRootView);
         if (sharedElements != null ) {
-            SharedElementTransitioner transitioner = new SharedElementTransitioner(this, sharedElements);
+            HashSet<String> sharedElementSet = new HashSet<String>();
+            for(Object sharedElement : sharedElements) {
+                sharedElementSet.add((String) sharedElement);
+            }
+            SharedElementTransitioner transitioner = new SharedElementTransitioner(this, sharedElementSet);
             mReactRootView.getRootView().setTag(R.id.sharedElementTransitioner, transitioner);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)

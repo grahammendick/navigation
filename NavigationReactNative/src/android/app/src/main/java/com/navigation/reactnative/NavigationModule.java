@@ -54,7 +54,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void render(int crumb, int tab, ReadableArray titles, String appKey, ReadableArray sharedElementNames, final ReadableArray oldSharedElementNames, String enterAnim, String exitAnim) {
+    public void render(int crumb, int tab, ReadableArray titles, String appKey, final ReadableArray sharedElementNames, final ReadableArray oldSharedElementNames, String enterAnim, String exitAnim) {
         final Activity currentActivity = getCurrentActivity();
         if (mIntents.size() == 0) {
             mIntents.put(0, currentActivity.getIntent());
@@ -113,7 +113,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 @Override
                 public void run() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null && sharedElements.length != 0) {
-                        intents[0].putExtra(SceneActivity.SHARED_ELEMENTS, new HashSet<>(sharedElementsMap.keySet()));
+                        intents[0].putExtra(SceneActivity.SHARED_ELEMENTS, sharedElementNames.toArrayList());
                         currentActivity.setExitSharedElementCallback(new SharedElementCallback() {
                             @Override
                             public void onSharedElementEnd(List<String> names, List<View> elements, List<View> snapshots) {
