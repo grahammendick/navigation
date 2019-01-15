@@ -34,11 +34,10 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         mReactRootView.startReactApplication(getReactNativeHost().getReactInstanceManager(), appKey, props);
         setContentView(mReactRootView);
         if (sharedElements != null ) {
+            this.postponeEnterTransition();
             SharedElementTransitioner transitioner = new SharedElementTransitioner(this, sharedElements);
             mReactRootView.getRootView().setTag(R.id.sharedElementTransitioner, transitioner);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            this.postponeEnterTransition();
     }
 
     private ReactNativeHost getReactNativeHost() {
