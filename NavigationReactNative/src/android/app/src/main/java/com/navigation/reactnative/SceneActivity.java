@@ -30,6 +30,7 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         Bundle props = new Bundle();
         props.putInt("crumb", getIntent().getIntExtra(CRUMB, 0));
         String appKey = getIntent().getStringExtra(APP_KEY);
+        @SuppressWarnings("unchecked")
         HashSet<String> sharedElements = (HashSet<String>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
         mReactRootView.startReactApplication(getReactNativeHost().getReactInstanceManager(), appKey, props);
         setContentView(mReactRootView);
