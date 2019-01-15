@@ -117,9 +117,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                             @Override
                             public void onSharedElementEnd(List<String> names, List<View> elements, List<View> snapshots) {
                                 for (View view : elements) {
-                                    View childView = ((ViewGroup) view).getChildAt(0);
-                                    if (childView instanceof ReactImageView)
-                                        ((ReactImageView) childView).getDrawable().setVisible(true, true);
+                                    if (view instanceof ReactImageView)
+                                        ((ReactImageView) view).getDrawable().setVisible(true, true);
                                 }
                             }
                             @Override
