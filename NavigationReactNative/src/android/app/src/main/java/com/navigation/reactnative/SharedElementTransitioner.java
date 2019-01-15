@@ -20,7 +20,10 @@ public class SharedElementTransitioner {
         if (sharedElements.contains(sharedElement) && !loadedSharedElements.contains(sharedElement)) {
             loadedSharedElements.add(sharedElement);
         }
-        if(sharedElements.size() == loadedSharedElements.size())
+        if(sharedElements.size() == loadedSharedElements.size()) {
             activity.startPostponedEnterTransition();
+            View contentView = activity.findViewById(android.R.id.content);
+            contentView.getRootView().setTag(R.id.sharedElementTransitioner, null);
+        }
     }
 }
