@@ -2,8 +2,6 @@ package com.navigation.reactnative;
 
 import android.os.Build;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
 
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -11,7 +9,7 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 
 import java.util.HashSet;
 
-public class SharedElementManager extends ViewGroupManager<FrameLayout> {
+public class SharedElementManager extends ViewGroupManager<SharedElementView> {
 
     @Override
     public String getName() {
@@ -19,8 +17,8 @@ public class SharedElementManager extends ViewGroupManager<FrameLayout> {
     }
 
     @Override
-    protected FrameLayout createViewInstance(ThemedReactContext reactContext) {
-        final FrameLayout view = new FrameLayout(reactContext);
+    protected SharedElementView createViewInstance(ThemedReactContext reactContext) {
+        final SharedElementView view = new SharedElementView(reactContext);
         view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View v) {
@@ -30,25 +28,31 @@ public class SharedElementManager extends ViewGroupManager<FrameLayout> {
                     sharedElements = new HashSet<>();
                     rootView.setTag(R.id.sharedElements, sharedElements);
                 }
-                if (!sharedElements.contains(view))
-                    sharedElements.add(view);
+                View sharedElement = view.getChildAt(0);
+                if (!sharedElements.contains(sharedElement)) {
+                    sharedElement.setTransitionName(view.getName());
+                    sharedElements.add(sharedElement);
+                }
             }
 
             @Override
             public void onViewDetachedFromWindow(View v) {
                 view.removeOnAttachStateChangeListener(this);
                 HashSet<View> sharedElements = getSharedElements(view.getRootView());
-                if (sharedElements != null && sharedElements.contains(view))
-                    sharedElements.remove(view);
+                View sharedElement = view.getChildAt(0);
+                if (sharedElements != null && sharedElements.contains(sharedElement)) {
+                    sharedElement.setTransitionName(null);
+                    sharedElements.remove(sharedElement);
+                }
             }
         });
         return view;
     }
 
     @ReactProp(name = "name")
-    public void setName(FrameLayout view, String name) {
+    public void setName(SharedElementView view, String name) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            view.setTransitionName(name);
+            view.setName(name);
     }
 
     @SuppressWarnings("unchecked")
