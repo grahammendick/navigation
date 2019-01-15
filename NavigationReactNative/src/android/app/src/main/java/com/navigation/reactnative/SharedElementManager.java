@@ -54,7 +54,7 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
                 View rootView = view.getRootView();
                 SharedElementTransitioner transitioner = (SharedElementTransitioner) rootView.getTag(R.id.sharedElementTransitioner);
                 if (transitioner != null)
-                    transitioner.load(view.getName(), null);
+                    transitioner.load(view.getName(), view.getEnterTransition());
                 return true;
             }
         });
@@ -70,6 +70,16 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
             sharedElement.setTransitionName(name);
     }
 
+    @ReactProp(name = "enterTransition")
+    public void setEnterTransition(SharedElementView view, String enterTransition) {
+        view.setEnterTransition(enterTransition);
+    }
+
+    @ReactProp(name = "exitTransition")
+    public void setExitTransition(SharedElementView view, String exitTransition) {
+        view.setExitTransition(exitTransition);
+    }
+    
     @SuppressWarnings("unchecked")
     public static HashSet<View> getSharedElements(View rootView) {
         return (HashSet<View>) rootView.getTag(R.id.sharedElements);
