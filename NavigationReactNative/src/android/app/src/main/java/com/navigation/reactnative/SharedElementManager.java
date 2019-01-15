@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.os.Build;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -44,6 +45,17 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
                     sharedElement.setTransitionName(null);
                     sharedElements.remove(sharedElement);
                 }
+            }
+        });
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                view.getViewTreeObserver().removeOnPreDrawListener(this);
+                View rootView = view.getRootView();
+                SharedElementTransitioner transitioner = (SharedElementTransitioner) rootView.getTag(R.id.sharedElements);
+                if (transitioner != null)
+                    transitioner.load(view.getName());
+                return true;
             }
         });
         return view;
