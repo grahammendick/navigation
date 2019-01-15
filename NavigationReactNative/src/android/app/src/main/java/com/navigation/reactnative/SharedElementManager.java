@@ -65,6 +65,9 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
     public void setName(SharedElementView view, String name) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             view.setName(name);
+        View sharedElement = view.getChildAt(0);
+        if (sharedElement != null)
+            sharedElement.setTransitionName(name);
     }
 
     @SuppressWarnings("unchecked")
