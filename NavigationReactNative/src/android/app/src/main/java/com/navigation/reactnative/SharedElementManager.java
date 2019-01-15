@@ -52,7 +52,7 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
             public boolean onPreDraw() {
                 view.getViewTreeObserver().removeOnPreDrawListener(this);
                 View rootView = view.getRootView();
-                SharedElementTransitioner transitioner = (SharedElementTransitioner) rootView.getTag(R.id.sharedElements);
+                SharedElementTransitioner transitioner = (SharedElementTransitioner) rootView.getTag(R.id.sharedElementTransitioner);
                 if (transitioner != null)
                     transitioner.load(view.getName());
                 return true;
