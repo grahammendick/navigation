@@ -38,22 +38,6 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             this.postponeEnterTransition();
-        final Activity activity = this;
-        mReactRootView.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
-            @Override
-            public void onChildViewAdded(View view, View view1) {
-                mReactRootView.setOnHierarchyChangeListener(null);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    Transition transition = TransitionInflater.from(activity).inflateTransition(R.transition.move);
-                    getWindow().setSharedElementEnterTransition(transition);
-                    activity.startPostponedEnterTransition();
-                }
-            }
-
-            @Override
-            public void onChildViewRemoved(View view, View view1) {
-
-            }
         });
     }
 
