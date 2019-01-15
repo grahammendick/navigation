@@ -73,10 +73,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 @Override
                 public void run() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
-                        HashSet<String> oldSharedElementSet = new HashSet<>();
-                        for(int i = 0; i < oldSharedElementNames.size(); i++) {
-                            oldSharedElementSet.add(oldSharedElementNames.getString(i));
-                        }
+                        HashSet<String> oldSharedElementSet = getSharedElementsSet(oldSharedElementNames);
                         SharedElementTransitioner transitioner = new SharedElementTransitioner(currentActivity, oldSharedElementSet);
                         for(String oldSharedElement : oldSharedElementSet)
                             transitioner.load(oldSharedElement, null);
@@ -120,11 +117,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 @Override
                 public void run() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null && sharedElements.length != 0) {
-                        HashSet<String> sharedElementSet = new HashSet<>();
-                        for(int i = 0; i < sharedElementNames.size(); i++) {
-                            sharedElementSet.add(sharedElementNames.getString(i));
-                        }
-                        intents[0].putExtra(SceneActivity.SHARED_ELEMENTS, sharedElementSet);
+                        intents[0].putExtra(SceneActivity.SHARED_ELEMENTS, getSharedElementsSet(sharedElementNames));
                         currentActivity.setExitSharedElementCallback(new SharedElementCallback() {
                             @Override
                             public void onSharedElementEnd(List<String> names, List<View> elements, List<View> snapshots) {
@@ -159,6 +152,14 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             return defaultId;
         String packageName = getReactApplicationContext().getPackageName();
         return getReactApplicationContext().getResources().getIdentifier(animationName, "anim", packageName);
+    }
+
+    private HashSet<String> getSharedElementsSet(ReadableArray sharedElementNames) {
+        HashSet<String> sharedElementSet = new HashSet<>();
+        for(int i = 0; i < sharedElementNames.size(); i++) {
+            sharedElementSet.add(sharedElementNames.getString(i));
+        }
+        return sharedElementSet;
     }
 
     private HashMap<String, View> getSharedElementsMap() {
