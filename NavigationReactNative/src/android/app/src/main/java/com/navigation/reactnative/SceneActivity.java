@@ -18,6 +18,7 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
     private ReactRootView mReactRootView;
     public static final String CRUMB = "Navigation.CRUMB";
     public static final String APP_KEY = "Navigation.APP_KEY";
+    public static final String SHARED_ELEMENTS = "Navigation.SHARED_ELEMENTS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

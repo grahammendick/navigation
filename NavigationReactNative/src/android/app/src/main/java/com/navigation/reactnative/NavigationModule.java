@@ -113,6 +113,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 @Override
                 public void run() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null && sharedElements.length != 0) {
+                        intents[0].putExtra(SceneActivity.SHARED_ELEMENTS, new HashSet<>(sharedElementsMap.keySet()));
                         currentActivity.setExitSharedElementCallback(new SharedElementCallback() {
                             @Override
                             public void onSharedElementEnd(List<String> names, List<View> elements, List<View> snapshots) {
