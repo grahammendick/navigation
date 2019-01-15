@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -67,13 +66,13 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             }
             final int enter = this.getAnimationResourceId(enterAnim, this.activityCloseEnterAnimationId);
             final int exit = this.getAnimationResourceId(exitAnim, this.activityCloseExitAnimationId);
-            final HashMap<String, View> oldSharedElementsMap = getSharedElementsMap();
+            final HashMap<String, View> oldSharedElementsMap = getSharedElementMap();
             final Pair[] oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
-                        HashSet<String> oldSharedElementSet = getSharedElementsSet(oldSharedElementNames);
+                        HashSet<String> oldSharedElementSet = getSharedElementSet(oldSharedElementNames);
                         SharedElementTransitioner transitioner = new SharedElementTransitioner(currentActivity, oldSharedElementSet);
                         for(String oldSharedElement : oldSharedElementSet)
                             transitioner.load(oldSharedElement, null);
@@ -111,13 +110,13 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             }
             final int enter = this.getAnimationResourceId(enterAnim, this.activityOpenEnterAnimationId);
             final int exit = this.getAnimationResourceId(exitAnim, this.activityOpenExitAnimationId);
-            final HashMap<String, View> sharedElementsMap = getSharedElementsMap();
+            final HashMap<String, View> sharedElementsMap = getSharedElementMap();
             final Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements(sharedElementsMap, sharedElementNames) : null;
             currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null && sharedElements.length != 0) {
-                        intents[0].putExtra(SceneActivity.SHARED_ELEMENTS, getSharedElementsSet(sharedElementNames));
+                        intents[0].putExtra(SceneActivity.SHARED_ELEMENTS, getSharedElementSet(sharedElementNames));
                         currentActivity.setExitSharedElementCallback(new SharedElementCallback() {
                             @Override
                             public void onSharedElementEnd(List<String> names, List<View> elements, List<View> snapshots) {
@@ -154,7 +153,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         return getReactApplicationContext().getResources().getIdentifier(animationName, "anim", packageName);
     }
 
-    private HashSet<String> getSharedElementsSet(ReadableArray sharedElementNames) {
+    private HashSet<String> getSharedElementSet(ReadableArray sharedElementNames) {
         HashSet<String> sharedElementSet = new HashSet<>();
         for(int i = 0; i < sharedElementNames.size(); i++) {
             sharedElementSet.add(sharedElementNames.getString(i));
@@ -162,7 +161,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         return sharedElementSet;
     }
 
-    private HashMap<String, View> getSharedElementsMap() {
+    private HashMap<String, View> getSharedElementMap() {
         View contentView = getCurrentActivity().findViewById(android.R.id.content);
         HashSet<View> sharedElements = SharedElementManager.getSharedElements(contentView.getRootView());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || sharedElements == null)
