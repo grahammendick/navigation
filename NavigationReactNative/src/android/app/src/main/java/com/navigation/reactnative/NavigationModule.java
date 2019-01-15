@@ -73,10 +73,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 public void run() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
                         HashSet<String> oldSharedElementSet = getSharedElementSet(oldSharedElementNames);
-                        SharedElementTransitioner transitioner = new SharedElementTransitioner(currentActivity, oldSharedElementSet);
-                        for(String oldSharedElement : oldSharedElementSet) {
-                            transitioner.load(oldSharedElement, null);
-                        }
+                        final SharedElementTransitioner transitioner = new SharedElementTransitioner(currentActivity, oldSharedElementSet);
                         currentActivity.setEnterSharedElementCallback(new SharedElementCallback() {
                             @Override
                             public void onMapSharedElements(List<String> names, Map<String, View> elements) {
@@ -85,8 +82,11 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                                 for(int i = 0; i < oldSharedElementNames.size(); i++) {
                                     String name = oldSharedElementNames.getString(i);
                                     names.add(name);
-                                    if (oldSharedElementsMap.containsKey(name))
+                                    if (oldSharedElementsMap.containsKey(name)) {
                                         elements.put(name, oldSharedElementsMap.get(name));
+                                        SharedElementView sharedElementView = (SharedElementView) oldSharedElementsMap.get(name).getParent();
+                                        transitioner.load(name, sharedElementView.getExitTransition());
+                                    }
                                 }
                             }
                         });
