@@ -83,9 +83,10 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                                     String name = oldSharedElementNames.getString(i);
                                     names.add(name);
                                     if (oldSharedElementsMap.containsKey(name)) {
-                                        elements.put(name, oldSharedElementsMap.get(name));
-                                        SharedElementView sharedElementView = (SharedElementView) oldSharedElementsMap.get(name).getParent();
-                                        transitioner.load(name, sharedElementView.getExitTransition());
+                                        View oldSharedElement = oldSharedElementsMap.get(name);
+                                        elements.put(name, oldSharedElement);
+                                        SharedElementView oldSharedElementView = (SharedElementView) oldSharedElement.getParent();
+                                        transitioner.load(name, oldSharedElementView.getExitTransition());
                                     }
                                 }
                             }
