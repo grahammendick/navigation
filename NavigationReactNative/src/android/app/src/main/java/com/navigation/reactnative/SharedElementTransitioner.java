@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.app.Activity;
+import android.os.Build;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.transition.TransitionSet;
@@ -21,6 +22,8 @@ public class SharedElementTransitioner {
     }
 
     public void load(String sharedElement, String transitionKey) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            return;
         if (sharedElements.contains(sharedElement) && !loadedSharedElements.contains(sharedElement)) {
             loadedSharedElements.add(sharedElement);
             if (transitionKey == null)

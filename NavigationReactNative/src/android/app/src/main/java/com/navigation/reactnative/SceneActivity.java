@@ -34,7 +34,7 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         HashSet<String> sharedElements = (HashSet<String>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
         mReactRootView.startReactApplication(getReactNativeHost().getReactInstanceManager(), appKey, props);
         setContentView(mReactRootView);
-        if (sharedElements != null ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null ) {
             this.postponeEnterTransition();
             SharedElementTransitioner transitioner = new SharedElementTransitioner(this, sharedElements);
             mReactRootView.getRootView().setTag(R.id.sharedElementTransitioner, transitioner);

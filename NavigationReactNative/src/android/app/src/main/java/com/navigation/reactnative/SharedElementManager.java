@@ -31,7 +31,7 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
                 }
                 View sharedElement = view.getChildAt(0);
                 if (!sharedElements.contains(sharedElement)) {
-                    sharedElement.setTransitionName(view.getName());
+                    setTransitionName(sharedElement, view.getName());
                     sharedElements.add(sharedElement);
                 }
             }
@@ -42,7 +42,7 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
                 HashSet<View> sharedElements = getSharedElements(view.getRootView());
                 View sharedElement = view.getChildAt(0);
                 if (sharedElements != null && sharedElements.contains(sharedElement)) {
-                    sharedElement.setTransitionName(null);
+                    setTransitionName(sharedElement, null);
                     sharedElements.remove(sharedElement);
                 }
             }
@@ -74,7 +74,7 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
         HashSet<View> sharedElements = getSharedElements(parent.getRootView());
         View sharedElement = parent.getChildAt(0);
         if (sharedElements != null && sharedElements.contains(sharedElement)) {
-            sharedElement.setTransitionName(null);
+            setTransitionName(sharedElement, null);
             sharedElements.remove(sharedElement);
         }
         super.removeViewAt(parent, index);
@@ -82,10 +82,13 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
 
     @ReactProp(name = "name")
     public void setName(SharedElementView view, String name) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            view.setName(name);
+        view.setName(name);
         View sharedElement = view.getChildAt(0);
-        if (sharedElement != null)
+        setTransitionName(sharedElement, name);
+    }
+
+    private void setTransitionName(View sharedElement, String name) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElement != null)
             sharedElement.setTransitionName(name);
     }
 
