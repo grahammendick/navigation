@@ -61,6 +61,23 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
         return view;
     }
 
+    public void addView(SharedElementView parent, View child, int index) {
+        parent.addView(child, index);
+        HashSet<View> sharedElements = getSharedElements(parent.getRootView());
+        if (sharedElements != null && !sharedElements.contains(child))
+            sharedElements.add(child);
+    }
+
+    public void removeViewAt(SharedElementView parent, int index) {
+        HashSet<View> sharedElements = getSharedElements(parent.getRootView());
+        View sharedElement = parent.getChildAt(0);
+        if (sharedElements != null && sharedElements.contains(sharedElement)) {
+            sharedElement.setTransitionName(null);
+            sharedElements.remove(sharedElement);
+        }
+        parent.removeViewAt(index);
+    }
+
     @ReactProp(name = "name")
     public void setName(SharedElementView view, String name) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
