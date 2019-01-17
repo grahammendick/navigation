@@ -54,12 +54,8 @@
         <div id="article">
             <h1>Shared Element Transition (Android)</h1>
             <p>
-                Android supports shared element transitions, where you can smoothly animate between UI elements that are common across two scenes. The Navigation router exposes this functionality to React using the <code>SharedElementAndroid</code> component. To identify a pair of shareable elements, you wrap each one in a <code>SharedElementAndroid</code> component and give them both the same <code>name</code>. When you navigate between scenes you pass the names of the pairs that you want to animate during the transition. You enable this functionality by locating the <code>styles.xml</code> file in the Android project and adding the following two lines:
+                Android supports shared element transitions, where you can smoothly animate between UI elements that are common across two scenes. The Navigation router exposes this functionality to React using the <code>SharedElementAndroid</code> component. To identify a pair of shareable elements, you wrap each one in a <code>SharedElementAndroid</code> component and give them both the same <code>name</code>. When you navigate between scenes you pass the names of the pairs that you want to animate during the transition.
             </p>
-            <pre><code class="language-jsx">&lt;style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
-    &lt;item name="android:windowSharedElementEnterTransition">@transition/move&lt;/item>
-    &lt;item name="android:windowSharedElementExitTransition">@transition/move&lt;/item>
-&lt;/style></code></pre>
             <p>
                 In our email example app, we can smooth out the transition when a user opens an email by sharing the subject of the email between the 'inbox' scene and the 'mail' scene. We wrap the subject elements on each scene inside a <code>SharedElementAndroid</code> component and give them both the same name. When we navigate to the 'mail' scene we pass a <code>sharedElements</code> array that contains this name.
             </p>
@@ -74,6 +70,21 @@
 &lt;/TouchableHighlight></code></pre>
             <pre><code class="language-jsx">// The 'mail' scene
 &lt;SharedElementAndroid name="mail">
+    &lt;Text>Meeting invite&lt;/Text>
+&lt;/SharedElementAndroid></code></pre>
+            <h2>Custom Transition</h2>
+            <p>
+                You can change the default shared element animation by creating an Android transition resource file. In our email example application, we want the email subject to overshoot its target slightly before settling into place. Inside Android Studio, we right click the root of our project and choose 'New -> Android Resource File'. In the pop-up dialog, we enter a name of 'email_overshoot', pick 'Transition' from the resource type dropdown and enter 'transition' for the directory name. We configure our animation using the built-in 'overshoot' interpolator.
+            </p>
+            <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
+    &lt;changeBounds android:interpolator="@android:interpolator/overshoot"/>
+&lt;/transitionSet></code></pre>
+            <p>
+                To get this animation to play when the 'mail' scene's <code>Text</code> component mounts and unmounts, we pass the name of our resource file to the <code>transition</code> prop of the <code>SharedElementAndroid</code> component.
+            </p>
+            <pre><code class="language-jsx">// The 'mail' scene
+&lt;SharedElementAndroid name="mail" transition="email_overshoot">
     &lt;Text>Meeting invite&lt;/Text>
 &lt;/SharedElementAndroid></code></pre>
         </div>
