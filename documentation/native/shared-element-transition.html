@@ -73,6 +73,14 @@
     &lt;Text>Meeting invite&lt;/Text>
 &lt;/SharedElementAndroid></code></pre>
             <h2>Custom Transition</h2>
+            <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
+    &lt;changeBounds android:interpolator="@android:interpolator/overshoot"/>
+&lt;/transitionSet></code></pre>
+            <pre><code class="language-jsx">// The 'mail' scene
+&lt;SharedElementAndroid name="mail" transition="overshoot">
+    &lt;Text>Meeting invite&lt;/Text>
+&lt;/SharedElementAndroid></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
