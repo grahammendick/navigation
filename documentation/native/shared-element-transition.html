@@ -73,12 +73,15 @@
     &lt;Text>Meeting invite&lt;/Text>
 &lt;/SharedElementAndroid></code></pre>
             <h2>Custom Transition</h2>
+            <p>
+                You can change the default shared element animation by creating an Android transition resource file. In our email example application, we want the email subject to overshoot its target slightly before settling into place. Inside Android Studio, we right click the root of our project and choose 'New -> Android Resource File'. In the pop-up dialog, we enter a name of 'email_overshoot', pick 'Transition' from the resource type dropdown and enter 'transition' for the directory name. We configure our animation using the built-in 'overshoot' interpolator.
+            </p>
             <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
 &lt;transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
     &lt;changeBounds android:interpolator="@android:interpolator/overshoot"/>
 &lt;/transitionSet></code></pre>
             <pre><code class="language-jsx">// The 'mail' scene
-&lt;SharedElementAndroid name="mail" transition="overshoot">
+&lt;SharedElementAndroid name="mail" transition="email_overshoot">
     &lt;Text>Meeting invite&lt;/Text>
 &lt;/SharedElementAndroid></code></pre>
         </div>
