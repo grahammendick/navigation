@@ -1,5 +1,5 @@
 import { Component, ReactNode } from 'react';
-import { ImageURISource } from 'react-native';
+import { ImageURISource, StyleProp, ViewStyle } from 'react-native';
 import { StateNavigator, State } from 'navigation';
 
 /**
@@ -76,6 +76,16 @@ export interface SharedElementAndroidProps {
      * The name shared across scenes by the two elements
      */
     name: string;
+
+    /**
+     * The resource for the transition
+     */
+    transition?: string | ((mount: boolean) => string);
+
+    /**
+     * The style
+     */
+    style?: StyleProp<ViewStyle>;
 }
 
 /**
