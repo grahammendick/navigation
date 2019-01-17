@@ -83,8 +83,7 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
     @ReactProp(name = "name")
     public void setName(SharedElementView view, String name) {
         view.setName(name);
-        View sharedElement = view.getChildAt(0);
-        setTransitionName(sharedElement, name);
+        setTransitionName(view.getChildAt(0), name);
     }
 
     private void setTransitionName(View sharedElement, String name) {
