@@ -24,7 +24,10 @@ export default ({color}) => (
             }}>
             <Text style={styles.back}>X</Text>
           </TouchableHighlight>}
-          <SharedElementAndroid name={color} style={styles.color} transition="overshoot">
+          <SharedElementAndroid
+            name={color}
+            style={styles.color}
+            transition="overshoot">
             <View style={{backgroundColor: color, flex: 1}} />
           </SharedElementAndroid>
           <Text style={styles.text}>{color}</Text>
