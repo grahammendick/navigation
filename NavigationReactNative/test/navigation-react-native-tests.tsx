@@ -37,7 +37,7 @@ var Person = ({ name }) => (
                         stateNavigator.navigateBack(1)
                     }} />
                 </RightBarIOS>
-                <SharedElementAndroid name={name}>
+                <SharedElementAndroid name={name} transition="bounce">
                     <Text>{name}</Text>
                 </SharedElementAndroid>
             </View>
