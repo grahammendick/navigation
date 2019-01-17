@@ -6,14 +6,19 @@ import {Linking} from 'react-native';
 import Grid from './Grid';
 import Detail from './Detail';
 
+const colors = [
+  'maroon', 'red', 'crimson', 'orange', 'brown', 'sienna', 'olive',
+  'purple', 'fuchsia', 'indigo', 'green', 'navy', 'blue', 'teal', 'black'
+];
+
 var stateNavigator = new StateNavigator([
   {key: 'grid', title: 'Colors'},
   {key: 'detail', title: 'Color', trackCrumbTrail: true},
 ]);
 
 const { grid, detail } = stateNavigator.states;
-grid.renderScene = () => <Grid/>;
-detail.renderScene = ({color}) => <Detail color={color}/>;
+grid.renderScene = () => <Grid colors={colors}/>;
+detail.renderScene = ({color}) => <Detail colors={colors} color={color}/>;
 
 stateNavigator.navigate('grid');
 addNavigateHandlers(stateNavigator);

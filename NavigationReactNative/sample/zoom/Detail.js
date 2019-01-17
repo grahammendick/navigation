@@ -3,12 +3,7 @@ import {StyleSheet, ScrollView, Text, View, Platform, TouchableHighlight} from '
 import {NavigationContext} from 'navigation-react';
 import {RightBarIOS, BarButtonIOS, SharedElementAndroid} from 'navigation-react-native';
 
-const colors = [
-  'maroon', 'red', 'crimson', 'orange', 'brown', 'sienna', 'olive',
-  'purple', 'fuchsia', 'indigo', 'green', 'navy', 'blue', 'teal', 'black'
-];
-
-export default ({color}) => (
+export default ({colors, color}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
