@@ -72,8 +72,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 @Override
                 public void run() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
-                        HashSet<String> oldSharedElementSet = getSharedElementSet(oldSharedElementNames);
-                        final SharedElementTransitioner transitioner = new SharedElementTransitioner(currentActivity, oldSharedElementSet);
+                        final SharedElementTransitioner transitioner = new SharedElementTransitioner(currentActivity, getSharedElementSet(oldSharedElementNames));
                         currentActivity.setEnterSharedElementCallback(new SharedElementCallback() {
                             @Override
                             public void onMapSharedElements(List<String> names, Map<String, View> elements) {
