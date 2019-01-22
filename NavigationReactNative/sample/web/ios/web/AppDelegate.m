@@ -21,7 +21,7 @@
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 
   NSString *title = @"Colors";
-  NSString *appKey = @"zoom";
+  NSString *appKey = @"web";
 
   UIViewController *sceneController = [[NVSceneController alloc] init:0 tab:0 title:title appKey:appKey];
   UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sceneController];
