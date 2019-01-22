@@ -8,6 +8,10 @@ export default ({colors, color}) => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         {Platform.OS !== 'ios' && <TouchableHighlight
           underlayColor="#fff"
+          accessibilityRole="link"
+          href={stateNavigator.historyManager.getHref(
+            stateNavigator.getNavigationBackLink(1)
+          )}
           onPress={() => {
             stateNavigator.navigateBack(1);
           }}>
@@ -24,10 +28,12 @@ export default ({colors, color}) => (
                 key={subcolor}
                 style={[styles.subcolor, {backgroundColor: subcolor}]}
                 underlayColor={subcolor}
+                accessibilityRole="link"
+                href={stateNavigator.historyManager.getHref(
+                  stateNavigator.getNavigationLink('detail', {color: subcolor})
+                )}
                 onPress={() => {
-                  stateNavigator.navigate('detail', {
-                    color: subcolor, sharedElements: [subcolor]
-                  });
+                  stateNavigator.navigate('detail', {color: subcolor});
                 }}>
                   <View />
               </TouchableHighlight>
