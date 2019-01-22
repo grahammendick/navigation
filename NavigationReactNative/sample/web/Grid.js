@@ -12,10 +12,12 @@ export default ({colors}) => (
               key={color}
               style={styles.color}
               underlayColor={color}                
+              accessibilityRole="link"
+              href={stateNavigator.historyManager.getHref(
+                stateNavigator.getNavigationLink('detail', {color})
+              )}
               onPress={() => {
-                stateNavigator.navigate('detail', {
-                  color, sharedElements: [color]
-                });
+                stateNavigator.navigate('detail', {color});
               }}>
               <View style={{flex: 1}}>
                 <View style={{backgroundColor: color, flex: 1}} />
