@@ -6,7 +6,7 @@ export default ({colors, color}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        {Platform.OS === 'android' && <TouchableHighlight
+        {Platform.OS !== 'ios' && <TouchableHighlight
           underlayColor="#fff"
           onPress={() => {
             stateNavigator.navigateBack(1);
