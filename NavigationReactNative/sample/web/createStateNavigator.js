@@ -22,7 +22,7 @@ export default () => {
 
   const {grid, detail} = stateNavigator.states;
   grid.renderScene = () => <Grid colors={colors} />;
-  detail.renderScene = ({color}) => <Detail colors={colors} {...color} />;
+  detail.renderScene = ({color}) => <Detail colors={colors} color={color} />;
   
   detail.truncateCrumbTrail = (state, data, crumbs) => (
     crumbs.slice(-1)[0].state === detail ? crumbs.slice(0, -1) : crumbs
