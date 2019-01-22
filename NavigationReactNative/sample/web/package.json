@@ -11,6 +11,7 @@
     "navigation-react-mobile": "*",
     "navigation-react-native": "*",
     "react": "*",
+    "react-art": "^16.7.0",
     "react-dom": "*",
     "react-native-web": "*",
     "webpack": "^4.28.4",
