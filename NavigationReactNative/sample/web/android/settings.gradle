@@ -1,0 +1,3 @@
+rootProject.name = 'web'
+
+include ':app'
