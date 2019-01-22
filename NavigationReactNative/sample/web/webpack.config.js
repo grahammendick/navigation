@@ -3,7 +3,7 @@ module.exports = {
     entry: "./index.web.js",
     output: {
         path: __dirname,
-        filename: "app.js"
+        filename: "web_app.js"
     },
     module: {
         rules: [

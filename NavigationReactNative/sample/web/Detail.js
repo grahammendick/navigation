@@ -1,17 +1,11 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, Platform, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {RightBarIOS, BarButtonIOS} from 'navigation-react-native';
 
 export default ({colors, color}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        {Platform.OS == 'ios' && <RightBarIOS>
-          <BarButtonIOS systemItem="cancel" onPress={() => {
-            stateNavigator.navigateBack(1);
-          }} />
-        </RightBarIOS>}
         {Platform.OS !== 'ios' && <TouchableHighlight
           underlayColor="#fff"
           accessibilityRole="link"
