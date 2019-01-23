@@ -22,7 +22,7 @@ export default ({colors}) => (
                   color, sharedElements: [color]
                 });
               }}>
-              <SharedElementAndroid name={color} style={{flex: 1}}>
+              <SharedElementAndroid name={color} data={{color}} style={{flex: 1}}>
                 <View style={{backgroundColor: color, flex: 1}} />
               </SharedElementAndroid>
             </TouchableHighlight>
