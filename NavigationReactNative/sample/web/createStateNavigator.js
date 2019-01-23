@@ -1,6 +1,5 @@
 import React from 'react';
 import {StateNavigator} from 'navigation';
-import {MobileHistoryManager} from 'navigation-react-mobile';
 import Grid from './Grid';
 import Detail from './Detail';
 
@@ -13,12 +12,7 @@ export default () => {
   const stateNavigator = new StateNavigator([
     {key: 'grid', title: 'Colors', route: ''},
     {key: 'detail', title: 'Color', trackCrumbTrail: true},
-  ], new MobileHistoryManager(url => {
-    var {state, data} = stateNavigator.parseLink(url);
-    return stateNavigator.fluent()
-      .navigate('grid')
-      .navigate(state.key, data).url;
-  }));
+  ]);
 
   const {grid, detail} = stateNavigator.states;
   grid.renderScene = () => <Grid colors={colors} />;
