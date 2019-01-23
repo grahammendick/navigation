@@ -15,7 +15,7 @@ module.exports = {
     resolve: {
         alias: {
             'react-native$': 'react-native-web',
-            'navigation-react-native$': path.resolve(__dirname, 'web/navigation-react-native-web.js'),
+            'navigation-react-native$': path.resolve(__dirname, 'navigation-react-native-web.js'),
 
         }
     }
