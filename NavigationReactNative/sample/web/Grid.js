@@ -1,6 +1,7 @@
 import React from 'react';
-import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
+import {StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
+import {SharedElementAndroid} from 'navigation-react-native';
 
 export default ({colors}) => (
   <NavigationContext.Consumer>
@@ -17,11 +18,13 @@ export default ({colors}) => (
                 stateNavigator.getNavigationLink('detail', {color})
               )}
               onPress={() => {
-                stateNavigator.navigate('detail', {color});
+                stateNavigator.navigate('detail', {
+                  color, sharedElements: [color]
+                });
               }}>
-              <View style={{flex: 1}}>
+              <SharedElementAndroid name={color} style={{flex: 1}}>
                 <View style={{backgroundColor: color, flex: 1}} />
-              </View>
+              </SharedElementAndroid>
             </TouchableHighlight>
           ))}
         </View>

@@ -1,3 +1,5 @@
+var path = require('path');
+
 module.exports = {
     mode: 'development',
     entry: "./index.web.js",
@@ -12,7 +14,9 @@ module.exports = {
     },
     resolve: {
         alias: {
-            'react-native$': 'react-native-web'
+            'react-native$': 'react-native-web',
+            'navigation-react-native$': path.resolve(__dirname, 'web/navigation-react-native-web.js'),
+
         }
     }
 };
