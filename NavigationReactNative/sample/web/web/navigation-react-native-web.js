@@ -6,7 +6,7 @@ class SharedElementAndroid extends React.Component{
   setNativeProps() {
   }
   render() {
-    const {style,children,...props} = this.props;
+    const {style, transition, children, ...props} = this.props;
     return (
       <View style={style}>
         <SharedElement {...props}>
