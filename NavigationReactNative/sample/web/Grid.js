@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
+import {StyleSheet, ScrollView, View, Platform, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {SharedElementAndroid} from 'navigation-react-native';
 
@@ -19,7 +19,7 @@ export default ({colors}) => (
               )}
               onPress={() => {
                 stateNavigator.navigate('detail', {
-                  color, sharedElements: [color]
+                  color, sharedElements: Platform.OS !== 'web' ? [color] : null
                 });
               }}>
               <SharedElementAndroid name={color} data={{color}} style={{flex: 1}}>

@@ -40,7 +40,7 @@ export default ({colors, color}) => (
                 )}
                 onPress={() => {
                   stateNavigator.navigate('detail', {
-                    color: subcolor, sharedElements: [subcolor]
+                    color: subcolor, sharedElements: Platform.OS !== 'web' ? [subcolor] : null
                   });
                 }}>
                   <View />
