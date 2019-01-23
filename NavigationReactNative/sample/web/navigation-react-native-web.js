@@ -2,6 +2,9 @@ import React from 'react';
 import {View} from 'react-native';
 import {SharedElement} from 'navigation-react-mobile';
 
+const RightBarIOS = () => null;
+const BarButtonIOS = () => null;
+
 class SharedElementAndroid extends React.Component{
   setNativeProps() {
   }
@@ -17,4 +20,4 @@ class SharedElementAndroid extends React.Component{
   }
 }
 
-export { SharedElementAndroid };
+export { RightBarIOS, BarButtonIOS, SharedElementAndroid };
