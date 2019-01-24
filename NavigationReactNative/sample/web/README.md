@@ -7,6 +7,6 @@ Once you've cloned the repository, you can install the dependencies for Mobile a
     npm install
     npm run build
     
-Run the command `react-native run-android` to start the Android app.
-Run the command `react-native run-ios` to start the iOS app.
+Run the command `react-native run-android` to start the Android app.  
+Run the command `react-native run-ios` to start the iOS app.  
 Open app.html to start the Web app.
