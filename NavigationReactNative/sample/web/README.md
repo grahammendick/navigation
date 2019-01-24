@@ -2,7 +2,7 @@
 The Navigation router lets you run your code on Android, iOS and the Web. It uses the underlying native API to provide faithful navigation on Android and iOS. It uses React Native for Web and Navigation React Mobile to run this same code on the Web.
 
 ## Run
-Once you've cloned the repository, you can install the dependencies for Mobile and Web and build the Web bundle:
+Once you've cloned the repository, you can install the dependencies for React Native and Web and build the Web bundle:
 
     npm install
     npm run build
