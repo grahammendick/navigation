@@ -62,16 +62,21 @@
             <pre><code class="language-jsx">// The 'inbox' scene
 &lt;TouchableHighlight
     onPress={() => {
-        stateNavigator.navigate('mail', {id: 12});
+        stateNavigator.navigate('mail', {id: id});
     }}>
-    &lt;SharedElementAndroid name="mail">
+    &lt;SharedElementAndroid name={'mail' + id}>
         &lt;Text>Meeting invite&lt;/Text>
     &lt;/SharedElementAndroid>
 &lt;/TouchableHighlight></code></pre>
             <pre><code class="language-jsx">// The 'mail' scene
-&lt;SharedElementAndroid name="mail">
+&lt;SharedElementAndroid name={'mail' + id}>
     &lt;Text>Meeting invite&lt;/Text>
 &lt;/SharedElementAndroid></code></pre>
+            <p>                
+            </p>
+            <pre><code class="language-js">var {mail} = stateNavigator.scenes;
+mail.getSharedElements = data => ['mail' + data.id];
+</code></pre>
             <h2>Custom Transition</h2>
             <p>
                 You can change the default shared element animation by creating an Android transition resource file. In our email example application, we want the email subject to overshoot its target slightly before settling into place. Inside Android Studio, we right click the root of our project and choose 'New -> Android Resource File'. In the pop-up dialog, we enter a name of 'email_overshoot', pick 'Transition' from the resource type dropdown and enter 'transition' for the directory name. We configure our animation using the built-in 'overshoot' interpolator.
