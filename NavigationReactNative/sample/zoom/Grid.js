@@ -14,9 +14,7 @@ export default ({colors}) => (
               style={styles.color}
               underlayColor={color}                
               onPress={() => {
-                stateNavigator.navigate('detail', {
-                  color, sharedElements: [color]
-                });
+                stateNavigator.navigate('detail', {color});
               }}>
               <SharedElementAndroid name={color} style={{flex: 1}}>
                 <View style={{backgroundColor: color, flex: 1}} />
