@@ -34,9 +34,7 @@ export default ({colors, color}) => (
                   style={[styles.subcolor, {backgroundColor: subcolor}]}
                   underlayColor={subcolor}
                   onPress={() => {
-                    stateNavigator.navigate('detail', {
-                      color: subcolor, sharedElements: [subcolor]
-                    });
+                    stateNavigator.navigate('detail', {color: subcolor});
                   }}>
                     <View />
                 </TouchableHighlight>
