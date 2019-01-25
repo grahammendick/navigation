@@ -73,7 +73,7 @@
     &lt;Text>Meeting invite&lt;/Text>
 &lt;/SharedElementAndroid></code></pre>
             <p> 
-                We attach a `getSharedElements` function to the 'mail' `State`               
+                When you navigate between two <code>States</code>, the Navigation router calls a <code>getSharedElement</code> function on the destination <code>State</code>. You return an array containing the names of the shared elements that are to participate in the transition. In our email example, we attach the function to the 'mail' <code>State</code> and return the name corresponding to the selected email.
             </p>
             <pre><code class="language-js">var {mail} = stateNavigator.scenes;
 mail.getSharedElements = data => ['mail' + data.id];
