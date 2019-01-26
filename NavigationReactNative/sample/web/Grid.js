@@ -18,9 +18,7 @@ export default ({colors}) => (
                 stateNavigator.getNavigationLink('detail', {color})
               )}
               onPress={() => {
-                stateNavigator.navigate('detail', {
-                  color, sharedElements: Platform.OS !== 'web' ? [color] : null
-                });
+                stateNavigator.navigate('detail', {color});
               }}>
               <SharedElementAndroid name={color} data={{color}} style={{flex: 1}}>
                 <View style={{backgroundColor: color, flex: 1}} />

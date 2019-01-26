@@ -39,9 +39,7 @@ export default ({colors, color}) => (
                   stateNavigator.getNavigationLink('detail', {color: subcolor})
                 )}
                 onPress={() => {
-                  stateNavigator.navigate('detail', {
-                    color: subcolor, sharedElements: Platform.OS !== 'web' ? [subcolor] : null
-                  });
+                  stateNavigator.navigate('detail', {color: subcolor});
                 }}>
                   <View />
               </TouchableHighlight>
