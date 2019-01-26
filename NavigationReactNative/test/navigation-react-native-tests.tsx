@@ -49,6 +49,8 @@ var { people, person } = stateNavigator.states;
 people.renderScene = () => <People />;
 person.renderScene = ({ name }) => <Person name={name}/>;
 
+person.getSharedElements = ({name}) => name;
+
 addNavigateHandlers(stateNavigator);
 
 var App = ({crumb}) => (
