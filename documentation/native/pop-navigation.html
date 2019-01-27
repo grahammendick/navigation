@@ -76,16 +76,16 @@ var Compose = () => (
                 The Navigation router is the only React Native router that navigates natively on Android and iOS where you can interrogate the stack in JavaScript. You recall that the Navigation router drops a breadcrumb at each visited scene, just like the fairy-tale characters Hansel and Gretel. The stack of visited scenes is represented in JavaScript as an array of breadcrumbs. Each crumb corresponds to a visited scene and holds the <code>State</code> and navigation data associated with it.
             </p>
             <p>
-                Let's use this array of crumbs to make the 'Back to Inbox' button work regardless of the route the user takes to get to the 'compose' scene. For example, if the user presses the 'Compose Mail' button after opening an email, then popping one scene off the stack goes back to the open email instead of the inbox. We ensure the 'Back to Inbox' button always pops to the top of the stack by navigating back the length of the crumbs</code> array.
+                Let's use this array of crumbs to make the 'Back to Inbox' button work regardless of the route the user takes to get to the 'compose' scene. For example, if the user presses the 'Compose Mail' button after opening an email, then popping one scene off the stack goes back to the open email instead of the inbox. We ensure the 'Back to Inbox' button always pops to the top of the stack by navigating back the length of the <code>crumbs</code> array.
             </p>
             <pre><code class="language-jsx">var {crumbs} = stateNavigator.stateContext;
 stateNavigator.navigateBack(crumbs.length);</code></pre>
             <h2>Popping when Pushing</h2>
             <p>
-                By default, each navigation adds one to the size of the stack. You can change this behaviour by attaching a <code>truncateCrumbTrail</code> function to a <code>State</code>. During a navigation, the Navigation router calls this function on the destination <code>State</code>. It passes in the provisional stack, as an array of crumbs</code>, and you return the modified stack. Removing a crumb</code> from the array pops the corresponding scene from the stack.
+                By default, each navigation adds one to the size of the stack. You can change this behaviour by attaching a <code>truncateCrumbTrail</code> function to a <code>State</code>. During a navigation, the Navigation router calls this function on the destination <code>State</code>. It passes in the provisional stack, as an array of <code>crumbs</code>, and you return the modified stack. Removing a crumb from the array pops the corresponding scene from the stack.
             </p>
             <p>
-                In the our example, we can add an 'Expand' button to the 'mail' scene so the user can view the full email conversation. On click, we navigate to the 'mail' scene again and pass an 'expand' boolean in navigation data. We must pop the scene showing the collapsed email from the stack so that navigating back still returns the user to their inbox. Put another way, we must prevent consecutive occurrences of the mail <code>State</code> appearing in the crumbs</code> array.
+                In the our example, we can add an 'Expand' button to the 'mail' scene so the user can view the full email conversation. On click, we navigate to the 'mail' scene again and pass an 'expand' boolean in navigation data. We must pop the scene showing the collapsed email from the stack so that navigating back still returns the user to their inbox. Put another way, we must prevent consecutive occurrences of the mail <code>State</code> appearing in the <code>crumbs</code> array.
             </p>
             <pre><code class="language-jsx">mail.truncateCrumbTrail = function(state, data, crumbs) {
   var latestCrumb = crumbs[crumbs.length - 1];
