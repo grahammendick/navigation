@@ -89,7 +89,7 @@ stateNavigator.navigateBack(crumbs.length);</code></pre>
             </p>
             <pre><code class="language-jsx">mail.truncateCrumbTrail = function(state, data, crumbs) {
   var latestCrumb = crumbs[crumbs.length - 1];
-  return latestCrumb.state.key === 'mail' ? crumbs.slice(0, -1) : crumbs;
+  return latestCrumb.state === state ? crumbs.slice(0, -1) : crumbs;
 };</code></pre>
         </div>
     </div>
