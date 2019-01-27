@@ -87,6 +87,10 @@ stateNavigator.navigateBack(crumbs.length);</code></pre>
             <p>
                 In the email example, we can add a button to the mail scene that expands the email so the user can view the full conversation. On click, we navigate to the mail scene again and pass an expand boolean in navigation data. We must remove the scene showing the collapsed email from the stack so that navigating back still returns the user to their inbox. Put another way, we must prevent consecutive occurrences of the mail State from appearing in the Crumbs array.
             </p>
+            <pre><code class="language-jsx">mail.truncateCrumbTrail = function(state, data, crumbs) {
+  var latestCrumb = crumbs[crumbs.length - 1];
+  return latestCrumb.state.key === 'mail' ? crumbs.slice(0, -1) : crumbs;
+};</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
