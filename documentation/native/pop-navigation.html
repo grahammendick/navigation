@@ -80,6 +80,17 @@ var Compose = () => (
             </p>
             <pre><code class="language-jsx">var {crumbs} = stateNavigator.stateContext;
 stateNavigator.navigateBack(crumbs.length);</code></pre>
+            <h2>Popping when Pushing</h2>
+            <p>
+                By default, each navigation adds one to the size of the stack. You can change this behaviour by attaching a <code>truncateCrumbTrail</code> function to a <code>State</code>. During a navigation, the Navigation router calls this function on the destination <code>State</code>. It passes in the provisional stack, as an array of <code>crumbs</code>, and you return the modified stack. Removing a crumb from the array pops the corresponding scene from the stack.
+            </p>
+            <p>
+                In the our example, we can add an 'Expand' button to the 'mail' scene so the user can view the full email conversation. On click, we navigate to the 'mail' scene again and pass an 'expand' boolean in navigation data. We must pop the scene showing the collapsed email from the stack so that navigating back still returns the user to their inbox. Put another way, we must prevent consecutive occurrences of the mail <code>State</code> appearing in the <code>crumbs</code> array.
+            </p>
+            <pre><code class="language-jsx">mail.truncateCrumbTrail = function(state, data, crumbs) {
+  var latestCrumb = crumbs[crumbs.length - 1];
+  return latestCrumb.state === state ? crumbs.slice(0, -1) : crumbs;
+};</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
