@@ -82,10 +82,10 @@ var Compose = () => (
 stateNavigator.navigateBack(crumbs.length);</code></pre>
             <h2>Pushing when Popping</h2>
             <p>
-                By default, each navigation adds one scene to the stack. You can change this behaviour by attaching a truncateCrumbTrail function to a State. During a navigation, the Navigation router calls this function on the destination State. It passes in the provisional stack, as an array of Crumbs, and you return the modified stack. Dropping a crumb from the array removes the corresponding scene in the stack.
+                By default, each navigation adds one scene to the stack. You can change this behaviour by attaching a <code>truncateCrumbTrail</code> function to a <code>State</code>. During a navigation, the Navigation router calls this function on the destination <code>State</code>. It passes in the provisional stack, as an array of <code>Crumbs</code>, and you return the modified stack. Dropping a <code>Crumb</code> from the array removes the corresponding scene in the stack.
             </p>
             <p>
-                In the email example, we can add a button to the mail scene that expands the email so the user can view the full conversation. On click, we navigate to the mail scene again and pass an expand boolean in navigation data. We must remove the scene showing the collapsed email from the stack so that navigating back still returns the user to their inbox. Put another way, we must prevent consecutive occurrences of the mail State from appearing in the Crumbs array.
+                In the email example, we can add a button to the 'mail' scene that expands the email so the user can view the full conversation. On click, we navigate to the 'mail' scene again and pass an 'expand' boolean in navigation data. We must remove the scene showing the collapsed email from the stack so that navigating back still returns the user to their inbox. Put another way, we must prevent consecutive occurrences of the mail <code>State</code> from appearing in the <code>Crumbs</code> array.
             </p>
             <pre><code class="language-jsx">mail.truncateCrumbTrail = function(state, data, crumbs) {
   var latestCrumb = crumbs[crumbs.length - 1];
