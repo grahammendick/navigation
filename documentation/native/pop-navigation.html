@@ -80,7 +80,7 @@ var Compose = () => (
             </p>
             <pre><code class="language-jsx">var {crumbs} = stateNavigator.stateContext;
 stateNavigator.navigateBack(crumbs.length);</code></pre>
-            <h2>Pushing when Popping</h2>
+            <h2>Popping when Pushing</h2>
             <p>
                 By default, each navigation adds one scene to the stack. You can change this behaviour by attaching a <code>truncateCrumbTrail</code> function to a <code>State</code>. During a navigation, the Navigation router calls this function on the destination <code>State</code>. It passes in the provisional stack, as an array of crumbs</code>, and you return the modified stack. Dropping a crumb</code> from the array removes the corresponding scene in the stack.
             </p>
