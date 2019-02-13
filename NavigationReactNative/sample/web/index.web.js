@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from 'react-native';
+import {render} from 'react-dom';
 import {NavigationHandler} from 'navigation-react';
 import {MobileHistoryManager} from 'navigation-react-mobile';
 import createStateNavigator from './createStateNavigator';
