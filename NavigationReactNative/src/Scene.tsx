@@ -10,8 +10,8 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
     constructor(props) {
         super(props);
         this.state = {navigationEvent: null};
-        this.willNavigate = this.willNavigate.bind(this);
         this.handleBack = this.handleBack.bind(this);
+        this.willNavigate = this.willNavigate.bind(this);
     }
     static defaultProps = {
         crumb: 0,
@@ -29,16 +29,16 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
         return null;
     }
     componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
         var navigationEmitter = new NativeEventEmitter(NativeModules.NavigationModule);
         this.willNavigateSubscription = navigationEmitter.addListener('WillNavigate', this.willNavigate);
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
     shouldComponentUpdate(_nextProps, nextState) {
         return nextState.navigationEvent !== this.state.navigationEvent;
     }
     componentWillUnmount() {
-        this.willNavigateSubscription.remove();
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        this.willNavigateSubscription.remove();
     }
     handleBack() {
         var {navigationEvent} = this.state;
