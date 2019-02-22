@@ -21,21 +21,14 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
         if (state && crumbs.length === crumb)
             return {navigationEvent};
         if (state && !prevNavigationEvent && crumb < crumbs.length) {
-            var {stateNavigator} = navigationEvent;
-            var stackNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
-            stackNavigator.stateContext = Scene.createStateContext(crumbs, crumb);
-            stackNavigator.configure = stateNavigator.configure;
-            stackNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
-            stackNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
-            stackNavigator.onNavigate = stateNavigator.onNavigate;
-            stackNavigator.offNavigate = stateNavigator.offNavigate;
-            stackNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
-            var {oldState, state, data, asyncData} = stackNavigator.stateContext;
-            return {navigationEvent: {oldState, state, data, asyncData, stateNavigator: stackNavigator}};
+            var stackNavigationEvent = Scene.createNavigationEvent(navigationEvent, crumbs, crumb);
+            return {navigationEvent: stackNavigationEvent};
         }
         return null;
     }
-    static createStateContext(crumbs: Crumb[], crumb: number) {
+    static createNavigationEvent(navigationEvent: NavigationEvent, crumbs: Crumb[], crumb: number): NavigationEvent {
+        var {stateNavigator} = navigationEvent;
+        var stackNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
         var stateContext = new StateContext();
         var {state, data, url, title} = crumbs[crumb];
         stateContext.state = state;
@@ -50,7 +43,15 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
             stateContext.previousData = stateContext.oldData = data;
             stateContext.previousUrl = stateContext.oldUrl = url;
         }
-        return stateContext;
+        stackNavigator.stateContext = stateContext;
+        stackNavigator.configure = stateNavigator.configure;
+        stackNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
+        stackNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
+        stackNavigator.onNavigate = stateNavigator.onNavigate;
+        stackNavigator.offNavigate = stateNavigator.offNavigate;
+        stackNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
+        var {oldState, state, data, asyncData} = stackNavigator.stateContext;
+        return {oldState, state, data, asyncData, stateNavigator: stackNavigator, nextState: undefined, nextData: undefined};
     }
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
