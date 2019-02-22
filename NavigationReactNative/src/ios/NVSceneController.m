@@ -30,6 +30,14 @@
     }
 }
 
+-(void)viewWillAppear:(BOOL)animated  
+{  
+    [super viewWillAppear:animated];  
+    if (self.navigationModule && self.navigationModule.bridge) {
+        [self.navigationModule sendEventWithName:@"WillNavigate" body:@{@"crumb": @(self.crumb), @"tab": @(self.tab)}];
+    }
+}
+
 - (void)loadView
 {
     NVApplicationHostDelegate *delegate = (NVApplicationHostDelegate *)[[UIApplication sharedApplication] delegate];
