@@ -11,7 +11,7 @@ RCT_EXPORT_MODULE();
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"Navigate"];
+    return @[@"Navigate", @"WillNavigate"];
 }
 
 - (dispatch_queue_t)methodQueue
