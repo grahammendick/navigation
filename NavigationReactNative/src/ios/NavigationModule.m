@@ -28,6 +28,7 @@ RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)t
     } else {
         navigationController = (UINavigationController *)rootViewController;
     }
+    ((NVSceneController *) [navigationController viewControllers][0]).navigationModule = self;
     
     NSInteger currentCrumb = [navigationController.viewControllers count] - 1;
     if (crumb < currentCrumb) {
