@@ -43,6 +43,17 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
         }
         return false;
     }
+    willNavigate({crumb}) {
+        if (this.props.crumb === crumb) {
+            var {navigationEvent} = this.props;
+            var {crumbs} = navigationEvent.stateNavigator.stateContext;
+            var {nextCrumb} = this.state.navigationEvent.stateNavigator.stateContext;
+            if (crumb < crumbs.length && crumbs[crumb].crumblessUrl !== nextCrumb.crumblessUrl) {
+                var stackNavigationEvent = Scene.createNavigationEvent(navigationEvent, crumbs, crumb);
+                this.setState({navigationEvent: stackNavigationEvent});
+            }
+        }
+    }
     static createNavigationEvent(navigationEvent: NavigationEvent, crumbs: Crumb[], crumb: number): NavigationEvent {
         var {stateNavigator} = navigationEvent;
         var stackNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
