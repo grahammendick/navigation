@@ -1,14 +1,16 @@
 import React, { ReactNode } from 'react';
-import { BackHandler } from 'react-native';
+import { BackHandler, NativeEventEmitter, NativeModules, EmitterSubscription } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 type NavigationMotionProps = { crumb?: number, renderScene: (state: State, data: any) => ReactNode, navigationEvent: NavigationEvent };
 type NavigationMotionState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<NavigationMotionProps, NavigationMotionState> {
+    private willNavigateSubscription: EmitterSubscription;
     constructor(props) {
         super(props);
         this.state = {navigationEvent: null};
+        this.willNavigate = this.willNavigate.bind(this);
         this.handleBack = this.handleBack.bind(this);
     }
     static defaultProps = {
@@ -27,13 +29,16 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
         return null;
     }
     componentDidMount() {
+        var navigationEmitter = new NativeEventEmitter(NativeModules.NavigationModule);
+        this.willNavigateSubscription = navigationEmitter.addListener('WillNavigate', this.willNavigate);
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
     shouldComponentUpdate(_nextProps, nextState) {
         return nextState.navigationEvent !== this.state.navigationEvent;
     }
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack); 
+        this.willNavigateSubscription.remove();
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
     handleBack() {
         var {navigationEvent} = this.state;
