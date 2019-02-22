@@ -29,8 +29,8 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
-    shouldComponentUpdate(props, state) {
-        return state.navigationEvent === props.navigationEvent;
+    shouldComponentUpdate(_nextProps, nextState) {
+        return nextState.navigationEvent !== this.state.navigationEvent;
     }
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack); 
