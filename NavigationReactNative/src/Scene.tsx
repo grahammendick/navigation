@@ -26,6 +26,23 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
         }
         return null;
     }
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+    shouldComponentUpdate(props, state) {
+        return state.navigationEvent === props.navigationEvent;
+    }
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBack); 
+    }
+    handleBack() {
+        var {navigationEvent} = this.state;
+        if (navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
+            navigationEvent.stateNavigator.navigateBack(1);
+            return true;
+        }
+        return false;
+    }
     static createNavigationEvent(navigationEvent: NavigationEvent, crumbs: Crumb[], crumb: number): NavigationEvent {
         var {stateNavigator} = navigationEvent;
         var stackNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
@@ -52,23 +69,6 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
         stackNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
         var {oldState, state, data, asyncData} = stackNavigator.stateContext;
         return {oldState, state, data, asyncData, stateNavigator: stackNavigator, nextState: undefined, nextData: undefined};
-    }
-    componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
-    }
-    shouldComponentUpdate(props, state) {
-        return state.navigationEvent === props.navigationEvent;
-    }
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack); 
-    }
-    handleBack() {
-        var {navigationEvent} = this.state;
-        if (navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
-            navigationEvent.stateNavigator.navigateBack(1);
-            return true;
-        }
-        return false;
     }
     render() {
         var {navigationEvent} = this.state;
