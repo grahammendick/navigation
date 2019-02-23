@@ -46,7 +46,7 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
     }
     willNavigate({crumb: targetCrumb}) {
         var {crumb, navigationEvent} = this.props;
-        var {crumbs} = navigationEvent.stateNavigator.stateContext;
+        var {crumbs, nextCrumb} = navigationEvent.stateNavigator.stateContext;
         if (targetCrumb === crumb && crumb < crumbs.length) {
             var changed = !this.state.navigationEvent;
             if (!changed) {
@@ -60,7 +60,7 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
             if (changed) {
                 var {stateNavigator} = navigationEvent;
                 var tempNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
-                tempNavigator.stateContext = Scene.createStateContext(crumbs, crumb);
+                tempNavigator.stateContext = Scene.createStateContext(crumbs, nextCrumb, crumb);
                 tempNavigator.configure = stateNavigator.configure;
                 tempNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
                 tempNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
@@ -72,7 +72,7 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
             }
         }
     }
-    static createStateContext(crumbs: Crumb[], crumb: number) {
+    static createStateContext(crumbs: Crumb[], nextCrumb: Crumb, crumb: number) {
         var stateContext = new StateContext();
         var {state, data, url, title} = crumbs[crumb];
         stateContext.state = state;
@@ -81,11 +81,15 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
         stateContext.title = title;
         stateContext.crumbs = crumbs.slice(0, crumb);
         stateContext.nextCrumb = crumbs[crumb];
+        var {state, data, url} = nextCrumb;
+        stateContext.oldState = state;
+        stateContext.oldData = data;
+        stateContext.oldUrl = url;
         if (crumb > 1) {
             var {state, data, url} = crumbs[crumb - 1];
-            stateContext.previousState = stateContext.oldState = state;
-            stateContext.previousData = stateContext.oldData = data;
-            stateContext.previousUrl = stateContext.oldUrl = url;
+            stateContext.previousState = state;
+            stateContext.previousData = data;
+            stateContext.previousUrl = url;
         }
         return stateContext;
     }
