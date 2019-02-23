@@ -59,16 +59,16 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
             }
             if (changed) {
                 var {stateNavigator} = navigationEvent;
-                var stackNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
-                stackNavigator.stateContext = Scene.createStateContext(crumbs, crumb);
-                stackNavigator.configure = stateNavigator.configure;
-                stackNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
-                stackNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
-                stackNavigator.onNavigate = stateNavigator.onNavigate;
-                stackNavigator.offNavigate = stateNavigator.offNavigate;
-                stackNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
-                var {oldState, state, data, asyncData} = stackNavigator.stateContext;
-                this.setState({navigationEvent: {oldState, state, data, asyncData, stateNavigator: stackNavigator, nextState: undefined, nextData: undefined}});
+                var tempNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
+                tempNavigator.stateContext = Scene.createStateContext(crumbs, crumb);
+                tempNavigator.configure = stateNavigator.configure;
+                tempNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
+                tempNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
+                tempNavigator.onNavigate = stateNavigator.onNavigate;
+                tempNavigator.offNavigate = stateNavigator.offNavigate;
+                tempNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
+                var {oldState, state, data, asyncData} = tempNavigator.stateContext;
+                this.setState({navigationEvent: {oldState, state, data, asyncData, stateNavigator: tempNavigator, nextState: undefined, nextData: undefined}});
             }
         }
     }
