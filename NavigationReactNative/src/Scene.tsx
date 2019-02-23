@@ -50,10 +50,15 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
     }
     willNavigate({crumb: targetCrumb}) {
         var {crumb, navigationEvent} = this.props;
-        if (targetCrumb === crumb) {
-            var {crumbs} = navigationEvent.stateNavigator.stateContext;
-            var {nextCrumb} = this.state.navigationEvent.stateNavigator.stateContext;
-            if (crumb < crumbs.length && crumbs[crumb].crumblessUrl !== nextCrumb.crumblessUrl) {
+        var {crumbs} = navigationEvent.stateNavigator.stateContext;
+        if (targetCrumb === crumb && crumb < crumbs.length) {
+            var {state: latestState, data: latestData} = crumbs[crumb];
+            var {state, data} = this.state.navigationEvent.stateNavigator.stateContext;
+            var unchanged = state === latestState && data.length === latestData.length;
+            for(var key in data) {
+                unchanged = unchanged && data[key] === latestData[key];
+            }
+            if (!unchanged) {
                 var stackNavigationEvent = Scene.createNavigationEvent(navigationEvent, crumbs, crumb);
                 this.setState({navigationEvent: stackNavigationEvent});
             }
