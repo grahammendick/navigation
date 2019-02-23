@@ -17,15 +17,11 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
         crumb: 0,
         renderScene: (state, data) => state.renderScene(data)
     }
-    static getDerivedStateFromProps(props: NavigationMotionProps, {navigationEvent: prevNavigationEvent}: NavigationMotionState) {
+    static getDerivedStateFromProps(props: NavigationMotionProps) {
         var {crumb, navigationEvent} = props;
         var {state, crumbs} = navigationEvent.stateNavigator.stateContext;
         if (state && crumbs.length === crumb)
             return {navigationEvent};
-        if (state && !prevNavigationEvent && crumb < crumbs.length) {
-            var stackNavigationEvent = Scene.createNavigationEvent(navigationEvent, crumbs, crumb);
-            return {navigationEvent: stackNavigationEvent};
-        }
         return null;
     }
     componentDidMount() {
@@ -52,21 +48,31 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
         var {crumb, navigationEvent} = this.props;
         var {crumbs} = navigationEvent.stateNavigator.stateContext;
         if (targetCrumb === crumb && crumb < crumbs.length) {
-            var {state: latestState, data: latestData} = crumbs[crumb];
-            var {state, data} = this.state.navigationEvent.stateNavigator.stateContext;
-            var unchanged = state === latestState && data.length === latestData.length;
-            for(var key in data) {
-                unchanged = unchanged && data[key] === latestData[key];
+            var changed = !this.state.navigationEvent;
+            if (!changed) {
+                var {state: latestState, data: latestData} = crumbs[crumb];
+                var {state, data} = this.state.navigationEvent.stateNavigator.stateContext;
+                changed = state !== latestState || data.length !== latestData.length;
+                for(var key in data) {
+                    changed = changed || data[key] !== latestData[key];
+                }
             }
-            if (!unchanged) {
-                var stackNavigationEvent = Scene.createNavigationEvent(navigationEvent, crumbs, crumb);
-                this.setState({navigationEvent: stackNavigationEvent});
+            if (changed) {
+                var {stateNavigator} = navigationEvent;
+                var stackNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
+                stackNavigator.stateContext = Scene.createStateContext(crumbs, crumb);
+                stackNavigator.configure = stateNavigator.configure;
+                stackNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
+                stackNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
+                stackNavigator.onNavigate = stateNavigator.onNavigate;
+                stackNavigator.offNavigate = stateNavigator.offNavigate;
+                stackNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
+                var {oldState, state, data, asyncData} = stackNavigator.stateContext;
+                this.setState({navigationEvent: {oldState, state, data, asyncData, stateNavigator: stackNavigator, nextState: undefined, nextData: undefined}});
             }
         }
     }
-    static createNavigationEvent(navigationEvent: NavigationEvent, crumbs: Crumb[], crumb: number): NavigationEvent {
-        var {stateNavigator} = navigationEvent;
-        var stackNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
+    static createStateContext(crumbs: Crumb[], crumb: number) {
         var stateContext = new StateContext();
         var {state, data, url, title} = crumbs[crumb];
         stateContext.state = state;
@@ -81,15 +87,7 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
             stateContext.previousData = stateContext.oldData = data;
             stateContext.previousUrl = stateContext.oldUrl = url;
         }
-        stackNavigator.stateContext = stateContext;
-        stackNavigator.configure = stateNavigator.configure;
-        stackNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
-        stackNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
-        stackNavigator.onNavigate = stateNavigator.onNavigate;
-        stackNavigator.offNavigate = stateNavigator.offNavigate;
-        stackNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
-        var {oldState, state, data, asyncData} = stackNavigator.stateContext;
-        return {oldState, state, data, asyncData, stateNavigator: stackNavigator, nextState: undefined, nextData: undefined};
+        return stateContext;
     }
     render() {
         var {navigationEvent} = this.state;
