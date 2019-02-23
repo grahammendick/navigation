@@ -43,7 +43,9 @@ RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)t
         }
         [navigationController setViewControllers:controllers animated:true];
     }
-    navigationController.viewControllers[crumb].title = titles[crumb];
+    for (NVSceneController *controller in [navigationController viewControllers]) {
+        controller.title = titles[controller.crumb];
+    }
     if ([rootViewController isKindOfClass:[UITabBarController class]]) {
         ((UITabBarController *)rootViewController).selectedViewController = navigationController;
     }
