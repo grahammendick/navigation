@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { BackHandler, NativeEventEmitter, NativeModules, EmitterSubscription } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
-type NavigationMotionProps = { crumb?: number, renderScene: (state: State, data: any) => ReactNode, navigationEvent: NavigationEvent };
+type NavigationMotionProps = { crumb?: number, tab?: number, renderScene: (state: State, data: any) => ReactNode, navigationEvent: NavigationEvent };
 type NavigationMotionState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<NavigationMotionProps, NavigationMotionState> {
@@ -15,6 +15,7 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
     }
     static defaultProps = {
         crumb: 0,
+        tab: 0,
         renderScene: (state, data) => state.renderScene(data)
     }
     static getDerivedStateFromProps(props: NavigationMotionProps) {
@@ -42,10 +43,10 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
         }
         return false;
     }
-    willNavigate({crumb: targetCrumb}) {
-        var {crumb, navigationEvent} = this.props;
+    willNavigate({crumb: targetCrumb, tab: targetTab}) {
+        var {crumb, tab, navigationEvent} = this.props;
         var {crumbs, nextCrumb} = navigationEvent.stateNavigator.stateContext;
-        if (targetCrumb === crumb && crumb < crumbs.length) {
+        if (targetCrumb === crumb && targetTab === tab && crumb < crumbs.length) {
             var changed = !this.state.navigationEvent;
             if (!changed) {
                 var {state: latestState, data: latestData} = crumbs[crumb];

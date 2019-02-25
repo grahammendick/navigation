@@ -34,6 +34,6 @@ addNavigateHandlers(stateNavigators);
 
 export default ({crumb, tab = 0}) => (
   <NavigationHandler stateNavigator={stateNavigators[tab]}>
-    <Scene crumb={crumb} />
+    <Scene crumb={crumb} tab={tab} />
   </NavigationHandler>
 );
