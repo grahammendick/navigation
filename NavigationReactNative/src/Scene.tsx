@@ -20,9 +20,7 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
     static getDerivedStateFromProps(props: NavigationMotionProps) {
         var {crumb, navigationEvent} = props;
         var {state, crumbs} = navigationEvent.stateNavigator.stateContext;
-        if (state && crumbs.length === crumb)
-            return {navigationEvent};
-        return null;
+        return (state && crumbs.length === crumb) ? {navigationEvent} : null;
     }
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
