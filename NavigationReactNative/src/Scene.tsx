@@ -50,7 +50,7 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
             if (!changed) {
                 var {state: latestState, data: latestData} = crumbs[crumb];
                 var {state, data} = this.state.navigationEvent.stateNavigator.stateContext;
-                changed = state !== latestState || data.length !== latestData.length;
+                changed = state !== latestState || Object.keys(data).length !== Object.keys(latestData).length;
                 for(var key in data) {
                     changed = changed || data[key] !== latestData[key];
                 }
