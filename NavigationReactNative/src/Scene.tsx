@@ -16,7 +16,7 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
     static defaultProps = {
         crumb: 0,
         tab: 0,
-        renderScene: (state, data) => state.renderScene(data)
+        renderScene: (state: State, data: any) => state.renderScene(data)
     }
     static getDerivedStateFromProps(props: NavigationMotionProps) {
         var {crumb, navigationEvent} = props;
