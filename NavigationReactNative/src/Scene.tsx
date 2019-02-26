@@ -58,16 +58,16 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
             }
             if (changed) {
                 var {stateNavigator} = navigationEvent;
-                var tempNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
-                tempNavigator.stateContext = Scene.createStateContext(crumbs, nextCrumb, crumb);
-                tempNavigator.configure = stateNavigator.configure;
-                tempNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
-                tempNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
-                tempNavigator.onNavigate = stateNavigator.onNavigate;
-                tempNavigator.offNavigate = stateNavigator.offNavigate;
-                tempNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
-                var {oldState, state, data, asyncData} = tempNavigator.stateContext;
-                this.setState({navigationEvent: {oldState, state, data, asyncData, stateNavigator: tempNavigator, nextState: undefined, nextData: undefined}});
+                var peekNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
+                peekNavigator.stateContext = Scene.createStateContext(crumbs, nextCrumb, crumb);
+                peekNavigator.configure = stateNavigator.configure;
+                peekNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
+                peekNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
+                peekNavigator.onNavigate = stateNavigator.onNavigate;
+                peekNavigator.offNavigate = stateNavigator.offNavigate;
+                peekNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
+                var {oldState, state, data, asyncData} = peekNavigator.stateContext;
+                this.setState({navigationEvent: {oldState, state, data, asyncData, stateNavigator: peekNavigator, nextState: undefined, nextData: undefined}});
             }
         }
     }
