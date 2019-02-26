@@ -17,6 +17,10 @@ export interface SceneProps {
      */
     crumb?: number;
     /**
+     * The iOS tab the scene belongs to
+     */
+    tab?: number;
+    /**
      * Renders the scene for the State and data
      */
     renderScene?: (state: State, data: any) => ReactNode;

@@ -11,7 +11,7 @@ RCT_EXPORT_MODULE();
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"Navigate"];
+    return @[@"Navigate", @"PeekNavigate"];
 }
 
 - (dispatch_queue_t)methodQueue
@@ -28,6 +28,7 @@ RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)t
     } else {
         navigationController = (UINavigationController *)rootViewController;
     }
+    ((NVSceneController *) [navigationController viewControllers][0]).navigationModule = self;
     
     NSInteger currentCrumb = [navigationController.viewControllers count] - 1;
     if (crumb < currentCrumb) {
@@ -42,7 +43,9 @@ RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)t
         }
         [navigationController setViewControllers:controllers animated:true];
     }
-    navigationController.viewControllers[crumb].title = titles[crumb];
+    for (NVSceneController *controller in [navigationController viewControllers]) {
+        controller.title = titles[controller.crumb];
+    }
     if ([rootViewController isKindOfClass:[UITabBarController class]]) {
         ((UITabBarController *)rootViewController).selectedViewController = navigationController;
     }
