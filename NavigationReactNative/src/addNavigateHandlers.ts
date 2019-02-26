@@ -9,9 +9,10 @@ var addNavigateHandlers = (stateNavigator: StateNavigator | StateNavigator[]) =>
             var {history, oldState} = stateNavigator.stateContext;
             if (!oldState || history)
                 return; 
-            var {state, data, title, oldData, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
+            var {state, data, oldData, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
             var appKey = AppRegistry.getAppKeys()[0];
-            var titles = crumbs.map(({data, title}) => data.sceneTitle || title).concat(data.sceneTitle || title);
+            var getTitle = ({state, data, title}: Crumb) => (state.getTitle && state.getTitle(data)) || title;
+            var titles = crumbs.map(getTitle).concat(getTitle(nextCrumb));
             var {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
             if (oldCrumbs.length < crumbs.length) {
                 var {state: nextState, data: nextData} = crumbs.concat(nextCrumb)[oldCrumbs.length + 1];
