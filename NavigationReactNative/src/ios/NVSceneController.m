@@ -34,7 +34,7 @@
 {  
     [super viewWillAppear:animated];  
     if (self.navigationModule && self.navigationModule.bridge) {
-        [self.navigationModule sendEventWithName:@"WillNavigate" body:@{@"crumb": @(self.crumb), @"tab": @(self.tab)}];
+        [self.navigationModule sendEventWithName:@"PeekNavigate" body:@{@"crumb": @(self.crumb), @"tab": @(self.tab)}];
     }
 }
 

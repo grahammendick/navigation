@@ -6,12 +6,12 @@ type NavigationMotionProps = { crumb?: number, tab?: number, renderScene: (state
 type NavigationMotionState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<NavigationMotionProps, NavigationMotionState> {
-    private willNavigateSubscription: EmitterSubscription;
+    private peekNavigateSubscription: EmitterSubscription;
     constructor(props) {
         super(props);
         this.state = {navigationEvent: null};
         this.handleBack = this.handleBack.bind(this);
-        this.willNavigate = this.willNavigate.bind(this);
+        this.peekNavigate = this.peekNavigate.bind(this);
     }
     static defaultProps = {
         crumb: 0,
@@ -26,14 +26,14 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
         var navigationEmitter = new NativeEventEmitter(NativeModules.NavigationModule);
-        this.willNavigateSubscription = navigationEmitter.addListener('WillNavigate', this.willNavigate);
+        this.peekNavigateSubscription = navigationEmitter.addListener('PeekNavigate', this.peekNavigate);
     }
     shouldComponentUpdate(_nextProps, nextState) {
         return nextState.navigationEvent !== this.state.navigationEvent;
     }
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
-        this.willNavigateSubscription.remove();
+        this.peekNavigateSubscription.remove();
     }
     handleBack() {
         var {navigationEvent} = this.state;
@@ -43,7 +43,7 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
         }
         return false;
     }
-    willNavigate({crumb: targetCrumb, tab: targetTab}) {
+    peekNavigate({crumb: targetCrumb, tab: targetTab}) {
         var {crumb, tab, navigationEvent} = this.props;
         var {crumbs, nextCrumb} = navigationEvent.stateNavigator.stateContext;
         if (targetCrumb === crumb && targetTab === tab && crumb < crumbs.length) {
