@@ -26,6 +26,8 @@ for(var key in stateNavigator.states) {
   state.getUnmountStyle = from => from ? 'slide_in' : 'slide_out';
 }
 
+timeline.getTitle = ({sceneTitle}) => sceneTitle;
+
 var stateNavigators = [stateNavigator, new StateNavigator(stateNavigator)];
 stateNavigator.navigate('home');
 stateNavigators[1].navigate('notifications');
