@@ -85,9 +85,9 @@ var stateNavigators = [stateNavigator, new StateNavigator(stateNavigator)];
 
 addNavigateHandlers(stateNavigators);
 
-export default ({crumb, tab}) => (
+export default ({crumb, tab = 0}) => (
   &lt;NavigationHandler stateNavigator={stateNavigators[tab]}>
-    &lt;Scene crumb={crumb} tab={tab} />
+    &lt;Scene crumb={crumb} />
   &lt;/NavigationHandler>
 );</code></pre>
             <h2>Android</h2>
