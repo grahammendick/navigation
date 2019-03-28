@@ -9,7 +9,8 @@ Once you've cloned the repository, you can install the dependencies and run the 
     npm install
     npm run build
 
-Running `npm test` executes the unit tests.
+Running `npm test` executes the unit tests.  
+Running `npm run package` outputs the npm packages inside the `build/npm` folder.
 
 Thanks to [BrowserStack](https://www.browserstack.com/) for their help with cross browser testing
 
