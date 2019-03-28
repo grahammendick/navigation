@@ -35,13 +35,19 @@ RCT_EXPORT_METHOD(render:(NSInteger)crumb tab:(NSInteger)tab titles:(NSArray *)t
         [navigationController popToViewController:navigationController.viewControllers[crumb] animated:true];
     }
     if (crumb > currentCrumb) {
-        NSMutableArray *controllers = [navigationController.viewControllers mutableCopy];
+        NSMutableArray *newControllers = [[NSMutableArray alloc] init];
         for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
             NSInteger nextCrumb = currentCrumb + i + 1;
             UIViewController *controller = [[NVSceneController alloc] initWithModule: self crumb: nextCrumb tab: tab title: titles[nextCrumb] appKey: appKey];
-            [controllers addObject:controller];
+            [newControllers addObject:controller];
         }
-        [navigationController setViewControllers:controllers animated:true];
+        
+        if (newControllers.count == 1) {
+            [navigationController pushViewController:newControllers.lastObject animated:true];
+        } else {
+            NSArray *allControllers = [navigationController.viewControllers arrayByAddingObjectsFromArray:newControllers];
+            [navigationController setViewControllers:allControllers animated:true];
+        }
     }
     for (NVSceneController *controller in [navigationController viewControllers]) {
         controller.title = titles[controller.crumb];
