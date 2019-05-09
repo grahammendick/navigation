@@ -4,11 +4,19 @@ import {connect} from 'react-redux';
 
 const mapStateToProps = ({byId}, {id}) => ({person: byId[id]});
 
-const Person = ({person: {name, dateOfBirth, email, phone}}) => (
+const edit = (id, name) => ({
+  type: "EDIT",
+  payload: {id, name}
+});
+
+const Person = ({person: {id, name, dateOfBirth, email, phone}, edit}) => (
   <SafeAreaView>
     <View style={styles.field}>
       <Text style={styles.label}>Name</Text>
-      <TextInput style={styles.entry}>{name}</TextInput>
+      <TextInput
+        onChangeText={(text) => edit(id, text)}
+        style={styles.entry}>{name}
+      </TextInput>
     </View>
     <View style={styles.field}>
       <Text style={styles.label}>DOB</Text>
@@ -25,7 +33,7 @@ const Person = ({person: {name, dateOfBirth, email, phone}}) => (
   </SafeAreaView>
 );
 
-export default connect(mapStateToProps)(Person);
+export default connect(mapStateToProps, {edit})(Person);
 
 const styles = StyleSheet.create({
   field: {
