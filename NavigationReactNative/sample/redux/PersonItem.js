@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {connect} from 'react-redux';
 
@@ -13,7 +13,7 @@ const PersonItem = ({person: {id, name}}) => (
           stateNavigator.navigate('person', {id});
         }}>
         <View>
-          <Text>{name}</Text>
+          <Text style={styles.name}>{name}</Text>
         </View>
       </TouchableOpacity>
     )}
@@ -21,3 +21,11 @@ const PersonItem = ({person: {id, name}}) => (
 );
 
 export default connect(mapStateToProps)(PersonItem);
+
+const styles = StyleSheet.create({
+  name: {
+    fontSize: 20,
+    margin: 5,
+    marginLeft: 25,
+  },
+});
