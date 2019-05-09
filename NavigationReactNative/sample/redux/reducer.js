@@ -18,7 +18,7 @@ var people = {
 
 export default (state = people, action) => {
     switch (action.type) {
-        case 'EDIT':
+        case "EDIT":
             var {id, name} = action.payload; 
             return {
                 ...state,
