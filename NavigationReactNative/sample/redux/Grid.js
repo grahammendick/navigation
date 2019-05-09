@@ -8,10 +8,15 @@ export default ({colors}) => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View style={styles.colors}>
           {colors.map(color => (
-            <View
+            <TouchableHighlight
               key={color}
-              style={[styles.color, {backgroundColor: color}]}>
-            </View>
+              style={styles.color}
+              underlayColor={color}                
+              onPress={() => {
+                stateNavigator.navigate('grid', {color});
+              }}>
+                <View style={{backgroundColor: color, flex: 1}} />
+            </TouchableHighlight>
           ))}
         </View>
       </ScrollView>
