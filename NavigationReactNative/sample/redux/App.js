@@ -5,6 +5,7 @@ import {addNavigateHandlers, Scene} from 'navigation-react-native';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import reducer from './reducer';
+import Blinkers from './Blinkers';
 import People from './People';
 import Person from './Person';
 
@@ -25,7 +26,9 @@ addNavigateHandlers(stateNavigator);
 export default ({crumb}) => (
   <Provider store={store}>
     <NavigationHandler stateNavigator={stateNavigator}>
-      <Scene crumb={crumb} />
+      <Blinkers crumb={crumb}>
+        <Scene crumb={crumb} />
+      </Blinkers>
     </NavigationHandler>
   </Provider>
 );
