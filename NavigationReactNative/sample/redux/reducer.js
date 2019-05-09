@@ -1,4 +1,4 @@
-var people = {
+const people = {
   byId: {
       "1": {id: "1", name: 'Bell Halvorson', dateOfBirth: '01/01/1980', email: 'bell@navigation.com', phone: '555 0001'},
       "2": {id: "2", name: 'Aditya Larson', dateOfBirth: '01/02/1980', email: 'aditya@navigation.com', phone: '555 0002'},

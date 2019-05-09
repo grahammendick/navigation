@@ -8,7 +8,7 @@ import reducer from './reducer';
 import People from './People';
 import Person from './Person';
 
-var stateNavigator = new StateNavigator([
+const stateNavigator = new StateNavigator([
   {key: 'people', title: 'People'},
   {key: 'person', title: 'Person', trackCrumbTrail: true},
 ]);
@@ -17,7 +17,7 @@ const { people, person } = stateNavigator.states;
 people.renderScene = () => <People />;
 person.renderScene = ({ id }) => <Person id={id} />;
 
-var store = createStore(reducer);
+const store = createStore(reducer);
 
 stateNavigator.navigate('people');
 addNavigateHandlers(stateNavigator);
