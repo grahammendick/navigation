@@ -8,11 +8,6 @@ import reducer from './reducer';
 import People from './People';
 import Person from './Person';
 
-const colors = [
-  'maroon', 'red', 'crimson', 'orange', 'brown', 'sienna', 'olive',
-  'purple', 'fuchsia', 'indigo', 'green', 'navy', 'blue', 'teal', 'black'
-];
-
 var stateNavigator = new StateNavigator([
   {key: 'people', title: 'People'},
   {key: 'person', title: 'Person', trackCrumbTrail: true},
