@@ -19,7 +19,7 @@
   self.bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 
-  NSString *title = @"Colors";
+  NSString *title = @"People";
   NSString *appKey = @"redux";
 
   UIViewController *sceneController = [[NVSceneController alloc] init:0 tab:0 title:title appKey:appKey];

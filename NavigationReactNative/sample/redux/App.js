@@ -2,7 +2,8 @@ import React from 'react';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
 import {addNavigateHandlers, Scene} from 'navigation-react-native';
-import Grid from './Grid';
+import People from './People';
+import Person from './Person';
 
 const colors = [
   'maroon', 'red', 'crimson', 'orange', 'brown', 'sienna', 'olive',
@@ -10,13 +11,15 @@ const colors = [
 ];
 
 var stateNavigator = new StateNavigator([
-  {key: 'grid', title: 'Colors', trackCrumbTrail: true},
+  {key: 'people', title: 'People'},
+  {key: 'person', title: 'Person', trackCrumbTrail: true},
 ]);
 
-const { grid } = stateNavigator.states;
-grid.renderScene = () => <Grid colors={colors}/>;
+const { people, person } = stateNavigator.states;
+people.renderScene = () => <People />;
+person.renderScene = ({ id }) => <Person id={id} />;
 
-stateNavigator.navigate('grid');
+stateNavigator.navigate('people');
 addNavigateHandlers(stateNavigator);
 
 export default ({crumb}) => (
