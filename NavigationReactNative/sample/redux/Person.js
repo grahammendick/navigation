@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, SafeAreaView, Text, TextInput, View} from 'react-native';
 import {connect} from 'react-redux';
 
-const mapStateToProps = ({byId}, {id}) => ({person: byId[id]});
+const mapStateToProps = ({people: {byId}}, {id}) => ({person: byId[id]});
 
 const edit = (id, name) => ({
   type: "EDIT",

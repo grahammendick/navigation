@@ -3,7 +3,7 @@ import {ScrollView, FlatList} from 'react-native';
 import {connect} from 'react-redux';
 import PersonItem from './PersonItem';
 
-const mapStateToProps = ({allIds}) => ({ids: allIds});
+const mapStateToProps = ({people: {allIds}}) => ({ids: allIds});
 
 const People = ({ids}) => (
   <ScrollView contentInsetAdjustmentBehavior="automatic">

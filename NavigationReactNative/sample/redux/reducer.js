@@ -1,4 +1,6 @@
-const people = {
+import {combineReducers} from "redux";
+
+const initialState = {
   byId: {
       "1": {id: "1", name: 'Bell Halvorson', dateOfBirth: '01/01/1980', email: 'bell@navigation.com', phone: '555 0001'},
       "2": {id: "2", name: 'Aditya Larson', dateOfBirth: '01/02/1980', email: 'aditya@navigation.com', phone: '555 0002'},
@@ -16,7 +18,7 @@ const people = {
   allIds: ["1","2","3","4","5","6","7","8","9","10","11","12"]
 };
 
-export default (state = people, action) => {
+const people = (state = initialState, action) => {
   switch (action.type) {
       case "EDIT":
           var {id, name} = action.payload; 
@@ -34,3 +36,24 @@ export default (state = people, action) => {
           return state;
   }
 }
+
+const crumbs = (state = {current: 0, peek: 0}, action) => {
+  switch (action.type) {
+    case "NAVIGATE":
+        var {crumb} = action.payload; 
+        return {
+          current: crumb,
+          peek: crumb,
+        };
+    case "PEEK":
+        var {crumb} = action.payload; 
+        return {
+          ...state,
+          peek: crumb,
+        };
+    default:
+        return state;
+}
+}
+
+export default combineReducers({people, crumbs})

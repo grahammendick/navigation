@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {connect} from 'react-redux';
 
-const mapStateToProps = ({byId}, {id}) => ({person: byId[id]});
+const mapStateToProps = ({people: {byId}}, {id}) => ({person: byId[id]});
 
 const PersonItem = ({person: {id, name}}) => (
   <NavigationContext.Consumer>
