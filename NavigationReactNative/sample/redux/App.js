@@ -17,7 +17,7 @@ const stateNavigator = new StateNavigator([
 
 const { people, person } = stateNavigator.states;
 people.renderScene = () => <People />;
-person.renderScene = ({ id }) => <Person id={id} />;
+person.renderScene = ({id}) => <Person id={id} />;
 
 const store = createStore(reducer);
 
