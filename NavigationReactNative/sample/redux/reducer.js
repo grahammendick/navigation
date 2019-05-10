@@ -53,7 +53,7 @@ const crumbs = (state = {current: 0, peek: 0}, action) => {
         };
     default:
         return state;
-}
+  }
 }
 
 export default combineReducers({people, crumbs})
