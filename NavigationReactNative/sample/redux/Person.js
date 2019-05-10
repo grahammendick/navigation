@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     margin: 5,
     marginLeft: 25,
+    alignItems: 'center',
   },
   label: {
     width: 100,
