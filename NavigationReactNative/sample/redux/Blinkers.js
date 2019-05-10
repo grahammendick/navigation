@@ -9,8 +9,8 @@ export default ({crumb, children}) => {
     subscription: {
       addNestedSub: listener => (
         subscription.addNestedSub(() => {
-          if (crumb === store.getState().crumbs.current
-              || crumb === store.getState().crumbs.peek)
+          const {current, peek} = store.getState().crumbs;
+          if (crumb === current || crumb === peek)
             listener();
           }
         )
