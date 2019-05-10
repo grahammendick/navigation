@@ -1,7 +1,7 @@
 import React, {useContext, useMemo} from 'react';
 import {ReactReduxContext} from 'react-redux';
 
-export default ({crumb, children}) => {
+const Blinkers = ({crumb, children}) => {
   const {store, subscription} = useContext(ReactReduxContext);
 
   const contextValue = useMemo(() => ({
@@ -24,3 +24,7 @@ export default ({crumb, children}) => {
     </ReactReduxContext.Provider>
   );  
 }
+
+Blinkers.defaultProps = {crumb: 0}
+ 
+export default Blinkers;
