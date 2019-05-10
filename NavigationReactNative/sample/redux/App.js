@@ -20,6 +20,13 @@ person.renderScene = ({ id }) => <Person id={id} />;
 
 const store = createStore(reducer);
 
+stateNavigator.onNavigate(() => {
+  store.dispatch({
+    type: "NAVIGATE",
+    payload: {crumb: stateNavigator.stateContext.crumbs.length}
+  })
+})
+
 stateNavigator.navigate('people');
 addNavigateHandlers(stateNavigator);
 
