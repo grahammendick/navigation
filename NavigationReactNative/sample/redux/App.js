@@ -1,4 +1,5 @@
 import React from 'react';
+import {NativeEventEmitter, NativeModules} from 'react-native';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
 import {addNavigateHandlers, Scene} from 'navigation-react-native';
@@ -24,8 +25,15 @@ stateNavigator.onNavigate(() => {
   store.dispatch({
     type: "NAVIGATE",
     payload: {crumb: stateNavigator.stateContext.crumbs.length}
-  })
-})
+  });
+});
+var navigationEmitter = new NativeEventEmitter(NativeModules.NavigationModule);
+navigationEmitter.addListener('PeekNavigate', ({crumb}) => {
+  store.dispatch({
+    type: "PEEK",
+    payload: {crumb}
+  });
+});
 
 stateNavigator.navigate('people');
 addNavigateHandlers(stateNavigator);
