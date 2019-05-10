@@ -15,7 +15,7 @@ const stateNavigator = new StateNavigator([
   {key: 'person', title: 'Person', trackCrumbTrail: true},
 ]);
 
-const { people, person } = stateNavigator.states;
+const {people, person} = stateNavigator.states;
 people.renderScene = () => <People />;
 person.renderScene = ({id}) => <Person id={id} />;
 
