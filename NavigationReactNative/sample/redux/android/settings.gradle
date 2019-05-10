@@ -1,0 +1,5 @@
+rootProject.name = 'redux'
+include ':navigation-react-native'
+project(':navigation-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/navigation-react-native/android/app')
+
+include ':app'
