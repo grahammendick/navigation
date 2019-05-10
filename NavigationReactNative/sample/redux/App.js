@@ -40,10 +40,10 @@ addNavigateHandlers(stateNavigator);
 
 export default ({crumb}) => (
   <Provider store={store}>
-    <NavigationHandler stateNavigator={stateNavigator}>
-      <Blinkers crumb={crumb}>
+    <Blinkers crumb={crumb}>
+      <NavigationHandler stateNavigator={stateNavigator}>
         <Scene crumb={crumb} />
-      </Blinkers>
-    </NavigationHandler>
+      </NavigationHandler>
+    </Blinkers>
   </Provider>
 );
