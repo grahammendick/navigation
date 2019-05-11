@@ -100,10 +100,11 @@ export default ({crumb}) => (
                 Locate the <code>AppDelegate.h</code> in the iOS project and replace the code with the following:
             </p>
             <pre><code class="language-js">#import &lt;UIKit/UIKit.h>
+#import &lt;React/RCTBridgeDelegate.h>
 #import &lt;React/RCTBridge.h>
 #import "NVApplicationHostDelegate.h"
 
-@interface AppDelegate : UIResponder &lt;NVApplicationHostDelegate>
+@interface AppDelegate : UIResponder &lt;UIApplicationDelegate, RCTBridgeDelegate, NVApplicationHostDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) RCTBridge *bridge;
@@ -113,6 +114,7 @@ export default ({crumb}) => (
                 Locate the <code>AppDelegate.m</code> in the iOS project and replace the code with that shown below. Change the <code>"Title"</code> placeholder string to the title of your first scene. Change the <code>"appKey"</code> placeholder string to the name of your application (it should match the key used in the <code>registerComponent</code> call in <code>index.js</code>).
             </p>
 <pre><code class="language-js">#import "AppDelegate.h"
+#import &lt;React/RCTBridge.h>
 #import &lt;React/RCTBundleURLProvider.h>
 #import &lt;React/RCTRootView.h>
 #import "NVSceneController.h"
@@ -121,9 +123,7 @@ export default ({crumb}) => (
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-  
-  self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation moduleProvider:nil launchOptions:launchOptions];  
+  self.bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 
   NSString *title = @"Title";
@@ -137,7 +137,17 @@ export default ({crumb}) => (
   return YES;
 }
 
-@end</code></pre>
+- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
+{
+#if DEBUG
+  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+#else
+  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+#endif
+}
+
+@end
+</code></pre>
           </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
