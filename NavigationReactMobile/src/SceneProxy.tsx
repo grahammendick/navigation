@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-class SceneProxy extends React.Component<{crumb: number, mountScene: (crumb: number, el: HTMLDivElement) => {}}> {
+class SceneProxy extends React.Component<{crumb: number, mountScene: (crumb: number, el: HTMLDivElement) => void}> {
     private sceneEl: React.RefObject<HTMLDivElement>;
     constructor(props) {
         super(props);

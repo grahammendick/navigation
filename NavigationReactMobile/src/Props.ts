@@ -46,6 +46,7 @@ interface SharedElementMotionProps {
 }
 
 interface NavigationMotionProps {
+    mountScene: (crumb: number, el: HTMLElement) => void;
     unmountedStyle?: any;
     mountedStyle?: any;
     crumbStyle?: any;
