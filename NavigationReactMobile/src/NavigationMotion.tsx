@@ -1,6 +1,5 @@
-import { State, Crumb } from 'navigation';
-import { NavigationEvent } from 'navigation-react';
 import * as React from 'react';
+import { State, Crumb } from 'navigation';
 import Motion from './Motion';
 import SceneProxy from './SceneProxy';
 import SharedElementContext from './SharedElementContext';
