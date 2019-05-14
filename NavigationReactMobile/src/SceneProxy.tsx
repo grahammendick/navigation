@@ -8,7 +8,7 @@ class SceneProxy extends React.Component<{crumb: number, mountScene: (crumb: num
     }
     componentDidMount() {
         var {crumb, mountScene} = this.props;
-        mountScene(crumb, el: this.sceneEl.current);
+        mountScene(crumb, this.sceneEl.current);
     }
     render() {
         return (
