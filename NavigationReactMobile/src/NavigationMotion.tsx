@@ -2,7 +2,7 @@ import { State, Crumb } from 'navigation';
 import { NavigationEvent } from 'navigation-react';
 import * as React from 'react';
 import Motion from './Motion';
-import Scene from './Scene';
+import SceneProxy from './SceneProxy';
 import SharedElementContext from './SharedElementContext';
 import SharedElementRegistry from './SharedElementRegistry';
 import withStateNavigator from './withStateNavigator';
@@ -68,7 +68,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     duration={duration}>
                     {styles => (
                         styles.map(({data: {key, state, data, crumbs}, style}) => {
-                            var scene = <Scene crumb={crumbs.length} />;
+                            var scene = <SceneProxy crumb={crumbs.length} />;
                             return children(style, scene, key, crumbs.length === key, state, data)
                         }).concat(
                             sharedElementMotion && sharedElementMotion({
