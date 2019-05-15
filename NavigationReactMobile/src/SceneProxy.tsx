@@ -24,14 +24,14 @@ class SceneProxy extends React.Component<SceneProxyProps> {
         ReactDOM.unmountComponentAtNode(this.sceneEl.current);
     }
     share(e) {
-        var {target, detail} = e;
+        var {target, detail: {name, data}} = e;
         var {crumb, sharedElementRegistry} = this.props;
-        sharedElementRegistry.registerSharedElement(crumb, name, target, detail.data);
+        sharedElementRegistry.registerSharedElement(crumb, name, target, data);
     }
     unshare(e) {
-        var {detail} = e;
+        var {detail: {name}} = e;
         var {crumb, sharedElementRegistry} = this.props;
-        sharedElementRegistry.unregisterSharedElement(crumb, detail.name);
+        sharedElementRegistry.unregisterSharedElement(crumb, name);
     }
     render() {
         return (

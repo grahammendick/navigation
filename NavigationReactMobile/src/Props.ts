@@ -20,8 +20,6 @@ interface SharedElementProps {
     name: string;
     data?: any;
     unshare?: boolean;
-    sharedElementRegistry: SharedElementRegistry;
-    stateNavigator: StateNavigator;
     children: ReactElement<any>;
 }
 

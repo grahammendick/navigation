@@ -1,6 +1,4 @@
 import * as React from 'react';
-import withStateNavigator from './withStateNavigator';
-import SharedElementContext from './SharedElementContext';
 import { SharedElementProps } from './Props';
 
 class SharedElement extends React.Component<SharedElementProps, any> {
@@ -9,24 +7,27 @@ class SharedElement extends React.Component<SharedElementProps, any> {
         this.register();
     }
     componentDidUpdate(prevProps) {
-        var {stateNavigator, sharedElementRegistry} = this.props;
-        var scene = stateNavigator.stateContext.crumbs.length;
-        sharedElementRegistry.unregisterSharedElement(scene, prevProps.name);
+        this.unshare(prevProps.name)
         this.register();
     }
     componentWillUnmount() {
-        var {stateNavigator, sharedElementRegistry} = this.props;
-        var scene = stateNavigator.stateContext.crumbs.length;
-        sharedElementRegistry.unregisterSharedElement(scene, this.props.name);
+        this.unshare(this.props.name)
+    }
+    share(name, data) {
+        var e = new CustomEvent('share', {bubbles: true, detail: {name, data}});
+        this.ref.dispatchEvent(e);
+    }
+    unshare(name) {
+        var e = new CustomEvent('unshare', {bubbles: true, detail: {name}});
+        this.ref.dispatchEvent(e);
     }
     register() {
-        var {unshare, name, data, stateNavigator, sharedElementRegistry} = this.props;
-        var scene = stateNavigator.stateContext.crumbs.length;
+        var {unshare, name, data} = this.props;
         if (!unshare) {
             if (this.ref)
-                sharedElementRegistry.registerSharedElement(scene, name, this.ref, data);
+                this.share(name, data);
         } else {
-            sharedElementRegistry.unregisterSharedElement(scene, name);
+            this.unshare(name)
         }
     }
     render() {
@@ -34,10 +35,4 @@ class SharedElement extends React.Component<SharedElementProps, any> {
     }
 }
 
-export default withStateNavigator(props => (
-    <SharedElementContext.Consumer>
-        {(sharedElementRegistry) => (
-            <SharedElement {...props} sharedElementRegistry={sharedElementRegistry} />
-        )}
-    </SharedElementContext.Consumer>
-));
+export default SharedElement;
