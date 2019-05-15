@@ -9,18 +9,15 @@ const stateNavigator = createStateNavigator();
 
 stateNavigator.start();
 
-var mountScene = (crumb, el) => {
-  ReactDOM.render(
-    <NavigationHandler stateNavigator={stateNavigator}>
-      <Scene crumb={crumb} />
-    </NavigationHandler>,
-    el
-  )  
-};
+var App = ({crumb}) => (
+  <NavigationHandler stateNavigator={stateNavigator}>
+    <Scene crumb={crumb} />
+  </NavigationHandler>
+);
 
 ReactDOM.render(
   <NavigationHandler stateNavigator={stateNavigator}>
-    <Zoom mountScene={mountScene}/>
+    <Zoom app={App}/>
   </NavigationHandler>,
   document.getElementById('content')
 );
