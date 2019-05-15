@@ -5,7 +5,6 @@ import ZoomShared from './ZoomShared';
 export default ({app}) => (
   <NavigationMotion
     app={app}
-    mountScene={mountScene}
     unmountedStyle={{opacity: 0}}
     mountedStyle={{opacity: 1}}
     crumbStyle={{opacity: 0}}
