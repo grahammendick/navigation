@@ -1,7 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+type SceneProxyProps = {crumb: number, app: React.ComponentClass<{crumb: number}>};
 
-class SceneProxy extends React.Component<{crumb: number, app: React.ComponentClass<{crumb: number}>}> {
+class SceneProxy extends React.Component<SceneProxyProps> {
     private sceneEl: React.RefObject<HTMLDivElement>;
     constructor(props) {
         super(props);
