@@ -11,6 +11,9 @@ class SceneProxy extends React.Component<{crumb: number, app: React.ComponentCla
         var {crumb, app: App} = this.props;
         ReactDOM.render(<App crumb={crumb} />, this.sceneEl.current);
     }
+    componentWillUnmount() {
+        ReactDOM.unmountComponentAtNode(this.sceneEl.current);
+    }
     render() {
         return (
             <div ref={this.sceneEl} />
