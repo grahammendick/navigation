@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-type SceneProxyProps = {crumb: number, app: React.ComponentClass<{crumb: number}>};
+import SharedElementContext from './SharedElementContext';
+import SharedElementRegistry from './SharedElementRegistry';
+type SceneProxyProps = {crumb: number, app: React.ComponentClass<{crumb: number}>, sharedElementRegistry: SharedElementRegistry};
 
 class SceneProxy extends React.Component<SceneProxyProps> {
     private sceneEl: React.RefObject<HTMLDivElement>;
@@ -22,4 +24,10 @@ class SceneProxy extends React.Component<SceneProxyProps> {
     }
 }
 
-export default SceneProxy;
+export default props => (
+    <SharedElementContext.Consumer>
+        {(sharedElementRegistry) => (
+            <SceneProxy {...props} sharedElementRegistry={sharedElementRegistry} />
+        )}
+    </SharedElementContext.Consumer>
+);
