@@ -2,7 +2,7 @@ import { StateNavigator, State } from 'navigation';
 import { NavigationEvent } from 'navigation-react';
 import SharedElementMotion from './SharedElementMotion';
 import SharedElementRegistry from './SharedElementRegistry';
-import { ReactElement, ReactNode } from 'react';
+import { ComponentClass, ReactElement, ReactNode } from 'react';
 
 interface MotionProps<T> {
     data: T[];
@@ -46,7 +46,7 @@ interface SharedElementMotionProps {
 }
 
 interface NavigationMotionProps {
-    mountScene: (crumb: number, el: HTMLElement) => void;
+    app: ComponentClass<{crumb: number}>;
     unmountedStyle?: any;
     mountedStyle?: any;
     crumbStyle?: any;

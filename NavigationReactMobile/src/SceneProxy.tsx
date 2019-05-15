@@ -1,14 +1,15 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
-class SceneProxy extends React.Component<{crumb: number, mountScene: (crumb: number, el: HTMLDivElement) => void}> {
+class SceneProxy extends React.Component<{crumb: number, app: React.ComponentClass<{crumb: number}>}> {
     private sceneEl: React.RefObject<HTMLDivElement>;
     constructor(props) {
         super(props);
         this.sceneEl = React.createRef(); 
     }
     componentDidMount() {
-        var {crumb, mountScene} = this.props;
-        mountScene(crumb, this.sceneEl.current);
+        var {crumb, app: App} = this.props;
+        ReactDOM.render(<App crumb={crumb} />, this.sceneEl.current);
     }
     render() {
         return (
