@@ -29,9 +29,7 @@ class SceneProxy extends React.Component<SceneProxyProps & {sharedElementRegistr
             sharedElementRegistry.unregisterSharedElement(crumb, name);
     }
     render() {
-        return (
-            <div ref={this.sceneEl} />
-        );
+        return <div ref={this.sceneEl} />;
     }
 }
 
