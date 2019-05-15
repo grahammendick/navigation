@@ -12,8 +12,8 @@ class SceneProxy extends React.Component<SceneProxyProps & {sharedElementRegistr
         this.sceneEl = React.createRef(); 
     }
     componentDidMount() {
-        this.sceneEl.current.addEventListener("share", this.share);
         var {crumb, app: App} = this.props;
+        this.sceneEl.current.addEventListener("share", this.share);
         ReactDOM.render(<App crumb={crumb} />, this.sceneEl.current);
     }
     componentWillUnmount() {
