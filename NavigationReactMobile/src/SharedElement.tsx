@@ -13,9 +13,9 @@ class SharedElement extends React.Component<SharedElementProps, any> {
     componentWillUnmount() {
         this.share(this.props.name)
     }
-    share(name, data?, share = false) {
-        var e = new CustomEvent('share', {bubbles: true, detail: {share, name, data}});
-        this.ref.dispatchEvent(e);
+    share(name: string, data?: any, share = false) {
+        var eventData = {bubbles: true, detail: {name, data, share}};
+        this.ref.dispatchEvent(new CustomEvent('share', eventData));
     }
     register() {
         var {unshare, name, data} = this.props;
