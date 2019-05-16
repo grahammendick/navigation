@@ -1,18 +1,17 @@
 import React from 'react';
 import {NavigationMotion} from 'navigation-react-mobile';
 
-export default () => (
+export default ({app}) => (
   <NavigationMotion
+    app={app}
     unmountedStyle={state => state.unmountedStyle}
     mountedStyle={state => state.mountedStyle}
     crumbStyle={state => state.crumbStyle}
     duration={1000}>
-    {({translateX = 0, translateY = 0}, scene, key, active) => (
-      <div key={key}
+    {({translateX = 0, translateY = 0}) => (
+      <div
         className="scene"
-        style={{transform: `translate(${translateX}%, ${translateY}%)`}}>
-        {scene}
-      </div>
+        style={{transform: `translate(${translateX}%, ${translateY}%)`}} />
     )}
   </NavigationMotion>
 );
