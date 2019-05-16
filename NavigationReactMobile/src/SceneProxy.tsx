@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import SharedElementContext from './SharedElementContext';
 import SharedElementRegistry from './SharedElementRegistry';
-type SceneProxyProps = {crumb: number, app: React.ComponentType<{crumb: number}>, children: React.ReactElement<any>};
+type SceneProxyProps = {crumb: number, app: React.ComponentType<{crumb: number}>};
 
 class SceneProxy extends React.Component<SceneProxyProps & {sharedElementRegistry: SharedElementRegistry}> {
     private ref: React.RefObject<HTMLDivElement>;
@@ -29,7 +29,7 @@ class SceneProxy extends React.Component<SceneProxyProps & {sharedElementRegistr
             sharedElementRegistry.unregisterSharedElement(crumb, name);
     }
     render() {
-        return React.cloneElement(this.props.children, {ref: this.ref});
+        return <div ref={this.ref} />;
     }
 }
 

@@ -51,7 +51,7 @@ interface NavigationMotionProps {
     sharedElementMotion?: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
     stateNavigator?: StateNavigator;
     navigationEvent: NavigationEvent;
-    children: (style: any, active: boolean, state: State, data: any) => ReactElement<any>;
+    children: (style: any, scene: ReactElement<any>, key: number, active: boolean, state: State, data: any) => ReactElement<any>;
 }
 
 interface SceneProps {
