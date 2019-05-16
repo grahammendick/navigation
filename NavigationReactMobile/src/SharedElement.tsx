@@ -25,10 +25,7 @@ class SharedElement extends React.Component<SharedElementProps, any> {
     }
     register() {
         var {unshare, name, data} = this.props;
-        if (!unshare)
-            this.share(name, data, true);
-        else
-            this.share(name)
+        this.share(name, data, !unshare);
     }
     render() {
         return React.cloneElement(this.props.children, {ref: this.ref});
