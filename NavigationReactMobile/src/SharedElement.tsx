@@ -2,10 +2,10 @@ import * as React from 'react';
 import { SharedElementProps } from './Props';
 
 class SharedElement extends React.Component<SharedElementProps, any> {
-    private sharedElementRef: React.RefObject<HTMLElement>;
+    private ref: React.RefObject<HTMLElement>;
     constructor(props) {
         super(props);
-        this.sharedElementRef = React.createRef(); 
+        this.ref = React.createRef(); 
     }
     componentDidMount() {
         this.register();
@@ -18,7 +18,7 @@ class SharedElement extends React.Component<SharedElementProps, any> {
         this.share(this.props.name)
     }
     share(name: string, data?: any, share = false) {
-        var {current} = this.sharedElementRef;
+        var {current} = this.ref;
         var eventData = {bubbles: true, detail: {name, data, share}};
         if (current)
             current.dispatchEvent(new CustomEvent('share', eventData));
@@ -31,7 +31,7 @@ class SharedElement extends React.Component<SharedElementProps, any> {
             this.share(name)
     }
     render() {
-        return React.cloneElement(this.props.children, {ref: this.sharedElementRef});
+        return React.cloneElement(this.props.children, {ref: this.ref});
     }
 }
 

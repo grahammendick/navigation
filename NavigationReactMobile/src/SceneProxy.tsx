@@ -5,20 +5,20 @@ import SharedElementRegistry from './SharedElementRegistry';
 type SceneProxyProps = {crumb: number, app: React.ComponentClass<{crumb: number}>, children: React.ReactElement<any>};
 
 class SceneProxy extends React.Component<SceneProxyProps & {sharedElementRegistry: SharedElementRegistry}> {
-    private sceneRef: React.RefObject<HTMLDivElement>;
+    private ref: React.RefObject<HTMLDivElement>;
     constructor(props) {
         super(props);
-        this.sceneRef = React.createRef(); 
+        this.ref = React.createRef(); 
         this.share = this.share.bind(this);
     }
     componentDidMount() {
         var {crumb, app: App} = this.props;
-        this.sceneRef.current.addEventListener("share", this.share);
-        ReactDOM.render(<App crumb={crumb} />, this.sceneRef.current);
+        this.ref.current.addEventListener("share", this.share);
+        ReactDOM.render(<App crumb={crumb} />, this.ref.current);
     }
     componentWillUnmount() {
-        this.sceneRef.current.removeEventListener("share", this.share);
-        ReactDOM.unmountComponentAtNode(this.sceneRef.current);
+        this.ref.current.removeEventListener("share", this.share);
+        ReactDOM.unmountComponentAtNode(this.ref.current);
     }
     share(e) {
         var {target, detail: {name, data, share}} = e;
@@ -29,7 +29,7 @@ class SceneProxy extends React.Component<SceneProxyProps & {sharedElementRegistr
             sharedElementRegistry.unregisterSharedElement(crumb, name);
     }
     render() {
-        return React.cloneElement(this.props.children, {ref: this.sceneRef});
+        return React.cloneElement(this.props.children, {ref: this.ref});
     }
 }
 
