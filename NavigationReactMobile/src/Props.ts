@@ -1,7 +1,6 @@
 import { StateNavigator, State } from 'navigation';
 import { NavigationEvent } from 'navigation-react';
 import SharedElementMotion from './SharedElementMotion';
-import SharedElementRegistry from './SharedElementRegistry';
 import { ComponentClass, ReactElement, ReactNode } from 'react';
 
 interface MotionProps<T> {
