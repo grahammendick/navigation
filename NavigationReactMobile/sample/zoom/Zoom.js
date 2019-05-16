@@ -9,12 +9,8 @@ export default ({app}) => (
     mountedStyle={{opacity: 1}}
     crumbStyle={{opacity: 0}}
     sharedElementMotion={props => <ZoomShared {...props} />}>
-    {({opacity}, scene, key, active) => (
-      <div key={key}
-        className="scene"
-        style={{opacity}}>
-        {scene}
-      </div>
+    {({opacity}) => (
+      <div className="scene" style={{opacity}} />
     )}
   </NavigationMotion>
 );
