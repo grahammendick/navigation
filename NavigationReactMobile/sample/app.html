@@ -33,7 +33,7 @@
     <script type="text/jsx">
         var { StateNavigator } = Navigation;
         var { NavigationContext, NavigationHandler, NavigationLink, RefreshLink, NavigationBackLink } = NavigationReact;
-        var { MobileHistoryManager, NavigationMotion, Scene } = NavigationReactMobile;
+        var { MobileHistoryManager, NavigationMotion } = NavigationReactMobile;
 
         class List extends React.Component {
             shouldComponentUpdate(nextProps) {
@@ -168,7 +168,7 @@
                     unmountedStyle={{opacity: 1, translate: 100}}
                     mountedStyle={{opacity: 1, translate: 0}}
                     crumbStyle={{opacity: 0, translate: 0}}>
-                    {({opacity, translate}, scene, key) => (
+                    {({opacity, translate}, scene, key, active) => (
                         <div key={key}
                             className="scene"
                             style={{
