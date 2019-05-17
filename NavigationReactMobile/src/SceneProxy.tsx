@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import Scene from './Scene';
 import SharedElementRegistry from './SharedElementRegistry';
 import withSharedElementRegistry from './withSharedElementRegistry';
 type SceneProxyProps = {crumb: number, app: React.ComponentType<{crumb: number}>};
