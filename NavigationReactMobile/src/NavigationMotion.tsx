@@ -69,9 +69,8 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     onRest={({key}) => this.clearScene(key)}
                     duration={duration}>
                     {styles => (
-                        styles.map(({data: {key, state, data, crumbs}, style}) => {
-                            var scene = !rootPerScene ? <Scene crumb={crumbs.length} />
-                                : <SceneProxy crumb={crumbs.length} app={app} />;
+                        styles.map(({data: {key, state, data}, style}) => {
+                            var scene = !rootPerScene ? <Scene crumb={key} /> : <SceneProxy crumb={key} app={app} />;
                             return children(style, scene, key, crumbs.length === key, state, data);
                         }).concat(
                             sharedElementMotion && sharedElementMotion({
