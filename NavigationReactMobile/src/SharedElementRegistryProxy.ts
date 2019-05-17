@@ -6,10 +6,8 @@ class SharedElementRegistryProxy extends SharedElementRegistry {
         ref.dispatchEvent(new CustomEvent('share', eventData));
     }
     unregisterSharedElement(scene: number, name?: string, ref?: HTMLElement) {
-        if (ref) {
-            var eventData = {bubbles: true, detail: {name, share: false}};
-            ref.dispatchEvent(new CustomEvent('share', eventData));
-        }
+        var eventData = {bubbles: true, detail: {name, share: false}};
+        ref.dispatchEvent(new CustomEvent('share', eventData));
     }
     getSharedElements(scene: number, oldScene: number) {
         return [];
