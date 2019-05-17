@@ -11,7 +11,7 @@ stateNavigator.start();
 
 ReactDOM.hydrate(
     <NavigationHandler stateNavigator={stateNavigator}>
-        <Isomorphic app={({crumb}) => <Scene crumb={crumb} />} singleRoot={true} />
+        <Isomorphic singleRoot={true} />
     </NavigationHandler>,
     document.getElementById('content')
 );

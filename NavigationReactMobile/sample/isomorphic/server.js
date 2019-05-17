@@ -36,7 +36,7 @@ app.get('*', function(req, res) {
         <body>
             <div id="content">${ReactDOMServer.renderToString(
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <Isomorphic app={({crumb}) => <Scene crumb={crumb} />} singleRoot={true} />
+                    <Isomorphic singleRoot={true} />
                 </NavigationHandler>
             )}</div>
             <script src="/app.js" ></script>
