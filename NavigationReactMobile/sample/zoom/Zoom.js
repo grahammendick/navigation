@@ -8,7 +8,7 @@ export default () => (
     mountedStyle={{opacity: 1}}
     crumbStyle={{opacity: 0}}
     sharedElementMotion={props => <ZoomShared {...props} />}>
-    {({opacity}, scene, key) => (
+    {({opacity}, scene, key, active) => (
       <div key={key}
         className="scene"
         style={{opacity}}>

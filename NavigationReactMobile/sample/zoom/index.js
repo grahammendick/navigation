@@ -13,4 +13,4 @@ ReactDOM.render(
     <Zoom />
   </NavigationHandler>,
   document.getElementById('content')
-);
+)
