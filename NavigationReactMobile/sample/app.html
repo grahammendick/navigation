@@ -162,16 +162,9 @@
         }
         stateNavigator.start();
 
-        var App = ({crumb}) => (
-            <NavigationHandler stateNavigator={stateNavigator}>
-                <Scene crumb={crumb} />
-            </NavigationHandler>
-        );
-
         ReactDOM.render(
             <NavigationHandler stateNavigator={stateNavigator}>
                 <NavigationMotion
-                    app={App}
                     unmountedStyle={{opacity: 1, translate: 100}}
                     mountedStyle={{opacity: 1, translate: 0}}
                     crumbStyle={{opacity: 0, translate: 0}}>
