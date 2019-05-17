@@ -9,8 +9,5 @@ class SharedElementRegistryProxy extends SharedElementRegistry {
         var eventData = {bubbles: true, detail: {name, share: false}};
         ref.dispatchEvent(new CustomEvent('share', eventData));
     }
-    getSharedElements(scene: number, oldScene: number) {
-        return [];
-    }
 }
 export default SharedElementRegistryProxy;
