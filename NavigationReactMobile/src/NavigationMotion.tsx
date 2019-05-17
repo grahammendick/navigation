@@ -56,7 +56,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         return typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData) : styleProp;
     }
     render() {
-        var {children, duration, app: App, rootPerScene, sharedElementMotion, stateNavigator} = this.props;
+        var {children, duration, app, rootPerScene, sharedElementMotion, stateNavigator} = this.props;
         var {stateContext: {crumbs, oldState}, stateContext} = stateNavigator;
         return (stateContext.state &&
             <SharedElementContext.Provider value={this.sharedElementRegistry}>
@@ -70,8 +70,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     duration={duration}>
                     {styles => (
                         styles.map(({data: {key, state, data}, style}) => {
-                            var scene = rootPerScene && <SceneProxy crumb={key} app={App} />;
-                            scene = scene || (App ? <App crumb={key} /> : <Scene crumb={key} />);
+                            var scene = !rootPerScene ? <Scene crumb={key} /> : <SceneProxy crumb={key} app={app} />;
                             return children(style, scene, key, crumbs.length === key, state, data);
                         }).concat(
                             sharedElementMotion && sharedElementMotion({
