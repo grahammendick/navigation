@@ -48,7 +48,7 @@ interface NavigationMotionProps {
     mountedStyle?: any;
     crumbStyle?: any;
     duration?: number;
-    singleRoot?: boolean;
+    rootPerScene?: boolean;
     sharedElementMotion?: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
     stateNavigator?: StateNavigator;
     navigationEvent: NavigationEvent;

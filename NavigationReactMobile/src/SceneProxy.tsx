@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import Scene from './Scene';
 import SharedElementContext from './SharedElementContext';
 import SharedElementRegistry from './SharedElementRegistry';
-type SceneProxyProps = {crumb: number, app: React.ComponentType<{crumb: number}>, singleRoot: boolean};
+type SceneProxyProps = {crumb: number, app: React.ComponentType<{crumb: number}>, rootPerScene: boolean};
 
 class SceneProxy extends React.Component<SceneProxyProps & {sharedElementRegistry: SharedElementRegistry}> {
     private ref: React.RefObject<HTMLDivElement>;
@@ -16,15 +16,15 @@ class SceneProxy extends React.Component<SceneProxyProps & {sharedElementRegistr
         app: ({crumb}) => <Scene crumb={crumb} />
     }
     componentDidMount() {
-        var {crumb, app: App, singleRoot} = this.props;
+        var {crumb, app: App, rootPerScene} = this.props;
         this.ref.current.addEventListener("share", this.share);
-        if (!singleRoot)
+        if (rootPerScene)
             ReactDOM.render(<App crumb={crumb} />, this.ref.current);
     }
     componentWillUnmount() {
-        var {singleRoot} = this.props;
+        var {rootPerScene} = this.props;
         this.ref.current.removeEventListener("share", this.share);
-        if (!singleRoot)
+        if (rootPerScene)
             ReactDOM.unmountComponentAtNode(this.ref.current);
     }
     share(e) {
@@ -36,8 +36,8 @@ class SceneProxy extends React.Component<SceneProxyProps & {sharedElementRegistr
             sharedElementRegistry.unregisterSharedElement(crumb, name);
     }
     render() {
-        var {crumb, app: App, singleRoot} = this.props;
-        return <div ref={this.ref} >{singleRoot && <App crumb={crumb} />}</div>;
+        var {crumb, app: App, rootPerScene} = this.props;
+        return <div ref={this.ref} >{!rootPerScene && <App crumb={crumb} />}</div>;
     }
 }
 
