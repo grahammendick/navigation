@@ -1,6 +1,7 @@
 import { StateNavigator, State } from 'navigation';
 import { NavigationEvent } from 'navigation-react';
 import SharedElementMotion from './SharedElementMotion';
+import SharedElementRegistry from './SharedElementRegistry';
 import { ComponentType, ReactElement, ReactNode } from 'react';
 
 interface MotionProps<T> {
@@ -19,6 +20,8 @@ interface SharedElementProps {
     name: string;
     data?: any;
     unshare?: boolean;
+    sharedElementRegistry: SharedElementRegistry;
+    stateNavigator: StateNavigator;
     children: ReactElement<any>;
 }
 
