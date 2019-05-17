@@ -56,7 +56,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         return typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData) : styleProp;
     }
     render() {
-        var {children, duration, rootPerScene, sharedElementMotion, stateNavigator, app} = this.props;
+        var {children, duration, app, rootPerScene, sharedElementMotion, stateNavigator} = this.props;
         var {stateContext: {crumbs, oldState}, stateContext} = stateNavigator;
         return (stateContext.state &&
             <SharedElementContext.Provider value={this.sharedElementRegistry}>
