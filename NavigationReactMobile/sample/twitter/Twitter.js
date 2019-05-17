@@ -2,9 +2,8 @@ import React from 'react';
 import {NavigationMotion} from 'navigation-react-mobile';
 import PhotoZoom from './PhotoZoom';
 
-export default ({app}) => (
+export default () => (
   <NavigationMotion
-    app={app}
     unmountedStyle={(state, data, crumbs) => {
       var {state: previousState, data: previousData} = crumbs[crumbs.length - 1];
       var sharePhoto = state.key === 'photo' && !(previousState.key === 'tweet' && previousData.id === data.id);
@@ -18,13 +17,15 @@ export default ({app}) => (
       sharedElements = sharedElements.filter(share => share.oldElement.data.enable || share.mountedElement.data.enable);
       return <PhotoZoom {...props} sharedElements={sharedElements} />;
     }}>
-    {({translate, scale, opacity}) => (
-      <div
+    {({translate, scale, opacity}, scene, key) => (
+      <div key={key}
         className="scene"
         style={{
           transform: `translate(${translate}%) scale(${scale}, ${scale})`,
           opacity
-        }} />
+        }}>
+        {scene}
+      </div>
     )}
   </NavigationMotion>
 );
