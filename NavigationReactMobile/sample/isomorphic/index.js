@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { NavigationHandler } from 'navigation-react';
+import { NavigationMotion } from 'navigation-react-mobile';
 import getStateNavigator from './getStateNavigator';
 import Isomorphic from './Isomorphic';
 

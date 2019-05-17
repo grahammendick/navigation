@@ -2,6 +2,7 @@ import express from 'express';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { NavigationHandler } from 'navigation-react';
+import { NavigationMotion } from 'navigation-react-mobile';
 import getStateNavigator from './getStateNavigator';
 import Isomorphic from './Isomorphic';
 
