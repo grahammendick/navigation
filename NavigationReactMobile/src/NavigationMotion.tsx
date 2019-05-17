@@ -16,7 +16,8 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         this.state = {rest: false};
     }
     static defaultProps = {
-        duration: 300
+        duration: 300,
+        singleRoot: false
     }
     static getDerivedStateFromProps(props: NavigationMotionProps, {rest}: NavigationMotionState) {
         return !rest ? null : {rest: false};
@@ -53,7 +54,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         return typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData) : styleProp;
     }
     render() {
-        var {children, duration, sharedElementMotion, stateNavigator, app} = this.props;
+        var {children, duration, singleRoot: singleRoot, sharedElementMotion, stateNavigator, app} = this.props;
         var {stateContext: {crumbs, oldState}, stateContext} = stateNavigator;
         return (stateContext.state &&
             <SharedElementContext.Provider value={this.sharedElementRegistry}>
@@ -68,7 +69,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     {styles => (
                         styles.map(({data: {key, state, data, crumbs}, style}) => {
                             var scene = (
-                                <SceneProxy crumb={crumbs.length} app={app} >
+                                <SceneProxy crumb={crumbs.length} app={app} singleRoot={singleRoot}>
                                     {!app && state.renderScene(data)}
                                 </SceneProxy>
                             );
