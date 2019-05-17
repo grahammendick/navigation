@@ -2,9 +2,8 @@ import React from 'react';
 import {NavigationMotion} from 'navigation-react-mobile';
 import ZoomShared from './ZoomShared';
 
-export default ({app}) => (
+export default () => (
   <NavigationMotion
-    app={app}
     unmountedStyle={{opacity: 0}}
     mountedStyle={{opacity: 1}}
     crumbStyle={{opacity: 0}}
