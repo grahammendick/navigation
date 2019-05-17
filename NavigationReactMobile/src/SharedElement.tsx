@@ -4,7 +4,11 @@ import withSharedElementRegistry from './withSharedElementRegistry';
 import { SharedElementProps } from './Props';
 
 class SharedElement extends React.Component<SharedElementProps, any> {
-    private ref: HTMLElement;
+    private ref: React.RefObject<HTMLElement>;
+    constructor(props) {
+        super(props);
+        this.ref = React.createRef(); 
+    }
     componentDidMount() {
         this.register();
     }
@@ -20,16 +24,16 @@ class SharedElement extends React.Component<SharedElementProps, any> {
         sharedElementRegistry.unregisterSharedElement(scene, this.props.name);
     }
     register() {
-        if (!this.ref) return;
+        if (!this.ref.current) return;
         var {unshare, name, data, stateNavigator, sharedElementRegistry} = this.props;
         var scene = stateNavigator.stateContext.crumbs.length;
         if (!unshare)
-            sharedElementRegistry.registerSharedElement(scene, name, this.ref, data);
+            sharedElementRegistry.registerSharedElement(scene, name, this.ref.current, data);
         else
-            sharedElementRegistry.unregisterSharedElement(scene, name, this.ref);
+            sharedElementRegistry.unregisterSharedElement(scene, name, this.ref.current);
     }
     render() {
-        return React.cloneElement(this.props.children, {ref: el => this.ref = el});
+        return React.cloneElement(this.props.children, {ref: this.ref});
     }
 }
 
