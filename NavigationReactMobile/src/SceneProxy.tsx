@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Scene from './Scene';
-import SharedElementContext from './SharedElementContext';
 import SharedElementRegistry from './SharedElementRegistry';
+import withSharedElementRegistry from './withSharedElementRegistry';
 type SceneProxyProps = {crumb: number, app: React.ComponentType<{crumb: number}>, rootPerScene: boolean};
 
 class SceneProxy extends React.Component<SceneProxyProps & {sharedElementRegistry: SharedElementRegistry}> {
@@ -41,10 +41,4 @@ class SceneProxy extends React.Component<SceneProxyProps & {sharedElementRegistr
     }
 }
 
-export default (props: SceneProxyProps) => (
-    <SharedElementContext.Consumer>
-        {(sharedElementRegistry) => (
-            <SceneProxy {...props} sharedElementRegistry={sharedElementRegistry} />
-        )}
-    </SharedElementContext.Consumer>
-);
+export default withSharedElementRegistry(SceneProxy);
