@@ -1,6 +1,6 @@
 import { StateNavigator } from 'navigation';
-import { NavigationHandler, NavigationLink } from 'navigation-react';
-import { NavigationMotion, Scene, MobileHistoryManager, SharedElement, SharedElementMotion } from 'navigation-react-mobile';
+import { NavigationLink } from 'navigation-react';
+import { NavigationMotion, MobileHistoryManager, SharedElement, SharedElementMotion } from 'navigation-react-mobile';
 import * as React from 'react';
 
 const stateNavigator: StateNavigator = new StateNavigator([
@@ -37,7 +37,7 @@ var { people, person } = stateNavigator.states;
 people.renderScene = ({ page }) => <People page={page}/>;
 person.renderScene = ({ id }) => <Person id={id}/>;
 
-var ZoomShared = (props) => (
+var Zoom = (props) => (
     <SharedElementMotion
         {...props}
         onAnimating={(name, ref) => {ref.style.opacity = '0'}}
@@ -55,26 +55,21 @@ var ZoomShared = (props) => (
     </SharedElementMotion>
 );
 
-var App = ({crumb}) => (
-    <NavigationHandler stateNavigator={stateNavigator}>
-        <Scene crumb={crumb} />
-    </NavigationHandler>
-);
-  
-
-var Zoom = () => (
+var App = () => (
     <NavigationMotion
-        app={App}
         unmountedStyle={{opacity: 1, translate: 100}}
         mountedStyle={{opacity: 1, translate: 0}}
         crumbStyle={{opacity: 0, translate: 0}}
-        sharedElementMotion={props => <ZoomShared {...props} />}>
-        {({ opacity, translate }) => (
+        sharedElementMotion={props => <Zoom {...props} />}>
+        {({ opacity, translate }, scene, key) => (
             <div
+                key={key}
                 style={{
                     opacity,
                     transform: `translate(${translate}%)`,
-                }} />
+                }}>
+                {scene}
+            </div>
         )}
     </NavigationMotion>
 );

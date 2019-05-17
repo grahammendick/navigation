@@ -88,7 +88,7 @@ export interface NavigationMotionProps {
     /**
      * The App component
      */
-    app: ComponentType<{crumb: number}>;
+    app?: ComponentType<{crumb: number}>;
     /**
      * A Scene's unmounted style
      */
@@ -112,7 +112,7 @@ export interface NavigationMotionProps {
     /**
      * Renders the Scene with the interpoated styles
      */
-    children: (style: any, active: boolean, state: State, data: any) => ReactElement<any>;
+    children: (style: any, scene: ReactElement<any>, key: number, active: boolean, state: State, data: any) => ReactElement<any>;
 }
 
 /**

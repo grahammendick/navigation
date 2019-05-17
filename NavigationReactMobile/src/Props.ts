@@ -46,7 +46,7 @@ interface SharedElementMotionProps {
 }
 
 interface NavigationMotionProps {
-    app: ComponentType<{crumb: number}>;
+    app?: ComponentType<{crumb: number}>;
     unmountedStyle?: any;
     mountedStyle?: any;
     crumbStyle?: any;
