@@ -22,7 +22,7 @@ class SceneProxy extends React.Component<SceneProxyProps & {sharedElementRegistr
             ReactDOM.render(<App crumb={crumb} />, this.ref.current);
     }
     componentWillUnmount() {
-        var {app: App, singleRoot} = this.props;
+        var {singleRoot} = this.props;
         this.ref.current.removeEventListener("share", this.share);
         if (!singleRoot)
             ReactDOM.unmountComponentAtNode(this.ref.current);
