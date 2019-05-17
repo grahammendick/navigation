@@ -33,7 +33,7 @@ class SceneProxy extends React.Component<SceneProxyProps & {sharedElementRegistr
         if (share)
             sharedElementRegistry.registerSharedElement(crumb, name, target, data);
         else
-            sharedElementRegistry.unregisterSharedElement(crumb, name);
+            sharedElementRegistry.unregisterSharedElement(crumb, name, target);
     }
     render() {
         var {crumb, app: App, rootPerScene} = this.props;
