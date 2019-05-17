@@ -2,7 +2,7 @@ import express from 'express';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { NavigationHandler } from 'navigation-react';
-import { NavigationMotion } from 'navigation-react-mobile';
+import { Scene } from 'navigation-react-mobile';
 import getStateNavigator from './getStateNavigator';
 import Isomorphic from './Isomorphic';
 
@@ -36,7 +36,7 @@ app.get('*', function(req, res) {
         <body>
             <div id="content">${ReactDOMServer.renderToString(
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <Isomorphic />
+                    <Isomorphic app={({crumb}) => <Scene crumb={crumb} />} singleRoot={true} />
                 </NavigationHandler>
             )}</div>
             <script src="/app.js" ></script>
