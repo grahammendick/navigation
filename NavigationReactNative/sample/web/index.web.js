@@ -1,7 +1,7 @@
 import React from 'react';
 import {render} from 'react-dom';
 import {NavigationHandler} from 'navigation-react';
-import {MobileHistoryManager} from 'navigation-react-mobile';
+import {MobileHistoryManager, Scene} from 'navigation-react-mobile';
 import createStateNavigator from './createStateNavigator';
 import Zoom from './Zoom';
 
@@ -17,9 +17,15 @@ stateNavigator
 
 stateNavigator.start();
 
+const App = ({crumb}) => (
+  <NavigationHandler stateNavigator={stateNavigator}>
+    <Scene crumb={crumb} />
+  </NavigationHandler>
+);
+
 render(
   <NavigationHandler stateNavigator={stateNavigator}>
-    <Zoom />
+    <Zoom app={App} />
   </NavigationHandler>,
   document.getElementById('content')
 )
