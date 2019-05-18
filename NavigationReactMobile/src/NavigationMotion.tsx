@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { State, Crumb } from 'navigation';
+import { State, Crumb, StateNavigator } from 'navigation';
 import Motion from './Motion';
 import Scene from './Scene';
 import SceneProxy from './SceneProxy';
@@ -7,22 +7,23 @@ import SharedElementContext from './SharedElementContext';
 import SharedElementRegistry from './SharedElementRegistry';
 import withStateNavigator from './withStateNavigator';
 import { NavigationMotionProps } from './Props';
-type NavigationMotionState = { rest: boolean };
+type NavigationMotionState = { rest: boolean, stateNavigator: StateNavigator };
 type SceneContext = { key: number, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, mount: boolean };
 
 class NavigationMotion extends React.Component<NavigationMotionProps, NavigationMotionState> {
     private sharedElementRegistry = new SharedElementRegistry();
     constructor(props: NavigationMotionProps) {
         super(props);
-        this.state = {rest: false};
+        this.state = {rest: false, stateNavigator: null};
     }
     static defaultProps = {
         duration: 300,
         app: ({crumb}) => <Scene crumb={crumb} />,
         rootPerScene: false
     }
-    static getDerivedStateFromProps(props: NavigationMotionProps, {rest}: NavigationMotionState) {
-        return !rest ? null : {rest: false};
+    static getDerivedStateFromProps(props: NavigationMotionProps, {stateNavigator: prevStateNavigator}: NavigationMotionState) {
+        var {stateNavigator} = props;
+        return stateNavigator !== prevStateNavigator ? {rest: false, stateNavigator} : null;
     }
     getSharedElements() {
         var {crumbs, oldUrl} = this.props.stateNavigator.stateContext;
