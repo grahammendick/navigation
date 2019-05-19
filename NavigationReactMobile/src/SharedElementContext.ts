@@ -1,4 +1,4 @@
 import * as React from 'react';
-import SharedElementRegistry from './SharedElementRegistry';
+import SharedElementRegistryProxy from './SharedElementRegistryProxy';
 
-export default React.createContext(new SharedElementRegistry());
+export default React.createContext(new SharedElementRegistryProxy());

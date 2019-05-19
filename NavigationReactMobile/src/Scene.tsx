@@ -1,20 +1,36 @@
-import { NavigationContext } from 'navigation-react';
 import * as React from 'react';
+import { State } from 'navigation';
+import { NavigationContext, NavigationEvent } from 'navigation-react';
+import withStateNavigator from './withStateNavigator';
 import { SceneProps } from './Props';
+type SceneState = { navigationEvent: NavigationEvent };
 
-class Scene extends React.Component<SceneProps> {
-    shouldComponentUpdate({navigationEvent, stateNavigator}: SceneProps) {
-        var index = navigationEvent.stateNavigator.stateContext.crumbs.length;
-        return stateNavigator.stateContext.crumbs.length === index
-            && navigationEvent !== this.props.navigationEvent;
+class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEvent}, SceneState> {
+    constructor(props) {
+        super(props);
+        this.state = {navigationEvent: null};
+    }
+    static defaultProps = {
+        renderScene: (state: State, data: any) => state.renderScene(data)
+    }
+    static getDerivedStateFromProps(props: SceneProps & {navigationEvent: NavigationEvent}) {
+        var {crumb, navigationEvent} = props;
+        var {state, crumbs} = navigationEvent.stateNavigator.stateContext;
+        return (state && crumbs.length === crumb) ? {navigationEvent} : null;
+    }
+    shouldComponentUpdate(_nextProps, nextState) {
+        return nextState.navigationEvent !== this.state.navigationEvent;
     }
     render() {
+        var {navigationEvent} = this.state;
+        if (!navigationEvent) return null;
+        var {state, data} = navigationEvent.stateNavigator.stateContext;
         return (
-            <NavigationContext.Provider value={this.props.navigationEvent}>
-                {this.props.children}
+            <NavigationContext.Provider value={navigationEvent}>
+                {this.props.renderScene(state, data)}
             </NavigationContext.Provider>
         );
     }
 }
 
-export default Scene;
+export default withStateNavigator(Scene);

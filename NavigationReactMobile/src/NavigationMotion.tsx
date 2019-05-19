@@ -1,32 +1,29 @@
-import { State, Crumb } from 'navigation';
-import { NavigationEvent } from 'navigation-react';
 import * as React from 'react';
+import { State, Crumb, StateNavigator } from 'navigation';
 import Motion from './Motion';
 import Scene from './Scene';
+import SceneProxy from './SceneProxy';
 import SharedElementContext from './SharedElementContext';
 import SharedElementRegistry from './SharedElementRegistry';
 import withStateNavigator from './withStateNavigator';
 import { NavigationMotionProps } from './Props';
-type NavigationMotionState = { scenes: { [crumbs: number]: NavigationEvent }, rest: boolean };
+type NavigationMotionState = { rest: boolean, stateNavigator: StateNavigator };
 type SceneContext = { key: number, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, mount: boolean };
 
 class NavigationMotion extends React.Component<NavigationMotionProps, NavigationMotionState> {
     private sharedElementRegistry = new SharedElementRegistry();
     constructor(props: NavigationMotionProps) {
         super(props);
-        var {navigationEvent, stateNavigator} = this.props;
-        var {state, crumbs} = stateNavigator.stateContext;
-        this.state = {scenes: {[crumbs.length]: state && navigationEvent}, rest: false};
+        this.state = {rest: false, stateNavigator: null};
     }
     static defaultProps = {
-        duration: 300
+        duration: 300,
+        app: ({crumb}) => <Scene crumb={crumb} />,
+        rootPerScene: false
     }
-    static getDerivedStateFromProps(props: NavigationMotionProps, {scenes}: NavigationMotionState) {
-        var {navigationEvent, stateNavigator} = props;
-        var {crumbs} = stateNavigator.stateContext;
-        if (scenes[crumbs.length] === navigationEvent)
-            return null;
-        return {scenes: {...scenes, [crumbs.length]: navigationEvent}, rest: false};
+    static getDerivedStateFromProps(props: NavigationMotionProps, {stateNavigator: prevStateNavigator}: NavigationMotionState) {
+        var {stateNavigator} = props;
+        return stateNavigator !== prevStateNavigator ? {rest: false, stateNavigator} : null;
     }
     getSharedElements() {
         var {crumbs, oldUrl} = this.props.stateNavigator.stateContext;
@@ -37,13 +34,12 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         return [];
     }
     clearScene(index) {
-        this.setState(({scenes: prevScenes, rest: prevRest}) => {
+        this.setState(({rest: prevRest}) => {
             var scene = this.getScenes().filter(scene => scene.key === index)[0];
             if (!scene)
                 this.sharedElementRegistry.unregisterSharedElement(index);
-            var scenes = {...prevScenes, [index]: scene ? prevScenes[index] : null};
             var rest = prevRest || (scene && scene.mount);
-            return (scenes[index] !== prevScenes[index] || rest !== prevRest) ? {scenes, rest} : null;
+            return (rest !== prevRest) ? {rest} : null;
         });
     }
     getScenes(): SceneContext[]{
@@ -61,7 +57,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         return typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData) : styleProp;
     }
     render() {
-        var {children, duration, sharedElementMotion, stateNavigator} = this.props;
+        var {children, duration, app: App, rootPerScene, sharedElementMotion, stateNavigator} = this.props;
         var {stateContext: {crumbs, oldState}, stateContext} = stateNavigator;
         return (stateContext.state &&
             <SharedElementContext.Provider value={this.sharedElementRegistry}>
@@ -75,13 +71,8 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     duration={duration}>
                     {styles => (
                         styles.map(({data: {key, state, data}, style}) => {
-                            var navigationEvent = this.state.scenes[key];
-                            var scene = navigationEvent && (
-                                <Scene navigationEvent={navigationEvent} stateNavigator={stateNavigator}>
-                                    {state.renderScene(data)}
-                                </Scene>
-                            );
-                            return children(style, scene, key, crumbs.length === key, state, data)
+                            var scene = !rootPerScene ? <App crumb={key} /> : <SceneProxy crumb={key} app={App} />;
+                            return children(style, scene, key, crumbs.length === key, state, data);
                         }).concat(
                             sharedElementMotion && sharedElementMotion({
                                 key: 'sharedElements',

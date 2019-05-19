@@ -6,7 +6,7 @@ class SharedElementRegistry {
         this.sharedElements[scene] = this.sharedElements[scene] || {};
         this.sharedElements[scene][name] = {ref, data};
     }
-    unregisterSharedElement(scene: number, name?: string) {
+    unregisterSharedElement(scene: number, name?: string, ref?: HTMLElement) {
         if (this.sharedElements[scene]) {
             if (name)
                 delete this.sharedElements[scene][name];

@@ -2,7 +2,7 @@ import { StateNavigator, State } from 'navigation';
 import { NavigationEvent } from 'navigation-react';
 import SharedElementMotion from './SharedElementMotion';
 import SharedElementRegistry from './SharedElementRegistry';
-import { ReactElement } from 'react';
+import { ComponentType, ReactElement, ReactNode } from 'react';
 
 interface MotionProps<T> {
     data: T[];
@@ -46,10 +46,12 @@ interface SharedElementMotionProps {
 }
 
 interface NavigationMotionProps {
+    app?: ComponentType<{crumb: number}>;
     unmountedStyle?: any;
     mountedStyle?: any;
     crumbStyle?: any;
     duration?: number;
+    rootPerScene?: boolean;
     sharedElementMotion?: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
     stateNavigator?: StateNavigator;
     navigationEvent: NavigationEvent;
@@ -57,8 +59,8 @@ interface NavigationMotionProps {
 }
 
 interface SceneProps {
-    navigationEvent: NavigationEvent;
-    stateNavigator: StateNavigator;
+    crumb: number;
+    renderScene?: (state: State, data: any) => ReactNode;
 }
 
 export { MotionProps, SharedElementProps, SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProps, NavigationMotionProps, SceneProps }

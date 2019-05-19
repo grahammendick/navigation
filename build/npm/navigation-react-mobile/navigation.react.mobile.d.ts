@@ -1,5 +1,5 @@
 import { State, HTML5HistoryManager } from 'navigation';
-import { Component, ReactElement } from 'react';
+import { Component, ComponentType, ReactElement, ReactNode } from 'react';
 
 /**
  * Defines the Shared Element Props contract
@@ -86,6 +86,10 @@ export interface SharedElementMotionProps {
  */
 export interface NavigationMotionProps {
     /**
+     * The App component
+     */
+    app?: ComponentType<{crumb: number}>;
+    /**
      * A Scene's unmounted style
      */
     unmountedStyle?: any;
@@ -112,6 +116,20 @@ export interface NavigationMotionProps {
 }
 
 /**
+ * Defines the Scene Props contract
+ */
+interface SceneProps {
+    /**
+     * The position of the Scene in the crumb trail
+     */
+    crumb: number;
+    /**
+     * Renders the Scene for the State and navigation data
+     */
+    renderScene?: (state: State, data: any) => ReactNode;
+}
+
+/**
  * Identifies HTML Elements that can be shared when navigating
  */
 export class SharedElement extends Component<SharedElementProps> { }
@@ -125,6 +143,11 @@ export class SharedElementMotion extends Component<SharedElementNavigationMotion
  * Animates Scenes when navigating
  */
 export class NavigationMotion extends Component<NavigationMotionProps> { }
+
+/**
+ * Renders the Scene for the provided position in the crumb trail
+ */
+export class Scene extends Component<SceneProps> { }
 
 /**
  * Manages history with the HTML5 history api. Produces friendly Urls in Mobile
