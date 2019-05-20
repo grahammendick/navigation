@@ -62,7 +62,7 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
             if (url == null)
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
             var data = { ...state.defaults, ...navigationData };
-            var crumbs = getCrumbTrail(state, navigationData, crumbs, nextCrumb);
+            var crumbs = getCrumbTrail(state, data, crumbs, nextCrumb);
             return navigateLink(state, data, crumbs, url);
         }
     }

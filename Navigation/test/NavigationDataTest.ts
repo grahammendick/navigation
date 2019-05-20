@@ -2192,6 +2192,66 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Refresh Individual Data Custom Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', trackCrumbTrail: true }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.truncateCrumbTrail = (state, data, crumbs) => {
+                if (data['string'] === 'Hello' && data['boolean'] === true
+                    && data['number'] === 0 && +data['date'] === +new Date(2010, 3, 7))
+                    return crumbs;
+                return [];
+            };
+        });
+        var individualNavigationData = {};
+        individualNavigationData['string'] = 'Hello';
+        individualNavigationData['boolean'] = true;
+        individualNavigationData['number'] = 0;
+        individualNavigationData['date'] = new Date(2010, 3, 7);
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s');
+                stateNavigator.refresh();
+                stateNavigator.refresh(individualNavigationData);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link);
+                var link = stateNavigator.getRefreshLink();
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getRefreshLink(individualNavigationData);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s')
+                    .refresh()
+                    .refresh(individualNavigationData)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate crumb trail', function() {
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+            });
+        }
+    });
+
     describe('Array Data Custom Trail', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
