@@ -563,4 +563,35 @@ describe('FluentLinkTest', function () {
             assert.equal(stateNavigator.stateContext.state.key, 's1');
         })
     });
+
+    describe('On Before Component Cancel Fluent Navigation', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            class Blocker extends React.Component<{ stateNavigator: StateNavigator }> {
+                componentDidMount() {
+                    this.props.stateNavigator.onBeforeNavigate(() => false);
+                }
+                render() {
+                    return null;
+                }
+            }
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({ stateNavigator }) => <Blocker stateNavigator={stateNavigator} />}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            assert.equal(stateNavigator.stateContext.state.key, 's0');
+            var link = stateNavigator.fluent(true).navigate('s1').url;
+            stateNavigator.navigateLink(link);
+            assert.equal(stateNavigator.stateContext.state.key, 's0');
+        })
+    });
 });
