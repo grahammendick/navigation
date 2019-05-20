@@ -113,4 +113,383 @@ describe('FluentLinkTest', function () {
             assert.equal(link.attributes.length, 3);
         })
     });
+
+    describe('Click Fluent Link', function () {
+        it('should navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink navigate={fluentNavigator => (
+                        fluentNavigator
+                            .navigate('s0')
+                            .navigate('s1')
+                    )}>
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+        })
+    });
+
+    describe('Ctrl + Click Fluent Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink navigate={fluentNavigator => (
+                        fluentNavigator
+                            .navigate('s0')
+                            .navigate('s1')
+                    )}>
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link, { ctrlKey: true });
+            assert.equal(stateNavigator.stateContext.state, null);
+        })
+    });
+
+    describe('Shift + Click Fluent Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink navigate={fluentNavigator => (
+                        fluentNavigator
+                            .navigate('s0')
+                            .navigate('s1')
+                    )}>
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link, { shiftKey: true });
+            assert.equal(stateNavigator.stateContext.state, null);
+        })
+    });
+
+    describe('Meta + Click Fluent Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink navigate={fluentNavigator => (
+                        fluentNavigator
+                            .navigate('s0')
+                            .navigate('s1')
+                    )}>
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link, { metaKey: true });
+            assert.equal(stateNavigator.stateContext.state, null);
+        })
+    });
+
+    describe('Alt + Click Fluent Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink navigate={fluentNavigator => (
+                        fluentNavigator
+                            .navigate('s0')
+                            .navigate('s1')
+                    )}>
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link, { altKey: true });
+            assert.equal(stateNavigator.stateContext.state, null);
+        })
+    });
+
+    describe('Button + Click Fluent Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink navigate={fluentNavigator => (
+                        fluentNavigator
+                            .navigate('s0')
+                            .navigate('s1')
+                    )}>
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link, { button: 1 });
+            assert.equal(stateNavigator.stateContext.state, null);
+        })
+    });
+
+    describe('Navigating Click Fluent Link', function () {
+        it('should navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink
+                        navigate={fluentNavigator => (
+                        fluentNavigator
+                            .navigate('s0')
+                            .navigate('s1')
+                        )}
+                        navigating={() => true}>
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+        })
+    });
+
+    describe('Not Navigating Click Fluent Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink
+                        navigate={fluentNavigator => (
+                        fluentNavigator
+                            .navigate('s0')
+                            .navigate('s1')
+                    )}
+                        navigating={() => false}>
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.state, null);
+        })
+    });
+
+    describe('Navigating Params Click Fluent Link', function () {
+        it('should navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var navigatingEvt, navigatingLink;
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink
+                        navigate={fluentNavigator => (
+                        fluentNavigator
+                            .navigate('s0')
+                            .navigate('s1')
+                    )}
+                        navigating={(e, link) => {
+                            navigatingEvt = e;
+                            navigatingLink = link;
+                            return true;
+                        }}>
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link, { clientX: 224 });
+            assert.strictEqual(navigatingEvt.clientX, 224);
+            assert.equal(navigatingLink, '/r1?crumb=%2Fr0');
+        })
+    });
+
+    describe('History Click Fluent Link', function () {
+        it('should navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink navigate={fluentNavigator => (
+                        fluentNavigator
+                            .navigate('s0')
+                            .navigate('s1')
+                    )}>
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            var addHistory;
+            stateNavigator.historyManager.addHistory = (url, replace) => { addHistory = !replace };
+            Simulate.click(link);
+            assert.strictEqual(addHistory, true);
+        })
+    });
+
+    describe('Replace History Click Fluent Link', function () {
+        it('should navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink
+                        navigate={fluentNavigator => (
+                        fluentNavigator
+                            .navigate('s0')
+                            .navigate('s1')
+                    )}
+                        historyAction="replace">
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            var replaceHistory;
+            stateNavigator.historyManager.addHistory = (url, replace) => { replaceHistory = replace };
+            Simulate.click(link);
+            assert.strictEqual(replaceHistory, true);
+        })
+    });
+
+    describe('None History Click Fluent Link', function () {
+        it('should navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink
+                        navigate={fluentNavigator => (
+                        fluentNavigator
+                            .navigate('s0')
+                            .navigate('s1')
+                    )}
+                        historyAction="none">
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            var noneHistory = true;
+            stateNavigator.historyManager.addHistory = () => { noneHistory = false };
+            Simulate.click(link);
+            assert.strictEqual(noneHistory, true);
+        })
+    });
+
+    describe('Crumb Trail Navigate Fluent Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink
+                        withContext={true}
+                        navigate={fluentNavigator => (
+                        fluentNavigator
+                            .navigate('s1')
+                    )}>
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r1');
+            stateNavigator.navigate('s0');
+            assert.equal(link.hash, '#/r1?crumb=%2Fr0');
+        })
+    });
+
+    describe('Click Custom Href Fluent Link', function () {
+        it('should navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.historyManager.getHref = () => '#/hello/world';
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink navigate={fluentNavigator => (
+                        fluentNavigator
+                            .navigate('s0')
+                            .navigate('s1')
+                    )}>
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/hello/world');
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+        })
+    });
 });
