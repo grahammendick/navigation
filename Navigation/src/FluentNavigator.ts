@@ -11,9 +11,14 @@ interface FluentNavigator {
 }
 
 function createFluentNavigator(states: { [index: string]: State }, stateHandler: StateHandler, stateContext = new StateContext()): FluentNavigator {
-    function navigateLink(url): FluentNavigator {
-        var { state, data } = stateHandler.parseLink(url);
-        var { [state.crumbTrailKey]: crumbs, ...data } = data;
+    function getCrumbTrail(state: State, navigationData: any, crumbs: Crumb[], nextCrumb: Crumb): Crumb[] {
+        crumbs = crumbs.slice();
+        if (nextCrumb)
+            crumbs.push(nextCrumb);
+        return state.truncateCrumbTrail(state, navigationData, crumbs);
+    }
+
+    function navigateLink(state: State, data: any, crumbs: Crumb[], url: string): FluentNavigator {
         var fluentContext = new StateContext();
         fluentContext.state = state;
         fluentContext.url = url;
@@ -26,28 +31,36 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
     return {
         url: stateContext.url,
         navigate: function(stateKey: string, navigationData?: any): FluentNavigator {
-            if (!states[stateKey])
+            var state = states[stateKey];
+            var {crumbs, nextCrumb} = stateContext;
+            if (!state)
                 throw new Error(stateKey + ' is not a valid State');
             if (typeof navigationData === 'function')
                 navigationData = navigationData(stateContext.data);
-            var url = stateHandler.getLink(states[stateKey], navigationData, stateContext.crumbs, stateContext.nextCrumb);
+            var url = stateHandler.getLink(state, navigationData, crumbs, nextCrumb);
             if (url == null)
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-            return navigateLink(url);
+            var data = { ...state.defaults, ...navigationData };
+            var crumbs = getCrumbTrail(state, navigationData, crumbs, nextCrumb);
+            return navigateLink(state, data, crumbs, url);
         },
         navigateBack: function(distance: number): FluentNavigator {
             if (!(distance <= stateContext.crumbs.length && distance > 0))
                 throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + stateContext.crumbs.length + ')');
-            var url = stateContext.crumbs[stateContext.crumbs.length - distance].url;
-            return navigateLink(url);
+            var {state, data, url} = stateContext.crumbs[stateContext.crumbs.length - distance];
+            var crumbs = stateContext.crumbs.slice(0, stateContext.crumbs.length - distance);
+            return navigateLink(state, data, crumbs, url);
         },
         refresh: function(navigationData?: any): FluentNavigator {
+            var {state, crumbs, nextCrumb} = stateContext;
             if (typeof navigationData === 'function')
                 navigationData = navigationData(stateContext.data);
-            var url = stateHandler.getLink(stateContext.state, navigationData, stateContext.crumbs, stateContext.nextCrumb);
+            var url = stateHandler.getLink(state, navigationData, crumbs, nextCrumb);
             if (url == null)
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-            return navigateLink(url);
+            var data = { ...state.defaults, ...navigationData };
+            var crumbs = getCrumbTrail(state, navigationData, crumbs, nextCrumb);
+            return navigateLink(state, data, crumbs, url);
         }
     }
 }
