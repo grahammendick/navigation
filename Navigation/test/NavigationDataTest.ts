@@ -1928,7 +1928,7 @@ describe('Navigation Data', function () {
         }
     });
 
-    describe.only('Wizard Refresh Data Defaults', function() {
+    describe('Wizard Refresh Data Defaults', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
