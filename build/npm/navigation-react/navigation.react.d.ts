@@ -1,4 +1,4 @@
-import { State, StateNavigator } from 'navigation';
+import { State, StateNavigator, FluentNavigator } from 'navigation';
 import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent } from 'react';
 
 /**
@@ -82,7 +82,7 @@ export interface RefreshLinkProps extends LinkProps {
 }
 
 /**
- * Hyperlink Component the navigates to the current State
+ * Hyperlink Component that navigates to the current State
  */
 export class RefreshLink extends Component<RefreshLinkProps> { }
 
@@ -97,14 +97,14 @@ export interface NavigationLinkProps extends RefreshLinkProps {
 }
 
 /**
- * Hyperlink Component the navigates to a State
+ * Hyperlink Component that navigates to a State
  */
 export class NavigationLink extends Component<NavigationLinkProps> { }
 
 /**
  * Defines the Navigation Back Link Props contract
  */
-export interface NavigationBackLinkProps extends RefreshLinkProps {
+export interface NavigationBackLinkProps extends LinkProps {
     /**
      * Starting at 1, The number of Crumb steps to go back
      */
@@ -112,7 +112,25 @@ export interface NavigationBackLinkProps extends RefreshLinkProps {
 }
 
 /**
- * Hyperlink Component the navigates back along the crumb trail
+ * Hyperlink Component that navigates back along the crumb trail
  */
 export class NavigationBackLink extends Component<NavigationBackLinkProps> { }
 
+/**
+ * Defines the Fluent Link Props contract
+ */
+export interface FluentLinkProps extends LinkProps {
+    /**
+     * Indicates whether to inherit the current context
+     */
+    withContext?: boolean;
+    /**
+     * The function that fluently navigates to a State
+     */
+    navigate: (fluentNavigator: FluentNavigator) => FluentNavigator;
+}
+
+/**
+ * Hyperlink Component that fluently navigates to a State
+ */
+export class FluentLink extends Component<FluentLinkProps> { }
