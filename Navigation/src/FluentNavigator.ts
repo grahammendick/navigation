@@ -12,6 +12,8 @@ interface FluentNavigator {
 
 function createFluentNavigator(states: { [index: string]: State }, stateHandler: StateHandler, stateContext = new StateContext()): FluentNavigator {
     function getCrumbTrail(state: State, navigationData: any, crumbs: Crumb[], nextCrumb: Crumb): Crumb[] {
+        if (!state.trackCrumbTrail)
+            return [];
         crumbs = crumbs.slice();
         if (nextCrumb)
             crumbs.push(nextCrumb);
