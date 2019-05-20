@@ -492,4 +492,42 @@ describe('FluentLinkTest', function () {
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
         })
     });
+
+    describe('Consumer Fluent Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            var {s0, s1, s2} = stateNavigator.states;
+            s0.renderView = () => (
+                <FluentLink
+                    withContext={true}
+                    navigate={fluentNavigator => (
+                        fluentNavigator
+                            .navigate('s1')
+                            .navigate('s2', {hello: 'world'})
+                )}>
+                    link text
+                </FluentLink>
+            );
+            s1.renderView = () => <h1>s1</h1>
+            s2.renderView = ({hello}) => <h1>{hello}</h1>
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({state, data}) => state.renderView(data)}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link);
+            var header = container.querySelector<HTMLHeadingElement>('h1');
+            assert.equal(header.innerHTML, 'world');
+        })
+    });
 });
