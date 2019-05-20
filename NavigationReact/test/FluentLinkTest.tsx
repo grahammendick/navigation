@@ -38,4 +38,21 @@ describe('FluentLinkTest', function () {
             assert.equal(link.innerHTML, '<span>link text</span>');
         })
     });
+
+    describe('Without State Navigator Fluent Link', function () {
+        it('should render', function(){
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <FluentLink navigate={fluentNavigator => (
+                    fluentNavigator.navigate('s')
+                )}>
+                    link text
+                </FluentLink>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
 });
