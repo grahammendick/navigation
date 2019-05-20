@@ -1866,6 +1866,68 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Wizard Data Defaults', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { b: true } },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+        });
+        var data = {
+            s: 'Hello',
+            n: 5
+        };
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1', data);
+                stateNavigator.navigate('s2', stateNavigator.stateContext.includeCurrentData(null));
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1', data);
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s2', stateNavigator.stateContext.includeCurrentData(null));
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0')
+                    .navigate('s1', data)
+                    .navigate('s2', currentData => currentData)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.previousData['s'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.previousData['n'], 5);
+                assert.strictEqual(stateNavigator.stateContext.previousData['b'], true);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['s'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['n'], 5);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['b'], true);
+                assert.strictEqual(stateNavigator.stateContext.data['s'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.data['n'], 5);
+                assert.strictEqual(stateNavigator.stateContext.data['b'], true);
+            });
+        }
+    });
+
     describe('Transition Transition', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
