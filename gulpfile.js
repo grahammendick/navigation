@@ -99,7 +99,8 @@ var tests = [
     { name: 'FluentNavigation', to: 'fluentNavigation.test.js' },
     { name: 'NavigationLink', to: 'navigationLink.test.js', folder: 'React', ext: 'tsx' },
     { name: 'NavigationBackLink', to: 'navigationBackLink.test.js', folder: 'React', ext: 'tsx' },
-    { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' }
+    { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' },
+    { name: 'FluentLink', to: 'fluentLink.test.js', folder: 'React', ext: 'tsx' }
 ];
 function testTask(name, input, file) {
     var globals = [

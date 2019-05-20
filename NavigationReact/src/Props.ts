@@ -1,5 +1,6 @@
 import AsyncStateNavigator from './AsyncStateNavigator';
 import { AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent } from 'react';
+import { FluentNavigator } from 'navigation';
 
 interface LinkProps extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
     historyAction?: 'add' | 'replace' | 'none';
@@ -25,4 +26,9 @@ interface NavigationBackLinkProps extends LinkProps {
     distance: number;
 }
 
-export { LinkProps, RefreshLinkProps, NavigationLinkProps, NavigationBackLinkProps }
+interface FluentLinkProps extends LinkProps {
+    withContext?: boolean;
+    navigate: (fluentNavigator: FluentNavigator) => FluentNavigator;
+}
+
+export { LinkProps, RefreshLinkProps, NavigationLinkProps, NavigationBackLinkProps, FluentLinkProps }
