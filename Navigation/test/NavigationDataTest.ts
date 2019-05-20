@@ -6899,7 +6899,8 @@ describe('Navigation Data', function () {
 
         describe('Fluent Navigate', function() {
             it('should throw error', function() {
-                assert.throws(() => stateNavigator.fluent().navigate('s', individualNavigationData), /The Url .+ is invalid/);
+                var link = stateNavigator.fluent().navigate('s', individualNavigationData).url;
+                assert.throws(() => stateNavigator.navigateLink(link), /The Url .+ is invalid/);
             });
         });
     });
@@ -6939,7 +6940,8 @@ describe('Navigation Data', function () {
 
         describe('Fluent Navigate', function() {
             it('should throw error', function() {
-                assert.throws(() => stateNavigator.fluent().navigate('s', arrayNavigationData), /The Url .+ is invalid/);
+                var link = stateNavigator.fluent().navigate('s', arrayNavigationData).url;
+                assert.throws(() => stateNavigator.navigateLink(link), /The Url .+ is invalid/);
             });
         });
     });
