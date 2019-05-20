@@ -114,6 +114,35 @@ describe('FluentLinkTest', function () {
         })
     });
 
+    describe('With Context Fluent Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink
+                        withContext={true}
+                        navigate={fluentNavigator => (
+                            fluentNavigator
+                                .navigate('s1')
+                                .navigate('s2')
+                    )}>
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r2?crumb=%2Fr0&crumb=%2Fr1');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
     describe('Click Fluent Link', function () {
         it('should navigate', function(){
             var stateNavigator = new StateNavigator([
