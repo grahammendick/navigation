@@ -5,9 +5,9 @@ import * as React from 'react';
 
 var FluentLink = (props: FluentLinkProps) => {
     var htmlProps = LinkUtility.toHtmlProps(props);
-    var { withContext, navigate, stateNavigator } = props;
+    var { withContext = false, navigate, stateNavigator } = props;
     try {
-        var link = navigate(stateNavigator.fluent(!!withContext)).url;
+        var link = navigate(stateNavigator.fluent(withContext)).url;
     } catch {}
     htmlProps.href = link && stateNavigator.historyManager.getHref(link);
     htmlProps.onClick = link && LinkUtility.getOnClick(stateNavigator, props, link);
