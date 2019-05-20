@@ -55,4 +55,31 @@ describe('FluentLinkTest', function () {
             assert.equal(link.innerHTML, 'link text');
         })
     });
+
+    describe('Invalid Fluent Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink navigate={fluentNavigator => (
+                        fluentNavigator
+                        .navigate('s0')
+                        .navigate('x')
+                    )}>
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
 });
