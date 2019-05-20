@@ -5759,8 +5759,8 @@ describe('Navigation Data', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateNavigator.navigate('s0');
-                stateNavigator.navigate('s1', data);
+                stateNavigator.navigate('s1');
+                stateNavigator.refresh(data);
                 stateNavigator.refresh(stateNavigator.stateContext.includeCurrentData(null));
             });
             test();
@@ -5768,9 +5768,9 @@ describe('Navigation Data', function () {
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateNavigator.getNavigationLink('s0');
+                var link = stateNavigator.getNavigationLink('s1');
                 stateNavigator.navigateLink(link);
-                link = stateNavigator.getNavigationLink('s1', data);
+                link = stateNavigator.getRefreshLink(data);
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData(null));
                 stateNavigator.navigateLink(link);
@@ -5781,8 +5781,8 @@ describe('Navigation Data', function () {
         describe('Fluent Navigate', function() {
             beforeEach(function() {
                 var link = stateNavigator.fluent()
-                    .navigate('s0')
-                    .navigate('s1', data)
+                    .navigate('s1')
+                    .refresh(data)
                     .refresh((currentData) => currentData)
                     .url;
                 stateNavigator.navigateLink(link);
