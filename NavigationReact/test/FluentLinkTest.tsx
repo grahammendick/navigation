@@ -594,4 +594,31 @@ describe('FluentLinkTest', function () {
             assert.equal(stateNavigator.stateContext.state.key, 's0');
         })
     });
+
+    describe('Click Fluent Navigate', function () {
+        it('should navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({stateNavigator}) => (
+                            <div onClick={() => stateNavigator.navigateLink(stateNavigator.fluent()
+                                .navigate('s0')
+                                .navigate('s1').url)
+                            } />
+                        )}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>,
+                container
+            );
+            var div = container.querySelector<HTMLAnchorElement>('div');
+            Simulate.click(div);
+            assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+        })
+    });
 });
