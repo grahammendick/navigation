@@ -530,4 +530,37 @@ describe('FluentLinkTest', function () {
             assert.equal(header.innerHTML, 'world');
         })
     });
+
+    describe('On Before Cancel Fluent Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FluentLink
+                        withContext={true}
+                        navigate={fluentNavigator => (
+                            fluentNavigator
+                                .navigate('s1')
+                                .navigate('s1')
+                    )}>
+                        link text
+                    </FluentLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelectorAll<HTMLAnchorElement>('a')[0];
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.crumbs.length, 2);
+            assert.equal(stateNavigator.stateContext.state.key, 's1');
+            stateNavigator.onBeforeNavigate(() => false);
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.crumbs.length, 2);
+            assert.equal(stateNavigator.stateContext.state.key, 's1');
+        })
+    });
 });
