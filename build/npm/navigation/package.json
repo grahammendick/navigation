@@ -1,6 +1,6 @@
 {
   "name": "navigation",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "The data-first JavaScript router",
   "main": "navigation.js",
   "types": "navigation.d.ts",
