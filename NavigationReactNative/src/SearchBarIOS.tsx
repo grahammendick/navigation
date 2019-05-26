@@ -1,10 +1,16 @@
 import React from 'react';
 import { requireNativeComponent, Platform } from 'react-native';
 
-const SearchBar = (props) => (
-    <NVSearchBar {...props} style={{position: 'absolute'}} /> 
+const SearchBar = ({
+    hidesWhenScrolling = false,
+    textAutocapitalizationType = 'sentences',
+}) => (
+    <NVSearchBar
+        hidesWhenScrolling={hidesWhenScrolling}
+        textAutocapitalizationType={textAutocapitalizationType}
+        style={{position: 'absolute'}} /> 
 );
 
-const NVSearchBar = requireNativeComponent('NVSearchBar', SearchBar as any);
+const NVSearchBar: any = requireNativeComponent('NVSearchBar', SearchBar as any);
 
 export default Platform.OS === 'ios' ? SearchBar : () => null;

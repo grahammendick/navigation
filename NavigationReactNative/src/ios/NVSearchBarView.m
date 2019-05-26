@@ -37,6 +37,7 @@
     self.reactViewController.definesPresentationContext = YES;
     [navigationItem setSearchController:searchController];
     [navigationItem setHidesSearchBarWhenScrolling:self.hidesWhenScrolling];
+    [[searchController searchBar] setAutocapitalizationType:self.textAutocapitalizationType];
 }
 
 

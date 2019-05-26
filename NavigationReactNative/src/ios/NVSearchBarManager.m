@@ -30,6 +30,7 @@ RCT_EXPORT_MODULE()
 }
 
 RCT_EXPORT_VIEW_PROPERTY(hidesWhenScrolling, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(textAutocapitalizationType, UITextAutocapitalizationType)
 
 - (RCTShadowView *)shadowView
 {
