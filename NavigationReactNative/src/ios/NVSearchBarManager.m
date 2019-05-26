@@ -1,9 +1,15 @@
-//
-//  NVSearchBarManager.m
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 26/05/2019.
-//  Copyright © 2019 Graham Mendick. All rights reserved.
-//
+#import "NVSearchBarManager.h"
+#import "NVSearchBarView.h"
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+@implementation NVSearchBarManager
+
+RCT_EXPORT_MODULE()
+
+- (UIView *)view
+{
+    return [[NVSearchBarView alloc] init];
+}
+
+@end
