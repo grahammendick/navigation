@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		7020F6D020ECD25F00E7A74E /* NVSceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7020F6CF20ECD25F00E7A74E /* NVSceneController.m */; };
 		7020F70A20ECD6FB00E7A74E /* NavigationModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 7020F70920ECD6FB00E7A74E /* NavigationModule.m */; };
+		70587C86229A8688009457B7 /* NVSearchBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70587C85229A8688009457B7 /* NVSearchBarView.m */; };
+		70587C89229A86B8009457B7 /* NVSearchBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70587C88229A86B8009457B7 /* NVSearchBarManager.m */; };
 		70AFBC3221DCD2CC006355EE /* NVSharedElementManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AFBC3121DCD2CC006355EE /* NVSharedElementManager.m */; };
 		70AFBC3521DCD320006355EE /* NVSharedElementView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AFBC3421DCD320006355EE /* NVSharedElementView.m */; };
 		70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3290212B2BC700DE0D13 /* NVRightBarView.m */; };
@@ -39,6 +41,10 @@
 		7020F6CF20ECD25F00E7A74E /* NVSceneController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSceneController.m; sourceTree = "<group>"; };
 		7020F70820ECD6ED00E7A74E /* NavigationModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavigationModule.h; sourceTree = "<group>"; };
 		7020F70920ECD6FB00E7A74E /* NavigationModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavigationModule.m; sourceTree = "<group>"; };
+		70587C84229A867A009457B7 /* NVSearchBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSearchBarView.h; sourceTree = "<group>"; };
+		70587C85229A8688009457B7 /* NVSearchBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSearchBarView.m; sourceTree = "<group>"; };
+		70587C87229A86AA009457B7 /* NVSearchBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSearchBarManager.h; sourceTree = "<group>"; };
+		70587C88229A86B8009457B7 /* NVSearchBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSearchBarManager.m; sourceTree = "<group>"; };
 		70AFBC3121DCD2CC006355EE /* NVSharedElementManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSharedElementManager.m; sourceTree = "<group>"; };
 		70AFBC3321DCD2F6006355EE /* NVSharedElementManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSharedElementManager.h; sourceTree = "<group>"; };
 		70AFBC3421DCD320006355EE /* NVSharedElementView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSharedElementView.m; sourceTree = "<group>"; };
@@ -73,6 +79,10 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				70587C88229A86B8009457B7 /* NVSearchBarManager.m */,
+				70587C87229A86AA009457B7 /* NVSearchBarManager.h */,
+				70587C85229A8688009457B7 /* NVSearchBarView.m */,
+				70587C84229A867A009457B7 /* NVSearchBarView.h */,
 				70AFBC3621DCD32A006355EE /* NVSharedElementView.h */,
 				70AFBC3421DCD320006355EE /* NVSharedElementView.m */,
 				70AFBC3321DCD2F6006355EE /* NVSharedElementManager.h */,
@@ -168,12 +178,14 @@
 				70BB3294212B2C0A00DE0D13 /* NVRightBarManager.m in Sources */,
 				70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */,
 				70AFBC3221DCD2CC006355EE /* NVSharedElementManager.m in Sources */,
+				70587C89229A86B8009457B7 /* NVSearchBarManager.m in Sources */,
 				70BB329A212B2C5100DE0D13 /* NVLeftBarManager.m in Sources */,
 				70BB32A0212B2CA000DE0D13 /* NVBarButtonView.m in Sources */,
 				70AFBC3521DCD320006355EE /* NVSharedElementView.m in Sources */,
 				70BB32A4212B2D4100DE0D13 /* NVBarView.m in Sources */,
 				7020F6D020ECD25F00E7A74E /* NVSceneController.m in Sources */,
 				7020F70A20ECD6FB00E7A74E /* NavigationModule.m in Sources */,
+				70587C86229A8688009457B7 /* NVSearchBarView.m in Sources */,
 				70BB3298212B2C4000DE0D13 /* NVLeftBarView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
