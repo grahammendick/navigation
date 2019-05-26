@@ -2,4 +2,6 @@
 
 @interface NVSearchBarView : UIView
 
+@property (nonatomic, assign) BOOL hidesWhenScrolling;
+
 @end

@@ -12,4 +12,7 @@ RCT_EXPORT_MODULE()
     return [[NVSearchBarView alloc] init];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(hidesWhenScrolling, BOOL)
+
+
 @end

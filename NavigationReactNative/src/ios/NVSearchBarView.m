@@ -30,7 +30,7 @@
         return;
     UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:_viewController];
     [navigationItem setSearchController:searchController];
-    [navigationItem setHidesSearchBarWhenScrolling:NO];
+    [navigationItem setHidesSearchBarWhenScrolling:self.hidesWhenScrolling];
 }
 
 
