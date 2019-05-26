@@ -1,7 +1,7 @@
 import React from 'react';
 import { requireNativeComponent, Platform } from 'react-native';
 
-const SearchBar = ({
+var SearchBar = ({
     children,
     hidesWhenScrolling = false,
     textAutocapitalizationType = 'sentences',
@@ -14,6 +14,6 @@ const SearchBar = ({
     </NVSearchBar>
 );
 
-const NVSearchBar: any = requireNativeComponent('NVSearchBar', SearchBar as any);
+var NVSearchBar = requireNativeComponent<any>('NVSearchBar', null);
 
 export default Platform.OS === 'ios' ? SearchBar : () => null;
