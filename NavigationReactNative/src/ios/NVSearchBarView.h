@@ -1,13 +1,5 @@
-//
-//  NVSearchBarView.h
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 26/05/2019.
-//  Copyright © 2019 Graham Mendick. All rights reserved.
-//
+#import <UIKit/UIKit.h>
 
-#ifndef NVSearchBarView_h
-#define NVSearchBarView_h
+@interface NVSearchBarView : UIView
 
-
-#endif /* NVSearchBarView_h */
+@end
