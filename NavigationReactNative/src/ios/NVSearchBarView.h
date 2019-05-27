@@ -2,7 +2,7 @@
 
 @interface NVSearchBarView : UIView
 
-@property (nonatomic, assign) BOOL hidesWhenScrolling;
-@property (nonatomic, assign) UITextAutocapitalizationType textAutocapitalizationType;
+@property (nonatomic, assign) BOOL hideWhenScrolling;
+@property (nonatomic, assign) UITextAutocapitalizationType autoCapitalize;
 
 @end

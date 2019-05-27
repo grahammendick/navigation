@@ -36,8 +36,8 @@
     UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:_viewController];
     self.reactViewController.definesPresentationContext = YES;
     [navigationItem setSearchController:searchController];
-    [navigationItem setHidesSearchBarWhenScrolling:self.hidesWhenScrolling];
-    [[searchController searchBar] setAutocapitalizationType:self.textAutocapitalizationType];
+    [navigationItem setHidesSearchBarWhenScrolling:self.hideWhenScrolling];
+    [[searchController searchBar] setAutocapitalizationType:self.autoCapitalize];
 }
 
 

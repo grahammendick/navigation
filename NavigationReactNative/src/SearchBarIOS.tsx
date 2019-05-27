@@ -3,12 +3,12 @@ import { requireNativeComponent, Platform } from 'react-native';
 
 var SearchBar = ({
     children,
-    hidesWhenScrolling = false,
-    textAutocapitalizationType = 'sentences',
+    hideWhenScrolling = false,
+    autoCapitalize = 'sentences',
 }) => (
     <NVSearchBar
-        hidesWhenScrolling={hidesWhenScrolling}
-        textAutocapitalizationType={textAutocapitalizationType}
+        hideWhenScrolling={hideWhenScrolling}
+        autoCapitalize={autoCapitalize}
         style={{position: 'absolute'}} >
         {children}
     </NVSearchBar>

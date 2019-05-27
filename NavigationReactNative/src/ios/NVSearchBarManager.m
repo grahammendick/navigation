@@ -29,8 +29,8 @@ RCT_EXPORT_MODULE()
     return [[NVSearchBarView alloc] init];
 }
 
-RCT_EXPORT_VIEW_PROPERTY(hidesWhenScrolling, BOOL)
-RCT_EXPORT_VIEW_PROPERTY(textAutocapitalizationType, UITextAutocapitalizationType)
+RCT_EXPORT_VIEW_PROPERTY(hideWhenScrolling, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(autoCapitalize, UITextAutocapitalizationType)
 
 - (RCTShadowView *)shadowView
 {
