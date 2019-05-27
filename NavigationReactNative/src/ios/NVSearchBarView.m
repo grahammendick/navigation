@@ -48,6 +48,9 @@
 }
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    if (!!self.onChangeText) {
+        self.onChangeText(@{@"text": searchController.searchBar.text});
+    }
 }
 
 @end
