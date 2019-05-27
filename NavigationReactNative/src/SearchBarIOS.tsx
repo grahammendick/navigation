@@ -2,18 +2,15 @@ import React from 'react';
 import { requireNativeComponent, Platform } from 'react-native';
 
 var SearchBar = ({
-    children,
-    text,
     hideWhenScrolling = false,
     autoCapitalize = 'sentences',
+    ...props
 }) => (
     <NVSearchBar
-        text={text}
         hideWhenScrolling={hideWhenScrolling}
         autoCapitalize={autoCapitalize}
-        style={{position: 'absolute'}} >
-        {children}
-    </NVSearchBar>
+        style={{position: 'absolute'}}
+        {...props} />
 );
 
 var NVSearchBar = requireNativeComponent<any>('NVSearchBar', null);
