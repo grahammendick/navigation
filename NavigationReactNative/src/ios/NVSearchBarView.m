@@ -5,14 +5,15 @@
 
 @implementation NVSearchBarView
 {
-    UIViewController *_viewController;
+    UISearchController *_searchController;
 }
 
 - (id)init
 {
     if (self = [super initWithFrame:CGRectZero]) {
-        _viewController = [UIViewController new];
-        _viewController.view = [UIView new];
+        UIViewController *viewController = [UIViewController new];
+        viewController.view = [UIView new];
+        _searchController = [[UISearchController alloc] initWithSearchResultsController:viewController];
     }
     return self;
 }
@@ -20,7 +21,7 @@
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
-    [_viewController.view insertSubview:subview atIndex:0];
+    [[_searchController searchResultsController].view insertSubview:subview atIndex:0];
 }
 
 - (void)didUpdateReactSubviews
@@ -31,13 +32,12 @@
 {
     [super didMoveToWindow];
     UINavigationItem *navigationItem = self.reactViewController.navigationItem;
-    if ([[navigationItem searchController] searchResultsController] == _viewController)
+    if ([navigationItem searchController] == _searchController)
         return;
-    UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:_viewController];
     self.reactViewController.definesPresentationContext = YES;
-    [navigationItem setSearchController:searchController];
+    [navigationItem setSearchController:_searchController];
     [navigationItem setHidesSearchBarWhenScrolling:self.hideWhenScrolling];
-    [[searchController searchBar] setAutocapitalizationType:self.autoCapitalize];
+    [[_searchController searchBar] setAutocapitalizationType:self.autoCapitalize];
 }
 
 
