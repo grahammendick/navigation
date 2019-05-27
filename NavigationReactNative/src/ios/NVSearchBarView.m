@@ -18,6 +18,12 @@
     return self;
 }
 
+- (void)setText:(NSString *)text
+{
+    [[_searchController searchBar] setText:text];
+}
+
+
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
