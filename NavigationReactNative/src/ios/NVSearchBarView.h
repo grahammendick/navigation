@@ -5,7 +5,6 @@
 @interface NVSearchBarView : UIView <UISearchResultsUpdating>
 
 @property (nonatomic, assign) BOOL hideWhenScrolling;
-@property (nonatomic, assign) UITextAutocapitalizationType autoCapitalize;
 @property (nonatomic, copy) RCTBubblingEventBlock onChangeText;
 
 -(id)initWithBridge: (RCTBridge *)bridge;

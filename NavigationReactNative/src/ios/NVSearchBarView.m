@@ -23,11 +23,20 @@
     return self;
 }
 
+- (void)setDimBackground:(BOOL)dimBackground
+{
+    [_searchController setDimsBackgroundDuringPresentation:dimBackground];
+}
+
+- (void)setAutoCapitalize:(UITextAutocapitalizationType)autoCapitalize
+{
+    [[_searchController searchBar] setAutocapitalizationType:autoCapitalize];
+}
+
 - (void)setText:(NSString *)text
 {
     [[_searchController searchBar] setText:text];
 }
-
 
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
@@ -50,7 +59,6 @@
     _searchController.searchResultsUpdater = self;
     [navigationItem setSearchController:_searchController];
     [navigationItem setHidesSearchBarWhenScrolling:self.hideWhenScrolling];
-    [[_searchController searchBar] setAutocapitalizationType:self.autoCapitalize];
 }
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {

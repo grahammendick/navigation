@@ -29,9 +29,10 @@ RCT_EXPORT_MODULE()
     return [[NVSearchBarView alloc] initWithBridge:self.bridge];
 }
 
-RCT_EXPORT_VIEW_PROPERTY(text, NSString)
+RCT_EXPORT_VIEW_PROPERTY(dimBackground, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(hideWhenScrolling, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(autoCapitalize, UITextAutocapitalizationType)
+RCT_EXPORT_VIEW_PROPERTY(text, NSString)
 RCT_EXPORT_VIEW_PROPERTY(onChangeText, RCTBubblingEventBlock)
 
 - (RCTShadowView *)shadowView
