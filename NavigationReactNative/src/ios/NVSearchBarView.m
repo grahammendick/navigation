@@ -2,7 +2,9 @@
 
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
+#import <React/RCTUIManager.h>
 #import <React/RCTTouchHandler.h>
+#import <React/RCTModalHostViewController.h>
 #import <React/UIView+React.h>
 
 @implementation NVSearchBarView
@@ -10,15 +12,22 @@
     __weak RCTBridge *_bridge;
     UISearchController *_searchController;
     RCTTouchHandler *_touchHandler;
+    UIView *_reactSubview;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
 {
     if (self = [super initWithFrame:CGRectZero]) {
-        UIViewController *viewController = [UIViewController new];
+        _bridge = bridge;
+        RCTModalHostViewController *viewController = [RCTModalHostViewController new];
         viewController.view = [UIView new];
         _searchController = [[UISearchController alloc] initWithSearchResultsController:viewController];
         _touchHandler = [[RCTTouchHandler alloc] initWithBridge:bridge];
+        __weak typeof(self) weakSelf = self;
+        viewController.supportedInterfaceOrientations = UIInterfaceOrientationMaskAll;
+        viewController.boundsDidChangeBlock = ^(CGRect newBounds) {
+            [weakSelf notifyForBoundsChange:newBounds];
+        };
     }
     return self;
 }
@@ -38,11 +47,19 @@
     [[_searchController searchBar] setText:text];
 }
 
+- (void)notifyForBoundsChange:(CGRect)newBounds
+{
+    if (_reactSubview) {
+        [_bridge.uiManager setSize:newBounds.size forView:_reactSubview];
+    }
+}
+
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
     [[_searchController searchResultsController].view insertSubview:subview atIndex:0];
     [_touchHandler attachToView:subview];
+    _reactSubview = subview;
 }
 
 - (void)didUpdateReactSubviews
