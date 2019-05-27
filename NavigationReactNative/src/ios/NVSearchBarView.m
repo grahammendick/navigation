@@ -39,12 +39,12 @@
 
 - (void)setAutoCapitalize:(UITextAutocapitalizationType)autoCapitalize
 {
-    [[_searchController searchBar] setAutocapitalizationType:autoCapitalize];
+    [_searchController.searchBar setAutocapitalizationType:autoCapitalize];
 }
 
 - (void)setText:(NSString *)text
 {
-    [[_searchController searchBar] setText:text];
+    [_searchController.searchBar setText:text];
 }
 
 - (void)notifyForBoundsChange:(CGRect)newBounds
@@ -57,7 +57,7 @@
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
-    [[_searchController searchResultsController].view insertSubview:subview atIndex:0];
+    [_searchController.searchResultsController.view insertSubview:subview atIndex:0];
     [_touchHandler attachToView:subview];
     _reactSubview = subview;
 }
