@@ -26,7 +26,7 @@ RCT_EXPORT_MODULE()
 
 - (UIView *)view
 {
-    return [[NVSearchBarView alloc] init];
+    return [[NVSearchBarView alloc] initWithBridge:self.bridge];
 }
 
 RCT_EXPORT_VIEW_PROPERTY(text, NSString)

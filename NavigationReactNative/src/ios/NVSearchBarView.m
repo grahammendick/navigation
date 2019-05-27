@@ -1,19 +1,24 @@
 #import "NVSearchBarView.h"
 
 #import <UIKit/UIKit.h>
+#import <React/RCTBridge.h>
+#import <React/RCTTouchHandler.h>
 #import <React/UIView+React.h>
 
 @implementation NVSearchBarView
 {
+    __weak RCTBridge *_bridge;
     UISearchController *_searchController;
+    RCTTouchHandler *_touchHandler;
 }
 
-- (id)init
+- (id)initWithBridge:(RCTBridge *)bridge
 {
     if (self = [super initWithFrame:CGRectZero]) {
         UIViewController *viewController = [UIViewController new];
         viewController.view = [UIView new];
         _searchController = [[UISearchController alloc] initWithSearchResultsController:viewController];
+        _touchHandler = [[RCTTouchHandler alloc] initWithBridge:bridge];
     }
     return self;
 }
@@ -28,6 +33,7 @@
 {
     [super insertReactSubview:subview atIndex:atIndex];
     [[_searchController searchResultsController].view insertSubview:subview atIndex:0];
+    [_touchHandler attachToView:subview];
 }
 
 - (void)didUpdateReactSubviews
