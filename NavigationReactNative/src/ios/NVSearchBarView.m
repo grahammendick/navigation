@@ -41,10 +41,13 @@
     if ([navigationItem searchController] == _searchController)
         return;
     self.reactViewController.definesPresentationContext = YES;
+    _searchController.searchResultsUpdater = self;
     [navigationItem setSearchController:_searchController];
     [navigationItem setHidesSearchBarWhenScrolling:self.hideWhenScrolling];
     [[_searchController searchBar] setAutocapitalizationType:self.autoCapitalize];
 }
 
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+}
 
 @end

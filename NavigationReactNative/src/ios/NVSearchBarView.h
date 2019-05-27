@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
 
-@interface NVSearchBarView : UIView
+@interface NVSearchBarView : UIView <UISearchResultsUpdating>
 
 @property (nonatomic, assign) BOOL hideWhenScrolling;
 @property (nonatomic, assign) UITextAutocapitalizationType autoCapitalize;
