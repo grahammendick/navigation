@@ -16,8 +16,7 @@ class SearchBar extends React.Component {
     onChangeText({nativeEvent}) {
         var {onChangeText} = this.props as any;
         var {eventCount, text} = nativeEvent;
-        if (this.ref.current && this.ref.current.setNativeProps)
-            this.ref.current.setNativeProps({mostRecentEventCount: eventCount});
+        this.ref.current.setNativeProps({mostRecentEventCount: eventCount});
         if (onChangeText)
             onChangeText(text)
 
