@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		70153012229D1F4800903FA7 /* NVSearchResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70153011229D1F4800903FA7 /* NVSearchResultsController.m */; };
 		7020F6D020ECD25F00E7A74E /* NVSceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7020F6CF20ECD25F00E7A74E /* NVSceneController.m */; };
 		7020F70A20ECD6FB00E7A74E /* NavigationModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 7020F70920ECD6FB00E7A74E /* NavigationModule.m */; };
 		70587C86229A8688009457B7 /* NVSearchBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70587C85229A8688009457B7 /* NVSearchBarView.m */; };
@@ -35,6 +36,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		70153011229D1F4800903FA7 /* NVSearchResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSearchResultsController.m; sourceTree = "<group>"; };
+		70153013229D1F5500903FA7 /* NVSearchResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSearchResultsController.h; sourceTree = "<group>"; };
 		7020F6BE20ECD07A00E7A74E /* libNavigationReactNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNavigationReactNative.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7020F6CA20ECD0F500E7A74E /* NVApplicationHostDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVApplicationHostDelegate.h; sourceTree = "<group>"; };
 		7020F6CE20ECD25200E7A74E /* NVSceneController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSceneController.h; sourceTree = "<group>"; };
@@ -79,6 +82,8 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				70153013229D1F5500903FA7 /* NVSearchResultsController.h */,
+				70153011229D1F4800903FA7 /* NVSearchResultsController.m */,
 				70587C88229A86B8009457B7 /* NVSearchBarManager.m */,
 				70587C87229A86AA009457B7 /* NVSearchBarManager.h */,
 				70587C85229A8688009457B7 /* NVSearchBarView.m */,
@@ -176,6 +181,7 @@
 			files = (
 				70BB329E212B2C9000DE0D13 /* NVBarButtonManager.m in Sources */,
 				70BB3294212B2C0A00DE0D13 /* NVRightBarManager.m in Sources */,
+				70153012229D1F4800903FA7 /* NVSearchResultsController.m in Sources */,
 				70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */,
 				70AFBC3221DCD2CC006355EE /* NVSharedElementManager.m in Sources */,
 				70587C89229A86B8009457B7 /* NVSearchBarManager.m in Sources */,
