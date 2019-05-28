@@ -4,5 +4,4 @@
 
 @property (nonatomic, copy) void (^boundsDidChangeBlock)(CGRect newBounds);
 
-
 @end
