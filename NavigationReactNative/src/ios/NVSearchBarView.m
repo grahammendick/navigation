@@ -41,6 +41,11 @@
     [_searchController.searchBar setAutocapitalizationType:autoCapitalize];
 }
 
+- (void)setPlaceholder:(NSString *)placeholder
+{
+    [_searchController.searchBar setPlaceholder:placeholder];
+}
+
 - (void)setText:(NSString *)text
 {
     [_searchController.searchBar setText:text];
