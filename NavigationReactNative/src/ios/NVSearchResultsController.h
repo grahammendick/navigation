@@ -1,13 +1,8 @@
-//
-//  NVSearchResultsController.h
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 28/05/2019.
-//  Copyright © 2019 Graham Mendick. All rights reserved.
-//
+#import <UIKit/UIKit.h>
 
-#ifndef NVSearchResultsController_h
-#define NVSearchResultsController_h
+@interface NVSearchResultsController : UIViewController
+
+@property (nonatomic, copy) void (^boundsDidChangeBlock)(CGRect newBounds);
 
 
-#endif /* NVSearchResultsController_h */
+@end

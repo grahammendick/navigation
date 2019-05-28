@@ -1,10 +1,10 @@
 #import "NVSearchBarView.h"
+#import "NVSearchResultsController.h"
 
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTTouchHandler.h>
-#import <React/RCTModalHostViewController.h>
 #import <React/UIView+React.h>
 
 @implementation NVSearchBarView
@@ -19,12 +19,11 @@
 {
     if (self = [super initWithFrame:CGRectZero]) {
         _bridge = bridge;
-        RCTModalHostViewController *viewController = [RCTModalHostViewController new];
+        NVSearchResultsController *viewController = [[NVSearchResultsController alloc] init];
         viewController.view = [UIView new];
         _searchController = [[UISearchController alloc] initWithSearchResultsController:viewController];
         _touchHandler = [[RCTTouchHandler alloc] initWithBridge:bridge];
         __weak typeof(self) weakSelf = self;
-        viewController.supportedInterfaceOrientations = UIInterfaceOrientationMaskAll;
         viewController.boundsDidChangeBlock = ^(CGRect newBounds) {
             [weakSelf notifyForBoundsChange:newBounds];
         };
