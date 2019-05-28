@@ -13,6 +13,7 @@
     UISearchController *_searchController;
     RCTTouchHandler *_touchHandler;
     UIView *_reactSubview;
+    NSInteger _nativeEventCount;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -48,7 +49,10 @@
 
 - (void)setText:(NSString *)text
 {
-    [_searchController.searchBar setText:text];
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if (eventLag == 0) {
+        [_searchController.searchBar setText:text];
+    }
 }
 
 - (void)notifyForBoundsChange:(CGRect)newBounds
@@ -83,8 +87,12 @@
 }
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    _nativeEventCount++;
     if (!!self.onChangeText) {
-        self.onChangeText(@{@"text": searchController.searchBar.text});
+        self.onChangeText(@{
+            @"text": searchController.searchBar.text,
+            @"eventCount": @(_nativeEventCount),
+        });
     }
 }
 

@@ -1,24 +1,37 @@
 import React from 'react';
-import { requireNativeComponent, Platform } from 'react-native';
+import { requireNativeComponent, Platform, NativeComponent } from 'react-native';
 
-var SearchBar = ({
-    dimBackground = false,
-    hideWhenScrolling = false,
-    autoCapitalize = 'sentences',
-    onChangeText,
-    ...props
-}) => (
-    <NVSearchBar
-        dimBackground={dimBackground}
-        hideWhenScrolling={hideWhenScrolling}
-        autoCapitalize={autoCapitalize}
-        onChangeText={({nativeEvent}) => {
-            if (onChangeText)
-                onChangeText(nativeEvent.text)
-        }}
-        style={{position: 'absolute'}}
-        {...props} />
-);
+class SearchBar extends React.Component {
+    private ref: React.RefObject<NativeComponent>;
+    constructor(props) {
+        super(props);
+        this.ref = React.createRef<NativeComponent>();
+        this.onChangeText = this.onChangeText.bind(this);
+    }
+    static defaultProps = {
+        dimBackground: false,
+        hideWhenScrolling: false,
+        autoCapitalize: 'sentences',
+    }
+    onChangeText({nativeEvent}) {
+        var {onChangeText} = this.props as any;
+        var {eventCount, text} = nativeEvent;
+        if (this.ref.current && this.ref.current.setNativeProps)
+            this.ref.current.setNativeProps({mostRecentEventCount: eventCount});
+        if (onChangeText)
+            onChangeText(text)
+
+    }
+    render() {
+        return (
+            <NVSearchBar
+                {...this.props}
+                ref={this.ref as any}
+                onChangeText={this.onChangeText}
+                style={{position: 'absolute'}} />
+        );
+    }
+} 
 
 var NVSearchBar = requireNativeComponent<any>('NVSearchBar', null);
 
