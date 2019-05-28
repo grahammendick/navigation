@@ -1,11 +1,11 @@
 import React from 'react';
-import { requireNativeComponent, Platform, NativeComponent } from 'react-native';
+import { requireNativeComponent, Platform, View } from 'react-native';
 
 class SearchBar extends React.Component {
-    private ref: React.RefObject<NativeComponent>;
+    private ref: React.RefObject<View>;
     constructor(props) {
         super(props);
-        this.ref = React.createRef<NativeComponent>();
+        this.ref = React.createRef<View>();
         this.onChangeText = this.onChangeText.bind(this);
     }
     static defaultProps = {
@@ -26,7 +26,7 @@ class SearchBar extends React.Component {
         return (
             <NVSearchBar
                 {...this.props}
-                ref={this.ref as any}
+                ref={this.ref}
                 onChangeText={this.onChangeText}
                 style={{position: 'absolute'}} />
         );
