@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent, Platform, View } from 'react-native';
+import { requireNativeComponent, Platform, StyleSheet, View } from 'react-native';
 
 class SearchBar extends React.Component {
     private ref: React.RefObject<View>;
@@ -15,8 +15,8 @@ class SearchBar extends React.Component {
     }
     onChangeText({nativeEvent}) {
         var {onChangeText} = this.props as any;
-        var {eventCount, text} = nativeEvent;
-        this.ref.current.setNativeProps({mostRecentEventCount: eventCount});
+        var {eventCount: mostRecentEventCount, text} = nativeEvent;
+        this.ref.current.setNativeProps({mostRecentEventCount});
         if (onChangeText)
             onChangeText(text)
 
@@ -27,11 +27,17 @@ class SearchBar extends React.Component {
                 {...this.props}
                 ref={this.ref}
                 onChangeText={this.onChangeText}
-                style={{position: 'absolute'}} />
+                style={styles.searchBar} />
         );
     }
-} 
+}
 
 var NVSearchBar = requireNativeComponent<any>('NVSearchBar', null);
+
+var styles = StyleSheet.create({
+    searchBar: {
+        position: 'absolute',
+    },
+});
 
 export default Platform.OS === 'ios' ? SearchBar : () => null;
