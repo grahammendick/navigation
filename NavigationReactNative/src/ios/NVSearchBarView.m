@@ -13,6 +13,7 @@
     UISearchController *_searchController;
     RCTTouchHandler *_touchHandler;
     UIView *_reactSubview;
+    __weak UINavigationItem *navigationItem;
     NSInteger _nativeEventCount;
 }
 
@@ -82,13 +83,23 @@
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    UINavigationItem *navigationItem = self.reactViewController.navigationItem;
+    navigationItem = self.reactViewController.navigationItem;
     if ([navigationItem searchController] == _searchController)
         return;
     self.reactViewController.definesPresentationContext = YES;
     _searchController.searchResultsUpdater = self;
     [navigationItem setSearchController:_searchController];
     [navigationItem setHidesSearchBarWhenScrolling:self.hideWhenScrolling];
+}
+
+- (void)willMoveToSuperview:(nullable UIView *)newSuperview
+{
+    [super willMoveToSuperview:newSuperview];
+    if (!newSuperview) {
+        [navigationItem setSearchController:nil];
+        [_searchController.searchResultsController dismissViewControllerAnimated:NO completion:nil];
+        navigationItem = nil;
+    }
 }
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
