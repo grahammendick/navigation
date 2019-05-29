@@ -9,7 +9,8 @@ class SearchBar extends React.Component {
         this.onChangeText = this.onChangeText.bind(this);
     }
     static defaultProps = {
-        dimBackground: false,
+        obscureBackground: true,
+        hideNavigationBar: true,
         hideWhenScrolling: false,
         autoCapitalize: 'sentences',
     }

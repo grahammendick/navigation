@@ -32,9 +32,14 @@
     return self;
 }
 
-- (void)setDimBackground:(BOOL)dimBackground
+- (void)setObscureBackground:(BOOL)obscureBackground
 {
-    [_searchController setDimsBackgroundDuringPresentation:dimBackground];
+    [_searchController setObscuresBackgroundDuringPresentation:obscureBackground];
+}
+
+- (void)setHideNavigationBar:(BOOL)hideNavigationBar
+{
+    [_searchController setHidesNavigationBarDuringPresentation:hideNavigationBar];
 }
 
 - (void)setAutoCapitalize:(UITextAutocapitalizationType)autoCapitalize
