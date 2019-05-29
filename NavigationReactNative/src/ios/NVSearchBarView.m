@@ -76,6 +76,13 @@
     _reactSubview = subview;
 }
 
+- (void)removeReactSubview:(UIView *)subview
+{
+    [super removeReactSubview:subview];
+    [_touchHandler detachFromView:subview];
+    _reactSubview = nil;
+}
+
 - (void)didUpdateReactSubviews
 {
 }
@@ -98,7 +105,6 @@
     if (!newSuperview) {
         [navigationItem setSearchController:nil];
         [_searchController.searchResultsController dismissViewControllerAnimated:NO completion:nil];
-        navigationItem = nil;
     }
 }
 
