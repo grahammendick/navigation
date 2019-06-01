@@ -1,9 +1,13 @@
-//
-//  NVNavigationStackManager.m
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 01/06/2019.
-//  Copyright © 2019 Graham Mendick. All rights reserved.
-//
+#import "NVNavigationStackManager.h"
+#import "NVNavigationStackView.h"
 
-#import <Foundation/Foundation.h>
+@implementation NVNavigationStackManager
+
+RCT_EXPORT_MODULE()
+
+- (UIView *)view
+{
+    return [[NVNavigationStackView alloc] init];
+}
+
+@end

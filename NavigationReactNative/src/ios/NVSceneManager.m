@@ -1,9 +1,13 @@
-//
-//  NVSceneManager.m
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 01/06/2019.
-//  Copyright © 2019 Graham Mendick. All rights reserved.
-//
+#import "NVSceneManager.h"
+#import "NVSceneView.h"
 
-#import <Foundation/Foundation.h>
+@implementation NVSceneManager
+
+RCT_EXPORT_MODULE()
+
+- (UIView *)view
+{
+    return [[NVSceneView alloc] init];
+}
+
+@end
