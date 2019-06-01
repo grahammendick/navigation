@@ -2,10 +2,10 @@ import React, { ReactNode } from 'react';
 import { requireNativeComponent, BackHandler, NativeEventEmitter, NativeModules, EmitterSubscription, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
-type NavigationMotionProps = { crumb?: number, tab?: number, renderScene: (state: State, data: any) => ReactNode, navigationEvent: NavigationEvent };
-type NavigationMotionState = { navigationEvent: NavigationEvent };
+type SceneProps = { crumb?: number, tab?: number, renderScene: (state: State, data: any) => ReactNode, navigationEvent: NavigationEvent };
+type SceneState = { navigationEvent: NavigationEvent };
 
-class Scene extends React.Component<NavigationMotionProps, NavigationMotionState> {
+class Scene extends React.Component<SceneProps, SceneState> {
     private peekNavigateSubscription: EmitterSubscription;
     constructor(props) {
         super(props);
@@ -18,7 +18,7 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
         tab: 0,
         renderScene: (state: State, data: any) => state.renderScene(data)
     }
-    static getDerivedStateFromProps(props: NavigationMotionProps) {
+    static getDerivedStateFromProps(props: SceneProps) {
         var {crumb, navigationEvent} = props;
         var {state, crumbs} = navigationEvent.stateNavigator.stateContext;
         return (state && crumbs.length === crumb) ? {navigationEvent} : null;
