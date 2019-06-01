@@ -26,7 +26,7 @@ class NavigationStack extends React.Component<{stateNavigator: StateNavigator}> 
     }
     render() {
         return (
-            <NVNavigationStack onNavigateBackIOS={this.onNavigateBackIOS}>
+            <NVNavigationStack onNavigateBackIOS={this.onNavigateBackIOS} style={{flex: 1}}>
                 {this.getScenes().map(({key}) => <Scene key={key} crumb={key} />)}
             </NVNavigationStack>
         );

@@ -6,7 +6,6 @@
 @implementation NVNavigationStackView
 {
     UINavigationController *_navigationController;
-    NSMutableArray *_subviews;
 }
 
 - (id)init
@@ -15,23 +14,31 @@
         _navigationController = [[UINavigationController alloc] init];
         [self addSubview:_navigationController.view];
         _navigationController.delegate = self;
-        _subviews = [[NSMutableArray alloc] init];
     }
     return self;
 }
 
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
-    [_subviews insertObject:subview atIndex:atIndex];
+    [super insertReactSubview:subview atIndex:atIndex];
     UIViewController *viewController = [UIViewController new];
-    viewController.view = subview;
+    [viewController.view insertSubview:subview atIndex:0];
     [_navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)removeReactSubview:(UIView *)subview
+{
+    [super removeReactSubview:subview];
+}
+
+- (void)didUpdateReactSubviews
+{
 }
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
-    if (crumb < _subviews.count - 1) {
+    if (crumb < [self reactSubviews].count - 1) {
         self.onNavigateBackIOS(@{@"crumb": @(crumb)});
     }
 }
