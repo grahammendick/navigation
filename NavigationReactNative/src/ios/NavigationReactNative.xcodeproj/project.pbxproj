@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		7020F6D020ECD25F00E7A74E /* NVSceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7020F6CF20ECD25F00E7A74E /* NVSceneController.m */; };
 		7020F70A20ECD6FB00E7A74E /* NavigationModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 7020F70920ECD6FB00E7A74E /* NavigationModule.m */; };
+		704B593422A2AAD0008C05C6 /* NVScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 704B593322A2AAD0008C05C6 /* NVScene.m */; };
+		704B593A22A2AB40008C05C6 /* NVNavigationStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 704B593922A2AB40008C05C6 /* NVNavigationStack.m */; };
 		70AFBC3221DCD2CC006355EE /* NVSharedElementManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AFBC3121DCD2CC006355EE /* NVSharedElementManager.m */; };
 		70AFBC3521DCD320006355EE /* NVSharedElementView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AFBC3421DCD320006355EE /* NVSharedElementView.m */; };
 		70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3290212B2BC700DE0D13 /* NVRightBarView.m */; };
@@ -39,6 +41,10 @@
 		7020F6CF20ECD25F00E7A74E /* NVSceneController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSceneController.m; sourceTree = "<group>"; };
 		7020F70820ECD6ED00E7A74E /* NavigationModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavigationModule.h; sourceTree = "<group>"; };
 		7020F70920ECD6FB00E7A74E /* NavigationModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavigationModule.m; sourceTree = "<group>"; };
+		704B593222A2AABD008C05C6 /* NVScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVScene.h; sourceTree = "<group>"; };
+		704B593322A2AAD0008C05C6 /* NVScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVScene.m; sourceTree = "<group>"; };
+		704B593822A2AB33008C05C6 /* NVNavigationStack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVNavigationStack.h; sourceTree = "<group>"; };
+		704B593922A2AB40008C05C6 /* NVNavigationStack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVNavigationStack.m; sourceTree = "<group>"; };
 		70AFBC3121DCD2CC006355EE /* NVSharedElementManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSharedElementManager.m; sourceTree = "<group>"; };
 		70AFBC3321DCD2F6006355EE /* NVSharedElementManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSharedElementManager.h; sourceTree = "<group>"; };
 		70AFBC3421DCD320006355EE /* NVSharedElementView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSharedElementView.m; sourceTree = "<group>"; };
@@ -73,6 +79,10 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				704B593922A2AB40008C05C6 /* NVNavigationStack.m */,
+				704B593822A2AB33008C05C6 /* NVNavigationStack.h */,
+				704B593322A2AAD0008C05C6 /* NVScene.m */,
+				704B593222A2AABD008C05C6 /* NVScene.h */,
 				70AFBC3621DCD32A006355EE /* NVSharedElementView.h */,
 				70AFBC3421DCD320006355EE /* NVSharedElementView.m */,
 				70AFBC3321DCD2F6006355EE /* NVSharedElementManager.h */,
@@ -166,6 +176,8 @@
 			files = (
 				70BB329E212B2C9000DE0D13 /* NVBarButtonManager.m in Sources */,
 				70BB3294212B2C0A00DE0D13 /* NVRightBarManager.m in Sources */,
+				704B593422A2AAD0008C05C6 /* NVScene.m in Sources */,
+				704B593A22A2AB40008C05C6 /* NVNavigationStack.m in Sources */,
 				70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */,
 				70AFBC3221DCD2CC006355EE /* NVSharedElementManager.m in Sources */,
 				70BB329A212B2C5100DE0D13 /* NVLeftBarManager.m in Sources */,
