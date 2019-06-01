@@ -28,7 +28,9 @@
 
 - (void)removeReactSubview:(UIView *)subview
 {
+    NSInteger crumb = [self.reactSubviews indexOfObject:subview] - 1;
     [super removeReactSubview:subview];
+    [_navigationController popToViewController:_navigationController.viewControllers[crumb] animated:true];
 }
 
 - (void)didUpdateReactSubviews
