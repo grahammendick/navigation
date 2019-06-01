@@ -1,4 +1,5 @@
 import React from 'react';
+import { requireNativeComponent } from 'react-native';
 import { StateNavigator } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import Scene from './Scene';
@@ -14,9 +15,15 @@ class NavigationStack extends React.Component<{stateNavigator: StateNavigator}> 
         });
     }
     render() {
-        return this.getScenes().map(({key}) => <Scene key={key} crumb={key} />);
+        return (
+            <NVNavigationStack>
+                {this.getScenes().map(({key}) => <Scene key={key} crumb={key} />)}
+            </NVNavigationStack>
+        );
     }
 };
+
+var  NVNavigationStack = requireNativeComponent('NVNavigationStack', null);
 
 export default props => (
     <NavigationContext.Consumer>
