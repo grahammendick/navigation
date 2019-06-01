@@ -20,7 +20,7 @@
 
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
-    [super insertReactSubview:subview atIndex:atIndex];
+    [super insertReactSubview:[UIView new] atIndex:atIndex];
     UIViewController *viewController = [UIViewController new];
     [viewController.view insertSubview:subview atIndex:0];
     [_navigationController pushViewController:viewController animated:YES];
