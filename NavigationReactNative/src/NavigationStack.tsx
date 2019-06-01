@@ -5,6 +5,16 @@ import { NavigationContext } from 'navigation-react';
 import Scene from './Scene';
 
 class NavigationStack extends React.Component<{stateNavigator: StateNavigator}> {
+    constructor(props) {
+        super(props);
+        this.onNavigateBackIOS = this.onNavigateBackIOS.bind(this);
+    }
+    onNavigateBackIOS({nativeEvent: {crumb}}) {
+        var {stateNavigator} = this.props;
+        var distance = stateNavigator.stateContext.crumbs.length - crumb;
+        if (stateNavigator.canNavigateBack(distance))
+            stateNavigator.navigateBack(distance);
+    }
     getScenes(){
         var {stateNavigator} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
@@ -16,14 +26,14 @@ class NavigationStack extends React.Component<{stateNavigator: StateNavigator}> 
     }
     render() {
         return (
-            <NVNavigationStack>
+            <NVNavigationStack onNavigateBackIOS={this.onNavigateBackIOS}>
                 {this.getScenes().map(({key}) => <Scene key={key} crumb={key} />)}
             </NVNavigationStack>
         );
     }
 };
 
-var  NVNavigationStack = requireNativeComponent('NVNavigationStack', null);
+var  NVNavigationStack = requireNativeComponent<any>('NVNavigationStack', null);
 
 export default props => (
     <NavigationContext.Consumer>
