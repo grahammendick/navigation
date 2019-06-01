@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { BackHandler, NativeEventEmitter, NativeModules, EmitterSubscription } from 'react-native';
+import { requireNativeComponent, BackHandler, NativeEventEmitter, NativeModules, EmitterSubscription } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 type NavigationMotionProps = { crumb?: number, tab?: number, renderScene: (state: State, data: any) => ReactNode, navigationEvent: NavigationEvent };
@@ -98,11 +98,15 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
         var {state, data} = navigationEvent.stateNavigator.stateContext;
         return (
             <NavigationContext.Provider value={navigationEvent}>
-                {this.props.renderScene(state, data)}
+                <NVScene>
+                    {this.props.renderScene(state, data)}
+                </NVScene>
             </NavigationContext.Provider>
         );
     }
 }
+
+var  NVScene = requireNativeComponent('NVScene', null);
 
 export default props => (
     <NavigationContext.Consumer>
