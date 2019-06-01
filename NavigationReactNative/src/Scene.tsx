@@ -95,9 +95,10 @@ class Scene extends React.Component<SceneProps, SceneState> {
     render() {
         var {navigationEvent} = this.state;
         if (!navigationEvent) return null;
-        var {state, data} = navigationEvent.stateNavigator.stateContext;
+        var {state, data, title} = navigationEvent.stateNavigator.stateContext;
+        title = (state.getTitle && state.getTitle(data)) || title; 
         return (
-            <NVScene style={StyleSheet.absoluteFill}>
+            <NVScene style={StyleSheet.absoluteFill} title={title}>
                 <NavigationContext.Provider value={navigationEvent}>
                     {this.props.renderScene(state, data)}
                 </NavigationContext.Provider>

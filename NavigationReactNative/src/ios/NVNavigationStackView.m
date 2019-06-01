@@ -1,4 +1,5 @@
 #import "NVNavigationStackView.h"
+#import "NVSceneView.h"
 
 #import <UIKit/UIKit.h>
 #import <React/UIView+React.h>
@@ -23,6 +24,7 @@
     [super insertReactSubview:[UIView new] atIndex:atIndex];
     UIViewController *viewController = [UIViewController new];
     viewController.view = subview;
+    viewController.title = ((NVSceneView *) subview).title;
     [_navigationController pushViewController:viewController animated:YES];
 }
 
