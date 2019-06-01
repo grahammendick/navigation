@@ -97,11 +97,11 @@ class Scene extends React.Component<NavigationMotionProps, NavigationMotionState
         if (!navigationEvent) return null;
         var {state, data} = navigationEvent.stateNavigator.stateContext;
         return (
-            <NavigationContext.Provider value={navigationEvent}>
-                <NVScene>
+            <NVScene>
+                <NavigationContext.Provider value={navigationEvent}>
                     {this.props.renderScene(state, data)}
-                </NVScene>
-            </NavigationContext.Provider>
+                </NavigationContext.Provider>
+            </NVScene>
         );
     }
 }
