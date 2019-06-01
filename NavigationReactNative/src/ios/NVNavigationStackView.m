@@ -37,6 +37,12 @@
 {
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    _navigationController.view.frame = self.bounds;
+}
+
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
