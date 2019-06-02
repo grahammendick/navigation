@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7020F6D020ECD25F00E7A74E /* NVSceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7020F6CF20ECD25F00E7A74E /* NVSceneController.m */; };
-		7020F70A20ECD6FB00E7A74E /* NavigationModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 7020F70920ECD6FB00E7A74E /* NavigationModule.m */; };
 		704B593C22A2AC14008C05C6 /* NVNavigationStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 704B593B22A2AC14008C05C6 /* NVNavigationStackView.m */; };
 		704B594022A2AC3A008C05C6 /* NVNavigationStackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 704B593F22A2AC3A008C05C6 /* NVNavigationStackManager.m */; };
 		704B594222A2AC56008C05C6 /* NVSceneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 704B594122A2AC56008C05C6 /* NVSceneView.m */; };
@@ -38,11 +36,6 @@
 
 /* Begin PBXFileReference section */
 		7020F6BE20ECD07A00E7A74E /* libNavigationReactNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNavigationReactNative.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		7020F6CA20ECD0F500E7A74E /* NVApplicationHostDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVApplicationHostDelegate.h; sourceTree = "<group>"; };
-		7020F6CE20ECD25200E7A74E /* NVSceneController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSceneController.h; sourceTree = "<group>"; };
-		7020F6CF20ECD25F00E7A74E /* NVSceneController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSceneController.m; sourceTree = "<group>"; };
-		7020F70820ECD6ED00E7A74E /* NavigationModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavigationModule.h; sourceTree = "<group>"; };
-		7020F70920ECD6FB00E7A74E /* NavigationModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavigationModule.m; sourceTree = "<group>"; };
 		704B593B22A2AC14008C05C6 /* NVNavigationStackView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVNavigationStackView.m; sourceTree = "<group>"; };
 		704B593D22A2AC20008C05C6 /* NVNavigationStackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVNavigationStackView.h; sourceTree = "<group>"; };
 		704B593E22A2AC30008C05C6 /* NVNavigationStackManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVNavigationStackManager.h; sourceTree = "<group>"; };
@@ -111,11 +104,6 @@
 				70BB3293212B2C0A00DE0D13 /* NVRightBarManager.m */,
 				70BB3292212B2BEB00DE0D13 /* NVRightBarView.h */,
 				70BB3290212B2BC700DE0D13 /* NVRightBarView.m */,
-				7020F70920ECD6FB00E7A74E /* NavigationModule.m */,
-				7020F70820ECD6ED00E7A74E /* NavigationModule.h */,
-				7020F6CF20ECD25F00E7A74E /* NVSceneController.m */,
-				7020F6CE20ECD25200E7A74E /* NVSceneController.h */,
-				7020F6CA20ECD0F500E7A74E /* NVApplicationHostDelegate.h */,
 				7020F6BF20ECD07A00E7A74E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -194,9 +182,7 @@
 				70AFBC3521DCD320006355EE /* NVSharedElementView.m in Sources */,
 				70BB32A4212B2D4100DE0D13 /* NVBarView.m in Sources */,
 				704B594622A2AC77008C05C6 /* NVSceneManager.m in Sources */,
-				7020F6D020ECD25F00E7A74E /* NVSceneController.m in Sources */,
 				704B594022A2AC3A008C05C6 /* NVNavigationStackManager.m in Sources */,
-				7020F70A20ECD6FB00E7A74E /* NavigationModule.m in Sources */,
 				70BB3298212B2C4000DE0D13 /* NVLeftBarView.m in Sources */,
 				704B594222A2AC56008C05C6 /* NVSceneView.m in Sources */,
 			);
