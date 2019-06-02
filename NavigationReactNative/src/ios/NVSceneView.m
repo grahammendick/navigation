@@ -9,4 +9,9 @@
     return self;
 }
 
+-(void)willAppear
+{
+    self.onWillAppear(nil);
+}
+
 @end

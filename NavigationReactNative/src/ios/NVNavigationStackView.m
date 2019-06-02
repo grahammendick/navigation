@@ -75,4 +75,11 @@
     }
 }
 
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
+    NVSceneView *scene = (NVSceneView *) [_scenes objectAtIndex:crumb];
+    [scene willAppear];
+}
+
 @end
