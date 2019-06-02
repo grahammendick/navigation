@@ -1,17 +1,21 @@
 import React from 'react';
-import { requireNativeComponent, StyleSheet } from 'react-native';
+import { requireNativeComponent, StyleSheet, View } from 'react-native';
 import { StateNavigator, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import Scene from './Scene';
 type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string};
 
 class NavigationStack extends React.Component<NavigationStackProps> {
+    private ref: React.RefObject<View>;
     constructor(props) {
         super(props);
+        this.ref = React.createRef<View>();
         this.onDidNavigateBack = this.onDidNavigateBack.bind(this);
     }
-    onDidNavigateBack({nativeEvent: {crumb}}) {
+    onDidNavigateBack({nativeEvent}) {
         var {stateNavigator} = this.props;
+        var {eventCount: mostRecentEventCount, crumb} = nativeEvent;
+        this.ref.current.setNativeProps({mostRecentEventCount});
         var distance = stateNavigator.stateContext.crumbs.length - crumb;
         if (stateNavigator.canNavigateBack(distance))
             stateNavigator.navigateBack(distance);
@@ -27,7 +31,10 @@ class NavigationStack extends React.Component<NavigationStackProps> {
     }
     render() {
         return (
-            <NVNavigationStack style={styles.stack} onDidNavigateBack={this.onDidNavigateBack}>
+            <NVNavigationStack
+                ref={this.ref}
+                style={styles.stack}
+                onDidNavigateBack={this.onDidNavigateBack}>
                 {this.getScenes().map(({key}) => (
                     <Scene key={key} crumb={key} title={this.props.title} />
                 ))}

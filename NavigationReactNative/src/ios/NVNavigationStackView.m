@@ -8,6 +8,7 @@
 {
     UINavigationController *_navigationController;
     NSMutableArray *_scenes;
+    NSInteger _nativeEventCount;
 }
 
 - (id)init
@@ -36,6 +37,9 @@
 
 - (void)didUpdateReactSubviews
 {
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if (eventLag != 0)
+        return;
     NSInteger crumb = [_scenes count] - 1;
     NSInteger currentCrumb = [_navigationController.viewControllers count] - 1;
     if (crumb < currentCrumb) {
@@ -71,7 +75,11 @@
 {
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
     if (crumb < [self.reactSubviews count] - 1) {
-        self.onDidNavigateBack(@{@"crumb": @(crumb)});
+        _nativeEventCount++;
+        self.onDidNavigateBack(@{
+            @"crumb": @(crumb),
+            @"eventCount": @(_nativeEventCount),
+        });
     }
 }
 
