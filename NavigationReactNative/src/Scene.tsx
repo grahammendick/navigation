@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { requireNativeComponent, BackHandler, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
-type SceneProps = { crumb?: number, tab?: number, renderScene: (state: State, data: any) => ReactNode, navigationEvent: NavigationEvent };
+type SceneProps = { crumb: number, renderScene: (state: State, data: any) => ReactNode, title: (state: State, data: any) => string, navigationEvent: NavigationEvent };
 type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
@@ -13,8 +13,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         this.onWillAppear = this.onWillAppear.bind(this);
     }
     static defaultProps = {
-        crumb: 0,
-        tab: 0,
+        title: () => null,
         renderScene: (state: State, data: any) => state.renderScene(data)
     }
     static getDerivedStateFromProps(props: SceneProps) {
@@ -88,13 +87,12 @@ class Scene extends React.Component<SceneProps, SceneState> {
     }
     render() {
         var {navigationEvent} = this.state;
-        var {crumb, navigationEvent: {stateNavigator}} = this.props;
+        var {crumb, title, navigationEvent: {stateNavigator}} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
-        var {state, data, title} = (crumb < crumbs.length) ? crumbs[crumb] : nextCrumb;
-        title = (state.getTitle && state.getTitle(data)) || title;
+        var {state, data} = (crumb < crumbs.length) ? crumbs[crumb] : nextCrumb;
         return (
             <NVScene
-                title={title}
+                title={title(state, data) || state.title}
                 style={styles.scene}
                 onWillAppear={this.onWillAppear}>
                 <NavigationContext.Provider value={navigationEvent}>

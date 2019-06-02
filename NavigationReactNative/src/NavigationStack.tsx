@@ -1,10 +1,11 @@
 import React from 'react';
 import { requireNativeComponent, StyleSheet } from 'react-native';
-import { StateNavigator } from 'navigation';
+import { StateNavigator, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import Scene from './Scene';
+type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string};
 
-class NavigationStack extends React.Component<{stateNavigator: StateNavigator}> {
+class NavigationStack extends React.Component<NavigationStackProps> {
     constructor(props) {
         super(props);
         this.onDidNavigateBack = this.onDidNavigateBack.bind(this);
@@ -27,7 +28,9 @@ class NavigationStack extends React.Component<{stateNavigator: StateNavigator}> 
     render() {
         return (
             <NVNavigationStack style={styles.stack} onDidNavigateBack={this.onDidNavigateBack}>
-                {this.getScenes().map(({key}) => <Scene key={key} crumb={key} />)}
+                {this.getScenes().map(({key}) => (
+                    <Scene key={key} crumb={key} title={this.props.title} />
+                ))}
             </NVNavigationStack>
         );
     }
