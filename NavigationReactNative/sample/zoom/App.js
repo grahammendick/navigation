@@ -1,7 +1,7 @@
 import React from 'react';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
-import {addNavigateHandlers, NavigationStack} from 'navigation-react-native';
+import {NavigationStack} from 'navigation-react-native';
 import {Linking} from 'react-native';
 import Grid from './Grid';
 import Detail from './Detail';
@@ -21,7 +21,6 @@ grid.renderScene = () => <Grid colors={colors}/>;
 detail.renderScene = ({color}) => <Detail colors={colors} color={color}/>;
 
 stateNavigator.navigate('grid');
-//addNavigateHandlers(stateNavigator);
 
 detail.truncateCrumbTrail = (state, data, crumbs) => (
   crumbs.slice(-1)[0].state === detail ? crumbs.slice(0, -1) : crumbs
