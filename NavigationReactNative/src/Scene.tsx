@@ -42,7 +42,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     onWillAppear() {
         var {crumb, navigationEvent} = this.props;
         var {crumbs, nextCrumb} = navigationEvent.stateNavigator.stateContext;
-        var changed = !this.state.navigationEvent;
+        var changed = !this.state.navigationEvent && crumb < crumbs.length;
         if (!changed && crumb < crumbs.length) {
             var {state: latestState, data: latestData} = crumbs[crumb];
             var {state, data} = this.state.navigationEvent.stateNavigator.stateContext;
