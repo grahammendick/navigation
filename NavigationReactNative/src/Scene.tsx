@@ -88,10 +88,10 @@ class Scene extends React.Component<SceneProps, SceneState> {
     }
     render() {
         var {navigationEvent} = this.state;
-        if (navigationEvent) {
-            var {state, data, title} = navigationEvent.stateNavigator.stateContext;
-            title = (state.getTitle && state.getTitle(data)) || title;
-        }
+        var {crumb, navigationEvent: {stateNavigator}} = this.props;
+        var {crumbs, nextCrumb} = stateNavigator.stateContext;
+        var {state, data, title} = (crumb < crumbs.length) ? crumbs[crumb] : nextCrumb;
+        title = (state.getTitle && state.getTitle(data)) || title;
         return (
             <NVScene
                 title={title}
