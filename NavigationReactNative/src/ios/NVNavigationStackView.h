@@ -3,6 +3,6 @@
 
 @interface NVNavigationStackView : UIView <UINavigationControllerDelegate>
 
-@property (nonatomic, copy) RCTBubblingEventBlock onNavigateBackIOS;
+@property (nonatomic, copy) RCTBubblingEventBlock onDidNavigateBack;
 
 @end

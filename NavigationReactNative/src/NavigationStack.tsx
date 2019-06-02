@@ -7,9 +7,9 @@ import Scene from './Scene';
 class NavigationStack extends React.Component<{stateNavigator: StateNavigator}> {
     constructor(props) {
         super(props);
-        this.onNavigateBackIOS = this.onNavigateBackIOS.bind(this);
+        this.onDidNavigateBack = this.onDidNavigateBack.bind(this);
     }
-    onNavigateBackIOS({nativeEvent: {crumb}}) {
+    onDidNavigateBack({nativeEvent: {crumb}}) {
         var {stateNavigator} = this.props;
         var distance = stateNavigator.stateContext.crumbs.length - crumb;
         if (stateNavigator.canNavigateBack(distance))
@@ -26,7 +26,7 @@ class NavigationStack extends React.Component<{stateNavigator: StateNavigator}> 
     }
     render() {
         return (
-            <NVNavigationStack onNavigateBackIOS={this.onNavigateBackIOS} style={{flex: 1}}>
+            <NVNavigationStack onDidNavigateBack={this.onDidNavigateBack} style={{flex: 1}}>
                 {this.getScenes().map(({key}) => <Scene key={key} crumb={key} />)}
             </NVNavigationStack>
         );

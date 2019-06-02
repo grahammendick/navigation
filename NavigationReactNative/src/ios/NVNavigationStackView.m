@@ -71,7 +71,7 @@
 {
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
     if (crumb < [self.reactSubviews count] - 1) {
-        self.onNavigateBackIOS(@{@"crumb": @(crumb)});
+        self.onDidNavigateBack(@{@"crumb": @(crumb)});
     }
 }
 

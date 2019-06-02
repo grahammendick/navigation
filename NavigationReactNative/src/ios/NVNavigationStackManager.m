@@ -10,6 +10,6 @@ RCT_EXPORT_MODULE()
     return [[NVNavigationStackView alloc] init];
 }
 
-RCT_EXPORT_VIEW_PROPERTY(onNavigateBackIOS, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onDidNavigateBack, RCTBubblingEventBlock)
 
 @end
