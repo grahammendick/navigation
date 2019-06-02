@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent } from 'react-native';
+import { requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import Scene from './Scene';
@@ -26,7 +26,7 @@ class NavigationStack extends React.Component<{stateNavigator: StateNavigator}> 
     }
     render() {
         return (
-            <NVNavigationStack onDidNavigateBack={this.onDidNavigateBack} style={{flex: 1}}>
+            <NVNavigationStack style={styles.stack} onDidNavigateBack={this.onDidNavigateBack}>
                 {this.getScenes().map(({key}) => <Scene key={key} crumb={key} />)}
             </NVNavigationStack>
         );
@@ -34,6 +34,12 @@ class NavigationStack extends React.Component<{stateNavigator: StateNavigator}> 
 };
 
 var  NVNavigationStack = requireNativeComponent<any>('NVNavigationStack', null);
+
+const styles = StyleSheet.create({
+    stack: {
+        flex: 1,
+    },
+});
 
 export default props => (
     <NavigationContext.Consumer>

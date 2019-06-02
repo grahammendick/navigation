@@ -95,8 +95,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return (
             <NVScene
                 title={title}
-                onWillAppear={this.onWillAppear}
-                style={StyleSheet.absoluteFill}>
+                style={styles.scene}
+                onWillAppear={this.onWillAppear}>
                 <NavigationContext.Provider value={navigationEvent}>
                     {navigationEvent && this.props.renderScene(state, data)}
                 </NavigationContext.Provider>
@@ -106,6 +106,13 @@ class Scene extends React.Component<SceneProps, SceneState> {
 }
 
 var  NVScene = requireNativeComponent<any>('NVScene', null);
+
+const styles = StyleSheet.create({
+    scene: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: '#fff',
+    },
+});
 
 export default props => (
     <NavigationContext.Consumer>
