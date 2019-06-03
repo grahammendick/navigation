@@ -11,6 +11,6 @@ public class SceneView extends ViewGroup {
     }
 
     @Override
-    protected void onLayout(boolean b, int i, int i1, int i2, int i3) {
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
     }
 }
