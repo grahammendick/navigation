@@ -1,5 +1,6 @@
 package com.navigation.reactnative;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,20 +34,21 @@ public class NavigationStackView extends ViewGroup {
     @Override
     public void addView(View child, int index) {
         Intent intent;
+        Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
         if (index == 0) {
             if (scenes.size() > 0) {
                 intent = scenes.get(0).intent;
-                ((ThemedReactContext) getContext()).getCurrentActivity().navigateUpTo(intent);
+                currentActivity.navigateUpTo(intent);
                 scenes.clear();
             }
             super.addView(child, index);
-            intent = ((ThemedReactContext) getContext()).getCurrentActivity().getIntent();
+            intent = currentActivity.getIntent();
         }
         else {
             Class scene = index % 2 == 1 ? SceneActivity.class : AlternateSceneActivity.class;
             intent = new Intent(getContext(), scene);
             intent.putExtra(SceneActivity.CRUMB, index);
-            ((ThemedReactContext) getContext()).getCurrentActivity().startActivity(intent, null);
+            currentActivity.startActivity(intent, null);
         }
         scenes.add(index, new SceneItem(index, intent, child));
     }
