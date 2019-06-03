@@ -10,12 +10,10 @@ import java.util.HashMap;
 
 public class NavigationStackView extends ViewGroup {
     public static HashMap<Integer, View> scenes = new HashMap<>();
-    public View view1;
 
 
     public NavigationStackView(ThemedReactContext context) {
         super(context);
-        view1 = new View(context);
     }
 
     @Override
@@ -32,7 +30,7 @@ public class NavigationStackView extends ViewGroup {
             Class scene = SceneActivity.class;
             Intent intent = new Intent(getContext(), scene);
             intent.putExtra(SceneActivity.CRUMB, index);
-            ((ThemedReactContext) getContext()).startActivity(intent, null);
+            getContext().startActivity(intent, null);
         }
     }
 
@@ -48,6 +46,6 @@ public class NavigationStackView extends ViewGroup {
     }
 
     public View getChildAt(int index) {
-        return index == 0 ? scenes.get(index) : view1;
+        return scenes.get(index);
     }
 }
