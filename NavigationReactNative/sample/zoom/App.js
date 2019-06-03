@@ -22,9 +22,9 @@ detail.renderScene = ({color}) => <Detail colors={colors} color={color}/>;
 
 stateNavigator.navigate('grid');
 
-/*detail.truncateCrumbTrail = (state, data, crumbs) => (
+detail.truncateCrumbTrail = (state, data, crumbs) => (
   crumbs.slice(-1)[0].state === detail ? crumbs.slice(0, -1) : crumbs
-);*/
+);
 detail.getSharedElements = ({color}) => [color];
 
 var openLink = (url) => {
