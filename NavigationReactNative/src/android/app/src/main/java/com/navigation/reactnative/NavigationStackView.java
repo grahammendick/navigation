@@ -27,7 +27,7 @@ public class NavigationStackView extends ViewGroup {
             super.addView(child, index);
         }
         else {
-            Class scene = SceneActivity.class;
+            Class scene = index % 2 == 1 ? SceneActivity.class : AlternateSceneActivity.class;
             Intent intent = new Intent(getContext(), scene);
             intent.putExtra(SceneActivity.CRUMB, index);
             getContext().startActivity(intent, null);
