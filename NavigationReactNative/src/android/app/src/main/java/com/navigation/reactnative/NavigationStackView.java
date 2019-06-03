@@ -34,6 +34,11 @@ public class NavigationStackView extends ViewGroup {
     public void addView(View child, int index) {
         Intent intent;
         if (index == 0) {
+            if (scenes.size() > 0) {
+                intent = scenes.get(0).intent;
+                ((ThemedReactContext) getContext()).getCurrentActivity().navigateUpTo(intent);
+                scenes.clear();
+            }
             super.addView(child, index);
             intent = ((ThemedReactContext) getContext()).getCurrentActivity().getIntent();
         }
