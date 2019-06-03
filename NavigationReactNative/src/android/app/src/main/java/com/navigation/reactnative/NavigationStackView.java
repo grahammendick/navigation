@@ -45,6 +45,7 @@ public class NavigationStackView extends ViewGroup {
         return scenes.size();
     }
 
+    @Override
     public View getChildAt(int index) {
         return scenes.get(index);
     }
