@@ -105,7 +105,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 Class scene = nextCrumb % 2 == 0 ? SceneActivity.class : AlternateSceneActivity.class;
                 Intent intent = new Intent(getReactApplicationContext(), scene);
                 intent.putExtra(SceneActivity.CRUMB, nextCrumb);
-                intent.putExtra(SceneActivity.APP_KEY, appKey);
+//                /intent.putExtra(SceneActivity.APP_KEY, appKey);
                 mIntents.put(nextCrumb, intent);
                 intents[i] = intent;
             }

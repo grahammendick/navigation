@@ -18,26 +18,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class SceneActivity extends Activity implements DefaultHardwareBackBtnHandler {
-    private ReactRootView mReactRootView;
     public static final String CRUMB = "Navigation.CRUMB";
-    public static final String APP_KEY = "Navigation.APP_KEY";
     public static final String SHARED_ELEMENTS = "Navigation.SHARED_ELEMENTS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mReactRootView = new ReactRootView(this);
-        Bundle props = new Bundle();
-        props.putInt("crumb", getIntent().getIntExtra(CRUMB, 0));
-        String appKey = getIntent().getStringExtra(APP_KEY);
+        int crumb = getIntent().getIntExtra(CRUMB, 0);
+        setContentView(NavigationStackView.scenes.get(crumb));
         @SuppressWarnings("unchecked")
         HashSet<String> sharedElements = (HashSet<String>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
-        mReactRootView.startReactApplication(getReactNativeHost().getReactInstanceManager(), appKey, props);
-        setContentView(mReactRootView);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null ) {
             this.postponeEnterTransition();
             SharedElementTransitioner transitioner = new SharedElementTransitioner(this, sharedElements);
-            mReactRootView.getRootView().setTag(R.id.sharedElementTransitioner, transitioner);
+            findViewById(android.R.id.content).getRootView().setTag(R.id.sharedElementTransitioner, transitioner);
         }
     }
 
@@ -58,14 +52,6 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         super.onResume();
         if (getReactNativeHost().hasInstance()) {
             getReactNativeHost().getReactInstanceManager().onHostResume(this, this);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mReactRootView != null) {
-            mReactRootView.unmountReactApplication();
         }
     }
 
