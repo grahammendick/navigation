@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
-import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.uimanager.JSTouchDispatcher;
@@ -23,7 +20,6 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.views.view.ReactViewGroup;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class SceneActivity extends Activity implements DefaultHardwareBackBtnHandler {
@@ -36,8 +32,8 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         super.onCreate(savedInstanceState);
         int crumb = getIntent().getIntExtra(CRUMB, 0);
         rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
-        if (crumb < NavigationStackView.scenes.size())
-            rootView.addView(NavigationStackView.scenes.get(crumb).view);
+        if (crumb < NavigationStackView.sceneItems.size())
+            rootView.addView(NavigationStackView.sceneItems.get(crumb).view);
         setContentView(rootView);
         @SuppressWarnings("unchecked")
         HashSet<String> sharedElements = (HashSet<String>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
@@ -53,7 +49,7 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         int crumb = intent.getIntExtra(CRUMB, 0);
         if (rootView.getChildCount() > 0)
             rootView.removeViewAt(0);
-        View view = NavigationStackView.scenes.get(crumb).view;
+        View view = NavigationStackView.sceneItems.get(crumb).view;
         if (view.getParent() != null)
             ((ViewGroup) view.getParent()).removeView(view);
         rootView.addView(view);

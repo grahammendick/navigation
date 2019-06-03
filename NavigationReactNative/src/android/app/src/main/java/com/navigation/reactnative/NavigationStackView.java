@@ -10,18 +10,7 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import java.util.ArrayList;
 
 public class NavigationStackView extends ViewGroup {
-    static class SceneItem {
-        public int crumb;
-        public Intent intent;
-        public View view;
-        public SceneItem(int crumb, Intent intent, View view){
-            this.crumb = crumb;
-            this.intent = intent;
-            this.view = view;
-        }
-    }
-    public static ArrayList<SceneItem> scenes = new ArrayList<>();
-
+    public static ArrayList<SceneItem> sceneItems = new ArrayList<>();
 
     public NavigationStackView(ThemedReactContext context) {
         super(context);
@@ -36,10 +25,10 @@ public class NavigationStackView extends ViewGroup {
         Intent intent;
         Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
         if (index == 0) {
-            if (scenes.size() > 0) {
-                intent = scenes.get(0).intent;
+            if (sceneItems.size() > 0) {
+                intent = sceneItems.get(0).intent;
                 currentActivity.navigateUpTo(intent);
-                scenes.clear();
+                sceneItems.clear();
             }
             super.addView(child, index);
             intent = currentActivity.getIntent();
@@ -50,25 +39,37 @@ public class NavigationStackView extends ViewGroup {
             intent.putExtra(SceneActivity.CRUMB, index);
             currentActivity.startActivity(intent, null);
         }
-        scenes.add(index, new SceneItem(index, intent, child));
+        sceneItems.add(index, new SceneItem(index, intent, child));
     }
 
     @Override
     public void removeViewAt(int index) {
-        SceneItem item = scenes.remove(index);
+        SceneItem item = sceneItems.remove(index);
         if (item.crumb == index) {
-            Intent intent = scenes.get(index - 1).intent;
+            Intent intent = sceneItems.get(index - 1).intent;
             ((ThemedReactContext) getContext()).getCurrentActivity().navigateUpTo(intent);
         }
     }
 
     @Override
     public int getChildCount() {
-        return scenes.size();
+        return sceneItems.size();
     }
 
     @Override
     public View getChildAt(int index) {
-        return scenes.get(index).view;
+        return sceneItems.get(index).view;
+    }
+
+    static class SceneItem {
+        public int crumb;
+        public Intent intent;
+        public View view;
+
+        public SceneItem(int crumb, Intent intent, View view){
+            this.crumb = crumb;
+            this.intent = intent;
+            this.view = view;
+        }
     }
 }
