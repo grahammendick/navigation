@@ -33,9 +33,9 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         int crumb = getIntent().getIntExtra(CRUMB, 0);
-        SceneViewGroup view = new SceneViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
-        view.addView(NavigationStackView.scenes.get(crumb));
-        setContentView(view);
+        SceneRootViewGroup rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
+        rootView.addView(NavigationStackView.scenes.get(crumb));
+        setContentView(rootView);
         @SuppressWarnings("unchecked")
         HashSet<String> sharedElements = (HashSet<String>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null ) {
@@ -88,11 +88,10 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         super.onBackPressed();
     }
 
-
-    static class SceneViewGroup extends ReactViewGroup implements RootView {
+    static class SceneRootViewGroup extends ReactViewGroup implements RootView {
         private final JSTouchDispatcher mJSTouchDispatcher = new JSTouchDispatcher(this);
 
-        public SceneViewGroup(Context context) {
+        public SceneRootViewGroup(Context context) {
             super(context);
         }
 
@@ -115,8 +114,6 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         public boolean onTouchEvent(MotionEvent event) {
             mJSTouchDispatcher.handleTouchEvent(event, getEventDispatcher());
             super.onTouchEvent(event);
-            // In case when there is no children interested in handling touch event, we return true from
-            // the root view in order to receive subsequent events related to that gesture
             return true;
         }
 
@@ -127,8 +124,6 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
 
         @Override
         public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-            // No-op - override in order to still receive events to onInterceptTouchEvent
-            // even when some other view disallow that
         }
 
         private EventDispatcher getEventDispatcher() {
