@@ -6,10 +6,21 @@ import android.view.ViewGroup;
 
 import com.facebook.react.uimanager.ThemedReactContext;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class NavigationStackView extends ViewGroup {
-    public static HashMap<Integer, View> scenes = new HashMap<>();
+    public class SceneItem {
+        public int crumb;
+        public Intent intent;
+        public View view;
+        public SceneItem(int crumb, Intent intent, View view){
+            this.crumb = crumb;
+            this.intent = intent;
+            this.view = view;
+        }
+    }
+    public static ArrayList<SceneItem> scenes = new ArrayList<>();
 
 
     public NavigationStackView(ThemedReactContext context) {
@@ -22,22 +33,25 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public void addView(View child, int index) {
-        scenes.put(index, child);
+        Intent intent;
         if (index == 0) {
             super.addView(child, index);
+            intent = ((ThemedReactContext) getContext()).getCurrentActivity().getIntent();
         }
         else {
             Class scene = index % 2 == 1 ? SceneActivity.class : AlternateSceneActivity.class;
-            Intent intent = new Intent(getContext(), scene);
+            intent = new Intent(getContext(), scene);
             intent.putExtra(SceneActivity.CRUMB, index);
             getContext().startActivity(intent, null);
         }
+        scenes.add(index, new SceneItem(index, intent, child));
     }
 
     @Override
     public void removeViewAt(int index) {
         scenes.remove(index);
-        ((ThemedReactContext) getContext()).getCurrentActivity().finish();
+        Intent intent = scenes.get(index - 1).intent;
+        ((ThemedReactContext) getContext()).getCurrentActivity().navigateUpTo(intent);
     }
 
     @Override
@@ -47,6 +61,6 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public View getChildAt(int index) {
-        return scenes.get(index);
+        return scenes.get(index).view;
     }
 }

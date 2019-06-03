@@ -34,7 +34,7 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
         super.onCreate(savedInstanceState);
         int crumb = getIntent().getIntExtra(CRUMB, 0);
         SceneRootViewGroup rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
-        rootView.addView(NavigationStackView.scenes.get(crumb));
+        rootView.addView(NavigationStackView.scenes.get(crumb).view);
         setContentView(rootView);
         @SuppressWarnings("unchecked")
         HashSet<String> sharedElements = (HashSet<String>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
