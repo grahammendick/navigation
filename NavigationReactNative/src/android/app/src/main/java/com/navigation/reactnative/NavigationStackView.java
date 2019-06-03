@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import com.facebook.react.uimanager.ThemedReactContext;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class NavigationStackView extends ViewGroup {
     public class SceneItem {
@@ -42,16 +41,18 @@ public class NavigationStackView extends ViewGroup {
             Class scene = index % 2 == 1 ? SceneActivity.class : AlternateSceneActivity.class;
             intent = new Intent(getContext(), scene);
             intent.putExtra(SceneActivity.CRUMB, index);
-            getContext().startActivity(intent, null);
+            ((ThemedReactContext) getContext()).getCurrentActivity().startActivity(intent, null);
         }
         scenes.add(index, new SceneItem(index, intent, child));
     }
 
     @Override
     public void removeViewAt(int index) {
-        scenes.remove(index);
-        Intent intent = scenes.get(index - 1).intent;
-        ((ThemedReactContext) getContext()).getCurrentActivity().navigateUpTo(intent);
+        SceneItem item = scenes.remove(index);
+        if (item.crumb == index) {
+            Intent intent = scenes.get(index - 1).intent;
+            ((ThemedReactContext) getContext()).getCurrentActivity().navigateUpTo(intent);
+        }
     }
 
     @Override

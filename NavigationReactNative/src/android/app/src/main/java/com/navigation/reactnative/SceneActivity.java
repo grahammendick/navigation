@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.transition.Transition;
@@ -28,12 +29,14 @@ import java.util.HashSet;
 public class SceneActivity extends Activity implements DefaultHardwareBackBtnHandler {
     public static final String CRUMB = "Navigation.CRUMB";
     public static final String SHARED_ELEMENTS = "Navigation.SHARED_ELEMENTS";
+    private SceneRootViewGroup rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         int crumb = getIntent().getIntExtra(CRUMB, 0);
-        SceneRootViewGroup rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
+        rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
+        crumb = Math.min(crumb, NavigationStackView.scenes.size() - 1);
         rootView.addView(NavigationStackView.scenes.get(crumb).view);
         setContentView(rootView);
         @SuppressWarnings("unchecked")
@@ -43,6 +46,17 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
             SharedElementTransitioner transitioner = new SharedElementTransitioner(this, sharedElements);
             findViewById(android.R.id.content).getRootView().setTag(R.id.sharedElementTransitioner, transitioner);
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        int crumb = intent.getIntExtra(CRUMB, 0);
+        if (rootView.getChildCount() > 0)
+            rootView.removeViewAt(0);
+        View view = NavigationStackView.scenes.get(crumb).view;
+        if (view.getParent() != null)
+            ((ViewGroup) view.getParent()).removeView(view);
+        rootView.addView(view);
     }
 
     private ReactNativeHost getReactNativeHost() {
