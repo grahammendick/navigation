@@ -1,4 +1,17 @@
 package com.navigation.reactnative;
 
-public class NavigationStackManager {
+import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.ViewGroupManager;
+
+public class NavigationStackManager extends ViewGroupManager<NavigationStackView> {
+
+    @Override
+    public String getName() {
+        return "NVNavigationStack";
+    }
+
+    @Override
+    public NavigationStackView createViewInstance(ThemedReactContext context) {
+        return new NavigationStackView(context);
+    }
 }
