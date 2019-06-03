@@ -9,7 +9,7 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import java.util.ArrayList;
 
 public class NavigationStackView extends ViewGroup {
-    public class SceneItem {
+    static class SceneItem {
         public int crumb;
         public Intent intent;
         public View view;
