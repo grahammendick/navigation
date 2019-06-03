@@ -1,18 +1,26 @@
 package com.navigation.reactnative;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactRootView;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
+import com.facebook.react.uimanager.JSTouchDispatcher;
+import com.facebook.react.uimanager.RootView;
+import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.events.EventDispatcher;
+import com.facebook.react.views.view.ReactViewGroup;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,7 +33,9 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         int crumb = getIntent().getIntExtra(CRUMB, 0);
-        setContentView(NavigationStackView.scenes.get(crumb));
+        SceneViewGroup view = new SceneViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
+        view.addView(NavigationStackView.scenes.get(crumb));
+        setContentView(view);
         @SuppressWarnings("unchecked")
         HashSet<String> sharedElements = (HashSet<String>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null ) {
@@ -76,5 +86,54 @@ public class SceneActivity extends Activity implements DefaultHardwareBackBtnHan
     @Override
     public void invokeDefaultOnBackPressed() {
         super.onBackPressed();
+    }
+
+
+    static class SceneViewGroup extends ReactViewGroup implements RootView {
+        private final JSTouchDispatcher mJSTouchDispatcher = new JSTouchDispatcher(this);
+
+        public SceneViewGroup(Context context) {
+            super(context);
+        }
+
+        @Override
+        public void handleException(Throwable t) {
+            getReactContext().handleException(new RuntimeException(t));
+        }
+
+        private ReactContext getReactContext() {
+            return (ReactContext) getContext();
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(MotionEvent event) {
+            mJSTouchDispatcher.handleTouchEvent(event, getEventDispatcher());
+            return super.onInterceptTouchEvent(event);
+        }
+
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
+            mJSTouchDispatcher.handleTouchEvent(event, getEventDispatcher());
+            super.onTouchEvent(event);
+            // In case when there is no children interested in handling touch event, we return true from
+            // the root view in order to receive subsequent events related to that gesture
+            return true;
+        }
+
+        @Override
+        public void onChildStartedNativeGesture(MotionEvent androidEvent) {
+            mJSTouchDispatcher.onChildStartedNativeGesture(androidEvent, getEventDispatcher());
+        }
+
+        @Override
+        public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+            // No-op - override in order to still receive events to onInterceptTouchEvent
+            // even when some other view disallow that
+        }
+
+        private EventDispatcher getEventDispatcher() {
+            ReactContext reactContext = getReactContext();
+            return reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+        }
     }
 }
