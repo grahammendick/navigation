@@ -14,4 +14,13 @@ public class SceneManager extends ViewGroupManager<SceneView> {
     public SceneView createViewInstance(ThemedReactContext context) {
         return new SceneView(context);
     }
+
+    @Override
+    public int getChildCount(SceneView parent) {
+        return 0;
+    }
+
+    @Override
+    public void removeAllViews(SceneView parent) {
+    }
 }
