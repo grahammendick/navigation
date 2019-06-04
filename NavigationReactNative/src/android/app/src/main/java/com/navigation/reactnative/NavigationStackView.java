@@ -13,6 +13,8 @@ import java.util.ArrayList;
 public class NavigationStackView extends ViewGroup {
     public static ArrayList<SceneItem> sceneItems = new ArrayList<>();
     private int oldCrumb = 0;
+    private String enterAnim;
+    private String exitAnim;
     private int activityOpenEnterAnimationId;
     private int activityOpenExitAnimationId;
     private int activityCloseEnterAnimationId;
@@ -36,8 +38,20 @@ public class NavigationStackView extends ViewGroup {
         activityStyle.recycle();
     }
 
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    public String getEnterAnim() {
+        return enterAnim;
+    }
+
+    public void setEnterAnim(String enterAnim) {
+        this.enterAnim = enterAnim;
+    }
+
+    public String getExitAnim() {
+        return exitAnim;
+    }
+
+    public void setExitAnim(String exitAnim) {
+        this.exitAnim = exitAnim;
     }
 
     @Override
@@ -64,8 +78,8 @@ public class NavigationStackView extends ViewGroup {
         SceneItem sceneItem = sceneItems.get(crumb);
         if (crumb < currentCrumb) {
             Intent intent = sceneItem.intent;
-            String enterAnim = sceneItem.view.getEnterAnim();
-            String exitAnim = sceneItem.view.getExitAnim();
+            String enterAnim = this.getEnterAnim();
+            String exitAnim = this.getExitAnim();
             int enter = this.getAnimationResourceId(enterAnim, this.activityOpenEnterAnimationId);
             int exit = this.getAnimationResourceId(exitAnim, this.activityOpenExitAnimationId);
             currentActivity.navigateUpTo(intent);
@@ -81,8 +95,8 @@ public class NavigationStackView extends ViewGroup {
                 sceneItems.get(nextCrumb).intent = intent;
                 intents[i] = intent;
             }
-            String enterAnim = sceneItem.view.getEnterAnim();
-            String exitAnim = sceneItem.view.getExitAnim();
+            String enterAnim = this.getEnterAnim();
+            String exitAnim = this.getExitAnim();
             int enter = this.getAnimationResourceId(enterAnim, this.activityOpenEnterAnimationId);
             int exit = this.getAnimationResourceId(exitAnim, this.activityOpenExitAnimationId);
             if (crumb - currentCrumb == 1)
@@ -109,6 +123,10 @@ public class NavigationStackView extends ViewGroup {
     @Override
     public View getChildAt(int index) {
         return sceneItems.get(index).view;
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
     }
 
     static class SceneItem {

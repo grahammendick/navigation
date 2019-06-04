@@ -24,10 +24,10 @@ class NavigationStack extends React.Component<NavigationStackProps> {
         if (stateNavigator.canNavigateBack(distance))
             stateNavigator.navigateBack(distance);
     }
-    getAnimation(crumb: number): {enterAnim: string, exitAnim: string} {
+    getAnimation(): {enterAnim: string, exitAnim: string} {
         var {stateNavigator, unmountStyle, crumbStyle} = this.props;
         var {state, data, oldState, oldData, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
-        if (!oldState || crumb != crumbs.length)
+        if (!oldState)
             return null;
         var {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
         if (oldCrumbs.length < crumbs.length) {
@@ -52,12 +52,12 @@ class NavigationStack extends React.Component<NavigationStackProps> {
                 url={url}
                 oldUrl={oldUrl}
                 style={styles.stack}
+                {...this.getAnimation()}
                 onDidNavigateBack={this.onDidNavigateBack}>
                 {crumbs.concat(nextCrumb).map((_, crumb) => (
                     <Scene
                         key={crumb}
                         crumb={crumb}
-                        {...this.getAnimation(crumb)}
                         title={this.props.title} />
                 ))}
             </NVNavigationStack>

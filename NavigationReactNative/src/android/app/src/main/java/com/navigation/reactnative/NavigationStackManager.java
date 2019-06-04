@@ -21,6 +21,16 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     public void setOldUrl(NavigationStackView view, String oldUrl) {
     }
 
+    @ReactProp(name = "enterAnim")
+    public void setEnterAnim(NavigationStackView view, String enterAnim) {
+        view.setEnterAnim(enterAnim);
+    }
+
+    @ReactProp(name = "exitAnim")
+    public void setExitAnim(NavigationStackView view, String exitAnim) {
+        view.setExitAnim(exitAnim);
+    }
+
     @Override
     public NavigationStackView createViewInstance(ThemedReactContext context) {
         return new NavigationStackView(context);
