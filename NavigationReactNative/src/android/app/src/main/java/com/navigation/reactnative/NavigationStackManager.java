@@ -34,12 +34,12 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
 
     @ReactProp(name = "sharedElements")
     public void setSharedElements(NavigationStackView view, ReadableArray sharedElements) {
-        view.setSharedElements(sharedElements);
+        view.setSharedElementNames(sharedElements);
     }
 
     @ReactProp(name = "oldSharedElements")
     public void setOldSharedElements(NavigationStackView view, ReadableArray oldSharedElements) {
-        view.setOldSharedElements(oldSharedElements);
+        view.setOldSharedElementNames(oldSharedElements);
     }
 
     @Override

@@ -67,20 +67,20 @@ public class NavigationStackView extends ViewGroup {
         this.exitAnim = exitAnim;
     }
 
-    public ReadableArray getSharedElements() {
+    public ReadableArray getSharedElementNames() {
         return sharedElementNames;
     }
 
-    public void setSharedElements(ReadableArray sharedElements) {
-        this.sharedElementNames = sharedElements;
+    public void setSharedElementNames(ReadableArray sharedElementNames) {
+        this.sharedElementNames = sharedElementNames;
     }
 
-    public ReadableArray getOldSharedElements() {
+    public ReadableArray getOldSharedElementNames() {
         return oldSharedElementNames;
     }
 
-    public void setOldSharedElements(ReadableArray oldSharedElements) {
-        this.oldSharedElementNames = oldSharedElements;
+    public void setOldSharedElementNames(ReadableArray oldSharedElementNames) {
+        this.oldSharedElementNames = oldSharedElementNames;
     }
 
     @Override
