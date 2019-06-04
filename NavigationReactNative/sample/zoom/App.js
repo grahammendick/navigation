@@ -39,6 +39,8 @@ Linking.addEventListener('url', ({url}) => openLink(url));
 
 export default () => (
   <NavigationHandler stateNavigator={stateNavigator}>
-    <NavigationStack />
+    <NavigationStack sharedElements={(state, data) => (      
+      state.getSharedElements ? state.getSharedElements(data) : null
+    )} />
   </NavigationHandler>
 );

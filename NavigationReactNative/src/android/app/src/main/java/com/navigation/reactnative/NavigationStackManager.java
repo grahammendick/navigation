@@ -1,5 +1,6 @@
 package com.navigation.reactnative;
 
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -29,6 +30,16 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     @ReactProp(name = "exitAnim")
     public void setExitAnim(NavigationStackView view, String exitAnim) {
         view.setExitAnim(exitAnim);
+    }
+
+    @ReactProp(name = "sharedElements")
+    public void setSharedElements(NavigationStackView view, ReadableArray sharedElements) {
+        view.setSharedElements(sharedElements);
+    }
+
+    @ReactProp(name = "oldSharedElements")
+    public void setOldSharedElements(NavigationStackView view, ReadableArray oldSharedElements) {
+        view.setOldSharedElements(oldSharedElements);
     }
 
     @Override
