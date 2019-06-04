@@ -13,7 +13,7 @@ public class SceneManager extends ViewGroupManager<SceneView> {
 
     @ReactProp(name = "enterAnim")
     public void setEnterAnim(SceneView view, String enterAnim) {
-        view.setExitAnim(enterAnim);
+        view.setEnterAnim(enterAnim);
     }
 
     @ReactProp(name = "exitAnim")

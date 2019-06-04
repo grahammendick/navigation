@@ -24,7 +24,7 @@ public class SceneView extends ViewGroup {
         return exitAnim;
     }
 
-    public void setExitAnim(String exitTransition) {
+    public void setExitAnim(String exitAnim) {
         this.exitAnim = exitAnim;
     }
 
