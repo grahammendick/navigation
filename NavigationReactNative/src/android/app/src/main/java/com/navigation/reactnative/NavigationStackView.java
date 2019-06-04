@@ -61,7 +61,7 @@ public class NavigationStackView extends ViewGroup {
             super.addView(child, index);
             intent = ((ThemedReactContext) getContext()).getCurrentActivity().getIntent();
         }
-        sceneItems.add(index, new SceneItem(index, intent, (SceneView) child));
+        sceneItems.add(index, new SceneItem(index, intent, child));
     }
 
     @Override
@@ -132,9 +132,9 @@ public class NavigationStackView extends ViewGroup {
     static class SceneItem {
         public int crumb;
         public Intent intent;
-        public SceneView view;
+        public View view;
 
-        public SceneItem(int crumb, Intent intent, SceneView view){
+        public SceneItem(int crumb, Intent intent, View view){
             this.crumb = crumb;
             this.intent = intent;
             this.view = view;
