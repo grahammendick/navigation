@@ -1,7 +1,7 @@
 import React from 'react';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
-import {addNavigateHandlers, Scene} from 'navigation-react-native';
+import {NavigationStack} from 'navigation-react-native';
 import Direction from './Direction';
 
 const stateNavigator = new StateNavigator([
@@ -27,10 +27,11 @@ west.getCrumbStyle = from => from ? 'west_crumb_in' : 'west_crumb_out';
 west.getUnmountStyle = from => from ? 'west_in' : 'west_out';
 
 stateNavigator.navigate('north');
-addNavigateHandlers(stateNavigator);
 
-export default ({crumb}) => (
+export default () => (
   <NavigationHandler stateNavigator={stateNavigator}>
-    <Scene crumb={crumb} />
+    <NavigationStack
+      crumbStyle={(from, state) => state.getCrumbStyle(from)}
+      unmountStyle={(from, state) => state.getUnmountStyle(from)} />
   </NavigationHandler>
 );

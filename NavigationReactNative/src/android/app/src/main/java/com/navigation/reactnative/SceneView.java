@@ -5,9 +5,27 @@ import android.view.ViewGroup;
 import com.facebook.react.uimanager.ThemedReactContext;
 
 public class SceneView extends ViewGroup {
+    private String enterAnim;
+    private String exitAnim;
 
     public SceneView(ThemedReactContext context) {
         super(context);
+    }
+
+    public String getEnterAnim() {
+        return enterAnim;
+    }
+
+    public void setEnterAnim(String enterAnim) {
+        this.enterAnim = enterAnim;
+    }
+
+    public String getExitAnim() {
+        return exitAnim;
+    }
+
+    public void setExitAnim(String exitTransition) {
+        this.exitAnim = exitAnim;
     }
 
     @Override
