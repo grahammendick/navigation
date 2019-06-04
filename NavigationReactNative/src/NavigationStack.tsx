@@ -45,10 +45,12 @@ class NavigationStack extends React.Component<NavigationStackProps> {
     }
     render() {
         var {stateNavigator} = this.props;
-        var {crumbs, nextCrumb} = stateNavigator.stateContext;
+        var {url, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
             <NVNavigationStack
                 ref={this.ref}
+                url={url}
+                oldUrl={oldUrl}
                 style={styles.stack}
                 onDidNavigateBack={this.onDidNavigateBack}>
                 {crumbs.concat(nextCrumb).map((_, crumb) => (

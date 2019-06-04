@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class NavigationStackView extends ViewGroup {
     public static ArrayList<SceneItem> sceneItems = new ArrayList<>();
+    private int oldCrumb = 0;
     private int activityOpenEnterAnimationId;
     private int activityOpenExitAnimationId;
     private int activityCloseEnterAnimationId;
@@ -41,29 +42,56 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public void addView(View child, int index) {
-        Intent intent;
-        Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
+        Intent intent = null;
         if (index == 0) {
-            if (sceneItems.size() > 0) {
-                intent = sceneItems.get(0).intent;
-                currentActivity.navigateUpTo(intent);
-                sceneItems.clear();
-            }
             super.addView(child, index);
-            intent = currentActivity.getIntent();
+            intent = ((ThemedReactContext) getContext()).getCurrentActivity().getIntent();
         }
-        else {
-            Class scene = index % 2 == 1 ? SceneActivity.class : AlternateSceneActivity.class;
-            intent = new Intent(getContext(), scene);
-            intent.putExtra(SceneActivity.CRUMB, index);
-            String enterAnim = ((SceneView) child).getEnterAnim();
-            String exitAnim = ((SceneView) child).getExitAnim();
+        sceneItems.add(index, new SceneItem(index, intent, (SceneView) child));
+    }
+
+    @Override
+    public void removeViewAt(int index) {
+        sceneItems.remove(index);
+    }
+
+    protected void onAfterUpdateTransaction() {
+        if (sceneItems.size()  == 0)
+            return;
+        Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
+        int crumb = sceneItems.size() - 1;
+        int currentCrumb = oldCrumb;
+        SceneItem sceneItem = sceneItems.get(crumb);
+        if (crumb < currentCrumb) {
+            Intent intent = sceneItem.intent;
+            String enterAnim = sceneItem.view.getEnterAnim();
+            String exitAnim = sceneItem.view.getExitAnim();
             int enter = this.getAnimationResourceId(enterAnim, this.activityOpenEnterAnimationId);
             int exit = this.getAnimationResourceId(exitAnim, this.activityOpenExitAnimationId);
-            currentActivity.startActivity(intent, null);
+            currentActivity.navigateUpTo(intent);
             currentActivity.overridePendingTransition(enter, exit);
         }
-        sceneItems.add(index, new SceneItem(index, intent, child));
+        if (crumb > currentCrumb) {
+            Intent[] intents = new Intent[crumb - currentCrumb];
+            for(int i = 0; i < crumb - currentCrumb; i++) {
+                int nextCrumb = currentCrumb + i + 1;
+                Class scene = nextCrumb % 2 == 0 ? SceneActivity.class : AlternateSceneActivity.class;
+                Intent intent = new Intent(getContext(), scene);
+                intent.putExtra(SceneActivity.CRUMB, nextCrumb);
+                sceneItems.get(nextCrumb).intent = intent;
+                intents[i] = intent;
+            }
+            String enterAnim = sceneItem.view.getEnterAnim();
+            String exitAnim = sceneItem.view.getExitAnim();
+            int enter = this.getAnimationResourceId(enterAnim, this.activityOpenEnterAnimationId);
+            int exit = this.getAnimationResourceId(exitAnim, this.activityOpenExitAnimationId);
+            if (crumb - currentCrumb == 1)
+                currentActivity.startActivity(intents[0]);
+            else
+                currentActivity.startActivities(intents);
+            currentActivity.overridePendingTransition(enter, exit);
+        }
+        oldCrumb = sceneItems.size() - 1;
     }
 
     private int getAnimationResourceId(String animationName, int defaultId) {
@@ -71,15 +99,6 @@ public class NavigationStackView extends ViewGroup {
             return defaultId;
         String packageName = getContext().getPackageName();
         return getContext().getResources().getIdentifier(animationName, "anim", packageName);
-    }
-
-    @Override
-    public void removeViewAt(int index) {
-        SceneItem item = sceneItems.remove(index);
-        if (item.crumb == index) {
-            Intent intent = sceneItems.get(index - 1).intent;
-            ((ThemedReactContext) getContext()).getCurrentActivity().navigateUpTo(intent);
-        }
     }
 
     @Override
@@ -95,9 +114,9 @@ public class NavigationStackView extends ViewGroup {
     static class SceneItem {
         public int crumb;
         public Intent intent;
-        public View view;
+        public SceneView view;
 
-        public SceneItem(int crumb, Intent intent, View view){
+        public SceneItem(int crumb, Intent intent, SceneView view){
             this.crumb = crumb;
             this.intent = intent;
             this.view = view;
