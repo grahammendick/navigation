@@ -109,8 +109,8 @@ public class NavigationStackView extends ViewGroup {
             Intent intent = sceneItem.intent;
             String enterAnim = this.getEnterAnim();
             String exitAnim = this.getExitAnim();
-            int enter = this.getAnimationResourceId(enterAnim, this.activityOpenEnterAnimationId);
-            int exit = this.getAnimationResourceId(exitAnim, this.activityOpenExitAnimationId);
+            int enter = this.getAnimationResourceId(enterAnim, this.activityCloseEnterAnimationId);
+            int exit = this.getAnimationResourceId(exitAnim, this.activityCloseExitAnimationId);
             final HashMap<String, View> oldSharedElementsMap = getSharedElementMap();
             Pair[] oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
