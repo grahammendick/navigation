@@ -4,7 +4,6 @@ import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import Scene from './Scene';
 type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any};
-type SceneContext = { key: number, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, mount: boolean };
 
 class NavigationStack extends React.Component<NavigationStackProps> {
     private ref: React.RefObject<View>;
@@ -24,15 +23,6 @@ class NavigationStack extends React.Component<NavigationStackProps> {
         var distance = stateNavigator.stateContext.crumbs.length - crumb;
         if (stateNavigator.canNavigateBack(distance))
             stateNavigator.navigateBack(distance);
-    }
-    getScenes(): SceneContext[]{
-        var {stateNavigator} = this.props;
-        var {crumbs, nextCrumb} = stateNavigator.stateContext;
-        return crumbs.concat(nextCrumb).map(({state, data, url}, index, crumbsAndNext) => {
-            var preCrumbs = crumbsAndNext.slice(0, index);
-            var {state: nextState, data: nextData} = crumbsAndNext[index + 1] || {state: undefined, data: undefined};
-            return {key: index, state, data, url, crumbs: preCrumbs, nextState, nextData, mount: url === nextCrumb.url};
-        });
     }
     getAnimation(crumb: number): {enterAnim: string, exitAnim: string} {
         var {stateNavigator, unmountStyle, crumbStyle} = this.props;
@@ -54,16 +44,18 @@ class NavigationStack extends React.Component<NavigationStackProps> {
         return {enterAnim, exitAnim};
     }
     render() {
+        var {stateNavigator} = this.props;
+        var {crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
             <NVNavigationStack
                 ref={this.ref}
                 style={styles.stack}
                 onDidNavigateBack={this.onDidNavigateBack}>
-                {this.getScenes().map(({key}) => (
+                {crumbs.concat(nextCrumb).map((_, crumb) => (
                     <Scene
-                        key={key}
-                        crumb={key}
-                        {...this.getAnimation(key)}
+                        key={crumb}
+                        crumb={crumb}
+                        {...this.getAnimation(crumb)}
                         title={this.props.title} />
                 ))}
             </NVNavigationStack>
