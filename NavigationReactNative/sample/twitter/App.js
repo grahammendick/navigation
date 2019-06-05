@@ -30,6 +30,7 @@ export default () => (
   <TabBarIOS style={{flex: 1}}>
     <NavigationHandler stateNavigator={stateNavigator}>
       <NavigationStack
+        title={({getTitle, title}, data) => getTitle ? getTitle(data) : title}
         crumbStyle={from => from ? 'scale_in' : 'scale_out'}
         unmountStyle={from => from ? 'scale_in' : 'scale_out'}>
         <TabBarItemIOS title="Home" />
@@ -37,6 +38,7 @@ export default () => (
     </NavigationHandler>
     <NavigationHandler stateNavigator={notificationsNavigator}>
       <NavigationStack
+        title={({getTitle, title}, data) => getTitle ? getTitle(data) : title}
         crumbStyle={from => from ? 'scale_in' : 'scale_out'}
         unmountStyle={from => from ? 'scale_in' : 'scale_out'}>
         <TabBarItemIOS title="Notifications" />
