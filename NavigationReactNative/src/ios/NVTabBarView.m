@@ -20,7 +20,7 @@
 
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
-    [super insertReactSubview:[UIView new] atIndex:atIndex];
+    [super insertReactSubview:subview atIndex:atIndex];
     [_tabBarController addChildViewController:((NVNavigationStackView *) subview).navigationController];
 }
 
