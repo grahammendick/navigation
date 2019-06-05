@@ -1,3 +1,14 @@
-import { requireNativeComponent, Platform } from 'react-native';
+import React from 'react';
+import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 
-export default Platform.OS === 'ios' ? requireNativeComponent<any>('NVTabBar', null) : () => null;
+var TabBar = ({children}) => <NVTabBar style={styles.tabBar}>{children}</NVTabBar>;
+
+var NVTabBar = requireNativeComponent<any>('NVTabBar', null);
+
+const styles = StyleSheet.create({
+    tabBar: {
+        flex: 1,
+    },
+});
+
+export default Platform.OS === 'ios' ? TabBar : () => null;

@@ -37,7 +37,7 @@ var Stack = ({stateNavigator}) => (
 );
 
 export default () => (
-  <TabBarIOS style={{flex: 1}}>
+  <TabBarIOS>
     <Stack stateNavigator={stateNavigator} />
     <Stack stateNavigator={notificationsNavigator} />
   </TabBarIOS>
