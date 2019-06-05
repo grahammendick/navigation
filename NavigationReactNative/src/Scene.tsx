@@ -13,7 +13,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         this.onWillAppear = this.onWillAppear.bind(this);
     }
     static defaultProps = {
-        title: () => null,
+        title: (state: State) => state.title,
         renderScene: (state: State, data: any) => state.renderScene(data)
     }
     static getDerivedStateFromProps(props: SceneProps) {
@@ -92,7 +92,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {state, data} = (crumb < crumbs.length) ? crumbs[crumb] : nextCrumb;
         return (
             <NVScene
-                title={title(state, data) || state.title}
+                title={title(state, data)}
                 style={styles.scene}
                 onWillAppear={this.onWillAppear}>
                 <NavigationContext.Provider value={navigationEvent}>
