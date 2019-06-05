@@ -7,7 +7,6 @@
 
 @implementation NVNavigationStackView
 {
-    UINavigationController *_navigationController;
     NSMutableArray *_scenes;
     NSInteger _nativeEventCount;
 }

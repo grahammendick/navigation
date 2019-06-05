@@ -27,7 +27,7 @@ stateNavigator.navigate('home');
 notificationsNavigator.navigate('notifications');
 
 export default () => (
-  <TabBarIOS>
+  <TabBarIOS style={{flex: 1}}>
     <NavigationHandler stateNavigator={stateNavigator}>
       <NavigationStack
         crumbStyle={from => from ? 'scale_in' : 'scale_out'}
