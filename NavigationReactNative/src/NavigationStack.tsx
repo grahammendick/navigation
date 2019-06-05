@@ -70,9 +70,7 @@ class NavigationStack extends React.Component<NavigationStackProps> {
                         crumb={crumb}
                         title={this.props.title} />
                 )).concat(
-                    <SceneBin
-                        key={this.renderMills}
-                        style={{position: 'absolute', width: 0, height: 0}}  />
+                    <SceneBin key={this.renderMills} />
                 )}
             </NVNavigationStack>
         );
