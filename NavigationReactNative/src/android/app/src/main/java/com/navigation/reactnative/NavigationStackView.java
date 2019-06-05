@@ -26,10 +26,10 @@ public class NavigationStackView extends ViewGroup {
     public ArrayList<SceneView> sceneDiscards = new ArrayList<>();
     private int oldCrumb = 0;
     private SceneBinView sceneBin;
-    private String enterAnim;
-    private String exitAnim;
-    private ReadableArray sharedElementNames;
-    private ReadableArray oldSharedElementNames;
+    protected String enterAnim;
+    protected String exitAnim;
+    protected ReadableArray sharedElementNames;
+    protected ReadableArray oldSharedElementNames;
     private int activityOpenEnterAnimationId;
     private int activityOpenExitAnimationId;
     private int activityCloseEnterAnimationId;
@@ -51,38 +51,6 @@ public class NavigationStackView extends ViewGroup {
         activityCloseEnterAnimationId = activityStyle.getResourceId(2, 0);
         activityCloseExitAnimationId = activityStyle.getResourceId(3, 0);
         activityStyle.recycle();
-    }
-
-    public String getEnterAnim() {
-        return enterAnim;
-    }
-
-    public void setEnterAnim(String enterAnim) {
-        this.enterAnim = enterAnim;
-    }
-
-    public String getExitAnim() {
-        return exitAnim;
-    }
-
-    public void setExitAnim(String exitAnim) {
-        this.exitAnim = exitAnim;
-    }
-
-    public ReadableArray getSharedElementNames() {
-        return sharedElementNames;
-    }
-
-    public void setSharedElementNames(ReadableArray sharedElementNames) {
-        this.sharedElementNames = sharedElementNames;
-    }
-
-    public ReadableArray getOldSharedElementNames() {
-        return oldSharedElementNames;
-    }
-
-    public void setOldSharedElementNames(ReadableArray oldSharedElementNames) {
-        this.oldSharedElementNames = oldSharedElementNames;
     }
 
     @Override
@@ -118,8 +86,8 @@ public class NavigationStackView extends ViewGroup {
         SceneItem sceneItem = sceneItems.get(crumb);
         if (crumb < currentCrumb) {
             Intent intent = sceneItem.intent;
-            String enterAnim = this.getEnterAnim();
-            String exitAnim = this.getExitAnim();
+            String enterAnim = this.enterAnim;
+            String exitAnim = this.exitAnim;
             int enter = this.getAnimationResourceId(enterAnim, this.activityCloseEnterAnimationId);
             int exit = this.getAnimationResourceId(exitAnim, this.activityCloseExitAnimationId);
             final HashMap<String, View> oldSharedElementsMap = getSharedElementMap();
@@ -138,7 +106,7 @@ public class NavigationStackView extends ViewGroup {
                                 View oldSharedElement = oldSharedElementsMap.get(name);
                                 elements.put(name, oldSharedElement);
                                 SharedElementView oldSharedElementView = (SharedElementView) oldSharedElement.getParent();
-                                transitioner.load(name, oldSharedElementView.getExitTransition());
+                                transitioner.load(name, oldSharedElementView.exitTransition);
                             }
                         }
                     }
@@ -159,8 +127,8 @@ public class NavigationStackView extends ViewGroup {
                 sceneItems.get(nextCrumb).intent = intent;
                 intents[i] = intent;
             }
-            String enterAnim = this.getEnterAnim();
-            String exitAnim = this.getExitAnim();
+            String enterAnim = this.enterAnim;
+            String exitAnim = this.exitAnim;
             int enter = this.getAnimationResourceId(enterAnim, this.activityOpenEnterAnimationId);
             int exit = this.getAnimationResourceId(exitAnim, this.activityOpenExitAnimationId);
             final HashMap<String, View> sharedElementsMap = getSharedElementMap();

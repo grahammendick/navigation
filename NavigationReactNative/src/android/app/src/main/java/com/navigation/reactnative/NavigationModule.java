@@ -85,7 +85,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                                         View oldSharedElement = oldSharedElementsMap.get(name);
                                         elements.put(name, oldSharedElement);
                                         SharedElementView oldSharedElementView = (SharedElementView) oldSharedElement.getParent();
-                                        transitioner.load(name, oldSharedElementView.getExitTransition());
+                                        transitioner.load(name, oldSharedElementView.exitTransition);
                                     }
                                 }
                             }

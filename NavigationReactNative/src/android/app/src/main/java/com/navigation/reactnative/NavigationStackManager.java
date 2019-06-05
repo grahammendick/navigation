@@ -24,22 +24,22 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
 
     @ReactProp(name = "enterAnim")
     public void setEnterAnim(NavigationStackView view, String enterAnim) {
-        view.setEnterAnim(enterAnim);
+        view.enterAnim = enterAnim;
     }
 
     @ReactProp(name = "exitAnim")
     public void setExitAnim(NavigationStackView view, String exitAnim) {
-        view.setExitAnim(exitAnim);
+        view.exitAnim = exitAnim;
     }
 
     @ReactProp(name = "sharedElements")
     public void setSharedElements(NavigationStackView view, ReadableArray sharedElements) {
-        view.setSharedElementNames(sharedElements);
+        view.sharedElementNames = sharedElements;
     }
 
     @ReactProp(name = "oldSharedElements")
     public void setOldSharedElements(NavigationStackView view, ReadableArray oldSharedElements) {
-        view.setOldSharedElementNames(oldSharedElements);
+        view.oldSharedElementNames = oldSharedElements;
     }
 
     @Override
