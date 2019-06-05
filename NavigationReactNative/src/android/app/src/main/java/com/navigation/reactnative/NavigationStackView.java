@@ -185,6 +185,16 @@ public class NavigationStackView extends ViewGroup {
     }
 
     @Override
+    public int getChildCount() {
+        return sceneItems.size();
+    }
+
+    @Override
+    public View getChildAt(int index) {
+        return sceneItems.get(index).view;
+    }
+
+    @Override
     public void onDetachedFromWindow() {
         if (sceneItems.size() > 1) {
             Intent mainIntent = sceneItems.get(0).intent;
@@ -231,16 +241,6 @@ public class NavigationStackView extends ViewGroup {
                 sharedElementPairs.add(Pair.create(sharedElementMap.get(name), name));
         }
         return sharedElementPairs.toArray(new Pair[sharedElementPairs.size()]);
-    }
-
-    @Override
-    public int getChildCount() {
-        return sceneItems.size();
-    }
-
-    @Override
-    public View getChildAt(int index) {
-        return sceneItems.get(index).view;
     }
 
     @Override
