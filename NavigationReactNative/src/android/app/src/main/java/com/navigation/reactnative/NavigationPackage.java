@@ -17,7 +17,8 @@ public class NavigationPackage implements ReactPackage {
         return Arrays.<ViewManager>asList(
             new NavigationStackManager(),
             new SceneManager(),
-            new SharedElementManager()
+            new SharedElementManager(),
+            new SceneBinManager()
         );
     }
 

@@ -23,7 +23,9 @@ import java.util.Map;
 
 public class NavigationStackView extends ViewGroup {
     public static ArrayList<SceneItem> sceneItems = new ArrayList<>();
+    public ArrayList<SceneView> sceneDiscards = new ArrayList<>();
     private int oldCrumb = 0;
+    private SceneBinView sceneBin;
     private String enterAnim;
     private String exitAnim;
     private ReadableArray sharedElementNames;
@@ -87,15 +89,24 @@ public class NavigationStackView extends ViewGroup {
     public void addView(View child, int index) {
         Intent intent = null;
         if (index == 0) {
-            super.addView(child, index);
+            super.addView(child, 0);
             intent = ((ThemedReactContext) getContext()).getCurrentActivity().getIntent();
         }
-        sceneItems.add(index, new SceneItem(index, intent, child));
+        if (!(child instanceof SceneBinView))
+            sceneItems.add(index, new SceneItem(index, intent, child));
+        else {
+            sceneBin = (SceneBinView) child;
+            for(int i = 0; i < sceneDiscards.size(); i++) {
+                sceneBin.getScenes().add(sceneDiscards.get(i));
+            }
+            sceneDiscards.clear();
+        }
     }
 
     @Override
     public void removeViewAt(int index) {
-        sceneItems.remove(index);
+        if (index < sceneItems.size())
+            sceneDiscards.add((SceneView) sceneItems.remove(index).view);
     }
 
     protected void onAfterUpdateTransaction() {
@@ -186,12 +197,12 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public int getChildCount() {
-        return sceneItems.size();
+        return sceneItems.size() + 1;
     }
 
     @Override
     public View getChildAt(int index) {
-        return sceneItems.get(index).view;
+        return index < sceneItems.size() ? sceneItems.get(index).view : sceneBin;
     }
 
     @Override

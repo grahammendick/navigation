@@ -3,10 +3,12 @@ import { requireNativeComponent, StyleSheet, View } from 'react-native';
 import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import Scene from './Scene';
+import SceneBin from './SceneBin';
 type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any};
 
 class NavigationStack extends React.Component<NavigationStackProps> {
     private ref: React.RefObject<View>;
+    private renderMills = Date.now();
     constructor(props) {
         super(props);
         this.ref = React.createRef<View>();
@@ -16,6 +18,11 @@ class NavigationStack extends React.Component<NavigationStackProps> {
         unmountStyle: () => null,
         crumbStyle: () => null,
         sharedElements: () => null
+    }
+    componentDidUpdate() {
+        var mills = Date.now();
+        if (mills - this.renderMills > 2000)
+            this.renderMills = mills;
     }
     onDidNavigateBack({nativeEvent}) {
         var {stateNavigator} = this.props;
@@ -62,7 +69,11 @@ class NavigationStack extends React.Component<NavigationStackProps> {
                         key={crumb}
                         crumb={crumb}
                         title={this.props.title} />
-                ))}
+                )).concat(
+                    <SceneBin
+                        key={this.renderMills}
+                        style={{position: 'absolute', width: 0, height: 0}}  />
+                )}
             </NVNavigationStack>
         );
     }
