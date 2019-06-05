@@ -26,23 +26,19 @@ var notificationsNavigator = new StateNavigator(stateNavigator);
 stateNavigator.navigate('home');
 notificationsNavigator.navigate('notifications');
 
+var Stack = ({stateNavigator}) => (
+  <NavigationHandler stateNavigator={stateNavigator}>
+    <NavigationStack
+      title={({getTitle, title}, data) => getTitle ? getTitle(data) : title}
+      crumbStyle={from => from ? 'scale_in' : 'scale_out'}
+      unmountStyle={from => from ? 'scale_in' : 'scale_out'}>
+    </NavigationStack>
+  </NavigationHandler>
+);
+
 export default () => (
   <TabBarIOS style={{flex: 1}}>
-    <NavigationHandler stateNavigator={stateNavigator}>
-      <NavigationStack
-        title={({getTitle, title}, data) => getTitle ? getTitle(data) : title}
-        crumbStyle={from => from ? 'scale_in' : 'scale_out'}
-        unmountStyle={from => from ? 'scale_in' : 'scale_out'}>
-        <TabBarItemIOS title="Home" />
-      </NavigationStack>
-    </NavigationHandler>
-    <NavigationHandler stateNavigator={notificationsNavigator}>
-      <NavigationStack
-        title={({getTitle, title}, data) => getTitle ? getTitle(data) : title}
-        crumbStyle={from => from ? 'scale_in' : 'scale_out'}
-        unmountStyle={from => from ? 'scale_in' : 'scale_out'}>
-        <TabBarItemIOS title="Notifications" />
-      </NavigationStack>
-    </NavigationHandler>
+    <Stack stateNavigator={stateNavigator} />
+    <Stack stateNavigator={notificationsNavigator} />
   </TabBarIOS>
 );
