@@ -26,10 +26,10 @@
 
 - (void)removeReactSubview:(UIView *)subview
 {
-    NSInteger index = [self.reactSubviews indexOfObject:subview] - 1;
+    NSInteger tab = [self.reactSubviews indexOfObject:subview];
     [super removeReactSubview:subview];
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
-    [controllers removeObjectAtIndex:index];
+    [controllers removeObjectAtIndex:tab];
     [_tabBarController setViewControllers:controllers];
 }
 

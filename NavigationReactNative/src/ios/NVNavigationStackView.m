@@ -34,7 +34,7 @@
 
 - (void)removeReactSubview:(UIView *)subview
 {
-    NSInteger crumb = [self.reactSubviews indexOfObject:subview] - 1;
+    NSInteger crumb = [self.reactSubviews indexOfObject:subview];
     [super removeReactSubview:subview];
     [_scenes removeObjectAtIndex:crumb];
 }
