@@ -1,7 +1,7 @@
 import React from 'react';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
-import {addNavigateHandlers, Scene} from 'navigation-react-native';
+import {NavigationStack, TabBarIOS, TabBarItemIOS} from 'navigation-react-native';
 import Home from './Home';
 import Notifications from './Notifications';
 import Tweet from './Tweet';
@@ -20,22 +20,27 @@ notifications.renderScene = () => <Notifications follows={getFollows()} />;
 tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)}  />;
 timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)}  />;
 
-for(var key in stateNavigator.states) {
-  var state = stateNavigator.states[key];
-  state.getCrumbStyle = from => from ? 'scale_in' : 'scale_out';
-  state.getUnmountStyle = from => from ? 'slide_in' : 'slide_out';
-}
-
 timeline.getTitle = ({sceneTitle}) => sceneTitle;
 
-var stateNavigators = [stateNavigator, new StateNavigator(stateNavigator)];
+var notificationsNavigator = new StateNavigator(stateNavigator);
 stateNavigator.navigate('home');
-stateNavigators[1].navigate('notifications');
+notificationsNavigator.navigate('notifications');
 
-addNavigateHandlers(stateNavigators);
-
-export default ({crumb, tab = 0}) => (
-  <NavigationHandler stateNavigator={stateNavigators[tab]}>
-    <Scene crumb={crumb} tab={tab} />
-  </NavigationHandler>
+export default () => (
+  <TabBarIOS>
+    <NavigationHandler stateNavigator={stateNavigator}>
+      <NavigationStack
+        crumbStyle={from => from ? 'scale_in' : 'scale_out'}
+        unmountStyle={from => from ? 'scale_in' : 'scale_out'}>
+        <TabBarItemIOS title="Home" />
+      </NavigationStack>
+    </NavigationHandler>
+    <NavigationHandler stateNavigator={notificationsNavigator}>
+      <NavigationStack
+        crumbStyle={from => from ? 'scale_in' : 'scale_out'}
+        unmountStyle={from => from ? 'scale_in' : 'scale_out'}>
+        <TabBarItemIOS title="Notifications" />
+      </NavigationStack>
+    </NavigationHandler>
+  </TabBarIOS>
 );
