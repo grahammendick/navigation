@@ -92,9 +92,9 @@ public class NavigationStackView extends ViewGroup {
             super.addView(child, 0);
             intent = ((ThemedReactContext) getContext()).getCurrentActivity().getIntent();
         }
-        if (!(child instanceof SceneBinView))
-            sceneItems.add(index, new SceneItem(index, intent, child));
-        else {
+        if (child instanceof SceneView)
+            sceneItems.add(index, new SceneItem(index, intent, (SceneView) child));
+        if (child instanceof SceneBinView) {
             sceneBin = (SceneBinView) child;
             for(int i = 0; i < sceneDiscards.size(); i++) {
                 sceneBin.getScenes().add(sceneDiscards.get(i));
@@ -106,7 +106,7 @@ public class NavigationStackView extends ViewGroup {
     @Override
     public void removeViewAt(int index) {
         if (index < sceneItems.size())
-            sceneDiscards.add((SceneView) sceneItems.remove(index).view);
+            sceneDiscards.add(sceneItems.remove(index).view);
     }
 
     protected void onAfterUpdateTransaction() {
@@ -261,9 +261,9 @@ public class NavigationStackView extends ViewGroup {
     static class SceneItem {
         public int crumb;
         public Intent intent;
-        public View view;
+        public SceneView view;
 
-        public SceneItem(int crumb, Intent intent, View view){
+        public SceneItem(int crumb, Intent intent, SceneView view){
             this.crumb = crumb;
             this.intent = intent;
             this.view = view;
