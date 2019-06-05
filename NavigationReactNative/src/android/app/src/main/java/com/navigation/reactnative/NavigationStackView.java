@@ -99,7 +99,7 @@ public class NavigationStackView extends ViewGroup {
     }
 
     protected void onAfterUpdateTransaction() {
-        if (sceneItems.size()  == 0)
+        if (sceneItems.size() == 0)
             return;
         Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
         int crumb = sceneItems.size() - 1;
@@ -182,6 +182,16 @@ public class NavigationStackView extends ViewGroup {
             currentActivity.overridePendingTransition(enter, exit);
         }
         oldCrumb = sceneItems.size() - 1;
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        if (sceneItems.size() > 0) {
+            Intent mainIntent = sceneItems.get(0).intent;
+            ((ThemedReactContext) getContext()).getCurrentActivity().navigateUpTo(mainIntent);
+            sceneItems.clear();
+        }
+        super.onDetachedFromWindow();
     }
 
     private int getAnimationResourceId(String animationName, int defaultId) {
