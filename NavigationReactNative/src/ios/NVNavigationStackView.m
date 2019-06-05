@@ -1,7 +1,6 @@
 #import "NVNavigationStackView.h"
 #import "NVSceneView.h"
 #import "NVSceneController.h"
-#import "NVTabBarItemView.h"
 
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
@@ -30,10 +29,7 @@
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:[UIView new] atIndex:atIndex];
-    if ([subview isKindOfClass:[NVSceneView class]])
-        [_scenes insertObject:subview atIndex:atIndex];
-    if ([subview isKindOfClass:[NVTabBarItemView class]])
-        _navigationController.tabBarItem = ((NVTabBarItemView *) subview).tabBar;
+    [_scenes insertObject:subview atIndex:atIndex];
 }
 
 - (void)removeReactSubview:(UIView *)subview

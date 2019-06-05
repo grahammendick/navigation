@@ -71,8 +71,6 @@ class NavigationStack extends React.Component<NavigationStackProps> {
                         title={this.props.title} />
                 )).concat(
                     <SceneBin key={this.renderMills} />
-                ).concat(
-                    children && React.cloneElement(children, {key: 'tab'})
                 )}
             </NVNavigationStack>
         );
