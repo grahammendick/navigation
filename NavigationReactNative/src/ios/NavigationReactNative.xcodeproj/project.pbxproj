@@ -15,6 +15,7 @@
 		709F32D322A7FFBF00A0358A /* NVTabBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F32D222A7FFBF00A0358A /* NVTabBarManager.m */; };
 		709F32D522A7FFD600A0358A /* NVTabBarItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F32D422A7FFD600A0358A /* NVTabBarItemView.m */; };
 		709F32D922A7FFFA00A0358A /* NVTabBarItemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F32D822A7FFFA00A0358A /* NVTabBarItemManager.m */; };
+		709F331222A8657700A0358A /* NVSceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F331122A8657700A0358A /* NVSceneController.m */; };
 		70AFBC3221DCD2CC006355EE /* NVSharedElementManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AFBC3121DCD2CC006355EE /* NVSharedElementManager.m */; };
 		70AFBC3521DCD320006355EE /* NVSharedElementView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AFBC3421DCD320006355EE /* NVSharedElementView.m */; };
 		70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3290212B2BC700DE0D13 /* NVRightBarView.m */; };
@@ -56,6 +57,8 @@
 		709F32D622A7FFE100A0358A /* NVTabBarItemView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarItemView.h; sourceTree = "<group>"; };
 		709F32D722A7FFF000A0358A /* NVTabBarItemManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarItemManager.h; sourceTree = "<group>"; };
 		709F32D822A7FFFA00A0358A /* NVTabBarItemManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTabBarItemManager.m; sourceTree = "<group>"; };
+		709F331122A8657700A0358A /* NVSceneController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSceneController.m; sourceTree = "<group>"; };
+		709F331322A8658500A0358A /* NVSceneController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSceneController.h; sourceTree = "<group>"; };
 		70AFBC3121DCD2CC006355EE /* NVSharedElementManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSharedElementManager.m; sourceTree = "<group>"; };
 		70AFBC3321DCD2F6006355EE /* NVSharedElementManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSharedElementManager.h; sourceTree = "<group>"; };
 		70AFBC3421DCD320006355EE /* NVSharedElementView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSharedElementView.m; sourceTree = "<group>"; };
@@ -90,6 +93,8 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				709F331322A8658500A0358A /* NVSceneController.h */,
+				709F331122A8657700A0358A /* NVSceneController.m */,
 				709F32D822A7FFFA00A0358A /* NVTabBarItemManager.m */,
 				709F32D722A7FFF000A0358A /* NVTabBarItemManager.h */,
 				709F32D622A7FFE100A0358A /* NVTabBarItemView.h */,
@@ -206,6 +211,7 @@
 				70AFBC3521DCD320006355EE /* NVSharedElementView.m in Sources */,
 				70BB32A4212B2D4100DE0D13 /* NVBarView.m in Sources */,
 				704B594622A2AC77008C05C6 /* NVSceneManager.m in Sources */,
+				709F331222A8657700A0358A /* NVSceneController.m in Sources */,
 				704B594022A2AC3A008C05C6 /* NVNavigationStackManager.m in Sources */,
 				70BB3298212B2C4000DE0D13 /* NVLeftBarView.m in Sources */,
 				704B594222A2AC56008C05C6 /* NVSceneView.m in Sources */,

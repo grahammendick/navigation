@@ -1,19 +1,24 @@
 #import "NVNavigationStackView.h"
 #import "NVSceneView.h"
+#import "NVSceneController.h"
 #import "NVTabBarItemView.h"
 
 #import <UIKit/UIKit.h>
+#import <React/RCTBridge.h>
+#import <React/RCTUIManager.h>
 #import <React/UIView+React.h>
 
 @implementation NVNavigationStackView
 {
+    __weak RCTBridge *_bridge;
     NSMutableArray *_scenes;
     NSInteger _nativeEventCount;
 }
 
-- (id)init
+- (id)initWithBridge:(RCTBridge *)bridge
 {
     if (self = [super init]) {
+        _bridge = bridge;
         _navigationController = [[UINavigationController alloc] init];
         [self addSubview:_navigationController.view];
         _navigationController.delegate = self;
@@ -52,8 +57,12 @@
         NSMutableArray *controllers = [[NSMutableArray alloc] init];
         for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
             NSInteger nextCrumb = currentCrumb + i + 1;
-            UIViewController *controller = [UIViewController new];
+            NVSceneController *controller = [[NVSceneController alloc] init];
             NVSceneView *scene = (NVSceneView *) [_scenes objectAtIndex:nextCrumb];
+            __weak typeof(self) weakSelf = self;
+            controller.boundsDidChangeBlock = ^(NVSceneController *sceneController) {
+                [weakSelf notifyForBoundsChange:sceneController];
+            };
             controller.view = scene;
             controller.title = scene.title;
             [controllers addObject:controller];
@@ -66,6 +75,11 @@
             [_navigationController setViewControllers:allControllers animated:true];
         }
     }
+}
+
+- (void)notifyForBoundsChange:(NVSceneController *)controller
+{
+    [_bridge.uiManager setSize:controller.view.bounds.size forView:controller.view];
 }
 
 - (void)layoutSubviews

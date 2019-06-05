@@ -25,7 +25,7 @@ RCT_EXPORT_MODULE()
 
 - (UIView *)view
 {
-    return [[NVNavigationStackView alloc] init];
+    return [[NVNavigationStackView alloc] initWithBridge:self.bridge];
 }
 
 - (RCTShadowView *)shadowView
