@@ -34,7 +34,7 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
             View view = NavigationStackView.sceneItems.get(crumb).view;
             if (view.getParent() != null)
                 ((ViewGroup) view.getParent()).removeView(view);
-            rootView.addView(NavigationStackView.sceneItems.get(crumb).view);
+            rootView.addView(view);
         }
         setContentView(rootView);
         @SuppressWarnings("unchecked")
