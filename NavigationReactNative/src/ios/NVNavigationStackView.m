@@ -62,7 +62,7 @@
                 [weakSelf notifyForBoundsChange:sceneController];
             };
             controller.view = scene;
-            controller.title = scene.title;
+            controller.navigationItem.title = scene.title;
             [controllers addObject:controller];
         }
         
