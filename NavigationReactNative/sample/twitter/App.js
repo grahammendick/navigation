@@ -52,7 +52,6 @@ export default () => (
   ) : (
     <NavigationHandler stateNavigator={stateNavigator}>
       <NavigationStack
-        title={getSceneTitle}
         crumbStyle={from => from ? 'scale_in' : 'scale_out'}
         unmountStyle={from => from ? 'slide_in' : 'slide_out'}>
       </NavigationStack>
