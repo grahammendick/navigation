@@ -45,7 +45,7 @@ export default () => (
         <NavigationHandler stateNavigator={notificationsNavigator}>
           <NavigationStack
             title={getSceneTitle}>
-            </NavigationStack>
+          </NavigationStack>
         </NavigationHandler>
       </TabBarItemIOS>
     </TabBarIOS>
