@@ -55,6 +55,8 @@
             NSInteger nextCrumb = currentCrumb + i + 1;
             NVSceneController *controller = [[NVSceneController alloc] init];
             NVSceneView *scene = (NVSceneView *) [_scenes objectAtIndex:nextCrumb];
+            if (!![scene superview])
+                return;
             __weak typeof(self) weakSelf = self;
             controller.boundsDidChangeBlock = ^(NVSceneController *sceneController) {
                 [weakSelf notifyForBoundsChange:sceneController];
