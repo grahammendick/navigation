@@ -54,7 +54,7 @@ export default () => (
       <NavigationStack
         title={getSceneTitle}
         crumbStyle={from => from ? 'scale_in' : 'scale_out'}
-        unmountStyle={from => from ? 'scale_in' : 'scale_out'}>
+        unmountStyle={from => from ? 'slide_in' : 'slide_out'}>
       </NavigationStack>
     </NavigationHandler>
   )
