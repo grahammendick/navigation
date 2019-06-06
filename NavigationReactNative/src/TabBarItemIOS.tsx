@@ -1,11 +1,12 @@
 import React from 'react';
 import { requireNativeComponent, Platform } from 'react-native';
 
-var TabBarItem = ({title, image, systemItem, children}) => (
+var TabBarItem = ({title, image, systemItem, onPress, children}) => (
     <NVTabBarItem
         title={title}
         image={image}
-        systemItem={systemItem}>
+        systemItem={systemItem}
+        onPress={onPress}>
         {children}            
     </NVTabBarItem>
 );

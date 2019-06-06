@@ -14,6 +14,7 @@
     if (self = [super init]) {
         _tabBarController = [[UITabBarController alloc] init];
         [self addSubview:_tabBarController.view];
+        _tabBarController.delegate = self;
     }
     return self;
 }
@@ -41,6 +42,15 @@
 {
     [super layoutSubviews];
     _tabBarController.view.frame = self.bounds;
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(nonnull UIViewController *)viewController
+{
+    NSUInteger tab = [tabBarController.viewControllers indexOfObject:viewController];
+    NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[tab];
+    if (!!tabBarItem.onPress) {
+        tabBarItem.onPress(nil);
+    }
 }
 
 @end
