@@ -83,13 +83,13 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
                 final int viewTag = getChildAt(0).getId();
                 ReactContext reactContext = getReactContext();
                 reactContext.runOnNativeModulesQueueThread(
-                        new GuardedRunnable(reactContext) {
-                            @Override
-                            public void runGuarded() {
-                                (getReactContext()).getNativeModule(UIManagerModule.class)
-                                        .updateNodeSize(viewTag, viewWidth, viewHeight);
-                            }
-                        });
+                    new GuardedRunnable(reactContext) {
+                        @Override
+                        public void runGuarded() {
+                            (getReactContext()).getNativeModule(UIManagerModule.class)
+                                    .updateNodeSize(viewTag, viewWidth, viewHeight);
+                        }
+                    });
             } else {
                 hasAdjustedSize = true;
             }
