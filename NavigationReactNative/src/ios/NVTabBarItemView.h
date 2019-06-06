@@ -2,6 +2,7 @@
 
 @interface NVTabBarItemView : UIView
 
-@property UITabBarItem *tabBar;
+@property UITabBarItem *tab;
+@property (nonatomic, strong) UINavigationController *navigationController;
 
 @end

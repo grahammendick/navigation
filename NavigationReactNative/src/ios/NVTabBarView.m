@@ -1,5 +1,5 @@
 #import "NVTabBarView.h"
-#import "NVNavigationStackView.h"
+#import "NVTabBarItemView.h"
 
 #import <UIKit/UIKit.h>
 #import <React/UIView+React.h>
@@ -21,7 +21,7 @@
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
-    [_tabBarController addChildViewController:((NVNavigationStackView *) subview).navigationController];
+    [_tabBarController addChildViewController:[(NVTabBarItemView *) subview navigationController]];
 }
 
 - (void)removeReactSubview:(UIView *)subview

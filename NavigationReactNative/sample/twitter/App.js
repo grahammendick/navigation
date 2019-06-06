@@ -27,13 +27,15 @@ stateNavigator.navigate('home');
 notificationsNavigator.navigate('notifications');
 
 var Stack = ({stateNavigator}) => (
-  <NavigationHandler stateNavigator={stateNavigator}>
-    <NavigationStack
-      title={({getTitle, title}, data) => getTitle ? getTitle(data) : title}
-      crumbStyle={from => from ? 'scale_in' : 'scale_out'}
-      unmountStyle={from => from ? 'scale_in' : 'scale_out'}>
-    </NavigationStack>
-  </NavigationHandler>
+  <TabBarItemIOS>
+    <NavigationHandler stateNavigator={stateNavigator}>
+      <NavigationStack
+        title={({getTitle, title}, data) => getTitle ? getTitle(data) : title}
+        crumbStyle={from => from ? 'scale_in' : 'scale_out'}
+        unmountStyle={from => from ? 'scale_in' : 'scale_out'}>
+      </NavigationStack>
+    </NavigationHandler>
+  </TabBarItemIOS>
 );
 
 export default () => (
