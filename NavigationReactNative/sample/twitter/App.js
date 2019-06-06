@@ -1,4 +1,5 @@
 import React from 'react';
+import {Platform} from 'react-native';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
 import {NavigationStack, TabBarIOS, TabBarItemIOS} from 'navigation-react-native';
@@ -26,8 +27,25 @@ var notificationsNavigator = new StateNavigator(stateNavigator);
 stateNavigator.navigate('home');
 notificationsNavigator.navigate('notifications');
 
-var Stack = ({title, stateNavigator}) => (
-  <TabBarItemIOS title={title}>
+export default () => (
+  Platform.OS === 'ios' ? (
+    <TabBarIOS>
+      <TabBarItemIOS title="Home">
+        <NavigationHandler stateNavigator={stateNavigator}>
+          <NavigationStack
+            title={({getTitle, title}, data) => getTitle ? getTitle(data) : title}>
+          </NavigationStack>
+        </NavigationHandler>
+      </TabBarItemIOS>
+      <TabBarItemIOS title="Notifications">
+        <NavigationHandler stateNavigator={notificationsNavigator}>
+          <NavigationStack
+            title={({getTitle, title}, data) => getTitle ? getTitle(data) : title}>
+          </NavigationStack>
+        </NavigationHandler>
+      </TabBarItemIOS>
+    </TabBarIOS>
+  ) : (
     <NavigationHandler stateNavigator={stateNavigator}>
       <NavigationStack
         title={({getTitle, title}, data) => getTitle ? getTitle(data) : title}
@@ -35,12 +53,5 @@ var Stack = ({title, stateNavigator}) => (
         unmountStyle={from => from ? 'scale_in' : 'scale_out'}>
       </NavigationStack>
     </NavigationHandler>
-  </TabBarItemIOS>
-);
-
-export default () => (
-  <TabBarIOS>
-    <Stack title="Home" stateNavigator={stateNavigator} />
-    <Stack title="Notifications" stateNavigator={notificationsNavigator} />
-  </TabBarIOS>
+  )
 );
