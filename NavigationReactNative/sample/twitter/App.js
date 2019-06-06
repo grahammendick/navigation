@@ -22,6 +22,10 @@ tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)}  />;
 timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)}  />;
 
 timeline.getTitle = ({sceneTitle}) => sceneTitle;
+var getSceneTitle = (state, data) => {
+  var {getTitle, title} = state;
+  return getTitle ? getTitle(data) : title;
+}
 
 var notificationsNavigator = new StateNavigator(stateNavigator);
 stateNavigator.navigate('home');
@@ -33,22 +37,22 @@ export default () => (
       <TabBarItemIOS title="Home">
         <NavigationHandler stateNavigator={stateNavigator}>
           <NavigationStack
-            title={({getTitle, title}, data) => getTitle ? getTitle(data) : title}>
+            title={getSceneTitle}>
           </NavigationStack>
         </NavigationHandler>
       </TabBarItemIOS>
       <TabBarItemIOS title="Notifications">
         <NavigationHandler stateNavigator={notificationsNavigator}>
           <NavigationStack
-            title={({getTitle, title}, data) => getTitle ? getTitle(data) : title}>
-          </NavigationStack>
+            title={getSceneTitle}>
+            </NavigationStack>
         </NavigationHandler>
       </TabBarItemIOS>
     </TabBarIOS>
   ) : (
     <NavigationHandler stateNavigator={stateNavigator}>
       <NavigationStack
-        title={({getTitle, title}, data) => getTitle ? getTitle(data) : title}
+        title={getSceneTitle}
         crumbStyle={from => from ? 'scale_in' : 'scale_out'}
         unmountStyle={from => from ? 'scale_in' : 'scale_out'}>
       </NavigationStack>
