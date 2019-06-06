@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.react.ReactActivity;
+import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.uimanager.JSTouchDispatcher;
@@ -29,8 +30,12 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         super.onCreate(savedInstanceState);
         int crumb = getIntent().getIntExtra(CRUMB, 0);
         rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
-        if (crumb < NavigationStackView.sceneItems.size())
+        if (crumb < NavigationStackView.sceneItems.size()) {
+            View view = NavigationStackView.sceneItems.get(crumb).view;
+            if (view.getParent() != null)
+                ((ViewGroup) view.getParent()).removeView(view);
             rootView.addView(NavigationStackView.sceneItems.get(crumb).view);
+        }
         setContentView(rootView);
         @SuppressWarnings("unchecked")
         HashSet<String> sharedElements = (HashSet<String>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
@@ -54,10 +59,48 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     }
 
     static class SceneRootViewGroup extends ReactViewGroup implements RootView {
+        private boolean hasAdjustedSize = false;
+        private int viewWidth;
+        private int viewHeight;
+
         private final JSTouchDispatcher mJSTouchDispatcher = new JSTouchDispatcher(this);
 
         public SceneRootViewGroup(Context context) {
             super(context);
+        }
+
+        @Override
+        protected void onSizeChanged(final int w, final int h, int oldw, int oldh) {
+            super.onSizeChanged(w, h, oldw, oldh);
+            viewWidth = w;
+            viewHeight = h;
+            updateFirstChildView();
+        }
+
+        private void updateFirstChildView() {
+            if (getChildCount() > 0) {
+                hasAdjustedSize = false;
+                final int viewTag = getChildAt(0).getId();
+                ReactContext reactContext = getReactContext();
+                reactContext.runOnNativeModulesQueueThread(
+                        new GuardedRunnable(reactContext) {
+                            @Override
+                            public void runGuarded() {
+                                (getReactContext()).getNativeModule(UIManagerModule.class)
+                                        .updateNodeSize(viewTag, viewWidth, viewHeight);
+                            }
+                        });
+            } else {
+                hasAdjustedSize = true;
+            }
+        }
+
+        @Override
+        public void addView(View child, int index, LayoutParams params) {
+            super.addView(child, index, params);
+            if (hasAdjustedSize) {
+                updateFirstChildView();
+            }
         }
 
         @Override
