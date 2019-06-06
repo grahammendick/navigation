@@ -1,3 +1,15 @@
+import React from 'react';
 import { requireNativeComponent, Platform } from 'react-native';
 
-export default Platform.OS === 'ios' ? requireNativeComponent<any>('NVTabBarItem', null) : () => null;
+var TabBarItem = ({title, image, systemItem, children}) => (
+    <NVTabBarItem
+        title={title}
+        image={image}
+        systemItem={systemItem}>
+        {children}            
+    </NVTabBarItem>
+);
+
+var NVTabBarItem = requireNativeComponent<any>('NVTabBarItem', null);
+
+export default Platform.OS === 'ios' ? TabBarItem : () => null;

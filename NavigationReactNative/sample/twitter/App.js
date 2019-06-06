@@ -26,8 +26,8 @@ var notificationsNavigator = new StateNavigator(stateNavigator);
 stateNavigator.navigate('home');
 notificationsNavigator.navigate('notifications');
 
-var Stack = ({stateNavigator}) => (
-  <TabBarItemIOS>
+var Stack = ({title, stateNavigator}) => (
+  <TabBarItemIOS title={title}>
     <NavigationHandler stateNavigator={stateNavigator}>
       <NavigationStack
         title={({getTitle, title}, data) => getTitle ? getTitle(data) : title}
@@ -40,7 +40,7 @@ var Stack = ({stateNavigator}) => (
 
 export default () => (
   <TabBarIOS>
-    <Stack stateNavigator={stateNavigator} />
-    <Stack stateNavigator={notificationsNavigator} />
+    <Stack title="Home" stateNavigator={stateNavigator} />
+    <Stack title="Notifications" stateNavigator={notificationsNavigator} />
   </TabBarIOS>
 );

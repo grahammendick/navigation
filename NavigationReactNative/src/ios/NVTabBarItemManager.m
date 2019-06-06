@@ -10,4 +10,8 @@ RCT_EXPORT_MODULE()
     return [[NVTabBarItemView alloc] init];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(title, NSString)
+RCT_EXPORT_VIEW_PROPERTY(image, UIImage)
+RCT_EXPORT_VIEW_PROPERTY(systemItem, UITabBarSystemItem)
+
 @end
