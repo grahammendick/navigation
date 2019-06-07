@@ -36,15 +36,13 @@ export default () => (
     <TabBarIOS>
       <TabBarItemIOS title="Home">
         <NavigationHandler stateNavigator={stateNavigator}>
-          <NavigationStack
-            title={getSceneTitle}>
+          <NavigationStack title={getSceneTitle}>
           </NavigationStack>
         </NavigationHandler>
       </TabBarItemIOS>
       <TabBarItemIOS title="Notifications">
         <NavigationHandler stateNavigator={notificationsNavigator}>
-          <NavigationStack
-            title={getSceneTitle}>
+          <NavigationStack title={getSceneTitle}>
           </NavigationStack>
         </NavigationHandler>
       </TabBarItemIOS>
