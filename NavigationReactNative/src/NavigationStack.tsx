@@ -54,7 +54,7 @@ class NavigationStack extends React.Component<NavigationStackProps> {
         return {enterAnim, exitAnim, sharedElements, oldSharedElements};
     }
     render() {
-        var {stateNavigator, children} = this.props;
+        var {stateNavigator} = this.props;
         var {url, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
             <NVNavigationStack
