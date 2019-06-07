@@ -25,7 +25,6 @@ stateNavigator.navigate('grid');
 detail.truncateCrumbTrail = (state, data, crumbs) => (
   crumbs.slice(-1)[0].state === detail ? crumbs.slice(0, -1) : crumbs
 );
-detail.getSharedElements = ({color}) => [color];
 
 var openLink = (url) => {
   if (url) {
@@ -39,8 +38,6 @@ Linking.addEventListener('url', ({url}) => openLink(url));
 
 export default () => (
   <NavigationHandler stateNavigator={stateNavigator}>
-    <NavigationStack sharedElements={(state, data) => (
-      state.getSharedElements ? state.getSharedElements(data) : null
-    )} />
+    <NavigationStack sharedElements={({color}) => color && [color]} />
   </NavigationHandler>
 );
