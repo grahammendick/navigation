@@ -38,6 +38,6 @@ Linking.addEventListener('url', ({url}) => openLink(url));
 
 export default () => (
   <NavigationHandler stateNavigator={stateNavigator}>
-    <NavigationStack sharedElements={({color}) => color && [color]} />
+    <NavigationStack sharedElements={(_, {color}) => color && [color]} />
   </NavigationHandler>
 );
