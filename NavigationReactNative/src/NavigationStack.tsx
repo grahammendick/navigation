@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { requireNativeComponent, StyleSheet, View, TabBarIOSItem } from 'react-native';
 import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import Scene from './Scene';
 import SceneBin from './SceneBin';
-type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, children: React.ReactElement<TabBarIOSItem>};
+type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode, children: React.ReactElement<TabBarIOSItem>};
 
 class NavigationStack extends React.Component<NavigationStackProps> {
     private ref: React.RefObject<View>;
@@ -54,7 +54,7 @@ class NavigationStack extends React.Component<NavigationStackProps> {
         return {enterAnim, exitAnim, sharedElements, oldSharedElements};
     }
     render() {
-        var {stateNavigator} = this.props;
+        var {stateNavigator, title, renderScene} = this.props;
         var {url, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
             <NVNavigationStack
@@ -68,7 +68,8 @@ class NavigationStack extends React.Component<NavigationStackProps> {
                     <Scene
                         key={crumb}
                         crumb={crumb}
-                        title={this.props.title} />
+                        title={title}
+                        renderScene={renderScene} />
                 )).concat(
                     <SceneBin key={this.renderMills} />
                 )}
