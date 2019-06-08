@@ -73,8 +73,11 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public void removeViewAt(int index) {
-        if (index < sceneItems.size())
-            sceneDiscards.add(sceneItems.remove(index).view);
+        if (index < sceneItems.size()) {
+            SceneView view = sceneItems.remove(index).view;
+             if (view.getChildCount() > 0)
+                 sceneDiscards.add(view);
+        }
     }
 
     protected void onAfterUpdateTransaction() {
