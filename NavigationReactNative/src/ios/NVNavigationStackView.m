@@ -86,6 +86,11 @@
     _navigationController.view.frame = self.bounds;
 }
 
+- (void)dealloc
+{
+    _navigationController.delegate = nil;
+}
+
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];

@@ -1,4 +1,4 @@
 #import <UIKit/UIKit.h>
 
-@interface NVTabBarView : UIView
+@interface NVTabBarView : UIView <UITabBarControllerDelegate>
 @end

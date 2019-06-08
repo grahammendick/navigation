@@ -44,6 +44,11 @@
     _tabBarController.view.frame = self.bounds;
 }
 
+- (void)dealloc
+{
+    _tabBarController.delegate = nil;
+}
+
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(nonnull UIViewController *)viewController
 {
     NSUInteger tab = [tabBarController.viewControllers indexOfObject:viewController];
