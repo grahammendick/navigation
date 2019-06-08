@@ -2,12 +2,7 @@
     package="com.navigation.reactnative">
 
     <application>
-        <activity
-            android:name=".SceneActivity"
-            android:launchMode="singleTop" />
-        <activity
-            android:name=".AlternateSceneActivity"
-            android:launchMode="singleTop" />
+        <activity android:name=".SceneActivity" />
     </application>
 
 </manifest>
