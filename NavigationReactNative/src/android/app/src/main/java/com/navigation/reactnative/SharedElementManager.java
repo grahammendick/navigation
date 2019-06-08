@@ -23,6 +23,7 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
         view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View v) {
+                view.removeOnAttachStateChangeListener(this);
                 View rootView = view.getRootView();
                 HashSet<View> sharedElements = getSharedElements(rootView);
                 if (sharedElements == null) {
@@ -38,12 +39,6 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
 
             @Override
             public void onViewDetachedFromWindow(View v) {
-                HashSet<View> sharedElements = getSharedElements(view.getRootView());
-                View sharedElement = view.getChildAt(0);
-                if (sharedElements != null && sharedElements.contains(sharedElement)) {
-                    setTransitionName(sharedElement, null);
-                    sharedElements.remove(sharedElement);
-                }
             }
         });
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
