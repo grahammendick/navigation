@@ -64,7 +64,7 @@ class NavigationStack extends React.Component<NavigationStackProps> {
                 style={styles.stack}
                 {...this.getAnimation()}
                 onDidNavigateBack={this.onDidNavigateBack}>
-                {crumbs.concat(nextCrumb).map((_, crumb) => (
+                {nextCrumb && crumbs.concat(nextCrumb).map((_, crumb) => (
                     <Scene
                         key={crumb}
                         crumb={crumb}
