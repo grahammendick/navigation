@@ -38,7 +38,6 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
 
             @Override
             public void onViewDetachedFromWindow(View v) {
-                view.removeOnAttachStateChangeListener(this);
                 HashSet<View> sharedElements = getSharedElements(view.getRootView());
                 View sharedElement = view.getChildAt(0);
                 if (sharedElements != null && sharedElements.contains(sharedElement)) {
