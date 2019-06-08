@@ -29,7 +29,6 @@ var getSceneTitle = (state, data) => {
 
 var notificationsNavigator = new StateNavigator(stateNavigator);
 stateNavigator.navigate('home');
-notificationsNavigator.navigate('notifications');
 
 export default () => (
   Platform.OS === 'ios' ? (
@@ -40,7 +39,10 @@ export default () => (
           </NavigationStack>
         </NavigationHandler>
       </TabBarItemIOS>
-      <TabBarItemIOS title="Notifications">
+      <TabBarItemIOS title="Notifications" onPress={() => {
+        if (!notificationsNavigator.stateContext.state)
+          notificationsNavigator.navigate('notifications');
+      }}>
         <NavigationHandler stateNavigator={notificationsNavigator}>
           <NavigationStack title={getSceneTitle}>
           </NavigationStack>
