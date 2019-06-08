@@ -116,6 +116,7 @@ public class NavigationStackView extends ViewGroup {
                 });
                 currentActivity.finishAfterTransition();
             } else {
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 currentActivity.navigateUpTo(intent);
             }
             currentActivity.overridePendingTransition(enter, exit);
@@ -124,8 +125,7 @@ public class NavigationStackView extends ViewGroup {
             Intent[] intents = new Intent[crumb - currentCrumb];
             for(int i = 0; i < crumb - currentCrumb; i++) {
                 int nextCrumb = currentCrumb + i + 1;
-                Class scene = nextCrumb % 2 == 0 ? SceneActivity.class : AlternateSceneActivity.class;
-                Intent intent = new Intent(getContext(), scene);
+                Intent intent = new Intent(getContext(), SceneActivity.class);
                 intent.putExtra(SceneActivity.CRUMB, nextCrumb);
                 sceneItems.get(nextCrumb).intent = intent;
                 intents[i] = intent;
