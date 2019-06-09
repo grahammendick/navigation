@@ -94,7 +94,7 @@ public class NavigationStackView extends ViewGroup {
             int enter = this.getAnimationResourceId(enterAnim, this.activityCloseEnterAnimationId);
             int exit = this.getAnimationResourceId(exitAnim, this.activityCloseExitAnimationId);
             final HashMap<String, View> oldSharedElementsMap = getSharedElementMap();
-            Boolean shared = currentActivity.getIntent().getSerializableExtra(SceneActivity.SHARED_ELEMENTS) != null;
+            Boolean shared = crumb < 20 && currentActivity.getIntent().getSerializableExtra(SceneActivity.SHARED_ELEMENTS) != null;
             Pair[] oldSharedElements = (shared && currentCrumb - crumb == 1) ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
                 final SharedElementTransitioner transitioner = new SharedElementTransitioner(currentActivity, getSharedElementSet(oldSharedElementNames));
@@ -126,7 +126,7 @@ public class NavigationStackView extends ViewGroup {
             Intent[] intents = new Intent[crumb - currentCrumb];
             for(int i = 0; i < crumb - currentCrumb; i++) {
                 int nextCrumb = currentCrumb + i + 1;
-                Intent intent = new Intent(getContext(), SceneActivity.class);
+                Intent intent = new Intent(getContext(), SceneActivity.getActivity(nextCrumb));
                 intent.putExtra(SceneActivity.CRUMB, nextCrumb);
                 sceneItems.get(nextCrumb).intent = intent;
                 intents[i] = intent;
@@ -181,6 +181,7 @@ public class NavigationStackView extends ViewGroup {
     public void onDetachedFromWindow() {
         if (sceneItems.size() > 1) {
             Intent mainIntent = sceneItems.get(0).intent;
+            mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             ((ThemedReactContext) getContext()).getCurrentActivity().navigateUpTo(mainIntent);
         }
         sceneItems.clear();
