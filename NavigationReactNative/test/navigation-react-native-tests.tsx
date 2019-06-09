@@ -70,5 +70,4 @@ var App = () => (
                 sharedElements={({name}) => name && [name]} />
         </NavigationHandler>
     )
-
-  );
+);
