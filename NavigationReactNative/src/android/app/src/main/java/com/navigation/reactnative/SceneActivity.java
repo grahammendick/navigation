@@ -87,7 +87,7 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
                         @Override
                         public void runGuarded() {
                             (getReactContext()).getNativeModule(UIManagerModule.class)
-                                    .updateNodeSize(viewTag, viewWidth, viewHeight);
+                                .updateNodeSize(viewTag, viewWidth, viewHeight);
                         }
                     });
             } else {
@@ -154,7 +154,7 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     public static Class getActivity(int crumb) {
         try {
             return Class.forName("com.navigation.reactnative.SceneActivity$Crumb" + crumb);
-        } catch (ClassNotFoundException e)  {
+        } catch (ClassNotFoundException e) {
             return SceneActivity.class;
         }
     }
