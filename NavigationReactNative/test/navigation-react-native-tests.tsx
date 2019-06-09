@@ -1,8 +1,8 @@
+import * as React from 'react';
+import { Platform, View, Text, TouchableHighlight } from 'react-native';
 import { StateNavigator, State } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
 import { NavigationStack, RightBarIOS, BarButtonIOS, SharedElementAndroid, TabBarIOS, TabBarItemIOS } from 'navigation-react-native';
-import * as React from 'react';
-import { Platform, View, Text, TouchableHighlight } from 'react-native';
 
 const stateNavigator: StateNavigator = new StateNavigator([
     { key: 'people', title: 'People' },
