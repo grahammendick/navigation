@@ -4,7 +4,7 @@ import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import Scene from './Scene';
 import SceneBin from './SceneBin';
-type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode, children: React.ReactElement<TabBarIOSItem>};
+type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
 
 class NavigationStack extends React.Component<NavigationStackProps> {
     private ref: React.RefObject<View>;

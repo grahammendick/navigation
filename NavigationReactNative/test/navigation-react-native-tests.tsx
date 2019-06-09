@@ -1,6 +1,6 @@
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { addNavigateHandlers, Scene, RightBarIOS, BarButtonIOS, SharedElementAndroid } from 'navigation-react-native';
+import { NavigationStack, RightBarIOS, BarButtonIOS, SharedElementAndroid } from 'navigation-react-native';
 import * as React from 'react';
 import { View, Text, TouchableHighlight } from 'react-native';
 
@@ -51,10 +51,10 @@ person.renderScene = ({ name }) => <Person name={name}/>;
 
 person.getSharedElements = ({name}) => name;
 
-addNavigateHandlers(stateNavigator);
-
-var App = ({crumb}) => (
+var App = () => (
     <NavigationHandler stateNavigator={stateNavigator}>
-      <Scene crumb={crumb} />
+      <NavigationStack
+        unmountStyle={(from) => from ? 'slide_in' : 'slide_out'}
+        sharedElements={({name}) => name && [name]} />
     </NavigationHandler>
   );
