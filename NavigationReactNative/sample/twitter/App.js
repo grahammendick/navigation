@@ -35,8 +35,7 @@ export default () => (
     <TabBarIOS>
       <TabBarItemIOS title="Home">
         <NavigationHandler stateNavigator={stateNavigator}>
-          <NavigationStack title={getSceneTitle}>
-          </NavigationStack>
+          <NavigationStack title={getSceneTitle} />
         </NavigationHandler>
       </TabBarItemIOS>
       <TabBarItemIOS title="Notifications" onPress={() => {
@@ -44,8 +43,7 @@ export default () => (
           notificationsNavigator.navigate('notifications');
       }}>
         <NavigationHandler stateNavigator={notificationsNavigator}>
-          <NavigationStack title={getSceneTitle}>
-          </NavigationStack>
+          <NavigationStack title={getSceneTitle} />
         </NavigationHandler>
       </TabBarItemIOS>
     </TabBarIOS>
