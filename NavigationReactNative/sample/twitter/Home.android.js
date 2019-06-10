@@ -26,7 +26,7 @@ export default ({tweets, follows}) => (
           <Tweets tweets={tweets} />
         </ScrollView>
       </View>
-      <View key={1}>
+      <View key={2}>
         <ScrollView style={styles.view}>
           <Notifications follows={follows} />
         </ScrollView>

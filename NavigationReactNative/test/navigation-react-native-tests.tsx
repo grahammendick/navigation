@@ -1,8 +1,8 @@
-import { StateNavigator } from 'navigation';
-import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { addNavigateHandlers, Scene, RightBarIOS, BarButtonIOS, SharedElementAndroid } from 'navigation-react-native';
 import * as React from 'react';
-import { View, Text, TouchableHighlight } from 'react-native';
+import { Platform, View, Text, TouchableHighlight } from 'react-native';
+import { StateNavigator, State } from 'navigation';
+import { NavigationContext, NavigationHandler } from 'navigation-react';
+import { NavigationStack, RightBarIOS, BarButtonIOS, SharedElementAndroid, TabBarIOS, TabBarItemIOS } from 'navigation-react-native';
 
 const stateNavigator: StateNavigator = new StateNavigator([
     { key: 'people', title: 'People' },
@@ -49,12 +49,25 @@ var { people, person } = stateNavigator.states;
 people.renderScene = () => <People />;
 person.renderScene = ({ name }) => <Person name={name}/>;
 
-person.getSharedElements = ({name}) => name;
-
-addNavigateHandlers(stateNavigator);
-
-var App = ({crumb}) => (
-    <NavigationHandler stateNavigator={stateNavigator}>
-      <Scene crumb={crumb} />
-    </NavigationHandler>
-  );
+person.getTitle = ({name}) => name;
+var getSceneTitle = ({getTitle, title}: State, data) => (
+    getTitle ? getTitle(data) : title
+)
+  
+var App = () => (
+    Platform.OS == 'ios' ? (
+        <TabBarIOS>
+            <TabBarItemIOS title="Home">
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationStack title={getSceneTitle} />
+                </NavigationHandler>
+            </TabBarItemIOS>
+        </TabBarIOS>
+    ) : (
+        <NavigationHandler stateNavigator={stateNavigator}>
+            <NavigationStack
+                unmountStyle={(from) => from ? 'slide_in' : 'slide_out'}
+                sharedElements={({name}) => name && [name]} />
+        </NavigationHandler>
+    )
+);
