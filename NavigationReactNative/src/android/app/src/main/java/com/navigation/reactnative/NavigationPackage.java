@@ -15,14 +15,15 @@ public class NavigationPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList(
-            new SharedElementManager()
+            new NavigationStackManager(),
+            new SceneManager(),
+            new SharedElementManager(),
+            new SceneBinManager()
         );
     }
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        List<NativeModule> modules = new ArrayList<>();
-        modules.add(new NavigationModule(reactContext));
-        return modules;
+        return new ArrayList<>();
     }
 }

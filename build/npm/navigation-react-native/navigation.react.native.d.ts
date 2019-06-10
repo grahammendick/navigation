@@ -3,33 +3,36 @@ import { ImageURISource, StyleProp, ViewStyle } from 'react-native';
 import { StateNavigator, State } from 'navigation';
 
 /**
- * Adds handlers for JavaScript and Native Navigate events
- * @param stateNavigator State Navigator(s) that correspond to Native stack(s)
+ * Defines the Navigation Stack Props contract
  */
-export function addNavigateHandlers(stateNavigator: StateNavigator | StateNavigator[]);
-
-/**
- * Defines the Scene Props contract
- */
-export interface SceneProps {
+export interface NavigationStackProps {
     /**
-     * The location of the scene in the stack
+     * A Scene's title
      */
-    crumb?: number;
+    title?: (state: State, data: any) => string;
     /**
-     * The iOS tab the scene belongs to
+     * A Scene's to and from crumb trail style
      */
-    tab?: number;
+    crumbStyle?: (from: boolean, state: State, data: any, nextState?: State, nextData?: any) => string;
+    /**
+     * A Scene's to and from unmount style
+     */
+    unmountStyle?: (from: boolean, state: State, data: any, nextState?: State, nextData?: any) => string;
+    /**
+     * A scene's shared elements
+     */
+    sharedElements?: (state: State, data: any) => string[];
     /**
      * Renders the scene for the State and data
      */
     renderScene?: (state: State, data: any) => ReactNode;
 }
 
+
 /**
- * Renders the scene for the crumb
+ * Renders a stack of Scenes
  */
-export class Scene extends Component<SceneProps> { }
+export class NavigationStack extends Component<NavigationStackProps> { }
 
 /**
  * Renders buttons in the left UI bar
@@ -71,7 +74,6 @@ export interface BarButtonIOSProps {
  */
 export class BarButtonIOS extends Component<BarButtonIOSProps> { }
 
-
 /**
  * Defines the Shared Element Props contract
  */
@@ -96,3 +98,47 @@ export interface SharedElementAndroidProps {
  * Shares its child UI element between scenes during navigation
  */
 export class SharedElementAndroid extends Component<SharedElementAndroidProps> {}
+
+/**
+ * Defines the Tab Bar Item Props contract
+ */
+export interface TabBarItemIOSProps {
+    /**
+     * The tab title
+     */
+    title?: string;
+
+    /**
+     * The tab image
+     */
+    image?: ImageURISource;
+
+    /**
+     * The tab system item
+     */
+    systemItem?: 'bookmarks' | 'contacts' | 'downloads' | 'favorites'
+        | 'featured' | 'history' | 'more' | 'most-recent' | 'most-viewed'
+        | 'recents' | 'search' | 'top-rated';
+
+    /**
+     * Handles button click events
+     */
+    onPress?: () => void;
+}
+
+/**
+ * Renders a tab in the UI tab bar
+ */
+export class TabBarItemIOS extends Component<TabBarItemIOSProps> {}
+
+/**
+ * Defines the Tab Bar Props contract
+ */
+export interface TabBarIOSProps {
+    children: React.ReactElement<TabBarItemIOS> | React.ReactElement<TabBarItemIOS>[]
+}
+
+/**
+ * Renders the UI tab bar
+ */
+export class TabBarIOS extends Component<TabBarIOSProps> {}

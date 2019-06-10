@@ -23,6 +23,7 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
         view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View v) {
+                view.removeOnAttachStateChangeListener(this);
                 View rootView = view.getRootView();
                 HashSet<View> sharedElements = getSharedElements(rootView);
                 if (sharedElements == null) {
@@ -31,20 +32,13 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
                 }
                 View sharedElement = view.getChildAt(0);
                 if (!sharedElements.contains(sharedElement)) {
-                    setTransitionName(sharedElement, view.getName());
+                    setTransitionName(sharedElement, view.name);
                     sharedElements.add(sharedElement);
                 }
             }
 
             @Override
             public void onViewDetachedFromWindow(View v) {
-                view.removeOnAttachStateChangeListener(this);
-                HashSet<View> sharedElements = getSharedElements(view.getRootView());
-                View sharedElement = view.getChildAt(0);
-                if (sharedElements != null && sharedElements.contains(sharedElement)) {
-                    setTransitionName(sharedElement, null);
-                    sharedElements.remove(sharedElement);
-                }
             }
         });
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -54,7 +48,7 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
                 View rootView = view.getRootView();
                 SharedElementTransitioner transitioner = (SharedElementTransitioner) rootView.getTag(R.id.sharedElementTransitioner);
                 if (transitioner != null)
-                    transitioner.load(view.getName(), view.getEnterTransition());
+                    transitioner.load(view.name, view.enterTransition);
                 return true;
             }
         });
@@ -82,7 +76,7 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
 
     @ReactProp(name = "name")
     public void setName(SharedElementView view, String name) {
-        view.setName(name);
+        view.name = name;
         setTransitionName(view.getChildAt(0), name);
     }
 
@@ -93,12 +87,12 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
 
     @ReactProp(name = "enterTransition")
     public void setEnterTransition(SharedElementView view, String enterTransition) {
-        view.setEnterTransition(enterTransition);
+        view.enterTransition = enterTransition;
     }
 
     @ReactProp(name = "exitTransition")
     public void setExitTransition(SharedElementView view, String exitTransition) {
-        view.setExitTransition(exitTransition);
+        view.exitTransition = exitTransition;
     }
     
     @SuppressWarnings("unchecked")
