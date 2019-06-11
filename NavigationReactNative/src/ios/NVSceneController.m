@@ -27,15 +27,15 @@
     NVSearchBarView *searchBar = (NVSearchBarView *) [self.view viewWithTag:SEARCH_BAR];
     if (!!searchBar)
     {
-        self.definesPresentationContext = YES;
         [self.navigationItem setSearchController:searchBar.searchController];
         [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
+        self.definesPresentationContext = true;
     }
 }
 
 - (void)viewDidLayoutSubviews
 {
-    [super viewDidLayoutSubviews];    
+    [super viewDidLayoutSubviews];
     if (self.boundsDidChangeBlock && !CGRectEqualToRect(_lastViewFrame, self.view.frame)) {
         self.boundsDidChangeBlock(self);
         _lastViewFrame = self.view.frame;
