@@ -75,17 +75,12 @@ var { people, person } = stateNavigator.states;
 people.renderScene = () => <People />;
 person.renderScene = ({ name }) => <Person name={name}/>;
 
-person.getTitle = ({name}) => name;
-var getSceneTitle = ({getTitle, title}: State, data) => (
-    getTitle ? getTitle(data) : title
-)
-  
 var App = () => (
     Platform.OS == 'ios' ? (
         <TabBarIOS>
             <TabBarItemIOS title="Home">
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationStack title={getSceneTitle} />
+                    <NavigationStack title={({title}, {name}) => name || title} />
                 </NavigationHandler>
             </TabBarItemIOS>
         </TabBarIOS>

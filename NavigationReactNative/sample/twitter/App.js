@@ -21,12 +21,6 @@ notifications.renderScene = () => <Notifications follows={getFollows()} />;
 tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)}  />;
 timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)}  />;
 
-timeline.getTitle = ({sceneTitle}) => sceneTitle;
-var getSceneTitle = (state, data) => {
-  var {getTitle, title} = state;
-  return getTitle ? getTitle(data) : title;
-}
-
 var notificationsNavigator = new StateNavigator(stateNavigator);
 stateNavigator.navigate('home');
 
@@ -35,7 +29,7 @@ export default () => (
     <TabBarIOS>
       <TabBarItemIOS title="Home">
         <NavigationHandler stateNavigator={stateNavigator}>
-          <NavigationStack title={getSceneTitle} />
+          <NavigationStack title={({title}, {sceneTitle}) => sceneTitle || title} />
         </NavigationHandler>
       </TabBarItemIOS>
       <TabBarItemIOS title="Notifications" onPress={() => {
@@ -43,7 +37,7 @@ export default () => (
           notificationsNavigator.navigate('notifications');
       }}>
         <NavigationHandler stateNavigator={notificationsNavigator}>
-          <NavigationStack title={getSceneTitle} />
+          <NavigationStack title={({title}, {sceneTitle}) => sceneTitle || title} />
         </NavigationHandler>
       </TabBarItemIOS>
     </TabBarIOS>
