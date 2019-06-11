@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
+import {StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {SharedElementAndroid, SearchBarIOS} from 'navigation-react-native';
 
@@ -10,6 +10,7 @@ const Colors = ({colors, children}) => (
         style={styles.scene}
         contentInsetAdjustmentBehavior="automatic">
         <View style={styles.colors}>
+          {children}
           {colors.map(color => (
             <TouchableHighlight
               key={color}
@@ -23,7 +24,6 @@ const Colors = ({colors, children}) => (
               </SharedElementAndroid>
             </TouchableHighlight>
           ))}
-          {children}
         </View>
       </ScrollView>
     )}
@@ -45,10 +45,9 @@ export default class Grid extends React.Component {
       <Colors colors={colors}>
         <SearchBarIOS
           text={text}
+          obscureBackground={false}
           onChangeText={text => this.setState({text})}>
-          <View>
-            <Colors colors={matchedColors} />
-          </View>
+          <Colors colors={matchedColors} />
         </SearchBarIOS>
       </Colors>
     );
