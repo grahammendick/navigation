@@ -45,6 +45,7 @@ export default class Grid extends React.Component {
       <Colors colors={colors}>
         <SearchBarIOS
           text={text}
+          autoCapitalize="none"
           obscureBackground={false}
           onChangeText={text => this.setState({text})}>
           <Colors colors={matchedColors} />
