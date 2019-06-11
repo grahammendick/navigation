@@ -12,7 +12,6 @@
     __weak RCTBridge *_bridge;
     RCTTouchHandler *_touchHandler;
     UIView *_reactSubview;
-    __weak UINavigationItem *navigationItem;
     NSInteger _nativeEventCount;
 }
 
@@ -22,7 +21,6 @@
         _bridge = bridge;
         self.tag = SEARCH_BAR;
         NVSearchResultsController *viewController = [[NVSearchResultsController alloc] init];
-        viewController.view = [UIView new];
         self.searchController = [[UISearchController alloc] initWithSearchResultsController:viewController];
         self.searchController.searchResultsUpdater = self;
         _touchHandler = [[RCTTouchHandler alloc] initWithBridge:bridge];
@@ -72,7 +70,7 @@
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
-    [self.searchController.searchResultsController.view insertSubview:subview atIndex:0];
+    self.searchController.searchResultsController.view = subview;
     [_touchHandler attachToView:subview];
     _reactSubview = subview;
 }
@@ -92,7 +90,7 @@
 {
     [super willMoveToSuperview:newSuperview];
     if (!newSuperview) {
-        [navigationItem setSearchController:nil];
+        [self.reactViewController.navigationItem setSearchController:nil];
         [self.searchController.searchResultsController dismissViewControllerAnimated:NO completion:nil];
     }
 }
