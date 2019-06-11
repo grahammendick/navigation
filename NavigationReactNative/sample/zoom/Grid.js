@@ -1,12 +1,14 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {SharedElementAndroid} from 'navigation-react-native';
+import {SharedElementAndroid, SearchBarIOS} from 'navigation-react-native';
 
-export default ({colors}) => (
+const Colors = ({colors, children}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
+      <ScrollView
+        style={styles.scene}
+        contentInsetAdjustmentBehavior="automatic">
         <View style={styles.colors}>
           {colors.map(color => (
             <TouchableHighlight
@@ -21,13 +23,42 @@ export default ({colors}) => (
               </SharedElementAndroid>
             </TouchableHighlight>
           ))}
+          {children}
         </View>
       </ScrollView>
     )}
   </NavigationContext.Consumer>
 );
 
+export default class Grid extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {text: ''};
+  }
+  render() {
+    const {colors} = this.props;
+    const {text} = this.state;
+    const matchedColors = colors.filter(color => (
+      color.indexOf(text.toLowerCase()) !== -1
+    ));
+    return (
+      <Colors colors={colors}>
+        <SearchBarIOS
+          text={text}
+          onChangeText={text => this.setState({text})}>
+          <View>
+            <Colors colors={matchedColors} />
+          </View>
+        </SearchBarIOS>
+      </Colors>
+    );
+  }
+}
+
 const styles = StyleSheet.create({
+  scene: {
+    backgroundColor: '#fff',
+  },
   colors: {
     flexDirection: 'row',
     flexWrap: 'wrap',
