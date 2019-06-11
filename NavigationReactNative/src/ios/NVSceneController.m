@@ -3,8 +3,8 @@
 
 @implementation NVSceneController
 {
-    CGRect _lastViewFrame;
     UIView *_view;
+    CGRect _lastViewFrame;
 }
 
 - (id)initWithScene:(UIView *)view
