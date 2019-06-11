@@ -35,8 +35,7 @@
 
 - (void)viewDidLayoutSubviews
 {
-    [super viewDidLayoutSubviews];
-    
+    [super viewDidLayoutSubviews];    
     if (self.boundsDidChangeBlock && !CGRectEqualToRect(_lastViewFrame, self.view.frame)) {
         self.boundsDidChangeBlock(self);
         _lastViewFrame = self.view.frame;
