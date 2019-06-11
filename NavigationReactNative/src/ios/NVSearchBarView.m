@@ -60,6 +60,11 @@
     }
 }
 
+- (void)didSetProps:(NSArray<NSString *> *)changedProps
+{
+    [self.reactViewController.navigationItem setHidesSearchBarWhenScrolling:self.hideWhenScrolling];
+}
+
 - (void)notifyForBoundsChange:(CGRect)newBounds
 {
     if (_reactSubview) {
@@ -84,6 +89,12 @@
 
 - (void)didUpdateReactSubviews
 {
+}
+
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    [self.reactViewController.navigationItem setSearchController:_searchController];
 }
 
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview
