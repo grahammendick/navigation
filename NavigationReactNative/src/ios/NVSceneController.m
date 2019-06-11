@@ -25,11 +25,11 @@
 {
     [super viewDidLoad];
     NVSearchBarView *searchBar = (NVSearchBarView *) [self.view viewWithTag:SEARCH_BAR];
+    self.definesPresentationContext = true;
     if (!!searchBar)
     {
         [self.navigationItem setSearchController:searchBar.searchController];
         [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
-        self.definesPresentationContext = true;
     }
 }
 
