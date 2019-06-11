@@ -10,7 +10,6 @@ const Colors = ({colors, children}) => (
         style={styles.scene}
         contentInsetAdjustmentBehavior="automatic">
         <View style={styles.colors}>
-          {children}
           {colors.map(color => (
             <TouchableHighlight
               key={color}
@@ -24,6 +23,7 @@ const Colors = ({colors, children}) => (
               </SharedElementAndroid>
             </TouchableHighlight>
           ))}
+          {children}
         </View>
       </ScrollView>
     )}
