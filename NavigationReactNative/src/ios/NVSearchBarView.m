@@ -62,7 +62,9 @@
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
-    [self.reactViewController.navigationItem setHidesSearchBarWhenScrolling:self.hideWhenScrolling];
+    if (@available(iOS 11.0, *)) {
+        [self.reactViewController.navigationItem setHidesSearchBarWhenScrolling:self.hideWhenScrolling];
+    }
 }
 
 - (void)notifyForBoundsChange:(CGRect)newBounds
@@ -94,15 +96,19 @@
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    [self.reactViewController.navigationItem setSearchController:_searchController];
+    if (@available(iOS 11.0, *)) {
+        [self.reactViewController.navigationItem setSearchController:_searchController];
+    }
 }
 
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview
 {
     [super willMoveToSuperview:newSuperview];
     if (!newSuperview) {
-        [self.reactViewController.navigationItem setSearchController:nil];
-        [self.searchController.searchResultsController dismissViewControllerAnimated:NO completion:nil];
+        if (@available(iOS 11.0, *)) {
+            [self.reactViewController.navigationItem setSearchController:nil];
+            [self.searchController.searchResultsController dismissViewControllerAnimated:NO completion:nil];
+        }
     }
 }
 

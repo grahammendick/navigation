@@ -28,8 +28,10 @@
     self.definesPresentationContext = true;
     if (!!searchBar)
     {
-        [self.navigationItem setSearchController:searchBar.searchController];
-        [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
+        if (@available(iOS 11.0, *)) {
+            [self.navigationItem setSearchController:searchBar.searchController];
+            [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
+        }
     }
 }
 
