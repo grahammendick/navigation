@@ -33,25 +33,25 @@ class People extends React.Component<any, any> {
     constructor(props) {
         super(props);
         this.state = {text: ''};
-      }
-      render() {
+    }
+    render() {
         var people = ['Bob', 'Brenda'];
         var {text} = this.state;
         const matchedPeople = people.filter(person => (
             person.indexOf(text.toLowerCase()) !== -1
         ));
         return (
-          <List people={people}>
-            <SearchBarIOS
-              text={text}
-              autoCapitalize="none"
-              obscureBackground={false}
-              onChangeText={text => this.setState({text})}>
-              <List people={matchedPeople} />
-            </SearchBarIOS>
-          </List>
+            <List people={people}>
+                <SearchBarIOS
+                    text={text}
+                    autoCapitalize="none"
+                    obscureBackground={false}
+                    onChangeText={text => this.setState({text})}>
+                    <List people={matchedPeople} />
+                </SearchBarIOS>
+            </List>
         );
-      }    
+    }    
 }
 
 var Person = ({ name }) => (
