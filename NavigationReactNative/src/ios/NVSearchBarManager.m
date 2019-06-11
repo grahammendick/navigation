@@ -2,23 +2,6 @@
 #import "NVSearchBarView.h"
 
 #import <UIKit/UIKit.h>
-#import <React/RCTShadowView.h>
-
-@interface NVSearchBarShadowView : RCTShadowView
-
-@end
-
-@implementation NVSearchBarShadowView
-
-- (void)insertReactSubview:(id<RCTComponent>)subview atIndex:(NSInteger)atIndex
-{
-    [super insertReactSubview:subview atIndex:atIndex];
-    if ([subview isKindOfClass:[RCTShadowView class]]) {
-        ((RCTShadowView *)subview).size = RCTScreenSize();
-    }
-}
-
-@end
 
 @implementation NVSearchBarManager
 
@@ -37,10 +20,5 @@ RCT_EXPORT_VIEW_PROPERTY(placeholder, NSString)
 RCT_EXPORT_VIEW_PROPERTY(text, NSString)
 RCT_EXPORT_VIEW_PROPERTY(mostRecentEventCount, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(onChangeText, RCTBubblingEventBlock)
-
-- (RCTShadowView *)shadowView
-{
-    return [NVSearchBarShadowView new];
-}
 
 @end
