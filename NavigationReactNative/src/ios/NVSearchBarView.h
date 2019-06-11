@@ -4,9 +4,12 @@
 
 @interface NVSearchBarView : UIView <UISearchResultsUpdating>
 
+@property UISearchController *searchController;
 @property (nonatomic, assign) BOOL hideWhenScrolling;
 @property (nonatomic, assign) NSInteger mostRecentEventCount;
 @property (nonatomic, copy) RCTBubblingEventBlock onChangeText;
+
+#define SEARCH_BAR ((int) 53)
 
 -(id)initWithBridge: (RCTBridge *)bridge;
 

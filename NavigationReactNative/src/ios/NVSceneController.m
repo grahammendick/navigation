@@ -1,16 +1,36 @@
 #import "NVSceneController.h"
+#import "NVSearchBarView.h"
 
 @implementation NVSceneController
 {
     CGRect _lastViewFrame;
+    UIView *_view;
 }
 
-- (id)init
+- (id)initWithScene:(UIView *)view
 {
-    if (!(self = [super init])) {
-        return nil;
+    if (self = [super init]) {
+        _view = view;
     }
     return self;
+}
+
+- (void)loadView
+{
+    [super loadView];
+    self.view = _view;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    NVSearchBarView *searchBar = (NVSearchBarView *) [self.view viewWithTag:SEARCH_BAR];
+    if (!!searchBar)
+    {
+        self.definesPresentationContext = YES;
+        [self.navigationItem setSearchController:searchBar.searchController];
+        [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
+    }
 }
 
 - (void)viewDidLayoutSubviews

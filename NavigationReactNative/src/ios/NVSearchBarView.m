@@ -10,7 +10,6 @@
 @implementation NVSearchBarView
 {
     __weak RCTBridge *_bridge;
-    UISearchController *_searchController;
     RCTTouchHandler *_touchHandler;
     UIView *_reactSubview;
     __weak UINavigationItem *navigationItem;
@@ -21,9 +20,11 @@
 {
     if (self = [super initWithFrame:CGRectZero]) {
         _bridge = bridge;
+        self.tag = SEARCH_BAR;
         NVSearchResultsController *viewController = [[NVSearchResultsController alloc] init];
         viewController.view = [UIView new];
-        _searchController = [[UISearchController alloc] initWithSearchResultsController:viewController];
+        self.searchController = [[UISearchController alloc] initWithSearchResultsController:viewController];
+        self.searchController.searchResultsUpdater = self;
         _touchHandler = [[RCTTouchHandler alloc] initWithBridge:bridge];
         __weak typeof(self) weakSelf = self;
         viewController.boundsDidChangeBlock = ^(CGRect newBounds) {
@@ -35,29 +36,29 @@
 
 - (void)setObscureBackground:(BOOL)obscureBackground
 {
-    [_searchController setObscuresBackgroundDuringPresentation:obscureBackground];
+    [self.searchController setObscuresBackgroundDuringPresentation:obscureBackground];
 }
 
 - (void)setHideNavigationBar:(BOOL)hideNavigationBar
 {
-    [_searchController setHidesNavigationBarDuringPresentation:hideNavigationBar];
+    [self.searchController setHidesNavigationBarDuringPresentation:hideNavigationBar];
 }
 
 - (void)setAutoCapitalize:(UITextAutocapitalizationType)autoCapitalize
 {
-    [_searchController.searchBar setAutocapitalizationType:autoCapitalize];
+    [self.searchController.searchBar setAutocapitalizationType:autoCapitalize];
 }
 
 - (void)setPlaceholder:(NSString *)placeholder
 {
-    [_searchController.searchBar setPlaceholder:placeholder];
+    [self.searchController.searchBar setPlaceholder:placeholder];
 }
 
 - (void)setText:(NSString *)text
 {
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    if (eventLag == 0 && [_searchController.searchBar text] != text) {
-        [_searchController.searchBar setText:text];
+    if (eventLag == 0 && [self.searchController.searchBar text] != text) {
+        [self.searchController.searchBar setText:text];
     }
 }
 
@@ -71,7 +72,7 @@
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
-    [_searchController.searchResultsController.view insertSubview:subview atIndex:0];
+    [self.searchController.searchResultsController.view insertSubview:subview atIndex:0];
     [_touchHandler attachToView:subview];
     _reactSubview = subview;
 }
@@ -87,24 +88,12 @@
 {
 }
 
-- (void)didMoveToWindow
-{
-    [super didMoveToWindow];
-    navigationItem = self.reactViewController.navigationItem;
-    if ([navigationItem searchController] == _searchController)
-        return;
-    self.reactViewController.definesPresentationContext = YES;
-    _searchController.searchResultsUpdater = self;
-    [navigationItem setSearchController:_searchController];
-    [navigationItem setHidesSearchBarWhenScrolling:self.hideWhenScrolling];
-}
-
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview
 {
     [super willMoveToSuperview:newSuperview];
     if (!newSuperview) {
         [navigationItem setSearchController:nil];
-        [_searchController.searchResultsController dismissViewControllerAnimated:NO completion:nil];
+        [self.searchController.searchResultsController dismissViewControllerAnimated:NO completion:nil];
     }
 }
 
