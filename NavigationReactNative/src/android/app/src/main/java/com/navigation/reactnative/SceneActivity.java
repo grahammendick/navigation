@@ -52,10 +52,12 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         int crumb = intent.getIntExtra(CRUMB, 0);
         if (rootView.getChildCount() > 0)
             rootView.removeViewAt(0);
-        View view = NavigationStackView.sceneItems.get(crumb).view;
-        if (view.getParent() != null)
-            ((ViewGroup) view.getParent()).removeView(view);
-        rootView.addView(view);
+        if (crumb < NavigationStackView.sceneItems.size()) {
+            View view = NavigationStackView.sceneItems.get(crumb).view;
+            if (view.getParent() != null)
+                ((ViewGroup) view.getParent()).removeView(view);
+            rootView.addView(view);
+        }
     }
 
     static class SceneRootViewGroup extends ReactViewGroup implements RootView {
