@@ -38,7 +38,7 @@ var NVSearchBar = requireNativeComponent<any>('NVSearchBar', null);
 var styles = StyleSheet.create({
     searchBar: {
         position: 'absolute',
-        zIndex: -53,
+        zIndex: -58,
     },
 });
 

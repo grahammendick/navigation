@@ -9,7 +9,7 @@
 @property (nonatomic, assign) NSInteger mostRecentEventCount;
 @property (nonatomic, copy) RCTBubblingEventBlock onChangeText;
 
-#define SEARCH_BAR ((int) 53)
+#define SEARCH_BAR ((int) 58)
 
 -(id)initWithBridge: (RCTBridge *)bridge;
 
