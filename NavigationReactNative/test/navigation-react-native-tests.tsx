@@ -2,18 +2,18 @@ import * as React from 'react';
 import { Platform, View, Text, TouchableHighlight } from 'react-native';
 import { StateNavigator, State } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { NavigationStack, RightBarIOS, BarButtonIOS, SharedElementAndroid, TabBarIOS, TabBarItemIOS } from 'navigation-react-native';
+import { NavigationStack, RightBarIOS, BarButtonIOS, SearchBarIOS, SharedElementAndroid, TabBarIOS, TabBarItemIOS } from 'navigation-react-native';
 
 const stateNavigator: StateNavigator = new StateNavigator([
     { key: 'people', title: 'People' },
     { key: 'person', title: 'Person', trackCrumbTrail: true }
 ]);
 
-var People = () => (
+var List = ({people, children}: any) => (
     <NavigationContext.Consumer>
         {({stateNavigator}) => (
             <View>
-                {['Bob', 'Brenda'].map(name => (
+                {people.map(name => (
                     <TouchableHighlight
                         onPress={() => {
                             stateNavigator.navigate('person', {name});
@@ -23,10 +23,36 @@ var People = () => (
                         </SharedElementAndroid>
                     </TouchableHighlight>
                 ))}
+                {children}
             </View>
         )}
     </NavigationContext.Consumer>
 );
+
+class People extends React.Component<any, any> {
+    constructor(props) {
+        super(props);
+        this.state = {text: ''};
+    }
+    render() {
+        var people = ['Bob', 'Brenda'];
+        var {text} = this.state;
+        const matchedPeople = people.filter(person => (
+            person.indexOf(text.toLowerCase()) !== -1
+        ));
+        return (
+            <List people={people}>
+                <SearchBarIOS
+                    text={text}
+                    autoCapitalize="none"
+                    obscureBackground={false}
+                    onChangeText={text => this.setState({text})}>
+                    <List people={matchedPeople} />
+                </SearchBarIOS>
+            </List>
+        );
+    }    
+}
 
 var Person = ({ name }) => (
     <NavigationContext.Consumer>
@@ -49,17 +75,12 @@ var { people, person } = stateNavigator.states;
 people.renderScene = () => <People />;
 person.renderScene = ({ name }) => <Person name={name}/>;
 
-person.getTitle = ({name}) => name;
-var getSceneTitle = ({getTitle, title}: State, data) => (
-    getTitle ? getTitle(data) : title
-)
-  
 var App = () => (
     Platform.OS == 'ios' ? (
         <TabBarIOS>
             <TabBarItemIOS title="Home">
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationStack title={getSceneTitle} />
+                    <NavigationStack title={({title}, {name}) => name || title} />
                 </NavigationHandler>
             </TabBarItemIOS>
         </TabBarIOS>

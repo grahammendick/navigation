@@ -53,15 +53,14 @@
         NSMutableArray *controllers = [[NSMutableArray alloc] init];
         for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
             NSInteger nextCrumb = currentCrumb + i + 1;
-            NVSceneController *controller = [[NVSceneController alloc] init];
             NVSceneView *scene = (NVSceneView *) [_scenes objectAtIndex:nextCrumb];
             if (!![scene superview])
                 return;
+            NVSceneController *controller = [[NVSceneController alloc] initWithScene:scene];
             __weak typeof(self) weakSelf = self;
             controller.boundsDidChangeBlock = ^(NVSceneController *sceneController) {
                 [weakSelf notifyForBoundsChange:sceneController];
             };
-            controller.view = scene;
             controller.navigationItem.title = scene.title;
             [controllers addObject:controller];
         }

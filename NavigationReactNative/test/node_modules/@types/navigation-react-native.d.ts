@@ -75,6 +75,45 @@ export interface BarButtonIOSProps {
 export class BarButtonIOS extends Component<BarButtonIOSProps> { }
 
 /**
+ * Defines the Search Bar Props contract
+ */
+export interface SearchBarIOSProps {
+    /**
+     * Indicates whether to to obscure the underlying content
+     */
+    obscureBackground?: boolean;
+    /**
+     * Indicates whether to hide the navigaiton bar
+     */
+    hideNavigationBar?: boolean;
+    /**
+     * Indicates whether to hide the search bar when scrolling
+     */
+    hideWhenScrolling?: boolean;
+    /**
+     * The auto-capitalization behavior
+     */
+    autoCapitalize?: 'none' | 'words' | 'sentences' | 'allCharacters';
+    /**
+     * Text displayed when search field is empty
+     */
+    placeholder?: string;
+    /**
+     * The search field text
+     */
+    text?: string;
+    /**
+     * Handles text change events
+     */
+    onChangeText?: (text: string) => void;
+}
+
+/**
+ * Renders a serach bar in the UI navigation bar
+ */
+export class SearchBarIOS extends Component<SearchBarIOSProps> { }
+
+/**
  * Defines the Shared Element Props contract
  */
 export interface SharedElementAndroidProps {
