@@ -68,8 +68,7 @@
                 To get this animation to play when the mail scene starts mounting, we pass a function to the <code>unmountStyle prop</code> of the <code>NavigationStack</code> component in <code>App.js</code>. When we navigate to the 'mail' <code>State</code>, the Navigation router calls this function and we return the name of our animation resource file.
             </p>
             <pre><code class="language-jsx">&lt;NavigationHandler stateNavigator={stateNavigator}>
-  &lt;NavigationStack
-    unmountStyle={from => from ? 'slide_in' : null} />
+  &lt;NavigationStack unmountStyle={from => from ? 'slide_in' : null} />
 &lt;/NavigationHandler>
 </code></pre>
             <h2>Popping</h2>
@@ -87,8 +86,7 @@
                 When we navigate back from the 'mail' <code>State</code>, the Navigation router calls the <code>unmountStyle</code> function again. This time the <code>from</code> parameter it passes in is false. We return our resource file name and Android slides the scene out as it unmounts.
             </p>
             <pre><code class="language-jsx">&lt;NavigationHandler stateNavigator={stateNavigator}>
-  &lt;NavigationStack
-    unmountStyle={from => from ? 'slide_in' : 'slide_out'} />
+  &lt;NavigationStack unmountStyle={from => from ? 'slide_in' : 'slide_out'} />
 &lt;/NavigationHandler>
 </code></pre>
             <h2>Animating Crumbs</h2>
