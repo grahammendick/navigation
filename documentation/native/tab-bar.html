@@ -62,16 +62,16 @@
             <pre><code class="language-jsx">import {TabBarIOS} from 'navigation-react-native';
 
 &lt;TabBarIOS>
-    &lt;TabBarItemIOS title="Inbox" image={require('./inbox.png')}>
-      &lt;NavigationHandler stateNavigator={stateNavigator}>
-        &lt;NavigationStack />
-      &lt;/NavigationHandler>
-    &lt;/TabBarItemIOS>
-    &lt;TabBarItemIOS systemItem="contacts">
-      &lt;NavigationHandler stateNavigator={contactsNavigator}>
-        &lt;NavigationStack />
-      &lt;/NavigationHandler>
-    &lt;/TabBarItemIOS>
+  &lt;TabBarItemIOS title="Inbox" image={require('./inbox.png')}>
+    &lt;NavigationHandler stateNavigator={stateNavigator}>
+      &lt;NavigationStack />
+    &lt;/NavigationHandler>
+  &lt;/TabBarItemIOS>
+  &lt;TabBarItemIOS systemItem="contacts">
+    &lt;NavigationHandler stateNavigator={contactsNavigator}>
+      &lt;NavigationStack />
+    &lt;/NavigationHandler>
+  &lt;/TabBarItemIOS>
 &lt;/TabBarIOS>
 </code></pre>
             <pre><code class="language-jsx">&lt;TabBarItemIOS title="Contact" onPress={() => {
