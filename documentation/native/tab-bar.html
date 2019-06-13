@@ -55,8 +55,31 @@
             <h1>Tab Bar (iOS)</h1>
             <p>
             </p>
-            <pre><code class="language-jsx">
+            <pre><code class="language-js">var contactsNavigator = new StateNavigator([
+  {key: 'contacts', title: 'Contacts'},
+  {key: 'contact', title: 'Contact', trackCrumbTrail: true}
+]);</code></pre>
+            <pre><code class="language-jsx">import {TabBarIOS} from 'navigation-react-native';
+
+&lt;TabBarIOS>
+    &lt;TabBarItemIOS title="Inbox">
+    &lt;NavigationHandler stateNavigator={stateNavigator}>
+        &lt;NavigationStack />
+    &lt;/NavigationHandler>
+    &lt;/TabBarItemIOS>
+    &lt;TabBarItemIOS title="Contacts">
+    &lt;NavigationHandler stateNavigator={contactsNavigator}>
+        &lt;NavigationStack />
+    &lt;/NavigationHandler>
+    &lt;/TabBarItemIOS>
+&lt;/TabBarIOS>
 </code></pre>
+            <pre><code class="language-jsx">&lt;TabBarItemIOS title="Contact" onPress={() => {
+  if (!contactsNavigator.stateContext.state) {
+    contactsNavigator.navigate('contacts');
+  }
+}}>
+    </code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
