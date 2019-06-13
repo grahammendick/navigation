@@ -74,7 +74,7 @@
   &lt;/TabBarItemIOS>
 &lt;/TabBarIOS>
 </code></pre>
-            <pre><code class="language-jsx">&lt;TabBarItemIOS title="Contact" onPress={() => {
+            <pre><code class="language-jsx">&lt;TabBarItemIOS systemItem="contacts" onPress={() => {
   if (!contactsNavigator.stateContext.state) {
     contactsNavigator.navigate('contacts');
   }
