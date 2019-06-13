@@ -67,10 +67,11 @@
 </code></pre>
             <h2>Search Bar</h2>
             <p>
-                The <code>SearchBarIOS</code> component displays a search bar below the title in the navigation bar. It calls the <code>onChangeText</code> prop whenever the search text changes. Any search results you render into the component’s children are displayed in a new native screen that sits over the top of the current one. We allow the user to search their inbox in our example application by adding a <code>SearchBarIOS</code> component to the 'mail' scene.
+                The <code>SearchBarIOS</code> component displays a search bar below the title in the navigation bar. It calls the <code>onChangeText</code> prop whenever the search text changes. Any search results you render into the component’s children are displayed in a new native screen that sits over the top of the current one. We allow the user to search their inbox in our example application by adding a <code>SearchBarIOS</code> component to the 'mail' scene. Setting <code>obscureBackground</code> to 'false' keeps the inbox interactive when the search text is focused but empty.
             </p>
             <pre><code class="language-jsx">&lt;SearchBarIOS
   text={text}
+  obscureBackground={false}
   onChangeText={text => this.setState({text})}>
   &lt;ScrollView>
     {mails
