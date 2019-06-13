@@ -65,10 +65,11 @@
     android:toXDelta="0" />
 &lt;/set></code></pre>
             <p>
-                To get this animation to play when the mail scene starts mounting, we attach a <code>getUnmountStyle</code> function to the corresponding 'mail' <code>State</code>. When we navigate to the 'mail' <code>State</code>, the Navigation router calls this function and we return the name of our animation resource file.
+                To get this animation to play when the mail scene starts mounting, we pass a function to the <code>unmountStyle prop</code> of the <code>NavigationStack</code> component in <code>App.js</code>. When we navigate to the 'mail' <code>State</code>, the Navigation router calls this function and we return the name of our animation resource file.
             </p>
-            <pre><code class="language-js">var {mail} = stateNavigator.scenes;
-mail.getUnmountStyle = from => from ? 'slide_in' : null;
+            <pre><code class="language-jsx">&lt;NavigationHandler stateNavigator={stateNavigator}>
+  &lt;NavigationStack unmountStyle={from => from ? 'slide_in' : null} />
+&lt;/NavigationHandler>                
 </code></pre>
             <h2>Popping</h2>
             <p>
