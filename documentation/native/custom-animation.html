@@ -94,10 +94,13 @@
                 When you push a new scene onto the stack, you can animate the outgoing scene as well as the incoming one. We want to fade out the 'inbox' scene when the user opens an email and fade it back in when they return to their inbox. We create two animation resource files. One called 'fade_out' that changes the scene's alpha value from 1 to 0, and another called 'fade_in' that changes it back again.
             </p>
             <p>
-                The Navigation router calls the <code>getCrumbStyle</code> function attached to the 'inbox' <code>State</code> to find out how to animate the 'inbox' scene. When the user opens an email the Navigation router calls the function passing in 'false' and, when the user returns to their inbox, it calls the function again with 'true'.
+                The Navigation router calls the function assigned to the <code>crumbStyle prop</code> to find out how to animate the 'inbox' scene. When the user opens an email the Navigation router calls the function passing in 'false' and, when the user returns to their inbox, it calls the function again with 'true'.
             </p>
-            <pre><code class="language-js">var {inbox} = stateNavigator.scenes;
-inbox.getCrumbStyle = from => from ? 'fade_in' : 'fade_out';
+            <pre><code class="language-jsx">&lt;NavigationHandler stateNavigator={stateNavigator}>
+  &lt;NavigationStack
+    unmountStyle={from => from ? 'slide_in' : 'slide_out'}
+    crumbStyle={from => from ? 'fade_in' : 'fade_out'} />
+&lt;/NavigationHandler>
 </code></pre>
         </div>
     </div>
