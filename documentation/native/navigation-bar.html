@@ -68,7 +68,15 @@
             <h2>Search Bar</h2>
             <p>
             </p>
-            <pre><code class="language-jsx">
+            <pre><code class="language-jsx">&lt;SearchBarIOS
+  text={text}
+  onChangeText={text => this.setState({text})}>
+  &lt;View>
+    {mails
+      .filter({message} => message.indexOf(text) !== -1)
+      .map({title} => &lt;Text>{title}&lt;/Text>)}
+  &lt;/View>
+&lt;/SearchBarIOS>
 </code></pre>
         </div>
     </div>
