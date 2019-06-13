@@ -75,8 +75,8 @@
   onChangeText={text => this.setState({text})}>
   &lt;ScrollView>
     {mails
-      .filter({message} => message.indexOf(text) !== -1)
-      .map({title} => &lt;Text>{title}&lt;/Text>)}
+      .filter(({message}) => message.indexOf(text) !== -1)
+      .map(({title}) => &lt;Text>{title}&lt;/Text>)}
   &lt;/ScrollView>
 &lt;/SearchBarIOS>
 </code></pre>
