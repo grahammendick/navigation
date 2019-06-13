@@ -54,12 +54,8 @@
         <div id="article">
             <h1>Setup</h1>
             <p>
-                The Navigation router for React Native uses the underlying native APIs to provide faithful navigation on Android and iOS. Because it contains native code you first have to eject from <code>create-react-native-app</code> or create your application using <code>react-native init</code>.
+                The Navigation router for React Native uses the underlying native APIs to provide faithful navigation on Android and iOS. Because it contains native code you have to eject from Expo or create your application using <code>react-native init</code>.
             </p>
-            <div class="Note">
-                <h2>Note</h2>
-                If you want a tabbed interface in iOS then follow the <a href="tabs-setup.html">Tabs Setup instructions</a> instead
-            </div>
             <p>
                 Install the three navigation packages from npm.
             </p>
@@ -68,86 +64,22 @@
                 Link the <code>navigation-react-native</code> package.
             </p>
             <pre><code class="language-js">react-native link navigation-react-native</code></pre>
-            <h2>JavaScript</h2>
             <p>
                 Replace the code in <code>App.js</code> with the following:
             </p>
             <pre><code class="language-jsx">import React from 'react';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
-import {addNavigateHandlers, Scene} from 'navigation-react-native';
+import {NavigationStack} from 'navigation-react-native';
 
 var stateNavigator = new StateNavigator([
 ]);
 
-addNavigateHandlers(stateNavigator);
-
-export default ({crumb}) => (
+export default () => (
   &lt;NavigationHandler stateNavigator={stateNavigator}>
-    &lt;Scene crumb={crumb} />
+    &lt;NavigationStack />
   &lt;/NavigationHandler>
 );</code></pre>
-            <h2>Android</h2>
-            <p>
-                Locate the <code>AndroidManifest.xml</code> in the Android project and add a <code>launchMode</code> of <code>singleTop</code> to the <code>MainActivity</code>.
-            </p>
-            <pre><code class="language-jsx">&lt;activity
-  android:name=".MainActivity"
-  android:launchMode="singleTop"
-  ...</code></pre>
-            <h2>iOS</h2>
-            <p>
-                Locate the <code>AppDelegate.h</code> in the iOS project and replace the code with the following:
-            </p>
-            <pre><code class="language-js">#import &lt;UIKit/UIKit.h>
-#import &lt;React/RCTBridgeDelegate.h>
-#import &lt;React/RCTBridge.h>
-#import "NVApplicationHostDelegate.h"
-
-@interface AppDelegate : UIResponder &lt;UIApplicationDelegate, RCTBridgeDelegate, NVApplicationHostDelegate>
-
-@property (nonatomic, strong) UIWindow *window;
-@property (nonatomic, strong) RCTBridge *bridge;
-
-@end</code></pre>
-            <p>
-                Locate the <code>AppDelegate.m</code> in the iOS project and replace the code with that shown below. Change the <code>"Title"</code> placeholder string to the title of your first scene. Change the <code>"appKey"</code> placeholder string to the name of your application (it should match the key used in the <code>registerComponent</code> call in <code>index.js</code>).
-            </p>
-<pre><code class="language-js">#import "AppDelegate.h"
-#import &lt;React/RCTBridge.h>
-#import &lt;React/RCTBundleURLProvider.h>
-#import &lt;React/RCTRootView.h>
-#import "NVSceneController.h"
-
-@implementation AppDelegate
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-  self.bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-
-  NSString *title = @"Title";
-  NSString *appKey = @"appKey";
-
-  UIViewController *sceneController = [[NVSceneController alloc] init:0 tab:0 title:title appKey:appKey];
-  UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sceneController];
-
-  self.window.rootViewController = navigationController;
-  [self.window makeKeyAndVisible];
-  return YES;
-}
-
-- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
-{
-#if DEBUG
-  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-#else
-  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-#endif
-}
-
-@end
-</code></pre>
           </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
