@@ -71,11 +71,11 @@
             <pre><code class="language-jsx">&lt;SearchBarIOS
   text={text}
   onChangeText={text => this.setState({text})}>
-  &lt;View>
+  &lt;ScrollView>
     {mails
       .filter({message} => message.indexOf(text) !== -1)
       .map({title} => &lt;Text>{title}&lt;/Text>)}
-  &lt;/View>
+  &lt;/ScrollView>
 &lt;/SearchBarIOS>
 </code></pre>
         </div>
