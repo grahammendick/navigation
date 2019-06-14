@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>UI Bar Buttons (iOS)</title>
+    <title>Navigation Bar (iOS)</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="../../css/prism.css">
     <link rel="stylesheet" href="../../css/navigation.css">
@@ -46,15 +46,16 @@
             <a href="pop-navigation.html">Pop Navigation</a>
             <a href="custom-animation.html">Custom Animation (Android)</a>
             <a href="shared-element-transition.html">Shared Element Transition (Android)</a>
-            <a href="ui-bar-buttons.html" class="selected">UI Bar Buttons (iOS)</a>
+            <a href="navigation-bar.html" class="selected">Navigation Bar (iOS)</a>
+            <a href="tab-bar.html">Tab Bar (iOS)</a>
             <a href="deep-links.html">Deep Links</a>
-            <a href="tabs-setup.html">Tabs Setup (iOS)</a>
             <a href="examples.html">Examples</a>
         </div>
         <div id="article">
-            <h1>UI Bar Buttons (iOS)</h1>
+            <h1>Navigation Bar (iOS)</h1>
+            <h2>Right and Left Bar Buttons</h2>
             <p>
-                The Navigation router uses the underlying native API on iOS to provide a UI Navigation Bar at the top of each scene. Alongside the scene's title and back button, you can add your own buttons to the UI Bar using the <code>BarButtonIOS</code> component. It has a <code>systemItem prop</code> that displays an <a href="https://developer.apple.com/documentation/uikit/uibarbuttonitem/systemitem">inbuilt button</a>, or you can pass your own text and image using the <code>title</code> and <code>image props</code>. Your buttons appear on the right or left of the UI Bar depending on whether you wrap them in a <code>RightBarIOS</code> or <code>LeftBarIOS</code> component. In our email example, we can add a 'compose' button to the right of the UI Bar that navigates to the compose scene.
+                The Navigation router uses the underlying native API on iOS to provide a native navigation bar at the top of each scene. Alongside the scene's title and back button, you can add your own buttons using the <code>BarButtonIOS</code> component. It has a <code>systemItem</code> prop that displays an inbuilt button, like 'Cancel' or 'Done', or you can pass your own text and image using the <code>title</code> and <code>image</code> props. Your buttons appear on the right or left of the navigation bar depending on whether you wrap them in a <code>RightBarIOS</code> or <code>LeftBarIOS</code> component. In our email example, we can add a 'compose' button to the right of the navigation bar that navigates to the 'compose' scene.
             </p>
             <pre><code class="language-jsx">import {RightBarIOS, BarButtonIOS} from 'navigation-react-native';
 
@@ -63,6 +64,23 @@
     stateNavigator.navigate('compose');
   }} />
 &lt;/RightBarIOS>
+</code></pre>
+            <h2>Search Bar</h2>
+            <p>
+                The <code>SearchBarIOS</code> component displays a search bar below the title in the navigation bar. It calls the <code>onChangeText</code> prop whenever the search text changes. Any search results you render into the component’s children are displayed in a new native screen that sits over the top of the current one. We allow the user to search their inbox in our example application by adding a <code>SearchBarIOS</code> component to the 'mail' scene. Setting <code>obscureBackground</code> to 'false' keeps the inbox interactive when the search text is focused but empty.
+            </p>
+            <pre><code class="language-jsx">import {SearchBarIOS} from 'navigation-react-native';
+
+&lt;SearchBarIOS
+  text={text}
+  obscureBackground={false}
+  onChangeText={text => this.setState({text})}>
+  &lt;ScrollView>
+    {mails
+      .filter(({message}) => message.indexOf(text) !== -1)
+      .map(({title}) => &lt;Text>{title}&lt;/Text>)}
+  &lt;/ScrollView>
+&lt;/SearchBarIOS>
 </code></pre>
         </div>
     </div>
