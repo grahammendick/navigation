@@ -9,7 +9,7 @@
   "dependencies": {
     "navigation": "^5.1.0",
     "navigation-react": "^4.0.1",
-    "navigation-react-native": "^4.0.1",
+    "navigation-react-native": "^5.0.0",
     "react": "16.8.3",
     "react-native": "0.59.8",
     "react-redux": "^7.0.3",
