@@ -78,6 +78,9 @@
   &lt;/TabBarItemIOS>
 &lt;/TabBarIOS>
 </code></pre>
+            <p>
+                You can avoid the performance costs of rendering all the tabs' content upfront by rendering them on demand instead. In our email example, the user starts off on their inbox so we don't need to render their list of contacts until they click on that tab. Inside the <code>onPress</code> handler of the 'contacts' tab we navigate to the 'contacts' State to begin the rendering.
+            </p>
             <pre><code class="language-jsx">&lt;TabBarItemIOS systemItem="contacts" onPress={() => {
   if (!contactsNavigator.stateContext.state) {
     contactsNavigator.navigate('contacts');
