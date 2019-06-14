@@ -54,6 +54,7 @@
         <div id="article">
             <h1>Tab Bar (iOS)</h1>
             <p>
+                The <code>TabBarIOS</code> component gives you a native tabbed interface in iOS. Each tab has its own stack of screens. To ensure that pushing and popping in one tab doesn't affect the stack in another tab, you give each tab its own <code>StateNavigator</code>. Let's add tabs to our email example. One tab for the user's inbox and another for their list of contacts. We create a new <code>StateNavigator</code> for the 'contacts' tab. It contains two <code>States</code> so the user can view all their contacts and edit the details of an individual contact.
             </p>
             <pre><code class="language-js">var contactsNavigator = new StateNavigator([
   {key: 'contacts', title: 'Contacts'},
