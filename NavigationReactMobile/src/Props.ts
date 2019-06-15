@@ -50,8 +50,8 @@ interface NavigationMotionProps {
     mountedStyle?: any;
     crumbStyle?: any;
     duration?: number;
-    renderScene: (state: State, data: any) => ReactNode,
     sharedElementMotion?: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
+    renderScene: (state: State, data: any) => ReactNode,
     stateNavigator?: StateNavigator;
     navigationEvent: NavigationEvent;
     children: (style: any, scene: ReactElement<any>, key: number, active: boolean, state: State, data: any) => ReactElement<any>;
