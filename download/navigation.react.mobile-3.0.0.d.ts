@@ -1,10 +1,10 @@
 /**
- * Navigation React Mobile Type Definitions v2.1.0
+ * Navigation React Mobile Type Definitions v3.0.0
  * (c) Graham Mendick - http://grahammendick.github.io/navigation/
  * License: Apache-2.0
  */
 import { State, HTML5HistoryManager } from 'navigation';
-import { Component, ComponentType, ReactElement, ReactNode } from 'react';
+import { Component, ReactElement, ReactNode } from 'react';
 
 /**
  * Defines the Shared Element Props contract
@@ -91,10 +91,6 @@ export interface SharedElementMotionProps {
  */
 export interface NavigationMotionProps {
     /**
-     * The App component
-     */
-    app?: ComponentType<{crumb: number}>;
-    /**
      * A Scene's unmounted style
      */
     unmountedStyle?: any;
@@ -115,23 +111,13 @@ export interface NavigationMotionProps {
      */
     sharedElementMotion?: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
     /**
+     * Renders the scene for the State and data
+     */
+    renderScene?: (state: State, data: any) => ReactNode;
+    /**
      * Renders the Scene with the interpoated styles
      */
     children: (style: any, scene: ReactElement<any>, key: number, active: boolean, state: State, data: any) => ReactElement<any>;
-}
-
-/**
- * Defines the Scene Props contract
- */
-interface SceneProps {
-    /**
-     * The position of the Scene in the crumb trail
-     */
-    crumb: number;
-    /**
-     * Renders the Scene for the State and navigation data
-     */
-    renderScene?: (state: State, data: any) => ReactNode;
 }
 
 /**
@@ -148,11 +134,6 @@ export class SharedElementMotion extends Component<SharedElementNavigationMotion
  * Animates Scenes when navigating
  */
 export class NavigationMotion extends Component<NavigationMotionProps> { }
-
-/**
- * Renders the Scene for the provided position in the crumb trail
- */
-export class Scene extends Component<SceneProps> { }
 
 /**
  * Manages history with the HTML5 history api. Produces friendly Urls in Mobile
