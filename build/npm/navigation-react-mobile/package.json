@@ -17,8 +17,7 @@
   "peerDependencies": {
     "navigation": "*",
     "navigation-react": "*",
-    "react": "*",
-    "react-dom": "*"
+    "react": "*"
   },
   "author": "Graham Mendick",
   "license": "Apache-2.0",
