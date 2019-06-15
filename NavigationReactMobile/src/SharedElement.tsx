@@ -1,6 +1,6 @@
 import * as React from 'react';
 import withStateNavigator from './withStateNavigator';
-import withSharedElementRegistry from './withSharedElementRegistry';
+import SharedElementContext from './SharedElementContext';
 import { SharedElementProps } from './Props';
 
 class SharedElement extends React.Component<SharedElementProps, any> {
@@ -36,4 +36,10 @@ class SharedElement extends React.Component<SharedElementProps, any> {
     }
 }
 
-export default withStateNavigator(withSharedElementRegistry(SharedElement));
+export default withStateNavigator(props => (
+    <SharedElementContext.Consumer>
+        {(sharedElementRegistry) => (
+            <SharedElement {...props} sharedElementRegistry={sharedElementRegistry} />
+        )}
+    </SharedElementContext.Consumer>
+));
