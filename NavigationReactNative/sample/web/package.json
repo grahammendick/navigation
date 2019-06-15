@@ -12,7 +12,7 @@
     "babel-loader": "^8.0.5",
     "navigation": "^5.1.0",
     "navigation-react": "^4.0.1",
-    "navigation-react-mobile": "^2.1.0",
+    "navigation-react-mobile": "^3.0.0",
     "navigation-react-native": "^5.0.0",
     "react": "16.6.3",
     "react-art": "^16.7.0",
