@@ -2,7 +2,6 @@ import * as React from 'react';
 import { State, Crumb, StateNavigator } from 'navigation';
 import Motion from './Motion';
 import Scene from './Scene';
-import SceneProxy from './SceneProxy';
 import SharedElementContext from './SharedElementContext';
 import SharedElementRegistry from './SharedElementRegistry';
 import withStateNavigator from './withStateNavigator';
@@ -18,8 +17,6 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
     }
     static defaultProps = {
         duration: 300,
-        app: ({crumb}) => <Scene crumb={crumb} />,
-        rootPerScene: false
     }
     static getDerivedStateFromProps(props: NavigationMotionProps, {stateNavigator: prevStateNavigator}: NavigationMotionState) {
         var {stateNavigator} = props;
@@ -57,7 +54,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         return typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData) : styleProp;
     }
     render() {
-        var {children, duration, app: App, rootPerScene, sharedElementMotion, stateNavigator} = this.props;
+        var {children, duration, sharedElementMotion, stateNavigator} = this.props;
         var {stateContext: {crumbs, oldState}, stateContext} = stateNavigator;
         return (stateContext.state &&
             <SharedElementContext.Provider value={this.sharedElementRegistry}>
@@ -71,7 +68,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     duration={duration}>
                     {styles => (
                         styles.map(({data: {key, state, data}, style}) => {
-                            var scene = !rootPerScene ? <App crumb={key} /> : <SceneProxy crumb={key} app={App} />;
+                            var scene = <Scene crumb={key} /> ;
                             return children(style, scene, key, crumbs.length === key, state, data);
                         }).concat(
                             sharedElementMotion && sharedElementMotion({
