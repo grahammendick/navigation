@@ -15,8 +15,6 @@ var items = [
     Object.assign({ globals: { navigation: 'Navigation', react: 'React',
             'react-dom': 'ReactDOM' } }, 
         require('./build/npm/navigation-react/package.json')),
-    Object.assign({ globals: { '@cycle/dom': 'CycleDOM', rx: 'Rx' } },
-        require('./build/npm/navigation-cycle/package.json')),
     Object.assign({ globals: { navigation: 'Navigation',
             'navigation-react': 'NavigationReact', react: 'React' } },
         require('./build/npm/navigation-react-mobile/package.json')),
