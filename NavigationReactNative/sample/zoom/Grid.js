@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {SharedElementAndroid, SearchBarIOS} from 'navigation-react-native';
+import {SharedElementAndroid, NavigationBarIOS, SearchBarIOS} from 'navigation-react-native';
 
 const Colors = ({colors, children}) => (
   <NavigationContext.Consumer>
@@ -43,13 +43,15 @@ export default class Grid extends React.Component {
     ));
     return (
       <Colors colors={colors}>
-        <SearchBarIOS
-          text={text}
-          autoCapitalize="none"
-          obscureBackground={false}
-          onChangeText={text => this.setState({text})}>
-          <Colors colors={matchedColors} />
-        </SearchBarIOS>
+        <NavigationBarIOS largeTitle={true}>
+          <SearchBarIOS
+            text={text}
+            autoCapitalize="none"
+            obscureBackground={false}
+            onChangeText={text => this.setState({text})}>
+            <Colors colors={matchedColors} />
+          </SearchBarIOS>
+        </NavigationBarIOS>
       </Colors>
     );
   }
