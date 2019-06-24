@@ -3,7 +3,7 @@
 ```js
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
-import {addNavigateHandlers, Scene} from 'navigation-react-native';
+import {NavigationStack} from 'navigation-react-native';
 
 var stateNavigator = new StateNavigator([
   {key: 'hello', title: 'Hello'},
@@ -26,11 +26,10 @@ world.renderScene = ({size}) => (
 );
 
 stateNavigator.navigate('hello');
-addNavigateHandlers(stateNavigator);
 
-export default ({crumb}) => (
+export default () => (
   <NavigationHandler stateNavigator={stateNavigator}>
-    <Scene crumb={crumb} />
+    <NavigationStack />
   </NavigationHandler>
 );
 ```
