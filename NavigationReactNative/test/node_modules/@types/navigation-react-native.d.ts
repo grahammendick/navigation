@@ -28,11 +28,29 @@ export interface NavigationStackProps {
     renderScene?: (state: State, data: any) => ReactNode;
 }
 
-
 /**
  * Renders a stack of Scenes
  */
 export class NavigationStack extends Component<NavigationStackProps> { }
+
+/**
+ * Defines the Navigation Bar Props contract
+ */
+export interface NavigationBarIOSProps {
+    /**
+     * Indicates whether to hide the navigation bar
+     */
+    hidden?: boolean;
+    /**
+     * Indicates whether the title should be large
+     */
+    largeTitle: boolean;
+}
+
+/**
+ * Controls the appearance of the UI navigation bar
+ */
+export class NavigationBarIOS extends Component<NavigationBarIOSProps> { }
 
 /**
  * Renders buttons in the left UI bar
@@ -83,7 +101,7 @@ export interface SearchBarIOSProps {
      */
     obscureBackground?: boolean;
     /**
-     * Indicates whether to hide the navigaiton bar
+     * Indicates whether to hide the navigation bar
      */
     hideNavigationBar?: boolean;
     /**

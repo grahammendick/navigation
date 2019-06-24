@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Platform, View, Text, TouchableHighlight } from 'react-native';
-import { StateNavigator, State } from 'navigation';
+import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { NavigationStack, RightBarIOS, BarButtonIOS, SearchBarIOS, SharedElementAndroid, TabBarIOS, TabBarItemIOS } from 'navigation-react-native';
+import { NavigationStack, NavigationBarIOS, RightBarIOS, BarButtonIOS, SearchBarIOS, SharedElementAndroid, TabBarIOS, TabBarItemIOS } from 'navigation-react-native';
 
 const stateNavigator: StateNavigator = new StateNavigator([
     { key: 'people', title: 'People' },
@@ -42,13 +42,15 @@ class People extends React.Component<any, any> {
         ));
         return (
             <List people={people}>
-                <SearchBarIOS
-                    text={text}
-                    autoCapitalize="none"
-                    obscureBackground={false}
-                    onChangeText={text => this.setState({text})}>
-                    <List people={matchedPeople} />
-                </SearchBarIOS>
+                <NavigationBarIOS largeTitle={true}>
+                    <SearchBarIOS
+                        text={text}
+                        autoCapitalize="none"
+                        obscureBackground={false}
+                        onChangeText={text => this.setState({text})}>
+                        <List people={matchedPeople} />
+                    </SearchBarIOS>
+                </NavigationBarIOS>
             </List>
         );
     }    
