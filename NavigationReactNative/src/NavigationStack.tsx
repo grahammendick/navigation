@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { requireNativeComponent, StyleSheet, View, TabBarIOSItem } from 'react-native';
+import { requireNativeComponent, StyleSheet, View } from 'react-native';
 import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import Scene from './Scene';
