@@ -4,7 +4,7 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
 
-@implementation RCTConvert (BarButtonSystemItem)
+@implementation RCTConvert (UIBarButtonSystemItem)
 
 RCT_ENUM_CONVERTER(UIBarButtonSystemItem, (@{
     @"done" : @(UIBarButtonSystemItemDone),
