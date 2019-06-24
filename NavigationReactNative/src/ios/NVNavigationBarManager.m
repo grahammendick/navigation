@@ -1,9 +1,13 @@
-//
-//  NVNavigationBarManager.m
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 24/06/2019.
-//  Copyright © 2019 Graham Mendick. All rights reserved.
-//
+#import "NVNavigationBarManager.h"
+#import "NVNavigationBarView.h"
 
-#import <Foundation/Foundation.h>
+@implementation NVNavigationBarManager
+
+RCT_EXPORT_MODULE()
+
+- (UIView *)view
+{
+    return [[NVNavigationBarView alloc] init];
+}
+
+@end
