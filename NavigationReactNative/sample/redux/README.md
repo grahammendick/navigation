@@ -1,5 +1,5 @@
 # Navigation Native Redux
-In Navigation, each scene has its own separate React tree. Because there's no shared root you need a global store library, like Redux, to share data between scenes. The `Blinkers` component ensures that Redux only propagates store changes to visible scenes.
+Navigation doesn't own your components so it integrates well with other libraries, like Redux.
 
 ## Run
 Once you've cloned the repository, you can install the dependencies and start the Redux example:
