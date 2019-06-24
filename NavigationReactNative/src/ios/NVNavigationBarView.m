@@ -4,9 +4,9 @@
 
 @implementation NVNavigationBarView
 
-- (void)didMoveToWindow
+- (void)didSetProps:(__unused NSArray<NSString *> *)changedProps
 {
-    [super didMoveToWindow];
+    [super didSetProps:changedProps];
     [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];
 }
 
