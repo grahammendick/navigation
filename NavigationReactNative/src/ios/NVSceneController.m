@@ -28,6 +28,7 @@
     NVSearchBarView *searchBar = (NVSearchBarView *) [self.view viewWithTag:SEARCH_BAR];
     NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
     self.definesPresentationContext = true;
+    self.navigationController.navigationBar.prefersLargeTitles = true;
     if (!!searchBar && !navigationBar.hidden)
     {
         if (@available(iOS 11.0, *)) {
@@ -42,6 +43,8 @@
     [super viewWillAppear:animated];
     NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
     [self.navigationController setNavigationBarHidden:navigationBar.hidden];
+    [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
+
 }
 
 - (void)viewDidLayoutSubviews
