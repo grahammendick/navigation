@@ -1,5 +1,5 @@
 {
-  "name": "redux",
+  "name": "navigation-redux",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -11,7 +11,9 @@
     "navigation-react": "^4.1.0",
     "navigation-react-native": "^5.0.0",
     "react": "16.8.3",
-    "react-native": "0.59.9"
+    "react-native": "0.59.9",
+    "react-redux": "^7.1.0",
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "@babel/core": "7.4.5",
