@@ -12,7 +12,7 @@
     return self;
 }
 
-- (void)didSetProps:(__unused NSArray<NSString *> *)changedProps
+- (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     [super didSetProps:changedProps];
     [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];
