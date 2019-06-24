@@ -4,6 +4,14 @@
 
 @implementation NVNavigationBarView
 
+- (id)init
+{
+    if (self = [super init]) {
+        self.tag = NAVIGATION_BAR;
+    }
+    return self;
+}
+
 - (void)didSetProps:(__unused NSArray<NSString *> *)changedProps
 {
     [super didSetProps:changedProps];

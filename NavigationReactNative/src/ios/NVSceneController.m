@@ -1,4 +1,5 @@
 #import "NVSceneController.h"
+#import "NVNavigationBarView.h"
 #import "NVSearchBarView.h"
 
 @implementation NVSceneController
@@ -25,14 +26,23 @@
 {
     [super viewDidLoad];
     NVSearchBarView *searchBar = (NVSearchBarView *) [self.view viewWithTag:SEARCH_BAR];
+    NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
     self.definesPresentationContext = true;
-    if (!!searchBar)
+    if (!!searchBar && !navigationBar.hidden)
     {
         if (@available(iOS 11.0, *)) {
             [self.navigationItem setSearchController:searchBar.searchController];
             [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
         }
     }
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
+    [self.navigationController setNavigationBarHidden:navigationBar.hidden];
 }
 
 - (void)viewDidLayoutSubviews
