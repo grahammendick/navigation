@@ -39,7 +39,7 @@
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
-		319F40671B414504B01B794B /* libNavigationReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6019520F485416F950F1777 /* libNavigationReactNative.a */; };
+		04AC662AC53248F0985DB791 /* libNavigationReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F0D62ADB5DFB4682A60A9E6B /* libNavigationReactNative.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -347,8 +347,8 @@
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		B7251F31B53641FCB9033632 /* NavigationReactNative.xcodeproj */ = {isa = PBXFileReference; name = "NavigationReactNative.xcodeproj"; path = "../node_modules/navigation-react-native/ios/NavigationReactNative.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		F6019520F485416F950F1777 /* libNavigationReactNative.a */ = {isa = PBXFileReference; name = "libNavigationReactNative.a"; path = "libNavigationReactNative.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		6C1D3CE8786E463B913710FC /* NavigationReactNative.xcodeproj */ = {isa = PBXFileReference; name = "NavigationReactNative.xcodeproj"; path = "../node_modules/navigation-react-native/ios/NavigationReactNative.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		F0D62ADB5DFB4682A60A9E6B /* libNavigationReactNative.a */ = {isa = PBXFileReference; name = "libNavigationReactNative.a"; path = "libNavigationReactNative.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -377,7 +377,7 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				319F40671B414504B01B794B /* libNavigationReactNative.a in Frameworks */,
+				04AC662AC53248F0985DB791 /* libNavigationReactNative.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -567,7 +567,7 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
-				B7251F31B53641FCB9033632 /* NavigationReactNative.xcodeproj */,
+				6C1D3CE8786E463B913710FC /* NavigationReactNative.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
