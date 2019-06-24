@@ -10,4 +10,6 @@ RCT_EXPORT_MODULE()
     return [[NVNavigationBarView alloc] init];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(hidden, BOOL)
+
 @end
