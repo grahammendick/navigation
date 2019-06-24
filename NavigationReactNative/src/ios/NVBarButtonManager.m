@@ -29,6 +29,7 @@ RCT_ENUM_CONVERTER(UIBarButtonSystemItem, (@{
     @"undo" : @(UIBarButtonSystemItemUndo),
     @"redo" : @(UIBarButtonSystemItemRedo)
 }), UIBarButtonSystemItemDone, integerValue)
+
 @end
 
 @implementation NVBarButtonManager
