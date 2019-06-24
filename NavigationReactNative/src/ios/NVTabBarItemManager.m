@@ -4,6 +4,25 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
 
+@implementation RCTConvert (UITabBarSystemItem)
+
+RCT_ENUM_CONVERTER(UITabBarSystemItem, (@{
+    @"more" : @(UITabBarSystemItemMore),
+    @"favorites" : @(UITabBarSystemItemFavorites),
+    @"featured" : @(UITabBarSystemItemFeatured),
+    @"topRated" : @(UITabBarSystemItemTopRated),
+    @"recents" : @(UITabBarSystemItemRecents),
+    @"contacts" : @(UITabBarSystemItemContacts),
+    @"history" : @(UITabBarSystemItemHistory),
+    @"bookmarks" : @(UITabBarSystemItemBookmarks),
+    @"search" : @(UITabBarSystemItemSearch),
+    @"downloads" : @(UITabBarSystemItemDownloads),
+    @"mostRecent" : @(UITabBarSystemItemMostRecent),
+    @"mostViewed" : @(UITabBarSystemItemMostViewed)
+}), UITabBarSystemItemMore, integerValue)
+
+@end
+
 @implementation NVTabBarItemManager
 
 RCT_EXPORT_MODULE()
