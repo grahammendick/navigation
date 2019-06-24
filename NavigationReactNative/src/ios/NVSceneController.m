@@ -43,8 +43,9 @@
     [super viewWillAppear:animated];
     NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
     [self.navigationController setNavigationBarHidden:navigationBar.hidden];
-    [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
-
+    if (@available(iOS 11.0, *)) {
+        [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
+    }
 }
 
 - (void)viewDidLayoutSubviews
