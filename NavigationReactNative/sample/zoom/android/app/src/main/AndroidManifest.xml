@@ -1,13 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.zoom">
+  package="com.zoom">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
+      android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
       <activity
@@ -29,7 +29,7 @@
           <category android:name="android.intent.category.BROWSABLE" />
           <data android:scheme="zoom" android:host="app" />
         </intent-filter>
-      </activity>      
+      </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>
 

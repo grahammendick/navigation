@@ -1,5 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableHighlight, ToolbarAndroid, View, ScrollView, ViewPagerAndroid} from 'react-native';
+import {StyleSheet, Text, TouchableHighlight, ToolbarAndroid, View, ScrollView} from 'react-native';
+import ViewPager from '@react-native-community/viewpager';
 import Tweets from './Tweets';
 import Notifications from './Notifications';
 
@@ -20,7 +21,7 @@ export default ({tweets, follows}) => (
         <Text style={styles.text}>Notifications</Text>
       </TouchableHighlight>
     </View>
-    <ViewPagerAndroid style={{flex: 1}} ref={el => this.viewPager = el}>
+    <ViewPager style={{flex: 1}} ref={el => this.viewPager = el}>
       <View key={1}>
         <ScrollView style={styles.view}>
           <Tweets tweets={tweets} />
@@ -31,7 +32,7 @@ export default ({tweets, follows}) => (
           <Notifications follows={follows} />
         </ScrollView>
       </View>
-    </ViewPagerAndroid>
+    </ViewPager>
   </View>
 );
 
