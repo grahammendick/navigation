@@ -10,16 +10,16 @@ RCT_ENUM_CONVERTER(UITabBarSystemItem, (@{
     @"more" : @(UITabBarSystemItemMore),
     @"favorites" : @(UITabBarSystemItemFavorites),
     @"featured" : @(UITabBarSystemItemFeatured),
-    @"topRated" : @(UITabBarSystemItemTopRated),
+    @"top-rated" : @(UITabBarSystemItemTopRated),
     @"recents" : @(UITabBarSystemItemRecents),
     @"contacts" : @(UITabBarSystemItemContacts),
     @"history" : @(UITabBarSystemItemHistory),
     @"bookmarks" : @(UITabBarSystemItemBookmarks),
     @"search" : @(UITabBarSystemItemSearch),
     @"downloads" : @(UITabBarSystemItemDownloads),
-    @"mostRecent" : @(UITabBarSystemItemMostRecent),
-    @"mostViewed" : @(UITabBarSystemItemMostViewed)
-}), UITabBarSystemItemMore, integerValue)
+    @"most-recent" : @(UITabBarSystemItemMostRecent),
+    @"most-viewed" : @(UITabBarSystemItemMostViewed),
+}), NSNotFound, integerValue)
 
 @end
 

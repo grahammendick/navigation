@@ -12,6 +12,8 @@ RCT_ENUM_CONVERTER(UIBarButtonSystemItem, (@{
     @"edit" : @(UIBarButtonSystemItemEdit),
     @"save" : @(UIBarButtonSystemItemSave),
     @"add" : @(UIBarButtonSystemItemAdd),
+    @"flexibleSpace" : @(UIBarButtonSystemItemFlexibleSpace),
+    @"fixedSpace" : @(UIBarButtonSystemItemFixedSpace),
     @"compose" : @(UIBarButtonSystemItemCompose),
     @"reply" : @(UIBarButtonSystemItemReply),
     @"action" : @(UIBarButtonSystemItemAction),
@@ -27,7 +29,7 @@ RCT_ENUM_CONVERTER(UIBarButtonSystemItem, (@{
     @"rewind" : @(UIBarButtonSystemItemRewind),
     @"fastForward" : @(UIBarButtonSystemItemFastForward),
     @"undo" : @(UIBarButtonSystemItemUndo),
-    @"redo" : @(UIBarButtonSystemItemRedo)
+    @"redo" : @(UIBarButtonSystemItemRedo),
 }), UIBarButtonSystemItemDone, integerValue)
 
 @end
