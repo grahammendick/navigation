@@ -4,21 +4,21 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
 
-@implementation RCTConvert (UITabBarSystemItem)
+ @implementation RCTConvert (UITabBarSystemItem)
 
-RCT_ENUM_CONVERTER(UITabBarSystemItem, (@{
-    @"more" : @(UITabBarSystemItemMore),
-    @"favorites" : @(UITabBarSystemItemFavorites),
-    @"featured" : @(UITabBarSystemItemFeatured),
-    @"top-rated" : @(UITabBarSystemItemTopRated),
-    @"recents" : @(UITabBarSystemItemRecents),
-    @"contacts" : @(UITabBarSystemItemContacts),
-    @"history" : @(UITabBarSystemItemHistory),
-    @"bookmarks" : @(UITabBarSystemItemBookmarks),
-    @"search" : @(UITabBarSystemItemSearch),
-    @"downloads" : @(UITabBarSystemItemDownloads),
-    @"most-recent" : @(UITabBarSystemItemMostRecent),
-    @"most-viewed" : @(UITabBarSystemItemMostViewed),
+ RCT_ENUM_CONVERTER(UITabBarSystemItem, (@{
+    @"more": @(UITabBarSystemItemMore),
+    @"favorites": @(UITabBarSystemItemFavorites),
+    @"featured": @(UITabBarSystemItemFeatured),
+    @"top-rated": @(UITabBarSystemItemTopRated),
+    @"recents": @(UITabBarSystemItemRecents),
+    @"contacts": @(UITabBarSystemItemContacts),
+    @"history": @(UITabBarSystemItemHistory),
+    @"bookmarks": @(UITabBarSystemItemBookmarks),
+    @"search": @(UITabBarSystemItemSearch),
+    @"downloads": @(UITabBarSystemItemDownloads),
+    @"most-recent": @(UITabBarSystemItemMostRecent),
+    @"most-viewed": @(UITabBarSystemItemMostViewed)
 }), NSNotFound, integerValue)
 
 @end
