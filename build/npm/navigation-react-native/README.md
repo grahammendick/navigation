@@ -6,8 +6,8 @@ import {NavigationHandler} from 'navigation-react';
 import {NavigationStack} from 'navigation-react-native';
 
 var stateNavigator = new StateNavigator([
-  {key: 'hello', title: 'Hello'},
-  {key: 'world', title: 'World', trackCrumbTrail: true},
+  {key: 'hello'},
+  {key: 'world', trackCrumbTrail: true},
 ]);
 
 const {hello, world} = stateNavigator.states;
