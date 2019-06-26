@@ -9,8 +9,8 @@ import People from './People';
 import Person from './Person';
 
 const stateNavigator = new StateNavigator([
-  {key: 'people', title: 'People'},
-  {key: 'person', title: 'Person', trackCrumbTrail: true},
+  {key: 'people'},
+  {key: 'person', trackCrumbTrail: true},
 ]);
 
 const {people, person} = stateNavigator.states;
