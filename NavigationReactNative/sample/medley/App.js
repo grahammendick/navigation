@@ -5,10 +5,10 @@ import {NavigationStack} from 'navigation-react-native';
 import Direction from './Direction';
 
 const stateNavigator = new StateNavigator([
-  {key: 'north', title: 'North', trackCrumbTrail: true},
-  {key: 'east', title: 'East', trackCrumbTrail: true},
-  {key: 'south', title: 'South', trackCrumbTrail: true},
-  {key: 'west', title: 'West', trackCrumbTrail: true},
+  {key: 'north', trackCrumbTrail: true},
+  {key: 'east', trackCrumbTrail: true},
+  {key: 'south', trackCrumbTrail: true},
+  {key: 'west', trackCrumbTrail: true},
 ]);
 
 const { north, east, south, west } = stateNavigator.states;

@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
+import {NavigationBarIOS} from 'navigation-react-native';
 
 const nextDirection = {
   north: 'east',
@@ -16,6 +17,8 @@ export default ({direction, color}) => (
         styles.scene,
         {backgroundColor: color}
       ]}>
+        <NavigationBarIOS
+          title={direction[0].toUpperCase() + direction.slice(1)} />
         <TouchableHighlight
           underlayColor={color}
           onPress={() => {
