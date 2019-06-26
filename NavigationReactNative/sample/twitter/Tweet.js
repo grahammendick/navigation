@@ -1,6 +1,7 @@
 import React from 'react';
-import {NavigationContext} from 'navigation-react';
 import {StyleSheet, Text, Image, Platform, ScrollView, View, ToolbarAndroid, TouchableHighlight} from 'react-native';
+import {NavigationContext} from 'navigation-react';
+import {NavigationBarIOS} from 'navigation-react-native';
 import Tweets from './Tweets';
 
 export default ({tweet: {account: {id: accountId, name, username, logo}, 
@@ -15,11 +16,12 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
           onIconClicked={() => {
             stateNavigator.navigateBack(1)
           }} />
+        <NavigationBarIOS title="Tweet" />
         <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
           <View>
             <View style={styles.heading}>
               <TouchableHighlight underlayColor="white" onPress={() => {
-                stateNavigator.navigate('timeline', {id: accountId, sceneTitle: name});
+                stateNavigator.navigate('timeline', {id: accountId});
               }}>
                 <Image style={styles.logo} source={logo} />
               </TouchableHighlight>

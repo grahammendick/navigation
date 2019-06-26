@@ -1,6 +1,7 @@
 import React from 'react';
-import {NavigationContext} from 'navigation-react';
 import {StyleSheet, Text, Image, Platform, ScrollView, ToolbarAndroid, View} from 'react-native';
+import {NavigationContext} from 'navigation-react';
+import {NavigationBarIOS} from 'navigation-react-native';
 import Tweets from './Tweets';
 
 export default ({timeline: {id, name, username, logo, bio, 
@@ -15,9 +16,10 @@ export default ({timeline: {id, name, username, logo, bio,
           onIconClicked={() => {
             stateNavigator.navigateBack(1)
           }} />
+        <NavigationBarIOS title={name} />
         <ScrollView 
-          contentInsetAdjustmentBehavior="automatic" style={styles.view}
-          ref={el => this.scrollView = el}>
+          contentInsetAdjustmentBehavior="automatic"
+          style={styles.view}>
           <View>
             <Image style={styles.logo} source={logo} />
             <Text style={styles.name}>{name}</Text>

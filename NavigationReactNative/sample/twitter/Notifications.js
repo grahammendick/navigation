@@ -1,11 +1,13 @@
 import React from 'react';
-import {NavigationContext} from 'navigation-react';
 import {ScrollView, StyleSheet, Text, Image, FlatList, View, TouchableHighlight} from 'react-native';
+import {NavigationContext} from 'navigation-react';
+import {NavigationBarIOS} from 'navigation-react-native';
 
 export default ({follows}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
+          <NavigationBarIOS title="Notifications" />
           <FlatList
               data={follows}
               keyExtractor={item => '' + item.id}
@@ -13,7 +15,7 @@ export default ({follows}) => (
               <TouchableHighlight
                 underlayColor="white"
                 onPress={() => {
-                  stateNavigator.navigate('timeline', {id, sceneTitle: name});
+                  stateNavigator.navigate('timeline', {id});
               }}>
                 <View style={styles.follow}>
                   <View>

@@ -10,10 +10,10 @@ import Timeline from './Timeline';
 import {getHome, getFollows, getTweet, getTimeline} from './data';
 
 var stateNavigator = new StateNavigator([
-  {key: 'home', title: 'Home'},
-  {key: 'notifications', title: 'Notifications'},
-  {key: 'tweet', title: 'Tweet', trackCrumbTrail: true},
-  {key: 'timeline', title: 'Timeline', trackCrumbTrail: true}
+  {key: 'home'},
+  {key: 'notifications'},
+  {key: 'tweet', trackCrumbTrail: true},
+  {key: 'timeline', trackCrumbTrail: true}
 ]);
 const {home, notifications, tweet, timeline} = stateNavigator.states;
 home.renderScene = () => <Home tweets={getHome()} follows={getFollows()} />;
@@ -29,7 +29,7 @@ export default () => (
     <TabBarIOS>
       <TabBarItemIOS title="Home">
         <NavigationHandler stateNavigator={stateNavigator}>
-          <NavigationStack title={({title}, {sceneTitle}) => sceneTitle || title} />
+          <NavigationStack />
         </NavigationHandler>
       </TabBarItemIOS>
       <TabBarItemIOS title="Notifications" onPress={() => {
@@ -37,7 +37,7 @@ export default () => (
           notificationsNavigator.navigate('notifications');
       }}>
         <NavigationHandler stateNavigator={notificationsNavigator}>
-          <NavigationStack title={({title}, {sceneTitle}) => sceneTitle || title} />
+          <NavigationStack />
         </NavigationHandler>
       </TabBarItemIOS>
     </TabBarIOS>
