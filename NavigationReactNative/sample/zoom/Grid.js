@@ -43,7 +43,7 @@ export default class Grid extends React.Component {
     ));
     return (
       <Colors colors={colors}>
-        <NavigationBarIOS largeTitle={true}>
+        <NavigationBarIOS largeTitle={true} title="Colors">
           <SearchBarIOS
             text={text}
             autoCapitalize="none"

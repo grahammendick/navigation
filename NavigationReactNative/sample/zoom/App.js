@@ -12,8 +12,8 @@ const colors = [
 ];
 
 var stateNavigator = new StateNavigator([
-  {key: 'grid', title: 'Colors'},
-  {key: 'detail', title: 'Color', trackCrumbTrail: true},
+  {key: 'grid'},
+  {key: 'detail', trackCrumbTrail: true},
 ]);
 
 const { grid, detail } = stateNavigator.states;
