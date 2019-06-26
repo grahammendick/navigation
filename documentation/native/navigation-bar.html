@@ -53,9 +53,17 @@
         </div>
         <div id="article">
             <h1>Navigation Bar (iOS)</h1>
-            <h2>Right and Left Bar Buttons</h2>
+            <h2>Setting the Title</h2>
             <p>
-                The Navigation router uses the underlying native API on iOS to provide a native navigation bar at the top of each scene. Alongside the scene's title and back button, you can add your own buttons using the <code>BarButtonIOS</code> component. It has a <code>systemItem</code> prop that displays an inbuilt button, like 'Cancel' or 'Done', or you can pass your own text and image using the <code>title</code> and <code>image</code> props. Your buttons appear on the right or left of the navigation bar depending on whether you wrap them in a <code>RightBarIOS</code> or <code>LeftBarIOS</code> component. In our email example, we can add a 'compose' button to the right of the navigation bar that navigates to the 'compose' scene.
+                The Navigation router uses the underlying native API on iOS to provide a native navigation bar at the top of each scene. 
+            </p>
+            <pre><code class="language-jsx">import {NavigationBarIOS} from 'navigation-react-native';
+
+&lt;NavigationBarIOS title="Inbox" />
+</code></pre>
+            <h2>Adding Right and Left Bar Buttons</h2>
+            <p>
+                Alongside the scene's title, you can add your own buttons using the <code>BarButtonIOS</code> component. It has a <code>systemItem</code> prop that displays an inbuilt button, like 'Cancel' or 'Done', or you can pass your own text and image using the <code>title</code> and <code>image</code> props. Your buttons appear on the right or left of the navigation bar depending on whether you wrap them in a <code>RightBarIOS</code> or <code>LeftBarIOS</code> component. In our email example, we can add a 'compose' button to the right of the navigation bar that navigates to the 'compose' scene.
             </p>
             <pre><code class="language-jsx">import {RightBarIOS, BarButtonIOS} from 'navigation-react-native';
 
@@ -65,7 +73,7 @@
   }} />
 &lt;/RightBarIOS>
 </code></pre>
-            <h2>Search Bar</h2>
+            <h2>Adding a Search Bar</h2>
             <p>
                 The <code>SearchBarIOS</code> component displays a search bar below the title in the navigation bar. It calls the <code>onChangeText</code> prop whenever the search text changes. Any search results you render into the component’s children are displayed in a new native screen that sits over the top of the current one. We allow the user to search their inbox in our example application by adding a <code>SearchBarIOS</code> component to the 'mail' scene. Setting <code>obscureBackground</code> to 'false' keeps the inbox interactive when the search text is focused but empty.
             </p>
