@@ -12,7 +12,7 @@
     "navigation": "^5.1.1",
     "navigation-react": "^4.1.0",
     "navigation-react-mobile": "^3.0.0",
-    "navigation-react-native": "^5.0.0",
+    "navigation-react-native": "^5.2.1",
     "react": "16.8.3",
     "react-dom": "^16.8.6",
     "react-native": "0.59.9",

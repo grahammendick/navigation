@@ -10,8 +10,8 @@ const colors = [
 
 export default () => {
   const stateNavigator = new StateNavigator([
-    {key: 'grid', title: 'Colors', route: ''},
-    {key: 'detail', title: 'Color', route: '{color}', trackCrumbTrail: true},
+    {key: 'grid', route: ''},
+    {key: 'detail', route: '{color}', trackCrumbTrail: true},
   ]);
 
   const {grid, detail} = stateNavigator.states;
