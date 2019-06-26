@@ -5,14 +5,15 @@ import { NavigationContext, NavigationHandler } from 'navigation-react';
 import { NavigationStack, NavigationBarIOS, RightBarIOS, BarButtonIOS, SearchBarIOS, SharedElementAndroid, TabBarIOS, TabBarItemIOS } from 'navigation-react-native';
 
 const stateNavigator: StateNavigator = new StateNavigator([
-    { key: 'people', title: 'People' },
-    { key: 'person', title: 'Person', trackCrumbTrail: true }
+    { key: 'people' },
+    { key: 'person', trackCrumbTrail: true }
 ]);
 
 var List = ({people, children}: any) => (
     <NavigationContext.Consumer>
         {({stateNavigator}) => (
             <View>
+                <NavigationBarIOS title="People" />
                 {people.map(name => (
                     <TouchableHighlight
                         onPress={() => {
@@ -42,7 +43,7 @@ class People extends React.Component<any, any> {
         ));
         return (
             <List people={people}>
-                <NavigationBarIOS largeTitle={true}>
+                <NavigationBarIOS largeTitle={true} title="Person">
                     <SearchBarIOS
                         text={text}
                         autoCapitalize="none"

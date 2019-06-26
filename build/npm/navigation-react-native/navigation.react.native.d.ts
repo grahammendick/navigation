@@ -44,7 +44,11 @@ export interface NavigationBarIOSProps {
     /**
      * Indicates whether the title should be large
      */
-    largeTitle: boolean;
+    largeTitle?: boolean;
+    /**
+     * The title
+     */
+    title?: string;
 }
 
 /**

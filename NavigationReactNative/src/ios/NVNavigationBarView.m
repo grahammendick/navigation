@@ -16,6 +16,9 @@
 {
     [super didSetProps:changedProps];
     [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];
+    if ([changedProps containsObject:@"title"]) {
+        [self.reactViewController.navigationItem setTitle:self.title];
+    }
 }
 
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview
