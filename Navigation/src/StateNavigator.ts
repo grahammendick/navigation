@@ -128,11 +128,11 @@ class StateNavigator {
                 return;
         }
         var navigateContinuation = (asyncData?: any) => {
-            var stateContext = this.createStateContext(state, data, crumbs, url, asyncData, history, currentContext);
+            var nextContext = this.createStateContext(state, data, crumbs, url, asyncData, history, currentContext);
             if (oldUrl === this.stateContext.url) {
-                suspendNavigation(stateContext, () => {
+                suspendNavigation(nextContext, () => {
                     if (oldUrl === this.stateContext.url)
-                        this.resumeNavigation(stateContext, historyAction);
+                        this.resumeNavigation(nextContext, historyAction);
                 });
             }
         };
