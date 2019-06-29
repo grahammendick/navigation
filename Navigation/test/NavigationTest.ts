@@ -5422,4 +5422,24 @@ describe('Navigation', function () {
             assert.equal(stateNavigator.stateContext.data.z, 'c');
         });
     });
+
+    describe('Context Override', function() {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var stateContext = stateNavigator.stateContext;
+            stateNavigator.navigate('s1', {y: 'b'});
+            stateNavigator.navigateLink('/r2?z=c', undefined, undefined, undefined, stateContext);
+            assert.equal(stateNavigator.stateContext.url, '/r2?z=c');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
+            assert.equal(stateNavigator.stateContext.data.z, 'c');
+            assert.equal(stateNavigator.stateContext.oldUrl, '/r0?x=a');
+            assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.oldData.x, 'a');
+        });
+    });
 });
