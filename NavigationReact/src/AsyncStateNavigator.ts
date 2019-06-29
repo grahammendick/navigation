@@ -45,7 +45,7 @@ class AsyncStateNavigator extends StateNavigator {
                 var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext);
                 this.suspendNavigation(asyncNavigator, resumeNavigation, defer);
             })
-        });
+        }, this.stateContext);
     }
 
     private suspendNavigation(asyncNavigator: AsyncStateNavigator, resumeNavigation: () => void, defer: boolean) {
