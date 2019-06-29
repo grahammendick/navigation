@@ -21,23 +21,24 @@ class AsyncStateNavigator extends StateNavigator {
         var url = this.getNavigationLink(stateKey, navigationData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-        this.navigateLink(url, historyAction, false, undefined, defer);
+        this.navigateLink(url, historyAction, false, undefined, undefined, defer);
     }
 
     navigateBack(distance: number, historyAction?: 'add' | 'replace' | 'none', defer?: boolean) {
         var url = this.getNavigationBackLink(distance);
-        this.navigateLink(url, historyAction, false, undefined, defer);
+        this.navigateLink(url, historyAction, false, undefined, undefined, defer);
     }
 
     refresh(navigationData?: any, historyAction?: 'add' | 'replace' | 'none', defer?: boolean) {
         var url = this.getRefreshLink(navigationData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-        this.navigateLink(url, historyAction, false, undefined, defer);
+        this.navigateLink(url, historyAction, false, undefined, undefined, defer);
     }
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false,
-        suspendNavigation?: (stateContext: StateContext, resumeNavigation: () => void) => void, defer = false) {
+        suspendNavigation?: (stateContext: StateContext, resumeNavigation: () => void) => void,
+        currentContext = this.stateContext, defer = false) {
         if (!suspendNavigation)
             suspendNavigation = (stateContext, resumeNavigation) => resumeNavigation();
         this.stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
@@ -45,7 +46,7 @@ class AsyncStateNavigator extends StateNavigator {
                 var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext);
                 this.suspendNavigation(asyncNavigator, resumeNavigation, defer);
             })
-        }, this.stateContext);
+        }, currentContext);
     }
 
     private suspendNavigation(asyncNavigator: AsyncStateNavigator, resumeNavigation: () => void, defer: boolean) {
