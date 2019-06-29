@@ -5461,4 +5461,24 @@ describe('Navigation', function () {
             }, stateContext);
         });
     });
+
+    describe('On Before Navigate Context Override', function() {
+        it('should call onBeforeNavigate listener', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var stateContext = stateNavigator.stateContext;
+            stateNavigator.navigate('s1', {y: 'b'});
+            stateNavigator.onBeforeNavigate((_state, _data, _url, _history, currentContext) => {
+                assert.equal(currentContext.url, '/r0?x=a');
+                assert.equal(currentContext.state, stateNavigator.states['s0']);
+                assert.equal(currentContext.data.x, 'a');
+                return true;
+            });
+            stateNavigator.navigateLink('/r2?z=c', undefined, undefined, undefined, stateContext);
+        });
+    });
 });
