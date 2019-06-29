@@ -5481,4 +5481,24 @@ describe('Navigation', function () {
             stateNavigator.navigateLink('/r2?z=c', undefined, undefined, undefined, stateContext);
         });
     });
+
+    describe('Unloading Context Override', function() {
+        it('should unload overridden State', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var stateContext = stateNavigator.stateContext;
+            stateNavigator.navigate('s1', {y: 'b'});
+            var unloaded = false;
+            stateNavigator.states['s0'].unloading = (_state, _data, _url, unload) => {
+                unloaded = true;
+                unload();
+            }
+            stateNavigator.navigateLink('/r2?z=c', undefined, undefined, undefined, stateContext);
+            assert.equal(unloaded, true);
+        });
+    });
 });
