@@ -2561,6 +2561,49 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Context Click Navigate', function () {
+        it('should override', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' },
+            ]);
+            class FirstContext extends React.Component {
+                static contextType = NavigationContext;                
+                private mountContext: any;
+                constructor(props, context) {
+                    super(props, context);
+                    this.mountContext = this.context;
+                }
+                render() {
+                    return (
+                        <NavigationContext.Provider value={this.mountContext}>
+                            {this.props.children}
+                        </NavigationContext.Provider>
+                    );
+                }
+            }
+            stateNavigator.navigate('s0', {x: 'a'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FirstContext>
+                        <NavigationLink
+                            stateKey="s2"
+                            navigationData={{z: 'c'}}>
+                            link text
+                        </NavigationLink>
+                    </FirstContext>
+                </NavigationHandler>,
+                container
+            );
+            stateNavigator.navigate('s1', {x: 'b'});
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+        })
+    });
+
     /*describe('Click Deferred Navigation Link', function () {
         it('should navigate async', function(done){
             var stateNavigator = new StateNavigator([
