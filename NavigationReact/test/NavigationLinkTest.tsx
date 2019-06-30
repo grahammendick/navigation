@@ -2555,7 +2555,7 @@ describe('NavigationLinkTest', function () {
                 </NavigationHandler>,
                 container
             );
-            var div = container.querySelector<HTMLAnchorElement>('div');
+            var div = container.querySelector<HTMLDivElement>('div');
             Simulate.click(div);
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
         })
