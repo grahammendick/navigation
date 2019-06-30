@@ -2600,7 +2600,12 @@ describe('NavigationLinkTest', function () {
             stateNavigator.navigate('s1', {x: 'b'});
             var link = container.querySelector<HTMLAnchorElement>('a');
             Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.url, '/r2?z=c');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
+            assert.equal(stateNavigator.stateContext.data.z, 'c');
+            assert.equal(stateNavigator.stateContext.oldUrl, '/r0?x=a');
             assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.oldData.x, 'a');
         })
     });
 
