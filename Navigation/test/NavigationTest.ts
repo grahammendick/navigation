@@ -5533,7 +5533,10 @@ describe('Navigation', function () {
                 unloaded = true;
                 unload();
             }
-            stateNavigator.navigateLink('/r2?z=c', undefined, undefined, undefined, stateContext);
+            var oldStateNavigator = new StateNavigator(stateNavigator);
+            oldStateNavigator.stateContext = stateContext;
+            var link = oldStateNavigator.getNavigationLink('s2', {z: 'c'});
+            stateNavigator.navigateLink(link, undefined, undefined, undefined, stateContext);
             assert.equal(unloaded, true);
         });
     });
