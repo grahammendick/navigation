@@ -2561,8 +2561,8 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('Context Click Navigate', function () {
-        it('should override', function(){
+    describe('Old Context Navigation Link', function () {
+        it('should update', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
