@@ -2597,7 +2597,7 @@ describe('NavigationLinkTest', function () {
                 </NavigationHandler>,
                 container
             );
-            stateNavigator.navigate('s1', {x: 'b'});
+            stateNavigator.navigate('s1', {y: 'b'});
             var link = container.querySelector<HTMLAnchorElement>('a');
             Simulate.click(link);
             assert.equal(stateNavigator.stateContext.url, '/r2?z=c&crumb=%2Fr0%3Fx%3Da');
