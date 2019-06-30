@@ -5448,15 +5448,26 @@ describe('Navigation', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
-                { key: 's2', route: 'r2' }
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var stateContext = stateNavigator.stateContext;
             stateNavigator.navigate('s1', {y: 'b'});
-            stateNavigator.navigateLink('/r2?z=c', undefined, undefined, (nextContext, resume) => {
+            var link = stateNavigator.getNavigationLink('s2', {z: 'c'});
+            stateNavigator.navigateLink(link, undefined, undefined, (nextContext, resume) => {
+                assert.equal(nextContext.url, '/r2?z=c&crumb=%2Fr1%3Fy%3Db');
+                assert.equal(nextContext.state, stateNavigator.states['s2']);
+                assert.equal(nextContext.data.z, 'c');
                 assert.equal(nextContext.oldUrl, '/r0?x=a');
                 assert.equal(nextContext.oldState, stateNavigator.states['s0']);
                 assert.equal(nextContext.oldData.x, 'a');
+                assert.equal(nextContext.previousUrl, '/r1?y=b');
+                assert.equal(nextContext.previousState, stateNavigator.states['s1']);
+                assert.equal(nextContext.previousData.y, 'b');
+                assert.equal(nextContext.crumbs.length, 1);
+                assert.equal(nextContext.crumbs[0].url, '/r1?y=b');
+                assert.equal(nextContext.crumbs[0].state, stateNavigator.states['s1']);
+                assert.equal(nextContext.crumbs[0].data.y, 'b');
                 resume();
             }, stateContext);
         });
