@@ -40,7 +40,7 @@ class AsyncStateNavigator extends StateNavigator {
         suspendNavigation?: (stateContext: StateContext, resumeNavigation: () => void) => void,
         currentContext = this.stateContext, defer = false) {
         if (!suspendNavigation)
-            suspendNavigation = (stateContext, resumeNavigation) => resumeNavigation();
+            suspendNavigation = (_stateContext, resumeNavigation) => resumeNavigation();
         this.stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
             suspendNavigation(stateContext, () => {
                 var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext);
