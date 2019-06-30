@@ -120,24 +120,24 @@ class StateNavigator {
         currentContext = this.stateContext) {
         if (history && this.stateContext.url === url)
             return;
-        var oldUrl = this.stateContext.url;
+        var context = this.stateContext;
         var { state, data, crumbs } = this.parseLink(url);
         for (var id in this.onBeforeNavigateCache.handlers) {
             var handler = this.onBeforeNavigateCache.handlers[id];
-            if (oldUrl !== this.stateContext.url || !handler(state, data, url, history, currentContext))
+            if (context !== this.stateContext || !handler(state, data, url, history, currentContext))
                 return;
         }
         var navigateContinuation = (asyncData?: any) => {
             var nextContext = this.createStateContext(state, data, crumbs, url, asyncData, history, currentContext);
-            if (oldUrl === this.stateContext.url) {
+            if (context === this.stateContext) {
                 suspendNavigation(nextContext, () => {
-                    if (oldUrl === this.stateContext.url)
+                    if (context === this.stateContext)
                         this.resumeNavigation(nextContext, historyAction);
                 });
             }
         };
         var unloadContinuation = () => {
-            if (oldUrl === this.stateContext.url)
+            if (context === this.stateContext)
                 state.navigating(data, url, navigateContinuation, history);
         };
         if (currentContext.state)
