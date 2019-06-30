@@ -2566,7 +2566,7 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
-                { key: 's2', route: 'r2' },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
             ]);
             class FirstContext extends React.Component {
                 static contextType = NavigationContext;                
@@ -2600,12 +2600,19 @@ describe('NavigationLinkTest', function () {
             stateNavigator.navigate('s1', {x: 'b'});
             var link = container.querySelector<HTMLAnchorElement>('a');
             Simulate.click(link);
-            assert.equal(stateNavigator.stateContext.url, '/r2?z=c');
+            assert.equal(stateNavigator.stateContext.url, '/r2?z=c&crumb=%2Fr0%3Fx%3Da');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
             assert.equal(stateNavigator.stateContext.data.z, 'c');
             assert.equal(stateNavigator.stateContext.oldUrl, '/r0?x=a');
             assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
             assert.equal(stateNavigator.stateContext.oldData.x, 'a');
+            assert.equal(stateNavigator.stateContext.previousUrl, '/r0?x=a');
+            assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.previousData.x, 'a');
+            assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+            assert.equal(stateNavigator.stateContext.crumbs[0].url, '/r0?x=a');
+            assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.crumbs[0].data.x, 'a');
         })
     });
 
