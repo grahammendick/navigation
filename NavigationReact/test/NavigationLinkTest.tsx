@@ -2555,9 +2555,64 @@ describe('NavigationLinkTest', function () {
                 </NavigationHandler>,
                 container
             );
-            var div = container.querySelector<HTMLAnchorElement>('div');
+            var div = container.querySelector<HTMLDivElement>('div');
             Simulate.click(div);
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+        })
+    });
+
+    describe('Old Context Navigation Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+            ]);
+            class FirstContext extends React.Component {
+                static contextType = NavigationContext;                
+                private mountContext: any;
+                constructor(props, context) {
+                    super(props, context);
+                    this.mountContext = this.context;
+                }
+                render() {
+                    return (
+                        <NavigationContext.Provider value={this.mountContext}>
+                            {this.props.children}
+                        </NavigationContext.Provider>
+                    );
+                }
+            }
+            stateNavigator.navigate('s0', {x: 'a'});
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <FirstContext>
+                        <NavigationLink
+                            stateKey="s2"
+                            navigationData={{z: 'c'}}>
+                            link text
+                        </NavigationLink>
+                    </FirstContext>
+                </NavigationHandler>,
+                container
+            );
+            stateNavigator.navigate('s1', {y: 'b'});
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link);
+            assert.equal(stateNavigator.stateContext.url, '/r2?z=c&crumb=%2Fr0%3Fx%3Da');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
+            assert.equal(stateNavigator.stateContext.data.z, 'c');
+            assert.equal(stateNavigator.stateContext.oldUrl, '/r0?x=a');
+            assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.oldData.x, 'a');
+            assert.equal(stateNavigator.stateContext.previousUrl, '/r0?x=a');
+            assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.previousData.x, 'a');
+            assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+            assert.equal(stateNavigator.stateContext.crumbs[0].url, '/r0?x=a');
+            assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.crumbs[0].data.x, 'a');
         })
     });
 

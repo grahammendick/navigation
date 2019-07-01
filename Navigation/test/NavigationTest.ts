@@ -5422,4 +5422,122 @@ describe('Navigation', function () {
             assert.equal(stateNavigator.stateContext.data.z, 'c');
         });
     });
+
+    describe('Context Override', function() {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var stateContext = stateNavigator.stateContext;
+            stateNavigator.navigate('s1', {y: 'b'});
+            var oldStateNavigator = new StateNavigator(stateNavigator);
+            oldStateNavigator.stateContext = stateContext;
+            var link = oldStateNavigator.getNavigationLink('s2', {z: 'c'});
+            stateNavigator.navigateLink(link, undefined, undefined, undefined, stateContext);
+            assert.equal(stateNavigator.stateContext.url, '/r2?z=c&crumb=%2Fr0%3Fx%3Da');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
+            assert.equal(stateNavigator.stateContext.data.z, 'c');
+            assert.equal(stateNavigator.stateContext.oldUrl, '/r0?x=a');
+            assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.oldData.x, 'a');
+            assert.equal(stateNavigator.stateContext.previousUrl, '/r0?x=a');
+            assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.previousData.x, 'a');
+            assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+            assert.equal(stateNavigator.stateContext.crumbs[0].url, '/r0?x=a');
+            assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.crumbs[0].data.x, 'a');
+        });
+    });
+
+    describe('Suspend Context Override', function() {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var stateContext = stateNavigator.stateContext;
+            stateNavigator.navigate('s1', {y: 'b'});
+            var oldStateNavigator = new StateNavigator(stateNavigator);
+            oldStateNavigator.stateContext = stateContext;
+            var link = oldStateNavigator.getNavigationLink('s2', {z: 'c'});
+            stateNavigator.navigateLink(link, undefined, undefined, (nextContext, resume) => {
+                assert.equal(nextContext.url, '/r2?z=c&crumb=%2Fr0%3Fx%3Da');
+                assert.equal(nextContext.state, stateNavigator.states['s2']);
+                assert.equal(nextContext.data.z, 'c');
+                assert.equal(nextContext.oldUrl, '/r0?x=a');
+                assert.equal(nextContext.oldState, stateNavigator.states['s0']);
+                assert.equal(nextContext.oldData.x, 'a');
+                assert.equal(nextContext.previousUrl, '/r0?x=a');
+                assert.equal(nextContext.previousState, stateNavigator.states['s0']);
+                assert.equal(nextContext.previousData.x, 'a');
+                assert.equal(nextContext.crumbs.length, 1);
+                assert.equal(nextContext.crumbs[0].url, '/r0?x=a');
+                assert.equal(nextContext.crumbs[0].state, stateNavigator.states['s0']);
+                assert.equal(nextContext.crumbs[0].data.x, 'a');
+                resume();
+            }, stateContext);
+        });
+    });
+
+    describe('On Before Navigate Context Override', function() {
+        it('should call onBeforeNavigate listener', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var stateContext = stateNavigator.stateContext;
+            stateNavigator.navigate('s1', {y: 'b'});
+            stateNavigator.onBeforeNavigate((state, data, url, _history, currentContext) => {
+                assert.equal(currentContext.url, '/r0?x=a');
+                assert.equal(currentContext.state, stateNavigator.states['s0']);
+                assert.equal(currentContext.data.x, 'a');
+                var {state: nextState, data: nextData, crumbs} = stateNavigator.parseLink(link);
+                assert.equal(url, '/r2?z=c&crumb=%2Fr0%3Fx%3Da');
+                assert.equal(state, stateNavigator.states['s2']);
+                assert.equal(data.z, 'c');
+                assert.equal(nextState, stateNavigator.states['s2']);
+                assert.equal(nextData.z, 'c');
+                assert.equal(crumbs.length, 1);
+                assert.equal(crumbs[0].url, '/r0?x=a');
+                assert.equal(crumbs[0].state, stateNavigator.states['s0']);
+                assert.equal(crumbs[0].data.x, 'a');
+                return true;
+            });
+            var oldStateNavigator = new StateNavigator(stateNavigator);
+            oldStateNavigator.stateContext = stateContext;
+            var link = oldStateNavigator.getNavigationLink('s2', {z: 'c'});
+            stateNavigator.navigateLink(link, undefined, undefined, undefined, stateContext);
+        });
+    });
+
+    describe('Unloading Context Override', function() {
+        it('should unload overridden State', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var stateContext = stateNavigator.stateContext;
+            stateNavigator.navigate('s1', {y: 'b'});
+            var unloaded = false;
+            stateNavigator.states['s0'].unloading = (_state, _data, _url, unload) => {
+                unloaded = true;
+                unload();
+            }
+            var oldStateNavigator = new StateNavigator(stateNavigator);
+            oldStateNavigator.stateContext = stateContext;
+            var link = oldStateNavigator.getNavigationLink('s2', {z: 'c'});
+            stateNavigator.navigateLink(link, undefined, undefined, undefined, stateContext);
+            assert.equal(unloaded, true);
+        });
+    });
 });
