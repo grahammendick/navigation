@@ -1,5 +1,5 @@
 /**
- * Navigation Type Definitions v5.0.1
+ * Navigation Type Definitions v5.2.0
  * (c) Graham Mendick - http://grahammendick.github.io/navigation/
  * License: Apache-2.0
  */
@@ -559,9 +559,11 @@ export class StateNavigator {
      * @param historyAction A value determining the effect on browser history
      * @param history A value indicating whether browser history was used
      * @param suspendNavigation Called before the navigation completes
+     * @param currentContext The current StateContext
      */
     navigateLink(url: string, historyAction?: 'add' | 'replace' | 'none', history?: boolean,
-        suspendNavigation?: (stateContext: StateContext, resumeNavigation: () => void) => void);
+        suspendNavigation?: (stateContext: StateContext, resumeNavigation: () => void) => void,
+        currentContext?: StateContext): void;
     /**
      * Parses the url out into State and Navigation Data
      * @param url The url to parse
