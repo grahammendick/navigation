@@ -11,7 +11,7 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - navigation-react-native (5.2.1):
+  - navigation-react-native (5.3.0):
     - React
   - React (0.60.0):
     - React-Core (= 0.60.0)
@@ -167,7 +167,7 @@ SPEC CHECKSUMS:
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  navigation-react-native: 25674a903dc9b44460c438868c35e2d60eb14069
+  navigation-react-native: 5dc99b933ece915db9577c761a5e7c0ce044252c
   React: 4b3c068e793e96672dcd186a2b572fac43e4b031
   React-Core: 3dc86b22920597f813c62a96db3165950b64826b
   React-cxxreact: 0dacb291e59b81e7c3f22a2118bee853ba8a60d2
