@@ -1,7 +1,7 @@
 import React from 'react';
 import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 
-var TabBar = ({children}) => <NVTabBar style={styles.tabBar}>{children}</NVTabBar>;
+var TabBar = ({children, barTintColor, tintColor}) => <NVTabBar style={styles.tabBar} barTintColor={barTintColor} tintColor={tintColor}>{children}</NVTabBar>;
 
 var NVTabBar = requireNativeComponent<any>('NVTabBar', null);
 
