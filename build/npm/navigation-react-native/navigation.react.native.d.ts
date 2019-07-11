@@ -205,6 +205,15 @@ export class TabBarItemIOS extends Component<TabBarItemIOSProps> {}
  */
 export interface TabBarIOSProps {
     children: React.ReactElement<TabBarItemIOS> | React.ReactElement<TabBarItemIOS>[]
+
+    /**
+     * The background color of the navigation bar
+     */
+    barTintColor?: string;
+    /**
+     * The color of the content within the navigation bar
+     */
+    tintColor?: string;
 }
 
 /**

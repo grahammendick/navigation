@@ -19,6 +19,17 @@
     return self;
 }
 
+- (void)didSetProps:(NSArray<NSString *> *)changedProps
+{
+    [super didSetProps:changedProps];
+    if ([changedProps containsObject:@"barTintColor"]) {
+        [self.tabBarController.tabBar setBarTintColor:self.barTintColor];
+    }
+    if ([changedProps containsObject:@"tintColor"]) {
+        [self.tabBarController.tabBar setTintColor: self.tintColor];
+    }
+}
+
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
