@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, ScrollView, processColor} from 'react-native';
+import {StyleSheet, ScrollView} from 'react-native';
 import {NavigationBarIOS} from 'navigation-react-native';
 import Tweets from './Tweets';
 
