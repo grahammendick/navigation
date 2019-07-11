@@ -22,6 +22,9 @@
     if ([changedProps containsObject:@"barTintColor"]) {
         [self.reactViewController.navigationController.navigationBar setBarTintColor:self.barTintColor];
     }
+    if ([changedProps containsObject:@"tintColor"]) {
+        [self.reactViewController.navigationController.navigationBar setTintColor: self.tintColor];
+    }
 }
 
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview

@@ -48,6 +48,9 @@
     if (navigationBar.barTintColor != NULL) {
         [self.navigationController.navigationBar setBarTintColor:navigationBar.barTintColor];
     }
+    if (navigationBar.tintColor != NULL) {
+        [self.navigationController.navigationBar setTintColor:navigationBar.tintColor];
+    }
     if (@available(iOS 11.0, *)) {
         self.navigationController.navigationBar.prefersLargeTitles = true;
         [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];

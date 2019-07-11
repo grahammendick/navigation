@@ -16,7 +16,7 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
           onIconClicked={() => {
             stateNavigator.navigateBack(1)
           }} />
-        <NavigationBarIOS title="Tweet" />
+        <NavigationBarIOS title="Tweet" barTintColor="#006dbf" tintColor="#ffffff" />
         <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
           <View>
             <View style={styles.heading}>

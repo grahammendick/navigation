@@ -5,7 +5,7 @@ import Tweets from './Tweets';
 
 export default ({tweets}) => (
   <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
-    <NavigationBarIOS title="Home" barTintColor="red" />
+    <NavigationBarIOS title="Home" barTintColor="#006dbf" tintColor="#ffffff" />
     <Tweets tweets={tweets} />
   </ScrollView>
 );

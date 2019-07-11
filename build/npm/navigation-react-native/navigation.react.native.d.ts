@@ -53,6 +53,10 @@ export interface NavigationBarIOSProps {
      * The background color of the navigation bar
      */
     barTintColor?: string;
+    /**
+     * The color of the content within the navigation bar
+     */
+    tintColor?: string;
 }
 
 /**
