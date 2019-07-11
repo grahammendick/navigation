@@ -24,6 +24,13 @@
     }
     if ([changedProps containsObject:@"tintColor"]) {
         [self.reactViewController.navigationController.navigationBar setTintColor: self.tintColor];
+        [self.reactViewController.navigationController.navigationBar setTitleTextAttributes:
+            @{NSForegroundColorAttributeName:self.tintColor}];
+
+        if (@available(iOS 11.0, *)) {
+            [self.reactViewController.navigationController.navigationBar setLargeTitleTextAttributes:
+                @{NSForegroundColorAttributeName:self.tintColor}];
+        }
     }
 }
 

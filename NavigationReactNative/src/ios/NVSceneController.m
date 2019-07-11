@@ -50,6 +50,13 @@
     }
     if (navigationBar.tintColor != NULL) {
         [self.navigationController.navigationBar setTintColor:navigationBar.tintColor];
+        [self.navigationController.navigationBar setTitleTextAttributes:
+            @{NSForegroundColorAttributeName:navigationBar.tintColor}];
+
+        if (@available(iOS 11.0, *)) {
+            [self.navigationController.navigationBar setLargeTitleTextAttributes:
+                @{NSForegroundColorAttributeName:navigationBar.tintColor}];
+        }
     }
     if (@available(iOS 11.0, *)) {
         self.navigationController.navigationBar.prefersLargeTitles = true;
