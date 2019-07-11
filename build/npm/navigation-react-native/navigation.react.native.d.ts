@@ -49,6 +49,10 @@ export interface NavigationBarIOSProps {
      * The title
      */
     title?: string;
+    /**
+     * The background color of the navigation bar
+     */
+    barTintColor?: string;
 }
 
 /**
