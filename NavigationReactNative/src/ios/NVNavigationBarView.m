@@ -19,6 +19,9 @@
     if ([changedProps containsObject:@"title"]) {
         [self.reactViewController.navigationItem setTitle:self.title];
     }
+    if ([changedProps containsObject:@"barTintColor"]) {
+        [self.reactViewController.navigationController.navigationBar setBarTintColor:self.barTintColor];
+    }
 }
 
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview
