@@ -42,6 +42,7 @@
     [super viewWillAppear:animated];
     NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
     [self.navigationController setNavigationBarHidden:navigationBar.hidden];
+    [self.navigationController.navigationBar setIsTranslucent: navigationBar.isTranslucent];
     if (navigationBar.title.length != 0) {
         [self.navigationItem setTitle:navigationBar.title];
     }

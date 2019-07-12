@@ -57,6 +57,10 @@ export interface NavigationBarIOSProps {
      * The color of the content within the navigation bar
      */
     tintColor?: string;
+    /**
+     * Whether the navigation bar background is translucent
+     */
+    isTranslucent?: boolean;
 }
 
 /**
@@ -207,13 +211,21 @@ export interface TabBarIOSProps {
     children: React.ReactElement<TabBarItemIOS> | React.ReactElement<TabBarItemIOS>[]
 
     /**
-     * The background color of the navigation bar
+     * The background color of the tab bar
      */
     barTintColor?: string;
     /**
-     * The color of the content within the navigation bar
+     * The color of the selected content within the tab bar
      */
     tintColor?: string;
+    /**
+     * The color of unselected content withing the tab bar
+     */
+    unselectedTintColor?: string;
+    /**
+     * Whether the tab bar background is translucent
+     */
+    isTranslucent?: boolean;
 }
 
 /**

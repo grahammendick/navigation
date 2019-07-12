@@ -28,6 +28,12 @@
     if ([changedProps containsObject:@"tintColor"]) {
         [self.tabBarController.tabBar setTintColor: self.tintColor];
     }
+    if ([changedProps containsObject:@"unselectedTintColor"]) {
+        [self.tabBarController.tabBar setUnselectedItemTintColor: self.unselectedTintColor];
+    }
+    if ([changedProps containsObject:@"isTranslucent"]) {
+        [self.tabBarController.tabBar setIsTranslucent: self.isTranslucent];
+    }
 }
 
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
