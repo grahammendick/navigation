@@ -60,7 +60,7 @@ export interface NavigationBarIOSProps {
     /**
      * Whether the navigation bar background is translucent
      */
-    isTranslucent?: boolean;
+    translucent?: boolean;
 }
 
 /**
@@ -225,7 +225,7 @@ export interface TabBarIOSProps {
     /**
      * Whether the tab bar background is translucent
      */
-    isTranslucent?: boolean;
+    translucent?: boolean;
 }
 
 /**

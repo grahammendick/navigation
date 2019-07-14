@@ -23,16 +23,16 @@
 {
     [super didSetProps:changedProps];
     if ([changedProps containsObject:@"barTintColor"]) {
-        [self.tabBarController.tabBar setBarTintColor:self.barTintColor];
+        [_tabBarController.tabBar setBarTintColor:self.barTintColor];
     }
     if ([changedProps containsObject:@"tintColor"]) {
-        [self.tabBarController.tabBar setTintColor: self.tintColor];
+        [_tabBarController.tabBar setTintColor: self.tintColor];
     }
     if ([changedProps containsObject:@"unselectedTintColor"]) {
-        [self.tabBarController.tabBar setUnselectedItemTintColor: self.unselectedTintColor];
+        [_tabBarController.tabBar setUnselectedItemTintColor: self.unselectedTintColor];
     }
     if ([changedProps containsObject:@"isTranslucent"]) {
-        [self.tabBarController.tabBar setIsTranslucent: self.isTranslucent];
+        [_tabBarController.tabBar setTranslucent: self.translucent];
     }
 }
 
