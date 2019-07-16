@@ -11,6 +11,6 @@ RCT_EXPORT_MODULE()
 }
 
 RCT_EXPORT_VIEW_PROPERTY(mostRecentEventCount, NSInteger)
-RCT_EXPORT_VIEW_PROPERTY(onDidNavigateBack, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onDidNavigateBack, RCTDirectEventBlock)
 
 @end

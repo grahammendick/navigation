@@ -6,7 +6,7 @@
 
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, assign) NSInteger mostRecentEventCount;
-@property (nonatomic, copy) RCTBubblingEventBlock onDidNavigateBack;
+@property (nonatomic, copy) RCTDirectEventBlock onDidNavigateBack;
 
 -(id)initWithBridge: (RCTBridge *)bridge;
 
