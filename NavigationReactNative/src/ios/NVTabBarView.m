@@ -31,9 +31,6 @@
     if ([changedProps containsObject:@"unselectedTintColor"]) {
         [_tabBarController.tabBar setUnselectedItemTintColor: self.unselectedTintColor];
     }
-    if ([changedProps containsObject:@"isTranslucent"]) {
-        [_tabBarController.tabBar setTranslucent: self.translucent];
-    }
 }
 
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex

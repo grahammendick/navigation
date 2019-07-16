@@ -7,7 +7,6 @@
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) UIColor *barTintColor;
 @property (nonatomic, copy) UIColor *tintColor;
-@property (nonatomic, assign) BOOL translucent;
 
 #define NAVIGATION_BAR ((int) 28)
 

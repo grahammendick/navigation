@@ -32,9 +32,6 @@
                 @{NSForegroundColorAttributeName:self.tintColor}];
         }
     }
-    if ([changedProps containsObject:@"translucent"]) {
-        [self.reactViewController.navigationController.navigationBar setTranslucent:self.translucent];
-    }
 }
 
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview

@@ -57,10 +57,6 @@ export interface NavigationBarIOSProps {
      * The color of the content within the navigation bar
      */
     tintColor?: string;
-    /**
-     * Whether the navigation bar background is translucent
-     */
-    translucent?: boolean;
 }
 
 /**
@@ -222,10 +218,6 @@ export interface TabBarIOSProps {
      * The color of unselected content withing the tab bar
      */
     unselectedTintColor?: string;
-    /**
-     * Whether the tab bar background is translucent
-     */
-    translucent?: boolean;
 }
 
 /**
