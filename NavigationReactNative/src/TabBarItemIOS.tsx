@@ -6,7 +6,11 @@ var TabBarItem = ({title, image, systemItem, onPress, children}) => (
         title={title}
         image={image}
         systemItem={systemItem}
-        onPress={onPress}>
+        onPress={event => {
+            event.stopPropagation();
+            if (onPress)
+                onPress(event);
+        }}>
         {children}            
     </NVTabBarItem>
 );
