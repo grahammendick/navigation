@@ -4,7 +4,7 @@
 @interface NVSceneView : UIView
 
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) RCTBubblingEventBlock onWillAppear;
+@property (nonatomic, copy) RCTDirectEventBlock onWillAppear;
 
 -(void)willAppear;
 
