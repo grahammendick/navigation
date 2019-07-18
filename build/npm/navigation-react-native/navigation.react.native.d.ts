@@ -234,6 +234,11 @@ export interface TabBarIOSStyleProps {
  */
 export interface TabBarIOSProps {
     children: React.ReactElement<TabBarItemIOS> | React.ReactElement<TabBarItemIOS>[]
+
+    /**
+     * The style of the tab bar
+     */
+    style?: TabBarIOSStyleProps;
 }
 
 /**

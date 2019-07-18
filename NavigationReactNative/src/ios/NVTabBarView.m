@@ -22,14 +22,14 @@
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     [super didSetProps:changedProps];
-    if ([changedProps containsObject:@"barTintColor"]) {
-        [_tabBarController.tabBar setBarTintColor:self.barTintColor];
+    if ([changedProps containsObject:@"backgroundColor"]) {
+        [_tabBarController.tabBar setBarTintColor:self.backgroundColor];
     }
-    if ([changedProps containsObject:@"tintColor"]) {
-        [_tabBarController.tabBar setTintColor: self.tintColor];
+    if ([changedProps containsObject:@"color"]) {
+        [_tabBarController.tabBar setTintColor: self.color];
     }
-    if ([changedProps containsObject:@"unselectedTintColor"]) {
-        [_tabBarController.tabBar setUnselectedItemTintColor: self.unselectedTintColor];
+    if ([changedProps containsObject:@"defaultColor"]) {
+        [_tabBarController.tabBar setUnselectedItemTintColor: self.defaultColor];
     }
 }
 
