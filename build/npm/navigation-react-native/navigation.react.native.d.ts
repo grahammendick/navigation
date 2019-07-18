@@ -34,6 +34,21 @@ export interface NavigationStackProps {
 export class NavigationStack extends Component<NavigationStackProps> { }
 
 /**
+ * Defines the Navigation Bar Style Props contract
+ */
+export interface NavigationBarIOSStyleProps {
+    /**
+     * The background color of the navigation bar
+     */
+    backgroundColor?: string;
+
+    /**
+     * The color of the content within the navigation bar
+     */
+    color?: string;
+}
+
+/**
  * Defines the Navigation Bar Props contract
  */
 export interface NavigationBarIOSProps {
@@ -50,13 +65,9 @@ export interface NavigationBarIOSProps {
      */
     title?: string;
     /**
-     * The background color of the navigation bar
+     * The style of the navigation bar
      */
-    barTintColor?: string;
-    /**
-     * The color of the content within the navigation bar
-     */
-    tintColor?: string;
+    style?: NavigationBarIOSStyleProps;
 }
 
 /**
@@ -201,23 +212,28 @@ export interface TabBarItemIOSProps {
 export class TabBarItemIOS extends Component<TabBarItemIOSProps> {}
 
 /**
+ * Defines the Tab Bar Style Props contract
+ */
+export interface TabBarIOSStyleProps {
+    /**
+     * The background color of the tab bar
+     */
+    backgroundColor?: string;
+    /**
+     * The color of the content within the tab bar
+     */
+    color?: string;
+    /**
+     * The color of unselected content wihtin the tab bar
+     */
+    defaultColor?: string;
+}
+
+/**
  * Defines the Tab Bar Props contract
  */
 export interface TabBarIOSProps {
     children: React.ReactElement<TabBarItemIOS> | React.ReactElement<TabBarItemIOS>[]
-
-    /**
-     * The background color of the tab bar
-     */
-    barTintColor?: string;
-    /**
-     * The color of the selected content within the tab bar
-     */
-    tintColor?: string;
-    /**
-     * The color of unselected content withing the tab bar
-     */
-    unselectedTintColor?: string;
 }
 
 /**

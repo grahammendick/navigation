@@ -45,17 +45,17 @@
     if (navigationBar.title.length != 0) {
         [self.navigationItem setTitle:navigationBar.title];
     }
-    if (navigationBar.barTintColor != NULL) {
-        [self.navigationController.navigationBar setBarTintColor:navigationBar.barTintColor];
+    if (navigationBar.backgroundColor != NULL) {
+        [self.navigationController.navigationBar setBarTintColor:navigationBar.backgroundColor];
     }
-    if (navigationBar.tintColor != NULL) {
-        [self.navigationController.navigationBar setTintColor:navigationBar.tintColor];
+    if (navigationBar.color != NULL) {
+        [self.navigationController.navigationBar setTintColor:navigationBar.color];
         [self.navigationController.navigationBar setTitleTextAttributes:
-            @{NSForegroundColorAttributeName:navigationBar.tintColor}];
+            @{NSForegroundColorAttributeName:navigationBar.color}];
 
         if (@available(iOS 11.0, *)) {
             [self.navigationController.navigationBar setLargeTitleTextAttributes:
-                @{NSForegroundColorAttributeName:navigationBar.tintColor}];
+                @{NSForegroundColorAttributeName:navigationBar.color}];
         }
     }
     if (@available(iOS 11.0, *)) {
