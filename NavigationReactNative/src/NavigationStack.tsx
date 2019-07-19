@@ -64,7 +64,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
             var exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs);
             var oldSharedElements = getSharedElements(oldState, oldData, oldCrumbs);
         }
-        if (crumbs.length == oldCrumbs.length) {
+        if (crumbs.length === oldCrumbs.length) {
             var enterAnim = unmountStyle(true, state, data, crumbs);
             var exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs, state, data);
         }
