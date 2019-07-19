@@ -67,6 +67,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         return {enterAnim, exitAnim, sharedElements, oldSharedElements};
     }
     render() {
+        var {keys} = this.state;
         var {stateNavigator, title, renderScene} = this.props;
         var {url, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
@@ -79,7 +80,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 onDidNavigateBack={this.onDidNavigateBack}>
                 {nextCrumb && crumbs.concat(nextCrumb).map((_, crumb) => (
                     <Scene
-                        key={crumb}
+                        key={keys[crumb]}
                         crumb={crumb}
                         title={title}
                         renderScene={renderScene} />
