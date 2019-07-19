@@ -11,6 +11,7 @@ class NavigationStack extends React.Component<NavigationStackProps> {
     private renderMills = Date.now();
     constructor(props) {
         super(props);
+        this.state = {keys: []};
         this.ref = React.createRef<View>();
         this.onDidNavigateBack = this.onDidNavigateBack.bind(this);
     }
@@ -18,6 +19,15 @@ class NavigationStack extends React.Component<NavigationStackProps> {
         unmountStyle: () => null,
         crumbStyle: () => null,
         sharedElements: () => null
+    }
+    static getDerivedStateFromProps({stateNavigator}: NavigationStackProps, {keys: prevKeys}) {
+        var {oldState, state, crumbs, nextCrumb} = stateNavigator.stateContext;
+        var currentKeys = crumbs.concat(nextCrumb).map(({state}) => state.key);
+        var newKeys = currentKeys.slice(prevKeys.length);
+        var keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
+        if (prevKeys.length === keys.length && oldState !== state)
+            keys[keys.length - 1] = state.key;
+        return {keys};
     }
     componentDidUpdate() {
         var mills = Date.now();
