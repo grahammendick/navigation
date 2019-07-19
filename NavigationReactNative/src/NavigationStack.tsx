@@ -12,7 +12,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     private renderMills = Date.now();
     constructor(props) {
         super(props);
-        this.state = {stateNavigator: this.props.stateNavigator, keys: []};
+        this.state = {stateNavigator: null, keys: []};
         this.ref = React.createRef<View>();
         this.onDidNavigateBack = this.onDidNavigateBack.bind(this);
     }
