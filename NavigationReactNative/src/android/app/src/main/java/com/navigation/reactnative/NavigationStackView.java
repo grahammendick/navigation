@@ -163,6 +163,16 @@ public class NavigationStackView extends ViewGroup {
             }
             currentActivity.overridePendingTransition(enter, exit);
         }
+        if (crumb == currentCrumb) {
+            Intent intent = new Intent(getContext(), SceneActivity.getActivity(crumb));
+            intent.putExtra(SceneActivity.CRUMB, crumb);
+            sceneItems.get(crumb).intent = intent;
+            int enter = this.getAnimationResourceId(this.enterAnim, this.activityOpenEnterAnimationId);
+            int exit = this.getAnimationResourceId(this.exitAnim, this.activityOpenExitAnimationId);
+            currentActivity.finish();
+            currentActivity.startActivity(intent);
+            currentActivity.overridePendingTransition(enter, exit);
+        }
         oldCrumb = sceneItems.size() - 1;
     }
 
