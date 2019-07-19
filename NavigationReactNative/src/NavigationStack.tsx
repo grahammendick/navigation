@@ -5,13 +5,14 @@ import { NavigationContext } from 'navigation-react';
 import Scene from './Scene';
 import SceneBin from './SceneBin';
 type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
+type NavigationStackState = {stateNavigator: StateNavigator, keys: string[]};
 
-class NavigationStack extends React.Component<NavigationStackProps> {
+class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
     private ref: React.RefObject<View>;
     private renderMills = Date.now();
     constructor(props) {
         super(props);
-        this.state = {keys: []};
+        this.state = {stateNavigator: this.props.stateNavigator, keys: []};
         this.ref = React.createRef<View>();
         this.onDidNavigateBack = this.onDidNavigateBack.bind(this);
     }
@@ -20,14 +21,16 @@ class NavigationStack extends React.Component<NavigationStackProps> {
         crumbStyle: () => null,
         sharedElements: () => null
     }
-    static getDerivedStateFromProps({stateNavigator}: NavigationStackProps, {keys: prevKeys}) {
+    static getDerivedStateFromProps({stateNavigator}: NavigationStackProps, {keys: prevKeys, stateNavigator: prevStateNavigator}: NavigationStackState) {
+        if (stateNavigator === prevStateNavigator)
+            return null;
         var {oldState, state, crumbs, nextCrumb} = stateNavigator.stateContext;
         var currentKeys = crumbs.concat(nextCrumb).map(({state}) => state.key);
         var newKeys = currentKeys.slice(prevKeys.length);
         var keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
         if (prevKeys.length === keys.length && oldState !== state)
             keys[keys.length - 1] = state.key;
-        return {keys};
+        return {keys, stateNavigator};
     }
     componentDidUpdate() {
         var mills = Date.now();
