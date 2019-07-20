@@ -84,8 +84,8 @@ public class NavigationStackView extends ViewGroup {
         if (mainActivity == null)
             mainActivity = currentActivity;
         if (this.finish) {
-            mainActivity.finish();
             currentActivity.finish();
+            mainActivity.finish();
             return;
         }
         if (sceneItems.size() == 0)
