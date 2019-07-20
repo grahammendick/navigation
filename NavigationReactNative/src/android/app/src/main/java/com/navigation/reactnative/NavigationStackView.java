@@ -204,6 +204,8 @@ public class NavigationStackView extends ViewGroup {
     }
 
     private int getAnimationResourceId(String animationName, int defaultId) {
+        if(((ThemedReactContext) getContext()).getCurrentActivity() == mainActivity)
+            return -1;
         if (animationName == null)
             return defaultId;
         String packageName = getContext().getPackageName();
