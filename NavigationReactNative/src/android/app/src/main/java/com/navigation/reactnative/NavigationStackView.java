@@ -195,7 +195,7 @@ public class NavigationStackView extends ViewGroup {
     @Override
     public void onDetachedFromWindow() {
         if (sceneItems.size() > 0) {
-            Intent mainIntent = sceneItems.get(0).intent;
+            Intent mainIntent = mainActivity.getIntent();
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             ((ThemedReactContext) getContext()).getCurrentActivity().navigateUpTo(mainIntent);
         }
