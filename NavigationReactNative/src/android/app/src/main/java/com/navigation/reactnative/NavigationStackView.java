@@ -24,17 +24,19 @@ import java.util.Map;
 public class NavigationStackView extends ViewGroup {
     public static ArrayList<SceneItem> sceneItems = new ArrayList<>();
     public ArrayList<SceneView> sceneDiscards = new ArrayList<>();
+    private Activity mainActity;
     private int oldCrumb = -1;
     private SceneBinView sceneBin;
     protected String enterAnim;
     protected String exitAnim;
     protected ReadableArray sharedElementNames;
     protected ReadableArray oldSharedElementNames;
+    protected boolean finish = false;
     private int activityOpenEnterAnimationId;
     private int activityOpenExitAnimationId;
     private int activityCloseEnterAnimationId;
     private int activityCloseExitAnimationId;
-
+   
     public NavigationStackView(ThemedReactContext context) {
         super(context);
 
@@ -78,9 +80,16 @@ public class NavigationStackView extends ViewGroup {
     }
 
     protected void onAfterUpdateTransaction() {
+        Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
+        if (mainActity == null)
+            mainActity = currentActivity;
+        if (this.finish) {
+            currentActivity.finish();
+            mainActity.finish();
+            return;
+        }
         if (sceneItems.size() == 0)
             return;
-        Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
         int crumb = sceneItems.size() - 1;
         int currentCrumb = oldCrumb;
         SceneItem sceneItem = sceneItems.get(crumb);

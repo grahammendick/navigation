@@ -1,19 +1,20 @@
 import React, { ReactNode } from 'react';
-import { requireNativeComponent, StyleSheet, View } from 'react-native';
+import { requireNativeComponent, BackHandler, StyleSheet, View } from 'react-native';
 import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import Scene from './Scene';
 import SceneBin from './SceneBin';
 type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
-type NavigationStackState = {stateNavigator: StateNavigator, keys: string[]};
+type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], finish: boolean};
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
     private ref: React.RefObject<View>;
     private renderMills = Date.now();
     constructor(props) {
         super(props);
-        this.state = {stateNavigator: null, keys: []};
+        this.state = {stateNavigator: null, keys: [], finish: false};
         this.ref = React.createRef<View>();
+        this.handleBack = this.handleBack.bind(this);
         this.onDidNavigateBack = this.onDidNavigateBack.bind(this);
     }
     static defaultProps = {
@@ -32,10 +33,16 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
             keys[keys.length - 1] = `${keys.length - 1}_${state.key}`;
         return {keys, stateNavigator};
     }
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
     componentDidUpdate() {
         var mills = Date.now();
         if (mills - this.renderMills > 2000)
             this.renderMills = mills;
+    }
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
     onDidNavigateBack({nativeEvent}) {
         var {stateNavigator} = this.props;
@@ -44,6 +51,10 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         var distance = stateNavigator.stateContext.crumbs.length - crumb;
         if (stateNavigator.canNavigateBack(distance))
             stateNavigator.navigateBack(distance);
+    }
+    handleBack() {
+        this.setState(() => ({finish: true}));
+        return true;
     }
     getAnimation() {
         var {stateNavigator, unmountStyle, crumbStyle, sharedElements: getSharedElements} = this.props;
@@ -71,7 +82,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         return {enterAnim, exitAnim, sharedElements, oldSharedElements};
     }
     render() {
-        var {keys} = this.state;
+        var {keys, finish} = this.state;
         var {stateNavigator, title, renderScene} = this.props;
         var {url, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
@@ -79,6 +90,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 ref={this.ref}
                 url={url}
                 oldUrl={oldUrl}
+                finish={finish}
                 style={styles.stack}
                 {...this.getAnimation()}
                 onDidNavigateBack={this.onDidNavigateBack}>
