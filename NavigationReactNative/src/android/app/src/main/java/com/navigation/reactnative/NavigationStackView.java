@@ -61,7 +61,7 @@ public class NavigationStackView extends ViewGroup {
             sceneItems.add(index, new SceneItem(index, null, (SceneView) child));
         if (child instanceof SceneBinView) {
             if (sceneBin == null)
-                this.onAfterUpdateTransaction();
+                onAfterUpdateTransaction();
             sceneBin = (SceneBinView) child;
             for(int i = 0; i < sceneDiscards.size(); i++) {
                 sceneBin.getScenes().add(sceneDiscards.get(i));
@@ -83,7 +83,7 @@ public class NavigationStackView extends ViewGroup {
         Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
         if (mainActivity == null)
             mainActivity = currentActivity;
-        if (this.finish) {
+        if (finish) {
             currentActivity.finish();
             mainActivity.finish();
             return;
@@ -95,8 +95,8 @@ public class NavigationStackView extends ViewGroup {
         SceneItem sceneItem = sceneItems.get(crumb);
         if (crumb < currentCrumb) {
             Intent intent = sceneItem.intent;
-            int enter = this.getAnimationResourceId(this.enterAnim, this.activityCloseEnterAnimationId);
-            int exit = this.getAnimationResourceId(this.exitAnim, this.activityCloseExitAnimationId);
+            int enter = getAnimationResourceId(enterAnim, activityCloseEnterAnimationId);
+            int exit = getAnimationResourceId(exitAnim, activityCloseExitAnimationId);
             final HashMap<String, View> oldSharedElementsMap = getSharedElementMap();
             Pair[] oldSharedElements = (crumb < 20 && currentCrumb - crumb == 1) ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
@@ -134,8 +134,8 @@ public class NavigationStackView extends ViewGroup {
                 sceneItems.get(nextCrumb).intent = intent;
                 intents[i] = intent;
             }
-            int enter = this.getAnimationResourceId(this.enterAnim, this.activityOpenEnterAnimationId);
-            int exit = this.getAnimationResourceId(this.exitAnim, this.activityOpenExitAnimationId);
+            int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
+            int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
             final HashMap<String, View> sharedElementsMap = getSharedElementMap();
             final Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements(sharedElementsMap, sharedElementNames) : null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null && sharedElements.length != 0) {
@@ -169,8 +169,8 @@ public class NavigationStackView extends ViewGroup {
             Intent intent = new Intent(getContext(), SceneActivity.getActivity(crumb));
             intent.putExtra(SceneActivity.CRUMB, crumb);
             sceneItems.get(crumb).intent = intent;
-            int enter = this.getAnimationResourceId(this.enterAnim, this.activityOpenEnterAnimationId);
-            int exit = this.getAnimationResourceId(this.exitAnim, this.activityOpenExitAnimationId);
+            int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
+            int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
             currentActivity.finish();
             currentActivity.startActivity(intent);
             currentActivity.overridePendingTransition(enter, exit);
