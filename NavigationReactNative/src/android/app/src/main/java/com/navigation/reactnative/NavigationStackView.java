@@ -26,6 +26,7 @@ public class NavigationStackView extends ViewGroup {
     public ArrayList<SceneView> sceneDiscards = new ArrayList<>();
     private Activity mainActivity;
     private int oldCrumb = -1;
+    private boolean updatedScenes = false;
     private SceneBinView sceneBin;
     protected String enterAnim;
     protected String exitAnim;
@@ -57,8 +58,10 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public void addView(View child, int index) {
-        if (child instanceof SceneView)
+        if (child instanceof SceneView) {
             sceneItems.add(index, new SceneItem(index, null, (SceneView) child));
+            updatedScenes = true;
+        }
         if (child instanceof SceneBinView) {
             if (sceneBin == null)
                 onAfterUpdateTransaction();
@@ -74,6 +77,7 @@ public class NavigationStackView extends ViewGroup {
     public void removeViewAt(int index) {
         if (index < sceneItems.size()) {
             SceneView view = sceneItems.remove(index).view;
+            updatedScenes = true;
              if (view.getChildCount() > 0)
                  sceneDiscards.add(view);
         }
@@ -87,7 +91,7 @@ public class NavigationStackView extends ViewGroup {
             mainActivity.finish();
             return;
         }
-        if (sceneItems.size() == 0)
+        if (!updatedScenes || sceneItems.size() == 0)
             return;
         int crumb = sceneItems.size() - 1;
         int currentCrumb = oldCrumb;
@@ -175,6 +179,7 @@ public class NavigationStackView extends ViewGroup {
             currentActivity.overridePendingTransition(enter, exit);
         }
         oldCrumb = sceneItems.size() - 1;
+        updatedScenes = false;
     }
 
     @Override
