@@ -84,9 +84,6 @@ public class NavigationStackView extends ViewGroup {
         if (mainActivity == null)
             mainActivity = currentActivity;
         if (finish) {
-            Intent mainIntent = mainActivity.getIntent();
-            mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            currentActivity.navigateUpTo(mainIntent);
             mainActivity.finish();
             return;
         }
