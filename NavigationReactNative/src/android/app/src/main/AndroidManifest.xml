@@ -3,6 +3,7 @@
 
     <application>
         <activity android:name=".SceneActivity" />
+        <activity android:name=".SceneActivity$Crumb0" /> <activity android:name=".SceneActivity$Crumb0" />
         <activity android:name=".SceneActivity$Crumb1" /> <activity android:name=".SceneActivity$Crumb2" />
         <activity android:name=".SceneActivity$Crumb3" /> <activity android:name=".SceneActivity$Crumb4" />
         <activity android:name=".SceneActivity$Crumb5" /> <activity android:name=".SceneActivity$Crumb6" />

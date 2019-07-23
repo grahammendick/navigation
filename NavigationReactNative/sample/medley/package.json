@@ -10,13 +10,13 @@
   "dependencies": {
     "navigation": "^5.2.0",
     "navigation-react": "^4.1.1",
-    "navigation-react-native": "^5.3.0",
+    "navigation-react-native": "^5.3.1",
     "react": "16.8.6",
-    "react-native": "0.60.0"
+    "react-native": "0.60.4"
   },
   "devDependencies": {
-    "@babel/core": "7.5.0",
-    "@babel/runtime": "7.5.0",
+    "@babel/core": "7.5.5",
+    "@babel/runtime": "7.5.5",
     "@react-native-community/eslint-config": "0.0.3",
     "babel-jest": "24.8.0",
     "eslint": "6.0.1",

@@ -24,17 +24,20 @@ import java.util.Map;
 public class NavigationStackView extends ViewGroup {
     public static ArrayList<SceneItem> sceneItems = new ArrayList<>();
     public ArrayList<SceneView> sceneDiscards = new ArrayList<>();
-    private int oldCrumb = 0;
+    private Activity mainActivity;
+    private int oldCrumb = -1;
+    private boolean updatedScenes = false;
     private SceneBinView sceneBin;
     protected String enterAnim;
     protected String exitAnim;
     protected ReadableArray sharedElementNames;
     protected ReadableArray oldSharedElementNames;
+    protected boolean finish = false;
     private int activityOpenEnterAnimationId;
     private int activityOpenExitAnimationId;
     private int activityCloseEnterAnimationId;
     private int activityCloseExitAnimationId;
-
+   
     public NavigationStackView(ThemedReactContext context) {
         super(context);
 
@@ -55,14 +58,13 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public void addView(View child, int index) {
-        Intent intent = null;
-        if (index == 0) {
-            super.addView(child, 0);
-            intent = ((ThemedReactContext) getContext()).getCurrentActivity().getIntent();
+        if (child instanceof SceneView) {
+            sceneItems.add(index, new SceneItem(index, null, (SceneView) child));
+            updatedScenes = true;
         }
-        if (child instanceof SceneView)
-            sceneItems.add(index, new SceneItem(index, intent, (SceneView) child));
         if (child instanceof SceneBinView) {
+            if (sceneBin == null)
+                onAfterUpdateTransaction();
             sceneBin = (SceneBinView) child;
             for(int i = 0; i < sceneDiscards.size(); i++) {
                 sceneBin.getScenes().add(sceneDiscards.get(i));
@@ -75,24 +77,29 @@ public class NavigationStackView extends ViewGroup {
     public void removeViewAt(int index) {
         if (index < sceneItems.size()) {
             SceneView view = sceneItems.remove(index).view;
+            updatedScenes = true;
              if (view.getChildCount() > 0)
                  sceneDiscards.add(view);
         }
     }
 
     protected void onAfterUpdateTransaction() {
-        if (sceneItems.size() == 0)
-            return;
         Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
+        if (mainActivity == null)
+            mainActivity = currentActivity;
+        if (finish) {
+            mainActivity.finish();
+            return;
+        }
+        if (!updatedScenes || sceneItems.size() == 0)
+            return;
         int crumb = sceneItems.size() - 1;
         int currentCrumb = oldCrumb;
         SceneItem sceneItem = sceneItems.get(crumb);
         if (crumb < currentCrumb) {
             Intent intent = sceneItem.intent;
-            String enterAnim = this.enterAnim;
-            String exitAnim = this.exitAnim;
-            int enter = this.getAnimationResourceId(enterAnim, this.activityCloseEnterAnimationId);
-            int exit = this.getAnimationResourceId(exitAnim, this.activityCloseExitAnimationId);
+            int enter = getAnimationResourceId(enterAnim, activityCloseEnterAnimationId);
+            int exit = getAnimationResourceId(exitAnim, activityCloseExitAnimationId);
             final HashMap<String, View> oldSharedElementsMap = getSharedElementMap();
             Pair[] oldSharedElements = (crumb < 20 && currentCrumb - crumb == 1) ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
@@ -130,10 +137,8 @@ public class NavigationStackView extends ViewGroup {
                 sceneItems.get(nextCrumb).intent = intent;
                 intents[i] = intent;
             }
-            String enterAnim = this.enterAnim;
-            String exitAnim = this.exitAnim;
-            int enter = this.getAnimationResourceId(enterAnim, this.activityOpenEnterAnimationId);
-            int exit = this.getAnimationResourceId(exitAnim, this.activityOpenExitAnimationId);
+            int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
+            int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
             final HashMap<String, View> sharedElementsMap = getSharedElementMap();
             final Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements(sharedElementsMap, sharedElementNames) : null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null && sharedElements.length != 0) {
@@ -163,7 +168,18 @@ public class NavigationStackView extends ViewGroup {
             }
             currentActivity.overridePendingTransition(enter, exit);
         }
+        if (crumb == currentCrumb) {
+            Intent intent = new Intent(getContext(), SceneActivity.getActivity(crumb));
+            intent.putExtra(SceneActivity.CRUMB, crumb);
+            sceneItems.get(crumb).intent = intent;
+            int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
+            int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
+            currentActivity.finish();
+            currentActivity.startActivity(intent);
+            currentActivity.overridePendingTransition(enter, exit);
+        }
         oldCrumb = sceneItems.size() - 1;
+        updatedScenes = false;
     }
 
     @Override
@@ -178,8 +194,8 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public void onDetachedFromWindow() {
-        if (sceneItems.size() > 1) {
-            Intent mainIntent = sceneItems.get(0).intent;
+        if (sceneItems.size() > 0) {
+            Intent mainIntent = mainActivity.getIntent();
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             ((ThemedReactContext) getContext()).getCurrentActivity().navigateUpTo(mainIntent);
         }
@@ -188,6 +204,8 @@ public class NavigationStackView extends ViewGroup {
     }
 
     private int getAnimationResourceId(String animationName, int defaultId) {
+        if(((ThemedReactContext) getContext()).getCurrentActivity() == mainActivity)
+            return -1;
         if (animationName == null)
             return defaultId;
         String packageName = getContext().getPackageName();

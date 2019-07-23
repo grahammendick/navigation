@@ -142,6 +142,7 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         }
     }
 
+    public static class Crumb0 extends SceneActivity {}
     public static class Crumb1 extends SceneActivity {} public static class Crumb2 extends SceneActivity {}
     public static class Crumb3 extends SceneActivity {} public static class Crumb4 extends SceneActivity {}
     public static class Crumb5 extends SceneActivity {} public static class Crumb6 extends SceneActivity {}

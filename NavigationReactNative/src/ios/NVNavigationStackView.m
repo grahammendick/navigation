@@ -72,6 +72,15 @@
             [_navigationController setViewControllers:allControllers animated:true];
         }
     }
+    if (crumb == currentCrumb) {
+        NVSceneView *scene = (NVSceneView *) [_scenes objectAtIndex:crumb];
+        if (!![scene superview])
+            return;
+        NVSceneController *controller = [[NVSceneController alloc] initWithScene:scene];
+        NSMutableArray *controllers = [NSMutableArray arrayWithArray:_navigationController.viewControllers];
+        [controllers replaceObjectAtIndex:crumb withObject:controller];
+        [_navigationController setViewControllers:controllers animated:true];
+    }
 }
 
 - (void)notifyForBoundsChange:(NVSceneController *)controller
