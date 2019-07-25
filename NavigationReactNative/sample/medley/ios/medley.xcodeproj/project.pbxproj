@@ -16,10 +16,10 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* medleyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* medleyTests.m */; };
-		8DBBEE1181B5F530C9DC1E6B /* libPods-medleyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1227BA4C86AD24FB58F51A9E /* libPods-medleyTests.a */; };
-		A779F5184830A6DF16B6EE65 /* libPods-medley-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 51C7118B36877CAAA1417A35 /* libPods-medley-tvOS.a */; };
-		BE5331BCF69DD18E20098487 /* libPods-medley.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB84F72417CE68FAE3AB0B3E /* libPods-medley.a */; };
-		FF102104171B8B05DAEEE89F /* libPods-medley-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFB06D2F75C84FF60C2324B /* libPods-medley-tvOSTests.a */; };
+		3A67A18E790FCE2BA674FEBE /* libPods-medleyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C66B4E8C874C317CBFA2E83F /* libPods-medleyTests.a */; };
+		8D547D73E841110D141F529D /* libPods-medley-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DDA7935207FD33DC46EEBC2 /* libPods-medley-tvOS.a */; };
+		991087526771A9140AF26258 /* libPods-medley-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A15EE00CFFFB57AC04F88AE /* libPods-medley-tvOSTests.a */; };
+		B3C076DB1B48F6BE02D278B9 /* libPods-medley.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71810DD7DBC1A7331D00379E /* libPods-medley.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,8 +44,7 @@
 		00E356EE1AD99517003FC87E /* medleyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = medleyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* medleyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = medleyTests.m; sourceTree = "<group>"; };
-		03BDE538F4337A5C529B1B0A /* Pods-medley-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medley-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-medley-tvOSTests/Pods-medley-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		1227BA4C86AD24FB58F51A9E /* libPods-medleyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-medleyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		03F51D8B221432CB8BD6407B /* Pods-medley.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medley.release.xcconfig"; path = "Target Support Files/Pods-medley/Pods-medley.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* medley.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = medley.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = medley/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = medley/AppDelegate.m; sourceTree = "<group>"; };
@@ -53,18 +52,19 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = medley/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = medley/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = medley/main.m; sourceTree = "<group>"; };
-		18E1401A0B4075665BD21A9F /* Pods-medley.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medley.debug.xcconfig"; path = "Target Support Files/Pods-medley/Pods-medley.debug.xcconfig"; sourceTree = "<group>"; };
+		24B94A6C9CA1B47F632F3CB6 /* Pods-medley.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medley.debug.xcconfig"; path = "Target Support Files/Pods-medley/Pods-medley.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* medley-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "medley-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* medley-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "medley-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3482BCD85961C449F3D3AC68 /* Pods-medley-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medley-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-medley-tvOS/Pods-medley-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		51C7118B36877CAAA1417A35 /* libPods-medley-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-medley-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		521ACC37B96FFF3F26E71CD3 /* Pods-medley-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medley-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-medley-tvOSTests/Pods-medley-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		57DBDEEF4300416CBB8E835E /* Pods-medley-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medley-tvOS.release.xcconfig"; path = "Target Support Files/Pods-medley-tvOS/Pods-medley-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		5FFB06D2F75C84FF60C2324B /* libPods-medley-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-medley-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7BE20A490F0FB5BCB77D4158 /* Pods-medleyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medleyTests.release.xcconfig"; path = "Target Support Files/Pods-medleyTests/Pods-medleyTests.release.xcconfig"; sourceTree = "<group>"; };
-		A91094BE2478C8889BD816A8 /* Pods-medleyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medleyTests.debug.xcconfig"; path = "Target Support Files/Pods-medleyTests/Pods-medleyTests.debug.xcconfig"; sourceTree = "<group>"; };
-		D154831C10D54A3257F707ED /* Pods-medley.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medley.release.xcconfig"; path = "Target Support Files/Pods-medley/Pods-medley.release.xcconfig"; sourceTree = "<group>"; };
-		DB84F72417CE68FAE3AB0B3E /* libPods-medley.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-medley.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A15EE00CFFFB57AC04F88AE /* libPods-medley-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-medley-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DDA7935207FD33DC46EEBC2 /* libPods-medley-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-medley-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		71810DD7DBC1A7331D00379E /* libPods-medley.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-medley.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C71D2E1A760608CDBA9515A /* Pods-medley-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medley-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-medley-tvOS/Pods-medley-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		800EBFA1659518DA2DEAFDA3 /* Pods-medley-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medley-tvOS.release.xcconfig"; path = "Target Support Files/Pods-medley-tvOS/Pods-medley-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		8A5BFFE10F9BEA8D15552C6E /* Pods-medleyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medleyTests.release.xcconfig"; path = "Target Support Files/Pods-medleyTests/Pods-medleyTests.release.xcconfig"; sourceTree = "<group>"; };
+		C66B4E8C874C317CBFA2E83F /* libPods-medleyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-medleyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C832C95BA78B54F69D69C7B5 /* Pods-medleyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medleyTests.debug.xcconfig"; path = "Target Support Files/Pods-medleyTests/Pods-medleyTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E26775B9B74CD14E1F9B956F /* Pods-medley-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medley-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-medley-tvOSTests/Pods-medley-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		ECE7415E1057E2B64E985845 /* Pods-medley-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medley-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-medley-tvOSTests/Pods-medley-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -74,7 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DBBEE1181B5F530C9DC1E6B /* libPods-medleyTests.a in Frameworks */,
+				3A67A18E790FCE2BA674FEBE /* libPods-medleyTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE5331BCF69DD18E20098487 /* libPods-medley.a in Frameworks */,
+				B3C076DB1B48F6BE02D278B9 /* libPods-medley.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,7 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A779F5184830A6DF16B6EE65 /* libPods-medley-tvOS.a in Frameworks */,
+				8D547D73E841110D141F529D /* libPods-medley-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,7 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF102104171B8B05DAEEE89F /* libPods-medley-tvOSTests.a in Frameworks */,
+				991087526771A9140AF26258 /* libPods-medley-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,31 +136,15 @@
 			name = medley;
 			sourceTree = "<group>";
 		};
-		2076E6BF3139C1D0A25B2AEB /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				18E1401A0B4075665BD21A9F /* Pods-medley.debug.xcconfig */,
-				D154831C10D54A3257F707ED /* Pods-medley.release.xcconfig */,
-				3482BCD85961C449F3D3AC68 /* Pods-medley-tvOS.debug.xcconfig */,
-				57DBDEEF4300416CBB8E835E /* Pods-medley-tvOS.release.xcconfig */,
-				521ACC37B96FFF3F26E71CD3 /* Pods-medley-tvOSTests.debug.xcconfig */,
-				03BDE538F4337A5C529B1B0A /* Pods-medley-tvOSTests.release.xcconfig */,
-				A91094BE2478C8889BD816A8 /* Pods-medleyTests.debug.xcconfig */,
-				7BE20A490F0FB5BCB77D4158 /* Pods-medleyTests.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				DB84F72417CE68FAE3AB0B3E /* libPods-medley.a */,
-				51C7118B36877CAAA1417A35 /* libPods-medley-tvOS.a */,
-				5FFB06D2F75C84FF60C2324B /* libPods-medley-tvOSTests.a */,
-				1227BA4C86AD24FB58F51A9E /* libPods-medleyTests.a */,
+				71810DD7DBC1A7331D00379E /* libPods-medley.a */,
+				6DDA7935207FD33DC46EEBC2 /* libPods-medley-tvOS.a */,
+				3A15EE00CFFFB57AC04F88AE /* libPods-medley-tvOSTests.a */,
+				C66B4E8C874C317CBFA2E83F /* libPods-medleyTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -180,7 +164,7 @@
 				00E356EF1AD99517003FC87E /* medleyTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				2076E6BF3139C1D0A25B2AEB /* Pods */,
+				B69ED8EBEA2BC413082F2CEC /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -198,6 +182,22 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		B69ED8EBEA2BC413082F2CEC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				24B94A6C9CA1B47F632F3CB6 /* Pods-medley.debug.xcconfig */,
+				03F51D8B221432CB8BD6407B /* Pods-medley.release.xcconfig */,
+				7C71D2E1A760608CDBA9515A /* Pods-medley-tvOS.debug.xcconfig */,
+				800EBFA1659518DA2DEAFDA3 /* Pods-medley-tvOS.release.xcconfig */,
+				E26775B9B74CD14E1F9B956F /* Pods-medley-tvOSTests.debug.xcconfig */,
+				ECE7415E1057E2B64E985845 /* Pods-medley-tvOSTests.release.xcconfig */,
+				C832C95BA78B54F69D69C7B5 /* Pods-medleyTests.debug.xcconfig */,
+				8A5BFFE10F9BEA8D15552C6E /* Pods-medleyTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -205,7 +205,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "medleyTests" */;
 			buildPhases = (
-				DD2C2676AFA70F370D9DE58D /* [CP] Check Pods Manifest.lock */,
+				DEA68B93002DD0154A4D28D5 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -224,7 +224,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "medley" */;
 			buildPhases = (
-				230F7E6B2A01181148AFD2E2 /* [CP] Check Pods Manifest.lock */,
+				DF8BE6A86ED7865839EC67B4 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
@@ -244,7 +244,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "medley-tvOS" */;
 			buildPhases = (
-				A3920B2067943E41A14AD141 /* [CP] Check Pods Manifest.lock */,
+				CF4641407F32B8E32EB9925A /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -264,7 +264,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "medley-tvOSTests" */;
 			buildPhases = (
-				216E82F48D903F5AA439EAD4 /* [CP] Check Pods Manifest.lock */,
+				604C4A4CF4F10386F0902E0B /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -373,7 +373,21 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		216E82F48D903F5AA439EAD4 /* [CP] Check Pods Manifest.lock */ = {
+		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native Code And Images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		604C4A4CF4F10386F0902E0B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -395,43 +409,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		230F7E6B2A01181148AFD2E2 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-medley-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bundle React Native Code And Images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
-		};
-		A3920B2067943E41A14AD141 /* [CP] Check Pods Manifest.lock */ = {
+		CF4641407F32B8E32EB9925A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -453,7 +431,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DD2C2676AFA70F370D9DE58D /* [CP] Check Pods Manifest.lock */ = {
+		DEA68B93002DD0154A4D28D5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -469,6 +447,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-medleyTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DF8BE6A86ED7865839EC67B4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-medley-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -580,7 +580,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A91094BE2478C8889BD816A8 /* Pods-medleyTests.debug.xcconfig */;
+			baseConfigurationReference = C832C95BA78B54F69D69C7B5 /* Pods-medleyTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -603,7 +603,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7BE20A490F0FB5BCB77D4158 /* Pods-medleyTests.release.xcconfig */;
+			baseConfigurationReference = 8A5BFFE10F9BEA8D15552C6E /* Pods-medleyTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -623,7 +623,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 18E1401A0B4075665BD21A9F /* Pods-medley.debug.xcconfig */;
+			baseConfigurationReference = 24B94A6C9CA1B47F632F3CB6 /* Pods-medley.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -643,7 +643,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D154831C10D54A3257F707ED /* Pods-medley.release.xcconfig */;
+			baseConfigurationReference = 03F51D8B221432CB8BD6407B /* Pods-medley.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -662,7 +662,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3482BCD85961C449F3D3AC68 /* Pods-medley-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 7C71D2E1A760608CDBA9515A /* Pods-medley-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -690,7 +690,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 57DBDEEF4300416CBB8E835E /* Pods-medley-tvOS.release.xcconfig */;
+			baseConfigurationReference = 800EBFA1659518DA2DEAFDA3 /* Pods-medley-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -718,7 +718,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 521ACC37B96FFF3F26E71CD3 /* Pods-medley-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = E26775B9B74CD14E1F9B956F /* Pods-medley-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -745,7 +745,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 03BDE538F4337A5C529B1B0A /* Pods-medley-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = ECE7415E1057E2B64E985845 /* Pods-medley-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;

@@ -14,14 +14,6 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
         return "NVNavigationStack";
     }
 
-    @ReactProp(name = "url")
-    public void setUrl(NavigationStackView view, String url) {
-    }
-
-    @ReactProp(name = "oldUrl")
-    public void setOldUrl(NavigationStackView view, String oldUrl) {
-    }
-
     @ReactProp(name = "enterAnim")
     public void setEnterAnim(NavigationStackView view, String enterAnim) {
         view.enterAnim = enterAnim;
@@ -40,6 +32,11 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     @ReactProp(name = "oldSharedElements")
     public void setOldSharedElements(NavigationStackView view, ReadableArray oldSharedElements) {
         view.oldSharedElementNames = oldSharedElements;
+    }
+
+    @ReactProp(name = "finish")
+    public void setFinish(NavigationStackView view, boolean finish) {
+        view.finish = finish;
     }
 
     @Override
