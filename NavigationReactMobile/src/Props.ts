@@ -6,14 +6,14 @@ import { ReactElement, ReactNode } from 'react';
 
 interface MotionProps<T> {
     data: T[];
-    getKey: (item: T) => string | number;
+    getKey: (item: T) => string;
     duration: number;
     enter: (item: T) => any;
     update: (item: T) => any;
     leave?: (item: T) => any;
     onRest?: (item: T) => void;
     progress?: number;
-    children: (items: {style: any, data: T, key: string | number, progress: number, start: any, end: any }[]) => ReactElement<any>[];
+    children: (items: {style: any, data: T, key: string, progress: number, start: any, end: any }[]) => ReactElement<any>[];
 }
 
 interface SharedElementProps {
