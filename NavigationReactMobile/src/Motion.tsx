@@ -74,7 +74,7 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
                     return newItem;
                 })
             )
-            .sort((a, b) => a.index !== b.index ? a.index - b.index : getKey(a).length - getKey(b).length);
+            .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length);
         return {items, moving: items.filter(({rest}) => !rest).length !== 0};
     }
     static areEqual(from = {}, to = {}) {
