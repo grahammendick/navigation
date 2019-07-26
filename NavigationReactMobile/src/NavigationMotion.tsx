@@ -76,7 +76,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     duration={duration}>
                     {styles => (
                         styles.map(({data: {key, state, data}, style}) => {
-                            var crumb = +key.replace(/\+/g, '');
+                            var crumb = +key.replace(/\++$/, '');
                             var scene = <Scene crumb={crumb} renderScene={renderScene} /> ;
                             return children(style, scene, key, crumbs.length === crumb, state, data);
                         }).concat(
