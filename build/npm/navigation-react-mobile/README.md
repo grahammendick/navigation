@@ -12,15 +12,19 @@ var stateNavigator = new Navigation.StateNavigator([
 
 stateNavigator.states.hello.renderScene = function() {
   return (
-    <NavigationReact.NavigationLink stateKey="world">
+    <NavigationReact.NavigationLink 
+      stateKey="world"
+      navigationData={{size: 20}}>
       Hello
     </NavigationReact.NavigationLink>
   );
 };
 
-stateNavigator.states.world.renderScene = function() {
+stateNavigator.states.world.renderScene = function(data) {
   return (
-    <NavigationReact.NavigationBackLink distance={1}>
+    <NavigationReact.NavigationBackLink
+      distance={1}
+      style={{fontSize: data.size}}>
       World
     </NavigationReact.NavigationBackLink>
   );

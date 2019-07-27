@@ -40,11 +40,11 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
         var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...(item as any), index}}), {});
         var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
         var items = prevItems
-            .map((item, index) => {
+            .map(item => {
                 var matchedItem = dataByKey[item.key];
                 var nextItem: any = {key: item.key, data: matchedItem || item.data, tick};
                 nextItem.end = !matchedItem ? (leave || update)(item.data) : update(matchedItem);
-                nextItem.index = !matchedItem ? data.length + index : matchedItem.index;
+                nextItem.index = !matchedItem ? item.index : matchedItem.index;
                 var unchanged = Motion.areEqual(item.end, nextItem.end);
                 if (unchanged) {
                     nextItem.start = item.start;
@@ -74,7 +74,7 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
                     return newItem;
                 })
             )
-            .sort((a, b) => a.index - b.index);
+            .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length);
         return {items, moving: items.filter(({rest}) => !rest).length !== 0};
     }
     static areEqual(from = {}, to = {}) {
