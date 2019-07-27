@@ -112,7 +112,7 @@ export interface NavigationMotionProps {
     /**
      * Renders the Scene with the interpoated styles
      */
-    children: (style: any, scene: ReactElement<any>, key: number, active: boolean, state: State, data: any) => ReactElement<any>;
+    children: (style: any, scene: ReactElement<any>, key: string, active: boolean, state: State, data: any) => ReactElement<any>;
 }
 
 /**
