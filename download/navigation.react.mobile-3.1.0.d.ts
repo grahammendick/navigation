@@ -1,5 +1,5 @@
 /**
- * Navigation React Mobile Type Definitions v3.0.0
+ * Navigation React Mobile Type Definitions v3.1.0
  * (c) Graham Mendick - http://grahammendick.github.io/navigation/
  * License: Apache-2.0
  */
@@ -117,7 +117,7 @@ export interface NavigationMotionProps {
     /**
      * Renders the Scene with the interpoated styles
      */
-    children: (style: any, scene: ReactElement<any>, key: number, active: boolean, state: State, data: any) => ReactElement<any>;
+    children: (style: any, scene: ReactElement<any>, key: string, active: boolean, state: State, data: any) => ReactElement<any>;
 }
 
 /**
