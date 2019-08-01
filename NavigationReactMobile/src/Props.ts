@@ -6,14 +6,14 @@ import { ReactElement, ReactNode } from 'react';
 
 interface MotionProps<T> {
     data: T[];
-    getKey: (item: T) => string | number;
+    getKey: (item: T) => string;
     duration: number;
     enter: (item: T) => any;
     update: (item: T) => any;
     leave?: (item: T) => any;
     onRest?: (item: T) => void;
     progress?: number;
-    children: (items: {style: any, data: T, key: string | number, progress: number, start: any, end: any }[]) => ReactElement<any>[];
+    children: (items: {style: any, data: T, key: string, progress: number, start: any, end: any }[]) => ReactElement<any>[];
 }
 
 interface SharedElementProps {
@@ -54,7 +54,7 @@ interface NavigationMotionProps {
     renderScene: (state: State, data: any) => ReactNode,
     stateNavigator?: StateNavigator;
     navigationEvent: NavigationEvent;
-    children: (style: any, scene: ReactElement<any>, key: number, active: boolean, state: State, data: any) => ReactElement<any>;
+    children: (style: any, scene: ReactElement<any>, key: string, active: boolean, state: State, data: any) => ReactElement<any>;
 }
 
 interface SceneProps {
