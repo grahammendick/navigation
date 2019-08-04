@@ -96,7 +96,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 onDidNavigateBack={this.onDidNavigateBack}>
                 {nextCrumb && 
                     <Ghost data={scenes} getKey={({crumb}) => keys[crumb]}>
-                        {({key, crumb}) => (
+                        {({key, data: {crumb}}) => (
                             <Scene
                                 key={key}
                                 crumb={crumb}
