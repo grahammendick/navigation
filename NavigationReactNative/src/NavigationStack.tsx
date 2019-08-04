@@ -84,13 +84,12 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     render() {
         var {keys, finish} = this.state;
         var {stateNavigator, title, renderScene} = this.props;
-        var {url, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
+        var {crumbs, nextCrumb} = stateNavigator.stateContext;
         var scenes = crumbs.concat(nextCrumb).map((crumb, index) => ({crumb, key: keys[index]}));
         return (
             <NVNavigationStack
                 ref={this.ref}
-                url={url}
-                oldUrl={oldUrl}
+                keys={keys}
                 finish={finish}
                 style={styles.stack}
                 {...this.getAnimation()}
