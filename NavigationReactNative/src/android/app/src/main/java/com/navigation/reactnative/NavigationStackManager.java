@@ -14,6 +14,14 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
         return "NVNavigationStack";
     }
 
+    @ReactProp(name = "url")
+    public void setUrl(NavigationStackView view, String url) {
+    }
+
+    @ReactProp(name = "oldUrl")
+    public void setOldUrl(NavigationStackView view, String oldUrl) {
+    }
+    
     @ReactProp(name = "enterAnim")
     public void setEnterAnim(NavigationStackView view, String enterAnim) {
         view.enterAnim = enterAnim;
