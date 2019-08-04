@@ -4,7 +4,6 @@ import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import Ghost from './Ghost';
 import Scene from './Scene';
-import SceneBin from './SceneBin';
 type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], finish: boolean};
 
@@ -106,9 +105,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                                 renderScene={renderScene} />
                         )}
                     </Ghost>
-                }).concat(
-                    <SceneBin key={this.renderMills} />
-                )}
+                }
             </NVNavigationStack>
         );
     }
