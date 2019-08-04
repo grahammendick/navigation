@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { requireNativeComponent, BackHandler, StyleSheet, View } from 'react-native';
 import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
+import Ghost from './Ghost';
 import Scene from './Scene';
 import SceneBin from './SceneBin';
 type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
@@ -85,6 +86,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         var {keys, finish} = this.state;
         var {stateNavigator, title, renderScene} = this.props;
         var {url, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
+        var scenes = crumbs.concat(nextCrumb).map((crumb, index) => ({crumb, key: keys[index]}));
         return (
             <NVNavigationStack
                 ref={this.ref}
@@ -94,13 +96,17 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 style={styles.stack}
                 {...this.getAnimation()}
                 onDidNavigateBack={this.onDidNavigateBack}>
-                {nextCrumb && crumbs.concat(nextCrumb).map((_, crumb) => (
-                    <Scene
-                        key={keys[crumb]}
-                        crumb={crumb}
-                        title={title}
-                        renderScene={renderScene} />
-                )).concat(
+                {nextCrumb && 
+                    <Ghost data={scenes}>
+                        {({crumb}) => (
+                            <Scene
+                                key={keys[crumb]}
+                                crumb={crumb}
+                                title={title}
+                                renderScene={renderScene} />
+                        )}
+                    </Ghost>
+                }).concat(
                     <SceneBin key={this.renderMills} />
                 )}
             </NVNavigationStack>
