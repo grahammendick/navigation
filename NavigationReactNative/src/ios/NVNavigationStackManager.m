@@ -10,6 +10,7 @@ RCT_EXPORT_MODULE()
     return [[NVNavigationStackView alloc] initWithBridge:self.bridge];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(keys, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(mostRecentEventCount, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(onDidNavigateBack, RCTDirectEventBlock)
 
