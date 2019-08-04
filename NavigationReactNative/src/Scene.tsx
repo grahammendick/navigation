@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { requireNativeComponent, BackHandler, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
-type SceneProps = { crumb: number, renderScene: (state: State, data: any) => ReactNode, title: (state: State, data: any) => string, navigationEvent: NavigationEvent };
+type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any) => ReactNode, title: (state: State, data: any) => string, navigationEvent: NavigationEvent };
 type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
@@ -87,11 +87,12 @@ class Scene extends React.Component<SceneProps, SceneState> {
     }
     render() {
         var {navigationEvent} = this.state;
-        var {crumb, title, navigationEvent: {stateNavigator}} = this.props;
+        var {crumb, title, sceneKey, navigationEvent: {stateNavigator}} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         var {state, data} = (crumb < crumbs.length) ? crumbs[crumb] : nextCrumb;
         return (
             <NVScene
+                sceneKey={sceneKey}
                 title={title(state, data)}
                 style={styles.scene}
                 onWillAppear={this.onWillAppear}>

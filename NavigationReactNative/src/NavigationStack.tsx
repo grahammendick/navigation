@@ -100,6 +100,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                             <Scene
                                 key={key}
                                 crumb={crumb}
+                                sceneKey={key}
                                 title={title}
                                 renderScene={renderScene} />
                         )}
