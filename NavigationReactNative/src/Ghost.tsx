@@ -1,14 +1,14 @@
 import * as React from 'react';
 
-class Ghost extends React.Component<{data: any, children: any}, {items: any}> {
+class Ghost extends React.Component<{getKey: any, data: any, children: any}, {items: any}> {
     constructor(props) {
         super(props);
         this.state = {items: []};
     }
     static getDerivedStateFromProps(props, {items: prevItems}) {
         var tick = performance.now();
-        var {data} = props;
-        var dataByKey = data.reduce((acc, item, index) => ({...acc, [item.key]: {...item, index}}), {});
+        var {getKey, data} = props;
+        var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...item, index}}), {});
         var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
         var items = prevItems
             .map(item => {
@@ -20,10 +20,10 @@ class Ghost extends React.Component<{data: any, children: any}, {items: any}> {
             })
             .filter(item => !item.popTime || item.popTime < tick + 1000)
             .concat(data
-                .filter(item => !itemsByKey[item.key])
+                .filter(item => !itemsByKey[getKey(item)])
                 .map(item => {
-                    var index = dataByKey[item.key].index;
-                    return {key: item.key, data: item, index};
+                    var index = dataByKey[getKey(item)].index;
+                    return {key: getKey(item), data: item, index};
                 })
             )
             .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length);
