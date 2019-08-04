@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { performance } from 'perf_hooks';
 
 class Ghost extends React.Component<{children: any}, {items: any}> {
     constructor(props) {
