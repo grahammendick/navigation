@@ -6,7 +6,7 @@ class Ghost extends React.Component<{getKey: any, data: any, children: any}, {it
         this.state = {items: []};
     }
     static getDerivedStateFromProps(props, {items: prevItems}) {
-        var tick = performance.now();
+        var tick = Date.now();
         var {getKey, data} = props;
         var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...item, index}}), {});
         var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
