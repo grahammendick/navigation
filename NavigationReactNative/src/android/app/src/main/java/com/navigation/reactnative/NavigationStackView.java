@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 public class NavigationStackView extends ViewGroup {
-    private HashMap<Integer, String> sceneKeys = new HashMap<>();
+    private ArrayList<String> sceneKeys = new ArrayList<>();
     public static HashMap<String, SceneItem> sceneItems = new HashMap<>();
     protected ReadableArray keys;
     private Activity mainActivity;
@@ -58,7 +58,7 @@ public class NavigationStackView extends ViewGroup {
     @Override
     public void addView(View child, int index) {
         SceneView scene = (SceneView) child;
-        sceneKeys.put(index, scene.sceneKey);
+        sceneKeys.add(index, scene.sceneKey);
         sceneItems.put(scene.sceneKey, new SceneItem(scene));
     }
 
