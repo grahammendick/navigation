@@ -165,7 +165,7 @@ public class NavigationStackView extends ViewGroup {
             currentActivity.startActivity(intent);
             currentActivity.overridePendingTransition(enter, exit);
         }
-        oldCrumb = sceneItems.size() - 1;
+        oldCrumb = keys.size() - 1;
     }
 
     @Override
