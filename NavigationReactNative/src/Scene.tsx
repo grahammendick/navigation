@@ -31,8 +31,10 @@ class Scene extends React.Component<SceneProps, SceneState> {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
     handleBack() {
+        var {crumb, navigationEvent: {stateNavigator}} = this.props;
+        var {crumbs} = stateNavigator.stateContext;
         var {navigationEvent} = this.state;
-        if (navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
+        if (crumbs.length === crumb && navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
             navigationEvent.stateNavigator.navigateBack(1);
             return true;
         }
