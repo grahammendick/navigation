@@ -15,7 +15,7 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     }
 
     @ReactProp(name = "keys")
-    public void setUrl(NavigationStackView view, ReadableArray keys) {
+    public void setkeys(NavigationStackView view, ReadableArray keys) {
         view.keys = keys;
     }
 
