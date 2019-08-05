@@ -16,10 +16,16 @@ class Scene extends React.Component<SceneProps, SceneState> {
         title: (state: State) => state.title,
         renderScene: (state: State, data: any) => state.renderScene(data)
     }
-    static getDerivedStateFromProps(props: SceneProps) {
+    static getDerivedStateFromProps(props: SceneProps, {navigationEvent: prevNavigationEvent}: SceneState) {
         var {crumb, navigationEvent} = props;
-        var {state, crumbs} = navigationEvent.stateNavigator.stateContext;
-        return (state && crumbs.length === crumb) ? {navigationEvent} : null;
+        var {state, oldState, oldUrl, crumbs} = navigationEvent.stateNavigator.stateContext;
+        if (!state || crumbs.length !== crumb)
+            return null;
+        if (!oldUrl || !prevNavigationEvent)
+            return {navigationEvent};
+        var {crumbs: oldCrumbs} = navigationEvent.stateNavigator.parseLink(oldUrl);
+        var replace = oldCrumbs.length === crumb && oldState !== state;
+        return !replace ? {navigationEvent} : null;
     }
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
