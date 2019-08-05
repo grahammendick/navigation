@@ -19,17 +19,19 @@
     if ([changedProps containsObject:@"title"]) {
         [self.reactViewController.navigationItem setTitle:self.title];
     }
-    if ([changedProps containsObject:@"backgroundColor"]) {
-        [self.reactViewController.navigationController.navigationBar setBarTintColor:self.backgroundColor];
+    if ([changedProps containsObject:@"barTintColor"]) {
+        [self.reactViewController.navigationController.navigationBar setBarTintColor:self.barTintColor];
     }
-    if ([changedProps containsObject:@"color"]) {
-        [self.reactViewController.navigationController.navigationBar setTintColor: self.color];
+    if ([changedProps containsObject:@"tintColor"]) {
+        [self.reactViewController.navigationController.navigationBar setTintColor: self.tintColor];
+    }
+    if ([changedProps containsObject:@"titleColor"]) {
         [self.reactViewController.navigationController.navigationBar setTitleTextAttributes:
-            @{NSForegroundColorAttributeName:self.color}];
+            @{NSForegroundColorAttributeName:self.titleColor}];
 
         if (@available(iOS 11.0, *)) {
             [self.reactViewController.navigationController.navigationBar setLargeTitleTextAttributes:
-                @{NSForegroundColorAttributeName:self.color}];
+                @{NSForegroundColorAttributeName:self.titleColor}];
         }
     }
 }

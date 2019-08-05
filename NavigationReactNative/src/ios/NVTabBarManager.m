@@ -10,8 +10,8 @@ RCT_EXPORT_MODULE()
     return [[NVTabBarView alloc] init];
 }
 
-RCT_EXPORT_VIEW_PROPERTY(backgroundColor, UIColor)
-RCT_EXPORT_VIEW_PROPERTY(color, UIColor)
-RCT_EXPORT_VIEW_PROPERTY(defaultColor, UIColor)
+RCT_EXPORT_VIEW_PROPERTY(barTintColor, UIColor)
+RCT_EXPORT_VIEW_PROPERTY(selectedTintColor, UIColor)
+RCT_EXPORT_VIEW_PROPERTY(unselectedTintColor, UIColor)
 
 @end
