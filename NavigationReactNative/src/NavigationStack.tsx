@@ -24,13 +24,14 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     static getDerivedStateFromProps({stateNavigator}: NavigationStackProps, {keys: prevKeys, stateNavigator: prevStateNavigator}: NavigationStackState) {
         if (stateNavigator === prevStateNavigator)
             return null;
+        var tick = Date.now();
         var {state, crumbs, nextCrumb} = stateNavigator.stateContext;
         var prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
-        var currentKeys = crumbs.concat(nextCrumb).map((_, i) => '' + i);
+        var currentKeys = crumbs.concat(nextCrumb).map((_, i) => i + '@' + tick);
         var newKeys = currentKeys.slice(prevKeys.length);
         var keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
         if (prevKeys.length === keys.length && prevState !== state)
-            keys[keys.length - 1] += '@' + Date.now();
+            keys[keys.length - 1] += currentKeys[keys.length - 1];
         return {keys, stateNavigator};
     }
     componentDidMount() {
