@@ -9,7 +9,6 @@ type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], fin
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
     private ref: React.RefObject<View>;
-    private renderMills = Date.now();
     constructor(props) {
         super(props);
         this.state = {stateNavigator: null, keys: [], finish: false};
@@ -35,11 +34,6 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     }
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
-    }
-    componentDidUpdate() {
-        var mills = Date.now();
-        if (mills - this.renderMills > 2000)
-            this.renderMills = mills;
     }
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
