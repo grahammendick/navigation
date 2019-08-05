@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import com.facebook.react.uimanager.ThemedReactContext;
 
 public class SceneView extends ViewGroup {
+    protected String sceneKey;
 
     public SceneView(ThemedReactContext context) {
         super(context);

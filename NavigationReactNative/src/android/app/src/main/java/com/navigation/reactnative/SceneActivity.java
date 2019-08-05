@@ -21,17 +21,17 @@ import com.facebook.react.views.view.ReactViewGroup;
 import java.util.HashSet;
 
 public class SceneActivity extends ReactActivity implements DefaultHardwareBackBtnHandler {
-    public static final String CRUMB = "Navigation.CRUMB";
+    public static final String KEY = "Navigation.KEY";
     public static final String SHARED_ELEMENTS = "Navigation.SHARED_ELEMENTS";
     private SceneRootViewGroup rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int crumb = getIntent().getIntExtra(CRUMB, 0);
+        String key = getIntent().getStringExtra(KEY);
         rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
-        if (crumb < NavigationStackView.sceneItems.size()) {
-            View view = NavigationStackView.sceneItems.get(crumb).view;
+        if (NavigationStackView.sceneItems.containsKey(key)) {
+            View view = NavigationStackView.sceneItems.get(key).view;
             if (view.getParent() != null)
                 ((ViewGroup) view.getParent()).removeView(view);
             rootView.addView(view);
@@ -49,11 +49,11 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        int crumb = intent.getIntExtra(CRUMB, 0);
+        String key = intent.getStringExtra(KEY);
         if (rootView.getChildCount() > 0)
             rootView.removeViewAt(0);
-        if (crumb < NavigationStackView.sceneItems.size()) {
-            View view = NavigationStackView.sceneItems.get(crumb).view;
+        if (NavigationStackView.sceneItems.containsKey(key)) {
+            View view = NavigationStackView.sceneItems.get(key).view;
             if (view.getParent() != null)
                 ((ViewGroup) view.getParent()).removeView(view);
             rootView.addView(view);
