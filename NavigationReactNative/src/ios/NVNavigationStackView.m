@@ -38,6 +38,10 @@
     [_scenes removeObjectForKey:((NVSceneView *) subview).sceneKey];
 }
 
+- (void)didUpdateReactSubviews
+{
+}
+
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     [super didSetProps:changedProps];
