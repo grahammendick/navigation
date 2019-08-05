@@ -15,10 +15,10 @@ class Ghost extends React.Component<{getKey: any, data: any, children: any}, {it
                 var matchedItem = dataByKey[item.key];
                 var nextItem: any = {key: item.key, data: matchedItem || item.data};
                 nextItem.index = !matchedItem ? item.index : matchedItem.index;
-                nextItem.popTime = !matchedItem ? tick : item.popTime;
+                nextItem.popTime = !matchedItem ? (item.popTime || tick + 1000) : undefined;
                 return nextItem;
             })
-            .filter(item => !item.popTime || item.popTime < tick + 1000)
+            .filter(item => !item.popTime || item.popTime < tick)
             .concat(data
                 .filter(item => !itemsByKey[getKey(item)])
                 .map(item => {
