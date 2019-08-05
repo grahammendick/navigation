@@ -18,7 +18,7 @@ class Ghost extends React.Component<{getKey: any, data: any, children: any}, {it
                 nextItem.popTime = !matchedItem ? (item.popTime || tick + 1000) : undefined;
                 return nextItem;
             })
-            .filter(item => !item.popTime || item.popTime < tick)
+            .filter(item => !item.popTime || tick < item.popTime)
             .concat(data
                 .filter(item => !itemsByKey[getKey(item)])
                 .map(item => {
