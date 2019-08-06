@@ -1,6 +1,7 @@
 import * as React from 'react';
+type GhostProps = {data: any, getKey: any, nativePop: boolean, children: any};
 
-class Ghost extends React.Component<{data: any, getKey: any, nativePop: boolean, children: any}, {items: any}> {
+class Ghost extends React.Component<GhostProps, any> {
     constructor(props) {
         super(props);
         this.state = {items: []};
