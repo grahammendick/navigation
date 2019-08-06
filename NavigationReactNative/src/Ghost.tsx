@@ -6,24 +6,24 @@ class Ghost extends React.Component<{getKey: any, data: any, children: any}, {it
         this.state = {items: []};
     }
     static getDerivedStateFromProps(props, {items: prevItems}) {
-        var tick = Date.now();
         var {getKey, data} = props;
         var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...item, index}}), {});
         var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
         var items = prevItems
+            .filter(item => !item.popped)
             .map(item => {
                 var matchedItem = dataByKey[item.key];
                 var nextItem: any = {key: item.key, data: matchedItem || item.data};
                 nextItem.index = !matchedItem ? item.index : matchedItem.index;
-                nextItem.popTime = !matchedItem ? (item.popTime || tick + 1000) : undefined;
+                nextItem.popped = !matchedItem;
                 return nextItem;
             })
-            .filter(item => !item.popTime || tick < item.popTime)
+            .filter(item => true)
             .concat(data
                 .filter(item => !itemsByKey[getKey(item)])
                 .map(item => {
                     var index = dataByKey[getKey(item)].index;
-                    return {key: getKey(item), data: item, index};
+                    return {key: getKey(item), data: item, index, popped: false};
                 })
             )
             .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length);
