@@ -92,7 +92,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 {...this.getAnimation()}
                 onDidNavigateBack={this.onDidNavigateBack}>
                 {nextCrumb && 
-                    <Ghost
+                    <Ghost<{crumb: number}>
                         data={crumbs.concat(nextCrumb).map((_, crumb) => ({crumb}))}
                         getKey={({crumb}) => keys[crumb]}
                         nativePop={history}>
