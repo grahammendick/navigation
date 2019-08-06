@@ -31,7 +31,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         var newKeys = currentKeys.slice(prevKeys.length);
         var keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
         if (prevKeys.length === keys.length && prevState !== state)
-            keys[keys.length - 1] += currentKeys[keys.length - 1];
+            keys[keys.length - 1] = currentKeys[keys.length - 1];
         return {keys, stateNavigator};
     }
     componentDidMount() {
