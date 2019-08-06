@@ -5,13 +5,13 @@ import { NavigationContext } from 'navigation-react';
 import Ghost from './Ghost';
 import Scene from './Scene';
 type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
-type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], finish: boolean};
+type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], finish: boolean, history: boolean};
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
     private ref: React.RefObject<View>;
     constructor(props) {
         super(props);
-        this.state = {stateNavigator: null, keys: [], finish: false};
+        this.state = {stateNavigator: null, keys: [], finish: false, history: false};
         this.ref = React.createRef<View>();
         this.handleBack = this.handleBack.bind(this);
         this.onDidNavigateBack = this.onDidNavigateBack.bind(this);
@@ -25,14 +25,14 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         if (stateNavigator === prevStateNavigator)
             return null;
         var tick = Date.now();
-        var {state, crumbs, nextCrumb} = stateNavigator.stateContext;
+        var {state, crumbs, nextCrumb, history} = stateNavigator.stateContext;
         var prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
         var currentKeys = crumbs.concat(nextCrumb).map((_, i) => i + '@' + tick);
         var newKeys = currentKeys.slice(prevKeys.length);
         var keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
         if (prevKeys.length === keys.length && prevState !== state)
             keys[keys.length - 1] = currentKeys[keys.length - 1];
-        return {keys, stateNavigator};
+        return {keys, stateNavigator, history};
     }
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
@@ -45,8 +45,10 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         var {eventCount: mostRecentEventCount, crumb} = nativeEvent;
         this.ref.current.setNativeProps({mostRecentEventCount});
         var distance = stateNavigator.stateContext.crumbs.length - crumb;
-        if (stateNavigator.canNavigateBack(distance))
-            stateNavigator.navigateBack(distance);
+        if (stateNavigator.canNavigateBack(distance)) {
+            var url = stateNavigator.getNavigationBackLink(distance);
+            stateNavigator.navigateLink(url, undefined, true);
+        }
     }
     handleBack() {
         this.setState(() => ({finish: true}));
@@ -78,7 +80,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         return {enterAnim, exitAnim, sharedElements, oldSharedElements};
     }
     render() {
-        var {keys, finish} = this.state;
+        var {keys, finish, history} = this.state;
         var {stateNavigator, title, renderScene} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         var scenes = crumbs.concat(nextCrumb).map((_, index) => ({crumb: index}));
@@ -91,7 +93,10 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 {...this.getAnimation()}
                 onDidNavigateBack={this.onDidNavigateBack}>
                 {nextCrumb && 
-                    <Ghost data={scenes} getKey={({crumb}) => keys[crumb]}>
+                    <Ghost
+                        data={scenes}
+                        nativePop={history}
+                        getKey={({crumb}) => keys[crumb]}>
                         {scenes => scenes.map(({key, data: {crumb}}) => (
                             <Scene
                                 key={key}

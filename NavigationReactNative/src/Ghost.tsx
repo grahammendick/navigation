@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-class Ghost extends React.Component<{getKey: any, data: any, children: any}, {items: any}> {
+class Ghost extends React.Component<{data: any, nativePop: boolean, getKey: any, children: any}, {items: any}> {
     constructor(props) {
         super(props);
         this.state = {items: []};
     }
     static getDerivedStateFromProps(props, {items: prevItems}) {
-        var {getKey, data} = props;
+        var {data, nativePop, getKey} = props;
         var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...item, index}}), {});
         var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
         var items = prevItems
@@ -18,7 +18,7 @@ class Ghost extends React.Component<{getKey: any, data: any, children: any}, {it
                 nextItem.popped = !matchedItem;
                 return nextItem;
             })
-            .filter(item => true)
+            .filter(item => !nativePop || !item.popped)
             .concat(data
                 .filter(item => !itemsByKey[getKey(item)])
                 .map(item => {
