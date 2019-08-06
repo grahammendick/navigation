@@ -83,7 +83,6 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         var {keys, finish, history} = this.state;
         var {stateNavigator, title, renderScene} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
-        var scenes = crumbs.concat(nextCrumb).map((_, index) => ({crumb: index}));
         return (
             <NVNavigationStack
                 ref={this.ref}
@@ -94,9 +93,9 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 onDidNavigateBack={this.onDidNavigateBack}>
                 {nextCrumb && 
                     <Ghost
-                        data={scenes}
-                        nativePop={history}
-                        getKey={({crumb}) => keys[crumb]}>
+                        data={crumbs.concat(nextCrumb).map((_, crumb) => ({crumb}))}
+                        getKey={({crumb}) => keys[crumb]}
+                        nativePop={history}>
                         {scenes => scenes.map(({key, data: {crumb}}) => (
                             <Scene
                                 key={key}

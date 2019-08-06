@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-class Ghost extends React.Component<{data: any, nativePop: boolean, getKey: any, children: any}, {items: any}> {
+class Ghost extends React.Component<{data: any, getKey: any, nativePop: boolean, children: any}, {items: any}> {
     constructor(props) {
         super(props);
         this.state = {items: []};
     }
     static getDerivedStateFromProps(props, {items: prevItems}) {
-        var {data, nativePop, getKey} = props;
+        var {data, getKey, nativePop} = props;
         var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...item, index}}), {});
         var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
         var items = prevItems
