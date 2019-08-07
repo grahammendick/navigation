@@ -51,6 +51,7 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
 
     @Override
     protected void onAfterUpdateTransaction(@Nonnull NavigationStackView view) {
+        super.onAfterUpdateTransaction(view);
         view.onAfterUpdateTransaction();
     }
 }
