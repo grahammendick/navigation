@@ -2,10 +2,18 @@ import React, { ReactNode } from 'react';
 import { requireNativeComponent, BackHandler, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
+import SceneContext from './SceneContext';
 type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any) => ReactNode, title: (state: State, data: any) => string, navigationEvent: NavigationEvent };
 type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
+    private sceneTracker = {
+        canHandleBack: () => {
+            var {crumb, navigationEvent} = this.props;
+            var {crumbs} = navigationEvent.stateNavigator.stateContext;
+            return crumbs.length === crumb;
+        }
+    };
     constructor(props) {
         super(props);
         this.state = {navigationEvent: null};
@@ -37,10 +45,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
     handleBack() {
-        var {crumb, navigationEvent: {stateNavigator}} = this.props;
-        var {crumbs} = stateNavigator.stateContext;
         var {navigationEvent} = this.state;
-        if (crumbs.length === crumb && navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
+        if (this.sceneTracker.canHandleBack() && navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
             navigationEvent.stateNavigator.navigateBack(1);
             return true;
         }
@@ -99,15 +105,17 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         var {state, data} = (crumb < crumbs.length) ? crumbs[crumb] : nextCrumb;
         return (
-            <NVScene
-                sceneKey={sceneKey}
-                title={title(state, data)}
-                style={styles.scene}
-                onWillAppear={this.onWillAppear}>
-                <NavigationContext.Provider value={navigationEvent}>
-                    {navigationEvent && this.props.renderScene(state, data)}
-                </NavigationContext.Provider>
-            </NVScene>
+            <SceneContext.Provider value={this.sceneTracker}>
+                <NVScene
+                    sceneKey={sceneKey}
+                    title={title(state, data)}
+                    style={styles.scene}
+                    onWillAppear={this.onWillAppear}>
+                    <NavigationContext.Provider value={navigationEvent}>
+                        {navigationEvent && this.props.renderScene(state, data)}
+                    </NavigationContext.Provider>
+                </NVScene>
+            </SceneContext.Provider>
         );
     }
 }
