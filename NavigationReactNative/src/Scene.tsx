@@ -4,19 +4,20 @@ import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import SceneContext from './SceneContext';
 type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any) => ReactNode, title: (state: State, data: any) => string, navigationEvent: NavigationEvent };
-type SceneState = { navigationEvent: NavigationEvent };
+type SceneState = { navigationEvent: NavigationEvent, replaced: boolean };
 
 class Scene extends React.Component<SceneProps, SceneState> {
     private sceneTracker = {
         canHandleBack: () => {
+            var {replaced} = this.state;
             var {crumb, navigationEvent} = this.props;
             var {crumbs} = navigationEvent.stateNavigator.stateContext;
-            return crumbs.length === crumb;
+            return crumbs.length === crumb && !replaced;
         }
     };
     constructor(props) {
         super(props);
-        this.state = {navigationEvent: null};
+        this.state = {navigationEvent: null, replaced: false};
         this.handleBack = this.handleBack.bind(this);
         this.onWillAppear = this.onWillAppear.bind(this);
     }
@@ -33,7 +34,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
             return {navigationEvent};
         var {crumbs: oldCrumbs} = navigationEvent.stateNavigator.parseLink(oldUrl);
         var replace = oldCrumbs.length === crumb && oldState !== state;
-        return !replace ? {navigationEvent} : null;
+        return !replace ? {navigationEvent} : {replaced: true};
     }
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
