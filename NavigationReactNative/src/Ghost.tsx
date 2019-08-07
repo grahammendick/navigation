@@ -8,8 +8,8 @@ class Ghost<T> extends React.Component<GhostProps<T>, any> {
     }
     static getDerivedStateFromProps(props, {items: prevItems}) {
         var tick = Date.now();
-        var popTime = tick + (!nativePop ? 1000 : 0);
         var {data, getKey, nativePop} = props;
+        var popTime = tick + (!nativePop ? 1000 : 0);
         var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...item, index}}), {});
         var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
         var items = prevItems
