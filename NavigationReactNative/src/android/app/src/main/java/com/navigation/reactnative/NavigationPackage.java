@@ -7,7 +7,6 @@ import com.facebook.react.uimanager.ViewManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class NavigationPackage implements ReactPackage {
@@ -17,8 +16,7 @@ public class NavigationPackage implements ReactPackage {
         return Arrays.<ViewManager>asList(
             new NavigationStackManager(),
             new SceneManager(),
-            new SharedElementManager(),
-            new SceneBinManager()
+            new SharedElementManager()
         );
     }
 
