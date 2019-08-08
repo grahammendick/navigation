@@ -179,6 +179,12 @@ public class NavigationStackView extends ViewGroup {
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        onAfterUpdateTransaction();
+    }
+
+    @Override
     public void onDetachedFromWindow() {
         if (keys.size() > 0) {
             Intent mainIntent = mainActivity.getIntent();
@@ -232,7 +238,6 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        onAfterUpdateTransaction();
     }
 
     static class SceneItem {
