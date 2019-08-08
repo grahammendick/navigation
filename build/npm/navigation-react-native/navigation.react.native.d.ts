@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { Component, ReactNode, Context } from 'react';
 import { ImageURISource, StyleProp, ViewStyle } from 'react-native';
 import { StateNavigator, State } from 'navigation';
 
@@ -32,6 +32,21 @@ export interface NavigationStackProps {
  * Renders a stack of Scenes
  */
 export class NavigationStack extends Component<NavigationStackProps> { }
+
+/**
+ * Tracks a scene as it moves through the Navigation Stack
+ */
+export interface SceneTracker {
+    /**
+     * Determines if a scene can handle the hardware back press
+     */
+    canHandleBack: () => boolean;
+}
+
+/**
+ * The context for providers and consumers of a tracked scene
+ */
+export var SceneContext: Context<SceneTracker>;
 
 /**
  * Defines the Navigation Bar Props contract
