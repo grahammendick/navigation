@@ -38,9 +38,9 @@ export class NavigationStack extends Component<NavigationStackProps> { }
  */
 export interface SceneTracker {
     /**
-     * Determines if a scene can handle the hardware back press
+     * Determines if the scene is at the top of the stack
      */
-    canHandleBack: () => boolean;
+    topOfStack: boolean;
 }
 
 /**
