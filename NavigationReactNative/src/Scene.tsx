@@ -100,17 +100,17 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {crumbs} = stateNavigator.stateContext;
         var {state, data} = navigationEvent ? navigationEvent.stateNavigator.stateContext : crumbs[crumb];
         return (
-            <SceneContext.Provider value={tracker}>
-                <NVScene
-                    sceneKey={sceneKey}
-                    title={title(state, data)}
-                    style={styles.scene}
-                    onWillAppear={this.onWillAppear}>
-                    <NavigationContext.Provider value={navigationEvent}>
+            <NVScene
+                sceneKey={sceneKey}
+                title={title(state, data)}
+                style={styles.scene}
+                onWillAppear={this.onWillAppear}>
+                <NavigationContext.Provider value={navigationEvent}>
+                    <SceneContext.Provider value={tracker}>
                         {navigationEvent && this.props.renderScene(state, data)}
-                    </NavigationContext.Provider>
-                </NVScene>
-            </SceneContext.Provider>
+                    </SceneContext.Provider>
+                </NavigationContext.Provider>
+            </NVScene>
         );
     }
 }
