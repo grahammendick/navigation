@@ -33,8 +33,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
-    shouldComponentUpdate(_nextProps, nextState) {
-        return nextState.navigationEvent !== this.state.navigationEvent;
+    shouldComponentUpdate(_nextProps, {navigationEvent, tracker}: SceneState) {
+        return navigationEvent !== this.state.navigationEvent || tracker !== this.state.tracker;
     }
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
@@ -97,8 +97,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
     render() {
         var {navigationEvent, tracker} = this.state;
         var {crumb, title, sceneKey, navigationEvent: {stateNavigator}} = this.props;
-        var {crumbs, nextCrumb} = stateNavigator.stateContext;
-        var {state, data} = (crumb < crumbs.length) ? crumbs[crumb] : nextCrumb;
+        var {crumbs} = stateNavigator.stateContext;
+        var {state, data} = navigationEvent ? navigationEvent.stateNavigator.stateContext : crumbs[crumb];
         return (
             <SceneContext.Provider value={tracker}>
                 <NVScene
