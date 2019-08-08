@@ -1,4 +1,4 @@
 import * as React from 'react';
-type SceneTracker = { canHandleBack: () => boolean };
+import SceneTracker from './SceneTracker';
 
-export default React.createContext() as React.Context<SceneTracker>;
+export default React.createContext(new SceneTracker());

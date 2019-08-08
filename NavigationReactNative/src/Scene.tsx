@@ -3,21 +3,14 @@ import { requireNativeComponent, BackHandler, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import SceneContext from './SceneContext';
+import SceneTracker from './SceneTracker';
 type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any) => ReactNode, title: (state: State, data: any) => string, navigationEvent: NavigationEvent };
-type SceneState = { navigationEvent: NavigationEvent, replaced: boolean };
+type SceneState = { navigationEvent: NavigationEvent, tracker: SceneTracker };
 
 class Scene extends React.Component<SceneProps, SceneState> {
-    private sceneTracker = {
-        canHandleBack: () => {
-            var {replaced} = this.state;
-            var {crumb, navigationEvent} = this.props;
-            var {crumbs} = navigationEvent.stateNavigator.stateContext;
-            return crumbs.length === crumb && !replaced;
-        }
-    };
     constructor(props) {
         super(props);
-        this.state = {navigationEvent: null, replaced: false};
+        this.state = {navigationEvent: null, tracker: new SceneTracker()};
         this.handleBack = this.handleBack.bind(this);
         this.onWillAppear = this.onWillAppear.bind(this);
     }
@@ -25,16 +18,17 @@ class Scene extends React.Component<SceneProps, SceneState> {
         title: (state: State) => state.title,
         renderScene: (state: State, data: any) => state.renderScene(data)
     }
-    static getDerivedStateFromProps(props: SceneProps, {navigationEvent: prevNavigationEvent}: SceneState) {
+    static getDerivedStateFromProps(props: SceneProps, {navigationEvent: prevNavigationEvent, tracker: prevTracker}: SceneState) {
         var {crumb, navigationEvent} = props;
         var {state, oldState, oldUrl, crumbs} = navigationEvent.stateNavigator.stateContext;
         if (!state || crumbs.length !== crumb)
-            return null;
+            return !prevTracker.topOfStack ? null : {tracker: new SceneTracker()};
         if (!oldUrl || !prevNavigationEvent)
-            return {navigationEvent};
+            return {navigationEvent, tracker: new SceneTracker(true)};
         var {crumbs: oldCrumbs} = navigationEvent.stateNavigator.parseLink(oldUrl);
+        var tracker = prevTracker.topOfStack ? prevTracker : new SceneTracker(true);
         var replace = oldCrumbs.length === crumb && oldState !== state;
-        return !replace ? {navigationEvent} : {replaced: true};
+        return !replace ? {navigationEvent, tracker} : {tracker: new SceneTracker()};
     }
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
@@ -46,8 +40,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
     handleBack() {
-        var {navigationEvent} = this.state;
-        if (this.sceneTracker.canHandleBack() && navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
+        var {navigationEvent, tracker} = this.state;
+        if (tracker.topOfStack && navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
             navigationEvent.stateNavigator.navigateBack(1);
             return true;
         }
@@ -101,12 +95,12 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return stateContext;
     }
     render() {
-        var {navigationEvent} = this.state;
+        var {navigationEvent, tracker} = this.state;
         var {crumb, title, sceneKey, navigationEvent: {stateNavigator}} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         var {state, data} = (crumb < crumbs.length) ? crumbs[crumb] : nextCrumb;
         return (
-            <SceneContext.Provider value={this.sceneTracker}>
+            <SceneContext.Provider value={tracker}>
                 <NVScene
                     sceneKey={sceneKey}
                     title={title(state, data)}
