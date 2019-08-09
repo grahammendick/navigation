@@ -34,19 +34,19 @@ export interface NavigationStackProps {
 export class NavigationStack extends Component<NavigationStackProps> { }
 
 /**
- * Tracks a scene as it moves through the Navigation Stack
+ * Represents the status of a scene
  */
-export interface SceneTracker {
+export interface SceneStatus {
     /**
-     * Determines if the scene is at the top of the stack
+     * Indicates if a scene is at the top of the stack
      */
     topOfStack: boolean;
 }
 
 /**
- * The context for providers and consumers of a tracked scene
+ * The context for providers and consumers of a scene's status
  */
-export var SceneContext: Context<SceneTracker>;
+export var SceneContext: Context<SceneStatus>;
 
 /**
  * Defines the Navigation Bar Props contract
