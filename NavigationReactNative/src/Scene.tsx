@@ -3,14 +3,14 @@ import { requireNativeComponent, BackHandler, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import SceneContext from './SceneContext';
-import SceneTracker from './SceneTracker';
+import SceneStatus from './SceneStatus';
 type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any) => ReactNode, title: (state: State, data: any) => string, navigationEvent: NavigationEvent };
-type SceneState = { navigationEvent: NavigationEvent, tracker: SceneTracker };
+type SceneState = { navigationEvent: NavigationEvent, status: SceneStatus };
 
 class Scene extends React.Component<SceneProps, SceneState> {
     constructor(props) {
         super(props);
-        this.state = {navigationEvent: null, tracker: new SceneTracker()};
+        this.state = {navigationEvent: null, status: new SceneStatus()};
         this.handleBack = this.handleBack.bind(this);
         this.onWillAppear = this.onWillAppear.bind(this);
     }
@@ -18,30 +18,30 @@ class Scene extends React.Component<SceneProps, SceneState> {
         title: (state: State) => state.title,
         renderScene: (state: State, data: any) => state.renderScene(data)
     }
-    static getDerivedStateFromProps(props: SceneProps, {navigationEvent: prevNavigationEvent, tracker: prevTracker}: SceneState) {
+    static getDerivedStateFromProps(props: SceneProps, {navigationEvent: prevNavigationEvent, status: prevStatus}: SceneState) {
         var {crumb, navigationEvent} = props;
         var {state, oldState, oldUrl, crumbs} = navigationEvent.stateNavigator.stateContext;
         if (!state || crumbs.length !== crumb)
-            return !prevTracker.topOfStack ? null : {tracker: new SceneTracker()};
+            return !prevStatus.topOfStack ? null : {status: new SceneStatus()};
         if (!oldUrl || !prevNavigationEvent)
-            return {navigationEvent, tracker: new SceneTracker(true)};
+            return {navigationEvent, status: new SceneStatus(true)};
         var {crumbs: oldCrumbs} = navigationEvent.stateNavigator.parseLink(oldUrl);
-        var tracker = prevTracker.topOfStack ? prevTracker : new SceneTracker(true);
+        var status = prevStatus.topOfStack ? prevStatus : new SceneStatus(true);
         var replace = oldCrumbs.length === crumb && oldState !== state;
-        return !replace ? {navigationEvent, tracker} : {tracker: new SceneTracker()};
+        return !replace ? {navigationEvent, status} : {status: new SceneStatus()};
     }
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
-    shouldComponentUpdate(_nextProps, {navigationEvent, tracker}: SceneState) {
-        return navigationEvent !== this.state.navigationEvent || tracker !== this.state.tracker;
+    shouldComponentUpdate(_nextProps, {navigationEvent, status}: SceneState) {
+        return navigationEvent !== this.state.navigationEvent || status !== this.state.status;
     }
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
     handleBack() {
-        var {navigationEvent, tracker} = this.state;
-        if (tracker.topOfStack && navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
+        var {navigationEvent, status} = this.state;
+        if (status.topOfStack && navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
             navigationEvent.stateNavigator.navigateBack(1);
             return true;
         }
@@ -95,7 +95,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return stateContext;
     }
     render() {
-        var {navigationEvent, tracker} = this.state;
+        var {navigationEvent, status} = this.state;
         var {crumb, title, sceneKey, navigationEvent: {stateNavigator}} = this.props;
         var {crumbs} = stateNavigator.stateContext;
         var {state, data} = navigationEvent ? navigationEvent.stateNavigator.stateContext : crumbs[crumb];
@@ -106,7 +106,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 style={styles.scene}
                 onWillAppear={this.onWillAppear}>
                 <NavigationContext.Provider value={navigationEvent}>
-                    <SceneContext.Provider value={tracker}>
+                    <SceneContext.Provider value={status}>
                         {navigationEvent && this.props.renderScene(state, data)}
                     </SceneContext.Provider>
                 </NavigationContext.Provider>

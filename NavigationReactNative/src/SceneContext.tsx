@@ -1,4 +1,4 @@
 import * as React from 'react';
-import SceneTracker from './SceneTracker';
+import SceneStatus from './SceneStatus';
 
-export default React.createContext(new SceneTracker());
+export default React.createContext(new SceneStatus());
