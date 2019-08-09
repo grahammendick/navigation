@@ -27,7 +27,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         var tick = Date.now();
         var {state, crumbs, nextCrumb, history} = stateNavigator.stateContext;
         var prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
-        var currentKeys = crumbs.concat(nextCrumb).map((_, i) => i + '@' + tick);
+        var currentKeys = crumbs.concat(nextCrumb || []).map((_, i) => i + '@' + tick);
         var newKeys = currentKeys.slice(prevKeys.length);
         var keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
         if (prevKeys.length === keys.length && prevState !== state)

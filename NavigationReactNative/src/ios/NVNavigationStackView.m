@@ -46,9 +46,9 @@
 {
     [super didSetProps:changedProps];
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    if (eventLag != 0)
-        return;
     NSInteger crumb = [self.keys count] - 1;
+    if (eventLag != 0 || crumb == -1)
+        return;
     NSInteger currentCrumb = [_navigationController.viewControllers count] - 1;
     if (crumb < currentCrumb) {
         [_navigationController popToViewController:_navigationController.viewControllers[crumb] animated:true];
