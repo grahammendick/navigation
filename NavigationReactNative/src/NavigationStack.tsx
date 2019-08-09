@@ -91,19 +91,19 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 style={styles.stack}
                 {...this.getAnimation()}
                 onDidNavigateBack={this.onDidNavigateBack}>
-                    <Ghost<{crumb: number}>
-                        data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
-                        getKey={({crumb}) => keys[crumb]}
-                        nativePop={history}>
-                        {scenes => scenes.map(({key, data: {crumb}}) => (
-                            <Scene
-                                key={key}
-                                crumb={crumb}
-                                sceneKey={key}
-                                title={title}
-                                renderScene={renderScene} />
-                        ))}
-                    </Ghost>
+                <Ghost<{crumb: number}>
+                    data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
+                    getKey={({crumb}) => keys[crumb]}
+                    nativePop={history}>
+                    {scenes => scenes.map(({key, data: {crumb}}) => (
+                        <Scene
+                            key={key}
+                            crumb={crumb}
+                            sceneKey={key}
+                            title={title}
+                            renderScene={renderScene} />
+                    ))}
+                </Ghost>
             </NVNavigationStack>
         );
     }
