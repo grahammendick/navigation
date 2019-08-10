@@ -47,22 +47,28 @@
     }
     [self.navigationController.navigationBar setBarTintColor:navigationBar.barTintColor];
     [self.navigationController.navigationBar setTintColor:navigationBar.tintColor];
-    if (navigationBar.titleColor != nil) {
-        [self.navigationController.navigationBar setTitleTextAttributes:
-            @{NSForegroundColorAttributeName:navigationBar.titleColor}];
 
-        if (@available(iOS 11.0, *)) {
-            [self.navigationController.navigationBar setLargeTitleTextAttributes:
-                @{NSForegroundColorAttributeName:navigationBar.titleColor}];
-        }
-    } else {
-        [self.navigationController.navigationBar setTitleTextAttributes:nil];
-        
-        if (@available(iOS 11.0, *)) {
-            [self.navigationController.navigationBar setLargeTitleTextAttributes:nil];
-        }
+    NSMutableDictionary *titleAttributes = [self.navigationController.navigationBar.titleTextAttributes mutableCopy];
+    if (titleAttributes == nil) {
+        titleAttributes = @{}.mutableCopy;
     }
+    [titleAttributes removeObjectForKey:NSForegroundColorAttributeName];
+    if (navigationBar.titleColor != nil) {
+        titleAttributes[NSForegroundColorAttributeName] = navigationBar.titleColor;
+    }
+    [self.navigationController.navigationBar setTitleTextAttributes:titleAttributes];
+
     if (@available(iOS 11.0, *)) {
+        NSMutableDictionary *largeTitleTextAttributes = [self.navigationController.navigationBar.largeTitleTextAttributes mutableCopy];
+        if (largeTitleTextAttributes == nil) {
+            largeTitleTextAttributes = @{}.mutableCopy;
+        }
+        [largeTitleTextAttributes removeObjectForKey:NSForegroundColorAttributeName];
+        if (navigationBar.titleColor != nil) {
+            largeTitleTextAttributes[NSForegroundColorAttributeName] = navigationBar.titleColor;
+        }
+        [self.navigationController.navigationBar setLargeTitleTextAttributes:largeTitleTextAttributes];
+
         self.navigationController.navigationBar.prefersLargeTitles = true;
         [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
     }

@@ -7,7 +7,7 @@ export default ({colors, color}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-          <NavigationBarIOS tintColor={color} titleColor={color} title="Color">
+          <NavigationBarIOS tintColor={color} titleColor={color === 'red' ? color : null} title="Color">
             <RightBarIOS>
               <BarButtonIOS systemItem="cancel" onPress={() => {
                 stateNavigator.navigateBack(1);
