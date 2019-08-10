@@ -26,7 +26,7 @@ stateNavigator.navigate('home');
 
 export default () => (
   Platform.OS === 'ios' ? (
-    <TabBarIOS barTintColor="#ffffff" selectedTintColor="#006dbf">
+    <TabBarIOS>
       <TabBarItemIOS title="Home">
         <NavigationHandler stateNavigator={stateNavigator}>
           <NavigationStack />

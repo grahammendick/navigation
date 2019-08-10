@@ -22,15 +22,9 @@
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     [super didSetProps:changedProps];
-    if ([changedProps containsObject:@"barTintColor"]) {
-        [_tabBarController.tabBar setBarTintColor:self.barTintColor];
-    }
-    if ([changedProps containsObject:@"selectedTintColor"]) {
-        [_tabBarController.tabBar setTintColor: self.selectedTintColor];
-    }
-    if ([changedProps containsObject:@"unselectedTintColor"]) {
-        [_tabBarController.tabBar setUnselectedItemTintColor: self.unselectedTintColor];
-    }
+    [_tabBarController.tabBar setBarTintColor:self.barTintColor];
+    [_tabBarController.tabBar setTintColor: self.selectedTintColor];
+    [_tabBarController.tabBar setUnselectedItemTintColor: self.unselectedTintColor];
 }
 
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex

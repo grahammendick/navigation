@@ -19,7 +19,19 @@
     if ([changedProps containsObject:@"title"]) {
         [self.reactViewController.navigationItem setTitle:self.title];
     }
-        
+    
+    [self updateColors];
+}
+
+- (void)willMoveToSuperview:(nullable UIView *)newSuperview
+{
+    [super willMoveToSuperview:newSuperview];
+    if (!newSuperview) {
+        [self.reactViewController.navigationController setNavigationBarHidden:false];
+    }
+}
+
+-(void)updateColors {
     [self.reactViewController.navigationController.navigationBar setBarTintColor:self.barTintColor];
     [self.reactViewController.navigationController.navigationBar setTintColor: self.tintColor];
 
@@ -43,14 +55,6 @@
             largeTitleTextAttributes[NSForegroundColorAttributeName] = self.titleColor;
         }
         [self.reactViewController.navigationController.navigationBar setLargeTitleTextAttributes:largeTitleTextAttributes];
-    }
-}
-
-- (void)willMoveToSuperview:(nullable UIView *)newSuperview
-{
-    [super willMoveToSuperview:newSuperview];
-    if (!newSuperview) {
-        [self.reactViewController.navigationController setNavigationBarHidden:false];
     }
 }
 

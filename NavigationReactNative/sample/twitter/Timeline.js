@@ -16,7 +16,7 @@ export default ({timeline: {id, name, username, logo, bio,
           onIconClicked={() => {
             stateNavigator.navigateBack(1)
           }} />
-        <NavigationBarIOS title={name} barTintColor="#ffffff" selectedTintColor="#006dbf" />
+        <NavigationBarIOS title={name} />
         <ScrollView 
           contentInsetAdjustmentBehavior="automatic"
           style={styles.view}>

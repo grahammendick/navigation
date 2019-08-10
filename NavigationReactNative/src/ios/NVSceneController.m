@@ -45,30 +45,10 @@
     if (navigationBar.title.length != 0) {
         [self.navigationItem setTitle:navigationBar.title];
     }
-    [self.navigationController.navigationBar setBarTintColor:navigationBar.barTintColor];
-    [self.navigationController.navigationBar setTintColor:navigationBar.tintColor];
 
-    NSMutableDictionary *titleAttributes = [self.navigationController.navigationBar.titleTextAttributes mutableCopy];
-    if (titleAttributes == nil) {
-        titleAttributes = @{}.mutableCopy;
-    }
-    [titleAttributes removeObjectForKey:NSForegroundColorAttributeName];
-    if (navigationBar.titleColor != nil) {
-        titleAttributes[NSForegroundColorAttributeName] = navigationBar.titleColor;
-    }
-    [self.navigationController.navigationBar setTitleTextAttributes:titleAttributes];
+    [navigationBar updateColors];
 
     if (@available(iOS 11.0, *)) {
-        NSMutableDictionary *largeTitleTextAttributes = [self.navigationController.navigationBar.largeTitleTextAttributes mutableCopy];
-        if (largeTitleTextAttributes == nil) {
-            largeTitleTextAttributes = @{}.mutableCopy;
-        }
-        [largeTitleTextAttributes removeObjectForKey:NSForegroundColorAttributeName];
-        if (navigationBar.titleColor != nil) {
-            largeTitleTextAttributes[NSForegroundColorAttributeName] = navigationBar.titleColor;
-        }
-        [self.navigationController.navigationBar setLargeTitleTextAttributes:largeTitleTextAttributes];
-
         self.navigationController.navigationBar.prefersLargeTitles = true;
         [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
     }

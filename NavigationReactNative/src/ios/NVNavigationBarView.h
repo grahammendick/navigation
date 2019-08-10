@@ -9,6 +9,8 @@
 @property (nonatomic, copy) UIColor *tintColor;
 @property (nonatomic, copy) UIColor *titleColor;
 
+-(void)updateColors;
+
 #define NAVIGATION_BAR ((int) 28)
 
 @end
