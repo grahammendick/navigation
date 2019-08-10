@@ -13,7 +13,7 @@ class BackButton extends React.Component<{onPress: () => boolean}> {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
     handleBack() {
-        return this.props.onPress;
+        return this.props.onPress();
     }
     render() {
         return null;
