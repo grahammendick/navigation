@@ -2,13 +2,15 @@ import React, { ReactNode } from 'react';
 import { requireNativeComponent, BackHandler, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
-type SceneProps = { crumb: number, renderScene: (state: State, data: any) => ReactNode, title: (state: State, data: any) => string, navigationEvent: NavigationEvent };
-type SceneState = { navigationEvent: NavigationEvent };
+import SceneContext from './SceneContext';
+import SceneStatus from './SceneStatus';
+type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any) => ReactNode, title: (state: State, data: any) => string, navigationEvent: NavigationEvent };
+type SceneState = { navigationEvent: NavigationEvent, status: SceneStatus };
 
 class Scene extends React.Component<SceneProps, SceneState> {
     constructor(props) {
         super(props);
-        this.state = {navigationEvent: null};
+        this.state = {navigationEvent: null, status: new SceneStatus()};
         this.handleBack = this.handleBack.bind(this);
         this.onWillAppear = this.onWillAppear.bind(this);
     }
@@ -16,23 +18,30 @@ class Scene extends React.Component<SceneProps, SceneState> {
         title: (state: State) => state.title,
         renderScene: (state: State, data: any) => state.renderScene(data)
     }
-    static getDerivedStateFromProps(props: SceneProps) {
+    static getDerivedStateFromProps(props: SceneProps, {navigationEvent: prevNavigationEvent, status: prevStatus}: SceneState) {
         var {crumb, navigationEvent} = props;
-        var {state, crumbs} = navigationEvent.stateNavigator.stateContext;
-        return (state && crumbs.length === crumb) ? {navigationEvent} : null;
+        var {state, oldState, oldUrl, crumbs} = navigationEvent.stateNavigator.stateContext;
+        if (!state || crumbs.length !== crumb)
+            return !prevStatus.topOfStack ? null : {status: new SceneStatus()};
+        if (!oldUrl || !prevNavigationEvent)
+            return {navigationEvent, status: new SceneStatus(true)};
+        var {crumbs: oldCrumbs} = navigationEvent.stateNavigator.parseLink(oldUrl);
+        var status = prevStatus.topOfStack ? prevStatus : new SceneStatus(true);
+        var replace = oldCrumbs.length === crumb && oldState !== state;
+        return !replace ? {navigationEvent, status} : {status: new SceneStatus()};
     }
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
-    shouldComponentUpdate(_nextProps, nextState) {
-        return nextState.navigationEvent !== this.state.navigationEvent;
+    shouldComponentUpdate(_nextProps, {navigationEvent, status}: SceneState) {
+        return navigationEvent !== this.state.navigationEvent || status !== this.state.status;
     }
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
     handleBack() {
-        var {navigationEvent} = this.state;
-        if (navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
+        var {navigationEvent, status} = this.state;
+        if (status.topOfStack && navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
             navigationEvent.stateNavigator.navigateBack(1);
             return true;
         }
@@ -86,17 +95,20 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return stateContext;
     }
     render() {
-        var {navigationEvent} = this.state;
-        var {crumb, title, navigationEvent: {stateNavigator}} = this.props;
-        var {crumbs, nextCrumb} = stateNavigator.stateContext;
-        var {state, data} = (crumb < crumbs.length) ? crumbs[crumb] : nextCrumb;
+        var {navigationEvent, status} = this.state;
+        var {crumb, title, sceneKey, navigationEvent: {stateNavigator}} = this.props;
+        var {crumbs} = stateNavigator.stateContext;
+        var {state, data} = navigationEvent ? navigationEvent.stateNavigator.stateContext : crumbs[crumb];
         return (
             <NVScene
+                sceneKey={sceneKey}
                 title={title(state, data)}
                 style={styles.scene}
                 onWillAppear={this.onWillAppear}>
                 <NavigationContext.Provider value={navigationEvent}>
-                    {navigationEvent && this.props.renderScene(state, data)}
+                    <SceneContext.Provider value={status}>
+                        {navigationEvent && this.props.renderScene(state, data)}
+                    </SceneContext.Provider>
                 </NavigationContext.Provider>
             </NVScene>
         );

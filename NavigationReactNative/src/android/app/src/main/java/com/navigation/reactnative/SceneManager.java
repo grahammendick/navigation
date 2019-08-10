@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.annotations.ReactProp;
 
 public class SceneManager extends ViewGroupManager<SceneView> {
 
@@ -10,17 +11,13 @@ public class SceneManager extends ViewGroupManager<SceneView> {
         return "NVScene";
     }
 
+    @ReactProp(name = "sceneKey")
+    public void setSceneKey(SceneView view, String sceneKey) {
+        view.sceneKey = sceneKey;
+    }
+
     @Override
     public SceneView createViewInstance(ThemedReactContext context) {
         return new SceneView(context);
-    }
-
-    @Override
-    public int getChildCount(SceneView parent) {
-        return 0;
-    }
-
-    @Override
-    public void removeAllViews(SceneView parent) {
     }
 }

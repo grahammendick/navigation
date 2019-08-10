@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { Component, ReactNode, Context } from 'react';
 import { ImageURISource, StyleProp, ViewStyle } from 'react-native';
 import { StateNavigator, State } from 'navigation';
 
@@ -32,6 +32,21 @@ export interface NavigationStackProps {
  * Renders a stack of Scenes
  */
 export class NavigationStack extends Component<NavigationStackProps> { }
+
+/**
+ * Represents the status of a scene
+ */
+export interface SceneStatus {
+    /**
+     * Indicates if a scene is at the top of the stack
+     */
+    topOfStack: boolean;
+}
+
+/**
+ * The context for providers and consumers of a scene's status
+ */
+export var SceneContext: Context<SceneStatus>;
 
 /**
  * Defines the Navigation Bar Props contract
