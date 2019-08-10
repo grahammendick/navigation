@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
-import { requireNativeComponent, BackHandler, StyleSheet } from 'react-native';
+import { requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
+import BackButton from './BackButton';
 import SceneContext from './SceneContext';
 import SceneStatus from './SceneStatus';
 type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any) => ReactNode, title: (state: State, data: any) => string, navigationEvent: NavigationEvent };
@@ -30,14 +31,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var replace = oldCrumbs.length === crumb && oldState !== state;
         return !replace ? {navigationEvent, status} : {status: new SceneStatus()};
     }
-    componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
-    }
     shouldComponentUpdate(_nextProps, {navigationEvent, status}: SceneState) {
         return navigationEvent !== this.state.navigationEvent || status !== this.state.status;
-    }
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
     handleBack() {
         var {navigationEvent, status} = this.state;
@@ -105,6 +100,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 title={title(state, data)}
                 style={styles.scene}
                 onWillAppear={this.onWillAppear}>
+                <BackButton onPress={this.handleBack} />
                 <NavigationContext.Provider value={navigationEvent}>
                     <SceneContext.Provider value={status}>
                         {navigationEvent && this.props.renderScene(state, data)}
