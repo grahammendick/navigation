@@ -2,9 +2,9 @@ import React, { ReactNode } from 'react';
 import { requireNativeComponent, StyleSheet, View } from 'react-native';
 import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
+import BackButton from './BackButton';
 import Ghost from './Ghost';
 import Scene from './Scene';
-import BackButton from './BackButton';
 type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], finish: boolean, history: boolean};
 
