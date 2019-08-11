@@ -64,6 +64,18 @@ export interface NavigationBarIOSProps {
      * The title
      */
     title?: string;
+    /**
+     * The background color of the navigation bar
+     */
+    barTintColor?: string;
+    /**
+     * The color of foreground elements on the navigation bar
+     */
+    tintColor?: string;
+    /**
+     * The color of the title view
+     */
+    titleColor?: string;
 }
 
 /**
@@ -211,7 +223,20 @@ export class TabBarItemIOS extends Component<TabBarItemIOSProps> {}
  * Defines the Tab Bar Props contract
  */
 export interface TabBarIOSProps {
-    children: React.ReactElement<TabBarItemIOS> | React.ReactElement<TabBarItemIOS>[]
+    children: React.ReactElement<TabBarItemIOS> | React.ReactElement<TabBarItemIOS>[];
+
+    /**
+     * The background color of the tab bar
+     */
+    barTintColor?: string;
+    /**
+     * The color of the content within the tab bar
+     */
+    selectedTintColor?: string;
+    /**
+     * The color of unselected content wihtin the tab bar
+     */
+    unselectedTintColor?: string;
 }
 
 /**

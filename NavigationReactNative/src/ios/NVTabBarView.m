@@ -19,6 +19,14 @@
     return self;
 }
 
+- (void)didSetProps:(NSArray<NSString *> *)changedProps
+{
+    [super didSetProps:changedProps];
+    [_tabBarController.tabBar setBarTintColor:self.barTintColor];
+    [_tabBarController.tabBar setTintColor: self.selectedTintColor];
+    [_tabBarController.tabBar setUnselectedItemTintColor: self.unselectedTintColor];
+}
+
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
