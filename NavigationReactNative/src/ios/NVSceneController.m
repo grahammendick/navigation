@@ -45,6 +45,9 @@
     if (navigationBar.title.length != 0) {
         [self.navigationItem setTitle:navigationBar.title];
     }
+
+    [navigationBar updateColors];
+
     if (@available(iOS 11.0, *)) {
         self.navigationController.navigationBar.prefersLargeTitles = true;
         [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
