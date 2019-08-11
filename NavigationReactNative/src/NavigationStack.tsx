@@ -1,9 +1,10 @@
 import React, { ReactNode } from 'react';
-import { requireNativeComponent, BackHandler, StyleSheet, View } from 'react-native';
+import { requireNativeComponent, StyleSheet, View } from 'react-native';
 import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import Ghost from './Ghost';
 import Scene from './Scene';
+import BackButton from './BackButton';
 type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], finish: boolean, history: boolean};
 
@@ -33,12 +34,6 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         if (prevKeys.length === keys.length && prevState !== state)
             keys[keys.length - 1] = currentKeys[keys.length - 1];
         return {keys, stateNavigator, history};
-    }
-    componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
-    }
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
     onDidNavigateBack({nativeEvent}) {
         var {stateNavigator} = this.props;
@@ -91,6 +86,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 style={styles.stack}
                 {...this.getAnimation()}
                 onDidNavigateBack={this.onDidNavigateBack}>
+                <BackButton onPress={this.handleBack} />
                 <Ghost<{crumb: number}>
                     data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
                     getKey={({crumb}) => keys[crumb]}
