@@ -30,8 +30,8 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         super.onCreate(savedInstanceState);
         String key = getIntent().getStringExtra(KEY);
         rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
-        if (NavigationStackView.sceneItems.containsKey(key)) {
-            View view = NavigationStackView.sceneItems.get(key).view;
+        if (NavigationStackView.scenes.containsKey(key)) {
+            View view = NavigationStackView.scenes.get(key);
             if (view.getParent() != null)
                 ((ViewGroup) view.getParent()).removeView(view);
             rootView.addView(view);
@@ -52,8 +52,8 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         String key = intent.getStringExtra(KEY);
         if (rootView.getChildCount() > 0)
             rootView.removeViewAt(0);
-        if (NavigationStackView.sceneItems.containsKey(key)) {
-            View view = NavigationStackView.sceneItems.get(key).view;
+        if (NavigationStackView.scenes.containsKey(key)) {
+            View view = NavigationStackView.scenes.get(key);
             if (view.getParent() != null)
                 ((ViewGroup) view.getParent()).removeView(view);
             rootView.addView(view);
