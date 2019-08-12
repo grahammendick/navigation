@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class NavigationStackView extends ViewGroup {
     private ArrayList<String> sceneKeys = new ArrayList<>();
-    public static HashMap<String, SceneItem> sceneItems = new HashMap<>();
+    public static HashMap<String, SceneView> sceneItems = new HashMap<>();
     protected ReadableArray keys;
     private Activity mainActivity;
     private int oldCrumb = -1;
@@ -60,7 +60,7 @@ public class NavigationStackView extends ViewGroup {
     public void addView(View child, int index) {
         SceneView scene = (SceneView) child;
         sceneKeys.add(index, scene.sceneKey);
-        sceneItems.put(scene.sceneKey, new SceneItem(scene));
+        sceneItems.put(scene.sceneKey, scene);
     }
 
     @Override
@@ -82,8 +82,10 @@ public class NavigationStackView extends ViewGroup {
         int crumb = keys.size() - 1;
         int currentCrumb = oldCrumb;
         if (crumb < currentCrumb) {
-            SceneItem sceneItem = sceneItems.get(keys.getString(crumb));
-            Intent intent = sceneItem.intent;
+            Intent intent = new Intent(getContext(), SceneActivity.getActivity(crumb));
+            String key = keys.getString(crumb);
+            intent.putExtra(SceneActivity.KEY, key);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             int enter = getAnimationResourceId(enterAnim, activityCloseEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityCloseExitAnimationId);
             final HashMap<String, View> oldSharedElementsMap = getSharedElementMap();
@@ -109,7 +111,6 @@ public class NavigationStackView extends ViewGroup {
                 });
                 currentActivity.finishAfterTransition();
             } else {
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 currentActivity.navigateUpTo(intent);
             }
             currentActivity.overridePendingTransition(enter, exit);
@@ -121,7 +122,6 @@ public class NavigationStackView extends ViewGroup {
                 Intent intent = new Intent(getContext(), SceneActivity.getActivity(nextCrumb));
                 String key = keys.getString(nextCrumb);
                 intent.putExtra(SceneActivity.KEY, key);
-                sceneItems.get(key).intent = intent;
                 intents[i] = intent;
             }
             int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
@@ -159,7 +159,6 @@ public class NavigationStackView extends ViewGroup {
             Intent intent = new Intent(getContext(), SceneActivity.getActivity(crumb));
             String key = keys.getString(crumb);
             intent.putExtra(SceneActivity.KEY, key);
-            sceneItems.get(key).intent = intent;
             int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
             currentActivity.finish();
@@ -177,7 +176,7 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public View getChildAt(int index) {
-        return sceneItems.get(sceneKeys.get(index)).view;
+        return sceneItems.get(sceneKeys.get(index));
     }
 
     @Override
@@ -240,14 +239,5 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-    }
-
-    static class SceneItem {
-        public Intent intent;
-        public SceneView view;
-
-        public SceneItem(SceneView view){
-            this.view = view;
-        }
     }
 }
