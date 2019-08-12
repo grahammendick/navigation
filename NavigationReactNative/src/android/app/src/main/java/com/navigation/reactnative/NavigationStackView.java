@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class NavigationStackView extends ViewGroup {
     private ArrayList<String> sceneKeys = new ArrayList<>();
-    public static HashMap<String, SceneView> sceneItems = new HashMap<>();
+    public static HashMap<String, SceneView> scenes = new HashMap<>();
     protected ReadableArray keys;
     private Activity mainActivity;
     private int oldCrumb = -1;
@@ -60,13 +60,13 @@ public class NavigationStackView extends ViewGroup {
     public void addView(View child, int index) {
         SceneView scene = (SceneView) child;
         sceneKeys.add(index, scene.sceneKey);
-        sceneItems.put(scene.sceneKey, scene);
+        scenes.put(scene.sceneKey, scene);
     }
 
     @Override
     public void removeViewAt(int index) {
         String sceneKey = sceneKeys.remove(index);
-        sceneItems.remove(sceneKey);
+        scenes.remove(sceneKey);
     }
 
     protected void onAfterUpdateTransaction() {
@@ -77,7 +77,7 @@ public class NavigationStackView extends ViewGroup {
             mainActivity.finish();
             return;
         }
-        if (sceneItems.size() == 0)
+        if (scenes.size() == 0)
             return;
         int crumb = keys.size() - 1;
         int currentCrumb = oldCrumb;
@@ -171,12 +171,12 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public int getChildCount() {
-        return sceneItems.size();
+        return scenes.size();
     }
 
     @Override
     public View getChildAt(int index) {
-        return sceneItems.get(sceneKeys.get(index));
+        return scenes.get(sceneKeys.get(index));
     }
 
     @Override
@@ -192,7 +192,7 @@ public class NavigationStackView extends ViewGroup {
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             ((ThemedReactContext) getContext()).getCurrentActivity().navigateUpTo(mainIntent);
         }
-        sceneItems.clear();
+        scenes.clear();
         super.onDetachedFromWindow();
     }
 
