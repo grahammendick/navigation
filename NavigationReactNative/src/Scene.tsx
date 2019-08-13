@@ -97,7 +97,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 title={title(state, data)}
                 style={styles.scene}
                 onWillAppear={this.onWillAppear}
-                onPopped={({nativeEvent}) => popped(sceneKey)}>
+                onPopped={() => popped(sceneKey)}>
                 <BackButton onPress={this.handleBack} />
                 <NavigationContext.Provider value={navigationEvent}>
                     {navigationEvent && this.props.renderScene(state, data)}
