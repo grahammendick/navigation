@@ -3,7 +3,9 @@ package com.navigation.reactnative;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
@@ -36,9 +38,11 @@ public class SceneView extends ViewGroup {
             }
         };
 
-    protected void onPopped() {
+    protected void onPopped(Boolean recyclable) {
+        WritableMap event = Arguments.createMap();
+        event.putBoolean("recyclable", recyclable);
         ReactContext reactContext = (ReactContext)getContext();
-        reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onPopped", null);
+        reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onPopped", event);
     }
 
     @Override

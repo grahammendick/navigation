@@ -65,8 +65,10 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     protected void onDestroy() {
         super.onDestroy();
         String key = getIntent().getStringExtra(KEY);
-        SceneView view = NavigationStackView.scenes.get(key);
-        view.onPopped();
+        if (NavigationStackView.scenes.containsKey(key)) {
+            SceneView view = NavigationStackView.scenes.get(key);
+            view.onPopped(getClass().getSimpleName().equals("SceneActivity"));
+        }
     }
 
     static class SceneRootViewGroup extends ReactViewGroup implements RootView {
