@@ -3,15 +3,13 @@ import { requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
-import SceneContext from './SceneContext';
-import SceneStatus from './SceneStatus';
 type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any) => ReactNode, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
-type SceneState = { navigationEvent: NavigationEvent, status: SceneStatus };
+type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
     constructor(props) {
         super(props);
-        this.state = {navigationEvent: null, status: new SceneStatus()};
+        this.state = {navigationEvent: null};
         this.handleBack = this.handleBack.bind(this);
         this.onWillAppear = this.onWillAppear.bind(this);
     }
@@ -19,23 +17,22 @@ class Scene extends React.Component<SceneProps, SceneState> {
         title: (state: State) => state.title,
         renderScene: (state: State, data: any) => state.renderScene(data)
     }
-    static getDerivedStateFromProps(props: SceneProps, {navigationEvent: prevNavigationEvent, status: prevStatus}: SceneState) {
+    static getDerivedStateFromProps(props: SceneProps, {navigationEvent: prevNavigationEvent}: SceneState) {
         var {crumb, navigationEvent} = props;
         var {state, oldState, oldUrl, crumbs} = navigationEvent.stateNavigator.stateContext;
         if (!state || crumbs.length !== crumb)
-            return !prevStatus.topOfStack ? null : {status: new SceneStatus()};
+            return null;
         if (!oldUrl || !prevNavigationEvent)
-            return {navigationEvent, status: new SceneStatus(true)};
+            return {navigationEvent};
         var {crumbs: oldCrumbs} = navigationEvent.stateNavigator.parseLink(oldUrl);
-        var status = prevStatus.topOfStack ? prevStatus : new SceneStatus(true);
         var replace = oldCrumbs.length === crumb && oldState !== state;
-        return !replace ? {navigationEvent, status} : {status: new SceneStatus()};
+        return !replace ? {navigationEvent} : null;
     }
-    shouldComponentUpdate(_nextProps, {navigationEvent, status}: SceneState) {
-        return navigationEvent !== this.state.navigationEvent || status !== this.state.status;
+    shouldComponentUpdate(_nextProps, {navigationEvent}: SceneState) {
+        return navigationEvent !== this.state.navigationEvent;
     }
     handleBack() {
-        var {navigationEvent, status} = this.state;
+        var {navigationEvent} = this.state;
         if (navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
             navigationEvent.stateNavigator.navigateBack(1);
             return true;
@@ -90,7 +87,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return stateContext;
     }
     render() {
-        var {navigationEvent, status} = this.state;
+        var {navigationEvent} = this.state;
         var {crumb, title, sceneKey, popped, navigationEvent: {stateNavigator}} = this.props;
         var {crumbs} = stateNavigator.stateContext;
         var {state, data} = navigationEvent ? navigationEvent.stateNavigator.stateContext : crumbs[crumb];
@@ -103,9 +100,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 onPopped={({nativeEvent}) => popped(sceneKey)}>
                 <BackButton onPress={this.handleBack} />
                 <NavigationContext.Provider value={navigationEvent}>
-                    <SceneContext.Provider value={status}>
-                        {navigationEvent && this.props.renderScene(state, data)}
-                    </SceneContext.Provider>
+                    {navigationEvent && this.props.renderScene(state, data)}
                 </NavigationContext.Provider>
             </NVScene>
         );
