@@ -1,7 +1,7 @@
 import * as React from 'react';
-type GhostProps<T> = {data: T[], getKey: any, nativePop: boolean, children: (items: {key: string, data: T}[], popped: (key: string) => void) => React.ReactElement<any>[]};
+type PopSyncProps<T> = {data: T[], getKey: any, nativePop: boolean, children: (items: {key: string, data: T}[], popped: (key: string) => void) => React.ReactElement<any>[]};
 
-class Ghost<T> extends React.Component<GhostProps<T>, any> {
+class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
     constructor(props) {
         super(props);
         this.state = {items: []};
@@ -48,4 +48,4 @@ class Ghost<T> extends React.Component<GhostProps<T>, any> {
     }
 }
 
-export default Ghost;
+export default PopSync;

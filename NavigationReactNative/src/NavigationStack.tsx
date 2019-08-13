@@ -3,7 +3,7 @@ import { requireNativeComponent, StyleSheet, View } from 'react-native';
 import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import BackButton from './BackButton';
-import Ghost from './Ghost';
+import PopSync from './PopSync';
 import Scene from './Scene';
 type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], finish: boolean, history: boolean};
@@ -87,7 +87,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 {...this.getAnimation()}
                 onDidNavigateBack={this.onDidNavigateBack}>
                 <BackButton onPress={this.handleBack} />
-                <Ghost<{crumb: number}>
+                <PopSync<{crumb: number}>
                     data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
                     getKey={({crumb}) => keys[crumb]}
                     nativePop={history}>
@@ -100,7 +100,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                             popped={popped}
                             renderScene={renderScene} />
                     ))}
-                </Ghost>
+                </PopSync>
             </NVNavigationStack>
         );
     }
