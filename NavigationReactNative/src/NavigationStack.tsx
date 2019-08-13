@@ -91,12 +91,13 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                     data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
                     getKey={({crumb}) => keys[crumb]}
                     nativePop={history}>
-                    {scenes => scenes.map(({key, data: {crumb}}) => (
+                    {(scenes, popped) => scenes.map(({key, data: {crumb}}) => (
                         <Scene
                             key={key}
                             crumb={crumb}
                             sceneKey={key}
                             title={title}
+                            popped={popped}
                             renderScene={renderScene} />
                     ))}
                 </Ghost>

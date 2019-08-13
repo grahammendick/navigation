@@ -1,10 +1,11 @@
 import * as React from 'react';
-type GhostProps<T> = {data: T[], getKey: any, nativePop: boolean, children: (items: {key: string, data: T}[]) => React.ReactElement<any>[]};
+type GhostProps<T> = {data: T[], getKey: any, nativePop: boolean, children: (items: {key: string, data: T}[], popped: (key: string) => void) => React.ReactElement<any>[]};
 
 class Ghost<T> extends React.Component<GhostProps<T>, any> {
     constructor(props) {
         super(props);
         this.state = {items: []};
+        this.popped = this.popped.bind(this);
     }
     static getDerivedStateFromProps(props, {items: prevItems}) {
         var tick = Date.now();
@@ -31,8 +32,14 @@ class Ghost<T> extends React.Component<GhostProps<T>, any> {
             .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length);
         return {items};
     }
+    popped(key: string) {
+        this.setState(({items: prevItems}) => {
+            var items = prevItems.filter(item => item.key !== key);
+            return {items};            
+        });
+    }
     render() {
-        return this.props.children(this.state.items);
+        return this.props.children(this.state.items, this.popped);
     }
 }
 

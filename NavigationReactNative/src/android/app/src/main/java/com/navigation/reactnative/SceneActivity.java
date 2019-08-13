@@ -49,6 +49,7 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        setIntent(intent);
         String key = intent.getStringExtra(KEY);
         if (rootView.getChildCount() > 0)
             rootView.removeViewAt(0);
@@ -58,6 +59,14 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
                 ((ViewGroup) view.getParent()).removeView(view);
             rootView.addView(view);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        String key = getIntent().getStringExtra(KEY);
+        SceneView view = NavigationStackView.scenes.get(key);
+        view.onPopped();
     }
 
     static class SceneRootViewGroup extends ReactViewGroup implements RootView {
