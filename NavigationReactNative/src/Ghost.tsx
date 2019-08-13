@@ -21,7 +21,7 @@ class Ghost<T> extends React.Component<GhostProps<T>, any> {
                 nextItem.popTime = !matchedItem ? (item.popTime || popTime) : undefined;
                 return nextItem;
             })
-            .filter(item => !item.popTime || tick < item.popTime)
+            //.filter(item => !item.popTime || tick < item.popTime)
             .concat(data
                 .filter(item => !itemsByKey[getKey(item)])
                 .map(item => {
