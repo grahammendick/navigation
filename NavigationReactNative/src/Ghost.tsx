@@ -1,5 +1,5 @@
 import * as React from 'react';
-type GhostProps<T> = {data: T[], getKey: any, nativePop: boolean, children: (items: {key: string, data: T}[], popped: (key: string, recycled: boolean) => void) => React.ReactElement<any>[]};
+type GhostProps<T> = {data: T[], getKey: any, nativePop: boolean, children: (items: {key: string, data: T}[], popped: (key: string) => void) => React.ReactElement<any>[]};
 
 class Ghost<T> extends React.Component<GhostProps<T>, any> {
     constructor(props) {
@@ -32,13 +32,13 @@ class Ghost<T> extends React.Component<GhostProps<T>, any> {
             .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length);
         return {items};
     }
-    popped(key: string, recyclable: boolean) {
+    popped(key: string) {
         this.setState(({items: prevItems}) => {
             var poppedItem = prevItems.filter(item => item.key === key)[0];
             if (!poppedItem)
                 return null;
-            var items = prevItems.filter(item => (
-                item.key !== key && (!recyclable || item.popTime !== poppedItem.popTime)
+            var items = prevItems.filter(({popTime, index}) => (
+                popTime !== poppedItem.popTime || index > poppedItem.index 
             ));
             return {items};            
         });

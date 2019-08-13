@@ -5,7 +5,7 @@ import { NavigationContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
 import SceneContext from './SceneContext';
 import SceneStatus from './SceneStatus';
-type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any) => ReactNode, title: (state: State, data: any) => string, popped: (key: string, recycled: boolean) => void, navigationEvent: NavigationEvent };
+type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any) => ReactNode, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
 type SceneState = { navigationEvent: NavigationEvent, status: SceneStatus };
 
 class Scene extends React.Component<SceneProps, SceneState> {
@@ -100,7 +100,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 title={title(state, data)}
                 style={styles.scene}
                 onWillAppear={this.onWillAppear}
-                onPopped={({nativeEvent}) => popped(sceneKey, nativeEvent.recyclable)}>
+                onPopped={({nativeEvent}) => popped(sceneKey)}>
                 <BackButton onPress={this.handleBack} />
                 <NavigationContext.Provider value={navigationEvent}>
                     <SceneContext.Provider value={status}>
