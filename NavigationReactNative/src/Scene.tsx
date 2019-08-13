@@ -36,7 +36,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     }
     handleBack() {
         var {navigationEvent, status} = this.state;
-        if (status.topOfStack && navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
+        if (navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
             navigationEvent.stateNavigator.navigateBack(1);
             return true;
         }
