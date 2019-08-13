@@ -37,7 +37,7 @@ public class SceneView extends ViewGroup {
         };
 
     protected void onPopped() {
-        ReactContext reactContext = (ReactContext)getContext();
+        ReactContext reactContext = (ReactContext) getContext();
         reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onPopped", null);
     }
 
