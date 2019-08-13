@@ -172,5 +172,4 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
             return SceneActivity.class;
         }
     }
-
 }
