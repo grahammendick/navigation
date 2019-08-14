@@ -17,7 +17,7 @@ class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
                 var matchedItem = dataByKey[item.key];
                 var nextItem: any = {key: item.key, data: matchedItem || item.data};
                 nextItem.index = !matchedItem ? item.index : matchedItem.index;
-                nextItem.reactPop = !matchedItem ? (item.reactPop || tick) : undefined;
+                nextItem.reactPop = !matchedItem ? (item.reactPop || tick) : 0;
                 return nextItem;
             })
             .concat(data
