@@ -24,10 +24,10 @@ class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
                 .filter(item => !itemsByKey[getKey(item)])
                 .map(item => {
                     var index = dataByKey[getKey(item)].index;
-                    return {key: getKey(item), data: item, index};
+                    return {key: getKey(item), data: item, index, reactPop: 0};
                 })
             )
-            .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length);
+            .sort((a, b) => a.index !== b.index ? a.index - b.index : b.reactPop - a.reactPop);
         return {items};
     }
     popNative(key: string) {
