@@ -14,4 +14,9 @@
     self.onWillAppear(nil);
 }
 
+-(void)didPop
+{
+    self.onPopped(nil);
+}
+
 @end

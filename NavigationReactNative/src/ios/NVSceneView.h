@@ -6,7 +6,9 @@
 @property (nonatomic, copy) NSString *sceneKey;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) RCTDirectEventBlock onWillAppear;
+@property (nonatomic, copy) RCTDirectEventBlock onPopped;
 
 -(void)willAppear;
+-(void)didPop;
 
 @end
