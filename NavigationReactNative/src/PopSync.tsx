@@ -33,7 +33,7 @@ class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
     popNative(key: string) {
         this.setState(({items: prevItems}) => {
             var poppedItem = prevItems.filter(item => item.key === key)[0];
-            if (!poppedItem)
+            if (!poppedItem || !poppedItem.reactPop)
                 return null;
             var items = prevItems.filter(({reactPop, index}) => (
                 reactPop !== poppedItem.reactPop || index > poppedItem.index 
