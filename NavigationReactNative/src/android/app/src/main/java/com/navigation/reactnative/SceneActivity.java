@@ -67,7 +67,8 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         String key = getIntent().getStringExtra(KEY);
         if (NavigationStackView.scenes.containsKey(key)) {
             SceneView view = NavigationStackView.scenes.get(key);
-            view.onPopped();
+            if (view.getParent() != null && view.getParent() == rootView)
+                view.onPopped();
         }
     }
 
