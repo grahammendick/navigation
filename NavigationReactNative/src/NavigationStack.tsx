@@ -89,13 +89,13 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 <PopSync<{crumb: number}>
                     data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
                     getKey={({crumb}) => keys[crumb]}>
-                    {(scenes, popped) => scenes.map(({key, data: {crumb}}) => (
+                    {(scenes, popNative) => scenes.map(({key, data: {crumb}}) => (
                         <Scene
                             key={key}
                             crumb={crumb}
                             sceneKey={key}
                             title={title}
-                            popped={popped}
+                            popped={popNative}
                             renderScene={renderScene} />
                     ))}
                 </PopSync>

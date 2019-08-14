@@ -1,11 +1,11 @@
 import * as React from 'react';
-type PopSyncProps<T> = {data: T[], getKey: any, children: (items: {key: string, data: T}[], popped: (key: string) => void) => React.ReactElement<any>[]};
+type PopSyncProps<T> = {data: T[], getKey: any, children: (items: {key: string, data: T}[], popNative: (key: string) => void) => React.ReactElement<any>[]};
 
 class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
     constructor(props) {
         super(props);
         this.state = {items: []};
-        this.popped = this.popped.bind(this);
+        this.popNative = this.popNative.bind(this);
     }
     static getDerivedStateFromProps(props, {items: prevItems}) {
         var tick = Date.now();
@@ -17,7 +17,7 @@ class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
                 var matchedItem = dataByKey[item.key];
                 var nextItem: any = {key: item.key, data: matchedItem || item.data};
                 nextItem.index = !matchedItem ? item.index : matchedItem.index;
-                nextItem.popTime = !matchedItem ? (item.popTime || tick) : undefined;
+                nextItem.reactPop = !matchedItem ? (item.reactPop || tick) : undefined;
                 return nextItem;
             })
             .concat(data
@@ -30,19 +30,19 @@ class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
             .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length);
         return {items};
     }
-    popped(key: string) {
+    popNative(key: string) {
         this.setState(({items: prevItems}) => {
             var poppedItem = prevItems.filter(item => item.key === key)[0];
             if (!poppedItem)
                 return null;
-            var items = prevItems.filter(({popTime, index}) => (
-                popTime !== poppedItem.popTime || index > poppedItem.index 
+            var items = prevItems.filter(({reactPop, index}) => (
+                reactPop !== poppedItem.reactPop || index > poppedItem.index 
             ));
             return {items};            
         });
     }
     render() {
-        return this.props.children(this.state.items, this.popped);
+        return this.props.children(this.state.items, this.popNative);
     }
 }
 
