@@ -41,8 +41,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         this.ref.current.setNativeProps({mostRecentEventCount});
         var distance = stateNavigator.stateContext.crumbs.length - crumb;
         if (stateNavigator.canNavigateBack(distance)) {
-            var url = stateNavigator.getNavigationBackLink(distance);
-            stateNavigator.navigateLink(url, undefined, true);
+            stateNavigator.navigateBack(distance);
         }
     }
     handleBack() {
@@ -75,7 +74,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         return {enterAnim, exitAnim, sharedElements, oldSharedElements};
     }
     render() {
-        var {keys, finish, history} = this.state;
+        var {keys, finish} = this.state;
         var {stateNavigator, title, renderScene} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
@@ -89,8 +88,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 <BackButton onPress={this.handleBack} />
                 <PopSync<{crumb: number}>
                     data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
-                    getKey={({crumb}) => keys[crumb]}
-                    nativePop={history}>
+                    getKey={({crumb}) => keys[crumb]}>
                     {(scenes, popped) => scenes.map(({key, data: {crumb}}) => (
                         <Scene
                             key={key}

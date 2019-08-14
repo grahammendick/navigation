@@ -1,5 +1,5 @@
 import * as React from 'react';
-type PopSyncProps<T> = {data: T[], getKey: any, nativePop: boolean, children: (items: {key: string, data: T}[], popped: (key: string) => void) => React.ReactElement<any>[]};
+type PopSyncProps<T> = {data: T[], getKey: any, children: (items: {key: string, data: T}[], popped: (key: string) => void) => React.ReactElement<any>[]};
 
 class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
     constructor(props) {
@@ -9,8 +9,8 @@ class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
     }
     static getDerivedStateFromProps(props, {items: prevItems}) {
         var tick = Date.now();
-        var {data, getKey, nativePop} = props;
-        var popTime = tick + (!nativePop ? 1000 : 0);
+        var {data, getKey} = props;
+        var popTime = tick + 1000;
         var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...item, index}}), {});
         var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
         var items = prevItems
