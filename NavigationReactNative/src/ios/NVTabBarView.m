@@ -19,12 +19,19 @@
     return self;
 }
 
-- (void)didSetProps:(NSArray<NSString *> *)changedProps
+- (void)setBarTintColor:(UIColor *)barTintColor
 {
-    [super didSetProps:changedProps];
-    [_tabBarController.tabBar setBarTintColor:self.barTintColor];
-    [_tabBarController.tabBar setTintColor: self.selectedTintColor];
-    [_tabBarController.tabBar setUnselectedItemTintColor: self.unselectedTintColor];
+    [_tabBarController.tabBar setBarTintColor:barTintColor];
+}
+
+- (void)setSelectedTintColor:(UIColor *)selectedTintColor
+{
+    [_tabBarController.tabBar setTintColor: selectedTintColor];
+}
+
+- (void)setUnselectedTintColor:(UIColor *)unselectedTintColor
+{
+    [_tabBarController.tabBar setUnselectedItemTintColor: unselectedTintColor];
 }
 
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
