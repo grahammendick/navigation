@@ -3,17 +3,17 @@
 
     <application>
         <activity android:name=".SceneActivity" />
-        <activity android:name=".SceneActivity$Crumb0" /> <activity android:name=".SceneActivity$Crumb0" />
-        <activity android:name=".SceneActivity$Crumb1" /> <activity android:name=".SceneActivity$Crumb2" />
-        <activity android:name=".SceneActivity$Crumb3" /> <activity android:name=".SceneActivity$Crumb4" />
-        <activity android:name=".SceneActivity$Crumb5" /> <activity android:name=".SceneActivity$Crumb6" />
-        <activity android:name=".SceneActivity$Crumb7" /> <activity android:name=".SceneActivity$Crumb8" />
-        <activity android:name=".SceneActivity$Crumb9" /> <activity android:name=".SceneActivity$Crumb10" />
-        <activity android:name=".SceneActivity$Crumb11" /> <activity android:name=".SceneActivity$Crumb12" />
-        <activity android:name=".SceneActivity$Crumb13" /> <activity android:name=".SceneActivity$Crumb14" />
-        <activity android:name=".SceneActivity$Crumb15" /> <activity android:name=".SceneActivity$Crumb16" />
-        <activity android:name=".SceneActivity$Crumb17" /> <activity android:name=".SceneActivity$Crumb18" />
-        <activity android:name=".SceneActivity$Crumb19" /> <activity android:name=".SceneActivity$Crumb20" />
+        <activity android:name=".SceneActivity$Crumb0" /> <activity android:name=".SceneActivity$Crumb1" />
+        <activity android:name=".SceneActivity$Crumb2" /> <activity android:name=".SceneActivity$Crumb3" />
+        <activity android:name=".SceneActivity$Crumb4" /> <activity android:name=".SceneActivity$Crumb5" />
+        <activity android:name=".SceneActivity$Crumb6" /> <activity android:name=".SceneActivity$Crumb7" />
+        <activity android:name=".SceneActivity$Crumb8" /> <activity android:name=".SceneActivity$Crumb9" />
+        <activity android:name=".SceneActivity$Crumb10" /> <activity android:name=".SceneActivity$Crumb11" />
+        <activity android:name=".SceneActivity$Crumb12" /> <activity android:name=".SceneActivity$Crumb13" />
+        <activity android:name=".SceneActivity$Crumb14" /> <activity android:name=".SceneActivity$Crumb15" />
+        <activity android:name=".SceneActivity$Crumb16" /> <activity android:name=".SceneActivity$Crumb17" />
+        <activity android:name=".SceneActivity$Crumb18" /> <activity android:name=".SceneActivity$Crumb19" />
+        <activity android:name=".SceneActivity$Crumb20" />
     </application>
 
 </manifest>

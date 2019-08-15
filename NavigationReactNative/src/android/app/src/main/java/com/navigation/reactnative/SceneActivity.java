@@ -154,17 +154,17 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         }
     }
 
-    public static class Crumb0 extends SceneActivity {}
-    public static class Crumb1 extends SceneActivity {} public static class Crumb2 extends SceneActivity {}
-    public static class Crumb3 extends SceneActivity {} public static class Crumb4 extends SceneActivity {}
-    public static class Crumb5 extends SceneActivity {} public static class Crumb6 extends SceneActivity {}
-    public static class Crumb7 extends SceneActivity {} public static class Crumb8 extends SceneActivity {}
-    public static class Crumb9 extends SceneActivity {} public static class Crumb10 extends SceneActivity {}
-    public static class Crumb11 extends SceneActivity {} public static class Crumb12 extends SceneActivity {}
-    public static class Crumb13 extends SceneActivity {} public static class Crumb14 extends SceneActivity {}
-    public static class Crumb15 extends SceneActivity {} public static class Crumb16 extends SceneActivity {}
-    public static class Crumb17 extends SceneActivity {} public static class Crumb18 extends SceneActivity {}
-    public static class Crumb19 extends SceneActivity {} public static class Crumb20 extends SceneActivity {}
+    public static class Crumb0 extends SceneActivity {} public static class Crumb1 extends SceneActivity {}
+    public static class Crumb2 extends SceneActivity {} public static class Crumb3 extends SceneActivity {}
+    public static class Crumb4 extends SceneActivity {} public static class Crumb5 extends SceneActivity {}
+    public static class Crumb6 extends SceneActivity {} public static class Crumb7 extends SceneActivity {}
+    public static class Crumb8 extends SceneActivity {} public static class Crumb9 extends SceneActivity {}
+    public static class Crumb10 extends SceneActivity {} public static class Crumb11 extends SceneActivity {}
+    public static class Crumb12 extends SceneActivity {} public static class Crumb13 extends SceneActivity {}
+    public static class Crumb14 extends SceneActivity {} public static class Crumb15 extends SceneActivity {}
+    public static class Crumb16 extends SceneActivity {} public static class Crumb17 extends SceneActivity {}
+    public static class Crumb18 extends SceneActivity {} public static class Crumb19 extends SceneActivity {}
+    public static class Crumb20 extends SceneActivity {}
 
     public static Class getActivity(int crumb) {
         try {
