@@ -49,6 +49,7 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        setIntent(intent);
         String key = intent.getStringExtra(KEY);
         if (rootView.getChildCount() > 0)
             rootView.removeViewAt(0);
@@ -57,6 +58,17 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
             if (view.getParent() != null)
                 ((ViewGroup) view.getParent()).removeView(view);
             rootView.addView(view);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        String key = getIntent().getStringExtra(KEY);
+        if (NavigationStackView.scenes.containsKey(key)) {
+            SceneView view = NavigationStackView.scenes.get(key);
+            if (view.getParent() != null && view.getParent() == rootView)
+                view.popped();
         }
     }
 
@@ -142,17 +154,17 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         }
     }
 
-    public static class Crumb0 extends SceneActivity {}
-    public static class Crumb1 extends SceneActivity {} public static class Crumb2 extends SceneActivity {}
-    public static class Crumb3 extends SceneActivity {} public static class Crumb4 extends SceneActivity {}
-    public static class Crumb5 extends SceneActivity {} public static class Crumb6 extends SceneActivity {}
-    public static class Crumb7 extends SceneActivity {} public static class Crumb8 extends SceneActivity {}
-    public static class Crumb9 extends SceneActivity {} public static class Crumb10 extends SceneActivity {}
-    public static class Crumb11 extends SceneActivity {} public static class Crumb12 extends SceneActivity {}
-    public static class Crumb13 extends SceneActivity {} public static class Crumb14 extends SceneActivity {}
-    public static class Crumb15 extends SceneActivity {} public static class Crumb16 extends SceneActivity {}
-    public static class Crumb17 extends SceneActivity {} public static class Crumb18 extends SceneActivity {}
-    public static class Crumb19 extends SceneActivity {} public static class Crumb20 extends SceneActivity {}
+    public static class Crumb0 extends SceneActivity {} public static class Crumb1 extends SceneActivity {}
+    public static class Crumb2 extends SceneActivity {} public static class Crumb3 extends SceneActivity {}
+    public static class Crumb4 extends SceneActivity {} public static class Crumb5 extends SceneActivity {}
+    public static class Crumb6 extends SceneActivity {} public static class Crumb7 extends SceneActivity {}
+    public static class Crumb8 extends SceneActivity {} public static class Crumb9 extends SceneActivity {}
+    public static class Crumb10 extends SceneActivity {} public static class Crumb11 extends SceneActivity {}
+    public static class Crumb12 extends SceneActivity {} public static class Crumb13 extends SceneActivity {}
+    public static class Crumb14 extends SceneActivity {} public static class Crumb15 extends SceneActivity {}
+    public static class Crumb16 extends SceneActivity {} public static class Crumb17 extends SceneActivity {}
+    public static class Crumb18 extends SceneActivity {} public static class Crumb19 extends SceneActivity {}
+    public static class Crumb20 extends SceneActivity {}
 
     public static Class getActivity(int crumb) {
         try {
@@ -161,5 +173,4 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
             return SceneActivity.class;
         }
     }
-
 }

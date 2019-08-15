@@ -1,14 +1,15 @@
 #import "NVSceneController.h"
+#import "NVSceneView.h"
 #import "NVNavigationBarView.h"
 #import "NVSearchBarView.h"
 
 @implementation NVSceneController
 {
-    UIView *_view;
+    NVSceneView *_view;
     CGRect _lastViewFrame;
 }
 
-- (id)initWithScene:(UIView *)view
+- (id)initWithScene:(NVSceneView *)view
 {
     if (self = [super init]) {
         _view = view;
@@ -61,6 +62,11 @@
         self.boundsDidChangeBlock(self);
         _lastViewFrame = self.view.frame;
     }
+}
+
+- (void)dealloc
+{
+    [_view didPop];
 }
 
 @end
