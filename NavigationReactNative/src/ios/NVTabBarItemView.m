@@ -18,6 +18,16 @@
     self.tab.title = title;
 }
 
+- (void)setBadge:(NSString *)badge
+{
+    self.tab.badgeValue = badge;
+}
+
+- (void)setBadgeColor:(UIColor *)badgeColor
+{
+    self.tab.badgeColor = badgeColor;
+}
+
 - (void)setImage:(UIImage *)image
 {
     self.tab.image = image;

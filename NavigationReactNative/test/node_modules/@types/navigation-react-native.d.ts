@@ -182,6 +182,16 @@ export interface TabBarItemIOSProps {
     title?: string;
 
     /**
+     * The tab badge value
+     */
+    badge?: string;
+
+    /**
+     * The tab badge background color
+     */
+    badgeColor?: string;
+
+    /**
      * The tab image
      */
     image?: ImageURISource;
