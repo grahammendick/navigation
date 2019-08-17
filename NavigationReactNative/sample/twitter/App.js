@@ -26,7 +26,7 @@ stateNavigator.navigate('home');
 
 export default() => {
   const [notified,
-    setIsNotified] = useState(false);
+    setNotified] = useState(false);
   return (Platform.OS === 'ios'
     ? (<TabBarIOS>
         <TabBarItemIOS title="Home">
@@ -39,7 +39,7 @@ export default() => {
           badge={!notified?getFollows().length:null} 
           /* badgeColor="red" */
           onPress={() => {
-            setIsNotified(true);
+            setNotified(true);
             if (!notificationsNavigator.stateContext.state) 
               notificationsNavigator.navigate('notifications');
             }}>
