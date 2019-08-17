@@ -21,11 +21,12 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
     static getDerivedStateFromProps({stateNavigator}: NavigationMotionProps, {keys: prevKeys, stateNavigator: prevStateNavigator}: NavigationMotionState) {
         if (stateNavigator === prevStateNavigator)
             return null;
-        var {oldState, state, crumbs, nextCrumb} = stateNavigator.stateContext;
+        var {state, crumbs, nextCrumb} = stateNavigator.stateContext;
+        var prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
         var currentKeys = crumbs.concat(nextCrumb).map((_, i) => '' + i);
         var newKeys = currentKeys.slice(prevKeys.length);
         var keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
-        if (prevKeys.length === keys.length && oldState !== state)
+        if (prevKeys.length === keys.length && prevState !== state)
             keys[keys.length - 1] += '+';
         return {keys, rest: false, stateNavigator};
     }
