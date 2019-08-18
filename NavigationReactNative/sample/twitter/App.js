@@ -26,32 +26,31 @@ stateNavigator.navigate('home');
 
 export default () => {
   const [notified, setNotified] = useState(false);
-  return (Platform.OS === 'ios' ? (
-      <TabBarIOS>
-        <TabBarItemIOS title="Home">
-          <NavigationHandler stateNavigator={stateNavigator}>
-            <NavigationStack/>
-          </NavigationHandler>
-        </TabBarItemIOS>
-        <TabBarItemIOS
-          title="Notifications"
-          badge={!notified ? getFollows().length : null} 
-          onPress={() => {
-            setNotified(true);
-            if (!notificationsNavigator.stateContext.state) 
-              notificationsNavigator.navigate('notifications');
-          }}>
-          <NavigationHandler stateNavigator={notificationsNavigator}>
-            <NavigationStack/>
-          </NavigationHandler>
-        </TabBarItemIOS>
-      </TabBarIOS>
-    ) : (
-      <NavigationHandler stateNavigator={stateNavigator}>
-        <NavigationStack
-          crumbStyle={from => from ? 'scale_in' : 'scale_out'}
-          unmountStyle={from => from ? 'slide_in' : 'slide_out'} />
-      </NavigationHandler>
-    )
-  );
+  return Platform.OS === 'ios' ? (
+    <TabBarIOS>
+      <TabBarItemIOS title="Home">
+        <NavigationHandler stateNavigator={stateNavigator}>
+          <NavigationStack/>
+        </NavigationHandler>
+      </TabBarItemIOS>
+      <TabBarItemIOS
+        title="Notifications"
+        badge={!notified ? getFollows().length : null} 
+        onPress={() => {
+          setNotified(true);
+          if (!notificationsNavigator.stateContext.state) 
+            notificationsNavigator.navigate('notifications');
+        }}>
+        <NavigationHandler stateNavigator={notificationsNavigator}>
+          <NavigationStack/>
+        </NavigationHandler>
+      </TabBarItemIOS>
+    </TabBarIOS>
+  ) : (
+    <NavigationHandler stateNavigator={stateNavigator}>
+      <NavigationStack
+        crumbStyle={from => from ? 'scale_in' : 'scale_out'}
+        unmountStyle={from => from ? 'slide_in' : 'slide_out'} />
+    </NavigationHandler>
+  )
 }
