@@ -155,12 +155,10 @@ export interface SharedElementAndroidProps {
      * The name shared across scenes by the two elements
      */
     name: string;
-
     /**
      * The resource for the transition
      */
     transition?: string | ((mount: boolean) => string);
-
     /**
      * The style
      */
@@ -180,29 +178,24 @@ export interface TabBarItemIOSProps {
      * The tab title
      */
     title?: string;
-
     /**
      * The tab badge value
      */
     badge?: string;
-
     /**
      * The tab badge background color
      */
     badgeColor?: string;
-
     /**
      * The tab image
      */
     image?: ImageURISource;
-
     /**
      * The tab system item
      */
     systemItem?: 'bookmarks' | 'contacts' | 'downloads' | 'favorites'
         | 'featured' | 'history' | 'more' | 'most-recent' | 'most-viewed'
         | 'recents' | 'search' | 'top-rated';
-
     /**
      * Handles button click events
      */
@@ -219,7 +212,6 @@ export class TabBarItemIOS extends Component<TabBarItemIOSProps> {}
  */
 export interface TabBarIOSProps {
     children: React.ReactElement<TabBarItemIOS> | React.ReactElement<TabBarItemIOS>[];
-
     /**
      * The background color of the tab bar
      */
