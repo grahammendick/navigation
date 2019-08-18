@@ -4,26 +4,6 @@ import ViewPager from '@react-native-community/viewpager';
 import Tweets from './Tweets';
 import Notifications from './Notifications';
 
-/*constructor(props, context) {
-  super(props, context);
-  this.state = {page: 0};
-  this.handleBack = this.handleBack.bind(this);
-}
-componentDidMount() {
-  BackHandler.addEventListener('hardwareBackPress', this.handleBack);
-}
-componentWillUnmount() {
-  BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
-}
-handleBack() {
-  if (this.state.page === 1) {
-    this.setPage(0);
-    return true;
-  }
-  return false;
-}*/
-
-
 export default ({tweets, follows}) => {
   const [page, setPage] = useState(0);
   const viewPager = useRef();
