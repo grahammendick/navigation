@@ -4,17 +4,8 @@ import ViewPager from '@react-native-community/viewpager';
 import Tweets from './Tweets';
 import Notifications from './Notifications';
 
-export default ({tweets, follows}) => {
-  const [page, setPage] = useState(0);
-  const viewPager = useRef();
+useBackHandler = handleBack => {
   const savedHandleBack = useRef();
-  const handleBack = () => {
-    if (page === 1) {
-      setPage(0);
-      viewPager.current.setPage(0);
-    }
-    return page === 1;
-  }
   useEffect(() => {
     savedHandleBack.current = handleBack;
   });
@@ -26,6 +17,18 @@ export default ({tweets, follows}) => {
       subscription.remove();
     }
   }, []);
+}
+
+export default ({tweets, follows}) => {
+  const [page, setPage] = useState(0);
+  const viewPager = useRef();
+  useBackHandler(() => {
+    if (page === 1) {
+      setPage(0);
+      viewPager.current.setPage(0);
+    }
+    return page === 1;
+  })
   return (
     <View style={{flex: 1}}>
       <ToolbarAndroid title="Home" style={styles.toolbar} />
