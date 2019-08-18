@@ -6,13 +6,13 @@ import BackButton from './BackButton';
 import PopSync from './PopSync';
 import Scene from './Scene';
 type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
-type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], finish: boolean, history: boolean};
+type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], finish: boolean};
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
     private ref: React.RefObject<View>;
     constructor(props) {
         super(props);
-        this.state = {stateNavigator: null, keys: [], finish: false, history: false};
+        this.state = {stateNavigator: null, keys: [], finish: false};
         this.ref = React.createRef<View>();
         this.handleBack = this.handleBack.bind(this);
         this.onDidNavigateBack = this.onDidNavigateBack.bind(this);
@@ -25,15 +25,14 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     static getDerivedStateFromProps({stateNavigator}: NavigationStackProps, {keys: prevKeys, stateNavigator: prevStateNavigator}: NavigationStackState) {
         if (stateNavigator === prevStateNavigator)
             return null;
-        var tick = Date.now();
-        var {state, crumbs, nextCrumb, history} = stateNavigator.stateContext;
+        var {state, crumbs, nextCrumb} = stateNavigator.stateContext;
         var prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
-        var currentKeys = crumbs.concat(nextCrumb || []).map((_, i) => i + '@' + tick);
+        var currentKeys = crumbs.concat(nextCrumb).map((_, i) => '' + i);
         var newKeys = currentKeys.slice(prevKeys.length);
         var keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
         if (prevKeys.length === keys.length && prevState !== state)
-            keys[keys.length - 1] = currentKeys[keys.length - 1];
-        return {keys, stateNavigator, history};
+            keys[keys.length - 1] += '+';
+        return {keys, stateNavigator};
     }
     onDidNavigateBack({nativeEvent}) {
         var {stateNavigator} = this.props;
