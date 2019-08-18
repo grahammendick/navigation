@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {StyleSheet, BackHandler, Text, TouchableHighlight, ToolbarAndroid, View, ScrollView} from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
 import Tweets from './Tweets';
@@ -26,7 +26,26 @@ handleBack() {
 
 export default ({tweets, follows}) => {
   const [page, setPage] = useState(0);
-  const viewPager = useRef(null);
+  const viewPager = useRef();
+  const savedHandleBack = useRef();
+  const handleBack = () => {
+    if (page === 1) {
+      setPage(0);
+      viewPager.current.setPage(0);
+    }
+    return page === 1;
+  }
+  useEffect(() => {
+    savedHandleBack.current = handleBack;
+  });
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener('hardwareBackPress',  () => (
+      savedHandleBack.current()
+    ));
+    return () => {
+      subscription.remove();
+    }
+  }, []);
   return (
     <View style={{flex: 1}}>
       <ToolbarAndroid title="Home" style={styles.toolbar} />
