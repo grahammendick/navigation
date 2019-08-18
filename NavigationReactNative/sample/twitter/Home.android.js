@@ -23,12 +23,14 @@ export default ({tweets, follows}) => {
   const [page, setPage] = useState(0);
   const viewPager = useRef();
   useBackHandler(() => {
-    if (page === 1) {
-      setPage(0);
-      viewPager.current.setPage(0);
-    }
+    if (page === 1)
+      updatePage(0);
     return page === 1;
-  })
+  });
+  updatePage = page => {
+    setPage(page);
+    viewPager.current.setPage(page);
+  }
   return (
     <View style={{flex: 1}}>
       <ToolbarAndroid title="Home" style={styles.toolbar} />
@@ -36,27 +38,19 @@ export default ({tweets, follows}) => {
         <TouchableHighlight
           underlayColor="white"
           style={styles.tab}
-          onPress={() => {
-            setPage(0);
-            viewPager.current.setPage(0);
-          }}>
+          onPress={() => {updatePage(0)}}>
           <Text style={styles.text}>Home</Text>
         </TouchableHighlight>
         <TouchableHighlight
           underlayColor="white"
           style={styles.tab}
-          onPress={() => {
-            setPage(1);
-            viewPager.current.setPage(1);
-          }}>
+          onPress={() => {updatePage(1)}}>
           <Text style={styles.text}>Notifications</Text>
         </TouchableHighlight>
       </View>
       <ViewPager
         ref={viewPager}
-        onPageSelected={({nativeEvent}) => {
-          setPage(nativeEvent.position)
-        }}
+        onPageSelected={({nativeEvent}) => {setPage(nativeEvent.position)}}
         style={{flex: 1}}>
         <View key={1}>
           <ScrollView style={styles.view}>
