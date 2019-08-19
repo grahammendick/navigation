@@ -37,7 +37,7 @@ public class NavigationStackView extends ViewGroup {
     private int activityOpenExitAnimationId;
     private int activityCloseEnterAnimationId;
     private int activityCloseExitAnimationId;
-   
+
     public NavigationStackView(ThemedReactContext context) {
         super(context);
 
@@ -238,7 +238,7 @@ public class NavigationStackView extends ViewGroup {
             if (sharedElementMap.containsKey(name))
                 sharedElementPairs.add(Pair.create(sharedElementMap.get(name), name));
         }
-        return sharedElementPairs.toArray(new Pair[sharedElementPairs.size()]);
+        return sharedElementPairs.toArray(new Pair[0]);
     }
 
     @Override
