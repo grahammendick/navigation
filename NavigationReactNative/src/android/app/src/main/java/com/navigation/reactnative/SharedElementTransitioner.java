@@ -5,7 +5,6 @@ import android.os.Build;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.transition.TransitionSet;
-import android.view.View;
 
 import java.util.HashMap;
 import java.util.HashSet;
