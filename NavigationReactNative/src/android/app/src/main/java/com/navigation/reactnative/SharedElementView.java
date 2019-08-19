@@ -5,7 +5,6 @@ import android.widget.FrameLayout;
 
 public class SharedElementView extends FrameLayout {
     protected String name;
-    protected int crumb;
     protected String enterTransition;
     protected String exitTransition;
 
