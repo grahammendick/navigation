@@ -219,11 +219,11 @@ public class NavigationStackView extends ViewGroup {
         Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
         if (!(currentActivity instanceof SceneActivity))
             return null;
-        HashSet<View> sharedElements = (HashSet<View>) ((SceneActivity) currentActivity).scene.getTag(R.id.sharedElements);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || sharedElements == null)
+        SceneView scene = ((SceneActivity) currentActivity).scene;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
             return null;
         HashMap<String, View> sharedElementMap = new HashMap<>();
-        for(View sharedElement : sharedElements) {
+        for(View sharedElement : scene.sharedElements) {
             sharedElementMap.put(sharedElement.getTransitionName(), sharedElement);
         }
         return sharedElementMap;

@@ -8,8 +8,6 @@ import android.widget.FrameLayout;
 
 import com.facebook.react.uimanager.ThemedReactContext;
 
-import java.util.HashSet;
-
 public class SharedElementView extends FrameLayout {
     private String name;
     protected String enterTransition;
@@ -28,11 +26,11 @@ public class SharedElementView extends FrameLayout {
     @Override
     public void addView(View child, int index) {
         super.addView(child, index);
-        setTransitionName(child, name);
         if (scene != null) {
-            HashSet<View> sharedElements = (HashSet<View>) scene.getTag(R.id.sharedElements);
-            if (!sharedElements.contains(child))
-                sharedElements.add(child);
+            if (!scene.sharedElements.contains(child)) {
+                setTransitionName(child, name);
+                scene.sharedElements.add(child);
+            }
         }
     }
 
@@ -40,10 +38,9 @@ public class SharedElementView extends FrameLayout {
     public void removeViewAt(int index) {
         View sharedElement = getChildAt(index);
         if (scene != null) {
-            HashSet<View> sharedElements = (HashSet<View>) scene.getTag(R.id.sharedElements);
-            if (sharedElements.contains(sharedElement)) {
+            if (scene.sharedElements.contains(sharedElement)) {
                 setTransitionName(sharedElement, null);
-                sharedElements.remove(sharedElement);
+                scene.sharedElements.remove(sharedElement);
             }
             super.removeViewAt(index);
         }
@@ -58,15 +55,10 @@ public class SharedElementView extends FrameLayout {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         scene = ((SceneActivity) ((ThemedReactContext) getContext()).getCurrentActivity()).scene;
-        HashSet<View> sharedElements = (HashSet<View>) scene.getTag(R.id.sharedElements);
         View sharedElement = getChildAt(0);
-        if (sharedElements == null) {
-            sharedElements = new HashSet<>();
-            scene.setTag(R.id.sharedElements, sharedElements);
-        }
-        if (!sharedElements.contains(sharedElement)) {
+        if (!scene.sharedElements.contains(sharedElement)) {
             setTransitionName(sharedElement, name);
-            sharedElements.add(sharedElement);
+            scene.sharedElements.add(sharedElement);
         }
         getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
