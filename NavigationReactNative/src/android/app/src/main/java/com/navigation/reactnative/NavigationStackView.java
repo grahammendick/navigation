@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.SharedElementCallback;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Build;
@@ -38,7 +39,7 @@ public class NavigationStackView extends ViewGroup {
     private int activityCloseEnterAnimationId;
     private int activityCloseExitAnimationId;
 
-    public NavigationStackView(ThemedReactContext context) {
+    public NavigationStackView(Context context) {
         super(context);
 
         TypedArray activityStyle = context.getTheme().obtainStyledAttributes(new int[] {android.R.attr.windowAnimationStyle});
