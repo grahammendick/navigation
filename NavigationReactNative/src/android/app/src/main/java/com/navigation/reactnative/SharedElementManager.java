@@ -85,6 +85,11 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
             sharedElement.setTransitionName(name);
     }
 
+    @ReactProp(name = "crumb")
+    public void setCrumn(SharedElementView view, int crumb) {
+        view.crumb = crumb;
+    }
+
     @ReactProp(name = "enterTransition")
     public void setEnterTransition(SharedElementView view, String enterTransition) {
         view.enterTransition = enterTransition;
