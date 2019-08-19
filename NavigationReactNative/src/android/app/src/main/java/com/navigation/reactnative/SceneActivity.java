@@ -24,6 +24,7 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     public static final String KEY = "Navigation.KEY";
     public static final String SHARED_ELEMENTS = "Navigation.SHARED_ELEMENTS";
     private SceneRootViewGroup rootView;
+    public SceneView scene;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +32,10 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         String key = getIntent().getStringExtra(KEY);
         rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
         if (NavigationStackView.scenes.containsKey(key)) {
-            View view = NavigationStackView.scenes.get(key);
-            if (view.getParent() != null)
-                ((ViewGroup) view.getParent()).removeView(view);
-            rootView.addView(view);
+            scene = NavigationStackView.scenes.get(key);
+            if (scene.getParent() != null)
+                ((ViewGroup) scene.getParent()).removeView(scene);
+            rootView.addView(scene);
         }
         setContentView(rootView);
         @SuppressWarnings("unchecked")
@@ -42,7 +43,7 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null ) {
             this.postponeEnterTransition();
             SharedElementTransitioner transitioner = new SharedElementTransitioner(this, sharedElements);
-            findViewById(android.R.id.content).getRootView().setTag(R.id.sharedElementTransitioner, transitioner);
+            scene.setTag(R.id.sharedElementTransitioner, transitioner);
         }
     }
 
@@ -54,10 +55,10 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         if (rootView.getChildCount() > 0)
             rootView.removeViewAt(0);
         if (NavigationStackView.scenes.containsKey(key)) {
-            View view = NavigationStackView.scenes.get(key);
-            if (view.getParent() != null)
-                ((ViewGroup) view.getParent()).removeView(view);
-            rootView.addView(view);
+            scene = NavigationStackView.scenes.get(key);
+            if (scene.getParent() != null)
+                ((ViewGroup) scene.getParent()).removeView(scene);
+            rootView.addView(scene);
         }
     }
 
@@ -65,11 +66,8 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     protected void onDestroy() {
         super.onDestroy();
         String key = getIntent().getStringExtra(KEY);
-        if (NavigationStackView.scenes.containsKey(key)) {
-            SceneView view = NavigationStackView.scenes.get(key);
-            if (view.getParent() != null && view.getParent() == rootView)
-                view.popped();
-        }
+        if (scene.getParent() != null && scene.getParent() == rootView)
+            scene.popped();
     }
 
     static class SceneRootViewGroup extends ReactViewGroup implements RootView {

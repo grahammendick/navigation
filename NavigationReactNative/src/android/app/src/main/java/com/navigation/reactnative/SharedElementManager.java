@@ -41,8 +41,8 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
             @Override
             public boolean onPreDraw() {
                 view.getViewTreeObserver().removeOnPreDrawListener(this);
-                View rootView = view.getRootView();
-                SharedElementTransitioner transitioner = (SharedElementTransitioner) rootView.getTag(R.id.sharedElementTransitioner);
+                View sceneView = ((SceneActivity) reactContext.getCurrentActivity()).scene;
+                SharedElementTransitioner transitioner = (SharedElementTransitioner) sceneView.getTag(R.id.sharedElementTransitioner);
                 if (transitioner != null)
                     transitioner.load(view.name, view.enterTransition);
                 return true;
@@ -95,10 +95,9 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
     
     @SuppressWarnings("unchecked")
     public static HashSet<View> getSharedElements(Activity activity) {
-        String key = activity.getIntent().getStringExtra(SceneActivity.KEY);
-        if (key == null)
+        if (!(activity instanceof  SceneActivity))
             return null;
-        final View sceneView = NavigationStackView.scenes.get(key);
+        final View sceneView = ((SceneActivity) activity).scene;
         HashSet<View> sharedElements = (HashSet<View>) sceneView.getTag(R.id.sharedElements);
         if (sharedElements == null) {
             sharedElements = new HashSet<>();
