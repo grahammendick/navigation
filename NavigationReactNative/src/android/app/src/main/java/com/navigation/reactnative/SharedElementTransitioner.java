@@ -10,18 +10,18 @@ import android.view.View;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class SharedElementTransitioner {
+class SharedElementTransitioner {
     private Activity activity;
     private HashSet<String> sharedElements;
     private HashSet<String> loadedSharedElements = new HashSet<>();
     private HashMap<String, Transition> transitions = new HashMap<>();
 
-    public SharedElementTransitioner(Activity activity, HashSet<String> sharedElements) {
+    SharedElementTransitioner(Activity activity, HashSet<String> sharedElements) {
         this.activity = activity;
         this.sharedElements = sharedElements;
     }
 
-    public void load(String sharedElement, String transitionKey) {
+    void load(String sharedElement, String transitionKey) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
             return;
         if (sharedElements.contains(sharedElement) && !loadedSharedElements.contains(sharedElement)) {
