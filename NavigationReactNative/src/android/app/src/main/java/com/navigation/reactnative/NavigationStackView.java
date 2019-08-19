@@ -59,6 +59,8 @@ public class NavigationStackView extends ViewGroup {
     @Override
     public void addView(View child, int index) {
         SceneView scene = (SceneView) child;
+        Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
+        scene.orientation = currentActivity.getResources().getConfiguration().orientation;
         sceneKeys.add(index, scene.sceneKey);
         scenes.put(scene.sceneKey, scene);
     }
@@ -89,7 +91,8 @@ public class NavigationStackView extends ViewGroup {
             int enter = getAnimationResourceId(enterAnim, activityCloseEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityCloseExitAnimationId);
             final HashMap<String, View> oldSharedElementsMap = getSharedElementMap();
-            Pair[] oldSharedElements = (crumb < 20 && currentCrumb - crumb == 1) ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
+            boolean orientationChanged = scenes.get(currentActivity.getIntent().getStringExtra(SceneActivity.KEY)).orientation != currentActivity.getResources().getConfiguration().orientation;
+            Pair[] oldSharedElements = (!orientationChanged && crumb < 20 && currentCrumb - crumb == 1) ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
                 final SharedElementTransitioner transitioner = new SharedElementTransitioner(currentActivity, getSharedElementSet(oldSharedElementNames));
                 currentActivity.setEnterSharedElementCallback(new SharedElementCallback() {
