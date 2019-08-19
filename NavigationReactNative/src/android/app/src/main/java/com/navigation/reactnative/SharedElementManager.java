@@ -1,5 +1,6 @@
 package com.navigation.reactnative;
 
+import android.app.Activity;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -18,20 +19,15 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
     }
 
     @Override
-    protected SharedElementView createViewInstance(ThemedReactContext reactContext) {
+    protected SharedElementView createViewInstance(final ThemedReactContext reactContext) {
         final SharedElementView view = new SharedElementView(reactContext);
         view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View v) {
                 view.removeOnAttachStateChangeListener(this);
-                View rootView = view.getRootView();
-                HashSet<View> sharedElements = getSharedElements(rootView);
-                if (sharedElements == null) {
-                    sharedElements = new HashSet<>();
-                    rootView.setTag(R.id.sharedElements, sharedElements);
-                }
+                HashSet<View> sharedElements = getSharedElements(reactContext.getCurrentActivity());
                 View sharedElement = view.getChildAt(0);
-                if (!sharedElements.contains(sharedElement)) {
+                if (sharedElements != null && !sharedElements.contains(sharedElement)) {
                     setTransitionName(sharedElement, view.name);
                     sharedElements.add(sharedElement);
                 }
@@ -58,14 +54,16 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
     @Override
     public void addView(SharedElementView parent, View child, int index) {
         super.addView(parent, child, index);
-        HashSet<View> sharedElements = getSharedElements(parent.getRootView());
+        Activity currentActivity = ((ThemedReactContext) parent.getContext()).getCurrentActivity();
+        HashSet<View> sharedElements = getSharedElements(currentActivity);
         if (sharedElements != null && !sharedElements.contains(child))
             sharedElements.add(child);
     }
 
     @Override
     public void removeViewAt(SharedElementView parent, int index) {
-        HashSet<View> sharedElements = getSharedElements(parent.getRootView());
+        Activity currentActivity = ((ThemedReactContext) parent.getContext()).getCurrentActivity();
+        HashSet<View> sharedElements = getSharedElements(currentActivity);
         View sharedElement = parent.getChildAt(0);
         if (sharedElements != null && sharedElements.contains(sharedElement)) {
             setTransitionName(sharedElement, null);
@@ -96,7 +94,16 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
     }
     
     @SuppressWarnings("unchecked")
-    public static HashSet<View> getSharedElements(View rootView) {
-        return (HashSet<View>) rootView.getTag(R.id.sharedElements);
+    public static HashSet<View> getSharedElements(Activity activity) {
+        String key = activity.getIntent().getStringExtra(SceneActivity.KEY);
+        if (key == null)
+            return null;
+        final View sceneView = NavigationStackView.scenes.get(key);
+        HashSet<View> sharedElements = (HashSet<View>) sceneView.getTag(R.id.sharedElements);
+        if (sharedElements == null) {
+            sharedElements = new HashSet<>();
+            sceneView.setTag(R.id.sharedElements, sharedElements);
+        }
+        return sharedElements;
     }
 }
