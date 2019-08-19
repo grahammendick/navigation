@@ -38,7 +38,7 @@ public class SharedElementView extends FrameLayout {
 
     @Override
     public void removeViewAt(int index) {
-        View sharedElement = getChildAt(index);
+        View sharedElement = getChildAt(0);
         if (scene != null) {
             HashSet<View> sharedElements = (HashSet<View>) scene.getTag(R.id.sharedElements);
             if (sharedElements.contains(sharedElement)) {
