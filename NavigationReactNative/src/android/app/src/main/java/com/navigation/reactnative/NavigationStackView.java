@@ -59,8 +59,6 @@ public class NavigationStackView extends ViewGroup {
     @Override
     public void addView(View child, int index) {
         SceneView scene = (SceneView) child;
-        Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
-        scene.orientation = currentActivity.getResources().getConfiguration().orientation;
         sceneKeys.add(index, scene.sceneKey);
         scenes.put(scene.sceneKey, scene);
     }
@@ -130,6 +128,7 @@ public class NavigationStackView extends ViewGroup {
             int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
             final HashMap<String, View> sharedElementsMap = getSharedElementMap();
+            scenes.get(keys.getString(crumb)).orientation = currentActivity.getResources().getConfiguration().orientation;
             final Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements(sharedElementsMap, sharedElementNames) : null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null && sharedElements.length != 0) {
                 intents[0].putExtra(SceneActivity.SHARED_ELEMENTS, getSharedElementSet(sharedElementNames));
