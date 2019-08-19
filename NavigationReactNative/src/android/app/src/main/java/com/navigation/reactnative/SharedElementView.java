@@ -1,5 +1,6 @@
 package com.navigation.reactnative;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.view.View;
@@ -54,7 +55,10 @@ public class SharedElementView extends FrameLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        scene = ((SceneActivity) ((ThemedReactContext) getContext()).getCurrentActivity()).scene;
+        Activity activity = ((ThemedReactContext) getContext()).getCurrentActivity();
+        if (!(activity instanceof SceneActivity))
+            return;
+        scene = ((SceneActivity) activity).scene;
         View sharedElement = getChildAt(0);
         if (!scene.sharedElements.contains(sharedElement)) {
             setTransitionName(sharedElement, name);
