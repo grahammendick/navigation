@@ -71,6 +71,8 @@ public class NavigationStackView extends ViewGroup {
 
     protected void onAfterUpdateTransaction() {
         Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
+        if (currentActivity == null)
+            return;
         if (mainActivity == null)
             mainActivity = currentActivity;
         if (finish) {
@@ -157,15 +159,17 @@ public class NavigationStackView extends ViewGroup {
             }
             currentActivity.overridePendingTransition(enter, exit);
         }
-        if (crumb == currentCrumb && !keys.getString(crumb).equals(oldKey)) {
-            Intent intent = new Intent(getContext(), SceneActivity.getActivity(crumb));
-            String key = keys.getString(crumb);
-            intent.putExtra(SceneActivity.KEY, key);
-            int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
-            int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
-            currentActivity.finish();
-            currentActivity.startActivity(intent);
-            currentActivity.overridePendingTransition(enter, exit);
+        if (crumb == currentCrumb) {
+            if (keys.getString(crumb) != null && !keys.getString(crumb).equals(oldKey)) {
+                Intent intent = new Intent(getContext(), SceneActivity.getActivity(crumb));
+                String key = keys.getString(crumb);
+                intent.putExtra(SceneActivity.KEY, key);
+                int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
+                int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
+                currentActivity.finish();
+                currentActivity.startActivity(intent);
+                currentActivity.overridePendingTransition(enter, exit);
+            }
         }
         oldCrumb = keys.size() - 1;
         oldKey = keys.getString(oldCrumb);
@@ -189,10 +193,11 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public void onDetachedFromWindow() {
-        if (keys.size() > 0) {
+        Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
+        if (keys.size() > 0 && currentActivity != null) {
             Intent mainIntent = mainActivity.getIntent();
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            ((ThemedReactContext) getContext()).getCurrentActivity().navigateUpTo(mainIntent);
+            currentActivity.navigateUpTo(mainIntent);
         }
         scenes.clear();
         super.onDetachedFromWindow();
