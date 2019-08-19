@@ -42,8 +42,7 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         HashSet<String> sharedElements = (HashSet<String>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null ) {
             this.postponeEnterTransition();
-            SharedElementTransitioner transitioner = new SharedElementTransitioner(this, sharedElements);
-            scene.setTag(R.id.sharedElementTransitioner, transitioner);
+            scene.transitioner = new SharedElementTransitioner(this, sharedElements);
         }
     }
 

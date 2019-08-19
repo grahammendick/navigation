@@ -46,8 +46,8 @@ class SharedElementTransitioner {
             }
             activity.getWindow().setSharedElementEnterTransition(transitionSet);
             activity.startPostponedEnterTransition();
-            View contentView = activity.findViewById(android.R.id.content);
-            contentView.getRootView().setTag(R.id.sharedElementTransitioner, null);
+            if (activity instanceof  SceneActivity)
+                ((SceneActivity) activity).scene.transitioner = null;
         }
     }
 }

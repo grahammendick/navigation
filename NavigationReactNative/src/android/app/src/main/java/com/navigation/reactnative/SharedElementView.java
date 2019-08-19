@@ -64,9 +64,8 @@ public class SharedElementView extends FrameLayout {
             @Override
             public boolean onPreDraw() {
                 getViewTreeObserver().removeOnPreDrawListener(this);
-                SharedElementTransitioner transitioner = (SharedElementTransitioner) scene.getTag(R.id.sharedElementTransitioner);
-                if (transitioner != null)
-                    transitioner.load(name, enterTransition);
+                if (scene.transitioner != null)
+                    scene.transitioner.load(name, enterTransition);
                 return true;
             }
         });
