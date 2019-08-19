@@ -159,17 +159,15 @@ public class NavigationStackView extends ViewGroup {
             }
             currentActivity.overridePendingTransition(enter, exit);
         }
-        if (crumb == currentCrumb) {
-            if (keys.getString(crumb) != null && !keys.getString(crumb).equals(oldKey)) {
-                Intent intent = new Intent(getContext(), SceneActivity.getActivity(crumb));
-                String key = keys.getString(crumb);
-                intent.putExtra(SceneActivity.KEY, key);
-                int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
-                int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
-                currentActivity.finish();
-                currentActivity.startActivity(intent);
-                currentActivity.overridePendingTransition(enter, exit);
-            }
+        if (crumb == currentCrumb && !oldKey.equals(keys.getString(crumb))) {
+            Intent intent = new Intent(getContext(), SceneActivity.getActivity(crumb));
+            String key = keys.getString(crumb);
+            intent.putExtra(SceneActivity.KEY, key);
+            int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
+            int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
+            currentActivity.finish();
+            currentActivity.startActivity(intent);
+            currentActivity.overridePendingTransition(enter, exit);
         }
         oldCrumb = keys.size() - 1;
         oldKey = keys.getString(oldCrumb);
