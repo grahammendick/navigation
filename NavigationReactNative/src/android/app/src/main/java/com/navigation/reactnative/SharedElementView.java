@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.view.View;
+import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
@@ -55,10 +56,12 @@ public class SharedElementView extends FrameLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        Activity activity = ((ThemedReactContext) getContext()).getCurrentActivity();
-        if (!(activity instanceof SceneActivity))
+        ViewParent ancestor = getParent();
+        while (ancestor != null && !(ancestor instanceof SceneView))
+            ancestor = ancestor.getParent();
+        if (ancestor == null)
             return;
-        scene = ((SceneActivity) activity).scene;
+        scene = (SceneView) ancestor;
         View sharedElement = getChildAt(0);
         if (!scene.sharedElements.contains(sharedElement)) {
             setTransitionName(sharedElement, name);
