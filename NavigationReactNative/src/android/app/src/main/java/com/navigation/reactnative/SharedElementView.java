@@ -74,4 +74,10 @@ public class SharedElementView extends FrameLayout {
             }
         });
     }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        scene = null;
+    }
 }
