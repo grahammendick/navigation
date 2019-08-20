@@ -23,6 +23,7 @@ import java.util.HashSet;
 public class SceneActivity extends ReactActivity implements DefaultHardwareBackBtnHandler {
     public static final String KEY = "Navigation.KEY";
     public static final String SHARED_ELEMENTS = "Navigation.SHARED_ELEMENTS";
+    public static final String ORIENTATION = "Navigation.ORIENTATION";
     private SceneRootViewGroup rootView;
     public SceneView scene;
 
@@ -49,7 +50,7 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        intent.putExtra("Navigation.ORIENTATION", getIntent().getIntExtra("Navigation.ORIENTATION", 0));
+        intent.putExtra(ORIENTATION, getIntent().getIntExtra(ORIENTATION, 0));
         setIntent(intent);
         String key = intent.getStringExtra(KEY);
         if (rootView.getChildCount() > 0)
