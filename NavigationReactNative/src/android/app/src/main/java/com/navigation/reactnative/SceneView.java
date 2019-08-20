@@ -1,16 +1,20 @@
 package com.navigation.reactnative;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+
+import java.util.HashSet;
 
 public class SceneView extends ViewGroup {
     protected String sceneKey;
+    public HashSet<View> sharedElements = new HashSet<>();
+    public SharedElementTransitioner transitioner;
 
-    public SceneView(ThemedReactContext context) {
+    public SceneView(Context context) {
         super(context);
     }
 

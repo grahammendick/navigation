@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.SharedElementCallback;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Build;
@@ -37,8 +38,8 @@ public class NavigationStackView extends ViewGroup {
     private int activityOpenExitAnimationId;
     private int activityCloseEnterAnimationId;
     private int activityCloseExitAnimationId;
-   
-    public NavigationStackView(ThemedReactContext context) {
+
+    public NavigationStackView(Context context) {
         super(context);
 
         TypedArray activityStyle = context.getTheme().obtainStyledAttributes(new int[] {android.R.attr.windowAnimationStyle});
@@ -71,6 +72,8 @@ public class NavigationStackView extends ViewGroup {
 
     protected void onAfterUpdateTransaction() {
         Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
+        if (currentActivity == null)
+            return;
         if (mainActivity == null)
             mainActivity = currentActivity;
         if (finish) {
@@ -89,7 +92,8 @@ public class NavigationStackView extends ViewGroup {
             int enter = getAnimationResourceId(enterAnim, activityCloseEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityCloseExitAnimationId);
             final HashMap<String, View> oldSharedElementsMap = getSharedElementMap();
-            Pair[] oldSharedElements = (crumb < 20 && currentCrumb - crumb == 1) ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
+            boolean orientationChanged = currentActivity.getIntent().getIntExtra(SceneActivity.ORIENTATION, 0) != currentActivity.getResources().getConfiguration().orientation;
+            Pair[] oldSharedElements = (!orientationChanged && crumb < 20 && currentCrumb - crumb == 1) ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
                 final SharedElementTransitioner transitioner = new SharedElementTransitioner(currentActivity, getSharedElementSet(oldSharedElementNames));
                 currentActivity.setEnterSharedElementCallback(new SharedElementCallback() {
@@ -122,6 +126,7 @@ public class NavigationStackView extends ViewGroup {
                 Intent intent = new Intent(getContext(), SceneActivity.getActivity(nextCrumb));
                 String key = keys.getString(nextCrumb);
                 intent.putExtra(SceneActivity.KEY, key);
+                intent.putExtra(SceneActivity.ORIENTATION, currentActivity.getResources().getConfiguration().orientation);
                 intents[i] = intent;
             }
             int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
@@ -155,7 +160,7 @@ public class NavigationStackView extends ViewGroup {
             }
             currentActivity.overridePendingTransition(enter, exit);
         }
-        if (crumb == currentCrumb && !keys.getString(crumb).equals(oldKey)) {
+        if (crumb == currentCrumb && !oldKey.equals(keys.getString(crumb))) {
             Intent intent = new Intent(getContext(), SceneActivity.getActivity(crumb));
             String key = keys.getString(crumb);
             intent.putExtra(SceneActivity.KEY, key);
@@ -187,10 +192,11 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public void onDetachedFromWindow() {
-        if (keys.size() > 0) {
+        Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
+        if (keys.size() > 0 && currentActivity != null) {
             Intent mainIntent = mainActivity.getIntent();
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            ((ThemedReactContext) getContext()).getCurrentActivity().navigateUpTo(mainIntent);
+            currentActivity.navigateUpTo(mainIntent);
         }
         scenes.clear();
         super.onDetachedFromWindow();
@@ -214,12 +220,14 @@ public class NavigationStackView extends ViewGroup {
     }
 
     private HashMap<String, View> getSharedElementMap() {
-        View contentView = ((ThemedReactContext) getContext()).getCurrentActivity().findViewById(android.R.id.content);
-        HashSet<View> sharedElements = SharedElementManager.getSharedElements(contentView.getRootView());
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || sharedElements == null)
+        Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
+        if (!(currentActivity instanceof SceneActivity))
+            return null;
+        SceneView scene = ((SceneActivity) currentActivity).scene;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
             return null;
         HashMap<String, View> sharedElementMap = new HashMap<>();
-        for(View sharedElement : sharedElements) {
+        for(View sharedElement : scene.sharedElements) {
             sharedElementMap.put(sharedElement.getTransitionName(), sharedElement);
         }
         return sharedElementMap;
@@ -234,7 +242,7 @@ public class NavigationStackView extends ViewGroup {
             if (sharedElementMap.containsKey(name))
                 sharedElementPairs.add(Pair.create(sharedElementMap.get(name), name));
         }
-        return sharedElementPairs.toArray(new Pair[sharedElementPairs.size()]);
+        return sharedElementPairs.toArray(new Pair[0]);
     }
 
     @Override

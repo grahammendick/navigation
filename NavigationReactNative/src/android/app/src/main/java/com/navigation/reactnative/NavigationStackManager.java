@@ -5,8 +5,6 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 
-import javax.annotation.Nonnull;
-
 public class NavigationStackManager extends ViewGroupManager<NavigationStackView> {
 
     @Override
@@ -50,7 +48,7 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     }
 
     @Override
-    protected void onAfterUpdateTransaction(@Nonnull NavigationStackView view) {
+    protected void onAfterUpdateTransaction(NavigationStackView view) {
         super.onAfterUpdateTransaction(view);
         view.onAfterUpdateTransaction();
     }

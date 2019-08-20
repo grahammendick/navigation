@@ -23,7 +23,9 @@ import java.util.HashSet;
 public class SceneActivity extends ReactActivity implements DefaultHardwareBackBtnHandler {
     public static final String KEY = "Navigation.KEY";
     public static final String SHARED_ELEMENTS = "Navigation.SHARED_ELEMENTS";
+    public static final String ORIENTATION = "Navigation.ORIENTATION";
     private SceneRootViewGroup rootView;
+    public SceneView scene;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,45 +33,41 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         String key = getIntent().getStringExtra(KEY);
         rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
         if (NavigationStackView.scenes.containsKey(key)) {
-            View view = NavigationStackView.scenes.get(key);
-            if (view.getParent() != null)
-                ((ViewGroup) view.getParent()).removeView(view);
-            rootView.addView(view);
+            scene = NavigationStackView.scenes.get(key);
+            if (scene.getParent() != null)
+                ((ViewGroup) scene.getParent()).removeView(scene);
+            rootView.addView(scene);
         }
         setContentView(rootView);
         @SuppressWarnings("unchecked")
-        HashSet<String> sharedElements = (HashSet<String>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null ) {
+        HashSet<String> sharedElementNames = (HashSet<String>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElementNames != null ) {
             this.postponeEnterTransition();
-            SharedElementTransitioner transitioner = new SharedElementTransitioner(this, sharedElements);
-            findViewById(android.R.id.content).getRootView().setTag(R.id.sharedElementTransitioner, transitioner);
+            scene.transitioner = new SharedElementTransitioner(this, sharedElementNames);
         }
     }
 
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        intent.putExtra(ORIENTATION, getIntent().getIntExtra(ORIENTATION, 0));
         setIntent(intent);
         String key = intent.getStringExtra(KEY);
         if (rootView.getChildCount() > 0)
             rootView.removeViewAt(0);
         if (NavigationStackView.scenes.containsKey(key)) {
-            View view = NavigationStackView.scenes.get(key);
-            if (view.getParent() != null)
-                ((ViewGroup) view.getParent()).removeView(view);
-            rootView.addView(view);
+            scene = NavigationStackView.scenes.get(key);
+            if (scene.getParent() != null)
+                ((ViewGroup) scene.getParent()).removeView(scene);
+            rootView.addView(scene);
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        String key = getIntent().getStringExtra(KEY);
-        if (NavigationStackView.scenes.containsKey(key)) {
-            SceneView view = NavigationStackView.scenes.get(key);
-            if (view.getParent() != null && view.getParent() == rootView)
-                view.popped();
-        }
+        if (scene.getParent() != null && scene.getParent() == rootView)
+            scene.popped();
     }
 
     static class SceneRootViewGroup extends ReactViewGroup implements RootView {
