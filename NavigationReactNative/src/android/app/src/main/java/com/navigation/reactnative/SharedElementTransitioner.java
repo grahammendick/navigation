@@ -45,7 +45,7 @@ class SharedElementTransitioner {
             }
             activity.getWindow().setSharedElementEnterTransition(transitionSet);
             activity.startPostponedEnterTransition();
-            if (activity instanceof  SceneActivity)
+            if (activity instanceof SceneActivity)
                 ((SceneActivity) activity).scene.transitioner = null;
             activity = null;
         }
