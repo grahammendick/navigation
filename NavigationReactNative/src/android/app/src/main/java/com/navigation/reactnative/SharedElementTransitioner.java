@@ -47,6 +47,7 @@ class SharedElementTransitioner {
             activity.startPostponedEnterTransition();
             if (activity instanceof  SceneActivity)
                 ((SceneActivity) activity).scene.transitioner = null;
+            activity = null;
         }
     }
 }
