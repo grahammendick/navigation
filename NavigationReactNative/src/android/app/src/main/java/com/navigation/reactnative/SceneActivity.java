@@ -49,6 +49,7 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        intent.putExtra("Navigation.ORIENTATION", getIntent().getIntExtra("Navigation.ORIENTATION", 0));
         setIntent(intent);
         String key = intent.getStringExtra(KEY);
         if (rootView.getChildCount() > 0)
