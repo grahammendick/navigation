@@ -11,7 +11,6 @@ import java.util.HashSet;
 
 public class SceneView extends ViewGroup {
     protected String sceneKey;
-    public int orientation;
     public HashSet<View> sharedElements = new HashSet<>();
     public SharedElementTransitioner transitioner;
 

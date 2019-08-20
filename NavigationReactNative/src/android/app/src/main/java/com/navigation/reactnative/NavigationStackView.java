@@ -92,7 +92,7 @@ public class NavigationStackView extends ViewGroup {
             int enter = getAnimationResourceId(enterAnim, activityCloseEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityCloseExitAnimationId);
             final HashMap<String, View> oldSharedElementsMap = getSharedElementMap();
-            boolean orientationChanged = scenes.get(currentActivity.getIntent().getStringExtra(SceneActivity.KEY)).orientation != currentActivity.getResources().getConfiguration().orientation;
+            boolean orientationChanged = currentActivity.getIntent().getIntExtra("orientation", 0)!= currentActivity.getResources().getConfiguration().orientation;
             Pair[] oldSharedElements = (!orientationChanged && crumb < 20 && currentCrumb - crumb == 1) ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
                 final SharedElementTransitioner transitioner = new SharedElementTransitioner(currentActivity, getSharedElementSet(oldSharedElementNames));
@@ -126,12 +126,12 @@ public class NavigationStackView extends ViewGroup {
                 Intent intent = new Intent(getContext(), SceneActivity.getActivity(nextCrumb));
                 String key = keys.getString(nextCrumb);
                 intent.putExtra(SceneActivity.KEY, key);
+                intent.putExtra("orientation", currentActivity.getResources().getConfiguration().orientation);
                 intents[i] = intent;
             }
             int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
             final HashMap<String, View> sharedElementsMap = getSharedElementMap();
-            scenes.get(keys.getString(crumb)).orientation = currentActivity.getResources().getConfiguration().orientation;
             final Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements(sharedElementsMap, sharedElementNames) : null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null && sharedElements.length != 0) {
                 intents[0].putExtra(SceneActivity.SHARED_ELEMENTS, getSharedElementSet(sharedElementNames));
