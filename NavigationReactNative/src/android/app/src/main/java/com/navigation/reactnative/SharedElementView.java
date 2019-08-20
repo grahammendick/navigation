@@ -1,14 +1,11 @@
 package com.navigation.reactnative;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
-
-import com.facebook.react.uimanager.ThemedReactContext;
 
 public class SharedElementView extends FrameLayout {
     private String name;
