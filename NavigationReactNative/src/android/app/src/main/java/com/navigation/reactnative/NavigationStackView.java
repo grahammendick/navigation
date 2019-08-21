@@ -6,6 +6,7 @@ import android.app.SharedElementCallback;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.views.image.ReactImageView;
 
@@ -74,8 +76,14 @@ public class NavigationStackView extends ViewGroup {
         Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
         if (currentActivity == null)
             return;
-        if (mainActivity == null)
+        if (mainActivity == null) {
             mainActivity = currentActivity;
+            Uri uri = mainActivity.getIntent().getData();
+            if (uri != null) {
+                DeviceEventManagerModule deviceEventManagerModule = ((ThemedReactContext) getContext()).getNativeModule(DeviceEventManagerModule.class);
+                deviceEventManagerModule.emitNewIntentReceived(uri);
+            }
+        }
         if (finish) {
             mainActivity.finish();
             return;
