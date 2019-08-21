@@ -17,7 +17,7 @@ public class LinkActivity extends Activity {
         Intent intent = getIntent();
         Uri uri = intent.getData();
         ReactContext reactContext = ((ReactApplication) getApplication()).getReactNativeHost().getReactInstanceManager().getCurrentReactContext();
-        if (reactContext == null) {
+        if (reactContext == null || reactContext.getCurrentActivity() == null) {
             Intent mainIntent = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName());
             if (mainIntent != null) {
                 mainIntent.setData(uri);
