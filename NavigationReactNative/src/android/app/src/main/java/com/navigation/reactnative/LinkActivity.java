@@ -16,18 +16,19 @@ public class LinkActivity extends Activity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         Uri uri = intent.getData();
-        if (getReactContext() == null) {
+        ReactContext reactContext = ((ReactApplication) getApplication()).getReactNativeHost().getReactInstanceManager().getCurrentReactContext();
+        if (reactContext == null) {
             Intent mainIntent = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName());
-            mainIntent.setData(uri);
-            startActivity(mainIntent);
+            if (mainIntent != null) {
+                mainIntent.setData(uri);
+                startActivity(mainIntent);
+            }
         } else {
-            DeviceEventManagerModule deviceEventManagerModule = getReactContext().getNativeModule(DeviceEventManagerModule.class);
-            deviceEventManagerModule.emitNewIntentReceived(uri);
+            if (uri != null) {
+                DeviceEventManagerModule deviceEventManagerModule = reactContext.getNativeModule(DeviceEventManagerModule.class);
+                deviceEventManagerModule.emitNewIntentReceived(uri);
+            }
         }
         finish();
-    }
-
-    private ReactContext getReactContext() {
-        return ((ReactApplication) getApplication()).getReactNativeHost().getReactInstanceManager().getCurrentReactContext();
     }
 }
