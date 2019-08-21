@@ -14,26 +14,21 @@ public class LinkActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        finish();
-    }
-    
-    @Override
-    protected void onDestroy() {
-        Activity currentActivity = getReactContext().getCurrentActivity();
         Intent intent = getIntent();
         Uri uri = intent.getData();
-        if (currentActivity == null) {
-            Intent mainIntent = getReactContext().getPackageManager().getLaunchIntentForPackage(getReactContext().getPackageName());
-            mainIntent.setData(uri);
-            startActivity(mainIntent);
+        ReactContext reactContext = ((ReactApplication) getApplication()).getReactNativeHost().getReactInstanceManager().getCurrentReactContext();
+        if (reactContext == null || reactContext.getCurrentActivity() == null) {
+            Intent mainIntent = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName());
+            if (mainIntent != null) {
+                mainIntent.setData(uri);
+                startActivity(mainIntent);
+            }
         } else {
-            DeviceEventManagerModule deviceEventManagerModule = getReactContext().getNativeModule(DeviceEventManagerModule.class);
-            deviceEventManagerModule.emitNewIntentReceived(uri);
+            if (uri != null) {
+                DeviceEventManagerModule deviceEventManagerModule = reactContext.getNativeModule(DeviceEventManagerModule.class);
+                deviceEventManagerModule.emitNewIntentReceived(uri);
+            }
         }
-        super.onDestroy();
-    }
-
-    private ReactContext getReactContext() {
-        return ((ReactApplication) getApplication()).getReactNativeHost().getReactInstanceManager().getCurrentReactContext();
+        finish();
     }
 }
