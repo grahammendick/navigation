@@ -80,6 +80,7 @@ public class NavigationStackView extends ViewGroup {
             mainActivity = currentActivity;
             Uri uri = mainActivity.getIntent().getData();
             if (uri != null) {
+                mainActivity.getIntent().setData(null);
                 DeviceEventManagerModule deviceEventManagerModule = ((ThemedReactContext) getContext()).getNativeModule(DeviceEventManagerModule.class);
                 deviceEventManagerModule.emitNewIntentReceived(uri);
             }
