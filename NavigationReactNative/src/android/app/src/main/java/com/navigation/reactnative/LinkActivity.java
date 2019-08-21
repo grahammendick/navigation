@@ -14,23 +14,17 @@ public class LinkActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        finish();
-    }
-    
-    @Override
-    protected void onDestroy() {
-        Activity currentActivity = getReactContext().getCurrentActivity();
         Intent intent = getIntent();
         Uri uri = intent.getData();
-        if (currentActivity == null) {
-            Intent mainIntent = getReactContext().getPackageManager().getLaunchIntentForPackage(getReactContext().getPackageName());
+        if (getReactContext() == null) {
+            Intent mainIntent = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName());
             mainIntent.setData(uri);
             startActivity(mainIntent);
         } else {
             DeviceEventManagerModule deviceEventManagerModule = getReactContext().getNativeModule(DeviceEventManagerModule.class);
             deviceEventManagerModule.emitNewIntentReceived(uri);
         }
-        super.onDestroy();
+        finish();
     }
 
     private ReactContext getReactContext() {
