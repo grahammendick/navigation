@@ -94,25 +94,6 @@ Linking.addEventListener('url', ({url}) => openLink(url));</code></pre>
     &lt;data android:scheme="email" android:host="app" />
   &lt;/intent-filter>
 &lt;/activity></code></pre>
-            <p>
-                Locate the <code>MainActiviy.java</code> in the Android project and add:
-            </p>
-            <pre><code class="language-jsx">import android.net.Uri;
-import android.os.Bundle;
-import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
-
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-  super.onCreate(savedInstanceState);
-  Uri uri = getIntent().getData();
-  if (uri != null) {
-    ReactContext currentContext = getReactInstanceManager().getCurrentReactContext();
-    DeviceEventManagerModule deviceEventManagerModule =
-        currentContext.getNativeModule(DeviceEventManagerModule.class);
-    deviceEventManagerModule.emitNewIntentReceived(uri);
-  }
-}</code></pre>
             <h3>iOS</h3>
             <p>
                 Open your iOS project in Xcode, select the project in the sidebar and navigate to the Info tab. Scroll down to the 'URL Types' section and add one that matches your URI pattern. In our email example, we'd enter an Identifier of 'email' and a URL Scheme of 'email'.
