@@ -33,6 +33,8 @@ class SharedElementTransitioner {
             else {
                 String packageName = activity.getApplicationContext().getPackageName();
                 int transitionId = activity.getResources().getIdentifier(transitionKey, "transition", packageName);
+                if (transitionId == 0)
+                    transitionId = activity.getResources().getIdentifier("move", "transition", packageName);
                 transition = TransitionInflater.from(activity).inflateTransition(transitionId);
                 transitions.put(transitionKey, transition);
             }
