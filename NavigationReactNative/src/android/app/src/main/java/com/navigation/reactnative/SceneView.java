@@ -34,7 +34,8 @@ public class SceneView extends ViewGroup {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        customGlobalLayoutListener = new CustomGlobalLayoutListener();
+        if (customGlobalLayoutListener == null)
+            customGlobalLayoutListener = new CustomGlobalLayoutListener();
         getViewTreeObserver().addOnGlobalLayoutListener(customGlobalLayoutListener);
         View child = getChildAt(0);
         if (child != null && child.getClass().getSimpleName().contains("DrawerLayout")) {
@@ -130,7 +131,7 @@ public class SceneView extends ViewGroup {
         }
 
         private void checkForDeviceDimensionsChanges() {
-            DisplayMetricsHolder.initDisplayMetrics(getContext());
+            DisplayMetricsHolder.initDisplayMetrics(((ReactContext) getContext()).getCurrentActivity());
             if (!areMetricsEqual(mWindowMetrics, DisplayMetricsHolder.getWindowDisplayMetrics()) ||
                     !areMetricsEqual(mScreenMetrics, DisplayMetricsHolder.getScreenDisplayMetrics())) {
                 mWindowMetrics.setTo(DisplayMetricsHolder.getWindowDisplayMetrics());
