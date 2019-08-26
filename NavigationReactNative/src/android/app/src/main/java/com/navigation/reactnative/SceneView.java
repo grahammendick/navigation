@@ -102,7 +102,7 @@ public class SceneView extends ViewGroup {
         private void checkForKeyboardEvents() {
             getRootView().getWindowVisibleDisplayFrame(mVisibleViewArea);
             final int heightDiff =
-                    DisplayMetricsHolder.getWindowDisplayMetrics().heightPixels - mVisibleViewArea.bottom;
+                DisplayMetricsHolder.getWindowDisplayMetrics().heightPixels - mVisibleViewArea.bottom;
             if (mKeyboardHeight != heightDiff && heightDiff > mMinKeyboardHeightDetected) {
                 mKeyboardHeight = heightDiff;
                 WritableMap params = Arguments.createMap();
@@ -121,8 +121,8 @@ public class SceneView extends ViewGroup {
 
         private void checkForDeviceOrientationChanges() {
             final int rotation =
-                    ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE))
-                            .getDefaultDisplay().getRotation();
+                ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE))
+                    .getDefaultDisplay().getRotation();
             if (mDeviceRotation == rotation) {
                 return;
             }
@@ -133,7 +133,7 @@ public class SceneView extends ViewGroup {
         private void checkForDeviceDimensionsChanges() {
             DisplayMetricsHolder.initDisplayMetrics(((ReactContext) getContext()).getCurrentActivity());
             if (!areMetricsEqual(mWindowMetrics, DisplayMetricsHolder.getWindowDisplayMetrics()) ||
-                    !areMetricsEqual(mScreenMetrics, DisplayMetricsHolder.getScreenDisplayMetrics())) {
+                !areMetricsEqual(mScreenMetrics, DisplayMetricsHolder.getScreenDisplayMetrics())) {
                 mWindowMetrics.setTo(DisplayMetricsHolder.getWindowDisplayMetrics());
                 mScreenMetrics.setTo(DisplayMetricsHolder.getScreenDisplayMetrics());
                 emitUpdateDimensionsEvent();
@@ -145,12 +145,12 @@ public class SceneView extends ViewGroup {
                 return displayMetrics.equals(otherMetrics);
             } else {
                 return displayMetrics.widthPixels == otherMetrics.widthPixels &&
-                        displayMetrics.heightPixels == otherMetrics.heightPixels &&
-                        displayMetrics.density == otherMetrics.density &&
-                        displayMetrics.densityDpi == otherMetrics.densityDpi &&
-                        displayMetrics.scaledDensity == otherMetrics.scaledDensity &&
-                        displayMetrics.xdpi == otherMetrics.xdpi &&
-                        displayMetrics.ydpi == otherMetrics.ydpi;
+                    displayMetrics.heightPixels == otherMetrics.heightPixels &&
+                    displayMetrics.density == otherMetrics.density &&
+                    displayMetrics.densityDpi == otherMetrics.densityDpi &&
+                    displayMetrics.scaledDensity == otherMetrics.scaledDensity &&
+                    displayMetrics.xdpi == otherMetrics.xdpi &&
+                    displayMetrics.ydpi == otherMetrics.ydpi;
             }
         }
 
