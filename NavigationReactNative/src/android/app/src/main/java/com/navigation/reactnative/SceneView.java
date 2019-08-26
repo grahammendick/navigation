@@ -25,6 +25,7 @@ public class SceneView extends ViewGroup {
     protected String sceneKey;
     public HashSet<View> sharedElements = new HashSet<>();
     public SharedElementTransitioner transitioner;
+    private CustomGlobalLayoutListener customGlobalLayoutListener;
 
     public SceneView(Context context) {
         super(context);
@@ -33,11 +34,19 @@ public class SceneView extends ViewGroup {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        customGlobalLayoutListener = new CustomGlobalLayoutListener();
+        getViewTreeObserver().addOnGlobalLayoutListener(customGlobalLayoutListener);
         View child = getChildAt(0);
         if (child != null && child.getClass().getSimpleName().contains("DrawerLayout")) {
             child.requestLayout();
             post(measureAndLayout);
         }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        getViewTreeObserver().removeOnGlobalLayoutListener(customGlobalLayoutListener);
     }
 
     private final Runnable measureAndLayout =
