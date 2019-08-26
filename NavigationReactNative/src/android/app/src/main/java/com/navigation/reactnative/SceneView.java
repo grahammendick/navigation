@@ -61,7 +61,7 @@ public class SceneView extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
     }
 
-    /* package */ void sendEvent(String eventName, WritableMap params) {
+    void sendEvent(String eventName, WritableMap params) {
         ((ReactContext) getContext())
             .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
             .emit(eventName, params);
@@ -76,7 +76,7 @@ public class SceneView extends ViewGroup {
         private DisplayMetrics mWindowMetrics = new DisplayMetrics();
         private DisplayMetrics mScreenMetrics = new DisplayMetrics();
 
-        /* package */ CustomGlobalLayoutListener() {
+        CustomGlobalLayoutListener() {
             DisplayMetricsHolder.initDisplayMetricsIfNotInitialized(getContext().getApplicationContext());
             mVisibleViewArea = new Rect();
             mMinKeyboardHeightDetected = (int) PixelUtil.toPixelFromDIP(60);
@@ -94,7 +94,6 @@ public class SceneView extends ViewGroup {
             final int heightDiff =
                     DisplayMetricsHolder.getWindowDisplayMetrics().heightPixels - mVisibleViewArea.bottom;
             if (mKeyboardHeight != heightDiff && heightDiff > mMinKeyboardHeightDetected) {
-                // keyboard is now showing, or the keyboard height has changed
                 mKeyboardHeight = heightDiff;
                 WritableMap params = Arguments.createMap();
                 WritableMap coordinates = Arguments.createMap();
@@ -105,7 +104,6 @@ public class SceneView extends ViewGroup {
                 params.putMap("endCoordinates", coordinates);
                 sendEvent("keyboardDidShow", params);
             } else if (mKeyboardHeight != 0 && heightDiff <= mMinKeyboardHeightDetected) {
-                // keyboard is now hidden
                 mKeyboardHeight = 0;
                 sendEvent("keyboardDidHide", null);
             }
@@ -123,9 +121,7 @@ public class SceneView extends ViewGroup {
         }
 
         private void checkForDeviceDimensionsChanges() {
-            // Get current display metrics.
             DisplayMetricsHolder.initDisplayMetrics(getContext());
-            // Check changes to both window and screen display metrics since they may not update at the same time.
             if (!areMetricsEqual(mWindowMetrics, DisplayMetricsHolder.getWindowDisplayMetrics()) ||
                     !areMetricsEqual(mScreenMetrics, DisplayMetricsHolder.getScreenDisplayMetrics())) {
                 mWindowMetrics.setTo(DisplayMetricsHolder.getWindowDisplayMetrics());
@@ -138,8 +134,6 @@ public class SceneView extends ViewGroup {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 return displayMetrics.equals(otherMetrics);
             } else {
-                // DisplayMetrics didn't have an equals method before API 17.
-                // Check all public fields manually.
                 return displayMetrics.widthPixels == otherMetrics.widthPixels &&
                         displayMetrics.heightPixels == otherMetrics.heightPixels &&
                         displayMetrics.density == otherMetrics.density &&
@@ -191,5 +185,4 @@ public class SceneView extends ViewGroup {
                 .emitUpdateDimensionsEvent();
         }
     }
-
 }
