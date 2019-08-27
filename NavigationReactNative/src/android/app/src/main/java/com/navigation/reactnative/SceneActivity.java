@@ -51,12 +51,8 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (getIntent().getIntExtra(CRUMB, 0) == intent.getIntExtra(CRUMB, 0)) {
-            intent.putExtra(ORIENTATION, getIntent().getIntExtra(ORIENTATION, 0));
-            setIntent(intent);
-        } else {
+        if (getIntent().getIntExtra(CRUMB, 0) != intent.getIntExtra(CRUMB, 0))
             navigateUpTo(intent);
-        }
     }
 
     @Override
