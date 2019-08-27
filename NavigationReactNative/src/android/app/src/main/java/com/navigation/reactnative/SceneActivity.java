@@ -23,15 +23,13 @@ import java.util.HashSet;
 public class SceneActivity extends ReactActivity implements DefaultHardwareBackBtnHandler {
     public static final String KEY = "Navigation.KEY";
     public static final String SHARED_ELEMENTS = "Navigation.SHARED_ELEMENTS";
-    public static final String ORIENTATION = "Navigation.ORIENTATION";
-    private SceneRootViewGroup rootView;
     public SceneView scene;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String key = getIntent().getStringExtra(KEY);
-        rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
+        SceneRootViewGroup rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
         if (NavigationStackView.scenes.containsKey(key)) {
             scene = NavigationStackView.scenes.get(key);
             if (scene.getParent() != null)
@@ -50,23 +48,14 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        intent.putExtra(ORIENTATION, getIntent().getIntExtra(ORIENTATION, 0));
-        setIntent(intent);
-        String key = intent.getStringExtra(KEY);
-        if (rootView.getChildCount() > 0)
-            rootView.removeViewAt(0);
-        if (NavigationStackView.scenes.containsKey(key)) {
-            scene = NavigationStackView.scenes.get(key);
-            if (scene.getParent() != null)
-                ((ViewGroup) scene.getParent()).removeView(scene);
-            rootView.addView(scene);
-        }
+        if (!getIntent().getStringExtra(KEY).equals(intent.getStringExtra(KEY)))
+            navigateUpTo(intent);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (scene.getParent() != null && scene.getParent() == rootView)
+        if (scene != null)
             scene.popped();
     }
 
@@ -149,26 +138,6 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         private EventDispatcher getEventDispatcher() {
             ReactContext reactContext = getReactContext();
             return reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
-        }
-    }
-
-    public static class Crumb0 extends SceneActivity {} public static class Crumb1 extends SceneActivity {}
-    public static class Crumb2 extends SceneActivity {} public static class Crumb3 extends SceneActivity {}
-    public static class Crumb4 extends SceneActivity {} public static class Crumb5 extends SceneActivity {}
-    public static class Crumb6 extends SceneActivity {} public static class Crumb7 extends SceneActivity {}
-    public static class Crumb8 extends SceneActivity {} public static class Crumb9 extends SceneActivity {}
-    public static class Crumb10 extends SceneActivity {} public static class Crumb11 extends SceneActivity {}
-    public static class Crumb12 extends SceneActivity {} public static class Crumb13 extends SceneActivity {}
-    public static class Crumb14 extends SceneActivity {} public static class Crumb15 extends SceneActivity {}
-    public static class Crumb16 extends SceneActivity {} public static class Crumb17 extends SceneActivity {}
-    public static class Crumb18 extends SceneActivity {} public static class Crumb19 extends SceneActivity {}
-    public static class Crumb20 extends SceneActivity {}
-
-    public static Class getActivity(int crumb) {
-        try {
-            return Class.forName("com.navigation.reactnative.SceneActivity$Crumb" + crumb);
-        } catch (ClassNotFoundException e) {
-            return SceneActivity.class;
         }
     }
 }

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public class NavigationStackView extends ViewGroup {
+    private static final String ORIENTATION = "Navigation.ORIENTATION";
     private ArrayList<String> sceneKeys = new ArrayList<>();
     public static HashMap<String, SceneView> scenes = new HashMap<>();
     protected ReadableArray keys;
@@ -94,15 +95,15 @@ public class NavigationStackView extends ViewGroup {
         int crumb = keys.size() - 1;
         int currentCrumb = oldCrumb;
         if (crumb < currentCrumb) {
-            Intent intent = new Intent(getContext(), SceneActivity.getActivity(crumb));
+            Intent intent = new Intent(getContext(), SceneActivity.class);
             String key = keys.getString(crumb);
             intent.putExtra(SceneActivity.KEY, key);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             int enter = getAnimationResourceId(enterAnim, activityCloseEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityCloseExitAnimationId);
             final HashMap<String, View> oldSharedElementsMap = getSharedElementMap();
-            boolean orientationChanged = currentActivity.getIntent().getIntExtra(SceneActivity.ORIENTATION, 0) != currentActivity.getResources().getConfiguration().orientation;
-            Pair[] oldSharedElements = (!orientationChanged && crumb < 20 && currentCrumb - crumb == 1) ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
+            boolean orientationChanged = currentActivity.getIntent().getIntExtra(ORIENTATION, 0) != currentActivity.getResources().getConfiguration().orientation;
+            Pair[] oldSharedElements = (!orientationChanged && currentCrumb - crumb == 1) ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
                 final SharedElementTransitioner transitioner = new SharedElementTransitioner(currentActivity, getSharedElementSet(oldSharedElementNames));
                 currentActivity.setEnterSharedElementCallback(new SharedElementCallback() {
@@ -132,10 +133,10 @@ public class NavigationStackView extends ViewGroup {
             Intent[] intents = new Intent[crumb - currentCrumb];
             for(int i = 0; i < crumb - currentCrumb; i++) {
                 int nextCrumb = currentCrumb + i + 1;
-                Intent intent = new Intent(getContext(), SceneActivity.getActivity(nextCrumb));
+                Intent intent = new Intent(getContext(), SceneActivity.class);
                 String key = keys.getString(nextCrumb);
                 intent.putExtra(SceneActivity.KEY, key);
-                intent.putExtra(SceneActivity.ORIENTATION, currentActivity.getResources().getConfiguration().orientation);
+                intent.putExtra(ORIENTATION, currentActivity.getResources().getConfiguration().orientation);
                 intents[i] = intent;
             }
             int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
@@ -170,7 +171,7 @@ public class NavigationStackView extends ViewGroup {
             currentActivity.overridePendingTransition(enter, exit);
         }
         if (crumb == currentCrumb && !oldKey.equals(keys.getString(crumb))) {
-            Intent intent = new Intent(getContext(), SceneActivity.getActivity(crumb));
+            Intent intent = new Intent(getContext(), SceneActivity.class);
             String key = keys.getString(crumb);
             intent.putExtra(SceneActivity.KEY, key);
             int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
