@@ -94,9 +94,10 @@ public class NavigationStackView extends ViewGroup {
         int crumb = keys.size() - 1;
         int currentCrumb = oldCrumb;
         if (crumb < currentCrumb) {
-            Intent intent = new Intent(getContext(), SceneActivity.getActivity(crumb));
+            Intent intent = new Intent(getContext(), SceneActivity.class);
             String key = keys.getString(crumb);
             intent.putExtra(SceneActivity.KEY, key);
+            intent.putExtra(SceneActivity.CRUMB, crumb);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             int enter = getAnimationResourceId(enterAnim, activityCloseEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityCloseExitAnimationId);
@@ -132,9 +133,10 @@ public class NavigationStackView extends ViewGroup {
             Intent[] intents = new Intent[crumb - currentCrumb];
             for(int i = 0; i < crumb - currentCrumb; i++) {
                 int nextCrumb = currentCrumb + i + 1;
-                Intent intent = new Intent(getContext(), SceneActivity.getActivity(nextCrumb));
+                Intent intent = new Intent(getContext(), SceneActivity.class);
                 String key = keys.getString(nextCrumb);
                 intent.putExtra(SceneActivity.KEY, key);
+                intent.putExtra(SceneActivity.CRUMB, nextCrumb);
                 intent.putExtra(SceneActivity.ORIENTATION, currentActivity.getResources().getConfiguration().orientation);
                 intents[i] = intent;
             }
@@ -170,9 +172,10 @@ public class NavigationStackView extends ViewGroup {
             currentActivity.overridePendingTransition(enter, exit);
         }
         if (crumb == currentCrumb && !oldKey.equals(keys.getString(crumb))) {
-            Intent intent = new Intent(getContext(), SceneActivity.getActivity(crumb));
+            Intent intent = new Intent(getContext(), SceneActivity.class);
             String key = keys.getString(crumb);
             intent.putExtra(SceneActivity.KEY, key);
+            intent.putExtra(SceneActivity.CRUMB, crumb);
             int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
             currentActivity.finish();

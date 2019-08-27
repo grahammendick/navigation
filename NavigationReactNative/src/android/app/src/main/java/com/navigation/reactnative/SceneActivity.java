@@ -22,6 +22,7 @@ import java.util.HashSet;
 
 public class SceneActivity extends ReactActivity implements DefaultHardwareBackBtnHandler {
     public static final String KEY = "Navigation.KEY";
+    public static final String CRUMB = "Navigation.CRUMB";
     public static final String SHARED_ELEMENTS = "Navigation.SHARED_ELEMENTS";
     public static final String ORIENTATION = "Navigation.ORIENTATION";
     private SceneRootViewGroup rootView;
@@ -50,6 +51,10 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        if (getIntent().getIntExtra(CRUMB, 0) != intent.getIntExtra(CRUMB, 0)) {
+            navigateUpTo(intent);
+            return;
+        }
         intent.putExtra(ORIENTATION, getIntent().getIntExtra(ORIENTATION, 0));
         setIntent(intent);
         String key = intent.getStringExtra(KEY);
@@ -66,7 +71,7 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (scene.getParent() != null && scene.getParent() == rootView)
+        if (scene != null && scene.getParent() != null && scene.getParent() == rootView)
             scene.popped();
     }
 
