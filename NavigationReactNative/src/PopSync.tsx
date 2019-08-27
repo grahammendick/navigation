@@ -8,7 +8,6 @@ class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
         this.popNative = this.popNative.bind(this);
     }
     static getDerivedStateFromProps(props, {items: prevItems, data: prevData}) {
-        var tick = Date.now();
         var {data, getKey} = props;
         if (data === prevData)
             return null;
@@ -19,14 +18,13 @@ class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
                 var matchedItem = dataByKey[item.key];
                 var nextItem: any = {key: item.key, data: matchedItem || item.data};
                 nextItem.index = !matchedItem ? item.index : matchedItem.index;
-                nextItem.reactPop = !matchedItem ? (item.reactPop || tick) : 0;
                 return nextItem;
             })
             .concat(data
                 .filter(item => !itemsByKey[getKey(item)])
                 .map(item => {
                     var index = dataByKey[getKey(item)].index;
-                    return {key: getKey(item), data: item, index, reactPop: 0};
+                    return {key: getKey(item), data: item, index};
                 })
             )
             .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length);
