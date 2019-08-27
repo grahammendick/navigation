@@ -62,7 +62,7 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (scene != null && scene.getParent() != null && scene.getParent() == rootView)
+        if (scene != null)
             scene.popped();
     }
 
