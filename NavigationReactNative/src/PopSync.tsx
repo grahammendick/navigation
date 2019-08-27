@@ -7,10 +7,10 @@ class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
         this.state = {items: [], data: null};
         this.popNative = this.popNative.bind(this);
     }
-    static getDerivedStateFromProps(props, {items: prevItems, data: currentData}) {
+    static getDerivedStateFromProps(props, {items: prevItems, data: prevData}) {
         var tick = Date.now();
         var {data, getKey} = props;
-        if (data === currentData)
+        if (data === prevData)
             return null;
         var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...item, index}}), {});
         var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
