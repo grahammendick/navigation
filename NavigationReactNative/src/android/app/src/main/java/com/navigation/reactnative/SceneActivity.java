@@ -23,14 +23,13 @@ import java.util.HashSet;
 public class SceneActivity extends ReactActivity implements DefaultHardwareBackBtnHandler {
     public static final String KEY = "Navigation.KEY";
     public static final String SHARED_ELEMENTS = "Navigation.SHARED_ELEMENTS";
-    private SceneRootViewGroup rootView;
     public SceneView scene;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String key = getIntent().getStringExtra(KEY);
-        rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
+        SceneRootViewGroup rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
         if (NavigationStackView.scenes.containsKey(key)) {
             scene = NavigationStackView.scenes.get(key);
             if (scene.getParent() != null)
