@@ -4,12 +4,14 @@ type PopSyncProps<T> = {data: T[], getKey: any, children: (items: {key: string, 
 class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
     constructor(props) {
         super(props);
-        this.state = {items: []};
+        this.state = {items: [], data: null};
         this.popNative = this.popNative.bind(this);
     }
-    static getDerivedStateFromProps(props, {items: prevItems}) {
+    static getDerivedStateFromProps(props, {items: prevItems, data: currentData}) {
         var tick = Date.now();
         var {data, getKey} = props;
+        if (data === currentData)
+            return null;
         var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...item, index}}), {});
         var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
         var items = prevItems
@@ -28,16 +30,11 @@ class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
                 })
             )
             .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length);
-        return {items};
+        return {items, data};
     }
     popNative(key: string) {
         this.setState(({items: prevItems}) => {
-            var poppedItem = prevItems.filter(item => item.key === key)[0];
-            if (!poppedItem || !poppedItem.reactPop)
-                return null;
-            var items = prevItems.filter(({reactPop, index}) => (
-                reactPop !== poppedItem.reactPop || index > poppedItem.index 
-            ));
+            var items = prevItems.filter(item => item.key !== key);
             return {items};            
         });
     }
