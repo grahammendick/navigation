@@ -98,7 +98,6 @@ public class NavigationStackView extends ViewGroup {
             Intent intent = new Intent(getContext(), SceneActivity.class);
             String key = keys.getString(crumb);
             intent.putExtra(SceneActivity.KEY, key);
-            intent.putExtra(SceneActivity.CRUMB, crumb);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             int enter = getAnimationResourceId(enterAnim, activityCloseEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityCloseExitAnimationId);
@@ -137,7 +136,6 @@ public class NavigationStackView extends ViewGroup {
                 Intent intent = new Intent(getContext(), SceneActivity.class);
                 String key = keys.getString(nextCrumb);
                 intent.putExtra(SceneActivity.KEY, key);
-                intent.putExtra(SceneActivity.CRUMB, nextCrumb);
                 intent.putExtra(ORIENTATION, currentActivity.getResources().getConfiguration().orientation);
                 intents[i] = intent;
             }
@@ -176,7 +174,6 @@ public class NavigationStackView extends ViewGroup {
             Intent intent = new Intent(getContext(), SceneActivity.class);
             String key = keys.getString(crumb);
             intent.putExtra(SceneActivity.KEY, key);
-            intent.putExtra(SceneActivity.CRUMB, crumb);
             int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
             currentActivity.finish();
