@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public class NavigationStackView extends ViewGroup {
+    private static final String ORIENTATION = "Navigation.ORIENTATION";
     private ArrayList<String> sceneKeys = new ArrayList<>();
     public static HashMap<String, SceneView> scenes = new HashMap<>();
     protected ReadableArray keys;
@@ -102,7 +103,7 @@ public class NavigationStackView extends ViewGroup {
             int enter = getAnimationResourceId(enterAnim, activityCloseEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityCloseExitAnimationId);
             final HashMap<String, View> oldSharedElementsMap = getSharedElementMap();
-            boolean orientationChanged = currentActivity.getIntent().getIntExtra(SceneActivity.ORIENTATION, 0) != currentActivity.getResources().getConfiguration().orientation;
+            boolean orientationChanged = currentActivity.getIntent().getIntExtra(ORIENTATION, 0) != currentActivity.getResources().getConfiguration().orientation;
             Pair[] oldSharedElements = (!orientationChanged && currentCrumb - crumb == 1) ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
                 final SharedElementTransitioner transitioner = new SharedElementTransitioner(currentActivity, getSharedElementSet(oldSharedElementNames));
@@ -137,7 +138,7 @@ public class NavigationStackView extends ViewGroup {
                 String key = keys.getString(nextCrumb);
                 intent.putExtra(SceneActivity.KEY, key);
                 intent.putExtra(SceneActivity.CRUMB, nextCrumb);
-                intent.putExtra(SceneActivity.ORIENTATION, currentActivity.getResources().getConfiguration().orientation);
+                intent.putExtra(ORIENTATION, currentActivity.getResources().getConfiguration().orientation);
                 intents[i] = intent;
             }
             int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);

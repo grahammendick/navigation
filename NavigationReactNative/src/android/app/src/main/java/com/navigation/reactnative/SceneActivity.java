@@ -24,7 +24,6 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     public static final String KEY = "Navigation.KEY";
     public static final String CRUMB = "Navigation.CRUMB";
     public static final String SHARED_ELEMENTS = "Navigation.SHARED_ELEMENTS";
-    public static final String ORIENTATION = "Navigation.ORIENTATION";
     private SceneRootViewGroup rootView;
     public SceneView scene;
 
