@@ -103,7 +103,7 @@ public class NavigationStackView extends ViewGroup {
             int exit = getAnimationResourceId(exitAnim, activityCloseExitAnimationId);
             final HashMap<String, View> oldSharedElementsMap = getSharedElementMap();
             boolean orientationChanged = currentActivity.getIntent().getIntExtra(SceneActivity.ORIENTATION, 0) != currentActivity.getResources().getConfiguration().orientation;
-            Pair[] oldSharedElements = (!orientationChanged && crumb < 20 && currentCrumb - crumb == 1) ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
+            Pair[] oldSharedElements = (!orientationChanged && currentCrumb - crumb == 1) ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
                 final SharedElementTransitioner transitioner = new SharedElementTransitioner(currentActivity, getSharedElementSet(oldSharedElementNames));
                 currentActivity.setEnterSharedElementCallback(new SharedElementCallback() {
