@@ -32,7 +32,6 @@
     
     UIViewController *reactViewController = self.reactViewController;
     if (reactViewController && self.window) {
-        self.frame = reactViewController.navigationController.navigationBar.bounds;
         reactViewController.navigationItem.titleView = self;
     }
 }
