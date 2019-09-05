@@ -1,5 +1,4 @@
 #import "NVNavigationBarView.h"
-#import "NVBarTitleView.h"
 
 #import <React/UIView+React.h>
 
@@ -11,14 +10,6 @@
         self.tag = NAVIGATION_BAR;
     }
     return self;
-}
-
-- (void)removeReactSubview:(UIView *)subview {
-    [super removeReactSubview:subview];
-    
-    if ([subview isKindOfClass:NVBarTitleView.class]) {
-        self.reactViewController.navigationItem.titleView = nil;
-    }
 }
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps

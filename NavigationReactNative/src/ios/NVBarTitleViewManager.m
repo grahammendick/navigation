@@ -6,7 +6,7 @@
 RCT_EXPORT_MODULE()
 
 - (UIView *)view {
-    return [[NVBarTitleView alloc] initWithBridge:self.bridge];
+    return [[NVBarTitleView alloc] init];
 }
 
 @end

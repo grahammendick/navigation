@@ -4,6 +4,4 @@
 
 @interface NVBarTitleView : UIView
 
-- (instancetype)initWithBridge:(RCTBridge *)bridge;
-
 @end
