@@ -79,6 +79,21 @@ export class LeftBarIOS extends Component { }
 export class RightBarIOS extends Component { }
 
 /**
+ * Defines the Title Bar Props contract
+ */
+export interface TitleBarIOSProps {
+  /**
+   * The style
+   */
+  style?: StyleProp<ViewStyle>;
+}
+
+/**
+ * Renders titleView in the UI navigation bar
+ */
+export class TitleBarIOS extends Component<TitleBarIOSProps> {  }
+
+/**
  * Defines the Bar Button Props contract
  */
 export interface BarButtonIOSProps {
