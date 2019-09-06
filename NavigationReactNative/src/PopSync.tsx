@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Platform } from 'react-native';
 type PopSyncProps<T> = {data: T[], getKey: any, children: (items: {key: string, data: T}[], popNative: (key: string) => void) => React.ReactElement<any>[]};
 
 class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
@@ -16,7 +17,7 @@ class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
         var items = prevItems
             .map(item => {
                 var matchedItem = dataByKey[item.key];
-                var nextItem: any = {key: item.key, data: matchedItem || item.data};
+                var nextItem: any = {key: item.key, data: matchedItem || item.data, reactPop: !matchedItem};
                 nextItem.index = !matchedItem ? item.index : matchedItem.index;
                 return nextItem;
             })
@@ -24,7 +25,7 @@ class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
                 .filter(item => !itemsByKey[getKey(item)])
                 .map(item => {
                     var index = dataByKey[getKey(item)].index;
-                    return {key: getKey(item), data: item, index};
+                    return {key: getKey(item), data: item, index, reactPop: false};
                 })
             )
             .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length);
@@ -32,6 +33,9 @@ class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
     }
     popNative(key: string) {
         this.setState(({items: prevItems}) => {
+            var poppedItem = prevItems.filter(item => item.key === key)[0];
+            if (Platform.OS === 'android' && !poppedItem.reactPop)
+                return null;
             var items = prevItems.filter(item => item.key !== key);
             return {items};            
         });
