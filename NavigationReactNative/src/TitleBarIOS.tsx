@@ -1,10 +1,10 @@
 import React from 'react'
 import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 
-const NVTitleBarView = requireNativeComponent<any>('NVTitleBarView', null)
+const NVTitleBar = requireNativeComponent<any>('NVTitleBarView', null)
 
 const TitleBar = ({style, ...props}) => (
-  <NVTitleBarView {...props} style={[styles.titleBar, style]}/>
+  <NVTitleBar {...props} style={[styles.titleBar, style]}/>
 )
 
 const styles = StyleSheet.create({
