@@ -7,10 +7,7 @@
 - (void)didMoveToWindow {
     [super didMoveToWindow];
     
-    UIViewController *reactViewController = self.reactViewController;
-    if (reactViewController && self.window) {
-        reactViewController.navigationItem.titleView = self;
-    }
+    self.reactViewController.navigationItem.titleView = self;
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview {
