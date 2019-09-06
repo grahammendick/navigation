@@ -2,6 +2,6 @@
 
 #import <React/RCTBridge.h>
 
-@interface NVBarTitleView : UIView
+@interface NVTitleBarView : UIView
 
 @end

@@ -1,8 +1,8 @@
-#import "NVBarTitleView.h"
+#import "NVTitleBarView.h"
 
 #import <React/UIView+React.h>
 
-@implementation NVBarTitleView
+@implementation NVTitleBarView
 
 - (void)didMoveToWindow {
     [super didMoveToWindow];
