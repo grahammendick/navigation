@@ -1,7 +1,7 @@
-#import "NVTitleBarViewManager.h"
+#import "NVTitleBarManager.h"
 #import "NVTitleBarView.h"
 
-@implementation NVTitleBarViewManager
+@implementation NVTitleBarManager
 
 RCT_EXPORT_MODULE()
 
