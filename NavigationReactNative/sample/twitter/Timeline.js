@@ -1,43 +1,42 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, Text, Image, Platform, ScrollView, ToolbarAndroid, View} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {NavigationBarIOS} from 'navigation-react-native';
 import Tweets from './Tweets';
 
 export default ({timeline: {id, name, username, logo, bio, 
-  followers, following, tweets}}) => (
-  <NavigationContext.Consumer>
-    {({stateNavigator}) => (
-      <>
-        <ToolbarAndroid
-          navIcon={require('./arrow.png')}
-          title={name}
-          style={styles.toolbar}
-          onIconClicked={() => {
-            stateNavigator.navigateBack(1)
-          }} />
-        <NavigationBarIOS title={name} />
-        <ScrollView 
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.view}>
-          <View>
-            <Image style={styles.logo} source={logo} />
-            <Text style={styles.name}>{name}</Text>
-            <Text>{username}</Text>
-            <Text style={styles.bio}>{bio}</Text>
-          </View>
-          <View style={styles.interactions}>
-            <Text style={styles.count}>{following.toLocaleString()}</Text>
-            <Text style={styles.interaction}>FOLLOWING</Text>
-            <Text style={styles.count}>{followers.toLocaleString()}</Text>
-            <Text style={styles.interaction}>FOLLOWERS</Text>
-          </View>
-          <Tweets tweets={tweets} onTimeline={accountId => accountId !== id} />
-        </ScrollView>
-      </>
-    )}
-  </NavigationContext.Consumer>
-);
+  followers, following, tweets}}) => {
+  const {stateNavigator} = useContext(NavigationContext);
+  return (
+    <>
+      <ToolbarAndroid
+        navIcon={require('./arrow.png')}
+        title={name}
+        style={styles.toolbar}
+        onIconClicked={() => {
+          stateNavigator.navigateBack(1)
+        }} />
+      <NavigationBarIOS title={name} />
+      <ScrollView 
+        contentInsetAdjustmentBehavior="automatic"
+        style={styles.view}>
+        <View>
+          <Image style={styles.logo} source={logo} />
+          <Text style={styles.name}>{name}</Text>
+          <Text>{username}</Text>
+          <Text style={styles.bio}>{bio}</Text>
+        </View>
+        <View style={styles.interactions}>
+          <Text style={styles.count}>{following.toLocaleString()}</Text>
+          <Text style={styles.interaction}>FOLLOWING</Text>
+          <Text style={styles.count}>{followers.toLocaleString()}</Text>
+          <Text style={styles.interaction}>FOLLOWERS</Text>
+        </View>
+        <Tweets tweets={tweets} onTimeline={accountId => accountId !== id} />
+      </ScrollView>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   toolbar: {

@@ -1,37 +1,36 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {ScrollView, StyleSheet, Text, Image, FlatList, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {NavigationBarIOS} from 'navigation-react-native';
 
-export default ({follows}) => (
-  <NavigationContext.Consumer>
-    {({stateNavigator}) => (
-      <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
-          <NavigationBarIOS title="Notifications" />
-          <FlatList
-              data={follows}
-              keyExtractor={item => '' + item.id}
-              renderItem={({item: {id, name, logo}}) => (
-              <TouchableHighlight
-                underlayColor="white"
-                onPress={() => {
-                  stateNavigator.navigate('timeline', {id});
-              }}>
-                <View style={styles.follow}>
-                  <View>
-                    <Image style={styles.logo} source={logo} />
-                    <View style={styles.details}>
-                    <Text style={styles.name}>{name}</Text>
-                    <Text>followed you.</Text>
-                    </View>
-                  </View>
+export default ({follows}) => {
+  const {stateNavigator} = useContext(NavigationContext);
+  return (
+    <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
+      <NavigationBarIOS title="Notifications" />
+      <FlatList
+          data={follows}
+          keyExtractor={item => '' + item.id}
+          renderItem={({item: {id, name, logo}}) => (
+            <TouchableHighlight
+              underlayColor="white"
+              onPress={() => {
+                stateNavigator.navigate('timeline', {id});
+            }}>
+            <View style={styles.follow}>
+              <View>
+                <Image style={styles.logo} source={logo} />
+                <View style={styles.details}>
+                <Text style={styles.name}>{name}</Text>
+                <Text>followed you.</Text>
                 </View>
-            </TouchableHighlight>
-          )} />
-      </ScrollView>
-    )}
-  </NavigationContext.Consumer>
-);
+              </View>
+            </View>
+          </TouchableHighlight>
+        )} />
+    </ScrollView>
+  );
+};
 
 const styles = StyleSheet.create({
   view: {
