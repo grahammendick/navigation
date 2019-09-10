@@ -1,38 +1,37 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {NavigationContext} from 'navigation-react';
 import {StyleSheet, Text, Image, View, FlatList, TouchableHighlight} from 'react-native';
 
-export default ({tweets, onTimeline}) => (
-  <NavigationContext.Consumer>
-    {({stateNavigator}) => (
-      <FlatList
-        data={tweets}
-        keyExtractor={item => '' + item.id}
-        renderItem={({item: {account: {id: accountId, name, logo}, id, text}}) => (
+export default ({tweets, onTimeline}) => {
+  const {stateNavigator} = useContext(NavigationContext);
+  return (
+    <FlatList
+      data={tweets}
+      keyExtractor={item => '' + item.id}
+      renderItem={({item: {account: {id: accountId, name, logo}, id, text}}) => (
+        <TouchableHighlight
+          underlayColor="white"
+          onPress={() => {
+            stateNavigator.navigate('tweet', {id});
+        }}>
+        <View style={styles.tweet}>
           <TouchableHighlight
             underlayColor="white"
             onPress={() => {
-              stateNavigator.navigate('tweet', {id});
+              if (!onTimeline || onTimeline(accountId))
+                stateNavigator.navigate('timeline', {id: accountId});
           }}>
-            <View style={styles.tweet}>
-              <TouchableHighlight
-                underlayColor="white"
-                onPress={() => {
-                  if (!onTimeline || onTimeline(accountId))
-                    stateNavigator.navigate('timeline', {id: accountId});
-              }}>
-                <Image style={styles.logo} source={logo} />
-              </TouchableHighlight>
-              <View style={styles.details}>
-                <Text style={styles.name}>{name}</Text>
-                <Text>{text}</Text>
-              </View>
-            </View>
+            <Image style={styles.logo} source={logo} />
           </TouchableHighlight>
-        )} />
-    )}
-  </NavigationContext.Consumer>
-);
+          <View style={styles.details}>
+            <Text style={styles.name}>{name}</Text>
+            <Text>{text}</Text>
+          </View>
+        </View>
+      </TouchableHighlight>
+    )} />
+  );
+};
 
 const styles = StyleSheet.create({
   tweet: {
