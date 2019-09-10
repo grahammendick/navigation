@@ -1,50 +1,49 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, Text, Image, Platform, ScrollView, View, ToolbarAndroid, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {NavigationBarIOS} from 'navigation-react-native';
 import Tweets from './Tweets';
 
 export default ({tweet: {account: {id: accountId, name, username, logo}, 
-  text, time, retweets, likes, replies}}) => (
-    <NavigationContext.Consumer>
-    {({stateNavigator}) => (
-      <>
-        <ToolbarAndroid
-          navIcon={require('./arrow.png')}
-          title="Tweet"
-          style={styles.toolbar}
-          onIconClicked={() => {
-            stateNavigator.navigateBack(1)
-          }} />
-        <NavigationBarIOS title="Tweet" />
-        <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
-          <View>
-            <View style={styles.heading}>
-              <TouchableHighlight underlayColor="white" onPress={() => {
-                stateNavigator.navigate('timeline', {id: accountId});
-              }}>
-                <Image style={styles.logo} source={logo} />
-              </TouchableHighlight>
-              <View style={styles.details}>
-                <Text style={styles.name}>{name}</Text>
-                <Text>{username}</Text>
-              </View>
-            </View>
-            <Text style={styles.text}>{text}</Text>
-            <Text style={styles.time}>{time}</Text>
-            <View style={styles.interactions}>
-              <Text style={styles.count}>{retweets}</Text>
-              <Text style={styles.interaction}>RETWEETS</Text>
-              <Text style={styles.count}>{likes}</Text>
-              <Text style={styles.interaction}>LIKES</Text>
+  text, time, retweets, likes, replies}}) => {
+  const {stateNavigator} = useContext(NavigationContext);
+  return (
+    <>
+      <ToolbarAndroid
+        navIcon={require('./arrow.png')}
+        title="Tweet"
+        style={styles.toolbar}
+        onIconClicked={() => {
+          stateNavigator.navigateBack(1)
+        }} />
+      <NavigationBarIOS title="Tweet" />
+      <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
+        <View>
+          <View style={styles.heading}>
+            <TouchableHighlight underlayColor="white" onPress={() => {
+              stateNavigator.navigate('timeline', {id: accountId});
+            }}>
+              <Image style={styles.logo} source={logo} />
+            </TouchableHighlight>
+            <View style={styles.details}>
+              <Text style={styles.name}>{name}</Text>
+              <Text>{username}</Text>
             </View>
           </View>
-          <Tweets tweets={replies} stateNavigator={stateNavigator} />
-        </ScrollView>
-      </>
-    )}
-  </NavigationContext.Consumer>
-);
+          <Text style={styles.text}>{text}</Text>
+          <Text style={styles.time}>{time}</Text>
+          <View style={styles.interactions}>
+            <Text style={styles.count}>{retweets}</Text>
+            <Text style={styles.interaction}>RETWEETS</Text>
+            <Text style={styles.count}>{likes}</Text>
+            <Text style={styles.interaction}>LIKES</Text>
+          </View>
+        </View>
+        <Tweets tweets={replies} stateNavigator={stateNavigator} />
+      </ScrollView>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   toolbar: {
