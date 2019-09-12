@@ -107,22 +107,27 @@ public class NavigationStackView extends ViewGroup {
         }
         if (crumb > currentCrumb) {
             FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
             int popEnter = getAnimationResourceId(popEnterAnim, activityCloseEnterAnimationId);
             int popExit = getAnimationResourceId(popExitAnim, activityCloseExitAnimationId);
+            Fragment fragment, prevFragment = null;
             for(int i = 0; i < crumb - currentCrumb; i++) {
                 int nextCrumb = currentCrumb + i + 1;
                 String key = keys.getString(nextCrumb);
-                String prevKey = nextCrumb > 0 ? keys.getString(nextCrumb - 1) : null;
+                fragment = new SceneFragment(key);
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
-                fragmentTransaction.add(((ViewGroup) this.getParent()).getId(), new SceneFragment(key), key);
-                if (prevKey != null)
-                    fragmentTransaction.hide(fragmentManager.findFragmentByTag(prevKey));
+                fragmentTransaction.add(((ViewGroup) this.getParent()).getId(), fragment, key);
+                if (nextCrumb > 0) {
+                    if (prevFragment == null)
+                        prevFragment = fragmentManager.findFragmentByTag(keys.getString(nextCrumb - 1));
+                    fragmentTransaction.hide(prevFragment);
+                }
                 fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
+                fragmentTransaction.commit();
+                prevFragment = fragment;
             }
-            fragmentTransaction.commit();
         }
         if (crumb == currentCrumb && !oldKey.equals(keys.getString(crumb))) {
             Intent intent = new Intent(getContext(), SceneActivity.class);
