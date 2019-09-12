@@ -102,39 +102,8 @@ public class NavigationStackView extends ViewGroup {
         int crumb = keys.size() - 1;
         int currentCrumb = oldCrumb;
         if (crumb < currentCrumb) {
-            Intent intent = new Intent(getContext(), SceneActivity.class);
-            String key = keys.getString(crumb);
-            intent.putExtra(SceneActivity.KEY, key);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            int enter = getAnimationResourceId(enterAnim, activityCloseEnterAnimationId);
-            int exit = getAnimationResourceId(exitAnim, activityCloseExitAnimationId);
-            final HashMap<String, View> oldSharedElementsMap = getSharedElementMap();
-            boolean orientationChanged = currentActivity.getIntent().getIntExtra(ORIENTATION, 0) != currentActivity.getResources().getConfiguration().orientation;
-            Pair[] oldSharedElements = (!orientationChanged && currentCrumb - crumb == 1) ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
-                final SharedElementTransitioner transitioner = new SharedElementTransitioner(currentActivity, getSharedElementSet(oldSharedElementNames));
-                currentActivity.setEnterSharedElementCallback(new SharedElementCallback() {
-                    @Override
-                    public void onMapSharedElements(List<String> names, Map<String, View> elements) {
-                        names.clear();
-                        elements.clear();
-                        for(int i = 0; i < oldSharedElementNames.size(); i++) {
-                            String name = oldSharedElementNames.getString(i);
-                            names.add(name);
-                            if (oldSharedElementsMap.containsKey(name)) {
-                                View oldSharedElement = oldSharedElementsMap.get(name);
-                                elements.put(name, oldSharedElement);
-                                SharedElementView oldSharedElementView = (SharedElementView) oldSharedElement.getParent();
-                                transitioner.load(name, oldSharedElementView.exitTransition);
-                            }
-                        }
-                    }
-                });
-                currentActivity.finishAfterTransition();
-            } else {
-                currentActivity.navigateUpTo(intent);
-            }
-            currentActivity.overridePendingTransition(enter, exit);
+            FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
+            fragmentManager.popBackStack();
         }
         if (crumb > currentCrumb) {
             FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
@@ -142,7 +111,9 @@ public class NavigationStackView extends ViewGroup {
             for(int i = 0; i < crumb - currentCrumb; i++) {
                 int nextCrumb = currentCrumb + i + 1;
                 String key = keys.getString(nextCrumb);
-                fragmentTransaction.add(this.getId(), new SceneFragment(key));
+                fragmentTransaction
+                    .add(this.getId(), new SceneFragment(key))
+                    .addToBackStack(null);
             }
             fragmentTransaction.commit();
         }

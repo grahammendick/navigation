@@ -10,16 +10,23 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class SceneFragment extends Fragment {
-    private String key;
+    public SceneView scene;
 
     public SceneFragment(String key) {
         super();
-        this.key = key;
+        scene = NavigationStackView.scenes.get(key);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return NavigationStackView.scenes.get(key);
+        return scene;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (scene != null)
+            scene.popped();
     }
 }
