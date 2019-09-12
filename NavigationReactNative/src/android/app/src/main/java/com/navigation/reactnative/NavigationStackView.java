@@ -13,6 +13,7 @@ import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -66,9 +67,6 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public void addView(View child, int index) {
-        if (child.getParent() != null)
-            return;
-        super.addView(child, index);
         SceneView scene = (SceneView) child;
         sceneKeys.add(index, scene.sceneKey);
         scenes.put(scene.sceneKey, scene);
@@ -108,12 +106,18 @@ public class NavigationStackView extends ViewGroup {
         if (crumb > currentCrumb) {
             FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
+            int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
             for(int i = 0; i < crumb - currentCrumb; i++) {
                 int nextCrumb = currentCrumb + i + 1;
                 String key = keys.getString(nextCrumb);
+                String prevKey = nextCrumb > 0 ? keys.getString(nextCrumb - 1) : null;
                 fragmentTransaction
-                    .add(this.getId(), new SceneFragment(key))
-                    .addToBackStack(String.valueOf(nextCrumb));
+                    .setCustomAnimations(enter, exit)
+                    .add(((ViewGroup) this.getParent()).getId(), new SceneFragment(key), key);
+                if (prevKey != null)
+                    fragmentTransaction.hide(fragmentManager.findFragmentByTag(prevKey));
+                fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
             }
             fragmentTransaction.commit();
         }
@@ -149,19 +153,17 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public void onDetachedFromWindow() {
-        Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
+        /*Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
         if (keys.size() > 0 && currentActivity != null) {
             Intent mainIntent = mainActivity.getIntent();
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             currentActivity.navigateUpTo(mainIntent);
-        }
+        }*/
         scenes.clear();
         super.onDetachedFromWindow();
     }
 
     private int getAnimationResourceId(String animationName, int defaultId) {
-        if(((ThemedReactContext) getContext()).getCurrentActivity() == mainActivity)
-            return -1;
         if (animationName == null)
             return defaultId;
         String packageName = getContext().getPackageName();
