@@ -57,6 +57,8 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
             var {state: nextState, data: nextData} = crumbs.concat(nextCrumb)[oldCrumbs.length + 1];
             var enterAnim = unmountStyle(true, state, data, crumbs);
             var exitAnim = crumbStyle(false, oldState, oldData, oldCrumbs, nextState, nextData);
+            var popEnterAnim = crumbStyle(true, oldState, oldData, oldCrumbs, nextState, nextData);
+            var popExitAnim = unmountStyle(false, state, data, crumbs);
             var sharedElements = getSharedElements(state, data, crumbs);
         }
         if (crumbs.length < oldCrumbs.length) {
@@ -70,7 +72,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
             var enterAnim = unmountStyle(true, state, data, crumbs);
             var exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs, state, data);
         }
-        return {enterAnim, exitAnim, sharedElements, oldSharedElements};
+        return {enterAnim, exitAnim, popEnterAnim, popExitAnim, sharedElements, oldSharedElements};
     }
     render() {
         var {keys, finish} = this.state;

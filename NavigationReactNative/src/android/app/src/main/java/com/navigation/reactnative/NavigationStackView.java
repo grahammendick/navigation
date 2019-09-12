@@ -39,6 +39,8 @@ public class NavigationStackView extends ViewGroup {
     private String oldKey;
     protected String enterAnim;
     protected String exitAnim;
+    protected String popEnterAnim;
+    protected String popExitAnim;
     protected ReadableArray sharedElementNames;
     protected ReadableArray oldSharedElementNames;
     protected boolean finish = false;
@@ -108,12 +110,14 @@ public class NavigationStackView extends ViewGroup {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
+            int popEnter = getAnimationResourceId(popEnterAnim, activityCloseEnterAnimationId);
+            int popExit = getAnimationResourceId(popExitAnim, activityCloseExitAnimationId);
             for(int i = 0; i < crumb - currentCrumb; i++) {
                 int nextCrumb = currentCrumb + i + 1;
                 String key = keys.getString(nextCrumb);
                 String prevKey = nextCrumb > 0 ? keys.getString(nextCrumb - 1) : null;
                 fragmentTransaction
-                    .setCustomAnimations(enter, exit)
+                    .setCustomAnimations(enter, exit, popEnter, popExit)
                     .add(((ViewGroup) this.getParent()).getId(), new SceneFragment(key), key);
                 if (prevKey != null)
                     fragmentTransaction.hide(fragmentManager.findFragmentByTag(prevKey));

@@ -27,6 +27,16 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
         view.exitAnim = exitAnim;
     }
 
+    @ReactProp(name = "popEnterAnim")
+    public void setPopEnterAnim(NavigationStackView view, String popEnterAnim) {
+        view.popEnterAnim= popEnterAnim;
+    }
+
+    @ReactProp(name = "popExitAnim")
+    public void setPopExitAnim(NavigationStackView view, String popExitAnim) {
+        view.popExitAnim = popExitAnim;
+    }
+
     @ReactProp(name = "sharedElements")
     public void setSharedElements(NavigationStackView view, ReadableArray sharedElements) {
         view.sharedElementNames = sharedElements;
