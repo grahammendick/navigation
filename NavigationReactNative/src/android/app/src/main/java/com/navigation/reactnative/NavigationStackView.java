@@ -116,9 +116,8 @@ public class NavigationStackView extends ViewGroup {
                 int nextCrumb = currentCrumb + i + 1;
                 String key = keys.getString(nextCrumb);
                 String prevKey = nextCrumb > 0 ? keys.getString(nextCrumb - 1) : null;
-                fragmentTransaction
-                    .setCustomAnimations(enter, exit, popEnter, popExit)
-                    .add(((ViewGroup) this.getParent()).getId(), new SceneFragment(key), key);
+                fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
+                fragmentTransaction.add(((ViewGroup) this.getParent()).getId(), new SceneFragment(key), key);
                 if (prevKey != null)
                     fragmentTransaction.hide(fragmentManager.findFragmentByTag(prevKey));
                 fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
