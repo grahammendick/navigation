@@ -103,7 +103,7 @@ public class NavigationStackView extends ViewGroup {
         int currentCrumb = oldCrumb;
         if (crumb < currentCrumb) {
             FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
-            fragmentManager.popBackStack();
+            fragmentManager.popBackStack(String.valueOf(crumb), 0);
         }
         if (crumb > currentCrumb) {
             FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
@@ -113,7 +113,7 @@ public class NavigationStackView extends ViewGroup {
                 String key = keys.getString(nextCrumb);
                 fragmentTransaction
                     .add(this.getId(), new SceneFragment(key))
-                    .addToBackStack(null);
+                    .addToBackStack(String.valueOf(nextCrumb));
             }
             fragmentTransaction.commit();
         }
