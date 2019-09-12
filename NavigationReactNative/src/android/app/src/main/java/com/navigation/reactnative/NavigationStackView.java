@@ -13,6 +13,10 @@ import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -62,6 +66,9 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public void addView(View child, int index) {
+        if (child.getParent() != null)
+            return;
+        super.addView(child, index);
         SceneView scene = (SceneView) child;
         sceneKeys.add(index, scene.sceneKey);
         scenes.put(scene.sceneKey, scene);
@@ -130,45 +137,14 @@ public class NavigationStackView extends ViewGroup {
             currentActivity.overridePendingTransition(enter, exit);
         }
         if (crumb > currentCrumb) {
-            Intent[] intents = new Intent[crumb - currentCrumb];
+            FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             for(int i = 0; i < crumb - currentCrumb; i++) {
                 int nextCrumb = currentCrumb + i + 1;
-                Intent intent = new Intent(getContext(), SceneActivity.class);
                 String key = keys.getString(nextCrumb);
-                intent.putExtra(SceneActivity.KEY, key);
-                intent.putExtra(ORIENTATION, currentActivity.getResources().getConfiguration().orientation);
-                intents[i] = intent;
+                fragmentTransaction.add(this.getId(), new SceneFragment(key));
             }
-            int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
-            int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
-            final HashMap<String, View> sharedElementsMap = getSharedElementMap();
-            final Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements(sharedElementsMap, sharedElementNames) : null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null && sharedElements.length != 0) {
-                intents[0].putExtra(SceneActivity.SHARED_ELEMENTS, getSharedElementSet(sharedElementNames));
-                currentActivity.setExitSharedElementCallback(new SharedElementCallback() {
-                    @Override
-                    public void onSharedElementEnd(List<String> names, List<View> elements, List<View> snapshots) {
-                        for (View view : elements) {
-                            if (view instanceof ReactImageView)
-                                ((ReactImageView) view).getDrawable().setVisible(true, true);
-                        }
-                    }
-                    @Override
-                    public void onMapSharedElements(List<String> names, Map<String, View> elements) {
-                        elements.clear();
-                        for(String name : names) {
-                            if (sharedElementsMap.containsKey(name))
-                                elements.put(name, sharedElementsMap.get(name));
-                        }
-                    }
-                });
-                @SuppressWarnings("unchecked")
-                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(currentActivity, sharedElements).toBundle();
-                currentActivity.startActivity(intents[0], bundle);
-            } else {
-                currentActivity.startActivities(intents);
-            }
-            currentActivity.overridePendingTransition(enter, exit);
+            fragmentTransaction.commit();
         }
         if (crumb == currentCrumb && !oldKey.equals(keys.getString(crumb))) {
             Intent intent = new Intent(getContext(), SceneActivity.class);
