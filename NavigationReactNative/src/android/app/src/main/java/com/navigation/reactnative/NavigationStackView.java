@@ -13,6 +13,7 @@ import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -68,6 +69,7 @@ public class NavigationStackView extends ViewGroup {
     @Override
     public void addView(View child, int index) {
         SceneView scene = (SceneView) child;
+        ViewCompat.setElevation(scene, index);
         sceneKeys.add(index, scene.sceneKey);
         scenes.put(scene.sceneKey, scene);
     }
@@ -138,7 +140,8 @@ public class NavigationStackView extends ViewGroup {
             FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
-            fragmentTransaction.replace(((ViewGroup) this.getParent()).getId(), new SceneFragment(scene), key);
+            fragmentTransaction.remove(fragmentManager.findFragmentByTag(oldKey));
+            fragmentTransaction.add(((ViewGroup) this.getParent()).getId(), new SceneFragment(scene), key);
             fragmentTransaction.addToBackStack(String.valueOf(crumb));
             fragmentTransaction.commit();
         }
