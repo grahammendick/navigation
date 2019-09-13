@@ -104,12 +104,13 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {crumb, title, sceneKey, popped, navigationEvent: {stateNavigator}} = this.props;
         var {crumbs} = stateNavigator.stateContext;
         var {state, data} = navigationEvent ? navigationEvent.stateNavigator.stateContext : crumbs[crumb];
+        var backgroundColor = navigationEvent ? '#fff' : 'rgba(255,255,255, 0)';
         return (
             <NVScene
                 sceneKey={sceneKey}
                 {...this.getAnimation()}
                 title={title(state, data)}
-                style={styles.scene}
+                style={[styles.scene, {backgroundColor}]}
                 onWillAppear={this.onWillAppear}
                 onPopped={() => popped(sceneKey)}>
                 <BackButton onPress={this.handleBack} />
@@ -125,7 +126,6 @@ var  NVScene = requireNativeComponent<any>('NVScene', null);
 
 const styles = StyleSheet.create({
     scene: {
-        backgroundColor: 'rgba(255,255,255, 0)',
         position: 'absolute',
         top: 0, right: 0,
         bottom: 0, left: 0,
