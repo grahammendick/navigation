@@ -139,8 +139,6 @@ public class NavigationStackView extends ViewGroup {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
             fragmentTransaction.replace(((ViewGroup) this.getParent()).getId(), new SceneFragment(key), key);
-            Fragment replacedFragment = fragmentManager.findFragmentByTag(oldKey);
-            fragmentTransaction.hide(replacedFragment);
             fragmentTransaction.addToBackStack(String.valueOf(crumb));
             fragmentTransaction.commit();
         }
