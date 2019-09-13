@@ -114,7 +114,7 @@ public class NavigationStackView extends ViewGroup {
                 SceneView scene = NavigationStackView.scenes.get(key);
                 int popEnter = getAnimationResourceId(scene.enterAnim, activityCloseExitAnimationId);
                 int popExit = getAnimationResourceId(scene.exitAnim, activityCloseEnterAnimationId);
-                fragment = new SceneFragment(key);
+                fragment = new SceneFragment(scene);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
                 fragmentTransaction.add(((ViewGroup) this.getParent()).getId(), fragment, key);
@@ -138,7 +138,7 @@ public class NavigationStackView extends ViewGroup {
             FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
-            fragmentTransaction.replace(((ViewGroup) this.getParent()).getId(), new SceneFragment(key), key);
+            fragmentTransaction.replace(((ViewGroup) this.getParent()).getId(), new SceneFragment(scene), key);
             fragmentTransaction.addToBackStack(String.valueOf(crumb));
             fragmentTransaction.commit();
         }

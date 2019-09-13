@@ -12,9 +12,9 @@ import androidx.fragment.app.Fragment;
 public class SceneFragment extends Fragment {
     public SceneView scene;
 
-    public SceneFragment(String key) {
+    public SceneFragment(SceneView scene) {
         super();
-        scene = NavigationStackView.scenes.get(key);
+        this.scene = scene;
     }
 
     @Nullable
