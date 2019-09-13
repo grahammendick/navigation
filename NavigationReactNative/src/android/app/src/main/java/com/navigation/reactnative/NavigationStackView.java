@@ -129,14 +129,20 @@ public class NavigationStackView extends ViewGroup {
             }
         }
         if (crumb == currentCrumb && !oldKey.equals(keys.getString(crumb))) {
-            Intent intent = new Intent(getContext(), SceneActivity.class);
-            String key = keys.getString(crumb);
-            intent.putExtra(SceneActivity.KEY, key);
             int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
-            currentActivity.finish();
-            currentActivity.startActivity(intent);
-            currentActivity.overridePendingTransition(enter, exit);
+            String key = keys.getString(crumb);
+            SceneView scene = NavigationStackView.scenes.get(key);
+            int popEnter = getAnimationResourceId(scene.enterAnim, activityCloseExitAnimationId);
+            int popExit = getAnimationResourceId(scene.exitAnim, activityCloseEnterAnimationId);
+            FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
+            fragmentTransaction.replace(((ViewGroup) this.getParent()).getId(), new SceneFragment(key), key);
+            Fragment replacedFragment = fragmentManager.findFragmentByTag(oldKey);
+            fragmentTransaction.hide(replacedFragment);
+            fragmentTransaction.addToBackStack(String.valueOf(crumb));
+            fragmentTransaction.commit();
         }
         oldCrumb = keys.size() - 1;
         oldKey = keys.getString(oldCrumb);
