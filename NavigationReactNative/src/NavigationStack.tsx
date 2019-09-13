@@ -110,6 +110,7 @@ var  NVNavigationStack = requireNativeComponent<any>('NVNavigationStack', null);
 const styles = StyleSheet.create({
     stack: {
         flex: 1,
+        backgroundColor: '#000',
     },
 });
 
