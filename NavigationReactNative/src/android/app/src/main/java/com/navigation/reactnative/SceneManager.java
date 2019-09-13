@@ -19,6 +19,16 @@ public class SceneManager extends ViewGroupManager<SceneView> {
         view.sceneKey = sceneKey;
     }
 
+    @ReactProp(name = "enterAnim")
+    public void setEnterAnim(SceneView view, String enterAnim) {
+        view.enterAnim = enterAnim;
+    }
+
+    @ReactProp(name = "exitAnim")
+    public void setExitAnim(SceneView view, String exitAnim) {
+        view.exitAnim = exitAnim;
+    }
+
     @Override
     public SceneView createViewInstance(ThemedReactContext context) {
         return new SceneView(context);

@@ -23,6 +23,8 @@ import java.util.HashSet;
 
 public class SceneView extends ViewGroup {
     protected String sceneKey;
+    protected String enterAnim;
+    protected String exitAnim;
     public HashSet<View> sharedElements = new HashSet<>();
     public SharedElementTransitioner transitioner;
     private CustomGlobalLayoutListener customGlobalLayoutListener;

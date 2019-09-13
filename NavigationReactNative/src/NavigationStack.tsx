@@ -76,7 +76,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     }
     render() {
         var {keys, finish} = this.state;
-        var {stateNavigator, title, renderScene} = this.props;
+        var {stateNavigator, unmountStyle, crumbStyle, title, renderScene} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
             <NVNavigationStack
@@ -95,6 +95,8 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                             key={key}
                             crumb={crumb}
                             sceneKey={key}
+                            unmountStyle={unmountStyle}
+                            crumbStyle={crumbStyle}
                             title={title}
                             popped={popNative}
                             renderScene={renderScene} />

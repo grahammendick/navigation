@@ -109,12 +109,13 @@ public class NavigationStackView extends ViewGroup {
             FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
             int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
             int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
-            int popEnter = getAnimationResourceId(popEnterAnim, activityCloseEnterAnimationId);
-            int popExit = getAnimationResourceId(popExitAnim, activityCloseExitAnimationId);
             Fragment fragment, prevFragment = null;
             for(int i = 0; i < crumb - currentCrumb; i++) {
                 int nextCrumb = currentCrumb + i + 1;
                 String key = keys.getString(nextCrumb);
+                SceneView scene = NavigationStackView.scenes.get(key);
+                int popEnter = getAnimationResourceId(scene.enterAnim, activityCloseExitAnimationId);
+                int popExit = getAnimationResourceId(scene.exitAnim, activityCloseEnterAnimationId);
                 fragment = new SceneFragment(key);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
