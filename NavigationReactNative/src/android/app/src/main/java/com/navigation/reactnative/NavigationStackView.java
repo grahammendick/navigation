@@ -39,8 +39,6 @@ public class NavigationStackView extends ViewGroup {
     private String oldKey;
     protected String enterAnim;
     protected String exitAnim;
-    protected String popEnterAnim;
-    protected String popExitAnim;
     protected ReadableArray sharedElementNames;
     protected ReadableArray oldSharedElementNames;
     protected boolean finish = false;
