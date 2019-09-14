@@ -36,8 +36,6 @@ public class NavigationStackView extends ViewGroup {
     public static HashMap<String, SceneView> scenes = new HashMap<>();
     protected ReadableArray keys;
     private Activity mainActivity;
-    private int oldCrumb = -1;
-    private String oldKey;
     protected String enterAnim;
     protected String exitAnim;
     protected ReadableArray sharedElementNames;
@@ -47,7 +45,7 @@ public class NavigationStackView extends ViewGroup {
     int activityOpenExitAnimationId;
     int activityCloseEnterAnimationId;
     int activityCloseExitAnimationId;
-    private SceneNavigator navigator = new FragmentNavigator();
+    SceneNavigator navigator;
 
     public NavigationStackView(Context context) {
         super(context);
@@ -105,18 +103,18 @@ public class NavigationStackView extends ViewGroup {
         if (scenes.size() == 0)
             return;
         int crumb = keys.size() - 1;
-        int currentCrumb = oldCrumb;
+        int currentCrumb = navigator.oldCrumb;
         if (crumb < currentCrumb) {
             navigator.navigateBack(currentCrumb, crumb, currentActivity, this);
         }
         if (crumb > currentCrumb) {
             navigator.navigate(currentCrumb, crumb, currentActivity, this);
         }
-        if (crumb == currentCrumb && !oldKey.equals(keys.getString(crumb))) {
+        if (crumb == currentCrumb && !navigator.oldKey.equals(keys.getString(crumb))) {
             navigator.refresh(currentCrumb, crumb, currentActivity, this);
         }
-        oldCrumb = keys.size() - 1;
-        oldKey = keys.getString(oldCrumb);
+        navigator.oldCrumb = keys.size() - 1;
+        navigator.oldKey = keys.getString(navigator.oldCrumb);
     }
 
     @Override

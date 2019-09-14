@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 
 abstract class SceneNavigator {
+    int oldCrumb = -1;
+    String oldKey;
 
     abstract void navigateBack(int currentCrumb, int crumb, Activity activity, NavigationStackView stack);
 
