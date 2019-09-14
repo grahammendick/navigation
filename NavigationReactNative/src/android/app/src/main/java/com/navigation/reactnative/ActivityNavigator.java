@@ -30,7 +30,7 @@ class ActivityNavigator extends SceneNavigator {
         int enter = getAnimationResourceId(activity, stack.enterAnim, stack.activityOpenEnterAnimationId);
         int exit = getAnimationResourceId(activity, stack.exitAnim, stack.activityOpenExitAnimationId);
         activity.startActivities(intents);
-        activity.overridePendingTransition(enter, exit);
+        activity.overridePendingTransition(oldCrumb != -1 ? enter : 0, oldCrumb != -1 ? exit : 0);
     }
 
     @Override

@@ -26,7 +26,7 @@ class FragmentNavigator extends SceneNavigator {
             int popEnter = getAnimationResourceId(activity, scene.enterAnim, stack.activityCloseExitAnimationId);
             int popExit = getAnimationResourceId(activity, scene.exitAnim, stack.activityCloseEnterAnimationId);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
+            fragmentTransaction.setCustomAnimations(oldCrumb != -1 ? enter : 0, exit, popEnter, popExit);
             fragmentTransaction.replace(stack.getChildAt(0).getId(), new SceneFragment(scene), key);
             fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
             fragmentTransaction.commit();

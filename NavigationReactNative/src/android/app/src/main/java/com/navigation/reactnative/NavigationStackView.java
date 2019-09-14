@@ -147,13 +147,6 @@ public class NavigationStackView extends ViewGroup {
         super.onDetachedFromWindow();
     }
 
-    private int getAnimationResourceId(String animationName, int defaultId) {
-        if (animationName == null)
-            return defaultId;
-        String packageName = getContext().getPackageName();
-        return getContext().getResources().getIdentifier(animationName, "anim", packageName);
-    }
-
     private HashSet<String> getSharedElementSet(ReadableArray sharedElementNames) {
         HashSet<String> sharedElementSet = new HashSet<>();
         for(int i = 0; i < sharedElementNames.size(); i++) {
