@@ -43,10 +43,11 @@ public class NavigationStackView extends ViewGroup {
     protected ReadableArray sharedElementNames;
     protected ReadableArray oldSharedElementNames;
     protected boolean finish = false;
-    private int activityOpenEnterAnimationId;
-    private int activityOpenExitAnimationId;
-    private int activityCloseEnterAnimationId;
-    private int activityCloseExitAnimationId;
+    int activityOpenEnterAnimationId;
+    int activityOpenExitAnimationId;
+    int activityCloseEnterAnimationId;
+    int activityCloseExitAnimationId;
+    private SceneNavigator navigator = new FragmentNavigator();
 
     public NavigationStackView(Context context) {
         super(context);
@@ -106,39 +107,13 @@ public class NavigationStackView extends ViewGroup {
         int crumb = keys.size() - 1;
         int currentCrumb = oldCrumb;
         if (crumb < currentCrumb) {
-            FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
-            fragmentManager.popBackStack(String.valueOf(crumb), 0);
+            navigator.navigateBack(currentCrumb, crumb, currentActivity, this);
         }
         if (crumb > currentCrumb) {
-            FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
-            int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
-            int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
-            for(int i = 0; i < crumb - currentCrumb; i++) {
-                int nextCrumb = currentCrumb + i + 1;
-                String key = keys.getString(nextCrumb);
-                SceneView scene = NavigationStackView.scenes.get(key);
-                int popEnter = getAnimationResourceId(scene.enterAnim, activityCloseExitAnimationId);
-                int popExit = getAnimationResourceId(scene.exitAnim, activityCloseEnterAnimationId);
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
-                fragmentTransaction.replace(getChildAt(0).getId(), new SceneFragment(scene), key);
-                fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
-                fragmentTransaction.commit();
-            }
+            navigator.navigate(currentCrumb, crumb, currentActivity, this);
         }
         if (crumb == currentCrumb && !oldKey.equals(keys.getString(crumb))) {
-            int enter = getAnimationResourceId(enterAnim, activityOpenEnterAnimationId);
-            int exit = getAnimationResourceId(exitAnim, activityOpenExitAnimationId);
-            String key = keys.getString(crumb);
-            SceneView scene = NavigationStackView.scenes.get(key);
-            int popEnter = getAnimationResourceId(scene.enterAnim, activityCloseExitAnimationId);
-            int popExit = getAnimationResourceId(scene.exitAnim, activityCloseEnterAnimationId);
-            FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
-            fragmentTransaction.replace(getChildAt(0).getId(), new SceneFragment(scene), key);
-            fragmentTransaction.addToBackStack(String.valueOf(crumb));
-            fragmentTransaction.commit();
+            navigator.refresh(currentCrumb, crumb, currentActivity, this);
         }
         oldCrumb = keys.size() - 1;
         oldKey = keys.getString(oldCrumb);
