@@ -132,8 +132,7 @@ public class NavigationStackView extends ViewGroup {
             FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
-            fragmentTransaction.remove(fragmentManager.findFragmentByTag(oldKey));
-            fragmentTransaction.add(((ViewGroup) this.getParent()).getId(), new SceneFragment(scene), key);
+            fragmentTransaction.replace(((ViewGroup) this.getParent()).getId(), new SceneFragment(scene), key);
             fragmentTransaction.addToBackStack(String.valueOf(crumb));
             fragmentTransaction.commit();
         }
