@@ -68,15 +68,19 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public void addView(View child, int index) {
+        if (child instanceof FragmentContainerView) {
+            super.addView(child, index);
+            return;
+        }
         SceneView scene = (SceneView) child;
         ViewCompat.setElevation(scene, index);
-        sceneKeys.add(index, scene.sceneKey);
+        sceneKeys.add(index - 1, scene.sceneKey);
         scenes.put(scene.sceneKey, scene);
     }
 
     @Override
     public void removeViewAt(int index) {
-        String sceneKey = sceneKeys.remove(index);
+        String sceneKey = sceneKeys.remove(index - 1);
         scenes.remove(sceneKey);
     }
 
@@ -117,7 +121,7 @@ public class NavigationStackView extends ViewGroup {
                 int popExit = getAnimationResourceId(scene.exitAnim, activityCloseEnterAnimationId);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
-                fragmentTransaction.replace(((ViewGroup) this.getParent()).getId(), new SceneFragment(scene), key);
+                fragmentTransaction.replace(getChildAt(0).getId(), new SceneFragment(scene), key);
                 fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
                 fragmentTransaction.commit();
             }
@@ -132,7 +136,7 @@ public class NavigationStackView extends ViewGroup {
             FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
-            fragmentTransaction.replace(((ViewGroup) this.getParent()).getId(), new SceneFragment(scene), key);
+            fragmentTransaction.replace(getChildAt(0).getId(), new SceneFragment(scene), key);
             fragmentTransaction.addToBackStack(String.valueOf(crumb));
             fragmentTransaction.commit();
         }
@@ -142,12 +146,14 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public int getChildCount() {
-        return scenes.size();
+        return scenes.size() + 1;
     }
 
     @Override
     public View getChildAt(int index) {
-        return scenes.get(sceneKeys.get(index));
+        if (index == 0)
+            return super.getChildAt(index);
+        return scenes.get(sceneKeys.get(index - 1));
     }
 
     @Override
