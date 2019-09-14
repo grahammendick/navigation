@@ -17,14 +17,14 @@ class FragmentNavigator extends SceneNavigator {
     @Override
     void navigate(int currentCrumb, int crumb, Activity activity, NavigationStackView stack) {
         FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
-        int enter = getAnimationResourceId(activity, stack.enterAnim, stack.activityOpenEnterAnimationId);
-        int exit = getAnimationResourceId(activity, stack.exitAnim, stack.activityOpenExitAnimationId);
+        int enter = getAnimationResourceId(activity, stack.enterAnim, android.R.attr.activityOpenEnterAnimation);
+        int exit = getAnimationResourceId(activity, stack.exitAnim, android.R.attr.activityOpenExitAnimation);
         for(int i = 0; i < crumb - currentCrumb; i++) {
             int nextCrumb = currentCrumb + i + 1;
             String key = stack.keys.getString(nextCrumb);
             SceneView scene = NavigationStackView.scenes.get(key);
-            int popEnter = getAnimationResourceId(activity, scene.enterAnim, stack.activityCloseExitAnimationId);
-            int popExit = getAnimationResourceId(activity, scene.exitAnim, stack.activityCloseEnterAnimationId);
+            int popEnter = getAnimationResourceId(activity, scene.enterAnim, android.R.attr.activityCloseExitAnimation);
+            int popExit = getAnimationResourceId(activity, scene.exitAnim, android.R.attr.activityCloseEnterAnimation);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(oldCrumb != -1 ? enter : 0, exit, popEnter, popExit);
             fragmentTransaction.replace(stack.getChildAt(0).getId(), new SceneFragment(scene), key);
@@ -35,12 +35,12 @@ class FragmentNavigator extends SceneNavigator {
 
     @Override
     void refresh(int currentCrumb, int crumb, Activity activity, NavigationStackView stack) {
-        int enter = getAnimationResourceId(activity, stack.enterAnim, stack.activityOpenEnterAnimationId);
-        int exit = getAnimationResourceId(activity, stack.exitAnim, stack.activityOpenExitAnimationId);
+        int enter = getAnimationResourceId(activity, stack.enterAnim, android.R.attr.activityOpenEnterAnimation);
+        int exit = getAnimationResourceId(activity, stack.exitAnim, android.R.attr.activityOpenExitAnimation);
         String key = stack.keys.getString(crumb);
         SceneView scene = NavigationStackView.scenes.get(key);
-        int popEnter = getAnimationResourceId(activity, scene.enterAnim, stack.activityCloseExitAnimationId);
-        int popExit = getAnimationResourceId(activity, scene.exitAnim, stack.activityCloseEnterAnimationId);
+        int popEnter = getAnimationResourceId(activity, scene.enterAnim, android.R.attr.activityCloseExitAnimation);
+        int popExit = getAnimationResourceId(activity, scene.exitAnim, android.R.attr.activityCloseEnterAnimation);
         FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);

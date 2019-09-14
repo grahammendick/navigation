@@ -41,28 +41,10 @@ public class NavigationStackView extends ViewGroup {
     protected ReadableArray sharedElementNames;
     protected ReadableArray oldSharedElementNames;
     protected boolean finish = false;
-    int activityOpenEnterAnimationId;
-    int activityOpenExitAnimationId;
-    int activityCloseEnterAnimationId;
-    int activityCloseExitAnimationId;
     SceneNavigator navigator;
 
     public NavigationStackView(Context context) {
         super(context);
-
-        TypedArray activityStyle = context.getTheme().obtainStyledAttributes(new int[] {android.R.attr.windowAnimationStyle});
-        int windowAnimationStyleResId = activityStyle.getResourceId(0, 0);
-        activityStyle.recycle();
-
-        activityStyle = context.getTheme().obtainStyledAttributes(windowAnimationStyleResId, new int[] {
-                android.R.attr.activityOpenEnterAnimation, android.R.attr.activityOpenExitAnimation,
-                android.R.attr.activityCloseEnterAnimation, android.R.attr.activityCloseExitAnimation
-        });
-        activityOpenEnterAnimationId = activityStyle.getResourceId(0, 0);
-        activityOpenExitAnimationId = activityStyle.getResourceId(1, 0);
-        activityCloseEnterAnimationId = activityStyle.getResourceId(2, 0);
-        activityCloseExitAnimationId = activityStyle.getResourceId(3, 0);
-        activityStyle.recycle();
     }
 
     @Override
