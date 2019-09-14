@@ -13,12 +13,6 @@ import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.core.view.ViewCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -54,7 +48,8 @@ public class NavigationStackView extends ViewGroup {
             return;
         }
         SceneView scene = (SceneView) child;
-        ViewCompat.setElevation(scene, index);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            scene.setElevation(index);
         sceneKeys.add(index - 1, scene.sceneKey);
         scenes.put(scene.sceneKey, scene);
     }
