@@ -14,10 +14,10 @@ import androidx.fragment.app.Fragment;
 import java.util.HashSet;
 
 public class SceneFragment extends Fragment implements SharedElementContainer {
-    public SceneView scene;
-    HashSet<String> sharedElementNames;
+    private SceneView scene;
+    private HashSet<String> sharedElementNames;
 
-    public SceneFragment(SceneView scene, HashSet<String> sharedElements) {
+    SceneFragment(SceneView scene, HashSet<String> sharedElements) {
         super();
         this.scene = scene;
         sharedElementNames = sharedElements;
