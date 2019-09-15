@@ -1,6 +1,5 @@
 package com.navigation.reactnative;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.transition.Transition;
