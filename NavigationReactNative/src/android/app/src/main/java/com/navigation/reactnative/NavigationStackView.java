@@ -102,12 +102,6 @@ public class NavigationStackView extends ViewGroup {
     }
 
     @Override
-    public void onDetachedFromWindow() {
-        scenes.clear();
-        super.onDetachedFromWindow();
-    }
-
-    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
     }
 }
