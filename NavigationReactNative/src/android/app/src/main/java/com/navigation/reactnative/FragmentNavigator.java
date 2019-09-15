@@ -36,8 +36,8 @@ class FragmentNavigator extends SceneNavigator {
                 sharedElements = getSharedElements(currentCrumb, crumb, prevFramgent, stack);
             }
             if (sharedElements != null) {
-                for(Pair<View, String> sharedElement : sharedElements) {
-                    fragmentTransaction.addSharedElement(sharedElement.first, sharedElement.second);
+                for(Pair sharedElement : sharedElements) {
+                    fragmentTransaction.addSharedElement((View) sharedElement.first, (String) sharedElement.second);
                 }
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             } else {
