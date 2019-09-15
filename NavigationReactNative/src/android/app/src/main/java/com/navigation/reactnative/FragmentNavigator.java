@@ -1,6 +1,8 @@
 package com.navigation.reactnative;
 
 import android.app.Activity;
+import android.util.Pair;
+import android.view.View;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -26,8 +28,21 @@ class FragmentNavigator extends SceneNavigator {
             int popEnter = getAnimationResourceId(activity, scene.enterAnim, android.R.attr.activityCloseExitAnimation);
             int popExit = getAnimationResourceId(activity, scene.exitAnim, android.R.attr.activityCloseEnterAnimation);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setReorderingAllowed(true);
+            Pair[] sharedElements = null;
+            if (nextCrumb > 0) {
+                String prevKey = stack.keys.getString(nextCrumb - 1);
+                SceneFragment prevFramgent = (SceneFragment) fragmentManager.findFragmentByTag(prevKey);
+                sharedElements = getSharedElements(currentCrumb, crumb, prevFramgent, stack);
+            }
+            if (sharedElements != null) {
+                for(Pair<View, String> sharedElement : sharedElements) {
+                    fragmentTransaction.addSharedElement(sharedElement.first, sharedElement.second);
+                }
+            }
             fragmentTransaction.setCustomAnimations(oldCrumb != -1 ? enter : 0, exit, popEnter, popExit);
-            fragmentTransaction.replace(stack.getChildAt(0).getId(), new SceneFragment(scene), key);
+            SceneFragment fragment = new SceneFragment(scene, getSharedElementSet(stack.sharedElementNames));
+            fragmentTransaction.replace(stack.getChildAt(0).getId(), fragment, key);
             fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
             fragmentTransaction.commit();
         }
@@ -44,7 +59,7 @@ class FragmentNavigator extends SceneNavigator {
         FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
-        fragmentTransaction.replace(stack.getChildAt(0).getId(), new SceneFragment(scene), key);
+        fragmentTransaction.replace(stack.getChildAt(0).getId(), new SceneFragment(scene, null), key);
         fragmentTransaction.addToBackStack(String.valueOf(crumb));
         fragmentTransaction.commit();
     }

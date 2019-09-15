@@ -80,6 +80,8 @@ abstract class SceneNavigator {
     }
 
     protected HashSet<String> getSharedElementSet(ReadableArray sharedElementNames) {
+        if (sharedElementNames == null)
+            return null;
         HashSet<String> sharedElementSet = new HashSet<>();
         for(int i = 0; i < sharedElementNames.size(); i++) {
             sharedElementSet.add(sharedElementNames.getString(i));

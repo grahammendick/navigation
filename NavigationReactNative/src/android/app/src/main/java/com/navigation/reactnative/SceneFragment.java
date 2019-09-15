@@ -11,17 +11,25 @@ import androidx.annotation.Nullable;
 import androidx.core.app.SharedElementCallback;
 import androidx.fragment.app.Fragment;
 
+import java.util.HashSet;
+
 public class SceneFragment extends Fragment implements SharedElementContainer {
     public SceneView scene;
+    HashSet<String> sharedElementNames;
 
-    public SceneFragment(SceneView scene) {
+    public SceneFragment(SceneView scene, HashSet<String> sharedElements) {
         super();
         this.scene = scene;
+        sharedElementNames = sharedElements;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (sharedElementNames != null ) {
+            postponeEnterTransition();
+            scene.transitioner = new SharedElementTransitioner(this, sharedElementNames);
+        }
         return scene;
     }
 
