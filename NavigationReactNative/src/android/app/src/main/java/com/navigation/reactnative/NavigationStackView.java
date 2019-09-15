@@ -103,12 +103,6 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public void onDetachedFromWindow() {
-        /*Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
-        if (keys.size() > 0 && currentActivity != null) {
-            Intent mainIntent = mainActivity.getIntent();
-            mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            currentActivity.navigateUpTo(mainIntent);
-        }*/
         scenes.clear();
         super.onDetachedFromWindow();
     }
