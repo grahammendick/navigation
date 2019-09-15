@@ -84,7 +84,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 keys={keys}
                 fragment={fragment}
                 finish={finish}
-                style={styles.stack}
+                style={[styles.stack, fragment ? {backgroundColor: '#000'} : null]}
                 {...this.getAnimation()}
                 onDidNavigateBack={this.onDidNavigateBack}>
                 <BackButton onPress={this.handleBack} />
@@ -114,7 +114,6 @@ var  NVNavigationStack = requireNativeComponent<any>('NVNavigationStack', null);
 const styles = StyleSheet.create({
     stack: {
         flex: 1,
-        backgroundColor: '#000',
     },
 });
 
