@@ -8,15 +8,11 @@ import android.util.Pair;
 import android.util.SparseIntArray;
 import android.view.View;
 
-import androidx.core.app.SharedElementCallback;
-
 import com.facebook.react.bridge.ReadableArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 
 abstract class SceneNavigator {
     int oldCrumb = -1;
@@ -62,7 +58,7 @@ abstract class SceneNavigator {
         return sharedElementSet;
     }
 
-    protected HashMap<String, View> getSharedElementMap(SceneView scene) {
+    HashMap<String, View> getSharedElementMap(SceneView scene) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
             return null;
         HashMap<String, View> sharedElementMap = new HashMap<>();
@@ -72,7 +68,7 @@ abstract class SceneNavigator {
         return sharedElementMap;
     }
 
-    protected Pair[] getSharedElements(HashMap<String, View> sharedElementMap, ReadableArray sharedElementNames) {
+    Pair[] getSharedElements(HashMap<String, View> sharedElementMap, ReadableArray sharedElementNames) {
         if (sharedElementMap == null || sharedElementNames == null)
             return null;
         ArrayList<Pair> sharedElementPairs = new ArrayList<>();
