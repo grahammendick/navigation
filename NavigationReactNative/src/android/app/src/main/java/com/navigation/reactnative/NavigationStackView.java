@@ -124,40 +124,6 @@ public class NavigationStackView extends ViewGroup {
         super.onDetachedFromWindow();
     }
 
-    private HashSet<String> getSharedElementSet(ReadableArray sharedElementNames) {
-        HashSet<String> sharedElementSet = new HashSet<>();
-        for(int i = 0; i < sharedElementNames.size(); i++) {
-            sharedElementSet.add(sharedElementNames.getString(i));
-        }
-        return sharedElementSet;
-    }
-
-    private HashMap<String, View> getSharedElementMap() {
-        Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
-        if (!(currentActivity instanceof SceneActivity))
-            return null;
-        SceneView scene = ((SceneActivity) currentActivity).scene;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-            return null;
-        HashMap<String, View> sharedElementMap = new HashMap<>();
-        for(View sharedElement : scene.sharedElements) {
-            sharedElementMap.put(sharedElement.getTransitionName(), sharedElement);
-        }
-        return sharedElementMap;
-    }
-
-    private Pair[] getSharedElements(HashMap<String, View> sharedElementMap, ReadableArray sharedElementNames) {
-        if (sharedElementMap == null || sharedElementNames == null)
-            return null;
-        ArrayList<Pair> sharedElementPairs = new ArrayList<>();
-        for(int i = 0; i < sharedElementNames.size(); i++) {
-            String name = sharedElementNames.getString(i);
-            if (sharedElementMap.containsKey(name))
-                sharedElementPairs.add(Pair.create(sharedElementMap.get(name), name));
-        }
-        return sharedElementPairs.toArray(new Pair[0]);
-    }
-
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
     }
