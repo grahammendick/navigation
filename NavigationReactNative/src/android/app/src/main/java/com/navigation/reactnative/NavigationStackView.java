@@ -1,31 +1,20 @@
 package com.navigation.reactnative;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
-import android.app.SharedElementCallback;
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
-import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ThemedReactContext;
-import com.facebook.react.views.image.ReactImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 
 public class NavigationStackView extends ViewGroup {
-    private static final String ORIENTATION = "Navigation.ORIENTATION";
     private ArrayList<String> sceneKeys = new ArrayList<>();
     public static HashMap<String, SceneView> scenes = new HashMap<>();
     protected ReadableArray keys;

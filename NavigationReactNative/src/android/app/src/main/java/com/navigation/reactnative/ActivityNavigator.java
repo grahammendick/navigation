@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Pair;
 
 class ActivityNavigator extends SceneNavigator {
+    private static final String ORIENTATION = "Navigation.ORIENTATION";
 
     @Override
     void navigateBack(int currentCrumb, int crumb, Activity activity, NavigationStackView stack) {
@@ -29,6 +30,7 @@ class ActivityNavigator extends SceneNavigator {
             Intent intent = new Intent(activity, SceneActivity.class);
             String key = stack.keys.getString(nextCrumb);
             intent.putExtra(SceneActivity.KEY, key);
+            intent.putExtra(ORIENTATION, activity.getResources().getConfiguration().orientation);
             intents[i] = intent;
         }
         int enter = getAnimationResourceId(activity, stack.enterAnim, android.R.attr.activityOpenEnterAnimation);
