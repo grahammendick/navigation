@@ -12,6 +12,7 @@ class ActivityNavigator extends SceneNavigator {
 
     @Override
     void navigateBack(int currentCrumb, int crumb, Activity activity, NavigationStackView stack) {
+        SceneActivity.scenes = stack.scenes;
         Intent intent = new Intent(activity, SceneActivity.class);
         String key = stack.keys.getString(crumb);
         intent.putExtra(SceneActivity.KEY, key);
@@ -29,6 +30,7 @@ class ActivityNavigator extends SceneNavigator {
 
     @Override
     void navigate(int currentCrumb, int crumb, Activity activity, NavigationStackView stack) {
+        SceneActivity.scenes = stack.scenes;
         Intent[] intents = new Intent[crumb - currentCrumb];
         for(int i = 0; i < crumb - currentCrumb; i++) {
             int nextCrumb = currentCrumb + i + 1;
@@ -56,6 +58,7 @@ class ActivityNavigator extends SceneNavigator {
 
     @Override
     void refresh(int currentCrumb, int crumb, Activity activity, NavigationStackView stack) {
+        SceneActivity.scenes = stack.scenes;
         Intent intent = new Intent(activity, SceneActivity.class);
         String key = stack.keys.getString(crumb);
         intent.putExtra(SceneActivity.KEY, key);

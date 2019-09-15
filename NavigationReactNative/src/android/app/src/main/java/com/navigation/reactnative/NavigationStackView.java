@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class NavigationStackView extends ViewGroup {
     private ArrayList<String> sceneKeys = new ArrayList<>();
-    public static HashMap<String, SceneView> scenes = new HashMap<>();
+    public HashMap<String, SceneView> scenes = new HashMap<>();
     protected ReadableArray keys;
     private Activity mainActivity;
     protected String enterAnim;

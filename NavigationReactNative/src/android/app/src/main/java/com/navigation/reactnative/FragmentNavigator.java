@@ -24,7 +24,7 @@ class FragmentNavigator extends SceneNavigator {
         for(int i = 0; i < crumb - currentCrumb; i++) {
             int nextCrumb = currentCrumb + i + 1;
             String key = stack.keys.getString(nextCrumb);
-            SceneView scene = NavigationStackView.scenes.get(key);
+            SceneView scene = stack.scenes.get(key);
             int popEnter = getAnimationResourceId(activity, scene.enterAnim, android.R.attr.activityCloseExitAnimation);
             int popExit = getAnimationResourceId(activity, scene.exitAnim, android.R.attr.activityCloseEnterAnimation);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -55,7 +55,7 @@ class FragmentNavigator extends SceneNavigator {
         int enter = getAnimationResourceId(activity, stack.enterAnim, android.R.attr.activityOpenEnterAnimation);
         int exit = getAnimationResourceId(activity, stack.exitAnim, android.R.attr.activityOpenExitAnimation);
         String key = stack.keys.getString(crumb);
-        SceneView scene = NavigationStackView.scenes.get(key);
+        SceneView scene = stack.scenes.get(key);
         int popEnter = getAnimationResourceId(activity, scene.enterAnim, android.R.attr.activityCloseExitAnimation);
         int popExit = getAnimationResourceId(activity, scene.exitAnim, android.R.attr.activityCloseEnterAnimation);
         FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();

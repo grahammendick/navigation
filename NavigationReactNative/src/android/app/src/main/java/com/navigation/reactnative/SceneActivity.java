@@ -21,11 +21,13 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.views.view.ReactViewGroup;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class SceneActivity extends ReactActivity implements DefaultHardwareBackBtnHandler, SharedElementContainer {
     public static final String KEY = "Navigation.KEY";
     public static final String SHARED_ELEMENTS = "Navigation.SHARED_ELEMENTS";
+    public static HashMap<String, SceneView> scenes = new HashMap<>();
     public SceneView scene;
 
     @Override
@@ -33,8 +35,8 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         super.onCreate(savedInstanceState);
         String key = getIntent().getStringExtra(KEY);
         SceneRootViewGroup rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
-        if (NavigationStackView.scenes.containsKey(key)) {
-            scene = NavigationStackView.scenes.get(key);
+        if (SceneActivity.scenes.containsKey(key)) {
+            scene = SceneActivity.scenes.get(key);
             if (scene.getParent() != null)
                 ((ViewGroup) scene.getParent()).removeView(scene);
             rootView.addView(scene);
