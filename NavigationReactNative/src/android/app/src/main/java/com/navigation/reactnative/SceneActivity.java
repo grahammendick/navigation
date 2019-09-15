@@ -70,6 +70,11 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     }
 
     @Override
+    public boolean canAddTarget() {
+        return true;
+    }
+
+    @Override
     public void setEnterTransition(Transition transition) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             getWindow().setSharedElementEnterTransition(transition);

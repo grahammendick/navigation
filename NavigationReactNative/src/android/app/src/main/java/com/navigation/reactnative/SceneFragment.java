@@ -26,10 +26,10 @@ public class SceneFragment extends Fragment implements SharedElementContainer {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (sharedElementNames != null ) {
-            postponeEnterTransition();
+        if (sharedElementNames != null )
             scene.transitioner = new SharedElementTransitioner(this, sharedElementNames);
-        }
+        if (scene.transitioner != null)
+            postponeEnterTransition();
         return scene;
     }
 
@@ -43,6 +43,11 @@ public class SceneFragment extends Fragment implements SharedElementContainer {
     @Override
     public SceneView getScene() {
         return scene;
+    }
+
+    @Override
+    public boolean canAddTarget() {
+        return false;
     }
 
     @Override

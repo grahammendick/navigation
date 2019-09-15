@@ -11,7 +11,6 @@ import android.view.View;
 import androidx.core.app.SharedElementCallback;
 
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.views.image.ReactImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,59 +52,6 @@ abstract class SceneNavigator {
         return context.getResources().getIdentifier(animationName, "anim", packageName);
     }
 
-    Pair[] getOldSharedElements(int currentCrumb, int crumb, SharedElementContainer sharedElementContainer, final NavigationStackView stack, final Activity activity) {
-        final HashMap<String, View> oldSharedElementsMap = getSharedElementMap(sharedElementContainer.getScene());
-        final Pair[] oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementsMap, stack.oldSharedElementNames) : null;
-        if (oldSharedElements != null && oldSharedElements.length != 0) {
-            final SharedElementTransitioner transitioner = new SharedElementTransitioner(sharedElementContainer, getSharedElementSet(stack.oldSharedElementNames));
-            sharedElementContainer.setEnterCallback(new SharedElementCallback() {
-                @Override
-                public void onMapSharedElements(List<String> names, Map<String, View> elements) {
-                    names.clear();
-                    elements.clear();
-                    for(int i = 0; i < stack.oldSharedElementNames.size(); i++) {
-                        String name = stack.oldSharedElementNames.getString(i);
-                        names.add(name);
-                        if (oldSharedElementsMap.containsKey(name)) {
-                            View oldSharedElement = oldSharedElementsMap.get(name);
-                            elements.put(name, oldSharedElement);
-                            SharedElementView oldSharedElementView = (SharedElementView) oldSharedElement.getParent();
-                            transitioner.load(name, oldSharedElementView.exitTransition, activity);
-                        }
-                    }
-                }
-            });
-            return oldSharedElements;
-        }
-        return null;
-    }
-
-    Pair[] getSharedElements(int currentCrumb, int crumb, SharedElementContainer sharedElementContainer, NavigationStackView stack) {
-        final HashMap<String, View> sharedElementsMap = getSharedElementMap(sharedElementContainer.getScene());
-        final Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements(sharedElementsMap, stack.sharedElementNames) : null;
-        if (sharedElements != null && sharedElements.length != 0) {
-            sharedElementContainer.setExitCallback(new SharedElementCallback() {
-                @Override
-                public void onSharedElementEnd(List<String> names, List<View> elements, List<View> snapshots) {
-                    for (View view : elements) {
-                        if (view instanceof ReactImageView)
-                            ((ReactImageView) view).getDrawable().setVisible(true, true);
-                    }
-                }
-                @Override
-                public void onMapSharedElements(List<String> names, Map<String, View> elements) {
-                    elements.clear();
-                    for(String name : names) {
-                        if (sharedElementsMap.containsKey(name))
-                            elements.put(name, sharedElementsMap.get(name));
-                    }
-                }
-            });
-            return sharedElements;
-        }
-        return null;
-    }
-
     HashSet<String> getSharedElementSet(ReadableArray sharedElementNames) {
         if (sharedElementNames == null)
             return null;
@@ -116,7 +62,7 @@ abstract class SceneNavigator {
         return sharedElementSet;
     }
 
-    private HashMap<String, View> getSharedElementMap(SceneView scene) {
+    protected HashMap<String, View> getSharedElementMap(SceneView scene) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
             return null;
         HashMap<String, View> sharedElementMap = new HashMap<>();
@@ -126,7 +72,7 @@ abstract class SceneNavigator {
         return sharedElementMap;
     }
 
-    private Pair[] getSharedElements(HashMap<String, View> sharedElementMap, ReadableArray sharedElementNames) {
+    protected Pair[] getSharedElements(HashMap<String, View> sharedElementMap, ReadableArray sharedElementNames) {
         if (sharedElementMap == null || sharedElementNames == null)
             return null;
         ArrayList<Pair> sharedElementPairs = new ArrayList<>();
