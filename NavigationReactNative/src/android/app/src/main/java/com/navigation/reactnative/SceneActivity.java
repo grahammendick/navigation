@@ -27,8 +27,8 @@ import java.util.HashSet;
 public class SceneActivity extends ReactActivity implements DefaultHardwareBackBtnHandler, SharedElementContainer {
     public static final String KEY = "Navigation.KEY";
     public static final String SHARED_ELEMENTS = "Navigation.SHARED_ELEMENTS";
-    public static HashMap<String, SceneView> scenes = new HashMap<>();
-    public SceneView scene;
+    protected static HashMap<String, SceneView> scenes;
+    private SceneView scene;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
