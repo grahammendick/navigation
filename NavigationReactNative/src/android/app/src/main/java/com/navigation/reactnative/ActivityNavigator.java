@@ -1,7 +1,11 @@
 package com.navigation.reactnative;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Pair;
 
 class ActivityNavigator extends SceneNavigator {
 
@@ -29,7 +33,17 @@ class ActivityNavigator extends SceneNavigator {
         }
         int enter = getAnimationResourceId(activity, stack.enterAnim, android.R.attr.activityOpenEnterAnimation);
         int exit = getAnimationResourceId(activity, stack.exitAnim, android.R.attr.activityOpenExitAnimation);
-        activity.startActivities(intents);
+        Pair[] sharedElements = null;
+        if (activity instanceof SharedElementContainer)
+            sharedElements = getSharedElements(currentCrumb, crumb, (SharedElementContainer) activity, stack);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null) {
+            intents[0].putExtra(SceneActivity.SHARED_ELEMENTS, getSharedElementSet(stack.sharedElementNames));
+            @SuppressWarnings("unchecked")
+            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(activity, sharedElements).toBundle();
+            activity.startActivity(intents[0], bundle);
+        } else {
+            activity.startActivities(intents);
+        }
         activity.overridePendingTransition(oldCrumb != -1 ? enter : 0, oldCrumb != -1 ? exit : 0);
     }
 

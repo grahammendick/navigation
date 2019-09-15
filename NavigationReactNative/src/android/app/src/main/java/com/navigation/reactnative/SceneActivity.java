@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.transition.Transition;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.core.app.SharedElementCallback;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.bridge.GuardedRunnable;
@@ -20,7 +23,7 @@ import com.facebook.react.views.view.ReactViewGroup;
 
 import java.util.HashSet;
 
-public class SceneActivity extends ReactActivity implements DefaultHardwareBackBtnHandler {
+public class SceneActivity extends ReactActivity implements DefaultHardwareBackBtnHandler, SharedElementContainer {
     public static final String KEY = "Navigation.KEY";
     public static final String SHARED_ELEMENTS = "Navigation.SHARED_ELEMENTS";
     public SceneView scene;
@@ -57,6 +60,22 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         super.onDestroy();
         if (scene != null)
             scene.popped();
+    }
+
+    @Override
+    public SceneView getScene() {
+        return scene;
+    }
+
+    @Override
+    public void setEnterTransition(Transition transition) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            getWindow().setSharedElementEnterTransition(transition);
+    }
+
+    @Override
+    public void setExitCallback(SharedElementCallback sharedElementCallback) {
+        setExitSharedElementCallback(sharedElementCallback);
     }
 
     static class SceneRootViewGroup extends ReactViewGroup implements RootView {
