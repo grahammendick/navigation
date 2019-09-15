@@ -18,7 +18,11 @@ class ActivityNavigator extends SceneNavigator {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         int enter = getAnimationResourceId(activity, stack.enterAnim, android.R.attr.activityCloseEnterAnimation);
         int exit = getAnimationResourceId(activity, stack.exitAnim, android.R.attr.activityCloseExitAnimation);
-        activity.navigateUpTo(intent);
+        Pair[] sharedElements = getOldSharedElements(currentCrumb, crumb, (SceneActivity) activity, stack, activity);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null)
+            activity.finishAfterTransition();
+        else
+            activity.navigateUpTo(intent);
         activity.overridePendingTransition(enter, exit);
     }
 

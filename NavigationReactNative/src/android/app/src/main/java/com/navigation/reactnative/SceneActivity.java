@@ -78,6 +78,11 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         setExitSharedElementCallback(sharedElementCallback);
     }
 
+    @Override
+    public void setEnterCallback(SharedElementCallback sharedElementCallback) {
+        setEnterSharedElementCallback(sharedElementCallback);
+    }
+
     static class SceneRootViewGroup extends ReactViewGroup implements RootView {
         private boolean hasAdjustedSize = false;
         private int viewWidth;

@@ -54,4 +54,9 @@ public class SceneFragment extends Fragment implements SharedElementContainer {
     public void setExitCallback(SharedElementCallback sharedElementCallback) {
         setExitSharedElementCallback(sharedElementCallback);
     }
+
+    @Override
+    public void setEnterCallback(SharedElementCallback sharedElementCallback) {
+        setEnterSharedElementCallback(sharedElementCallback);
+    }
 }
