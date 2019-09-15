@@ -43,7 +43,7 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         @SuppressWarnings("unchecked")
         HashSet<String> sharedElementNames = (HashSet<String>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElementNames != null ) {
-            this.postponeEnterTransition();
+            postponeEnterTransition();
             scene.transitioner = new SharedElementTransitioner(this, sharedElementNames);
         }
     }
