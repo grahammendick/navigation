@@ -5,12 +5,12 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.util.Pair;
+import android.util.SparseIntArray;
 import android.view.View;
 
 import androidx.core.app.SharedElementCallback;
 
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.views.image.ReactImageView;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.Map;
 abstract class SceneNavigator {
     int oldCrumb = -1;
     String oldKey;
-    private HashMap<Integer, Integer> defaultAnimation;
+    private SparseIntArray defaultAnimation;
 
     abstract void navigateBack(int currentCrumb, int crumb, Activity activity, NavigationStackView stack);
 
@@ -30,9 +30,9 @@ abstract class SceneNavigator {
 
     abstract void refresh(int currentCrumb, int crumb, Activity activity, NavigationStackView stack);
 
-    protected int getAnimationResourceId(Context context, String animationName, int defaultId) {
+    int getAnimationResourceId(Context context, String animationName, int defaultId) {
         if (defaultAnimation == null) {
-            defaultAnimation = new HashMap<>();
+            defaultAnimation = new SparseIntArray();
             TypedArray activityStyle = context.getTheme().obtainStyledAttributes(new int[] {android.R.attr.windowAnimationStyle});
             int windowAnimationStyleResId = activityStyle.getResourceId(0, 0);
             activityStyle.recycle();
@@ -53,7 +53,7 @@ abstract class SceneNavigator {
         return context.getResources().getIdentifier(animationName, "anim", packageName);
     }
 
-    protected  Pair[] getOldSharedElements(int currentCrumb, int crumb, SharedElementContainer sharedElementContainer, final NavigationStackView stack, final Activity activity) {
+    Pair[] getOldSharedElements(int currentCrumb, int crumb, SharedElementContainer sharedElementContainer, final NavigationStackView stack, final Activity activity) {
         final HashMap<String, View> oldSharedElementsMap = getSharedElementMap(sharedElementContainer.getScene());
         final Pair[] oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementsMap, stack.oldSharedElementNames) : null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
@@ -80,7 +80,7 @@ abstract class SceneNavigator {
         return null;
     }
 
-    protected Pair[] getSharedElements(int currentCrumb, int crumb, SharedElementContainer sharedElementContainer, NavigationStackView stack) {
+    Pair[] getSharedElements(int currentCrumb, int crumb, SharedElementContainer sharedElementContainer, NavigationStackView stack) {
         final HashMap<String, View> sharedElementsMap = getSharedElementMap(sharedElementContainer.getScene());
         final Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements(sharedElementsMap, stack.sharedElementNames) : null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null && sharedElements.length != 0) {
@@ -106,7 +106,7 @@ abstract class SceneNavigator {
         return null;
     }
 
-    protected HashSet<String> getSharedElementSet(ReadableArray sharedElementNames) {
+    HashSet<String> getSharedElementSet(ReadableArray sharedElementNames) {
         if (sharedElementNames == null)
             return null;
         HashSet<String> sharedElementSet = new HashSet<>();
