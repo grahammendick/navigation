@@ -56,7 +56,7 @@ abstract class SceneNavigator {
     Pair[] getOldSharedElements(int currentCrumb, int crumb, SharedElementContainer sharedElementContainer, final NavigationStackView stack, final Activity activity) {
         final HashMap<String, View> oldSharedElementsMap = getSharedElementMap(sharedElementContainer.getScene());
         final Pair[] oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementsMap, stack.oldSharedElementNames) : null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && oldSharedElements != null && oldSharedElements.length != 0) {
+        if (oldSharedElements != null && oldSharedElements.length != 0) {
             final SharedElementTransitioner transitioner = new SharedElementTransitioner(sharedElementContainer, getSharedElementSet(stack.oldSharedElementNames));
             sharedElementContainer.setEnterCallback(new SharedElementCallback() {
                 @Override
@@ -83,7 +83,7 @@ abstract class SceneNavigator {
     Pair[] getSharedElements(int currentCrumb, int crumb, SharedElementContainer sharedElementContainer, NavigationStackView stack) {
         final HashMap<String, View> sharedElementsMap = getSharedElementMap(sharedElementContainer.getScene());
         final Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements(sharedElementsMap, stack.sharedElementNames) : null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElements != null && sharedElements.length != 0) {
+        if (sharedElements != null && sharedElements.length != 0) {
             sharedElementContainer.setExitCallback(new SharedElementCallback() {
                 @Override
                 public void onSharedElementEnd(List<String> names, List<View> elements, List<View> snapshots) {
