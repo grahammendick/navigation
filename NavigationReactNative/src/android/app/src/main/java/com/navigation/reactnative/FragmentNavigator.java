@@ -75,7 +75,7 @@ class FragmentNavigator extends SceneNavigator {
         fragmentManager.popBackStack();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
-        fragmentTransaction.replace(stack.getChildAt(0).getId(), new SceneFragment(scene, null), stack.getId() + "_" + key);
+        fragmentTransaction.add(stack.getChildAt(0).getId(), new SceneFragment(scene, null), stack.getId() + "_" + key);
         fragmentTransaction.addToBackStack(stack.getId() + "_" + String.valueOf(crumb));
         fragmentTransaction.commit();
     }
