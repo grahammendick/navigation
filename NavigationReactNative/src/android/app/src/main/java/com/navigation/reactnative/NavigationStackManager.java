@@ -5,8 +5,11 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 
+import javax.annotation.Nonnull;
+
 public class NavigationStackManager extends ViewGroupManager<NavigationStackView> {
 
+    @Nonnull
     @Override
     public String getName() {
         return "NVNavigationStack";
@@ -47,13 +50,14 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
         view.finish = finish;
     }
 
+    @Nonnull
     @Override
-    public NavigationStackView createViewInstance(ThemedReactContext context) {
-        return new NavigationStackView(context);
+    protected NavigationStackView createViewInstance(@Nonnull ThemedReactContext reactContext) {
+        return new NavigationStackView(reactContext);
     }
 
     @Override
-    protected void onAfterUpdateTransaction(NavigationStackView view) {
+    protected void onAfterUpdateTransaction(@Nonnull NavigationStackView view) {
         super.onAfterUpdateTransaction(view);
         view.onAfterUpdateTransaction();
     }

@@ -7,8 +7,11 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 public class SceneManager extends ViewGroupManager<SceneView> {
 
+    @Nonnull
     @Override
     public String getName() {
         return "NVScene";
@@ -29,9 +32,10 @@ public class SceneManager extends ViewGroupManager<SceneView> {
         view.exitAnim = exitAnim;
     }
 
+    @Nonnull
     @Override
-    public SceneView createViewInstance(ThemedReactContext context) {
-        return new SceneView(context);
+    protected SceneView createViewInstance(@Nonnull ThemedReactContext reactContext) {
+        return new SceneView(reactContext);
     }
 
     @Override
