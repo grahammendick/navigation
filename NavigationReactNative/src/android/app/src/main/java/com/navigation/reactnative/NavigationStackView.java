@@ -38,7 +38,7 @@ public class NavigationStackView extends ViewGroup {
         }
         SceneView scene = (SceneView) child;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            scene.setElevation(index);
+            scene.setElevation(getChildAt(index - 1).getElevation() + 1);
         sceneKeys.add(index - 1, scene.sceneKey);
         scenes.put(scene.sceneKey, scene);
     }
