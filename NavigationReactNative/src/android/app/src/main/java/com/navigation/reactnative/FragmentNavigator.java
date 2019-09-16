@@ -31,6 +31,8 @@ class FragmentNavigator extends SceneNavigator {
         final FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
         int enter = getAnimationResourceId(activity, stack.enterAnim, android.R.attr.activityOpenEnterAnimation);
         int exit = getAnimationResourceId(activity, stack.exitAnim, android.R.attr.activityOpenExitAnimation);
+        if (exit == 0 && stack.exitAnim != null)
+            exit = getAnimationResourceId(activity, null, android.R.attr.activityOpenExitAnimation);
         for(int i = 0; i < crumb - currentCrumb; i++) {
             int nextCrumb = currentCrumb + i + 1;
             String key = stack.keys.getString(nextCrumb);
