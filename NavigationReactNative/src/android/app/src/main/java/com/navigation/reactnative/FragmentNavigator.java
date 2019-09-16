@@ -72,6 +72,7 @@ class FragmentNavigator extends SceneNavigator {
         int popEnter = getAnimationResourceId(activity, scene.enterAnim, android.R.attr.activityCloseExitAnimation);
         int popExit = getAnimationResourceId(activity, scene.exitAnim, android.R.attr.activityCloseEnterAnimation);
         FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
+        fragmentManager.popBackStack();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
         fragmentTransaction.replace(stack.getChildAt(0).getId(), new SceneFragment(scene, null), stack.getId() + "_" + key);
