@@ -46,8 +46,9 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         }
     }
     handleBack() {
-        this.setState(() => ({finish: true}));
-        return true;
+        var {fragment} = this.props;
+        this.setState(() => !fragment ? ({finish: true}): null);
+        return !fragment;
     }
     getAnimation() {
         var {stateNavigator, unmountStyle, crumbStyle, sharedElements: getSharedElements} = this.props;

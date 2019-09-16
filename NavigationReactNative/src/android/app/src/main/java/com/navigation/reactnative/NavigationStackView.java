@@ -7,6 +7,9 @@ import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -25,6 +28,7 @@ public class NavigationStackView extends ViewGroup {
     protected ReadableArray oldSharedElementNames;
     protected boolean finish = false;
     SceneNavigator navigator;
+    private FragmentManager.OnBackStackChangedListener backStackChangedListener;
 
     public NavigationStackView(Context context) {
         super(context);
@@ -45,6 +49,10 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     public void removeViewAt(int index) {
+        if (index == 0) {
+            super.removeViewAt(index);
+            return;
+        }
         String sceneKey = sceneKeys.remove(index - 1);
         scenes.remove(sceneKey);
     }
@@ -63,7 +71,7 @@ public class NavigationStackView extends ViewGroup {
             }
         }
         if (finish) {
-            mainActivity.finish();
+            currentActivity.finishAffinity();
             return;
         }
         if (scenes.size() == 0)
@@ -99,6 +107,24 @@ public class NavigationStackView extends ViewGroup {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         onAfterUpdateTransaction();
+        final FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
+        backStackChangedListener = new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if (fragmentManager.getBackStackEntryCount() == 0)
+                    mainActivity.finishAffinity();
+            }
+        };
+        fragmentManager.addOnBackStackChangedListener(backStackChangedListener);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (backStackChangedListener != null) {
+            FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
+            fragmentManager.removeOnBackStackChangedListener(backStackChangedListener);
+        }
     }
 
     @Override
