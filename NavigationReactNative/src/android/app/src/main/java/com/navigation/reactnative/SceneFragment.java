@@ -20,6 +20,7 @@ public class SceneFragment extends Fragment implements SharedElementContainer {
     SceneFragment(SceneView scene, HashSet<String> sharedElements) {
         super();
         this.scene = scene;
+        scene.fragment = this;
         sharedElementNames = sharedElements;
     }
 
