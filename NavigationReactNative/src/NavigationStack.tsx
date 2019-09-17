@@ -6,7 +6,7 @@ import BackButton from './BackButton';
 import FragmentContainer from './FragmentContainer';
 import PopSync from './PopSync';
 import Scene from './Scene';
-type NavigationStackProps = {stateNavigator: StateNavigator, fragment: boolean, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
+type NavigationStackProps = {stateNavigator: StateNavigator, primary: boolean, fragment: boolean, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], finish: boolean};
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
@@ -19,7 +19,8 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         this.onDidNavigateBack = this.onDidNavigateBack.bind(this);
     }
     static defaultProps = {
-        fragment: false,
+        primary: true,
+        fragment: true,
         unmountStyle: () => null,
         crumbStyle: () => null,
         sharedElements: () => null
@@ -46,9 +47,9 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         }
     }
     handleBack() {
-        var {fragment} = this.props;
-        this.setState(() => !fragment ? ({finish: true}): null);
-        return !fragment;
+        var {primary, fragment} = this.props;
+        this.setState(() => (!fragment || primary) ? ({finish: true}): null);
+        return !fragment || primary;
     }
     getAnimation() {
         var {stateNavigator, unmountStyle, crumbStyle, sharedElements: getSharedElements} = this.props;
