@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
+import androidx.fragment.app.Fragment;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
@@ -28,6 +30,7 @@ public class SceneView extends ViewGroup {
     public HashSet<View> sharedElements = new HashSet<>();
     public SharedElementTransitioner transitioner;
     private CustomGlobalLayoutListener customGlobalLayoutListener;
+    Fragment fragment;
 
     public SceneView(Context context) {
         super(context);
