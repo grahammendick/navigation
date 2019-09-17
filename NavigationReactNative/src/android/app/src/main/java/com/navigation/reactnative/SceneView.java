@@ -39,20 +39,23 @@ public class SceneView extends ViewGroup {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (customGlobalLayoutListener == null)
-            customGlobalLayoutListener = new CustomGlobalLayoutListener();
-        getViewTreeObserver().addOnGlobalLayoutListener(customGlobalLayoutListener);
-        View child = getChildAt(0);
-        if (child != null && child.getClass().getSimpleName().contains("DrawerLayout")) {
-            child.requestLayout();
-            post(measureAndLayout);
+        if (fragment == null) {
+            if (customGlobalLayoutListener == null)
+                customGlobalLayoutListener = new CustomGlobalLayoutListener();
+            getViewTreeObserver().addOnGlobalLayoutListener(customGlobalLayoutListener);
+            View child = getChildAt(0);
+            if (child != null && child.getClass().getSimpleName().contains("DrawerLayout")) {
+                child.requestLayout();
+                post(measureAndLayout);
+            }
         }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        getViewTreeObserver().removeOnGlobalLayoutListener(customGlobalLayoutListener);
+        if (fragment == null)
+            getViewTreeObserver().removeOnGlobalLayoutListener(customGlobalLayoutListener);
     }
 
     private final Runnable measureAndLayout =
