@@ -88,6 +88,7 @@
             <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
 &lt;transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
     &lt;changeBounds android:interpolator="@android:interpolator/overshoot"/>
+    &lt;changeTransform android:interpolator="@android:interpolator/overshoot"/>
 &lt;/transitionSet></code></pre>
             <p>
                 To get this animation to play when the 'mail' scene's <code>Text</code> component mounts and unmounts, we pass the name of our resource file to the <code>transition</code> prop of the <code>SharedElementAndroid</code> component.
