@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.transition.Transition;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.core.app.SharedElementCallback;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.bridge.GuardedRunnable;
@@ -18,20 +21,22 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.views.view.ReactViewGroup;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
-public class SceneActivity extends ReactActivity implements DefaultHardwareBackBtnHandler {
+public class SceneActivity extends ReactActivity implements DefaultHardwareBackBtnHandler, SharedElementContainer {
     public static final String KEY = "Navigation.KEY";
     public static final String SHARED_ELEMENTS = "Navigation.SHARED_ELEMENTS";
-    public SceneView scene;
+    protected static HashMap<String, SceneView> scenes;
+    private SceneView scene;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String key = getIntent().getStringExtra(KEY);
         SceneRootViewGroup rootView = new SceneRootViewGroup(getReactNativeHost().getReactInstanceManager().getCurrentReactContext());
-        if (NavigationStackView.scenes.containsKey(key)) {
-            scene = NavigationStackView.scenes.get(key);
+        if (SceneActivity.scenes.containsKey(key)) {
+            scene = SceneActivity.scenes.get(key);
             if (scene.getParent() != null)
                 ((ViewGroup) scene.getParent()).removeView(scene);
             rootView.addView(scene);
@@ -40,7 +45,7 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         @SuppressWarnings("unchecked")
         HashSet<String> sharedElementNames = (HashSet<String>) getIntent().getSerializableExtra(SHARED_ELEMENTS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedElementNames != null ) {
-            this.postponeEnterTransition();
+            postponeEnterTransition();
             scene.transitioner = new SharedElementTransitioner(this, sharedElementNames);
         }
     }
@@ -57,6 +62,32 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
         super.onDestroy();
         if (scene != null)
             scene.popped();
+    }
+
+    @Override
+    public SceneView getScene() {
+        return scene;
+    }
+
+    @Override
+    public boolean canAddTarget() {
+        return true;
+    }
+
+    @Override
+    public void setEnterTransition(Transition transition) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            getWindow().setSharedElementEnterTransition(transition);
+    }
+
+    @Override
+    public void setExitCallback(SharedElementCallback sharedElementCallback) {
+        setExitSharedElementCallback(sharedElementCallback);
+    }
+
+    @Override
+    public void setEnterCallback(SharedElementCallback sharedElementCallback) {
+        setEnterSharedElementCallback(sharedElementCallback);
     }
 
     static class SceneRootViewGroup extends ReactViewGroup implements RootView {

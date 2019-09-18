@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
+import androidx.fragment.app.Fragment;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
@@ -23,9 +25,12 @@ import java.util.HashSet;
 
 public class SceneView extends ViewGroup {
     protected String sceneKey;
+    protected String enterAnim;
+    protected String exitAnim;
     public HashSet<View> sharedElements = new HashSet<>();
     public SharedElementTransitioner transitioner;
     private CustomGlobalLayoutListener customGlobalLayoutListener;
+    Fragment fragment;
 
     public SceneView(Context context) {
         super(context);
@@ -34,20 +39,23 @@ public class SceneView extends ViewGroup {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (customGlobalLayoutListener == null)
-            customGlobalLayoutListener = new CustomGlobalLayoutListener();
-        getViewTreeObserver().addOnGlobalLayoutListener(customGlobalLayoutListener);
-        View child = getChildAt(0);
-        if (child != null && child.getClass().getSimpleName().contains("DrawerLayout")) {
-            child.requestLayout();
-            post(measureAndLayout);
+        if (fragment == null) {
+            if (customGlobalLayoutListener == null)
+                customGlobalLayoutListener = new CustomGlobalLayoutListener();
+            getViewTreeObserver().addOnGlobalLayoutListener(customGlobalLayoutListener);
+            View child = getChildAt(0);
+            if (child != null && child.getClass().getSimpleName().contains("DrawerLayout")) {
+                child.requestLayout();
+                post(measureAndLayout);
+            }
         }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        getViewTreeObserver().removeOnGlobalLayoutListener(customGlobalLayoutListener);
+        if (fragment == null)
+            getViewTreeObserver().removeOnGlobalLayoutListener(customGlobalLayoutListener);
     }
 
     private final Runnable measureAndLayout =

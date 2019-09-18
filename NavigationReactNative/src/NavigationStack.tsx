@@ -3,9 +3,10 @@ import { requireNativeComponent, StyleSheet, View } from 'react-native';
 import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import BackButton from './BackButton';
+import FragmentContainer from './FragmentContainer';
 import PopSync from './PopSync';
 import Scene from './Scene';
-type NavigationStackProps = {stateNavigator: StateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
+type NavigationStackProps = {stateNavigator: StateNavigator, primary: boolean, fragmentMode: boolean, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], finish: boolean};
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
@@ -18,6 +19,8 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         this.onDidNavigateBack = this.onDidNavigateBack.bind(this);
     }
     static defaultProps = {
+        primary: true,
+        fragmentMode: true,
         unmountStyle: () => null,
         crumbStyle: () => null,
         sharedElements: () => null
@@ -44,8 +47,9 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         }
     }
     handleBack() {
-        this.setState(() => ({finish: true}));
-        return true;
+        var {primary, fragmentMode} = this.props;
+        this.setState(() => (!fragmentMode || primary) ? ({finish: true}): null);
+        return !fragmentMode || primary;
     }
     getAnimation() {
         var {stateNavigator, unmountStyle, crumbStyle, sharedElements: getSharedElements} = this.props;
@@ -74,17 +78,19 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     }
     render() {
         var {keys, finish} = this.state;
-        var {stateNavigator, title, renderScene} = this.props;
+        var {stateNavigator, fragmentMode, unmountStyle, crumbStyle, title, renderScene} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
             <NVNavigationStack
                 ref={this.ref}
                 keys={keys}
                 finish={finish}
-                style={styles.stack}
+                fragmentMode={fragmentMode}
+                style={[styles.stack, fragmentMode ? {backgroundColor: '#000'} : null]}
                 {...this.getAnimation()}
                 onDidNavigateBack={this.onDidNavigateBack}>
                 <BackButton onPress={this.handleBack} />
+                <FragmentContainer style={{flex: 1}} />
                 <PopSync<{crumb: number}>
                     data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
                     getKey={({crumb}) => keys[crumb]}>
@@ -93,6 +99,8 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                             key={key}
                             crumb={crumb}
                             sceneKey={key}
+                            unmountStyle={unmountStyle}
+                            crumbStyle={crumbStyle}
                             title={title}
                             popped={popNative}
                             renderScene={renderScene} />
