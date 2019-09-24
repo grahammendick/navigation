@@ -1,7 +1,6 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -32,26 +31,26 @@ public class TabBarView extends ViewPager {
     }
 
     public class Adapter extends FragmentPagerAdapter {
+        private List<TabFragment> tabs = new ArrayList<>();
 
         Adapter() {
             super(((FragmentActivity) ((ThemedReactContext) getContext()).getCurrentActivity()).getSupportFragmentManager());
         }
 
-        private final List<TabFragment> fragments = new ArrayList<>();
 
         void addTab(TabBarItemView tab, int index) {
-            fragments.add(index, new TabFragment(tab));
+            tabs.add(index, new TabFragment(tab));
             notifyDataSetChanged();
         }
 
         @Override
         public int getCount() {
-            return fragments.size();
+            return tabs.size();
         }
 
         @Override
         public Fragment getItem(int position) {
-            return fragments.get(position);
+            return tabs.get(position);
         }
     }
 }
