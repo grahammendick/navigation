@@ -10,11 +10,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class TabFragment extends Fragment {
-    private View tabBarItem;
+    private TabBarItemView tabBarItem;
 
-    TabFragment(View tabBarItem) {
+    TabFragment(TabBarItemView tabBarItem) {
         super();
         this.tabBarItem = tabBarItem;
+        tabBarItem.fragment = this;
     }
 
     @Nullable
