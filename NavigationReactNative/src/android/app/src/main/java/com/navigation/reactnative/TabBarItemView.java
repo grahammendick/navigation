@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-public class TabBarItemView extends ViewGroup {
+public class TabBarItemView extends ViewGroup implements NavigationBoundary {
     Fragment fragment;
 
     public TabBarItemView(Context context) {
@@ -14,5 +14,10 @@ public class TabBarItemView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    }
+
+    @Override
+    public Fragment getFragment() {
+        return fragment;
     }
 }

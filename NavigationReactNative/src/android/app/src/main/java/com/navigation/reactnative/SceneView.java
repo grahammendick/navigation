@@ -23,7 +23,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import java.util.HashSet;
 
-public class SceneView extends ViewGroup {
+public class SceneView extends ViewGroup implements NavigationBoundary {
     protected String sceneKey;
     protected String enterAnim;
     protected String exitAnim;
@@ -83,6 +83,11 @@ public class SceneView extends ViewGroup {
         ((ReactContext) getContext())
             .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
             .emit(eventName, params);
+    }
+
+    @Override
+    public Fragment getFragment() {
+        return fragment;
     }
 
     private class CustomGlobalLayoutListener implements ViewTreeObserver.OnGlobalLayoutListener {
