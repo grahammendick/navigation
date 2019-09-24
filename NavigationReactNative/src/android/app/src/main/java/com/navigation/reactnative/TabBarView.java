@@ -27,8 +27,8 @@ public class TabBarView extends ViewPager {
         return (Adapter) super.getAdapter();
     }
 
-    void addViewToAdapter(View child, int index) {
-        getAdapter().addView(child, index);
+    void addTabToAdapter(TabBarItemView tab, int index) {
+        getAdapter().addTab(tab, index);
     }
 
     public class Adapter extends FragmentPagerAdapter {
@@ -39,8 +39,8 @@ public class TabBarView extends ViewPager {
 
         private final List<TabFragment> fragments = new ArrayList<>();
 
-        void addView(View child, int index) {
-            fragments.add(index, new TabFragment(child));
+        void addTab(TabBarItemView tab, int index) {
+            fragments.add(index, new TabFragment(tab));
             notifyDataSetChanged();
         }
 
