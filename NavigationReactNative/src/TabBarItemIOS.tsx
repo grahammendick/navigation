@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent, Platform } from 'react-native';
+import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 
 var TabBarItem = ({title, badge, badgeColor, image, systemItem, onPress, children}) => (
     <NVTabBarItem
@@ -8,6 +8,7 @@ var TabBarItem = ({title, badge, badgeColor, image, systemItem, onPress, childre
         badgeColor={badgeColor}
         image={image}
         systemItem={systemItem}
+        style={styles.tabBarItem}
         onPress={event => {
             event.stopPropagation();
             if (onPress)
@@ -19,4 +20,12 @@ var TabBarItem = ({title, badge, badgeColor, image, systemItem, onPress, childre
 
 var NVTabBarItem = requireNativeComponent<any>('NVTabBarItem', null);
 
-export default Platform.OS === 'ios' ? TabBarItem : () => null;
+const styles = StyleSheet.create({
+    tabBarItem: {
+        position: 'absolute',
+        top: 0, right: 0,
+        bottom: 0, left: 0,
+    },
+});
+
+export default TabBarItem;

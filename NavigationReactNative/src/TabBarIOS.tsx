@@ -11,4 +11,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Platform.OS === 'ios' ? TabBar : () => null;
+export default TabBar;

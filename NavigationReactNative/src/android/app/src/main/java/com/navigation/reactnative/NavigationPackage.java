@@ -17,7 +17,9 @@ public class NavigationPackage implements ReactPackage {
             new NavigationStackManager(),
             new SceneManager(),
             new SharedElementManager(),
-            new FragmentContainerManager()
+            new FragmentContainerManager(),
+            new TabBarManager(),
+            new TabBarItemManager()
         );
     }
 
