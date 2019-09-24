@@ -2,11 +2,14 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
-import androidx.viewpager.widget.PagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import com.facebook.react.uimanager.ThemedReactContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,57 +31,27 @@ public class TabBarView extends ViewPager {
         getAdapter().addView(child, index);
     }
 
-    private class Adapter extends PagerAdapter {
+    public class Adapter extends FragmentPagerAdapter {
 
-        private final List<View> mViews = new ArrayList<>();
-        private boolean mIsViewPagerInIntentionallyInconsistentState = false;
+        Adapter() {
+            super(((FragmentActivity) ((ThemedReactContext) getContext()).getCurrentActivity()).getSupportFragmentManager());
+        }
+
+        private final List<TabFragment> fragments = new ArrayList<>();
 
         void addView(View child, int index) {
-            mViews.add(index, child);
+            fragments.add(index, new TabFragment(child));
             notifyDataSetChanged();
-        }
-
-        void removeViewAt(int index) {
-            mViews.remove(index);
-            notifyDataSetChanged();
-        }
-
-        /**
-         * Replace a set of views to the ViewPager adapter and update the ViewPager
-         */
-        void setViews(List<View> views) {
-            mViews.clear();
-            mViews.addAll(views);
-            notifyDataSetChanged();
-
-            // we want to make sure we return POSITION_NONE for every view here, since this is only
-            // called after a removeAllViewsFromAdapter
-            mIsViewPagerInIntentionallyInconsistentState = false;
         }
 
         @Override
         public int getCount() {
-            return mViews.size();
+            return fragments.size();
         }
 
         @Override
-        public int getItemPosition(Object object) {
-            // if we've removed all views, we want to return POSITION_NONE intentionally
-            return mIsViewPagerInIntentionallyInconsistentState || !mViews.contains(object) ?
-                    POSITION_NONE : mViews.indexOf(object);
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            View view = mViews.get(position);
-            container.addView(view, 0, generateDefaultLayoutParams());
-            //post(measureAndLayout);
-            return view;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
+        public Fragment getItem(int position) {
+            return fragments.get(position);
         }
     }
 }
