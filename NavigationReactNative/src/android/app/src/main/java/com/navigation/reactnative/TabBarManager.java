@@ -5,6 +5,7 @@ import android.view.View;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.annotations.ReactProp;
 
 import java.util.Map;
 
@@ -22,6 +23,13 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
     @Override
     protected TabBarView createViewInstance(@Nonnull ThemedReactContext reactContext) {
         return new TabBarView(reactContext);
+    }
+
+    @ReactProp(name = "selectedTab")
+    public void setSelectedTab(TabBarView view, int selectedTab) {
+        if (view.getCurrentItem() != selectedTab) {
+            view.setCurrentItem(selectedTab, false);
+        }
     }
 
     @Override
