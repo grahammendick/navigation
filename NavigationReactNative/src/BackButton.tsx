@@ -1,16 +1,17 @@
 import React from 'react';
 import { BackHandler } from 'react-native';
+import BackHandlerContext from './BackHandlerContext';
 
-class BackButton extends React.Component<{onPress: () => boolean}> {
+class BackButton extends React.Component<{backHandler: BackHandler, onPress: () => boolean}> {
     constructor(props) {
         super(props);
         this.handleBack = this.handleBack.bind(this);
     }
     componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.props.backHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        this.props.backHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
     handleBack() {
         return this.props.onPress();
@@ -20,4 +21,10 @@ class BackButton extends React.Component<{onPress: () => boolean}> {
     }
 }
 
-export default BackButton;
+export default props => (
+    <BackHandlerContext.Consumer>
+        {backHandler => (
+            <BackButton {...props} backHandler={backHandler} />
+        )}
+    </BackHandlerContext.Consumer>
+);
