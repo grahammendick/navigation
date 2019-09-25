@@ -16,8 +16,8 @@ class TabBar extends React.Component<any, any> {
                 }}
                 style={styles.tabBar}>
                     {React.Children.map(children, (child: any, index) => {
-                        var childProps = {...child.props, selected: index === this.state.selectedTab};
-                        return React.cloneElement(child, childProps);
+                        var selected = index === this.state.selectedTab;
+                        return React.cloneElement(child, {...child.props, selected});
                     })}
             </NVTabBar>
         );
