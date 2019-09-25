@@ -37,7 +37,6 @@ public class TabBarView extends ViewPager {
             super(((FragmentActivity) ((ThemedReactContext) getContext()).getCurrentActivity()).getSupportFragmentManager());
         }
 
-
         void addTab(TabBarItemView tab, int index) {
             tabs.add(index, new TabFragment(tab));
             notifyDataSetChanged();
