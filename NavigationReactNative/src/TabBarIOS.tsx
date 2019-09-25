@@ -1,7 +1,22 @@
 import React from 'react';
-import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
+import { requireNativeComponent, StyleSheet } from 'react-native';
 
-var TabBar = props => <NVTabBar {...props} style={styles.tabBar} />;
+class TabBar extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {selectedTab: 0};
+    }
+    render() {
+        return (
+            <NVTabBar
+                {...this.props}
+                onTabSelected={({nativeEvent}) => {
+                    this.setState({selectedTab: nativeEvent.tab})
+                }}
+                style={styles.tabBar} />
+        );
+    }
+}
 
 var NVTabBar = requireNativeComponent<any>('NVTabBar', null);
 

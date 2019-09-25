@@ -8,7 +8,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,7 @@ public class TabBarView extends ViewPager {
 
     public TabBarView(Context context) {
         super(context);
+        addOnPageChangeListener(new TabChangeListener());
         setAdapter(new Adapter());
     }
 
@@ -30,11 +34,11 @@ public class TabBarView extends ViewPager {
         getAdapter().addTab(tab, index);
     }
 
-    public class Adapter extends FragmentPagerAdapter {
+    private class Adapter extends FragmentPagerAdapter {
         private List<TabFragment> tabs = new ArrayList<>();
 
         Adapter() {
-            super(((FragmentActivity) ((ThemedReactContext) getContext()).getCurrentActivity()).getSupportFragmentManager());
+            super(((FragmentActivity) ((ReactContext) getContext()).getCurrentActivity()).getSupportFragmentManager());
         }
 
         void addTab(TabBarItemView tab, int index) {
@@ -50,6 +54,27 @@ public class TabBarView extends ViewPager {
         @Override
         public Fragment getItem(int position) {
             return tabs.get(position);
+        }
+    }
+
+    private class TabChangeListener implements ViewPager.OnPageChangeListener {
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            WritableMap event = Arguments.createMap();
+            event.putInt("tab", position);
+            ReactContext reactContext = (ReactContext) getContext();
+            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onTabSelected", event);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
         }
     }
 }
