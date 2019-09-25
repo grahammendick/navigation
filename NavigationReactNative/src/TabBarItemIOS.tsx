@@ -8,11 +8,11 @@ var createBackHandler = () => {
     var addEventListener = (eventName, handler) => {
         if (listeners.indexOf(handler) === -1)
             listeners.push(handler);
-        return { remove: removeEventListener(eventName, handler) };
+        return { remove: () => removeEventListener(eventName, handler) };
     }
     var removeEventListener = (_, handler) => {
         if (listeners.indexOf(handler) !== -1)
-            listeners.slice(listeners.indexOf(handler));
+            listeners.splice(listeners.indexOf(handler));
     }
     return {listeners, addEventListener, removeEventListener};
 }
