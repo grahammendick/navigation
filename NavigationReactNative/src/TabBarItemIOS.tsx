@@ -26,8 +26,9 @@ class TabBarItem extends React.Component<any> {
     }
     handleBack() {
         if (this.props.selected) {
-            for (var i = this.backHandler.listeners.length - 1; i >= 0; i--) {
-                if (this.backHandler.listeners[i]())
+            var {listeners} = this.backHandler;
+            for (var i = listeners.length - 1; i >= 0; i--) {
+                if (listeners[i]())
                     return true;
             }
         }
