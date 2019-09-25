@@ -1,21 +1,15 @@
 import React from 'react';
-import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
+import { requireNativeComponent, StyleSheet } from 'react-native';
 
-var TabBarItem = ({title, badge, badgeColor, image, systemItem, onPress, children}) => (
+var TabBarItem = ({onPress, ...props}) => (
     <NVTabBarItem
-        title={title}
-        badge={badge}
-        badgeColor={badgeColor}
-        image={image}
-        systemItem={systemItem}
+        {...props}
         style={styles.tabBarItem}
         onPress={event => {
             event.stopPropagation();
             if (onPress)
                 onPress(event);
-        }}>
-        {children}            
-    </NVTabBarItem>
+        }} />
 );
 
 var NVTabBarItem = requireNativeComponent<any>('NVTabBarItem', null);
