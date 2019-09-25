@@ -23,7 +23,7 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
 
     @Override
     public void addView(TabBarView parent, View child, int index) {
-        parent.addTabToAdapter((TabBarItemView) child, index);
+        parent.addTab((TabBarItemView) child, index);
     }
 
 }

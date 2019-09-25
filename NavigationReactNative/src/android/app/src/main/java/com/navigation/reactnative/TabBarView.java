@@ -26,7 +26,7 @@ public class TabBarView extends ViewPager {
         return (Adapter) super.getAdapter();
     }
 
-    void addTabToAdapter(TabBarItemView tab, int index) {
+    void addTab(TabBarItemView tab, int index) {
         getAdapter().addTab(tab, index);
     }
 
