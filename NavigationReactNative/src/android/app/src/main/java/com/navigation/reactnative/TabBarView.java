@@ -27,6 +27,7 @@ public class TabBarView extends ViewPager {
         addOnPageChangeListener(new TabChangeListener());
         setAdapter(new Adapter());
     }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
