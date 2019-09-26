@@ -90,12 +90,13 @@ public class TabBarView extends ViewPager {
         }
 
         @Override
-        public int getItemPosition(Object object) {
+        public int getItemPosition(@NonNull Object object) {
             return !tabs.contains(object) ? POSITION_NONE : tabs.indexOf(object);
         }
 
+        @NonNull
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
             post(measureAndLayout);
             return super.instantiateItem(container, position);
         }
