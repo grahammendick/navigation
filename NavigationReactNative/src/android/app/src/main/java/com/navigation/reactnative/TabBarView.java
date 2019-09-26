@@ -70,11 +70,13 @@ public class TabBarView extends ViewPager {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 tab.setElevation(-1 * index);
             notifyDataSetChanged();
+            setOffscreenPageLimit(tabs.size());
         }
 
         void removeTab(int index) {
             tabs.remove(index);
             notifyDataSetChanged();
+            setOffscreenPageLimit(tabs.size());
         }
 
         @Override
