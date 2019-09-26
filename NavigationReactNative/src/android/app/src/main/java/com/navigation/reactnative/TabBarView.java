@@ -51,11 +51,13 @@ public class TabBarView extends ViewPager {
     }
 
     void addTab(TabBarItemView tab, int index) {
-        getAdapter().addTab(tab, index);
+        if (getAdapter() != null)
+            getAdapter().addTab(tab, index);
     }
 
     void removeTab(int index) {
-        getAdapter().removeTab(index);
+        if (getAdapter() != null)
+            getAdapter().removeTab(index);
     }
 
     private class Adapter extends FragmentPagerAdapter {
