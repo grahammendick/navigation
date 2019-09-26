@@ -28,7 +28,7 @@ class TabBar extends React.Component<any, any> {
                     <BackButton onPress={this.handleBack} />
                     {React.Children.map(children, (child: any, index) => {
                         var selected = index === this.state.selectedTab;
-                        return React.cloneElement(child, {...child.props, selected});
+                        return child && React.cloneElement(child, {...child.props, selected});
                     })}
             </NVTabBar>
         );

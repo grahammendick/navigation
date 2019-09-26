@@ -1,11 +1,15 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.os.Build;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.facebook.react.bridge.Arguments;
@@ -23,6 +27,22 @@ public class TabBarView extends ViewPager {
         addOnPageChangeListener(new TabChangeListener());
         setAdapter(new Adapter());
     }
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        this.requestLayout();
+        post(measureAndLayout);
+    }
+
+    private final Runnable measureAndLayout = new Runnable() {
+        @Override
+        public void run() {
+            measure(
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+            layout(getLeft(), getTop(), getRight(), getBottom());
+        }
+    };
 
     @Nullable
     @Override
@@ -34,6 +54,10 @@ public class TabBarView extends ViewPager {
         getAdapter().addTab(tab, index);
     }
 
+    void removeTab(int index) {
+        getAdapter().removeTab(index);
+    }
+
     private class Adapter extends FragmentPagerAdapter {
         private List<TabFragment> tabs = new ArrayList<>();
 
@@ -43,6 +67,13 @@ public class TabBarView extends ViewPager {
 
         void addTab(TabBarItemView tab, int index) {
             tabs.add(index, new TabFragment(tab));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                tab.setElevation(-1 * index);
+            notifyDataSetChanged();
+        }
+
+        void removeTab(int index) {
+            tabs.remove(index);
             notifyDataSetChanged();
         }
 
@@ -54,6 +85,24 @@ public class TabBarView extends ViewPager {
         @Override
         public Fragment getItem(int position) {
             return tabs.get(position);
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return !tabs.contains(object) ? POSITION_NONE : tabs.indexOf(object);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            post(measureAndLayout);
+            return super.instantiateItem(container, position);
+        }
+
+        @Override
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            FragmentTransaction transaction = ((FragmentActivity) ((ReactContext) getContext()).getCurrentActivity()).getSupportFragmentManager().beginTransaction();
+            transaction.remove((Fragment) object);
+            transaction.commit();
         }
     }
 

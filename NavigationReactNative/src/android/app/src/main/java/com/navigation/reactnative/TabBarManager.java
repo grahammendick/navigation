@@ -38,6 +38,11 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
     }
 
     @Override
+    public void removeViewAt(TabBarView parent, int index) {
+        parent.removeTab(index);
+    }
+
+    @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
                 .put("onTabSelected", MapBuilder.of("registrationName", "onTabSelected"))
