@@ -78,12 +78,13 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     }
     render() {
         var {keys, finish} = this.state;
-        var {stateNavigator, fragmentMode, unmountStyle, crumbStyle, title, renderScene} = this.props;
+        var {stateNavigator, primary, fragmentMode, unmountStyle, crumbStyle, title, renderScene} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
             <NVNavigationStack
                 ref={this.ref}
                 keys={keys}
+                primary={primary}
                 finish={finish}
                 fragmentMode={fragmentMode}
                 style={[styles.stack, fragmentMode ? {backgroundColor: '#000'} : null]}
