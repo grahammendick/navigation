@@ -73,13 +73,11 @@ public class TabBarView extends ViewPager {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 tab.setElevation(-1 * index);
             notifyDataSetChanged();
-            setOffscreenPageLimit(tabs.size());
         }
 
         void removeTab(int index) {
             tabs.remove(index);
             notifyDataSetChanged();
-            setOffscreenPageLimit(tabs.size());
         }
 
         @Override
@@ -106,9 +104,11 @@ public class TabBarView extends ViewPager {
 
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            FragmentTransaction transaction = ((FragmentActivity) ((ReactContext) getContext()).getCurrentActivity()).getSupportFragmentManager().beginTransaction();
-            transaction.remove((Fragment) object);
-            transaction.commit();
+            if (!tabs.contains(object)) {
+                FragmentTransaction transaction = ((FragmentActivity) ((ReactContext) getContext()).getCurrentActivity()).getSupportFragmentManager().beginTransaction();
+                transaction.remove((Fragment) object);
+                transaction.commit();
+            }
         }
     }
 
@@ -116,7 +116,6 @@ public class TabBarView extends ViewPager {
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
         }
 
         @Override
