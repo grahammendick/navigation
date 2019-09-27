@@ -39,7 +39,7 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
 
     @Override
     public void removeViewAt(TabBarView parent, int index) {
-        parent.removeTab(index);
+        throw new UnsupportedOperationException("Removing a tab isn't supported");
     }
 
     @Override

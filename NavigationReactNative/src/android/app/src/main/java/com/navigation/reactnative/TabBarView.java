@@ -55,11 +55,6 @@ public class TabBarView extends ViewPager {
             getAdapter().addTab(tab, index);
     }
 
-    void removeTab(int index) {
-        if (getAdapter() != null)
-            getAdapter().removeTab(index);
-    }
-
     private class Adapter extends FragmentPagerAdapter {
         private List<TabFragment> tabs = new ArrayList<>();
 
@@ -71,11 +66,6 @@ public class TabBarView extends ViewPager {
             tabs.add(index, new TabFragment(tab));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 tab.setElevation(-1 * index);
-            notifyDataSetChanged();
-        }
-
-        void removeTab(int index) {
-            tabs.remove(index);
             notifyDataSetChanged();
         }
 
