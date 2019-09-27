@@ -1,13 +1,17 @@
 package com.navigation.reactnative;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.os.Build;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -20,18 +24,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TabBarView extends ViewPager {
+    private List<TabBarItemView> tabs = new ArrayList<>();
 
     public TabBarView(Context context) {
         super(context);
         addOnPageChangeListener(new TabChangeListener());
-        setAdapter(new Adapter());
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        Activity activity = ((ReactContext) getContext()).getCurrentActivity();
+        setAdapter(new Adapter(getFragmentManager(activity)));
+        for(int i = 0; i < tabs.size(); i++) {
+            addTab(tabs.get(i), i);
+        }
         this.requestLayout();
         post(measureAndLayout);
+    }
+
+    private FragmentManager getFragmentManager(Activity activity) {
+        ViewParent parent = this;
+        Fragment fragment = null;
+        while (parent != null) {
+            if (parent instanceof NavigationBoundary) {
+                fragment = ((NavigationBoundary) parent).getFragment();
+                break;
+            }
+            parent = parent.getParent();
+        }
+        return fragment == null? ((FragmentActivity) activity).getSupportFragmentManager():  fragment.getChildFragmentManager();
     }
 
     private final Runnable measureAndLayout = new Runnable() {
@@ -53,30 +75,33 @@ public class TabBarView extends ViewPager {
     void addTab(TabBarItemView tab, int index) {
         if (getAdapter() != null)
             getAdapter().addTab(tab, index);
+        else
+            tabs.add(index, tab);
     }
 
     private class Adapter extends FragmentPagerAdapter {
-        private List<TabFragment> tabs = new ArrayList<>();
+        private List<TabFragment> tabFragments = new ArrayList<>();
 
-        Adapter() {
-            super(((FragmentActivity) ((ReactContext) getContext()).getCurrentActivity()).getSupportFragmentManager());
+        Adapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
         }
 
         void addTab(TabBarItemView tab, int index) {
-            tabs.add(index, new TabFragment(tab));
+            tabFragments.add(index, new TabFragment(tab));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 tab.setElevation(-1 * index);
             notifyDataSetChanged();
+            setOffscreenPageLimit(tabFragments.size() == 1 ? 2 : 1);
         }
 
         @Override
         public int getCount() {
-            return tabs.size();
+            return tabFragments.size();
         }
 
         @Override
         public Fragment getItem(int position) {
-            return tabs.get(position);
+            return tabFragments.get(position);
         }
 
         @NonNull
