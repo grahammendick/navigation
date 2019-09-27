@@ -70,16 +70,12 @@ public class TabBarView extends ViewPager {
 
         void addTab(TabBarItemView tab, int index) {
             tabs.add(index, new TabFragment(tab));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                tab.setElevation(-1 * index);
             notifyDataSetChanged();
-            setOffscreenPageLimit(tabs.size());
         }
 
         void removeTab(int index) {
             tabs.remove(index);
             notifyDataSetChanged();
-            setOffscreenPageLimit(tabs.size());
         }
 
         @Override
@@ -94,7 +90,7 @@ public class TabBarView extends ViewPager {
 
         @Override
         public int getItemPosition(@NonNull Object object) {
-            return !tabs.contains(object) ? POSITION_NONE : tabs.indexOf(object);
+            return tabs.indexOf(object);
         }
 
         @NonNull
@@ -106,9 +102,6 @@ public class TabBarView extends ViewPager {
 
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            FragmentTransaction transaction = ((FragmentActivity) ((ReactContext) getContext()).getCurrentActivity()).getSupportFragmentManager().beginTransaction();
-            transaction.remove((Fragment) object);
-            transaction.commit();
         }
     }
 
