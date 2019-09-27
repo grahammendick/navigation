@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -68,6 +69,8 @@ public class TabBarView extends ViewPager {
 
         void addTab(TabBarItemView tab, int index) {
             tabs.add(index, new TabFragment(tab));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                tab.setElevation(-1 * index);
             notifyDataSetChanged();
         }
 
