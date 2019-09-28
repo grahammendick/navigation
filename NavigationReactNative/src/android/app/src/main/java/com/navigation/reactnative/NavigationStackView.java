@@ -120,7 +120,7 @@ public class NavigationStackView extends ViewGroup {
             for (Fragment fragment : fragmentManager.getFragments()) {
                 fragmentTransation.remove(fragment);
             }
-            fragmentTransation.commit();
+            fragmentTransation.commitAllowingStateLoss();
         }
     }
 
