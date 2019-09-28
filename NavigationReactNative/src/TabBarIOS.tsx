@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent, StyleSheet } from 'react-native';
+import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 import BackButton from './BackButton';
 
 class TabBar extends React.Component<any, any> {
@@ -17,24 +17,28 @@ class TabBar extends React.Component<any, any> {
     render() {
         var {children, ...props} = this.props;
         return (
-            <NVTabBar
-                {...props}
-                onTabSelected={({nativeEvent}) => {
-                    if (this.state.selectedTab !== nativeEvent.tab)
-                        this.setState({selectedTab: nativeEvent.tab})
-                }}
-                selectedTab={this.state.selectedTab}
-                style={styles.tabBar}>
-                    <BackButton onPress={this.handleBack} />
-                    {React.Children.map(children, (child: any, index) => {
-                        var selected = index === this.state.selectedTab;
-                        return child && React.cloneElement(child, {...child.props, selected});
-                    })}
-            </NVTabBar>
+            <>
+                {Platform.OS === 'android' && <NVTabLayout style={{height: 48}} />}
+                <NVTabBar
+                    {...props}
+                    onTabSelected={({nativeEvent}) => {
+                        if (this.state.selectedTab !== nativeEvent.tab)
+                            this.setState({selectedTab: nativeEvent.tab})
+                    }}
+                    selectedTab={this.state.selectedTab}
+                    style={styles.tabBar}>
+                        <BackButton onPress={this.handleBack} />
+                        {React.Children.map(children, (child: any, index) => {
+                            var selected = index === this.state.selectedTab;
+                            return child && React.cloneElement(child, {...child.props, selected});
+                        })}
+                </NVTabBar>
+            </>
         );
     }
 }
 
+var NVTabLayout = requireNativeComponent<any>('NVTabLayout', null);
 var NVTabBar = requireNativeComponent<any>('NVTabBar', null);
 
 const styles = StyleSheet.create({

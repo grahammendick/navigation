@@ -18,6 +18,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class TabBarView extends ViewPager {
         }
         this.requestLayout();
         post(measureAndLayout);
+        ((TabLayout) ((ViewGroup) getParent()).getChildAt(0)).setupWithViewPager(this);
     }
 
     private FragmentManager getFragmentManager(Activity activity) {
@@ -101,6 +103,12 @@ public class TabBarView extends ViewPager {
         @Override
         public Fragment getItem(int position) {
             return tabFragments.get(position);
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabFragments.get(position).tabBarItem.title;
         }
 
         @NonNull

@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class TabFragment extends Fragment {
-    private TabBarItemView tabBarItem;
+    TabBarItemView tabBarItem;
 
     TabFragment(TabBarItemView tabBarItem) {
         super();
