@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 
 public class TabBarItemView extends ViewGroup implements NavigationBoundary {
     Fragment fragment;
+    protected String title;
 
     public TabBarItemView(Context context) {
         super(context);
