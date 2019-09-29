@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import androidx.annotation.Nullable;
+
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -15,19 +17,19 @@ public class TabLayoutManager extends ViewGroupManager<TabLayoutView> {
     }
 
     @ReactProp(name = "indicatorColor", customType = "Color")
-    public void setIndicatorColor(TabLayoutView view, int indicatorColor) {
-        view.setSelectedTabIndicatorColor(indicatorColor);
+    public void setIndicatorColor(TabLayoutView view, @Nullable Integer indicatorColor) {
+        view.setSelectedTabIndicatorColor(indicatorColor != null ? indicatorColor : view.defaultTabIndicatorColor);
     }
 
     @ReactProp(name = "selectedTintColor", customType = "Color")
-    public void setSelectedTintColor(TabLayoutView view, int selectedTintColor) {
-        view.selectedTintColor = selectedTintColor;
+    public void setSelectedTintColor(TabLayoutView view, @Nullable Integer selectedTintColor) {
+        view.selectedTintColor = selectedTintColor != null ? selectedTintColor : view.defaultTextColor;
         view.setTabTextColors(view.unselectedTintColor, view.selectedTintColor);
     }
 
     @ReactProp(name = "unselectedTintColor", customType = "Color")
-    public void setUnselectedTintColor(TabLayoutView view, int unselectedTintColor) {
-        view.unselectedTintColor = unselectedTintColor;
+    public void setUnselectedTintColor(TabLayoutView view, @Nullable Integer  unselectedTintColor) {
+        view.unselectedTintColor = unselectedTintColor != null ? unselectedTintColor : view.defaultTextColor;
         view.setTabTextColors(view.unselectedTintColor, view.selectedTintColor);
     }
 
