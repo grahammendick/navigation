@@ -14,8 +14,9 @@ public class TabLayoutView extends TabLayout {
     public TabLayoutView(Context context) {
         super(context);
         selectedTintColor = unselectedTintColor = defaultTextColor = getTabTextColors().getDefaultColor();
-        TypedArray styledAttributes = context.obtainStyledAttributes(null, R.styleable.TabLayout, 0, R.style.Widget_Design_TabLayout);
-        defaultTabIndicatorColor = styledAttributes.getColor(R.styleable.TabLayout_tabIndicatorColor, 0);
+        TypedArray layoutStyle = context.getTheme().obtainStyledAttributes(R.styleable.TabLayout);
+        defaultTabIndicatorColor = layoutStyle.getColor(R.styleable.TabLayout_tabIndicatorColor, 0);
+        layoutStyle.recycle();
     }
 
     void redraw() {
