@@ -15,10 +15,15 @@ class TabBar extends React.Component<any, any> {
         return !!selectedTab;
     }
     render() {
-        var {children, ...props} = this.props;
+        var {children, barTintColor, selectedTintColor, unselectedTintColor, ...props} = this.props;
         return (
             <>
-                {Platform.OS === 'android' && <NVTabLayout style={{height: 48}} />}
+                {Platform.OS === 'android' && (
+                    <NVTabLayout
+                        selectedTintColor={selectedTintColor}
+                        unselectedTintColor={unselectedTintColor}
+                        style={{backgroundColor: barTintColor, height: 48}} />
+                )}
                 <NVTabBar
                     {...props}
                     onTabSelected={({nativeEvent}) => {

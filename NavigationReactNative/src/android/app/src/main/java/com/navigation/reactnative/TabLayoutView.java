@@ -5,9 +5,13 @@ import android.content.Context;
 import com.google.android.material.tabs.TabLayout;
 
 public class TabLayoutView extends TabLayout {
+    int selectedTintColor;
+    int unselectedTintColor;
 
     public TabLayoutView(Context context) {
         super(context);
+        selectedTintColor = getTabTextColors().getDefaultColor();
+        unselectedTintColor = getTabTextColors().getDefaultColor();
     }
 
     @Override
