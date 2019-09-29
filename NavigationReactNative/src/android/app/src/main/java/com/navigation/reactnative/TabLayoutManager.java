@@ -14,6 +14,11 @@ public class TabLayoutManager extends ViewGroupManager<TabLayoutView> {
         return "NVTabLayout";
     }
 
+    @ReactProp(name = "indicatorColor", customType = "Color")
+    public void setIndicatorColor(TabLayoutView view, int indicatorColor) {
+        view.setSelectedTabIndicatorColor(indicatorColor);
+    }
+
     @ReactProp(name = "selectedTintColor", customType = "Color")
     public void setSelectedTintColor(TabLayoutView view, int selectedTintColor) {
         view.selectedTintColor = selectedTintColor;
