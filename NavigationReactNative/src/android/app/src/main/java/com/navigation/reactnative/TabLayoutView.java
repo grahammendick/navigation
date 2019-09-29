@@ -14,9 +14,7 @@ public class TabLayoutView extends TabLayout {
         unselectedTintColor = getTabTextColors().getDefaultColor();
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
+    void redraw() {
         post(measureAndLayout);
     }
 
