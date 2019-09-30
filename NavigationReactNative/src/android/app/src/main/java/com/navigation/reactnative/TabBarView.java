@@ -52,6 +52,8 @@ public class TabBarView extends ViewPager {
                 Integer imageReource = getAdapter().tabFragments.get(i).tabBarItem.imageResource;
                 if (imageReource != null)
                     tabLayout.getTabAt(i).setIcon(imageReource);
+                else
+                    tabLayout.getTabAt(i).setIcon(null);
             }
         }
     }
