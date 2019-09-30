@@ -21,7 +21,7 @@ class TabBar extends React.Component<any, any> {
         var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs} = this.props;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
-        var tabLayout = (
+        var tabLayout = Platform.OS === 'android' && (
             <NVTabLayout
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
@@ -30,7 +30,7 @@ class TabBar extends React.Component<any, any> {
         );
         return (
             <>
-                {Platform.OS === 'android' && !bottomTabs && tabLayout}
+                {!bottomTabs && tabLayout}
                 <NVTabBar
                     tabCount={tabBarItems.length}
                     onTabSelected={({nativeEvent}) => {
@@ -47,7 +47,7 @@ class TabBar extends React.Component<any, any> {
                                 return child && React.cloneElement(child, {...child.props, selected})
                             })}
                 </NVTabBar>
-                {Platform.OS === 'android' && bottomTabs && tabLayout}
+                {bottomTabs && tabLayout}
             </>
         );
     }
