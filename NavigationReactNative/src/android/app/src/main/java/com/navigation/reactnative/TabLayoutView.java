@@ -2,6 +2,8 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
@@ -18,6 +20,17 @@ public class TabLayoutView extends TabLayout {
         if (getTabTextColors() != null)
             selectedTintColor = unselectedTintColor = defaultTextColor = getTabTextColors().getDefaultColor();
         setSelectedTabIndicatorColor(defaultTextColor);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        View view =  ((ViewGroup) getParent()).getChildAt(0);
+        TabBarView tabBar = (view instanceof TabBarView) ? (TabBarView) view : null;
+        if (tabBar != null) {
+            setupWithViewPager(tabBar);
+            tabBar.populateTabIcons();
+        }
     }
 
     @Override

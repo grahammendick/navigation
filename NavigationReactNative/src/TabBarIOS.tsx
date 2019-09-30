@@ -8,6 +8,9 @@ class TabBar extends React.Component<any, any> {
         this.state = {selectedTab: 0};
         this.handleBack = this.handleBack.bind(this);
     }
+    static defaultProps = {
+        bottomTabs: false,
+    }
     handleBack() {
         var {selectedTab} = this.state;
         if (selectedTab)
@@ -15,19 +18,19 @@ class TabBar extends React.Component<any, any> {
         return !!selectedTab;
     }
     render() {
-        var {children, barTintColor, selectedTintColor,unselectedTintColor, ...props} = this.props;
+        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs} = this.props;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
+        var tabLayout = (
+            <NVTabLayout
+                selectedTintColor={selectedTintColor}
+                unselectedTintColor={unselectedTintColor}
+                style={{backgroundColor: barTintColor, height: titleOnly ? 48 : 72}} />
+        );
         return (
             <>
-                {Platform.OS === 'android' && (
-                    <NVTabLayout
-                        selectedTintColor={selectedTintColor}
-                        unselectedTintColor={unselectedTintColor}
-                        style={{backgroundColor: barTintColor, height: titleOnly ? 48 : 72}} />
-                )}
+                {Platform.OS === 'android' && !bottomTabs && tabLayout}
                 <NVTabBar
-                    {...props}
                     tabCount={tabBarItems.length}
                     onTabSelected={({nativeEvent}) => {
                         if (this.state.selectedTab !== nativeEvent.tab)
@@ -43,6 +46,7 @@ class TabBar extends React.Component<any, any> {
                                 return child && React.cloneElement(child, {...child.props, selected})
                             })}
                 </NVTabBar>
+                {Platform.OS === 'android' && bottomTabs && tabLayout}
             </>
         );
     }

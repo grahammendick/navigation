@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
@@ -64,7 +65,12 @@ public class TabBarView extends ViewPager {
     }
 
     private TabLayoutView getTabLayout() {
-        return getParent() != null ? (TabLayoutView) ((ViewGroup) getParent()).getChildAt(0) : null;
+        for(int i = 0; getParent() != null && i < ((ViewGroup) getParent()).getChildCount(); i++) {
+            View child = ((ViewGroup) getParent()).getChildAt(i);
+            if (child instanceof TabLayoutView)
+                return (TabLayoutView) child;
+        }
+        return null;
     }
 
     private FragmentManager getFragmentManager(Activity activity) {
