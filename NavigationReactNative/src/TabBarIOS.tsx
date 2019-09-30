@@ -25,6 +25,7 @@ class TabBar extends React.Component<any, any> {
             <NVTabLayout
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
+                selectedIndicatorAtTop={bottomTabs}
                 style={{backgroundColor: barTintColor, height: titleOnly ? 48 : 72}} />
         );
         return (
