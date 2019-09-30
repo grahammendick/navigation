@@ -15,13 +15,15 @@ public class TabLayoutView extends TabLayout {
 
     public TabLayoutView(Context context) {
         super(context);
-        selectedTintColor = unselectedTintColor = defaultTextColor = getTabTextColors().getDefaultColor();
+        if (getTabTextColors() != null)
+            selectedTintColor = unselectedTintColor = defaultTextColor = getTabTextColors().getDefaultColor();
         setSelectedTabIndicatorColor(defaultTextColor);
     }
 
     @Override
     public void setupWithViewPager(@Nullable ViewPager viewPager) {
         super.setupWithViewPager(viewPager);
+        post(measureAndLayout);
         if (viewPager != null && viewPager.getAdapter() != null) {
             viewPager.getAdapter().registerDataSetObserver(new DataSetObserver() {
                 @Override
