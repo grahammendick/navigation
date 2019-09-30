@@ -121,7 +121,7 @@ public class TabBarView extends ViewPager {
             notifyDataSetChanged();
             if (getTabLayout() != null)
                 getTabLayout().redraw();
-            setOffscreenPageLimit(tabs.size() + 1);
+            setOffscreenPageLimit(tabFragments.size() + 1);
         }
 
         void removeTab(int index) {
@@ -129,7 +129,7 @@ public class TabBarView extends ViewPager {
             notifyDataSetChanged();
             if (getTabLayout() != null)
                 getTabLayout().redraw();
-            setOffscreenPageLimit(tabs.size() + 1);
+            setOffscreenPageLimit(tabFragments.size() + 1);
         }
 
         @Override
@@ -150,7 +150,7 @@ public class TabBarView extends ViewPager {
 
         @Override
         public int getItemPosition(Object object) {
-            return !tabs.contains(object) ? POSITION_NONE : tabs.indexOf(object);
+            return POSITION_NONE;
         }
 
         @Override
