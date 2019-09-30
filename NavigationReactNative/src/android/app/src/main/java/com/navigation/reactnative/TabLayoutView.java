@@ -22,13 +22,15 @@ public class TabLayoutView extends TabLayout {
     @Override
     public void setupWithViewPager(@Nullable ViewPager viewPager) {
         super.setupWithViewPager(viewPager);
-        viewPager.getAdapter().registerDataSetObserver(new DataSetObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                post(measureAndLayout);
-            }
-        });
+        if (viewPager != null && viewPager.getAdapter() != null) {
+            viewPager.getAdapter().registerDataSetObserver(new DataSetObserver() {
+                @Override
+                public void onChanged() {
+                    super.onChanged();
+                    post(measureAndLayout);
+                }
+            });
+        }
     }
 
     private final Runnable measureAndLayout = new Runnable() {
