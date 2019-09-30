@@ -45,7 +45,7 @@ public class TabBarView extends ViewPager {
     }
 
     private TabLayoutView getTabLayout() {
-        return (TabLayoutView) ((ViewGroup) getParent()).getChildAt(0);
+        return getParent() != null ? (TabLayoutView) ((ViewGroup) getParent()).getChildAt(0) : null;
 
     }
 
