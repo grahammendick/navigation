@@ -1,6 +1,10 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.database.DataSetObserver;
+
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -15,8 +19,16 @@ public class TabLayoutView extends TabLayout {
         setSelectedTabIndicatorColor(defaultTextColor);
     }
 
-    void redraw() {
-        post(measureAndLayout);
+    @Override
+    public void setupWithViewPager(@Nullable ViewPager viewPager) {
+        super.setupWithViewPager(viewPager);
+        viewPager.getAdapter().registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                post(measureAndLayout);
+            }
+        });
     }
 
     private final Runnable measureAndLayout = new Runnable() {

@@ -120,16 +120,12 @@ public class TabBarView extends ViewPager {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 tab.setElevation(-1 * index);
             notifyDataSetChanged();
-            if (getTabLayout() != null)
-                getTabLayout().redraw();
             setOffscreenPageLimit(tabFragments.size() + 1);
         }
 
         void removeTab(int index) {
             tabFragments.remove(index);
             notifyDataSetChanged();
-            if (getTabLayout() != null)
-                getTabLayout().redraw();
             setOffscreenPageLimit(tabFragments.size() + 1);
         }
 
