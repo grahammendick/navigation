@@ -41,12 +41,7 @@ public class TabBarView extends ViewPager {
         }
         this.requestLayout();
         post(measureAndLayout);
-        if (getTabLayout() != null)
-            getTabLayout().setupWithViewPager(this);
-    }
-
-    private TabLayoutView getTabLayout() {
-        return getParent() != null ? (TabLayoutView) ((ViewGroup) getParent()).getChildAt(0) : null;
+        ((TabLayoutView) ((ViewGroup) getParent()).getChildAt(0)).setupWithViewPager(this);
     }
 
     private FragmentManager getFragmentManager(Activity activity) {
