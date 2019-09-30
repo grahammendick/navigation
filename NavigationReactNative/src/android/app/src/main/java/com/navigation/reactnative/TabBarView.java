@@ -54,7 +54,7 @@ public class TabBarView extends ViewPager {
                 Integer imageReource = getAdapter().tabFragments.get(i).tabBarItem.imageResource;
                 TabLayout.Tab tab = tabLayout.getTabAt(i);
                 if (tab != null) {
-                    if (imageReource != null)
+                    if (imageReource != null && imageReource != 0)
                         tab.setIcon(imageReource);
                     else
                         tab.setIcon(null);
