@@ -16,16 +16,19 @@ class TabBar extends React.Component<any, any> {
     }
     render() {
         var {children, barTintColor, selectedTintColor,unselectedTintColor, ...props} = this.props;
+        var tabBarItems = React.Children.toArray(children).filter(child => !!child);
+        var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
         return (
             <>
                 {Platform.OS === 'android' && (
                     <NVTabLayout
                         selectedTintColor={selectedTintColor}
                         unselectedTintColor={unselectedTintColor}
-                        style={{backgroundColor: barTintColor, height: 48}} />
+                        style={{backgroundColor: barTintColor, height: titleOnly ? 48 : 72}} />
                 )}
                 <NVTabBar
                     {...props}
+                    tabCount={tabBarItems.length}
                     onTabSelected={({nativeEvent}) => {
                         if (this.state.selectedTab !== nativeEvent.tab)
                             this.setState({selectedTab: nativeEvent.tab})
@@ -33,7 +36,7 @@ class TabBar extends React.Component<any, any> {
                     selectedTab={this.state.selectedTab}
                     style={styles.tabBar}>
                         <BackButton onPress={this.handleBack} />
-                        {React.Children.toArray(children)
+                        {tabBarItems
                             .filter(child => !!child)
                             .map((child: any, index) => {
                                 var selected = index === this.state.selectedTab;

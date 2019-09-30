@@ -32,6 +32,10 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
         }
     }
 
+    @ReactProp(name = "tabCount")
+    public void setTabCount(TabBarView view, int tabCount) {
+    }
+
     @Override
     public int getChildCount(TabBarView parent) {
         return parent.getTabsCount();
@@ -57,5 +61,12 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
         return MapBuilder.<String, Object>builder()
                 .put("onTabSelected", MapBuilder.of("registrationName", "onTabSelected"))
                 .build();
+    }
+
+    @Override
+    protected void onAfterUpdateTransaction(@Nonnull TabBarView view) {
+        super.onAfterUpdateTransaction(view);
+        view.populateTabIcons();
+
     }
 }

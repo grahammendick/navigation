@@ -41,7 +41,23 @@ public class TabBarView extends ViewPager {
         }
         this.requestLayout();
         post(measureAndLayout);
-        ((TabLayoutView) ((ViewGroup) getParent()).getChildAt(0)).setupWithViewPager(this);
+        getTabLayout().setupWithViewPager(this);
+        populateTabIcons();
+    }
+
+    void populateTabIcons() {
+        TabLayoutView tabLayout = getTabLayout();
+        if (tabLayout != null) {
+            for(int i = 0; i < tabLayout.getTabCount(); i++) {
+                Integer imageReource = getAdapter().tabFragments.get(i).tabBarItem.imageResource;
+                if (imageReource != null)
+                    tabLayout.getTabAt(i).setIcon(imageReource);
+            }
+        }
+    }
+
+    private TabLayoutView getTabLayout() {
+        return getParent() != null ? (TabLayoutView) ((ViewGroup) getParent()).getChildAt(0) : null;
     }
 
     private FragmentManager getFragmentManager(Activity activity) {
