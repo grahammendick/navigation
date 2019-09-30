@@ -168,7 +168,7 @@ public class TabBarView extends ViewPager {
 
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            if (!tabFragments.contains(object)) {
+            if ((object instanceof TabFragment) && !tabFragments.contains(object)) {
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.remove((Fragment) object);
                 transaction.commitAllowingStateLoss();
