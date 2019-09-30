@@ -156,7 +156,7 @@ public class TabBarView extends ViewPager {
 
         @Override
         public long getItemId(int position) {
-            return System.identityHashCode(tabFragments.get(position));
+            return tabFragments.get(position).hashCode();
         }
 
         @NonNull
