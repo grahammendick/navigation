@@ -41,7 +41,8 @@ public class TabBarView extends ViewPager {
         }
         this.requestLayout();
         post(measureAndLayout);
-        getTabLayout().setupWithViewPager(this);
+        if (getTabLayout() != null)
+            getTabLayout().setupWithViewPager(this);
     }
 
     private TabLayoutView getTabLayout() {
@@ -149,7 +150,7 @@ public class TabBarView extends ViewPager {
         }
 
         @Override
-        public int getItemPosition(Object object) {
+        public int getItemPosition(@NonNull Object object) {
             return POSITION_NONE;
         }
 
