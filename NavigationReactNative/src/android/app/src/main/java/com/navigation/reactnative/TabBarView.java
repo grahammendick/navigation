@@ -19,6 +19,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,19 +42,23 @@ public class TabBarView extends ViewPager {
         }
         this.requestLayout();
         post(measureAndLayout);
-        getTabLayout().setupWithViewPager(this);
+        if (getTabLayout() != null)
+            getTabLayout().setupWithViewPager(this);
         populateTabIcons();
     }
 
     void populateTabIcons() {
         TabLayoutView tabLayout = getTabLayout();
-        if (tabLayout != null) {
+        if (tabLayout != null && getAdapter() != null) {
             for(int i = 0; i < tabLayout.getTabCount(); i++) {
                 Integer imageReource = getAdapter().tabFragments.get(i).tabBarItem.imageResource;
-                if (imageReource != null)
-                    tabLayout.getTabAt(i).setIcon(imageReource);
-                else
-                    tabLayout.getTabAt(i).setIcon(null);
+                TabLayout.Tab tab = tabLayout.getTabAt(i);
+                if (tab != null) {
+                    if (imageReource != null)
+                        tab.setIcon(imageReource);
+                    else
+                        tab.setIcon(null);
+                }
             }
         }
     }
