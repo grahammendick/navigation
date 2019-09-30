@@ -78,6 +78,20 @@ public class TabBarView extends ViewPager {
         return (Adapter) super.getAdapter();
     }
 
+    int getTabsCount() {
+        if (getAdapter() != null)
+            return getAdapter().tabFragments.size();
+        else
+            return tabs.size();
+    }
+
+    TabBarItemView getTabAt(int index) {
+        if (getAdapter() != null)
+            return getAdapter().tabFragments.get(index).tabBarItem;
+        else
+            return tabs.get(index);
+    }
+
     void addTab(TabBarItemView tab, int index) {
         if (getAdapter() != null)
             getAdapter().addTab(tab, index);
@@ -133,6 +147,11 @@ public class TabBarView extends ViewPager {
             return tabFragments.get(position).tabBarItem.title;
         }
 
+        @Override
+        public int getItemPosition(Object object) {
+            return !tabs.contains(object) ? POSITION_NONE : tabs.indexOf(object);
+        }
+
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
@@ -142,9 +161,11 @@ public class TabBarView extends ViewPager {
 
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            FragmentTransaction transaction = ((FragmentActivity) ((ReactContext) getContext()).getCurrentActivity()).getSupportFragmentManager().beginTransaction();
-            transaction.remove((Fragment) object);
-            transaction.commit();
+            if (!tabFragments.contains(object)) {
+                FragmentTransaction transaction = ((FragmentActivity) ((ReactContext) getContext()).getCurrentActivity()).getSupportFragmentManager().beginTransaction();
+                transaction.remove((Fragment) object);
+                transaction.commit();
+            }
         }
     }
 

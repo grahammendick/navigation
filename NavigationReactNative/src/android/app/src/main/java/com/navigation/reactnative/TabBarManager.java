@@ -33,6 +33,16 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
     }
 
     @Override
+    public int getChildCount(TabBarView parent) {
+        return parent.getTabsCount();
+    }
+
+    @Override
+    public View getChildAt(TabBarView parent, int index) {
+        return parent.getTabAt(index);
+    }
+
+    @Override
     public void addView(TabBarView parent, View child, int index) {
         parent.addTab((TabBarItemView) child, index);
     }
