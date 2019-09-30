@@ -110,7 +110,7 @@ public class TabBarView extends ViewPager {
         }
 
         void removeTab(int index) {
-            tabs.remove(index);
+            tabFragments.remove(index);
             notifyDataSetChanged();
             if (getTabLayout() != null)
                 getTabLayout().redraw();
