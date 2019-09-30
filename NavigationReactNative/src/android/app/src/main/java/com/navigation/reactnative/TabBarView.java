@@ -108,9 +108,11 @@ public class TabBarView extends ViewPager {
 
     private class Adapter extends FragmentPagerAdapter {
         private List<TabFragment> tabFragments = new ArrayList<>();
+        FragmentManager fragmentManager;
 
         Adapter(FragmentManager fragmentManager) {
             super(fragmentManager);
+            this.fragmentManager = fragmentManager;
         }
 
         void addTab(TabBarItemView tab, int index) {
@@ -152,6 +154,11 @@ public class TabBarView extends ViewPager {
             return !tabs.contains(object) ? POSITION_NONE : tabs.indexOf(object);
         }
 
+        @Override
+        public long getItemId(int position) {
+            return System.identityHashCode(tabFragments.get(position));
+        }
+
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
@@ -162,9 +169,9 @@ public class TabBarView extends ViewPager {
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             if (!tabFragments.contains(object)) {
-                FragmentTransaction transaction = ((FragmentActivity) ((ReactContext) getContext()).getCurrentActivity()).getSupportFragmentManager().beginTransaction();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.remove((Fragment) object);
-                transaction.commit();
+                transaction.commitAllowingStateLoss();
             }
         }
     }
