@@ -25,12 +25,20 @@ public class TabLayoutView extends TabLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        View view =  ((ViewGroup) getParent()).getChildAt(0);
-        TabBarView tabBar = (view instanceof TabBarView) ? (TabBarView) view : null;
+        TabBarView tabBar = getTabBar();
         if (tabBar != null) {
             setupWithViewPager(tabBar);
             tabBar.populateTabIcons();
         }
+    }
+
+    private TabBarView getTabBar() {
+        for(int i = 0; getParent() != null && i < ((ViewGroup) getParent()).getChildCount(); i++) {
+            View child = ((ViewGroup) getParent()).getChildAt(i);
+            if (child instanceof TabBarView)
+                return (TabBarView) child;
+        }
+        return null;
     }
 
     @Override
