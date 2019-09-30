@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.facebook.react.bridge.Arguments;
@@ -84,6 +85,13 @@ public class TabBarView extends ViewPager {
             tabs.add(index, tab);
     }
 
+    void removeTab(int index) {
+        if (getAdapter() != null)
+            getAdapter().removeTab(index);
+        else
+            tabs.remove(index);
+    }
+
     private class Adapter extends FragmentPagerAdapter {
         private List<TabFragment> tabFragments = new ArrayList<>();
 
@@ -98,7 +106,15 @@ public class TabBarView extends ViewPager {
             notifyDataSetChanged();
             if (getTabLayout() != null)
                 getTabLayout().redraw();
-            setOffscreenPageLimit(tabFragments.size() == 1 ? 2 : 1);
+            setOffscreenPageLimit(tabs.size() + 1);
+        }
+
+        void removeTab(int index) {
+            tabs.remove(index);
+            notifyDataSetChanged();
+            if (getTabLayout() != null)
+                getTabLayout().redraw();
+            setOffscreenPageLimit(tabs.size() + 1);
         }
 
         @Override
@@ -126,6 +142,9 @@ public class TabBarView extends ViewPager {
 
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            FragmentTransaction transaction = ((FragmentActivity) ((ReactContext) getContext()).getCurrentActivity()).getSupportFragmentManager().beginTransaction();
+            transaction.remove((Fragment) object);
+            transaction.commit();
         }
     }
 
