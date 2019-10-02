@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent, StyleSheet } from 'react-native';
+import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 import BackButton from './BackButton';
 import BackHandlerContext from './BackHandlerContext';
 
@@ -35,10 +35,12 @@ class TabBarItem extends React.Component<any> {
         return false;
     }
     render() {
-        var {onPress, children, ...props} = this.props;
+        var {onPress, children, image, ...props} = this.props;
+        var platformImage = ((typeof image !== 'string') === (Platform.OS === 'ios')) ? image : null;
         return (
             <NVTabBarItem
                 {...props}
+                image={platformImage}
                 style={styles.tabBarItem}
                 onPress={event => {
                     event.stopPropagation();

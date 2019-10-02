@@ -20,7 +20,7 @@ class TabBar extends React.Component<any, any> {
     render() {
         var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs} = this.props;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
-        var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
+        var titleOnly = !tabBarItems.find(({props}: any) => props.title && typeof props.image === 'string');
         var tabLayout = Platform.OS === 'android' && (
             <NVTabLayout
                 selectedTintColor={selectedTintColor}
