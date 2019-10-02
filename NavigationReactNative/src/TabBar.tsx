@@ -32,7 +32,7 @@ class TabBar extends React.Component<any, any> {
             <>
                 {!bottomTabs && tabLayout}
                 <NVTabBar
-                    images={tabBarItems.map(({props}: any) => props.image)}
+                    images={tabBarItems.map(({props: {image}}: any) => typeof image === 'string' ? image : null)}
                     onTabSelected={({nativeEvent}) => {
                         if (this.state.selectedTab !== nativeEvent.tab)
                             this.setState({selectedTab: nativeEvent.tab})
