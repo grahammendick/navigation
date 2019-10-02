@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import NavigationStack from './NavigationStack';
 import Scene from './Scene';
 import NavigationBarIOS from './NavigationBarIOS';
@@ -10,4 +11,7 @@ import TabBarItem from './TabBarItem';
 import SharedElementAndroid from './SharedElementAndroid';
 import TitleBarIOS from './TitleBarIOS';
 
-export { NavigationStack, Scene, NavigationBarIOS, LeftBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SearchBarIOS, TabBar, TabBarItem, SharedElementAndroid };
+var TabBarIOS = Platform.OS === 'ios' ? TabBar : () => null;
+var TabBarItemIOS = Platform.OS === 'ios' ? TabBarItem : () => null;
+
+export { NavigationStack, Scene, NavigationBarIOS, LeftBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SearchBarIOS, TabBar, TabBarItem, TabBarIOS, TabBarItemIOS, SharedElementAndroid };
