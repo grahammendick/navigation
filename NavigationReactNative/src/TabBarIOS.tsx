@@ -38,6 +38,9 @@ class TabBar extends React.Component<any, any> {
                             this.setState({selectedTab: nativeEvent.tab})
                     }}
                     selectedTab={this.state.selectedTab}
+                    barTintColor={barTintColor}
+                    selectedTintColor={selectedTintColor}
+                    unselectedTintColor={unselectedTintColor}
                     style={styles.tabBar}>
                         <BackButton onPress={this.handleBack} />
                         {tabBarItems
