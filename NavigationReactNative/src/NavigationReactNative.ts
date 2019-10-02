@@ -5,9 +5,9 @@ import LeftBarIOS from './LeftBarIOS';
 import RightBarIOS from './RightBarIOS';
 import BarButtonIOS from './BarButtonIOS';
 import SearchBarIOS from './SearchBarIOS';
-import TabBarIOS from './TabBarIOS';
-import TabBarItemIOS from './TabBarItemIOS';
+import TabBar from './TabBar';
+import TabBarItem from './TabBarItem';
 import SharedElementAndroid from './SharedElementAndroid';
 import TitleBarIOS from './TitleBarIOS';
 
-export { NavigationStack, Scene, NavigationBarIOS, LeftBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SearchBarIOS, TabBarIOS, TabBarItemIOS, SharedElementAndroid };
+export { NavigationStack, Scene, NavigationBarIOS, LeftBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SearchBarIOS, TabBar, TabBarItem, SharedElementAndroid };
