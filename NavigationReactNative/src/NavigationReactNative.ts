@@ -10,8 +10,9 @@ import TabBar from './TabBar';
 import TabBarItem from './TabBarItem';
 import SharedElementAndroid from './SharedElementAndroid';
 import TitleBarIOS from './TitleBarIOS';
+import BackHandlerContext from './BackHandlerContext';
 
 var TabBarIOS = Platform.OS === 'ios' ? TabBar : () => null;
 var TabBarItemIOS = Platform.OS === 'ios' ? TabBarItem : () => null;
 
-export { NavigationStack, Scene, NavigationBarIOS, LeftBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SearchBarIOS, TabBar, TabBarItem, TabBarIOS, TabBarItemIOS, SharedElementAndroid };
+export { NavigationStack, Scene, NavigationBarIOS, LeftBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SearchBarIOS, TabBar, TabBarItem, TabBarIOS, TabBarItemIOS, SharedElementAndroid, BackHandlerContext };
