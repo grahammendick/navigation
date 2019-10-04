@@ -209,6 +209,7 @@ public class TabBarView extends ViewPager {
             event.putInt("tab", position);
             ReactContext reactContext = (ReactContext) getContext();
             reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onTabSelected", event);
+            getAdapter().tabFragments.get(position).tabBarItem.pressed();
         }
 
         @Override
