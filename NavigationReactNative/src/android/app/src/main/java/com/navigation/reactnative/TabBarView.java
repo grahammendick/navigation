@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -19,6 +20,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.events.NativeGestureUtil;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.tabs.TabLayout;
 
@@ -128,6 +130,18 @@ public class TabBarView extends ViewPager {
             getAdapter().removeTab(index);
         else
             tabs.remove(index);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        try {
+            if (super.onInterceptTouchEvent(ev)) {
+                NativeGestureUtil.notifyNativeGestureStarted(this, ev);
+                return true;
+            }
+        } catch (IllegalArgumentException e) {
+        }
+        return false;
     }
 
     private class Adapter extends FragmentPagerAdapter {
