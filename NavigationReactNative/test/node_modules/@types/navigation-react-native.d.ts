@@ -1,5 +1,5 @@
-import { Component, ReactNode } from 'react';
-import { ImageURISource, StyleProp, ViewStyle } from 'react-native';
+import { Component, Context, ReactNode } from 'react';
+import { BackHandler, ImageRequireSource, ImageURISource, StyleProp, ViewStyle } from 'react-native';
 import { StateNavigator, State } from 'navigation';
 
 /**
@@ -194,9 +194,14 @@ export interface SharedElementAndroidProps {
 export class SharedElementAndroid extends Component<SharedElementAndroidProps> {}
 
 /**
+ * The context for overriding default hardware back handling
+ */
+export var BackHandlerContext: Context<BackHandler>;
+
+/**
  * Defines the Tab Bar Item Props contract
  */
-export interface TabBarItemIOSProps {
+export interface TabBarItemProps {
     /**
      * The tab title
      */
@@ -212,7 +217,7 @@ export interface TabBarItemIOSProps {
     /**
      * The tab image
      */
-    image?: ImageURISource;
+    image?: ImageRequireSource | ImageURISource | string;
     /**
      * The tab system item
      */
@@ -228,12 +233,17 @@ export interface TabBarItemIOSProps {
 /**
  * Renders a tab in the UI tab bar
  */
-export class TabBarItemIOS extends Component<TabBarItemIOSProps> {}
+export class TabBarItemIOS extends Component<TabBarItemProps> {}
+
+/**
+ * Renders a tab in the tab bar
+ */
+export class TabBarItem extends Component<TabBarItemProps> {}
 
 /**
  * Defines the Tab Bar Props contract
  */
-export interface TabBarIOSProps {
+export interface TabBarProps {
     children: React.ReactElement<TabBarItemIOS> | React.ReactElement<TabBarItemIOS>[];
     /**
      * The background color of the tab bar
@@ -247,9 +257,18 @@ export interface TabBarIOSProps {
      * The color of unselected content wihtin the tab bar
      */
     unselectedTintColor?: string;
+    /**
+     * Indicates whether the tabs should be at the bottom
+     */
+    bottomTabs?: boolean;
 }
 
 /**
  * Renders the UI tab bar
  */
-export class TabBarIOS extends Component<TabBarIOSProps> {}
+export class TabBarIOS extends Component<TabBarProps> {}
+
+/**
+ * Renders a tab bar
+ */
+export class TabBar extends Component<TabBarProps> {}

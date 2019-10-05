@@ -11,7 +11,7 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - navigation-react-native (5.7.0):
+  - navigation-react-native (6.0.0):
     - React
   - React (0.60.5):
     - React-Core (= 0.60.5)
@@ -81,8 +81,6 @@ PODS:
     - React-Core (= 0.60.5)
   - React-RCTWebSocket (0.60.5):
     - React-Core (= 0.60.5)
-  - RNCViewpager (1.1.7):
-    - React
   - yoga (0.60.5.React)
 
 DEPENDENCIES:
@@ -107,7 +105,6 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-RCTWebSocket (from `../node_modules/react-native/Libraries/WebSocket`)
-  - "RNCViewpager (from `../node_modules/@react-native-community/viewpager`)"
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -157,8 +154,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   React-RCTWebSocket:
     :path: "../node_modules/react-native/Libraries/WebSocket"
-  RNCViewpager:
-    :path: "../node_modules/@react-native-community/viewpager"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -167,7 +162,7 @@ SPEC CHECKSUMS:
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  navigation-react-native: 944bf1ce4c823f4a8b107a207422cefa3cfc433f
+  navigation-react-native: 3f24554bd74c200421e3d82fd583f89f12f06506
   React: 53c53c4d99097af47cf60594b8706b4e3321e722
   React-Core: ba421f6b4f4cbe2fb17c0b6fc675f87622e78a64
   React-cxxreact: 8384287780c4999351ad9b6e7a149d9ed10a2395
@@ -185,7 +180,6 @@ SPEC CHECKSUMS:
   React-RCTText: b074d89033583d4f2eb5faf7ea2db3a13c7553a2
   React-RCTVibration: 2105b2e0e2b66a6408fc69a46c8a7fb5b2fdade0
   React-RCTWebSocket: cd932a16b7214898b6b7f788c8bddb3637246ac4
-  RNCViewpager: eff3ba6712d3aff9ea779ef1c99f78aa7cd36771
   yoga: 312528f5bbbba37b4dcea5ef00e8b4033fdd9411
 
 PODFILE CHECKSUM: 537e09f47736fb4d255de40767187689e0a1fb2c

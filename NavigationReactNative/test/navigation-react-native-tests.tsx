@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Platform, View, Text, TouchableHighlight } from 'react-native';
+import { View, Text, TouchableHighlight } from 'react-native';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { NavigationStack, NavigationBarIOS, RightBarIOS, BarButtonIOS, SearchBarIOS, SharedElementAndroid, TabBarIOS, TabBarItemIOS } from 'navigation-react-native';
+import { NavigationStack, NavigationBarIOS, RightBarIOS, BarButtonIOS, SearchBarIOS, SharedElementAndroid, TabBar, TabBarItem } from 'navigation-react-native';
 
 const stateNavigator: StateNavigator = new StateNavigator([
     { key: 'people' },
@@ -79,19 +79,14 @@ people.renderScene = () => <People />;
 person.renderScene = ({ name }) => <Person name={name}/>;
 
 var App = () => (
-    Platform.OS == 'ios' ? (
-        <TabBarIOS>
-            <TabBarItemIOS title="Home">
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationStack title={({title}, {name}) => name || title} />
+    <TabBar>
+        <TabBarItem title="Home">
+            <NavigationHandler stateNavigator={stateNavigator}>
+                <NavigationStack
+                    title={({title}, {name}) => name || title}
+                    unmountStyle={(from) => from ? 'slide_in' : 'slide_out'}
+                    sharedElements={({name}) => name && [name]} />
                 </NavigationHandler>
-            </TabBarItemIOS>
-        </TabBarIOS>
-    ) : (
-        <NavigationHandler stateNavigator={stateNavigator}>
-            <NavigationStack
-                unmountStyle={(from) => from ? 'slide_in' : 'slide_out'}
-                sharedElements={({name}) => name && [name]} />
-        </NavigationHandler>
-    )
+        </TabBarItem>
+    </TabBar>
 );

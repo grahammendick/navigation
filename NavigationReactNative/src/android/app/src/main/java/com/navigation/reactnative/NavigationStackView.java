@@ -7,6 +7,11 @@ import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -23,6 +28,7 @@ public class NavigationStackView extends ViewGroup {
     protected String exitAnim;
     protected ReadableArray sharedElementNames;
     protected ReadableArray oldSharedElementNames;
+    protected boolean primary = true;
     protected boolean finish = false;
     SceneNavigator navigator;
 
@@ -103,6 +109,19 @@ public class NavigationStackView extends ViewGroup {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         onAfterUpdateTransaction();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (primary) {
+            FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
+            FragmentTransaction fragmentTransation = fragmentManager.beginTransaction();
+            for (Fragment fragment : fragmentManager.getFragments()) {
+                fragmentTransation.remove(fragment);
+            }
+            fragmentTransation.commitAllowingStateLoss();
+        }
     }
 
     @Override

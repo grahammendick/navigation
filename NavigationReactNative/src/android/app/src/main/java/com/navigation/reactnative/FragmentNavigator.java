@@ -86,8 +86,8 @@ class FragmentNavigator extends SceneNavigator {
         ViewParent parent = stack;
         Fragment fragment = null;
         while (parent != null) {
-            if (parent instanceof SceneView) {
-                fragment = ((SceneView) parent).fragment;
+            if (parent instanceof NavigationBoundary) {
+                fragment = ((NavigationBoundary) parent).getFragment();
                 break;
             }
             parent = parent.getParent();
