@@ -8,7 +8,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@react-native-community/viewpager": "^1.1.7",
     "navigation": "^5.2.0",
     "navigation-react": "^4.1.1",
     "navigation-react-native": "^6.0.0",
