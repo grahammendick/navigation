@@ -43,7 +43,7 @@ public class TabBarView extends ViewPager {
         for(int i = 0; i < tabs.size(); i++) {
             addTab(tabs.get(i), i);
         }
-        this.requestLayout();
+        requestLayout();
         post(measureAndLayout);
         if (getTabLayout() != null)
             getTabLayout().setupWithViewPager(this);
@@ -214,7 +214,6 @@ public class TabBarView extends ViewPager {
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
         }
 
         @Override
@@ -228,7 +227,6 @@ public class TabBarView extends ViewPager {
 
         @Override
         public void onPageScrollStateChanged(int state) {
-
         }
     }
 }
