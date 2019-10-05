@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import {Platform} from 'react-native';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
-import {NavigationStack, TabBarIOS, TabBarItemIOS} from 'navigation-react-native';
+import {NavigationStack, TabBar, TabBarItem} from 'navigation-react-native';
 import Home from './Home';
 import Notifications from './Notifications';
 import Tweet from './Tweet';
@@ -23,34 +22,32 @@ timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)}  />;
 
 const notificationsNavigator = new StateNavigator(stateNavigator);
 stateNavigator.navigate('home');
+notificationsNavigator.navigate('notifications');
 
 export default () => {
   const [notified, setNotified] = useState(false);
-  return Platform.OS === 'ios' ? (
-    <TabBarIOS>
-      <TabBarItemIOS title="Home">
+  return (
+    <TabBar bottomTabs={true}>
+      <TabBarItem title="Home">
         <NavigationHandler stateNavigator={stateNavigator}>
-          <NavigationStack/>
+          <NavigationStack
+            crumbStyle={from => from ? 'scale_in' : 'scale_out'}
+            unmountStyle={from => from ? 'slide_in' : 'slide_out'} />
         </NavigationHandler>
-      </TabBarItemIOS>
-      <TabBarItemIOS
+      </TabBarItem>
+      <TabBarItem
         title="Notifications"
         badge={!notified ? getFollows().length : null} 
         onPress={() => {
           setNotified(true);
-          if (!notificationsNavigator.stateContext.state) 
-            notificationsNavigator.navigate('notifications');
         }}>
         <NavigationHandler stateNavigator={notificationsNavigator}>
-          <NavigationStack/>
+          <NavigationStack
+            primary={false}
+            crumbStyle={from => from ? 'scale_in' : 'scale_out'}
+            unmountStyle={from => from ? 'slide_in' : 'slide_out'} />
         </NavigationHandler>
-      </TabBarItemIOS>
-    </TabBarIOS>
-  ) : (
-    <NavigationHandler stateNavigator={stateNavigator}>
-      <NavigationStack
-        crumbStyle={from => from ? 'scale_in' : 'scale_out'}
-        unmountStyle={from => from ? 'slide_in' : 'slide_out'} />
-    </NavigationHandler>
-  )
+      </TabBarItem>
+    </TabBar>
+  );
 }

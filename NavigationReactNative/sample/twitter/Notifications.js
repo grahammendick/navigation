@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {ScrollView, StyleSheet, Text, Image, FlatList, View, TouchableHighlight} from 'react-native';
+import {ScrollView, StyleSheet, Text, Image, FlatList, View, TouchableHighlight, ToolbarAndroid} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {NavigationBarIOS} from 'navigation-react-native';
 
@@ -7,6 +7,7 @@ export default ({follows}) => {
   const {stateNavigator} = useContext(NavigationContext);
   return (
     <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
+      <ToolbarAndroid title="Notifications" style={styles.toolbar} />
       <NavigationBarIOS title="Notifications" />
       <FlatList
           data={follows}
@@ -33,6 +34,9 @@ export default ({follows}) => {
 };
 
 const styles = StyleSheet.create({
+  toolbar: {
+    height: Platform.OS === 'android' ? 50 : 0,
+  },
   view: {
     paddingLeft: 20,
     paddingRight: 20,
