@@ -38,9 +38,7 @@ export default () => {
       <TabBarItem
         title="Notifications"
         badge={!notified ? getFollows().length : null} 
-        onPress={() => {
-          setNotified(true);
-        }}>
+        onPress={() => {setNotified(true)}}>
         <NavigationHandler stateNavigator={notificationsNavigator}>
           <NavigationStack
             primary={false}
