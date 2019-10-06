@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Tab Bar (iOS)</title>
+    <title>Tab Bar</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="../../css/prism.css">
     <link rel="stylesheet" href="../../css/navigation.css">
@@ -52,14 +52,20 @@
             <a href="examples.html">Examples</a>
         </div>
         <div id="article">
-            <h1>Tab Bar (iOS)</h1>
+            <h1>Tab Bar</h1>
             <p>
-                The <code>TabBarIOS</code> component gives you a native tabbed interface in iOS. Each tab has its own stack of screens. To ensure that pushing and popping in one tab doesn't affect the stack in another tab, you give each tab its own <code>StateNavigator</code>. Let's add tabs to our email example. One tab for the user's inbox and another for their list of contacts. We create a new <code>StateNavigator</code> for the 'contacts' tab. It contains two <code>States</code> so the user can view all their contacts and edit the details of an individual contact.
+                The <code>TabBar</code> component gives you a native tabbed interface in iOS and Android. Each tab has its own stack of screens. To ensure that pushing and popping in one tab doesn't affect the stack in another tab, you give each tab its own <code>StateNavigator</code>. Let's add tabs to our email example. One tab for the user's inbox and another for their list of contacts. We create a new <code>StateNavigator</code> for the 'contacts' tab. It contains two <code>States</code> so the user can view all their contacts and edit the details of an individual contact.
             </p>
             <pre><code class="language-js">var contactsNavigator = new StateNavigator([
   {key: 'contacts'},
   {key: 'contact', trackCrumbTrail: true}
-]);</code></pre>
+]);
+
+var {contacts, contact} = stateNavigator.states;
+contacts.renderScene = () => &lt;Contacts />;
+contact.renderScene = ({id}) => &lt;Contact id={id} />;
+
+stateNavigator.navigate('contacts');</code></pre>
             <p>
                 You must render the <code>TabBarIOS</code> component at the root of your app because iOS doesn't support adding a tabbed interface to a scene. You create a <code>NavigationStack</code> for each tab and give each one a dedicated <code>StateNavigator</code>. Wrap each stack in a <code>TabBarItemIOS</code> component and add them as children of <code>TabBarIOS</code>. You identify your tabs using the <code>image</code> and <code>title</code> props of the <code>TabBarItemIOS</code> component. In our email example, we set the <code>systemItem</code> prop so that the 'contacts' tab displays with the inbuilt iOS icon for contacts. 
             </p>
