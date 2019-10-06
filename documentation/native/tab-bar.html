@@ -88,6 +88,9 @@ stateNavigator.navigate('contacts');</code></pre>
 &lt;/TabBar>
 </code></pre>
             <h2>Adding Android Back Handlers</h2>
+            <p>
+                By default, your Android back handlers are processed in reverse order. The last subscription is run first. But with tab navigation you only want the back handlers for the active tab to run. To ensure back handlers for inactive tabs are ignored, add and remove your handlers using the <code>BackHandlerContext</code>.
+            </p>
             <pre><code class="language-jsx">import {BackHandlerContext} from 'navigation-react-native';
 
 class Contacts extends React.Component {
