@@ -70,7 +70,7 @@ stateNavigator.navigate('contacts');</code></pre>
                 You create a <code>NavigationStack</code> for each tab and give each one a dedicated <code>StateNavigator</code>. Set the <code>primary</code> prop to 'false' on all <code>NavigationStacks</code> except the first. This ensures that pressing the Android back button on the first scene of tab two goes to tab one instead of closing the app. The App only closes when pressing the Android back on the first scene of the primary stack.
             </p>
             <p>
-                Wrap each stack in a <code>TabBarItem</code> component and add them as children of a <code>TabBar</code>. You identify your tabs using the <code>title</code> and <code>image</code> props of the <code>TabBarItem</code>. On iOS, you must render the <code>TabBar</code> component at the root of your app. On Android, you can render the <code>TabBar</code> anywhere (including inside another <code>TabBar</code>).
+                Wrap each stack in a <code>TabBarItem</code> component and add them as children of a <code>TabBar</code>. You identify your tabs using the <code>title</code> and <code>image</code> props of the <code>TabBarItem</code>. On iOS, you must render the <code>TabBar</code> component at the root of your app. On Android, you can render the <code>TabBar</code> anywhere (including inside another <code>TabBar</code>). In our email example, we set the <code>systemItem</code> prop so that the 'contacts' tab displays with the inbuilt iOS icon for contacts.
             </p>
             <pre><code class="language-jsx">import {TabBar, TabBarItem} from 'navigation-react-native';
 
@@ -80,7 +80,7 @@ stateNavigator.navigate('contacts');</code></pre>
       &lt;NavigationStack />
     &lt;/NavigationHandler>
   &lt;/TabBarItem>
-  &lt;TabBarItem title="Contacts">
+  &lt;TabBarItem title="Contacts" systemItem="contacts">
     &lt;NavigationHandler stateNavigator={contactsNavigator}>
       &lt;NavigationStack primary={false} />
     &lt;/NavigationHandler>
