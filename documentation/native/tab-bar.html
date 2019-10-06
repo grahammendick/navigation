@@ -67,7 +67,7 @@ contact.renderScene = ({id}) => &lt;Contact id={id} />;
 
 stateNavigator.navigate('contacts');</code></pre>
             <p>
-              You create a <code>NavigationStack</code> for each tab and give each one a dedicated <code>StateNavigator</code>. Wrap each stack in a <code>TabBarItemIOS</code> component and add them as children of <code>TabBarIOS</code>. You identify your tabs using the <code>image</code> and <code>title</code> props of the <code>TabBarItemIOS</code> component. In our email example, we set the <code>systemItem</code> prop so that the 'contacts' tab displays with the inbuilt iOS icon for contacts. 
+                You create a <code>NavigationStack</code> for each tab and give each one a dedicated <code>StateNavigator</code>. Wrap each stack in a <code>TabBarItem</code> component and add them as children of a <code>TabBar</code>. You identify your tabs using the <code>title</code> prop of the <code>TabBarItem</code>. On iOS, you must render the <code>TabBar</code> component at the root of your app. On Android, you can render the <code>TabBar</code> anywhere (including inside another <code>TabBar</code>).
             </p>
             <pre><code class="language-jsx">import {TabBar, TabBarItem} from 'navigation-react-native';
 
@@ -86,10 +86,6 @@ stateNavigator.navigate('contacts');</code></pre>
 </code></pre>
             <h2>Styling Tabs</h2>
             <h2>Adding Android Back Handlers</h2>
-            <div class="Note">
-                <h2>Note</h2>
-                On iOS, you must render the <code>TabBar</code> component at the root of your app. On Android, you can render the <code>TabBar</code> anywhere, including inside another <code>TabBar</code>.
-            </div>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
