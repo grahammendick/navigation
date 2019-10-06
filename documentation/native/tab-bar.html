@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Tab Bar (iOS)</title>
+    <title>Tab Bar</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="../../css/prism.css">
     <link rel="stylesheet" href="../../css/navigation.css">
@@ -44,51 +44,75 @@
             <a href="hello-world.html">Hello World</a>
             <a href="push-navigation.html">Push Navigation</a>
             <a href="pop-navigation.html">Pop Navigation</a>
+            <a href="tab-bar.html" class="selected">Tab Bar</a>
             <a href="custom-animation.html">Custom Animation (Android)</a>
             <a href="shared-element-transition.html">Shared Element Transition (Android)</a>
             <a href="navigation-bar.html">Navigation Bar (iOS)</a>
-            <a href="tab-bar.html" class="selected">Tab Bar (iOS)</a>
             <a href="deep-links.html">Deep Links</a>
             <a href="examples.html">Examples</a>
         </div>
         <div id="article">
-            <h1>Tab Bar (iOS)</h1>
+            <h1>Tab Bar</h1>
             <p>
-                The <code>TabBarIOS</code> component gives you a native tabbed interface in iOS. Each tab has its own stack of screens. To ensure that pushing and popping in one tab doesn't affect the stack in another tab, you give each tab its own <code>StateNavigator</code>. Let's add tabs to our email example. One tab for the user's inbox and another for their list of contacts. We create a new <code>StateNavigator</code> for the 'contacts' tab. It contains two <code>States</code> so the user can view all their contacts and edit the details of an individual contact.
+                The <code>TabBar</code> component gives you a native tabbed interface in iOS and Android. Each tab has its own stack of screens. To ensure that pushing and popping in one tab doesn't affect the stack in another tab, you give each tab its own <code>StateNavigator</code>. Let's add tabs to our email example. One tab for the user's inbox and another for their list of contacts. We create a new <code>StateNavigator</code> for the 'contacts' tab. It contains two <code>States</code> so the user can view all their contacts and edit the details of an individual contact.
             </p>
             <pre><code class="language-js">var contactsNavigator = new StateNavigator([
   {key: 'contacts'},
   {key: 'contact', trackCrumbTrail: true}
-]);</code></pre>
-            <p>
-                You must render the <code>TabBarIOS</code> component at the root of your app because iOS doesn't support adding a tabbed interface to a scene. You create a <code>NavigationStack</code> for each tab and give each one a dedicated <code>StateNavigator</code>. Wrap each stack in a <code>TabBarItemIOS</code> component and add them as children of <code>TabBarIOS</code>. You identify your tabs using the <code>image</code> and <code>title</code> props of the <code>TabBarItemIOS</code> component. In our email example, we set the <code>systemItem</code> prop so that the 'contacts' tab displays with the inbuilt iOS icon for contacts. 
-            </p>
-            <pre><code class="language-jsx">import {TabBarIOS} from 'navigation-react-native';
+]);
 
-&lt;TabBarIOS>
-  &lt;TabBarItemIOS title="Inbox" image={require('./inbox.png')}>
+var {contacts, contact} = stateNavigator.states;
+contacts.renderScene = () => &lt;Contacts />;
+contact.renderScene = ({id}) => &lt;Contact id={id} />;
+
+stateNavigator.navigate('contacts');</code></pre>
+            <p>
+                You create a <code>NavigationStack</code> for each tab and give each one a dedicated <code>StateNavigator</code>. Set the <code>primary</code> prop to 'false' on all <code>NavigationStacks</code> except the first. This ensures that pressing the Android back button on the first scene of tab two goes to tab one instead of closing the app. The App only closes when pressing the Android back on the first scene of the primary stack.
+            </p>
+            <p>
+                Wrap each stack in a <code>TabBarItem</code> component and add them as children of a <code>TabBar</code>. You identify your tabs using the <code>title</code> and <code>image</code> props of the <code>TabBarItem</code>. On iOS, you must render the <code>TabBar</code> component at the root of your app. On Android, you can render the <code>TabBar</code> anywhere (including inside another <code>TabBar</code>). In our email example, we set the <code>systemItem</code> prop so that the 'contacts' tab displays with the inbuilt iOS icon for contacts.
+            </p>
+            <pre><code class="language-jsx">import {TabBar, TabBarItem} from 'navigation-react-native';
+
+&lt;TabBar>
+  &lt;TabBarItem title="Inbox">
     &lt;NavigationHandler stateNavigator={stateNavigator}>
       &lt;NavigationStack />
     &lt;/NavigationHandler>
-  &lt;/TabBarItemIOS>
-  &lt;TabBarItemIOS systemItem="contacts">
+  &lt;/TabBarItem>
+  &lt;TabBarItem title="Contacts" systemItem="contacts">
     &lt;NavigationHandler stateNavigator={contactsNavigator}>
-      &lt;NavigationStack />
+      &lt;NavigationStack primary={false} />
     &lt;/NavigationHandler>
-  &lt;/TabBarItemIOS>
-&lt;/TabBarIOS>
+  &lt;/TabBarItem>
+&lt;/TabBar>
 </code></pre>
+            <h2>Adding Android Back Handlers</h2>
             <p>
-                You can avoid the performance costs of rendering all the tabs' content upfront by rendering them on demand instead. In our email example, the user starts off on their inbox so we don't need to render their list of contacts until they click on that tab. Inside the <code>onPress</code> handler of the 'contacts' tab we navigate to the 'contacts' State to begin the rendering.
+                By default, your Android back handlers are processed in reverse order. The last subscription is run first. But with tab navigation you only want the back handlers for the active tab to run. To ensure back handlers for inactive tabs are ignored, you must add and remove them using the <code>BackHandlerContext</code>.
             </p>
-            <pre><code class="language-jsx">&lt;TabBarItemIOS systemItem="contacts" onPress={() => {
-  if (!contactsNavigator.stateContext.state) {
-    contactsNavigator.navigate('contacts');
+            <pre><code class="language-jsx">import {BackHandlerContext} from 'navigation-react-native';
+
+class Contacts extends React.Component {
+  componentDidMount() {
+    const {backHandler} = this.props;
+    this.subscription = backHandler.addEventListener('hardwareBackPress', () => {
+      //handle back
+      return true;
+    });
   }
-}}>
-</code></pre>
+
+  componentWillUnmount() {
+    this.subscription.remove()
+  }
+}
+
+export default () => (
+  &lt;BackHandlerContext.Consumer>
+    {backHandler => &lt;Contacts backHandler={backHandler} />}
+  &lt;/BackHandlerContext.Consumer>
+);</code></pre>
         </div>
-    </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
 </html>
