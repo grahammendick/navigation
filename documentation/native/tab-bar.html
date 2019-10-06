@@ -69,20 +69,20 @@ stateNavigator.navigate('contacts');</code></pre>
             <p>
                 You must render the <code>TabBarIOS</code> component at the root of your app because iOS doesn't support adding a tabbed interface to a scene. You create a <code>NavigationStack</code> for each tab and give each one a dedicated <code>StateNavigator</code>. Wrap each stack in a <code>TabBarItemIOS</code> component and add them as children of <code>TabBarIOS</code>. You identify your tabs using the <code>image</code> and <code>title</code> props of the <code>TabBarItemIOS</code> component. In our email example, we set the <code>systemItem</code> prop so that the 'contacts' tab displays with the inbuilt iOS icon for contacts. 
             </p>
-            <pre><code class="language-jsx">import {TabBarIOS} from 'navigation-react-native';
+            <pre><code class="language-jsx">import {TabBar, TabBarItem} from 'navigation-react-native';
 
-&lt;TabBarIOS>
-  &lt;TabBarItemIOS title="Inbox" image={require('./inbox.png')}>
+&lt;TabBar>
+  &lt;TabBarItem title="Inbox">
     &lt;NavigationHandler stateNavigator={stateNavigator}>
       &lt;NavigationStack />
     &lt;/NavigationHandler>
-  &lt;/TabBarItemIOS>
-  &lt;TabBarItemIOS systemItem="contacts">
+  &lt;/TabBarItem>
+  &lt;TabBarItem title="Contacts">
     &lt;NavigationHandler stateNavigator={contactsNavigator}>
       &lt;NavigationStack />
     &lt;/NavigationHandler>
-  &lt;/TabBarItemIOS>
-&lt;/TabBarIOS>
+  &lt;/TabBarItem>
+&lt;/TabBar>
 </code></pre>
             <p>
                 You can avoid the performance costs of rendering all the tabs' content upfront by rendering them on demand instead. In our email example, the user starts off on their inbox so we don't need to render their list of contacts until they click on that tab. Inside the <code>onPress</code> handler of the 'contacts' tab we navigate to the 'contacts' State to begin the rendering.
