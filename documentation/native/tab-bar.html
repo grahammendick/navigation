@@ -85,6 +85,27 @@ stateNavigator.navigate('contacts');</code></pre>
 &lt;/TabBar>
 </code></pre>
             <h2>Adding Android Back Handlers</h2>
+            <pre><code class="language-jsx">import {BackHandlerContext} from 'navigation-react-native';
+
+class Contacts extends React.Component {
+  componentDidMount() {
+    const {backHandler} = this.props;
+    this.subscription = backHandler.addEventListener('hardwareBackPress', () => {
+      //handle back
+      return true;
+    });
+  }
+
+  componentWillUnmount() {
+    this.subscription.remove()
+  }
+}
+
+export default () => (
+  &lt;BackHandlerContext.Consumer>
+    {backHandler => &lt;Contacts backHandler={backHandler} />}
+  &lt;/BackHandlerContext.Consumer>
+);</code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
