@@ -12,7 +12,7 @@ var createBackHandler = () => {
     }
     var removeEventListener = (_, handler) => {
         if (listeners.indexOf(handler) !== -1)
-            listeners.splice(listeners.indexOf(handler));
+            listeners.splice(listeners.indexOf(handler), 1);
     }
     return {listeners, addEventListener, removeEventListener};
 }
