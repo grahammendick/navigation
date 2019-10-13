@@ -16,6 +16,7 @@ const Person = ({person: {id, name, dateOfBirth, email, phone}, edit}) => (
     <View style={styles.field}>
       <Text style={styles.label}>Name</Text>
       <TextInput
+        autoFocus={true}
         onChangeText={(text) => edit(id, text)}
         style={styles.entry}>{name}
       </TextInput>
