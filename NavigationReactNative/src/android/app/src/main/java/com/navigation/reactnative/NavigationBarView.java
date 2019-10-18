@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
@@ -12,6 +13,7 @@ import com.facebook.drawee.view.DraweeHolder;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +21,11 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
-public class NavigationBarView extends Toolbar {
+public class NavigationBarView extends AppBarLayout {
     List<View> barViews = new ArrayList<>();
-    IconResolver iconResolver;
+    private IconResolver iconResolver;
+
+    private Toolbar toolbar;
 
     private final DraweeHolder mLogoHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
     private final DraweeHolder mNavIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
@@ -33,29 +37,33 @@ public class NavigationBarView extends Toolbar {
 
     public NavigationBarView(Context context) {
         super(context);
+
+        toolbar = new Toolbar(context);
+        addView(toolbar, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
         iconResolver = new IconResolver(context);
         mLogoControllerListener = iconResolver.new IconControllerListener(mLogoHolder) {
             @Override
             protected void setDrawable(Drawable d) {
-                setLogo(d);
+                toolbar.setLogo(d);
                 requestLayout();
             }
         };
         mNavIconControllerListener = iconResolver.new IconControllerListener(mNavIconHolder) {
             @Override
             protected void setDrawable(Drawable d) {
-                setNavigationIcon(d);
+                toolbar.setNavigationIcon(d);
                 requestLayout();
             }
         };
         mOverflowIconControllerListener = iconResolver.new IconControllerListener(mNavIconHolder) {
             @Override
             protected void setDrawable(Drawable d) {
-                setOverflowIcon(d);
+                toolbar.setOverflowIcon(d);
                 requestLayout();
             }
         };
-        setNavigationOnClickListener(new OnClickListener() {
+        toolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 ReactContext reactContext = (ReactContext) getContext();
@@ -123,8 +131,12 @@ public class NavigationBarView extends Toolbar {
         buildMenu();
     }
 
+    void setTitle(String title) {
+        toolbar.setTitle(title);
+    }
+
     void buildMenu() {
-        getMenu().clear();
+        toolbar.getMenu().clear();
         LeftBarView leftBarView = null;
         RightBarView rightBarView = null;
         for (View barView: barViews) {
@@ -137,7 +149,7 @@ public class NavigationBarView extends Toolbar {
         if (leftBarView != null) {
             for (int i = 0; i < leftBarView.getChildCount(); i++) {
                 BarButtonView barButtonView = (BarButtonView) leftBarView.getChildAt(i);
-                MenuItem menuItem = getMenu().add(barButtonView.title);
+                MenuItem menuItem = toolbar.getMenu().add(barButtonView.title);
                 barButtonView.menuItem = menuItem;
                 barButtonView.update();
             }
@@ -145,7 +157,7 @@ public class NavigationBarView extends Toolbar {
         if (rightBarView != null) {
             for (int i = 0; i < rightBarView.getChildCount(); i++) {
                 BarButtonView barButtonView = (BarButtonView) rightBarView.getChildAt(i);
-                MenuItem menuItem = getMenu().add(barButtonView.title);
+                MenuItem menuItem = toolbar.getMenu().add(barButtonView.title);
                 barButtonView.menuItem = menuItem;
                 barButtonView.update();
             }
