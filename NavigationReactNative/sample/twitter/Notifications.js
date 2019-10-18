@@ -1,14 +1,13 @@
 import React, {useContext} from 'react';
-import {ScrollView, StyleSheet, Text, Image, FlatList, View, TouchableHighlight, ToolbarAndroid} from 'react-native';
+import {ScrollView, StyleSheet, Text, Image, FlatList, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBarIOS} from 'navigation-react-native';
+import {NavigationBar} from 'navigation-react-native';
 
 export default ({follows}) => {
   const {stateNavigator} = useContext(NavigationContext);
   return (
     <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
-      <ToolbarAndroid title="Notifications" style={styles.toolbar} />
-      <NavigationBarIOS title="Notifications" />
+      <NavigationBar title="Notifications" />
       <FlatList
           data={follows}
           keyExtractor={item => '' + item.id}

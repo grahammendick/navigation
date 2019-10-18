@@ -20,7 +20,11 @@ public class NavigationPackage implements ReactPackage {
             new FragmentContainerManager(),
             new TabBarManager(),
             new TabBarItemManager(),
-            new TabLayoutManager()
+            new TabLayoutManager(),
+            new NavigationBarManager(),
+            new RightBarManager(),
+            new LeftBarManager(),
+            new BarButtonManager()
         );
     }
 

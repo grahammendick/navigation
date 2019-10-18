@@ -1,13 +1,13 @@
 import React from 'react';
 import {StyleSheet, ScrollView, View, Platform, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBarIOS, SharedElementAndroid} from 'navigation-react-native';
+import {NavigationBar, SharedElementAndroid} from 'navigation-react-native';
 
 export default ({colors}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <NavigationBarIOS title="Colors" />
+        <NavigationBar title="Colors" />
         <View style={styles.colors}>
           {colors.map(color => (
             <TouchableHighlight

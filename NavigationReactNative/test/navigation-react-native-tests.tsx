@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, TouchableHighlight } from 'react-native';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { NavigationStack, NavigationBarIOS, RightBarIOS, BarButtonIOS, SearchBarIOS, SharedElementAndroid, TabBar, TabBarItem } from 'navigation-react-native';
+import { NavigationStack, NavigationBar, RightBar, BarButton, SearchBarIOS, SharedElementAndroid, TabBar, TabBarItem } from 'navigation-react-native';
 
 const stateNavigator: StateNavigator = new StateNavigator([
     { key: 'people' },
@@ -13,7 +13,7 @@ var List = ({people, children}: any) => (
     <NavigationContext.Consumer>
         {({stateNavigator}) => (
             <View>
-                <NavigationBarIOS title="People" />
+                <NavigationBar title="People" />
                 {people.map(name => (
                     <TouchableHighlight
                         onPress={() => {
@@ -43,7 +43,7 @@ class People extends React.Component<any, any> {
         ));
         return (
             <List people={people}>
-                <NavigationBarIOS largeTitle={true} title="Person">
+                <NavigationBar largeTitle={true} title="Person">
                     <SearchBarIOS
                         text={text}
                         autoCapitalize="none"
@@ -51,7 +51,7 @@ class People extends React.Component<any, any> {
                         onChangeText={text => this.setState({text})}>
                         <List people={matchedPeople} />
                     </SearchBarIOS>
-                </NavigationBarIOS>
+                </NavigationBar>
             </List>
         );
     }    
@@ -61,11 +61,11 @@ var Person = ({ name }) => (
     <NavigationContext.Consumer>
         {({stateNavigator}) => (
             <View>
-                <RightBarIOS>
-                    <BarButtonIOS systemItem="cancel" onPress={() => {
+                <RightBar>
+                    <BarButton title="Cancel" systemItem="cancel" onPress={() => {
                         stateNavigator.navigateBack(1)
                     }} />
-                </RightBarIOS>
+                </RightBar>
                 <SharedElementAndroid name={name} transition="bounce">
                     <Text>{name}</Text>
                 </SharedElementAndroid>

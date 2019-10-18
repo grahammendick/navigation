@@ -44,7 +44,7 @@ export class NavigationStack extends Component<NavigationStackProps> { }
 /**
  * Defines the Navigation Bar Props contract
  */
-export interface NavigationBarIOSProps {
+export interface NavigationBarProps {
     /**
      * Indicates whether to hide the navigation bar
      */
@@ -74,17 +74,17 @@ export interface NavigationBarIOSProps {
 /**
  * Controls the appearance of the UI navigation bar
  */
-export class NavigationBarIOS extends Component<NavigationBarIOSProps> { }
+export class NavigationBar extends Component<NavigationBarProps> { }
 
 /**
  * Renders buttons in the left UI bar
  */
-export class LeftBarIOS extends Component { }
+export class LeftBar extends Component { }
 
 /**
  * Renders buttons in the right UI bar
  */
-export class RightBarIOS extends Component { }
+export class RightBar extends Component { }
 
 /**
  * Defines the Title Bar Props contract
