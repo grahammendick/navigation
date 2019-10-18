@@ -2,6 +2,10 @@ import React from 'react';
 import { requireNativeComponent, Image, Platform } from 'react-native';
 class NavigationBar extends React.Component<any, any> {
   render() {
+    if (Platform.OS == "android" && this.props.hidden) {
+      return null
+    }
+
     const nativeProps = {...this.props};
     if (this.props.logo) {
       nativeProps.logo = Image.resolveAssetSource(this.props.logo);
