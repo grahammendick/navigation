@@ -19,26 +19,36 @@ class NavigationBar extends React.Component<any, any> {
     if (this.props.overflowIcon) {
       nativeProps.overflowIcon = Image.resolveAssetSource(this.props.overflowIcon);
     }
-    var {children} = this.props;
 
-    var menuItems = React.Children.toArray(children).reduce((buttons, child: ReactElement<any>) => {
-      var type = child.type;
-      if (type === LeftBar || type === RightBar) {
-        buttons = buttons.concat(
-            React.Children.toArray(child.props.children)
-              .map((child: ReactElement<any>) => ({
-                  ...child.props,
-                  image: Image.resolveAssetSource(child.props.image)
-              })
-            )
+    if (Platform.OS === 'android') {
+      var {children} = this.props;
+
+      var menuItems = React.Children.toArray(children)
+        .filter((child: ReactElement<any>) => {
+          var type = child.type;
+          return (type === LeftBar || type === RightBar)
+        })
+        .sort((a: ReactElement<any>, b: ReactElement<any>) => {
+          if (a.type === b.type) {
+            return 0
+          }
+          if (a.type === RightBar) {
+            return 1
+          }
+          return -1
+        })
+        .map((child: ReactElement<any>) => (
+          React.Children.toArray(child.props.children)
+            .map((child: ReactElement<any>) => ({
+              ...child.props,
+              image: Image.resolveAssetSource(child.props.image),
+            })
           )
-      }
-      return buttons;
-    }, []);
-    
-    nativeProps.menuItems = menuItems;
-
-    if (Platform.OS == 'android') {
+        ))
+      
+      // flatten items `[[item]]` -> `[item]`
+      menuItems = [].concat.apply([], menuItems)
+      nativeProps.menuItems = menuItems;
       return (
         <NVNavigationBar {...nativeProps} style={{ height: 50 }} onActionSelected={(event) => {
           var position = event.nativeEvent.position
