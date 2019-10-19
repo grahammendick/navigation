@@ -1,7 +1,6 @@
 package com.navigation.reactnative;
 
-import android.view.View;
-
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -47,30 +46,16 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
         view.setOverflowIconSource(overflowIcon);
     }
 
+    @ReactProp(name = "menuItems")
+    public void setMenuItems(NavigationBarView view, @Nullable ReadableArray menuItems) {
+        view.setMenuItems(menuItems);
+    }
+
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
                 .put("onIconClicked", MapBuilder.of("registrationName", "onIconClicked"))
+                .put("onActionSelected", MapBuilder.of("registrationName", "onActionSelected"))
                 .build();
-    }
-
-    @Override
-    public int getChildCount(NavigationBarView parent) {
-        return parent.barViews.size();
-    }
-
-    @Override
-    public View getChildAt(NavigationBarView parent, int index) {
-        return parent.barViews.get(index);
-    }
-
-    @Override
-    public void addView(NavigationBarView parent, View child, int index) {
-        parent.addBar(index, child);
-    }
-
-    @Override
-    public void removeViewAt(NavigationBarView parent, int index) {
-        parent.removeBar(index);
     }
 }

@@ -10,19 +10,19 @@ import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.DraweeHolder;
+import com.facebook.drawee.view.MultiDraweeHolder;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
 public class NavigationBarView extends AppBarLayout {
-    List<View> barViews = new ArrayList<>();
     private IconResolver iconResolver;
 
     private Toolbar toolbar;
@@ -34,6 +34,8 @@ public class NavigationBarView extends AppBarLayout {
     private IconResolver.IconControllerListener mLogoControllerListener;
     private IconResolver.IconControllerListener mNavIconControllerListener;
     private IconResolver.IconControllerListener mOverflowIconControllerListener;
+    private final MultiDraweeHolder<GenericDraweeHierarchy> mActionsHolder =
+            new MultiDraweeHolder<>();
 
     public NavigationBarView(Context context) {
         super(context);
@@ -70,6 +72,18 @@ public class NavigationBarView extends AppBarLayout {
                 reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onIconClicked", null);
             }
         });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                WritableMap event = Arguments.createMap();
+                event.putInt("position", item.getOrder());
+
+                ReactContext reactContext = (ReactContext) getContext();
+                reactContext.getJSModule(RCTEventEmitter.class)
+                        .receiveEvent(getId(),"onActionSelected", event);
+                return true;
+            }
+        });
     }
 
     @Override
@@ -87,7 +101,6 @@ public class NavigationBarView extends AppBarLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        buildMenu();
         attachDraweeHolders();
     }
 
@@ -113,56 +126,77 @@ public class NavigationBarView extends AppBarLayout {
         mLogoHolder.onDetach();
         mNavIconHolder.onDetach();
         mOverflowIconHolder.onDetach();
+        mActionsHolder.onDetach();
     }
 
     private void attachDraweeHolders() {
         mLogoHolder.onAttach();
         mNavIconHolder.onAttach();
         mOverflowIconHolder.onAttach();
-    }
-
-    void addBar(int index, View barView) {
-        barViews.add(index, barView);
-        buildMenu();
-    }
-
-    void removeBar(int index) {
-        barViews.remove(index);
-        buildMenu();
+        mActionsHolder.onDetach();
     }
 
     void setTitle(String title) {
         toolbar.setTitle(title);
     }
 
-    void buildMenu() {
+    void setMenuItems(@Nullable ReadableArray menuItems) {
         toolbar.getMenu().clear();
-        LeftBarView leftBarView = null;
-        RightBarView rightBarView = null;
-        for (View barView: barViews) {
-            if (barView instanceof LeftBarView) {
-                leftBarView = (LeftBarView) barView;
-            } else if (barView instanceof RightBarView) {
-                rightBarView = (RightBarView) barView;
+        if (menuItems != null) {
+            for (int i = 0; i < menuItems.size(); i++) {
+                ReadableMap menuItemProps = menuItems.getMap(i);
+                if (menuItemProps == null) {
+                    continue;
+                }
+                String title = menuItemProps.getString("title");
+                ReadableMap iconSource = menuItemProps.getMap("image");
+                String show = menuItemProps.getString("show");
+
+                MenuItem menuItem = toolbar.getMenu().add(title);
+                if (iconSource != null) {
+                    setMenuItemIcon(menuItem, iconSource);
+                }
+                if (show != null) {
+                    setMenuItemShow(menuItem, show);
+                }
             }
         }
-        if (leftBarView != null) {
-            for (int i = 0; i < leftBarView.getChildCount(); i++) {
-                BarButtonView barButtonView = (BarButtonView) leftBarView.getChildAt(i);
-                MenuItem menuItem = toolbar.getMenu().add(barButtonView.title);
-                barButtonView.menuItem = menuItem;
-                barButtonView.update();
-            }
-        }
-        if (rightBarView != null) {
-            for (int i = 0; i < rightBarView.getChildCount(); i++) {
-                BarButtonView barButtonView = (BarButtonView) rightBarView.getChildAt(i);
-                MenuItem menuItem = toolbar.getMenu().add(barButtonView.title);
-                barButtonView.menuItem = menuItem;
-                barButtonView.update();
-            }
-        }
+
         requestLayout();
+    }
+
+    private void setMenuItemShow(MenuItem menuItem, String show) {
+        int showAsAction;
+        switch (show) {
+            case "always": {
+                showAsAction = MenuItem.SHOW_AS_ACTION_ALWAYS;
+                break;
+            }
+            case "ifRoom": {
+                showAsAction = MenuItem.SHOW_AS_ACTION_IF_ROOM;
+                break;
+            }
+            case "never": {
+                showAsAction = MenuItem.SHOW_AS_ACTION_NEVER;
+                break;
+            }
+            default: {
+                showAsAction = MenuItem.SHOW_AS_ACTION_IF_ROOM;
+                break;
+            }
+        }
+        menuItem.setShowAsAction(showAsAction);
+    }
+
+    private void setMenuItemIcon(final MenuItem item, ReadableMap iconSource) {
+        DraweeHolder<GenericDraweeHierarchy> holder =
+                DraweeHolder.create(createDraweeHierarchy(), getContext());
+        IconResolver.ActionIconControllerListener controllerListener = iconResolver.new ActionIconControllerListener(item, holder);
+        controllerListener.setIconImageInfo(iconResolver.getIconImageInfo(iconSource));
+
+        iconResolver.setIconSource(iconSource, controllerListener, holder);
+        mActionsHolder.add(holder);
+        mActionsHolder.onAttach();
     }
 
     private GenericDraweeHierarchy createDraweeHierarchy() {
