@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import android.view.View;
+
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
@@ -24,6 +26,15 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
     @Override
     protected NavigationBarView createViewInstance(@Nonnull ThemedReactContext reactContext) {
         return new NavigationBarView(reactContext);
+    }
+
+    @Override
+    public void addView(NavigationBarView parent, View child, int index) {
+        if (child instanceof TitleBarView) {
+            parent.addTitleView((TitleBarView) child);
+        } else {
+            super.addView(parent, child, index);
+        }
     }
 
     @ReactProp(name = "title")

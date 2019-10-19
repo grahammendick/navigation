@@ -21,7 +21,8 @@ public class NavigationPackage implements ReactPackage {
             new TabBarManager(),
             new TabBarItemManager(),
             new TabLayoutManager(),
-            new NavigationBarManager()
+            new NavigationBarManager(),
+            new TitleBarViewManager()
         );
     }
 

@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,6 +135,15 @@ public class NavigationBarView extends AppBarLayout {
         mNavIconHolder.onAttach();
         mOverflowIconHolder.onAttach();
         mActionsHolder.onDetach();
+    }
+
+    void addTitleView(TitleBarView titleView) {
+        Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(
+                Toolbar.LayoutParams.MATCH_PARENT,
+                Toolbar.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER
+        );
+        toolbar.addView(titleView, layoutParams);
     }
 
     void setTitle(String title) {

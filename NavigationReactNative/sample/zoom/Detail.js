@@ -1,17 +1,17 @@
 import React from 'react';
-import {StyleSheet, ScrollView, Text, View, Platform, TouchableHighlight} from 'react-native';
+import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBar, RightBar, BarButton, TitleBarIOS, SharedElementAndroid} from 'navigation-react-native';
+import {NavigationBar, RightBar, BarButton, TitleBar, SharedElementAndroid} from 'navigation-react-native';
 
 export default ({colors, color}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
           <NavigationBar title="Color">
-            <TitleBarIOS style={styles.titleBar}>
+            <TitleBar style={styles.titleBar}>
               <Text style={styles.titleBarText}>Color</Text>
-              <View style={{backgroundColor: color, width: 28, height: 28}}/>
-            </TitleBarIOS>
+              <View style={{backgroundColor: color, width: 28, height: 28}}/>              
+            </TitleBar>
             <RightBar>
               <BarButton title="X" show="always" systemItem="cancel" onPress={() => {
                 stateNavigator.navigateBack(1);
@@ -47,6 +47,7 @@ export default ({colors, color}) => (
   
 const styles = StyleSheet.create({
   titleBar: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'

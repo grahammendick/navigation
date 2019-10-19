@@ -89,7 +89,7 @@ export class RightBar extends Component { }
 /**
  * Defines the Title Bar Props contract
  */
-export interface TitleBarIOSProps {
+export interface TitleBarProps {
   /**
    * The style
    */
@@ -99,7 +99,7 @@ export interface TitleBarIOSProps {
 /**
  * Renders titleView in the UI navigation bar
  */
-export class TitleBarIOS extends Component<TitleBarIOSProps> {  }
+export class TitleBar extends Component<TitleBarProps> {  }
 
 /**
  * Defines the Bar Button Props contract
