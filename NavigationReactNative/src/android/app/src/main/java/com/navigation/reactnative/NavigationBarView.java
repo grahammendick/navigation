@@ -150,6 +150,10 @@ public class NavigationBarView extends AppBarLayout {
         toolbar.setTitle(title);
     }
 
+    private static final String PROP_ACTION_ICON = "image";
+    private static final String PROP_ACTION_SHOW = "show";
+    private static final String PROP_ACTION_TITLE = "title";
+
     void setMenuItems(@Nullable ReadableArray menuItems) {
         toolbar.getMenu().clear();
         if (menuItems != null) {
@@ -158,44 +162,21 @@ public class NavigationBarView extends AppBarLayout {
                 if (menuItemProps == null) {
                     continue;
                 }
-                String title = menuItemProps.getString("title");
-                ReadableMap iconSource = menuItemProps.getMap("image");
-                String show = menuItemProps.getString("show");
+                String title = menuItemProps.getString(PROP_ACTION_TITLE);
+                ReadableMap iconSource = menuItemProps.getMap(PROP_ACTION_ICON);
 
                 MenuItem menuItem = toolbar.getMenu().add(title);
                 if (iconSource != null) {
                     setMenuItemIcon(menuItem, iconSource);
                 }
-                if (show != null) {
-                    setMenuItemShow(menuItem, show);
-                }
+                int showAsAction = menuItemProps.hasKey(PROP_ACTION_SHOW)
+                        ? menuItemProps.getInt(PROP_ACTION_SHOW)
+                        : MenuItem.SHOW_AS_ACTION_NEVER;
+                menuItem.setShowAsAction(showAsAction);
             }
         }
 
         requestLayout();
-    }
-
-    private void setMenuItemShow(MenuItem menuItem, String show) {
-        int showAsAction;
-        switch (show) {
-            case "always": {
-                showAsAction = MenuItem.SHOW_AS_ACTION_ALWAYS;
-                break;
-            }
-            case "ifRoom": {
-                showAsAction = MenuItem.SHOW_AS_ACTION_IF_ROOM;
-                break;
-            }
-            case "never": {
-                showAsAction = MenuItem.SHOW_AS_ACTION_NEVER;
-                break;
-            }
-            default: {
-                showAsAction = MenuItem.SHOW_AS_ACTION_IF_ROOM;
-                break;
-            }
-        }
-        menuItem.setShowAsAction(showAsAction);
     }
 
     private void setMenuItemIcon(final MenuItem item, ReadableMap iconSource) {

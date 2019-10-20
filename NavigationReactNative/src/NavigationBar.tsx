@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react';
-import { requireNativeComponent, Image, Platform } from 'react-native';
+import React, {ReactElement} from 'react';
+import {requireNativeComponent, Image, Platform, UIManager} from 'react-native';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
 
@@ -18,7 +18,13 @@ var NavigationBar = ({hidden, logo, navIcon, overflowIcon, children, ...otherPro
                 })
             )
         ))
-        .reduce((a, b) => a.concat(b), []);
+        .reduce((a, b) => a.concat(b), [])
+        .map((action) => ({
+            ...action,
+            show: UIManager.getViewManagerConfig(
+                'NVNavigationBar',
+              ).Constants.ShowAsAction[action.show]
+        }))
     return (
         <NVNavigationBar
             menuItems={menuItems}
