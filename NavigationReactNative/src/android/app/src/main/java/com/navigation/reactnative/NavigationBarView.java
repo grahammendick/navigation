@@ -20,9 +20,6 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
@@ -30,7 +27,6 @@ public class NavigationBarView extends AppBarLayout {
     private IconResolver iconResolver;
 
     Toolbar toolbar;
-    List<View> titleViews = new ArrayList<>();
 
     private final DraweeHolder mLogoHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
     private final DraweeHolder mNavIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());

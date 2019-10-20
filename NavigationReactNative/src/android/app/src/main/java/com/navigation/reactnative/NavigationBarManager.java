@@ -32,12 +32,12 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
 
     @Override
     public int getChildCount(NavigationBarView parent) {
-        return parent.titleViews.size();
+        return parent.toolbar.getChildCount();
     }
 
     @Override
     public View getChildAt(NavigationBarView parent, int index) {
-        return parent.titleViews.get(index);
+        return parent.toolbar.getChildAt(index);
     }
 
     @Override
@@ -47,13 +47,11 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
                 Toolbar.LayoutParams.MATCH_PARENT
         );
         parent.toolbar.addView(child, index, layoutParams);
-        parent.titleViews.add(index, child);
     }
 
     @Override
     public void removeViewAt(NavigationBarView parent, int index) {
         parent.toolbar.removeViewAt(index);
-        parent.titleViews.remove(index);
     }
 
     @ReactProp(name = "title")
