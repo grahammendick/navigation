@@ -14,17 +14,14 @@ var NavigationBar = ({hidden, logo, navIcon, overflowIcon, children, ...otherPro
             (React.Children.toArray(props.children) as ReactElement<any>[])
                 .map(({props}) => ({
                     ...props,
+                    show: UIManager.getViewManagerConfig(
+                        'NVNavigationBar',
+                        ).Constants.ShowAsAction[props.show],
                     image: Image.resolveAssetSource(props.image),
                 })
             )
         ))
         .reduce((a, b) => a.concat(b), [])
-        .map((action) => ({
-            ...action,
-            show: UIManager.getViewManagerConfig(
-                'NVNavigationBar',
-              ).Constants.ShowAsAction[action.show]
-        }))
     return (
         <NVNavigationBar
             menuItems={menuItems}
