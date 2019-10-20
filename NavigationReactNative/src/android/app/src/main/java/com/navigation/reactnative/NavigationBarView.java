@@ -2,7 +2,6 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +19,17 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
 public class NavigationBarView extends AppBarLayout {
     private IconResolver iconResolver;
 
-    private Toolbar toolbar;
+    Toolbar toolbar;
+    List<View> titleViews = new ArrayList<>();
 
     private final DraweeHolder mLogoHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
     private final DraweeHolder mNavIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
@@ -135,15 +138,6 @@ public class NavigationBarView extends AppBarLayout {
         mNavIconHolder.onAttach();
         mOverflowIconHolder.onAttach();
         mActionsHolder.onDetach();
-    }
-
-    void addTitleView(TitleBarView titleView) {
-        Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(
-                Toolbar.LayoutParams.MATCH_PARENT,
-                Toolbar.LayoutParams.MATCH_PARENT,
-                Gravity.CENTER
-        );
-        toolbar.addView(titleView, layoutParams);
     }
 
     void setTitle(String title) {

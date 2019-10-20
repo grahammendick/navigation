@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 
 public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
     @Nonnull
@@ -30,12 +31,29 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
     }
 
     @Override
+    public int getChildCount(NavigationBarView parent) {
+        return parent.titleViews.size();
+    }
+
+    @Override
+    public View getChildAt(NavigationBarView parent, int index) {
+        return parent.titleViews.get(index);
+    }
+
+    @Override
     public void addView(NavigationBarView parent, View child, int index) {
-        if (child instanceof TitleBarView) {
-            parent.addTitleView((TitleBarView) child);
-        } else {
-            super.addView(parent, child, index);
-        }
+        Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(
+                Toolbar.LayoutParams.MATCH_PARENT,
+                Toolbar.LayoutParams.MATCH_PARENT
+        );
+        parent.toolbar.addView(child, index, layoutParams);
+        parent.titleViews.add(index, child);
+    }
+
+    @Override
+    public void removeViewAt(NavigationBarView parent, int index) {
+        parent.toolbar.removeViewAt(index);
+        parent.titleViews.remove(index);
     }
 
     @ReactProp(name = "title")
