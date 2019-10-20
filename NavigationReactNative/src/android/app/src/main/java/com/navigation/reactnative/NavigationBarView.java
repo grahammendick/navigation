@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,7 +160,7 @@ public class NavigationBarView extends AppBarLayout {
                 String title = menuItemProps.getString(PROP_ACTION_TITLE);
                 ReadableMap iconSource = menuItemProps.getMap(PROP_ACTION_ICON);
 
-                MenuItem menuItem = toolbar.getMenu().add(title);
+                MenuItem menuItem = toolbar.getMenu().add(Menu.NONE, Menu.NONE, i, title);
                 if (iconSource != null) {
                     setMenuItemIcon(menuItem, iconSource);
                 }
