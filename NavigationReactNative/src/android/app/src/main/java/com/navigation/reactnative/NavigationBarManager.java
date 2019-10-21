@@ -98,7 +98,7 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-                .put("onIconClicked", MapBuilder.of("registrationName", "onIconClicked"))
+                .put("onNavigationPress", MapBuilder.of("registrationName", "onNavigationPress"))
                 .put("onActionSelected", MapBuilder.of("registrationName", "onActionSelected"))
                 .build();
     }
