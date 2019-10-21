@@ -66,12 +66,12 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
         view.setLogoSource(logo);
     }
 
-    @ReactProp(name = "navIcon")
+    @ReactProp(name = "navigationImage")
     public void setNavIcon(NavigationBarView view, @Nullable ReadableMap navIcon) {
         view.setNavIconSource(navIcon);
     }
 
-    @ReactProp(name = "overflowIcon")
+    @ReactProp(name = "overflowImage")
     public void setOverflowIcon(NavigationBarView view, @Nullable ReadableMap overflowIcon) {
         view.setOverflowIconSource(overflowIcon);
     }
