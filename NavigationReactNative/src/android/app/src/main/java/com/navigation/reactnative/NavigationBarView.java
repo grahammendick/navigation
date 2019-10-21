@@ -134,7 +134,7 @@ public class NavigationBarView extends AppBarLayout {
         mLogoHolder.onAttach();
         mNavIconHolder.onAttach();
         mOverflowIconHolder.onAttach();
-        mActionsHolder.onDetach();
+        mActionsHolder.onAttach();
     }
 
     void setTitle(String title) {
@@ -147,6 +147,7 @@ public class NavigationBarView extends AppBarLayout {
 
     void setMenuItems(@Nullable ReadableArray menuItems) {
         toolbar.getMenu().clear();
+        mActionsHolder.clear();
         if (menuItems != null) {
             for (int i = 0; i < menuItems.size(); i++) {
                 ReadableMap menuItemProps = menuItems.getMap(i);
@@ -166,8 +167,6 @@ public class NavigationBarView extends AppBarLayout {
                 menuItem.setShowAsAction(showAsAction);
             }
         }
-
-        requestLayout();
     }
 
     private void setMenuItemIcon(final MenuItem item, ReadableMap iconSource) {
@@ -178,7 +177,6 @@ public class NavigationBarView extends AppBarLayout {
 
         iconResolver.setIconSource(iconSource, controllerListener, holder);
         mActionsHolder.add(holder);
-        mActionsHolder.onAttach();
     }
 
     private GenericDraweeHierarchy createDraweeHierarchy() {
