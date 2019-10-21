@@ -9,3 +9,4 @@ node_modules
 .DS_Store
 .project
 org.eclipse.buildship.core.prefs
+.classpath
