@@ -28,7 +28,8 @@ var NavigationBar = ({hidden, logo, navIcon, overflowIcon, children, ...otherPro
             logo={Image.resolveAssetSource(logo)}
             navIcon={Image.resolveAssetSource(navIcon)}
             overflowIcon = {Image.resolveAssetSource(overflowIcon)}
-            style={{ height: 50 }}
+            style={Platform.OS === 'android' ? { height: 50 } : undefined}
+            hidden={hidden}
             {...otherProps}
             onActionSelected={({nativeEvent}) => {
                 var onPress = menuItems[nativeEvent.position].onPress;
