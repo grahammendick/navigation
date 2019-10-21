@@ -1,8 +1,5 @@
 package com.navigation.reactnative;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -56,8 +53,7 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
     @Override
     public void removeViewAt(NavigationBarView parent, int index) {
         parent.toolbar.removeViewAt(index);
-        int[] insets = getDefaultContentInsets(parent.getContext());
-        parent.toolbar.setContentInsetsRelative(insets[0], insets[1]);
+        parent.toolbar.setContentInsetsRelative(parent.defaultContentInsetStart, parent.defaultContentInsetEnd);
     }
 
     @ReactProp(name = "title")
@@ -85,6 +81,20 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
         view.setMenuItems(menuItems);
     }
 
+    @ReactProp(name = "barTintColor", customType = "Color")
+    public void setBarTintColor(NavigationBarView view, @Nullable Integer barTintColor) {
+        if (barTintColor != null) {
+            view.toolbar.setBackgroundColor(barTintColor);
+        } else {
+            view.toolbar.setBackground(null);
+        }
+    }
+
+    @ReactProp(name = "titleColor", customType = "Color")
+    public void setTitleColor(NavigationBarView view, @Nullable Integer textColor) {
+        view.toolbar.setTitleTextColor(textColor != null ? textColor : view.defaultTitleTextColor);
+    }
+
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
@@ -102,50 +112,5 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
                         "never", MenuItem.SHOW_AS_ACTION_NEVER,
                         "always", MenuItem.SHOW_AS_ACTION_ALWAYS,
                         "ifRoom", MenuItem.SHOW_AS_ACTION_IF_ROOM));
-    }
-
-    private int[] getDefaultContentInsets(Context context) {
-        Resources.Theme theme = context.getTheme();
-        TypedArray toolbarStyle = null;
-        TypedArray contentInsets = null;
-
-        try {
-            toolbarStyle =
-                    theme.obtainStyledAttributes(new int[] {getIdentifier(context, "toolbarStyle")});
-
-            int toolbarStyleResId = toolbarStyle.getResourceId(0, 0);
-
-            contentInsets =
-                    theme.obtainStyledAttributes(
-                            toolbarStyleResId,
-                            new int[] {
-                                    getIdentifier(context, "contentInsetStart"),
-                                    getIdentifier(context, "contentInsetEnd"),
-                            });
-
-            int contentInsetStart = contentInsets.getDimensionPixelSize(0, 0);
-            int contentInsetEnd = contentInsets.getDimensionPixelSize(1, 0);
-
-            return new int[] {contentInsetStart, contentInsetEnd};
-        } finally {
-            recycleQuietly(toolbarStyle);
-            recycleQuietly(contentInsets);
-        }
-
-    }
-
-    private static void recycleQuietly(@Nullable TypedArray style) {
-        if (style != null) {
-            style.recycle();
-        }
-    }
-
-    /**
-     * The appcompat-v7 BUCK dep is listed as a provided_dep, which complains that
-     * com.facebook.react.R doesn't exist. Since the attributes provided from a parent, we can access
-     * those attributes dynamically.
-     */
-    private static int getIdentifier(Context context, String name) {
-        return context.getResources().getIdentifier(name, "attr", context.getPackageName());
     }
 }

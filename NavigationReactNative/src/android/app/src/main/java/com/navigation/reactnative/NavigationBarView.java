@@ -1,6 +1,9 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +31,10 @@ public class NavigationBarView extends AppBarLayout {
 
     Toolbar toolbar;
 
+    int defaultContentInsetStart;
+    int defaultContentInsetEnd;
+    int defaultTitleTextColor;
+
     private final DraweeHolder mLogoHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
     private final DraweeHolder mNavIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
     private final DraweeHolder mOverflowIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
@@ -43,6 +50,10 @@ public class NavigationBarView extends AppBarLayout {
 
         toolbar = new Toolbar(context);
         addView(toolbar, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        defaultContentInsetStart = toolbar.getContentInsetStart();
+        defaultContentInsetEnd = toolbar.getContentInsetEnd();
+        defaultTitleTextColor = getDefaultTitleTextColor(context);
 
         iconResolver = new IconResolver(context);
         mLogoControllerListener = iconResolver.new IconControllerListener(mLogoHolder) {
@@ -203,5 +214,23 @@ public class NavigationBarView extends AppBarLayout {
         // The toolbar relies on a measure + layout pass happening after it calls requestLayout().
         // Without this, certain calls (e.g. setLogo) only take effect after a second invalidation.
         post(mLayoutRunnable);
+    }
+
+    private static int getDefaultTitleTextColor(Context context) {
+        Resources.Theme theme = context.getTheme();
+        TypedArray toolbarStyle = theme.obtainStyledAttributes(new int[] {getIdentifier(context, "toolbarStyle")});
+        int toolbarStyleResId = toolbarStyle.getResourceId(0, 0);
+        toolbarStyle.recycle();
+        TypedArray textAppearances = theme.obtainStyledAttributes(toolbarStyleResId, new int[] {getIdentifier(context, "titleTextAppearance")});
+        int titleTextAppearanceResId = textAppearances.getResourceId(0, 0);
+        textAppearances.recycle();
+        TypedArray titleTextAppearance = theme.obtainStyledAttributes(titleTextAppearanceResId, new int[]{android.R.attr.textColor});
+        int titleTextColor = titleTextAppearance.getColor(0, Color.BLACK);
+        titleTextAppearance.recycle();
+        return titleTextColor;
+    }
+
+    private static int getIdentifier(Context context, String name) {
+        return context.getResources().getIdentifier(name, "attr", context.getPackageName());
     }
 }
