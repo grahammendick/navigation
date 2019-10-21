@@ -10,10 +10,10 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
   return (
     <>
       <NavigationBar
-        navIcon={require('./arrow.png')}
+        navigationImage={require('./arrow.png')}
         title="Tweet"
         style={styles.toolbar}
-        onIconClicked={() => {
+        onNavigationPress={() => {
           stateNavigator.navigateBack(1)
         }} />
       <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>

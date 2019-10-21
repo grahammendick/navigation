@@ -10,9 +10,9 @@ export default ({timeline: {id, name, username, logo, bio,
   return (
     <>
       <NavigationBar
-        navIcon={require('./arrow.png')}
+        navigationImage={require('./arrow.png')}
         title={name}
-        onIconClicked={() => {
+        onNavigationPress={() => {
           stateNavigator.navigateBack(1)
         }} />
       <ScrollView 
