@@ -14,9 +14,9 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, ..
             (React.Children.toArray(props.children) as ReactElement<any>[])
                 .map(({props}) => ({
                     ...props,
-                    show: UIManager.getViewManagerConfig(
-                        'NVNavigationBar',
-                        ).Constants.ShowAsAction[props.show],
+                    show: Platform.OS === 'android'
+                     ? UIManager.getViewManagerConfig('NVNavigationBar').Constants.ShowAsAction[props.show]
+                     : undefined,
                     image: Image.resolveAssetSource(props.image),
                 })
             )
