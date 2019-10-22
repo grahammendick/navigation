@@ -19,9 +19,9 @@ class FragmentNavigator extends SceneNavigator {
 
     @Override
     void navigateBack(int currentCrumb, int crumb, Activity activity, NavigationStackView stack) {
-        FragmentManager fragmentManager = getFragmentManager(stack, activity);;
+        FragmentManager fragmentManager = getFragmentManager(stack, activity);
         SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKey);
-        Pair[] sharedElements = getOldSharedElements(currentCrumb, crumb, fragment, stack);
+        Pair[] sharedElements = fragment != null ? getOldSharedElements(currentCrumb, crumb, fragment, stack) : null;
         SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(stack.keys.getString(crumb));
         if (sharedElements != null && prevFragment != null && prevFragment.getScene() != null)
             prevFragment.getScene().transitioner = new SharedElementTransitioner(prevFragment, getSharedElementSet(stack.oldSharedElementNames));
@@ -73,7 +73,7 @@ class FragmentNavigator extends SceneNavigator {
         SceneView scene = stack.scenes.get(key);
         int popEnter = getAnimationResourceId(activity, scene.enterAnim, android.R.attr.activityCloseEnterAnimation);
         int popExit = getAnimationResourceId(activity, scene.exitAnim, android.R.attr.activityCloseExitAnimation);
-        FragmentManager fragmentManager = getFragmentManager(stack, activity);;
+        FragmentManager fragmentManager = getFragmentManager(stack, activity);
         fragmentManager.popBackStack();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
@@ -82,7 +82,7 @@ class FragmentNavigator extends SceneNavigator {
         fragmentTransaction.commit();
     }
 
-    ;private FragmentManager getFragmentManager(NavigationStackView stack,  Activity activity) {
+    private FragmentManager getFragmentManager(NavigationStackView stack,  Activity activity) {
         ViewParent parent = stack;
         Fragment fragment = null;
         while (parent != null) {
