@@ -164,7 +164,9 @@ public class NavigationBarView extends AppBarLayout {
                 if (menuItemProps == null) {
                     continue;
                 }
-                String title = menuItemProps.getString(PROP_ACTION_TITLE);
+                String title = menuItemProps.hasKey(PROP_ACTION_TITLE)
+                        ? menuItemProps.getString(PROP_ACTION_TITLE)
+                        : "";
                 ReadableMap iconSource = menuItemProps.getMap(PROP_ACTION_ICON);
                 MenuItem menuItem = toolbar.getMenu().add(Menu.NONE, Menu.NONE, i, title);
                 if (iconSource != null) {
