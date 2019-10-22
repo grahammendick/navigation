@@ -71,27 +71,36 @@ export interface NavigationBarProps {
     titleColor?: string;
 
     /**
-     * Sets the toolbar logo on Android
+     * The logo
      */
     logo?: ImageURISource;
     /**
-     * Sets the overflow icon on Android
+     * The menu overflow image
      */
     overflowImage?: ImageURISource;
     /**
-     * Sets the navigation icon on Android
+     * The navigation button image
      */
     navigationImage?: ImageURISource;
     /**
-     * Handles navigation icon click event on Android
+     * Handles navigation button click events
      */
     onNavigationPress?: () => void
+    /**
+     * Determines when this item should appear in the navigation bar
+     */
+    show?: 'ifRoom' | 'never' | 'always';
 }
 
 /**
  * Controls the appearance of the UI navigation bar
  */
 export class NavigationBar extends Component<NavigationBarProps> { }
+
+/**
+ * Controls the appearance of the UI navigation bar
+ */
+export class NavigaitonBarIOS extends Component<NavigationBarProps> {}
 
 /**
  * Renders buttons in the left UI bar
@@ -102,6 +111,16 @@ export class LeftBar extends Component { }
  * Renders buttons in the right UI bar
  */
 export class RightBar extends Component { }
+
+/**
+ * Renders buttons in the left UI bar
+ */
+export class LeftBarIOS extends Component { }
+
+/**
+ * Renders buttons in the right UI bar
+ */
+export class RightBarIOS extends Component { }
 
 /**
  * Defines the Title Bar Props contract
@@ -117,6 +136,11 @@ export interface TitleBarProps {
  * Renders titleView in the UI navigation bar
  */
 export class TitleBar extends Component<TitleBarProps> {  }
+
+/**
+ * Renders titleView in the UI navigation bar
+ */
+export class TitleBarIOS extends Component<TitleBarProps> {  }
 
 /**
  * Defines the Bar Button Props contract
