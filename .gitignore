@@ -7,4 +7,3 @@ node_modules
 !Navigation*/src/node_modules
 !Navigation*/test/node_modules
 .DS_Store
-

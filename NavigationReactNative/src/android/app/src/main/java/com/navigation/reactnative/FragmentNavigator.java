@@ -20,7 +20,7 @@ class FragmentNavigator extends SceneNavigator {
     @Override
     void navigateBack(int currentCrumb, int crumb, Activity activity, NavigationStackView stack) {
         FragmentManager fragmentManager = getFragmentManager(stack, activity);;
-        SceneFragment fragment = (SceneFragment) fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
+        SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKey);
         Pair[] sharedElements = getOldSharedElements(currentCrumb, crumb, fragment, stack);
         SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(stack.keys.getString(crumb));
         if (sharedElements != null && prevFragment != null && prevFragment.getScene() != null)
