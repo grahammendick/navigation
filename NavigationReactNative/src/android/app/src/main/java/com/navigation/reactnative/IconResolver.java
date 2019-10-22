@@ -18,37 +18,30 @@ import com.facebook.react.views.toolbar.DrawableWithIntrinsicSize;
 
 import androidx.annotation.Nullable;
 
-public class IconResolver {
+class IconResolver {
     private Context context;
 
-    public IconResolver(Context context) {
+    IconResolver(Context context) {
         this.context = context;
     }
 
-    /**
-     * Attaches specific icon width & height to a BaseControllerListener which will be used to
-     * create the Drawable
-     */
     abstract class IconControllerListener extends BaseControllerListener<ImageInfo> {
+        private final DraweeHolder holder;
+        private IconImageInfo iconImageInfo;
 
-        private final DraweeHolder mHolder;
-
-        private IconImageInfo mIconImageInfo;
-
-        public IconControllerListener(DraweeHolder holder) {
-            mHolder = holder;
+        IconControllerListener(DraweeHolder holder) {
+            this.holder = holder;
         }
 
-        public void setIconImageInfo(IconImageInfo iconImageInfo) {
-            mIconImageInfo = iconImageInfo;
+        void setIconImageInfo(IconImageInfo iconImageInfo) {
+            this.iconImageInfo = iconImageInfo;
         }
 
         @Override
         public void onFinalImageSet(String id, @Nullable ImageInfo imageInfo, @Nullable Animatable animatable) {
             super.onFinalImageSet(id, imageInfo, animatable);
-
-            final ImageInfo info = mIconImageInfo != null ? mIconImageInfo : imageInfo;
-            setDrawable(new DrawableWithIntrinsicSize(mHolder.getTopLevelDrawable(), info));
+            final ImageInfo info = iconImageInfo != null ? iconImageInfo : imageInfo;
+            setDrawable(new DrawableWithIntrinsicSize(holder.getTopLevelDrawable(), info));
         }
 
         protected abstract void setDrawable(Drawable d);
@@ -59,27 +52,23 @@ public class IconResolver {
         }
     }
 
-    /**
-     * Simple implementation of ImageInfo, only providing width & height
-     */
     private static class IconImageInfo implements ImageInfo {
+        private int width;
+        private int height;
 
-        private int mWidth;
-        private int mHeight;
-
-        public IconImageInfo(int width, int height) {
-            mWidth = width;
-            mHeight = height;
+        IconImageInfo(int width, int height) {
+            this.width = width;
+            this.height = height;
         }
 
         @Override
         public int getWidth() {
-            return mWidth;
+            return width;
         }
 
         @Override
         public int getHeight() {
-            return mHeight;
+            return height;
         }
 
         @Override
@@ -90,28 +79,21 @@ public class IconResolver {
     }
 
     class ActionIconControllerListener extends IconControllerListener {
-        private final MenuItem mItem;
+        private final MenuItem item;
 
         ActionIconControllerListener(MenuItem item, DraweeHolder holder) {
             super(holder);
-            mItem = item;
+            this.item = item;
         }
 
         @Override
         protected void setDrawable(Drawable d) {
-            mItem.setIcon(d);
+            item.setIcon(d);
         }
     }
 
-    /**
-     * Sets an icon for a specific icon source. If the uri indicates an icon
-     * to be somewhere remote (http/https) or on the local filesystem, it uses fresco to load it.
-     * Otherwise it loads the Drawable from the Resources and directly returns it via a callback
-     */
     void setIconSource(ReadableMap source, IconControllerListener controllerListener, DraweeHolder holder) {
-
         String uri = source != null ? source.getString(PROP_ICON_URI) : null;
-
         if (uri == null) {
             controllerListener.setIconImageInfo(null);
             controllerListener.setDrawable(null);
@@ -127,7 +109,6 @@ public class IconResolver {
         } else {
             controllerListener.setDrawable(getDrawableByName(uri));
         }
-
     }
 
     private int getDrawableResourceByName(String name) {

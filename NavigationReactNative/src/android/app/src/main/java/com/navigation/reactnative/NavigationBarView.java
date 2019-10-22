@@ -89,7 +89,6 @@ public class NavigationBarView extends AppBarLayout {
             public boolean onMenuItemClick(MenuItem item) {
                 WritableMap event = Arguments.createMap();
                 event.putInt("position", item.getOrder());
-
                 ReactContext reactContext = (ReactContext) getContext();
                 reactContext.getJSModule(RCTEventEmitter.class)
                         .receiveEvent(getId(),"onActionSelected", event);
@@ -167,7 +166,6 @@ public class NavigationBarView extends AppBarLayout {
                 }
                 String title = menuItemProps.getString(PROP_ACTION_TITLE);
                 ReadableMap iconSource = menuItemProps.getMap(PROP_ACTION_ICON);
-
                 MenuItem menuItem = toolbar.getMenu().add(Menu.NONE, Menu.NONE, i, title);
                 if (iconSource != null) {
                     setMenuItemIcon(menuItem, iconSource);
@@ -185,7 +183,6 @@ public class NavigationBarView extends AppBarLayout {
                 DraweeHolder.create(createDraweeHierarchy(), getContext());
         IconResolver.ActionIconControllerListener controllerListener = iconResolver.new ActionIconControllerListener(item, holder);
         controllerListener.setIconImageInfo(iconResolver.getIconImageInfo(iconSource));
-
         iconResolver.setIconSource(iconSource, controllerListener, holder);
         mActionsHolder.add(holder);
     }
@@ -210,9 +207,6 @@ public class NavigationBarView extends AppBarLayout {
     @Override
     public void requestLayout() {
         super.requestLayout();
-
-        // The toolbar relies on a measure + layout pass happening after it calls requestLayout().
-        // Without this, certain calls (e.g. setLogo) only take effect after a second invalidation.
         post(mLayoutRunnable);
     }
 
