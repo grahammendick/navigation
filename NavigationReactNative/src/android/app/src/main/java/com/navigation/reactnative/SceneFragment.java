@@ -15,20 +15,18 @@ import java.util.HashSet;
 
 public class SceneFragment extends Fragment implements SharedElementContainer {
     private SceneView scene;
-    private HashSet<String> sharedElementNames;
 
     SceneFragment(SceneView scene, HashSet<String> sharedElements) {
         super();
         this.scene = scene;
         scene.fragment = this;
-        sharedElementNames = sharedElements;
+        if (sharedElements != null )
+            scene.transitioner = new SharedElementTransitioner(this, sharedElements);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (sharedElementNames != null )
-            scene.transitioner = new SharedElementTransitioner(this, sharedElementNames);
         if (scene.transitioner != null)
             postponeEnterTransition();
         return scene;
