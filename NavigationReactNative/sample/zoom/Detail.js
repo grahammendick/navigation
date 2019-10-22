@@ -6,18 +6,19 @@ import {NavigationBar, RightBar, BarButton, TitleBar, SharedElementAndroid} from
 export default ({colors, color}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-          <NavigationBar title="Color">
-            <TitleBar style={styles.titleBar}>
-              <Text style={styles.titleBarText}>Color</Text>
-              <View style={{backgroundColor: color, width: 28, height: 28}}/>              
-            </TitleBar>
-            <RightBar>
-              <BarButton title="X" show="always" systemItem="cancel" onPress={() => {
-                stateNavigator.navigateBack(1);
-              }} />
-            </RightBar>
-          </NavigationBar>
+      <>
+        <NavigationBar title="Color">
+          <TitleBar style={styles.titleBar}>
+            <Text style={styles.titleBarText}>Color</Text>
+            <View style={{backgroundColor: color, width: 28, height: 28}}/>              
+          </TitleBar>
+          <RightBar>
+            <BarButton title="X" show="always" systemItem="cancel" onPress={() => {
+              stateNavigator.navigateBack(1);
+            }} />
+          </RightBar>
+        </NavigationBar>
+        <ScrollView contentInsetAdjustmentBehavior="automatic">
           <SharedElementAndroid
             name={color}
             style={styles.color}
@@ -41,6 +42,7 @@ export default ({colors, color}) => (
             )}
           </View>
         </ScrollView>
+      </>
     )}
   </NavigationContext.Consumer>
 );
