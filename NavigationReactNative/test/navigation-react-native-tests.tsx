@@ -12,20 +12,22 @@ const stateNavigator: StateNavigator = new StateNavigator([
 var List = ({people, children}: any) => (
     <NavigationContext.Consumer>
         {({stateNavigator}) => (
-            <View>
+            <>
                 <NavigationBar title="People" />
-                {people.map(name => (
-                    <TouchableHighlight
-                        onPress={() => {
-                            stateNavigator.navigate('person', {name});
-                    }}>
-                        <SharedElementAndroid name={name}>
-                            <Text>{name}</Text>
-                        </SharedElementAndroid>
-                    </TouchableHighlight>
-                ))}
-                {children}
-            </View>
+                <View>
+                    {people.map(name => (
+                        <TouchableHighlight
+                            onPress={() => {
+                                stateNavigator.navigate('person', {name});
+                        }}>
+                            <SharedElementAndroid name={name}>
+                                <Text>{name}</Text>
+                            </SharedElementAndroid>
+                        </TouchableHighlight>
+                    ))}
+                    {children}
+                </View>
+            </>
         )}
     </NavigationContext.Consumer>
 );
@@ -42,7 +44,7 @@ class People extends React.Component<any, any> {
             person.indexOf(text.toLowerCase()) !== -1
         ));
         return (
-            <List people={people}>
+            <>
                 <NavigationBar largeTitle={true} title="Person">
                     <SearchBarIOS
                         text={text}
@@ -52,7 +54,8 @@ class People extends React.Component<any, any> {
                         <List people={matchedPeople} />
                     </SearchBarIOS>
                 </NavigationBar>
-            </List>
+                <List people={people} />
+            </>
         );
     }    
 }
@@ -60,16 +63,20 @@ class People extends React.Component<any, any> {
 var Person = ({ name }) => (
     <NavigationContext.Consumer>
         {({stateNavigator}) => (
-            <View>
-                <RightBar>
-                    <BarButton title="Cancel" systemItem="cancel" onPress={() => {
-                        stateNavigator.navigateBack(1)
-                    }} />
-                </RightBar>
-                <SharedElementAndroid name={name} transition="bounce">
-                    <Text>{name}</Text>
-                </SharedElementAndroid>
-            </View>
+            <>
+                <NavigationBar largeTitle={true} title="Person">
+                    <RightBar>
+                        <BarButton title="Cancel" systemItem="cancel" onPress={() => {
+                            stateNavigator.navigateBack(1)
+                        }} />
+                    </RightBar>
+                </NavigationBar>
+                <View>
+                    <SharedElementAndroid name={name} transition="bounce">
+                        <Text>{name}</Text>
+                    </SharedElementAndroid>
+                </View>
+            </>
         )}
     </NavigationContext.Consumer>
 );
