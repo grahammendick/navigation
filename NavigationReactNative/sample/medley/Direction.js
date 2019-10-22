@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBar} from 'navigation-react-native';
+import {NavigationBarIOS} from 'navigation-react-native';
 
 const nextDirection = {
   north: 'east',
@@ -13,29 +13,27 @@ const nextDirection = {
 export default ({direction, color}) => (
   <NavigationContext.Consumer>
     {({stateNavigator: {stateContext: {crumbs}}, stateNavigator}) => (
-      <>
-        <NavigationBar
+      <View style={[
+        styles.scene,
+        {backgroundColor: color}
+      ]}>
+        <NavigationBarIOS
           title={direction[0].toUpperCase() + direction.slice(1)} />
-        <View style={[
-          styles.scene,
-          {backgroundColor: color}
-        ]}>
-          <TouchableHighlight
-            underlayColor={color}
-            onPress={() => {
-              stateNavigator.navigate(nextDirection[direction]);
-          }}>
-            <Text style={styles.text}>{direction} {crumbs.length}</Text>
-          </TouchableHighlight>
-          {stateNavigator.canNavigateBack(1) && <TouchableHighlight
-            underlayColor={color}
-            onPress={() => {
-              stateNavigator.navigateBack(1);
-          }}>
-            <Text style={styles.text}>back</Text>
-          </TouchableHighlight>}
-        </View>
-      </>
+        <TouchableHighlight
+          underlayColor={color}
+          onPress={() => {
+            stateNavigator.navigate(nextDirection[direction]);
+        }}>
+          <Text style={styles.text}>{direction} {crumbs.length}</Text>
+        </TouchableHighlight>
+        {stateNavigator.canNavigateBack(1) && <TouchableHighlight
+          underlayColor={color}
+          onPress={() => {
+            stateNavigator.navigateBack(1);
+        }}>
+          <Text style={styles.text}>back</Text>
+        </TouchableHighlight>}
+      </View>
     )}
   </NavigationContext.Consumer>
 );

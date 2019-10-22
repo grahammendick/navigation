@@ -25,14 +25,14 @@ class NavigationBar extends React.Component {
   }
 }
 
-const NavigationBar = props => (
+const NavigationBarIOS = props => (
   <NavigationContext.Consumer>
       {(navigationEvent) => <NavigationBar stateNavigator={navigationEvent.stateNavigator} {...props} />}
   </NavigationContext.Consumer>
 )
 
-const RightBar = () => null;
-const BarButton = () => null;
+const RightBarIOS = () => null;
+const BarButtonIOS = () => null;
 
 class SharedElementAndroid extends React.Component{
   setNativeProps() {
@@ -49,4 +49,4 @@ class SharedElementAndroid extends React.Component{
   }
 }
 
-export { NavigationBar, RightBar, BarButton, SharedElementAndroid };
+export { NavigationBarIOS, RightBarIOS, BarButtonIOS, SharedElementAndroid };

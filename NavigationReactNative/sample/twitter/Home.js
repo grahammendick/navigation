@@ -1,11 +1,12 @@
 import React from 'react';
-import {StyleSheet, ScrollView} from 'react-native';
-import {NavigationBar} from 'navigation-react-native';
+import {StyleSheet, ScrollView, ToolbarAndroid} from 'react-native';
+import {NavigationBarIOS} from 'navigation-react-native';
 import Tweets from './Tweets';
 
 export default ({tweets}) => (
   <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
-    <NavigationBar title="Home" />
+    <ToolbarAndroid title="Home" style={styles.toolbar} />
+    <NavigationBarIOS title="Home" />
     <Tweets tweets={tweets} />
   </ScrollView>
 );

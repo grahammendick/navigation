@@ -1,19 +1,30 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, Platform, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBar, RightBar, BarButton, SharedElementAndroid} from 'navigation-react-native';
+import {NavigationBarIOS, RightBarIOS, BarButtonIOS, SharedElementAndroid} from 'navigation-react-native';
 
 export default ({colors, color}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <NavigationBar title="Color">
-          <RightBar>
-            <BarButton title="X" show="always" systemItem="cancel" onPress={() => {
+        <NavigationBarIOS title="Color">
+          <RightBarIOS>
+            <BarButtonIOS systemItem="cancel" onPress={() => {
               stateNavigator.navigateBack(1);
             }} />
-          </RightBar>
-        </NavigationBar>
+          </RightBarIOS>
+        </NavigationBarIOS>
+        {Platform.OS !== 'ios' && <TouchableHighlight
+          underlayColor="#fff"
+          accessibilityRole="link"
+          href={stateNavigator.historyManager.getHref(
+            stateNavigator.getNavigationBackLink(1)
+          )}
+          onPress={() => {
+            stateNavigator.navigateBack(1);
+          }}>
+          <Text style={styles.back}>X</Text>
+        </TouchableHighlight>}
         <SharedElementAndroid name={color} data={{color}} style={styles.color}>
           <View style={{backgroundColor: color, flex: 1}} />
         </SharedElementAndroid>
