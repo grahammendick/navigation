@@ -13,7 +13,6 @@ import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.image.QualityInfo;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.PixelUtil;
-import com.facebook.react.views.toolbar.DrawableWithIntrinsicSize;
 
 import androidx.annotation.Nullable;
 
