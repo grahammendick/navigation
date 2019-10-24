@@ -4,7 +4,7 @@ import LeftBar from './LeftBar';
 import RightBar from './RightBar';
 
 var NVNavigationBar = requireNativeComponent<any>('NVNavigationBar', null);
-var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, ...otherProps}) => {
+var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, style, ...otherProps}) => {
     if (Platform.OS === 'android' && hidden)
         return null
     var menuItems = (React.Children.toArray(children) as ReactElement<any>[])
@@ -28,7 +28,7 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, ..
             logo={Image.resolveAssetSource(logo)}
             navigationImage={Image.resolveAssetSource(navigationImage)}
             overflowImage={Image.resolveAssetSource(overflowImage)}
-            style={Platform.OS === 'android' ? { height: 50 } : undefined}
+            style={[Platform.OS === 'android' ? { height: 50 } : undefined, style]}
             hidden={hidden}
             {...otherProps}
             onActionSelected={({nativeEvent}) => {

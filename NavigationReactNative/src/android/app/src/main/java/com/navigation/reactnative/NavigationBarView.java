@@ -5,10 +5,12 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
@@ -34,6 +36,8 @@ public class NavigationBarView extends AppBarLayout {
     int defaultContentInsetStart;
     int defaultContentInsetEnd;
     int defaultTitleTextColor;
+    ViewOutlineProvider defaultOutlineProvider;
+    Drawable defaultBackground;
 
     private final DraweeHolder mLogoHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
     private final DraweeHolder mNavIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
@@ -54,6 +58,10 @@ public class NavigationBarView extends AppBarLayout {
         defaultContentInsetStart = toolbar.getContentInsetStart();
         defaultContentInsetEnd = toolbar.getContentInsetEnd();
         defaultTitleTextColor = getDefaultTitleTextColor(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            defaultOutlineProvider = getOutlineProvider();
+        }
+        defaultBackground = getBackground();
 
         iconResolver = new IconResolver(context);
         mLogoControllerListener = iconResolver.new IconControllerListener(mLogoHolder) {

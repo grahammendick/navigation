@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -84,9 +86,15 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
     @ReactProp(name = "barTintColor", customType = "Color")
     public void setBarTintColor(NavigationBarView view, @Nullable Integer barTintColor) {
         if (barTintColor != null) {
+            view.setBackground(null);
             view.toolbar.setBackgroundColor(barTintColor);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Color.alpha(barTintColor) < 255)
+                view.setOutlineProvider(null);
         } else {
+            view.setBackground(view.defaultBackground);
             view.toolbar.setBackground(null);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                view.setOutlineProvider(view.defaultOutlineProvider);
         }
     }
 
