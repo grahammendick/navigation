@@ -29,6 +29,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
 public class NavigationBarView extends AppBarLayout {
+    class ActionIconControllerListener extends IconResolver.IconControllerListener {
+        private final MenuItem item;
+
+        ActionIconControllerListener(MenuItem item, DraweeHolder holder) {
+            super(holder);
+            this.item = item;
+        }
+
+        @Override
+        protected void setDrawable(Drawable d) {
+            item.setIcon(d);
+            NavigationBarView.this.requestLayout();
+        }
+    }
+
     private IconResolver iconResolver;
 
     Toolbar toolbar;
@@ -64,25 +79,22 @@ public class NavigationBarView extends AppBarLayout {
         defaultBackground = getBackground();
 
         iconResolver = new IconResolver(context);
-        mLogoControllerListener = iconResolver.new IconControllerListener(mLogoHolder) {
+        mLogoControllerListener = new IconResolver.IconControllerListener(mLogoHolder) {
             @Override
             protected void setDrawable(Drawable d) {
                 toolbar.setLogo(d);
-                requestLayout();
             }
         };
-        mNavIconControllerListener = iconResolver.new IconControllerListener(mNavIconHolder) {
+        mNavIconControllerListener = new IconResolver.IconControllerListener(mNavIconHolder) {
             @Override
             protected void setDrawable(Drawable d) {
                 toolbar.setNavigationIcon(d);
-                requestLayout();
             }
         };
-        mOverflowIconControllerListener = iconResolver.new IconControllerListener(mNavIconHolder) {
+        mOverflowIconControllerListener = new IconResolver.IconControllerListener(mNavIconHolder) {
             @Override
             protected void setDrawable(Drawable d) {
                 toolbar.setOverflowIcon(d);
-                requestLayout();
             }
         };
         toolbar.setNavigationOnClickListener(new OnClickListener() {
@@ -191,7 +203,7 @@ public class NavigationBarView extends AppBarLayout {
     private void setMenuItemIcon(final MenuItem item, ReadableMap iconSource) {
         DraweeHolder<GenericDraweeHierarchy> holder =
                 DraweeHolder.create(createDraweeHierarchy(), getContext());
-        IconResolver.ActionIconControllerListener controllerListener = iconResolver.new ActionIconControllerListener(item, holder);
+        ActionIconControllerListener controllerListener = new ActionIconControllerListener(item, holder);
         controllerListener.setIconImageInfo(iconResolver.getIconImageInfo(iconSource));
         iconResolver.setIconSource(iconSource, controllerListener, holder);
         mActionsHolder.add(holder);

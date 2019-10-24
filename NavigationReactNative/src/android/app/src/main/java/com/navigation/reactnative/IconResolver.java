@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.view.MenuItem;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.BaseControllerListener;
@@ -25,7 +24,7 @@ class IconResolver {
         this.context = context;
     }
 
-    abstract class IconControllerListener extends BaseControllerListener<ImageInfo> {
+    abstract static class IconControllerListener extends BaseControllerListener<ImageInfo> {
         private final DraweeHolder holder;
         private IconImageInfo iconImageInfo;
 
@@ -76,20 +75,6 @@ class IconResolver {
             return null;
         }
 
-    }
-
-    class ActionIconControllerListener extends IconControllerListener {
-        private final MenuItem item;
-
-        ActionIconControllerListener(MenuItem item, DraweeHolder holder) {
-            super(holder);
-            this.item = item;
-        }
-
-        @Override
-        protected void setDrawable(Drawable d) {
-            item.setIcon(d);
-        }
     }
 
     void setIconSource(ReadableMap source, IconControllerListener controllerListener, DraweeHolder holder) {
