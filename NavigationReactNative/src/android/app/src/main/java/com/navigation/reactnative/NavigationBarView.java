@@ -53,15 +53,16 @@ public class NavigationBarView extends AppBarLayout {
     int defaultTitleTextColor;
     ViewOutlineProvider defaultOutlineProvider;
     Drawable defaultBackground;
+    Drawable defaultOverflowIcon;
 
-    private final DraweeHolder mLogoHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
-    private final DraweeHolder mNavIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
-    private final DraweeHolder mOverflowIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
+    private final DraweeHolder logoHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
+    private final DraweeHolder navIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
+    private final DraweeHolder overflowIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
 
-    private IconResolver.IconControllerListener mLogoControllerListener;
-    private IconResolver.IconControllerListener mNavIconControllerListener;
-    private IconResolver.IconControllerListener mOverflowIconControllerListener;
-    private final MultiDraweeHolder<GenericDraweeHierarchy> mActionsHolder =
+    private IconResolver.IconControllerListener logoControllerListener;
+    private IconResolver.IconControllerListener navIconControllerListener;
+    private IconResolver.IconControllerListener overflowIconControllerListener;
+    private final MultiDraweeHolder<GenericDraweeHierarchy> actionsHolder =
             new MultiDraweeHolder<>();
 
     public NavigationBarView(Context context) {
@@ -72,26 +73,27 @@ public class NavigationBarView extends AppBarLayout {
 
         defaultContentInsetStart = toolbar.getContentInsetStart();
         defaultContentInsetEnd = toolbar.getContentInsetEnd();
-        defaultTitleTextColor = getDefaultTitleTextColor(context);
+        defaultTitleTextColor = getDefaultTitleTextColor();
+        defaultOverflowIcon = toolbar.getOverflowIcon();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             defaultOutlineProvider = getOutlineProvider();
         }
         defaultBackground = getBackground();
 
         iconResolver = new IconResolver(context);
-        mLogoControllerListener = new IconResolver.IconControllerListener(mLogoHolder) {
+        logoControllerListener = new IconResolver.IconControllerListener(logoHolder) {
             @Override
             protected void setDrawable(Drawable d) {
                 toolbar.setLogo(d);
             }
         };
-        mNavIconControllerListener = new IconResolver.IconControllerListener(mNavIconHolder) {
+        navIconControllerListener = new IconResolver.IconControllerListener(navIconHolder) {
             @Override
             protected void setDrawable(Drawable d) {
                 toolbar.setNavigationIcon(d);
             }
         };
-        mOverflowIconControllerListener = new IconResolver.IconControllerListener(mNavIconHolder) {
+        overflowIconControllerListener = new IconResolver.IconControllerListener(overflowIconHolder) {
             @Override
             protected void setDrawable(Drawable d) {
                 toolbar.setOverflowIcon(d);
@@ -142,33 +144,32 @@ public class NavigationBarView extends AppBarLayout {
     }
 
     void setLogoSource(@Nullable ReadableMap source) {
-        iconResolver.setIconSource(source, mLogoControllerListener, mLogoHolder);
+        iconResolver.setIconSource(source, logoControllerListener, logoHolder);
     }
 
     void setNavIconSource(@Nullable ReadableMap source) {
-        iconResolver.setIconSource(source, mNavIconControllerListener, mNavIconHolder);
+        iconResolver.setIconSource(source, navIconControllerListener, navIconHolder);
     }
 
     void setOverflowIconSource(@Nullable ReadableMap source) {
-        iconResolver.setIconSource(source, mOverflowIconControllerListener, mOverflowIconHolder);
+        if (source != null)
+            iconResolver.setIconSource(source, overflowIconControllerListener, overflowIconHolder);
+        else
+            toolbar.setOverflowIcon(defaultOverflowIcon);
     }
 
     private void detachDraweeHolders() {
-        mLogoHolder.onDetach();
-        mNavIconHolder.onDetach();
-        mOverflowIconHolder.onDetach();
-        mActionsHolder.onDetach();
+        logoHolder.onDetach();
+        navIconHolder.onDetach();
+        overflowIconHolder.onDetach();
+        actionsHolder.onDetach();
     }
 
     private void attachDraweeHolders() {
-        mLogoHolder.onAttach();
-        mNavIconHolder.onAttach();
-        mOverflowIconHolder.onAttach();
-        mActionsHolder.onAttach();
-    }
-
-    void setTitle(String title) {
-        toolbar.setTitle(title);
+        logoHolder.onAttach();
+        navIconHolder.onAttach();
+        overflowIconHolder.onAttach();
+        actionsHolder.onAttach();
     }
 
     private static final String PROP_ACTION_ICON = "image";
@@ -177,7 +178,7 @@ public class NavigationBarView extends AppBarLayout {
 
     void setMenuItems(@Nullable ReadableArray menuItems) {
         toolbar.getMenu().clear();
-        mActionsHolder.clear();
+        actionsHolder.clear();
         if (menuItems != null) {
             for (int i = 0; i < menuItems.size(); i++) {
                 ReadableMap menuItemProps = menuItems.getMap(i);
@@ -206,7 +207,7 @@ public class NavigationBarView extends AppBarLayout {
         ActionIconControllerListener controllerListener = new ActionIconControllerListener(item, holder);
         controllerListener.setIconImageInfo(iconResolver.getIconImageInfo(iconSource));
         iconResolver.setIconSource(iconSource, controllerListener, holder);
-        mActionsHolder.add(holder);
+        actionsHolder.add(holder);
     }
 
     private GenericDraweeHierarchy createDraweeHierarchy() {
@@ -232,12 +233,12 @@ public class NavigationBarView extends AppBarLayout {
         post(mLayoutRunnable);
     }
 
-    private static int getDefaultTitleTextColor(Context context) {
-        Resources.Theme theme = context.getTheme();
-        TypedArray toolbarStyle = theme.obtainStyledAttributes(new int[] {getIdentifier(context, "toolbarStyle")});
+    private int getDefaultTitleTextColor() {
+        Resources.Theme theme = getContext().getTheme();
+        TypedArray toolbarStyle = theme.obtainStyledAttributes(new int[] {getIdentifier(getContext(), "toolbarStyle")});
         int toolbarStyleResId = toolbarStyle.getResourceId(0, 0);
         toolbarStyle.recycle();
-        TypedArray textAppearances = theme.obtainStyledAttributes(toolbarStyleResId, new int[] {getIdentifier(context, "titleTextAppearance")});
+        TypedArray textAppearances = theme.obtainStyledAttributes(toolbarStyleResId, new int[] {getIdentifier(getContext(), "titleTextAppearance")});
         int titleTextAppearanceResId = textAppearances.getResourceId(0, 0);
         textAppearances.recycle();
         TypedArray titleTextAppearance = theme.obtainStyledAttributes(titleTextAppearanceResId, new int[]{android.R.attr.textColor});

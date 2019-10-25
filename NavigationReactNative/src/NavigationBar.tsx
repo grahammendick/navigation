@@ -15,7 +15,7 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, st
                 .map(({props}) => ({
                     ...props,
                     show: Platform.OS === 'android'
-                     ? UIManager.getViewManagerConfig('NVNavigationBar').Constants.ShowAsAction[props.show]
+                     ? (UIManager as any).getViewManagerConfig('NVNavigationBar').Constants.ShowAsAction[props.show]
                      : undefined,
                     image: Image.resolveAssetSource(props.image),
                 })
@@ -28,7 +28,7 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, st
             logo={Image.resolveAssetSource(logo)}
             navigationImage={Image.resolveAssetSource(navigationImage)}
             overflowImage={Image.resolveAssetSource(overflowImage)}
-            style={[Platform.OS === 'android' ? { height: 50 } : undefined, style]}
+            style={Platform.OS === 'android' ? { height: 56 } : undefined}
             hidden={hidden}
             {...otherProps}
             onActionSelected={({nativeEvent}) => {

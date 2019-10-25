@@ -7,6 +7,7 @@ import android.net.Uri;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.drawable.ForwardingDrawable;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.DraweeHolder;
 import com.facebook.imagepipeline.image.ImageInfo;
@@ -21,6 +22,25 @@ class IconResolver {
 
     IconResolver(Context context) {
         this.context = context;
+    }
+
+    private static class DrawableWithIntrinsicSize extends ForwardingDrawable implements Drawable.Callback {
+        private final ImageInfo imageInfo;
+
+        DrawableWithIntrinsicSize(Drawable drawable, ImageInfo imageInfo) {
+            super(drawable);
+            this.imageInfo = imageInfo;
+        }
+
+        @Override
+        public int getIntrinsicWidth() {
+            return imageInfo.getWidth();
+        }
+
+        @Override
+        public int getIntrinsicHeight() {
+            return imageInfo.getHeight();
+        }
     }
 
     abstract static class IconControllerListener extends BaseControllerListener<ImageInfo> {

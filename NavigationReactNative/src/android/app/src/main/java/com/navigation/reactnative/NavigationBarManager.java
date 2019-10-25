@@ -60,7 +60,7 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
 
     @ReactProp(name = "title")
     public void setTitle(NavigationBarView view, @Nullable String title) {
-        view.setTitle(title);
+        view.toolbar.setTitle(title);
     }
 
     @ReactProp(name = "logo")
@@ -88,8 +88,12 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
         if (barTintColor != null) {
             view.setBackground(null);
             view.toolbar.setBackgroundColor(barTintColor);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Color.alpha(barTintColor) < 255)
-                view.setOutlineProvider(null);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (Color.alpha(barTintColor) < 255)
+                    view.setOutlineProvider(null);
+                else
+                    view.setOutlineProvider(view.defaultOutlineProvider);
+            }
         } else {
             view.setBackground(view.defaultBackground);
             view.toolbar.setBackground(null);
