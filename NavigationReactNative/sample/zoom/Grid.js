@@ -6,26 +6,22 @@ import {SharedElementAndroid, NavigationBar, SearchBarIOS} from 'navigation-reac
 const Colors = ({colors, children}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
-      <ScrollView
-        style={styles.scene}
-        contentInsetAdjustmentBehavior="automatic">
-        <View style={styles.colors}>
-          {colors.map(color => (
-            <TouchableHighlight
-              key={color}
-              style={styles.color}
-              underlayColor={color}                
-              onPress={() => {
-                stateNavigator.navigate('detail', {color});
-              }}>
-              <SharedElementAndroid name={color} style={{flex: 1}}>
-                <View style={{backgroundColor: color, flex: 1}} />
-              </SharedElementAndroid>
-            </TouchableHighlight>
-          ))}
-          {children}
-        </View>
-      </ScrollView>
+      <View style={styles.colors}>
+        {colors.map(color => (
+          <TouchableHighlight
+            key={color}
+            style={styles.color}
+            underlayColor={color}                
+            onPress={() => {
+              stateNavigator.navigate('detail', {color});
+            }}>
+            <SharedElementAndroid name={color} style={{flex: 1}}>
+              <View style={{backgroundColor: color, flex: 1}} />
+            </SharedElementAndroid>
+          </TouchableHighlight>
+        ))}
+        {children}
+      </View>
     )}
   </NavigationContext.Consumer>
 );
@@ -55,7 +51,11 @@ export default class Grid extends React.Component {
             autoCapitalize="none"
             obscureBackground={false}
             onChangeText={text => this.setState({text})}>
-            <Colors colors={matchedColors} />
+            <ScrollView
+              style={styles.scene}
+              contentInsetAdjustmentBehavior="automatic">
+              <Colors colors={matchedColors} />
+            </ScrollView>
           </SearchBarIOS>
         </NavigationBar>
         <Colors colors={colors} />
