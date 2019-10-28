@@ -15,7 +15,7 @@ export default ({colors, color}) => (
             <View style={{backgroundColor: color, width: 28, height: 28}}/>
           </TitleBar>
           <RightBar>
-            <BarButton title="X" show="always" systemItem="cancel" onPress={() => {
+            <BarButton title="cancel" show="always" systemItem="cancel" onPress={() => {
               stateNavigator.navigateBack(1);
             }} />
           </RightBar>
