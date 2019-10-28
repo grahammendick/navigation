@@ -5,7 +5,7 @@ import com.facebook.react.uimanager.ViewGroupManager;
 
 import javax.annotation.Nonnull;
 
-public class TitleBarViewManager extends ViewGroupManager<TitleBarView> {
+public class TitleBarManager extends ViewGroupManager<TitleBarView> {
     @Nonnull
     @Override
     public String getName() {
