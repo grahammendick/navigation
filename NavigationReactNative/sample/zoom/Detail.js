@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
+import {Platform, StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {NavigationBar, RightBar, BarButton, TitleBar, SharedElementAndroid} from 'navigation-react-native';
 
@@ -7,10 +7,12 @@ export default ({colors, color}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <>
-        <NavigationBar title="Color">
+        <NavigationBar
+          title="Color"
+          barTintColor={Platform.OS === 'android' ? '#fff' : null}>
           <TitleBar style={styles.titleBar}>
             <Text style={styles.titleBarText}>Color</Text>
-            <View style={{backgroundColor: color, width: 28, height: 28}}/>              
+            <View style={{backgroundColor: color, width: 28, height: 28}}/>
           </TitleBar>
           <RightBar>
             <BarButton title="X" show="always" systemItem="cancel" onPress={() => {
@@ -51,12 +53,11 @@ const styles = StyleSheet.create({
   titleBar: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center'
   },
   titleBarText: {
     marginRight: 4,
-    fontSize: 16
+    fontSize: Platform.OS === 'ios' ? 16 : 20,
   },
   back: {
     fontSize: 20,

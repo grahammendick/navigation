@@ -48,8 +48,6 @@ public class NavigationBarView extends AppBarLayout {
 
     Toolbar toolbar;
 
-    int defaultContentInsetStart;
-    int defaultContentInsetEnd;
     int defaultTitleTextColor;
     ViewOutlineProvider defaultOutlineProvider;
     Drawable defaultBackground;
@@ -71,8 +69,6 @@ public class NavigationBarView extends AppBarLayout {
         toolbar = new Toolbar(context);
         addView(toolbar, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
-        defaultContentInsetStart = toolbar.getContentInsetStart();
-        defaultContentInsetEnd = toolbar.getContentInsetEnd();
         defaultTitleTextColor = getDefaultTitleTextColor();
         defaultOverflowIcon = toolbar.getOverflowIcon();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
