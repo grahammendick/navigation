@@ -86,10 +86,6 @@ export interface NavigationBarProps {
      * Handles navigation button click events
      */
     onNavigationPress?: () => void
-    /**
-     * Determines when this item should appear in the navigation bar
-     */
-    show?: 'ifRoom' | 'never' | 'always';
 }
 
 /**
@@ -165,6 +161,10 @@ export interface BarButtonProps {
      * Handles button click events
      */
     onPress?: () => void;
+    /**
+     * Determines when this item should appear in the navigation bar
+     */
+    show?: 'ifRoom' | 'never' | 'always';
 }
 
 /**
