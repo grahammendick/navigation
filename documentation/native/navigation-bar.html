@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Navigation Bar (iOS)</title>
+    <title>Navigation Bar</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="../../css/prism.css">
     <link rel="stylesheet" href="../../css/navigation.css">
@@ -44,36 +44,50 @@
             <a href="hello-world.html">Hello World</a>
             <a href="push-navigation.html">Push Navigation</a>
             <a href="pop-navigation.html">Pop Navigation</a>
+            <a href="navigation-bar.html" class="selected">Navigation Bar</a>
             <a href="tab-bar.html">Tab Bar</a>
             <a href="custom-animation.html">Custom Animation (Android)</a>
             <a href="shared-element-transition.html">Shared Element Transition (Android)</a>
-            <a href="navigation-bar.html" class="selected">Navigation Bar (iOS)</a>
             <a href="deep-links.html">Deep Links</a>
             <a href="examples.html">Examples</a>
         </div>
         <div id="article">
-            <h1>Navigation Bar (iOS)</h1>
+            <h1>Navigation Bar</h1>
             <h2>Setting the Title</h2>
             <p>
-                The Navigation router uses the underlying native API on iOS to provide a native navigation bar at the top of each scene. The <code>title</code> and <code>largeTitle</code> props of the <code>NavigationBarIOS</code> component configure a scene's title. You can also hide the navigation bar entirely via the <code>hidden</code> prop.
+                The Navigation router uses the underlying native APIs on Android and iOS to provide a native navigation bar that you can position at the top of each scene. The <code>title</code> prop of the <code>NavigationBar</code> component configures a scene's title. You enable large titles on iOS by setting the <code>largeTitle</code> prop to true.
             </p>
-            <pre><code class="language-jsx">import {NavigationBarIOS} from 'navigation-react-native';
+            <pre><code class="language-jsx">import {NavigationBar} from 'navigation-react-native';
 
-&lt;NavigationBarIOS title="Inbox" />
+&lt;NavigationBar title="Inbox" />
 </code></pre>
-            <h2>Adding Right and Left Bar Buttons</h2>
             <p>
-                Alongside the scene's title, you can add your own buttons using the <code>BarButtonIOS</code> component. It has a <code>systemItem</code> prop that displays an inbuilt button, like 'Cancel' or 'Done', or you can pass your own text and image using the <code>title</code> and <code>image</code> props. Your buttons appear on the right or left of the navigation bar depending on whether you wrap them in a <code>RightBarIOS</code> or <code>LeftBarIOS</code> component. In our email example, we can add a 'compose' button to the right of the navigation bar that navigates to the 'compose' scene.
+                You can customise the title view using the <code>TitleBar</code> component. In our email example app, we can add an image next to the 'inbox' title.
             </p>
-            <pre><code class="language-jsx">import {RightBarIOS, BarButtonIOS} from 'navigation-react-native';
+            <pre><code class="language-jsx">import {NavigationBar, TitleBar} from 'navigation-react-native';
 
-&lt;RightBarIOS>
-  &lt;BarButtonIOS systemItem="compose" onPress={() => {
-    stateNavigator.navigate('compose');
-  }} />
-&lt;/RightBarIOS>
+&lt;NavigationBar>
+  &lt;TitleBar>
+    &lt;Text>Inbox&lt;/Text>
+    &lt;Image src={require('./inbox.png')} />
+  &lt;/TitleBar>
+&lt;/NavigationBar>
 </code></pre>
-            <h2>Adding a Search Bar</h2>
+            <h2>Adding Buttons</h2>
+            <p>
+                Alongside the scene's title, you can add your own buttons using the <code>BarButton</code> component. You can pass your own text and image using the <code>title</code> and <code>image</code> props. Your buttons appear on the right or left of the navigation bar on iOS, depending on whether you wrap them in a <code>RightBar</code> or <code>LeftBar</code> component. On Android they  appear on the right of the navigation bar or in the overflow menu depending on the value you assign to the <code>show</code> prop. In our email example, we can add a 'compose' button to the right of the navigation bar that navigates to the 'compose' scene. We set the <code>systemItem</code> prop so it displays the inbuilt 'compose' icon on iOS.
+            </p>
+            <pre><code class="language-jsx">import {NavigationBar, RightBar, BarButton} from 'navigation-react-native';
+
+&lt;NavigationBar>
+  &lt;RightBar>
+    &lt;BarButton title="compose" systemItem="compose" onPress={() => {
+      stateNavigator.navigate('compose');
+    }} />
+  &lt;/RightBar>
+&lt;/NavigationBar>
+</code></pre>
+            <h2>Adding a Search Bar on iOS</h2>
             <p>
                 The <code>SearchBarIOS</code> component displays a search bar below the title in the navigation bar. It calls the <code>onChangeText</code> prop whenever the search text changes. Any search results you render into the component’s children are displayed in a new native screen that sits over the top of the current one. We allow the user to search their inbox in our example application by adding a <code>SearchBarIOS</code> component to the 'mail' scene. Setting <code>obscureBackground</code> to 'false' keeps the inbox interactive when the search text is focused but empty.
             </p>
