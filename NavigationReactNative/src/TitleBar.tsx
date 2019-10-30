@@ -1,10 +1,10 @@
 import React from 'react'
-import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
+import { requireNativeComponent, StyleSheet, Platform } from 'react-native';
 
 const NVTitleBar = requireNativeComponent<any>('NVTitleBar', null)
 
 const TitleBar = ({style, ...props}) => (
-  <NVTitleBar {...props} style={[styles.titleBar, style]}/>
+  <NVTitleBar {...props} style={Platform.OS === 'ios' ? [styles.titleBar, style] : style}/>
 )
 
 const styles = StyleSheet.create({
@@ -13,5 +13,5 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Platform.OS === 'ios' ? TitleBar : () => null
+export default TitleBar
 

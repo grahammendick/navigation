@@ -1,30 +1,26 @@
 import React from 'react';
-import {StyleSheet, ScrollView, Text, View, Platform, TouchableHighlight} from 'react-native';
+import {Platform, StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SharedElementAndroid} from 'navigation-react-native';
+import {NavigationBar, RightBar, BarButton, TitleBar, SharedElementAndroid} from 'navigation-react-native';
 
 export default ({colors, color}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-          <NavigationBarIOS title="Color">
-            <TitleBarIOS style={styles.titleBar}>
-              <Text style={styles.titleBarText}>Color</Text>
-              <View style={{backgroundColor: color, width: 28, height: 28}}/>
-            </TitleBarIOS>
-            <RightBarIOS>
-              <BarButtonIOS systemItem="cancel" onPress={() => {
-                stateNavigator.navigateBack(1);
-              }} />
-            </RightBarIOS>
-          </NavigationBarIOS>
-          {Platform.OS === 'android' && <TouchableHighlight
-            underlayColor="#fff"
-            onPress={() => {
+      <>
+        <NavigationBar
+          title="Color"
+          barTintColor={Platform.OS === 'android' ? '#fff' : null}>
+          <TitleBar style={styles.titleBar}>
+            <Text style={styles.titleBarText}>Color</Text>
+            <View style={{backgroundColor: color, width: 28, height: 28}}/>
+          </TitleBar>
+          <RightBar>
+            <BarButton title="cancel" show="always" systemItem="cancel" onPress={() => {
               stateNavigator.navigateBack(1);
-            }}>
-            <Text style={styles.back}>X</Text>
-          </TouchableHighlight>}
+            }} />
+          </RightBar>
+        </NavigationBar>
+        <ScrollView contentInsetAdjustmentBehavior="automatic">
           <SharedElementAndroid
             name={color}
             style={styles.color}
@@ -48,19 +44,20 @@ export default ({colors, color}) => (
             )}
           </View>
         </ScrollView>
+      </>
     )}
   </NavigationContext.Consumer>
 );
   
 const styles = StyleSheet.create({
   titleBar: {
+    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center'
   },
   titleBarText: {
     marginRight: 4,
-    fontSize: 16
+    fontSize: Platform.OS === 'ios' ? 16 : 20,
   },
   back: {
     fontSize: 20,

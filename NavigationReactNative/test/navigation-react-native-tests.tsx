@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, TouchableHighlight } from 'react-native';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { NavigationStack, NavigationBarIOS, RightBarIOS, BarButtonIOS, SearchBarIOS, SharedElementAndroid, TabBar, TabBarItem } from 'navigation-react-native';
+import { NavigationStack, NavigationBar, RightBar, BarButton, SearchBarIOS, SharedElementAndroid, TabBar, TabBarItem } from 'navigation-react-native';
 
 const stateNavigator: StateNavigator = new StateNavigator([
     { key: 'people' },
@@ -12,20 +12,22 @@ const stateNavigator: StateNavigator = new StateNavigator([
 var List = ({people, children}: any) => (
     <NavigationContext.Consumer>
         {({stateNavigator}) => (
-            <View>
-                <NavigationBarIOS title="People" />
-                {people.map(name => (
-                    <TouchableHighlight
-                        onPress={() => {
-                            stateNavigator.navigate('person', {name});
-                    }}>
-                        <SharedElementAndroid name={name}>
-                            <Text>{name}</Text>
-                        </SharedElementAndroid>
-                    </TouchableHighlight>
-                ))}
-                {children}
-            </View>
+            <>
+                <NavigationBar title="People" />
+                <View>
+                    {people.map(name => (
+                        <TouchableHighlight
+                            onPress={() => {
+                                stateNavigator.navigate('person', {name});
+                        }}>
+                            <SharedElementAndroid name={name}>
+                                <Text>{name}</Text>
+                            </SharedElementAndroid>
+                        </TouchableHighlight>
+                    ))}
+                    {children}
+                </View>
+            </>
         )}
     </NavigationContext.Consumer>
 );
@@ -42,8 +44,8 @@ class People extends React.Component<any, any> {
             person.indexOf(text.toLowerCase()) !== -1
         ));
         return (
-            <List people={people}>
-                <NavigationBarIOS largeTitle={true} title="Person">
+            <>
+                <NavigationBar largeTitle={true} title="Person">
                     <SearchBarIOS
                         text={text}
                         autoCapitalize="none"
@@ -51,8 +53,9 @@ class People extends React.Component<any, any> {
                         onChangeText={text => this.setState({text})}>
                         <List people={matchedPeople} />
                     </SearchBarIOS>
-                </NavigationBarIOS>
-            </List>
+                </NavigationBar>
+                <List people={people} />
+            </>
         );
     }    
 }
@@ -60,16 +63,20 @@ class People extends React.Component<any, any> {
 var Person = ({ name }) => (
     <NavigationContext.Consumer>
         {({stateNavigator}) => (
-            <View>
-                <RightBarIOS>
-                    <BarButtonIOS systemItem="cancel" onPress={() => {
-                        stateNavigator.navigateBack(1)
-                    }} />
-                </RightBarIOS>
-                <SharedElementAndroid name={name} transition="bounce">
-                    <Text>{name}</Text>
-                </SharedElementAndroid>
-            </View>
+            <>
+                <NavigationBar largeTitle={true} title="Person">
+                    <RightBar>
+                        <BarButton title="Cancel" systemItem="cancel" onPress={() => {
+                            stateNavigator.navigateBack(1)
+                        }} />
+                    </RightBar>
+                </NavigationBar>
+                <View>
+                    <SharedElementAndroid name={name} transition="bounce">
+                        <Text>{name}</Text>
+                    </SharedElementAndroid>
+                </View>
+            </>
         )}
     </NavigationContext.Consumer>
 );

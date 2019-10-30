@@ -44,7 +44,7 @@ export class NavigationStack extends Component<NavigationStackProps> { }
 /**
  * Defines the Navigation Bar Props contract
  */
-export interface NavigationBarIOSProps {
+export interface NavigationBarProps {
     /**
      * Indicates whether to hide the navigation bar
      */
@@ -69,12 +69,44 @@ export interface NavigationBarIOSProps {
      * The color of the title view
      */
     titleColor?: string;
+
+    /**
+     * The logo
+     */
+    logo?: ImageURISource;
+    /**
+     * The menu overflow image
+     */
+    overflowImage?: ImageURISource;
+    /**
+     * The navigation button image
+     */
+    navigationImage?: ImageURISource;
+    /**
+     * Handles navigation button click events
+     */
+    onNavigationPress?: () => void
 }
 
 /**
  * Controls the appearance of the UI navigation bar
  */
-export class NavigationBarIOS extends Component<NavigationBarIOSProps> { }
+export class NavigationBar extends Component<NavigationBarProps> { }
+
+/**
+ * Controls the appearance of the UI navigation bar
+ */
+export class NavigaitonBarIOS extends Component<NavigationBarProps> {}
+
+/**
+ * Renders buttons in the left UI bar
+ */
+export class LeftBar extends Component { }
+
+/**
+ * Renders buttons in the right UI bar
+ */
+export class RightBar extends Component { }
 
 /**
  * Renders buttons in the left UI bar
@@ -89,7 +121,7 @@ export class RightBarIOS extends Component { }
 /**
  * Defines the Title Bar Props contract
  */
-export interface TitleBarIOSProps {
+export interface TitleBarProps {
   /**
    * The style
    */
@@ -99,12 +131,17 @@ export interface TitleBarIOSProps {
 /**
  * Renders titleView in the UI navigation bar
  */
-export class TitleBarIOS extends Component<TitleBarIOSProps> {  }
+export class TitleBar extends Component<TitleBarProps> {  }
+
+/**
+ * Renders titleView in the UI navigation bar
+ */
+export class TitleBarIOS extends Component<TitleBarProps> {  }
 
 /**
  * Defines the Bar Button Props contract
  */
-export interface BarButtonIOSProps {
+export interface BarButtonProps {
     /**
      * The button title
      */
@@ -124,12 +161,16 @@ export interface BarButtonIOSProps {
      * Handles button click events
      */
     onPress?: () => void;
+    /**
+     * Determines when this item should appear in the navigation bar
+     */
+    show?: 'ifRoom' | 'never' | 'always';
 }
 
 /**
  * Renders a button in the UI bar
  */
-export class BarButtonIOS extends Component<BarButtonIOSProps> { }
+export class BarButton extends Component<BarButtonProps> { }
 
 /**
  * Defines the Search Bar Props contract

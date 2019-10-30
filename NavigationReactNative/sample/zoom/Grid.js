@@ -1,7 +1,7 @@
 import React from 'react';
-import {StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
+import {Platform, StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {SharedElementAndroid, NavigationBarIOS, SearchBarIOS} from 'navigation-react-native';
+import {SharedElementAndroid, NavigationBar, SearchBarIOS} from 'navigation-react-native';
 
 const Colors = ({colors, children}) => (
   <NavigationContext.Consumer>
@@ -30,6 +30,10 @@ const Colors = ({colors, children}) => (
   </NavigationContext.Consumer>
 );
 
+const Container = (props) => (
+  Platform.OS === 'ios' ? <ScrollView {...props}/> : <>{props.children}</>
+);
+
 export default class Grid extends React.Component {
   constructor(props) {
     super(props);
@@ -42,8 +46,13 @@ export default class Grid extends React.Component {
       color.indexOf(text.toLowerCase()) !== -1
     ));
     return (
-      <Colors colors={colors}>
-        <NavigationBarIOS largeTitle={true} title="Colors">
+      <Container
+        style={styles.scene}
+        contentInsetAdjustmentBehavior="automatic">
+        <NavigationBar
+          largeTitle={true}
+          title="Colors"
+          barTintColor={Platform.OS === 'android' ? '#fff' : null}>
           <SearchBarIOS
             text={text}
             autoCapitalize="none"
@@ -51,8 +60,9 @@ export default class Grid extends React.Component {
             onChangeText={text => this.setState({text})}>
             <Colors colors={matchedColors} />
           </SearchBarIOS>
-        </NavigationBarIOS>
-      </Colors>
+        </NavigationBar>
+        <Colors colors={colors} />
+      </Container>
     );
   }
 }
