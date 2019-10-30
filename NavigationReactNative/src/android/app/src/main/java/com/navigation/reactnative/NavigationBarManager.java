@@ -49,13 +49,11 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
                 Toolbar.LayoutParams.MATCH_PARENT
         );
         parent.toolbar.addView(child, index, layoutParams);
-        parent.toolbar.setContentInsetsRelative(0, 0);
     }
 
     @Override
     public void removeViewAt(NavigationBarView parent, int index) {
         parent.toolbar.removeViewAt(index);
-        parent.toolbar.setContentInsetsRelative(parent.defaultContentInsetStart, parent.defaultContentInsetEnd);
     }
 
     @ReactProp(name = "title")

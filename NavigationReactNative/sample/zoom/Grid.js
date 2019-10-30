@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Platform, ScrollView, View, TouchableHighlight} from 'react-native';
+import {Platform, StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {SharedElementAndroid, NavigationBar, SearchBarIOS} from 'navigation-react-native';
 
@@ -49,7 +49,10 @@ export default class Grid extends React.Component {
       <Container
         style={styles.scene}
         contentInsetAdjustmentBehavior="automatic">
-        <NavigationBar largeTitle={true} title="Colors">
+        <NavigationBar
+          largeTitle={true}
+          title="Colors"
+          barTintColor={Platform.OS === 'android' ? '#fff' : null}>
           <SearchBarIOS
             text={text}
             autoCapitalize="none"
