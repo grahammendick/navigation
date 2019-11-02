@@ -42,4 +42,4 @@ var styles = StyleSheet.create({
     },
 });
 
-export default Platform.OS === 'ios' ? SearchBar : () => null;
+export default SearchBar;
