@@ -271,6 +271,6 @@ public class NavigationBarView extends AppBarLayout {
     }
 
     interface OnSearchMenuChangedListener {
-        void onSearchMenuChanged(MenuItem searchMenu);
+        void onSearchMenuChanged(MenuItem searchMenuItem);
     }
 }
