@@ -33,6 +33,10 @@ public class NavigationBarView extends AppBarLayout {
     Toolbar toolbar;
     private MenuItem searchMenuItem;
     private OnSearchMenuChangedListener onSearchMenuChangedListener;
+    private static final String PROP_ACTION_ICON = "image";
+    private static final String PROP_ACTION_SHOW = "show";
+    private static final String PROP_ACTION_TITLE = "title";
+    private static final String PROP_ACTION_SEARCH = "search";
     int defaultTitleTextColor;
     ViewOutlineProvider defaultOutlineProvider;
     Drawable defaultBackground;
@@ -148,11 +152,6 @@ public class NavigationBarView extends AppBarLayout {
         overflowIconHolder.onAttach();
         actionsHolder.onAttach();
     }
-
-    private static final String PROP_ACTION_ICON = "image";
-    private static final String PROP_ACTION_SHOW = "show";
-    private static final String PROP_ACTION_TITLE = "title";
-    private static final String PROP_ACTION_SEARCH = "search";
 
     void setMenuItems(@Nullable ReadableArray menuItems) {
         toolbar.getMenu().clear();
