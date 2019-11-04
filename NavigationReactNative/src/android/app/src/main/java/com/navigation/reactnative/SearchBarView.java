@@ -41,9 +41,9 @@ public class SearchBarView extends ReactViewGroup {
         super.onAttachedToWindow();
         ViewGroup view = (ViewGroup) getParent();
         NavigationBarView navigationBarView = null;
-        for(int j = 0; j < view.getChildCount(); j++) {
-            if (view.getChildAt(j) instanceof  NavigationBarView)
-                navigationBarView = (NavigationBarView) view.getChildAt(j);
+        for(int i = 0; i < view.getChildCount(); i++) {
+            if (view.getChildAt(i) instanceof  NavigationBarView)
+                navigationBarView = (NavigationBarView) view.getChildAt(i);
         }
         if (navigationBarView != null)
             navigationBarView.searchMenuItem.setActionView(searchView);
