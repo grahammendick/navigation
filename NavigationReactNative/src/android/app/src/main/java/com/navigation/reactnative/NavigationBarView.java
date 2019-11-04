@@ -179,15 +179,18 @@ public class NavigationBarView extends AppBarLayout {
         actionsHolder.clear();
         for (int i = 0; menuItems != null && i < menuItems.size(); i++) {
             ReadableMap menuItemProps = menuItems.getMap(i);
+            if (menuItemProps == null)
+                continue;
             String title = menuItemProps.hasKey(PROP_ACTION_TITLE) ? menuItemProps.getString(PROP_ACTION_TITLE) : "";
             ReadableMap iconSource = menuItemProps.getMap(PROP_ACTION_ICON);
             MenuItem menuItem = toolbar.getMenu().add(Menu.NONE, Menu.NONE, i, title);
             if (iconSource != null)
                 setMenuItemIcon(menuItem, iconSource);
             int showAsAction = menuItemProps.hasKey(PROP_ACTION_SHOW) ? menuItemProps.getInt(PROP_ACTION_SHOW) : MenuItem.SHOW_AS_ACTION_NEVER;
-            boolean search = menuItemProps.hasKey(PROP_ACTION_SEARCH) ? menuItemProps.getBoolean(PROP_ACTION_SEARCH) : false;
+            boolean search = menuItemProps.hasKey(PROP_ACTION_SEARCH) && menuItemProps.getBoolean(PROP_ACTION_SEARCH);
             if (search) {
-                menuItem.setActionView(new SearchView(getContext()));
+                SearchView searchView = new SearchView(getContext());
+                menuItem.setActionView(searchView);
                 showAsAction = MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction;
                 menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                     @Override
@@ -199,6 +202,17 @@ public class NavigationBarView extends AppBarLayout {
                     public boolean onMenuItemActionExpand(MenuItem item) {
                         requestLayout();
                         return true;
+                    }
+                });
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        return false;
                     }
                 });
             }
