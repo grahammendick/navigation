@@ -32,7 +32,7 @@ public class NavigationBarView extends AppBarLayout {
     private IconResolver iconResolver;
     Toolbar toolbar;
     private MenuItem searchMenuItem;
-    private OnSearchAddedListener onSearchAddedListener;
+    private OnSearchListener onSearchAddedListener;
     private static final String PROP_ACTION_ICON = "image";
     private static final String PROP_ACTION_SHOW = "show";
     private static final String PROP_ACTION_TITLE = "title";
@@ -172,16 +172,18 @@ public class NavigationBarView extends AppBarLayout {
                 searchMenuItem = menuItem;
                 showAsAction = MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction;
                 if (onSearchAddedListener != null)
-                    onSearchAddedListener.onSearchAdded(searchMenuItem);
+                    onSearchAddedListener.onSearchAdd(searchMenuItem);
                 menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
+                        onSearchAddedListener.onSearchCollapse();
                         requestLayout();
                         return true;
                     }
 
                     @Override
                     public boolean onMenuItemActionExpand(MenuItem item) {
+                        onSearchAddedListener.onSearchExpand();
                         requestLayout();
                         return true;
                     }
@@ -199,10 +201,10 @@ public class NavigationBarView extends AppBarLayout {
         actionsHolder.add(holder);
     }
 
-    void setOnSearchAddedListener(OnSearchAddedListener onSearchAddedListener) {
+    void setOnSearchAddedListener(OnSearchListener onSearchAddedListener) {
         this.onSearchAddedListener = onSearchAddedListener;
         if (searchMenuItem != null)
-            this.onSearchAddedListener.onSearchAdded(searchMenuItem);
+            this.onSearchAddedListener.onSearchAdd(searchMenuItem);
 
     }
 
@@ -262,7 +264,9 @@ public class NavigationBarView extends AppBarLayout {
         }
     }
 
-    interface OnSearchAddedListener {
-        void onSearchAdded(MenuItem searchMenuItem);
+    interface OnSearchListener {
+        void onSearchAdd(MenuItem searchMenuItem);
+        void onSearchExpand();
+        void onSearchCollapse();
     }
 }

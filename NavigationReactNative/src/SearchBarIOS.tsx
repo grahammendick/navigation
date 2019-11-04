@@ -1,10 +1,11 @@
 import React from 'react';
 import { requireNativeComponent, Platform, StyleSheet, View } from 'react-native';
 
-class SearchBar extends React.Component {
+class SearchBar extends React.Component<any, any> {
     private ref: React.RefObject<View>;
     constructor(props) {
         super(props);
+        this.state = {show: false};
         this.ref = React.createRef<View>();
         this.onChangeText = this.onChangeText.bind(this);
     }
@@ -28,7 +29,8 @@ class SearchBar extends React.Component {
                 {...this.props}
                 ref={this.ref}
                 onChangeText={this.onChangeText}
-                style={styles.searchBar} />
+                onShow={({nativeEvent: {show}}) => this.setState({show})}
+                style={[styles.searchBar, {zIndex: this.state.show ? 58 : -58}]} />
         );
     }
 }

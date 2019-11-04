@@ -47,10 +47,26 @@ public class SearchBarView extends ReactViewGroup {
                 navigationBarView = (NavigationBarView) view.getChildAt(i);
         }
         if (navigationBarView != null) {
-            navigationBarView.setOnSearchAddedListener(new NavigationBarView.OnSearchAddedListener() {
+            navigationBarView.setOnSearchAddedListener(new NavigationBarView.OnSearchListener() {
                 @Override
-                public void onSearchAdded(MenuItem searchMenuItem) {
+                public void onSearchAdd(MenuItem searchMenuItem) {
                     searchMenuItem.setActionView(searchView);
+                }
+
+                @Override
+                public void onSearchExpand() {
+                    WritableMap event = Arguments.createMap();
+                    event.putBoolean("show", true);
+                    ReactContext reactContext = (ReactContext) getContext();
+                    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onShow", event);
+                }
+
+                @Override
+                public void onSearchCollapse() {
+                    WritableMap event = Arguments.createMap();
+                    event.putBoolean("show", false);
+                    ReactContext reactContext = (ReactContext) getContext();
+                    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onShow", event);
                 }
             });
         }
