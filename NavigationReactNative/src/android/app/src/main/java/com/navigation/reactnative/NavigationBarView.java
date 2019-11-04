@@ -32,7 +32,7 @@ public class NavigationBarView extends AppBarLayout {
     private IconResolver iconResolver;
     Toolbar toolbar;
     private MenuItem searchMenuItem;
-    private OnSearchMenuChangedListener onSearchMenuChangedListener;
+    private OnSearchAddedListener onSearchAddedListener;
     private static final String PROP_ACTION_ICON = "image";
     private static final String PROP_ACTION_SHOW = "show";
     private static final String PROP_ACTION_TITLE = "title";
@@ -171,8 +171,8 @@ public class NavigationBarView extends AppBarLayout {
             if (search) {
                 searchMenuItem = menuItem;
                 showAsAction = MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction;
-                if (onSearchMenuChangedListener != null)
-                    onSearchMenuChangedListener.onSearchMenuChanged(searchMenuItem);
+                if (onSearchAddedListener != null)
+                    onSearchAddedListener.onSearchAdded(searchMenuItem);
                 menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
@@ -199,10 +199,10 @@ public class NavigationBarView extends AppBarLayout {
         actionsHolder.add(holder);
     }
 
-    void setOnSearchMenuChangedListener(OnSearchMenuChangedListener onSearchMenuChangedListener) {
-        this.onSearchMenuChangedListener = onSearchMenuChangedListener;
+    void setOnSearchAddedListener(OnSearchAddedListener onSearchAddedListener) {
+        this.onSearchAddedListener = onSearchAddedListener;
         if (searchMenuItem != null)
-            this.onSearchMenuChangedListener.onSearchMenuChanged(searchMenuItem);
+            this.onSearchAddedListener.onSearchAdded(searchMenuItem);
 
     }
 
@@ -262,7 +262,7 @@ public class NavigationBarView extends AppBarLayout {
         }
     }
 
-    interface OnSearchMenuChangedListener {
-        void onSearchMenuChanged(MenuItem searchMenuItem);
+    interface OnSearchAddedListener {
+        void onSearchAdded(MenuItem searchMenuItem);
     }
 }

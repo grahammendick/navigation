@@ -47,9 +47,9 @@ public class SearchBarView extends ReactViewGroup {
                 navigationBarView = (NavigationBarView) view.getChildAt(i);
         }
         if (navigationBarView != null) {
-            navigationBarView.setOnSearchMenuChangedListener(new NavigationBarView.OnSearchMenuChangedListener() {
+            navigationBarView.setOnSearchAddedListener(new NavigationBarView.OnSearchAddedListener() {
                 @Override
-                public void onSearchMenuChanged(MenuItem searchMenuItem) {
+                public void onSearchAdded(MenuItem searchMenuItem) {
                     searchMenuItem.setActionView(searchView);
                 }
             });
