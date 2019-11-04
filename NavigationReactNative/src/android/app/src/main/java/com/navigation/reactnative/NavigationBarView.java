@@ -30,25 +30,20 @@ import androidx.appcompat.widget.Toolbar;
 
 public class NavigationBarView extends AppBarLayout {
     private IconResolver iconResolver;
-
     Toolbar toolbar;
     MenuItem searchMenuItem;
     private OnSearchMenuChangedListener onSearchMenuChangedListener;
-
     int defaultTitleTextColor;
     ViewOutlineProvider defaultOutlineProvider;
     Drawable defaultBackground;
     Drawable defaultOverflowIcon;
-
     private final DraweeHolder logoHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
     private final DraweeHolder navIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
     private final DraweeHolder overflowIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
-
     private IconResolver.IconControllerListener logoControllerListener;
     private IconResolver.IconControllerListener navIconControllerListener;
     private IconResolver.IconControllerListener overflowIconControllerListener;
-    private final MultiDraweeHolder<GenericDraweeHierarchy> actionsHolder =
-            new MultiDraweeHolder<>();
+    private final MultiDraweeHolder<GenericDraweeHierarchy> actionsHolder = new MultiDraweeHolder<>();
 
     public NavigationBarView(Context context) {
         super(context);
@@ -95,8 +90,7 @@ public class NavigationBarView extends AppBarLayout {
                 WritableMap event = Arguments.createMap();
                 event.putInt("position", item.getOrder());
                 ReactContext reactContext = (ReactContext) getContext();
-                reactContext.getJSModule(RCTEventEmitter.class)
-                        .receiveEvent(getId(),"onActionSelected", event);
+                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onActionSelected", event);
                 return true;
             }
         });
@@ -199,8 +193,7 @@ public class NavigationBarView extends AppBarLayout {
     }
 
     private void setMenuItemIcon(final MenuItem item, ReadableMap iconSource) {
-        DraweeHolder<GenericDraweeHierarchy> holder =
-                DraweeHolder.create(createDraweeHierarchy(), getContext());
+        DraweeHolder<GenericDraweeHierarchy> holder = DraweeHolder.create(createDraweeHierarchy(), getContext());
         ActionIconControllerListener controllerListener = new ActionIconControllerListener(item, holder);
         controllerListener.setIconImageInfo(iconResolver.getIconImageInfo(iconSource));
         iconResolver.setIconSource(iconSource, controllerListener, holder);
@@ -216,17 +209,17 @@ public class NavigationBarView extends AppBarLayout {
 
     private GenericDraweeHierarchy createDraweeHierarchy() {
         return new GenericDraweeHierarchyBuilder(getContext().getResources())
-                .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
-                .setFadeDuration(0)
-                .build();
+            .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
+            .setFadeDuration(0)
+            .build();
     }
 
     private final Runnable mLayoutRunnable = new Runnable() {
         @Override
         public void run() {
             measure(
-                    MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
