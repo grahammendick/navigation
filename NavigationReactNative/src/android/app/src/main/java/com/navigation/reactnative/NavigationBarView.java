@@ -190,6 +190,7 @@ public class NavigationBarView extends AppBarLayout {
             boolean search = menuItemProps.hasKey(PROP_ACTION_SEARCH) && menuItemProps.getBoolean(PROP_ACTION_SEARCH);
             if (search) {
                 SearchView searchView = new SearchView(getContext());
+                searchView.setBackgroundColor(Color.WHITE);
                 menuItem.setActionView(searchView);
                 showAsAction = MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction;
                 menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
