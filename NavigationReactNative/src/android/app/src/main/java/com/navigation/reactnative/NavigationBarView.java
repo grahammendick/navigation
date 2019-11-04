@@ -31,7 +31,7 @@ import androidx.appcompat.widget.Toolbar;
 public class NavigationBarView extends AppBarLayout {
     private IconResolver iconResolver;
     Toolbar toolbar;
-    MenuItem searchMenuItem;
+    private MenuItem searchMenuItem;
     private OnSearchMenuChangedListener onSearchMenuChangedListener;
     int defaultTitleTextColor;
     ViewOutlineProvider defaultOutlineProvider;
