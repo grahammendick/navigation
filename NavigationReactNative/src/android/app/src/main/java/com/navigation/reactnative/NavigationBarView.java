@@ -212,6 +212,14 @@ public class NavigationBarView extends AppBarLayout {
 
                     @Override
                     public boolean onQueryTextChange(String newText) {
+                        ViewGroup view = (ViewGroup) getParent();
+                        SearchBarView searchBarView = null;
+                        for(int i = 0; i < view.getChildCount(); i++) {
+                            if (view.getChildAt(i) instanceof  SearchBarView)
+                                searchBarView = (SearchBarView) view.getChildAt(i);
+                        }
+                        if (searchBarView != null)
+                            searchBarView.textChanged(newText);
                         return false;
                     }
                 });
