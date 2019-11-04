@@ -26,6 +26,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
 public class NavigationBarView extends AppBarLayout {
@@ -171,29 +172,37 @@ public class NavigationBarView extends AppBarLayout {
     private static final String PROP_ACTION_ICON = "image";
     private static final String PROP_ACTION_SHOW = "show";
     private static final String PROP_ACTION_TITLE = "title";
+    private static final String PROP_ACTION_SEARCH = "search";
 
     void setMenuItems(@Nullable ReadableArray menuItems) {
         toolbar.getMenu().clear();
         actionsHolder.clear();
-        if (menuItems != null) {
-            for (int i = 0; i < menuItems.size(); i++) {
-                ReadableMap menuItemProps = menuItems.getMap(i);
-                if (menuItemProps == null) {
-                    continue;
-                }
-                String title = menuItemProps.hasKey(PROP_ACTION_TITLE)
-                        ? menuItemProps.getString(PROP_ACTION_TITLE)
-                        : "";
-                ReadableMap iconSource = menuItemProps.getMap(PROP_ACTION_ICON);
-                MenuItem menuItem = toolbar.getMenu().add(Menu.NONE, Menu.NONE, i, title);
-                if (iconSource != null) {
-                    setMenuItemIcon(menuItem, iconSource);
-                }
-                int showAsAction = menuItemProps.hasKey(PROP_ACTION_SHOW)
-                        ? menuItemProps.getInt(PROP_ACTION_SHOW)
-                        : MenuItem.SHOW_AS_ACTION_NEVER;
-                menuItem.setShowAsAction(showAsAction);
+        for (int i = 0; menuItems != null && i < menuItems.size(); i++) {
+            ReadableMap menuItemProps = menuItems.getMap(i);
+            String title = menuItemProps.hasKey(PROP_ACTION_TITLE) ? menuItemProps.getString(PROP_ACTION_TITLE) : "";
+            ReadableMap iconSource = menuItemProps.getMap(PROP_ACTION_ICON);
+            MenuItem menuItem = toolbar.getMenu().add(Menu.NONE, Menu.NONE, i, title);
+            if (iconSource != null)
+                setMenuItemIcon(menuItem, iconSource);
+            int showAsAction = menuItemProps.hasKey(PROP_ACTION_SHOW) ? menuItemProps.getInt(PROP_ACTION_SHOW) : MenuItem.SHOW_AS_ACTION_NEVER;
+            boolean search = menuItemProps.hasKey(PROP_ACTION_SEARCH) ? menuItemProps.getBoolean(PROP_ACTION_SEARCH) : false;
+            if (search) {
+                menuItem.setActionView(new SearchView(getContext()));
+                showAsAction = MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction;
+                menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem item) {
+                        requestLayout();
+                        return true;
+                    }
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem item) {
+                        requestLayout();
+                        return true;
+                    }
+                });
             }
+            menuItem.setShowAsAction(showAsAction);
         }
     }
 
