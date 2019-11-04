@@ -201,8 +201,8 @@ public class NavigationBarView extends AppBarLayout {
         actionsHolder.add(holder);
     }
 
-    void setOnSearchAddedListener(OnSearchListener onSearchAddedListener) {
-        this.onSearchAddedListener = onSearchAddedListener;
+    void setOnSearchListener(OnSearchListener onSearchListener) {
+        this.onSearchAddedListener = onSearchListener;
         if (searchMenuItem != null)
             this.onSearchAddedListener.onSearchAdd(searchMenuItem);
 
