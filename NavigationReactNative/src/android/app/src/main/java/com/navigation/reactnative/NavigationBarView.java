@@ -26,7 +26,6 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
 public class NavigationBarView extends AppBarLayout {
@@ -48,6 +47,7 @@ public class NavigationBarView extends AppBarLayout {
     private IconResolver iconResolver;
 
     Toolbar toolbar;
+    MenuItem searchMenuItem;
 
     int defaultTitleTextColor;
     ViewOutlineProvider defaultOutlineProvider;
@@ -189,9 +189,7 @@ public class NavigationBarView extends AppBarLayout {
             int showAsAction = menuItemProps.hasKey(PROP_ACTION_SHOW) ? menuItemProps.getInt(PROP_ACTION_SHOW) : MenuItem.SHOW_AS_ACTION_NEVER;
             boolean search = menuItemProps.hasKey(PROP_ACTION_SEARCH) && menuItemProps.getBoolean(PROP_ACTION_SEARCH);
             if (search) {
-                SearchView searchView = new SearchView(getContext());
-                searchView.setBackgroundColor(Color.WHITE);
-                menuItem.setActionView(searchView);
+                searchMenuItem = menuItem;
                 showAsAction = MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction;
                 menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                     @Override
@@ -199,29 +197,11 @@ public class NavigationBarView extends AppBarLayout {
                         requestLayout();
                         return true;
                     }
+
                     @Override
                     public boolean onMenuItemActionExpand(MenuItem item) {
                         requestLayout();
                         return true;
-                    }
-                });
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        ViewGroup view = (ViewGroup) getParent();
-                        SearchBarView searchBarView = null;
-                        for(int i = 0; i < view.getChildCount(); i++) {
-                            if (view.getChildAt(i) instanceof  SearchBarView)
-                                searchBarView = (SearchBarView) view.getChildAt(i);
-                        }
-                        if (searchBarView != null)
-                            searchBarView.textChanged(newText);
-                        return false;
                     }
                 });
             }
