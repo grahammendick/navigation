@@ -29,25 +29,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
 public class NavigationBarView extends AppBarLayout {
-    class ActionIconControllerListener extends IconResolver.IconControllerListener {
-        private final MenuItem item;
-
-        ActionIconControllerListener(MenuItem item, DraweeHolder holder) {
-            super(holder);
-            this.item = item;
-        }
-
-        @Override
-        protected void setDrawable(Drawable d) {
-            item.setIcon(d);
-            NavigationBarView.this.requestLayout();
-        }
-    }
-
     private IconResolver iconResolver;
 
     Toolbar toolbar;
     MenuItem searchMenuItem;
+    private OnSearchMenuChangedListener onSearchMenuChangedListener;
 
     int defaultTitleTextColor;
     ViewOutlineProvider defaultOutlineProvider;
@@ -177,6 +163,7 @@ public class NavigationBarView extends AppBarLayout {
     void setMenuItems(@Nullable ReadableArray menuItems) {
         toolbar.getMenu().clear();
         actionsHolder.clear();
+        requestLayout();
         for (int i = 0; menuItems != null && i < menuItems.size(); i++) {
             ReadableMap menuItemProps = menuItems.getMap(i);
             if (menuItemProps == null)
@@ -191,6 +178,8 @@ public class NavigationBarView extends AppBarLayout {
             if (search) {
                 searchMenuItem = menuItem;
                 showAsAction = MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction;
+                if (onSearchMenuChangedListener != null)
+                    onSearchMenuChangedListener.onSearchMenuChanged(searchMenuItem);
                 menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
@@ -216,6 +205,13 @@ public class NavigationBarView extends AppBarLayout {
         controllerListener.setIconImageInfo(iconResolver.getIconImageInfo(iconSource));
         iconResolver.setIconSource(iconSource, controllerListener, holder);
         actionsHolder.add(holder);
+    }
+
+    void setOnSearchMenuChangedListener(OnSearchMenuChangedListener onSearchMenuChangedListener) {
+        this.onSearchMenuChangedListener = onSearchMenuChangedListener;
+        if (searchMenuItem != null)
+            this.onSearchMenuChangedListener.onSearchMenuChanged(searchMenuItem);
+
     }
 
     private GenericDraweeHierarchy createDraweeHierarchy() {
@@ -257,5 +253,24 @@ public class NavigationBarView extends AppBarLayout {
 
     private static int getIdentifier(Context context, String name) {
         return context.getResources().getIdentifier(name, "attr", context.getPackageName());
+    }
+
+    class ActionIconControllerListener extends IconResolver.IconControllerListener {
+        private final MenuItem item;
+
+        ActionIconControllerListener(MenuItem item, DraweeHolder holder) {
+            super(holder);
+            this.item = item;
+        }
+
+        @Override
+        protected void setDrawable(Drawable d) {
+            item.setIcon(d);
+            NavigationBarView.this.requestLayout();
+        }
+    }
+
+    interface OnSearchMenuChangedListener {
+        void onSearchMenuChanged(MenuItem searchMenu);
     }
 }

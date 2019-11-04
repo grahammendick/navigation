@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import androidx.appcompat.widget.SearchView;
@@ -45,8 +46,14 @@ public class SearchBarView extends ReactViewGroup {
             if (view.getChildAt(i) instanceof  NavigationBarView)
                 navigationBarView = (NavigationBarView) view.getChildAt(i);
         }
-        if (navigationBarView != null)
-            navigationBarView.searchMenuItem.setActionView(searchView);
+        if (navigationBarView != null) {
+            navigationBarView.setOnSearchMenuChangedListener(new NavigationBarView.OnSearchMenuChangedListener() {
+                @Override
+                public void onSearchMenuChanged(MenuItem searchMenu) {
+                    searchMenu.setActionView(searchView);
+                }
+            });
+        }
     }
 
     @Override
