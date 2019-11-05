@@ -1,5 +1,10 @@
 package com.navigation.reactnative;
 
+import android.text.InputType;
+import android.view.MenuItem;
+
+import androidx.annotation.Nullable;
+
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -31,6 +36,11 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
         view.mostRecentEventCount = mostRecentEventCount;
     }
 
+    @ReactProp(name = "autoCapitalize")
+    public void setAutoCapitalize(SearchBarView view, int autoCapitalize) {
+        view.searchView.setInputType(autoCapitalize);
+    }
+
     @Nonnull
     @Override
     protected SearchBarView createViewInstance(@Nonnull ThemedReactContext reactContext) {
@@ -43,5 +53,16 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
             .put("onChangeText", MapBuilder.of("registrationName", "onChangeText"))
             .put("onShow", MapBuilder.of("registrationName", "onShow"))
             .build();
+    }
+
+    @Override
+    public Map<String, Object> getExportedViewConstants() {
+        return MapBuilder.<String, Object>of(
+            "AutoCapitalize",
+            MapBuilder.of(
+                "none", InputType.TYPE_CLASS_TEXT,
+                "words", InputType.TYPE_TEXT_FLAG_CAP_WORDS,
+                "sentences", InputType.TYPE_TEXT_FLAG_CAP_SENTENCES,
+                "allCharacters", InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS));
     }
 }

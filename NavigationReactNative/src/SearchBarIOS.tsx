@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent, Platform, StyleSheet, View } from 'react-native';
+import { requireNativeComponent, Platform, StyleSheet, UIManager, View } from 'react-native';
 
 class SearchBar extends React.Component<any, any> {
     private ref: React.RefObject<View>;
@@ -24,10 +24,14 @@ class SearchBar extends React.Component<any, any> {
 
     }
     render() {
+        var {autoCapitalize, ...props} = this.props;
+        var constants = (UIManager as any).getViewManagerConfig('NVSearchBar').Constants;
+        var autoCapitalize = Platform.OS === 'android' ? constants.AutoCapitalize[autoCapitalize] : autoCapitalize;
         return (
             <NVSearchBar
-                {...this.props}
+                {...props}
                 ref={this.ref}
+                autoCapitalize={autoCapitalize}
                 onChangeText={this.onChangeText}
                 onShow={({nativeEvent: {show}}) => this.setState({show})}
                 style={[styles.searchBar, {zIndex: this.state.show ? 58 : -58}]} />
