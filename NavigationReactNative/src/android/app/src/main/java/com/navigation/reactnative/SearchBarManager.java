@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.annotations.ReactProp;
 
 import java.util.Map;
 
@@ -13,6 +14,16 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
     @Override
     public String getName() {
         return "NVSearchBar";
+    }
+
+    @ReactProp(name = "text")
+    public void setText(SearchBarView view, String text) {
+        view.setQuery(text);
+    }
+
+    @ReactProp(name = "mostRecentEventCount")
+    public void setMostRecentEventCount(SearchBarView view, int mostRecentEventCount) {
+        view.mostRecentEventCount = mostRecentEventCount;
     }
 
     @Nonnull

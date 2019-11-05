@@ -15,6 +15,8 @@ import com.facebook.react.views.view.ReactViewGroup;
 
 public class SearchBarView extends ReactViewGroup {
     SearchView searchView;
+    int nativeEventCount;
+    int mostRecentEventCount;
 
     public SearchBarView(Context context) {
         super(context);
@@ -28,13 +30,21 @@ public class SearchBarView extends ReactViewGroup {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                nativeEventCount++;
                 WritableMap event = Arguments.createMap();
                 event.putString("text", newText);
+                event.putInt("eventCount", nativeEventCount);
                 ReactContext reactContext = (ReactContext) getContext();
                 reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onChangeText", event);
                 return false;
             }
         });
+    }
+
+    void setQuery(String query) {
+        int eventLag = nativeEventCount - mostRecentEventCount;
+        if (eventLag == 0)
+            searchView.setQuery(query, true);
     }
 
     @Override
