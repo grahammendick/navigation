@@ -156,7 +156,7 @@ public class NavigationBarView extends AppBarLayout {
     void setMenuItems(@Nullable ReadableArray menuItems) {
         toolbar.getMenu().clear();
         actionsHolder.clear();
-        requestLayout();
+        post(measureAndLayout);
         for (int i = 0; menuItems != null && i < menuItems.size(); i++) {
             ReadableMap menuItemProps = menuItems.getMap(i);
             if (menuItemProps == null)
@@ -177,14 +177,14 @@ public class NavigationBarView extends AppBarLayout {
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
                         onSearchAddedListener.onSearchCollapse();
-                        requestLayout();
+                        post(measureAndLayout);
                         return true;
                     }
 
                     @Override
                     public boolean onMenuItemActionExpand(MenuItem item) {
                         onSearchAddedListener.onSearchExpand();
-                        requestLayout();
+                        post(measureAndLayout);
                         return true;
                     }
                 });
@@ -215,7 +215,7 @@ public class NavigationBarView extends AppBarLayout {
             .build();
     }
 
-    private final Runnable mLayoutRunnable = new Runnable() {
+    private final Runnable measureAndLayout = new Runnable() {
         @Override
         public void run() {
             measure(
@@ -224,12 +224,6 @@ public class NavigationBarView extends AppBarLayout {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
-
-    @Override
-    public void requestLayout() {
-        super.requestLayout();
-        post(mLayoutRunnable);
-    }
 
     private int getDefaultTitleTextColor() {
         Resources.Theme theme = getContext().getTheme();
@@ -260,7 +254,7 @@ public class NavigationBarView extends AppBarLayout {
         @Override
         protected void setDrawable(Drawable d) {
             item.setIcon(d);
-            NavigationBarView.this.requestLayout();
+            post(measureAndLayout);
         }
     }
 
