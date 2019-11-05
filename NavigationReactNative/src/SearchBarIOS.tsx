@@ -26,7 +26,7 @@ class SearchBar extends React.Component<any, any> {
     render() {
         var {autoCapitalize, ...props} = this.props;
         var constants = (UIManager as any).getViewManagerConfig('NVSearchBar').Constants;
-        var autoCapitalize = Platform.OS === 'android' ? constants.AutoCapitalize[autoCapitalize] : autoCapitalize;
+        autoCapitalize = Platform.OS === 'android' ? constants.AutoCapitalize[autoCapitalize] : autoCapitalize;
         return (
             <NVSearchBar
                 {...props}
