@@ -16,6 +16,11 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
         return "NVSearchBar";
     }
 
+    @ReactProp(name = "placeholder")
+    public void setPlaceholder(SearchBarView view, String placeholder) {
+        view.searchView.setQueryHint(placeholder);
+    }
+
     @ReactProp(name = "text")
     public void setText(SearchBarView view, String text) {
         view.setQuery(text);
