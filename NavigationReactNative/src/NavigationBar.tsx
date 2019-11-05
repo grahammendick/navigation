@@ -9,6 +9,7 @@ var NVNavigationBar = requireNativeComponent<any>('NVNavigationBar', null);
 var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, style, ...otherProps}) => {
     if (Platform.OS === 'android' && hidden)
         return null
+    var constants = (UIManager as any).getViewManagerConfig('NVNavigationBar').Constants;
     var menuItems = (React.Children.toArray(children) as ReactElement<any>[])
         .filter(({type}) => (type === LeftBar || type === RightBar))
         .sort((a, b) => (a.type === b.type ? 0 : (a.type === RightBar ? 1 : -1)))
@@ -16,9 +17,7 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, st
             (React.Children.toArray(props.children) as ReactElement<any>[])
                 .map(({props}) => ({
                     ...props,
-                    show: Platform.OS === 'android'
-                     ? (UIManager as any).getViewManagerConfig('NVNavigationBar').Constants.ShowAsAction[props.show]
-                     : undefined,
+                    show: Platform.OS === 'android' ? constants.ShowAsAction[props.show] : undefined,
                     image: Image.resolveAssetSource(props.image),
                 })
             )
