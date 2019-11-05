@@ -5,7 +5,7 @@ import NavigationBar from './NavigationBar';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
 import BarButton from './BarButton';
-import SearchBarIOS from './SearchBarIOS';
+import SearchBar from './SearchBar';
 import TabBar from './TabBar';
 import TabBarItem from './TabBarItem';
 import SharedElementAndroid from './SharedElementAndroid';
@@ -21,4 +21,4 @@ var BarButtonIOS = Platform.OS === 'ios' ? BarButton : () => null;
 var TabBarIOS = Platform.OS === 'ios' ? TabBar : () => null;
 var TabBarItemIOS = Platform.OS === 'ios' ? TabBarItem : () => null;
 
-export { NavigationStack, Scene, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, NavigationBarIOS, LeftBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SearchBarIOS, TabBar, TabBarItem, TabBarIOS, TabBarItemIOS, SharedElementAndroid, BackHandlerContext };
+export { NavigationStack, Scene, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, NavigationBarIOS, LeftBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SearchBar, TabBar, TabBarItem, TabBarIOS, TabBarItemIOS, SharedElementAndroid, BackHandlerContext };

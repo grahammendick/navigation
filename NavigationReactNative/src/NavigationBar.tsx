@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { requireNativeComponent, Image, Platform, UIManager } from 'react-native';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
-import SearchBarIOS from './SearchBarIOS';
+import SearchBar from './SearchBar';
 import TitleBar from './TitleBar';
 
 var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, style, ...otherProps}) => {
@@ -40,7 +40,7 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, st
             }}>
                 {childrenArray.find(({type}) => type === TitleBar)}
             </NVNavigationBar>
-            {childrenArray.find(({type}) => type === SearchBarIOS)}
+            {childrenArray.find(({type}) => type === SearchBar)}
         </>
     )
 }
