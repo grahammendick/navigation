@@ -108,19 +108,18 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-                .put("onNavigationPress", MapBuilder.of("registrationName", "onNavigationPress"))
-                .put("onActionSelected", MapBuilder.of("registrationName", "onActionSelected"))
-                .build();
+            .put("onNavigationPress", MapBuilder.of("registrationName", "onNavigationPress"))
+            .put("onActionSelected", MapBuilder.of("registrationName", "onActionSelected"))
+            .build();
     }
 
-    @Nullable
     @Override
     public Map<String, Object> getExportedViewConstants() {
         return MapBuilder.<String, Object>of(
-                "ShowAsAction",
-                MapBuilder.of(
-                        "never", MenuItem.SHOW_AS_ACTION_NEVER,
-                        "always", MenuItem.SHOW_AS_ACTION_ALWAYS,
-                        "ifRoom", MenuItem.SHOW_AS_ACTION_IF_ROOM));
+            "ShowAsAction",
+            MapBuilder.of(
+                "never", MenuItem.SHOW_AS_ACTION_NEVER,
+                "always", MenuItem.SHOW_AS_ACTION_ALWAYS,
+                "ifRoom", MenuItem.SHOW_AS_ACTION_IF_ROOM));
     }
 }

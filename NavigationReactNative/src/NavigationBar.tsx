@@ -1,5 +1,5 @@
-import React, {ReactElement} from 'react';
-import {requireNativeComponent, Image, Platform, UIManager} from 'react-native';
+import React, { ReactElement } from 'react';
+import { requireNativeComponent, Image, Platform, UIManager } from 'react-native';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
 import SearchBarIOS from './SearchBarIOS';
