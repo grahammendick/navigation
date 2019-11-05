@@ -9,7 +9,8 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, st
     if (Platform.OS === 'android' && hidden)
         return null
     var constants = (UIManager as any).getViewManagerConfig('NVNavigationBar').Constants;
-    var menuItems = (React.Children.toArray(children) as ReactElement<any>[])
+    var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
+    var menuItems = childrenArray
         .filter(({type}) => (type === LeftBar || type === RightBar))
         .sort((a, b) => (a.type === b.type ? 0 : (a.type === RightBar ? 1 : -1)))
         .map(({props}) => (
@@ -22,10 +23,6 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, st
             )
         ))
         .reduce((a, b) => a.concat(b), [])
-    var getChild = elementType => (
-        React.Children.toArray(children)
-            .find(({type}: ReactElement<any>) => type === elementType)   
-    )
     return (
         <>
             <NVNavigationBar
@@ -41,9 +38,9 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, st
                     if (onPress)
                         onPress();
             }}>
-                {getChild(TitleBar)}
+                {childrenArray.find(({type}) => type === TitleBar)}
             </NVNavigationBar>
-            {getChild(SearchBarIOS)}
+            {childrenArray.find(({type}) => type === SearchBarIOS)}
         </>
     )
 }
