@@ -5,7 +5,6 @@ import RightBar from './RightBar';
 import SearchBarIOS from './SearchBarIOS';
 import TitleBar from './TitleBar';
 
-var NVNavigationBar = requireNativeComponent<any>('NVNavigationBar', null);
 var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, style, ...otherProps}) => {
     if (Platform.OS === 'android' && hidden)
         return null
@@ -34,7 +33,7 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, st
                 logo={Image.resolveAssetSource(logo)}
                 navigationImage={Image.resolveAssetSource(navigationImage)}
                 overflowImage={Image.resolveAssetSource(overflowImage)}
-                style={Platform.OS === 'android' ? { height: 56 } : undefined}
+                style={Platform.OS === 'android' ? {height: 56} : undefined}
                 hidden={hidden}
                 {...otherProps}
                 onActionSelected={({nativeEvent}) => {
@@ -48,4 +47,7 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, st
         </>
     )
 }
+
+var NVNavigationBar = requireNativeComponent<any>('NVNavigationBar', null);
+
 export default NavigationBar;
