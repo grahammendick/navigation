@@ -1,9 +1,6 @@
 package com.navigation.reactnative;
 
 import android.text.InputType;
-import android.view.MenuItem;
-
-import androidx.annotation.Nullable;
 
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
