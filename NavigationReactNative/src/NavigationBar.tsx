@@ -37,9 +37,9 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, st
                     if (onPress)
                         onPress();
             }}>
-                {childrenArray.find(({type}) => type === TitleBar)}
+                {Platform.OS === 'ios' ? children : childrenArray.find(({type}) => type === TitleBar)}
             </NVNavigationBar>
-            {childrenArray.find(({type}) => type === SearchBar)}
+            {Platform.OS === 'ios' ? null : childrenArray.find(({type}) => type === SearchBar)}
         </>
     )
 }
