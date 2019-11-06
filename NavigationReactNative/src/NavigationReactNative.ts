@@ -17,8 +17,8 @@ var TitleBarIOS = Platform.OS === 'ios' ? TitleBar : () => null;
 var RightBarIOS = Platform.OS === 'ios' ? RightBar : () => null;
 var LeftBarIOS = Platform.OS === 'ios' ? LeftBar : () => null;
 var BarButtonIOS = Platform.OS === 'ios' ? BarButton : () => null;
-
+var SearchBarIOS = Platform.OS === 'ios' ? SearchBar : () => null;
 var TabBarIOS = Platform.OS === 'ios' ? TabBar : () => null;
 var TabBarItemIOS = Platform.OS === 'ios' ? TabBarItem : () => null;
 
-export { NavigationStack, Scene, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, NavigationBarIOS, LeftBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SearchBar, TabBar, TabBarItem, TabBarIOS, TabBarItemIOS, SharedElementAndroid, BackHandlerContext };
+export { NavigationStack, Scene, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, NavigationBarIOS, LeftBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SearchBar, SearchBarIOS, TabBar, TabBarItem, TabBarIOS, TabBarItemIOS, SharedElementAndroid, BackHandlerContext };
