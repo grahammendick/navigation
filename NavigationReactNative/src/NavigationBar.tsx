@@ -13,16 +13,15 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, st
     var menuItems = childrenArray
         .filter(({type}) => (type === LeftBar || type === RightBar))
         .sort((a, b) => (a.type === b.type ? 0 : (a.type === RightBar ? 1 : -1)))
-        .map(({props}) => (
-            (React.Children.toArray(props.children) as ReactElement<any>[])
-                .map(({props}) => ({
+        .reduce((buttons, {props}) => (
+            buttons.concat((React.Children.toArray(props.children))
+                .map(({props}: ReactElement<any>) => ({
                     ...props,
                     show: Platform.OS === 'android' ? constants.ShowAsAction[props.show] : undefined,
                     image: Image.resolveAssetSource(props.image),
                 })
-            )
-        ))
-        .reduce((a, b) => a.concat(b), [])
+            ))
+        ), []);
     return (
         <>
             <NVNavigationBar
