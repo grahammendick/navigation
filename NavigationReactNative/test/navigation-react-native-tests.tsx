@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, TouchableHighlight } from 'react-native';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { NavigationStack, NavigationBar, RightBar, BarButton, SearchBarIOS, SharedElementAndroid, TabBar, TabBarItem } from 'navigation-react-native';
+import { NavigationStack, NavigationBar, RightBar, BarButton, SearchBar, SharedElementAndroid, TabBar, TabBarItem } from 'navigation-react-native';
 
 const stateNavigator: StateNavigator = new StateNavigator([
     { key: 'people' },
@@ -46,13 +46,13 @@ class People extends React.Component<any, any> {
         return (
             <>
                 <NavigationBar largeTitle={true} title="Person">
-                    <SearchBarIOS
+                    <SearchBar
                         text={text}
                         autoCapitalize="none"
                         obscureBackground={false}
                         onChangeText={text => this.setState({text})}>
                         <List people={matchedPeople} />
-                    </SearchBarIOS>
+                    </SearchBar>
                 </NavigationBar>
                 <List people={people} />
             </>

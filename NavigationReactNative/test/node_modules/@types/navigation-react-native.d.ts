@@ -175,7 +175,7 @@ export class BarButton extends Component<BarButtonProps> { }
 /**
  * Defines the Search Bar Props contract
  */
-export interface SearchBarIOSProps {
+export interface SearchBarProps {
     /**
      * Indicates whether to to obscure the underlying content
      */
@@ -209,7 +209,12 @@ export interface SearchBarIOSProps {
 /**
  * Renders a serach bar in the UI navigation bar
  */
-export class SearchBarIOS extends Component<SearchBarIOSProps> { }
+export class SearchBarIOS extends Component<SearchBarProps> { }
+
+/**
+ * Renders a serach bar in the UI navigation bar
+ */
+export class SearchBar extends Component<SearchBarProps> { }
 
 /**
  * Defines the Shared Element Props contract
