@@ -1,7 +1,7 @@
 import React from 'react';
 import {Platform, StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {SharedElementAndroid, NavigationBar, SearchBarIOS} from 'navigation-react-native';
+import {SharedElementAndroid, NavigationBar, SearchBar, RightBar, BarButton} from 'navigation-react-native';
 
 const Colors = ({colors, children}) => (
   <NavigationContext.Consumer>
@@ -31,7 +31,7 @@ const Colors = ({colors, children}) => (
 );
 
 const Container = (props) => (
-  Platform.OS === 'ios' ? <ScrollView {...props}/> : <>{props.children}</>
+  Platform.OS === 'ios' ? <ScrollView {...props}/> : <View {...props} />
 );
 
 export default class Grid extends React.Component {
@@ -48,18 +48,22 @@ export default class Grid extends React.Component {
     return (
       <Container
         style={styles.scene}
+        collapsable={false}
         contentInsetAdjustmentBehavior="automatic">
         <NavigationBar
           largeTitle={true}
           title="Colors"
           barTintColor={Platform.OS === 'android' ? '#fff' : null}>
-          <SearchBarIOS
+          <SearchBar
             text={text}
             autoCapitalize="none"
             obscureBackground={false}
             onChangeText={text => this.setState({text})}>
             <Colors colors={matchedColors} />
-          </SearchBarIOS>
+          </SearchBar>
+          <RightBar>
+            <BarButton title="search" show="always" search={true} />
+          </RightBar>
         </NavigationBar>
         <Colors colors={colors} />
       </Container>
@@ -70,6 +74,7 @@ export default class Grid extends React.Component {
 const styles = StyleSheet.create({
   scene: {
     backgroundColor: '#fff',
+    flex: 1,
   },
   colors: {
     flexDirection: 'row',
