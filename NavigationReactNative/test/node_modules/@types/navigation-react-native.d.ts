@@ -165,6 +165,10 @@ export interface BarButtonProps {
      * Determines when this item should appear in the navigation bar
      */
     show?: 'ifRoom' | 'never' | 'always';
+    /**
+     * Indicates whether this item opens the search bar
+     */
+    search?: boolean;
 }
 
 /**

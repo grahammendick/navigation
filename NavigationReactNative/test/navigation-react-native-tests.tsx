@@ -53,6 +53,9 @@ class People extends React.Component<any, any> {
                         onChangeText={text => this.setState({text})}>
                         <List people={matchedPeople} />
                     </SearchBar>
+                    <RightBar>
+                        <BarButton title="Search" search={true} />
+                    </RightBar>
                 </NavigationBar>
                 <List people={people} />
             </>
