@@ -21,7 +21,6 @@ public class SearchBarView extends ReactViewGroup {
     public SearchBarView(Context context) {
         super(context);
         searchView = new SearchView(context);
-        searchView.setBackgroundColor(Color.WHITE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
