@@ -29,39 +29,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
 public class NavigationBarView extends AppBarLayout {
-    class ActionIconControllerListener extends IconResolver.IconControllerListener {
-        private final MenuItem item;
-
-        ActionIconControllerListener(MenuItem item, DraweeHolder holder) {
-            super(holder);
-            this.item = item;
-        }
-
-        @Override
-        protected void setDrawable(Drawable d) {
-            item.setIcon(d);
-            NavigationBarView.this.requestLayout();
-        }
-    }
-
     private IconResolver iconResolver;
-
     Toolbar toolbar;
-
+    private MenuItem searchMenuItem;
+    private OnSearchListener onSearchAddedListener;
+    private static final String PROP_ACTION_ICON = "image";
+    private static final String PROP_ACTION_SHOW = "show";
+    private static final String PROP_ACTION_TITLE = "title";
+    private static final String PROP_ACTION_SEARCH = "search";
     int defaultTitleTextColor;
     ViewOutlineProvider defaultOutlineProvider;
     Drawable defaultBackground;
     Drawable defaultOverflowIcon;
-
     private final DraweeHolder logoHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
     private final DraweeHolder navIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
     private final DraweeHolder overflowIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
-
     private IconResolver.IconControllerListener logoControllerListener;
     private IconResolver.IconControllerListener navIconControllerListener;
     private IconResolver.IconControllerListener overflowIconControllerListener;
-    private final MultiDraweeHolder<GenericDraweeHierarchy> actionsHolder =
-            new MultiDraweeHolder<>();
+    private final MultiDraweeHolder<GenericDraweeHierarchy> actionsHolder = new MultiDraweeHolder<>();
 
     public NavigationBarView(Context context) {
         super(context);
@@ -108,8 +94,7 @@ public class NavigationBarView extends AppBarLayout {
                 WritableMap event = Arguments.createMap();
                 event.putInt("position", item.getOrder());
                 ReactContext reactContext = (ReactContext) getContext();
-                reactContext.getJSModule(RCTEventEmitter.class)
-                        .receiveEvent(getId(),"onActionSelected", event);
+                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onActionSelected", event);
                 return true;
             }
         });
@@ -168,66 +153,77 @@ public class NavigationBarView extends AppBarLayout {
         actionsHolder.onAttach();
     }
 
-    private static final String PROP_ACTION_ICON = "image";
-    private static final String PROP_ACTION_SHOW = "show";
-    private static final String PROP_ACTION_TITLE = "title";
-
     void setMenuItems(@Nullable ReadableArray menuItems) {
         toolbar.getMenu().clear();
         actionsHolder.clear();
-        if (menuItems != null) {
-            for (int i = 0; i < menuItems.size(); i++) {
-                ReadableMap menuItemProps = menuItems.getMap(i);
-                if (menuItemProps == null) {
-                    continue;
-                }
-                String title = menuItemProps.hasKey(PROP_ACTION_TITLE)
-                        ? menuItemProps.getString(PROP_ACTION_TITLE)
-                        : "";
-                ReadableMap iconSource = menuItemProps.getMap(PROP_ACTION_ICON);
-                MenuItem menuItem = toolbar.getMenu().add(Menu.NONE, Menu.NONE, i, title);
-                if (iconSource != null) {
-                    setMenuItemIcon(menuItem, iconSource);
-                }
-                int showAsAction = menuItemProps.hasKey(PROP_ACTION_SHOW)
-                        ? menuItemProps.getInt(PROP_ACTION_SHOW)
-                        : MenuItem.SHOW_AS_ACTION_NEVER;
-                menuItem.setShowAsAction(showAsAction);
+        post(measureAndLayout);
+        for (int i = 0; menuItems != null && i < menuItems.size(); i++) {
+            ReadableMap menuItemProps = menuItems.getMap(i);
+            if (menuItemProps == null)
+                continue;
+            String title = menuItemProps.hasKey(PROP_ACTION_TITLE) ? menuItemProps.getString(PROP_ACTION_TITLE) : "";
+            ReadableMap iconSource = menuItemProps.getMap(PROP_ACTION_ICON);
+            MenuItem menuItem = toolbar.getMenu().add(Menu.NONE, Menu.NONE, i, title);
+            if (iconSource != null)
+                setMenuItemIcon(menuItem, iconSource);
+            int showAsAction = menuItemProps.hasKey(PROP_ACTION_SHOW) ? menuItemProps.getInt(PROP_ACTION_SHOW) : MenuItem.SHOW_AS_ACTION_NEVER;
+            boolean search = menuItemProps.hasKey(PROP_ACTION_SEARCH) && menuItemProps.getBoolean(PROP_ACTION_SEARCH);
+            if (search) {
+                searchMenuItem = menuItem;
+                showAsAction = MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction;
+                if (onSearchAddedListener != null)
+                    onSearchAddedListener.onSearchAdd(searchMenuItem);
+                menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem item) {
+                        onSearchAddedListener.onSearchCollapse();
+                        post(measureAndLayout);
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem item) {
+                        onSearchAddedListener.onSearchExpand();
+                        post(measureAndLayout);
+                        return true;
+                    }
+                });
             }
+            menuItem.setShowAsAction(showAsAction);
         }
     }
 
     private void setMenuItemIcon(final MenuItem item, ReadableMap iconSource) {
-        DraweeHolder<GenericDraweeHierarchy> holder =
-                DraweeHolder.create(createDraweeHierarchy(), getContext());
+        DraweeHolder<GenericDraweeHierarchy> holder = DraweeHolder.create(createDraweeHierarchy(), getContext());
         ActionIconControllerListener controllerListener = new ActionIconControllerListener(item, holder);
         controllerListener.setIconImageInfo(iconResolver.getIconImageInfo(iconSource));
         iconResolver.setIconSource(iconSource, controllerListener, holder);
         actionsHolder.add(holder);
     }
 
-    private GenericDraweeHierarchy createDraweeHierarchy() {
-        return new GenericDraweeHierarchyBuilder(getContext().getResources())
-                .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
-                .setFadeDuration(0)
-                .build();
+    void setOnSearchListener(OnSearchListener onSearchListener) {
+        this.onSearchAddedListener = onSearchListener;
+        if (searchMenuItem != null)
+            this.onSearchAddedListener.onSearchAdd(searchMenuItem);
+
     }
 
-    private final Runnable mLayoutRunnable = new Runnable() {
+    private GenericDraweeHierarchy createDraweeHierarchy() {
+        return new GenericDraweeHierarchyBuilder(getContext().getResources())
+            .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
+            .setFadeDuration(0)
+            .build();
+    }
+
+    private final Runnable measureAndLayout = new Runnable() {
         @Override
         public void run() {
             measure(
-                    MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
-
-    @Override
-    public void requestLayout() {
-        super.requestLayout();
-        post(mLayoutRunnable);
-    }
 
     private int getDefaultTitleTextColor() {
         Resources.Theme theme = getContext().getTheme();
@@ -245,5 +241,26 @@ public class NavigationBarView extends AppBarLayout {
 
     private static int getIdentifier(Context context, String name) {
         return context.getResources().getIdentifier(name, "attr", context.getPackageName());
+    }
+
+    class ActionIconControllerListener extends IconResolver.IconControllerListener {
+        private final MenuItem item;
+
+        ActionIconControllerListener(MenuItem item, DraweeHolder holder) {
+            super(holder);
+            this.item = item;
+        }
+
+        @Override
+        protected void setDrawable(Drawable d) {
+            item.setIcon(d);
+            post(measureAndLayout);
+        }
+    }
+
+    interface OnSearchListener {
+        void onSearchAdd(MenuItem searchMenuItem);
+        void onSearchExpand();
+        void onSearchCollapse();
     }
 }

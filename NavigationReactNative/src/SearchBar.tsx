@@ -1,10 +1,11 @@
 import React from 'react';
-import { requireNativeComponent, Platform, StyleSheet, View } from 'react-native';
+import { requireNativeComponent, Platform, StyleSheet, UIManager, View } from 'react-native';
 
-class SearchBar extends React.Component {
+class SearchBar extends React.Component<any, any> {
     private ref: React.RefObject<View>;
     constructor(props) {
         super(props);
+        this.state = {show: false};
         this.ref = React.createRef<View>();
         this.onChangeText = this.onChangeText.bind(this);
     }
@@ -23,12 +24,18 @@ class SearchBar extends React.Component {
 
     }
     render() {
+        var {autoCapitalize, ...props} = this.props;
+        var constants = (UIManager as any).getViewManagerConfig('NVSearchBar').Constants;
+        autoCapitalize = Platform.OS === 'android' ? constants.AutoCapitalize[autoCapitalize] : autoCapitalize;
         return (
             <NVSearchBar
-                {...this.props}
+                {...props}
                 ref={this.ref}
+                autoCapitalize={autoCapitalize}
                 onChangeText={this.onChangeText}
-                style={styles.searchBar} />
+                onExpand={() => this.setState({show: true})}
+                onCollapse={() => this.setState({show: false})}
+                style={[styles.searchBar, {zIndex: Platform.OS === 'android' && this.state.show ? 58 : -58}]} />
         );
     }
 }
@@ -38,8 +45,13 @@ var NVSearchBar = requireNativeComponent<any>('NVSearchBar', null);
 var styles = StyleSheet.create({
     searchBar: {
         position: 'absolute',
-        zIndex: -58,
+        ...Platform.select({
+            android: {
+                top: 56, right: 0,
+                bottom: 0, left: 0,
+            },
+        })
     },
 });
 
-export default Platform.OS === 'ios' ? SearchBar : () => null;
+export default SearchBar;

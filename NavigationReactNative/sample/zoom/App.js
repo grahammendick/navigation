@@ -18,7 +18,7 @@ var stateNavigator = new StateNavigator([
 
 const { grid, detail } = stateNavigator.states;
 grid.renderScene = () => <Grid colors={colors}/>;
-detail.renderScene = ({color}) => <Detail colors={colors} color={color}/>;
+detail.renderScene = (data) => <Detail colors={colors} {...data}/>;
 
 stateNavigator.navigate('grid');
 
@@ -38,6 +38,6 @@ Linking.addEventListener('url', ({url}) => openLink(url));
 
 export default () => (
   <NavigationHandler stateNavigator={stateNavigator}>
-    <NavigationStack sharedElements={(_, {color}) => color && [color]} />
+    <NavigationStack sharedElements={(_, {name}) => name && [name]} />
   </NavigationHandler>
 );
