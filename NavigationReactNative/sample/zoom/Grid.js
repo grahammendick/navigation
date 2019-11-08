@@ -3,32 +3,40 @@ import {Platform, StyleSheet, ScrollView, View, TouchableHighlight} from 'react-
 import {NavigationContext} from 'navigation-react';
 import {SharedElementAndroid, NavigationBar, SearchBar, RightBar, BarButton} from 'navigation-react-native';
 
-const Colors = ({colors, children}) => (
-  <NavigationContext.Consumer>
-    {({stateNavigator}) => (
-      <ScrollView
-        style={styles.scene}
-        contentInsetAdjustmentBehavior="automatic">
-        <View style={styles.colors}>
-          {colors.map(color => (
-            <TouchableHighlight
-              key={color}
-              style={styles.color}
-              underlayColor={color}                
-              onPress={() => {
-                stateNavigator.navigate('detail', {color});
-              }}>
-              <SharedElementAndroid name={color} style={{flex: 1}}>
-                <View style={{backgroundColor: color, flex: 1}} />
-              </SharedElementAndroid>
-            </TouchableHighlight>
-          ))}
-          {children}
-        </View>
-      </ScrollView>
-    )}
-  </NavigationContext.Consumer>
-);
+const Colors = ({colors, children, filter}) => {
+  const suffix = filter != null ? '_search' : '';
+  const matchedColors = colors.filter(color => (
+    !filter || color.indexOf(filter.toLowerCase()) !== -1
+  ));
+  return (
+    <NavigationContext.Consumer>
+      {({stateNavigator}) => (
+        <ScrollView
+          style={styles.scene}
+          contentInsetAdjustmentBehavior="automatic">
+          <View style={styles.colors}>
+            {matchedColors.map(color => (
+              <TouchableHighlight
+                key={color}
+                style={styles.color}
+                underlayColor={color}                
+                onPress={() => {
+                  stateNavigator.navigate('detail', {
+                    color, name: color + suffix, filter, search: filter != null
+                  });
+                }}>
+                <SharedElementAndroid name={color + suffix} style={{flex: 1}}>
+                  <View style={{backgroundColor: color, flex: 1}} />
+                </SharedElementAndroid>
+              </TouchableHighlight>
+            ))}
+            {children}
+          </View>
+        </ScrollView>
+      )}
+    </NavigationContext.Consumer>
+  );
+}
 
 const Container = (props) => (
   Platform.OS === 'ios' ? <ScrollView {...props}/> : <View {...props} />
@@ -42,9 +50,6 @@ export default class Grid extends React.Component {
   render() {
     const {colors} = this.props;
     const {text} = this.state;
-    const matchedColors = colors.filter(color => (
-      color.indexOf(text.toLowerCase()) !== -1
-    ));
     return (
       <Container
         style={styles.scene}
@@ -59,7 +64,7 @@ export default class Grid extends React.Component {
             autoCapitalize="none"
             obscureBackground={false}
             onChangeText={text => this.setState({text})}>
-            <Colors colors={matchedColors} />
+            <Colors colors={colors} filter={text} />
           </SearchBar>
           <RightBar>
             <BarButton title="search" show="always" search={true} />

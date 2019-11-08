@@ -3,7 +3,7 @@ import {Platform, StyleSheet, ScrollView, Text, View, TouchableHighlight} from '
 import {NavigationContext} from 'navigation-react';
 import {NavigationBar, RightBar, BarButton, TitleBar, SharedElementAndroid} from 'navigation-react-native';
 
-export default ({colors, color}) => (
+export default ({colors, color, name, filter, search}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <>
@@ -22,7 +22,7 @@ export default ({colors, color}) => (
         </NavigationBar>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <SharedElementAndroid
-            name={color}
+            name={name}
             style={styles.color}
             transition="overshoot">
             <View style={{backgroundColor: color, flex: 1}} />
@@ -30,17 +30,22 @@ export default ({colors, color}) => (
           <Text style={styles.text}>{color}</Text>
           <View style={styles.colors}>
             {[1,2,3].map(i => colors[(colors.indexOf(color) + i) % 15])
-              .map(subcolor => (
-                <TouchableHighlight
-                  key={subcolor}
-                  style={[styles.subcolor, {backgroundColor: subcolor}]}
-                  underlayColor={subcolor}
-                  onPress={() => {
-                    stateNavigator.navigate('detail', {color: subcolor});
-                  }}>
-                    <View />
-                </TouchableHighlight>
-              )
+              .map(subcolor => {
+                const suffix = search ? '_search' : '';
+                const matched = !filter || subcolor.indexOf(filter.toLowerCase()) !== -1;
+                const name = matched ? subcolor + suffix : null;
+                return (
+                  <TouchableHighlight
+                    key={subcolor}
+                    style={[styles.subcolor, {backgroundColor: subcolor}]}
+                    underlayColor={subcolor}
+                    onPress={() => {
+                      stateNavigator.navigate('detail', {color: subcolor, name, filter, search});
+                    }}>
+                      <View />
+                  </TouchableHighlight>
+                )
+              }
             )}
           </View>
         </ScrollView>
