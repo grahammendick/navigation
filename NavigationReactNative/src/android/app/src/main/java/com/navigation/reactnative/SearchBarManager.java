@@ -48,7 +48,8 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
             .put("onChangeText", MapBuilder.of("registrationName", "onChangeText"))
-            .put("onShow", MapBuilder.of("registrationName", "onShow"))
+            .put("onExpand", MapBuilder.of("registrationName", "onExpand"))
+            .put("onCollapse", MapBuilder.of("registrationName", "onCollapse"))
             .build();
     }
 

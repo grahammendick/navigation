@@ -33,7 +33,8 @@ class SearchBar extends React.Component<any, any> {
                 ref={this.ref}
                 autoCapitalize={autoCapitalize}
                 onChangeText={this.onChangeText}
-                onShow={({nativeEvent: {show}}) => this.setState({show})}
+                onExpand={() => this.setState({show: true})}
+                onCollapse={() => this.setState({show: false})}
                 style={[styles.searchBar, {zIndex: Platform.OS === 'android' && this.state.show ? 58 : -58}]} />
         );
     }

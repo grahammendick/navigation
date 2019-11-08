@@ -1,7 +1,6 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
@@ -64,18 +63,14 @@ public class SearchBarView extends ReactViewGroup {
 
                 @Override
                 public void onSearchExpand() {
-                    WritableMap event = Arguments.createMap();
-                    event.putBoolean("show", true);
                     ReactContext reactContext = (ReactContext) getContext();
-                    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onShow", event);
+                    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onExpand", null);
                 }
 
                 @Override
                 public void onSearchCollapse() {
-                    WritableMap event = Arguments.createMap();
-                    event.putBoolean("show", false);
                     ReactContext reactContext = (ReactContext) getContext();
-                    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onShow", event);
+                    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onCollapse", null);
                 }
             });
         }
