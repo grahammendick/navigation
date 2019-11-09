@@ -1,5 +1,8 @@
 package com.navigation.reactnative;
 
+import android.os.Build;
+import android.view.View;
+
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -59,6 +62,41 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     @Override
     protected NavigationStackView createViewInstance(@Nonnull ThemedReactContext reactContext) {
         return new NavigationStackView(reactContext);
+    }
+
+    @Override
+    public void addView(NavigationStackView parent, View child, int index) {
+        if (child instanceof FragmentContainerView) {
+            parent.addView(child, index);
+            return;
+        }
+        SceneView scene = (SceneView) child;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            scene.setElevation(getChildAt(parent, index - 1).getElevation() + 1);
+        parent.sceneKeys.add(index - 1, scene.sceneKey);
+        parent.scenes.put(scene.sceneKey, scene);
+    }
+
+    @Override
+    public void removeViewAt(NavigationStackView parent, int index) {
+        if (index == 0) {
+            parent.removeViewAt(index);
+            return;
+        }
+        String sceneKey = parent.sceneKeys.remove(index - 1);
+        parent.scenes.remove(sceneKey);
+    }
+
+    @Override
+    public int getChildCount(NavigationStackView parent) {
+        return parent.scenes.size() + 1;
+    }
+
+    @Override
+    public View getChildAt(NavigationStackView parent, int index) {
+        if (index == 0)
+            return parent.getChildAt(index);
+        return parent.scenes.get(parent.sceneKeys.get(index - 1));
     }
 
     @Override

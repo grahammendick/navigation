@@ -3,8 +3,6 @@ package com.navigation.reactnative;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
-import android.os.Build;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
@@ -20,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class NavigationStackView extends ViewGroup {
-    private ArrayList<String> sceneKeys = new ArrayList<>();
+    protected ArrayList<String> sceneKeys = new ArrayList<>();
     protected HashMap<String, SceneView> scenes = new HashMap<>();
     protected ReadableArray keys;
     private Activity mainActivity;
@@ -34,29 +32,6 @@ public class NavigationStackView extends ViewGroup {
 
     public NavigationStackView(Context context) {
         super(context);
-    }
-
-    @Override
-    public void addView(View child, int index) {
-        if (child instanceof FragmentContainerView) {
-            super.addView(child, index);
-            return;
-        }
-        SceneView scene = (SceneView) child;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            scene.setElevation(getChildAt(index - 1).getElevation() + 1);
-        sceneKeys.add(index - 1, scene.sceneKey);
-        scenes.put(scene.sceneKey, scene);
-    }
-
-    @Override
-    public void removeViewAt(int index) {
-        if (index == 0) {
-            super.removeViewAt(index);
-            return;
-        }
-        String sceneKey = sceneKeys.remove(index - 1);
-        scenes.remove(sceneKey);
     }
 
     protected void onAfterUpdateTransaction() {
@@ -91,18 +66,6 @@ public class NavigationStackView extends ViewGroup {
         }
         navigator.oldCrumb = keys.size() - 1;
         navigator.oldKey = keys.getString(navigator.oldCrumb);
-    }
-
-    @Override
-    public int getChildCount() {
-        return scenes.size() + 1;
-    }
-
-    @Override
-    public View getChildAt(int index) {
-        if (index == 0)
-            return super.getChildAt(index);
-        return scenes.get(sceneKeys.get(index - 1));
     }
 
     @Override
