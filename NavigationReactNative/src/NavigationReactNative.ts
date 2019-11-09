@@ -8,7 +8,7 @@ import BarButton from './BarButton';
 import SearchBar from './SearchBar';
 import TabBar from './TabBar';
 import TabBarItem from './TabBarItem';
-import SharedElementAndroid from './SharedElementAndroid';
+import SharedElement from './SharedElement';
 import TitleBar from './TitleBar';
 import BackHandlerContext from './BackHandlerContext';
 
@@ -20,5 +20,6 @@ var BarButtonIOS = Platform.OS === 'ios' ? BarButton : () => null;
 var SearchBarIOS = Platform.OS === 'ios' ? SearchBar : () => null;
 var TabBarIOS = Platform.OS === 'ios' ? TabBar : () => null;
 var TabBarItemIOS = Platform.OS === 'ios' ? TabBarItem : () => null;
+var SharedElementAndroid = Platform.OS === 'android' ? SharedElement : () => null;
 
-export { NavigationStack, Scene, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, NavigationBarIOS, LeftBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SearchBar, SearchBarIOS, TabBar, TabBarItem, TabBarIOS, TabBarItemIOS, SharedElementAndroid, BackHandlerContext };
+export { NavigationStack, Scene, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, NavigationBarIOS, LeftBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SearchBar, SearchBarIOS, TabBar, TabBarItem, TabBarIOS, TabBarItemIOS, SharedElement, SharedElementAndroid, BackHandlerContext };

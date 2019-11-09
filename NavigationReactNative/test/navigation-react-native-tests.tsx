@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, TouchableHighlight } from 'react-native';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { NavigationStack, NavigationBar, RightBar, BarButton, SearchBar, SharedElementAndroid, TabBar, TabBarItem } from 'navigation-react-native';
+import { NavigationStack, NavigationBar, RightBar, BarButton, SearchBar, SharedElement, TabBar, TabBarItem } from 'navigation-react-native';
 
 const stateNavigator: StateNavigator = new StateNavigator([
     { key: 'people' },
@@ -20,9 +20,9 @@ var List = ({people, children}: any) => (
                             onPress={() => {
                                 stateNavigator.navigate('person', {name});
                         }}>
-                            <SharedElementAndroid name={name}>
+                            <SharedElement name={name}>
                                 <Text>{name}</Text>
-                            </SharedElementAndroid>
+                            </SharedElement>
                         </TouchableHighlight>
                     ))}
                     {children}
@@ -75,9 +75,9 @@ var Person = ({ name }) => (
                     </RightBar>
                 </NavigationBar>
                 <View>
-                    <SharedElementAndroid name={name} transition="bounce">
+                    <SharedElement name={name} transition="bounce">
                         <Text>{name}</Text>
-                    </SharedElementAndroid>
+                    </SharedElement>
                 </View>
             </>
         )}

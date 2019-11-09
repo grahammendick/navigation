@@ -1,7 +1,7 @@
 import React from 'react';
 import {Platform, StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {SharedElementAndroid, NavigationBar, SearchBar, RightBar, BarButton} from 'navigation-react-native';
+import {SharedElement, NavigationBar, SearchBar, RightBar, BarButton} from 'navigation-react-native';
 
 const Colors = ({colors, children, filter}) => {
   const suffix = filter != null ? '_search' : '';
@@ -25,9 +25,9 @@ const Colors = ({colors, children, filter}) => {
                     color, name: color + suffix, filter, search: filter != null
                   });
                 }}>
-                <SharedElementAndroid name={color + suffix} style={{flex: 1}}>
+                <SharedElement name={color + suffix} style={{flex: 1}}>
                   <View style={{backgroundColor: color, flex: 1}} />
-                </SharedElementAndroid>
+                </SharedElement>
               </TouchableHighlight>
             ))}
             {children}

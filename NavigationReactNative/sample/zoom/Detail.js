@@ -1,7 +1,7 @@
 import React from 'react';
 import {Platform, StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBar, RightBar, BarButton, TitleBar, SharedElementAndroid} from 'navigation-react-native';
+import {NavigationBar, RightBar, BarButton, TitleBar, SharedElement} from 'navigation-react-native';
 
 export default ({colors, color, name, filter, search}) => (
   <NavigationContext.Consumer>
@@ -21,12 +21,9 @@ export default ({colors, color, name, filter, search}) => (
           </RightBar>
         </NavigationBar>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
-          <SharedElementAndroid
-            name={name}
-            style={styles.color}
-            transition="overshoot">
+          <SharedElement name={name} style={styles.color} transition="overshoot">
             <View style={{backgroundColor: color, flex: 1}} />
-          </SharedElementAndroid>
+          </SharedElement>
           <Text style={styles.text}>{color}</Text>
           <View style={styles.colors}>
             {[1,2,3].map(i => colors[(colors.indexOf(color) + i) % 15])

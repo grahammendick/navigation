@@ -223,7 +223,7 @@ export class SearchBar extends Component<SearchBarProps> { }
 /**
  * Defines the Shared Element Props contract
  */
-export interface SharedElementAndroidProps {
+export interface SharedElementProps {
     /**
      * The name shared across scenes by the two elements
      */
@@ -241,7 +241,12 @@ export interface SharedElementAndroidProps {
 /**
  * Shares its child UI element between scenes during navigation
  */
-export class SharedElementAndroid extends Component<SharedElementAndroidProps> {}
+export class SharedElementAndroid extends Component<SharedElementProps> {}
+
+/**
+ * Shares its child UI element between scenes during navigation
+ */
+export class SharedElement extends Component<SharedElementProps> {}
 
 /**
  * The context for overriding default hardware back handling
