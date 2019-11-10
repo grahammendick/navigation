@@ -29,7 +29,16 @@ detail.truncateCrumbTrail = (state, data, crumbs) => (
 var openLink = (url) => {
   if (url) {
     var color = url.split('=')[1];
-    stateNavigator.navigate('detail', {color});
+    var {state, data} = stateNavigator.stateContext;
+    if (state === detail) {
+      const {filter, search} = data;
+      const suffix = search ? '_search' : '';
+      const matched = !filter || color.indexOf(filter.toLowerCase()) !== -1;
+      const name = matched ? color + suffix : null;
+      stateNavigator.navigate('detail', {color, name, filter, search});
+    } else {
+      stateNavigator.navigate('detail', {color, name: color});
+    }
   }
 };
 
