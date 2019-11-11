@@ -91,6 +91,10 @@
             <p>
                 The <code>SearchBar</code> component displays a search bar below the title in the navigation bar. It calls the <code>onChangeText</code> prop whenever the search text changes. Any search results you render into the component’s children are displayed in a new native screen that sits over the top of the current one. On Android, you trigger the search via a <code>BarButton</code> with the <code>search</code> prop set to 'true'. We allow the user to search their inbox in our example application by adding a <code>SearchBar</code> component to the 'mail' scene. Setting <code>obscureBackground</code> to 'false' on iOS keeps the inbox interactive when the search text is focused but empty.
             </p>
+            <div class="Note">
+                <h2>Note</h2>
+                On Android, wrap the scene in a <code>View</code> component with <code>collapsable</code> set to 'false'. On iOS, wrap the scene in a <code>ScrollView</code> component with <code>contentInsetAdjustmentBehavior</code> set to 'automatic'
+            </div>
             <pre><code class="language-jsx">import {NavigationBar, RightBar, BarButton, SearchBar} from 'navigation-react-native';
 
 &lt;NavigationBar title="Inbox">
