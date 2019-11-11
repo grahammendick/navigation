@@ -79,7 +79,7 @@
             </p>
             <pre><code class="language-jsx">import {NavigationBar, RightBar, BarButton} from 'navigation-react-native';
 
-&lt;NavigationBar>
+&lt;NavigationBar title="Inbox">
   &lt;RightBar>
     &lt;BarButton title="compose" systemItem="compose" onPress={() => {
       stateNavigator.navigate('compose');
@@ -87,22 +87,27 @@
   &lt;/RightBar>
 &lt;/NavigationBar>
 </code></pre>
-            <h2>Adding a Search Bar on iOS</h2>
+            <h2>Adding a Search Bar</h2>
             <p>
-                The <code>SearchBarIOS</code> component displays a search bar below the title in the navigation bar. It calls the <code>onChangeText</code> prop whenever the search text changes. Any search results you render into the component’s children are displayed in a new native screen that sits over the top of the current one. We allow the user to search their inbox in our example application by adding a <code>SearchBarIOS</code> component to the 'mail' scene. Setting <code>obscureBackground</code> to 'false' keeps the inbox interactive when the search text is focused but empty.
+                The <code>SearchBar</code> component displays a search bar below the title in the navigation bar. It calls the <code>onChangeText</code> prop whenever the search text changes. Any search results you render into the component’s children are displayed in a new native screen that sits over the top of the current one. We allow the user to search their inbox in our example application by adding a <code>SearchBar</code> component to the 'mail' scene. Setting <code>obscureBackground</code> to 'false' keeps the inbox interactive when the search text is focused but empty.
             </p>
-            <pre><code class="language-jsx">import {SearchBarIOS} from 'navigation-react-native';
+            <pre><code class="language-jsx">import {NavigationBar, RightBar, BarButton, SearchBar} from 'navigation-react-native';
 
-&lt;SearchBarIOS
-  text={text}
-  obscureBackground={false}
-  onChangeText={text => this.setState({text})}>
-  &lt;ScrollView>
-    {mails
-      .filter(({message}) => message.indexOf(text) !== -1)
-      .map(({title}) => &lt;Text>{title}&lt;/Text>)}
-  &lt;/ScrollView>
-&lt;/SearchBarIOS>
+&lt;NavigationBar title="Inbox">
+  &lt;SearchBar
+    text={text}
+    obscureBackground={false}
+    onChangeText={text => this.setState({text})}>
+    &lt;ScrollView>
+      {mails
+        .filter(({message}) => message.indexOf(text) !== -1)
+        .map(({title}) => &lt;Text>{title}&lt;/Text>)}
+    &lt;/ScrollView>
+  &lt;/SearchBar>
+  &lt;RightBar>
+    &lt;BarButton title="search" search={true} />
+  &lt;/RightBar>
+&lt;/NavigationBar>
 </code></pre>
         </div>
     </div>
