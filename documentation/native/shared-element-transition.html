@@ -54,24 +54,24 @@
         <div id="article">
             <h1>Shared Element Transition (Android)</h1>
             <p>
-                Android supports shared element transitions, where you can smoothly animate between UI elements that are common across two scenes. The Navigation router exposes this functionality to React using the <code>SharedElementAndroid</code> component. To identify a pair of shareable elements, you wrap each one in a <code>SharedElementAndroid</code> component and give them both the same <code>name</code>.
+                Android supports shared element transitions, where you can smoothly animate between UI elements that are common across two scenes. The Navigation router exposes this functionality to React using the <code>SharedElement</code> component. To identify a pair of shareable elements, you wrap each one in a <code>SharedElement</code> component and give them both the same <code>name</code>.
             </p>
             <p>
-                In our email example app, we can smooth out the transition when a user opens an email by sharing the subject of the email between the 'inbox' scene and the 'mail' scene. We wrap the subject elements on each scene inside a <code>SharedElementAndroid</code> component and give them both the same name.
+                In our email example app, we can smooth out the transition when a user opens an email by sharing the subject of the email between the 'inbox' scene and the 'mail' scene. We wrap the subject elements on each scene inside a <code>SharedElement</code> component and give them both the same name.
             </p>
             <pre><code class="language-jsx">// The 'inbox' scene
 &lt;TouchableHighlight
-    onPress={() => {
-        stateNavigator.navigate('mail', {id: id});
-    }}>
-    &lt;SharedElementAndroid name={'email' + id}>
-        &lt;Text>Meeting invite&lt;/Text>
-    &lt;/SharedElementAndroid>
+  onPress={() => {
+    stateNavigator.navigate('mail', {id: id});
+  }}>
+  &lt;SharedElement name={'email' + id}>
+    &lt;Text>Meeting invite&lt;/Text>
+  &lt;/SharedElement>
 &lt;/TouchableHighlight></code></pre>
             <pre><code class="language-jsx">// The 'mail' scene
-&lt;SharedElementAndroid name={'email' + id}>
-    &lt;Text>Meeting invite&lt;/Text>
-&lt;/SharedElementAndroid></code></pre>
+&lt;SharedElement name={'email' + id}>
+  &lt;Text>Meeting invite&lt;/Text>
+&lt;/SharedElement></code></pre>
             <p> 
                 When you navigate between two <code>States</code>, the Navigation router calls the function you assign to the <code>sharedElements</code> prop of the <code>NavigationStack</code> component. You return an array containing the names of the shared elements that are to participate in the transition. In our email example, we check the destination is the 'mail' <code>State</code> before returning the name corresponding to the selected email.
             </p>
@@ -87,16 +87,16 @@
             </p>
             <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
 &lt;transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
-    &lt;changeBounds android:interpolator="@android:interpolator/overshoot"/>
-    &lt;changeTransform android:interpolator="@android:interpolator/overshoot"/>
+  &lt;changeBounds android:interpolator="@android:interpolator/overshoot"/>
+  &lt;changeTransform android:interpolator="@android:interpolator/overshoot"/>
 &lt;/transitionSet></code></pre>
             <p>
-                To get this animation to play when the 'mail' scene's <code>Text</code> component mounts and unmounts, we pass the name of our resource file to the <code>transition</code> prop of the <code>SharedElementAndroid</code> component.
+                To get this animation to play when the 'mail' scene's <code>Text</code> component mounts and unmounts, we pass the name of our resource file to the <code>transition</code> prop of the <code>SharedElement</code> component.
             </p>
             <pre><code class="language-jsx">// The 'mail' scene
-&lt;SharedElementAndroid name={'email' + id} transition="email_overshoot">
-    &lt;Text>Meeting invite&lt;/Text>
-&lt;/SharedElementAndroid></code></pre>
+&lt;SharedElement name={'email' + id} transition="email_overshoot">
+  &lt;Text>Meeting invite&lt;/Text>
+&lt;/SharedElement></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
