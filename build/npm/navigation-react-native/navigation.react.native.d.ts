@@ -69,19 +69,18 @@ export interface NavigationBarProps {
      * The color of the title view
      */
     titleColor?: string;
-
     /**
      * The logo
      */
-    logo?: ImageURISource;
+    logo?: ImageRequireSource | ImageURISource;
     /**
      * The menu overflow image
      */
-    overflowImage?: ImageURISource;
+    overflowImage?: ImageRequireSource | ImageURISource;
     /**
      * The navigation button image
      */
-    navigationImage?: ImageURISource;
+    navigationImage?: ImageRequireSource | ImageURISource;
     /**
      * Handles navigation button click events
      */
@@ -149,7 +148,7 @@ export interface BarButtonProps {
     /**
      * The button image
      */
-    image?: ImageURISource;
+    image?: ImageRequireSource | ImageURISource;
     /**
      * The button system item
      */
