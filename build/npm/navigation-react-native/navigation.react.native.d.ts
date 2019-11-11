@@ -316,6 +316,10 @@ export interface TabBarProps {
      * Indicates whether the tabs should be at the bottom
      */
     bottomTabs?: boolean;
+    /**
+     * Indicates whether the tab bar can be scrolled horizontally
+     */
+    scrollable?: boolean;
 }
 
 /**

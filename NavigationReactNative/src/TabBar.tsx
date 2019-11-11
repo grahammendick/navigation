@@ -18,7 +18,7 @@ class TabBar extends React.Component<any, any> {
         return !!selectedTab;
     }
     render() {
-        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs} = this.props;
+        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable} = this.props;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && typeof props.image === 'string');
         var tabLayout = Platform.OS === 'android' && (
@@ -26,6 +26,7 @@ class TabBar extends React.Component<any, any> {
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
+                scrollable={scrollable}
                 style={{backgroundColor: barTintColor, height: titleOnly ? 48 : 72}} />
         );
         return (
@@ -41,6 +42,7 @@ class TabBar extends React.Component<any, any> {
                     barTintColor={barTintColor}
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}
+                    scrollable={scrollable}
                     style={styles.tabBar}>
                         <BackButton onPress={this.handleBack} />
                         {tabBarItems
