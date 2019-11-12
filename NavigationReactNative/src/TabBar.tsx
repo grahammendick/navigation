@@ -10,6 +10,7 @@ class TabBar extends React.Component<any, any> {
     }
     static defaultProps = {
         bottomTabs: false,
+        scrollable: false
     }
     handleBack() {
         var {selectedTab} = this.state;
@@ -26,7 +27,7 @@ class TabBar extends React.Component<any, any> {
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
-                scrollable={scrollable}
+                scrollable={scrollable?scrollable:false}
                 style={{backgroundColor: barTintColor, height: titleOnly ? 48 : 72}} />
         );
         return (
@@ -42,7 +43,6 @@ class TabBar extends React.Component<any, any> {
                     barTintColor={barTintColor}
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}
-                    scrollable={scrollable}
                     style={styles.tabBar}>
                         <BackButton onPress={this.handleBack} />
                         {tabBarItems

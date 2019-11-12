@@ -22,6 +22,11 @@ public class TabLayoutView extends TabLayout {
         setSelectedTabIndicatorColor(defaultTextColor);
     }
 
+    public void setScrollable(boolean scrollable) {
+        setTabMode(scrollable ? TabLayout.MODE_SCROLLABLE : TabLayout.MODE_FIXED);
+        post(measureAndLayout);
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
