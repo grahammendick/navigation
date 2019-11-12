@@ -67,12 +67,14 @@ public class NavigationBarView extends AppBarLayout {
             @Override
             protected void setDrawable(Drawable d) {
                 toolbar.setLogo(d);
+                post(measureAndLayout);
             }
         };
         navIconControllerListener = new IconResolver.IconControllerListener(navIconHolder) {
             @Override
             protected void setDrawable(Drawable d) {
                 toolbar.setNavigationIcon(d);
+                post(measureAndLayout);
             }
         };
         overflowIconControllerListener = new IconResolver.IconControllerListener(overflowIconHolder) {
