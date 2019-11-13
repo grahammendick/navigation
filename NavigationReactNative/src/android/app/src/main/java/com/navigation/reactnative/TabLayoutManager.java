@@ -35,6 +35,11 @@ public class TabLayoutManager extends ViewGroupManager<TabLayoutView> {
         view.setSelectedTabIndicatorGravity(!selectedIndicatorAtTop ? TabLayout.INDICATOR_GRAVITY_BOTTOM : TabLayout.INDICATOR_GRAVITY_TOP);
     }
 
+    @ReactProp(name = "scrollable")
+    public void setScrollable(TabLayoutView view, @Nullable boolean scrollable) {
+        view.setScrollable(scrollable);
+    }
+
     @Nonnull
     @Override
     protected TabLayoutView createViewInstance(@Nonnull ThemedReactContext reactContext) {
