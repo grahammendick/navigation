@@ -36,8 +36,7 @@ public class TabLayoutManager extends ViewGroupManager<TabLayoutView> {
     }
 
     @ReactProp(name = "scrollable")
-    public void setTabScrollable(TabLayoutView view, @Nullable boolean scrollable) {
-        view.setTabMode(scrollable ? TabLayout.MODE_SCROLLABLE : TabLayout.MODE_FIXED);
+    public void setScrollable(TabLayoutView view, @Nullable boolean scrollable) {
         view.setScrollable(scrollable);
     }
 

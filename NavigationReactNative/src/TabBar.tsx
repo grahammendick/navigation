@@ -27,7 +27,7 @@ class TabBar extends React.Component<any, any> {
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
-                scrollable={scrollable?scrollable:false}
+                scrollable={scrollable}
                 style={{backgroundColor: barTintColor, height: titleOnly ? 48 : 72}} />
         );
         return (
