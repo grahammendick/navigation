@@ -1,9 +1,8 @@
 import React, { ReactNode } from 'react';
-import { requireNativeComponent, StyleSheet, View } from 'react-native';
+import { requireNativeComponent, Platform, StyleSheet, View } from 'react-native';
 import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import BackButton from './BackButton';
-import FragmentContainer from './FragmentContainer';
 import PopSync from './PopSync';
 import Scene from './Scene';
 type NavigationStackProps = {stateNavigator: StateNavigator, primary: boolean, fragmentMode: boolean, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
@@ -91,7 +90,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 {...this.getAnimation()}
                 onDidNavigateBack={this.onDidNavigateBack}>
                 <BackButton onPress={this.handleBack} />
-                <FragmentContainer style={{flex: 1}} />
+                {Platform.OS === 'android' && <NVFragmentContainer style={styles.stack} />}
                 <PopSync<{crumb: number}>
                     data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
                     getKey={({crumb}) => keys[crumb]}>
@@ -112,7 +111,8 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     }
 };
 
-var  NVNavigationStack = requireNativeComponent<any>('NVNavigationStack', null);
+var NVFragmentContainer = requireNativeComponent<any>('NVFragmentContainer', null);
+var NVNavigationStack = requireNativeComponent<any>('NVNavigationStack', null);
 
 const styles = StyleSheet.create({
     stack: {
