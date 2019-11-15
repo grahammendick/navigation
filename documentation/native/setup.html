@@ -70,14 +70,16 @@ import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
 import {NavigationStack} from 'navigation-react-native';
 
-var stateNavigator = new StateNavigator([
+const stateNavigator = new StateNavigator([
 ]);
 
-export default () => (
+const App = () => (
   &lt;NavigationHandler stateNavigator={stateNavigator}>
     &lt;NavigationStack />
   &lt;/NavigationHandler>
-);</code></pre>
+);
+
+export default App;</code></pre>
           </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
