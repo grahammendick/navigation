@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
@@ -51,17 +52,19 @@ public class TabBarView extends ViewPager {
     }
 
     void populateTabIcons() {
-        TabLayoutView tabLayout = getTabLayout();
+        final TabLayoutView tabLayout = getTabLayout();
         if (tabLayout != null && getAdapter() != null) {
             for(int i = 0; i < tabLayout.getTabCount(); i++) {
-                Integer imageReource = getAdapter().tabFragments.get(i).tabBarItem.imageResource;
-                TabLayout.Tab tab = tabLayout.getTabAt(i);
-                if (tab != null) {
-                    if (imageReource != null && imageReource != 0)
-                        tab.setIcon(imageReource);
-                    else
-                        tab.setIcon(null);
-                }
+                final TabLayout.Tab tab = tabLayout.getTabAt(i);
+                getAdapter().tabFragments.get(i).tabBarItem.setOnIconListener(new TabBarItemView.OnIconListener() {
+                    @Override
+                    public void onIconResolve(Drawable icon) {
+                        if (tab != null) {
+                            tab.setIcon(icon);
+                            post(tabLayout.measureAndLayout);
+                        }
+                    }
+                });
             }
         }
     }
