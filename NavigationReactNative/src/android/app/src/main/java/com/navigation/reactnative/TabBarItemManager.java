@@ -26,8 +26,8 @@ public class TabBarItemManager extends ViewGroupManager<TabBarItemView> {
     }
 
     @ReactProp(name = "image")
-    public void setImage(TabBarItemView view, String image) {
-        view.setImage(image);
+    public void setImage(TabBarItemView view, @Nullable ReadableMap icon) {
+        view.setIconSource(icon);
     }
 
     @Nonnull

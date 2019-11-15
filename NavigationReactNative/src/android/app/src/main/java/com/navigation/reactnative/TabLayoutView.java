@@ -61,7 +61,7 @@ public class TabLayoutView extends TabLayout {
         }
     }
 
-    private final Runnable measureAndLayout = new Runnable() {
+    final Runnable measureAndLayout = new Runnable() {
         @Override
         public void run() {
             measure(
