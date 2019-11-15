@@ -14,7 +14,6 @@ import com.facebook.drawee.view.DraweeHolder;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-import com.facebook.react.views.imagehelper.ResourceDrawableIdHelper;
 
 public class TabBarItemView extends ViewGroup implements NavigationBoundary {
     Fragment fragment;
