@@ -2,7 +2,6 @@ package com.navigation.reactnative;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.MotionEvent;
@@ -61,8 +60,6 @@ public class TabBarView extends ViewPager {
                     @Override
                     public void onIconResolve(Drawable icon) {
                         if (tab != null) {
-                            int color = tab.isSelected() ? tabLayout.selectedTintColor : tabLayout.unselectedTintColor;
-                            icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
                             tab.setIcon(icon);
                             post(tabLayout.measureAndLayout);
                         }
