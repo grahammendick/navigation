@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import android.graphics.PorterDuff;
+
 import androidx.annotation.Nullable;
 
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -22,12 +24,20 @@ public class TabLayoutManager extends ViewGroupManager<TabLayoutView> {
         view.selectedTintColor = selectedTintColor != null ? selectedTintColor : view.defaultTextColor;
         view.setTabTextColors(view.unselectedTintColor, view.selectedTintColor);
         view.setSelectedTabIndicatorColor(view.selectedTintColor);
+        TabLayout.Tab selectedTab = view.getTabAt(view.getSelectedTabPosition());
+        if (selectedTab != null && selectedTab.getIcon() != null)
+            selectedTab.getIcon().setColorFilter(view.selectedTintColor, PorterDuff.Mode.SRC_IN);
     }
 
     @ReactProp(name = "unselectedTintColor", customType = "Color")
     public void setUnselectedTintColor(TabLayoutView view, @Nullable Integer  unselectedTintColor) {
         view.unselectedTintColor = unselectedTintColor != null ? unselectedTintColor : view.defaultTextColor;
         view.setTabTextColors(view.unselectedTintColor, view.selectedTintColor);
+        for (int i = 0; i < view.getTabCount(); i++) {
+            TabLayout.Tab tab = view.getTabAt(i);
+            if (!tab.isSelected() && tab.getIcon() != null)
+                tab.getIcon().setColorFilter(view.unselectedTintColor, PorterDuff.Mode.SRC_IN);
+        }
     }
 
     @ReactProp(name = "selectedIndicatorAtTop")

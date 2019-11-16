@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.graphics.PorterDuff;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -35,6 +36,23 @@ public class TabLayoutView extends TabLayout {
             setupWithViewPager(tabBar);
             tabBar.populateTabIcons();
         }
+        addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+            @Override
+            public void onTabSelected(Tab tab) {
+                if (tab.getIcon() != null)
+                    tab.getIcon().setColorFilter(selectedTintColor, PorterDuff.Mode.SRC_IN);
+            }
+
+            @Override
+            public void onTabUnselected(Tab tab) {
+                if (tab.getIcon() != null)
+                    tab.getIcon().setColorFilter(unselectedTintColor, PorterDuff.Mode.SRC_IN);
+            }
+
+            @Override
+            public void onTabReselected(Tab tab) {
+            }
+        });
     }
 
     private TabBarView getTabBar() {
