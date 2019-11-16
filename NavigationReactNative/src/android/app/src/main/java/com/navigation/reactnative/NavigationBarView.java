@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.Menu;
@@ -32,6 +33,7 @@ public class NavigationBarView extends AppBarLayout {
     private IconResolver iconResolver;
     Toolbar toolbar;
     private MenuItem searchMenuItem;
+    private Integer tintColor;
     private OnSearchListener onSearchAddedListener;
     private static final String PROP_ACTION_ICON = "image";
     private static final String PROP_ACTION_SHOW = "show";
@@ -67,6 +69,7 @@ public class NavigationBarView extends AppBarLayout {
             @Override
             protected void setDrawable(Drawable d) {
                 toolbar.setLogo(d);
+                setTintColor(toolbar.getLogo());
                 post(measureAndLayout);
             }
         };
@@ -74,6 +77,7 @@ public class NavigationBarView extends AppBarLayout {
             @Override
             protected void setDrawable(Drawable d) {
                 toolbar.setNavigationIcon(d);
+                setTintColor(toolbar.getNavigationIcon());
                 post(measureAndLayout);
             }
         };
@@ -81,6 +85,7 @@ public class NavigationBarView extends AppBarLayout {
             @Override
             protected void setDrawable(Drawable d) {
                 toolbar.setOverflowIcon(d);
+                setTintColor(toolbar.getOverflowIcon());
             }
         };
         toolbar.setNavigationOnClickListener(new OnClickListener() {
@@ -153,6 +158,25 @@ public class NavigationBarView extends AppBarLayout {
         navIconHolder.onAttach();
         overflowIconHolder.onAttach();
         actionsHolder.onAttach();
+    }
+
+    void setTintColor(Integer tintColor) {
+        this.tintColor = tintColor;
+        setTintColor(toolbar.getNavigationIcon());
+        setTintColor(toolbar.getLogo());
+        setTintColor(toolbar.getOverflowIcon());
+        for(int i = 0; i < toolbar.getMenu().size(); i++) {
+            setTintColor(toolbar.getMenu().getItem(i).getIcon());
+        }
+    }
+
+    private void setTintColor(Drawable icon) {
+        if (icon != null) {
+            if (tintColor != null)
+                icon.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
+            else
+                icon.clearColorFilter();
+        }
     }
 
     void setMenuItems(@Nullable ReadableArray menuItems) {
@@ -256,6 +280,7 @@ public class NavigationBarView extends AppBarLayout {
         @Override
         protected void setDrawable(Drawable d) {
             item.setIcon(d);
+            setTintColor(item.getIcon());
             post(measureAndLayout);
         }
     }

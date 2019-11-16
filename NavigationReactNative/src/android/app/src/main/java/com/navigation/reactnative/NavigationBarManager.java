@@ -100,6 +100,11 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
         }
     }
 
+    @ReactProp(name = "tintColor", customType = "Color")
+    public void setTintColor(NavigationBarView view, @Nullable Integer tintColor) {
+        view.setTintColor(tintColor);
+    }
+
     @ReactProp(name = "titleColor", customType = "Color")
     public void setTitleColor(NavigationBarView view, @Nullable Integer textColor) {
         view.toolbar.setTitleTextColor(textColor != null ? textColor : view.defaultTitleTextColor);
