@@ -48,6 +48,11 @@
     }
 
     [navigationBar updateColors];
+    
+    if (navigationBar.backTitle != nil) {
+        UINavigationItem *previousNavigationItem = [[self backViewController] navigationItem];
+        previousNavigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:navigationBar.backTitle style:UIBarButtonItemStyleDone target:nil action:nil];
+    }
 
     if (@available(iOS 11.0, *)) {
         self.navigationController.navigationBar.prefersLargeTitles = true;
@@ -61,6 +66,7 @@
     
     NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
     [navigationBar updateColors];
+
 }
 
 - (void)viewDidLayoutSubviews
@@ -75,6 +81,17 @@
 - (void)dealloc
 {
     [_view didPop];
+}
+
+- (UIViewController *)backViewController
+{
+    NSInteger numberOfViewControllers = self.navigationController.viewControllers.count;
+
+    if (numberOfViewControllers < 2) {
+        return nil;
+    } else {
+        return [self.navigationController.viewControllers objectAtIndex:numberOfViewControllers - 2];
+    }
 }
 
 @end
