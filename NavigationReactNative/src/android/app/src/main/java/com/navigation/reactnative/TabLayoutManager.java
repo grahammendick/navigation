@@ -22,12 +22,14 @@ public class TabLayoutManager extends ViewGroupManager<TabLayoutView> {
         view.selectedTintColor = selectedTintColor != null ? selectedTintColor : view.defaultTextColor;
         view.setTabTextColors(view.unselectedTintColor, view.selectedTintColor);
         view.setSelectedTabIndicatorColor(view.selectedTintColor);
+        view.setTabIconTint(view.getTabTextColors());
     }
 
     @ReactProp(name = "unselectedTintColor", customType = "Color")
     public void setUnselectedTintColor(TabLayoutView view, @Nullable Integer  unselectedTintColor) {
         view.unselectedTintColor = unselectedTintColor != null ? unselectedTintColor : view.defaultTextColor;
         view.setTabTextColors(view.unselectedTintColor, view.selectedTintColor);
+        view.setTabIconTint(view.getTabTextColors());
     }
 
     @ReactProp(name = "selectedIndicatorAtTop")
@@ -36,7 +38,7 @@ public class TabLayoutManager extends ViewGroupManager<TabLayoutView> {
     }
 
     @ReactProp(name = "scrollable")
-    public void setScrollable(TabLayoutView view, @Nullable boolean scrollable) {
+    public void setScrollable(TabLayoutView view, boolean scrollable) {
         view.setScrollable(scrollable);
     }
 
