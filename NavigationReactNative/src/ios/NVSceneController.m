@@ -50,8 +50,11 @@
     [navigationBar updateColors];
     
     if (navigationBar.backTitle != nil) {
-        UINavigationItem *previousNavigationItem = [[self backViewController] navigationItem];
-        previousNavigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:navigationBar.backTitle style:UIBarButtonItemStyleDone target:nil action:nil];
+        NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
+        UIViewController *previousViewController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
+        if (previousViewController != nil) {
+            previousViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:navigationBar.backTitle style:UIBarButtonItemStyleDone target:nil action:nil];
+        }
     }
 
     if (@available(iOS 11.0, *)) {
@@ -81,17 +84,6 @@
 - (void)dealloc
 {
     [_view didPop];
-}
-
-- (UIViewController *)backViewController
-{
-    NSInteger numberOfViewControllers = self.navigationController.viewControllers.count;
-
-    if (numberOfViewControllers < 2) {
-        return nil;
-    } else {
-        return [self.navigationController.viewControllers objectAtIndex:numberOfViewControllers - 2];
-    }
 }
 
 @end
