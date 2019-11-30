@@ -8,19 +8,17 @@ import Photo from './Photo';
 import {getHome, getTweet, getTimeline} from './data';
 
 export default () => {
-
-  var historyAdded = false;
   const historyManager = new MobileHistoryManager(url => {
-    var {state, data} = stateNavigator.parseLink(url);
+    const {state, data} = stateNavigator.parseLink(url);
+    const {previousState} = stateNavigator.stateContext;
     var fluent = stateNavigator.fluent().navigate('home');
-    if (!historyAdded)
+    if (!previousState)
       stateNavigator.historyManager.addHistory(fluent.url, true);
     if (state.key === 'photo') {
       fluent = fluent.navigate('tweet', {id: data.id});
-      if (!historyAdded)
+      if (!previousState)
         stateNavigator.historyManager.addHistory(fluent.url);
     }
-    historyAdded = true;
     return fluent.navigate(state.key, data).url;
   });
 
