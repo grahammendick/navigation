@@ -8,7 +8,7 @@ import Photo from './Photo';
 import {getHome, getTweet, getTimeline} from './data';
 
 export default () => {
-  const buildCurrentUrl = url => {
+  const buildStarttUrl = url => {
     const {state, data} = stateNavigator.parseLink(url);
     let fluent = stateNavigator.fluent().navigate('home');
     stateNavigator.historyManager.addHistory(fluent.url, true);
@@ -24,7 +24,7 @@ export default () => {
     {key: 'tweet', trackCrumbTrail: true},
     {key: 'timeline', trackCrumbTrail: true},
     {key: 'photo', trackCrumbTrail: true}
-  ], new MobileHistoryManager(buildCurrentUrl));
+  ], new MobileHistoryManager(buildStarttUrl));
 
   const {home, tweet, timeline, photo} = stateNavigator.states;
   home.renderScene = () => <Home tweets={getHome()} />;
