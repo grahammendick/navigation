@@ -11,7 +11,7 @@ export default () => {
   const buildCurrentUrl = url => {
     const {state, data} = stateNavigator.parseLink(url);
     const {previousState} = stateNavigator.stateContext;
-    var fluent = stateNavigator.fluent().navigate('home');
+    let fluent = stateNavigator.fluent().navigate('home');
     if (!previousState)
       stateNavigator.historyManager.addHistory(fluent.url, true);
     if (state.key === 'photo') {
