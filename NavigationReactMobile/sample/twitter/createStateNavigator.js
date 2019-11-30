@@ -10,14 +10,11 @@ import {getHome, getTweet, getTimeline} from './data';
 export default () => {
   const buildCurrentUrl = url => {
     const {state, data} = stateNavigator.parseLink(url);
-    const {previousState} = stateNavigator.stateContext;
     let fluent = stateNavigator.fluent().navigate('home');
-    if (!previousState)
-      stateNavigator.historyManager.addHistory(fluent.url, true);
+    stateNavigator.historyManager.addHistory(fluent.url, true);
     if (state.key === 'photo') {
       fluent = fluent.navigate('tweet', {id: data.id});
-      if (!previousState)
-        stateNavigator.historyManager.addHistory(fluent.url);
+      stateNavigator.historyManager.addHistory(fluent.url);
     }
     return fluent.navigate(state.key, data).url;
   };
