@@ -151,15 +151,17 @@
             }
         };
 
+        var buildStartUrl = url => {
+            var { state, data } = stateNavigator.parseLink(url);
+            var fluent = stateNavigator.fluent().navigate('people');
+            stateNavigator.historyManager.addHistory(fluent.url, true);
+            return fluent.navigate(state.key, data).url;
+        }
+
         var stateNavigator = new Navigation.StateNavigator([
             { key: 'people', route: '{startRowIndex?}/{maximumRows?}/{sortExpression?}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search' },
             { key: 'person', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, trackCrumbTrail: true, title: 'Person Details' }
-        ], new MobileHistoryManager(url => {
-            var { state, data } = stateNavigator.parseLink(url);
-            return stateNavigator.fluent()
-                .navigate('people')
-                .navigate(state.key, data).url;
-        }));
+        ], new MobileHistoryManager(buildStartUrl));
 
         var states = stateNavigator.states;
         states.people.renderScene = function (data) {
