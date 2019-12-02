@@ -3,7 +3,13 @@ import { NavigationBackLink } from 'navigation-react';
 
 export default ({ person }) => (
     <div>
-        <NavigationBackLink distance={1}>
+        <NavigationBackLink
+            distance={1}
+            navigating={e => {
+                e.preventDefault();
+                history.back();
+                return false;
+            }}>  
             Person Search
         </NavigationBackLink>
         <div>
