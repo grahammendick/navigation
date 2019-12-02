@@ -133,7 +133,15 @@
                 var person = personSearch.getDetails(this.props.id);
                 return (
                     <div>
-                        <NavigationBackLink distance={1}>Person Search</NavigationBackLink>
+                        <NavigationBackLink
+                            distance={1}
+                            navigating={e => {
+                                e.preventDefault();
+                                history.back();
+                                return false;
+                            }}>
+                            Person Search
+                        </NavigationBackLink>
                         <div>
                             Name: {person.name}<br />
                             Date of Birth: {person.dateOfBirth}
