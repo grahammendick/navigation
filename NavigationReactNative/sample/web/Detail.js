@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, Platform, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBarIOS, RightBarIOS, BarButtonIOS, SharedElementAndroid} from 'navigation-react-native';
+import {NavigationBarIOS, RightBarIOS, BarButtonIOS, SharedElement} from 'navigation-react-native';
 
 export default ({colors, color}) => (
   <NavigationContext.Consumer>
@@ -25,9 +25,9 @@ export default ({colors, color}) => (
           }}>
           <Text style={styles.back}>X</Text>
         </TouchableHighlight>}
-        <SharedElementAndroid name={color} data={{color}} style={styles.color}>
+        <SharedElement name={color} data={{color}} style={styles.color}>
           <View style={{backgroundColor: color, flex: 1}} />
-        </SharedElementAndroid>
+        </SharedElement>
         <Text style={styles.text}>{color}</Text>
         <View style={styles.colors}>
           {[1,2,3].map(i => colors[(colors.indexOf(color) + i) % 15])

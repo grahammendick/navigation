@@ -6,8 +6,9 @@ import createStateNavigator from './createStateNavigator';
 var stateNavigator = createStateNavigator();
 stateNavigator.navigate('grid');
 
-export default () => (
+const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
     <NavigationStack sharedElements={(_, {color}) => color && [color]} />
   </NavigationHandler>
 );
+export default App;
