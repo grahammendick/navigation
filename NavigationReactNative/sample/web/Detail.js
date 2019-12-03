@@ -1,54 +1,56 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, Platform, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBarIOS, RightBarIOS, BarButtonIOS, SharedElement} from 'navigation-react-native';
+import {NavigationBar, RightBar, BarButton, SharedElement} from 'navigation-react-native';
 
 export default ({colors, color}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <NavigationBarIOS title="Color">
-          <RightBarIOS>
-            <BarButtonIOS systemItem="cancel" onPress={() => {
+      <>
+        <NavigationBar title="Color">
+          <RightBar>
+            <BarButton systemItem="cancel" title="cancel" show="always" onPress={() => {
               stateNavigator.navigateBack(1);
             }} />
-          </RightBarIOS>
-        </NavigationBarIOS>
-        {Platform.OS !== 'ios' && <TouchableHighlight
-          underlayColor="#fff"
-          accessibilityRole="link"
-          href={stateNavigator.historyManager.getHref(
-            stateNavigator.getNavigationBackLink(1)
-          )}
-          onPress={() => {
-            stateNavigator.navigateBack(1);
-          }}>
-          <Text style={styles.back}>X</Text>
-        </TouchableHighlight>}
-        <SharedElement name={color} data={{color}} style={styles.color}>
-          <View style={{backgroundColor: color, flex: 1}} />
-        </SharedElement>
-        <Text style={styles.text}>{color}</Text>
-        <View style={styles.colors}>
-          {[1,2,3].map(i => colors[(colors.indexOf(color) + i) % 15])
-            .map(subcolor => (
-              <TouchableHighlight
-                key={subcolor}
-                style={[styles.subcolor, {backgroundColor: subcolor}]}
-                underlayColor={subcolor}
-                accessibilityRole="link"
-                href={stateNavigator.historyManager.getHref(
-                  stateNavigator.getNavigationLink('detail', {color: subcolor})
-                )}
-                onPress={() => {
-                  stateNavigator.navigate('detail', {color: subcolor});
-                }}>
-                  <View />
-              </TouchableHighlight>
-            )
-          )}
-        </View>
-      </ScrollView>
+          </RightBar>
+        </NavigationBar>
+        <ScrollView contentInsetAdjustmentBehavior="automatic">
+          {Platform.OS === 'web' && <TouchableHighlight
+            underlayColor="#fff"
+            accessibilityRole="link"
+            href={stateNavigator.historyManager.getHref(
+              stateNavigator.getNavigationBackLink(1)
+            )}
+            onPress={() => {
+              stateNavigator.navigateBack(1);
+            }}>
+            <Text style={styles.back}>X</Text>
+          </TouchableHighlight>}
+          <SharedElement name={color} data={{color}} style={styles.color}>
+            <View style={{backgroundColor: color, flex: 1}} />
+          </SharedElement>
+          <Text style={styles.text}>{color}</Text>
+          <View style={styles.colors}>
+            {[1,2,3].map(i => colors[(colors.indexOf(color) + i) % 15])
+              .map(subcolor => (
+                <TouchableHighlight
+                  key={subcolor}
+                  style={[styles.subcolor, {backgroundColor: subcolor}]}
+                  underlayColor={subcolor}
+                  accessibilityRole="link"
+                  href={stateNavigator.historyManager.getHref(
+                    stateNavigator.getNavigationLink('detail', {color: subcolor})
+                  )}
+                  onPress={() => {
+                    stateNavigator.navigate('detail', {color: subcolor});
+                  }}>
+                    <View />
+                </TouchableHighlight>
+              )
+            )}
+          </View>
+        </ScrollView>
+      </>
     )}
   </NavigationContext.Consumer>
 );

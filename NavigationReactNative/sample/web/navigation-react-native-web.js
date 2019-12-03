@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {SharedElement as SharedElementWeb} from 'navigation-react-mobile';
 
-class NavigationBar extends React.Component {
+class NavigationBarWeb extends React.Component {
   constructor(props) {
     super(props);
     this.setTitle = this.setTitle.bind(this);
@@ -25,14 +25,14 @@ class NavigationBar extends React.Component {
   }
 }
 
-const NavigationBarIOS = props => (
+const NavigationBar = props => (
   <NavigationContext.Consumer>
-      {(navigationEvent) => <NavigationBar stateNavigator={navigationEvent.stateNavigator} {...props} />}
+      {(navigationEvent) => <NavigationBarWeb stateNavigator={navigationEvent.stateNavigator} {...props} />}
   </NavigationContext.Consumer>
 )
 
-const RightBarIOS = () => null;
-const BarButtonIOS = () => null;
+const RightBar = () => null;
+const BarButton = () => null;
 
 class SharedElement extends React.Component{
   setNativeProps() {
@@ -49,4 +49,4 @@ class SharedElement extends React.Component{
   }
 }
 
-export { NavigationBarIOS, RightBarIOS, BarButtonIOS, SharedElement };
+export { NavigationBar, RightBar, BarButton, SharedElement };
