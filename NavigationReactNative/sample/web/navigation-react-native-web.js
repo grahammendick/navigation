@@ -25,6 +25,7 @@ class NavigationBarWeb extends React.Component {
       <View style={{
         marginLeft: 15,
         marginRight: 5,
+        marginBottom: 5,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-end'
