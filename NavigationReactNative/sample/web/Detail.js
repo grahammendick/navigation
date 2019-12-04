@@ -9,23 +9,20 @@ export default ({colors, color}) => (
       <>
         <NavigationBar title="Color">
           <RightBar>
-            <BarButton systemItem="cancel" title="cancel" show="always" onPress={() => {
-              stateNavigator.navigateBack(1);
-            }} />
+            <BarButton
+              systemItem="cancel"
+              title="cancel"
+              show="always"
+              accessibilityRole="link"
+              href={stateNavigator.historyManager.getHref(
+                stateNavigator.getNavigationBackLink(1)
+              )}
+              onPress={() => {
+                stateNavigator.navigateBack(1);
+              }} />
           </RightBar>
         </NavigationBar>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
-          {Platform.OS === 'web' && <TouchableHighlight
-            underlayColor="#fff"
-            accessibilityRole="link"
-            href={stateNavigator.historyManager.getHref(
-              stateNavigator.getNavigationBackLink(1)
-            )}
-            onPress={() => {
-              stateNavigator.navigateBack(1);
-            }}>
-            <Text style={styles.back}>X</Text>
-          </TouchableHighlight>}
           <SharedElement name={color} data={{color}} style={styles.color}>
             <View style={{backgroundColor: color, flex: 1}} />
           </SharedElement>

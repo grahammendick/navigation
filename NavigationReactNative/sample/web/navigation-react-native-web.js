@@ -49,10 +49,8 @@ const NavigationBar = props => (
 
 const RightBar = ({children}) => children;
 
-const BarButton = ({title, onPress}) => (
-  <TouchableHighlight
-    underlayColor="#fff"
-    onPress={onPress}>
+const BarButton = ({title, ...props}) => (
+  <TouchableHighlight underlayColor="#fff" {...props}>
     <Text>{title}</Text>
   </TouchableHighlight>
 
