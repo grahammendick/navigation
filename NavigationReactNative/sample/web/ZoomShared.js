@@ -13,10 +13,12 @@ export default (props) => (
           position: 'absolute',
           left, top, width, height,
           transformOrigin: 'top left',
-          transform: `
-            translate(${style.left - left}px, ${style.top - top}px)
-            scale(${style.width / width}, ${style.height / height})
-          `,      
+          transform: [
+            {translateX: style.left - left}, 
+            {translateY: style.top - top},
+            {scaleX:  style.width / width},
+            {scaleY: style.height / height}
+          ],      
           backgroundColor: color,
         }}>
       </View>
