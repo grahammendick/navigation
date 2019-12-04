@@ -11,7 +11,7 @@ export default ({colors, color}) => (
           <RightBar>
             <BarButton
               systemItem="cancel"
-              title="cancel"
+              title="Cancel"
               show="always"
               accessibilityRole="link"
               href={stateNavigator.historyManager.getHref(
