@@ -18,7 +18,10 @@ export default ({colors, color}) => (
                 stateNavigator.getNavigationBackLink(1)
               )}
               onPress={() => {
-                stateNavigator.navigateBack(1);
+                if (Platform.OS !== 'web')
+                  stateNavigator.navigateBack(1);
+                else
+                  history.back();
               }} />
           </RightBar>
         </NavigationBar>
@@ -39,7 +42,7 @@ export default ({colors, color}) => (
                     stateNavigator.getNavigationLink('detail', {color: subcolor})
                   )}
                   onPress={() => {
-                    stateNavigator.navigate('detail', {color: subcolor});
+                    stateNavigator.navigate('detail', {color: subcolor}, 'replace');
                   }}>
                     <View />
                 </TouchableHighlight>
