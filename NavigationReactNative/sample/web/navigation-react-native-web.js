@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Text, TouchableHighlight, View} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {SharedElement as SharedElementWeb} from 'navigation-react-mobile';
 
@@ -22,12 +22,21 @@ class NavigationBarWeb extends React.Component {
   }
   render() {
     return (
-      <Text
-        accessibilityRole="heading"
-        aria-level="1"
-        style={{fontSize: 20, marginLeft: 15}}>
-        {this.props.title}
-      </Text>
+      <View style={{
+        marginLeft: 15,
+        marginRight: 5,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end'
+      }}>
+        <Text
+          accessibilityRole="heading"
+          aria-level="1"
+          style={{fontSize: 20}}>
+          {this.props.title}
+        </Text>
+        {this.props.children}
+      </View>
     );
   }
 }
@@ -38,8 +47,16 @@ const NavigationBar = props => (
   </NavigationContext.Consumer>
 )
 
-const RightBar = () => null;
-const BarButton = () => null;
+const RightBar = ({children}) => children;
+
+const BarButton = ({title, onPress}) => (
+  <TouchableHighlight
+    underlayColor="#fff"
+    onPress={onPress}>
+    <Text>{title}</Text>
+  </TouchableHighlight>
+
+);
 
 class SharedElement extends React.Component{
   setNativeProps() {
