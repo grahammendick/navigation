@@ -44,7 +44,9 @@ class NavigationBarWeb extends React.Component {
 
 const NavigationBar = props => (
   <NavigationContext.Consumer>
-      {(navigationEvent) => <NavigationBarWeb stateNavigator={navigationEvent.stateNavigator} {...props} />}
+      {({stateNavigator}) => (
+        <NavigationBarWeb stateNavigator={stateNavigator} {...props} />
+      )}
   </NavigationContext.Consumer>
 )
 
