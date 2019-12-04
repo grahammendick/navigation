@@ -17,6 +17,7 @@ export default () => (
           overflow: 'auto',
           padding: 5,
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center'
         }}>
         {scene}

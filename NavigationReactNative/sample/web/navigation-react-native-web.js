@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {Text, View} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {SharedElement as SharedElementWeb} from 'navigation-react-mobile';
 
@@ -21,7 +21,14 @@ class NavigationBarWeb extends React.Component {
       document.title = this.props.title;
   }
   render() {
-    return null;
+    return (
+      <Text
+        accessibilityRole="heading"
+        aria-level="1"
+        style={{fontSize: 20, marginLeft: 15}}>
+        {this.props.title}
+      </Text>
+    );
   }
 }
 
