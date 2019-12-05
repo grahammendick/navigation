@@ -10,13 +10,18 @@ export default () => {
     {key: 'sceneSouth', trackCrumbTrail: true},
     {key: 'sceneWest', trackCrumbTrail: true},
   ];
-  const stateNavigator = new StateNavigator(states, new MobileHistoryManager(url => {
+
+  const buildStartUrl = url => {
     var {state} = stateNavigator.parseLink(url);
-    var fluentNavigator = stateNavigator.fluent();
-    for(var i = 0; i < states.length && states[i].key !== state.key; i++)
-      fluentNavigator = fluentNavigator.navigate(states[i].key);
-    return fluentNavigator.navigate(state.key).url;
-  }));
+    var fluent = stateNavigator.fluent();
+    for(var i = 0; i < states.length && states[i].key !== state.key; i++) {
+      fluent = fluent.navigate(states[i].key);
+      stateNavigator.historyManager.addHistory(fluent.url, i === 0);
+    }
+    return fluent.navigate(state.key).url;
+  };
+
+  const stateNavigator = new StateNavigator(states, new MobileHistoryManager(buildStartUrl));
 
   const { sceneNorth, sceneEast, sceneSouth, sceneWest } = stateNavigator.states;
   sceneNorth.renderScene = () => renderScene('North', 'blue');

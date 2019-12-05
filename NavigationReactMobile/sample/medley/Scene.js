@@ -16,7 +16,13 @@ export default ({direction, color}) => (
           {direction} {stateNavigator.stateContext.crumbs.length}
         </NavigationLink>
         {stateNavigator.stateContext.crumbs.length > 0 && (
-          <NavigationBackLink distance={1}>
+          <NavigationBackLink
+            distance={1}
+            navigating={e => {
+              e.preventDefault();
+              history.back();
+              return false;
+            }}>
             Back
           </NavigationBackLink>
         )}

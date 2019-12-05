@@ -2,9 +2,15 @@ import React from 'react';
 import {NavigationBackLink} from 'navigation-react';
 import {SharedElement} from 'navigation-react-mobile';
 
-export default ({color, stateNavigator}) => (
+export default ({color}) => (
   <div className="color">
-    <NavigationBackLink distance={1}>
+    <NavigationBackLink
+      distance={1}
+      navigating={e => {
+        e.preventDefault();
+        history.back();
+        return false;
+      }}>
       X
     </NavigationBackLink>
     <SharedElement

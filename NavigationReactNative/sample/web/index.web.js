@@ -7,13 +7,14 @@ import Zoom from './Zoom';
 
 const stateNavigator = createStateNavigator();
 
-stateNavigator
-  .configure(stateNavigator, new MobileHistoryManager(url => {
-    var {state, data} = stateNavigator.parseLink(url);
-    return stateNavigator.fluent()
-      .navigate('grid')
-      .navigate(state.key, data).url;
-  }));
+const buildStartUrl = url => {
+  const {state, data} = stateNavigator.parseLink(url);
+  let fluent = stateNavigator.fluent().navigate('grid');
+  stateNavigator.historyManager.addHistory(fluent.url, true);
+  return fluent.navigate(state.key, data).url;
+};
+
+stateNavigator.configure(stateNavigator, new MobileHistoryManager(buildStartUrl));
 
 stateNavigator.start();
 
