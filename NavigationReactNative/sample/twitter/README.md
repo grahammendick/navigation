@@ -1,5 +1,5 @@
 # Navigation Native Twitter
-Navigation uses the underlying native API to provide faithful tabbed navigation on iOS.
+Navigation uses the underlying native API to provide faithful tabbed navigation on iOS and Android.
 
 ## Run
 Once you've cloned the repository, you can install the dependencies and start the Twitter example:
