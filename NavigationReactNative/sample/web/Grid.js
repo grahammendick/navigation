@@ -1,33 +1,35 @@
 import React from 'react';
-import {StyleSheet, ScrollView, View, Platform, TouchableHighlight} from 'react-native';
+import {StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBarIOS, SharedElementAndroid} from 'navigation-react-native';
+import {NavigationBar, SharedElement} from 'navigation-react-native';
 
 export default ({colors}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <NavigationBarIOS title="Colors" />
-        <View style={styles.colors}>
-          {colors.map(color => (
-            <TouchableHighlight
-              key={color}
-              style={styles.color}
-              underlayColor={color}                
-              accessibilityRole="link"
-              href={stateNavigator.historyManager.getHref(
-                stateNavigator.getNavigationLink('detail', {color})
-              )}
-              onPress={() => {
-                stateNavigator.navigate('detail', {color});
-              }}>
-              <SharedElementAndroid name={color} data={{color}} style={{flex: 1}}>
-                <View style={{backgroundColor: color, flex: 1}} />
-              </SharedElementAndroid>
-            </TouchableHighlight>
-          ))}
-        </View>
-      </ScrollView>
+      <>
+        <NavigationBar title="Colors" />
+        <ScrollView contentInsetAdjustmentBehavior="automatic">
+          <View style={styles.colors}>
+            {colors.map(color => (
+              <TouchableHighlight
+                key={color}
+                style={styles.color}
+                underlayColor={color}                
+                accessibilityRole="link"
+                href={stateNavigator.historyManager.getHref(
+                  stateNavigator.getNavigationLink('detail', {color})
+                )}
+                onPress={() => {
+                  stateNavigator.navigate('detail', {color});
+                }}>
+                <SharedElement name={color} data={{color}} style={{flex: 1}}>
+                  <View style={{backgroundColor: color, flex: 1}} />
+                </SharedElement>
+              </TouchableHighlight>
+            ))}
+          </View>
+        </ScrollView>
+      </>
     )}
   </NavigationContext.Consumer>
 );

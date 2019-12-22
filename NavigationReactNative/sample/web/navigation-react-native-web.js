@@ -1,9 +1,9 @@
 import React from 'react';
-import {View} from 'react-native';
+import {Text, TouchableHighlight, View} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {SharedElement} from 'navigation-react-mobile';
+import {SharedElement as SharedElementWeb} from 'navigation-react-mobile';
 
-class NavigationBar extends React.Component {
+class NavigationBarWeb extends React.Component {
   constructor(props) {
     super(props);
     this.setTitle = this.setTitle.bind(this);
@@ -21,32 +21,57 @@ class NavigationBar extends React.Component {
       document.title = this.props.title;
   }
   render() {
-    return null;
+    return (
+      <View style={{
+        marginLeft: 15,
+        marginRight: 5,
+        marginBottom: 5,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end'
+      }}>
+        <Text
+          accessibilityRole="heading"
+          aria-level="1"
+          style={{fontSize: 20}}>
+          {this.props.title}
+        </Text>
+        {this.props.children}
+      </View>
+    );
   }
 }
 
-const NavigationBarIOS = props => (
+const NavigationBar = props => (
   <NavigationContext.Consumer>
-      {(navigationEvent) => <NavigationBar stateNavigator={navigationEvent.stateNavigator} {...props} />}
+      {({stateNavigator}) => (
+        <NavigationBarWeb stateNavigator={stateNavigator} {...props} />
+      )}
   </NavigationContext.Consumer>
 )
 
-const RightBarIOS = () => null;
-const BarButtonIOS = () => null;
+const RightBar = ({children}) => children;
 
-class SharedElementAndroid extends React.Component{
+const BarButton = ({title, ...props}) => (
+  <TouchableHighlight underlayColor="#fff" {...props}>
+    <Text>{title}</Text>
+  </TouchableHighlight>
+
+);
+
+class SharedElement extends React.Component{
   setNativeProps() {
   }
   render() {
     const {style, transition, children, ...props} = this.props;
     return (
       <View style={style}>
-        <SharedElement {...props}>
+        <SharedElementWeb {...props}>
           <div style={{display: 'flex', flex: 1}}>{children}</div>
-        </SharedElement>
+        </SharedElementWeb>
       </View>
     );
   }
 }
 
-export { NavigationBarIOS, RightBarIOS, BarButtonIOS, SharedElementAndroid };
+export { NavigationBar, RightBar, BarButton, SharedElement };
