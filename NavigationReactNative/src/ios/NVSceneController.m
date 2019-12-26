@@ -48,11 +48,13 @@
     }
 
     [navigationBar updateColors];
-    
-    if (navigationBar.backTitle != nil) {
-        NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
-        UIViewController *previousViewController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
-        if (previousViewController != nil) {
+
+    NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
+    UIViewController *previousViewController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
+    if (previousViewController != nil) {
+        if (navigationBar.backTitle == nil) {
+            previousViewController.navigationItem.backBarButtonItem = nil;
+        } else {
             previousViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:navigationBar.backTitle style:UIBarButtonItemStyleDone target:nil action:nil];
         }
     }
