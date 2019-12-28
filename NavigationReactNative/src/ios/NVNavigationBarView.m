@@ -18,15 +18,13 @@
     [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];
     if ([changedProps containsObject:@"title"]) {
         [self.reactViewController.navigationItem setTitle:self.title];
-    } else if ([changedProps containsObject:@"backTitle"]) {
+    }
+    if ([changedProps containsObject:@"backTitle"]) {
         NSInteger crumb = [self.reactViewController.navigationController.viewControllers indexOfObject:self.reactViewController];
         UIViewController *previousController = crumb > 0 ? [self.reactViewController.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
-        if (previousController != nil) {
-            if (self.backTitle == nil) {
-                previousController.navigationItem.backBarButtonItem = nil;
-            } else {
-                previousController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStyleDone target:nil action:nil];
-            }
+        previousController.navigationItem.backBarButtonItem = nil;
+        if (self.backTitle != nil) {
+            previousController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
         }
     }
     
