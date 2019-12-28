@@ -21,8 +21,13 @@
     } else if ([changedProps containsObject:@"backTitle"]) {
         NSInteger crumb = [self.reactViewController.navigationController.viewControllers indexOfObject:self.reactViewController];
         UIViewController *previousController = crumb > 0 ? [self.reactViewController.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
-        
-        previousController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStyleDone target:nil action:nil];
+        if (previousController != nil) {
+            if (self.backTitle == nil) {
+                previousController.navigationItem.backBarButtonItem = nil;
+            } else {
+                previousController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStyleDone target:nil action:nil];
+            }
+        }
     }
     
     [self updateColors];
