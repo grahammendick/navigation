@@ -27,7 +27,7 @@ notificationsNavigator.navigate('notifications');
 export default () => {
   const [notified, setNotified] = useState(false);
   return (
-    <TabBar bottomTabs={false} selectedTintColor='blue'>
+    <TabBar bottomTabs={true}>
       <TabBarItem title="Home">
         <NavigationHandler stateNavigator={stateNavigator}>
           <NavigationStack
