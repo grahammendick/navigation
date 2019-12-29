@@ -70,6 +70,10 @@ export interface NavigationBarProps {
      */
     titleColor?: string;
     /**
+     * The title for the back button
+     */
+    backTitle?: string;
+    /**
      * The logo
      */
     logo?: ImageRequireSource | ImageURISource;

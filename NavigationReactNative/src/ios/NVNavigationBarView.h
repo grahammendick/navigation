@@ -8,6 +8,7 @@
 @property (nonatomic, copy) UIColor *barTintColor;
 @property (nonatomic, copy) UIColor *tintColor;
 @property (nonatomic, copy) UIColor *titleColor;
+@property (nonatomic, copy) NSString *backTitle;
 
 -(void)updateColors;
 
