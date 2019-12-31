@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -59,6 +60,10 @@ public class TabLayoutView extends TabLayout implements TabView {
                 }
             });
         }
+    }
+
+    public void setIcon(int index, Drawable icon) {
+        getTabAt(index).setIcon(icon);
     }
 
     final Runnable measureAndLayout = new Runnable() {

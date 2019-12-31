@@ -23,7 +23,6 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,34 +45,32 @@ public class TabBarView extends ViewPager {
         }
         requestLayout();
         post(measureAndLayout);
-        if (getTabLayout() != null)
-            getTabLayout().setupWithViewPager(this);
+        if (getTabView() != null)
+            getTabView().setupWithViewPager(this);
         populateTabIcons();
     }
 
     void populateTabIcons() {
-        final TabLayoutView tabLayout = getTabLayout();
-        if (tabLayout != null && getAdapter() != null) {
-            for(int i = 0; i < tabLayout.getTabCount(); i++) {
-                final TabLayout.Tab tab = tabLayout.getTabAt(i);
+        final TabView tabView = getTabView();
+        if (tabView != null && getAdapter() != null) {
+            for(int i = 0; i < tabView.getTabCount(); i++) {
+                final int index = i;
                 getAdapter().tabFragments.get(i).tabBarItem.setOnIconListener(new TabBarItemView.OnIconListener() {
                     @Override
                     public void onIconResolve(Drawable icon) {
-                        if (tab != null) {
-                            tab.setIcon(icon);
-                            post(tabLayout.measureAndLayout);
-                        }
+                        tabView.setIcon(index, icon);
+                        //post(tabView.measureAndLayout);
                     }
                 });
             }
         }
     }
 
-    private TabLayoutView getTabLayout() {
+    private TabView getTabView() {
         for(int i = 0; getParent() != null && i < ((ViewGroup) getParent()).getChildCount(); i++) {
             View child = ((ViewGroup) getParent()).getChildAt(i);
-            if (child instanceof TabLayoutView)
-                return (TabLayoutView) child;
+            if (child instanceof TabView)
+                return (TabView) child;
         }
         return null;
     }
