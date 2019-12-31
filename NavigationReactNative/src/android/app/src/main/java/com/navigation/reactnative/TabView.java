@@ -11,4 +11,6 @@ public interface TabView {
     int getTabCount();
 
     void setIcon(int index, Drawable icon);
+
+    Runnable getMeasureAndLayout();
 }

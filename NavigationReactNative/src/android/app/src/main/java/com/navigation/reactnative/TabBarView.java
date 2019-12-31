@@ -59,7 +59,7 @@ public class TabBarView extends ViewPager {
                     @Override
                     public void onIconResolve(Drawable icon) {
                         tabView.setIcon(index, icon);
-                        //post(tabView.measureAndLayout);
+                        post(tabView.getMeasureAndLayout());
                     }
                 });
             }

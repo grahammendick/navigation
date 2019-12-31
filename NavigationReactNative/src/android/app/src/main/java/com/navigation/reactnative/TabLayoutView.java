@@ -66,6 +66,10 @@ public class TabLayoutView extends TabLayout implements TabView {
         getTabAt(index).setIcon(icon);
     }
 
+    public Runnable getMeasureAndLayout() {
+        return measureAndLayout;
+    }
+
     final Runnable measureAndLayout = new Runnable() {
         @Override
         public void run() {

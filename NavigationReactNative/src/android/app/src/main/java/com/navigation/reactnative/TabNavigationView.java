@@ -19,24 +19,6 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     }
 
     @Override
-    public void setupWithViewPager(@Nullable ViewPager viewPager) {
-        getMenu().clear();;
-        PagerAdapter pagerAdapter = viewPager.getAdapter();
-        for(int i = 0; i < pagerAdapter.getCount(); i++) {
-            getMenu().add(Menu.NONE, Menu.NONE, i, pagerAdapter.getPageTitle(i));
-        }
-    }
-
-    @Override
-    public int getTabCount() {
-        return getMenu().size();
-    }
-
-    public void setIcon(int index, Drawable icon) {
-        getMenu().getItem(index).setIcon(icon);
-    }
-
-    @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         TabBarView tabBar = getTabBar();
@@ -54,4 +36,36 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         }
         return null;
     }
+
+    @Override
+    public void setupWithViewPager(@Nullable ViewPager viewPager) {
+        getMenu().clear();;
+        PagerAdapter pagerAdapter = viewPager.getAdapter();
+        for(int i = 0; i < pagerAdapter.getCount(); i++) {
+            getMenu().add(Menu.NONE, Menu.NONE, i, pagerAdapter.getPageTitle(i));
+        }
+    }
+
+    @Override
+    public int getTabCount() {
+        return getMenu().size();
+    }
+
+    public void setIcon(int index, Drawable icon) {
+        getMenu().getItem(index).setIcon(icon);
+    }
+
+    public Runnable getMeasureAndLayout() {
+        return measureAndLayout;
+    }
+
+    final Runnable measureAndLayout = new Runnable() {
+        @Override
+        public void run() {
+            measure(
+                    MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+            layout(getLeft(), getTop(), getRight(), getBottom());
+        }
+    };
 }
