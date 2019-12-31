@@ -45,6 +45,7 @@ class TabBar extends React.Component<any, any> {
                     barTintColor={barTintColor}
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}
+                    swipeable={swipeable}
                     style={styles.tabBar}>
                         <BackButton onPress={this.handleBack} />
                         {tabBarItems
