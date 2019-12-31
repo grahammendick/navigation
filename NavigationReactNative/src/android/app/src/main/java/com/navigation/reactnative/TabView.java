@@ -1,8 +1,26 @@
 package com.navigation.reactnative;
 
+import android.content.Context;
+import android.view.Menu;
+
 import androidx.annotation.Nullable;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-public interface TabView {
-    void setupWithViewPager(@Nullable ViewPager viewPager);
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+public class TabNavigationView extends BottomNavigationView implements TabView {
+
+    public TabNavigationView(Context context) {
+        super(context);
+    }
+
+    @Override
+    public void setupWithViewPager(@Nullable ViewPager viewPager) {
+        getMenu().clear();;
+        PagerAdapter pagerAdapter = viewPager.getAdapter();
+        for(int i = 0; i < pagerAdapter.getCount(); i++) {
+            getMenu().add(Menu.NONE, Menu.NONE, i, pagerAdapter.getPageTitle(i));
+        }
+    }
 }
