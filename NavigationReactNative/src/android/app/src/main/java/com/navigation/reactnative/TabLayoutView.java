@@ -63,7 +63,9 @@ public class TabLayoutView extends TabLayout implements TabView {
     }
 
     public void setIcon(int index, Drawable icon) {
-        getTabAt(index).setIcon(icon);
+        TabLayout.Tab tab = getTabAt(index);
+        if (tab != null)
+            tab.setIcon(icon);
     }
 
     public Runnable getMeasureAndLayout() {

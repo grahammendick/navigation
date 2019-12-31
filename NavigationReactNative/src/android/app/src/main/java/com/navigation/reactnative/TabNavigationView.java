@@ -39,10 +39,14 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
 
     @Override
     public void setupWithViewPager(@Nullable ViewPager viewPager) {
-        getMenu().clear();;
-        PagerAdapter pagerAdapter = viewPager.getAdapter();
-        for(int i = 0; i < pagerAdapter.getCount(); i++) {
-            getMenu().add(Menu.NONE, Menu.NONE, i, pagerAdapter.getPageTitle(i));
+        getMenu().clear();
+        if (viewPager != null) {
+            PagerAdapter pagerAdapter = viewPager.getAdapter();
+            if (pagerAdapter != null) {
+                for (int i = 0; i < pagerAdapter.getCount(); i++) {
+                    getMenu().add(Menu.NONE, Menu.NONE, i, pagerAdapter.getPageTitle(i));
+                }
+            }
         }
     }
 
