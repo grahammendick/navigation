@@ -10,7 +10,7 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
     @Nonnull
     @Override
     public String getName() {
-        return null;
+        return "NVTabNavigation";
     }
 
     @Nonnull

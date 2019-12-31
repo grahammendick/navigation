@@ -10,7 +10,8 @@ class TabBar extends React.Component<any, any> {
     }
     static defaultProps = {
         bottomTabs: false,
-        scrollable: false
+        scrollable: false,
+        swipeable: true
     }
     handleBack() {
         var {selectedTab} = this.state;
@@ -19,11 +20,12 @@ class TabBar extends React.Component<any, any> {
         return !!selectedTab;
     }
     render() {
-        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable} = this.props;
+        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, swipeable} = this.props;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
+        var NVTabView = swipeable ? NVTabLayout : NVTabNavigation;
         var tabLayout = Platform.OS === 'android' && (
-            <NVTabLayout
+            <NVTabView
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
@@ -59,6 +61,7 @@ class TabBar extends React.Component<any, any> {
 }
 
 var NVTabLayout = requireNativeComponent<any>('NVTabLayout', null);
+var NVTabNavigation = requireNativeComponent<any>('NVTabNavigation', null);
 var NVTabBar = requireNativeComponent<any>('NVTabBar', null);
 
 const styles = StyleSheet.create({
