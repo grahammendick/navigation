@@ -2,6 +2,8 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
@@ -22,5 +24,24 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         for(int i = 0; i < pagerAdapter.getCount(); i++) {
             getMenu().add(Menu.NONE, Menu.NONE, i, pagerAdapter.getPageTitle(i));
         }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        TabBarView tabBar = getTabBar();
+        if (tabBar != null) {
+            setupWithViewPager(tabBar);
+            //tabBar.populateTabIcons();
+        }
+    }
+
+    private TabBarView getTabBar() {
+        for(int i = 0; getParent() != null && i < ((ViewGroup) getParent()).getChildCount(); i++) {
+            View child = ((ViewGroup) getParent()).getChildAt(i);
+            if (child instanceof TabBarView)
+                return (TabBarView) child;
+        }
+        return null;
     }
 }
