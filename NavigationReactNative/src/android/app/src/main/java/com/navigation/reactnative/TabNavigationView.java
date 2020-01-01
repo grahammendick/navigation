@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,14 +47,9 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
 
     @Override
     public void setupWithViewPager(@Nullable final ViewPager viewPager) {
-        getMenu().clear();
-        if (viewPager != null) {
-            PagerAdapter pagerAdapter = viewPager.getAdapter();
-            if (pagerAdapter != null) {
-                for (int i = 0; i < pagerAdapter.getCount(); i++) {
-                    getMenu().add(Menu.NONE, i, i, pagerAdapter.getPageTitle(i));
-                }
-            }
+        if (viewPager != null && viewPager.getAdapter() != null) {
+            final PagerAdapter pagerAdapter = viewPager.getAdapter();
+            buildMenu(pagerAdapter);
             setOnNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -75,6 +71,21 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                 public void onPageScrollStateChanged(int state) {
                 }
             });
+            pagerAdapter.registerDataSetObserver(new DataSetObserver() {
+                @Override
+                public void onChanged() {
+                    buildMenu(pagerAdapter);
+                    setSelectedItemId(viewPager.getCurrentItem());
+                    post(measureAndLayout);
+                }
+            });
+        }
+    }
+
+    private void buildMenu(PagerAdapter pagerAdapter) {
+        getMenu().clear();
+        for (int i = 0; i < pagerAdapter.getCount(); i++) {
+            getMenu().add(Menu.NONE, i, i, pagerAdapter.getPageTitle(i));
         }
     }
 
