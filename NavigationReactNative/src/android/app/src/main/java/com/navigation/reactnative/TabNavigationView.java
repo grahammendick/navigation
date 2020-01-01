@@ -51,7 +51,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
             PagerAdapter pagerAdapter = viewPager.getAdapter();
             if (pagerAdapter != null) {
                 for (int i = 0; i < pagerAdapter.getCount(); i++) {
-                    getMenu().add(Menu.NONE, Menu.NONE, i, pagerAdapter.getPageTitle(i));
+                    getMenu().add(Menu.NONE, i, i, pagerAdapter.getPageTitle(i));
                 }
             }
             setOnNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
@@ -59,6 +59,20 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     viewPager.setCurrentItem(menuItem.getOrder(), false);
                     return true;
+                }
+            });
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    setSelectedItemId(position);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
                 }
             });
         }
