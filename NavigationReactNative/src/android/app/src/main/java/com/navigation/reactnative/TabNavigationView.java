@@ -15,9 +15,14 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TabNavigationView extends BottomNavigationView implements TabView {
+    int defaultTextColor;
+    int selectedTintColor;
+    int unselectedTintColor;
 
     public TabNavigationView(Context context) {
         super(context);
+        TabLayoutView tabLayout = new TabLayoutView(context);
+        selectedTintColor = unselectedTintColor = defaultTextColor = tabLayout.defaultTextColor;
     }
 
     @Override
@@ -53,7 +58,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     viewPager.setCurrentItem(menuItem.getOrder(), false);
-                    return false;
+                    return true;
                 }
             });
         }
