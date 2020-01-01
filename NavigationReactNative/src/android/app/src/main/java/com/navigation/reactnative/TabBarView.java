@@ -29,6 +29,7 @@ import java.util.List;
 
 public class TabBarView extends ViewPager {
     private List<TabBarItemView> tabs = new ArrayList<>();
+    boolean swipeable = true;
 
     public TabBarView(Context context) {
         super(context);
@@ -135,12 +136,22 @@ public class TabBarView extends ViewPager {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         try {
-            if (super.onInterceptTouchEvent(ev)) {
+            if (swipeable && super.onInterceptTouchEvent(ev)) {
                 NativeGestureUtil.notifyNativeGestureStarted(this, ev);
                 return true;
             }
         } catch (IllegalArgumentException e) {
         }
+        return false;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        try {
+            return swipeable && super.onTouchEvent(ev);
+        } catch (IllegalArgumentException e) {
+        }
+
         return false;
     }
 
