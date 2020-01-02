@@ -50,7 +50,6 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         if (viewPager != null && viewPager.getAdapter() != null) {
             final PagerAdapter pagerAdapter = viewPager.getAdapter();
             buildMenu(pagerAdapter);
-            post(measureAndLayout);
             setOnNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -77,7 +76,6 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                 public void onChanged() {
                     buildMenu(pagerAdapter);
                     setSelectedItemId(viewPager.getCurrentItem());
-                    post(measureAndLayout);
                 }
             });
         }
@@ -88,6 +86,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         for (int i = 0; i < pagerAdapter.getCount(); i++) {
             getMenu().add(Menu.NONE, i, i, pagerAdapter.getPageTitle(i));
         }
+        post(measureAndLayout);
     }
 
     @Override
