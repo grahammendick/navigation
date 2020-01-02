@@ -50,6 +50,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         if (viewPager != null && viewPager.getAdapter() != null) {
             final PagerAdapter pagerAdapter = viewPager.getAdapter();
             buildMenu(pagerAdapter);
+            post(measureAndLayout);
             setOnNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

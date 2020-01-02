@@ -40,9 +40,11 @@ public class TabBarView extends ViewPager {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         Activity activity = ((ReactContext) getContext()).getCurrentActivity();
-        setAdapter(new Adapter(getFragmentManager(activity)));
-        for(int i = 0; i < tabs.size(); i++) {
-            addTab(tabs.get(i), i);
+        if (getAdapter() == null) {
+            setAdapter(new Adapter(getFragmentManager(activity)));
+            for (int i = 0; i < tabs.size(); i++) {
+                addTab(tabs.get(i), i);
+            }
         }
         requestLayout();
         post(measureAndLayout);
