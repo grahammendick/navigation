@@ -27,34 +27,31 @@ const notificationsNavigator = new StateNavigator(stateNavigator);
 stateNavigator.navigate('home');
 notificationsNavigator.navigate('notifications');
 
-export default () => {
+const Stack = ({navigator}) => (
+  <NavigationHandler stateNavigator={navigator}>
+    <NavigationStack
+      crumbStyle={from => from ? 'scale_in' : 'scale_out'}
+      unmountStyle={from => from ? 'slide_in' : 'slide_out'} />
+  </NavigationHandler>
+);
+
+const App = () => {
   const [notified, setNotified] = useState(false);
   return Platform.OS === 'ios' ? (
     <TabBar bottomTabs={true}>
       <TabBarItem title="Home">
-        <NavigationHandler stateNavigator={stateNavigator}>
-          <NavigationStack
-            crumbStyle={from => from ? 'scale_in' : 'scale_out'}
-            unmountStyle={from => from ? 'slide_in' : 'slide_out'} />
-        </NavigationHandler>
+        <Stack navigator={stateNavigator} />
       </TabBarItem>
       <TabBarItem
         title="Notifications"
         badge={!notified ? getFollows().length : null} 
         onPress={() => {setNotified(true)}}>
-        <NavigationHandler stateNavigator={notificationsNavigator}>
-          <NavigationStack
-            primary={false}
-            crumbStyle={from => from ? 'scale_in' : 'scale_out'}
-            unmountStyle={from => from ? 'slide_in' : 'slide_out'} />
-        </NavigationHandler>
+        <Stack navigator={notificationsNavigator} />
       </TabBarItem>
     </TabBar>
   ) : (
-    <NavigationHandler stateNavigator={stateNavigator}>
-      <NavigationStack
-        crumbStyle={from => from ? 'scale_in' : 'scale_out'}
-        unmountStyle={from => from ? 'slide_in' : 'slide_out'} />
-    </NavigationHandler>
+    <Stack navigator={stateNavigator} />
   );
-}
+};
+
+export default App;
