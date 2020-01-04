@@ -51,6 +51,7 @@ export default class Grid extends React.Component {
     const {colors} = this.props;
     return (
       <>
+        <NavigationBar title="Colors" />
         <ScrollView
           style={styles.scene}
           nestedScrollEnabled={true}
@@ -66,7 +67,6 @@ export default class Grid extends React.Component {
             ))}
           </View>
         </ScrollView>
-        <NavigationBar title="Colors" />
       </>
     );
   }
