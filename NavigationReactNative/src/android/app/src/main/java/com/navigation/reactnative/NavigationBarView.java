@@ -56,10 +56,10 @@ public class NavigationBarView extends AppBarLayout {
     public NavigationBarView(Context context) {
         super(context);
 
-        toolbarLayout = new CollapsingToolbarLayout(context);
-        addView(toolbarLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        //toolbarLayout = new CollapsingToolbarLayout(context);
+        //addView(toolbarLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         toolbar = new Toolbar(context);
-        toolbarLayout.addView(toolbar, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        addView(toolbar, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         defaultTitleTextColor = getDefaultTitleTextColor();
         defaultOverflowIcon = toolbar.getOverflowIcon();
@@ -127,6 +127,9 @@ public class NavigationBarView extends AppBarLayout {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         attachDraweeHolders();
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+        toolbar.requestLayout();
     }
 
     @Override
