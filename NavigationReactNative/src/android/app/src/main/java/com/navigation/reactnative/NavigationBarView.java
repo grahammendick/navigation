@@ -25,12 +25,14 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
 public class NavigationBarView extends AppBarLayout {
     private IconResolver iconResolver;
+    CollapsingToolbarLayout toolbarLayout;
     Toolbar toolbar;
     private MenuItem searchMenuItem;
     private Integer tintColor;
@@ -54,8 +56,10 @@ public class NavigationBarView extends AppBarLayout {
     public NavigationBarView(Context context) {
         super(context);
 
+        toolbarLayout = new CollapsingToolbarLayout(context);
+        addView(toolbarLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         toolbar = new Toolbar(context);
-        addView(toolbar, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        toolbarLayout.addView(toolbar, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         defaultTitleTextColor = getDefaultTitleTextColor();
         defaultOverflowIcon = toolbar.getOverflowIcon();
