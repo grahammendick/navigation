@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
 import com.facebook.react.bridge.Arguments;
@@ -23,7 +24,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import java.util.HashSet;
 
-public class SceneView extends ViewGroup implements NavigationBoundary {
+public class SceneView extends CoordinatorLayout implements NavigationBoundary {
     protected String sceneKey;
     protected String enterAnim;
     protected String exitAnim;
@@ -37,7 +38,7 @@ public class SceneView extends ViewGroup implements NavigationBoundary {
     }
 
     @Override
-    protected void onAttachedToWindow() {
+    public void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (fragment == null) {
             if (customGlobalLayoutListener == null)
@@ -52,7 +53,7 @@ public class SceneView extends ViewGroup implements NavigationBoundary {
     }
 
     @Override
-    protected void onDetachedFromWindow() {
+    public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (fragment == null)
             getViewTreeObserver().removeOnGlobalLayoutListener(customGlobalLayoutListener);
