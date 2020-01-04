@@ -58,7 +58,8 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
 
     @ReactProp(name = "title")
     public void setTitle(NavigationBarView view, @Nullable String title) {
-        view.toolbar.setTitle(title);
+        //view.toolbar.setTitle(title);
+        view.toolbarLayout.setTitle(title);
     }
 
     @ReactProp(name = "logo")
