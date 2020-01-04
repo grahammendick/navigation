@@ -11,6 +11,7 @@ import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.BaseDataSubscriber;
 import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.drawable.ForwardingDrawable;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.facebook.imagepipeline.image.CloseableBitmap;
@@ -27,6 +28,25 @@ class IconResolver {
 
     IconResolver(Context context) {
         this.context = context;
+    }
+
+    private static class DrawableWithIntrinsicSize extends ForwardingDrawable implements Drawable.Callback {
+        private final ImageInfo imageInfo;
+
+        DrawableWithIntrinsicSize(Drawable drawable, ImageInfo imageInfo) {
+            super(drawable);
+            this.imageInfo = imageInfo;
+        }
+
+        @Override
+        public int getIntrinsicWidth() {
+            return imageInfo.getWidth();
+        }
+
+        @Override
+        public int getIntrinsicHeight() {
+            return imageInfo.getHeight();
+        }
     }
 
     interface IconResolverListener {
@@ -58,7 +78,7 @@ class IconResolver {
         }
 
     }
-
+    
     void setIconSource(ReadableMap source, final IconResolverListener iconResolverListener) {
         String uri = source != null ? source.getString(PROP_ICON_URI) : null;
         if (uri == null) {
@@ -67,10 +87,7 @@ class IconResolver {
             ImagePipeline imagePipeline = Fresco.getImagePipeline();
             ImageRequestBuilder builder = ImageRequestBuilder.newBuilderWithSource(Uri.parse(uri));
 
-            ImageInfo imageInfo = getIconImageInfo(source);
-            if (imageInfo != null) {
-                builder.setResizeOptions(new ResizeOptions(imageInfo.getWidth(), imageInfo.getHeight()));
-            }
+            final ImageInfo imageInfo = getIconImageInfo(source);
 
             ImageRequest request = builder.build();
             DataSource<CloseableReference<CloseableImage>> dataSource = imagePipeline.fetchDecodedImage(request, context);
@@ -89,7 +106,9 @@ class IconResolver {
                             Bitmap bitmap = (((CloseableBitmap) image).getUnderlyingBitmap());
                             if (bitmap != null && !bitmap.isRecycled()) {
                                 Bitmap bitmapCopy = bitmap.copy(bitmap.getConfig(), true);
-                                iconResolverListener.setDrawable(new BitmapDrawable(context.getResources(), bitmapCopy));
+                                Drawable drawable = new BitmapDrawable(context.getResources(), bitmapCopy);
+                                DrawableWithIntrinsicSize sizedDrawable = new DrawableWithIntrinsicSize(drawable, imageInfo);
+                                iconResolverListener.setDrawable(sizedDrawable);
                             }
                         }
                     } finally {
