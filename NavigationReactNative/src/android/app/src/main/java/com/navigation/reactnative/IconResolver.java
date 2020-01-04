@@ -12,7 +12,6 @@ import com.facebook.datasource.BaseDataSubscriber;
 import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.drawable.ForwardingDrawable;
-import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.facebook.imagepipeline.image.CloseableBitmap;
 import com.facebook.imagepipeline.image.CloseableImage;
@@ -99,26 +98,27 @@ class IconResolver {
                     }
 
                     CloseableReference<CloseableImage> imageRef = dataSource.getResult();
-                    CloseableImage image = imageRef.get();
-                    try {
+                    if (imageRef != null) {
+                        CloseableImage image = imageRef.get();
+                        try {
 
-                        if (image instanceof CloseableBitmap) {
-                            Bitmap bitmap = (((CloseableBitmap) image).getUnderlyingBitmap());
-                            if (bitmap != null && !bitmap.isRecycled()) {
-                                Bitmap bitmapCopy = bitmap.copy(bitmap.getConfig(), true);
-                                Drawable drawable = new BitmapDrawable(context.getResources(), bitmapCopy);
-                                DrawableWithIntrinsicSize sizedDrawable = new DrawableWithIntrinsicSize(drawable, imageInfo);
-                                iconResolverListener.setDrawable(sizedDrawable);
+                            if (image instanceof CloseableBitmap) {
+                                Bitmap bitmap = (((CloseableBitmap) image).getUnderlyingBitmap());
+                                if (bitmap != null && !bitmap.isRecycled()) {
+                                    Bitmap bitmapCopy = bitmap.copy(bitmap.getConfig(), true);
+                                    Drawable drawable = new BitmapDrawable(context.getResources(), bitmapCopy);
+                                    DrawableWithIntrinsicSize sizedDrawable = new DrawableWithIntrinsicSize(drawable, imageInfo);
+                                    iconResolverListener.setDrawable(sizedDrawable);
+                                }
                             }
+                        } finally {
+                            imageRef.close();
                         }
-                    } finally {
-                        imageRef.close();
                     }
                 }
 
                 @Override
                 protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
-                    // TODO; Throw Error?; For now just dont load anything
                 }
             }, UiThreadImmediateExecutorService.getInstance());
         } else {
@@ -146,7 +146,7 @@ class IconResolver {
     private static final String PROP_ICON_WIDTH = "width";
     private static final String PROP_ICON_HEIGHT = "height";
 
-    IconImageInfo getIconImageInfo(ReadableMap source) {
+    private IconImageInfo getIconImageInfo(ReadableMap source) {
         if (source.hasKey(PROP_ICON_WIDTH) && source.hasKey(PROP_ICON_HEIGHT)) {
             final int width = Math.round(PixelUtil.toPixelFromDIP(source.getInt(PROP_ICON_WIDTH)));
             final int height = Math.round(PixelUtil.toPixelFromDIP(source.getInt(PROP_ICON_HEIGHT)));
