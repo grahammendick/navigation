@@ -19,6 +19,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
+    ViewPager.OnPageChangeListener pageChangeListener;
 
     public TabNavigationView(Context context) {
         super(context);
@@ -57,7 +58,9 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                     return true;
                 }
             });
-            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            if (pageChangeListener != null)
+                viewPager.removeOnPageChangeListener(pageChangeListener);
+            pageChangeListener = new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 }
@@ -70,7 +73,8 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                 @Override
                 public void onPageScrollStateChanged(int state) {
                 }
-            });
+            };
+            viewPager.addOnPageChangeListener(pageChangeListener);
             pagerAdapter.registerDataSetObserver(new DataSetObserver() {
                 @Override
                 public void onChanged() {
