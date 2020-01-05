@@ -19,8 +19,8 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
-    ViewPager.OnPageChangeListener pageChangeListener;
-    DataSetObserver dataSetObserver;
+    private ViewPager.OnPageChangeListener pageChangeListener;
+    private DataSetObserver dataSetObserver;
 
     public TabNavigationView(Context context) {
         super(context);
