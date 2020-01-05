@@ -20,6 +20,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     int selectedTintColor;
     int unselectedTintColor;
     ViewPager.OnPageChangeListener pageChangeListener;
+    DataSetObserver dataSetObserver;
 
     public TabNavigationView(Context context) {
         super(context);
@@ -75,13 +76,16 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                 }
             };
             viewPager.addOnPageChangeListener(pageChangeListener);
-            pagerAdapter.registerDataSetObserver(new DataSetObserver() {
+            if (dataSetObserver != null)
+                pagerAdapter.unregisterDataSetObserver(dataSetObserver);
+            dataSetObserver = new DataSetObserver() {
                 @Override
                 public void onChanged() {
                     buildMenu(pagerAdapter);
                     setSelectedItemId(viewPager.getCurrentItem());
                 }
-            });
+            };
+            pagerAdapter.registerDataSetObserver(dataSetObserver);
         }
     }
 
