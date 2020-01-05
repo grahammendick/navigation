@@ -38,12 +38,13 @@ const Stack = ({navigator}) => (
 const App = () => {
   const [notified, setNotified] = useState(false);
   return Platform.OS === 'ios' ? (
-    <TabBar bottomTabs={true}>
-      <TabBarItem title="Home">
+    <TabBar bottomTabs={true} selectedTintColor={'deepskyblue'}>
+      <TabBarItem title="Home" image={require('./home.png')}>
         <Stack navigator={stateNavigator} />
       </TabBarItem>
       <TabBarItem
         title="Notifications"
+        image={require('./notifications.png')}
         badge={!notified ? getFollows().length : null} 
         onPress={() => {setNotified(true)}}>
         <Stack navigator={notificationsNavigator} />
