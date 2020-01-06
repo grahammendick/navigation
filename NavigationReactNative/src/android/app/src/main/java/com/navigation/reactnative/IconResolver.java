@@ -89,23 +89,9 @@ class IconResolver {
                 }
             }, UiThreadImmediateExecutorService.getInstance());
         } else {
-            iconResolverListener.setDrawable(getDrawableByName(uri, context));
-        }
-    }
-
-    private static int getDrawableResourceByName(String name, Context context) {
-        return context.getResources().getIdentifier(
-                name,
-                "drawable",
-                context.getPackageName());
-    }
-
-    private static Drawable getDrawableByName(String name, Context context) {
-        int drawableResId = getDrawableResourceByName(name, context);
-        if (drawableResId != 0) {
-            return context.getResources().getDrawable(getDrawableResourceByName(name, context));
-        } else {
-            return null;
+            int drawableResId = context.getResources().getIdentifier(uri, "drawable", context.getPackageName());
+            if (drawableResId != 0)
+                iconResolverListener.setDrawable(context.getResources().getDrawable(drawableResId));
         }
     }
 }
