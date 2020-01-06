@@ -38,9 +38,9 @@ public class NavigationBarView extends AppBarLayout {
     ViewOutlineProvider defaultOutlineProvider;
     Drawable defaultBackground;
     Drawable defaultOverflowIcon;
-    private IconResolver.IconResolverListener logoControllerListener;
-    private IconResolver.IconResolverListener navIconControllerListener;
-    private IconResolver.IconResolverListener overflowIconControllerListener;
+    private IconResolver.IconResolverListener logoResolverListener;
+    private IconResolver.IconResolverListener navIconResolverListener;
+    private IconResolver.IconResolverListener overflowIconResolverListener;
 
     public NavigationBarView(Context context) {
         super(context);
@@ -56,7 +56,7 @@ public class NavigationBarView extends AppBarLayout {
         defaultBackground = getBackground();
 
         iconResolver = new IconResolver(context);
-        logoControllerListener = new IconResolver.IconResolverListener() {
+        logoResolverListener = new IconResolver.IconResolverListener() {
             @Override
             public void setDrawable(Drawable d) {
                 toolbar.setLogo(d);
@@ -64,7 +64,7 @@ public class NavigationBarView extends AppBarLayout {
                 post(measureAndLayout);
             }
         };
-        navIconControllerListener = new IconResolver.IconResolverListener() {
+        navIconResolverListener = new IconResolver.IconResolverListener() {
             @Override
             public void setDrawable(Drawable d) {
                 toolbar.setNavigationIcon(d);
@@ -72,7 +72,7 @@ public class NavigationBarView extends AppBarLayout {
                 post(measureAndLayout);
             }
         };
-        overflowIconControllerListener = new IconResolver.IconResolverListener() {
+        overflowIconResolverListener = new IconResolver.IconResolverListener() {
             @Override
             public void setDrawable(Drawable d) {
                 toolbar.setOverflowIcon(d);
@@ -99,16 +99,16 @@ public class NavigationBarView extends AppBarLayout {
     }
 
     void setLogoSource(@Nullable ReadableMap source) {
-        iconResolver.setIconSource(source, logoControllerListener);
+        iconResolver.setIconSource(source, logoResolverListener);
     }
 
     void setNavIconSource(@Nullable ReadableMap source) {
-        iconResolver.setIconSource(source, navIconControllerListener);
+        iconResolver.setIconSource(source, navIconResolverListener);
     }
 
     void setOverflowIconSource(@Nullable ReadableMap source) {
         if (source != null)
-            iconResolver.setIconSource(source, overflowIconControllerListener);
+            iconResolver.setIconSource(source, overflowIconResolverListener);
         else
             toolbar.setOverflowIcon(defaultOverflowIcon);
     }

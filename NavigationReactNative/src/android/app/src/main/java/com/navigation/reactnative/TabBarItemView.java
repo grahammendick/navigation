@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -18,12 +17,12 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
     private Drawable icon;
     private OnIconListener onIconListener;
     private IconResolver iconResolver;
-    private IconResolver.IconResolverListener tabIconControllerListener;
+    private IconResolver.IconResolverListener tabIconResolverListener;
 
     public TabBarItemView(Context context) {
         super(context);
         iconResolver = new IconResolver(context);
-        tabIconControllerListener = new IconResolver.IconResolverListener() {
+        tabIconResolverListener = new IconResolver.IconResolverListener() {
             @Override
             public void setDrawable(Drawable d) {
                 icon = d;
@@ -34,7 +33,7 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
     }
 
     void setIconSource(@Nullable ReadableMap source) {
-        iconResolver.setIconSource(source, tabIconControllerListener);
+        iconResolver.setIconSource(source, tabIconResolverListener);
     }
 
     void setOnIconListener(OnIconListener onIconListener) {
