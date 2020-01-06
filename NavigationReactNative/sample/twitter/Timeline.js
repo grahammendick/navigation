@@ -13,7 +13,7 @@ export default ({timeline: {id, name, username, logo, bio,
         title={name}
         navigationImage={require('./arrow.png')}
         barTintColor={Platform.OS === 'android' ? '#fff' : null}
-        tintColor="deepskyblue"
+        tintColor={Platform.OS === 'android' ? "deepskyblue" : null}
         onNavigationPress={() => {
           stateNavigator.navigateBack(1)
         }} />

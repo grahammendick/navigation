@@ -38,7 +38,7 @@ const Stack = ({navigator}) => (
 const App = () => {
   const [notified, setNotified] = useState(false);
   return Platform.OS === 'ios' ? (
-    <TabBar selectedTintColor={'deepskyblue'}>
+    <TabBar>
       <TabBarItem title="Home" image={require('./home.png')}>
         <Stack navigator={stateNavigator} />
       </TabBarItem>

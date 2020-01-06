@@ -13,7 +13,7 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         title="Tweet"
         navigationImage={require('./arrow.png')}
         barTintColor={Platform.OS === 'android' ? '#fff' : null}
-        tintColor="deepskyblue"
+        tintColor={Platform.OS === 'android' ? "deepskyblue" : null}
         onNavigationPress={() => {
           stateNavigator.navigateBack(1)
         }} />
