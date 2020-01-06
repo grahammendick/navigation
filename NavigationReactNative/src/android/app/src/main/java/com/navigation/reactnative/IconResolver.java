@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -25,12 +26,12 @@ class IconResolver {
     private static final String PROP_ICON_WIDTH = "width";
     private static final String PROP_ICON_HEIGHT = "height";
 
-    private static class DrawableWithIntrinsicSize extends ForwardingDrawable implements Drawable.Callback {
+    private static class DrawableWithIntrinsicSize extends BitmapDrawable {
         private int width;
         private int height;
 
-        DrawableWithIntrinsicSize(Drawable drawable, ReadableMap source) {
-            super(drawable);
+        DrawableWithIntrinsicSize(Resources resources, Bitmap bitmap, ReadableMap source) {
+            super(resources, bitmap);
             width = Math.round(PixelUtil.toPixelFromDIP(source.getInt(PROP_ICON_WIDTH)));
             height = Math.round(PixelUtil.toPixelFromDIP(source.getInt(PROP_ICON_HEIGHT)));
         }
@@ -73,9 +74,8 @@ class IconResolver {
                                 Bitmap bitmap = (((CloseableBitmap) image).getUnderlyingBitmap());
                                 if (bitmap != null && !bitmap.isRecycled()) {
                                     Bitmap bitmapCopy = bitmap.copy(bitmap.getConfig(), true);
-                                    Drawable drawable = new BitmapDrawable(context.getResources(), bitmapCopy);
-                                    DrawableWithIntrinsicSize sizedDrawable = new DrawableWithIntrinsicSize(drawable, source);
-                                    iconResolverListener.setDrawable(sizedDrawable);
+                                    Drawable drawable = new DrawableWithIntrinsicSize(context.getResources(), bitmapCopy, source);
+                                    iconResolverListener.setDrawable(drawable);
                                 }
                             }
                         } finally {
