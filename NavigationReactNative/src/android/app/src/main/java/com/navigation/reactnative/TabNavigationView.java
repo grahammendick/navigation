@@ -86,6 +86,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                 }
             };
             pagerAdapter.registerDataSetObserver(dataSetObserver);
+            setSelectedItemId(viewPager.getCurrentItem());
         }
     }
 
