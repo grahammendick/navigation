@@ -16,12 +16,10 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
     protected String title;
     private Drawable icon;
     private OnIconListener onIconListener;
-    private IconResolver iconResolver;
     private IconResolver.IconResolverListener tabIconResolverListener;
 
     public TabBarItemView(Context context) {
         super(context);
-        iconResolver = new IconResolver(context);
         tabIconResolverListener = new IconResolver.IconResolverListener() {
             @Override
             public void setDrawable(Drawable d) {
@@ -33,7 +31,7 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
     }
 
     void setIconSource(@Nullable ReadableMap source) {
-        iconResolver.setIconSource(source, tabIconResolverListener);
+        IconResolver.setIconSource(source, tabIconResolverListener, getContext());
     }
 
     void setOnIconListener(OnIconListener onIconListener) {

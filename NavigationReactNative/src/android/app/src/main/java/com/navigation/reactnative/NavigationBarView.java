@@ -25,7 +25,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
 public class NavigationBarView extends AppBarLayout {
-    private IconResolver iconResolver;
     Toolbar toolbar;
     private MenuItem searchMenuItem;
     private Integer tintColor;
@@ -55,7 +54,6 @@ public class NavigationBarView extends AppBarLayout {
         }
         defaultBackground = getBackground();
 
-        iconResolver = new IconResolver(context);
         logoResolverListener = new IconResolver.IconResolverListener() {
             @Override
             public void setDrawable(Drawable d) {
@@ -99,16 +97,16 @@ public class NavigationBarView extends AppBarLayout {
     }
 
     void setLogoSource(@Nullable ReadableMap source) {
-        iconResolver.setIconSource(source, logoResolverListener);
+        IconResolver.setIconSource(source, logoResolverListener, getContext());
     }
 
     void setNavIconSource(@Nullable ReadableMap source) {
-        iconResolver.setIconSource(source, navIconResolverListener);
+        IconResolver.setIconSource(source, navIconResolverListener, getContext());
     }
 
     void setOverflowIconSource(@Nullable ReadableMap source) {
         if (source != null)
-            iconResolver.setIconSource(source, overflowIconResolverListener);
+            IconResolver.setIconSource(source, overflowIconResolverListener, getContext());
         else
             toolbar.setOverflowIcon(defaultOverflowIcon);
     }
@@ -173,7 +171,7 @@ public class NavigationBarView extends AppBarLayout {
 
     private void setMenuItemIcon(final MenuItem item, ReadableMap iconSource) {
         ActionIconControllerListener controllerListener = new ActionIconControllerListener(item);
-        iconResolver.setIconSource(iconSource, controllerListener);
+        IconResolver.setIconSource(iconSource, controllerListener, getContext());
     }
 
     void setOnSearchListener(OnSearchListener onSearchListener) {

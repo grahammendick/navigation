@@ -23,12 +23,6 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.PixelUtil;
 
 class IconResolver {
-    private Context context;
-
-    IconResolver(Context context) {
-        this.context = context;
-    }
-
     private static class DrawableWithIntrinsicSize extends ForwardingDrawable implements Drawable.Callback {
         private final ImageInfo imageInfo;
 
@@ -78,7 +72,7 @@ class IconResolver {
 
     }
     
-    void setIconSource(ReadableMap source, final IconResolverListener iconResolverListener) {
+    static void setIconSource(ReadableMap source, final IconResolverListener iconResolverListener, final Context context) {
         String uri = source != null ? source.getString(PROP_ICON_URI) : null;
         if (uri == null) {
             iconResolverListener.setDrawable(null);
@@ -122,21 +116,21 @@ class IconResolver {
                 }
             }, UiThreadImmediateExecutorService.getInstance());
         } else {
-            iconResolverListener.setDrawable(getDrawableByName(uri));
+            iconResolverListener.setDrawable(getDrawableByName(uri, context));
         }
     }
 
-    private int getDrawableResourceByName(String name) {
+    private static int getDrawableResourceByName(String name, Context context) {
         return context.getResources().getIdentifier(
                 name,
                 "drawable",
                 context.getPackageName());
     }
 
-    private Drawable getDrawableByName(String name) {
-        int drawableResId = getDrawableResourceByName(name);
+    private static Drawable getDrawableByName(String name, Context context) {
+        int drawableResId = getDrawableResourceByName(name, context);
         if (drawableResId != 0) {
-            return context.getResources().getDrawable(getDrawableResourceByName(name));
+            return context.getResources().getDrawable(getDrawableResourceByName(name, context));
         } else {
             return null;
         }
@@ -146,7 +140,7 @@ class IconResolver {
     private static final String PROP_ICON_WIDTH = "width";
     private static final String PROP_ICON_HEIGHT = "height";
 
-    private IconImageInfo getIconImageInfo(ReadableMap source) {
+    private static IconImageInfo getIconImageInfo(ReadableMap source) {
         if (source.hasKey(PROP_ICON_WIDTH) && source.hasKey(PROP_ICON_HEIGHT)) {
             final int width = Math.round(PixelUtil.toPixelFromDIP(source.getInt(PROP_ICON_WIDTH)));
             final int height = Math.round(PixelUtil.toPixelFromDIP(source.getInt(PROP_ICON_HEIGHT)));
