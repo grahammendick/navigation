@@ -28,24 +28,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TabBarView extends ViewPager {
-    private List<TabBarItemView> tabs = new ArrayList<>();
     boolean swipeable = true;
 
     public TabBarView(Context context) {
         super(context);
         addOnPageChangeListener(new TabChangeListener());
+        Activity activity = ((ReactContext) context).getCurrentActivity();
+        setAdapter(new Adapter(getFragmentManager(activity)));
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        Activity activity = ((ReactContext) getContext()).getCurrentActivity();
-        if (getAdapter() == null) {
-            setAdapter(new Adapter(getFragmentManager(activity)));
-            for (int i = 0; i < tabs.size(); i++) {
-                addTab(tabs.get(i), i);
-            }
-        }
         requestLayout();
         post(measureAndLayout);
         if (getTabView() != null)
@@ -108,31 +102,19 @@ public class TabBarView extends ViewPager {
     }
 
     int getTabsCount() {
-        if (getAdapter() != null)
-            return getAdapter().tabFragments.size();
-        else
-            return tabs.size();
+        return getAdapter() != null ? getAdapter().tabFragments.size() : 0;
     }
 
     TabBarItemView getTabAt(int index) {
-        if (getAdapter() != null)
-            return getAdapter().tabFragments.get(index).tabBarItem;
-        else
-            return tabs.get(index);
+        return getAdapter().tabFragments.get(index).tabBarItem;
     }
 
     void addTab(TabBarItemView tab, int index) {
-        if (getAdapter() != null)
-            getAdapter().addTab(tab, index);
-        else
-            tabs.add(index, tab);
+        getAdapter().addTab(tab, index);
     }
 
     void removeTab(int index) {
-        if (getAdapter() != null)
-            getAdapter().removeTab(index);
-        else
-            tabs.remove(index);
+        getAdapter().removeTab(index);
     }
 
     @Override
