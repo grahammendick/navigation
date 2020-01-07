@@ -106,15 +106,17 @@ public class TabBarView extends ViewPager {
     }
 
     TabBarItemView getTabAt(int index) {
-        return getAdapter().tabFragments.get(index).tabBarItem;
+        return getAdapter() != null ? getAdapter().tabFragments.get(index).tabBarItem : null;
     }
 
     void addTab(TabBarItemView tab, int index) {
-        getAdapter().addTab(tab, index);
+        if (getAdapter() != null)
+            getAdapter().addTab(tab, index);
     }
 
     void removeTab(int index) {
-        getAdapter().removeTab(index);
+        if (getAdapter() != null)
+            getAdapter().removeTab(index);
     }
 
     @Override
@@ -124,7 +126,7 @@ public class TabBarView extends ViewPager {
                 NativeGestureUtil.notifyNativeGestureStarted(this, ev);
                 return true;
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
         return false;
     }
@@ -133,7 +135,7 @@ public class TabBarView extends ViewPager {
     public boolean onTouchEvent(MotionEvent ev) {
         try {
             return swipeable && super.onTouchEvent(ev);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         return false;
@@ -217,7 +219,8 @@ public class TabBarView extends ViewPager {
             event.putInt("tab", position);
             ReactContext reactContext = (ReactContext) getContext();
             reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onTabSelected", event);
-            getAdapter().tabFragments.get(position).tabBarItem.pressed();
+            if (getAdapter() != null)
+                getAdapter().tabFragments.get(position).tabBarItem.pressed();
         }
 
         @Override
