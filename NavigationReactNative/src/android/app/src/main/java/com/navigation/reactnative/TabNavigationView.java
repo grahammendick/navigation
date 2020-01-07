@@ -95,6 +95,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         for (int i = 0; i < pagerAdapter.getCount(); i++) {
             getMenu().add(Menu.NONE, i, i, pagerAdapter.getPageTitle(i));
         }
+        requestLayout();
         post(measureAndLayout);
     }
 
