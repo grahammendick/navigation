@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,7 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
-public class TabLayoutView extends TabLayout {
+public class TabLayoutView extends TabLayout implements TabView {
     int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
@@ -59,6 +60,16 @@ public class TabLayoutView extends TabLayout {
                 }
             });
         }
+    }
+
+    public void setIcon(int index, Drawable icon) {
+        TabLayout.Tab tab = getTabAt(index);
+        if (tab != null)
+            tab.setIcon(icon);
+    }
+
+    public Runnable getMeasureAndLayout() {
+        return measureAndLayout;
     }
 
     final Runnable measureAndLayout = new Runnable() {

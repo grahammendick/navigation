@@ -23,57 +23,51 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TabBarView extends ViewPager {
-    private List<TabBarItemView> tabs = new ArrayList<>();
+    boolean swipeable = true;
 
     public TabBarView(Context context) {
         super(context);
         addOnPageChangeListener(new TabChangeListener());
+        Activity activity = ((ReactContext) context).getCurrentActivity();
+        setAdapter(new Adapter(getFragmentManager(activity)));
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        Activity activity = ((ReactContext) getContext()).getCurrentActivity();
-        setAdapter(new Adapter(getFragmentManager(activity)));
-        for(int i = 0; i < tabs.size(); i++) {
-            addTab(tabs.get(i), i);
-        }
         requestLayout();
         post(measureAndLayout);
-        if (getTabLayout() != null)
-            getTabLayout().setupWithViewPager(this);
+        if (getTabView() != null)
+            getTabView().setupWithViewPager(this);
         populateTabIcons();
     }
 
     void populateTabIcons() {
-        final TabLayoutView tabLayout = getTabLayout();
-        if (tabLayout != null && getAdapter() != null) {
-            for(int i = 0; i < tabLayout.getTabCount(); i++) {
-                final TabLayout.Tab tab = tabLayout.getTabAt(i);
+        final TabView tabView = getTabView();
+        if (tabView != null && getAdapter() != null) {
+            for(int i = 0; i < tabView.getTabCount(); i++) {
+                final int index = i;
                 getAdapter().tabFragments.get(i).tabBarItem.setOnIconListener(new TabBarItemView.OnIconListener() {
                     @Override
                     public void onIconResolve(Drawable icon) {
-                        if (tab != null) {
-                            tab.setIcon(icon);
-                            post(tabLayout.measureAndLayout);
-                        }
+                        tabView.setIcon(index, icon);
+                        post(tabView.getMeasureAndLayout());
                     }
                 });
             }
         }
     }
 
-    private TabLayoutView getTabLayout() {
+    private TabView getTabView() {
         for(int i = 0; getParent() != null && i < ((ViewGroup) getParent()).getChildCount(); i++) {
             View child = ((ViewGroup) getParent()).getChildAt(i);
-            if (child instanceof TabLayoutView)
-                return (TabLayoutView) child;
+            if (child instanceof TabView)
+                return (TabView) child;
         }
         return null;
     }
@@ -108,42 +102,42 @@ public class TabBarView extends ViewPager {
     }
 
     int getTabsCount() {
-        if (getAdapter() != null)
-            return getAdapter().tabFragments.size();
-        else
-            return tabs.size();
+        return getAdapter() != null ? getAdapter().tabFragments.size() : 0;
     }
 
     TabBarItemView getTabAt(int index) {
-        if (getAdapter() != null)
-            return getAdapter().tabFragments.get(index).tabBarItem;
-        else
-            return tabs.get(index);
+        return getAdapter() != null ? getAdapter().tabFragments.get(index).tabBarItem : null;
     }
 
     void addTab(TabBarItemView tab, int index) {
         if (getAdapter() != null)
             getAdapter().addTab(tab, index);
-        else
-            tabs.add(index, tab);
     }
 
     void removeTab(int index) {
         if (getAdapter() != null)
             getAdapter().removeTab(index);
-        else
-            tabs.remove(index);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         try {
-            if (super.onInterceptTouchEvent(ev)) {
+            if (swipeable && super.onInterceptTouchEvent(ev)) {
                 NativeGestureUtil.notifyNativeGestureStarted(this, ev);
                 return true;
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
+        return false;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        try {
+            return swipeable && super.onTouchEvent(ev);
+        } catch (IllegalArgumentException ignored) {
+        }
+
         return false;
     }
 
@@ -225,7 +219,8 @@ public class TabBarView extends ViewPager {
             event.putInt("tab", position);
             ReactContext reactContext = (ReactContext) getContext();
             reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onTabSelected", event);
-            getAdapter().tabFragments.get(position).tabBarItem.pressed();
+            if (getAdapter() != null)
+                getAdapter().tabFragments.get(position).tabBarItem.pressed();
         }
 
         @Override
