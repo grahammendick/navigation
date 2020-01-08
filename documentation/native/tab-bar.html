@@ -88,6 +88,10 @@ stateNavigator.navigate('contacts');</code></pre>
 &lt;/TabBar></code></pre>
             <h2>Adding a Bottom Tab Bar on Android</h2>
             <p>
+                In a standard Android app, the tabs only appear on the first scene. When the user navigates to a new scene the tabs disappear. You can replicate this setup using the same <code>TabBar</code>  component as above. But you don’t need a separate <code>NavigationStack</code>  per tab anymore. In their place you put the components that make up the tab content.
+            </p>
+            <p>
+                In our email example, we create a 'home' scene that renders the <code>TabBar</code>  with two tabs. In the first tab we place our <code>Inbox</code>  component and we put the <code>Contacts</code>  component into the second tab. We set the <code>bottomTabs</code>  prop of the <code>TabBar</code>  to true because, in the usual Android setup, the tabs appear at the bottom of the screen.
             </p>
             <pre><code class="language-jsx">var Home =  () => (
   &lt;TabBar bottomTabs={true} swipeable={false}>
