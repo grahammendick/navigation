@@ -86,30 +86,30 @@ stateNavigator.navigate('contacts');</code></pre>
     &lt;/NavigationHandler>
   &lt;/TabBarItem>
 &lt;/TabBar></code></pre>
-            <h2>Adding Bottom Tab Navigation (Android)</h2>
+            <h2>Adding Bottom Tabs on Android</h2>
             <p>
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
-  {key: 'home'},
-  {key: 'mail', trackCrumbTrail: true},
-  {key: 'compose', trackCrumbTrail: true},
-  {key: 'contact', trackCrumbTrail: true}
-]);
-</code></pre>
-          <pre><code class="language-jsx">var {home} = stateNavigator.states;
-
-home.renderScene = () => (
+            <pre><code class="language-jsx">var Home =  () => (
   &lt;TabBar bottomTabs={true} swipeable={false}>
     &lt;TabBarItem title="Inbox">
       &lt;Inbox />
+        &lt;NavigationStack />
+      &lt;/NavigationHandler>
     &lt;/TabBarItem>
     &lt;TabBarItem title="Contacts">
       &lt;Contacts />
     &lt;/TabBarItem>
   &lt;/TabBar>
-);
-</code></pre>
-          <pre><code class="language-jsx"></code></pre>
+);</code></pre>
+          <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+  {key: 'home'},
+  {key: 'mail', trackCrumbTrail: true},
+  {key: 'compose', trackCrumbTrail: true},
+  {key: 'contact', trackCrumbTrail: true}
+]);
+
+var {home} = stateNavigator.states;
+home.renderScene = () => &lt;Home />;</code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
