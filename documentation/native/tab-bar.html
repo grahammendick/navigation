@@ -104,7 +104,7 @@ stateNavigator.navigate('contacts');</code></pre>
   &lt;/TabBar>
 );</code></pre>
             <p>
-                We can make do with a single <code>StateNavigator</code> now that we no longer have separate <code>NavigationStacks</code>. We can also get rid of the 'inbox' <code>State</code> from the <code>StateNavigator</code> because it's not a scene in its own right anymore. The <code>Inbox</code> component is now part of the 'home' scene. We need to add a 'home' <code>State</code> and make sure that it's displayed when the app first loads.
+                We can make do with a single <code>StateNavigator</code> now that we no longer have separate <code>NavigationStacks</code>. We can also get rid of the 'inbox' <code>State</code> from the <code>StateNavigator</code> because it's not a scene in its own right anymore. The <code>Inbox</code> component is now part of the 'home' scene. Instead, we need to add a 'home' <code>State</code> and make sure that it's displayed when the app first loads.
             </p>  
             <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
   {key: 'home'},
