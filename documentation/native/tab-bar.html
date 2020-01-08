@@ -85,33 +85,31 @@ stateNavigator.navigate('contacts');</code></pre>
       &lt;NavigationStack primary={false} />
     &lt;/NavigationHandler>
   &lt;/TabBarItem>
-&lt;/TabBar>
-</code></pre>
-            <h2>Adding Android Back Handlers</h2>
+&lt;/TabBar></code></pre>
+            <h2>Adding Bottom Tab Navigation (Android)</h2>
             <p>
-                By default, your Android back handlers are processed in reverse order. The last subscription is run first. But with tab navigation you only want the back handlers for the active tab to run. To ensure back handlers for inactive tabs are ignored, you must add and remove them using the <code>BackHandlerContext</code>.
             </p>
-            <pre><code class="language-jsx">import {BackHandlerContext} from 'navigation-react-native';
+            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+  {key: 'home'},
+  {key: 'mail', trackCrumbTrail: true},
+  {key: 'compose', trackCrumbTrail: true},
+  {key: 'contact', trackCrumbTrail: true}
+]);
+</code></pre>
+          <pre><code class="language-jsx">var {home} = stateNavigator.states;
 
-class Contacts extends React.Component {
-  componentDidMount() {
-    const {backHandler} = this.props;
-    this.subscription = backHandler.addEventListener('hardwareBackPress', () => {
-      //handle back
-      return true;
-    });
-  }
-
-  componentWillUnmount() {
-    this.subscription.remove()
-  }
-}
-
-export default () => (
-  &lt;BackHandlerContext.Consumer>
-    {backHandler => &lt;Contacts backHandler={backHandler} />}
-  &lt;/BackHandlerContext.Consumer>
-);</code></pre>
+home.renderScene = () => (
+  &lt;TabBar bottomTabs={true} swipeable={false}>
+    &lt;TabBarItem title="Inbox">
+      &lt;Inbox />
+    &lt;/TabBarItem>
+    &lt;TabBarItem title="Contacts">
+      &lt;Contacts />
+    &lt;/TabBarItem>
+  &lt;/TabBar>
+);
+</code></pre>
+          <pre><code class="language-jsx"></code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
