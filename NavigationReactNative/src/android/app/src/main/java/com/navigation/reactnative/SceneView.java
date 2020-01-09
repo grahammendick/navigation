@@ -41,9 +41,6 @@ public class SceneView extends CoordinatorLayout implements NavigationBoundary {
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) getChildAt(0).getLayoutParams();
-        params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
-        getChildAt(0).requestLayout();
         if (fragment == null) {
             if (customGlobalLayoutListener == null)
                 customGlobalLayoutListener = new CustomGlobalLayoutListener();

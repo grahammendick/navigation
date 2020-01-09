@@ -1,9 +1,16 @@
 package com.navigation.reactnative;
 
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ScrollView;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.Map;
 
@@ -43,5 +50,18 @@ public class SceneManager extends ViewGroupManager<SceneView> {
         return MapBuilder.<String, Object>builder()
             .put("onPopped", MapBuilder.of("registrationName", "onPopped"))
             .build();
+    }
+
+    @Override
+    public void addView(SceneView parent, View child, int index) {
+        super.addView(parent, child, index);
+        if (child instanceof ScrollView) {
+            CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT
+            );
+            params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
+            child.setLayoutParams(params);
+        }
     }
 }
