@@ -323,6 +323,10 @@ export interface TabBarProps {
      * Indicates whether the tab bar can be scrolled horizontally
      */
     scrollable?: boolean;
+    /**
+     * Indicates whether the selected tab can be changed by swiping 
+     */
+    swipeable?: boolean;
 }
 
 /**
