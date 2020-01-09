@@ -13,11 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 
-import com.facebook.drawee.drawable.ScalingUtils;
-import com.facebook.drawee.generic.GenericDraweeHierarchy;
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
-import com.facebook.drawee.view.DraweeHolder;
-import com.facebook.drawee.view.MultiDraweeHolder;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
@@ -31,7 +26,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
 public class NavigationBarView extends AppBarLayout {
-    private IconResolver iconResolver;
     Toolbar toolbar;
     private MenuItem searchMenuItem;
     private Integer tintColor;
@@ -44,13 +38,9 @@ public class NavigationBarView extends AppBarLayout {
     ViewOutlineProvider defaultOutlineProvider;
     Drawable defaultBackground;
     Drawable defaultOverflowIcon;
-    private final DraweeHolder logoHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
-    private final DraweeHolder navIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
-    private final DraweeHolder overflowIconHolder = DraweeHolder.create(createDraweeHierarchy(), getContext());
-    private IconResolver.IconControllerListener logoControllerListener;
-    private IconResolver.IconControllerListener navIconControllerListener;
-    private IconResolver.IconControllerListener overflowIconControllerListener;
-    private final MultiDraweeHolder<GenericDraweeHierarchy> actionsHolder = new MultiDraweeHolder<>();
+    private IconResolver.IconResolverListener logoResolverListener;
+    private IconResolver.IconResolverListener navIconResolverListener;
+    private IconResolver.IconResolverListener overflowIconResolverListener;
 
     public NavigationBarView(Context context) {
         super(context);
@@ -65,26 +55,25 @@ public class NavigationBarView extends AppBarLayout {
         }
         defaultBackground = getBackground();
 
-        iconResolver = new IconResolver(context);
-        logoControllerListener = new IconResolver.IconControllerListener(logoHolder) {
+        logoResolverListener = new IconResolver.IconResolverListener() {
             @Override
-            protected void setDrawable(Drawable d) {
+            public void setDrawable(Drawable d) {
                 toolbar.setLogo(d);
                 setTintColor(toolbar.getLogo());
                 post(measureAndLayout);
             }
         };
-        navIconControllerListener = new IconResolver.IconControllerListener(navIconHolder) {
+        navIconResolverListener = new IconResolver.IconResolverListener() {
             @Override
-            protected void setDrawable(Drawable d) {
+            public void setDrawable(Drawable d) {
                 toolbar.setNavigationIcon(d);
                 setTintColor(toolbar.getNavigationIcon());
                 post(measureAndLayout);
             }
         };
-        overflowIconControllerListener = new IconResolver.IconControllerListener(overflowIconHolder) {
+        overflowIconResolverListener = new IconResolver.IconResolverListener() {
             @Override
-            protected void setDrawable(Drawable d) {
+            public void setDrawable(Drawable d) {
                 toolbar.setOverflowIcon(d);
                 setTintColor(toolbar.getOverflowIcon());
             }
@@ -108,60 +97,19 @@ public class NavigationBarView extends AppBarLayout {
         });
     }
 
-    @Override
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        detachDraweeHolders();
-    }
-
-    @Override
-    public void onStartTemporaryDetach() {
-        super.onStartTemporaryDetach();
-        detachDraweeHolders();
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        attachDraweeHolders();
-        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
-        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
-        toolbar.requestLayout();
-    }
-
-    @Override
-    public void onFinishTemporaryDetach() {
-        super.onFinishTemporaryDetach();
-        attachDraweeHolders();
-    }
-
     void setLogoSource(@Nullable ReadableMap source) {
-        iconResolver.setIconSource(source, logoControllerListener, logoHolder);
+        IconResolver.setIconSource(source, logoResolverListener, getContext());
     }
 
     void setNavIconSource(@Nullable ReadableMap source) {
-        iconResolver.setIconSource(source, navIconControllerListener, navIconHolder);
+        IconResolver.setIconSource(source, navIconResolverListener, getContext());
     }
 
     void setOverflowIconSource(@Nullable ReadableMap source) {
         if (source != null)
-            iconResolver.setIconSource(source, overflowIconControllerListener, overflowIconHolder);
+            IconResolver.setIconSource(source, overflowIconResolverListener, getContext());
         else
             toolbar.setOverflowIcon(defaultOverflowIcon);
-    }
-
-    private void detachDraweeHolders() {
-        logoHolder.onDetach();
-        navIconHolder.onDetach();
-        overflowIconHolder.onDetach();
-        actionsHolder.onDetach();
-    }
-
-    private void attachDraweeHolders() {
-        logoHolder.onAttach();
-        navIconHolder.onAttach();
-        overflowIconHolder.onAttach();
-        actionsHolder.onAttach();
     }
 
     void setTintColor(Integer tintColor) {
@@ -185,7 +133,6 @@ public class NavigationBarView extends AppBarLayout {
 
     void setMenuItems(@Nullable ReadableArray menuItems) {
         toolbar.getMenu().clear();
-        actionsHolder.clear();
         post(measureAndLayout);
         for (int i = 0; menuItems != null && i < menuItems.size(); i++) {
             ReadableMap menuItemProps = menuItems.getMap(i);
@@ -224,11 +171,8 @@ public class NavigationBarView extends AppBarLayout {
     }
 
     private void setMenuItemIcon(final MenuItem item, ReadableMap iconSource) {
-        DraweeHolder<GenericDraweeHierarchy> holder = DraweeHolder.create(createDraweeHierarchy(), getContext());
-        ActionIconControllerListener controllerListener = new ActionIconControllerListener(item, holder);
-        controllerListener.setIconImageInfo(iconResolver.getIconImageInfo(iconSource));
-        iconResolver.setIconSource(iconSource, controllerListener, holder);
-        actionsHolder.add(holder);
+        ActionIconControllerListener controllerListener = new ActionIconControllerListener(item);
+        IconResolver.setIconSource(iconSource, controllerListener, getContext());
     }
 
     void setOnSearchListener(OnSearchListener onSearchListener) {
@@ -236,13 +180,6 @@ public class NavigationBarView extends AppBarLayout {
         if (searchMenuItem != null)
             this.onSearchAddedListener.onSearchAdd(searchMenuItem);
 
-    }
-
-    private GenericDraweeHierarchy createDraweeHierarchy() {
-        return new GenericDraweeHierarchyBuilder(getContext().getResources())
-            .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
-            .setFadeDuration(0)
-            .build();
     }
 
     private final Runnable measureAndLayout = new Runnable() {
@@ -273,16 +210,15 @@ public class NavigationBarView extends AppBarLayout {
         return context.getResources().getIdentifier(name, "attr", context.getPackageName());
     }
 
-    class ActionIconControllerListener extends IconResolver.IconControllerListener {
+    class ActionIconControllerListener implements IconResolver.IconResolverListener {
         private final MenuItem item;
 
-        ActionIconControllerListener(MenuItem item, DraweeHolder holder) {
-            super(holder);
+        ActionIconControllerListener(MenuItem item) {
             this.item = item;
         }
 
         @Override
-        protected void setDrawable(Drawable d) {
+        public void setDrawable(Drawable d) {
             item.setIcon(d);
             setTintColor(item.getIcon());
             post(measureAndLayout);
