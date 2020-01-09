@@ -1,7 +1,6 @@
 package com.navigation.reactnative;
 
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ScrollView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -56,12 +55,8 @@ public class SceneManager extends ViewGroupManager<SceneView> {
     public void addView(SceneView parent, View child, int index) {
         super.addView(parent, child, index);
         if (child instanceof ScrollView) {
-            CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.MATCH_PARENT
-            );
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
             params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
-            child.setLayoutParams(params);
         }
     }
 }
