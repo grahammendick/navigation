@@ -44,6 +44,10 @@ public class NavigationBarView extends AppBarLayout {
     public NavigationBarView(Context context) {
         super(context);
 
+        setLayoutParams(new AppBarLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        ));
         toolbar = new Toolbar(context);
         addView(toolbar, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
