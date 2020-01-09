@@ -84,10 +84,6 @@ public class SceneView extends CoordinatorLayout implements NavigationBoundary {
         reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onPopped", null);
     }
 
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-    }
-
     void sendEvent(String eventName, WritableMap params) {
         ((ReactContext) getContext())
             .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
