@@ -85,33 +85,38 @@ stateNavigator.navigate('contacts');</code></pre>
       &lt;NavigationStack primary={false} />
     &lt;/NavigationHandler>
   &lt;/TabBarItem>
-&lt;/TabBar>
-</code></pre>
-            <h2>Adding Android Back Handlers</h2>
+&lt;/TabBar></code></pre>
+            <h2>Adding a Bottom Tab Bar on Android</h2>
             <p>
-                By default, your Android back handlers are processed in reverse order. The last subscription is run first. But with tab navigation you only want the back handlers for the active tab to run. To ensure back handlers for inactive tabs are ignored, you must add and remove them using the <code>BackHandlerContext</code>.
+                In a standard Android app, the tabs only appear on the first scene. When the user navigates to a new scene the tabs disappear. You can replicate this setup using the same <code>TabBar</code>  component as above. But you don't need a separate <code>NavigationStack</code>  per tab anymore. In their place you put the components that make up the tab content.
             </p>
-            <pre><code class="language-jsx">import {BackHandlerContext} from 'navigation-react-native';
-
-class Contacts extends React.Component {
-  componentDidMount() {
-    const {backHandler} = this.props;
-    this.subscription = backHandler.addEventListener('hardwareBackPress', () => {
-      //handle back
-      return true;
-    });
-  }
-
-  componentWillUnmount() {
-    this.subscription.remove()
-  }
-}
-
-export default () => (
-  &lt;BackHandlerContext.Consumer>
-    {backHandler => &lt;Contacts backHandler={backHandler} />}
-  &lt;/BackHandlerContext.Consumer>
+            <p>
+                In our email example, we create a 'home' scene that renders the <code>TabBar</code>  with two tabs. In the first tab we place our <code>Inbox</code>  component and we put the <code>Contacts</code>  component into the second tab. We set the <code>bottomTabs</code>  prop of the <code>TabBar</code>  to true because, in the usual Android setup, the tabs appear at the bottom of the screen.
+            </p>
+            <pre><code class="language-jsx">var Home =  () => (
+  &lt;TabBar bottomTabs={true} swipeable={false}>
+    &lt;TabBarItem title="Inbox">
+      &lt;Inbox />
+    &lt;/TabBarItem>
+    &lt;TabBarItem title="Contacts">
+      &lt;Contacts />
+    &lt;/TabBarItem>
+  &lt;/TabBar>
 );</code></pre>
+            <p>
+                We can make do with a single <code>StateNavigator</code> now that we no longer have separate <code>NavigationStacks</code>. We can also get rid of the 'inbox' <code>State</code> from the <code>StateNavigator</code> because it's not a scene in its own right anymore. The <code>Inbox</code> component is now part of the 'home' scene. Instead, we need to add a 'home' <code>State</code> and make sure that it's displayed when the app first loads.
+            </p>  
+            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+  {key: 'home'},
+  {key: 'mail', trackCrumbTrail: true},
+  {key: 'compose', trackCrumbTrail: true},
+  {key: 'contact', trackCrumbTrail: true}
+]);
+
+var {home} = stateNavigator.states;
+home.renderScene = () => &lt;Home />;
+
+stateNavigator.navigate('home');</code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
