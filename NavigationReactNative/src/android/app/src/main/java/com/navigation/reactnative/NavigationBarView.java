@@ -50,6 +50,9 @@ public class NavigationBarView extends AppBarLayout {
         ));
         toolbar = new Toolbar(context);
         addView(toolbar, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        ((AppBarLayout.LayoutParams) toolbar.getLayoutParams()).setScrollFlags(
+            AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
+        );
 
         defaultTitleTextColor = getDefaultTitleTextColor();
         defaultOverflowIcon = toolbar.getOverflowIcon();
