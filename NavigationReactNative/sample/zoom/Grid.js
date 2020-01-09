@@ -13,6 +13,7 @@ const Colors = ({colors, children, filter}) => {
       {({stateNavigator}) => (
         <ScrollView
           style={styles.scene}
+          nestedScrollEnabled={true}
           contentInsetAdjustmentBehavior="automatic">
           <View style={styles.colors}>
             {matchedColors.map(color => (
@@ -52,21 +53,7 @@ export default class Grid extends React.Component {
     return (
       <>
         <NavigationBar title="Colors" />
-        <ScrollView
-          style={styles.scene}
-          nestedScrollEnabled={true}
-          contentInsetAdjustmentBehavior="automatic">
-          <View style={styles.colors}>
-            {colors.map(color => (
-              <TouchableHighlight
-                key={color}
-                style={styles.color}
-                underlayColor={color}>
-                <View style={{backgroundColor: color, flex: 1}} />
-              </TouchableHighlight>
-            ))}
-          </View>
-        </ScrollView>
+        <Colors colors={colors} />
       </>
     );
   }
