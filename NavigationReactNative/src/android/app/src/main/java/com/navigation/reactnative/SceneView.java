@@ -36,13 +36,6 @@ public class SceneView extends CoordinatorLayout implements NavigationBoundary {
 
     public SceneView(Context context) {
         super(context);
-        CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        );
-        params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
-        setLayoutParams(params);
-        setFitsSystemWindows(false);
     }
 
     @Override
