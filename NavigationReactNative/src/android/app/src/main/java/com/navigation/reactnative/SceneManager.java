@@ -59,4 +59,9 @@ public class SceneManager extends ViewGroupManager<SceneView> {
             params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
         }
     }
+
+    @Override
+    public boolean needsCustomLayoutForChildren() {
+        return true;
+    }
 }
