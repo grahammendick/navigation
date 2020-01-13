@@ -51,7 +51,7 @@ export default class Grid extends React.Component {
   render() {
     const {colors} = this.props;
     return (
-      <CoordinatorLayout style={{flex: 1}}>
+      <CoordinatorLayout>
         <NavigationBar title="Colors" />
         <Colors colors={colors} />
       </CoordinatorLayout>
