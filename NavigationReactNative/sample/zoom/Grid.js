@@ -1,7 +1,7 @@
 import React from 'react';
 import {Platform, StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {SharedElement, NavigationBar, SearchBar, RightBar, BarButton} from 'navigation-react-native';
+import {SharedElement, NavigationBar, CoordinatorLayout, SearchBar, RightBar, BarButton} from 'navigation-react-native';
 
 const Colors = ({colors, children, filter}) => {
   const suffix = filter != null ? '_search' : '';
@@ -51,10 +51,10 @@ export default class Grid extends React.Component {
   render() {
     const {colors} = this.props;
     return (
-      <>
+      <CoordinatorLayout style={{flex: 1}}>
         <NavigationBar title="Colors" />
         <Colors colors={colors} />
-      </>
+      </CoordinatorLayout>
     );
   }
 }

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
 import com.facebook.react.bridge.Arguments;
@@ -21,11 +20,10 @@ import com.facebook.react.modules.deviceinfo.DeviceInfoModule;
 import com.facebook.react.uimanager.DisplayMetricsHolder;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.HashSet;
 
-public class SceneView extends CoordinatorLayout implements NavigationBoundary {
+public class SceneView extends ViewGroup implements NavigationBoundary {
     protected String sceneKey;
     protected String enterAnim;
     protected String exitAnim;
@@ -39,7 +37,7 @@ public class SceneView extends CoordinatorLayout implements NavigationBoundary {
     }
 
     @Override
-    public void onAttachedToWindow() {
+    protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (fragment == null) {
             if (customGlobalLayoutListener == null)
@@ -54,7 +52,7 @@ public class SceneView extends CoordinatorLayout implements NavigationBoundary {
     }
 
     @Override
-    public void onDetachedFromWindow() {
+    protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (fragment == null)
             getViewTreeObserver().removeOnGlobalLayoutListener(customGlobalLayoutListener);
@@ -75,6 +73,10 @@ public class SceneView extends CoordinatorLayout implements NavigationBoundary {
     protected void popped() {
         ReactContext reactContext = (ReactContext) getContext();
         reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onPopped", null);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
     }
 
     void sendEvent(String eventName, WritableMap params) {
