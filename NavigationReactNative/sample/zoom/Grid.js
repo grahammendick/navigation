@@ -52,7 +52,7 @@ export default class Grid extends React.Component {
     const {colors} = this.props;
     return (
       <CoordinatorLayout>
-        <NavigationBar title="Colors" />
+        <NavigationBar title="Colors" scrollFlags={['scroll', 'enterAlways']} />
         <Colors colors={colors} />
       </CoordinatorLayout>
     );

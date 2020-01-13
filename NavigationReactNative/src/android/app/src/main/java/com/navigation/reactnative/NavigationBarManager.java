@@ -11,6 +11,7 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.Map;
 
@@ -110,6 +111,11 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
         view.toolbar.setTitleTextColor(textColor != null ? textColor : view.defaultTitleTextColor);
     }
 
+    @ReactProp(name = "scrollFlags")
+    public void setScrollFlags(NavigationBarView view, int scrollFlags) {
+        ((AppBarLayout.LayoutParams) view.toolbar.getLayoutParams()).setScrollFlags(scrollFlags);
+    }
+
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
@@ -125,6 +131,13 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
             MapBuilder.of(
                 "never", MenuItem.SHOW_AS_ACTION_NEVER,
                 "always", MenuItem.SHOW_AS_ACTION_ALWAYS,
-                "ifRoom", MenuItem.SHOW_AS_ACTION_IF_ROOM));
+                "ifRoom", MenuItem.SHOW_AS_ACTION_IF_ROOM),
+            "ScrollFlag",
+            MapBuilder.of(
+                "snap", AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP,
+                "scroll", AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL,
+                "enterAlways", AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS,
+                "exitUntilCollapsed", AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED,
+                "enterAlwaysCollapsed", AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED));
     }
 }

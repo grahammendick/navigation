@@ -5,7 +5,7 @@ import RightBar from './RightBar';
 import SearchBar from './SearchBar';
 import TitleBar from './TitleBar';
 
-var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, style, ...otherProps}) => {
+var NavigationBar = ({hidden, logo, navigationImage, overflowImage, scrollFlags = [], children, style, ...otherProps}) => {
     if (Platform.OS === 'android' && hidden)
         return null
     var constants = (UIManager as any).getViewManagerConfig('NVNavigationBar').Constants;
@@ -22,6 +22,8 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, st
                 })
             ))
         ), []);
+    var flags = (typeof scrollFlags === 'string' ? [scrollFlags] : scrollFlags)
+        .reduce((flags, flag) => flags | constants.ScrollFlag[flag], 0);
     return (
         <>
             <NVNavigationBar
@@ -30,6 +32,7 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, st
                 navigationImage={Image.resolveAssetSource(navigationImage)}
                 overflowImage={Image.resolveAssetSource(overflowImage)}
                 style={Platform.OS === 'android' ? {height: 56} : undefined}
+                scrollFlags={flags}
                 hidden={hidden}
                 {...otherProps}
                 onActionSelected={({nativeEvent}) => {
