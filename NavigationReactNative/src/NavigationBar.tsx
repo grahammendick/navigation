@@ -4,6 +4,7 @@ import LeftBar from './LeftBar';
 import RightBar from './RightBar';
 import SearchBar from './SearchBar';
 import TitleBar from './TitleBar';
+import CollapsingBar from './CollapsingBar';
 
 var NavigationBar = ({hidden, logo, navigationImage, overflowImage, scrollFlags = [], children, style, ...otherProps}) => {
     if (Platform.OS === 'android' && hidden)
@@ -31,21 +32,24 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, scrollFlags 
                 {...otherProps}
                 style={Platform.OS === 'android' ? {height: 56} : undefined}>
                 {Platform.OS === 'ios' ? children :
-                    <NVToolbar
-                        menuItems={menuItems}
-                        logo={Image.resolveAssetSource(logo)}
-                        navigationImage={Image.resolveAssetSource(navigationImage)}
-                        overflowImage={Image.resolveAssetSource(overflowImage)}
-                        scrollFlags={flags}
-                        {...otherProps}
-                        style={{height: 56}}
-                        onActionSelected={({nativeEvent}) => {
-                            var onPress = menuItems[nativeEvent.position].onPress;
-                            if (onPress)
-                                onPress();
-                        }}>
-                        {childrenArray.find(({type}) => type === TitleBar)}
-                    </NVToolbar>}
+                    <>
+                        {childrenArray.find(({type}) => type === CollapsingBar)}
+                        <NVToolbar
+                            menuItems={menuItems}
+                            logo={Image.resolveAssetSource(logo)}
+                            navigationImage={Image.resolveAssetSource(navigationImage)}
+                            overflowImage={Image.resolveAssetSource(overflowImage)}
+                            scrollFlags={flags}
+                            {...otherProps}
+                            style={{height: 56}}
+                            onActionSelected={({nativeEvent}) => {
+                                var onPress = menuItems[nativeEvent.position].onPress;
+                                if (onPress)
+                                    onPress();
+                            }}>
+                            {childrenArray.find(({type}) => type === TitleBar)}
+                        </NVToolbar>
+                    </>}
             </NVNavigationBar>
             {Platform.OS === 'ios' ? null : childrenArray.find(({type}) => type === SearchBar)}
         </>
