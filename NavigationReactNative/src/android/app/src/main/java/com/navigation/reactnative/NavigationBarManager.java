@@ -45,11 +45,7 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
 
     @Override
     public void addView(NavigationBarView parent, View child, int index) {
-        Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(
-                Toolbar.LayoutParams.MATCH_PARENT,
-                Toolbar.LayoutParams.MATCH_PARENT
-        );
-        parent.toolbar.addView(child, index, layoutParams);
+        parent.toolbar.addView(child, index);
     }
 
     @Override
