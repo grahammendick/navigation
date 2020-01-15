@@ -9,7 +9,6 @@ import android.graphics.drawable.Drawable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -38,7 +37,7 @@ public class ToolbarView extends Toolbar {
 
     public ToolbarView(Context context) {
         super(context);
-        setLayoutParams(new AppBarLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.WRAP_CONTENT));
         defaultTitleTextColor = getDefaultTitleTextColor();
         defaultOverflowIcon = getOverflowIcon();
         logoResolverListener = new IconResolver.IconResolverListener() {
