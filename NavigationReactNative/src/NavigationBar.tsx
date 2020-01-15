@@ -27,20 +27,25 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, scrollFlags 
     return (
         <>
             <NVNavigationBar
-                menuItems={menuItems}
-                logo={Image.resolveAssetSource(logo)}
-                navigationImage={Image.resolveAssetSource(navigationImage)}
-                overflowImage={Image.resolveAssetSource(overflowImage)}
-                style={Platform.OS === 'android' ? {height: 56} : undefined}
-                scrollFlags={flags}
                 hidden={hidden}
                 {...otherProps}
-                onActionSelected={({nativeEvent}) => {
-                    var onPress = menuItems[nativeEvent.position].onPress;
-                    if (onPress)
-                        onPress();
-            }}>
-                {Platform.OS === 'ios' ? children : childrenArray.find(({type}) => type === TitleBar)}
+                style={Platform.OS === 'android' ? {height: 56} : undefined}>
+                {Platform.OS === 'ios' ? children :
+                    <NVToolbar
+                        menuItems={menuItems}
+                        logo={Image.resolveAssetSource(logo)}
+                        navigationImage={Image.resolveAssetSource(navigationImage)}
+                        overflowImage={Image.resolveAssetSource(overflowImage)}
+                        scrollFlags={flags}
+                        {...otherProps}
+                        style={{height: 56}}
+                        onActionSelected={({nativeEvent}) => {
+                            var onPress = menuItems[nativeEvent.position].onPress;
+                            if (onPress)
+                                onPress();
+                        }}>
+                        {childrenArray.find(({type}) => type === TitleBar)}
+                    </NVToolbar>}
             </NVNavigationBar>
             {Platform.OS === 'ios' ? null : childrenArray.find(({type}) => type === SearchBar)}
         </>
@@ -48,5 +53,6 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, scrollFlags 
 }
 
 var NVNavigationBar = requireNativeComponent<any>('NVNavigationBar', null);
+var NVToolbar = requireNativeComponent<any>('NVToolbar', null);
 
 export default NavigationBar;
