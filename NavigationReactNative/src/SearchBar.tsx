@@ -35,7 +35,7 @@ class SearchBar extends React.Component<any, any> {
                 onChangeText={this.onChangeText}
                 onExpand={() => this.setState({show: true})}
                 onCollapse={() => this.setState({show: false})}
-                style={[this.state.show && styles.searchBar, {position: 'absolute'}]}>
+                style={[styles.searchBar, {zIndex: Platform.OS === 'android' && this.state.show ? 58 : -58}]}>
                 {Platform.OS === 'ios' || this.state.show ? children : null}
             </NVSearchBar>
         );
@@ -45,12 +45,15 @@ class SearchBar extends React.Component<any, any> {
 var NVSearchBar = requireNativeComponent<any>('NVSearchBar', null);
 
 var styles = StyleSheet.create({
-    searchBar: Platform.select({
-        android: {
-            top: 56, right: 0,
-            bottom: 0, left: 0,
-        },
-    })
+    searchBar: {
+        position: 'absolute',
+        ...Platform.select({
+            android: {
+                top: 56, right: 0,
+                bottom: 0, left: 0,
+            },
+        })
+    },
 });
 
 export default SearchBar;

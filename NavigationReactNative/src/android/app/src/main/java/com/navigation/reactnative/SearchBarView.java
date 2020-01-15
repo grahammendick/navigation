@@ -51,10 +51,6 @@ public class SearchBarView extends ReactViewGroup {
         ViewGroup view = (ViewGroup) getParent();
         NavigationBarView navigationBarView = null;
         for(int i = 0; i < view.getChildCount(); i++) {
-            if (view.getChildAt(i) instanceof  CoordinatorLayoutView)
-                view = (CoordinatorLayoutView) view.getChildAt(i);
-        }
-        for(int i = 0; i < view.getChildCount(); i++) {
             if (view.getChildAt(i) instanceof  NavigationBarView)
                 navigationBarView = (NavigationBarView) view.getChildAt(i);
         }
