@@ -25,6 +25,8 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, scrollFlags 
         ), []);
     var flags = (typeof scrollFlags === 'string' ? [scrollFlags] : scrollFlags)
         .reduce((flags, flag) => flags | constants.ScrollFlag[flag], 0);
+    var collapsingBar = childrenArray.find(({type}) => type === CollapsingBar);
+    var Container = collapsingBar ? CollapsingBar : React.Fragment;
     return (
         <>
             <NVNavigationBar
@@ -32,8 +34,8 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, scrollFlags 
                 {...otherProps}
                 style={Platform.OS === 'android' ? {height: 56} : undefined}>
                 {Platform.OS === 'ios' ? children :
-                    <>
-                        {childrenArray.find(({type}) => type === CollapsingBar)}
+                    <Container>
+                        {collapsingBar && collapsingBar.props.children}
                         <NVToolbar
                             menuItems={menuItems}
                             logo={Image.resolveAssetSource(logo)}
@@ -49,7 +51,7 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, scrollFlags 
                             }}>
                             {childrenArray.find(({type}) => type === TitleBar)}
                         </NVToolbar>
-                    </>}
+                    </Container>}
             </NVNavigationBar>
             {Platform.OS === 'ios' ? null : childrenArray.find(({type}) => type === SearchBar)}
         </>
