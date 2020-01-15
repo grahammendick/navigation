@@ -83,6 +83,24 @@ public class ToolbarView extends Toolbar {
         });
     }
 
+    private int getDefaultTitleTextColor() {
+        Resources.Theme theme = getContext().getTheme();
+        TypedArray toolbarStyle = theme.obtainStyledAttributes(new int[] {getIdentifier(getContext(), "toolbarStyle")});
+        int toolbarStyleResId = toolbarStyle.getResourceId(0, 0);
+        toolbarStyle.recycle();
+        TypedArray textAppearances = theme.obtainStyledAttributes(toolbarStyleResId, new int[] {getIdentifier(getContext(), "titleTextAppearance")});
+        int titleTextAppearanceResId = textAppearances.getResourceId(0, 0);
+        textAppearances.recycle();
+        TypedArray titleTextAppearance = theme.obtainStyledAttributes(titleTextAppearanceResId, new int[]{android.R.attr.textColor});
+        int titleTextColor = titleTextAppearance.getColor(0, Color.BLACK);
+        titleTextAppearance.recycle();
+        return titleTextColor;
+    }
+
+    private static int getIdentifier(Context context, String name) {
+        return context.getResources().getIdentifier(name, "attr", context.getPackageName());
+    }
+
     void setLogoSource(@Nullable ReadableMap source) {
         IconResolver.setIconSource(source, logoResolverListener, getContext());
     }
@@ -177,24 +195,6 @@ public class ToolbarView extends Toolbar {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
-
-    private int getDefaultTitleTextColor() {
-        Resources.Theme theme = getContext().getTheme();
-        TypedArray toolbarStyle = theme.obtainStyledAttributes(new int[] {getIdentifier(getContext(), "toolbarStyle")});
-        int toolbarStyleResId = toolbarStyle.getResourceId(0, 0);
-        toolbarStyle.recycle();
-        TypedArray textAppearances = theme.obtainStyledAttributes(toolbarStyleResId, new int[] {getIdentifier(getContext(), "titleTextAppearance")});
-        int titleTextAppearanceResId = textAppearances.getResourceId(0, 0);
-        textAppearances.recycle();
-        TypedArray titleTextAppearance = theme.obtainStyledAttributes(titleTextAppearanceResId, new int[]{android.R.attr.textColor});
-        int titleTextColor = titleTextAppearance.getColor(0, Color.BLACK);
-        titleTextAppearance.recycle();
-        return titleTextColor;
-    }
-
-    private static int getIdentifier(Context context, String name) {
-        return context.getResources().getIdentifier(name, "attr", context.getPackageName());
-    }
 
     class ActionIconControllerListener implements IconResolver.IconResolverListener {
         private final MenuItem item;
