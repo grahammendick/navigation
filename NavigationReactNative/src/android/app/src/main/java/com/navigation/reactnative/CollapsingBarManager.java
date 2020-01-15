@@ -1,7 +1,10 @@
 package com.navigation.reactnative;
 
+import androidx.annotation.Nullable;
+
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.annotations.ReactProp;
 
 import javax.annotation.Nonnull;
 
@@ -17,5 +20,10 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
     @Override
     protected CollapsingBarView createViewInstance(@Nonnull ThemedReactContext reactContext) {
         return new CollapsingBarView(reactContext);
+    }
+
+    @ReactProp(name = "title")
+    public void setTitle(CollapsingBarView view, @Nullable String title) {
+        view.setTitle(title);
     }
 }
