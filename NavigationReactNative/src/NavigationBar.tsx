@@ -29,7 +29,6 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, height = 56,
     var Container = ({children}) => (
         !collapsingBar ? children :
             <CollapsingBar
-                style={{height}}
                 title={otherProps.title}
                 scrollFlags={flags}>
                 {collapsingBar.props.children}
@@ -40,6 +39,7 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, height = 56,
         <>
             <NVNavigationBar
                 hidden={hidden}
+                style={{height}}
                 {...otherProps}>
                 {Platform.OS === 'ios' ? children :
                     <Container>

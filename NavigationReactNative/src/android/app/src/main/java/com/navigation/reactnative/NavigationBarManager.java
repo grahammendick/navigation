@@ -3,8 +3,10 @@ package com.navigation.reactnative;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -44,6 +46,13 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 view.setOutlineProvider(view.defaultOutlineProvider);
         }
+    }
+
+    @ReactProp(name = "height")
+    public void setHeight(NavigationBarView view, double height) {
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        params.height = (int) PixelUtil.toPixelFromDIP(height);
+        view.setLayoutParams(params);
     }
 
     @Override

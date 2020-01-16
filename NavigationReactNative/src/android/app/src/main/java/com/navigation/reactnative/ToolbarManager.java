@@ -1,13 +1,17 @@
 package com.navigation.reactnative;
 
+import android.view.ViewGroup;
+
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import javax.annotation.Nonnull;
 
@@ -70,6 +74,13 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
 
     @ReactProp(name = "scrollFlags")
     public void setScrollFlags(ToolbarView view, int scrollFlags) {
-        ((AppBarLayout.LayoutParams) view.getLayoutParams()).setScrollFlags(scrollFlags);
+        //((AppBarLayout.LayoutParams) view.getLayoutParams()).setScrollFlags(scrollFlags);
+    }
+
+    @ReactProp(name = "height")
+    public void setHeight(ToolbarView view, double height) {
+        CollapsingToolbarLayout.LayoutParams params = (CollapsingToolbarLayout.LayoutParams) view.getLayoutParams();
+        params.height = (int) PixelUtil.toPixelFromDIP(height);
+        view.setLayoutParams(params);
     }
 }

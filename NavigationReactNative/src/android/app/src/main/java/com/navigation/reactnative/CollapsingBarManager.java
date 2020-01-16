@@ -32,4 +32,9 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
     public void setScrollFlags(CollapsingBarView view, int scrollFlags) {
         ((AppBarLayout.LayoutParams) view.getLayoutParams()).setScrollFlags(scrollFlags);
     }
+
+    @Override
+    public boolean needsCustomLayoutForChildren() {
+        return true;
+    }
 }
