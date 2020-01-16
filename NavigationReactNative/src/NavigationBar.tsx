@@ -26,15 +26,6 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, height = 56,
     var flags = (typeof scrollFlags === 'string' ? [scrollFlags] : scrollFlags)
         .reduce((flags, flag) => flags | constants.ScrollFlag[flag], 0);
     var collapsingBar = childrenArray.find(({type}) => type === CollapsingBar);
-    var Container = ({children}) => (
-        !collapsingBar ? children :
-            <CollapsingBar
-                title={otherProps.title}
-                scrollFlags={flags}>
-                {collapsingBar.props.children}
-                {children}
-            </CollapsingBar>
-    )
     return (
         <>
             <NVNavigationBar
@@ -42,7 +33,8 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, height = 56,
                 style={{height}}
                 {...otherProps}>
                 {Platform.OS === 'ios' ? children :
-                    <Container>
+                    <Container collapse={!!collapsingBar} scrollFlags={flags} {...otherProps}>
+                        {collapsingBar && collapsingBar.props.children}
                         <NVToolbar
                             menuItems={menuItems}
                             logo={Image.resolveAssetSource(logo)}
@@ -64,6 +56,10 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, height = 56,
         </>
     )
 }
+
+var Container = ({collapse, ...props}) => (
+    !collapse ? props.children : <CollapsingBar {...props} />
+)
 
 var NVNavigationBar = requireNativeComponent<any>('NVNavigationBar', null);
 var NVToolbar = requireNativeComponent<any>('NVToolbar', null);
