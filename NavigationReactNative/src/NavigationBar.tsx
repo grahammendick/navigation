@@ -28,13 +28,12 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, height = 56,
     var collapsingBar = childrenArray.find(({type}) => type === CollapsingBar);
     return (
         <>
-            <NVNavigationBar hidden={hidden} {...otherProps}>
+            <NVNavigationBar
+                hidden={hidden}
+                style={{height}}
+                {...otherProps}>
                 {Platform.OS === 'ios' ? children :
-                    <Container
-                        collapse={!!collapsingBar}
-                        title={otherProps.title}
-                        scrollFlags={flags}
-                        style={{height}}>
+                    <Container collapse={!!collapsingBar} scrollFlags={flags} {...otherProps}>
                         {collapsingBar && collapsingBar.props.children}
                         <NVToolbar
                             menuItems={menuItems}

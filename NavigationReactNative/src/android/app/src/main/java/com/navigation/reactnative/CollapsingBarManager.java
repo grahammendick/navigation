@@ -2,7 +2,6 @@ package com.navigation.reactnative;
 
 import androidx.annotation.Nullable;
 
-import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -32,13 +31,6 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
     @ReactProp(name = "scrollFlags")
     public void setScrollFlags(CollapsingBarView view, int scrollFlags) {
         ((AppBarLayout.LayoutParams) view.getLayoutParams()).setScrollFlags(scrollFlags);
-    }
-
-    @ReactProp(name = "height")
-    public void setHeight(CollapsingBarView view, double height) {
-        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) view.getLayoutParams();
-        params.height = (int) PixelUtil.toPixelFromDIP(height);
-        view.setLayoutParams(params);
     }
 
     @Override
