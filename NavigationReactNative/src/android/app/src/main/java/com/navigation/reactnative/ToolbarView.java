@@ -20,7 +20,6 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 public class ToolbarView extends Toolbar {
     private MenuItem searchMenuItem;
@@ -38,9 +37,7 @@ public class ToolbarView extends Toolbar {
 
     public ToolbarView(Context context) {
         super(context);
-        CollapsingToolbarLayout.LayoutParams params = new CollapsingToolbarLayout.LayoutParams(CollapsingToolbarLayout.LayoutParams.MATCH_PARENT, CollapsingToolbarLayout.LayoutParams.MATCH_PARENT);
-        params.setCollapseMode(CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN);
-        setLayoutParams(params);
+        setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.MATCH_PARENT));
         defaultTitleTextColor = getDefaultTitleTextColor();
         defaultOverflowIcon = getOverflowIcon();
         logoResolverListener = new IconResolver.IconResolverListener() {

@@ -50,9 +50,7 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
 
     @ReactProp(name = "height")
     public void setHeight(NavigationBarView view, double height) {
-        ViewGroup.LayoutParams params = view.getLayoutParams();
-        params.height = (int) PixelUtil.toPixelFromDIP(height);
-        view.setLayoutParams(params);
+        view.getLayoutParams().height = (int) PixelUtil.toPixelFromDIP(height);
     }
 
     @Override
