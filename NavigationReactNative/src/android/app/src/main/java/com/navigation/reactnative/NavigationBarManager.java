@@ -3,7 +3,6 @@ package com.navigation.reactnative;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
