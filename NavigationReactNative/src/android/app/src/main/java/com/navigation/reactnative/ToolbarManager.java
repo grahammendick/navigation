@@ -8,7 +8,6 @@ import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.google.android.material.appbar.AppBarLayout;
 
 import javax.annotation.Nonnull;
 
