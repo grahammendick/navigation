@@ -6,7 +6,7 @@ import SearchBar from './SearchBar';
 import TitleBar from './TitleBar';
 import CollapsingBar from './CollapsingBar';
 
-var NavigationBar = ({hidden, logo, navigationImage, overflowImage, height = 56, children, style, ...otherProps}) => {
+var NavigationBar = ({hidden, logo, navigationImage, overflowImage, height, children, style, ...otherProps}) => {
     if (Platform.OS === 'android' && hidden)
         return null
     var constants = (UIManager as any).getViewManagerConfig('NVNavigationBar').Constants;
