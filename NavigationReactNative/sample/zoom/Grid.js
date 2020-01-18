@@ -52,7 +52,7 @@ export default class Grid extends React.Component {
     const {colors} = this.props;
     return (
       <CoordinatorLayout>
-        <NavigationBar height={200} title="Colors" scrollFlags={['scroll', 'exitUntilCollapsed']}>
+        <NavigationBar height={200} title="Colors">
           <CollapsingBar>
           </CollapsingBar>
         </NavigationBar>

@@ -6,7 +6,7 @@ import SearchBar from './SearchBar';
 import TitleBar from './TitleBar';
 import CollapsingBar from './CollapsingBar';
 
-var NavigationBar = ({hidden, logo, navigationImage, overflowImage, height = 56, scrollFlags = [], children, style, ...otherProps}) => {
+var NavigationBar = ({hidden, logo, navigationImage, overflowImage, height = 56, children, style, ...otherProps}) => {
     if (Platform.OS === 'android' && hidden)
         return null
     var constants = (UIManager as any).getViewManagerConfig('NVNavigationBar').Constants;
@@ -23,21 +23,18 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, height = 56,
                 })
             ))
         ), []);
-    var flags = (typeof scrollFlags === 'string' ? [scrollFlags] : scrollFlags)
-        .reduce((flags, flag) => flags | constants.ScrollFlag[flag], 0);
     var collapsingBar = childrenArray.find(({type}) => type === CollapsingBar);
     return (
         <>
             <NVNavigationBar hidden={hidden} style={{height}} {...otherProps}>
                 {Platform.OS === 'ios' ? children :
-                    <Container collapse={!!collapsingBar} scrollFlags={flags} title={otherProps.title}>
+                    <Container collapse={!!collapsingBar} title={otherProps.title}>
                         {collapsingBar && collapsingBar.props.children}
                         <NVToolbar
                             menuItems={menuItems}
                             logo={Image.resolveAssetSource(logo)}
                             navigationImage={Image.resolveAssetSource(navigationImage)}
                             overflowImage={Image.resolveAssetSource(overflowImage)}
-                            scrollFlags={flags}
                             {...otherProps}
                             style={{height: 56}}
                             onActionSelected={({nativeEvent}) => {

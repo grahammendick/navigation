@@ -28,11 +28,6 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
         view.setTitle(title);
     }
 
-    @ReactProp(name = "scrollFlags")
-    public void setScrollFlags(CollapsingBarView view, int scrollFlags) {
-        ((AppBarLayout.LayoutParams) view.getLayoutParams()).setScrollFlags(scrollFlags);
-    }
-
     @Override
     public boolean needsCustomLayoutForChildren() {
         return true;

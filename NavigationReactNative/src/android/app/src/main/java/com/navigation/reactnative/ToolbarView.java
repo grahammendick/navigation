@@ -37,7 +37,9 @@ public class ToolbarView extends Toolbar {
 
     public ToolbarView(Context context) {
         super(context);
-        setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.MATCH_PARENT));
+        AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.MATCH_PARENT);
+        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+        setLayoutParams(params);
         defaultTitleTextColor = getDefaultTitleTextColor();
         defaultOverflowIcon = getOverflowIcon();
         logoResolverListener = new IconResolver.IconResolverListener() {

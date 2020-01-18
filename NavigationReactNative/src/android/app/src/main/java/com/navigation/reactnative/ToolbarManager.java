@@ -69,11 +69,6 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         view.setTitleTextColor(textColor != null ? textColor : view.defaultTitleTextColor);
     }
 
-    @ReactProp(name = "scrollFlags")
-    public void setScrollFlags(ToolbarView view, int scrollFlags) {
-        ((AppBarLayout.LayoutParams) view.getLayoutParams()).setScrollFlags(scrollFlags);
-    }
-
     @ReactProp(name = "height")
     public void setHeight(ToolbarView view, double height) {
         view.getLayoutParams().height = (int) PixelUtil.toPixelFromDIP(height);
