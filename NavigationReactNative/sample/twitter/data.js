@@ -137,7 +137,7 @@ const fetchTweet = id => ({
 });
 
 const getHome = () => {
-  const homeTweets = [1, 5, 9, 2, 6, 10];
+  const homeTweets = [1, 5, 9, 2, 6, 10, 3, 7, 11];
   return homeTweets.map(id => fetchTweet(id));
 };
 
