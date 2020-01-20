@@ -6,7 +6,7 @@ import SearchBar from './SearchBar';
 import TitleBar from './TitleBar';
 import CollapsingBar from './CollapsingBar';
 
-var NavigationBar = ({hidden, logo, navigationImage, overflowImage, height, children, style, ...otherProps}) => {
+var NavigationBar: any = ({hidden, logo, navigationImage, overflowImage, children, style = {}, ...otherProps}) => {
     if (Platform.OS === 'android' && hidden)
         return null
     var constants = (UIManager as any).getViewManagerConfig('NVNavigationBar').Constants;
@@ -26,7 +26,7 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, height, chil
     var collapsingBar = childrenArray.find(({type}) => type === CollapsingBar);
     return (
         <>
-            <NVNavigationBar hidden={hidden} style={{height}} {...otherProps}>
+            <NVNavigationBar hidden={hidden} style={{height: style.height}} {...otherProps}>
                 {Platform.OS === 'ios' ? children :
                     <Container collapse={!!collapsingBar} {...otherProps}>
                         {collapsingBar && collapsingBar.props.children}
