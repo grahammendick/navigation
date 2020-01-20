@@ -51,7 +51,7 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, height, chil
     )
 }
 
-var Container = ({collapse, title, barTintColor, children}) => (
+var Container: any = ({collapse, title, barTintColor, children}) => (
     !collapse ? children : 
         <CollapsingBar title={title} barTintColor={barTintColor}>{children}</CollapsingBar>
 )
