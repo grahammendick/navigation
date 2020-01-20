@@ -1,7 +1,7 @@
 import React from 'react';
 import {Platform, StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {SharedElement, NavigationBar, CoordinatorLayout, CollapsingBar, SearchBar, RightBar, BarButton} from 'navigation-react-native';
+import {SharedElement, NavigationBar, SearchBar, RightBar, BarButton} from 'navigation-react-native';
 
 const Colors = ({colors, children, filter}) => {
   const suffix = filter != null ? '_search' : '';
@@ -13,7 +13,6 @@ const Colors = ({colors, children, filter}) => {
       {({stateNavigator}) => (
         <ScrollView
           style={styles.scene}
-          nestedScrollEnabled={true}
           contentInsetAdjustmentBehavior="automatic">
           <View style={styles.colors}>
             {matchedColors.map(color => (
@@ -50,14 +49,29 @@ export default class Grid extends React.Component {
   }
   render() {
     const {colors} = this.props;
+    const {text} = this.state;
     return (
-      <CoordinatorLayout>
-        <NavigationBar height={200} title="Colors">
-          <CollapsingBar>
-          </CollapsingBar>
+      <Container
+        style={styles.scene}
+        collapsable={false}
+        contentInsetAdjustmentBehavior="automatic">
+        <NavigationBar
+          largeTitle={true}
+          title="Colors"
+          barTintColor={Platform.OS === 'android' ? '#fff' : null}>
+          <SearchBar
+            text={text}
+            autoCapitalize="none"
+            obscureBackground={false}
+            onChangeText={text => this.setState({text})}>
+            <Colors colors={colors} filter={text} />
+          </SearchBar>
+          <RightBar>
+            <BarButton title="search" show="always" search={true} />
+          </RightBar>
         </NavigationBar>
         <Colors colors={colors} />
-      </CoordinatorLayout>
+      </Container>
     );
   }
 }
