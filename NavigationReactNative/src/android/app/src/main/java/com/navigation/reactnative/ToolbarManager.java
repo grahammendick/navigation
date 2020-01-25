@@ -8,6 +8,8 @@ import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import javax.annotation.Nonnull;
 
@@ -71,5 +73,18 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
     @ReactProp(name = "height")
     public void setHeight(ToolbarView view, double height) {
         view.getLayoutParams().height = (int) PixelUtil.toPixelFromDIP(height);
+    }
+
+    @ReactProp(name = "pin")
+    public void setPin(ToolbarView view, boolean pin) {
+        if (pin) {
+            CollapsingToolbarLayout.LayoutParams params = new CollapsingToolbarLayout.LayoutParams(view.getLayoutParams().width, view.getLayoutParams().height);
+            params.setCollapseMode(CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN);
+            view.setLayoutParams(params);
+        } else {
+            AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(view.getLayoutParams().width, view.getLayoutParams().height);
+            params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+            view.setLayoutParams(params);
+        }
     }
 }

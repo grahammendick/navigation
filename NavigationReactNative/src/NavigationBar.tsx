@@ -35,6 +35,7 @@ var NavigationBar: any = ({hidden, logo, navigationImage, overflowImage, childre
                             logo={Image.resolveAssetSource(logo)}
                             navigationImage={Image.resolveAssetSource(navigationImage)}
                             overflowImage={Image.resolveAssetSource(overflowImage)}
+                            pin={!!collapsingBar}
                             {...otherProps}
                             style={{height: 56}}
                             onActionSelected={({nativeEvent}) => {
