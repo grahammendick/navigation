@@ -1,28 +1,34 @@
 import React, {useContext} from 'react';
 import {StyleSheet, Text, Image, Platform, ScrollView, View} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBar} from 'navigation-react-native';
+import {NavigationBar, CoordinatorLayout, CollapsingBar} from 'navigation-react-native';
 import Tweets from './Tweets';
 
 export default ({timeline: {id, name, username, logo, bio, 
   followers, following, tweets}}) => {
   const {stateNavigator} = useContext(NavigationContext);
   return (
-    <>
+    <CoordinatorLayout>
       <NavigationBar
         title={name}
         navigationImage={require('./arrow.png')}
         barTintColor={Platform.OS === 'android' ? '#fff' : null}
         tintColor={Platform.OS === 'android' ? "deepskyblue" : null}
+        style={{height: 200}}
         onNavigationPress={() => {
           stateNavigator.navigateBack(1)
-        }} />
-      <ScrollView 
+        }}>
+        <CollapsingBar>
+          <View collapsable={false}>
+            <Image style={styles.logo} source={logo} />
+          </View>
+        </CollapsingBar>
+      </NavigationBar>
+      <ScrollView
+        nestedScrollEnabled={true}
         contentInsetAdjustmentBehavior="automatic"
         style={styles.view}>
         <View>
-          <Image style={styles.logo} source={logo} />
-          <Text style={styles.name}>{name}</Text>
           <Text>{username}</Text>
           <Text style={styles.bio}>{bio}</Text>
         </View>
@@ -34,7 +40,7 @@ export default ({timeline: {id, name, username, logo, bio,
         </View>
         <Tweets tweets={tweets} onTimeline={accountId => accountId !== id} />
       </ScrollView>
-    </>
+    </CoordinatorLayout>
   );
 };
 
@@ -45,11 +51,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logo: {
-    width: 100,
-    height: 100,
-    marginTop: 20,
+    width: 75,
+    height: 75,
     borderRadius: 50,
-    marginRight: 12,
+    marginTop: 60,
+    marginLeft: 15,
   },
   name: {
     fontWeight: 'bold',

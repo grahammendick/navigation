@@ -6,7 +6,7 @@ const accounts = {
     bio: 'Software Engineer @coinbase. Previously @a16z & @GoldmanSachs. Besides doing nerdy things, I love running & reading. I believe in the magic of thinking big :)',
     following: 763,
     followers: 6722,
-    tweets: [1, 2, 5, 3, 4]
+    tweets: [1, 2, 5, 3, 4, 10]
   },
   2: {
     name: 'Sebastian Markbåge',
@@ -15,7 +15,7 @@ const accounts = {
     bio: 'React JS · TC39 · The Facebook · Tweets are personal',
     following: 354,
     followers: 14319,
-    tweets: [5, 6, 9, 7, 8]
+    tweets: [5, 6, 9, 7, 8, 2]
   },
   3: {
     name: 'Dan Abramov',
@@ -24,7 +24,7 @@ const accounts = {
     bio: 'Co-authored Redux, Create React App, React Hot Loader, React DnD. Helping improve @reactjs. Personal opinions. #juniordevforlife',
     following: 1576,
     followers: 52822,
-    tweets: [9, 10, 1, 11, 12]
+    tweets: [9, 10, 1, 11, 12, 6]
   }
 };
 
