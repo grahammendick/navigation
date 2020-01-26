@@ -27,14 +27,6 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
         view.setTitle(title);
     }
 
-    @ReactProp(name = "barTintColor", customType = "Color")
-    public void setBarTintColor(CollapsingBarView view, @Nullable Integer barTintColor) {
-        if (barTintColor != null)
-            view.setBackgroundColor(barTintColor);
-        else
-            view.setBackground(null);
-    }
-
     @Override
     public boolean needsCustomLayoutForChildren() {
         return true;

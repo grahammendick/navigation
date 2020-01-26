@@ -24,11 +24,15 @@ var NavigationBar: any = ({hidden, logo, navigationImage, overflowImage, childre
             ))
         ), []);
     var collapsingBar = childrenArray.find(({type}) => type === CollapsingBar);
+    var collapsingStyle = collapsingBar && collapsingBar.props.style;
     return (
         <>
             <NVNavigationBar hidden={hidden} style={{height: style.height}} {...otherProps}>
                 {Platform.OS === 'ios' ? children :
-                    <Container collapse={!!collapsingBar} {...otherProps}>
+                    <Container
+                        collapse={!!collapsingBar}
+                        title={otherProps.title}
+                        backgroundColor={collapsingStyle && collapsingStyle.backgroundColor}>
                         {collapsingBar && collapsingBar.props.children}
                         <NVToolbar
                             menuItems={menuItems}
@@ -52,9 +56,9 @@ var NavigationBar: any = ({hidden, logo, navigationImage, overflowImage, childre
     )
 }
 
-var Container: any = ({collapse, title, barTintColor, children}) => (
+var Container: any = ({collapse, title, backgroundColor, children}) => (
     !collapse ? children : 
-        <CollapsingBar title={title} barTintColor={barTintColor}>{children}</CollapsingBar>
+        <CollapsingBar title={title} style={{backgroundColor}}>{children}</CollapsingBar>
 )
 
 var NVNavigationBar = requireNativeComponent<any>('NVNavigationBar', null);
