@@ -1,9 +1,7 @@
 import React from 'react'
 import { requireNativeComponent, Platform } from 'react-native';
 
-const CoordinatorLayout = ({children}) => (
-    <NVCoordinatorLayout style={{flex: 1}}>{children}</NVCoordinatorLayout>
-);
+const CoordinatorLayout = (props) => <NVCoordinatorLayout {...props} style={{flex: 1}} />;
 
 const NVCoordinatorLayout = requireNativeComponent<any>('NVCoordinatorLayout', null)
 

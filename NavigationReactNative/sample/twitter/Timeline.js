@@ -8,27 +8,25 @@ export default ({timeline: {id, name, username, logo, bio,
   followers, following, tweets}}) => {
   const {stateNavigator} = useContext(NavigationContext);
   return (
-    <CoordinatorLayout>
+    <CoordinatorLayout overlayTop={100}>
       <NavigationBar
         title={name}
         navigationImage={require('./arrow.png')}
-        barTintColor={Platform.OS === 'android' ? '#fff' : null}
-        tintColor={Platform.OS === 'android' ? "deepskyblue" : null}
-        style={{height: 200}}
+        tintColor={Platform.OS === 'android' ? "#fff" : null}
+        titleColor={Platform.OS === 'android' ? "#fff" : null}
+        style={{height: 120}}
         onNavigationPress={() => {
           stateNavigator.navigateBack(1)
         }}>
-        <CollapsingBar>
-          <View collapsable={false}>
-            <Image style={styles.logo} source={logo} />
-          </View>
-        </CollapsingBar>
+        <CollapsingBar style={{backgroundColor: '#006c37'}} />
       </NavigationBar>
       <ScrollView
         nestedScrollEnabled={true}
         contentInsetAdjustmentBehavior="automatic"
         style={styles.view}>
         <View>
+          <Image style={styles.logo} source={logo} />
+          <Text style={styles.name}>{name}</Text>
           <Text>{username}</Text>
           <Text style={styles.bio}>{bio}</Text>
         </View>
@@ -51,15 +49,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logo: {
-    width: 75,
-    height: 75,
+    width: 80,
+    height: 80,
     borderRadius: 50,
-    marginTop: 60,
-    marginLeft: 15,
+    borderWidth: 4,
+    borderColor: 'white',
   },
   name: {
     fontWeight: 'bold',
-    fontSize: 18, 
+    fontSize: 24, 
     marginTop: 5,
     marginBottom: 2,
   },
