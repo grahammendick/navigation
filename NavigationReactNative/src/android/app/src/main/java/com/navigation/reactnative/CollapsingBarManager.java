@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.google.android.material.internal.CollapsingTextHelper;
 
 import javax.annotation.Nonnull;
 
@@ -37,6 +38,16 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
     @ReactProp(name = "contentScrimColor", customType = "Color")
     public void setContentScrimColor(CollapsingBarView view, @Nullable Integer contentScrimColor) {
         view.setContentScrim(contentScrimColor != null ? new ColorDrawable(contentScrimColor) : view.defaultContentScrim);
+    }
+
+    @ReactProp(name = "collapsedTitleColor", customType = "Color")
+    public void setCollapsedTitleColor(CollapsingBarView view, @Nullable Integer collapsedTitleColor) {
+        view.setCollapsedTitleTextColor(collapsedTitleColor != null ? collapsedTitleColor : view.defaultTitleTextColor);
+    }
+
+    @ReactProp(name = "expandedTitleColor", customType = "Color")
+    public void setExpandedTitleColor(CollapsingBarView view, @Nullable Integer expandedTitleColor) {
+        view.setExpandedTitleColor(expandedTitleColor != null ? expandedTitleColor : view.defaultTitleTextColor);
     }
 
     @Override

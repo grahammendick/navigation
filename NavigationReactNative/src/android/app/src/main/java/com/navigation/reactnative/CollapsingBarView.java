@@ -8,6 +8,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 public class CollapsingBarView extends CollapsingToolbarLayout {
     Drawable defaultContentScrim;
+    int defaultTitleTextColor;
 
     public CollapsingBarView(Context context) {
         super(context);
@@ -15,6 +16,7 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
         params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
         setLayoutParams(params);
         defaultContentScrim = getContentScrim();
+        defaultTitleTextColor = new ToolbarView(context).defaultTitleTextColor;
     }
 
     @Override
