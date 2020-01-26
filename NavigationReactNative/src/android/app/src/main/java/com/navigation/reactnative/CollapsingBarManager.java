@@ -27,6 +27,11 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
         view.setTitle(title);
     }
 
+    @ReactProp(name = "titleEnabled")
+    public void setTitleEnabled(CollapsingBarView view, boolean titleEnabled) {
+        view.setTitleEnabled(titleEnabled);
+    }
+
     @Override
     public boolean needsCustomLayoutForChildren() {
         return true;

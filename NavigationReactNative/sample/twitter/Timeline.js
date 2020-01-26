@@ -18,7 +18,7 @@ export default ({timeline: {id, name, username, logo, bio,
         onNavigationPress={() => {
           stateNavigator.navigateBack(1)
         }}>
-        <CollapsingBar style={{backgroundColor: '#006c37'}} />
+        <CollapsingBar titleEnabled={false} style={{backgroundColor: '#006c37'}} />
       </NavigationBar>
       <ScrollView
         nestedScrollEnabled={true}
