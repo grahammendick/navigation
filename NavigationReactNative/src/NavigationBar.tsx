@@ -55,9 +55,8 @@ var NavigationBar: any = ({hidden, logo, navigationImage, overflowImage, childre
     )
 }
 
-var Container: any = ({collapse, title, children, ...props}) => (
-    !collapse ? children : 
-        <CollapsingBar title={title} {...props}>{children}</CollapsingBar>
+var Container: any = ({collapse, children, ...props}) => (
+    !collapse ? children : <CollapsingBar {...props}>{children}</CollapsingBar>
 )
 
 var NVNavigationBar = requireNativeComponent<any>('NVNavigationBar', null);
