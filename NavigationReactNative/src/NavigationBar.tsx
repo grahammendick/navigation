@@ -30,7 +30,7 @@ var NavigationBar: any = ({hidden, logo, navigationImage, overflowImage, childre
                 {Platform.OS === 'ios' ? children :
                     <Container
                         collapse={!!collapsingBar}
-                        title={otherProps.title}
+                        {...otherProps}
                         {...(collapsingBar && collapsingBar.props)}>
                         {collapsingBar && collapsingBar.props.children}
                         <NVToolbar
@@ -40,6 +40,7 @@ var NavigationBar: any = ({hidden, logo, navigationImage, overflowImage, childre
                             overflowImage={Image.resolveAssetSource(overflowImage)}
                             pin={!!collapsingBar}
                             {...otherProps}
+                            barTintColor={!collapsingBar ? otherProps.barTintColor : null}
                             style={{height: 56}}
                             onActionSelected={({nativeEvent}) => {
                                 var onPress = menuItems[nativeEvent.position].onPress;

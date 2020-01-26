@@ -12,16 +12,14 @@ export default ({timeline: {id, name, username, logo, bio,
       <NavigationBar
         title={name}
         navigationImage={require('./arrow.png')}
+        barTintColor={Platform.OS === 'android' ? "#008d4a" : null}
         tintColor={Platform.OS === 'android' ? "#fff" : null}
         titleColor={Platform.OS === 'android' ? "#fff" : null}
         style={{height: 120}}
         onNavigationPress={() => {
           stateNavigator.navigateBack(1)
         }}>
-        <CollapsingBar
-          titleEnabled={false}
-          contentScrimColor="#008d4a"
-          style={{backgroundColor: '#006c37'}} />
+        <CollapsingBar style={{backgroundColor: '#006c37'}} />
       </NavigationBar>
       <ScrollView
         nestedScrollEnabled={true}
