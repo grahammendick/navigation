@@ -31,7 +31,8 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
         view.overlayTop = overlayTop;
         if (view.getChildAt(1) != null) {
             CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getChildAt(1).getLayoutParams();
-            ((AppBarLayout.ScrollingViewBehavior) params.getBehavior()).setOverlayTop(overlayTop);
+            if (params.getBehavior() != null)
+                ((AppBarLayout.ScrollingViewBehavior) params.getBehavior()).setOverlayTop(overlayTop);
         }
     }
 
