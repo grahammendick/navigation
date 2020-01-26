@@ -26,13 +26,13 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
         return new CoordinatorLayoutView(reactContext);
     }
 
-    @ReactProp(name = "overlayTop")
-    public void setOverlayTop(CoordinatorLayoutView view, int overlayTop) {
-        view.overlayTop = overlayTop;
+    @ReactProp(name = "overlapTop")
+    public void setOverlapTop(CoordinatorLayoutView view, int overlapTop) {
+        view.overlapTop = overlapTop;
         if (view.getChildAt(1) != null) {
             CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getChildAt(1).getLayoutParams();
             if (params.getBehavior() != null)
-                ((AppBarLayout.ScrollingViewBehavior) params.getBehavior()).setOverlayTop(overlayTop);
+                ((AppBarLayout.ScrollingViewBehavior) params.getBehavior()).setOverlayTop(overlapTop);
         }
     }
 
@@ -42,7 +42,7 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
         if (child instanceof ScrollView) {
             CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
             AppBarLayout.ScrollingViewBehavior behavior = new AppBarLayout.ScrollingViewBehavior();
-            behavior.setOverlayTop(parent.overlayTop);
+            behavior.setOverlayTop(parent.overlapTop);
             params.setBehavior(behavior);
         }
     }
