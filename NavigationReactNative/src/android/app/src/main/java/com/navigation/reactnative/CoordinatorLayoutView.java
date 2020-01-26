@@ -8,7 +8,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.facebook.react.uimanager.PixelUtil;
 
 public class CoordinatorLayoutView extends CoordinatorLayout {
-    int overlapTop = 0;
+    int overlap = 0;
 
     public CoordinatorLayoutView(Context context){
         super(context);

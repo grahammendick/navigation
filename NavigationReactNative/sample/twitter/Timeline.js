@@ -8,7 +8,7 @@ export default ({timeline: {id, name, username, logo, bio,
   followers, following, tweets}}) => {
   const {stateNavigator} = useContext(NavigationContext);
   return (
-    <CoordinatorLayout overlapTop={110}>
+    <CoordinatorLayout overlap={110}>
       <NavigationBar
         title={name}
         navigationImage={require('./arrow.png')}
