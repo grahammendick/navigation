@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import android.graphics.drawable.ColorDrawable;
+
 import androidx.annotation.Nullable;
 
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -30,6 +32,11 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
     @ReactProp(name = "titleEnabled")
     public void setTitleEnabled(CollapsingBarView view, boolean titleEnabled) {
         view.setTitleEnabled(titleEnabled);
+    }
+
+    @ReactProp(name = "contentScrimColor", customType = "Color")
+    public void setContentScrimColor(CollapsingBarView view, @Nullable Integer contentScrimColor) {
+        view.setContentScrim(contentScrimColor != null ? new ColorDrawable(contentScrimColor) : view.defaultContentScrim);
     }
 
     @Override

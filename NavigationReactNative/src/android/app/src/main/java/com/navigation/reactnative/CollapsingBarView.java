@@ -1,17 +1,20 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 public class CollapsingBarView extends CollapsingToolbarLayout {
+    Drawable defaultContentScrim;
 
     public CollapsingBarView(Context context) {
         super(context);
         AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.MATCH_PARENT);
         params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
         setLayoutParams(params);
+        defaultContentScrim = getContentScrim();
     }
 
     @Override
