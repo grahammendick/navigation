@@ -8,10 +8,14 @@ export default ({timeline: {id, name, username, logo, bio,
   colors, followers, following, tweets}}) => {
   const {stateNavigator} = useContext(NavigationContext);
   const [offset] = useState(new Animated.Value(0));
-  const diameter = offset.interpolate({
+  const width = offset.interpolate({
     inputRange:  [-64, 0],
     outputRange: [60, 80],
-  })
+  });
+  const marginLeft = offset.interpolate({
+    inputRange:  [-64, 0],
+    outputRange: [10, 0],
+  });
   return (
     <CoordinatorLayout overlap={110}>
       <NavigationBar
@@ -36,7 +40,7 @@ export default ({timeline: {id, name, username, logo, bio,
         <View>
           <Animated.Image
             source={logo}
-            style={[styles.logo, {width: diameter, height: diameter}]} />
+            style={[styles.logo, {width, height: width, marginLeft}]} />
           <Text style={styles.name}>{name}</Text>
           <Text>{username}</Text>
           <Text style={styles.bio}>{bio}</Text>
