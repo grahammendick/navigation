@@ -24,7 +24,7 @@ const accounts = {
     username: '@dan_abramov',
     logo: require('./dan_abramov.jpeg'),
     bio: 'Co-authored Redux, Create React App, React Hot Loader, React DnD. Helping improve @reactjs. Personal opinions. #juniordevforlife',
-    colors: ['#008d4a', '#006c37'],
+    colors: ['#9e6144', '#ff80a4'],
     following: 1576,
     followers: 52822,
     tweets: [9, 10, 1, 11, 12, 6]
