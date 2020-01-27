@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {StyleSheet, Text, Image, Platform, ScrollView, View, Animated} from 'react-native';
+import {StyleSheet, Text, Platform, ScrollView, View, Animated} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {NavigationBar, CoordinatorLayout, CollapsingBar} from 'navigation-react-native';
 import Tweets from './Tweets';
