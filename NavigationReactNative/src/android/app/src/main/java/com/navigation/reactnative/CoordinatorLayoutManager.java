@@ -29,8 +29,8 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
     @ReactProp(name = "overlap")
     public void setOverlap(CoordinatorLayoutView view, int overlap) {
         view.overlap = overlap;
-        if (view.getChildAt(1) != null) {
-            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getChildAt(1).getLayoutParams();
+        if (view.getScrollView() != null) {
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getScrollView().getLayoutParams();
             if (params.getBehavior() != null)
                 ((AppBarLayout.ScrollingViewBehavior) params.getBehavior()).setOverlayTop(overlap);
         }
