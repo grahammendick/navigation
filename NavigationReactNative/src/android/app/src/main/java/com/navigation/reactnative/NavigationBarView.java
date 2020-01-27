@@ -5,6 +5,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.ViewOutlineProvider;
 
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.PixelUtil;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
 
 public class NavigationBarView extends AppBarLayout {
@@ -18,5 +23,14 @@ public class NavigationBarView extends AppBarLayout {
             defaultOutlineProvider = getOutlineProvider();
         }
         defaultBackground = getBackground();
+        addOnOffsetChangedListener(new OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
+                WritableMap event = Arguments.createMap();
+                event.putInt("offset", (int) PixelUtil.toDIPFromPixel(offset));
+                ReactContext reactContext = (ReactContext) getContext();
+                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onOffsetChanged", event);
+            }
+        });
     }
 }
