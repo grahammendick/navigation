@@ -4,12 +4,15 @@ import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -87,4 +90,13 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
             view.setLayoutParams(params);
         }
     }
+
+    @Override
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+                .put("onNavigationPress", MapBuilder.of("registrationName", "onNavigationPress"))
+                .put("onActionSelected", MapBuilder.of("registrationName", "onActionSelected"))
+                .build();
+    }
+
 }
