@@ -5,14 +5,14 @@ import {NavigationBar, CoordinatorLayout, CollapsingBar} from 'navigation-react-
 import Tweets from './Tweets';
 
 export default ({timeline: {id, name, username, logo, bio, 
-  followers, following, tweets}}) => {
+  colors, followers, following, tweets}}) => {
   const {stateNavigator} = useContext(NavigationContext);
   return (
     <CoordinatorLayout overlap={110}>
       <NavigationBar
         title={name}
         navigationImage={require('./arrow.png')}
-        barTintColor={Platform.OS === 'android' ? "#008d4a" : null}
+        barTintColor={Platform.OS === 'android' ? colors[0] : null}
         tintColor={Platform.OS === 'android' ? "#fff" : null}
         titleColor={Platform.OS === 'android' ? "#fff" : null}
         style={{height: 120}}
@@ -20,7 +20,7 @@ export default ({timeline: {id, name, username, logo, bio,
           stateNavigator.navigateBack(1)
         }}>
         <CollapsingBar>
-          <View style={{backgroundColor: '#006c37'}} />
+          <View style={{backgroundColor: colors[1]}} />
         </CollapsingBar>
       </NavigationBar>
       <ScrollView
