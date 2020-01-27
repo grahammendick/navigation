@@ -1,5 +1,5 @@
-import React, {useContext} from 'react';
-import {StyleSheet, Text, Image, Platform, ScrollView, View} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {StyleSheet, Text, Image, Platform, ScrollView, View, Animated} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {NavigationBar, CoordinatorLayout, CollapsingBar} from 'navigation-react-native';
 import Tweets from './Tweets';
@@ -7,10 +7,16 @@ import Tweets from './Tweets';
 export default ({timeline: {id, name, username, logo, bio, 
   colors, followers, following, tweets}}) => {
   const {stateNavigator} = useContext(NavigationContext);
+  const [offset] = useState(new Animated.Value(0));
+  const diameter = offset.interpolate({
+    inputRange:  [-64, 0],
+    outputRange: [60, 80],
+  })
   return (
     <CoordinatorLayout overlap={110}>
       <NavigationBar
         title={name}
+        onOffsetChanged={Animated.event([{nativeEvent:{offset}}])}
         navigationImage={require('./arrow.png')}
         barTintColor={Platform.OS === 'android' ? colors[0] : null}
         tintColor={Platform.OS === 'android' ? "#fff" : null}
@@ -28,7 +34,9 @@ export default ({timeline: {id, name, username, logo, bio,
         contentInsetAdjustmentBehavior="automatic"
         style={styles.view}>
         <View>
-          <Image style={styles.logo} source={logo} />
+          <Animated.Image
+            source={logo}
+            style={[styles.logo, {width: diameter, height: diameter}]} />
           <Text style={styles.name}>{name}</Text>
           <Text>{username}</Text>
           <Text style={styles.bio}>{bio}</Text>
@@ -52,8 +60,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logo: {
-    width: 80,
-    height: 80,
     borderRadius: 50,
     borderWidth: 4,
     borderColor: 'white',
