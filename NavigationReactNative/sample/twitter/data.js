@@ -4,7 +4,7 @@ const accounts = {
     username: '@iam_preethi',
     logo: require('./iam_preethi.jpeg'),
     bio: 'Software Engineer @coinbase. Previously @a16z & @GoldmanSachs. Besides doing nerdy things, I love running & reading. I believe in the magic of thinking big :)',
-    colors: ['#008d4a', '#006c37'],
+    colors: ['#3b00d9', '#009df7'],
     following: 763,
     followers: 6722,
     tweets: [1, 2, 5, 3, 4, 10]
