@@ -52,7 +52,6 @@ var styles = StyleSheet.create({
         ...Platform.select({
             android: {
                 zIndex: -58,
-                position: 'absolute',
             },
         })
     },
