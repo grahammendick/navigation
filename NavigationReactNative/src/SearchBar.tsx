@@ -28,6 +28,7 @@ class SearchBar extends React.Component<any, any> {
         var {autoCapitalize, children, ...props} = this.props;
         var constants = (UIManager as any).getViewManagerConfig('NVSearchBar').Constants;
         autoCapitalize = Platform.OS === 'android' ? constants.AutoCapitalize[autoCapitalize] : autoCapitalize;
+        var showStyle = Platform.OS == 'android' && show && {top, right: 0, bottom: 0, left: 0, zIndex: 58}
         return (
             <NVSearchBar
                 {...props}
@@ -36,7 +37,7 @@ class SearchBar extends React.Component<any, any> {
                 onChangeText={this.onChangeText}
                 onExpand={({nativeEvent: {top}}) => this.setState({show: true, top})}
                 onCollapse={() => this.setState({show: false})}
-                style={[show && styles.searchBar, {position: 'absolute', top}]}>
+                style={[styles.searchBar, showStyle]}>
                 {Platform.OS === 'ios' || this.state.show ? children : null}
             </NVSearchBar>
         );
@@ -46,12 +47,15 @@ class SearchBar extends React.Component<any, any> {
 var NVSearchBar = requireNativeComponent<any>('NVSearchBar', null);
 
 var styles = StyleSheet.create({
-    searchBar: Platform.select({
-        android: {
-            right: 0,
-            bottom: 0, left: 0,
-        },
-    })
+    searchBar: {
+        position: 'absolute',
+        ...Platform.select({
+            android: {
+                zIndex: -58,
+                position: 'absolute',
+            },
+        })
+    },
 });
 
 export default SearchBar;
