@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logo: {
-    width: 80,
-    height: 80,
+    width: 85,
+    height: 85,
     borderRadius: 50,
     borderWidth: 4,
     borderColor: 'white',
