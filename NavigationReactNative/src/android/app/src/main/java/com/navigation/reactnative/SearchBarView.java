@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.widget.SearchView;
 
@@ -50,6 +51,14 @@ public class SearchBarView extends ReactViewGroup {
         super.onAttachedToWindow();
         ViewGroup view = (ViewGroup) getParent();
         ToolbarView toolbarView = null;
+        if (searchView.requestFocusFromTouch()) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.showSoftInput(searchView.findFocus(), 0);
+        }
+        for(int i = 0; i < view.getChildCount(); i++) {
+            if (view.getChildAt(i) instanceof  CoordinatorLayoutView)
+                view = (CoordinatorLayoutView) view.getChildAt(i);
+        }
         for(int i = 0; i < view.getChildCount(); i++) {
             if (view.getChildAt(i) instanceof NavigationBarView) {
                 NavigationBarView navigationBarView = (NavigationBarView) view.getChildAt(i);
