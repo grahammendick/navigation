@@ -53,7 +53,8 @@ public class SearchBarView extends ReactViewGroup {
         ToolbarView toolbarView = null;
         if (searchView.requestFocusFromTouch()) {
             InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.showSoftInput(searchView.findFocus(), 0);
+            if (inputMethodManager != null)
+                inputMethodManager.showSoftInput(searchView.findFocus(), 0);
         }
         for(int i = 0; i < view.getChildCount(); i++) {
             if (view.getChildAt(i) instanceof  CoordinatorLayoutView)
