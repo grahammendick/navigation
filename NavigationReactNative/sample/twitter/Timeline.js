@@ -26,7 +26,7 @@ export default ({timeline: {id, name, username, logo, bio,
           stateNavigator.navigateBack(1)
         }}>
         <CollapsingBar>
-          <View style={{backgroundColor: colors[1]}} />
+          <View style={{backgroundColor: colors[1], flex: 1}} />
         </CollapsingBar>
       </NavigationBar>
       <ScrollView
