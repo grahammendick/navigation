@@ -9,6 +9,7 @@ import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.Map;
 
@@ -48,7 +49,7 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
 
     @ReactProp(name = "height")
     public void setHeight(NavigationBarView view, double height) {
-        view.getLayoutParams().height = (int) PixelUtil.toPixelFromDIP(height);
+        view.getLayoutParams().height = height != 0 ? (int) PixelUtil.toPixelFromDIP(height) : AppBarLayout.LayoutParams.WRAP_CONTENT;
     }
 
     @Override
