@@ -26,7 +26,10 @@ var NavigationBar: any = ({hidden, logo, navigationImage, overflowImage, childre
     var collapsingBar = childrenArray.find(({type}) => type === CollapsingBar);
     return (
         <>
-            <NVNavigationBar hidden={hidden} style={{height: style.height}} {...otherProps}>
+            <NVNavigationBar
+                hidden={hidden}
+                style={{height: Platform.OS === 'android' && collapsingBar ? style.height : null}}
+                {...otherProps}>
                 {Platform.OS === 'ios' ? children :
                     <Container
                         collapse={!!collapsingBar}
