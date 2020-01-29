@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.MenuItem;
+import android.view.ViewParent;
 
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
@@ -16,6 +17,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
     @Nonnull
@@ -50,6 +52,11 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
     @ReactProp(name = "height")
     public void setHeight(NavigationBarView view, double height) {
         view.getLayoutParams().height = height != 0 ? (int) PixelUtil.toPixelFromDIP(height) : AppBarLayout.LayoutParams.WRAP_CONTENT;
+        if (view.getParent() instanceof CoordinatorLayoutView) {
+            CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) view.getParent();
+            coordinatorLayoutView.requestLayout();
+            coordinatorLayoutView.post(coordinatorLayoutView.measureAndLayout);
+        }
     }
 
     @Override
