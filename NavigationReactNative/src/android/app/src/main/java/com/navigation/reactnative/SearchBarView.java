@@ -83,11 +83,8 @@ public class SearchBarView extends ReactViewGroup {
                 @Override
                 public void onSearchExpand() {
                     ReactContext reactContext = (ReactContext) getContext();
-                    int top = 56;
-                    if (!(navigationBarView.getChildAt(0) instanceof CollapsingBarView))
-                        top += PixelUtil.toDIPFromPixel(barOffset);
                     WritableMap event = Arguments.createMap();
-                    event.putInt("top", top);
+                    event.putInt("top", 56 + (int) PixelUtil.toDIPFromPixel(barOffset));
                     reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onExpand", event);
                 }
 
