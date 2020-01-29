@@ -21,10 +21,7 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
         addOnLayoutChangeListener(new OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if (getParent() != null && getParent().getParent() instanceof CoordinatorLayoutView) {
-                    CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) getParent().getParent();
-                    coordinatorLayoutView.post(coordinatorLayoutView.measureAndLayout);
-                }
+                measureAndLayoutCoordinator();
             }
         });
     }
@@ -45,4 +42,11 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
+
+    void measureAndLayoutCoordinator() {
+        if (getParent() != null && getParent().getParent() instanceof CoordinatorLayoutView) {
+            CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) getParent().getParent();
+            coordinatorLayoutView.post(coordinatorLayoutView.measureAndLayout);
+        }
+    }
 }
