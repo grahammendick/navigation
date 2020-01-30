@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, TouchableHighlight } from 'react-native';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { NavigationStack, NavigationBar, RightBar, BarButton, SearchBar, SharedElement, TabBar, TabBarItem } from 'navigation-react-native';
+import { NavigationStack, NavigationBar, CoordinatorLayout, RightBar, BarButton, SearchBar, SharedElement, TabBar, TabBarItem } from 'navigation-react-native';
 
 const stateNavigator: StateNavigator = new StateNavigator([
     { key: 'people' },
@@ -12,7 +12,7 @@ const stateNavigator: StateNavigator = new StateNavigator([
 var List = ({people, children}: any) => (
     <NavigationContext.Consumer>
         {({stateNavigator}) => (
-            <>
+            <CoordinatorLayout>
                 <NavigationBar title="People" />
                 <View>
                     {people.map(name => (
@@ -27,7 +27,7 @@ var List = ({people, children}: any) => (
                     ))}
                     {children}
                 </View>
-            </>
+            </CoordinatorLayout>
         )}
     </NavigationContext.Consumer>
 );
