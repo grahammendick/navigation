@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -17,7 +18,7 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class NavigationStackView extends ViewGroup {
+public class NavigationStackView extends ViewGroup implements LifecycleEventListener {
     protected ArrayList<String> sceneKeys = new ArrayList<>();
     protected HashMap<String, SceneView> scenes = new HashMap<>();
     protected ReadableArray keys;
@@ -28,6 +29,7 @@ public class NavigationStackView extends ViewGroup {
     protected ReadableArray oldSharedElementNames;
     protected boolean primary = true;
     protected boolean finish = false;
+    private boolean canNavigate = true;
     SceneNavigator navigator;
 
     public NavigationStackView(Context context) {
@@ -36,7 +38,7 @@ public class NavigationStackView extends ViewGroup {
 
     protected void onAfterUpdateTransaction() {
         Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
-        if (currentActivity == null)
+        if (currentActivity == null || !canNavigate)
             return;
         if (mainActivity == null) {
             mainActivity = currentActivity;
@@ -72,11 +74,13 @@ public class NavigationStackView extends ViewGroup {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         onAfterUpdateTransaction();
+        ((ThemedReactContext) getContext()).addLifecycleEventListener(this);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        ((ThemedReactContext) getContext()).removeLifecycleEventListener(this);
         if (primary) {
             FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
             FragmentTransaction fragmentTransation = fragmentManager.beginTransaction();
@@ -89,5 +93,20 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    }
+
+    @Override
+    public void onHostResume() {
+        canNavigate = true;
+        onAfterUpdateTransaction();
+    }
+
+    @Override
+    public void onHostPause() {
+        canNavigate = false;
+    }
+
+    @Override
+    public void onHostDestroy() {
     }
 }
