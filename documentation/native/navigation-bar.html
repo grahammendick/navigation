@@ -125,9 +125,9 @@
 &lt;/CoordinatorLayout>
 </code></pre>
             <h2>Collapsing the Title</h2>
-            <p></p>
-            <pre><code class="language-jsx">&lt;NavigationBar title="Inbox" largeTitle={true} />
-</code></pre>
+            <p>
+                We can draw attention to our inbox scene by enlarging the title. As the user scrolls down the large title collapses back to its normal size. We set the <code>largeTitle</code> prop to true and assign an initial expanded height. Then we wrap the scene in a <code>CoordinatorLayout</code> component and enable nested scrolling. On Android, the navigation bar needs a <code>CollapsingBar</code> child. Any content of the <code>CollapsingBar</code> collapses along with the title.
+            </p>
             <pre><code class="language-jsx">import {CollapsingBar} from 'navigation-react-native';
 
 &lt;CoordinatorLayout>
