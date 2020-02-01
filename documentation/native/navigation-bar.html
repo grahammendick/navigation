@@ -114,7 +114,9 @@
 &lt;/NavigationBar>
 </code></pre>
             <h2>Scrolling the Navigation Bar on Android</h2>
-            <p></p>
+            <p>
+                By wrapping the inbox scene in a <code>CoordinatorLayout</code> component we prevent the navigation bar from getting in the way on Android. The navigation bar gradually scrolls offscreen as the user moves down through their inbox. As soon as the user starts to scroll back up the navigation bar reappears. This functionality is only available on API level 21+ because we have to enable nested scrolling on the React Native <code>ScrollView</code>.
+            </p>
             <pre><code class="language-jsx">import {CoordinatorLayout} from 'navigation-react-native';
 
 &lt;CoordinatorLayout>
