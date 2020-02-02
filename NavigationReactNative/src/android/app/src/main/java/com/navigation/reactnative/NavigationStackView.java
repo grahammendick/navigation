@@ -29,7 +29,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected ReadableArray oldSharedElementNames;
     protected boolean primary = true;
     protected boolean finish = false;
-    private boolean canNavigate = true;
     SceneNavigator navigator;
 
     public NavigationStackView(Context context) {
@@ -38,7 +37,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
 
     protected void onAfterUpdateTransaction() {
         Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
-        if (currentActivity == null || !canNavigate)
+        if (currentActivity == null)
             return;
         if (mainActivity == null) {
             mainActivity = currentActivity;
@@ -53,7 +52,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             currentActivity.finishAffinity();
             return;
         }
-        if (scenes.size() == 0)
+        if (scenes.size() == 0 || !navigator.canNavigate(currentActivity, this))
             return;
         int crumb = keys.size() - 1;
         int currentCrumb = navigator.oldCrumb;
@@ -97,13 +96,11 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
 
     @Override
     public void onHostResume() {
-        canNavigate = true;
         onAfterUpdateTransaction();
     }
 
     @Override
     public void onHostPause() {
-        canNavigate = false;
     }
 
     @Override
