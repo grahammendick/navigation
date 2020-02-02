@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -17,7 +18,7 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class NavigationStackView extends ViewGroup {
+public class NavigationStackView extends ViewGroup implements LifecycleEventListener {
     protected ArrayList<String> sceneKeys = new ArrayList<>();
     protected HashMap<String, SceneView> scenes = new HashMap<>();
     protected ReadableArray keys;
@@ -51,7 +52,7 @@ public class NavigationStackView extends ViewGroup {
             currentActivity.finishAffinity();
             return;
         }
-        if (scenes.size() == 0)
+        if (scenes.size() == 0 || !navigator.canNavigate(currentActivity, this))
             return;
         int crumb = keys.size() - 1;
         int currentCrumb = navigator.oldCrumb;
@@ -72,11 +73,13 @@ public class NavigationStackView extends ViewGroup {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         onAfterUpdateTransaction();
+        ((ThemedReactContext) getContext()).addLifecycleEventListener(this);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        ((ThemedReactContext) getContext()).removeLifecycleEventListener(this);
         if (primary) {
             FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
             FragmentTransaction fragmentTransation = fragmentManager.beginTransaction();
@@ -89,5 +92,18 @@ public class NavigationStackView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    }
+
+    @Override
+    public void onHostResume() {
+        onAfterUpdateTransaction();
+    }
+
+    @Override
+    public void onHostPause() {
+    }
+
+    @Override
+    public void onHostDestroy() {
     }
 }

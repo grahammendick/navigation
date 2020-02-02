@@ -18,6 +18,11 @@ import java.util.Map;
 class FragmentNavigator extends SceneNavigator {
 
     @Override
+    boolean canNavigate(Activity activity, NavigationStackView stack) {
+        return !getFragmentManager(stack, activity).isStateSaved();
+    }
+
+    @Override
     void navigateBack(int currentCrumb, int crumb, Activity activity, NavigationStackView stack) {
         FragmentManager fragmentManager = getFragmentManager(stack, activity);
         SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKey);

@@ -19,6 +19,10 @@ abstract class SceneNavigator {
     String oldKey;
     private SparseIntArray defaultAnimation;
 
+    boolean canNavigate(Activity activity, NavigationStackView stack) {
+        return true;
+    }
+
     abstract void navigateBack(int currentCrumb, int crumb, Activity activity, NavigationStackView stack);
 
     abstract void navigate(int currentCrumb, int crumb, Activity activity, NavigationStackView stack);
