@@ -55,7 +55,7 @@
             <h1>Navigation Bar</h1>
             <h2>Setting the Title</h2>
             <p>
-                The Navigation router uses the underlying native APIs on Android and iOS to provide a native navigation bar that you can position at the top of each scene. The <code>title</code> prop of the <code>NavigationBar</code> component configures a scene's title. You enable large titles on iOS by setting the <code>largeTitle</code> prop to true.
+                The Navigation router uses the underlying native APIs on Android and iOS to provide a native navigation bar that you can position at the top of each scene. The <code>title</code> prop of the <code>NavigationBar</code> component configures a scene's title.
             </p>
             <pre><code class="language-jsx">import {NavigationBar} from 'navigation-react-native';
 
@@ -112,6 +112,30 @@
     &lt;BarButton title="search" search={true} />
   &lt;/RightBar>
 &lt;/NavigationBar>
+</code></pre>
+            <h2>Scrolling the Navigation Bar on Android</h2>
+            <p>
+                By wrapping the inbox scene in a <code>CoordinatorLayout</code> component we prevent the navigation bar from getting in the way on Android. The navigation bar gradually scrolls offscreen as the user moves down through their inbox. As soon as the user starts to scroll back up the navigation bar reappears. This functionality is only available on API level 21+ because we have to enable nested scrolling on the React Native <code>ScrollView</code>.
+            </p>
+            <pre><code class="language-jsx">import {CoordinatorLayout} from 'navigation-react-native';
+
+&lt;CoordinatorLayout>
+  &lt;NavigationBar title="Inbox" />
+  &lt;ScrollView nestedScrollEnabled={true} />
+&lt;/CoordinatorLayout>
+</code></pre>
+            <h2>Collapsing the Title</h2>
+            <p>
+                We can draw attention to our inbox scene by enlarging the title. As the user scrolls down the large title collapses back to its normal size. We set the <code>largeTitle</code> prop to true and assign an initial expanded height. Then we wrap the scene in a <code>CoordinatorLayout</code> component and enable nested scrolling. On Android, the navigation bar needs a <code>CollapsingBar</code> child. Any content of the <code>CollapsingBar</code> collapses along with the title.
+            </p>
+            <pre><code class="language-jsx">import {CollapsingBar} from 'navigation-react-native';
+
+&lt;CoordinatorLayout>
+  &lt;NavigationBar title="Inbox" largeTitle={true} style={{height: 120}}>
+    &lt;CollapsingBar />
+  &lt;/NavigationBar>
+  &lt;ScrollView nestedScrollEnabled={true} />
+&lt;/CoordinatorLayout>
 </code></pre>
         </div>
     </div>
