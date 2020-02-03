@@ -1,27 +1,42 @@
-import React, {useContext} from 'react';
-import {StyleSheet, Text, Image, Platform, ScrollView, View} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {StyleSheet, Text, Platform, ScrollView, View, Animated} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBar} from 'navigation-react-native';
+import {NavigationBar, CoordinatorLayout, CollapsingBar} from 'navigation-react-native';
 import Tweets from './Tweets';
 
 export default ({timeline: {id, name, username, logo, bio, 
-  followers, following, tweets}}) => {
+  colors, followers, following, tweets}}) => {
   const {stateNavigator} = useContext(NavigationContext);
+  const [offset] = useState(new Animated.Value(0));
+  const scale = offset.interpolate({
+    inputRange:  [-64, 0],
+    outputRange: [.8, 1],
+  });
   return (
-    <>
+    <CoordinatorLayout overlap={110}>
       <NavigationBar
         title={name}
+        onOffsetChanged={Animated.event([{nativeEvent:{offset}}])}
         navigationImage={require('./arrow.png')}
-        barTintColor={Platform.OS === 'android' ? '#fff' : null}
-        tintColor={Platform.OS === 'android' ? "deepskyblue" : null}
+        barTintColor={Platform.OS === 'android' ? colors[0] : null}
+        tintColor={Platform.OS === 'android' ? "#fff" : null}
+        titleColor={Platform.OS === 'android' ? "#fff" : null}
+        style={{height: 120}}
         onNavigationPress={() => {
           stateNavigator.navigateBack(1)
-        }} />
-      <ScrollView 
+        }}>
+        <CollapsingBar>
+          <View style={{backgroundColor: colors[1], flex: 1}} />
+        </CollapsingBar>
+      </NavigationBar>
+      <ScrollView
+        nestedScrollEnabled={true}
         contentInsetAdjustmentBehavior="automatic"
         style={styles.view}>
         <View>
-          <Image style={styles.logo} source={logo} />
+          <Animated.Image
+            source={logo}
+            style={[styles.logo, {transform: [{scale}]}]} />
           <Text style={styles.name}>{name}</Text>
           <Text>{username}</Text>
           <Text style={styles.bio}>{bio}</Text>
@@ -34,7 +49,7 @@ export default ({timeline: {id, name, username, logo, bio,
         </View>
         <Tweets tweets={tweets} onTimeline={accountId => accountId !== id} />
       </ScrollView>
-    </>
+    </CoordinatorLayout>
   );
 };
 
@@ -45,15 +60,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logo: {
-    width: 100,
-    height: 100,
-    marginTop: 20,
+    width: 85,
+    height: 85,
     borderRadius: 50,
-    marginRight: 12,
+    borderWidth: 4,
+    borderColor: 'white',
   },
   name: {
     fontWeight: 'bold',
-    fontSize: 18, 
+    fontSize: 24, 
     marginTop: 5,
     marginBottom: 2,
   },

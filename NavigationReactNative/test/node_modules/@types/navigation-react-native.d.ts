@@ -224,6 +224,26 @@ export class SearchBarIOS extends Component<SearchBarProps> { }
 export class SearchBar extends Component<SearchBarProps> { }
 
 /**
+ * Defines the Coordinator Layout Props contract
+ */
+export interface CoordinatorLayoutProps {
+    /**
+     * The distance the scrolled content overlaps the navigation bar
+     */
+    overlap?: number;   
+}
+
+/**
+ * Container that supports collapsing the navigation bar
+ */
+export class CoordinatorLayout extends Component<CoordinatorLayoutProps> {}
+
+/**
+ * Renders collapsing content inside the navigation bar
+ */
+export class CollapsingBar extends Component {}
+
+/**
  * Defines the Shared Element Props contract
  */
 export interface SharedElementProps {

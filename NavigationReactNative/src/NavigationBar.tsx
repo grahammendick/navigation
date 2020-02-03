@@ -4,8 +4,9 @@ import LeftBar from './LeftBar';
 import RightBar from './RightBar';
 import SearchBar from './SearchBar';
 import TitleBar from './TitleBar';
+import CollapsingBar from './CollapsingBar';
 
-var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, style, ...otherProps}) => {
+var NavigationBar: any = ({hidden, logo, navigationImage, overflowImage, children, style = {}, ...otherProps}) => {
     if (Platform.OS === 'android' && hidden)
         return null
     var constants = (UIManager as any).getViewManagerConfig('NVNavigationBar').Constants;
@@ -22,28 +23,47 @@ var NavigationBar = ({hidden, logo, navigationImage, overflowImage, children, st
                 })
             ))
         ), []);
+    var collapsingBar = childrenArray.find(({type}) => type === CollapsingBar);
     return (
         <>
             <NVNavigationBar
-                menuItems={menuItems}
-                logo={Image.resolveAssetSource(logo)}
-                navigationImage={Image.resolveAssetSource(navigationImage)}
-                overflowImage={Image.resolveAssetSource(overflowImage)}
-                style={Platform.OS === 'android' ? {height: 56} : undefined}
                 hidden={hidden}
-                {...otherProps}
-                onActionSelected={({nativeEvent}) => {
-                    var onPress = menuItems[nativeEvent.position].onPress;
-                    if (onPress)
-                        onPress();
-            }}>
-                {Platform.OS === 'ios' ? children : childrenArray.find(({type}) => type === TitleBar)}
+                style={{height: Platform.OS === 'android' && collapsingBar ? style.height : null}}
+                {...otherProps}>
+                {Platform.OS === 'ios' ? children :
+                    <Container
+                        collapse={!!collapsingBar}
+                        {...otherProps}
+                        {...(collapsingBar && collapsingBar.props)}>
+                        {collapsingBar && collapsingBar.props.children}
+                        <NVToolbar
+                            menuItems={menuItems}
+                            logo={Image.resolveAssetSource(logo)}
+                            navigationImage={Image.resolveAssetSource(navigationImage)}
+                            overflowImage={Image.resolveAssetSource(overflowImage)}
+                            pin={!!collapsingBar}
+                            {...otherProps}
+                            barTintColor={!collapsingBar ? otherProps.barTintColor : null}
+                            style={{height: 56}}
+                            onActionSelected={({nativeEvent}) => {
+                                var onPress = menuItems[nativeEvent.position].onPress;
+                                if (onPress)
+                                    onPress();
+                            }}>
+                            {childrenArray.find(({type}) => type === TitleBar)}
+                        </NVToolbar>
+                    </Container>}
             </NVNavigationBar>
             {Platform.OS === 'ios' ? null : childrenArray.find(({type}) => type === SearchBar)}
         </>
     )
 }
 
+var Container: any = ({collapse, children, ...props}) => (
+    !collapse ? children : <CollapsingBar {...props}>{children}</CollapsingBar>
+)
+
 var NVNavigationBar = requireNativeComponent<any>('NVNavigationBar', null);
+var NVToolbar = requireNativeComponent<any>('NVToolbar', null);
 
 export default NavigationBar;

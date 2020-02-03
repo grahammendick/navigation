@@ -3,21 +3,21 @@ package com.navigation.reactnative;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.MenuItem;
-import android.view.View;
+import android.view.ViewParent;
 
-import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.Map;
 
 import javax.annotation.Nonnull;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
     @Nonnull
@@ -32,60 +32,10 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
         return new NavigationBarView(reactContext);
     }
 
-    @Override
-    public int getChildCount(NavigationBarView parent) {
-        return parent.toolbar.getChildCount();
-    }
-
-    @Override
-    public View getChildAt(NavigationBarView parent, int index) {
-        return parent.toolbar.getChildAt(index);
-    }
-
-    @Override
-    public void addView(NavigationBarView parent, View child, int index) {
-        Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(
-                Toolbar.LayoutParams.MATCH_PARENT,
-                Toolbar.LayoutParams.MATCH_PARENT
-        );
-        parent.toolbar.addView(child, index, layoutParams);
-    }
-
-    @Override
-    public void removeViewAt(NavigationBarView parent, int index) {
-        parent.toolbar.removeViewAt(index);
-    }
-
-    @ReactProp(name = "title")
-    public void setTitle(NavigationBarView view, @Nullable String title) {
-        view.toolbar.setTitle(title);
-    }
-
-    @ReactProp(name = "logo")
-    public void setLogo(NavigationBarView view, @Nullable ReadableMap logo) {
-        view.setLogoSource(logo);
-    }
-
-    @ReactProp(name = "navigationImage")
-    public void setNavIcon(NavigationBarView view, @Nullable ReadableMap navIcon) {
-        view.setNavIconSource(navIcon);
-    }
-
-    @ReactProp(name = "overflowImage")
-    public void setOverflowIcon(NavigationBarView view, @Nullable ReadableMap overflowIcon) {
-        view.setOverflowIconSource(overflowIcon);
-    }
-
-    @ReactProp(name = "menuItems")
-    public void setMenuItems(NavigationBarView view, @Nullable ReadableArray menuItems) {
-        view.setMenuItems(menuItems);
-    }
-
     @ReactProp(name = "barTintColor", customType = "Color")
     public void setBarTintColor(NavigationBarView view, @Nullable Integer barTintColor) {
         if (barTintColor != null) {
             view.setBackground(null);
-            view.toolbar.setBackgroundColor(barTintColor);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if (Color.alpha(barTintColor) < 255)
                     view.setOutlineProvider(null);
@@ -94,27 +44,25 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
             }
         } else {
             view.setBackground(view.defaultBackground);
-            view.toolbar.setBackground(null);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 view.setOutlineProvider(view.defaultOutlineProvider);
         }
     }
 
-    @ReactProp(name = "tintColor", customType = "Color")
-    public void setTintColor(NavigationBarView view, @Nullable Integer tintColor) {
-        view.setTintColor(tintColor);
-    }
-
-    @ReactProp(name = "titleColor", customType = "Color")
-    public void setTitleColor(NavigationBarView view, @Nullable Integer textColor) {
-        view.toolbar.setTitleTextColor(textColor != null ? textColor : view.defaultTitleTextColor);
+    @ReactProp(name = "height")
+    public void setHeight(NavigationBarView view, double height) {
+        view.getLayoutParams().height = height != 0 ? (int) PixelUtil.toPixelFromDIP(height) : AppBarLayout.LayoutParams.WRAP_CONTENT;
+        if (view.getParent() instanceof CoordinatorLayoutView) {
+            CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) view.getParent();
+            coordinatorLayoutView.requestLayout();
+            coordinatorLayoutView.post(coordinatorLayoutView.measureAndLayout);
+        }
     }
 
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("onNavigationPress", MapBuilder.of("registrationName", "onNavigationPress"))
-            .put("onActionSelected", MapBuilder.of("registrationName", "onActionSelected"))
+            .put("onOffsetChanged", MapBuilder.of("registrationName", "onOffsetChanged"))
             .build();
     }
 
