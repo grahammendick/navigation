@@ -1,5 +1,5 @@
 import { Component, Context, ReactNode } from 'react';
-import { BackHandler, ImageRequireSource, ImageURISource, StyleProp, ViewStyle } from 'react-native';
+import { BackHandler, ImageRequireSource, ImageURISource, NativeSyntheticEvent, StyleProp, ViewStyle } from 'react-native';
 import { StateNavigator, State } from 'navigation';
 
 /**
@@ -86,9 +86,13 @@ export interface NavigationBarProps {
      */
     navigationImage?: ImageRequireSource | ImageURISource;
     /**
-     * Handles navigation button click events
+     * Handles navigation button press events
      */
-    onNavigationPress?: () => void
+    onNavigationPress?: () => void;
+    /**
+     * Handles offset change events
+     */
+    onOffsetChanged?: (e: NativeSyntheticEvent<{offset}>) => void;
 }
 
 /**
@@ -161,7 +165,7 @@ export interface BarButtonProps {
         | 'bookmarks' | 'search' | 'refresh' | 'stop' | 'camera'
         | 'trash' | 'play' | 'pause' | 'rewind' | 'fastForward';
     /**
-     * Handles button click events
+     * Handles button press events
      */
     onPress?: () => void;
     /**
@@ -303,7 +307,7 @@ export interface TabBarItemProps {
         | 'featured' | 'history' | 'more' | 'most-recent' | 'most-viewed'
         | 'recents' | 'search' | 'top-rated';
     /**
-     * Handles button click events
+     * Handles button press events
      */
     onPress?: () => void;
 }
