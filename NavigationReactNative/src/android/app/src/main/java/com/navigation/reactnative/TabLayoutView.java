@@ -3,8 +3,6 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
@@ -26,25 +24,6 @@ public class TabLayoutView extends TabLayout implements TabView {
     public void setScrollable(boolean scrollable) {
         setTabMode(scrollable ? TabLayout.MODE_SCROLLABLE : TabLayout.MODE_FIXED);
         post(measureAndLayout);
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        TabBarView tabBar = getTabBar();
-        if (tabBar != null) {
-            setupWithViewPager(tabBar);
-            tabBar.populateTabIcons();
-        }
-    }
-
-    private TabBarView getTabBar() {
-        for(int i = 0; getParent() != null && i < ((ViewGroup) getParent()).getChildCount(); i++) {
-            View child = ((ViewGroup) getParent()).getChildAt(i);
-            if (child instanceof TabBarView)
-                return (TabBarView) child;
-        }
-        return null;
     }
 
     @Override
