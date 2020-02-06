@@ -8,7 +8,7 @@ export default ({follows}) => {
   return (
     <CoordinatorLayout>
       <NavigationBar title="Notifications" barTintColor={Platform.OS === 'android' ? '#fff' : null}>
-        <TabLayout barTintColor="#fff" selectedTintColor="deepskyblue" />
+        <TabBar barTintColor="#fff" selectedTintColor="deepskyblue" />
       </NavigationBar>
       <TabBar selectedTintColor="deepskyblue">
         <TabBarItem title="All">

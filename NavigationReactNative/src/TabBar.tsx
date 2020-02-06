@@ -1,7 +1,6 @@
 import React from 'react';
 import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 import BackButton from './BackButton';
-import TabLayout from './TabLayout';
 
 class TabBar extends React.Component<any, any> {
     constructor(props) {
@@ -24,10 +23,9 @@ class TabBar extends React.Component<any, any> {
         var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, swipeable} = this.props;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
-        var NVTabView = swipeable ? TabLayout : NVTabNavigation;
+        var NVTabView = swipeable ? NVTabLayout : NVTabNavigation;
         var tabLayout = Platform.OS === 'android' && (
             <NVTabView
-                barTintColor={barTintColor}
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
@@ -39,8 +37,8 @@ class TabBar extends React.Component<any, any> {
         );
         return (
             <>
-                {/*!bottomTabs && tabLayout*/}
-                <NVTabBar
+                {!bottomTabs && tabLayout}
+                {!!tabBarItems.length && <NVTabBar
                     images={tabBarItems.map(({props}: any) => props.image)}
                     onTabSelected={({nativeEvent}) => {
                         if (this.state.selectedTab !== nativeEvent.tab)
@@ -59,13 +57,14 @@ class TabBar extends React.Component<any, any> {
                                 var selected = index === this.state.selectedTab;
                                 return React.cloneElement(child, {...child.props, selected})
                             })}
-                </NVTabBar>
+                </NVTabBar>}
                 {bottomTabs && tabLayout}
             </>
         );
     }
 }
 
+var NVTabLayout = requireNativeComponent<any>('NVTabLayout', null);
 var NVTabNavigation = requireNativeComponent<any>('NVTabNavigation', null);
 var NVTabBar = requireNativeComponent<any>('NVTabBar', null);
 
