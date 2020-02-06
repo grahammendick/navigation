@@ -47,7 +47,7 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
         return null;
     }
 
-    @Override
+    /*@Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int height = MeasureSpec.getSize(heightMeasureSpec);
         int contentHeight = getScrollView() != null ? getScrollView().getChildAt(0).getHeight() : 0;
@@ -57,5 +57,5 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
         if (collapsedGap > 0)
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec) - collapsedGap, MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
+    }*/
 }
