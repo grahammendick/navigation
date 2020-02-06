@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {ScrollView, StyleSheet, Text, Image, FlatList, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {CoordinatorLayout, NavigationBar, TabBar, TabBarItem, TabLayout} from 'navigation-react-native';
+import {CoordinatorLayout, NavigationBar, TabBar, TabBarItem} from 'navigation-react-native';
 
 export default ({follows}) => {
   const {stateNavigator} = useContext(NavigationContext);
