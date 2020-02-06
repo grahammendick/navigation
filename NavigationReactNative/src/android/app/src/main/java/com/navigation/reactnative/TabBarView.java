@@ -11,6 +11,7 @@ import android.view.ViewParent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -64,8 +65,12 @@ public class TabBarView extends ViewPager {
     }
 
     private TabView getTabView() {
-        for(int i = 0; getParent() != null && i < ((ViewGroup) getParent()).getChildCount(); i++) {
-            View child = ((ViewGroup) getParent()).getChildAt(i);
+        ViewGroup parent = (ViewGroup) getParent();
+        if (parent instanceof CoordinatorLayout) {
+            parent = (ViewGroup) parent.getChildAt(0);
+        }
+        for(int i = 0; getParent() != null && i < parent.getChildCount(); i++) {
+            View child = parent.getChildAt(i);
             if (child instanceof TabView)
                 return (TabView) child;
         }
