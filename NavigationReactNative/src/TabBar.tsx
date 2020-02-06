@@ -27,12 +27,13 @@ class TabBar extends React.Component<any, any> {
         var NVTabView = swipeable ? TabLayout : NVTabNavigation;
         var tabLayout = Platform.OS === 'android' && (
             <NVTabView
+                barTintColor={barTintColor}
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
                 scrollable={scrollable}
                 style={{
-                    /*backgroundColor: barTintColor,*/
+                    backgroundColor: barTintColor,
                     height: swipeable ? (titleOnly ? 48 : 72) : 56
                 }} />
         );
