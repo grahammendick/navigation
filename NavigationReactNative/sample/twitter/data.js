@@ -145,7 +145,7 @@ const getHome = () => {
 };
 
 const getFollows = () => {
-  const notifications = [1, 2, 3];
+  const notifications = [1, 2, 3, 2, 1, 3, 3, 2, 1];
   return notifications.map(id => ({...accounts[id], id}));
 };
 

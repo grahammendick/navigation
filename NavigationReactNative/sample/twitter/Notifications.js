@@ -18,7 +18,7 @@ export default ({follows}) => {
             style={styles.view}>
             <FlatList
                 data={follows}
-                keyExtractor={item => '' + item.id}
+                keyExtractor={(item, index) => '' + index}
                 renderItem={({item: {id, name, logo}}) => (
                   <TouchableHighlight
                     underlayColor="white"
