@@ -52,6 +52,9 @@ var NavigationBar: any = ({hidden, logo, navigationImage, overflowImage, childre
                             }}>
                             {childrenArray.find(({type}) => type === TitleBar)}
                         </NVToolbar>
+                        {childrenArray.filter(({type}) => (
+                            ![CollapsingBar, TitleBar, SearchBar].find(el => el === type))
+                        )}
                     </Container>}
             </NVNavigationBar>
             {Platform.OS === 'ios' ? null : childrenArray.find(({type}) => type === SearchBar)}
