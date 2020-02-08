@@ -69,7 +69,7 @@ public class TabBarView extends ViewPager {
         if (parent instanceof CoordinatorLayout) {
             parent = (ViewGroup) parent.getChildAt(0);
         }
-        for(int i = 0; getParent() != null && i < parent.getChildCount(); i++) {
+        for(int i = 0; parent != null && i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
             if (child instanceof TabView)
                 return (TabView) child;
