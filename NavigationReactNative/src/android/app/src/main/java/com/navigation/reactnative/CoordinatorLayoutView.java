@@ -1,7 +1,6 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.ScrollView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -10,7 +9,6 @@ import com.facebook.react.uimanager.PixelUtil;
 
 public class CoordinatorLayoutView extends CoordinatorLayout {
     int overlap = 0;
-    boolean nestedScrolling = false;
 
     public CoordinatorLayoutView(Context context){
         super(context);
@@ -47,18 +45,6 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
                 return (ScrollView) getChildAt(i);
         }
         return null;
-    }
-
-    @Override
-    public boolean onStartNestedScroll(View child, View target, int axes, int type) {
-        nestedScrolling = true;
-        return super.onStartNestedScroll(child, target, axes, type);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        nestedScrolling = false;
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     /*@Override
