@@ -16,6 +16,8 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
     private int touchSlop;
     private int lastMotionY;
     private int activePointerId;
+    private int[] scrollOffset = new int[2];
+    private int[] scrollConsumed = new int[2];
 
     public CoordinatorLayoutView(Context context){
         super(context);
@@ -65,8 +67,10 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
                     int activePointerIndex = ev.findPointerIndex(activePointerId);
                     int y = (int) ev.getY(activePointerIndex);
                     int yDiff = Math.abs(y - lastMotionY);
-                    if (yDiff > touchSlop)
+                    if (yDiff > touchSlop) {
                         dragging = true;
+                        lastMotionY = y;
+                    }
                     break;
                 case MotionEvent.ACTION_CANCEL:
                 case MotionEvent.ACTION_UP:
@@ -83,12 +87,18 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && dragging) {
+            ScrollView scrollView = getScrollView();
             int action = ev.getAction();
             switch (action & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_MOVE: {
                     int activePointerIndex = ev.findPointerIndex(activePointerId);
                     int y = (int) ev.getY(activePointerIndex);
                     int deltaY = lastMotionY - y;
+                    if (scrollView.dispatchNestedPreScroll(0, deltaY, scrollConsumed, scrollOffset))
+                        deltaY -= scrollConsumed[1];
+                    lastMotionY = y - scrollOffset[1];
+                    if (scrollView.dispatchNestedScroll(0, 0, 0, deltaY, scrollOffset))
+                        lastMotionY -= scrollOffset[1];
                     break;
                 }
                 case MotionEvent.ACTION_CANCEL:
