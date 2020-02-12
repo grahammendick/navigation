@@ -60,7 +60,6 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
                     dragging = false;
                     lastMotionY = (int) ev.getY();
                     activePointerId = ev.getPointerId(0);
-                    scrollView.startNestedScroll(SCROLL_AXIS_VERTICAL);
                     break;
                 }
                 case MotionEvent.ACTION_MOVE:
@@ -75,7 +74,6 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
                 case MotionEvent.ACTION_CANCEL:
                 case MotionEvent.ACTION_UP:
                     dragging = false;
-                    scrollView.stopNestedScroll();
                     break;
             }
         }
@@ -91,6 +89,7 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
             int action = ev.getAction();
             switch (action & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_MOVE: {
+                    scrollView.startNestedScroll(SCROLL_AXIS_VERTICAL);
                     int activePointerIndex = ev.findPointerIndex(activePointerId);
                     int y = (int) ev.getY(activePointerIndex);
                     int deltaY = lastMotionY - y;
@@ -104,6 +103,7 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
                 case MotionEvent.ACTION_CANCEL:
                 case MotionEvent.ACTION_UP:
                     dragging = false;
+                    scrollView.stopNestedScroll();
                     break;
             }
         }
