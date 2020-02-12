@@ -69,8 +69,8 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
                 case MotionEvent.ACTION_MOVE:
                     int activePointerIndex = ev.findPointerIndex(activePointerId);
                     int y = (int) ev.getY(activePointerIndex);
-                    int yDiff = Math.abs(y - lastMotionY);
-                    if (yDiff > touchSlop)
+                    int deltaY = lastMotionY - y;
+                    if (Math.abs(deltaY) > touchSlop)
                         dragging = true;
                     break;
             }
