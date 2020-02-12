@@ -75,10 +75,6 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
                         lastMotionY = y;
                     }
                     break;
-                case MotionEvent.ACTION_CANCEL:
-                case MotionEvent.ACTION_UP:
-                    dragging = false;
-                    break;
             }
         }
         if (dragging)
