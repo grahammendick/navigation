@@ -80,10 +80,17 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
     public boolean onTouchEvent(MotionEvent ev) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && dragging) {
             int action = ev.getAction();
-            if (MotionEvent.ACTION_MOVE == (action & MotionEvent.ACTION_MASK)) {
-                int activePointerIndex = ev.findPointerIndex(activePointerId);
-                int y = (int) ev.getY(activePointerIndex);
-                int deltaY = lastMotionY - y;
+            switch (action & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_MOVE: {
+                    int activePointerIndex = ev.findPointerIndex(activePointerId);
+                    int y = (int) ev.getY(activePointerIndex);
+                    int deltaY = lastMotionY - y;
+                    break;
+                }
+                case MotionEvent.ACTION_CANCEL:
+                case MotionEvent.ACTION_UP:
+                    dragging = false;
+                    break;
             }
         }
         return super.onTouchEvent(ev) || dragging;
