@@ -1,17 +1,25 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.os.Build;
+import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 import android.widget.ScrollView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.facebook.react.uimanager.PixelUtil;
+import com.facebook.react.uimanager.events.NativeGestureUtil;
 
 public class CoordinatorLayoutView extends CoordinatorLayout {
     int overlap = 0;
+    private boolean dragging = false;
+    private int touchSlop;
+    private int lastMotionY;
+    private int activePointerId;
 
     public CoordinatorLayoutView(Context context){
         super(context);
+        touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
     @Override
@@ -31,14 +39,6 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
         }
     };
 
-    private NavigationBarView getNavigationBarView() {
-        for(int i = 0; i < getChildCount(); i++) {
-            if (getChildAt(i) instanceof NavigationBarView)
-                return (NavigationBarView) getChildAt(i);
-        }
-        return null;
-    }
-
     ScrollView getScrollView() {
         for(int i = 0; i < getChildCount(); i++) {
             if (getChildAt(i) instanceof ScrollView)
@@ -47,15 +47,45 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
         return null;
     }
 
-    /*@Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int height = MeasureSpec.getSize(heightMeasureSpec);
-        int contentHeight = getScrollView() != null ? getScrollView().getChildAt(0).getHeight() : 0;
-        boolean collapsingBar = getNavigationBarView() != null && getNavigationBarView().getChildAt(0) instanceof CollapsingBarView;
-        int navigationBarHeight = collapsingBar ? (int) PixelUtil.toPixelFromDIP(56) : 0;
-        int collapsedGap = height + 2 - contentHeight - navigationBarHeight;
-        if (collapsedGap > 0)
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec) - collapsedGap, MeasureSpec.EXACTLY);
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }*/
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        ScrollView scrollView = getScrollView();
+        boolean cannotScroll = scrollView != null && !scrollView.canScrollVertically(1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && cannotScroll) {
+            int action = ev.getAction();
+            switch (action & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_DOWN: {
+                    dragging = false;
+                    lastMotionY = (int) ev.getY();
+                    activePointerId = ev.getPointerId(0);
+                    scrollView.startNestedScroll(SCROLL_AXIS_VERTICAL);
+                    break;
+                }
+                case MotionEvent.ACTION_MOVE:
+                    dragging = true;
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                case MotionEvent.ACTION_UP:
+                    dragging = false;
+                    scrollView.stopNestedScroll();
+                    break;
+            }
+        }
+        if (dragging)
+            NativeGestureUtil.notifyNativeGestureStarted(this, ev);
+        return super.onInterceptTouchEvent(ev) || dragging;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && dragging) {
+            int action = ev.getAction();
+            if (MotionEvent.ACTION_MOVE == (action & MotionEvent.ACTION_MASK)) {
+                int activePointerIndex = ev.findPointerIndex(activePointerId);
+                int y = (int) ev.getY(activePointerIndex);
+                int deltaY = lastMotionY - y;
+            }
+        }
+        return super.onTouchEvent(ev) || dragging;
+    }
 }
