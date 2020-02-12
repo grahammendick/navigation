@@ -93,11 +93,10 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
                     int activePointerIndex = ev.findPointerIndex(activePointerId);
                     int y = (int) ev.getY(activePointerIndex);
                     int deltaY = lastMotionY - y;
+                    lastMotionY = y;
                     if (scrollView.dispatchNestedPreScroll(0, deltaY, scrollConsumed, scrollOffset))
                         deltaY -= scrollConsumed[1];
-                    lastMotionY = y - scrollOffset[1];
-                    if (scrollView.dispatchNestedScroll(0, 0, 0, deltaY, scrollOffset))
-                        lastMotionY -= scrollOffset[1];
+                    scrollView.dispatchNestedScroll(0, 0, 0, deltaY, scrollOffset);
                     break;
                 }
                 case MotionEvent.ACTION_CANCEL:
