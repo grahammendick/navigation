@@ -50,7 +50,7 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         ScrollView scrollView = getScrollView();
-        boolean cannotScroll = scrollView != null && !scrollView.canScrollVertically(1);
+        boolean cannotScroll = scrollView != null && scrollView.getScrollY() == 0 && !scrollView.canScrollVertically(1);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && cannotScroll) {
             int action = ev.getAction();
             switch (action & MotionEvent.ACTION_MASK) {
