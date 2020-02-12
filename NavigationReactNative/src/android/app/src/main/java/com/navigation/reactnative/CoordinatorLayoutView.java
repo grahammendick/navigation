@@ -70,10 +70,8 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
                     int activePointerIndex = ev.findPointerIndex(activePointerId);
                     int y = (int) ev.getY(activePointerIndex);
                     int yDiff = Math.abs(y - lastMotionY);
-                    if (yDiff > touchSlop) {
+                    if (yDiff > touchSlop)
                         dragging = true;
-                        lastMotionY = y;
-                    }
                     break;
             }
         }
