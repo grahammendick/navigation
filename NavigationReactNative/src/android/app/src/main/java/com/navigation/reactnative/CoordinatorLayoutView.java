@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.os.Build;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.ScrollView;
 
@@ -47,7 +48,8 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
                 return (ScrollView) getChildAt(i);
             if (getChildAt(i) instanceof TabBarView) {
                 TabBarView tabBarView = ((TabBarView) getChildAt(i));
-                return (ScrollView) tabBarView.getTabAt(tabBarView.getCurrentItem()).getChildAt(0);
+                View tabContent = tabBarView.getTabAt(tabBarView.getCurrentItem()).getChildAt(0);
+                return tabContent instanceof ScrollView ? (ScrollView) tabContent : null;
             }
         }
         return null;
