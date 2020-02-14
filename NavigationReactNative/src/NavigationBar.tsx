@@ -5,6 +5,7 @@ import RightBar from './RightBar';
 import SearchBar from './SearchBar';
 import TitleBar from './TitleBar';
 import CollapsingBar from './CollapsingBar';
+import TabBar from './TabBar';
 
 var NavigationBar: any = ({hidden, logo, navigationImage, overflowImage, children, style = {}, ...otherProps}) => {
     if (Platform.OS === 'android' && hidden)
@@ -52,6 +53,7 @@ var NavigationBar: any = ({hidden, logo, navigationImage, overflowImage, childre
                             }}>
                             {childrenArray.find(({type}) => type === TitleBar)}
                         </NVToolbar>
+                        {childrenArray.find(({type}) => type === TabBar)}
                     </Container>}
             </NVNavigationBar>
             {Platform.OS === 'ios' ? null : childrenArray.find(({type}) => type === SearchBar)}

@@ -3,12 +3,11 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 
 public class TabLayoutView extends TabLayout implements TabView {
@@ -18,6 +17,9 @@ public class TabLayoutView extends TabLayout implements TabView {
 
     public TabLayoutView(Context context) {
         super(context);
+        AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.WRAP_CONTENT);
+        params.setScrollFlags(0);
+        setLayoutParams(params);
         if (getTabTextColors() != null)
             selectedTintColor = unselectedTintColor = defaultTextColor = getTabTextColors().getDefaultColor();
         setSelectedTabIndicatorColor(defaultTextColor);
@@ -26,25 +28,6 @@ public class TabLayoutView extends TabLayout implements TabView {
     public void setScrollable(boolean scrollable) {
         setTabMode(scrollable ? TabLayout.MODE_SCROLLABLE : TabLayout.MODE_FIXED);
         post(measureAndLayout);
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        TabBarView tabBar = getTabBar();
-        if (tabBar != null) {
-            setupWithViewPager(tabBar);
-            tabBar.populateTabIcons();
-        }
-    }
-
-    private TabBarView getTabBar() {
-        for(int i = 0; getParent() != null && i < ((ViewGroup) getParent()).getChildCount(); i++) {
-            View child = ((ViewGroup) getParent()).getChildAt(i);
-            if (child instanceof TabBarView)
-                return (TabBarView) child;
-        }
-        return null;
     }
 
     @Override

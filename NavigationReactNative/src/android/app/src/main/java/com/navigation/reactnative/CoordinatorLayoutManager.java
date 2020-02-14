@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.ScrollView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -42,7 +43,7 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
     @Override
     public void addView(CoordinatorLayoutView parent, View child, int index) {
         super.addView(parent, child, index);
-        if (child instanceof ScrollView) {
+        if (child instanceof ScrollView || child instanceof ViewPager) {
             CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
             AppBarLayout.ScrollingViewBehavior behavior = new AppBarLayout.ScrollingViewBehavior();
             behavior.setOverlayTop(parent.overlap);

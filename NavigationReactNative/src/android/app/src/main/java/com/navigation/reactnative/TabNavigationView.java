@@ -5,8 +5,6 @@ import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,25 +24,6 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         super(context);
         TabLayoutView tabLayout = new TabLayoutView(context);
         selectedTintColor = unselectedTintColor = defaultTextColor = tabLayout.defaultTextColor;
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        TabBarView tabBar = getTabBar();
-        if (tabBar != null) {
-            setupWithViewPager(tabBar);
-            tabBar.populateTabIcons();
-        }
-    }
-
-    private TabBarView getTabBar() {
-        for(int i = 0; getParent() != null && i < ((ViewGroup) getParent()).getChildCount(); i++) {
-            View child = ((ViewGroup) getParent()).getChildAt(i);
-            if (child instanceof TabBarView)
-                return (TabBarView) child;
-        }
-        return null;
     }
 
     @Override

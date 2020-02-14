@@ -38,7 +38,7 @@ class TabBar extends React.Component<any, any> {
         return (
             <>
                 {!bottomTabs && tabLayout}
-                <NVTabBar
+                {!!tabBarItems.length && <NVTabBar
                     images={tabBarItems.map(({props}: any) => props.image)}
                     onTabSelected={({nativeEvent}) => {
                         if (this.state.selectedTab !== nativeEvent.tab)
@@ -57,7 +57,7 @@ class TabBar extends React.Component<any, any> {
                                 var selected = index === this.state.selectedTab;
                                 return React.cloneElement(child, {...child.props, selected})
                             })}
-                </NVTabBar>
+                </NVTabBar>}
                 {bottomTabs && tabLayout}
             </>
         );

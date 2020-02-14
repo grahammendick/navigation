@@ -3,7 +3,6 @@ package com.navigation.reactnative;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.MenuItem;
-import android.view.ViewParent;
 
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
@@ -17,7 +16,6 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
     @Nonnull

@@ -21,6 +21,6 @@ public class TabFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return tabBarItem;
+        return tabBarItem.getChildCount() == 1 ? tabBarItem.getChildAt(0) : tabBarItem;
     }
 }
