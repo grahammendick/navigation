@@ -1,47 +1,36 @@
 import React, {useContext} from 'react';
-import {ScrollView, StyleSheet, Text, Image, FlatList, View, TouchableHighlight} from 'react-native';
+import {ScrollView, StyleSheet, Text, Image, FlatList, View, TouchableHighlight, ToolbarAndroid} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {CoordinatorLayout, NavigationBar, TabBar, TabBarItem} from 'navigation-react-native';
+import {NavigationBar} from 'navigation-react-native';
 
 export default ({follows}) => {
   const {stateNavigator} = useContext(NavigationContext);
   return (
-    <CoordinatorLayout>
-      <NavigationBar title="Notifications" barTintColor={Platform.OS === 'android' ? '#fff' : null}>
-        <TabBar barTintColor="#fff" selectedTintColor="deepskyblue" />
-      </NavigationBar>
-      <TabBar selectedTintColor="deepskyblue">
-        <TabBarItem title="All">
-          <ScrollView
-            nestedScrollEnabled={true}
-            contentInsetAdjustmentBehavior="automatic"
-            style={styles.view}>
-            <FlatList
-                data={follows}
-                keyExtractor={(item, index) => '' + index}
-                renderItem={({item: {id, name, logo}}) => (
-                  <TouchableHighlight
-                    underlayColor="white"
-                    onPress={() => {
-                      stateNavigator.navigate('timeline', {id});
-                  }}>
-                  <View style={styles.follow}>
-                    <View>
-                      <Image style={styles.logo} source={logo} />
-                      <View style={styles.details}>
-                      <Text style={styles.name}>{name}</Text>
-                      <Text>followed you.</Text>
-                      </View>
-                    </View>
+    <>
+      <NavigationBar title="Notifications" barTintColor={Platform.OS === 'android' ? '#fff' : null} />
+      <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
+        <FlatList
+            data={follows}
+            keyExtractor={item => '' + item.id}
+            renderItem={({item: {id, name, logo}}) => (
+              <TouchableHighlight
+                underlayColor="white"
+                onPress={() => {
+                  stateNavigator.navigate('timeline', {id});
+              }}>
+              <View style={styles.follow}>
+                <View>
+                  <Image style={styles.logo} source={logo} />
+                  <View style={styles.details}>
+                  <Text style={styles.name}>{name}</Text>
+                  <Text>followed you.</Text>
                   </View>
-                </TouchableHighlight>
-              )} />
-          </ScrollView>
-        </TabBarItem>
-        <TabBarItem title="Mentions">
-        </TabBarItem>
-      </TabBar>
-    </CoordinatorLayout>
+                </View>
+              </View>
+            </TouchableHighlight>
+          )} />
+      </ScrollView>
+    </>
   );
 };
 
