@@ -117,6 +117,25 @@ var {home} = stateNavigator.states;
 home.renderScene = () => &lt;Home />;
 
 stateNavigator.navigate('home');</code></pre>
+            <h2>Scrolling the Navigation Bar on Android</h2>
+            <p>
+
+            </p>
+            <pre><code class="language-jsx">var Contacts = () => (
+  &lt;CoordinatorLayout>
+    &lt;NavigationBar title="Contacts">
+      &lt;TabBar />
+    &lt;/NavigationBar>
+    &lt;TabBar>
+      &lt;TabBarItem title="Personal">
+        &lt;ScrollView nestedScrollEnabled={true} />
+      &lt;/TabBarItem>
+      &lt;TabBarItem title="Work">
+        &lt;ScrollView nestedScrollEnabled={true} />
+      &lt;/TabBarItem>
+    &lt;/TabBar>
+  &lt;/CoordinatorLayout>
+);</code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
