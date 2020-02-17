@@ -117,6 +117,25 @@ var {home} = stateNavigator.states;
 home.renderScene = () => &lt;Home />;
 
 stateNavigator.navigate('home');</code></pre>
+            <h2>Scrolling the Navigation Bar on Android</h2>
+            <p>
+                In our email example on Android, we separate the personal contacts from the work ones by having a separate tab for each. We <a href="navigation-bar.html#scrolling">scroll the navigation bar</a> off the screen so that these inner tabs don't look squashed. After wrapping the tabs in a <code>CoordinatorLayout</code> and turning on nested scrolling, we must add an extra <code>TabBar</code> component into the navigation bar. It doesn't need any <code>TabBarItem</code> children because its job is to keep the tab headings in place as the navigation bar scrolls.
+            </p>
+            <pre><code class="language-jsx">var Contacts = () => (
+  &lt;CoordinatorLayout>
+    &lt;NavigationBar title="Contacts">
+      &lt;TabBar />
+    &lt;/NavigationBar>
+    &lt;TabBar>
+      &lt;TabBarItem title="Personal">
+        &lt;ScrollView nestedScrollEnabled={true} />
+      &lt;/TabBarItem>
+      &lt;TabBarItem title="Work">
+        &lt;ScrollView nestedScrollEnabled={true} />
+      &lt;/TabBarItem>
+    &lt;/TabBar>
+  &lt;/CoordinatorLayout>
+);</code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
