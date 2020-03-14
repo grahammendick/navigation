@@ -3,7 +3,7 @@ import { requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
-type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any) => ReactNode, crumbStyle: any, unmountStyle: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
+type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any, asyncData: any) => ReactNode, crumbStyle: any, unmountStyle: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
 type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
@@ -15,7 +15,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     }
     static defaultProps = {
         title: (state: State) => state.title,
-        renderScene: (state: State, data: any) => state.renderScene(data)
+        renderScene: (state: State, data: any, asyncData: any) => state.renderScene(data, asyncData)
     }
     static getDerivedStateFromProps(props: SceneProps, {navigationEvent: prevNavigationEvent}: SceneState) {
         var {crumb, navigationEvent} = props;
@@ -103,7 +103,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {navigationEvent} = this.state;
         var {crumb, title, sceneKey, popped, navigationEvent: {stateNavigator}} = this.props;
         var {crumbs} = stateNavigator.stateContext;
-        var {state, data} = navigationEvent ? navigationEvent.stateNavigator.stateContext : crumbs[crumb];
+        var {state, data, asyncData} = navigationEvent ? navigationEvent.stateNavigator.stateContext : crumbs[crumb];
         return (
             <NVScene
                 sceneKey={sceneKey}
@@ -114,7 +114,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 onPopped={() => popped(sceneKey)}>
                 <BackButton onPress={this.handleBack} />
                 <NavigationContext.Provider value={navigationEvent}>
-                    {navigationEvent && this.props.renderScene(state, data)}
+                    {navigationEvent && this.props.renderScene(state, data, asyncData)}
                 </NavigationContext.Provider>
             </NVScene>
         );
