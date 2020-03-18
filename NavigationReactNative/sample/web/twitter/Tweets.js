@@ -41,8 +41,6 @@ const styles = StyleSheet.create({
   view: {
     paddingLeft: 20,
     paddingRight: 20,
-    backgroundColor: '#fff',
-    flex: 1,
   },
   tweet: {
     flexDirection: 'row',
