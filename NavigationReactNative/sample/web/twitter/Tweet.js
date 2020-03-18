@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {StyleSheet, Text, Image, Platform, ScrollView, View, TouchableHighlight} from 'react-native';
+import {StyleSheet, Text, Image, Platform, View, TouchableHighlight, SafeAreaView} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {NavigationBar} from 'navigation-react-native';
 import Tweets from './Tweets';
@@ -17,39 +17,38 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         onNavigationPress={() => {
           stateNavigator.navigateBack(1)
         }} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
-        <View>
-          <View style={styles.heading}>
-            <TouchableHighlight underlayColor="white" onPress={() => {
-              stateNavigator.navigate('timeline', {id: accountId});
-            }}>
-              <Image style={styles.logo} source={logo} />
-            </TouchableHighlight>
-            <View style={styles.details}>
-              <Text style={styles.name}>{name}</Text>
-              <Text>{username}</Text>
+      <SafeAreaView style={{flex: 1}}>
+        <Tweets
+          tweets={replies}
+          renderHeader={() => (
+            <View>
+              <View style={styles.heading}>
+                <TouchableHighlight underlayColor="white" onPress={() => {
+                  stateNavigator.navigate('timeline', {id: accountId});
+                }}>
+                  <Image style={styles.logo} source={logo} />
+                </TouchableHighlight>
+                <View style={styles.details}>
+                  <Text style={styles.name}>{name}</Text>
+                  <Text>{username}</Text>
+                </View>
+              </View>
+              <Text style={styles.text}>{text}</Text>
+              <Text style={styles.time}>{time}</Text>
+              <View style={styles.interactions}>
+                <Text style={styles.count}>{retweets}</Text>
+                <Text style={styles.interaction}>RETWEETS</Text>
+                <Text style={styles.count}>{likes}</Text>
+                <Text style={styles.interaction}>LIKES</Text>
+              </View>
             </View>
-          </View>
-          <Text style={styles.text}>{text}</Text>
-          <Text style={styles.time}>{time}</Text>
-          <View style={styles.interactions}>
-            <Text style={styles.count}>{retweets}</Text>
-            <Text style={styles.interaction}>RETWEETS</Text>
-            <Text style={styles.count}>{likes}</Text>
-            <Text style={styles.interaction}>LIKES</Text>
-          </View>
-        </View>
-        <Tweets tweets={replies} stateNavigator={stateNavigator} />
-      </ScrollView>
+          )} />
+      </SafeAreaView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  view: {
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
   heading: {
     flexDirection: 'row',
     marginTop: 20,

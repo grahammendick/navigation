@@ -2,12 +2,15 @@ import React, {useContext} from 'react';
 import {NavigationContext} from 'navigation-react';
 import {StyleSheet, Text, Image, View, FlatList, TouchableHighlight} from 'react-native';
 
-export default ({tweets, onTimeline}) => {
+export default ({renderHeader, tweets, onTimeline}) => {
   const {stateNavigator} = useContext(NavigationContext);
   return (
     <FlatList
       data={tweets}
       keyExtractor={item => '' + item.id}
+      nestedScrollEnabled={true}
+      ListHeaderComponent={renderHeader}
+      style={styles.view}
       renderItem={({item: {account: {id: accountId, name, logo}, id, text}}) => (
         <TouchableHighlight
           underlayColor="white"
@@ -34,6 +37,11 @@ export default ({tweets, onTimeline}) => {
 };
 
 const styles = StyleSheet.create({
+  view: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    flex: 1,
+  },
   tweet: {
     flexDirection: 'row',
     paddingTop: 10,
