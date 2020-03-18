@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {StyleSheet, Text, Image, FlatList, View, TouchableHighlight} from 'react-native';
+import {Platform, StyleSheet, Text, Image, FlatList, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {NavigationBar} from 'navigation-react-native';
 
