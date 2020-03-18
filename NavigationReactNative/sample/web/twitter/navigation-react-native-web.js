@@ -56,6 +56,8 @@ const NavigationBar = props => (
   </NavigationContext.Consumer>
 )
 
+const CollapsingBar = () => null;
+
 const CoordinatorLayout = ({children}) => children;
 
 class TabBar extends React.Component {
@@ -95,4 +97,4 @@ class TabBar extends React.Component {
 
 const TabBarItem = ({children}) => children;
 
-export { NavigationBar, CoordinatorLayout, TabBar, TabBarItem };
+export { NavigationBar, CollapsingBar, CoordinatorLayout, TabBar, TabBarItem };

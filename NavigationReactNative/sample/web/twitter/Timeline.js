@@ -19,8 +19,11 @@ export default ({timeline: {id, name, username, logo, bio,
         onOffsetChanged={Animated.event([{nativeEvent:{offset}}])}
         navigationImage={require('./arrow.png')}
         barTintColor={Platform.OS === 'android' ? colors[0] : null}
-        tintColor={Platform.OS === 'android' ? "#fff" : null}
+        tintColor={Platform.OS === 'android' ? "#fff" : (Platform.OS !== 'web' ? null : 'deepskyblue')}
         titleColor={Platform.OS === 'android' ? "#fff" : null}
+        navigationHref={stateNavigator.historyManager.getHref(
+          stateNavigator.getNavigationBackLink(1)
+        )}
         style={{height: 120}}
         onNavigationPress={() => {
           stateNavigator.navigateBack(1)
