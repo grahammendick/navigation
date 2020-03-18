@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Image, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 
 class NavigationBarWeb extends React.Component {
@@ -20,21 +20,29 @@ class NavigationBarWeb extends React.Component {
       document.title = this.props.title;
   }
   render() {
+    const {navigationImage, navigationHref, onNavigationPress, title} = this.props;
     return (
       <View style={{
         paddingLeft: 15,
         paddingRight: 5,
         paddingBottom: 5,
         paddingTop: 5,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        flexDirection: 'row',
       }}>
+        <TouchableHighlight
+          accessibilityRole="link"
+          href={navigationHref}
+          underlayColor="white"
+          onPress={onNavigationPress}>
+          <Image source={navigationImage} style={{width: 24, height: 24}} />
+        </TouchableHighlight>
         <Text
           accessibilityRole="heading"
           aria-level="1"
           style={{fontSize: 20}}>
-          {this.props.title}
+          {title}
         </Text>
-        {this.props.children}
       </View>
     );
   }

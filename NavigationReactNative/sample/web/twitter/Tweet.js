@@ -14,8 +14,14 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         navigationImage={require('./arrow.png')}
         barTintColor={Platform.OS === 'android' ? '#fff' : null}
         tintColor={Platform.OS === 'android' ? "deepskyblue" : null}
+        navigationHref={stateNavigator.historyManager.getHref(
+          stateNavigator.getNavigationBackLink(1)
+        )}
         onNavigationPress={() => {
-          stateNavigator.navigateBack(1)
+          if (Platform.OS !== 'web')
+            stateNavigator.navigateBack(1);
+          else
+            history.back();
         }} />
       <Tweets
         tweets={replies}
