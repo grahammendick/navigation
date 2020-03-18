@@ -58,4 +58,33 @@ const NavigationBar = props => (
 
 const CoordinatorLayout = ({children}) => children;
 
-export { NavigationBar, CoordinatorLayout };
+const TabBar = ({children}) => {
+  return (
+    <>
+      {React.Children.toArray(children)
+        .map((child, index) => {
+          var selected = index === 0;
+          return (
+            <View key={index} style={{display: selected ? 'flex' : 'none', flex: 1}}>
+              {React.cloneElement(child, {...child.props})}
+            </View>
+          );
+        })}
+      <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', height: 72}}>
+        {React.Children.toArray(children)
+          .map((child, index) => {
+            var selected = index === 0;
+            return (
+                <TouchableHighlight key={index} style={{flex: 1, justifyContent: 'center', alignItems: 'center', height: 72}}>
+                  <Text>{child.props.title}</Text>
+                </TouchableHighlight>
+            );
+          })}
+      </View>
+    </>
+  )
+};
+
+const TabBarItem = ({children}) => children;
+
+export { NavigationBar, CoordinatorLayout, TabBar, TabBarItem };
