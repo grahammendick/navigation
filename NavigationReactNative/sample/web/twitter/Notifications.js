@@ -38,6 +38,8 @@ const styles = StyleSheet.create({
   view: {
     paddingLeft: 20,
     paddingRight: 20,
+    backgroundColor: '#fff',
+    flex: 1,
   },
   follow: {
     flexDirection: 'row',

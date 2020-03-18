@@ -22,12 +22,13 @@ class NavigationBarWeb extends React.Component {
   render() {
     return (
       <View style={{
-        marginLeft: 15,
-        marginRight: 5,
-        marginBottom: 5,
+        paddingLeft: 15,
+        paddingRight: 5,
+        paddingBottom: 5,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
+        backgroundColor: '#fff'
       }}>
         <Text
           accessibilityRole="heading"
