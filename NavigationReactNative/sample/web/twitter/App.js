@@ -1,114 +1,58 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React, {useState} from 'react';
+import {Platform} from 'react-native';
+import {StateNavigator} from 'navigation';
+import {NavigationHandler} from 'navigation-react';
+import {NavigationStack, TabBar, TabBarItem} from 'navigation-react-native';
+import Home from './Home';
+import Notifications from './Notifications';
+import Tabs from './Tabs';
+import Tweet from './Tweet';
+import Timeline from './Timeline';
+import {getHome, getFollows, getTweet, getTimeline} from './data';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+const stateNavigator = new StateNavigator([
+  {key: 'home'},
+  {key: 'notifications'},
+  {key: 'tweet', trackCrumbTrail: true},
+  {key: 'timeline', trackCrumbTrail: true}
+]);
+const {home, notifications, tweet, timeline} = stateNavigator.states;
+const HomeLayout = Platform.OS === 'ios' ? Home : Tabs;
+home.renderScene = () => <HomeLayout tweets={getHome()} follows={getFollows()} />;
+notifications.renderScene = () => <Notifications follows={getFollows()} />;
+tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)}  />;
+timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)}  />;
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const notificationsNavigator = new StateNavigator(stateNavigator);
+stateNavigator.navigate('home');
+notificationsNavigator.navigate('notifications');
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+const Stack = ({navigator}) => (
+  <NavigationHandler stateNavigator={navigator}>
+    <NavigationStack
+      crumbStyle={from => from ? 'scale_in' : 'scale_out'}
+      unmountStyle={from => from ? 'slide_in' : 'slide_out'} />
+  </NavigationHandler>
+);
+
+const App = () => {
+  const [notified, setNotified] = useState(false);
+  return Platform.OS === 'ios' ? (
+    <TabBar>
+      <TabBarItem title="Home" image={require('./home.png')}>
+        <Stack navigator={stateNavigator} />
+      </TabBarItem>
+      <TabBarItem
+        title="Notifications"
+        image={require('./notifications.png')}
+        badge={!notified ? getFollows().length : null} 
+        onPress={() => {setNotified(true)}}>
+        <Stack navigator={notificationsNavigator} />
+      </TabBarItem>
+    </TabBar>
+  ) : (
+    <Stack navigator={stateNavigator} />
   );
 };
-
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
 
 export default App;
