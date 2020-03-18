@@ -12,8 +12,8 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
       <NavigationBar
         title="Tweet"
         navigationImage={require('./arrow.png')}
-        barTintColor={Platform.OS === 'android' ? '#fff' : null}
-        tintColor={Platform.OS === 'android' ? "deepskyblue" : null}
+        barTintColor={Platform.OS !== 'ios' ? '#fff' : null}
+        tintColor={Platform.OS !== 'ios' ? "deepskyblue" : null}
         navigationHref={stateNavigator.historyManager.getHref(
           stateNavigator.getNavigationBackLink(1)
         )}

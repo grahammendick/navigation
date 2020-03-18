@@ -20,23 +20,23 @@ class NavigationBarWeb extends React.Component {
       document.title = this.props.title;
   }
   render() {
-    const {navigationImage, navigationHref, onNavigationPress, title} = this.props;
+    const {navigationImage, navigationHref, onNavigationPress, title, barTintColor, tintColor} = this.props;
     return (
       <View style={{
         paddingLeft: 15,
         paddingRight: 5,
         paddingBottom: 5,
         paddingTop: 5,
-        backgroundColor: '#fff',
         flexDirection: 'row',
       }}>
-        <TouchableHighlight
+       {navigationImage && <TouchableHighlight
           accessibilityRole="link"
           href={navigationHref}
-          underlayColor="white"
-          onPress={onNavigationPress}>
-          <Image source={navigationImage} style={{width: 24, height: 24}} />
-        </TouchableHighlight>
+          underlayColor={barTintColor}
+          onPress={onNavigationPress}
+          style={{marginRight: 20}}>
+          <Image source={navigationImage} style={{width: 24, height: 24, tintColor}} />
+        </TouchableHighlight>}
         <Text
           accessibilityRole="heading"
           aria-level="1"
