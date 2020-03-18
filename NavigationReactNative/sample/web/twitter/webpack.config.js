@@ -10,7 +10,7 @@ module.exports = {
     module: {
         rules: [
             { test: /\.js$/, exclude: /node_modules/, use: { loader: 'babel-loader' } },
-            { test: /\.(png|jpe?g|gif)$/, exclude: /node_modules/, use: { loader: 'react-native-web-image-loader?name=gen-[hash].[ext]' }  }
+            { test: /\.(png|jpe?g)$/, use: { loader: 'url-loader', options: { name: "[name].[ext]", esModule: false } } },
         ]
     },
     resolve: {

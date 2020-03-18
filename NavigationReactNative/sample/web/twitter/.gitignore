@@ -59,9 +59,3 @@ app.web.js
 
 # CocoaPods
 /ios/Pods/
-
-gen-*.jpg
-gen-*.jpeg
-gen-*.png
-
-
