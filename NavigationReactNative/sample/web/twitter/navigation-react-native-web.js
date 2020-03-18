@@ -76,7 +76,7 @@ class TabBar extends React.Component {
               {React.cloneElement(child, {...child.props})}
             </View>
           ))}
-        <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', height: 72}}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
           {React.Children.toArray(children)
             .map((child, index) => (
               <TouchableHighlight
