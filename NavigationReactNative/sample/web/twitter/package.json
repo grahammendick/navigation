@@ -7,14 +7,23 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "webpack"
   },
   "dependencies": {
+    "babel-loader": "^8.0.6",
+    "babel-runtime": "^6.26.0",
     "navigation": "^5.2.0",
     "navigation-react": "^4.1.1",
+    "navigation-react-mobile": "^3.1.1",
     "navigation-react-native": "^6.7.0",
     "react": "16.9.0",
-    "react-native": "0.61.5"
+    "react-dom": "^16.13.0",
+    "react-native": "0.61.5",
+    "react-native-web": "^0.12.2",
+    "react-native-web-image-loader": "0.0.7",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
   },
   "devDependencies": {
     "@babel/core": "7.8.7",
