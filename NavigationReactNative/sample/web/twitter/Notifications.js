@@ -8,29 +8,28 @@ export default ({follows}) => {
   return (
     <>
       <NavigationBar title="Notifications" barTintColor={Platform.OS === 'android' ? '#fff' : null} />
-      <SafeAreaView style={{flex: 1}}>
-        <FlatList
-          data={follows}
-          keyExtractor={item => '' + item.id}
-          style={styles.view}
-          renderItem={({item: {id, name, logo}}) => (
-            <TouchableHighlight
-              underlayColor="white"
-              onPress={() => {
-                stateNavigator.navigate('timeline', {id});
-            }}>
-            <View style={styles.follow}>
-              <View>
-                <Image style={styles.logo} source={logo} />
-                <View style={styles.details}>
-                <Text style={styles.name}>{name}</Text>
-                <Text>followed you.</Text>
-                </View>
+      <FlatList
+        data={follows}
+        keyExtractor={item => '' + item.id}
+        contentInsetAdjustmentBehavior="automatic"
+        style={styles.view}
+        renderItem={({item: {id, name, logo}}) => (
+          <TouchableHighlight
+            underlayColor="white"
+            onPress={() => {
+              stateNavigator.navigate('timeline', {id});
+          }}>
+          <View style={styles.follow}>
+            <View>
+              <Image style={styles.logo} source={logo} />
+              <View style={styles.details}>
+              <Text style={styles.name}>{name}</Text>
+              <Text>followed you.</Text>
               </View>
             </View>
-          </TouchableHighlight>
-        )} />
-      </SafeAreaView>
+          </View>
+        </TouchableHighlight>
+      )} />
     </>
   );
 };

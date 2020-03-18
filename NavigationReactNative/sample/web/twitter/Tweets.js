@@ -8,6 +8,7 @@ export default ({renderHeader, tweets, onTimeline}) => {
     <FlatList
       data={tweets}
       keyExtractor={item => '' + item.id}
+      contentInsetAdjustmentBehavior="automatic"
       nestedScrollEnabled={true}
       ListHeaderComponent={renderHeader}
       style={styles.view}

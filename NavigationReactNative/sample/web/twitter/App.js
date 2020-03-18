@@ -4,6 +4,7 @@ import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
 import {NavigationStack, TabBar, TabBarItem} from 'navigation-react-native';
 import createStateNavigator from './createStateNavigator';
+import {getFollows} from './data';
 
 var stateNavigator = createStateNavigator();
 
