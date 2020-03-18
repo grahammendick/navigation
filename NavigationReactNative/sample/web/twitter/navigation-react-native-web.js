@@ -56,4 +56,6 @@ const NavigationBar = props => (
   </NavigationContext.Consumer>
 )
 
-export { NavigationBar };
+const CoordinatorLayout = ({children}) => children;
+
+export { NavigationBar, CoordinatorLayout };
