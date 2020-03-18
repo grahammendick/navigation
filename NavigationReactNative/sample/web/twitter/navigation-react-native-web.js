@@ -58,31 +58,33 @@ const NavigationBar = props => (
 
 const CoordinatorLayout = ({children}) => children;
 
-const TabBar = ({children}) => {
-  return (
-    <>
-      {React.Children.toArray(children)
-        .map((child, index) => {
-          var selected = index === 0;
-          return (
-            <View key={index} style={{display: selected ? 'flex' : 'none', flex: 1}}>
+class TabBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {selectedTab: 0};
+  }
+  render() {
+    const {children} = this.props;
+    const {selectedTab} = this.state;
+    return (
+      <>
+        {React.Children.toArray(children)
+          .map((child, index) => (
+            <View key={index} style={{display: index === selectedTab ? 'flex' : 'none', flex: 1}}>
               {React.cloneElement(child, {...child.props})}
             </View>
-          );
-        })}
-      <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', height: 72}}>
-        {React.Children.toArray(children)
-          .map((child, index) => {
-            var selected = index === 0;
-            return (
-                <TouchableHighlight key={index} style={{flex: 1, justifyContent: 'center', alignItems: 'center', height: 72}}>
-                  <Text>{child.props.title}</Text>
-                </TouchableHighlight>
-            );
-          })}
-      </View>
-    </>
-  )
+          ))}
+        <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', height: 72}}>
+          {React.Children.toArray(children)
+            .map((child, index) => (
+              <TouchableHighlight key={index} style={{flex: 1, justifyContent: 'center', alignItems: 'center', height: 72}}>
+                <Text>{child.props.title}</Text>
+              </TouchableHighlight>
+            ))}
+        </View>
+      </>
+    )
+  }
 };
 
 const TabBarItem = ({children}) => children;
