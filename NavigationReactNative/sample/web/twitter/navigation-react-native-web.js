@@ -77,7 +77,13 @@ class TabBar extends React.Component {
         <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', height: 72}}>
           {React.Children.toArray(children)
             .map((child, index) => (
-              <TouchableHighlight key={index} style={{flex: 1, justifyContent: 'center', alignItems: 'center', height: 72}}>
+              <TouchableHighlight
+                key={index}
+                onPress={() => {
+                  if (selectedTab !== index)
+                    this.setState({selectedTab: index})
+                }}
+                style={{flex: 1, justifyContent: 'center', alignItems: 'center', height: 72}}>
                 <Text>{child.props.title}</Text>
               </TouchableHighlight>
             ))}
