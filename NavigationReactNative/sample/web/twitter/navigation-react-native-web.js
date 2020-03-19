@@ -14,7 +14,7 @@ const NavigationBar = ({navigationImage, navigationHref, onNavigationPress, isAc
     };
     stateNavigator.onNavigate(setTitle);
     return () => stateNavigator.offNavigate(setTitle);
-  }, [])
+  }, []);
   return (
     <View style={{
       paddingLeft: 15,
