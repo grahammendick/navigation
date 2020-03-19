@@ -13,26 +13,35 @@ export default ({renderHeader, tweets, onTimeline}) => {
       ListHeaderComponent={renderHeader}
       style={styles.view}
       renderItem={({item: {account: {id: accountId, name, logo}, id, text}}) => (
-        <TouchableHighlight
-          underlayColor="white"
-          onPress={() => {
-            stateNavigator.navigate('tweet', {id});
-        }}>
         <View style={styles.tweet}>
           <TouchableHighlight
             underlayColor="white"
+            accessibilityRole={!onTimeline || onTimeline(accountId) ? 'link' : undefined}
+            href={stateNavigator.historyManager.getHref(
+              stateNavigator.getNavigationLink('timeline', {id: accountId})
+            )}
             onPress={() => {
               if (!onTimeline || onTimeline(accountId))
                 stateNavigator.navigate('timeline', {id: accountId});
           }}>
             <Image style={styles.logo} source={logo} />
           </TouchableHighlight>
-          <View style={styles.details}>
+          <TouchableHighlight
+            underlayColor="white"
+            style={styles.details}
+            accessibilityRole="link"
+            href={stateNavigator.historyManager.getHref(
+              stateNavigator.getNavigationLink('tweet', {id})
+            )}
+            onPress={() => {
+              stateNavigator.navigate('tweet', {id});
+          }}>
+          <View>
             <Text style={styles.name}>{name}</Text>
             <Text>{text}</Text>
           </View>
-        </View>
-      </TouchableHighlight>
+        </TouchableHighlight>
+      </View>
     )} />
   );
 };
