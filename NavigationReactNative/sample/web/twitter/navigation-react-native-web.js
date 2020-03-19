@@ -1,66 +1,45 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Image, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 
-class NavigationBarWeb extends React.Component {
-  constructor(props) {
-    super(props);
-    this.setTitle = this.setTitle.bind(this);
-  }
-  static defaultProps = {
-    isActive: () => true,
-  }
-  componentDidMount() {
-    const {isActive, stateNavigator, title} = this.props;
-    stateNavigator.onNavigate(this.setTitle);
+const NavigationBar = ({navigationImage, navigationHref, onNavigationPress, isActive = () => true, title, barTintColor, tintColor}) => {
+  const {stateNavigator} = useContext(NavigationContext);
+  useEffect(() => {
     if (isActive(stateNavigator.stateContext.data))
       document.title = title;
-  }
-  componentWillUnmount() {
-    this.props.stateNavigator.offNavigate(this.setTitle);    
-  }
-  setTitle(_oldState, _state, data, _asyncData, stateContext) {
-    const {isActive, stateNavigator, title} = this.props;
-    const {crumbs} = stateNavigator.stateContext;
-    if (stateContext.crumbs.length === crumbs.length && isActive(data))
-      document.title = title;
-  }
-  render() {
-    const {navigationImage, navigationHref, onNavigationPress, title, barTintColor, tintColor} = this.props;
-    return (
-      <View style={{
-        paddingLeft: 15,
-        paddingRight: 5,
-        paddingBottom: 5,
-        paddingTop: 5,
-        flexDirection: 'row',
-      }}>
-       {navigationImage && <TouchableHighlight
-          accessibilityRole="link"
-          href={navigationHref}
-          underlayColor={barTintColor}
-          onPress={onNavigationPress}
-          style={{marginRight: 20}}>
-          <Image source={navigationImage} style={{width: 24, height: 24, tintColor}} />
-        </TouchableHighlight>}
-        <Text
-          accessibilityRole="heading"
-          aria-level="1"
-          style={{fontSize: 20}}>
-          {title}
-        </Text>
-      </View>
-    );
-  }
+    const setTitle = (_oldState, _state, data, _asyncData, stateContext) => {
+      const {crumbs} = stateNavigator.stateContext;
+      if (stateContext.crumbs.length === crumbs.length && isActive(data))
+        document.title = title;  
+    };
+    stateNavigator.onNavigate(setTitle);
+    return () => stateNavigator.offNavigate(setTitle);
+  }, [])
+  return (
+    <View style={{
+      paddingLeft: 15,
+      paddingRight: 5,
+      paddingBottom: 5,
+      paddingTop: 5,
+      flexDirection: 'row',
+    }}>
+      {navigationImage && <TouchableHighlight
+        accessibilityRole="link"
+        href={navigationHref}
+        underlayColor={barTintColor}
+        onPress={onNavigationPress}
+        style={{marginRight: 20}}>
+        <Image source={navigationImage} style={{width: 24, height: 24, tintColor}} />
+      </TouchableHighlight>}
+      <Text
+        accessibilityRole="heading"
+        aria-level="1"
+        style={{fontSize: 20}}>
+        {title}
+      </Text>
+    </View>
+  );
 }
-
-const NavigationBar = props => (
-  <NavigationContext.Consumer>
-      {({stateNavigator}) => (
-        <NavigationBarWeb stateNavigator={stateNavigator} {...props} />
-      )}
-  </NavigationContext.Consumer>
-)
 
 const CollapsingBar = () => null;
 
