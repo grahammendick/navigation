@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* webTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* webTests.m */; };
+		00E356F31AD99517003FC87E /* zoomTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* zoomTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -15,11 +15,11 @@
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2DCD954D1E0B4F2C00145EB5 /* webTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* webTests.m */; };
-		6FCD282760B1625EF1F5E4A2 /* libPods-web-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E7C5D016BE3E98D448E87B3 /* libPods-web-tvOSTests.a */; };
-		8AE04E09BF5A0BD9C7E794F5 /* libPods-webTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 60A77B5720660621C3BDC0A8 /* libPods-webTests.a */; };
-		8F733EA1DED3B61E72EF921E /* libPods-web-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FBBFF6DB936F069E7717735 /* libPods-web-tvOS.a */; };
-		BA7817DAF3C4F34062A49FDB /* libPods-web.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17B1504BDB5E5FC489CCED85 /* libPods-web.a */; };
+		2DCD954D1E0B4F2C00145EB5 /* zoomTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* zoomTests.m */; };
+		BE93173131EB1FB611908D70 /* libPods-zoom-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D844AE86AC7BC36292F4C874 /* libPods-zoom-tvOS.a */; };
+		D07557D7174BD4C563EC057B /* libPods-zoom.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5BC1DB545C30AAE50B1D61D /* libPods-zoom.a */; };
+		E2F8997A36EDBC8EA6AC9DBC /* libPods-zoom-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F1E4B93204F2EF6F2BDFF74 /* libPods-zoom-tvOSTests.a */; };
+		EFC64547C31D9635536960EE /* libPods-zoomTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E674FCCD74F95137B3E4A78E /* libPods-zoomTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,43 +28,43 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = web;
+			remoteInfo = zoom;
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
-			remoteInfo = "web-tvOS";
+			remoteInfo = "zoom-tvOS";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* webTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = webTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* zoomTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = zoomTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* webTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = webTests.m; sourceTree = "<group>"; };
-		06AEDC9CF69258AAAFFAC4D3 /* Pods-web.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-web.release.xcconfig"; path = "Target Support Files/Pods-web/Pods-web.release.xcconfig"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* web.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = web.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = web/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = web/AppDelegate.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* zoomTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = zoomTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* zoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = zoom/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = zoom/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = web/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = web/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = web/main.m; sourceTree = "<group>"; };
-		17B1504BDB5E5FC489CCED85 /* libPods-web.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-web.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		17D32A403AAC2A18A5E3AF70 /* Pods-web-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-web-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-web-tvOS/Pods-web-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		2D02E47B1E0B4A5D006451C7 /* web-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "web-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* web-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "web-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		392627C2095EDE10C683549A /* Pods-web.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-web.debug.xcconfig"; path = "Target Support Files/Pods-web/Pods-web.debug.xcconfig"; sourceTree = "<group>"; };
-		4FBBFF6DB936F069E7717735 /* libPods-web-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-web-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		60A77B5720660621C3BDC0A8 /* libPods-webTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-webTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		65DD16354ED8D449BF31C5E7 /* Pods-web-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-web-tvOS.release.xcconfig"; path = "Target Support Files/Pods-web-tvOS/Pods-web-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		69B3A888493E1C516394EED9 /* Pods-webTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-webTests.debug.xcconfig"; path = "Target Support Files/Pods-webTests/Pods-webTests.debug.xcconfig"; sourceTree = "<group>"; };
-		79940C3A91787DEA99E1823C /* Pods-webTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-webTests.release.xcconfig"; path = "Target Support Files/Pods-webTests/Pods-webTests.release.xcconfig"; sourceTree = "<group>"; };
-		8E7C5D016BE3E98D448E87B3 /* libPods-web-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-web-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		909352DCD4F8106D93CAB1EA /* Pods-web-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-web-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-web-tvOSTests/Pods-web-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		CBBB9BDCE82A13E767CC212E /* Pods-web-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-web-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-web-tvOSTests/Pods-web-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = zoom/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = zoom/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = zoom/main.m; sourceTree = "<group>"; };
+		200F46CBA75952D7CC5D33CC /* Pods-zoom-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zoom-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-zoom-tvOSTests/Pods-zoom-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2D02E47B1E0B4A5D006451C7 /* zoom-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "zoom-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E4901E0B4A5D006451C7 /* zoom-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "zoom-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3C24AEF09FF91C5C63E2172A /* Pods-zoom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zoom.release.xcconfig"; path = "Target Support Files/Pods-zoom/Pods-zoom.release.xcconfig"; sourceTree = "<group>"; };
+		6799FFAC83A11ADF58F9BB99 /* Pods-zoom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zoom.debug.xcconfig"; path = "Target Support Files/Pods-zoom/Pods-zoom.debug.xcconfig"; sourceTree = "<group>"; };
+		740911288039D32434BE1FE6 /* Pods-zoomTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zoomTests.debug.xcconfig"; path = "Target Support Files/Pods-zoomTests/Pods-zoomTests.debug.xcconfig"; sourceTree = "<group>"; };
+		9F1E4B93204F2EF6F2BDFF74 /* libPods-zoom-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-zoom-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A26FAA3CF26D2BE53DE4A8BF /* Pods-zoom-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zoom-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-zoom-tvOSTests/Pods-zoom-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		A299EA9750C7833F0633910D /* Pods-zoom-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zoom-tvOS.release.xcconfig"; path = "Target Support Files/Pods-zoom-tvOS/Pods-zoom-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		BC8F53896DF5CF2FD56E7EA9 /* Pods-zoomTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zoomTests.release.xcconfig"; path = "Target Support Files/Pods-zoomTests/Pods-zoomTests.release.xcconfig"; sourceTree = "<group>"; };
+		CD49AB54BD5453636511267A /* Pods-zoom-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zoom-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-zoom-tvOS/Pods-zoom-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		D844AE86AC7BC36292F4C874 /* libPods-zoom-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-zoom-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5BC1DB545C30AAE50B1D61D /* libPods-zoom.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-zoom.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E674FCCD74F95137B3E4A78E /* libPods-zoomTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-zoomTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -74,7 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8AE04E09BF5A0BD9C7E794F5 /* libPods-webTests.a in Frameworks */,
+				EFC64547C31D9635536960EE /* libPods-zoomTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BA7817DAF3C4F34062A49FDB /* libPods-web.a in Frameworks */,
+				D07557D7174BD4C563EC057B /* libPods-zoom.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,7 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8F733EA1DED3B61E72EF921E /* libPods-web-tvOS.a in Frameworks */,
+				BE93173131EB1FB611908D70 /* libPods-zoom-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,20 +98,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FCD282760B1625EF1F5E4A2 /* libPods-web-tvOSTests.a in Frameworks */,
+				E2F8997A36EDBC8EA6AC9DBC /* libPods-zoom-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* webTests */ = {
+		00E356EF1AD99517003FC87E /* zoomTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* webTests.m */,
+				00E356F21AD99517003FC87E /* zoomTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = webTests;
+			path = zoomTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -122,7 +122,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* web */ = {
+		048929A567042105F5EF7830 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6799FFAC83A11ADF58F9BB99 /* Pods-zoom.debug.xcconfig */,
+				3C24AEF09FF91C5C63E2172A /* Pods-zoom.release.xcconfig */,
+				CD49AB54BD5453636511267A /* Pods-zoom-tvOS.debug.xcconfig */,
+				A299EA9750C7833F0633910D /* Pods-zoom-tvOS.release.xcconfig */,
+				200F46CBA75952D7CC5D33CC /* Pods-zoom-tvOSTests.debug.xcconfig */,
+				A26FAA3CF26D2BE53DE4A8BF /* Pods-zoom-tvOSTests.release.xcconfig */,
+				740911288039D32434BE1FE6 /* Pods-zoomTests.debug.xcconfig */,
+				BC8F53896DF5CF2FD56E7EA9 /* Pods-zoomTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		13B07FAE1A68108700A75B9A /* zoom */ = {
 			isa = PBXGroup;
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -133,7 +149,7 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = web;
+			name = zoom;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -141,10 +157,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				17B1504BDB5E5FC489CCED85 /* libPods-web.a */,
-				4FBBFF6DB936F069E7717735 /* libPods-web-tvOS.a */,
-				8E7C5D016BE3E98D448E87B3 /* libPods-web-tvOSTests.a */,
-				60A77B5720660621C3BDC0A8 /* libPods-webTests.a */,
+				E5BC1DB545C30AAE50B1D61D /* libPods-zoom.a */,
+				D844AE86AC7BC36292F4C874 /* libPods-zoom-tvOS.a */,
+				9F1E4B93204F2EF6F2BDFF74 /* libPods-zoom-tvOSTests.a */,
+				E674FCCD74F95137B3E4A78E /* libPods-zoomTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -159,12 +175,12 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* web */,
+				13B07FAE1A68108700A75B9A /* zoom */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* webTests */,
+				00E356EF1AD99517003FC87E /* zoomTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				E6BA18AF5665504ED77B6AC0 /* Pods */,
+				048929A567042105F5EF7830 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -174,38 +190,22 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* web.app */,
-				00E356EE1AD99517003FC87E /* webTests.xctest */,
-				2D02E47B1E0B4A5D006451C7 /* web-tvOS.app */,
-				2D02E4901E0B4A5D006451C7 /* web-tvOSTests.xctest */,
+				13B07F961A680F5B00A75B9A /* zoom.app */,
+				00E356EE1AD99517003FC87E /* zoomTests.xctest */,
+				2D02E47B1E0B4A5D006451C7 /* zoom-tvOS.app */,
+				2D02E4901E0B4A5D006451C7 /* zoom-tvOSTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		E6BA18AF5665504ED77B6AC0 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				392627C2095EDE10C683549A /* Pods-web.debug.xcconfig */,
-				06AEDC9CF69258AAAFFAC4D3 /* Pods-web.release.xcconfig */,
-				17D32A403AAC2A18A5E3AF70 /* Pods-web-tvOS.debug.xcconfig */,
-				65DD16354ED8D449BF31C5E7 /* Pods-web-tvOS.release.xcconfig */,
-				CBBB9BDCE82A13E767CC212E /* Pods-web-tvOSTests.debug.xcconfig */,
-				909352DCD4F8106D93CAB1EA /* Pods-web-tvOSTests.release.xcconfig */,
-				69B3A888493E1C516394EED9 /* Pods-webTests.debug.xcconfig */,
-				79940C3A91787DEA99E1823C /* Pods-webTests.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* webTests */ = {
+		00E356ED1AD99517003FC87E /* zoomTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "webTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "zoomTests" */;
 			buildPhases = (
-				ED46A8DD377FF79455BD850C /* [CP] Check Pods Manifest.lock */,
+				97BB5CEC7D3988FBEF5CCA31 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -215,16 +215,16 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = webTests;
-			productName = webTests;
-			productReference = 00E356EE1AD99517003FC87E /* webTests.xctest */;
+			name = zoomTests;
+			productName = zoomTests;
+			productReference = 00E356EE1AD99517003FC87E /* zoomTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* web */ = {
+		13B07F861A680F5B00A75B9A /* zoom */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "web" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "zoom" */;
 			buildPhases = (
-				22A918F810AB24F5F5A28953 /* [CP] Check Pods Manifest.lock */,
+				9A1ADE0F1714B5640B047354 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
@@ -235,16 +235,16 @@
 			);
 			dependencies = (
 			);
-			name = web;
-			productName = web;
-			productReference = 13B07F961A680F5B00A75B9A /* web.app */;
+			name = zoom;
+			productName = zoom;
+			productReference = 13B07F961A680F5B00A75B9A /* zoom.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E47A1E0B4A5D006451C7 /* web-tvOS */ = {
+		2D02E47A1E0B4A5D006451C7 /* zoom-tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "web-tvOS" */;
+			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "zoom-tvOS" */;
 			buildPhases = (
-				82D82A17B15BA92A3910D81B /* [CP] Check Pods Manifest.lock */,
+				8D2D4A6D05F28B7A3C780EA2 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -255,16 +255,16 @@
 			);
 			dependencies = (
 			);
-			name = "web-tvOS";
-			productName = "web-tvOS";
-			productReference = 2D02E47B1E0B4A5D006451C7 /* web-tvOS.app */;
+			name = "zoom-tvOS";
+			productName = "zoom-tvOS";
+			productReference = 2D02E47B1E0B4A5D006451C7 /* zoom-tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E48F1E0B4A5D006451C7 /* web-tvOSTests */ = {
+		2D02E48F1E0B4A5D006451C7 /* zoom-tvOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "web-tvOSTests" */;
+			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "zoom-tvOSTests" */;
 			buildPhases = (
-				9D1A8E933DE568CBDC32C21A /* [CP] Check Pods Manifest.lock */,
+				4A55B36E46618A905874AA1F /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -274,9 +274,9 @@
 			dependencies = (
 				2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */,
 			);
-			name = "web-tvOSTests";
-			productName = "web-tvOSTests";
-			productReference = 2D02E4901E0B4A5D006451C7 /* web-tvOSTests.xctest */;
+			name = "zoom-tvOSTests";
+			productName = "zoom-tvOSTests";
+			productReference = 2D02E4901E0B4A5D006451C7 /* zoom-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -303,7 +303,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "web" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "zoom" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -316,10 +316,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* web */,
-				00E356ED1AD99517003FC87E /* webTests */,
-				2D02E47A1E0B4A5D006451C7 /* web-tvOS */,
-				2D02E48F1E0B4A5D006451C7 /* web-tvOSTests */,
+				13B07F861A680F5B00A75B9A /* zoom */,
+				00E356ED1AD99517003FC87E /* zoomTests */,
+				2D02E47A1E0B4A5D006451C7 /* zoom-tvOS */,
+				2D02E48F1E0B4A5D006451C7 /* zoom-tvOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -373,28 +373,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		22A918F810AB24F5F5A28953 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-web-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -409,7 +387,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		82D82A17B15BA92A3910D81B /* [CP] Check Pods Manifest.lock */ = {
+		4A55B36E46618A905874AA1F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -424,14 +402,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-web-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-zoom-tvOSTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9D1A8E933DE568CBDC32C21A /* [CP] Check Pods Manifest.lock */ = {
+		8D2D4A6D05F28B7A3C780EA2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -446,14 +424,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-web-tvOSTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-zoom-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		ED46A8DD377FF79455BD850C /* [CP] Check Pods Manifest.lock */ = {
+		97BB5CEC7D3988FBEF5CCA31 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -468,7 +446,29 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-webTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-zoomTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9A1ADE0F1714B5640B047354 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-zoom-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -520,7 +520,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* webTests.m in Sources */,
+				00E356F31AD99517003FC87E /* zoomTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -546,7 +546,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DCD954D1E0B4F2C00145EB5 /* webTests.m in Sources */,
+				2DCD954D1E0B4F2C00145EB5 /* zoomTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -555,12 +555,12 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* web */;
+			target = 13B07F861A680F5B00A75B9A /* zoom */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 		2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2D02E47A1E0B4A5D006451C7 /* web-tvOS */;
+			target = 2D02E47A1E0B4A5D006451C7 /* zoom-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -572,7 +572,7 @@
 				13B07FB21A68108700A75B9A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = web;
+			path = zoom;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -580,14 +580,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 69B3A888493E1C516394EED9 /* Pods-webTests.debug.xcconfig */;
+			baseConfigurationReference = 740911288039D32434BE1FE6 /* Pods-zoomTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = webTests/Info.plist;
+				INFOPLIST_FILE = zoomTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -597,17 +597,17 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/web.app/web";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/zoom.app/zoom";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 79940C3A91787DEA99E1823C /* Pods-webTests.release.xcconfig */;
+			baseConfigurationReference = BC8F53896DF5CF2FD56E7EA9 /* Pods-zoomTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = webTests/Info.plist;
+				INFOPLIST_FILE = zoomTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -617,18 +617,18 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/web.app/web";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/zoom.app/zoom";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 392627C2095EDE10C683549A /* Pods-web.debug.xcconfig */;
+			baseConfigurationReference = 6799FFAC83A11ADF58F9BB99 /* Pods-zoom.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				INFOPLIST_FILE = web/Info.plist;
+				INFOPLIST_FILE = zoom/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -636,18 +636,18 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = web;
+				PRODUCT_NAME = zoom;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 06AEDC9CF69258AAAFFAC4D3 /* Pods-web.release.xcconfig */;
+			baseConfigurationReference = 3C24AEF09FF91C5C63E2172A /* Pods-zoom.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = web/Info.plist;
+				INFOPLIST_FILE = zoom/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -655,14 +655,14 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = web;
+				PRODUCT_NAME = zoom;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 17D32A403AAC2A18A5E3AF70 /* Pods-web-tvOS.debug.xcconfig */;
+			baseConfigurationReference = CD49AB54BD5453636511267A /* Pods-zoom-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -673,14 +673,14 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "web-tvOS/Info.plist";
+				INFOPLIST_FILE = "zoom-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.web-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.zoom-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -690,7 +690,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 65DD16354ED8D449BF31C5E7 /* Pods-web-tvOS.release.xcconfig */;
+			baseConfigurationReference = A299EA9750C7833F0633910D /* Pods-zoom-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -701,14 +701,14 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "web-tvOS/Info.plist";
+				INFOPLIST_FILE = "zoom-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.web-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.zoom-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -718,7 +718,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CBBB9BDCE82A13E767CC212E /* Pods-web-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 200F46CBA75952D7CC5D33CC /* Pods-zoom-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -728,24 +728,24 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "web-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "zoom-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.web-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.zoom-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/web-tvOS.app/web-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/zoom-tvOS.app/zoom-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Debug;
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 909352DCD4F8106D93CAB1EA /* Pods-web-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = A26FAA3CF26D2BE53DE4A8BF /* Pods-zoom-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -755,17 +755,17 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "web-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "zoom-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.web-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.zoom-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/web-tvOS.app/web-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/zoom-tvOS.app/zoom-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
@@ -872,7 +872,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "webTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "zoomTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -881,7 +881,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "web" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "zoom" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -890,7 +890,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "web-tvOS" */ = {
+		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "zoom-tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4971E0B4A5E006451C7 /* Debug */,
@@ -899,7 +899,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "web-tvOSTests" */ = {
+		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "zoom-tvOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
@@ -908,7 +908,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "web" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "zoom" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

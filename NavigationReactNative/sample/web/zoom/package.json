@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "zoom",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -15,22 +15,22 @@
     "navigation": "^5.2.0",
     "navigation-react": "^4.1.1",
     "navigation-react-mobile": "^3.1.1",
-    "navigation-react-native": "^6.4.1",
+    "navigation-react-native": "^6.7.0",
     "react": "16.9.0",
-    "react-dom": "^16.12.0",
+    "react-dom": "^16.13.0",
     "react-native": "0.61.5",
-    "react-native-web": "^0.11.7",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10"
+    "react-native-web": "^0.12.2",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
   },
   "devDependencies": {
-    "@babel/core": "7.7.4",
-    "@babel/runtime": "7.7.4",
+    "@babel/core": "7.8.7",
+    "@babel/runtime": "7.8.7",
     "@react-native-community/eslint-config": "0.0.5",
     "babel-jest": "24.9.0",
-    "eslint": "6.7.2",
+    "eslint": "6.8.0",
     "jest": "24.9.0",
-    "metro-react-native-babel-preset": "0.56.3",
+    "metro-react-native-babel-preset": "0.56.4",
     "react-test-renderer": "16.9.0"
   },
   "jest": {

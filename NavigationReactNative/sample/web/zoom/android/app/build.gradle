@@ -128,7 +128,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.web"
+        applicationId "com.zoom"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
