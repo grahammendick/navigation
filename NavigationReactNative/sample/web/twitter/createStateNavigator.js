@@ -10,10 +10,10 @@ import {getHome, getFollows, getTweet, getTimeline} from './data';
 
 export default () => {
   const stateNavigator = new StateNavigator([
-    {key: 'home', route: '', defaults: {tab: 0}},
+    {key: 'home', route: '{tab?}', defaults: {tab: 0}},
     {key: 'notifications'},
-    {key: 'tweet', trackCrumbTrail: true},
-    {key: 'timeline', trackCrumbTrail: true}
+    {key: 'tweet', route: 'tweet/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}},
+    {key: 'timeline', route: 'timeline/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}}
   ]);
   const {home, notifications, tweet, timeline} = stateNavigator.states;
   const HomeLayout = Platform.OS === 'ios' ? Home : Tabs;
