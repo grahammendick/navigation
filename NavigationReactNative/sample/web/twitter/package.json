@@ -1,0 +1,40 @@
+{
+  "name": "twitter",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint .",
+    "build": "webpack"
+  },
+  "dependencies": {
+    "babel-loader": "^8.0.6",
+    "navigation": "^5.2.0",
+    "navigation-react": "^4.1.1",
+    "navigation-react-mobile": "^3.1.1",
+    "navigation-react-native": "^6.7.0",
+    "react": "16.9.0",
+    "react-dom": "^16.13.0",
+    "react-native": "0.61.5",
+    "react-native-web": "^0.12.2",
+    "url-loader": "^4.0.0",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "devDependencies": {
+    "@babel/core": "7.8.7",
+    "@babel/runtime": "7.8.7",
+    "@react-native-community/eslint-config": "0.0.5",
+    "babel-jest": "24.9.0",
+    "eslint": "6.8.0",
+    "jest": "24.9.0",
+    "metro-react-native-babel-preset": "0.56.4",
+    "react-test-renderer": "16.9.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
