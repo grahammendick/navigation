@@ -66,7 +66,7 @@ class TabBar extends React.Component {
     this.state = {selectedTab: 0};
   }
   render() {
-    const {children} = this.props;
+    const {children, selectedTintColor} = this.props;
     const {selectedTab} = this.state;
     return (
       <>
@@ -81,12 +81,13 @@ class TabBar extends React.Component {
             .map((child, index) => (
               <TouchableHighlight
                 key={index}
+                underlayColor="#fff"
                 onPress={() => {
                   if (selectedTab !== index)
                     this.setState({selectedTab: index})
                 }}
                 style={{flex: 1, justifyContent: 'center', alignItems: 'center', height: 72}}>
-                <Text>{child.props.title}</Text>
+                <Text style={{color: index === selectedTab ? selectedTintColor : '#808080'}}>{child.props.title}</Text>
               </TouchableHighlight>
             ))}
         </View>
