@@ -7,7 +7,10 @@ export default ({follows}) => {
   const {stateNavigator} = useContext(NavigationContext);
   return (
     <>
-      <NavigationBar title="Notifications" barTintColor={Platform.OS === 'android' ? '#fff' : null} />
+      <NavigationBar
+        title="Notifications"
+        isActive={({tab}) => console.log(tab) || tab === 1}
+        barTintColor={Platform.OS === 'android' ? '#fff' : null} />
       <FlatList
         data={follows}
         keyExtractor={item => '' + item.id}

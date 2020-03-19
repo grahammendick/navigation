@@ -7,17 +7,23 @@ class NavigationBarWeb extends React.Component {
     super(props);
     this.setTitle = this.setTitle.bind(this);
   }
+  static defaultProps = {
+    isActive: () => true,
+  }
   componentDidMount() {
-    this.props.stateNavigator.onNavigate(this.setTitle);
-    document.title = this.props.title;
+    const {isActive, stateNavigator, title} = this.props;
+    stateNavigator.onNavigate(this.setTitle);
+    if (isActive(stateNavigator.stateContext.data))
+      document.title = title;
   }
   componentWillUnmount() {
     this.props.stateNavigator.offNavigate(this.setTitle);    
   }
-  setTitle(_oldState, _state, _data, _asyncData, stateContext) {
-    const {crumbs} = this.props.stateNavigator.stateContext;
-    if (stateContext.crumbs.length === crumbs.length)
-      document.title = this.props.title;
+  setTitle(_oldState, _state, data, _asyncData, stateContext) {
+    const {isActive, stateNavigator, title} = this.props;
+    const {crumbs} = stateNavigator.stateContext;
+    if (stateContext.crumbs.length === crumbs.length && isActive(data))
+      document.title = title;
   }
   render() {
     const {navigationImage, navigationHref, onNavigationPress, title, barTintColor, tintColor} = this.props;
