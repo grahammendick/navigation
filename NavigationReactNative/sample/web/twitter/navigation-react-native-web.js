@@ -87,7 +87,10 @@ class TabBar extends React.Component {
                     this.setState({selectedTab: index})
                 }}
                 style={{flex: 1, justifyContent: 'center', alignItems: 'center', height: 72}}>
-                <Text style={{color: index === selectedTab ? selectedTintColor : '#808080'}}>{child.props.title}</Text>
+                <>
+                  <Image source={child.props.image} style={{width: 24, height: 24, tintColor: index === selectedTab ? selectedTintColor : '#808080'}} />
+                  <Text style={{color: index === selectedTab ? selectedTintColor : '#808080'}}>{child.props.title}</Text>
+                </>
               </TouchableHighlight>
             ))}
         </View>
