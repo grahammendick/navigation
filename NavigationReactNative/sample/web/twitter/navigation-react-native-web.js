@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Image, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 
@@ -66,50 +66,44 @@ const CollapsingBar = () => null;
 
 const CoordinatorLayout = ({children}) => children;
 
-const TabBarWeb = ({children, selectedIndex, selectedTintColor, stateNavigator}) => (
-  <>
-    {React.Children.toArray(children)
-      .map((child, index) => (
-        <View key={index} style={{display: index === selectedIndex ? 'flex' : 'none', flex: 1}}>
-          {React.cloneElement(child, {...child.props})}
-        </View>
-      ))}
-    <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
+const TabBar = ({children, selectedIndex, selectedTintColor}) => {
+  const {stateNavigator} = useContext(NavigationContext);
+  return (
+    <>
       {React.Children.toArray(children)
         .map((child, index) => (
-          <TouchableHighlight
-            key={index}
-            accessibilityRole="link"
-            href={stateNavigator.historyManager.getHref(child.props.link)}
-            underlayColor="#fff"
-            onPress={() => {
-              if (selectedIndex === index)
-                return;
-              if (index === 1)
-                stateNavigator.navigateLink(child.props.link);
-              else
-                history.back();
-            }}
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center', height: 72}}>
-            <>
-              <Image source={child.props.image} style={{width: 24, height: 24, tintColor: index === selectedIndex ? selectedTintColor : '#808080'}} />
-              <Text style={{color: index === selectedIndex ? selectedTintColor : '#808080'}}>{child.props.title}</Text>
-            </>
-          </TouchableHighlight>
+          <View key={index} style={{display: index === selectedIndex ? 'flex' : 'none', flex: 1}}>
+            {React.cloneElement(child, {...child.props})}
+          </View>
         ))}
-    </View>
-  </>
-);
+      <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
+        {React.Children.toArray(children)
+          .map((child, index) => (
+            <TouchableHighlight
+              key={index}
+              accessibilityRole="link"
+              href={stateNavigator.historyManager.getHref(child.props.link)}
+              underlayColor="#fff"
+              onPress={() => {
+                if (selectedIndex === index)
+                  return;
+                if (index === 1)
+                  stateNavigator.navigateLink(child.props.link);
+                else
+                  history.back();
+              }}
+              style={{flex: 1, justifyContent: 'center', alignItems: 'center', height: 72}}>
+              <>
+                <Image source={child.props.image} style={{width: 24, height: 24, tintColor: index === selectedIndex ? selectedTintColor : '#808080'}} />
+                <Text style={{color: index === selectedIndex ? selectedTintColor : '#808080'}}>{child.props.title}</Text>
+              </>
+            </TouchableHighlight>
+          ))}
+      </View>
+    </>
+  );
+};
 
 const TabBarItem = ({children}) => children;
-
-const TabBar = props => (
-  <NavigationContext.Consumer>
-      {({stateNavigator}) => (
-        <TabBarWeb stateNavigator={stateNavigator} {...props} />
-      )}
-  </NavigationContext.Consumer>
-)
-
 
 export { NavigationBar, CollapsingBar, CoordinatorLayout, TabBar, TabBarItem };
