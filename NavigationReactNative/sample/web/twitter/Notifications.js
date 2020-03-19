@@ -9,7 +9,7 @@ export default ({follows}) => {
     <>
       <NavigationBar
         title="Notifications"
-        isActive={({tab}) => console.log(tab) || tab === 1}
+        isActive={({tab}) => tab === 1}
         barTintColor={Platform.OS === 'android' ? '#fff' : null} />
       <FlatList
         data={follows}
