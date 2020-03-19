@@ -60,19 +60,17 @@ const CollapsingBar = () => null;
 
 const CoordinatorLayout = ({children}) => children;
 
-class TabBar extends React.Component {
+class TabBarWeb extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {selectedTab: 0};
   }
   render() {
-    const {children, selectedTintColor} = this.props;
-    const {selectedTab} = this.state;
+    const {children, selectedIndex, selectedTintColor} = this.props;
     return (
       <>
         {React.Children.toArray(children)
           .map((child, index) => (
-            <View key={index} style={{display: index === selectedTab ? 'flex' : 'none', flex: 1}}>
+            <View key={index} style={{display: index === selectedIndex ? 'flex' : 'none', flex: 1}}>
               {React.cloneElement(child, {...child.props})}
             </View>
           ))}
@@ -81,15 +79,17 @@ class TabBar extends React.Component {
             .map((child, index) => (
               <TouchableHighlight
                 key={index}
+                accessibilityRole="link"
+                href={this.props.stateNavigator.historyManager.getHref(child.props.link)}
                 underlayColor="#fff"
                 onPress={() => {
-                  if (selectedTab !== index)
-                    this.setState({selectedTab: index})
+                  if (selectedIndex !== index)
+                    this.props.stateNavigator.navigateLink(child.props.link);
                 }}
                 style={{flex: 1, justifyContent: 'center', alignItems: 'center', height: 72}}>
                 <>
-                  <Image source={child.props.image} style={{width: 24, height: 24, tintColor: index === selectedTab ? selectedTintColor : '#808080'}} />
-                  <Text style={{color: index === selectedTab ? selectedTintColor : '#808080'}}>{child.props.title}</Text>
+                  <Image source={child.props.image} style={{width: 24, height: 24, tintColor: index === selectedIndex ? selectedTintColor : '#808080'}} />
+                  <Text style={{color: index === selectedIndex ? selectedTintColor : '#808080'}}>{child.props.title}</Text>
                 </>
               </TouchableHighlight>
             ))}
@@ -100,5 +100,14 @@ class TabBar extends React.Component {
 };
 
 const TabBarItem = ({children}) => children;
+
+const TabBar = props => (
+  <NavigationContext.Consumer>
+      {({stateNavigator}) => (
+        <TabBarWeb stateNavigator={stateNavigator} {...props} />
+      )}
+  </NavigationContext.Consumer>
+)
+
 
 export { NavigationBar, CollapsingBar, CoordinatorLayout, TabBar, TabBarItem };
