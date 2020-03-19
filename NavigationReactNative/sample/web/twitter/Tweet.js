@@ -28,8 +28,14 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         renderHeader={() => (
           <View>
             <View style={styles.heading}>
-              <TouchableHighlight underlayColor="white" onPress={() => {
-                stateNavigator.navigate('timeline', {id: accountId});
+              <TouchableHighlight
+                underlayColor="white"
+                accessibilityRole="link"
+                href={stateNavigator.historyManager.getHref(
+                  stateNavigator.getNavigationLink('timeline', {id: accountId})
+                )}
+                onPress={() => {
+                  stateNavigator.navigate('timeline', {id: accountId});
               }}>
                 <Image style={styles.logo} source={logo} />
               </TouchableHighlight>
