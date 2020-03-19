@@ -77,8 +77,12 @@ const TabBarWeb = ({children, selectedIndex, selectedTintColor, stateNavigator})
             href={stateNavigator.historyManager.getHref(child.props.link)}
             underlayColor="#fff"
             onPress={() => {
-              if (selectedIndex !== index)
+              if (selectedIndex === index)
+                return;
+              if (index === 1)
                 stateNavigator.navigateLink(child.props.link);
+              else
+                history.back();
             }}
             style={{flex: 1, justifyContent: 'center', alignItems: 'center', height: 72}}>
             <>
