@@ -19,6 +19,10 @@ export default ({follows}) => {
         renderItem={({item: {id, name, logo}}) => (
           <TouchableHighlight
             underlayColor="white"
+            accessibilityRole="link"
+            href={stateNavigator.historyManager.getHref(
+              stateNavigator.getNavigationLink('timeline', {id})
+            )}
             onPress={() => {
               stateNavigator.navigate('timeline', {id});
           }}>
