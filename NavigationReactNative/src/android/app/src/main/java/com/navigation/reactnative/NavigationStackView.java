@@ -52,7 +52,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             currentActivity.finishAffinity();
             return;
         }
-        if (scenes.size() == 0 || !navigator.canNavigate(currentActivity, this))
+        if (scenes.size() == 0 || !navigator.canNavigate(currentActivity, this) || getParent() == null)
             return;
         int crumb = keys.size() - 1;
         int currentCrumb = navigator.oldCrumb;
@@ -87,6 +87,10 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 fragmentTransation.remove(fragment);
             }
             fragmentTransation.commitAllowingStateLoss();
+            try {
+                fragmentManager.executePendingTransactions();
+            } catch (IllegalArgumentException e) {
+            }
         }
     }
 
