@@ -88,7 +88,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             }
             fragmentTransation.commitAllowingStateLoss();
             try {
-                fragmentManager.executePendingTransactions();
+                if (!fragmentManager.isDestroyed())
+                    fragmentManager.executePendingTransactions();
             } catch (IllegalArgumentException ignored) {
             }
         }
