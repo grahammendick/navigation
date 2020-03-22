@@ -29,26 +29,27 @@ export default ({timeline: {id, name, username, logo, bio,
           <View style={{backgroundColor: colors[1], flex: 1}} />
         </CollapsingBar>
       </NavigationBar>
-      <ScrollView
-        nestedScrollEnabled={true}
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.view}>
-        <View>
-          <Animated.Image
-            source={logo}
-            style={[styles.logo, {transform: [{scale}]}]} />
-          <Text style={styles.name}>{name}</Text>
-          <Text>{username}</Text>
-          <Text style={styles.bio}>{bio}</Text>
-        </View>
-        <View style={styles.interactions}>
-          <Text style={styles.count}>{following.toLocaleString()}</Text>
-          <Text style={styles.interaction}>FOLLOWING</Text>
-          <Text style={styles.count}>{followers.toLocaleString()}</Text>
-          <Text style={styles.interaction}>FOLLOWERS</Text>
-        </View>
-        <Tweets tweets={tweets} onTimeline={accountId => accountId !== id} />
-      </ScrollView>
+      <Tweets
+        tweets={tweets}
+        renderHeader={() => (
+          <>
+            <View>
+              <Animated.Image
+                source={logo}
+                style={[styles.logo, {transform: [{scale}]}]} />
+              <Text style={styles.name}>{name}</Text>
+              <Text>{username}</Text>
+              <Text style={styles.bio}>{bio}</Text>
+            </View>
+            <View style={styles.interactions}>
+              <Text style={styles.count}>{following.toLocaleString()}</Text>
+              <Text style={styles.interaction}>FOLLOWING</Text>
+              <Text style={styles.count}>{followers.toLocaleString()}</Text>
+              <Text style={styles.interaction}>FOLLOWERS</Text>
+            </View>
+          </>
+        )}
+        onTimeline={accountId => accountId !== id} />
     </CoordinatorLayout>
   );
 };
