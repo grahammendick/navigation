@@ -69,7 +69,7 @@
 };</code></pre>
             <h2>Replacing History</h2>
             <p>
-                
+                You must keep the browser history in step with the stack of scenes. Otherwise, the in-built back button won't respect the stack. If you prevent the breadcrumb trail from growing you must also prevent the browser history from growing. You do this by passing a value of 'replace' to the <code>historyAction prop</code> of the <code>NavigationLink</code> component. When the user taps the Hyperlink the Url updates without adding to the browser history. In our email example, we’ll add this prop to the <code>NavigationLink</code> that expands the email thread.     
             </p>
             <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
   stateKey="mail"
