@@ -100,7 +100,7 @@ stateNavigator.start();</code></pre>
 );</code></pre>
             <h2>Navigating Back</h2>
             <p>
-                Although the Navigation router holds the stack of visited scenes, you must use the browser history <code>back</code> function to navigate back through the stack. This ensures that the browser history also holds the stack of visited scenes so that the built-in back button never goes forward. You still use the <code>NavigationBackLink</code> component to build Hyperlinks, e.g., for SEO, but override the <code>navigating</code> function to call <code>history.back</code>.
+                Although the Navigation router holds the stack of visited scenes, you must use the browser history <code>back</code> function to navigate back through the stack. This ensures that the browser history also holds the stack of visited scenes so that the built-in back button respects the stack. You still use the <code>NavigationBackLink</code> component to build Hyperlinks, e.g., for SEO, but override the <code>navigating</code> function to call <code>history.back</code>.
             </p>
             <p>
                 In our email example, we add a <code>NavigationBackLink</code> to the 'mail' scene so the user can return to their inbox. When they tap the Hyperlink, the 'mail' scene fades out as it's unmounted and the 'inbox' scene fades back in as it's mounted.
