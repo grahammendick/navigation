@@ -67,6 +67,16 @@
   var latestCrumb = crumbs[crumbs.length - 1];
   return latestCrumb.state.key === 'inbox' ? crumbs : crumbs.slice(0, -1); 
 };</code></pre>
+            <h2>Replacing History</h2>
+            <p>
+                
+            </p>
+            <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
+  stateKey="mail"
+  navigationData={{id: mail.id, expand: true}}
+  historyAction="replace">
+  Expand Thread
+&lt;/NavigationReact.NavigationLink></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
