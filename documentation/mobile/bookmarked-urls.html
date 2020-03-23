@@ -54,6 +54,12 @@
         </div>
         <div id="article">
             <h1>Bookmarked Urls</h1>
+            <pre><code class="language-jsx">new NavigationReactMobile.MobileHistoryManager(function(url) {
+  var {state, data} = stateNavigator.parseLink(url);
+  var fluent = stateNavigator.fluent().navigate('inbox');
+  stateNavigator.historyManager.addHistory(fluent.url, true);
+  return fluent.navigate(state.key, data).url;
+})</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
