@@ -36,6 +36,7 @@
             <a href="animated-navigation.html" class="selected">Animated Navigation</a>
             <a href="non-animated-navigation.html">Non-Animated Navigation</a>
             <a href="clean-urls.html">Clean Urls</a>
+            <a href="bookmarked-urls.html">Bookmarked Urls</a>
             <a href="shared-element-navigation.html">Shared Element Navigation</a>
             <a href="examples.html">Examples</a>
             <div class="separator"></div>
@@ -98,22 +99,22 @@ stateNavigator.start();</code></pre>
   &lt;/NavigationReact.NavigationHandler>,
   document.getElementById('app')
 );</code></pre>
-            <h2>Navigating Back</h2>
+            <h2 id="navigating-back">Navigating Back</h2>
             <p>
-                The user can navigate back to visited scenes, along the breadcrumb trail, as Hansel and Gretel intended. You navigate back using the <code>NavigationBackLink</code> component specifying the distance you want to travel. In our email example, we add a <code>NavigationBackLink</code> component to the 'mail' scene so the user can return to their inbox. When they click the Hyperlink, the 'mail' scene fades out as it's unmounted and the 'inbox' scene fades back in as it's mounted.
+                Although the Navigation router holds the stack of visited scenes, you must use the browser history <code>back</code> function to navigate back through the stack. This ensures that the browser history also holds the stack of visited scenes so that the built-in back button respects the stack. You still use the <code>NavigationBackLink</code> component to build Hyperlinks, e.g., for SEO, but override the <code>navigating</code> function to call <code>history.back</code>.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationReact.NavigationBackLink distance={1}>
+            <p>
+                In our email example, we add a <code>NavigationBackLink</code> to the 'mail' scene so the user can return to their inbox. When they tap the Hyperlink, the 'mail' scene fades out as it's unmounted and the 'inbox' scene fades back in as it's mounted.
+            </p>
+            <pre><code class="language-jsx">&lt;NavigationReact.NavigationBackLink 
+  distance={1}
+  navigating={e => {
+    e.preventDefault();
+    history.back();
+    return false;
+  }}>
   Back to Inbox
 &lt;/NavigationReact.NavigationBackLink></code></pre>
-            <p>
-                You can navigate back programatically by passing the distance into the <code>navigateBack</code> function on the <code>stateNavigator</code>.
-            </p>
-            <pre><code class="language-jsx">&lt;NavigationReact.NavigationContext.Consumer>
-  {({ stateNavigator }) => (
-    &lt;div onClick={() => >stateNavigator.navigateBack(1)}>Back to Inbox&lt;/div>
-  )}
-&lt;/NavigationReact.NavigationContext.Consumer>
-</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>

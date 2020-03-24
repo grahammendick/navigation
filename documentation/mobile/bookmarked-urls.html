@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Examples</title>
+    <title>Bookmarked Urls</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="../../css/prism.css">
     <link rel="stylesheet" href="../../css/navigation.css">
@@ -36,9 +36,9 @@
             <a href="animated-navigation.html">Animated Navigation</a>
             <a href="non-animated-navigation.html">Non-Animated Navigation</a>
             <a href="clean-urls.html">Clean Urls</a>
-            <a href="bookmarked-urls.html">Bookmarked Urls</a>
+            <a href="bookmarked-urls.html" class="selected">Bookmarked Urls</a>
             <a href="shared-element-navigation.html">Shared Element Navigation</a>
-            <a href="examples.html" class="selected">Examples</a>
+            <a href="examples.html">Examples</a>
             <div class="separator"></div>
             <h2>NATIVE</h2>
             <a href="../native/setup.html">Setup</a>
@@ -53,11 +53,34 @@
             <a href="../native/examples.html">Examples</a>
         </div>
         <div id="article">
-            <h1>Examples</h1>
+            <h1>Bookmarked Urls</h1>
+            <h2>Priming the Stack</h2>
             <p>
-                Below is the email example from the <a href="animated-navigation.html">Mobile guide to the Navigation router</a>. You'll find more examples in the <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReactMobile/sample">Navigation React Mobile samples folder</a>.
+                A user visiting a bookmarked email will find that the Hyperlink taking them back to their inbox is disabled. The bookmark takes the user straight to their open email, bypassing the inbox, so the stack of scenes is empty and they can't navigate back. We can re-enable the Hyperlink by prepopulating the breadcrumb trail so it looks like the user came from the 'inbox' scene. We can build this Url by using the Navigation router's fluent navigation to simulate the user opening the email from their inbox.
             </p>
-            <iframe width="100%" height="400" src="//jsfiddle.net/navigation/yrcyoz2w/4/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+            <pre><code class="language-jsx">var url = stateNavigator.fluent()
+  .navigate('inbox')
+  .navigate('mail', {id: 12}).url;</code></pre>
+            <p>
+                We change the startup Url by passing a function into the <code>MobileHistoryManager</code> constructor. The function receives the browser Url and we use fluent navigation to return the new Url with the 'inbox' breadcrumb included. We extract the bookmarked email Id from the incoming Url using the <code>parseLink</code> function on the <code>stateNavigator</code>.
+            </p>
+            <pre><code class="language-jsx">new NavigationReactMobile.MobileHistoryManager(function(url) {
+  var {state, data} = stateNavigator.parseLink(url);
+  return stateNavigator.fluent()
+    .navigate('inbox')
+    .navigate(state.key, data).url;
+})</code></pre>
+            <h2>Priming the Browser History</h2>
+            <p>
+                Remember that when the user taps the Hyperlink we’re <a href="animated-navigation.html#navigating-back">calling the history back function</a> to take them to their inbox. Because the user jumped directly to the bookmarked email, the 'inbox' Url isn’t in their browser history. So, even though the Hyperlink is enabled, it still doesn’t work. We can fix this by replacing the current Url with the 'inbox' Url. That way, the 'inbox' Url ends up in browser history when the Navigation router pushes the bookmarked Url on startup.
+            </p>
+            <pre><code class="language-jsx">new NavigationReactMobile.MobileHistoryManager(function(url) {
+  var {state, data} = stateNavigator.parseLink(url);
+  var fluent = stateNavigator.fluent().navigate('inbox');
+  // replace the current Url with 'inbox' Url
+  stateNavigator.historyManager.addHistory(fluent.url, true);
+  return fluent.navigate(state.key, data).url;
+})</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
