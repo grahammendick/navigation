@@ -71,11 +71,13 @@
     .navigate(state.key, data).url;
 })</code></pre>
             <h2>Priming the Browser History</h2>
-
-
+            <p>
+                Remember that when the user taps the Hyperlink we’re <a href="animated-navigation.html#navigating-back">calling the history back function</a> to take them to their inbox. Because the user jumped directly to the bookmarked email, the 'inbox' Url isn’t in their browser history. So, even though the Hyperlink is enabled, it still doesn’t work. We can fix this by replacing the current Url with the 'inbox' Url. That way, the 'inbox' Url ends up in browser history when the Navigation router pushes the bookmarked Url on startup.
+            </p>
             <pre><code class="language-jsx">new NavigationReactMobile.MobileHistoryManager(function(url) {
   var {state, data} = stateNavigator.parseLink(url);
   var fluent = stateNavigator.fluent().navigate('inbox');
+  // replace the current Url with 'inbox' Url
   stateNavigator.historyManager.addHistory(fluent.url, true);
   return fluent.navigate(state.key, data).url;
 })</code></pre>

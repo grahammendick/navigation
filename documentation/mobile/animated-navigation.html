@@ -98,7 +98,7 @@ stateNavigator.start();</code></pre>
   &lt;/NavigationReact.NavigationHandler>,
   document.getElementById('app')
 );</code></pre>
-            <h2>Navigating Back</h2>
+            <h2 id="navigating-back">Navigating Back</h2>
             <p>
                 Although the Navigation router holds the stack of visited scenes, you must use the browser history <code>back</code> function to navigate back through the stack. This ensures that the browser history also holds the stack of visited scenes so that the built-in back button respects the stack. You still use the <code>NavigationBackLink</code> component to build Hyperlinks, e.g., for SEO, but override the <code>navigating</code> function to call <code>history.back</code>.
             </p>
