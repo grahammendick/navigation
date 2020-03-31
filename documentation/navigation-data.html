@@ -89,13 +89,10 @@
             <p>
                 You don't have to convert the data from strings because the Navigation router remembers their original types. Adding <code>prop type</code> validation to the <code>Mail</code> component, for example, wouldn't raise an exception.
             </p>
-            <pre><code class="language-jsx">var Mail = React.createClass({
-  propTypes: {
-    id: React.propTypes.number,
-    expand: React.propTypes.bool
-  },
-  /* ... */
-});</code></pre>
+            <pre><code class="language-jsx">Mail.propTypes = {
+  id: React.propTypes.number,
+  expand: React.propTypes.bool
+};</code></pre>
             <h2>Setting Default Values</h2>
             <p>
                 The Navigation router lets you define default navigation data values for each <code>State</code>. The data passed into a <code>State's navigated</code> function includes these default values for any item that you don't supply with a value when navigating. If we give the <code>expand</code> item in the email example a default value of false then we don't have to explicitly pass it in navigation data when the mail's opened.
