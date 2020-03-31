@@ -64,10 +64,8 @@
             <p>
                 A reusable Sorter component consists of a Hyperlink that toggles the sort order. Remember that it's just the UI we're reusing and not the sorting logic itself. With the Navigation router we think in terms of typed data rather than URLs. We'll model the sort order as a boolean called 'up'. A value of true represents a sort direction of ascending. We can then use the Navigation router's <code>RefreshLink</code> component to build a Sorter component that toggles this 'up' value:
             </p>
-            <pre><code class="language-jsx">var Sorter = ({up, children, stateNavigator}) => (
-  &lt;RefreshLink 
-    navigationData={{up: !up}}
-    stateNavigator={stateNavigator}>
+            <pre><code class="language-jsx">var Sorter = ({up, children}) => (
+  &lt;RefreshLink navigationData={{up: !up}}>
     {children}
   &lt;/RefreshLink>
 );
@@ -81,7 +79,7 @@
             <p>
                 You've seen how the <code>RefreshLink</code> component lets us focus on the data instead of worrying about URLs. That means we can avoid hard-coding href attributes and create reusable navigational components. Let's use this technique to create a reusable Pager component. It will have 'First', 'Previous', 'Next' and 'Last' Hyperlinks that each change the current page number. For example, the 'First' Hyperlink sets the page number to 1 and the 'Previous' Hyperlink decrements the page number:
             </p>
-            <pre><code class="language-jsx">var Pager = ({page, size, total, stateNavigator}) => {
+            <pre><code class="language-jsx">var Pager = ({page, size, total}) => {
   var pages = [
     {text: 'First', page: 1},
     {text: 'Previous', page: Math.max(page - 1, 1)},
@@ -94,8 +92,7 @@
         &lt;RefreshLink 
           navigationData={{page: pageInfo.page}}
           disableActive={true}
-          key={pageInfo.text}
-          stateNavigator={stateNavigator}>
+          key={pageInfo.text}>
           {pageInfo.text}
         &lt;/RefreshLink>
       )}
@@ -115,11 +112,10 @@
             <p>
                 The Navigation router comes to our rescue. It keeps track of the current 'page' data so that the Sorter doesn't have to. To ensure that the sorting Hyperlink includes the current page number we set the <code>RefreshLink's includeCurrentData prop</code> to true.
             </p>
-            <pre><code class="language-jsx">var Sorter = ({up, children, stateNavigator}) => (
+            <pre><code class="language-jsx">var Sorter = ({up, children}) => (
   &lt;RefreshLink 
     navigationData={{up: !up}}
-    includeCurrentData={true}
-    stateNavigator={stateNavigator}>
+    includeCurrentData={true}>
     {children}
   &lt;/RefreshLink>
 );</code></pre>
