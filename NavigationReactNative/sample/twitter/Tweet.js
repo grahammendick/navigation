@@ -17,7 +17,7 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         onNavigationPress={() => {
           stateNavigator.navigateBack(1)
         }} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.view}>
+      <Tweets tweets={replies} renderHeader={() => (
         <View>
           <View style={styles.heading}>
             <TouchableHighlight underlayColor="white" onPress={() => {
@@ -39,8 +39,7 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
             <Text style={styles.interaction}>LIKES</Text>
           </View>
         </View>
-        <Tweets tweets={replies} stateNavigator={stateNavigator} />
-      </ScrollView>
+      )} />
     </>
   );
 };

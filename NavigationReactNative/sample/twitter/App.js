@@ -45,7 +45,7 @@ const App = () => {
       <TabBarItem
         title="Notifications"
         image={require('./notifications.png')}
-        badge={!notified ? getFollows().length : null} 
+        badge={!notified ? '' + getFollows().length : null} 
         onPress={() => {setNotified(true)}}>
         <Stack navigator={notificationsNavigator} />
       </TabBarItem>
