@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {StyleSheet, Text, Platform, ScrollView, View, Animated} from 'react-native';
+import {StyleSheet, Text, Platform, View, Animated} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {NavigationBar, CoordinatorLayout, CollapsingBar} from 'navigation-react-native';
 import Tweets from './Tweets';
@@ -16,7 +16,7 @@ export default ({timeline: {id, name, username, logo, bio,
     <CoordinatorLayout overlap={110}>
       <NavigationBar
         title={name}
-        onOffsetChanged={Animated.event([{nativeEvent:{offset}}], {useNativeDriver: false})}
+        onOffsetChanged={Animated.event([{nativeEvent:{offset}}], {useNativeDriver: true})}
         navigationImage={require('./arrow.png')}
         barTintColor={Platform.OS === 'android' ? colors[0] : null}
         tintColor={Platform.OS === 'android' ? "#fff" : null}
