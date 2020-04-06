@@ -8,7 +8,6 @@ import CollapsingBar from './CollapsingBar';
 import TabBar from './TabBar';
 
 class NavigationBar extends React.Component<any, any> {
-    public static Animated: NavigationBar;
     constructor(props) {
         super(props);
     }
@@ -75,6 +74,4 @@ var Container: any = ({collapse, children, ...props}) => (
 var NVNavigationBar = requireNativeComponent<any>('NVNavigationBar', null);
 var NVToolbar = requireNativeComponent<any>('NVToolbar', null);
 
-NavigationBar.Animated = Animated.createAnimatedComponent(NavigationBar);
-
-export default NavigationBar;
+export default Animated.createAnimatedComponent(NavigationBar);

@@ -14,7 +14,7 @@ export default ({timeline: {id, name, username, logo, bio,
   });
   return (
     <CoordinatorLayout overlap={110}>
-      <NavigationBar.Animated
+      <NavigationBar
         title={name}
         onOffsetChanged={Animated.event([{nativeEvent:{offset}}], {useNativeDriver: true})}
         navigationImage={require('./arrow.png')}
@@ -28,7 +28,7 @@ export default ({timeline: {id, name, username, logo, bio,
         <CollapsingBar>
           <View style={{backgroundColor: colors[1], flex: 1}} />
         </CollapsingBar>
-      </NavigationBar.Animated>
+      </NavigationBar>
       <Tweets
         tweets={tweets}
         renderHeader={() => (
