@@ -55,7 +55,7 @@ public class NavigationBarView extends AppBarLayout {
         @Override
         public void dispatch(RCTEventEmitter rctEventEmitter) {
             WritableMap event = Arguments.createMap();
-            event.putInt("offset", (int) PixelUtil.toDIPFromPixel(offset));
+            event.putDouble("offset", PixelUtil.toDIPFromPixel(offset));
             rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }
