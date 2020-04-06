@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.ViewOutlineProvider;
 
+import androidx.core.util.Pools;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
@@ -28,8 +30,7 @@ public class NavigationBarView extends AppBarLayout {
         addOnOffsetChangedListener(new OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
-                OffsetChangedEvent event = new OffsetChangedEvent();
-                event.init(getId(), offset);
+                OffsetChangedEvent event = OffsetChangedEvent.obtain(getId(), offset);
                 ReactContext reactContext = (ReactContext) getContext();
                 reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher().dispatchEvent(event);
             }
@@ -38,13 +39,23 @@ public class NavigationBarView extends AppBarLayout {
 
     static class OffsetChangedEvent extends Event<OffsetChangedEvent> {
         private int offset;
+        private static final Pools.SynchronizedPool<OffsetChangedEvent> pool = new Pools.SynchronizedPool<>(3);
 
         private OffsetChangedEvent() {
         }
 
-        private void init(int viewTag, int offset) {
-            super.init(viewTag);
-            this.offset = offset;
+        private static OffsetChangedEvent obtain(int viewTag, int offset) {
+            OffsetChangedEvent event = pool.acquire();
+            if (event == null)
+                event = new OffsetChangedEvent();
+            event.init(viewTag);
+            event.offset = offset;
+            return event;
+        }
+
+        @Override
+        public void onDispose() {
+            pool.release(this);
         }
 
         @Override
