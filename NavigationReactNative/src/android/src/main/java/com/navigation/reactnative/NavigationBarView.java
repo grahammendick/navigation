@@ -59,6 +59,16 @@ public class NavigationBarView extends AppBarLayout {
         }
 
         @Override
+        public short getCoalescingKey() {
+            return 0;
+        }
+
+        @Override
+        public boolean canCoalesce() {
+            return true;
+        }
+
+        @Override
         public String getEventName() {
             return "onOffsetChanged";
         }
