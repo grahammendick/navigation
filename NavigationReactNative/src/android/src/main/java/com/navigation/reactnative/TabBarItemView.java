@@ -15,8 +15,9 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
     Fragment fragment;
     protected String title;
     private Drawable icon;
-    private OnIconListener onIconListener;
     private IconResolver.IconResolverListener tabIconResolverListener;
+    private TabView tabView;
+    int index;
 
     public TabBarItemView(Context context) {
         super(context);
@@ -24,8 +25,10 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
             @Override
             public void setDrawable(Drawable d) {
                 icon = d;
-                if (onIconListener != null)
-                    onIconListener.onIconResolve(icon);
+                if (tabView != null) {
+                    tabView.setIcon(index, icon);
+                    post(tabView.getMeasureAndLayout());
+                }
             }
         };
     }
@@ -34,11 +37,12 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
         IconResolver.setIconSource(source, tabIconResolverListener, getContext());
     }
 
-    void setOnIconListener(OnIconListener onIconListener) {
-        this.onIconListener = onIconListener;
-        if (icon!= null)
-            this.onIconListener.onIconResolve(icon);
-
+    void setTabView(TabView tabView) {
+        this.tabView = tabView;
+        if (icon != null) {
+            tabView.setIcon(index, icon);
+            post(tabView.getMeasureAndLayout());
+        }
     }
 
     protected void pressed() {
@@ -53,9 +57,5 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
     @Override
     public Fragment getFragment() {
         return fragment;
-    }
-
-    interface OnIconListener {
-        void onIconResolve(Drawable icon);
     }
 }

@@ -37,10 +37,6 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
         }
     }
 
-    @ReactProp(name = "images")
-    public void setImages(TabBarView view, ReadableArray images) {
-    }
-
     @ReactProp(name = "swipeable")
     public void setSwipeable(TabBarView view, boolean swipeable) {
         view.swipeable = swipeable;
@@ -76,7 +72,7 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
     @Override
     protected void onAfterUpdateTransaction(@Nonnull TabBarView view) {
         super.onAfterUpdateTransaction(view);
-        view.populateTabIcons();
+        view.populateTabs();
 
     }
 }
