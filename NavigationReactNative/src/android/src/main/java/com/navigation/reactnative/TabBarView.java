@@ -143,7 +143,7 @@ public class TabBarView extends ViewPager {
         FragmentManager fragmentManager;
 
         Adapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
+            super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
             this.fragmentManager = fragmentManager;
         }
 
@@ -166,6 +166,7 @@ public class TabBarView extends ViewPager {
             return tabFragments.size();
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             return tabFragments.get(position);
