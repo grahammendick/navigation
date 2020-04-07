@@ -13,11 +13,11 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 public class TabBarItemView extends ViewGroup implements NavigationBoundary {
     Fragment fragment;
+    protected int index;
     protected String title;
     private Drawable icon;
     private IconResolver.IconResolverListener tabIconResolverListener;
     private TabView tabView;
-    int index;
 
     public TabBarItemView(Context context) {
         super(context);
