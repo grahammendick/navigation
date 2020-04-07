@@ -8,7 +8,10 @@ export default ({tweets, follows}) => (
     <TabBarItem title="Home" image={require('./home.png')}>
       <Home tweets={tweets} follows={follows} />
     </TabBarItem>
-    <TabBarItem title="Notifications" image={require('./notifications.png')}>
+    <TabBarItem
+      title="Notifications"
+      image={require('./notifications.png')}
+      badge={follows.length}>
       <Notifications follows={follows} />
     </TabBarItem>
   </TabBar>

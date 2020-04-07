@@ -35,6 +35,11 @@ public class TabBarItemManager extends ViewGroupManager<TabBarItemView> {
         view.setIconSource(icon);
     }
 
+    @ReactProp(name = "badge")
+    public void setBadge(TabBarItemView view, @Nullable Integer badge) {
+        view.setBadge(badge);
+    }
+
     @Nonnull
     @Override
     protected TabBarItemView createViewInstance(@Nonnull ThemedReactContext reactContext) {

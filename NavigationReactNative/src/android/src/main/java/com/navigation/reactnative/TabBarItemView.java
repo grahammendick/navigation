@@ -17,6 +17,7 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
     protected String title;
     private Drawable icon;
     private IconResolver.IconResolverListener tabIconResolverListener;
+    private Integer badge;
     private TabView tabView;
 
     public TabBarItemView(Context context) {
@@ -37,11 +38,22 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
         IconResolver.setIconSource(source, tabIconResolverListener, getContext());
     }
 
+    void setBadge(@Nullable Integer badge) {
+        this.badge = badge;
+        if (badge != null) {
+            if (tabView != null)
+                tabView.getBadgeIcon(index).setNumber(badge);
+        }
+    }
+
     void setTabView(TabView tabView) {
         this.tabView = tabView;
         if (icon != null) {
             tabView.setIcon(index, icon);
             post(tabView.getMeasureAndLayout());
+        }
+        if (badge != null) {
+            tabView.getBadgeIcon(index).setNumber(badge);
         }
     }
 
