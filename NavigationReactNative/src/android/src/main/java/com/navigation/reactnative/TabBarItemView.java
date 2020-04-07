@@ -18,7 +18,9 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
     private Drawable icon;
     private IconResolver.IconResolverListener tabIconResolverListener;
     private Integer badge;
+    private Integer badgeColor;
     private TabView tabView;
+    private Integer defaultBadgeColor;
 
     public TabBarItemView(Context context) {
         super(context);
@@ -46,14 +48,26 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
             tabView.getBadgeIcon(index).setNumber(badge);
         else
             tabView.removeBadgeIcon(index);
+        setBadgeColor(badgeColor);
+    }
+
+    void setBadgeColor(@Nullable Integer badgeColor) {
+        this.badgeColor = badgeColor;
+        if (tabView == null || badge == null)
+            return;
+        if (defaultBadgeColor == null)
+            defaultBadgeColor = tabView.getBadgeIcon(index).getBackgroundColor();
+        if (badgeColor != null)
+            tabView.getBadgeIcon(index).setBackgroundColor(badgeColor);
+        else
+            tabView.getBadgeIcon(index).setBackgroundColor(defaultBadgeColor);
     }
 
     void setTabView(TabView tabView) {
         this.tabView = tabView;
         if (icon != null)
             tabView.setIcon(index, icon);
-        if (badge != null)
-            tabView.getBadgeIcon(index).setNumber(badge);
+        setBadge(badge);
     }
 
     protected void pressed() {

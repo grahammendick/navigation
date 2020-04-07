@@ -40,6 +40,11 @@ public class TabBarItemManager extends ViewGroupManager<TabBarItemView> {
         view.setBadge(badge);
     }
 
+    @ReactProp(name = "badgeColor", customType = "Color")
+    public void setBadgeColor(TabBarItemView view, @Nullable Integer badgeColor) {
+        view.setBadgeColor(badgeColor);
+    }
+
     @Nonnull
     @Override
     protected TabBarItemView createViewInstance(@Nonnull ThemedReactContext reactContext) {
