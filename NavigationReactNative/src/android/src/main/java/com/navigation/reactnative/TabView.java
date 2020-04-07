@@ -16,5 +16,7 @@ public interface TabView {
 
     BadgeDrawable getBadgeIcon(int index);
 
+    void removeBadgeIcon(int index);
+
     Runnable getMeasureAndLayout();
 }

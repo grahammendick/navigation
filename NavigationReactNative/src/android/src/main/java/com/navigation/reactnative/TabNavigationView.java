@@ -93,6 +93,11 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         return getOrCreateBadge(index);
     }
 
+    @Override
+    public void removeBadgeIcon(int index) {
+        removeBadge(index);
+    }
+
     public Runnable getMeasureAndLayout() {
         return measureAndLayout;
     }

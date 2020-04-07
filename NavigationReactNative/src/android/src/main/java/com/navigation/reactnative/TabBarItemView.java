@@ -40,10 +40,12 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
 
     void setBadge(@Nullable Integer badge) {
         this.badge = badge;
-        if (badge != null) {
-            if (tabView != null)
-                tabView.getBadgeIcon(index).setNumber(badge);
-        }
+        if (tabView == null)
+            return;
+        if (badge != null)
+            tabView.getBadgeIcon(index).setNumber(badge);
+        else
+            tabView.removeBadgeIcon(index);
     }
 
     void setTabView(TabView tabView) {

@@ -58,6 +58,13 @@ public class TabLayoutView extends TabLayout implements TabView {
         return tab != null ? tab.getOrCreateBadge() : null;
     }
 
+    @Override
+    public void removeBadgeIcon(int index) {
+        TabLayout.Tab tab = getTabAt(index);
+        if (tab != null)
+            tab.removeBadge();
+    }
+
     public Runnable getMeasureAndLayout() {
         return measureAndLayout;
     }
