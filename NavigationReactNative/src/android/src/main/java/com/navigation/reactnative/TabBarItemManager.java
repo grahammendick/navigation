@@ -27,7 +27,7 @@ public class TabBarItemManager extends ViewGroupManager<TabBarItemView> {
 
     @ReactProp(name = "title")
     public void setTitle(TabBarItemView view, String title) {
-        view.title = title;
+        view.setTitle(title);
     }
 
     @ReactProp(name = "image")

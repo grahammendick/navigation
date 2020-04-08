@@ -84,6 +84,11 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         return getMenu().size();
     }
 
+    @Override
+    public void setTitle(int index, String title) {
+        getMenu().getItem(index).setTitle(title);
+    }
+
     public void setIcon(int index, Drawable icon) {
         getMenu().getItem(index).setIcon(icon);
     }
