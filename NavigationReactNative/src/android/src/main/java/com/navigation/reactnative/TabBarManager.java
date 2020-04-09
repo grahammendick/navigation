@@ -37,6 +37,10 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
         }
     }
 
+    @ReactProp(name = "tabCount")
+    public void setImages(TabBarView view, int tabCount) {
+    }
+
     @ReactProp(name = "swipeable")
     public void setSwipeable(TabBarView view, boolean swipeable) {
         view.swipeable = swipeable;
