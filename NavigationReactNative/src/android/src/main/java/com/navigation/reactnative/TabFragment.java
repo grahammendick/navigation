@@ -24,9 +24,9 @@ public class TabFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         boolean nestedScrollView = false;
-        ScrollView scrollView = (ScrollView) tabBarItem.getChildAt(0);
+        View child = tabBarItem.getChildAt(0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            nestedScrollView = scrollView != null && scrollView.isNestedScrollingEnabled();
+            nestedScrollView = child instanceof ScrollView && child.isNestedScrollingEnabled();
         return nestedScrollView ? tabBarItem.getChildAt(0) : tabBarItem;
     }
 }
