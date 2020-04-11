@@ -2,7 +2,6 @@ package com.navigation.reactnative;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,21 +44,14 @@ public class TabBarView extends ViewPager {
         post(measureAndLayout);
         if (getTabView() != null)
             getTabView().setupWithViewPager(this);
-        populateTabIcons();
+        populateTabs();
     }
 
-    void populateTabIcons() {
-        final TabView tabView = getTabView();
+    void populateTabs() {
+        TabView tabView = getTabView();
         if (tabView != null && getAdapter() != null) {
             for(int i = 0; i < tabView.getTabCount(); i++) {
-                final int index = i;
-                getAdapter().tabFragments.get(i).tabBarItem.setOnIconListener(new TabBarItemView.OnIconListener() {
-                    @Override
-                    public void onIconResolve(Drawable icon) {
-                        tabView.setIcon(index, icon);
-                        post(tabView.getMeasureAndLayout());
-                    }
-                });
+                getAdapter().tabFragments.get(i).tabBarItem.setTabView(tabView);
             }
         }
     }
@@ -151,7 +143,7 @@ public class TabBarView extends ViewPager {
         FragmentManager fragmentManager;
 
         Adapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
+            super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
             this.fragmentManager = fragmentManager;
         }
 
@@ -174,6 +166,7 @@ public class TabBarView extends ViewPager {
             return tabFragments.size();
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             return tabFragments.get(position);

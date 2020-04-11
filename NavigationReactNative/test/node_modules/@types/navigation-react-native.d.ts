@@ -291,7 +291,7 @@ export interface TabBarItemProps {
     /**
      * The tab badge value
      */
-    badge?: string;
+    badge?: string | number;
     /**
      * The tab badge background color
      */

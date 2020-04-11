@@ -13,10 +13,14 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 public class TabBarItemView extends ViewGroup implements NavigationBoundary {
     Fragment fragment;
+    protected int index;
     protected String title;
     private Drawable icon;
-    private OnIconListener onIconListener;
     private IconResolver.IconResolverListener tabIconResolverListener;
+    private Integer badge;
+    private Integer badgeColor;
+    private TabView tabView;
+    private Integer defaultBadgeColor;
 
     public TabBarItemView(Context context) {
         super(context);
@@ -24,21 +28,54 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
             @Override
             public void setDrawable(Drawable d) {
                 icon = d;
-                if (onIconListener != null)
-                    onIconListener.onIconResolve(icon);
+                if (tabView != null) {
+                    tabView.setIcon(index, icon);
+                    post(tabView.getMeasureAndLayout());
+                }
             }
         };
+    }
+
+    void setTitle(String title) {
+        this.title = title;
+        if (tabView != null) {
+            tabView.setTitle(index, title);
+            post(tabView.getMeasureAndLayout());
+        }
     }
 
     void setIconSource(@Nullable ReadableMap source) {
         IconResolver.setIconSource(source, tabIconResolverListener, getContext());
     }
 
-    void setOnIconListener(OnIconListener onIconListener) {
-        this.onIconListener = onIconListener;
-        if (icon!= null)
-            this.onIconListener.onIconResolve(icon);
+    void setBadge(@Nullable Integer badge) {
+        this.badge = badge;
+        if (tabView == null)
+            return;
+        if (badge != null)
+            tabView.getBadgeIcon(index).setNumber(badge);
+        else
+            tabView.removeBadgeIcon(index);
+        setBadgeColor(badgeColor);
+    }
 
+    void setBadgeColor(@Nullable Integer badgeColor) {
+        this.badgeColor = badgeColor;
+        if (tabView == null || badge == null)
+            return;
+        if (defaultBadgeColor == null)
+            defaultBadgeColor = tabView.getBadgeIcon(index).getBackgroundColor();
+        if (badgeColor != null)
+            tabView.getBadgeIcon(index).setBackgroundColor(badgeColor);
+        else
+            tabView.getBadgeIcon(index).setBackgroundColor(defaultBadgeColor);
+    }
+
+    void setTabView(TabView tabView) {
+        this.tabView = tabView;
+        if (icon != null)
+            tabView.setIcon(index, icon);
+        setBadge(badge);
     }
 
     protected void pressed() {
@@ -53,9 +90,5 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
     @Override
     public Fragment getFragment() {
         return fragment;
-    }
-
-    interface OnIconListener {
-        void onIconResolve(Drawable icon);
     }
 }

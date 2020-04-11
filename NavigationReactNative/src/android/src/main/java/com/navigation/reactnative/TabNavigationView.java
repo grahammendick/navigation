@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TabNavigationView extends BottomNavigationView implements TabView {
@@ -83,8 +84,23 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         return getMenu().size();
     }
 
+    @Override
+    public void setTitle(int index, String title) {
+        getMenu().getItem(index).setTitle(title);
+    }
+
     public void setIcon(int index, Drawable icon) {
         getMenu().getItem(index).setIcon(icon);
+    }
+
+    @Override
+    public BadgeDrawable getBadgeIcon(int index) {
+        return getOrCreateBadge(index);
+    }
+
+    @Override
+    public void removeBadgeIcon(int index) {
+        removeBadge(index);
     }
 
     public Runnable getMeasureAndLayout() {
