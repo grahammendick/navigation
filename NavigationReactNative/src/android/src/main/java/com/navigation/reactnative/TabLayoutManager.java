@@ -26,7 +26,7 @@ public class TabLayoutManager extends ViewGroupManager<TabLayoutView> {
     }
 
     @ReactProp(name = "unselectedTintColor", customType = "Color")
-    public void setUnselectedTintColor(TabLayoutView view, @Nullable Integer unselectedTintColor) {
+    public void setUnselectedTintColor(TabLayoutView view, @Nullable Integer  unselectedTintColor) {
         view.unselectedTintColor = unselectedTintColor != null ? unselectedTintColor : view.defaultTextColor;
         view.setTabTextColors(view.unselectedTintColor, view.selectedTintColor);
         view.setTabIconTint(view.getTabTextColors());

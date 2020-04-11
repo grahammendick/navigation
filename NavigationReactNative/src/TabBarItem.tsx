@@ -35,14 +35,12 @@ class TabBarItem extends React.Component<any> {
         return false;
     }
     render() {
-        var {onPress, children, image, badge, ...props} = this.props;
+        var {onPress, children, image, ...props} = this.props;
         image = typeof image === 'string' ? (Platform.OS === 'ios' ? null : {uri: image}) : image;
-        badge = badge ? (Platform.OS === 'ios' ? '' + badge : +badge) : undefined;
         return (
             <NVTabBarItem
                 {...props}
                 image={Platform.OS === 'ios' ? image : Image.resolveAssetSource(image)}
-                badge={!!badge ? badge : undefined}
                 style={styles.tabBarItem}
                 onPress={event => {
                     event.stopPropagation();

@@ -20,29 +20,14 @@ public class TabBarItemManager extends ViewGroupManager<TabBarItemView> {
         return "NVTabBarItem";
     }
 
-    @ReactProp(name = "index")
-    public void setIndex(TabBarItemView view, int index) {
-        view.index = index;
-    }
-
     @ReactProp(name = "title")
     public void setTitle(TabBarItemView view, String title) {
-        view.setTitle(title);
+        view.title = title;
     }
 
     @ReactProp(name = "image")
     public void setImage(TabBarItemView view, @Nullable ReadableMap icon) {
         view.setIconSource(icon);
-    }
-
-    @ReactProp(name = "badge")
-    public void setBadge(TabBarItemView view, @Nullable Integer badge) {
-        view.setBadge(badge);
-    }
-
-    @ReactProp(name = "badgeColor", customType = "Color")
-    public void setBadgeColor(TabBarItemView view, @Nullable Integer badgeColor) {
-        view.setBadgeColor(badgeColor);
     }
 
     @Nonnull
