@@ -2,6 +2,7 @@ import React from 'react';
 import { requireNativeComponent, Image, Platform, StyleSheet } from 'react-native';
 import BackButton from './BackButton';
 import BackHandlerContext from './BackHandlerContext';
+import PrimaryStackContext from './PrimaryStackContext';
 
 var createBackHandler = () => {
     var listeners = [];
@@ -35,7 +36,7 @@ class TabBarItem extends React.Component<any> {
         return false;
     }
     render() {
-        var {onPress, children, image, ...props} = this.props;
+        var {onPress, children, image, index, primary, ...props} = this.props;
         image = typeof image === 'string' ? (Platform.OS === 'ios' ? null : {uri: image}) : image;
         return (
             <NVTabBarItem
@@ -48,9 +49,11 @@ class TabBarItem extends React.Component<any> {
                         onPress(event);
                 }}>
                 <BackButton onPress={this.handleBack} />
-                <BackHandlerContext.Provider value={this.backHandler}>
-                    {children}
-                </BackHandlerContext.Provider>
+                <PrimaryStackContext.Provider value={primary && index === 0}>
+                    <BackHandlerContext.Provider value={this.backHandler}>
+                        {children}
+                    </BackHandlerContext.Provider>
+                </PrimaryStackContext.Provider>
             </NVTabBarItem>
         );
     }
@@ -66,4 +69,8 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TabBarItem;
+export default (props) => (
+    <PrimaryStackContext.Consumer>
+        {(primary) => <TabBarItem {...props} primary={primary} />}
+    </PrimaryStackContext.Consumer>    
+);

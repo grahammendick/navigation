@@ -55,7 +55,7 @@ class TabBar extends React.Component<any, any> {
                             .filter(child => !!child)
                             .map((child: any, index) => {
                                 var selected = index === this.state.selectedTab;
-                                return React.cloneElement(child, {...child.props, selected})
+                                return React.cloneElement(child, {...child.props, index, selected})
                             })}
                 </NVTabBar>}
                 {bottomTabs && tabLayout}
