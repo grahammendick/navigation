@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
@@ -23,6 +24,15 @@ public class TabLayoutView extends TabLayout implements TabView {
         if (getTabTextColors() != null)
             selectedTintColor = unselectedTintColor = defaultTextColor = getTabTextColors().getDefaultColor();
         setSelectedTabIndicatorColor(defaultTextColor);
+        addOnLayoutChangeListener(new OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (getParent() != null && getParent().getParent() instanceof CoordinatorLayoutView) {
+                    CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) getParent().getParent();
+                    post(coordinatorLayoutView.measureAndLayout);
+                }
+            }
+        });
     }
 
     public void setScrollable(boolean scrollable) {
@@ -51,7 +61,6 @@ public class TabLayoutView extends TabLayout implements TabView {
         if (tab != null)
             tab.setText(title);
         post(measureAndLayout);
-        measureAndLayoutCoordinator();
     }
 
     public void setIcon(int index, Drawable icon) {
@@ -59,7 +68,6 @@ public class TabLayoutView extends TabLayout implements TabView {
         if (tab != null)
             tab.setIcon(icon);
         post(measureAndLayout);
-        measureAndLayoutCoordinator();
     }
 
     final Runnable measureAndLayout = new Runnable() {
@@ -71,11 +79,4 @@ public class TabLayoutView extends TabLayout implements TabView {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
-
-    void measureAndLayoutCoordinator() {
-        if (getParent() != null && getParent().getParent() instanceof CoordinatorLayoutView) {
-            CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) getParent().getParent();
-            post(coordinatorLayoutView.measureAndLayout);
-        }
-    }
 }
