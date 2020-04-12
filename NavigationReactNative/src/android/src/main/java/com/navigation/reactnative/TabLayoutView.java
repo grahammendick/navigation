@@ -50,16 +50,16 @@ public class TabLayoutView extends TabLayout implements TabView {
         TabLayout.Tab tab = getTabAt(index);
         if (tab != null)
             tab.setText(title);
+        post(measureAndLayout);
+        measureAndLayoutCoordinator();
     }
 
     public void setIcon(int index, Drawable icon) {
         TabLayout.Tab tab = getTabAt(index);
         if (tab != null)
             tab.setIcon(icon);
-    }
-
-    public Runnable getMeasureAndLayout() {
-        return measureAndLayout;
+        post(measureAndLayout);
+        measureAndLayoutCoordinator();
     }
 
     final Runnable measureAndLayout = new Runnable() {
@@ -71,4 +71,11 @@ public class TabLayoutView extends TabLayout implements TabView {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
+
+    void measureAndLayoutCoordinator() {
+        if (getParent() != null && getParent().getParent() instanceof CoordinatorLayoutView) {
+            CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) getParent().getParent();
+            post(coordinatorLayoutView.measureAndLayout);
+        }
+    }
 }

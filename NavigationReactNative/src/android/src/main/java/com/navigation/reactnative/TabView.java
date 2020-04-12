@@ -13,6 +13,4 @@ public interface TabView {
     void setTitle(int index, String title);
 
     void setIcon(int index, Drawable icon);
-
-    Runnable getMeasureAndLayout();
 }

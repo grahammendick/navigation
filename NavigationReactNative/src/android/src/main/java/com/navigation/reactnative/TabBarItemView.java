@@ -25,20 +25,16 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
             @Override
             public void setDrawable(Drawable d) {
                 icon = d;
-                if (tabView != null) {
+                if (tabView != null)
                     tabView.setIcon(index, icon);
-                    post(tabView.getMeasureAndLayout());
-                }
             }
         };
     }
 
     void setTitle(String title) {
         this.title = title;
-        if (tabView != null) {
+        if (tabView != null)
             tabView.setTitle(index, title);
-            post(tabView.getMeasureAndLayout());
-        }
     }
 
     void setIconSource(@Nullable ReadableMap source) {
