@@ -45,6 +45,13 @@ public class TabLayoutView extends TabLayout implements TabView {
         }
     }
 
+    @Override
+    public void setTitle(int index, String title) {
+        TabLayout.Tab tab = getTabAt(index);
+        if (tab != null)
+            tab.setText(title);
+    }
+
     public void setIcon(int index, Drawable icon) {
         TabLayout.Tab tab = getTabAt(index);
         if (tab != null)

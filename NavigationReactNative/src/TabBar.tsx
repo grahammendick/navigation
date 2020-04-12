@@ -39,7 +39,7 @@ class TabBar extends React.Component<any, any> {
             <>
                 {!bottomTabs && tabLayout}
                 {!!tabBarItems.length && <NVTabBar
-                    images={tabBarItems.map(({props}: any) => props.image)}
+                    tabCount={tabBarItems.length}
                     onTabSelected={({nativeEvent}) => {
                         if (this.state.selectedTab !== nativeEvent.tab)
                             this.setState({selectedTab: nativeEvent.tab})

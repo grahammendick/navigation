@@ -10,6 +10,8 @@ public interface TabView {
 
     int getTabCount();
 
+    void setTitle(int index, String title);
+
     void setIcon(int index, Drawable icon);
 
     Runnable getMeasureAndLayout();

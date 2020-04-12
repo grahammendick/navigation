@@ -41,6 +41,7 @@ class TabBarItem extends React.Component<any> {
         return (
             <NVTabBarItem
                 {...props}
+                index={index}
                 image={Platform.OS === 'ios' ? image : Image.resolveAssetSource(image)}
                 style={styles.tabBarItem}
                 onPress={event => {
