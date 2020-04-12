@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, StyleSheet, ScrollView} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {NavigationBar, CoordinatorLayout} from 'navigation-react-native';
 import Tweets from './Tweets';
 
