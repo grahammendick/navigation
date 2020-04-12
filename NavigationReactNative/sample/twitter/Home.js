@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, StyleSheet} from 'react-native';
+import {Platform} from 'react-native';
 import {NavigationBar, CoordinatorLayout} from 'navigation-react-native';
 import Tweets from './Tweets';
 
@@ -9,10 +9,3 @@ export default ({tweets}) => (
     <Tweets tweets={tweets} />
   </CoordinatorLayout>
 );
-
-const styles = StyleSheet.create({
-  view: {
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-});
