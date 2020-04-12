@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.google.android.material.internal.CollapsingTextHelper;
 
 import javax.annotation.Nonnull;
 
