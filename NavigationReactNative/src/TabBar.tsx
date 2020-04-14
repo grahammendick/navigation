@@ -24,10 +24,11 @@ class TabBar extends React.Component<any, any> {
         var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, segmented, swipeable} = this.props;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
+        var tabViewHeight = swipeable ? (titleOnly ? 48 : 72) : 56
+        tabViewHeight = Platform.OS === 'android' ? tabViewHeight : 28;
         var TabBar = !segmented ? NVTabBar : NVSegmentedTabBar;
         var TabView = swipeable ? NVTabLayout : NVTabNavigation;
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedControl;
-        var NVTab
         var tabLayout = (Platform.OS === 'android' || segmented) && (
             <TabView
                 selectedTintColor={selectedTintColor}
@@ -35,8 +36,8 @@ class TabBar extends React.Component<any, any> {
                 selectedIndicatorAtTop={bottomTabs}
                 scrollable={scrollable}
                 style={{
-                    backgroundColor: barTintColor,
-                    height: swipeable ? (titleOnly ? 48 : 72) : 56
+                    height: tabViewHeight,
+                    backgroundColor: barTintColor
                 }} />
         );
         return (
