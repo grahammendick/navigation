@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
+import { requireNativeComponent, Platform, StyleSheet, View } from 'react-native';
 import BackButton from './BackButton';
 
 class TabBar extends React.Component<any, any> {
@@ -26,7 +26,7 @@ class TabBar extends React.Component<any, any> {
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
         var tabViewHeight = swipeable ? (titleOnly ? 48 : 72) : 56
         tabViewHeight = Platform.OS === 'android' ? tabViewHeight : 28;
-        var TabBar = !segmented ? NVTabBar : NVSegmentedTabBar;
+        var TabBar = !segmented ? NVTabBar : View;
         var TabView = swipeable ? NVTabLayout : NVTabNavigation;
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedControl;
         var tabLayout = (Platform.OS === 'android' || segmented) && (
@@ -73,7 +73,6 @@ var NVTabLayout = requireNativeComponent<any>('NVTabLayout', null);
 var NVTabNavigation = requireNativeComponent<any>('NVTabNavigation', null);
 var NVSegmentedControl = requireNativeComponent<any>('NVSegmentedControl', null);
 var NVTabBar = requireNativeComponent<any>('NVTabBar', null);
-var NVSegmentedTabBar = requireNativeComponent<any>('NVSegmentedTabBar', null);
 
 const styles = StyleSheet.create({
     tabBar: {
