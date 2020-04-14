@@ -30,6 +30,10 @@
 		70BB329E212B2C9000DE0D13 /* NVBarButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB329D212B2C9000DE0D13 /* NVBarButtonManager.m */; };
 		70BB32A0212B2CA000DE0D13 /* NVBarButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB329F212B2CA000DE0D13 /* NVBarButtonView.m */; };
 		70BB32A4212B2D4100DE0D13 /* NVBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB32A3212B2D4100DE0D13 /* NVBarView.m */; };
+		70E99F2A24461103004B520A /* NVSegmentedControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E99F2924461103004B520A /* NVSegmentedControlView.m */; };
+		70E99F2D24461152004B520A /* NVSegmentedControlManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E99F2C24461152004B520A /* NVSegmentedControlManager.m */; };
+		70E99F3024461167004B520A /* NVSegmentedTabBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E99F2F24461167004B520A /* NVSegmentedTabBarView.m */; };
+		70E99F3324461181004B520A /* NVSegmentedTabBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E99F3224461181004B520A /* NVSegmentedTabBarManager.m */; };
 		EE17B6DD231E85C000C62B81 /* NVTitleBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = EE17B6DC231E85C000C62B81 /* NVTitleBarView.m */; };
 		EE17B6E0231E86B800C62B81 /* NVTitleBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EE17B6DF231E86B800C62B81 /* NVTitleBarManager.m */; };
 /* End PBXBuildFile section */
@@ -94,6 +98,14 @@
 		70BB32A1212B2CA900DE0D13 /* NVBarButtonView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVBarButtonView.h; sourceTree = "<group>"; };
 		70BB32A2212B2D3700DE0D13 /* NVBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVBarView.h; sourceTree = "<group>"; };
 		70BB32A3212B2D4100DE0D13 /* NVBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVBarView.m; sourceTree = "<group>"; };
+		70E99F28244610EB004B520A /* NVSegmentedControlView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSegmentedControlView.h; sourceTree = "<group>"; };
+		70E99F2924461103004B520A /* NVSegmentedControlView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSegmentedControlView.m; sourceTree = "<group>"; };
+		70E99F2B24461144004B520A /* NVSegmentedControlManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSegmentedControlManager.h; sourceTree = "<group>"; };
+		70E99F2C24461152004B520A /* NVSegmentedControlManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSegmentedControlManager.m; sourceTree = "<group>"; };
+		70E99F2E2446115E004B520A /* NVSegmentedTabBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSegmentedTabBarView.h; sourceTree = "<group>"; };
+		70E99F2F24461167004B520A /* NVSegmentedTabBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSegmentedTabBarView.m; sourceTree = "<group>"; };
+		70E99F3124461176004B520A /* NVSegmentedTabBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSegmentedTabBarManager.h; sourceTree = "<group>"; };
+		70E99F3224461181004B520A /* NVSegmentedTabBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSegmentedTabBarManager.m; sourceTree = "<group>"; };
 		EE17B6DB231E85C000C62B81 /* NVTitleBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTitleBarView.h; sourceTree = "<group>"; };
 		EE17B6DC231E85C000C62B81 /* NVTitleBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTitleBarView.m; sourceTree = "<group>"; };
 		EE17B6DE231E86B800C62B81 /* NVTitleBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTitleBarManager.h; sourceTree = "<group>"; };
@@ -114,6 +126,14 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				70E99F3224461181004B520A /* NVSegmentedTabBarManager.m */,
+				70E99F3124461176004B520A /* NVSegmentedTabBarManager.h */,
+				70E99F2F24461167004B520A /* NVSegmentedTabBarView.m */,
+				70E99F2E2446115E004B520A /* NVSegmentedTabBarView.h */,
+				70E99F2C24461152004B520A /* NVSegmentedControlManager.m */,
+				70E99F2B24461144004B520A /* NVSegmentedControlManager.h */,
+				70E99F2924461103004B520A /* NVSegmentedControlView.m */,
+				70E99F28244610EB004B520A /* NVSegmentedControlView.h */,
 				70922F8722C0D15C009CECB0 /* NVNavigationBarManager.h */,
 				70922F8522C0D153009CECB0 /* NVNavigationBarManager.m */,
 				70922F8322C0D143009CECB0 /* NVNavigationBarView.m */,
@@ -241,14 +261,18 @@
 				70922F8422C0D143009CECB0 /* NVNavigationBarView.m in Sources */,
 				704B593C22A2AC14008C05C6 /* NVNavigationStackView.m in Sources */,
 				70AFBC3221DCD2CC006355EE /* NVSharedElementManager.m in Sources */,
+				70E99F3024461167004B520A /* NVSegmentedTabBarView.m in Sources */,
 				EE17B6DD231E85C000C62B81 /* NVTitleBarView.m in Sources */,
 				70587C89229A86B8009457B7 /* NVSearchBarManager.m in Sources */,
+				70E99F3324461181004B520A /* NVSegmentedTabBarManager.m in Sources */,
 				709F32D322A7FFBF00A0358A /* NVTabBarManager.m in Sources */,
 				709F32D522A7FFD600A0358A /* NVTabBarItemView.m in Sources */,
+				70E99F2D24461152004B520A /* NVSegmentedControlManager.m in Sources */,
 				70BB329A212B2C5100DE0D13 /* NVLeftBarManager.m in Sources */,
 				70BB32A0212B2CA000DE0D13 /* NVBarButtonView.m in Sources */,
 				70922F8622C0D153009CECB0 /* NVNavigationBarManager.m in Sources */,
 				70AFBC3521DCD320006355EE /* NVSharedElementView.m in Sources */,
+				70E99F2A24461103004B520A /* NVSegmentedControlView.m in Sources */,
 				70BB32A4212B2D4100DE0D13 /* NVBarView.m in Sources */,
 				70587C86229A8688009457B7 /* NVSearchBarView.m in Sources */,
 				704B594622A2AC77008C05C6 /* NVSceneManager.m in Sources */,
