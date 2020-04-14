@@ -11,6 +11,7 @@ class TabBar extends React.Component<any, any> {
     static defaultProps = {
         bottomTabs: false,
         scrollable: false,
+        segmented: false,
         swipeable: true
     }
     handleBack() {
@@ -20,12 +21,15 @@ class TabBar extends React.Component<any, any> {
         return !!selectedTab;
     }
     render() {
-        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, swipeable} = this.props;
+        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, segmented, swipeable} = this.props;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
-        var NVTabView = swipeable ? NVTabLayout : NVTabNavigation;
-        var tabLayout = Platform.OS === 'android' && (
-            <NVTabView
+        var TabBar = !segmented ? NVTabBar : NVSegmentedTabBar;
+        var TabView = swipeable ? NVTabLayout : NVTabNavigation;
+        TabView = Platform.OS === 'android' ? TabView : NVSegmentedControl;
+        var NVTab
+        var tabLayout = (Platform.OS === 'android' || segmented) && (
+            <TabView
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
@@ -38,7 +42,7 @@ class TabBar extends React.Component<any, any> {
         return (
             <>
                 {!bottomTabs && tabLayout}
-                {!!tabBarItems.length && <NVTabBar
+                {!!tabBarItems.length && <TabBar
                     tabCount={tabBarItems.length}
                     onTabSelected={({nativeEvent}) => {
                         if (this.state.selectedTab !== nativeEvent.tab)
@@ -57,7 +61,7 @@ class TabBar extends React.Component<any, any> {
                                 var selected = index === this.state.selectedTab;
                                 return React.cloneElement(child, {...child.props, index, selected})
                             })}
-                </NVTabBar>}
+                </TabBar>}
                 {bottomTabs && tabLayout}
             </>
         );
@@ -66,7 +70,9 @@ class TabBar extends React.Component<any, any> {
 
 var NVTabLayout = requireNativeComponent<any>('NVTabLayout', null);
 var NVTabNavigation = requireNativeComponent<any>('NVTabNavigation', null);
+var NVSegmentedControl = requireNativeComponent<any>('NVSegmentedControl', null);
 var NVTabBar = requireNativeComponent<any>('NVTabBar', null);
+var NVSegmentedTabBar = requireNativeComponent<any>('NVSegmentedTabBar', null);
 
 const styles = StyleSheet.create({
     tabBar: {
