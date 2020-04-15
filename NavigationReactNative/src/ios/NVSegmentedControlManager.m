@@ -10,4 +10,6 @@ RCT_EXPORT_MODULE()
     return [[NVSegmentedControlView alloc] init];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(titles, NSArray<NSString *>)
+
 @end
