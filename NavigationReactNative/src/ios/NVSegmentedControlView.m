@@ -37,7 +37,8 @@
 
 - (void)selectTab
 {
-    UIView* tabBar = [self.superview.subviews objectAtIndex:1];
+    NSInteger tabBarIndex = 1 - [self.superview.subviews indexOfObject:self];
+    UIView* tabBar = [self.superview.subviews objectAtIndex:tabBarIndex];
     for(NSInteger i = 0; i < [tabBar.subviews count]; i++) {
         [tabBar.subviews objectAtIndex:i].alpha = (i == _selectedIndex ? 1 : 0);
     }
