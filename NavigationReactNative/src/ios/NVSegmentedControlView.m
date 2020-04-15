@@ -1,4 +1,5 @@
 #import "NVSegmentedControlView.h"
+#import "NVTabBarItemView.h"
 
 @implementation NVSegmentedControlView
 {
@@ -26,21 +27,25 @@
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    [self selectTab];
+    [self selectTab:false];
 }
 
 - (void)tabPressed
 {
     _selectedIndex = self.selectedSegmentIndex;
-    [self selectTab];
+    [self selectTab:true];
 }
 
-- (void)selectTab
+- (void)selectTab:(Boolean) press
 {
     NSInteger tabBarIndex = 1 - [self.superview.subviews indexOfObject:self];
     UIView* tabBar = [self.superview.subviews objectAtIndex:tabBarIndex];
     for(NSInteger i = 0; i < [tabBar.subviews count]; i++) {
-        [tabBar.subviews objectAtIndex:i].alpha = (i == _selectedIndex ? 1 : 0);
+        NVTabBarItemView *tabBarItem = (NVTabBarItemView *) [tabBar.subviews objectAtIndex:i];
+        tabBarItem.alpha = (i == _selectedIndex ? 1 : 0);
+        if (press && i == _selectedIndex && !!tabBarItem.onPress) {
+            tabBarItem.onPress(nil);
+        }
     }
 }
 
