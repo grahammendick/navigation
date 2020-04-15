@@ -36,7 +36,7 @@
     [self selectTab:true];
 }
 
-- (void)selectTab:(Boolean) press
+- (void)selectTab:(BOOL) press
 {
     NSInteger tabBarIndex = 1 - [self.superview.subviews indexOfObject:self];
     UIView* tabBar = [self.superview.subviews objectAtIndex:tabBarIndex];
