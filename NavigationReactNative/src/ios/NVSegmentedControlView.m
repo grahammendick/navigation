@@ -27,13 +27,13 @@
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    [self selectTab:false];
+    [self selectTab:NO];
 }
 
 - (void)tabPressed
 {
     _selectedIndex = self.selectedSegmentIndex;
-    [self selectTab:true];
+    [self selectTab:YES];
 }
 
 - (void)selectTab:(BOOL) press
