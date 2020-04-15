@@ -34,6 +34,7 @@ class TabBar extends React.Component<any, any> {
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
+                titles={tabBarItems.map(({props}: any) => props.title)}
                 scrollable={scrollable}
                 style={{
                     height: tabViewHeight,
