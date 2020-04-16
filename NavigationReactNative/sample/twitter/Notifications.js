@@ -2,54 +2,10 @@ import React, {useContext} from 'react';
 import {StyleSheet, SafeAreaView, Text, Image, FlatList, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {CoordinatorLayout, NavigationBar, TabBar, TabBarItem} from 'navigation-react-native';
-
-const Follow = ({account: {id, name, logo}}) => {
-  const {stateNavigator} = useContext(NavigationContext);
-  return (
-    <TouchableHighlight
-      underlayColor="white"
-      onPress={() => {
-        stateNavigator.navigate('timeline', {id});
-      }}>
-      <View style={styles.follow}>
-        <View>
-          <Image style={styles.logo} source={logo} />
-          <View style={styles.details}>
-          <Text style={styles.name}>{name}</Text>
-          <Text>followed you.</Text>
-          </View>
-        </View>
-      </View>
-    </TouchableHighlight>
-  );
-}
-
-const Tweet = ({id, account: {id: accountId, name, logo}, text}) => {
-  const {stateNavigator} = useContext(NavigationContext);
-  return (
-    <TouchableHighlight
-      underlayColor="white"
-      onPress={() => {
-        stateNavigator.navigate('tweet', {id});
-      }}>
-      <View style={styles.tweet}>
-        <TouchableHighlight
-          underlayColor="white"
-          onPress={() => {
-            stateNavigator.navigate('timeline', {id: accountId});
-        }}>
-          <Image style={styles.tweetLogo} source={logo} />
-        </TouchableHighlight>
-        <View style={styles.tweetDetails}>
-          <Text style={styles.tweetName}>{name}</Text>
-          <Text>{text}</Text>
-        </View>
-      </View>
-    </TouchableHighlight>
-  );
-}
+import TweetItem from './TweetItem';
 
 export default ({notifications}) => {
+  const {stateNavigator} = useContext(NavigationContext);
   return (
     <SafeAreaView style={{flex: 1}}>
       <CoordinatorLayout>
@@ -65,8 +21,24 @@ export default ({notifications}) => {
               keyExtractor={(_item, index) => '' + index}
               nestedScrollEnabled={true}
               style={styles.view}
-              renderItem={({item}) => (
-                item.follow ? <Follow {...item} /> : <Tweet {...item} />
+              renderItem={({item: {account: {id, name, logo}}, item}) => (
+                item.follow ? (
+                  <TouchableHighlight
+                    underlayColor="white"
+                    onPress={() => {
+                      stateNavigator.navigate('timeline', {id});
+                    }}>
+                    <View style={styles.follow}>
+                      <View>
+                        <Image style={styles.logo} source={logo} />
+                        <View style={styles.details}>
+                        <Text style={styles.name}>{name}</Text>
+                        <Text>followed you.</Text>
+                        </View>
+                      </View>
+                    </View>
+                  </TouchableHighlight>
+                ) : <TweetItem {...item} />
               )} />
           </TabBarItem>
           <TabBarItem title="Mentions">
@@ -75,7 +47,7 @@ export default ({notifications}) => {
               keyExtractor={(_item, index) => '' + index}
               nestedScrollEnabled={true}
               style={styles.view}
-              renderItem={({item}) => <Tweet {...item} />} />
+              renderItem={({item}) => <TweetItem {...item} />} />
           </TabBarItem>
         </TabBar>
       </CoordinatorLayout>
@@ -112,24 +84,5 @@ const styles = StyleSheet.create({
     borderRadius: 17.5,
     marginRight: 5,
     marginBottom: 10,
-  },
-  tweet: {
-    flexDirection: 'row',
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderBottomColor: '#ccd6dd',
-    borderBottomWidth: 1,
-  },
-  tweetDetails: {
-    flex: 1,
-  },
-  tweetName: {
-    fontWeight: 'bold',
-  },
-  tweetLogo: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 8,
   },
 });
