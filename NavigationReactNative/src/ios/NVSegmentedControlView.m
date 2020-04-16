@@ -24,6 +24,42 @@
     self.selectedSegmentIndex = _selectedIndex;
 }
 
+- (void)setBarTintColor:(UIColor *)barTintColor
+{
+    [super setTintColor:barTintColor];
+    if (@available(iOS 13.0, *)) {
+        [self setBackgroundColor:barTintColor];
+    }
+}
+
+- (void)setSelectedTintColor:(UIColor *)selectedTintColor
+{
+    if (@available(iOS 13.0, *)) {
+        NSMutableDictionary *titleAttributes = [[self titleTextAttributesForState:UIControlStateSelected] mutableCopy];
+        if (titleAttributes == nil) {
+            titleAttributes = @{}.mutableCopy;
+        }
+        [titleAttributes removeObjectForKey:NSForegroundColorAttributeName];
+        if (selectedTintColor != nil) {
+            titleAttributes[NSForegroundColorAttributeName] = selectedTintColor;
+        }
+        [self setTitleTextAttributes:titleAttributes forState:UIControlStateSelected];
+    }
+}
+
+- (void)setUnselectedTintColor:(UIColor *)unselectedTintColor
+{
+    NSMutableDictionary *titleAttributes = [[self titleTextAttributesForState:UIControlStateNormal] mutableCopy];
+    if (titleAttributes == nil) {
+        titleAttributes = @{}.mutableCopy;
+    }
+    [titleAttributes removeObjectForKey:NSForegroundColorAttributeName];
+    if (unselectedTintColor != nil) {
+        titleAttributes[NSForegroundColorAttributeName] = unselectedTintColor;
+    }
+    [self setTitleTextAttributes:titleAttributes forState:UIControlStateNormal];
+}
+
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
