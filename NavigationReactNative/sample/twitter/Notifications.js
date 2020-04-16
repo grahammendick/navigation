@@ -53,10 +53,16 @@ export default ({notifications}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <CoordinatorLayout>
-        <NavigationBar title="Notifications" barTintColor={Platform.OS === 'android' ? '#fff' : null}>
+        <NavigationBar
+          title="Notifications"
+          barTintColor={Platform.OS === 'android' ? 'rgba(255,255,255, 0)' : null}>
           <TabBar selectedTintColor="#1da1f2" />
         </NavigationBar>
-        <TabBar segmented={true} barTintColor={Platform.OS === 'ios' ? '#1da1f2' : null} unselectedTintColor="#fff" selectedTintColor="#1da1f2">
+        <TabBar
+          segmented={true}
+          barTintColor={Platform.OS === 'ios' ? '#1da1f2' : null}
+          unselectedTintColor="#fff"
+          selectedTintColor="#1da1f2">
           <TabBarItem title="All">
             <FlatList
               data={notifications}
