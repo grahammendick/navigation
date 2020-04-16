@@ -56,13 +56,19 @@ export default ({notifications}) => {
       <TabBar segmented={true}>
         <TabBarItem title="All">
           <FlatList
-              data={notifications}
-              keyExtractor={(_item, index) => '' + index}
-              contentInsetAdjustmentBehavior="automatic"
-              style={styles.view}
-              renderItem={({item}) => (
-                item.follow ? <Follow {...item} /> : <Tweet {...item} />
-              )} />
+            data={notifications}
+            keyExtractor={(_item, index) => '' + index}
+            style={styles.view}
+            renderItem={({item}) => (
+              item.follow ? <Follow {...item} /> : <Tweet {...item} />
+            )} />
+        </TabBarItem>
+        <TabBarItem title="Mentions">
+          <FlatList
+            data={notifications.filter(({mention}) => mention)}
+            keyExtractor={(_item, index) => '' + index}
+            style={styles.view}
+            renderItem={({item}) => <Tweet {...item} />} />
         </TabBarItem>
       </TabBar>
     </SafeAreaView>
