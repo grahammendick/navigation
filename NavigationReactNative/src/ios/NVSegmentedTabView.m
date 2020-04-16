@@ -1,7 +1,7 @@
-#import "NVSegmentedControlView.h"
+#import "NVSegmentedTabView.h"
 #import "NVTabBarItemView.h"
 
-@implementation NVSegmentedControlView
+@implementation NVSegmentedTabView
 {
     NSInteger _selectedIndex;
 }

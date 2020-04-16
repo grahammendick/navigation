@@ -1,13 +1,13 @@
-#import "NVSegmentedControlManager.h"
-#import "NVSegmentedControlView.h"
+#import "NVSegmentedTabManager.h"
+#import "NVSegmentedTabView.h"
 
-@implementation NVSegmentedControlManager
+@implementation NVSegmentedTabManager
 
 RCT_EXPORT_MODULE()
 
 - (UIView *)view
 {
-    return [[NVSegmentedControlView alloc] init];
+    return [[NVSegmentedTabView alloc] init];
 }
 
 RCT_EXPORT_VIEW_PROPERTY(titles, NSArray<NSString *>)

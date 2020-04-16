@@ -28,7 +28,7 @@ class TabBar extends React.Component<any, any> {
         tabViewHeight = Platform.OS === 'android' ? tabViewHeight : 28;
         var TabBar = (Platform.OS === 'android' || !segmented) ? NVTabBar : View;
         var TabView = swipeable ? NVTabLayout : NVTabNavigation;
-        TabView = Platform.OS === 'android' ? TabView : NVSegmentedControl;
+        TabView = Platform.OS === 'android' ? TabView : NVSegmentedTab;
         var tabLayout = (Platform.OS === 'android' || segmented) && (
             <TabView
                 selectedTintColor={selectedTintColor}
@@ -72,7 +72,7 @@ class TabBar extends React.Component<any, any> {
 
 var NVTabLayout = requireNativeComponent<any>('NVTabLayout', null);
 var NVTabNavigation = requireNativeComponent<any>('NVTabNavigation', null);
-var NVSegmentedControl = requireNativeComponent<any>('NVSegmentedControl', null);
+var NVSegmentedTab = requireNativeComponent<any>('NVSegmentedTab', null);
 var NVTabBar = requireNativeComponent<any>('NVTabBar', null);
 
 const styles = StyleSheet.create({
