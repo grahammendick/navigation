@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {StyleSheet, SafeAreaView, Text, Image, FlatList, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBar, TabBar, TabBarItem} from 'navigation-react-native';
+import {CoordinatorLayout, NavigationBar, TabBar, TabBarItem} from 'navigation-react-native';
 
 const Follow = ({account: {id, name, logo}}) => {
   const {stateNavigator} = useContext(NavigationContext);
@@ -52,25 +52,31 @@ const Tweet = ({id, account: {id: accountId, name, logo}, text}) => {
 export default ({notifications}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
-      <NavigationBar title="Notifications" barTintColor={Platform.OS === 'android' ? '#fff' : null} />
-      <TabBar segmented={true}>
-        <TabBarItem title="All">
-          <FlatList
-            data={notifications}
-            keyExtractor={(_item, index) => '' + index}
-            style={styles.view}
-            renderItem={({item}) => (
-              item.follow ? <Follow {...item} /> : <Tweet {...item} />
-            )} />
-        </TabBarItem>
-        <TabBarItem title="Mentions">
-          <FlatList
-            data={notifications.filter(({mention}) => mention)}
-            keyExtractor={(_item, index) => '' + index}
-            style={styles.view}
-            renderItem={({item}) => <Tweet {...item} />} />
-        </TabBarItem>
-      </TabBar>
+      <CoordinatorLayout>
+        <NavigationBar title="Notifications" barTintColor={Platform.OS === 'android' ? '#fff' : null}>
+          <TabBar />
+        </NavigationBar>
+        <TabBar segmented={true}>
+          <TabBarItem title="All">
+            <FlatList
+              data={notifications}
+              keyExtractor={(_item, index) => '' + index}
+              nestedScrollEnabled={true}
+              style={styles.view}
+              renderItem={({item}) => (
+                item.follow ? <Follow {...item} /> : <Tweet {...item} />
+              )} />
+          </TabBarItem>
+          <TabBarItem title="Mentions">
+            <FlatList
+              data={notifications.filter(({mention}) => mention)}
+              keyExtractor={(_item, index) => '' + index}
+              nestedScrollEnabled={true}
+              style={styles.view}
+              renderItem={({item}) => <Tweet {...item} />} />
+          </TabBarItem>
+        </TabBar>
+      </CoordinatorLayout>
     </SafeAreaView>
   );
 };
