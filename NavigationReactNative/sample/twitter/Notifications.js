@@ -56,7 +56,7 @@ export default ({notifications}) => {
         <NavigationBar title="Notifications" barTintColor={Platform.OS === 'android' ? '#fff' : null}>
           <TabBar selectedTintColor="#1da1f2" />
         </NavigationBar>
-        <TabBar segmented={true} barTintColor={Platform.OS === 'ios' ? "#1da1f2" : null} unselectedTintColor="#fff" selectedTintColor="#1da1f2">
+        <TabBar segmented={true} barTintColor={Platform.OS === 'ios' ? '#1da1f2' : null} unselectedTintColor="#fff" selectedTintColor="#1da1f2">
           <TabBarItem title="All">
             <FlatList
               data={notifications}
