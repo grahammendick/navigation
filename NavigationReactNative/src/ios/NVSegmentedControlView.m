@@ -40,15 +40,17 @@
 
 - (void)setUnselectedTintColor:(UIColor *)unselectedTintColor
 {
-    NSMutableDictionary *titleAttributes = [[self titleTextAttributesForState:UIControlStateNormal] mutableCopy];
-    if (titleAttributes == nil) {
-        titleAttributes = @{}.mutableCopy;
+    if (@available(iOS 13.0, *)) {
+        NSMutableDictionary *titleAttributes = [[self titleTextAttributesForState:UIControlStateNormal] mutableCopy];
+        if (titleAttributes == nil) {
+            titleAttributes = @{}.mutableCopy;
+        }
+        [titleAttributes removeObjectForKey:NSForegroundColorAttributeName];
+        if (unselectedTintColor != nil) {
+            titleAttributes[NSForegroundColorAttributeName] = unselectedTintColor;
+        }
+        [self setTitleTextAttributes:titleAttributes forState:UIControlStateNormal];
     }
-    [titleAttributes removeObjectForKey:NSForegroundColorAttributeName];
-    if (unselectedTintColor != nil) {
-        titleAttributes[NSForegroundColorAttributeName] = unselectedTintColor;
-    }
-    [self setTitleTextAttributes:titleAttributes forState:UIControlStateNormal];
 }
 
 - (void)didMoveToWindow
