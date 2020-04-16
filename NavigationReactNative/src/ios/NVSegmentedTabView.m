@@ -75,7 +75,7 @@
 
 - (void)selectTab:(BOOL) press
 {
-    NSInteger tabBarIndex = 1 - [self.superview.subviews indexOfObject:self];
+    NSInteger tabBarIndex = [self.superview.subviews indexOfObject:self] + (self.bottomTabs ? -1 : 1);
     UIView* tabBar = [self.superview.subviews objectAtIndex:tabBarIndex];
     for(NSInteger i = 0; i < [tabBar.subviews count]; i++) {
         NVTabBarItemView *tabBarItem = (NVTabBarItemView *) [tabBar.subviews objectAtIndex:i];
