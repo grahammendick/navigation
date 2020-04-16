@@ -23,6 +23,14 @@
     self.selectedSegmentIndex = _selectedIndex;
 }
 
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    [super setTintColor:backgroundColor];
+    if (@available(iOS 13.0, *)) {
+        [super setBackgroundColor:backgroundColor];
+    }
+}
+
 - (void)setSelectedTintColor:(UIColor *)selectedTintColor
 {
     if (@available(iOS 13.0, *)) {
