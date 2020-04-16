@@ -3,8 +3,53 @@ import {StyleSheet, SafeAreaView, Text, Image, FlatList, View, TouchableHighligh
 import {NavigationContext} from 'navigation-react';
 import {NavigationBar, TabBar, TabBarItem} from 'navigation-react-native';
 
-export default ({notifications}) => {
+const Follow = ({account: {id, name, logo}}) => {
   const {stateNavigator} = useContext(NavigationContext);
+  return (
+    <TouchableHighlight
+      underlayColor="white"
+      onPress={() => {
+        stateNavigator.navigate('timeline', {id});
+      }}>
+      <View style={styles.follow}>
+        <View>
+          <Image style={styles.logo} source={logo} />
+          <View style={styles.details}>
+          <Text style={styles.name}>{name}</Text>
+          <Text>followed you.</Text>
+          </View>
+        </View>
+      </View>
+    </TouchableHighlight>
+  );
+}
+
+const Tweet = ({id, account: {id: accountId, name, logo}, text}) => {
+  const {stateNavigator} = useContext(NavigationContext);
+  return (
+    <TouchableHighlight
+      underlayColor="white"
+      onPress={() => {
+        stateNavigator.navigate('tweet', {id});
+      }}>
+      <View style={styles.tweet}>
+        <TouchableHighlight
+          underlayColor="white"
+          onPress={() => {
+            stateNavigator.navigate('timeline', {id: accountId});
+        }}>
+          <Image style={styles.tweet_logo} source={logo} />
+        </TouchableHighlight>
+        <View style={styles.tweet_details}>
+          <Text style={styles.tweet_name}>{name}</Text>
+          <Text>{text}</Text>
+        </View>
+      </View>
+    </TouchableHighlight>
+  );
+}
+
+export default ({notifications}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <NavigationBar title="Notifications" barTintColor={Platform.OS === 'android' ? '#fff' : null} />
@@ -15,44 +60,7 @@ export default ({notifications}) => {
               keyExtractor={({follow, id, account}) => `${follow ? 'f' : 'm'}${id || account.id}`}
               contentInsetAdjustmentBehavior="automatic"
               style={styles.view}
-              renderItem={({item: {follow, id, account: {id: accountId, name, logo}, text}}) => (
-                follow ?
-                  <TouchableHighlight
-                    underlayColor="white"
-                    onPress={() => {
-                      stateNavigator.navigate('timeline', {id: accountId});
-                    }}>
-                    <View style={styles.follow}>
-                      <View>
-                        <Image style={styles.logo} source={logo} />
-                        <View style={styles.details}>
-                        <Text style={styles.name}>{name}</Text>
-                        <Text>followed you.</Text>
-                        </View>
-                      </View>
-                    </View>
-                  </TouchableHighlight>
-                  :
-                  <TouchableHighlight
-                    underlayColor="white"
-                    onPress={() => {
-                      stateNavigator.navigate('tweet', {id});
-                    }}>
-                    <View style={styles.tweet}>
-                      <TouchableHighlight
-                        underlayColor="white"
-                        onPress={() => {
-                          stateNavigator.navigate('timeline', {id: accountId});
-                      }}>
-                        <Image style={styles.tweet_logo} source={logo} />
-                      </TouchableHighlight>
-                      <View style={styles.tweet_details}>
-                        <Text style={styles.tweet_name}>{name}</Text>
-                        <Text>{text}</Text>
-                      </View>
-                    </View>
-                  </TouchableHighlight>
-              )} />
+              renderItem={({item}) => item.follow ? <Follow {...item} /> : <Tweet {...item} />} />
         </TabBarItem>
       </TabBar>
     </SafeAreaView>
