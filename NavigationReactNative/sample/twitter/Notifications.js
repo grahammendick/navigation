@@ -38,10 +38,10 @@ const Tweet = ({id, account: {id: accountId, name, logo}, text}) => {
           onPress={() => {
             stateNavigator.navigate('timeline', {id: accountId});
         }}>
-          <Image style={styles.tweet_logo} source={logo} />
+          <Image style={styles.tweetLogo} source={logo} />
         </TouchableHighlight>
-        <View style={styles.tweet_details}>
-          <Text style={styles.tweet_name}>{name}</Text>
+        <View style={styles.tweetDetails}>
+          <Text style={styles.tweetName}>{name}</Text>
           <Text>{text}</Text>
         </View>
       </View>
@@ -112,13 +112,13 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccd6dd',
     borderBottomWidth: 1,
   },
-  tweet_details: {
+  tweetDetails: {
     flex: 1,
   },
-  tweet_name: {
+  tweetName: {
     fontWeight: 'bold',
   },
-  tweet_logo: {
+  tweetLogo: {
     width: 50,
     height: 50,
     borderRadius: 25,
