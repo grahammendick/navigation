@@ -57,10 +57,12 @@ export default ({notifications}) => {
         <TabBarItem title="All">
           <FlatList
               data={notifications}
-              keyExtractor={({follow, id, account}) => `${follow ? 'f' : 'm'}${id || account.id}`}
+              keyExtractor={(_item, index) => '' + index}
               contentInsetAdjustmentBehavior="automatic"
               style={styles.view}
-              renderItem={({item}) => item.follow ? <Follow {...item} /> : <Tweet {...item} />} />
+              renderItem={({item}) => (
+                item.follow ? <Follow {...item} /> : <Tweet {...item} />
+              )} />
         </TabBarItem>
       </TabBar>
     </SafeAreaView>
