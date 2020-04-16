@@ -8,7 +8,7 @@ import Notifications from './Notifications';
 import Tabs from './Tabs';
 import Tweet from './Tweet';
 import Timeline from './Timeline';
-import {getHome, getFollows, getTweet, getTimeline} from './data';
+import {getHome, getNotifications, getTweet, getTimeline} from './data';
 
 const stateNavigator = new StateNavigator([
   {key: 'home'},
@@ -18,8 +18,8 @@ const stateNavigator = new StateNavigator([
 ]);
 const {home, notifications, tweet, timeline} = stateNavigator.states;
 const HomeLayout = Platform.OS === 'ios' ? Home : Tabs;
-home.renderScene = () => <HomeLayout tweets={getHome()} follows={getFollows()} />;
-notifications.renderScene = () => <Notifications follows={getFollows()} />;
+home.renderScene = () => <HomeLayout tweets={getHome()} notifications={getNotifications()} />;
+notifications.renderScene = () => <Notifications notifications={getNotifications()} />;
 tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)}  />;
 timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)}  />;
 
@@ -45,7 +45,7 @@ const App = () => {
       <TabBarItem
         title="Notifications"
         image={require('./notifications.png')}
-        badge={!notified ? getFollows().length : null} 
+        badge={!notified ? getNotifications().length : null} 
         onPress={() => {setNotified(true)}}>
         <Stack navigator={notificationsNavigator} />
       </TabBarItem>

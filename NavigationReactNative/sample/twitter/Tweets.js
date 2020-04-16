@@ -17,22 +17,22 @@ export default ({renderHeader, tweets, onTimeline}) => {
           underlayColor="white"
           onPress={() => {
             stateNavigator.navigate('tweet', {id});
-        }}>
-        <View style={styles.tweet}>
-          <TouchableHighlight
-            underlayColor="white"
-            onPress={() => {
-              if (!onTimeline || onTimeline(accountId))
-                stateNavigator.navigate('timeline', {id: accountId});
           }}>
-            <Image style={styles.logo} source={logo} />
-          </TouchableHighlight>
-          <View style={styles.details}>
-            <Text style={styles.name}>{name}</Text>
-            <Text>{text}</Text>
+          <View style={styles.tweet}>
+            <TouchableHighlight
+              underlayColor="white"
+              onPress={() => {
+                if (!onTimeline || onTimeline(accountId))
+                  stateNavigator.navigate('timeline', {id: accountId});
+            }}>
+              <Image style={styles.logo} source={logo} />
+            </TouchableHighlight>
+            <View style={styles.details}>
+              <Text style={styles.name}>{name}</Text>
+              <Text>{text}</Text>
+            </View>
           </View>
-        </View>
-      </TouchableHighlight>
+        </TouchableHighlight>
     )} />
   );
 };
