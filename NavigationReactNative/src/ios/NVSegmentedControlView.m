@@ -16,20 +16,11 @@
 
 - (void)setTitles:(NSArray<NSString *> *)titles
 {
-
     [self removeAllSegments];
     for (NSString *title in titles) {
         [self insertSegmentWithTitle:title atIndex:self.numberOfSegments animated:NO];
     }
     self.selectedSegmentIndex = _selectedIndex;
-}
-
-- (void)setBarTintColor:(UIColor *)barTintColor
-{
-    [super setTintColor:barTintColor];
-    if (@available(iOS 13.0, *)) {
-        [self setBackgroundColor:barTintColor];
-    }
 }
 
 - (void)setSelectedTintColor:(UIColor *)selectedTintColor

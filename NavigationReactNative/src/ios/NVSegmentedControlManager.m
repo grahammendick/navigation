@@ -11,7 +11,6 @@ RCT_EXPORT_MODULE()
 }
 
 RCT_EXPORT_VIEW_PROPERTY(titles, NSArray<NSString *>)
-RCT_EXPORT_VIEW_PROPERTY(barTintColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(selectedTintColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(unselectedTintColor, UIColor)
 
