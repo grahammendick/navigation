@@ -2,9 +2,6 @@
 #import "NVTabBarItemView.h"
 
 @implementation NVSegmentedTabView
-{
-    NSInteger _selectedIndex;
-}
 
 - (id)init
 {
@@ -16,11 +13,15 @@
 
 - (void)setTitles:(NSArray<NSString *> *)titles
 {
+    NSInteger selectedIndex = MIN(MAX(0, self.selectedSegmentIndex), titles.count - 1);
+    BOOL selectedIndexChanged = selectedIndex != self.selectedSegmentIndex;
     [self removeAllSegments];
     for (NSString *title in titles) {
         [self insertSegmentWithTitle:title atIndex:self.numberOfSegments animated:NO];
     }
-    self.selectedSegmentIndex = _selectedIndex;
+    self.selectedSegmentIndex = selectedIndex;
+    if (!!self.window && selectedIndexChanged)
+        [self selectTab:YES];
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
@@ -64,12 +65,12 @@
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    [self selectTab:NO];
+    if (!!self.window)
+        [self selectTab:NO];
 }
 
 - (void)tabPressed
 {
-    _selectedIndex = self.selectedSegmentIndex;
     [self selectTab:YES];
 }
 
@@ -79,8 +80,8 @@
     UIView* tabBar = [self.superview.subviews objectAtIndex:tabBarIndex];
     for(NSInteger i = 0; i < [tabBar.subviews count]; i++) {
         NVTabBarItemView *tabBarItem = (NVTabBarItemView *) [tabBar.subviews objectAtIndex:i];
-        tabBarItem.alpha = (i == _selectedIndex ? 1 : 0);
-        if (press && i == _selectedIndex && !!tabBarItem.onPress) {
+        tabBarItem.alpha = (i == self.selectedSegmentIndex ? 1 : 0);
+        if (press && i == self.selectedSegmentIndex && !!tabBarItem.onPress) {
             tabBarItem.onPress(nil);
         }
     }
