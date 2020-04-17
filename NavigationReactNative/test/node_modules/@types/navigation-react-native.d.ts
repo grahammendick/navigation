@@ -344,13 +344,13 @@ export interface TabBarProps {
      */
     bottomTabs?: boolean;
     /**
-     * Indicates whether the tab bar can be scrolled horizontally
-     */
-    scrollable?: boolean;
-    /**
      * Indicates whether the tab bar is for top level navigation
      */
     primary?: boolean;
+    /**
+     * Indicates whether the tab bar can be scrolled horizontally
+     */
+    scrollable?: boolean;
     /**
      * Indicates whether the selected tab can be changed by swiping 
      */
