@@ -13,15 +13,12 @@
 
 - (void)setTitles:(NSArray<NSString *> *)titles
 {
-    NSInteger selectedIndex = MIN(MAX(0, self.selectedSegmentIndex), titles.count - 1);
-    BOOL selectedIndexChanged = selectedIndex != self.selectedSegmentIndex;
+    NSInteger selectedSegmentIndex = MAX(0, self.selectedSegmentIndex);
     [self removeAllSegments];
     for (NSString *title in titles) {
         [self insertSegmentWithTitle:title atIndex:self.numberOfSegments animated:NO];
     }
-    self.selectedSegmentIndex = selectedIndex;
-    if (!!self.window && selectedIndexChanged)
-        [self selectTab:YES];
+    self.selectedSegmentIndex = selectedSegmentIndex;
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
