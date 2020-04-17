@@ -348,9 +348,9 @@ export interface TabBarProps {
      */
     scrollable?: boolean;
     /**
-     * Indicates whether the tab strip is split into segments
+     * Indicates whether the tab bar is for top level navigation
      */
-    segmented?: boolean;
+    primary?: boolean;
     /**
      * Indicates whether the selected tab can be changed by swiping 
      */
