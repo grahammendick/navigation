@@ -10,7 +10,7 @@ class TabBar extends React.Component<any, any> {
     }
     static defaultProps = {
         scrollable: false,
-        primary: true,
+        primary: Platform.OS === 'ios',
     }
     handleBack() {
         var {selectedTab} = this.state;
