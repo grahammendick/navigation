@@ -9,10 +9,8 @@ class TabBar extends React.Component<any, any> {
         this.handleBack = this.handleBack.bind(this);
     }
     static defaultProps = {
-        bottomTabs: false,
         scrollable: false,
-        segmented: false,
-        swipeable: true
+        primary: true,
     }
     handleBack() {
         var {selectedTab} = this.state;
@@ -21,15 +19,17 @@ class TabBar extends React.Component<any, any> {
         return !!selectedTab;
     }
     render() {
-        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, segmented, swipeable} = this.props;
+        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, swipeable} = this.props;
+        bottomTabs = bottomTabs != null ? bottomTabs : primary;
+        primary = (Platform.OS === 'android' && swipeable != null) ? !swipeable : primary;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
-        var tabViewHeight = swipeable ? (titleOnly ? 48 : 72) : 56
+        var tabViewHeight = !primary ? (titleOnly ? 48 : 72) : 56
         tabViewHeight = Platform.OS === 'android' ? tabViewHeight : 28;
-        var TabBar = (Platform.OS === 'android' || !segmented) ? NVTabBar : View;
-        var TabView = swipeable ? NVTabLayout : NVTabNavigation;
+        var TabBar = (Platform.OS === 'android' || primary) ? NVTabBar : View;
+        var TabView = !primary ? NVTabLayout : NVTabNavigation;
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedTab;
-        var tabLayout = (Platform.OS === 'android' || segmented) && (
+        var tabLayout = (Platform.OS === 'android' || !primary) && (
             <TabView
                 bottomTabs={bottomTabs}
                 selectedTintColor={selectedTintColor}
@@ -55,7 +55,7 @@ class TabBar extends React.Component<any, any> {
                     barTintColor={barTintColor}
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}
-                    swipeable={swipeable}
+                    swipeable={!primary}
                     style={styles.tabBar}>
                         <BackButton onPress={this.handleBack} />
                         {tabBarItems
