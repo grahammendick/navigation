@@ -87,7 +87,7 @@ contact.renderScene = ({id}) => &lt;Contact id={id} />;
 
 contactsNavigator.navigate('contacts');</code></pre>
             <p>
-                We change the <code>App</code> code from <a href="setup.html">Setup instructions</a> to return a <code>TabBar</code> component. We give each tab its own <code>NavigationStack</code> and <code>StateNavigator</code>. For example, we give the 'contacts' tab the <code>contactsNavigator</code> we just created. To make them look like top level tabs, we assign each one an image as well as a title.
+                We change the <code>App</code> code from the <a href="setup.html">Setup instructions</a> to return a <code>TabBar</code> component. We give each tab its own <code>NavigationStack</code> and <code>StateNavigator</code>. For example, we give the 'contacts' tab the <code>contactsNavigator</code> we just created. To make them look like top level tabs, we assign each one an image as well as a title.
             </p>
             <pre><code class="language-jsx">var App = () => (
   &lt;TabBar primary={true}>
