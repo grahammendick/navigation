@@ -69,7 +69,7 @@ var Contacts = () => (
     &lt;/TabBarItem>
   &lt;/TabBar>
 );</code></pre>
-            <h2>Navigating Within a Tab</h2>
+            <h2>Adding Top Level Navigation Tabs</h2>
             <p>
                 Top level navigation tabs are different. On iOS, and sometimes Android, they stay at the bottom of the screen the whole time. Each tab has its own stack of scenes. You navigate forward and back within the tab and switch tabs to pick up where you left off. To recreate these you render a <code>TabBar</code> component at the root of your app and set its <code>primary</code> prop to true. Then you assign each <code>TabBarItem</code> a <code>NavigationStack</code> component with its own <code>StateNavigator</code>.
             </p>
