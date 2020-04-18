@@ -71,7 +71,7 @@ var Contacts = () => (
 );</code></pre>
             <h2>Adding Top Level Navigation Tabs</h2>
             <p>
-                Top level navigation tabs are different. On iOS, and sometimes Android, they stay at the bottom of the screen the whole time. Each tab has its own stack of scenes. You navigate forward and back within the tab and switch tabs to pick up where you left off. To recreate these you render a <code>TabBar</code> component at the root of your app and set its <code>primary</code> prop to true. Then you assign each <code>TabBarItem</code> a <code>NavigationStack</code> component with its own <code>StateNavigator</code>.
+                Top level navigation tabs are different. On iOS, and sometimes Android, they stay at the bottom of the screen the whole time. Each tab has its own stack of scenes. You navigate forward and back within the tab. To recreate these you render a <code>TabBar</code> component at the root of your app and set its <code>primary</code> prop to true. Then you assign each <code>TabBarItem</code> a <code>NavigationStack</code> component with its own <code>StateNavigator</code>.
             </p>
             <p>
                 Let's add top level tabs to our email example. One tab for the user's inbox and another for their list of contacts. We create a new <code>StateNavigator</code> for the 'contacts' tab. It contains two <code>States</code> so the user can view all their contacts and edit the details of an individual contact. 
@@ -81,13 +81,13 @@ var Contacts = () => (
   {key: 'contact', trackCrumbTrail: true}
 ]);
 
-var {contacts, contact} = stateNavigator.states;
+var {contacts, contact} = contactsNavigator.states;
 contacts.renderScene = () => &lt;Contacts />;
 contact.renderScene = ({id}) => &lt;Contact id={id} />;
 
-stateNavigator.navigate('contacts');</code></pre>
+contactsNavigator.navigate('contacts');</code></pre>
             <p>
-                We change the <code>App</code> code from <a href="setup.html">Setup instructions</a> to return a <code>TabBar</code> component instead. We give each tab its own <code>NavigationStack</code> with its own <code>StateNavigator</code>. To make them look like top level tabs, we assign each one an image as well as a title.
+                We change the <code>App</code> code from <a href="setup.html">Setup instructions</a> to return a <code>TabBar</code> component. We give each tab its own <code>NavigationStack</code> and <code>StateNavigator</code>. For example, we give the 'contacts' tab the <code>contactsNavigator</code> we just created. To make them look like top level tabs, we assign each one an image as well as a title.
             </p>
             <pre><code class="language-jsx">var App = () => (
   &lt;TabBar primary={true}>
