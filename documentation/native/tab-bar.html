@@ -106,21 +106,20 @@ stateNavigator.navigate('contacts');</code></pre>
             <h2>Scrolling the Navigation Bar on Android</h2>
             <p>
             </p>
-            <pre><code class="language-jsx">var Contacts = () => (
-  &lt;CoordinatorLayout>
-    &lt;NavigationBar title="Contacts">
-      &lt;TabBar primary={false} />
-    &lt;/NavigationBar>
-    &lt;TabBar primary={false}>
-      &lt;TabBarItem title="Personal">
-        &lt;ScrollView nestedScrollEnabled={true} />
-      &lt;/TabBarItem>
-      &lt;TabBarItem title="Work">
-        &lt;ScrollView nestedScrollEnabled={true} />
-      &lt;/TabBarItem>
-    &lt;/TabBar>
-  &lt;/CoordinatorLayout>
-);</code></pre>
+            <pre><code class="language-jsx">&lt;CoordinatorLayout>
+  &lt;NavigationBar title="Contacts">
+    &lt;TabBar primary={false} />
+  &lt;/NavigationBar>
+  &lt;TabBar primary={false}>
+    &lt;TabBarItem title="Personal">
+      &lt;ScrollView nestedScrollEnabled={true} />
+    &lt;/TabBarItem>
+    &lt;TabBarItem title="Work">
+      &lt;ScrollView nestedScrollEnabled={true} />
+    &lt;/TabBarItem>
+  &lt;/TabBar>
+&lt;/CoordinatorLayout>
+</code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
