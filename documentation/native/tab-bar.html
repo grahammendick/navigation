@@ -55,7 +55,21 @@
         <div id="article">
             <h1>Tab Bar</h1>
             <p>
-                The <code>TabBar</code> component gives you a native tabbed interface in iOS and Android. Each tab has its own stack of screens. To ensure that pushing and popping in one tab doesn't affect the stack in another tab, you give each tab its own <code>StateNavigator</code>. Let's add tabs to our email example. One tab for the user's inbox and another for their list of contacts. We create a new <code>StateNavigator</code> for the 'contacts' tab. It contains two <code>States</code> so the user can view all their contacts and edit the details of an individual contact.
+            </p>
+            <pre><code class="language-jsx">import {TabBar, TabBarItem} from 'navigation-react-native';
+
+var Contacts = () => (
+  &lt;TabBar primary={false}>
+    &lt;TabBarItem title="Personal">
+      &lt;ScrollView />
+    &lt;/TabBarItem>
+    &lt;TabBarItem title="Work">
+      &lt;ScrollView />
+    &lt;/TabBarItem>
+  &lt;/TabBar>
+);</code></pre>
+            <h2>Navigating Within a Tab</h2>
+            <p>
             </p>
             <pre><code class="language-js">var contactsNavigator = new StateNavigator([
   {key: 'contacts'},
@@ -68,63 +82,28 @@ contact.renderScene = ({id}) => &lt;Contact id={id} />;
 
 stateNavigator.navigate('contacts');</code></pre>
             <p>
-                You create a <code>NavigationStack</code> for each tab and give each one a dedicated <code>StateNavigator</code>. Wrap each stack in a <code>TabBarItem</code> component and add them as children of a <code>TabBar</code>. You identify your tabs using the <code>title</code> and <code>image</code> props of the <code>TabBarItem</code>. On iOS, you must render the <code>TabBar</code> component at the root of your app. On Android, you can render the <code>TabBar</code> anywhere (including inside another <code>TabBar</code>). In our email example, we set the <code>systemItem</code> prop so that the 'contacts' tab displays with the inbuilt iOS icon for contacts.
             </p>
-            <pre><code class="language-jsx">import {TabBar, TabBarItem} from 'navigation-react-native';
-
-&lt;TabBar>
-  &lt;TabBarItem title="Inbox">
+            <pre><code class="language-jsx">&lt;TabBar primary={true}>
+  &lt;TabBarItem title="Inbox" image={require('./home.png')}>
     &lt;NavigationHandler stateNavigator={stateNavigator}>
       &lt;NavigationStack />
     &lt;/NavigationHandler>
   &lt;/TabBarItem>
-  &lt;TabBarItem title="Contacts" systemItem="contacts">
+  &lt;TabBarItem title="Contacts" image={require('./nofitications.png')}>
     &lt;NavigationHandler stateNavigator={contactsNavigator}>
       &lt;NavigationStack />
     &lt;/NavigationHandler>
   &lt;/TabBarItem>
 &lt;/TabBar></code></pre>
-            <h2>Adding a Bottom Tab Bar on Android</h2>
-            <p>
-                In a standard Android app, the tabs only appear on the first scene. When the user navigates to a new scene the tabs disappear. You can replicate this setup using the same <code>TabBar</code>  component as above. But you don't need a separate <code>NavigationStack</code>  per tab anymore. In their place you put the components that make up the tab content.
-            </p>
-            <p>
-                In our email example, we create a 'home' scene that renders the <code>TabBar</code>  with two tabs. In the first tab we place our <code>Inbox</code>  component and we put the <code>Contacts</code>  component into the second tab. We set the <code>bottomTabs</code>  prop of the <code>TabBar</code>  to true because, in the usual Android setup, the tabs appear at the bottom of the screen.
-            </p>
-            <pre><code class="language-jsx">var Home =  () => (
-  &lt;TabBar bottomTabs={true} swipeable={false}>
-    &lt;TabBarItem title="Inbox">
-      &lt;Inbox />
-    &lt;/TabBarItem>
-    &lt;TabBarItem title="Contacts">
-      &lt;Contacts />
-    &lt;/TabBarItem>
-  &lt;/TabBar>
-);</code></pre>
-            <p>
-                We can make do with a single <code>StateNavigator</code> now that we no longer have separate <code>NavigationStacks</code>. We can also get rid of the 'inbox' <code>State</code> from the <code>StateNavigator</code> because it's not a scene in its own right anymore. The <code>Inbox</code> component is now part of the 'home' scene. Instead, we need to add a 'home' <code>State</code> and make sure that it's displayed when the app first loads.
-            </p>  
-            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
-  {key: 'home'},
-  {key: 'mail', trackCrumbTrail: true},
-  {key: 'compose', trackCrumbTrail: true},
-  {key: 'contact', trackCrumbTrail: true}
-]);
-
-var {home} = stateNavigator.states;
-home.renderScene = () => &lt;Home />;
-
-stateNavigator.navigate('home');</code></pre>
             <h2>Scrolling the Navigation Bar on Android</h2>
             <p>
-                In our email example on Android, we separate the personal contacts from the work ones by having a separate tab for each. We <a href="navigation-bar.html#scrolling">scroll the navigation bar</a> off the screen so that these inner tabs don't look squashed. After wrapping the tabs in a <code>CoordinatorLayout</code> and turning on nested scrolling, we must add an extra <code>TabBar</code> component into the navigation bar. It doesn't need any <code>TabBarItem</code> children because its job is to keep the tab headings in place as the navigation bar scrolls.
             </p>
             <pre><code class="language-jsx">var Contacts = () => (
   &lt;CoordinatorLayout>
     &lt;NavigationBar title="Contacts">
-      &lt;TabBar />
+      &lt;TabBar primary={false} />
     &lt;/NavigationBar>
-    &lt;TabBar>
+    &lt;TabBar primary={false}>
       &lt;TabBarItem title="Personal">
         &lt;ScrollView nestedScrollEnabled={true} />
       &lt;/TabBarItem>
