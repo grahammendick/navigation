@@ -71,6 +71,7 @@ var Contacts = () => (
 );</code></pre>
             <h2>Navigating Within a Tab</h2>
             <p>
+                Top level navigation tabs are different. On iOS, and sometimes Android, they stay at the bottom of the screen the whole time. Each tab has its own stack of scenes. You navigate forward and back within the tab and switch tabs to pick up where you left off. To recreate these you render a <code>TabBar</code> component at the root of your app and set its <code>primary</code> prop to true. Then you assign each <code>TabBarItem</code> a <code>NavigationStack</code> component with its own <code>StateNavigator</code>.
             </p>
             <pre><code class="language-js">var contactsNavigator = new StateNavigator([
   {key: 'contacts'},
@@ -84,18 +85,20 @@ contact.renderScene = ({id}) => &lt;Contact id={id} />;
 stateNavigator.navigate('contacts');</code></pre>
             <p>
             </p>
-            <pre><code class="language-jsx">&lt;TabBar primary={true}>
-  &lt;TabBarItem title="Inbox" image={require('./home.png')}>
-    &lt;NavigationHandler stateNavigator={stateNavigator}>
-      &lt;NavigationStack />
-    &lt;/NavigationHandler>
-  &lt;/TabBarItem>
-  &lt;TabBarItem title="Contacts" image={require('./nofitications.png')}>
-    &lt;NavigationHandler stateNavigator={contactsNavigator}>
-      &lt;NavigationStack />
-    &lt;/NavigationHandler>
-  &lt;/TabBarItem>
-&lt;/TabBar></code></pre>
+            <pre><code class="language-jsx">var App = () => (
+  &lt;TabBar primary={true}>
+    &lt;TabBarItem title="Inbox" image={require('./home.png')}>
+      &lt;NavigationHandler stateNavigator={stateNavigator}>
+        &lt;NavigationStack />
+      &lt;/NavigationHandler>
+    &lt;/TabBarItem>
+    &lt;TabBarItem title="Contacts" image={require('./nofitications.png')}>
+      &lt;NavigationHandler stateNavigator={contactsNavigator}>
+        &lt;NavigationStack />
+      &lt;/NavigationHandler>
+    &lt;/TabBarItem>
+  &lt;/TabBar>
+);</code></pre>
             <h2>Scrolling the Navigation Bar on Android</h2>
             <p>
             </p>
