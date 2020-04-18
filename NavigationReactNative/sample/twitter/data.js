@@ -144,9 +144,16 @@ const getHome = () => {
   return homeTweets.map(id => fetchTweet(id));
 };
 
-const getFollows = () => {
-  const notifications = [1, 2, 3];
-  return notifications.map(id => ({...accounts[id], id}));
+const getNotifications = () => {
+  return [
+    {follow: true, account: {...accounts[2], id: 2}},
+    {mention: true, ...fetchTweet(1)},
+    {follow: true, account: {...accounts[3], id: 3}},
+    {mention: true, ...fetchTweet(5)},
+    {follow: true, account: {...accounts[1], id: 1}},
+    {mention: true, ...fetchTweet(9)},
+    {mention: true, ...fetchTweet(6)},
+  ];
 };
 
 const getTweet = id => {
@@ -161,4 +168,4 @@ const getTimeline = id => {
   return timeline;
 };
 
-export {getHome, getFollows, getTweet, getTimeline};
+export {getHome, getNotifications, getTweet, getTimeline};

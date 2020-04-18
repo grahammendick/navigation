@@ -41,7 +41,8 @@
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
-    self.navigationController = [(NVNavigationStackView *) subview navigationController];
+    if ([subview class] == [NVNavigationStackView class])
+        self.navigationController = [(NVNavigationStackView *) subview navigationController];
     self.navigationController.tabBarItem = self.tab;
 }
 
