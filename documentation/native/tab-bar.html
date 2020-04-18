@@ -105,6 +105,7 @@ stateNavigator.navigate('contacts');</code></pre>
 );</code></pre>
             <h2>Scrolling the Navigation Bar on Android</h2>
             <p>
+                By wrapping the contacts scene in a <code>CoordinatorLayout</code> component we prevent the navigation bar from getting in the way on Android. The navigation bar gradually scrolls offscreen as the user moves down through their contacts. As soon as the user starts to scroll back up the navigation bar reappears. We render an empty <code>TabBar</code> inside the navigation bar to prevent the tabs scrolling off the screen, too. This functionality is only available on API level 21+ because we have to enable nested scrolling on the React Native <code>ScrollViews</code>.
             </p>
             <pre><code class="language-jsx">&lt;CoordinatorLayout>
   &lt;NavigationBar title="Contacts">
