@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 public class NavigationStackFragment extends Fragment {
     private NavigationStackView stack;
 
-    public NavigationStackFragment(NavigationStackView stack) {
+    NavigationStackFragment(NavigationStackView stack) {
         this.stack = stack;
     }
 
