@@ -2,7 +2,7 @@ import React from 'react';
 import BackHandlerContext from './BackHandlerContext';
 import createBackHandler from './createBackHandler';
 
-class BackHandlerScope extends React.Component<any> {
+class ModalBackHandler extends React.Component<any> {
     private backHandler: any;
     constructor(props) {
         super(props);
@@ -17,4 +17,4 @@ class BackHandlerScope extends React.Component<any> {
     }
 };
 
-export default BackHandlerScope;
+export default ModalBackHandler;

@@ -11,7 +11,7 @@ import TabBarItem from './TabBarItem';
 import SharedElement from './SharedElement';
 import TitleBar from './TitleBar';
 import BackHandlerContext from './BackHandlerContext';
-import BackHandlerScope from './BackHandlerScope';
+import ModalBackHandler from './ModalBackHandler';
 import CoordinatorLayout from './CoordinatorLayout';
 import CollapsingBar from './CollapsingBar';
 
@@ -25,4 +25,4 @@ var TabBarIOS = Platform.OS === 'ios' ? TabBar : () => null;
 var TabBarItemIOS = Platform.OS === 'ios' ? TabBarItem : () => null;
 var SharedElementAndroid = Platform.OS === 'android' ? SharedElement : () => null;
 
-export { NavigationStack, Scene, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, NavigationBarIOS, LeftBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SearchBar, SearchBarIOS, TabBar, TabBarItem, TabBarIOS, TabBarItemIOS, SharedElement, SharedElementAndroid, BackHandlerContext, BackHandlerScope, CoordinatorLayout, CollapsingBar };
+export { NavigationStack, Scene, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, NavigationBarIOS, LeftBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SearchBar, SearchBarIOS, TabBar, TabBarItem, TabBarIOS, TabBarItemIOS, SharedElement, SharedElementAndroid, BackHandlerContext, ModalBackHandler, CoordinatorLayout, CollapsingBar };
