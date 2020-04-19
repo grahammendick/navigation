@@ -18,6 +18,11 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
         return "NVTabNavigation";
     }
 
+    @ReactProp(name = "bottomTabs")
+    public void setBottomTabs(TabNavigationView view, boolean bottomTabs) {
+        view.bottomTabs = bottomTabs;
+    }
+
     @ReactProp(name = "selectedTintColor", customType = "Color")
     public void setSelectedTintColor(TabNavigationView view, @Nullable Integer selectedTintColor) {
         view.selectedTintColor = selectedTintColor != null ? selectedTintColor : view.defaultTextColor;
