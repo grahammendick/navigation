@@ -21,6 +21,7 @@ import java.util.HashMap;
 public class NavigationStackView extends ViewGroup implements LifecycleEventListener {
     protected ArrayList<String> sceneKeys = new ArrayList<>();
     protected HashMap<String, SceneView> scenes = new HashMap<>();
+    NavigationStackFragment fragment = null;
     protected ReadableArray keys;
     private Activity mainActivity;
     protected String enterAnim;
@@ -51,6 +52,13 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         if (finish) {
             currentActivity.finishAffinity();
             return;
+        }
+        if (fragment == null) {
+            fragment = new NavigationStackFragment(this);
+            FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.add(fragment, String.valueOf(getId()));
+            transaction.commitNow();
         }
         if (scenes.size() == 0 || !navigator.canNavigate(currentActivity, this))
             return;
