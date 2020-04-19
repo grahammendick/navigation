@@ -16,12 +16,12 @@ class FragmentNavigator extends SceneNavigator {
 
     @Override
     boolean canNavigate(Activity activity, NavigationStackView stack) {
-        return !getFragmentManager(stack).isStateSaved();
+        return !stack.fragment.getChildFragmentManager().isStateSaved();
     }
 
     @Override
     void navigateBack(int currentCrumb, int crumb, Activity activity, NavigationStackView stack) {
-        FragmentManager fragmentManager = getFragmentManager(stack);
+        FragmentManager fragmentManager = stack.fragment.getChildFragmentManager();
         SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKey);
         Pair[] sharedElements = fragment != null ? getOldSharedElements(currentCrumb, crumb, fragment, stack) : null;
         SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(stack.keys.getString(crumb));
@@ -32,7 +32,7 @@ class FragmentNavigator extends SceneNavigator {
 
     @Override
     void navigate(int currentCrumb, int crumb, Activity activity, NavigationStackView stack) {
-        final FragmentManager fragmentManager = getFragmentManager(stack);
+        final FragmentManager fragmentManager = stack.fragment.getChildFragmentManager();
         int enter = getAnimationResourceId(activity, stack.enterAnim, android.R.attr.activityOpenEnterAnimation);
         int exit = getAnimationResourceId(activity, stack.exitAnim, android.R.attr.activityOpenExitAnimation);
         if (exit == 0 && stack.exitAnim != null)
@@ -75,17 +75,13 @@ class FragmentNavigator extends SceneNavigator {
         SceneView scene = stack.scenes.get(key);
         int popEnter = getAnimationResourceId(activity, scene.enterAnim, android.R.attr.activityCloseEnterAnimation);
         int popExit = getAnimationResourceId(activity, scene.exitAnim, android.R.attr.activityCloseExitAnimation);
-        FragmentManager fragmentManager = getFragmentManager(stack);
+        FragmentManager fragmentManager = stack.fragment.getChildFragmentManager();
         fragmentManager.popBackStack();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
         fragmentTransaction.add(stack.getChildAt(0).getId(), new SceneFragment(scene, null), key);
         fragmentTransaction.addToBackStack(String.valueOf(crumb));
         fragmentTransaction.commit();
-    }
-
-    private FragmentManager getFragmentManager(NavigationStackView stack) {
-        return stack.fragment.getChildFragmentManager();
     }
 
     private Pair[] getOldSharedElements(int currentCrumb, int crumb, SharedElementContainer sharedElementContainer, final NavigationStackView stack) {
