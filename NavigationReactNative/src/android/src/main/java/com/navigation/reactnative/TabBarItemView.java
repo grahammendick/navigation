@@ -11,8 +11,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
-public class TabBarItemView extends ViewGroup implements NavigationBoundary {
-    Fragment fragment;
+public class TabBarItemView extends ViewGroup {
     protected int index;
     protected String title;
     private Drawable icon;
@@ -54,10 +53,5 @@ public class TabBarItemView extends ViewGroup implements NavigationBoundary {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-    }
-
-    @Override
-    public Fragment getFragment() {
-        return fragment;
     }
 }
