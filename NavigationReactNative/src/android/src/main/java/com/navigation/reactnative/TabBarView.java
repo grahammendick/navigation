@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.facebook.react.bridge.Arguments;
@@ -33,8 +34,7 @@ public class TabBarView extends ViewPager {
     public TabBarView(Context context) {
         super(context);
         addOnPageChangeListener(new TabChangeListener());
-        Activity activity = ((ReactContext) context).getCurrentActivity();
-        setAdapter(new Adapter(getFragmentManager(activity)));
+        setAdapter(new Adapter());
     }
 
     @Override
@@ -51,7 +51,7 @@ public class TabBarView extends ViewPager {
         TabView tabView = getTabView();
         if (tabView != null && getAdapter() != null) {
             for(int i = 0; i < tabView.getTabCount(); i++) {
-                getAdapter().tabFragments.get(i).tabBarItem.setTabView(tabView);
+                getAdapter().tabs.get(i).setTabView(tabView);
             }
         }
     }
@@ -67,19 +67,6 @@ public class TabBarView extends ViewPager {
                 return (TabView) child;
         }
         return null;
-    }
-
-    private FragmentManager getFragmentManager(Activity activity) {
-        ViewParent parent = this;
-        Fragment fragment = null;
-        while (parent != null) {
-            if (parent instanceof NavigationBoundary) {
-                fragment = ((NavigationBoundary) parent).getFragment();
-                break;
-            }
-            parent = parent.getParent();
-        }
-        return fragment == null? ((FragmentActivity) activity).getSupportFragmentManager():  fragment.getChildFragmentManager();
     }
 
     private final Runnable measureAndLayout = new Runnable() {
@@ -99,11 +86,11 @@ public class TabBarView extends ViewPager {
     }
 
     int getTabsCount() {
-        return getAdapter() != null ? getAdapter().tabFragments.size() : 0;
+        return getAdapter() != null ? getAdapter().tabs.size() : 0;
     }
 
     TabBarItemView getTabAt(int index) {
-        return getAdapter() != null ? getAdapter().tabFragments.get(index).tabBarItem : null;
+        return getAdapter() != null ? getAdapter().tabs.get(index) : null;
     }
 
     void addTab(TabBarItemView tab, int index) {
@@ -138,43 +125,31 @@ public class TabBarView extends ViewPager {
         return false;
     }
 
-    private class Adapter extends FragmentPagerAdapter {
-        private List<TabFragment> tabFragments = new ArrayList<>();
+    private class Adapter extends PagerAdapter {
+        private List<TabBarItemView> tabs = new ArrayList<>();
         FragmentManager fragmentManager;
 
-        Adapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
-            this.fragmentManager = fragmentManager;
-        }
-
         void addTab(TabBarItemView tab, int index) {
-            tabFragments.add(index, new TabFragment(tab));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                tab.setElevation(-1 * index);
+            tabs.add(index, tab);
+            //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+              //  tab.setElevation(-1 * index);
             notifyDataSetChanged();
-            setOffscreenPageLimit(tabFragments.size() + 1);
         }
 
         void removeTab(int index) {
-            tabFragments.remove(index);
+            tabs.remove(index);
             notifyDataSetChanged();
-            setOffscreenPageLimit(tabFragments.size() + 1);
         }
 
         @Override
         public int getCount() {
-            return tabFragments.size();
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return tabFragments.get(position);
+            return tabs.size();
         }
 
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
-            return tabFragments.get(position).tabBarItem.title;
+            return tabs.get(position).title;
         }
 
         @Override
@@ -182,25 +157,24 @@ public class TabBarView extends ViewPager {
             return POSITION_NONE;
         }
 
-        @Override
-        public long getItemId(int position) {
-            return tabFragments.get(position).hashCode();
-        }
-
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            TabBarItemView tab = tabs.get(position);
+            View view = tab.getChildCount() == 1 ? tab.getChildAt(0) : tab;
+            container.addView(view, 0);
             post(measureAndLayout);
-            return super.instantiateItem(container, position);
+            return view;
         }
 
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            if ((object instanceof TabFragment) && !tabFragments.contains(object)) {
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.remove((Fragment) object);
-                transaction.commitAllowingStateLoss();
-            }
+            container.removeView((View) object);
+        }
+
+        @Override
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+            return view == object;
         }
     }
 
@@ -217,7 +191,7 @@ public class TabBarView extends ViewPager {
             ReactContext reactContext = (ReactContext) getContext();
             reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onTabSelected", event);
             if (getAdapter() != null)
-                getAdapter().tabFragments.get(position).tabBarItem.pressed();
+                getAdapter().tabs.get(position).pressed();
         }
 
         @Override
