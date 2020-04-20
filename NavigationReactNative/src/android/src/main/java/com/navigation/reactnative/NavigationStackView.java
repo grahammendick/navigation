@@ -3,8 +3,13 @@ package com.navigation.reactnative;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -21,7 +26,7 @@ import java.util.HashMap;
 public class NavigationStackView extends ViewGroup implements LifecycleEventListener {
     protected ArrayList<String> sceneKeys = new ArrayList<>();
     protected HashMap<String, SceneView> scenes = new HashMap<>();
-    NavigationStackFragment fragment = null;
+    Fragment fragment = null;
     protected ReadableArray keys;
     private Activity mainActivity;
     protected String enterAnim;
@@ -54,7 +59,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             return;
         }
         if (fragment == null) {
-            fragment = new NavigationStackFragment(this);
+            fragment = new StackFragment(this);
             FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.add(fragment, String.valueOf(getId()));
@@ -113,5 +118,19 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
 
     @Override
     public void onHostDestroy() {
+    }
+
+    public static class StackFragment extends Fragment {
+        private NavigationStackView stack;
+
+        StackFragment(NavigationStackView stack) {
+            this.stack = stack;
+        }
+
+        @Nullable
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            return stack;
+        }
     }
 }
