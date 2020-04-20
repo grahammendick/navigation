@@ -96,7 +96,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     }
 
     void removeFragment() {
-        if (mainActivity != null) {
+        if (mainActivity != null && fragment != null) {
             FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
             FragmentTransaction fragmentTransation = fragmentManager.beginTransaction();
             fragmentTransation.remove(fragment);
