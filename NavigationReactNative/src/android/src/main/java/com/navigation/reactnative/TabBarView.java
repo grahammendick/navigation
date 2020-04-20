@@ -1,21 +1,14 @@
 package com.navigation.reactnative;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -127,12 +120,9 @@ public class TabBarView extends ViewPager {
 
     private class Adapter extends PagerAdapter {
         private List<TabBarItemView> tabs = new ArrayList<>();
-        FragmentManager fragmentManager;
 
         void addTab(TabBarItemView tab, int index) {
             tabs.add(index, tab);
-            //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-              //  tab.setElevation(-1 * index);
             notifyDataSetChanged();
         }
 
