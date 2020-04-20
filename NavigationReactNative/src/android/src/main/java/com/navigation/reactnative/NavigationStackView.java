@@ -96,10 +96,12 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     }
 
     void removeFragment() {
-        FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
-        FragmentTransaction fragmentTransation = fragmentManager.beginTransaction();
-        fragmentTransation.remove(fragment);
-        fragmentTransation.commitAllowingStateLoss();
+        if (mainActivity != null) {
+            FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
+            FragmentTransaction fragmentTransation = fragmentManager.beginTransaction();
+            fragmentTransation.remove(fragment);
+            fragmentTransation.commitAllowingStateLoss();
+        }
     }
 
     @Override
