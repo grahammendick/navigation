@@ -93,14 +93,13 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         ((ThemedReactContext) getContext()).removeLifecycleEventListener(this);
-        if (primary) {
-            FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
-            FragmentTransaction fragmentTransation = fragmentManager.beginTransaction();
-            for (Fragment fragment : fragmentManager.getFragments()) {
-                fragmentTransation.remove(fragment);
-            }
-            fragmentTransation.commitAllowingStateLoss();
-        }
+    }
+
+    void removeFragment() {
+        FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
+        FragmentTransaction fragmentTransation = fragmentManager.beginTransaction();
+        fragmentTransation.remove(fragment);
+        fragmentTransation.commitAllowingStateLoss();
     }
 
     @Override
