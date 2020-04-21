@@ -11,7 +11,7 @@ class ModalBackHandler extends React.Component<any> {
         this.backHandler = createBackHandler();
     }
     handleBack() {
-        return Platform.OS === "android" && this.backHandler.handleBack();
+        return Platform.OS === 'android' && this.backHandler.handleBack();
     }
     render() {
         return (
