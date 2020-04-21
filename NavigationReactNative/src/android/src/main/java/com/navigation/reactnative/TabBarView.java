@@ -143,7 +143,7 @@ public class TabBarView extends ViewPager {
 
         @Override
         public int getItemPosition(@NonNull Object object) {
-            return tabs.indexOf(object);
+            return tabs.contains(object) ? tabs.indexOf(object) : POSITION_NONE;
         }
 
         @NonNull
