@@ -2,7 +2,7 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
@@ -10,7 +10,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
-public class TabBarItemView extends ViewGroup {
+public class TabBarItemView extends LinearLayout {
     protected int index;
     protected String title;
     private Drawable icon;
@@ -48,9 +48,5 @@ public class TabBarItemView extends ViewGroup {
     protected void pressed() {
         ReactContext reactContext = (ReactContext) getContext();
         reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onPress", null);
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
     }
 }
