@@ -81,8 +81,8 @@ public class TabBarView extends ViewPager {
         return getAdapter() != null ? getAdapter().tabs.size() : 0;
     }
 
-    TabBarItemView getTabAt(int index) {
-        return getAdapter() != null ? getAdapter().tabs.get(index) : null;
+    View getTabAt(int index) {
+        return getAdapter() != null ? getAdapter().tabs.get(index).content.get(0) : null;
     }
 
     void addTab(TabBarItemView tab, int index) {
@@ -143,16 +143,21 @@ public class TabBarView extends ViewPager {
 
         @Override
         public int getItemPosition(@NonNull Object object) {
-            return tabs.contains(object) ? tabs.indexOf(object) : POSITION_NONE;
+            for(int i = 0; i < tabs.size(); i++) {
+                TabBarItemView tab = tabs.get(i);
+                if (tab.content.get(0) == object)
+                    return i;
+            }
+            return POSITION_NONE;
         }
 
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             TabBarItemView tab = tabs.get(position);
-            container.addView(tab, 0);
+            container.addView(tab.content.get(0), 0);
             post(measureAndLayout);
-            return tab;
+            return tab.content.get(0);
         }
 
         @Override

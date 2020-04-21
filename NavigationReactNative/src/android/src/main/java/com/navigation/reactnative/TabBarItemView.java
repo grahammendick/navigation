@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
@@ -10,11 +11,15 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TabBarItemView extends ViewGroup {
     protected int index;
     protected String title;
     private Drawable icon;
     private TabView tabView;
+    List<View> content = new ArrayList<>();
     private IconResolver.IconResolverListener tabIconResolverListener;
 
     public TabBarItemView(Context context) {
