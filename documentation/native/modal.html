@@ -67,7 +67,7 @@
 &lt;/Modal> </code></pre>
             <h2>Navigating in a Modal</h2>
             <p>
-                A modal can have its own stack of scenes independent of the main stack. Inside the <code>Modal</code>, you render a <code>NavigationStack</code> with its own <code>StateNavigator</code>, We need two scenes in the modal in our email example. The first collects the new contact's name and number and the second collects their address. We create a <code>StateNavigator</code> with a <code>State</code> for each scene. We navigate to the 'contact' <code>State</code> so it’s displayed when the modal opens.
+                A modal can have its own stack of scenes independent of the main stack. Inside the <code>Modal</code>, you render a <code>NavigationStack</code> with its own <code>StateNavigator</code>. We need two scenes in the modal in our email example. The first collects the new contact's name and number and the second collects their address. We create a <code>StateNavigator</code> with a <code>State</code> for each scene. We navigate to the 'contact' <code>State</code> so it’s displayed when the modal opens.
             </p>
             <pre><code class="language-jsx">var contactNavigator = new StateNavigator([
   {key: 'contact'},
