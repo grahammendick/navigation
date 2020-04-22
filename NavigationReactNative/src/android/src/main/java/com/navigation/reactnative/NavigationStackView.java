@@ -62,7 +62,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             fragment = new StackFragment(this);
             FragmentManager fragmentManager = ((FragmentActivity) currentActivity).getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(fragment, String.valueOf(getId()));
+            transaction.add(fragment, "Stack" + getId());
             transaction.commitNow();
         }
         if (scenes.size() == 0 || !navigator.canNavigate(currentActivity, this))
