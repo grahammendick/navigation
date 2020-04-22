@@ -76,7 +76,7 @@ var Contacts = () => (
             <p>
                 Let's add top level tabs to our email example. One tab for the user's inbox and another for their list of contacts. We create a new <code>StateNavigator</code> for the 'contacts' tab. It contains two <code>States</code> so the user can view all their contacts and edit the details of an individual contact. 
             </p>
-            <pre><code class="language-js">var contactsNavigator = new StateNavigator([
+            <pre><code class="language-jsx">var contactsNavigator = new StateNavigator([
   {key: 'contacts'},
   {key: 'contact', trackCrumbTrail: true}
 ]);
