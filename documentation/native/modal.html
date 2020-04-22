@@ -89,6 +89,7 @@ contactNavigator.navigate('contact');</code></pre>
 &lt;/Modal> </code></pre>
             <h2>Handling the Android Back Button</h2>
             <p>
+                When the user presses the Android back button inside a modal, React Native calls the <code>onRequestClose</code> prop. Normally this is where you’d close the modal. But if you have a stack of scenes you might want to navigate to the start of the stack before closing the modal. If you wrap the <code>Modal</code> in a <code>ModalBackHandler</code> you have access to a <code>handleBack</code> function that pops the scene on the top of the stack.
             </p>
             <pre><code class="language-jsx">import {ModalBackHandler} from 'navigation-react-native';
 
