@@ -57,6 +57,13 @@
             <h1>Modal</h1>
             <p>
             </p>
+            <pre><code class="language-jsx">import {Modal} from 'react-native';
+
+&lt;Modal
+  visible={this.state.modalVisible}
+  onRequestClose={() => this.setState({modalVisible: false})}>
+  &lt;Contact />
+&lt;/Modal> </code></pre>
             <h2>Navigating in a Modal</h2>
             <p>
             </p>
@@ -72,9 +79,7 @@ address.renderScene = () => &lt;Address />;
 contactNavigator.navigate('contact');</code></pre>
             <p>
             </p>
-            <pre><code class="language-jsx">import {Modal} from 'react-native';
-
-&lt;Modal visible={this.state.modalVisible}>
+            <pre><code class="language-jsx">&lt;Modal>
   &lt;NavigationHandler stateNavigator={contactNavigator}>
     &lt;NavigationStack />
   &lt;/NavigationHandler>
