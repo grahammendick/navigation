@@ -56,7 +56,7 @@
         <div id="article">
             <h1>Modal</h1>
             <p>
-                The Navigation router works with the <code>Modal</code> component from React Native. In our email example, we render a <code>Modal</code> when the user chooses to create a new contact.
+                The Navigation router works with the built-in <code>Modal</code> component from React Native. Like the Navigation router, the <code>Modal</code> component is 100% native on Android and iOS. You can see how to configure it on <a href="https://reactnative.dev/docs/modal">the React Native website</a>. In our email example, we add a 'Create Contact' button to the contacts list. When pressed, we display a modal to collect the contact's name and number..
             </p>
             <pre><code class="language-jsx">import {Modal} from 'react-native';
 
@@ -67,6 +67,7 @@
 &lt;/Modal> </code></pre>
             <h2>Navigating in a Modal</h2>
             <p>
+
             </p>
             <pre><code class="language-jsx">var contactNavigator = new StateNavigator([
   {key: 'contact'},
