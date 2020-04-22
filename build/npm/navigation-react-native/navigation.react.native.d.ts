@@ -366,3 +366,15 @@ export class TabBarIOS extends Component<TabBarProps> {}
  * Renders a tab bar
  */
 export class TabBar extends Component<TabBarProps> {}
+
+/**
+ * Defines the Modal Back Handler Props contract
+ */
+export interface ModalBackHandlerProps {
+    children: (handleBack: () => boolean) => ReactNode;
+}
+
+/**
+ * Handles the hardware back button inside a Modal
+ */
+export class ModalBackHandler extends Component<ModalBackHandlerProps> {}
