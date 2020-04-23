@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
-import androidx.fragment.app.Fragment;
-
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
@@ -23,14 +21,14 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import java.util.HashSet;
 
-public class SceneView extends ViewGroup implements NavigationBoundary {
+public class SceneView extends ViewGroup {
     protected String sceneKey;
     protected String enterAnim;
     protected String exitAnim;
     public HashSet<View> sharedElements = new HashSet<>();
     public SharedElementTransitioner transitioner;
     private CustomGlobalLayoutListener customGlobalLayoutListener;
-    Fragment fragment;
+    boolean fragmentMode;
 
     public SceneView(Context context) {
         super(context);
@@ -39,7 +37,7 @@ public class SceneView extends ViewGroup implements NavigationBoundary {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (fragment == null) {
+        if (fragmentMode) {
             if (customGlobalLayoutListener == null)
                 customGlobalLayoutListener = new CustomGlobalLayoutListener();
             getViewTreeObserver().addOnGlobalLayoutListener(customGlobalLayoutListener);
@@ -54,7 +52,7 @@ public class SceneView extends ViewGroup implements NavigationBoundary {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (fragment == null)
+        if (fragmentMode)
             getViewTreeObserver().removeOnGlobalLayoutListener(customGlobalLayoutListener);
     }
 
@@ -83,11 +81,6 @@ public class SceneView extends ViewGroup implements NavigationBoundary {
         ((ReactContext) getContext())
             .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
             .emit(eventName, params);
-    }
-
-    @Override
-    public Fragment getFragment() {
-        return fragment;
     }
 
     private class CustomGlobalLayoutListener implements ViewTreeObserver.OnGlobalLayoutListener {

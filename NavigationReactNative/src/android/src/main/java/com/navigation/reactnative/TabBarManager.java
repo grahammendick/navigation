@@ -77,6 +77,5 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
     protected void onAfterUpdateTransaction(@Nonnull TabBarView view) {
         super.onAfterUpdateTransaction(view);
         view.populateTabs();
-
     }
 }

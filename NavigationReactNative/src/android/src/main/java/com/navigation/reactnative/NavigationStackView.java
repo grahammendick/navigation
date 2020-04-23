@@ -3,8 +3,13 @@ package com.navigation.reactnative;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -21,6 +26,7 @@ import java.util.HashMap;
 public class NavigationStackView extends ViewGroup implements LifecycleEventListener {
     protected ArrayList<String> sceneKeys = new ArrayList<>();
     protected HashMap<String, SceneView> scenes = new HashMap<>();
+    Fragment fragment = null;
     protected ReadableArray keys;
     private Activity mainActivity;
     protected String enterAnim;
@@ -52,6 +58,13 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             currentActivity.finishAffinity();
             return;
         }
+        if (fragment == null) {
+            fragment = new StackFragment(this);
+            FragmentManager fragmentManager = ((FragmentActivity) currentActivity).getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.add(fragment, "Stack" + getId());
+            transaction.commitNow();
+        }
         if (scenes.size() == 0 || !navigator.canNavigate(currentActivity, this))
             return;
         int crumb = keys.size() - 1;
@@ -80,12 +93,13 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         ((ThemedReactContext) getContext()).removeLifecycleEventListener(this);
-        if (primary) {
+    }
+
+    void removeFragment() {
+        if (mainActivity != null && fragment != null) {
             FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
             FragmentTransaction fragmentTransation = fragmentManager.beginTransaction();
-            for (Fragment fragment : fragmentManager.getFragments()) {
-                fragmentTransation.remove(fragment);
-            }
+            fragmentTransation.remove(fragment);
             fragmentTransation.commitAllowingStateLoss();
         }
     }
@@ -105,5 +119,19 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
 
     @Override
     public void onHostDestroy() {
+    }
+
+    public static class StackFragment extends Fragment {
+        private NavigationStackView stack;
+
+        StackFragment(NavigationStackView stack) {
+            this.stack = stack;
+        }
+
+        @Nullable
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            return stack;
+        }
     }
 }

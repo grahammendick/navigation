@@ -3,6 +3,8 @@ package com.navigation.reactnative;
 import android.os.Build;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -103,5 +105,11 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     protected void onAfterUpdateTransaction(@Nonnull NavigationStackView view) {
         super.onAfterUpdateTransaction(view);
         view.onAfterUpdateTransaction();
+    }
+
+    @Override
+    public void onDropViewInstance(@NonNull NavigationStackView view) {
+        view.removeFragment();
+        super.onDropViewInstance(view);
     }
 }
