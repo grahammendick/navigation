@@ -1,0 +1,112 @@
+<html>
+<head>
+    <title>Modal</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../css/prism.css">
+    <link rel="stylesheet" href="../../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+        <div>
+            <a href="../../index.html">Navigation</a>
+            <a href="../hello-world.html" class="selected">Docs</a>
+            <a href="../../download/index.html">Download</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <a href="../hello-world.html">Hello World</a>
+            <a href="../thinking-in-navigation.html">Thinking in Navigation</a>
+            <div class="separator"></div>
+            <h2>THE ABC</h2>
+            <a href="../state-navigation.html">A. State Navigation</a>
+            <a href="../navigation-data.html">B. Navigation Data</a>
+            <a href="../routes.html">C. Routes</a>
+            <a href="../examples.html">Examples</a>
+            <div class="separator"></div>
+            <h2>FURTHER GUIDES</h2>
+            <a href="../current-data.html">Current Data</a>
+            <a href="../html5-history.html">HTML5 History</a>
+            <a href="../navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="../reusable-components.html">Reusable Components</a>
+            <div class="separator"></div>
+            <h2>MOBILE</h2>
+            <a href="../mobile/hello-world.html">Hello World</a>
+            <a href="../mobile/animated-navigation.html">Animated Navigation</a>
+            <a href="../mobile/non-animated-navigation.html">Non-Animated Navigation</a>
+            <a href="../mobile/clean-urls.html">Clean Urls</a>
+            <a href="../mobile/bookmarked-urls.html">Bookmarked Urls</a>
+            <a href="../mobile/shared-element-navigation.html">Shared Element Navigation</a>
+            <a href="../mobile/examples.html">Examples</a>
+            <div class="separator"></div>
+            <h2>NATIVE</h2>
+            <a href="setup.html">Setup</a>
+            <a href="hello-world.html">Hello World</a>
+            <a href="push-navigation.html">Push Navigation</a>
+            <a href="pop-navigation.html">Pop Navigation</a>
+            <a href="navigation-bar.html">Navigation Bar</a>
+            <a href="tab-bar.html">Tab Bar</a>
+            <a href="modal.html" class="selected">Modal</a>
+            <a href="custom-animation.html">Custom Animation (Android)</a>
+            <a href="shared-element-transition.html">Shared Element Transition (Android)</a>
+            <a href="deep-links.html">Deep Links</a>
+            <a href="examples.html">Examples</a>
+        </div>
+        <div id="article">
+            <h1>Modal</h1>
+            <p>
+                The Navigation router works with the built-in <code>Modal</code> component from React Native. Like the Navigation router, the <code>Modal</code> component is 100% native on Android and iOS. You can see how to configure it on <a href="https://reactnative.dev/docs/modal">the React Native website</a>. In our email example, we add a 'Create Contact' button to the contacts list. When pressed, we display a modal to collect the contact's name and number.
+            </p>
+            <pre><code class="language-jsx">import {Modal} from 'react-native';
+
+&lt;Modal
+  visible={this.state.modalVisible}
+  onRequestClose={() => this.setState({modalVisible: false})}>
+  &lt;Contact />
+&lt;/Modal> </code></pre>
+            <h2>Navigating in a Modal</h2>
+            <p>
+                A modal can have its own stack of scenes independent of the main stack. Inside the <code>Modal</code>, you render a <code>NavigationStack</code> with its own <code>StateNavigator</code>. We need two scenes in the modal in our email example. The first collects the new contact's name and number and the second collects their address. We create a <code>StateNavigator</code> with a <code>State</code> for each scene. We navigate to the 'contact' <code>State</code> so it’s displayed when the modal opens.
+            </p>
+            <pre><code class="language-jsx">var contactNavigator = new StateNavigator([
+  {key: 'contact'},
+  {key: 'address', trackCrumbTrail: true}
+]);
+
+var {contact, address} = contactNavigator.states;
+contact.renderScene = () => &lt;Contact />;
+address.renderScene = () => &lt;Address />;
+
+contactNavigator.navigate('contact');</code></pre>
+            <p>
+                Then we render the <code>NavigationStack</code> inside the <code>Modal</code> and assign it the <code>StateNavigator</code> we just created.
+            </p>
+            <pre><code class="language-jsx">&lt;Modal>
+  &lt;NavigationHandler stateNavigator={contactNavigator}>
+    &lt;NavigationStack />
+  &lt;/NavigationHandler>
+&lt;/Modal> </code></pre>
+            <h2>Handling the Android Back Button</h2>
+            <p>
+                When the user presses the Android back button inside a modal, React Native calls the <code>onRequestClose</code> prop. Normally this is where you’d close the modal. But if you have a stack of scenes you might want to navigate to the start of the stack before closing the modal. If you wrap the <code>Modal</code> in a <code>ModalBackHandler</code> you have access to a <code>handleBack</code> function that pops the scene on the top of the stack.
+            </p>
+            <pre><code class="language-jsx">import {ModalBackHandler} from 'navigation-react-native';
+
+&lt;ModalBackHandler>
+  {handleBack => (
+    &lt;Modal
+      onRequestClose={() => {
+        if (!handleBack())
+          this.setState({modalVisible: false});
+      }}>
+      &lt;NavigationHandler stateNavigator={contactNavigator}>
+        &lt;NavigationStack />
+      &lt;/NavigationHandler>
+    &lt;/Modal>        
+  )}
+&lt;/ModalBackHandler></code></pre>
+        </div>
+    <script type="text/javascript" src="../../js/prism.js"></script>
+</body>
+</html>
