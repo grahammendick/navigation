@@ -92,7 +92,7 @@ export interface NavigationBarProps {
     /**
      * Handles offset change events
      */
-    onOffsetChanged?: (e: NativeSyntheticEvent<{offset}>) => void;
+    onOffsetChanged?: (e: NativeSyntheticEvent<{offset: number}>) => void;
 }
 
 /**
