@@ -31,18 +31,14 @@ class IconResolver {
 
         DrawableWithIntrinsicSize(Resources resources, Bitmap bitmap, ReadableMap source) {
             super(resources, bitmap);
-            
-            if (source.hasKey(PROP_ICON_WIDTH)) {
-                width = Math.round(PixelUtil.toPixelFromDIP(source.getInt(PROP_ICON_WIDTH)));
-            } else {
-                width = bitmap.getWidth();
-            }
 
-            if (source.hasKey(PROP_ICON_HEIGHT)) {
-                height = Math.round(PixelUtil.toPixelFromDIP(source.getInt(PROP_ICON_HEIGHT)));
-            } else {
-                height = bitmap.getHeight();
-            }
+            width = source.hasKey(PROP_ICON_WIDTH)
+                    ? Math.round(PixelUtil.toPixelFromDIP(source.getInt(PROP_ICON_WIDTH)))
+                    : bitmap.getWidth();
+
+            height = source.hasKey(PROP_ICON_HEIGHT)
+                    ? Math.round(PixelUtil.toPixelFromDIP(source.getInt(PROP_ICON_HEIGHT)))
+                    : bitmap.getHeight();
         }
 
         @Override
