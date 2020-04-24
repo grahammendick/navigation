@@ -31,8 +31,12 @@ class IconResolver {
 
         DrawableWithIntrinsicSize(Resources resources, Bitmap bitmap, ReadableMap source) {
             super(resources, bitmap);
-            width = Math.round(PixelUtil.toPixelFromDIP(source.getInt(PROP_ICON_WIDTH)));
-            height = Math.round(PixelUtil.toPixelFromDIP(source.getInt(PROP_ICON_HEIGHT)));
+            width = source.hasKey(PROP_ICON_WIDTH)
+                    ? Math.round(PixelUtil.toPixelFromDIP(source.getInt(PROP_ICON_WIDTH)))
+                    : bitmap.getWidth();
+            height = source.hasKey(PROP_ICON_HEIGHT)
+                    ? Math.round(PixelUtil.toPixelFromDIP(source.getInt(PROP_ICON_HEIGHT)))
+                    : bitmap.getHeight();
         }
 
         @Override
