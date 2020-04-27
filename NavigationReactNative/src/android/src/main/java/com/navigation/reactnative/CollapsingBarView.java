@@ -18,12 +18,6 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
         setLayoutParams(params);
         defaultContentScrim = getContentScrim();
         defaultTitleTextColor = new ToolbarView(context).defaultTitleTextColor;
-        addOnLayoutChangeListener(new OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                measureAndLayoutCoordinator();
-            }
-        });
     }
 
     @Override
@@ -42,11 +36,4 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
-
-    void measureAndLayoutCoordinator() {
-        if (getParent() != null && getParent().getParent() instanceof CoordinatorLayoutView) {
-            CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) getParent().getParent();
-            //coordinatorLayoutView.post(coordinatorLayoutView.measureAndLayout);
-        }
-    }
 }
