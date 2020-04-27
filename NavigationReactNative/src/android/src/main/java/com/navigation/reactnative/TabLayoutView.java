@@ -39,15 +39,6 @@ public class TabLayoutView extends TabLayout implements TabView {
         if (getTabTextColors() != null)
             selectedTintColor = unselectedTintColor = defaultTextColor = getTabTextColors().getDefaultColor();
         setSelectedTabIndicatorColor(defaultTextColor);
-        addOnLayoutChangeListener(new OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if (getParent() != null && getParent().getParent() instanceof CoordinatorLayoutView) {
-                    CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) getParent().getParent();
-                    post(coordinatorLayoutView.measureAndLayout);
-                }
-            }
-        });
     }
 
     public void setScrollable(boolean scrollable) {

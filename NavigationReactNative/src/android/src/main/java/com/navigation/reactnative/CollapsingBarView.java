@@ -46,7 +46,7 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
     void measureAndLayoutCoordinator() {
         if (getParent() != null && getParent().getParent() instanceof CoordinatorLayoutView) {
             CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) getParent().getParent();
-            coordinatorLayoutView.post(coordinatorLayoutView.measureAndLayout);
+            //coordinatorLayoutView.post(coordinatorLayoutView.measureAndLayout);
         }
     }
 }

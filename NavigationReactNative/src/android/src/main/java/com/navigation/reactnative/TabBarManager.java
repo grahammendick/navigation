@@ -31,10 +31,6 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
         if (view.getCurrentItem() != selectedTab) {
             view.setCurrentItem(selectedTab, false);
         }
-        if (view.getParent() instanceof CoordinatorLayoutView) {
-            CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) view.getParent();
-            coordinatorLayoutView.post(coordinatorLayoutView.measureAndLayout);
-        }
     }
 
     @ReactProp(name = "tabCount")
