@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
+import com.facebook.react.modules.core.ChoreographerCompat;
+import com.facebook.react.modules.core.ReactChoreographer;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 
@@ -17,6 +19,17 @@ public class TabLayoutView extends TabLayout implements TabView {
     int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
+    private boolean layoutRequested = false;
+    private final ChoreographerCompat.FrameCallback layoutCallback = new ChoreographerCompat.FrameCallback() {
+        @Override
+        public void doFrame(long frameTimeNanos) {
+            layoutRequested = false;
+            measure(
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+            layout(getLeft(), getTop(), getRight(), getBottom());
+        }
+    };
 
     public TabLayoutView(Context context) {
         super(context);
@@ -39,7 +52,6 @@ public class TabLayoutView extends TabLayout implements TabView {
 
     public void setScrollable(boolean scrollable) {
         setTabMode(scrollable ? TabLayout.MODE_SCROLLABLE : TabLayout.MODE_FIXED);
-        post(measureAndLayout);
     }
 
     @Override
@@ -62,17 +74,11 @@ public class TabLayoutView extends TabLayout implements TabView {
     }
 
     @Override
-    public void setupWithViewPager(@Nullable ViewPager viewPager) {
-        super.setupWithViewPager(viewPager);
-        post(measureAndLayout);
-        if (viewPager != null && viewPager.getAdapter() != null) {
-            viewPager.getAdapter().registerDataSetObserver(new DataSetObserver() {
-                @Override
-                public void onChanged() {
-                    super.onChanged();
-                    post(measureAndLayout);
-                }
-            });
+    public void requestLayout() {
+        super.requestLayout();
+        if (!layoutRequested && layoutCallback != null) {
+            layoutRequested = true;
+            ReactChoreographer.getInstance().postFrameCallback(ReactChoreographer.CallbackType.NATIVE_ANIMATED_MODULE, layoutCallback);
         }
     }
 
@@ -81,23 +87,11 @@ public class TabLayoutView extends TabLayout implements TabView {
         TabLayout.Tab tab = getTabAt(index);
         if (tab != null)
             tab.setText(title);
-        post(measureAndLayout);
     }
 
     public void setIcon(int index, Drawable icon) {
         TabLayout.Tab tab = getTabAt(index);
         if (tab != null)
             tab.setIcon(icon);
-        post(measureAndLayout);
     }
-
-    final Runnable measureAndLayout = new Runnable() {
-        @Override
-        public void run() {
-            measure(
-                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-        }
-    };
 }
