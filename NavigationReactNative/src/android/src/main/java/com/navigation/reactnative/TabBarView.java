@@ -127,7 +127,7 @@ public class TabBarView extends ViewPager {
         return false;
     }
 
-    private class Adapter extends PagerAdapter {
+    private static class Adapter extends PagerAdapter {
         private List<TabBarItemView> tabs = new ArrayList<>();
 
         void addTab(TabBarItemView tab, int index) {
