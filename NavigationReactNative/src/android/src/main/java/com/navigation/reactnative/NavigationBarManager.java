@@ -53,7 +53,6 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
         if (view.getParent() instanceof CoordinatorLayoutView) {
             CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) view.getParent();
             coordinatorLayoutView.requestLayout();
-            //coordinatorLayoutView.post(coordinatorLayoutView.measureAndLayout);
         }
     }
 
