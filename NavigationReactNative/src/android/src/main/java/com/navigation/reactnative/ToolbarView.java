@@ -155,14 +155,12 @@ public class ToolbarView extends Toolbar {
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
                         onSearchAddedListener.onSearchCollapse();
-                        post(measureAndLayout);
                         return true;
                     }
 
                     @Override
                     public boolean onMenuItemActionExpand(MenuItem item) {
                         onSearchAddedListener.onSearchExpand();
-                        post(measureAndLayout);
                         return true;
                     }
                 });
