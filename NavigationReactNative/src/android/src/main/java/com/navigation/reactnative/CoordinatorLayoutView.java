@@ -9,8 +9,6 @@ import android.widget.ScrollView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.facebook.react.modules.core.ChoreographerCompat;
-import com.facebook.react.modules.core.ReactChoreographer;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
 
 public class CoordinatorLayoutView extends CoordinatorLayout {
@@ -22,16 +20,6 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
     private int[] scrollOffset = new int[2];
     private int[] scrollConsumed = new int[2];
     private boolean layoutRequested = false;
-    private final ChoreographerCompat.FrameCallback layoutCallback = new ChoreographerCompat.FrameCallback() {
-        @Override
-        public void doFrame(long frameTimeNanos) {
-            layoutRequested = false;
-            measure(
-                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-        }
-    };
 
     public CoordinatorLayoutView(Context context){
         super(context);
@@ -44,14 +32,26 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
         requestLayout();
     }
 
+
     @Override
     public void requestLayout() {
         super.requestLayout();
-        if (!layoutRequested && layoutCallback != null) {
+        if (!layoutRequested) {
             layoutRequested = true;
-            ReactChoreographer.getInstance().postFrameCallback(ReactChoreographer.CallbackType.NATIVE_ANIMATED_MODULE, layoutCallback);
+            post(measureAndLayout);
         }
     }
+
+    private final Runnable measureAndLayout = new Runnable() {
+        @Override
+        public void run() {
+            layoutRequested = false;
+            measure(
+                    MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+            layout(getLeft(), getTop(), getRight(), getBottom());
+        }
+    };
 
     ScrollView getScrollView() {
         for(int i = 0; i < getChildCount(); i++) {
