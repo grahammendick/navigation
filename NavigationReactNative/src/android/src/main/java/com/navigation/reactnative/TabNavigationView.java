@@ -13,8 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.facebook.react.modules.core.ChoreographerCompat;
-import com.facebook.react.modules.core.ReactChoreographer;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TabNavigationView extends BottomNavigationView implements TabView {
@@ -25,16 +23,6 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     private ViewPager.OnPageChangeListener pageChangeListener;
     private DataSetObserver dataSetObserver;
     private boolean layoutRequested = false;
-    private final ChoreographerCompat.FrameCallback layoutCallback = new ChoreographerCompat.FrameCallback() {
-        @Override
-        public void doFrame(long frameTimeNanos) {
-            layoutRequested = false;
-            measure(
-                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-        }
-    };
 
     public TabNavigationView(Context context) {
         super(context);
@@ -114,11 +102,22 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     @Override
     public void requestLayout() {
         super.requestLayout();
-        if (!layoutRequested && layoutCallback != null) {
+        if (!layoutRequested) {
             layoutRequested = true;
-            ReactChoreographer.getInstance().postFrameCallback(ReactChoreographer.CallbackType.NATIVE_ANIMATED_MODULE, layoutCallback);
+            post(measureAndLayout);
         }
     }
+
+    private final Runnable measureAndLayout = new Runnable() {
+        @Override
+        public void run() {
+            layoutRequested = false;
+            measure(
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+            layout(getLeft(), getTop(), getRight(), getBottom());
+        }
+    };
 
     @Override
     public int getTabCount() {

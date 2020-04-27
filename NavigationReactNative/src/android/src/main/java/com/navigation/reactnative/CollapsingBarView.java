@@ -9,6 +9,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 public class CollapsingBarView extends CollapsingToolbarLayout {
     Drawable defaultContentScrim;
     int defaultTitleTextColor;
+    private boolean layoutRequested = false;
 
     public CollapsingBarView(Context context) {
         super(context);
@@ -23,12 +24,21 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         requestLayout();
-        post(measureAndLayout);
+    }
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        if (!layoutRequested) {
+            layoutRequested = true;
+            post(measureAndLayout);
+        }
     }
 
     private final Runnable measureAndLayout = new Runnable() {
         @Override
         public void run() {
+            layoutRequested = false;
             measure(
                 MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));

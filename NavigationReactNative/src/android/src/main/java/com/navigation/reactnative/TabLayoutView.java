@@ -5,8 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.facebook.react.modules.core.ChoreographerCompat;
-import com.facebook.react.modules.core.ReactChoreographer;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 
@@ -16,16 +14,6 @@ public class TabLayoutView extends TabLayout implements TabView {
     int selectedTintColor;
     int unselectedTintColor;
     private boolean layoutRequested = false;
-    private final ChoreographerCompat.FrameCallback layoutCallback = new ChoreographerCompat.FrameCallback() {
-        @Override
-        public void doFrame(long frameTimeNanos) {
-            layoutRequested = false;
-            measure(
-                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-        }
-    };
 
     public TabLayoutView(Context context) {
         super(context);
@@ -63,11 +51,22 @@ public class TabLayoutView extends TabLayout implements TabView {
     @Override
     public void requestLayout() {
         super.requestLayout();
-        if (!layoutRequested && layoutCallback != null) {
+        if (!layoutRequested) {
             layoutRequested = true;
-            ReactChoreographer.getInstance().postFrameCallback(ReactChoreographer.CallbackType.NATIVE_ANIMATED_MODULE, layoutCallback);
+            post(measureAndLayout);
         }
     }
+
+    private final Runnable measureAndLayout = new Runnable() {
+        @Override
+        public void run() {
+            layoutRequested = false;
+            measure(
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+            layout(getLeft(), getTop(), getRight(), getBottom());
+        }
+    };
 
     @Override
     public void setTitle(int index, String title) {
