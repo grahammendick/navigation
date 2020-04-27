@@ -27,13 +27,11 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
     @ReactProp(name = "title")
     public void setTitle(CollapsingBarView view, @Nullable String title) {
         view.setTitle(title);
-        view.measureAndLayoutCoordinator();
     }
 
     @ReactProp(name = "titleEnabled")
     public void setTitleEnabled(CollapsingBarView view, boolean titleEnabled) {
         view.setTitleEnabled(titleEnabled);
-        view.measureAndLayoutCoordinator();
     }
 
     @ReactProp(name = "contentScrimColor", customType = "Color")
