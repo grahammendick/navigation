@@ -44,8 +44,9 @@ public class TabBarItemView extends ViewGroup {
         IconResolver.setIconSource(source, tabIconResolverListener, getContext());
     }
 
-    void setTabView(TabView tabView) {
+    void setTabView(TabView tabView, int index) {
         this.tabView = tabView;
+        this.index = index;
         if (icon != null)
             tabView.setIcon(index, icon);
     }

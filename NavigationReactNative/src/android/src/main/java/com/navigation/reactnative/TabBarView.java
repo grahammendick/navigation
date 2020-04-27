@@ -43,7 +43,7 @@ public class TabBarView extends ViewPager {
         TabView tabView = getTabView();
         if (tabView != null && getAdapter() != null) {
             for(int i = 0; i < tabView.getTabCount(); i++) {
-                getAdapter().tabs.get(i).setTabView(tabView);
+                getAdapter().tabs.get(i).setTabView(tabView, i);
             }
         }
     }
@@ -96,13 +96,17 @@ public class TabBarView extends ViewPager {
     }
 
     void addTab(TabBarItemView tab, int index) {
-        if (getAdapter() != null)
+        if (getAdapter() != null) {
             getAdapter().addTab(tab, index);
+            populateTabs();
+        }
     }
 
     void removeTab(int index) {
-        if (getAdapter() != null)
+        if (getAdapter() != null) {
             getAdapter().removeTab(index);
+            populateTabs();
+        }
     }
 
     @Override
@@ -127,7 +131,7 @@ public class TabBarView extends ViewPager {
         return false;
     }
 
-    private static class Adapter extends PagerAdapter {
+    private class Adapter extends PagerAdapter {
         private List<TabBarItemView> tabs = new ArrayList<>();
 
         void addTab(TabBarItemView tab, int index) {
