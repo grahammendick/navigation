@@ -19,6 +19,7 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
     private int activePointerId;
     private int[] scrollOffset = new int[2];
     private int[] scrollConsumed = new int[2];
+    private boolean layoutRequested = false;
 
     public CoordinatorLayoutView(Context context){
         super(context);
@@ -29,15 +30,25 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         requestLayout();
-        post(measureAndLayout);
     }
 
-    final Runnable measureAndLayout = new Runnable() {
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        if (!layoutRequested) {
+            layoutRequested = true;
+            post(measureAndLayout);
+        }
+    }
+
+    private final Runnable measureAndLayout = new Runnable() {
         @Override
         public void run() {
+            layoutRequested = false;
             measure(
-                    MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };

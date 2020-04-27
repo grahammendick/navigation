@@ -22,11 +22,6 @@ public class TabBarItemManager extends ViewGroupManager<TabBarItemView> {
         return "NVTabBarItem";
     }
 
-    @ReactProp(name = "index")
-    public void setIndex(TabBarItemView view, int index) {
-        view.index = index;
-    }
-
     @ReactProp(name = "title")
     public void setTitle(TabBarItemView view, String title) {
         view.setTitle(title);

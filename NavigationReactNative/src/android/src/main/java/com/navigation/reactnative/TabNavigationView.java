@@ -22,6 +22,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     int unselectedTintColor;
     private ViewPager.OnPageChangeListener pageChangeListener;
     private DataSetObserver dataSetObserver;
+    private boolean layoutRequested = false;
 
     public TabNavigationView(Context context) {
         super(context);
@@ -96,9 +97,27 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         for (int i = 0; i < pagerAdapter.getCount(); i++) {
             getMenu().add(Menu.NONE, i, i, pagerAdapter.getPageTitle(i));
         }
-        requestLayout();
-        post(measureAndLayout);
     }
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        if (!layoutRequested) {
+            layoutRequested = true;
+            post(measureAndLayout);
+        }
+    }
+
+    private final Runnable measureAndLayout = new Runnable() {
+        @Override
+        public void run() {
+            layoutRequested = false;
+            measure(
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+            layout(getLeft(), getTop(), getRight(), getBottom());
+        }
+    };
 
     @Override
     public int getTabCount() {
@@ -108,21 +127,9 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     @Override
     public void setTitle(int index, String title) {
         getMenu().getItem(index).setTitle(title);
-        post(measureAndLayout);
     }
 
     public void setIcon(int index, Drawable icon) {
         getMenu().getItem(index).setIcon(icon);
-        post(measureAndLayout);
     }
-
-    final Runnable measureAndLayout = new Runnable() {
-        @Override
-        public void run() {
-            measure(
-                    MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-        }
-    };
 }

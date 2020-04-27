@@ -22,6 +22,7 @@ import java.util.List;
 
 public class TabBarView extends ViewPager {
     boolean swipeable = true;
+    private boolean layoutRequested = false;
 
     public TabBarView(Context context) {
         super(context);
@@ -33,7 +34,6 @@ public class TabBarView extends ViewPager {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         requestLayout();
-        post(measureAndLayout);
         if (getTabView() != null)
             getTabView().setupWithViewPager(this);
         populateTabs();
@@ -43,7 +43,7 @@ public class TabBarView extends ViewPager {
         TabView tabView = getTabView();
         if (tabView != null && getAdapter() != null) {
             for(int i = 0; i < tabView.getTabCount(); i++) {
-                getAdapter().tabs.get(i).setTabView(tabView);
+                getAdapter().tabs.get(i).setTabView(tabView, i);
             }
         }
     }
@@ -61,9 +61,19 @@ public class TabBarView extends ViewPager {
         return null;
     }
 
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        if (!layoutRequested) {
+            layoutRequested = true;
+            post(measureAndLayout);
+        }
+    }
+
     private final Runnable measureAndLayout = new Runnable() {
         @Override
         public void run() {
+            layoutRequested = false;
             measure(
                 MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
@@ -86,13 +96,17 @@ public class TabBarView extends ViewPager {
     }
 
     void addTab(TabBarItemView tab, int index) {
-        if (getAdapter() != null)
+        if (getAdapter() != null) {
             getAdapter().addTab(tab, index);
+            populateTabs();
+        }
     }
 
     void removeTab(int index) {
-        if (getAdapter() != null)
+        if (getAdapter() != null) {
             getAdapter().removeTab(index);
+            populateTabs();
+        }
     }
 
     @Override
@@ -117,7 +131,7 @@ public class TabBarView extends ViewPager {
         return false;
     }
 
-    private class Adapter extends PagerAdapter {
+    private static class Adapter extends PagerAdapter {
         private List<TabBarItemView> tabs = new ArrayList<>();
 
         void addTab(TabBarItemView tab, int index) {
@@ -156,7 +170,6 @@ public class TabBarView extends ViewPager {
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             TabBarItemView tab = tabs.get(position);
             container.addView(tab.content.get(0), 0);
-            post(measureAndLayout);
             return tab.content.get(0);
         }
 

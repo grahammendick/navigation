@@ -2,7 +2,6 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.view.View;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -10,6 +9,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 public class CollapsingBarView extends CollapsingToolbarLayout {
     Drawable defaultContentScrim;
     int defaultTitleTextColor;
+    private boolean layoutRequested = false;
 
     public CollapsingBarView(Context context) {
         super(context);
@@ -18,35 +18,31 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
         setLayoutParams(params);
         defaultContentScrim = getContentScrim();
         defaultTitleTextColor = new ToolbarView(context).defaultTitleTextColor;
-        addOnLayoutChangeListener(new OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                measureAndLayoutCoordinator();
-            }
-        });
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         requestLayout();
-        post(measureAndLayout);
+    }
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        if (!layoutRequested) {
+            layoutRequested = true;
+            post(measureAndLayout);
+        }
     }
 
     private final Runnable measureAndLayout = new Runnable() {
         @Override
         public void run() {
+            layoutRequested = false;
             measure(
-                    MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
-
-    void measureAndLayoutCoordinator() {
-        if (getParent() != null && getParent().getParent() instanceof CoordinatorLayoutView) {
-            CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) getParent().getParent();
-            coordinatorLayoutView.post(coordinatorLayoutView.measureAndLayout);
-        }
-    }
 }

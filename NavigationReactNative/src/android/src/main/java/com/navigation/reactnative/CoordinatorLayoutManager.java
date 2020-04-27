@@ -32,11 +32,8 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
         view.overlap = overlap;
         if (view.getScrollView() != null) {
             CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getScrollView().getLayoutParams();
-            if (params.getBehavior() != null) {
+            if (params.getBehavior() != null)
                 ((AppBarLayout.ScrollingViewBehavior) params.getBehavior()).setOverlayTop(overlap);
-                view.requestLayout();
-                view.post(view.measureAndLayout);
-            }
         }
     }
 
