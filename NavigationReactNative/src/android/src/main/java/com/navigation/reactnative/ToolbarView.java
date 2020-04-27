@@ -34,6 +34,7 @@ public class ToolbarView extends Toolbar {
     private IconResolver.IconResolverListener logoResolverListener;
     private IconResolver.IconResolverListener navIconResolverListener;
     private IconResolver.IconResolverListener overflowIconResolverListener;
+    private boolean layoutRequested = false;
 
     public ToolbarView(Context context) {
         super(context);
@@ -45,7 +46,6 @@ public class ToolbarView extends Toolbar {
             public void setDrawable(Drawable d) {
                 setLogo(d);
                 setTintColor(getLogo());
-                post(measureAndLayout);
             }
         };
         navIconResolverListener = new IconResolver.IconResolverListener() {
@@ -53,7 +53,6 @@ public class ToolbarView extends Toolbar {
             public void setDrawable(Drawable d) {
                 setNavigationIcon(d);
                 setTintColor(getNavigationIcon());
-                post(measureAndLayout);
             }
         };
         overflowIconResolverListener = new IconResolver.IconResolverListener() {
@@ -136,7 +135,6 @@ public class ToolbarView extends Toolbar {
 
     void setMenuItems(@Nullable ReadableArray menuItems) {
         getMenu().clear();
-        post(measureAndLayout);
         for (int i = 0; menuItems != null && i < menuItems.size(); i++) {
             ReadableMap menuItemProps = menuItems.getMap(i);
             if (menuItemProps == null)
@@ -185,9 +183,19 @@ public class ToolbarView extends Toolbar {
 
     }
 
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        if (!layoutRequested) {
+            layoutRequested = true;
+            post(measureAndLayout);
+        }
+    }
+
     private final Runnable measureAndLayout = new Runnable() {
         @Override
         public void run() {
+            layoutRequested = false;
             measure(
                     MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
                     MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
@@ -206,7 +214,6 @@ public class ToolbarView extends Toolbar {
         public void setDrawable(Drawable d) {
             item.setIcon(d);
             setTintColor(item.getIcon());
-            post(measureAndLayout);
         }
     }
 
