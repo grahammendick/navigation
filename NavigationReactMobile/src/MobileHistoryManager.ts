@@ -1,4 +1,4 @@
-import { HTML5HistoryManager } from 'navigation';
+import { HTML5HistoryManager, StateContext } from 'navigation';
 
 class MobileHistoryManager extends HTML5HistoryManager {
     private hash = false;
@@ -8,6 +8,25 @@ class MobileHistoryManager extends HTML5HistoryManager {
         super(applicationPath || '');
         this.buildCurrentUrl = buildCurrentUrl;
         this.hash = applicationPath === undefined;
+    }
+
+    addHistory(url: string, replace: boolean, stateContext?: StateContext) {
+        if (!!stateContext) {
+            var {oldUrl, crumbs} = stateContext;
+            if (!!oldUrl) {
+                for(var i = 0; i < crumbs.length; i++) {
+                    super.addHistory(crumbs[i].url, true);                    
+                }
+            } else {
+                var oldScenes = oldUrl.split('crumb=').length;
+                if (crumbs.length > oldScenes) {
+                    for(var i = oldScenes + 1; i < crumbs.length; i++) {
+                        super.addHistory(crumbs[i].url, false);                    
+                    }    
+                }
+            }
+        }
+        super.addHistory(url, replace);
     }
 
     getHref(url: string): string {
