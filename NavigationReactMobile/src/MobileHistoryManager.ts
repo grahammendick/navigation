@@ -25,7 +25,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
         super.addHistory(url, replace);
         if (title)
             document.title = title;
-}
+    }
 
     getHref(url: string): string {
         var queryIndex = url.indexOf('?');
