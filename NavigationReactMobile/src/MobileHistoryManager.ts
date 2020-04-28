@@ -15,7 +15,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
             var {oldUrl, crumbs} = stateContext;
             if (!oldUrl) {
                 for(var i = 0; i < crumbs.length; i++) {
-                    super.addHistory(crumbs[i].url, true);                    
+                    super.addHistory(crumbs[i].url, i === 0);
                 }
             } else {
                 var oldScenes = oldUrl.split('crumb=').length - 1;
