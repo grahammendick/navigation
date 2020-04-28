@@ -19,10 +19,13 @@ class MobileHistoryManager extends HTML5HistoryManager {
                 }
             } else {
                 var oldScenes = oldUrl.split('crumb=').length - 1;
-                if (crumbs.length > oldScenes) {
+                if (crumbs.length > oldScenes + 1) {
                     for(var i = oldScenes + 1; i < crumbs.length; i++) {
-                        super.addHistory(crumbs[i].url, false);                    
-                    }    
+                        var crumb = crumbs[i];
+                        super.addHistory(crumb.url, false);                    
+                        if (typeof document !== 'undefined' && crumb.state.title)
+                            document.title = crumb.state.title;
+                    }
                 }
             }
         }
