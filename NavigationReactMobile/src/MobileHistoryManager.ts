@@ -13,23 +13,12 @@ class MobileHistoryManager extends HTML5HistoryManager {
     addHistory(url: string, replace: boolean, stateContext?: StateContext) {
         if (!!stateContext) {
             var {oldUrl, crumbs} = stateContext;
-            if (!oldUrl) {
-                for(var i = 0; i < crumbs.length; i++) {
-                    var crumb = crumbs[i];
-                    super.addHistory(crumb.url, i === 0);
-                    if (typeof document !== 'undefined' && crumb.state.title)
-                        document.title = crumb.state.title;
-                }
-            } else {
-                var oldScenes = oldUrl.split('crumb=').length - 1;
-                if (crumbs.length > oldScenes + 1) {
-                    for(var i = oldScenes + 1; i < crumbs.length; i++) {
-                        var crumb = crumbs[i];
-                        super.addHistory(crumb.url, false);                    
-                        if (typeof document !== 'undefined' && crumb.state.title)
-                            document.title = crumb.state.title;
-                    }
-                }
+            var start = !oldUrl ? 0 : oldUrl.split('crumb=').length;
+            for(var i = start; i < crumbs.length; i++) {
+                var crumb = crumbs[i];
+                super.addHistory(crumb.url, i === 0);
+                if (typeof document !== 'undefined' && crumb.state.title)
+                    document.title = crumb.state.title;
             }
         }
         super.addHistory(url, replace);
