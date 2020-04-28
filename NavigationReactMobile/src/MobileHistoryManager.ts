@@ -11,6 +11,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
     }
 
     addHistory(url: string, replace: boolean, stateContext?: StateContext) {
+        var title = typeof document !== 'undefined' && document.title;
         if (!!stateContext) {
             var {oldUrl, crumbs} = stateContext;
             var start = !oldUrl ? 0 : oldUrl.split('crumb=').length;
@@ -22,7 +23,9 @@ class MobileHistoryManager extends HTML5HistoryManager {
             }
         }
         super.addHistory(url, replace);
-    }
+        if (title)
+            document.title = title;
+}
 
     getHref(url: string): string {
         var queryIndex = url.indexOf('?');
