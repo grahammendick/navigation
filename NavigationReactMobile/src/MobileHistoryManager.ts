@@ -13,7 +13,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
     addHistory(url: string, replace: boolean, stateContext?: StateContext) {
         if (!!stateContext) {
             var {oldUrl, crumbs} = stateContext;
-            if (!!oldUrl) {
+            if (!oldUrl) {
                 for(var i = 0; i < crumbs.length; i++) {
                     super.addHistory(crumbs[i].url, true);                    
                 }
