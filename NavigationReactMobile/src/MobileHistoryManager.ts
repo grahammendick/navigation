@@ -18,7 +18,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
                     super.addHistory(crumbs[i].url, true);                    
                 }
             } else {
-                var oldScenes = oldUrl.split('crumb=').length;
+                var oldScenes = oldUrl.split('crumb=').length - 1;
                 if (crumbs.length > oldScenes) {
                     for(var i = oldScenes + 1; i < crumbs.length; i++) {
                         super.addHistory(crumbs[i].url, false);                    
