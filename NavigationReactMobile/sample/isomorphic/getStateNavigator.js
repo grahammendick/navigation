@@ -14,8 +14,8 @@ function getStateNavigator() {
     };
 
     var stateNavigator = new StateNavigator([
-        {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1}},
-        {key: 'person', route: 'person/{id}', defaults: {id: 0}, trackCrumbTrail: true}
+        {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1}, title: 'People'},
+        {key: 'person', route: 'person/{id}', defaults: {id: 0}, trackCrumbTrail: true, title: 'Person'}
     ], new MobileHistoryManager(buildStartUrl, ''));
 
     var { people, person } = stateNavigator.states;

@@ -13,8 +13,8 @@ export default () => {
   };
 
   const stateNavigator = new StateNavigator([
-    {key: 'grid', route: ''},
-    {key: 'detail', trackCrumbTrail: true},
+    {key: 'grid', route: '', title: 'Colors'},
+    {key: 'detail', trackCrumbTrail: true, title: 'Color'},
   ], new MobileHistoryManager(buildStartUrl));
 
   const {grid, detail} = stateNavigator.states;

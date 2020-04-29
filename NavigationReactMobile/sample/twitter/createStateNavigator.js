@@ -17,10 +17,10 @@ export default () => {
   };
 
   const stateNavigator = new StateNavigator([
-    {key: 'home', route: ''},
-    {key: 'tweet', trackCrumbTrail: true},
-    {key: 'timeline', trackCrumbTrail: true},
-    {key: 'photo', trackCrumbTrail: true}
+    {key: 'home', route: '', title: 'Home'},
+    {key: 'tweet', trackCrumbTrail: true, title: 'Tweet'},
+    {key: 'timeline', trackCrumbTrail: true, title: 'Timeline'},
+    {key: 'photo', trackCrumbTrail: true, title: 'Photo'}
   ], new MobileHistoryManager(buildStartUrl));
 
   const {home, tweet, timeline, photo} = stateNavigator.states;
