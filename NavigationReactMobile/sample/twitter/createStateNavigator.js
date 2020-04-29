@@ -11,11 +11,8 @@ export default () => {
   const buildStartUrl = url => {
     const {state, data} = stateNavigator.parseLink(url);
     let fluent = stateNavigator.fluent().navigate('home');
-    stateNavigator.historyManager.addHistory(fluent.url, true);
-    if (state.key === 'photo') {
+    if (state.key === 'photo')
       fluent = fluent.navigate('tweet', {id: data.id});
-      stateNavigator.historyManager.addHistory(fluent.url);
-    }
     return fluent.navigate(state.key, data).url;
   };
 
