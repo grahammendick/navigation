@@ -158,7 +158,7 @@ class StateNavigator {
         }
         if (url === this.stateContext.url) {
             if (historyAction !== 'none')
-                this.historyManager.addHistory(url, historyAction === 'replace', stateContext);
+                this.historyManager.addHistory(url, historyAction === 'replace', this.stateContext);
             if (this.stateContext.title && (typeof document !== 'undefined'))
                 document.title = this.stateContext.title;
         }
