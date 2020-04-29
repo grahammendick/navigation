@@ -3967,12 +3967,15 @@ describe('Navigation', function () {
 
     describe('History Add', function () {
         var replaceHistory;
+        var historyContext: StateContext;
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             var historyManager = new HashHistoryManager();
             replaceHistory = undefined;
-            historyManager.addHistory = (_url: string, replace: boolean) => {
+            historyContext = undefined;
+            historyManager.addHistory = (_url: string, replace: boolean, stateContext?: StateContext) => {
                 replaceHistory = replace;
+                historyContext = stateContext;
             }
             stateNavigator = new StateNavigator([
                     { key: 's', route: 'r' }
@@ -3999,18 +4002,23 @@ describe('Navigation', function () {
         function test() {
             it('should pass replace false to history manager', function() {
                 assert.strictEqual(replaceHistory, false);
+                assert.strictEqual(historyContext.url, '/r');
+                assert.strictEqual(historyContext.state, stateNavigator.states.s);
             });
         }
     });
 
     describe('History Replace', function () {
         var replaceHistory;
+        var historyContext: StateContext;
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             var historyManager = new HashHistoryManager();
             replaceHistory = undefined;
-            historyManager.addHistory = (_url: string, replace: boolean) => {
+            historyContext = undefined;
+            historyManager.addHistory = (_url: string, replace: boolean, stateContext?: StateContext) => {
                 replaceHistory = replace;
+                historyContext = stateContext;
             }
             stateNavigator = new StateNavigator([
                     { key: 's', route: 'r' }
@@ -4037,6 +4045,8 @@ describe('Navigation', function () {
         function test() {
             it('should pass replace true to history manager', function() {
                 assert.strictEqual(replaceHistory, true);
+                assert.strictEqual(historyContext.url, '/r');
+                assert.strictEqual(historyContext.state, stateNavigator.states.s);
             });
         }
     });
