@@ -165,9 +165,10 @@ export interface HistoryManager {
      * Adds browser history
      * @param url The current url
      * @param replace A value indicating whether to replace the current
+     * @param stateContext The current StateContext
      * browser history entry
      */
-    addHistory(url: string, replace: boolean): void;
+    addHistory(url: string, replace: boolean, stateContext: StateContext): void;
     /**
      * Gets the current location
      */
