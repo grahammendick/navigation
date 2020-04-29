@@ -16,7 +16,6 @@ export default () => {
     var fluent = stateNavigator.fluent();
     for(var i = 0; i < states.length && states[i].key !== state.key; i++) {
       fluent = fluent.navigate(states[i].key);
-      stateNavigator.historyManager.addHistory(fluent.url, i === 0);
     }
     return fluent.navigate(state.key).url;
   };
