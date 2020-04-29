@@ -8,9 +8,9 @@ import { searchPeople, getPerson } from './Data';
 function getStateNavigator() {
     var buildStartUrl = url => {
         var { state, data } = stateNavigator.parseLink(url);
-        var fluent = stateNavigator.fluent().navigate('people');
-        stateNavigator.historyManager.addHistory(fluent.url, true);
-        return fluent.navigate(state.key, data).url;
+        return stateNavigator.fluent()
+            .navigate('people')
+            .navigate(state.key, data).url;
     };
 
     var stateNavigator = new StateNavigator([
