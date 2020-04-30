@@ -11,7 +11,7 @@ class HTML5HistoryManager implements HistoryManager {
 
     init(navigateHistory: (url?: string) => void) {
         if (!this.disabled && !this.navigateHistory) {
-            this.navigateHistory = e => navigateHistory(e.state || undefined);
+            this.navigateHistory = e => navigateHistory((e.state && e.state.navigationLink) || undefined);
             window.addEventListener('popstate', this.navigateHistory);
         }
     }
@@ -20,9 +20,9 @@ class HTML5HistoryManager implements HistoryManager {
         var href = this.getHref(url);
         if (!this.disabled && this.getHref(this.getUrl(window.location)) !== href) {
             if (!replace)            
-                window.history.pushState(url, null, href);
+                window.history.pushState({navigationLink: url}, null, href);
             else
-                window.history.replaceState(url, null, href);
+                window.history.replaceState({navigationLink: url}, null, href);
         }
     }
 
