@@ -5,13 +5,14 @@
 
 @implementation NVSegmentedTabView
 {
-    NSInteger _selectedTab;
+    NSInteger _selectedTabIndex;
+    NVTabBarItemView *_selectedTab;
 }
 
 - (id)init
 {
     if (self = [super init]) {
-        _selectedTab = 0;
+        _selectedTabIndex = 0;
         [self addTarget:self action:@selector(tabPressed) forControlEvents:UIControlEventValueChanged];
     }
     return self;
@@ -86,22 +87,21 @@
     NSInteger tabBarIndex = [self.superview.subviews indexOfObject:self] + (self.bottomTabs ? -1 : 1);
     UIView* tabBar = [self.superview.subviews objectAtIndex:tabBarIndex];
     if (!press) {
-        self.selectedSegmentIndex = [tabBar.reactSubviews indexOfObjectPassingTest:^BOOL(UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            return [(NVTabBarItemView *) obj selected];
-        }];
+        self.selectedSegmentIndex = [tabBar.reactSubviews indexOfObject:_selectedTab];
         if (self.selectedSegmentIndex == -1)
             self.selectedSegmentIndex = 0;
-        tabChanged = _selectedTab != self.selectedSegmentIndex;
+        tabChanged = _selectedTabIndex != self.selectedSegmentIndex;
     }
     for(NSInteger i = 0; i < [tabBar.reactSubviews count]; i++) {
         NVTabBarItemView *tabBarItem = (NVTabBarItemView *) [tabBar.reactSubviews objectAtIndex:i];
         tabBarItem.alpha = (i == self.selectedSegmentIndex ? 1 : 0);
-        tabBarItem.selected = i == self.selectedSegmentIndex;
-        if (tabChanged && i == self.selectedSegmentIndex && !!tabBarItem.onPress) {
-            tabBarItem.onPress(nil);
+        if (i == self.selectedSegmentIndex) {
+            _selectedTabIndex = i;
+            _selectedTab = tabBarItem;
+            if (tabChanged && !!tabBarItem.onPress)
+                tabBarItem.onPress(nil);
         }
     }
-    _selectedTab = self.selectedSegmentIndex;
 }
 
 @end
