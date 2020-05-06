@@ -13,7 +13,7 @@
 {
     if (self = [super init]) {
         _tabBarController = [[UITabBarController alloc] init];
-        [self addSubview:_tabBarController.view];
+        //[self addSubview:_tabBarController.view];
         _tabBarController.delegate = self;
     }
     return self;
@@ -37,21 +37,21 @@
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
-    [_tabBarController addChildViewController:[(NVTabBarItemView *) subview navigationController]];
+    //[_tabBarController addChildViewController:[(NVTabBarItemView *) subview navigationController]];
 }
 
 - (void)removeReactSubview:(UIView *)subview
 {
     NSInteger tab = [self.reactSubviews indexOfObject:subview];
     [super removeReactSubview:subview];
-    NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
+    /*NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers removeObjectAtIndex:tab];
-    [_tabBarController setViewControllers:controllers];
+    [_tabBarController setViewControllers:controllers];*/
 }
 
-- (void)didUpdateReactSubviews
+/*- (void)didUpdateReactSubviews
 {
-}
+}*/
 
 - (void)layoutSubviews
 {

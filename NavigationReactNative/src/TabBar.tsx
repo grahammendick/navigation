@@ -26,7 +26,6 @@ class TabBar extends React.Component<any, any> {
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
         var tabViewHeight = !primary ? (titleOnly ? 48 : 72) : 56
         tabViewHeight = Platform.OS === 'android' ? tabViewHeight : 28;
-        var TabBar = (Platform.OS === 'android' || primary) ? NVTabBar : View;
         var TabView = !primary ? NVTabLayout : NVTabNavigation;
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedTab;
         var tabLayout = (Platform.OS === 'android' || !primary) && (
@@ -45,7 +44,7 @@ class TabBar extends React.Component<any, any> {
         return (
             <>
                 {!bottomTabs && tabLayout}
-                {!!tabBarItems.length && <TabBar
+                {!!tabBarItems.length && <NVTabBar
                     tabCount={tabBarItems.length}
                     onTabSelected={({nativeEvent}) => {
                         if (this.state.selectedTab !== nativeEvent.tab)
@@ -64,7 +63,7 @@ class TabBar extends React.Component<any, any> {
                                 var selected = index === this.state.selectedTab;
                                 return React.cloneElement(child, {...child.props, index, selected})
                             })}
-                </TabBar>}
+                </NVTabBar>}
                 {bottomTabs && tabLayout}
             </>
         );
