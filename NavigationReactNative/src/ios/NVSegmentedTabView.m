@@ -82,18 +82,17 @@
 
 - (void)selectTab:(BOOL) press
 {
+    BOOL tabChanged = press;
     NSInteger tabBarIndex = [self.superview.subviews indexOfObject:self] + (self.bottomTabs ? -1 : 1);
     UIView* tabBar = [self.superview.subviews objectAtIndex:tabBarIndex];
     if (!press) {
-        NSInteger selectedSegmentIndex = [tabBar.reactSubviews indexOfObjectPassingTest:^BOOL(UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        self.selectedSegmentIndex = [tabBar.reactSubviews indexOfObjectPassingTest:^BOOL(UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             return [(NVTabBarItemView *) obj selected];
         }];
-        if (selectedSegmentIndex != self.selectedSegmentIndex)
-            self.selectedSegmentIndex = selectedSegmentIndex;
+        if (self.selectedSegmentIndex == NSNotFound)
+            self.selectedSegmentIndex = 0;
+        tabChanged = _selectedTab != self.selectedSegmentIndex;
     }
-    if (self.selectedSegmentIndex == NSNotFound)
-        self.selectedSegmentIndex = 0;
-    BOOL tabChanged = press || _selectedTab != self.selectedSegmentIndex;
     for(NSInteger i = 0; i < [tabBar.reactSubviews count]; i++) {
         NVTabBarItemView *tabBarItem = (NVTabBarItemView *) [tabBar.reactSubviews objectAtIndex:i];
         tabBarItem.alpha = (i == self.selectedSegmentIndex ? 1 : 0);
