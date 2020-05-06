@@ -4,6 +4,9 @@
 #import <React/UIView+React.h>
 
 @implementation NVSegmentedTabView
+{
+    BOOL _tabChanged;
+}
 
 - (id)init
 {
@@ -21,6 +24,7 @@
         [self insertSegmentWithTitle:title atIndex:self.numberOfSegments animated:NO];
     }
     self.selectedSegmentIndex = selectedSegmentIndex < self.numberOfSegments ? selectedSegmentIndex : 0;
+    _tabChanged = selectedSegmentIndex != self.selectedSegmentIndex;
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
@@ -63,29 +67,31 @@
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
-    [self selectTab:NO];
+    [self selectTab];
 }
 
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
     if (!!self.window)
-        [self selectTab:NO];
+        [self selectTab];
 }
 
 - (void)tabPressed
 {
-    [self selectTab:YES];
+    _tabChanged = true;
+    [self selectTab];
 }
 
-- (void)selectTab:(BOOL) press
+- (void)selectTab
 {
     NSInteger tabBarIndex = [self.superview.subviews indexOfObject:self] + (self.bottomTabs ? -1 : 1);
     UIView* tabBar = [self.superview.subviews objectAtIndex:tabBarIndex];
     for(NSInteger i = 0; i < [tabBar.reactSubviews count]; i++) {
         NVTabBarItemView *tabBarItem = (NVTabBarItemView *) [tabBar.reactSubviews objectAtIndex:i];
         tabBarItem.alpha = (i == self.selectedSegmentIndex ? 1 : 0);
-        if (press && i == self.selectedSegmentIndex && !!tabBarItem.onPress) {
+        if (_tabChanged && i == self.selectedSegmentIndex && !!tabBarItem.onPress) {
+            _tabChanged = false;
             tabBarItem.onPress(nil);
         }
     }
