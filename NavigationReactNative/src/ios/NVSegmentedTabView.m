@@ -89,7 +89,7 @@
         self.selectedSegmentIndex = [tabBar.reactSubviews indexOfObjectPassingTest:^BOOL(UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             return [(NVTabBarItemView *) obj selected];
         }];
-        if (self.selectedSegmentIndex == NSNotFound)
+        if (self.selectedSegmentIndex == -1)
             self.selectedSegmentIndex = 0;
         tabChanged = _selectedTab != self.selectedSegmentIndex;
     }
