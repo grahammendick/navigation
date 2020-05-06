@@ -1,11 +1,18 @@
 #import "NVSegmentedTabView.h"
 #import "NVTabBarItemView.h"
 
+#import <React/UIView+React.h>
+
 @implementation NVSegmentedTabView
+{
+    NSInteger _selectedTabIndex;
+    NVTabBarItemView *_selectedTab;
+}
 
 - (id)init
 {
     if (self = [super init]) {
+        _selectedTabIndex = 0;
         [self addTarget:self action:@selector(tabPressed) forControlEvents:UIControlEventValueChanged];
     }
     return self;
@@ -13,12 +20,10 @@
 
 - (void)setTitles:(NSArray<NSString *> *)titles
 {
-    NSInteger selectedSegmentIndex = MAX(0, self.selectedSegmentIndex);
     [self removeAllSegments];
     for (NSString *title in titles) {
         [self insertSegmentWithTitle:title atIndex:self.numberOfSegments animated:NO];
     }
-    self.selectedSegmentIndex = selectedSegmentIndex;
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
@@ -59,6 +64,11 @@
     }
 }
 
+- (void)didSetProps:(NSArray<NSString *> *)changedProps
+{
+    [self selectTab:NO];
+}
+
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
@@ -73,13 +83,23 @@
 
 - (void)selectTab:(BOOL) press
 {
+    BOOL tabChanged = press;
     NSInteger tabBarIndex = [self.superview.subviews indexOfObject:self] + (self.bottomTabs ? -1 : 1);
     UIView* tabBar = [self.superview.subviews objectAtIndex:tabBarIndex];
-    for(NSInteger i = 0; i < [tabBar.subviews count]; i++) {
-        NVTabBarItemView *tabBarItem = (NVTabBarItemView *) [tabBar.subviews objectAtIndex:i];
+    if (!press) {
+        self.selectedSegmentIndex = [tabBar.reactSubviews indexOfObject:_selectedTab];
+        if (self.selectedSegmentIndex == -1)
+            self.selectedSegmentIndex = 0;
+        tabChanged = _selectedTabIndex != self.selectedSegmentIndex;
+    }
+    for(NSInteger i = 0; i < [tabBar.reactSubviews count]; i++) {
+        NVTabBarItemView *tabBarItem = (NVTabBarItemView *) [tabBar.reactSubviews objectAtIndex:i];
         tabBarItem.alpha = (i == self.selectedSegmentIndex ? 1 : 0);
-        if (press && i == self.selectedSegmentIndex && !!tabBarItem.onPress) {
-            tabBarItem.onPress(nil);
+        if (i == self.selectedSegmentIndex) {
+            _selectedTabIndex = i;
+            _selectedTab = tabBarItem;
+            if (tabChanged && !!tabBarItem.onPress)
+                tabBarItem.onPress(nil);
         }
     }
 }
