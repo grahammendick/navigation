@@ -79,7 +79,7 @@
 
 - (void)tabPressed
 {
-    _tabChanged = true;
+    _tabChanged = YES;
     [self selectTab];
 }
 
@@ -91,7 +91,7 @@
         NVTabBarItemView *tabBarItem = (NVTabBarItemView *) [tabBar.reactSubviews objectAtIndex:i];
         tabBarItem.alpha = (i == self.selectedSegmentIndex ? 1 : 0);
         if (_tabChanged && i == self.selectedSegmentIndex && !!tabBarItem.onPress) {
-            _tabChanged = false;
+            _tabChanged = NO;
             tabBarItem.onPress(nil);
         }
     }
