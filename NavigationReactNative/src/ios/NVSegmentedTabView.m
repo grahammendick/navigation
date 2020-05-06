@@ -1,6 +1,8 @@
 #import "NVSegmentedTabView.h"
 #import "NVTabBarItemView.h"
 
+#import <React/UIView+React.h>
+
 @implementation NVSegmentedTabView
 
 - (id)init
@@ -59,6 +61,10 @@
     }
 }
 
+- (void)didSetProps:(NSArray<NSString *> *)changedProps
+{
+}
+
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
@@ -75,8 +81,8 @@
 {
     NSInteger tabBarIndex = [self.superview.subviews indexOfObject:self] + (self.bottomTabs ? -1 : 1);
     UIView* tabBar = [self.superview.subviews objectAtIndex:tabBarIndex];
-    for(NSInteger i = 0; i < [tabBar.subviews count]; i++) {
-        NVTabBarItemView *tabBarItem = (NVTabBarItemView *) [tabBar.subviews objectAtIndex:i];
+    for(NSInteger i = 0; i < [tabBar.reactSubviews count]; i++) {
+        NVTabBarItemView *tabBarItem = (NVTabBarItemView *) [tabBar.reactSubviews objectAtIndex:i];
         tabBarItem.alpha = (i == self.selectedSegmentIndex ? 1 : 0);
         if (press && i == self.selectedSegmentIndex && !!tabBarItem.onPress) {
             tabBarItem.onPress(nil);
