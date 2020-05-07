@@ -27,7 +27,6 @@
             previousController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
         }
     }
-    
     [self updateColors];
 }
 
@@ -40,30 +39,22 @@
 }
 
 -(void)updateColors {
-    [self.reactViewController.navigationController.navigationBar setBarTintColor:self.barTintColor];
-    [self.reactViewController.navigationController.navigationBar setTintColor: self.tintColor];
-
-    NSMutableDictionary *titleAttributes = [self.reactViewController.navigationController.navigationBar.titleTextAttributes mutableCopy];
-    if (titleAttributes == nil) {
-        titleAttributes = @{}.mutableCopy;
-    }
-    [titleAttributes removeObjectForKey:NSForegroundColorAttributeName];
-    if (self.titleColor != nil) {
-        titleAttributes[NSForegroundColorAttributeName] = self.titleColor;
-    }
-    [self.reactViewController.navigationController.navigationBar setTitleTextAttributes:titleAttributes];
-    
+    UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
+    [navigationBar setBarTintColor:self.barTintColor];
+    [navigationBar setTintColor: self.tintColor];
+    [navigationBar setTitleTextAttributes:[self setForegroundColor:navigationBar.titleTextAttributes :self.titleColor]];
     if (@available(iOS 11.0, *)) {
-        NSMutableDictionary *largeTitleTextAttributes = [self.reactViewController.navigationController.navigationBar.largeTitleTextAttributes mutableCopy];
-        if (largeTitleTextAttributes == nil) {
-            largeTitleTextAttributes = @{}.mutableCopy;
-        }
-        [largeTitleTextAttributes removeObjectForKey:NSForegroundColorAttributeName];
-        if (self.titleColor != nil) {
-            largeTitleTextAttributes[NSForegroundColorAttributeName] = self.titleColor;
-        }
-        [self.reactViewController.navigationController.navigationBar setLargeTitleTextAttributes:largeTitleTextAttributes];
+        [navigationBar setLargeTitleTextAttributes:[self setForegroundColor:navigationBar.largeTitleTextAttributes :self.titleColor]];
     }
+}
+
+-(NSDictionary *)setForegroundColor:(NSDictionary *)attributes :(UIColor *)color
+{
+    NSMutableDictionary *attributesCopy = attributes != nil ? [attributes mutableCopy] : @{}.mutableCopy;
+    [attributesCopy removeObjectForKey:NSForegroundColorAttributeName];
+    if (color != nil)
+        attributesCopy[NSForegroundColorAttributeName] = color;
+    return attributesCopy;
 }
 
 @end
