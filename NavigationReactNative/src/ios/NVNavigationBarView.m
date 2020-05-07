@@ -41,6 +41,9 @@
 -(void)updateColors {
     UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
     if (@available(iOS 13.0, *)) {
+        self.reactViewController.navigationItem.standardAppearance = [self updateColors:navigationBar.standardAppearance];
+        self.reactViewController.navigationItem.scrollEdgeAppearance = [self updateColors:navigationBar.scrollEdgeAppearance];
+        self.reactViewController.navigationItem.compactAppearance = [self updateColors:navigationBar.compactAppearance];
     } else {
         [navigationBar setBarTintColor:self.barTintColor];
         [navigationBar setTintColor: self.tintColor];
@@ -49,6 +52,18 @@
             [navigationBar setLargeTitleTextAttributes:[self setForeground:self.titleColor :navigationBar.largeTitleTextAttributes]];
         }
     }
+}
+
+-(UINavigationBarAppearance *)updateColors:(UINavigationBarAppearance *)appearance
+API_AVAILABLE(ios(13.0))
+{
+    UINavigationBarAppearance *appearanceCopy = [appearance copy];
+    [appearanceCopy setBackgroundColor:self.barTintColor];
+    [appearanceCopy.buttonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.backButtonAppearance.normal.titleTextAttributes]];
+    [appearanceCopy.doneButtonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.doneButtonAppearance.normal.titleTextAttributes]];
+    [appearanceCopy setTitleTextAttributes:[self setForeground:self.titleColor :appearanceCopy.titleTextAttributes]];
+    [appearanceCopy setLargeTitleTextAttributes:[self setForeground:self.titleColor :appearanceCopy.largeTitleTextAttributes]];
+    return appearanceCopy;
 }
 
 -(NSDictionary *)setForeground:(UIColor *)color :(NSDictionary *)attributes
