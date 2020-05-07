@@ -70,10 +70,12 @@ API_AVAILABLE(ios(13.0))
 -(NSDictionary *)setForeground:(UIColor *)color :(NSDictionary *)attributes
 {
     NSMutableDictionary *attributesCopy = attributes != nil ? [attributes mutableCopy] : @{}.mutableCopy;
-    if (@available(iOS 13.0, *)) {} else
+    if (@available(iOS 13.0, *)) {} else {
         [attributesCopy removeObjectForKey:NSForegroundColorAttributeName];
-    if (color != nil)
+    }
+    if (color != nil) {
         attributesCopy[NSForegroundColorAttributeName] = color;
+    }
     return attributesCopy;
 }
 
