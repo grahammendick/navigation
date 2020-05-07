@@ -40,15 +40,18 @@
 
 -(void)updateColors {
     UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
-    [navigationBar setBarTintColor:self.barTintColor];
-    [navigationBar setTintColor: self.tintColor];
-    [navigationBar setTitleTextAttributes:[self setForegroundColor:navigationBar.titleTextAttributes :self.titleColor]];
-    if (@available(iOS 11.0, *)) {
-        [navigationBar setLargeTitleTextAttributes:[self setForegroundColor:navigationBar.largeTitleTextAttributes :self.titleColor]];
+    if (@available(iOS 13.0, *)) {
+    } else {
+        [navigationBar setBarTintColor:self.barTintColor];
+        [navigationBar setTintColor: self.tintColor];
+        [navigationBar setTitleTextAttributes:[self setForeground:self.titleColor :navigationBar.titleTextAttributes]];
+        if (@available(iOS 11.0, *)) {
+            [navigationBar setLargeTitleTextAttributes:[self setForeground:self.titleColor :navigationBar.largeTitleTextAttributes]];
+        }
     }
 }
 
--(NSDictionary *)setForegroundColor:(NSDictionary *)attributes :(UIColor *)color
+-(NSDictionary *)setForeground:(UIColor *)color :(NSDictionary *)attributes
 {
     NSMutableDictionary *attributesCopy = attributes != nil ? [attributes mutableCopy] : @{}.mutableCopy;
     [attributesCopy removeObjectForKey:NSForegroundColorAttributeName];
