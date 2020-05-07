@@ -58,8 +58,9 @@
 API_AVAILABLE(ios(13.0))
 {
     UINavigationBarAppearance *appearanceCopy = [appearance copy];
-    if (self.barTintColor != nil)
+    if (self.barTintColor != nil) {
         [appearanceCopy setBackgroundColor:self.barTintColor];
+    }
     [appearanceCopy.buttonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.buttonAppearance.normal.titleTextAttributes]];
     [appearanceCopy.doneButtonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.doneButtonAppearance.normal.titleTextAttributes]];
     [appearanceCopy setTitleTextAttributes:[self setForeground:self.titleColor :appearanceCopy.titleTextAttributes]];
