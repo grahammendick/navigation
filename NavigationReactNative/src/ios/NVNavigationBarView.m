@@ -27,7 +27,6 @@
             previousController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
         }
     }
-    
     [self updateColors];
 }
 
@@ -40,30 +39,42 @@
 }
 
 -(void)updateColors {
-    [self.reactViewController.navigationController.navigationBar setBarTintColor:self.barTintColor];
-    [self.reactViewController.navigationController.navigationBar setTintColor: self.tintColor];
+    UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
+    if (@available(iOS 13.0, *)) {
+        [navigationBar setTintColor: self.tintColor];
+        self.reactViewController.navigationItem.standardAppearance = [self updateColors:navigationBar.standardAppearance];
+        self.reactViewController.navigationItem.scrollEdgeAppearance = [self updateColors:navigationBar.scrollEdgeAppearance];
+        self.reactViewController.navigationItem.compactAppearance = [self updateColors:navigationBar.compactAppearance];
+    } else {
+        [navigationBar setBarTintColor:self.barTintColor];
+        [navigationBar setTintColor: self.tintColor];
+        [navigationBar setTitleTextAttributes:[self setForeground:self.titleColor :navigationBar.titleTextAttributes]];
+        if (@available(iOS 11.0, *)) {
+            [navigationBar setLargeTitleTextAttributes:[self setForeground:self.titleColor :navigationBar.largeTitleTextAttributes]];
+        }
+    }
+}
 
-    NSMutableDictionary *titleAttributes = [self.reactViewController.navigationController.navigationBar.titleTextAttributes mutableCopy];
-    if (titleAttributes == nil) {
-        titleAttributes = @{}.mutableCopy;
+-(UINavigationBarAppearance *)updateColors:(UINavigationBarAppearance *)appearance
+API_AVAILABLE(ios(13.0))
+{
+    UINavigationBarAppearance *appearanceCopy = appearance != nil ? [appearance copy] : [UINavigationBarAppearance new];
+    [appearanceCopy setBackgroundColor:self.barTintColor];
+    [appearanceCopy.buttonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.buttonAppearance.normal.titleTextAttributes]];
+    [appearanceCopy.doneButtonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.doneButtonAppearance.normal.titleTextAttributes]];
+    [appearanceCopy setTitleTextAttributes:[self setForeground:self.titleColor :appearanceCopy.titleTextAttributes]];
+    [appearanceCopy setLargeTitleTextAttributes:[self setForeground:self.titleColor :appearanceCopy.largeTitleTextAttributes]];
+    return appearanceCopy;
+}
+
+-(NSDictionary *)setForeground:(UIColor *)color :(NSDictionary *)attributes
+{
+    NSMutableDictionary *attributesCopy = [attributes != nil ? attributes : @{} mutableCopy];
+    [attributesCopy removeObjectForKey:NSForegroundColorAttributeName];
+    if (color != nil) {
+        attributesCopy[NSForegroundColorAttributeName] = color;
     }
-    [titleAttributes removeObjectForKey:NSForegroundColorAttributeName];
-    if (self.titleColor != nil) {
-        titleAttributes[NSForegroundColorAttributeName] = self.titleColor;
-    }
-    [self.reactViewController.navigationController.navigationBar setTitleTextAttributes:titleAttributes];
-    
-    if (@available(iOS 11.0, *)) {
-        NSMutableDictionary *largeTitleTextAttributes = [self.reactViewController.navigationController.navigationBar.largeTitleTextAttributes mutableCopy];
-        if (largeTitleTextAttributes == nil) {
-            largeTitleTextAttributes = @{}.mutableCopy;
-        }
-        [largeTitleTextAttributes removeObjectForKey:NSForegroundColorAttributeName];
-        if (self.titleColor != nil) {
-            largeTitleTextAttributes[NSForegroundColorAttributeName] = self.titleColor;
-        }
-        [self.reactViewController.navigationController.navigationBar setLargeTitleTextAttributes:largeTitleTextAttributes];
-    }
+    return attributesCopy;
 }
 
 @end
