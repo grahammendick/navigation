@@ -41,6 +41,7 @@
 -(void)updateColors {
     UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
     if (@available(iOS 13.0, *)) {
+        [navigationBar setTintColor: self.tintColor];
         self.reactViewController.navigationItem.standardAppearance = [self updateColors:navigationBar.standardAppearance];
         self.reactViewController.navigationItem.scrollEdgeAppearance = [self updateColors:navigationBar.scrollEdgeAppearance];
         self.reactViewController.navigationItem.compactAppearance = [self updateColors:navigationBar.compactAppearance];

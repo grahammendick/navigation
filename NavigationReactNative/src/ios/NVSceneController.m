@@ -63,9 +63,7 @@
 {
     [super viewDidAppear:animated];
     NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
-    if (@available(iOS 13.0, *)) {} else {
-        [navigationBar updateColors];
-    }
+    [navigationBar updateColors];
 }
 
 - (void)viewDidLayoutSubviews
