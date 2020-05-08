@@ -58,7 +58,7 @@
 -(UINavigationBarAppearance *)updateColors:(UINavigationBarAppearance *)appearance
 API_AVAILABLE(ios(13.0))
 {
-    UINavigationBarAppearance *appearanceCopy = [appearance copy];
+    UINavigationBarAppearance *appearanceCopy = appearance != nil ? [appearance copy] : [UINavigationBarAppearance new];
     [appearanceCopy setBackgroundColor:self.barTintColor];
     [appearanceCopy.buttonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.buttonAppearance.normal.titleTextAttributes]];
     [appearanceCopy.doneButtonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.doneButtonAppearance.normal.titleTextAttributes]];
