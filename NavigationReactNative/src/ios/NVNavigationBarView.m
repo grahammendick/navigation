@@ -58,9 +58,7 @@
 API_AVAILABLE(ios(13.0))
 {
     UINavigationBarAppearance *appearanceCopy = [appearance copy];
-    if (self.barTintColor != nil) {
-        [appearanceCopy setBackgroundColor:self.barTintColor];
-    }
+    [appearanceCopy setBackgroundColor:self.barTintColor];
     [appearanceCopy.buttonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.buttonAppearance.normal.titleTextAttributes]];
     [appearanceCopy.doneButtonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.doneButtonAppearance.normal.titleTextAttributes]];
     [appearanceCopy setTitleTextAttributes:[self setForeground:self.titleColor :appearanceCopy.titleTextAttributes]];
@@ -71,9 +69,7 @@ API_AVAILABLE(ios(13.0))
 -(NSDictionary *)setForeground:(UIColor *)color :(NSDictionary *)attributes
 {
     NSMutableDictionary *attributesCopy = attributes != nil ? [attributes mutableCopy] : @{}.mutableCopy;
-    if (@available(iOS 13.0, *)) {} else {
-        [attributesCopy removeObjectForKey:NSForegroundColorAttributeName];
-    }
+    [attributesCopy removeObjectForKey:NSForegroundColorAttributeName];
     if (color != nil) {
         attributesCopy[NSForegroundColorAttributeName] = color;
     }
