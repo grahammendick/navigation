@@ -6,8 +6,6 @@ class TabBar extends React.Component<any, any> {
     constructor(props) {
         super(props);
         this.state = {selectedTab: props.selectedTab || 0};
-        this.handleTabChange = this.handleTabChange.bind(this);
-        this.handleBack = this.handleBack.bind(this);
     }
     static defaultProps = {
         scrollable: false,
@@ -18,20 +16,16 @@ class TabBar extends React.Component<any, any> {
             return {selectedTab};
         return null;
     }
-    handleTabChange({nativeEvent: {tab}}) {
+    changeTab(tab) {
         var {selectedTab, onTabChange} = this.props;
         if (this.state.selectedTab !== tab) {
             if (selectedTab == null)
                 this.setState({selectedTab: tab});
             if (!!onTabChange)
                 onTabChange(tab);
+            return true;
         }
-    }
-    handleBack() {
-        var {selectedTab} = this.state;
-        if (selectedTab)
-            this.setState({selectedTab: 0});
-        return !!selectedTab;
+        return false;
     }
     render() {
         var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, swipeable} = this.props;
@@ -62,14 +56,14 @@ class TabBar extends React.Component<any, any> {
                 {!bottomTabs && tabLayout}
                 {!!tabBarItems.length && <TabBar
                     tabCount={tabBarItems.length}
-                    onTabSelected={this.handleTabChange}
+                    onTabSelected={({nativeEvent: {tab}}) => this.changeTab(tab)}
                     selectedTab={this.state.selectedTab}
                     barTintColor={barTintColor}
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}
                     swipeable={!primary}
                     style={styles.tabBar}>
-                        <BackButton onPress={this.handleBack} />
+                        <BackButton onPress={() => this.changeTab(0)} />
                         {tabBarItems
                             .filter(child => !!child)
                             .map((child: any, index) => {
