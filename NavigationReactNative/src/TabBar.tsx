@@ -5,12 +5,26 @@ import BackButton from './BackButton';
 class TabBar extends React.Component<any, any> {
     constructor(props) {
         super(props);
-        this.state = {selectedTab: 0};
+        this.state = {selectedTab: props.selectedTab || 0};
+        this.selectTab = this.selectTab.bind(this);
         this.handleBack = this.handleBack.bind(this);
     }
     static defaultProps = {
         scrollable: false,
         primary: Platform.OS === 'ios',
+    }
+    static getDerivedStateFromProps({selectedTab}, state) {
+        if (selectedTab != null && selectedTab !== state.selectedTab)
+            return {selectedTab};
+        return null;
+    }
+    selectTab({nativeEvent: {tab}}) {
+        var {selectedTab, onTabChange} = this.props;
+        if (this.state.selectedTab !== tab) {
+            if (selectedTab == null)
+                this.setState({selectedTab: tab})
+            onTabChange(tab);
+        }
     }
     handleBack() {
         var {selectedTab} = this.state;
@@ -47,10 +61,7 @@ class TabBar extends React.Component<any, any> {
                 {!bottomTabs && tabLayout}
                 {!!tabBarItems.length && <TabBar
                     tabCount={tabBarItems.length}
-                    onTabSelected={({nativeEvent}) => {
-                        if (this.state.selectedTab !== nativeEvent.tab)
-                            this.setState({selectedTab: nativeEvent.tab})
-                    }}
+                    onTabSelected={this.selectTab}
                     selectedTab={this.state.selectedTab}
                     barTintColor={barTintColor}
                     selectedTintColor={selectedTintColor}
