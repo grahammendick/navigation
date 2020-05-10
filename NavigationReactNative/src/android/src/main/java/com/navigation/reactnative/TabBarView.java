@@ -29,14 +29,15 @@ public class TabBarView extends ViewPager {
     public TabBarView(Context context) {
         super(context);
         addOnPageChangeListener(new TabChangeListener());
-        setAdapter(new Adapter());
-        getAdapter().registerDataSetObserver(new DataSetObserver() {
+        Adapter adapter = new Adapter();
+        adapter.registerDataSetObserver(new DataSetObserver() {
             @Override
             public void onChanged() {
                 if (getCurrentItem() != selectedTab && getTabsCount() > selectedTab)
                     setCurrentItem(selectedTab, false);
             }
         });
+        setAdapter(adapter);
     }
 
     @Override
