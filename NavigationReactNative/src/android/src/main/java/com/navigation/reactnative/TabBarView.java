@@ -25,12 +25,18 @@ public class TabBarView extends ViewPager {
     int selectedTab = 0;
     boolean swipeable = true;
     private boolean layoutRequested = false;
-    private DataSetObserver dataSetObserver;
 
     public TabBarView(Context context) {
         super(context);
         addOnPageChangeListener(new TabChangeListener());
         setAdapter(new Adapter());
+        getAdapter().registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                if (getCurrentItem() != selectedTab && getTabsCount() > selectedTab)
+                    setCurrentItem(selectedTab, false);
+            }
+        });
     }
 
     @Override
@@ -40,18 +46,6 @@ public class TabBarView extends ViewPager {
         if (getTabView() != null)
             getTabView().setupWithViewPager(this);
         populateTabs();
-        if (dataSetObserver == null && getAdapter() != null) {
-            if (getCurrentItem() != selectedTab && getTabsCount() > selectedTab)
-                setCurrentItem(selectedTab, false);
-            dataSetObserver = new DataSetObserver() {
-                @Override
-                public void onChanged() {
-                    if (getCurrentItem() != selectedTab && getTabsCount() > selectedTab)
-                        setCurrentItem(selectedTab, false);
-                }
-            };
-            getAdapter().registerDataSetObserver(dataSetObserver);
-        }
     }
 
     void populateTabs() {
