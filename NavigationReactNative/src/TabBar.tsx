@@ -6,7 +6,7 @@ class TabBar extends React.Component<any, any> {
     constructor(props) {
         super(props);
         this.state = {selectedTab: props.selectedTab || 0};
-        this.selectTab = this.selectTab.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
         this.handleBack = this.handleBack.bind(this);
     }
     static defaultProps = {
@@ -18,7 +18,7 @@ class TabBar extends React.Component<any, any> {
             return {selectedTab};
         return null;
     }
-    selectTab({nativeEvent: {tab}}) {
+    handleTabChange({nativeEvent: {tab}}) {
         var {selectedTab, onTabChange} = this.props;
         if (this.state.selectedTab !== tab) {
             if (selectedTab == null)
@@ -61,7 +61,7 @@ class TabBar extends React.Component<any, any> {
                 {!bottomTabs && tabLayout}
                 {!!tabBarItems.length && <TabBar
                     tabCount={tabBarItems.length}
-                    onTabSelected={this.selectTab}
+                    onTabSelected={this.handleTabChange}
                     selectedTab={this.state.selectedTab}
                     barTintColor={barTintColor}
                     selectedTintColor={selectedTintColor}
