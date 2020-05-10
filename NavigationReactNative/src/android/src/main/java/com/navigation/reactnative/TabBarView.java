@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TabBarView extends ViewPager {
+    int selectedTab = 0;
     boolean swipeable = true;
     private boolean layoutRequested = false;
+    private DataSetObserver dataSetObserver;
 
     public TabBarView(Context context) {
         super(context);
@@ -37,6 +40,18 @@ public class TabBarView extends ViewPager {
         if (getTabView() != null)
             getTabView().setupWithViewPager(this);
         populateTabs();
+        if (dataSetObserver == null && getAdapter() != null) {
+            if (getCurrentItem() != selectedTab && getTabsCount() > selectedTab)
+                setCurrentItem(selectedTab, false);
+            dataSetObserver = new DataSetObserver() {
+                @Override
+                public void onChanged() {
+                    if (getCurrentItem() != selectedTab && getTabsCount() > selectedTab)
+                        setCurrentItem(selectedTab, false);
+                }
+            };
+            getAdapter().registerDataSetObserver(dataSetObserver);
+        }
     }
 
     void populateTabs() {
