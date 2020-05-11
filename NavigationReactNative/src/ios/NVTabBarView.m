@@ -7,6 +7,7 @@
 @implementation NVTabBarView
 {
     UITabBarController *_tabBarController;
+    NSInteger _selectedTab;
 }
 
 - (id)init
@@ -17,6 +18,11 @@
         _tabBarController.delegate = self;
     }
     return self;
+}
+
+- (void)setSelectedTab:(NSInteger)selectedTab
+{
+    _selectedTab = selectedTab;
 }
 
 - (void)setBarTintColor:(UIColor *)barTintColor
@@ -47,6 +53,11 @@
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers removeObjectAtIndex:tab];
     [_tabBarController setViewControllers:controllers];
+}
+
+- (void)didSetProps:(NSArray<NSString *> *)changedProps
+{
+    _tabBarController.selectedIndex = _selectedTab;
 }
 
 - (void)didUpdateReactSubviews
