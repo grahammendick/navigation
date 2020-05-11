@@ -77,9 +77,9 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(nonnull UIViewController *)viewController
 {
-    NSUInteger tab = [tabBarController.viewControllers indexOfObject:viewController];
-    NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[tab];
-    self.onTabSelected(@{ @"tab": @(tab) });
+    _selectedTab = [tabBarController.viewControllers indexOfObject:viewController];
+    NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[_selectedTab];
+    self.onTabSelected(@{ @"tab": @(_selectedTab) });
     if (!!tabBarItem.onPress) {
         tabBarItem.onPress(nil);
     }
