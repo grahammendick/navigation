@@ -68,6 +68,7 @@
 {
     NSUInteger tab = [tabBarController.viewControllers indexOfObject:viewController];
     NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[tab];
+    self.onTabSelected(@{ @"tab": @(tab) });
     if (!!tabBarItem.onPress) {
         tabBarItem.onPress(nil);
     }
