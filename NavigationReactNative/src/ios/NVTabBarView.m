@@ -57,7 +57,13 @@
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
-    _tabBarController.selectedIndex = _selectedTab;
+    if (_tabBarController.selectedIndex == NSNotFound) {
+        _tabBarController.selectedIndex = 0;
+    }
+    if (_tabBarController.selectedIndex != _selectedTab) {
+        _tabBarController.selectedIndex = _selectedTab;
+        [self selectTab];
+    }
 }
 
 - (void)didUpdateReactSubviews
@@ -78,6 +84,11 @@
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(nonnull UIViewController *)viewController
 {
     _selectedTab = [tabBarController.viewControllers indexOfObject:viewController];
+    [self selectTab];
+}
+
+-(void) selectTab
+{
     NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[_selectedTab];
     self.onTabSelected(@{ @"tab": @(_selectedTab) });
     if (!!tabBarItem.onPress) {
