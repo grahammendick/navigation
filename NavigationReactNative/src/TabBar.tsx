@@ -25,12 +25,12 @@ class TabBar extends React.Component<any, any> {
         this.changeTab(tab);
     }
     changeTab(tab) {
-        var {selectedTab, onTabChange} = this.props;
+        var {selectedTab, onChangeTab} = this.props;
         if (this.state.selectedTab !== tab) {
             if (selectedTab == null)
                 this.setState({selectedTab: tab});
-            if (!!onTabChange)
-                onTabChange(tab);
+            if (!!onChangeTab)
+                onChangeTab(tab);
             return true;
         }
         return false;
