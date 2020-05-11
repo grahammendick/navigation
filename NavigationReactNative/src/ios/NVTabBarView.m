@@ -8,6 +8,7 @@
 {
     UITabBarController *_tabBarController;
     NSInteger _selectedTab;
+    NSInteger _nativeEventCount;
 }
 
 - (id)init
@@ -60,7 +61,8 @@
     if (_tabBarController.selectedIndex == NSNotFound) {
         _tabBarController.selectedIndex = 0;
     }
-    if (_tabBarController.selectedIndex != _selectedTab) {
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if (eventLag == 0 && _tabBarController.selectedIndex != _selectedTab) {
         _tabBarController.selectedIndex = _selectedTab;
         [self selectTab];
     }
@@ -89,8 +91,12 @@
 
 -(void) selectTab
 {
+    _nativeEventCount++;
     NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[_selectedTab];
-    self.onTabSelected(@{ @"tab": @(_selectedTab) });
+    self.onTabSelected(@{
+        @"tab": @(_selectedTab),
+        @"eventCount": @(_nativeEventCount),
+    });
     if (!!tabBarItem.onPress) {
         tabBarItem.onPress(nil);
     }
