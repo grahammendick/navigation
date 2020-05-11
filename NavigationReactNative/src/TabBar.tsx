@@ -3,9 +3,12 @@ import { requireNativeComponent, Platform, StyleSheet, View } from 'react-native
 import BackButton from './BackButton';
 
 class TabBar extends React.Component<any, any> {
+    private ref: React.RefObject<View>;
     constructor(props) {
         super(props);
         this.state = {selectedTab: props.selectedTab || 0};
+        this.ref = React.createRef<View>();
+        this.onTabSelected = this.onTabSelected.bind(this);
     }
     static defaultProps = {
         scrollable: false,
@@ -15,6 +18,11 @@ class TabBar extends React.Component<any, any> {
         if (selectedTab != null && selectedTab !== state.selectedTab)
             return {selectedTab};
         return null;
+    }
+    onTabSelected({nativeEvent}) {
+        var {eventCount: mostRecentEventCount, tab} = nativeEvent;
+        this.ref.current.setNativeProps({mostRecentEventCount});
+        this.changeTab(tab);
     }
     changeTab(tab) {
         var {selectedTab, onTabChange} = this.props;
@@ -55,8 +63,9 @@ class TabBar extends React.Component<any, any> {
             <>
                 {!bottomTabs && tabLayout}
                 {!!tabBarItems.length && <TabBar
+                    ref={this.ref}
                     tabCount={tabBarItems.length}
-                    onTabSelected={({nativeEvent: {tab}}) => this.changeTab(tab)}
+                    onTabSelected={this.onTabSelected}
                     selectedTab={this.state.selectedTab}
                     barTintColor={barTintColor}
                     selectedTintColor={selectedTintColor}

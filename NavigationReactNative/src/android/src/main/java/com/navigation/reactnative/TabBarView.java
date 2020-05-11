@@ -25,6 +25,8 @@ public class TabBarView extends ViewPager {
     int selectedTab = 0;
     boolean swipeable = true;
     private boolean layoutRequested = false;
+    int nativeEventCount;
+    int mostRecentEventCount;
 
     public TabBarView(Context context) {
         super(context);
@@ -202,9 +204,11 @@ public class TabBarView extends ViewPager {
 
         @Override
         public void onPageSelected(int position) {
+            nativeEventCount++;
             selectedTab = position;
             WritableMap event = Arguments.createMap();
             event.putInt("tab", position);
+            event.putInt("eventCount", nativeEventCount);
             ReactContext reactContext = (ReactContext) getContext();
             reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onTabSelected", event);
             if (getAdapter() != null)
