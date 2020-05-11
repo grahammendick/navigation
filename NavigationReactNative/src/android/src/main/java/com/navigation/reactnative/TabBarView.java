@@ -202,6 +202,7 @@ public class TabBarView extends ViewPager {
 
         @Override
         public void onPageSelected(int position) {
+            selectedTab = position;
             WritableMap event = Arguments.createMap();
             event.putInt("tab", position);
             ReactContext reactContext = (ReactContext) getContext();
