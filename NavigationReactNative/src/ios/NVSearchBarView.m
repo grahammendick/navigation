@@ -31,7 +31,9 @@
 
 - (void)setObscureBackground:(BOOL)obscureBackground
 {
-    [self.searchController setObscuresBackgroundDuringPresentation:obscureBackground];
+    if (@available(iOS 9.1, *)) {
+        [self.searchController setObscuresBackgroundDuringPresentation:obscureBackground];
+    }
 }
 
 - (void)setHideNavigationBar:(BOOL)hideNavigationBar
