@@ -86,7 +86,7 @@
 {
     [super didMoveToWindow];
     if (!!self.window)
-        [self selectTab:NO];
+        [self selectTab:_selectedTabBarItem == nil && self.selectedSegmentIndex > 0];
 }
 
 - (void)tabPressed
