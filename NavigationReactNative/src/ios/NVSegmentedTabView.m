@@ -29,10 +29,12 @@
 
 - (void)setTitles:(NSArray<NSString *> *)titles
 {
+    NSInteger selectedIndex = self.selectedSegmentIndex;
     [self removeAllSegments];
     for (NSString *title in titles) {
         [self insertSegmentWithTitle:title atIndex:self.numberOfSegments animated:NO];
     }
+    self.selectedSegmentIndex = selectedIndex;
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
@@ -98,9 +100,8 @@
     NSInteger tabBarIndex = [self.superview.subviews indexOfObject:self] + (self.bottomTabs ? -1 : 1);
     UIView* tabBar = [self.superview.subviews objectAtIndex:tabBarIndex];
     if (!press) {
-        self.selectedSegmentIndex = [tabBar.reactSubviews indexOfObject:_selectedTabBarItem];
-        if (self.selectedSegmentIndex == -1)
-            self.selectedSegmentIndex = 0;
+        BOOL tabFound = [tabBar.reactSubviews indexOfObject:_selectedTabBarItem] != NSNotFound;
+        self.selectedSegmentIndex = (tabFound || [tabBar.reactSubviews count] > self.selectedSegmentIndex) ? MAX(self.selectedSegmentIndex, 0) : 0;
         tabChanged = _selectedTab != self.selectedSegmentIndex;
     }
     if (tabChanged) {
