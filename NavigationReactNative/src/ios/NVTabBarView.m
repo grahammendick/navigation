@@ -41,7 +41,9 @@
 
 - (void)setUnselectedTintColor:(UIColor *)unselectedTintColor
 {
-    [_tabBarController.tabBar setUnselectedItemTintColor: unselectedTintColor];
+    if (@available(iOS 10.0, *)) {
+        [_tabBarController.tabBar setUnselectedItemTintColor: unselectedTintColor];
+    }
 }
 
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
