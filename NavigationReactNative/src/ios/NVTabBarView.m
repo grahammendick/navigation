@@ -23,7 +23,10 @@
 
 - (void)setSelectedTab:(NSInteger)selectedTab
 {
-    _selectedTab = selectedTab;
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if (eventLag == 0) {
+        _selectedTab = selectedTab;
+    }
 }
 
 - (void)setBarTintColor:(UIColor *)barTintColor
@@ -61,8 +64,7 @@
     if (_tabBarController.selectedIndex == NSNotFound) {
         _tabBarController.selectedIndex = 0;
     }
-    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    if (eventLag == 0 && _tabBarController.selectedIndex != _selectedTab) {
+    if (_tabBarController.selectedIndex != _selectedTab) {
         _tabBarController.selectedIndex = _selectedTab;
         [self selectTab];
     }
