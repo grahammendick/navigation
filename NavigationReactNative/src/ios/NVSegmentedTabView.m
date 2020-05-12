@@ -21,7 +21,10 @@
 
 - (void)setSelectedTab:(NSInteger)selectedTab
 {
-    _selectedTab = selectedTab;
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if (eventLag == 0) {
+        _selectedTab = selectedTab;
+    }
 }
 
 - (void)setTitles:(NSArray<NSString *> *)titles
@@ -73,8 +76,7 @@
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     BOOL press = NO;
-    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    if (eventLag == 0 && self.selectedSegmentIndex != _selectedTab) {
+    if (self.selectedSegmentIndex != _selectedTab) {
         self.selectedSegmentIndex = _selectedTab;
         press = YES;
     }
