@@ -49,6 +49,8 @@ class TabBar extends React.Component<any, any> {
         var tabLayout = (Platform.OS === 'android' || !primary) && (
             <TabView
                 bottomTabs={bottomTabs}
+                onTabSelected={this.onTabSelected}
+                selectedTab={this.state.selectedTab}
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
