@@ -75,11 +75,8 @@
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
-    BOOL press = NO;
-    if (self.selectedSegmentIndex != _selectedTab) {
-        self.selectedSegmentIndex = _selectedTab;
-        press = YES;
-    }
+    BOOL press = self.selectedSegmentIndex != _selectedTab;
+    self.selectedSegmentIndex = _selectedTab;
     [self selectTab:press];
 }
 
