@@ -102,10 +102,11 @@
     UIView* tabBar = [self.superview.subviews objectAtIndex:tabBarIndex];
     if (!press) {
         NSInteger previousSelectionIndex = [tabBar.reactSubviews indexOfObject:_selectedTabBarItem];
-        if (previousSelectionIndex != NSNotFound)
+        if (previousSelectionIndex != NSNotFound) {
             self.selectedSegmentIndex = previousSelectionIndex;
-        if (previousSelectionIndex == NSNotFound)
-            self.selectedSegmentIndex = ([tabBar.reactSubviews count] > self.selectedSegmentIndex) ? self.selectedSegmentIndex : 0;
+        } else {
+            self.selectedSegmentIndex = MAX(self.selectedSegmentIndex, 0);
+        }
         tabChanged = _selectedTab != self.selectedSegmentIndex;
     }
     if (tabChanged) {
