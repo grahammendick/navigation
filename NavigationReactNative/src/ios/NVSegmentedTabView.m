@@ -7,6 +7,7 @@
 {
     NSInteger _selectedTab;
     NVTabBarItemView *_selectedTabBarItem;
+    NSInteger _nativeEventCount;
 }
 
 - (id)init
@@ -72,7 +73,8 @@
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     BOOL press = NO;
-    if (self.selectedSegmentIndex != _selectedTab) {
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if (eventLag == 0 && self.selectedSegmentIndex != _selectedTab) {
         self.selectedSegmentIndex = _selectedTab;
         press = YES;
     }
@@ -102,7 +104,13 @@
             self.selectedSegmentIndex = 0;
         tabChanged = _selectedTab != self.selectedSegmentIndex;
     }
-    self.onTabSelected(@{ @"tab": @(self.selectedSegmentIndex) });
+    if (tabChanged) {
+        _nativeEventCount++;
+        self.onTabSelected(@{
+            @"tab": @(self.selectedSegmentIndex),
+            @"eventCount": @(_nativeEventCount),
+        });
+    }
     for(NSInteger i = 0; i < [tabBar.reactSubviews count]; i++) {
         NVTabBarItemView *tabBarItem = (NVTabBarItemView *) [tabBar.reactSubviews objectAtIndex:i];
         tabBarItem.alpha = (i == self.selectedSegmentIndex ? 1 : 0);

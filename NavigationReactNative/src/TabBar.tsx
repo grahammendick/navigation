@@ -48,6 +48,7 @@ class TabBar extends React.Component<any, any> {
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedTab;
         var tabLayout = (Platform.OS === 'android' || !primary) && (
             <TabView
+                ref={Platform.OS === 'ios' ? this.ref : undefined}
                 bottomTabs={bottomTabs}
                 onTabSelected={this.onTabSelected}
                 selectedTab={this.state.selectedTab}
@@ -65,7 +66,7 @@ class TabBar extends React.Component<any, any> {
             <>
                 {!bottomTabs && tabLayout}
                 {!!tabBarItems.length && <TabBar
-                    ref={this.ref}
+                    ref={(Platform.OS === 'android' || primary) ? this.ref : undefined}
                     tabCount={tabBarItems.length}
                     onTabSelected={this.onTabSelected}
                     selectedTab={this.state.selectedTab}
