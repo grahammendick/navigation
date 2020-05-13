@@ -49,7 +49,9 @@
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
-    [_tabBarController addChildViewController:[(NVTabBarItemView *) subview navigationController]];
+    NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
+    [controllers insertObject:[(NVTabBarItemView *) subview navigationController] atIndex:atIndex];
+    [_tabBarController setViewControllers:controllers];
 }
 
 - (void)removeReactSubview:(UIView *)subview
