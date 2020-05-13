@@ -89,8 +89,11 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(nonnull UIViewController *)viewController
 {
-    _selectedTab = [tabBarController.viewControllers indexOfObject:viewController];
-    [self selectTab];
+    NSInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
+    if (_selectedTab != selectedIndex) {
+        _selectedTab = selectedIndex;
+        [self selectTab];
+    }
 }
 
 -(void) selectTab
