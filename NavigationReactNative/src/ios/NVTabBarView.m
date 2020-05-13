@@ -7,6 +7,8 @@
 @implementation NVTabBarView
 {
     UITabBarController *_tabBarController;
+    NSInteger _selectedTab;
+    NSInteger _nativeEventCount;
 }
 
 - (id)init
@@ -17,6 +19,14 @@
         _tabBarController.delegate = self;
     }
     return self;
+}
+
+- (void)setSelectedTab:(NSInteger)selectedTab
+{
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if (eventLag == 0) {
+        _selectedTab = selectedTab;
+    }
 }
 
 - (void)setBarTintColor:(UIColor *)barTintColor
@@ -31,13 +41,17 @@
 
 - (void)setUnselectedTintColor:(UIColor *)unselectedTintColor
 {
-    [_tabBarController.tabBar setUnselectedItemTintColor: unselectedTintColor];
+    if (@available(iOS 10.0, *)) {
+        [_tabBarController.tabBar setUnselectedItemTintColor: unselectedTintColor];
+    }
 }
 
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
-    [_tabBarController addChildViewController:[(NVTabBarItemView *) subview navigationController]];
+    NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
+    [controllers insertObject:[(NVTabBarItemView *) subview navigationController] atIndex:atIndex];
+    [_tabBarController setViewControllers:controllers];
 }
 
 - (void)removeReactSubview:(UIView *)subview
@@ -47,6 +61,21 @@
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers removeObjectAtIndex:tab];
     [_tabBarController setViewControllers:controllers];
+}
+
+- (void)didSetProps:(NSArray<NSString *> *)changedProps
+{
+    if (_tabBarController.selectedIndex == NSNotFound) {
+        _tabBarController.selectedIndex = 0;
+    }
+    if (_tabBarController.selectedIndex != _selectedTab) {
+        if ([changedProps containsObject:@"selectedTab"]) {
+            _tabBarController.selectedIndex = _selectedTab;
+        } else {
+            _selectedTab = _tabBarController.selectedIndex;
+        }
+        [self selectTab];
+    }
 }
 
 - (void)didUpdateReactSubviews
@@ -66,8 +95,21 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(nonnull UIViewController *)viewController
 {
-    NSUInteger tab = [tabBarController.viewControllers indexOfObject:viewController];
-    NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[tab];
+    NSInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
+    if (_selectedTab != selectedIndex) {
+        _selectedTab = selectedIndex;
+        [self selectTab];
+    }
+}
+
+-(void) selectTab
+{
+    _nativeEventCount++;
+    NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[_selectedTab];
+    self.onTabSelected(@{
+        @"tab": @(_selectedTab),
+        @"eventCount": @(_nativeEventCount),
+    });
     if (!!tabBarItem.onPress) {
         tabBarItem.onPress(nil);
     }

@@ -2,7 +2,6 @@ package com.navigation.reactnative;
 
 import android.view.View;
 
-import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -28,9 +27,17 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
 
     @ReactProp(name = "selectedTab")
     public void setSelectedTab(TabBarView view, int selectedTab) {
-        if (view.getCurrentItem() != selectedTab) {
-            view.setCurrentItem(selectedTab, false);
+        int eventLag = view.nativeEventCount - view.mostRecentEventCount;
+        if (eventLag == 0 && view.getCurrentItem() != selectedTab) {
+            view.selectedTab = selectedTab;
+            if (view.getTabsCount() > selectedTab)
+                view.setCurrentItem(selectedTab, false);
         }
+    }
+
+    @ReactProp(name = "mostRecentEventCount")
+    public void setMostRecentEventCount(TabBarView view, int mostRecentEventCount) {
+        view.mostRecentEventCount = mostRecentEventCount;
     }
 
     @ReactProp(name = "tabCount")

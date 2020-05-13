@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +22,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TabBarView extends ViewPager {
+    int selectedTab = 0;
     boolean swipeable = true;
     private boolean layoutRequested = false;
+    int nativeEventCount;
+    int mostRecentEventCount;
+    private boolean dataSetChanged = false;
 
     public TabBarView(Context context) {
         super(context);
         addOnPageChangeListener(new TabChangeListener());
-        setAdapter(new Adapter());
+        Adapter adapter = new Adapter();
+        adapter.registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                if (getCurrentItem() != selectedTab && getTabsCount() > selectedTab)
+                    setCurrentItem(selectedTab, false);
+            }
+        });
+        setAdapter(adapter);
     }
 
     @Override
@@ -131,17 +144,21 @@ public class TabBarView extends ViewPager {
         return false;
     }
 
-    private static class Adapter extends PagerAdapter {
+    private class Adapter extends PagerAdapter {
         private List<TabBarItemView> tabs = new ArrayList<>();
 
         void addTab(TabBarItemView tab, int index) {
             tabs.add(index, tab);
+            dataSetChanged = true;
             notifyDataSetChanged();
+            dataSetChanged = false;
         }
 
         void removeTab(int index) {
             tabs.remove(index);
+            dataSetChanged = true;
             notifyDataSetChanged();
+            dataSetChanged = false;
         }
 
         @Override
@@ -192,8 +209,12 @@ public class TabBarView extends ViewPager {
 
         @Override
         public void onPageSelected(int position) {
+            if (!dataSetChanged)
+                nativeEventCount++;
+            selectedTab = position;
             WritableMap event = Arguments.createMap();
             event.putInt("tab", position);
+            event.putInt("eventCount", nativeEventCount);
             ReactContext reactContext = (ReactContext) getContext();
             reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onTabSelected", event);
             if (getAdapter() != null)

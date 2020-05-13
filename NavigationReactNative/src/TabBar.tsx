@@ -3,20 +3,38 @@ import { requireNativeComponent, Platform, StyleSheet, View } from 'react-native
 import BackButton from './BackButton';
 
 class TabBar extends React.Component<any, any> {
+    private ref: React.RefObject<View>;
     constructor(props) {
         super(props);
-        this.state = {selectedTab: 0};
-        this.handleBack = this.handleBack.bind(this);
+        this.state = {selectedTab: props.tab || props.defaultTab};
+        this.ref = React.createRef<View>();
+        this.onTabSelected = this.onTabSelected.bind(this);
     }
     static defaultProps = {
+        defaultTab: 0,
         scrollable: false,
         primary: Platform.OS === 'ios',
     }
-    handleBack() {
-        var {selectedTab} = this.state;
-        if (selectedTab)
-            this.setState({selectedTab: 0});
-        return !!selectedTab;
+    static getDerivedStateFromProps({tab}, {selectedTab}) {
+        if (tab != null && tab !== selectedTab)
+            return {selectedTab: tab};
+        return null;
+    }
+    onTabSelected({nativeEvent}) {
+        var {eventCount: mostRecentEventCount, tab} = nativeEvent;
+        this.ref.current.setNativeProps({mostRecentEventCount});
+        this.changeTab(tab);
+    }
+    changeTab(selectedTab) {
+        var {tab, onChangeTab} = this.props;
+        if (this.state.selectedTab !== selectedTab) {
+            if (tab == null)
+                this.setState({selectedTab});
+            if (!!onChangeTab)
+                onChangeTab(selectedTab);
+            return true;
+        }
+        return false;
     }
     render() {
         var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, swipeable} = this.props;
@@ -31,7 +49,10 @@ class TabBar extends React.Component<any, any> {
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedTab;
         var tabLayout = (Platform.OS === 'android' || !primary) && (
             <TabView
+                ref={Platform.OS === 'ios' ? this.ref : undefined}
                 bottomTabs={bottomTabs}
+                onTabSelected={this.onTabSelected}
+                selectedTab={this.state.selectedTab}
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
@@ -46,18 +67,16 @@ class TabBar extends React.Component<any, any> {
             <>
                 {!bottomTabs && tabLayout}
                 {!!tabBarItems.length && <TabBar
+                    ref={(Platform.OS === 'android' || primary) ? this.ref : undefined}
                     tabCount={tabBarItems.length}
-                    onTabSelected={({nativeEvent}) => {
-                        if (this.state.selectedTab !== nativeEvent.tab)
-                            this.setState({selectedTab: nativeEvent.tab})
-                    }}
+                    onTabSelected={this.onTabSelected}
                     selectedTab={this.state.selectedTab}
                     barTintColor={barTintColor}
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}
                     swipeable={!primary}
                     style={styles.tabBar}>
-                        <BackButton onPress={this.handleBack} />
+                        <BackButton onPress={() => this.changeTab(0)} />
                         {tabBarItems
                             .filter(child => !!child)
                             .map((child: any, index) => {

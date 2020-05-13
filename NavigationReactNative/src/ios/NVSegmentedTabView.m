@@ -5,17 +5,26 @@
 
 @implementation NVSegmentedTabView
 {
-    NSInteger _selectedTabIndex;
-    NVTabBarItemView *_selectedTab;
+    NSInteger _selectedTab;
+    NVTabBarItemView *_selectedTabBarItem;
+    NSInteger _nativeEventCount;
 }
 
 - (id)init
 {
     if (self = [super init]) {
-        _selectedTabIndex = 0;
+        _selectedTab = 0;
         [self addTarget:self action:@selector(tabPressed) forControlEvents:UIControlEventValueChanged];
     }
     return self;
+}
+
+- (void)setSelectedTab:(NSInteger)selectedTab
+{
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if (eventLag == 0) {
+        _selectedTab = selectedTab;
+    }
 }
 
 - (void)setTitles:(NSArray<NSString *> *)titles
@@ -24,6 +33,7 @@
     for (NSString *title in titles) {
         [self insertSegmentWithTitle:title atIndex:self.numberOfSegments animated:NO];
     }
+    self.selectedSegmentIndex = _selectedTab;
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
@@ -66,14 +76,17 @@
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
-    [self selectTab:NO];
+    BOOL press = self.selectedSegmentIndex != _selectedTab;
+    self.selectedSegmentIndex = _selectedTab;
+    [self selectTab:press];
 }
 
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    if (!!self.window)
-        [self selectTab:NO];
+    if (!!self.window) {
+        [self selectTab:_selectedTabBarItem == nil && self.selectedSegmentIndex > 0];
+    }
 }
 
 - (void)tabPressed
@@ -87,17 +100,23 @@
     NSInteger tabBarIndex = [self.superview.subviews indexOfObject:self] + (self.bottomTabs ? -1 : 1);
     UIView* tabBar = [self.superview.subviews objectAtIndex:tabBarIndex];
     if (!press) {
-        self.selectedSegmentIndex = [tabBar.reactSubviews indexOfObject:_selectedTab];
-        if (self.selectedSegmentIndex == -1)
-            self.selectedSegmentIndex = 0;
-        tabChanged = _selectedTabIndex != self.selectedSegmentIndex;
+        NSInteger reselectedTab = [tabBar.reactSubviews indexOfObject:_selectedTabBarItem];
+        self.selectedSegmentIndex = reselectedTab != NSNotFound ? reselectedTab : MAX(self.selectedSegmentIndex, 0);
+        tabChanged = _selectedTab != self.selectedSegmentIndex;
+    }
+    if (tabChanged) {
+        _nativeEventCount++;
+        self.onTabSelected(@{
+            @"tab": @(self.selectedSegmentIndex),
+            @"eventCount": @(_nativeEventCount),
+        });
     }
     for(NSInteger i = 0; i < [tabBar.reactSubviews count]; i++) {
         NVTabBarItemView *tabBarItem = (NVTabBarItemView *) [tabBar.reactSubviews objectAtIndex:i];
         tabBarItem.alpha = (i == self.selectedSegmentIndex ? 1 : 0);
         if (i == self.selectedSegmentIndex) {
-            _selectedTabIndex = i;
-            _selectedTab = tabBarItem;
+            _selectedTab = i;
+            _selectedTabBarItem = tabBarItem;
             if (tabChanged && !!tabBarItem.onPress)
                 tabBarItem.onPress(nil);
         }

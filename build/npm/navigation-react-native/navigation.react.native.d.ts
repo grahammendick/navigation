@@ -355,6 +355,18 @@ export interface TabBarProps {
      * Indicates whether the selected tab can be changed by swiping 
      */
     swipeable?: boolean;
+    /**
+     * The default selected tab index
+     */
+    defaultTab?: number;
+    /**
+     * The selected tab index
+     */
+    tab?: number;
+    /**
+     * Handles tab change events
+     */
+    onChangeTab?: (tab: number) => void;
 }
 
 /**
