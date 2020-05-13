@@ -6,7 +6,7 @@ class TabBar extends React.Component<any, any> {
     private ref: React.RefObject<View>;
     constructor(props) {
         super(props);
-        this.state = {selectedTab: props.selectedTab || 0};
+        this.state = {selectedTab: props.tab || 0};
         this.ref = React.createRef<View>();
         this.onTabSelected = this.onTabSelected.bind(this);
     }
@@ -14,9 +14,9 @@ class TabBar extends React.Component<any, any> {
         scrollable: false,
         primary: Platform.OS === 'ios',
     }
-    static getDerivedStateFromProps({selectedTab}, state) {
-        if (selectedTab != null && selectedTab !== state.selectedTab)
-            return {selectedTab};
+    static getDerivedStateFromProps({tab}, {selectedTab}) {
+        if (tab != null && tab !== selectedTab)
+            return {selectedTab: tab};
         return null;
     }
     onTabSelected({nativeEvent}) {
@@ -24,13 +24,13 @@ class TabBar extends React.Component<any, any> {
         this.ref.current.setNativeProps({mostRecentEventCount});
         this.changeTab(tab);
     }
-    changeTab(tab) {
-        var {selectedTab, onChangeTab} = this.props;
-        if (this.state.selectedTab !== tab) {
-            if (selectedTab == null)
-                this.setState({selectedTab: tab});
+    changeTab(selectedTab) {
+        var {tab, onChangeTab} = this.props;
+        if (this.state.selectedTab !== selectedTab) {
+            if (tab == null)
+                this.setState({selectedTab});
             if (!!onChangeTab)
-                onChangeTab(tab);
+                onChangeTab(selectedTab);
             return true;
         }
         return false;
