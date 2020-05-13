@@ -6,11 +6,12 @@ class TabBar extends React.Component<any, any> {
     private ref: React.RefObject<View>;
     constructor(props) {
         super(props);
-        this.state = {selectedTab: props.tab || 0};
+        this.state = {selectedTab: props.tab || props.defaultTab};
         this.ref = React.createRef<View>();
         this.onTabSelected = this.onTabSelected.bind(this);
     }
     static defaultProps = {
+        defaultTab: 0,
         scrollable: false,
         primary: Platform.OS === 'ios',
     }
