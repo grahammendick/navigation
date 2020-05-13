@@ -27,6 +27,7 @@ public class TabBarView extends ViewPager {
     private boolean layoutRequested = false;
     int nativeEventCount;
     int mostRecentEventCount;
+    private boolean dataSetChanged = false;
 
     public TabBarView(Context context) {
         super(context);
@@ -143,17 +144,21 @@ public class TabBarView extends ViewPager {
         return false;
     }
 
-    private static class Adapter extends PagerAdapter {
+    private class Adapter extends PagerAdapter {
         private List<TabBarItemView> tabs = new ArrayList<>();
 
         void addTab(TabBarItemView tab, int index) {
             tabs.add(index, tab);
+            dataSetChanged = true;
             notifyDataSetChanged();
+            dataSetChanged = false;
         }
 
         void removeTab(int index) {
             tabs.remove(index);
+            dataSetChanged = true;
             notifyDataSetChanged();
+            dataSetChanged = false;
         }
 
         @Override
@@ -204,7 +209,8 @@ public class TabBarView extends ViewPager {
 
         @Override
         public void onPageSelected(int position) {
-            nativeEventCount++;
+            if (!dataSetChanged)
+                nativeEventCount++;
             selectedTab = position;
             WritableMap event = Arguments.createMap();
             event.putInt("tab", position);
