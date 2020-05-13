@@ -69,7 +69,11 @@
         _tabBarController.selectedIndex = 0;
     }
     if (_tabBarController.selectedIndex != _selectedTab) {
-        _tabBarController.selectedIndex = _selectedTab;
+        if ([changedProps containsObject:@"selectedTab"]) {
+            _tabBarController.selectedIndex = _selectedTab;
+        } else {
+            _selectedTab = _tabBarController.selectedIndex;
+        }
         [self selectTab];
     }
 }
