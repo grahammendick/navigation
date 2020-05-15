@@ -59,6 +59,12 @@
     }
 }
 
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    UITextField *searchTextField = [self findTextField:self.searchController.searchBar];
+    [searchTextField setBackgroundColor:backgroundColor];
+}
+
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     if (@available(iOS 11.0, *)) {
@@ -117,6 +123,22 @@
             @"eventCount": @(_nativeEventCount),
         });
     }
+}
+
+- (UITextField *)findTextField:(UIView *)view
+{
+    for (UIView *subview in view.subviews) {
+        if ([subview isKindOfClass:[UITextField class]]) {
+            return (UITextField *)subview;
+        }
+        
+        UITextField *child = [self findTextField:subview];
+        if (child != nil) {
+            return child;
+        }
+    }
+            
+    return nil;
 }
 
 @end
