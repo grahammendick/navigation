@@ -216,6 +216,14 @@ export interface SearchBarProps {
      */
     backgroundColor?: string;
     /**
+     * The search field text color (Android only)
+     */
+    textColor?: string;
+    /**
+     * The search field placeholder text color (Android only)
+     */
+    placeholderColor?: string;
+    /**
      * Handles text change events
      */
     onChangeText?: (text: string) => void;

@@ -45,6 +45,16 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
         view.setBackgroundColor(backgroundColor);
     }
 
+    @ReactProp(name = "textColor", customType = "Color")
+    public void setTextColor(SearchBarView view, @Nullable Integer textColor) {
+        view.setTextColor(textColor);
+    }
+
+    @ReactProp(name = "placeholderColor", customType = "Color")
+    public void setPlaceholderColor(SearchBarView view, @Nullable Integer placeholderColor) {
+        view.setPlaceholderColor(placeholderColor);
+    }
+
     @Nonnull
     @Override
     protected SearchBarView createViewInstance(@Nonnull ThemedReactContext reactContext) {

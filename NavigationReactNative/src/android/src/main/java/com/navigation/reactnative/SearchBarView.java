@@ -21,6 +21,8 @@ public class SearchBarView extends ReactViewGroup {
     private int barOffset = 0;
     int nativeEventCount;
     int mostRecentEventCount;
+    int originalTextColor;
+    int originalPlaceholderColor;
 
     public SearchBarView(Context context) {
         super(context);
@@ -48,6 +50,10 @@ public class SearchBarView extends ReactViewGroup {
                 barOffset = offset;
             }
         };
+        
+        SearchView.SearchAutoComplete searchAutoComplete = getAutoComplete();
+        originalTextColor = searchAutoComplete.getCurrentTextColor();
+        originalPlaceholderColor = searchAutoComplete.getCurrentHintTextColor();
     }
 
     void setQuery(String query) {
@@ -57,8 +63,30 @@ public class SearchBarView extends ReactViewGroup {
     }
 
     void setBackgroundColor(Integer backgroundColor) {
-        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-        searchAutoComplete.setBackgroundColor(backgroundColor);
+        SearchView.SearchAutoComplete searchAutoComplete = getAutoComplete();
+        if (backgroundColor != null) {
+            searchAutoComplete.setBackgroundColor(backgroundColor);
+        } else {
+            searchAutoComplete.setBackground(null);
+        }
+    }
+
+    public void setTextColor(Integer textColor) {
+        SearchView.SearchAutoComplete searchAutoComplete = getAutoComplete();
+        if (textColor != null) {
+            searchAutoComplete.setTextColor(textColor);
+        } else {
+            searchAutoComplete.setTextColor(originalTextColor);
+        }
+    }
+
+    public void setPlaceholderColor(Integer placeholderColor) {
+        SearchView.SearchAutoComplete searchAutoComplete = getAutoComplete();
+        if (placeholderColor != null) {
+            searchAutoComplete.setHintTextColor(placeholderColor);
+        } else {
+            searchAutoComplete.setHintTextColor(originalPlaceholderColor);
+        }
     }
 
     @Override
@@ -122,6 +150,10 @@ public class SearchBarView extends ReactViewGroup {
             }
         }
         return null;
+    }
+
+    private SearchView.SearchAutoComplete getAutoComplete() {
+        return searchView.findViewById(androidx.appcompat.R.id.search_src_text);
     }
 
     @Override
