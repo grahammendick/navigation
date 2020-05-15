@@ -65,6 +65,13 @@
     [searchTextField setBackgroundColor:backgroundColor];
 }
 
+- (void)setTextColor:(UIColor *)textColor
+{
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setDefaultTextAttributes:@{
+        NSForegroundColorAttributeName:textColor
+    }];
+}
+
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     if (@available(iOS 11.0, *)) {
