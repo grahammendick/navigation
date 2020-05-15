@@ -56,6 +56,11 @@ public class SearchBarView extends ReactViewGroup {
             searchView.setQuery(query, true);
     }
 
+    void setBackgroundColor(Integer backgroundColor) {
+        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchAutoComplete.setBackgroundColor(backgroundColor);
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();

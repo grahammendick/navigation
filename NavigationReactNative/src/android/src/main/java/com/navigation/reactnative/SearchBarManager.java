@@ -2,6 +2,8 @@ package com.navigation.reactnative;
 
 import android.text.InputType;
 
+import androidx.annotation.Nullable;
+
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -36,6 +38,11 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
     @ReactProp(name = "autoCapitalize")
     public void setAutoCapitalize(SearchBarView view, int autoCapitalize) {
         view.searchView.setInputType(autoCapitalize);
+    }
+
+    @ReactProp(name = "backgroundColor", customType = "Color")
+    public void setBackgroundColor(SearchBarView view, @Nullable Integer backgroundColor) {
+        view.setBackgroundColor(backgroundColor);
     }
 
     @Nonnull

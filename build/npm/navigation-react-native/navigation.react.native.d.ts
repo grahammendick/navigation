@@ -212,6 +212,10 @@ export interface SearchBarProps {
      */
     text?: string;
     /**
+     * The search field background color (Android only)
+     */
+    backgroundColor?: string;
+    /**
      * Handles text change events
      */
     onChangeText?: (text: string) => void;
