@@ -212,7 +212,7 @@ export interface SearchBarProps {
      */
     text?: string;
     /**
-     * The search field background color (Android only)
+     * The search field background color
      */
     backgroundColor?: string;
     /**
