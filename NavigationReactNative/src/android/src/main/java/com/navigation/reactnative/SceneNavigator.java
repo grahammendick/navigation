@@ -48,6 +48,8 @@ abstract class SceneNavigator {
         }
         if (animationName == null)
             return defaultAnimation.get(defaultId);
+        if (animationName.equals(""))
+            return 0;
         String packageName = context.getPackageName();
         return context.getResources().getIdentifier(animationName, "anim", packageName);
     }
