@@ -58,6 +58,35 @@
             <p>
                 You can use any third-party Drawer component with the Navigation router.
             </p>
+            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+  {key: 'inbox'},
+  {key: 'mail', trackCrumbTrail: true},
+  {key: 'compose', trackCrumbTrail: true},
+  {key: 'sent'}
+]);
+
+var {sent} = stateNavigator.states;
+sent.renderScene = () => &lt;Sent />;</code></pre>
+            <pre><code class="language-jsx">&lt;DrawerLayout
+  ref={this.ref}
+  onDrawerClose={() => {
+    if (this.state.selected)
+      stateNavigator.navigate('sent');
+  }}
+  renderNavigationView={() => (
+    &lt;View>
+      &lt;TouchableHighlight
+        onPress={() => {
+          this.setState({selected: true});
+          this.ref.current.closeDrawer();
+      }}>
+        &lt;Text>Sent&lt;/Text>
+      &lt;/TouchableHighlight>
+    &lt;/View>
+  )}> </code></pre>
+            <pre><code class="language-jsx">&lt;NavigationHandler stateNavigator={stateNavigator}>
+  &lt;NavigationStack unmountStyle={(from, state) => state.key === 'sent' ? '' : null} />
+&lt;/NavigationHandler></code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
