@@ -85,7 +85,7 @@ sent.renderScene = () => &lt;Sent />;</code></pre>
     &lt;/View>
   )}> </code></pre>
             <pre><code class="language-jsx">&lt;NavigationHandler stateNavigator={stateNavigator}>
-  &lt;NavigationStack unmountStyle={(from, state) => state.key === 'sent' ? '' : null} />
+  &lt;NavigationStack unmountStyle={(from, state) => state === sent ? '' : null} />
 &lt;/NavigationHandler></code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
