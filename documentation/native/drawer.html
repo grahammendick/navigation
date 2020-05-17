@@ -56,8 +56,47 @@
         <div id="article">
             <h1>Drawer</h1>
             <p>
-                You can use any third-party Drawer component with the Navigation router.
+                You can use any third-party Drawer component with the Navigation router.  In our email example, we use the <code>DrawerLayout</code> component from react-native-gesture-handler, but any other one would work just as well. We add the drawer to the 'inbox' scene so the user can view their sent email. When the user taps the 'sent' button we close the drawer and navigate to their sent email when the close animation completes.
             </p>
+            <pre><code class="language-jsx">import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
+
+&lt;DrawerLayout
+  ref={this.ref}
+  onDrawerClose={() => {
+    if (this.state.selected)
+      stateNavigator.navigate('sent');
+  }}
+  renderNavigationView={() => (
+    &lt;View>
+      &lt;TouchableHighlight
+        onPress={() => {
+          this.setState({selected: true});
+          this.ref.current.closeDrawer();
+      }}>
+        &lt;Text>Sent&lt;/Text>
+      &lt;/TouchableHighlight>
+    &lt;/View>
+  )}>
+  ...
+&lt;/DrawerLayout></code></pre>
+            <p>
+                Remember that the Navigation router manages the stack by dropping a breadcrumb at each visited scene. You disable the breadcrumb trail by setting <code>trackCrumbTrail</code> to false (the default) against a <code>State</code>. When navigating to that <code>State</code> the stack of scenes will start from scratch. In our email example, we disable the breadcrumb trail for the 'sent' <code>State</code> so that the 'sent' scene replaces the 'inbox' scene in the stack.
+            </p>
+            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+  {key: 'inbox'},
+  {key: 'mail', trackCrumbTrail: true},
+  {key: 'compose', trackCrumbTrail: true},
+  {key: 'sent'}
+]);
+
+var {sent} = stateNavigator.states;
+sent.renderScene = () => &lt;Sent />;</code></pre>
+            <p>
+                When one scene replaces another, the Navigation router animates the transition. We can use the <a href="custom-animation.html">custom animation API</a> to disable the animation so that the 'sent' scene immediately appears in place of the inbox. When the user taps the 'sent' button in the drawer, the Navigation router calls our <code>unmountStyle</code> prop passing in the target <code>State</code>. We return an empty string that tells the Navigation router to disable the animation.
+            </p>
+            <pre><code class="language-jsx">&lt;NavigationHandler stateNavigator={stateNavigator}>
+  &lt;NavigationStack unmountStyle={(from, state) => state === sent ? '' : null} />
+&lt;/NavigationHandler></code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
