@@ -67,7 +67,9 @@
 
 var {sent} = stateNavigator.states;
 sent.renderScene = () => &lt;Sent />;</code></pre>
-            <pre><code class="language-jsx">&lt;DrawerLayout
+            <pre><code class="language-jsx">import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
+
+&lt;DrawerLayout
   ref={this.ref}
   onDrawerClose={() => {
     if (this.state.selected)
