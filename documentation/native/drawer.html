@@ -56,7 +56,7 @@
         <div id="article">
             <h1>Drawer</h1>
             <p>
-              You can use any third-party Drawer component with the Navigation router.  In our email example, we use the <code>DrawerLayout</code> component from react-native-gesture-handler, but any other one would work just as well. We add the drawer to the 'inbox' scene so the user can view their sent email. When the user taps the 'sent' button we close the drawer and navigate to their sent email when the drawer closes.
+                You can use any third-party Drawer component with the Navigation router.  In our email example, we use the <code>DrawerLayout</code> component from react-native-gesture-handler, but any other one would work just as well. We add the drawer to the 'inbox' scene so the user can view their sent email. When the user taps the 'sent' button we close the drawer and navigate to their sent email when the drawer closes.
             </p>
             <pre><code class="language-jsx">import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 
@@ -79,6 +79,9 @@
   )}>
   ...
 &lt;/DrawerLayout></code></pre>
+            <p>
+                Remember that the Navigation router manages the stack by dropping a breadcrumb at each visited scene. You disable the breadcrumb trail by setting <code>trackCrumbTrail</code> to false (the default) against a <code>State</code>. When navigating to that <code>State</code> the stack of scenes will start from scratch. In our email example, we disable the breadcrumb trail for the 'sent' <code>State</code> so that the 'sent' scene replaces the 'inbox' scene in the stack.
+            </p>
             <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
   {key: 'inbox'},
   {key: 'mail', trackCrumbTrail: true},
