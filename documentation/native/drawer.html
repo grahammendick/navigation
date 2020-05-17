@@ -58,15 +58,6 @@
             <p>
                 You can use any third-party Drawer component with the Navigation router.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
-  {key: 'inbox'},
-  {key: 'mail', trackCrumbTrail: true},
-  {key: 'compose', trackCrumbTrail: true},
-  {key: 'sent'}
-]);
-
-var {sent} = stateNavigator.states;
-sent.renderScene = () => &lt;Sent />;</code></pre>
             <pre><code class="language-jsx">import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 
 &lt;DrawerLayout
@@ -86,6 +77,15 @@ sent.renderScene = () => &lt;Sent />;</code></pre>
       &lt;/TouchableHighlight>
     &lt;/View>
   )}> </code></pre>
+            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+  {key: 'inbox'},
+  {key: 'mail', trackCrumbTrail: true},
+  {key: 'compose', trackCrumbTrail: true},
+  {key: 'sent'}
+]);
+
+var {sent} = stateNavigator.states;
+sent.renderScene = () => &lt;Sent />;</code></pre>
             <pre><code class="language-jsx">&lt;NavigationHandler stateNavigator={stateNavigator}>
   &lt;NavigationStack unmountStyle={(from, state) => state === sent ? '' : null} />
 &lt;/NavigationHandler></code></pre>
