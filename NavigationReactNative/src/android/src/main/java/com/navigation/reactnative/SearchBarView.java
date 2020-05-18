@@ -22,7 +22,7 @@ public class SearchBarView extends ReactViewGroup {
     int nativeEventCount;
     int mostRecentEventCount;
     int originalTextColor;
-    int originalPlaceholderColor;
+    int originalTintColor;
 
     public SearchBarView(Context context) {
         super(context);
@@ -53,7 +53,7 @@ public class SearchBarView extends ReactViewGroup {
         
         SearchView.SearchAutoComplete searchAutoComplete = getAutoComplete();
         originalTextColor = searchAutoComplete.getCurrentTextColor();
-        originalPlaceholderColor = searchAutoComplete.getCurrentHintTextColor();
+        originalTintColor = searchAutoComplete.getCurrentHintTextColor();
     }
 
     void setQuery(String query) {
@@ -62,10 +62,10 @@ public class SearchBarView extends ReactViewGroup {
             searchView.setQuery(query, true);
     }
 
-    void setBackgroundColor(Integer backgroundColor) {
+    void setBarTintColor(Integer barTintColor) {
         SearchView.SearchAutoComplete searchAutoComplete = getAutoComplete();
-        if (backgroundColor != null) {
-            searchAutoComplete.setBackgroundColor(backgroundColor);
+        if (barTintColor != null) {
+            searchAutoComplete.setBackgroundColor(barTintColor);
         } else {
             searchAutoComplete.setBackground(null);
         }
@@ -80,12 +80,12 @@ public class SearchBarView extends ReactViewGroup {
         }
     }
 
-    public void setPlaceholderColor(Integer placeholderColor) {
+    public void setTintColor(Integer tintColor) {
         SearchView.SearchAutoComplete searchAutoComplete = getAutoComplete();
-        if (placeholderColor != null) {
-            searchAutoComplete.setHintTextColor(placeholderColor);
+        if (tintColor != null) {
+            searchAutoComplete.setHintTextColor(tintColor);
         } else {
-            searchAutoComplete.setHintTextColor(originalPlaceholderColor);
+            searchAutoComplete.setHintTextColor(originalTintColor);
         }
     }
 

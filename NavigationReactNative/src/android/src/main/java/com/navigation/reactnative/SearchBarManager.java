@@ -40,9 +40,9 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
         view.searchView.setInputType(autoCapitalize);
     }
 
-    @ReactProp(name = "backgroundColor", customType = "Color")
-    public void setBackgroundColor(SearchBarView view, @Nullable Integer backgroundColor) {
-        view.setBackgroundColor(backgroundColor);
+    @ReactProp(name = "barTintColor", customType = "Color")
+    public void setBarTintColor(SearchBarView view, @Nullable Integer barTintColor) {
+        view.setBarTintColor(barTintColor);
     }
 
     @ReactProp(name = "textColor", customType = "Color")
@@ -50,9 +50,9 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
         view.setTextColor(textColor);
     }
 
-    @ReactProp(name = "placeholderColor", customType = "Color")
-    public void setPlaceholderColor(SearchBarView view, @Nullable Integer placeholderColor) {
-        view.setPlaceholderColor(placeholderColor);
+    @ReactProp(name = "tintColor", customType = "Color")
+    public void setTintColor(SearchBarView view, @Nullable Integer tintColor) {
+        view.setTintColor(tintColor);
     }
 
     @Nonnull

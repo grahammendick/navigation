@@ -12,7 +12,7 @@
     UIView *_reactSubview;
     NSInteger _nativeEventCount;
     UIColor *_textColor;
-    UIColor *_placeholderColor;
+    UIColor *_tintColor;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -61,10 +61,10 @@
     }
 }
 
-- (void)setBackgroundColor:(UIColor *)backgroundColor
+- (void)setBarTintColor:(UIColor *)barTintColor
 {
     UITextField *searchTextField = (UITextField *)[self findSubviewOf:self.searchController.searchBar ofKind:[UITextField class]];
-    [searchTextField setBackgroundColor:backgroundColor];
+    [searchTextField setBackgroundColor:barTintColor];
 }
 
 - (void)setTextColor:(UIColor *)textColor
@@ -74,11 +74,20 @@
     [searchTextField setTextColor:textColor];
 }
 
-- (void)setPlaceholderColor:(UIColor *)placeholderColor
+- (void)setTintColor:(UIColor *)tintColor
 {
-    _placeholderColor = placeholderColor;
-    UILabel *placeholderLabel = (UILabel *)[self findSubviewOf:self.searchController.searchBar ofKind:[UILabel class]];
-    [placeholderLabel setTextColor:placeholderColor];
+    _tintColor = tintColor;
+    UITextField *searchTextField = (UITextField *)[self findSubviewOf:self.searchController.searchBar ofKind:[UITextField class]];
+    UILabel *placeholderLabel = (UILabel *)[self findSubviewOf:searchTextField ofKind:[UILabel class]];
+    [placeholderLabel setTextColor:tintColor];
+    
+    UIImageView *icon = (UIImageView *)[searchTextField leftView];
+    icon.image = [icon.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    icon.tintColor = tintColor;
+    
+    UIButton *cancelSearchButton = (UIButton *)[self findSubviewOf:searchTextField ofKind:[UIButton class]];
+    [cancelSearchButton setImage:[cancelSearchButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    cancelSearchButton.tintColor = tintColor;
 }
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
@@ -123,7 +132,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     [self setTextColor:_textColor];
-    [self setPlaceholderColor:_placeholderColor];
+    [self setTintColor:_tintColor];
 }
 
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview
@@ -145,6 +154,8 @@
             @"eventCount": @(_nativeEventCount),
         });
     }
+    
+    [self setTintColor:_tintColor];
 }
 
 - (UIView *)findSubviewOf:(UIView *)view ofKind:(Class)class

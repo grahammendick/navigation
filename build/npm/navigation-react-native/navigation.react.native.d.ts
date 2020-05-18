@@ -214,7 +214,7 @@ export interface SearchBarProps {
     /**
      * The search field background color
      */
-    backgroundColor?: string;
+    barTintColor?: string;
     /**
      * The search field text color (Android only)
      */
@@ -222,7 +222,7 @@ export interface SearchBarProps {
     /**
      * The search field placeholder text color (Android only)
      */
-    placeholderColor?: string;
+    tintColor?: string;
     /**
      * Handles text change events
      */
