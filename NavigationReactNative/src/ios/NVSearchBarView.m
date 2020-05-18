@@ -11,6 +11,8 @@
     __weak RCTBridge *_bridge;
     UIView *_reactSubview;
     NSInteger _nativeEventCount;
+    UIColor *_textColor;
+    UIColor *_placeholderColor;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -61,15 +63,22 @@
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
 {
-    UITextField *searchTextField = [self findTextField:self.searchController.searchBar];
+    UITextField *searchTextField = (UITextField *)[self findSubviewOf:self.searchController.searchBar ofKind:[UITextField class]];
     [searchTextField setBackgroundColor:backgroundColor];
 }
 
 - (void)setTextColor:(UIColor *)textColor
 {
-    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setDefaultTextAttributes:@{
-        NSForegroundColorAttributeName:textColor
-    }];
+    _textColor = textColor;
+    UITextField *searchTextField = (UITextField *)[self findSubviewOf:self.searchController.searchBar ofKind:[UITextField class]];
+    [searchTextField setTextColor:textColor];
+}
+
+- (void)setPlaceholderColor:(UIColor *)placeholderColor
+{
+    _placeholderColor = placeholderColor;
+    UILabel *placeholderLabel = (UILabel *)[self findSubviewOf:self.searchController.searchBar ofKind:[UILabel class]];
+    [placeholderLabel setTextColor:placeholderColor];
 }
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
@@ -111,6 +120,12 @@
     }
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self setTextColor:_textColor];
+    [self setPlaceholderColor:_placeholderColor];
+}
+
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview
 {
     [super willMoveToSuperview:newSuperview];
@@ -132,14 +147,14 @@
     }
 }
 
-- (UITextField *)findTextField:(UIView *)view
+- (UIView *)findSubviewOf:(UIView *)view ofKind:(Class)class
 {
     for (UIView *subview in view.subviews) {
-        if ([subview isKindOfClass:[UITextField class]]) {
-            return (UITextField *)subview;
+        if ([subview isKindOfClass:class]) {
+            return subview;
         }
         
-        UITextField *child = [self findTextField:subview];
+        UIView *child = [self findSubviewOf:subview ofKind:class];
         if (child != nil) {
             return child;
         }
