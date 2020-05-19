@@ -51,9 +51,8 @@ public class SearchBarView extends ReactViewGroup {
                 if (hasFocus) {
                     NavigationBarView navigationBarView = getNavigationBarView();
                     if (navigationBarView != null) {
-                        Toolbar toolbarView = (Toolbar) searchView.getParent();
-                        ImageButton arrowButton = (ImageButton) toolbarView.getChildAt(1);
-                        arrowButton.setColorFilter(navigationBarView.getTintColor());
+                        ToolbarView toolbarView = (ToolbarView) searchView.getParent();
+                        toolbarView.setCollapseSearchButton((ImageButton) toolbarView.getChildAt(1));
                     }
                 }
             }

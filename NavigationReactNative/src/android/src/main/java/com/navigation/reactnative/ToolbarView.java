@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -24,6 +25,7 @@ import com.google.android.material.appbar.AppBarLayout;
 public class ToolbarView extends Toolbar {
     private MenuItem searchMenuItem;
     private Integer tintColor;
+    private ImageButton collapseSearchButton;
     private OnSearchListener onSearchAddedListener;
     private static final String PROP_ACTION_ICON = "image";
     private static final String PROP_ACTION_SHOW = "show";
@@ -131,6 +133,12 @@ public class ToolbarView extends Toolbar {
             else
                 icon.clearColorFilter();
         }
+        if (collapseSearchButton != null) {
+            if (tintColor != null)
+                collapseSearchButton.setColorFilter(tintColor);
+            else
+                collapseSearchButton.clearColorFilter();
+        }
     }
 
     void setMenuItems(@Nullable ReadableArray menuItems) {
@@ -179,6 +187,14 @@ public class ToolbarView extends Toolbar {
         if (searchMenuItem != null)
             this.onSearchAddedListener.onSearchAdd(searchMenuItem);
 
+    }
+
+    void setCollapseSearchButton(ImageButton collapseSearchButton) {
+        this.collapseSearchButton = collapseSearchButton;
+        if (tintColor != null)
+            collapseSearchButton.setColorFilter(tintColor);
+        else
+            collapseSearchButton.clearColorFilter();
     }
 
     @Override
