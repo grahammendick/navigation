@@ -11,8 +11,6 @@
     __weak RCTBridge *_bridge;
     UIView *_reactSubview;
     NSInteger _nativeEventCount;
-    UIColor *_textColor;
-    UIColor *_tintColor;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -67,29 +65,6 @@
     [searchTextField setBackgroundColor:barTintColor];
 }
 
-- (void)setTextColor:(UIColor *)textColor
-{
-    _textColor = textColor;
-    UITextField *searchTextField = (UITextField *)[self findSubviewOf:self.searchController.searchBar ofKind:[UITextField class]];
-    [searchTextField setTextColor:textColor];
-}
-
-- (void)setTintColor:(UIColor *)tintColor
-{
-    _tintColor = tintColor;
-    UITextField *searchTextField = (UITextField *)[self findSubviewOf:self.searchController.searchBar ofKind:[UITextField class]];
-    UILabel *placeholderLabel = (UILabel *)[self findSubviewOf:searchTextField ofKind:[UILabel class]];
-    [placeholderLabel setTextColor:tintColor];
-    
-    UIImageView *icon = (UIImageView *)[searchTextField leftView];
-    icon.image = [icon.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    icon.tintColor = tintColor;
-    
-    UIButton *cancelSearchButton = (UIButton *)[self findSubviewOf:searchTextField ofKind:[UIButton class]];
-    [cancelSearchButton setImage:[cancelSearchButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    cancelSearchButton.tintColor = tintColor;
-}
-
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     if (@available(iOS 11.0, *)) {
@@ -129,12 +104,6 @@
     }
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    [self setTextColor:_textColor];
-    [self setTintColor:_tintColor];
-}
-
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview
 {
     [super willMoveToSuperview:newSuperview];
@@ -154,8 +123,6 @@
             @"eventCount": @(_nativeEventCount),
         });
     }
-    
-    [self setTintColor:_tintColor];
 }
 
 - (UIView *)findSubviewOf:(UIView *)view ofKind:(Class)class

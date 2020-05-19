@@ -45,16 +45,6 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
         view.setBarTintColor(barTintColor);
     }
 
-    @ReactProp(name = "textColor", customType = "Color")
-    public void setTextColor(SearchBarView view, @Nullable Integer textColor) {
-        view.setTextColor(textColor);
-    }
-
-    @ReactProp(name = "tintColor", customType = "Color")
-    public void setTintColor(SearchBarView view, @Nullable Integer tintColor) {
-        view.setTintColor(tintColor);
-    }
-
     @Nonnull
     @Override
     protected SearchBarView createViewInstance(@Nonnull ThemedReactContext reactContext) {
