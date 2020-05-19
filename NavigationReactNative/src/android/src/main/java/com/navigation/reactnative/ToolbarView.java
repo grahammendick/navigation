@@ -33,7 +33,7 @@ public class ToolbarView extends Toolbar {
     private static final String PROP_ACTION_SEARCH = "search";
     int defaultTitleTextColor;
     Drawable defaultOverflowIcon;
-    private Integer defaultMenuItemColor;
+    private Integer defaultMenuTintColor;
     private IconResolver.IconResolverListener logoResolverListener;
     private IconResolver.IconResolverListener navIconResolverListener;
     private IconResolver.IconResolverListener overflowIconResolverListener;
@@ -181,9 +181,9 @@ public class ToolbarView extends Toolbar {
                 for(int j = 0; j < menu.getChildCount(); j++) {
                     if (menu.getChildAt(j) instanceof ActionMenuItemView) {
                         ActionMenuItemView menuItem = (ActionMenuItemView) menu.getChildAt(j);
-                        if (defaultMenuItemColor == null)
-                            defaultMenuItemColor = menuItem.getCurrentTextColor();
-                        menuItem.setTextColor(tintColor != null ? tintColor : defaultMenuItemColor);
+                        if (defaultMenuTintColor == null)
+                            defaultMenuTintColor = menuItem.getCurrentTextColor();
+                        menuItem.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
                     }
                 }
             }
