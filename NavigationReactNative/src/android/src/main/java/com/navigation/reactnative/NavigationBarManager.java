@@ -30,6 +30,11 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
         return new NavigationBarView(reactContext);
     }
 
+    @ReactProp(name = "tintColor", customType = "Color")
+    public void setTintColor(NavigationBarView view, @Nullable Integer tintColor) {
+        view.setTintColor(tintColor);
+    }
+
     @ReactProp(name = "barTintColor", customType = "Color")
     public void setBarTintColor(NavigationBarView view, @Nullable Integer barTintColor) {
         if (barTintColor != null) {

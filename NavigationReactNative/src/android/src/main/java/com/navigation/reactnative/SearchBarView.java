@@ -2,10 +2,13 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
@@ -40,6 +43,19 @@ public class SearchBarView extends ReactViewGroup {
                 ReactContext reactContext = (ReactContext) getContext();
                 reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onChangeText", event);
                 return false;
+            }
+        });
+        searchView.setOnQueryTextFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    NavigationBarView navigationBarView = getNavigationBarView();
+                    if (navigationBarView != null) {
+                        Toolbar toolbarView = (Toolbar) searchView.getParent();
+                        ImageButton arrowButton = (ImageButton) toolbarView.getChildAt(1);
+                        arrowButton.setColorFilter(navigationBarView.getTintColor());
+                    }
+                }
             }
         });
         onOffsetChangedListener = new AppBarLayout.OnOffsetChangedListener() {

@@ -17,6 +17,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
 
 public class NavigationBarView extends AppBarLayout {
+    private Integer tintColor;
     ViewOutlineProvider defaultOutlineProvider;
     Drawable defaultBackground;
 
@@ -35,6 +36,14 @@ public class NavigationBarView extends AppBarLayout {
                 reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher().dispatchEvent(event);
             }
         });
+    }
+
+    public Integer getTintColor() {
+        return tintColor;
+    }
+
+    public void setTintColor(Integer tintColor) {
+        this.tintColor = tintColor;
     }
 
     static class OffsetChangedEvent extends Event<OffsetChangedEvent> {
