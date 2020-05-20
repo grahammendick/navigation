@@ -8,7 +8,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
@@ -49,11 +48,9 @@ public class SearchBarView extends ReactViewGroup {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    NavigationBarView navigationBarView = getNavigationBarView();
-                    if (navigationBarView != null) {
-                        ToolbarView toolbarView = (ToolbarView) searchView.getParent();
+                    ToolbarView toolbarView = (ToolbarView) searchView.getParent();
+                    if (toolbarView.getChildAt(1) instanceof ImageButton)
                         toolbarView.setCollapseSearchButton((ImageButton) toolbarView.getChildAt(1));
-                    }
                 }
             }
         });
@@ -72,7 +69,7 @@ public class SearchBarView extends ReactViewGroup {
     }
 
     void setBarTintColor(Integer barTintColor) {
-        SearchView.SearchAutoComplete searchAutoComplete = getAutoComplete();
+        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         if (barTintColor != null) {
             searchAutoComplete.setBackgroundColor(barTintColor);
         } else {
@@ -141,10 +138,6 @@ public class SearchBarView extends ReactViewGroup {
             }
         }
         return null;
-    }
-
-    private SearchView.SearchAutoComplete getAutoComplete() {
-        return searchView.findViewById(androidx.appcompat.R.id.search_src_text);
     }
 
     @Override

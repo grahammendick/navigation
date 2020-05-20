@@ -61,8 +61,9 @@
 
 - (void)setBarTintColor:(UIColor *)barTintColor
 {
-    UITextField *searchTextField = (UITextField *)[self findSubviewOf:self.searchController.searchBar ofKind:[UITextField class]];
-    [searchTextField setBackgroundColor:barTintColor];
+    if (@available(iOS 13.0, *)) {
+        [self.searchController.searchBar.searchTextField setBackgroundColor:barTintColor];
+    }
 }
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
@@ -123,22 +124,6 @@
             @"eventCount": @(_nativeEventCount),
         });
     }
-}
-
-- (UIView *)findSubviewOf:(UIView *)view ofKind:(Class)class
-{
-    for (UIView *subview in view.subviews) {
-        if ([subview isKindOfClass:class]) {
-            return subview;
-        }
-        
-        UIView *child = [self findSubviewOf:subview ofKind:class];
-        if (child != nil) {
-            return child;
-        }
-    }
-            
-    return nil;
 }
 
 @end
