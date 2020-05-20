@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.view.MenuItem;
 
@@ -33,7 +34,7 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
     @ReactProp(name = "barTintColor", customType = "Color")
     public void setBarTintColor(NavigationBarView view, @Nullable Integer barTintColor) {
         if (barTintColor != null) {
-            view.setBackground(null);
+            view.setBackground(new ColorDrawable(barTintColor));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if (Color.alpha(barTintColor) < 255)
                     view.setOutlineProvider(null);
