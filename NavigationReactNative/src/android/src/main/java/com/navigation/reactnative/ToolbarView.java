@@ -129,7 +129,7 @@ public class ToolbarView extends Toolbar {
             setTintColor(getMenu().getItem(i).getIcon());
         }
         setCollapseSearchTintColor();
-}
+    }
 
     private void setTintColor(Drawable icon) {
         if (icon != null) {
@@ -209,7 +209,6 @@ public class ToolbarView extends Toolbar {
         this.collapseSearchButton = collapseSearchButton;
         setCollapseSearchTintColor();
     }
-
 
     void setCollapseSearchTintColor() {
         if (collapseSearchButton != null) {
