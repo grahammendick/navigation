@@ -19,6 +19,7 @@ RCT_EXPORT_VIEW_PROPERTY(autoCapitalize, UITextAutocapitalizationType)
 RCT_EXPORT_VIEW_PROPERTY(placeholder, NSString)
 RCT_EXPORT_VIEW_PROPERTY(text, NSString)
 RCT_EXPORT_VIEW_PROPERTY(mostRecentEventCount, NSInteger)
+RCT_EXPORT_VIEW_PROPERTY(barTintColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(onChangeText, RCTBubblingEventBlock)
 
 @end

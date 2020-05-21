@@ -59,6 +59,13 @@
     }
 }
 
+- (void)setBarTintColor:(UIColor *)barTintColor
+{
+    if (@available(iOS 13.0, *)) {
+        [self.searchController.searchBar.searchTextField setBackgroundColor:barTintColor];
+    }
+}
+
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     if (@available(iOS 11.0, *)) {

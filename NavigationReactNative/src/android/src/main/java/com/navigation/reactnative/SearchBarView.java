@@ -2,8 +2,10 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 
 import androidx.appcompat.widget.SearchView;
 
@@ -42,6 +44,16 @@ public class SearchBarView extends ReactViewGroup {
                 return false;
             }
         });
+        searchView.setOnQueryTextFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    ToolbarView toolbarView = (ToolbarView) searchView.getParent();
+                    if (toolbarView.getChildAt(1) instanceof ImageButton)
+                        toolbarView.setCollapseSearchButton((ImageButton) toolbarView.getChildAt(1));
+                }
+            }
+        });
         onOffsetChangedListener = new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
@@ -54,6 +66,15 @@ public class SearchBarView extends ReactViewGroup {
         int eventLag = nativeEventCount - mostRecentEventCount;
         if (eventLag == 0 && !searchView.getQuery().toString().equals(query))
             searchView.setQuery(query, true);
+    }
+
+    void setBarTintColor(Integer barTintColor) {
+        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        if (barTintColor != null) {
+            searchAutoComplete.setBackgroundColor(barTintColor);
+        } else {
+            searchAutoComplete.setBackground(null);
+        }
     }
 
     @Override
