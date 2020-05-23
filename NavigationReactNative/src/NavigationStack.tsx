@@ -16,6 +16,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         this.state = {stateNavigator: null, keys: [], finish: false};
         this.ref = React.createRef<View>();
         this.handleBack = this.handleBack.bind(this);
+        this.onWillNavigateBack = this.onWillNavigateBack.bind(this);
         this.onDidNavigateBack = this.onDidNavigateBack.bind(this);
     }
     static defaultProps = {
@@ -35,6 +36,8 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         if (prevKeys.length === keys.length && prevState !== state)
             keys[keys.length - 1] += '+';
         return {keys, stateNavigator};
+    }
+    onWillNavigateBack({nativeEvent}) {
     }
     onDidNavigateBack({nativeEvent}) {
         var {stateNavigator} = this.props;
@@ -88,6 +91,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 fragmentMode={fragmentMode}
                 style={[styles.stack, fragmentMode ? {backgroundColor: '#000'} : null]}
                 {...this.getAnimation()}
+                onWillNavigateBack={this.onWillNavigateBack}
                 onDidNavigateBack={this.onDidNavigateBack}>
                 <BackButton onPress={this.handleBack} />
                 {Platform.OS === 'android' && <NVFragmentContainer style={styles.stack} />}

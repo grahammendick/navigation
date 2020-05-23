@@ -8,6 +8,7 @@
 @property (nonatomic, copy) NSArray *keys;
 @property (nonatomic, copy) NSString *enterAnim;
 @property (nonatomic, assign) NSInteger mostRecentEventCount;
+@property (nonatomic, copy) RCTDirectEventBlock onWillNavigateBack;
 @property (nonatomic, copy) RCTDirectEventBlock onDidNavigateBack;
 
 -(id)initWithBridge: (RCTBridge *)bridge;
