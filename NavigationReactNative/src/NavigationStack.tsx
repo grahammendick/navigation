@@ -41,6 +41,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     onWillNavigateBack({nativeEvent}) {
         var {stateNavigator} = this.props;
         var distance = stateNavigator.stateContext.crumbs.length - nativeEvent.crumb;
+        this.resumeNavigation = null;
         if (stateNavigator.canNavigateBack(distance)) {
             var url = stateNavigator.getNavigationBackLink(distance);
             stateNavigator.navigateLink(url, undefined, true, (_stateContext, resumeNavigation) => {
@@ -51,7 +52,8 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     onDidNavigateBack({nativeEvent}) {
         var mostRecentEventCount = nativeEvent.eventCount;
         this.ref.current.setNativeProps({mostRecentEventCount});
-        this.resumeNavigation();
+        if (this.resumeNavigation)
+            this.resumeNavigation();
     }
     handleBack() {
         var {primary, fragmentMode} = this.props;
