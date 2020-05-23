@@ -9,11 +9,6 @@
     return self;
 }
 
--(void)willAppear
-{
-    self.onWillAppear(nil);
-}
-
 -(void)didPop
 {
     self.onPopped(nil);
