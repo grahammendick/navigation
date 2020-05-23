@@ -1,16 +1,17 @@
 import React, { ReactNode } from 'react';
 import { requireNativeComponent, Platform, StyleSheet, View } from 'react-native';
-import { StateNavigator, Crumb, State } from 'navigation';
-import { NavigationContext } from 'navigation-react';
+import { Crumb, State } from 'navigation';
+import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
 import BackButton from './BackButton';
 import PopSync from './PopSync';
 import Scene from './Scene';
 import PrimaryStackContext from './PrimaryStackContext';
-type NavigationStackProps = {stateNavigator: StateNavigator, primary: boolean, fragmentMode: boolean, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
-type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], finish: boolean};
+type NavigationStackProps = {stateNavigator: AsyncStateNavigator, primary: boolean, fragmentMode: boolean, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
+type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], finish: boolean};
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
     private ref: React.RefObject<View>;
+    private resumeNavigation: () => void;
     constructor(props) {
         super(props);
         this.state = {stateNavigator: null, keys: [], finish: false};
@@ -38,15 +39,20 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         return {keys, stateNavigator};
     }
     onWillNavigateBack({nativeEvent}) {
-    }
-    onDidNavigateBack({nativeEvent}) {
         var {stateNavigator} = this.props;
-        var {eventCount: mostRecentEventCount, crumb} = nativeEvent;
-        this.ref.current.setNativeProps({mostRecentEventCount});
+        var {crumb} = nativeEvent;
         var distance = stateNavigator.stateContext.crumbs.length - crumb;
         if (stateNavigator.canNavigateBack(distance)) {
-            stateNavigator.navigateBack(distance);
+            var url = stateNavigator.getNavigationBackLink(distance);
+            stateNavigator.navigateLink(url, undefined, true, (_stateContext, resumeNavigation) => {
+                this.resumeNavigation = resumeNavigation;
+            });
         }
+    }
+    onDidNavigateBack({nativeEvent}) {
+        var {eventCount: mostRecentEventCount} = nativeEvent;
+        this.ref.current.setNativeProps({mostRecentEventCount});
+        this.resumeNavigation();
     }
     handleBack() {
         var {primary, fragmentMode} = this.props;
