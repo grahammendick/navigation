@@ -108,7 +108,6 @@
 {
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
     if (crumb < [self.keys count] - 1) {
-        _nativeEventCount++;
         self.onWillNavigateBack(@{
             @"crumb": @(crumb),
         });
