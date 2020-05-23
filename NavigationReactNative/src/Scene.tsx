@@ -11,11 +11,15 @@ class Scene extends React.Component<SceneProps, SceneState> {
         super(props);
         this.state = {navigationEvent: null};
         this.handleBack = this.handleBack.bind(this);
-        this.onWillAppear = this.onWillAppear.bind(this);
+        this.onBeforeNavigate = this.onBeforeNavigate.bind(this);
     }
     static defaultProps = {
         title: (state: State) => state.title,
         renderScene: (state: State, data: any) => state.renderScene(data)
+    }
+    componentDidMount() {
+        var {stateNavigator} = this.props.navigationEvent;
+        stateNavigator.onBeforeNavigate(this.onBeforeNavigate);
     }
     static getDerivedStateFromProps(props: SceneProps, {navigationEvent: prevNavigationEvent}: SceneState) {
         var {crumb, navigationEvent} = props;
@@ -31,6 +35,10 @@ class Scene extends React.Component<SceneProps, SceneState> {
     shouldComponentUpdate(_nextProps, {navigationEvent}: SceneState) {
         return navigationEvent !== this.state.navigationEvent;
     }
+    componentWillUnmount() {
+        var {stateNavigator} = this.props.navigationEvent;
+        stateNavigator.offBeforeNavigate(this.onBeforeNavigate);
+    }
     handleBack() {
         var {navigationEvent} = this.state;
         if (navigationEvent && navigationEvent.stateNavigator.canNavigateBack(1)) {
@@ -39,8 +47,10 @@ class Scene extends React.Component<SceneProps, SceneState> {
         }
         return false;
     }
-    onWillAppear() {
+    onBeforeNavigate(_state, _data, url: string) {
         var {crumb, navigationEvent} = this.props;
+        if (url.split('crumb=').length - 1 !== crumb)
+            return true;
         var {crumbs, nextCrumb} = navigationEvent.stateNavigator.stateContext;
         var changed = !this.state.navigationEvent && crumb < crumbs.length;
         if (!changed && crumb < crumbs.length) {
@@ -64,6 +74,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
             var {oldState, state, data, asyncData} = peekNavigator.stateContext;
             this.setState({navigationEvent: {oldState, state, data, asyncData, stateNavigator: peekNavigator, nextState: undefined, nextData: undefined}});
         }
+        return true;
     }
     static createStateContext(crumbs: Crumb[], nextCrumb: Crumb, crumb: number) {
         var stateContext = new StateContext();
@@ -110,7 +121,6 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 {...this.getAnimation()}
                 title={title(state, data)}
                 style={styles.scene}
-                onWillAppear={this.onWillAppear}
                 onPopped={() => popped(sceneKey)}>
                 <BackButton onPress={this.handleBack} />
                 <NavigationContext.Provider value={navigationEvent}>
