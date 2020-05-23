@@ -108,9 +108,7 @@
 {
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
     if (crumb < [self.keys count] - 1) {
-        self.onWillNavigateBack(@{
-            @"crumb": @(crumb),
-        });
+        self.onWillNavigateBack(@{ @"crumb": @(crumb) });
     }
 }
 
@@ -119,9 +117,7 @@
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
     if (crumb < [self.keys count] - 1) {
         _nativeEventCount++;
-        self.onDidNavigateBack(@{
-            @"eventCount": @(_nativeEventCount),
-        });
+        self.onDidNavigateBack(@{ @"eventCount": @(_nativeEventCount) });
     }
 }
 
