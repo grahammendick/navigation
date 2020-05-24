@@ -5,6 +5,7 @@ import { NavigationHandler } from 'navigation-react';
 import { NavigationMotion, useSceneNavigated } from 'navigation-react-mobile';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
 declare var global: any;
@@ -30,14 +31,16 @@ describe('UseSceneNavigated', function () {
             };
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion duration={0}>
-                        {(_style, scene, key) =>  <div key={key}>{scene}</div>}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion duration={0}>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
             try {
                 assert.equal(navigatingA, true);
             } finally {
@@ -65,14 +68,16 @@ describe('UseSceneNavigated', function () {
             };
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion duration={0}>
-                        {(_style, scene, key) =>  <div key={key}>{scene}</div>}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion duration={0}>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
             navigatingA = false;
             setCountA(1);
             try {
@@ -107,14 +112,16 @@ describe('UseSceneNavigated', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion duration={0}>
-                        {(_style, scene, key) =>  <div key={key}>{scene}</div>}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion duration={0}>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
             navigatingA = navigatingB = false;
             stateNavigator.navigate('sceneB');
             try {
@@ -150,14 +157,16 @@ describe('UseSceneNavigated', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion duration={0}>
-                        {(_style, scene, key) =>  <div key={key}>{scene}</div>}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion duration={0}>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
             stateNavigator.navigate('sceneB');
             navigatingA = navigatingB = false;
             stateNavigator.navigate('sceneA');
@@ -186,14 +195,16 @@ describe('UseSceneNavigated', function () {
             };
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion duration={0}>
-                        {(_style, scene, key) =>  <div key={key}>{scene}</div>}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion duration={0}>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
             navigatingA = false;
             stateNavigator.navigate('sceneA');
             try {
@@ -228,14 +239,16 @@ describe('UseSceneNavigated', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion duration={0}>
-                        {(_style, scene, key) =>  <div key={key}>{scene}</div>}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion duration={0}>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
             navigatingA = navigatingB = false;
             stateNavigator.navigate('sceneB');
             try {

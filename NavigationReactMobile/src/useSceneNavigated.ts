@@ -4,13 +4,11 @@ import { NavigationContext } from 'navigation-react';
 var useSceneNavigated = (handler: () => void) => {
     var prevContext = useRef(null);
     var navigationEvent = useContext(NavigationContext);
-    useMemo(() => {
+    useEffect(() => {
         if (navigationEvent !== prevContext.current)
             handler();
-    }, [navigationEvent, handler]);
-    useEffect(() => {
         prevContext.current = navigationEvent;
-    }, [navigationEvent]);
+    }, [navigationEvent, handler]);
 };
 
 export default useSceneNavigated;
