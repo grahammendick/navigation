@@ -47,7 +47,7 @@ describe('UseScene', function () {
     });
 
     describe('AA', function () {
-        it('should call navigating hook', function(){
+        it('should not call navigating hook', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' }
             ]);
@@ -120,6 +120,50 @@ describe('UseScene', function () {
             try {
                 assert.equal(navigatingA, false);
                 assert.equal(navigatingB, true);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
+
+    describe('A -> B to A', function () {
+        it('should call navigating hook on A and not on B', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var navigatingA, navigatingB = false;
+            var SceneA = () => {
+                useSceneNavigating(() => {
+                    navigatingA = true;
+                })
+                return <div />;
+            };
+            var SceneB = () => {
+                useSceneNavigating(() => {
+                    navigatingB = true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationMotion duration={0}>
+                        {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                    </NavigationMotion>
+                </NavigationHandler>,
+                container
+            );
+            stateNavigator.navigate('sceneB');
+            navigatingA = navigatingB = false;
+            stateNavigator.navigate('sceneA');
+            try {
+                assert.equal(navigatingA, true);
+                assert.equal(navigatingB, false);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
