@@ -203,4 +203,47 @@ describe('UseScene', function () {
             }
         })
     });
+
+    describe('A to B', function () {
+        it('should call navigating hook on B and not on A', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var navigatingA, navigatingB = false;
+            var SceneA = () => {
+                useSceneNavigating(() => {
+                    navigatingA = true;
+                })
+                return <div />;
+            };
+            var SceneB = () => {
+                useSceneNavigating(() => {
+                    navigatingB = true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationMotion duration={0}>
+                        {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                    </NavigationMotion>
+                </NavigationHandler>,
+                container
+            );
+            navigatingA = navigatingB = false;
+            stateNavigator.navigate('sceneB');
+            try {
+                assert.equal(navigatingA, false);
+                assert.equal(navigatingB, true);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
