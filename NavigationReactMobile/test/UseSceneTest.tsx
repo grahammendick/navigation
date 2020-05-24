@@ -34,11 +34,7 @@ describe('UseScene', function () {
             ReactDOM.render(
                 <NavigationHandler stateNavigator={stateNavigator}>
                     <NavigationMotion duration={0}>
-                        {(_style, scene, key) => (
-                            <div key={key}>
-                                {scene}
-                            </div>
-                        )}
+                        {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                     </NavigationMotion>
                 </NavigationHandler>,
                 container
