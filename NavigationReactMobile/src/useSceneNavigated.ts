@@ -1,4 +1,4 @@
-import { useContext, useMemo, useRef } from 'react';
+import { useContext, useEffect, useMemo, useRef } from 'react';
 import { NavigationContext } from 'navigation-react';
 
 var useSceneNavigated  = (handler: () => void) => {
@@ -7,8 +7,10 @@ var useSceneNavigated  = (handler: () => void) => {
     useMemo(() => {
         if (navigationEvent !== prevContext.current)
             handler();
-        prevContext.current = navigationEvent;
     }, [navigationEvent, handler]);
+    useEffect(() => {
+        prevContext.current = navigationEvent;
+    }, [navigationEvent]);
 };
 
 export default useSceneNavigated;
