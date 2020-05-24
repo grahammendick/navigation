@@ -47,7 +47,7 @@ describe('UseScene', function () {
     });
 
     describe('A to A -> B', function () {
-        it('should call navigating hook on B', function(){
+        it('should call navigating hook on B and not on A', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true }
