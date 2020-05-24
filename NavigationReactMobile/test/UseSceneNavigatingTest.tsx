@@ -169,4 +169,38 @@ describe('UseScene', function () {
             }
         })
     });
+
+    describe('A to A', function () {
+        it('should call navigating hook', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA} = stateNavigator.states;
+            var navigatingA = false;
+            var SceneA = () => {
+                useSceneNavigating(() => {
+                    navigatingA = true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationMotion duration={0}>
+                        {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                    </NavigationMotion>
+                </NavigationHandler>,
+                container
+            );
+            navigatingA = false;
+            stateNavigator.navigate('sceneA');
+            try {
+                assert.equal(navigatingA, true);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
