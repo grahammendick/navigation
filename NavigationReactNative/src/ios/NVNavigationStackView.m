@@ -104,23 +104,21 @@
     _navigationController.delegate = nil;
 }
 
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
-    if (crumb < [self.reactSubviews count] - 1) {
-        _nativeEventCount++;
-        self.onDidNavigateBack(@{
-            @"crumb": @(crumb),
-            @"eventCount": @(_nativeEventCount),
-        });
-    }
-}
-
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
-    NVSceneView *scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
-    [scene willAppear];
+    if (crumb < [self.keys count] - 1) {
+        self.onWillNavigateBack(@{ @"crumb": @(crumb) });
+    }
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
+    if (crumb < [self.keys count] - 1) {
+        _nativeEventCount++;
+        self.onDidNavigateBack(@{ @"eventCount": @(_nativeEventCount) });
+    }
 }
 
 @end

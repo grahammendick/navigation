@@ -1,21 +1,23 @@
 import React, { ReactNode } from 'react';
 import { requireNativeComponent, Platform, StyleSheet, View } from 'react-native';
-import { StateNavigator, Crumb, State } from 'navigation';
-import { NavigationContext } from 'navigation-react';
+import { Crumb, State } from 'navigation';
+import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
 import BackButton from './BackButton';
 import PopSync from './PopSync';
 import Scene from './Scene';
 import PrimaryStackContext from './PrimaryStackContext';
-type NavigationStackProps = {stateNavigator: StateNavigator, primary: boolean, fragmentMode: boolean, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
-type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], finish: boolean};
+type NavigationStackProps = {stateNavigator: AsyncStateNavigator, primary: boolean, fragmentMode: boolean, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
+type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], finish: boolean};
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
     private ref: React.RefObject<View>;
+    private resumeNavigation: () => void;
     constructor(props) {
         super(props);
         this.state = {stateNavigator: null, keys: [], finish: false};
         this.ref = React.createRef<View>();
         this.handleBack = this.handleBack.bind(this);
+        this.onWillNavigateBack = this.onWillNavigateBack.bind(this);
         this.onDidNavigateBack = this.onDidNavigateBack.bind(this);
     }
     static defaultProps = {
@@ -36,14 +38,22 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
             keys[keys.length - 1] += '+';
         return {keys, stateNavigator};
     }
-    onDidNavigateBack({nativeEvent}) {
+    onWillNavigateBack({nativeEvent}) {
         var {stateNavigator} = this.props;
-        var {eventCount: mostRecentEventCount, crumb} = nativeEvent;
-        this.ref.current.setNativeProps({mostRecentEventCount});
-        var distance = stateNavigator.stateContext.crumbs.length - crumb;
+        var distance = stateNavigator.stateContext.crumbs.length - nativeEvent.crumb;
+        this.resumeNavigation = null;
         if (stateNavigator.canNavigateBack(distance)) {
-            stateNavigator.navigateBack(distance);
+            var url = stateNavigator.getNavigationBackLink(distance);
+            stateNavigator.navigateLink(url, undefined, true, (_stateContext, resumeNavigation) => {
+                this.resumeNavigation = resumeNavigation;
+            });
         }
+    }
+    onDidNavigateBack({nativeEvent}) {
+        var mostRecentEventCount = nativeEvent.eventCount;
+        this.ref.current.setNativeProps({mostRecentEventCount});
+        if (this.resumeNavigation)
+            this.resumeNavigation();
     }
     handleBack() {
         var {primary, fragmentMode} = this.props;
@@ -88,6 +98,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 fragmentMode={fragmentMode}
                 style={[styles.stack, fragmentMode ? {backgroundColor: '#000'} : null]}
                 {...this.getAnimation()}
+                onWillNavigateBack={this.onWillNavigateBack}
                 onDidNavigateBack={this.onDidNavigateBack}>
                 <BackButton onPress={this.handleBack} />
                 {Platform.OS === 'android' && <NVFragmentContainer style={styles.stack} />}
