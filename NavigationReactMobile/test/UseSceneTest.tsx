@@ -27,7 +27,7 @@ describe('UseScene', function () {
                 useSceneNavigating(() => {
                     navigatingA = true;
                 })
-                return <span>Hello</span>;
+                return <div />;
             }
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
