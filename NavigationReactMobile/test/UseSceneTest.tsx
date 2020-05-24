@@ -1,10 +1,10 @@
-import * as assert from 'assert';
-import * as mocha from 'mocha';
+import assert from 'assert';
+import mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationHandler } from 'navigation-react';
-import { NavigationMotion } from 'navigation-react-mobile';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import { NavigationMotion, useSceneNavigating } from 'navigation-react-mobile';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import { Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
@@ -22,7 +22,14 @@ describe('UseScene', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA} = stateNavigator.states;
-            sceneA.renderScene = () => <span>Hello</span>;
+            var navigatingA = false;
+            var SceneA = () => {
+                useSceneNavigating(() => {
+                    navigatingA = true;
+                })
+                return <span>Hello</span>;
+            }
+            sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
             ReactDOM.render(
                 <NavigationHandler stateNavigator={stateNavigator}>
@@ -37,8 +44,7 @@ describe('UseScene', function () {
                 container
             );
             try {
-                var span = container.querySelector<HTMLSpanElement>('span');
-                assert.equal(span.textContent, 'Hello');
+                assert.equal(navigatingA, true);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
