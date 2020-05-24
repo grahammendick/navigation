@@ -17,21 +17,21 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
         return {items, restart: moving};
     }
     componentDidMount() {
-        this.animateId = requestAnimationFrame(this.animate);
+        this.animateId = window.requestAnimationFrame(this.animate);
     }
     componentDidUpdate() {
         if (!this.animateId && this.state.restart)
-            this.animateId = requestAnimationFrame(this.animate);
+            this.animateId = window.requestAnimationFrame(this.animate);
     }
     componentWillUnmount() {
-        cancelAnimationFrame(this.animateId);
+        window.cancelAnimationFrame(this.animateId);
     }
     animate(tick) {
         this.setState(({items: prevItems}) => {
             var {items, moving} = Motion.move(tick, prevItems, this.props);
             this.animateId = null;
             if (moving)
-                this.animateId = requestAnimationFrame(this.animate);
+                this.animateId = window.requestAnimationFrame(this.animate);
             return {items, restart: false};
         })
     }
