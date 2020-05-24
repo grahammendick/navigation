@@ -3,7 +3,7 @@ import mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationHandler } from 'navigation-react';
 import { NavigationMotion, useSceneNavigating } from 'navigation-react-mobile';
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
