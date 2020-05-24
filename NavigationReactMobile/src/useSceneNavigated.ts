@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { NavigationContext } from 'navigation-react';
 
 var useSceneNavigated = (handler: () => void) => {
