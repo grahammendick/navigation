@@ -2,7 +2,7 @@ import assert from 'assert';
 import mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationHandler } from 'navigation-react';
-import { NavigationMotion, useSceneNavigating } from 'navigation-react-mobile';
+import { NavigationMotion, useSceneNavigated } from 'navigation-react-mobile';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { JSDOM } from 'jsdom';
@@ -23,7 +23,7 @@ describe('UseScene', function () {
             var {sceneA} = stateNavigator.states;
             var navigatingA = false;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useSceneNavigated(() => {
                     navigatingA = true;
                 })
                 return <div />;
@@ -58,7 +58,7 @@ describe('UseScene', function () {
             var SceneA = () => {
                 var [count, setCount]  = useState(0);
                 setCountA = setCount;
-                useSceneNavigating(() => {
+                useSceneNavigated(() => {
                     navigatingA = true;
                 })
                 return <div />;
@@ -93,13 +93,13 @@ describe('UseScene', function () {
             var {sceneA, sceneB} = stateNavigator.states;
             var navigatingA, navigatingB = false;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useSceneNavigated(() => {
                     navigatingA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneNavigating(() => {
+                useSceneNavigated(() => {
                     navigatingB = true;
                 })
                 return <div />;
@@ -136,13 +136,13 @@ describe('UseScene', function () {
             var {sceneA, sceneB} = stateNavigator.states;
             var navigatingA, navigatingB = false;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useSceneNavigated(() => {
                     navigatingA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneNavigating(() => {
+                useSceneNavigated(() => {
                     navigatingB = true;
                 })
                 return <div />;
@@ -179,7 +179,7 @@ describe('UseScene', function () {
             var {sceneA} = stateNavigator.states;
             var navigatingA = false;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useSceneNavigated(() => {
                     navigatingA = true;
                 })
                 return <div />;
@@ -214,13 +214,13 @@ describe('UseScene', function () {
             var {sceneA, sceneB} = stateNavigator.states;
             var navigatingA, navigatingB = false;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useSceneNavigated(() => {
                     navigatingA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneNavigating(() => {
+                useSceneNavigated(() => {
                     navigatingB = true;
                 })
                 return <div />;

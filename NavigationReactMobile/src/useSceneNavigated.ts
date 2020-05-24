@@ -1,7 +1,7 @@
 import { useContext, useMemo, useRef } from 'react';
 import { NavigationContext } from 'navigation-react';
 
-var useSceneNavigating  = (handler: () => void) => {
+var useSceneNavigated  = (handler: () => void) => {
     var prevContext = useRef(null);
     var navigationEvent = useContext(NavigationContext);
     useMemo(() => {
@@ -11,4 +11,4 @@ var useSceneNavigating  = (handler: () => void) => {
     }, [navigationEvent, handler]);
 };
 
-export default useSceneNavigating;
+export default useSceneNavigated;
