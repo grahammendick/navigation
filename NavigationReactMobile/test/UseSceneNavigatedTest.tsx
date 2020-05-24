@@ -13,7 +13,7 @@ window.addEventListener = () => {};
 global.window = window;
 global.document = window.document;
 
-describe('UseScene', function () {
+describe('UseSceneNavigated', function () {
     describe('A', function () {
         it('should call navigating hook', function(){
             var stateNavigator = new StateNavigator([
