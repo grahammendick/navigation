@@ -3,7 +3,7 @@ import mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationHandler } from 'navigation-react';
 import { NavigationMotion, useSceneNavigating } from 'navigation-react-mobile';
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { JSDOM } from 'jsdom';
 
@@ -40,6 +40,43 @@ describe('UseScene', function () {
             );
             try {
                 assert.equal(navigatingA, true);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
+
+    describe('AA', function () {
+        it('should call navigating hook', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA} = stateNavigator.states;
+            var navigatingA = false;
+            var setCountA;
+            var SceneA = () => {
+                var [count, setCount]  = useState(0);
+                setCountA = setCount;
+                useSceneNavigating(() => {
+                    navigatingA = true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationMotion duration={0}>
+                        {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                    </NavigationMotion>
+                </NavigationHandler>,
+                container
+            );
+            navigatingA = false;
+            setCountA(1);
+            try {
+                assert.equal(navigatingA, false);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
