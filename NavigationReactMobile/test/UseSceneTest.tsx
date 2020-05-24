@@ -18,7 +18,7 @@ describe('UseScene', function () {
     describe('A', function () {
         it('should call navigating hook', function(){
             var stateNavigator = new StateNavigator([
-                { key: 'sceneA', route: 'r' }
+                { key: 'sceneA' }
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA} = stateNavigator.states;
