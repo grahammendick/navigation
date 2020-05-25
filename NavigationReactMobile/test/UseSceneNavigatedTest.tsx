@@ -463,7 +463,7 @@ describe('UseSceneNavigated', function () {
         })
     });
 
-    describe('A to A --> B -> C to A -> B', function () {
+    describe('A to A -> B -> C to A -> B', function () {
         it('should call navigated hook on B and not on A or C', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
