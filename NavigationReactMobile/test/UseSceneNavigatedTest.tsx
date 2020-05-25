@@ -592,7 +592,7 @@ describe('UseSceneNavigated', function () {
         })
     });
 
-    describe('Cancel navigation', function () {
+    describe('Suspend navigation', function () {
         it('should not call navigated hook', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
@@ -628,8 +628,8 @@ describe('UseSceneNavigated', function () {
             });
             act(() => {
                 navigatedA = navigatedB = false;
-                stateNavigator.onBeforeNavigate(() => false);
-                stateNavigator.navigate('sceneB');
+                var url = stateNavigator.getNavigationLink('sceneB');
+                stateNavigator.navigateLink(url, undefined, false, () => {});
             });
             try {
                 assert.equal(navigatedA, false);
