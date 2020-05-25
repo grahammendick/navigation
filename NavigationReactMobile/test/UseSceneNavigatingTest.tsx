@@ -522,4 +522,53 @@ describe('UseSceneNavigating', function () {
             }
         })
     });
+
+    describe('Suspend navigation', function () {
+        it('should call navigating hook', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var navigatingA, navigatingB;
+            var SceneA = () => {
+                useSceneNavigating(() => {
+                    navigatingA = true;
+                })
+                return <div />;
+            };
+            var SceneB = () => {
+                useSceneNavigating(() => {
+                    navigatingB = true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+                stateNavigator.navigate('sceneB');
+            });
+            act(() => {
+                navigatingA = navigatingB = false;
+                var url = stateNavigator.getNavigationBackLink(1);
+                stateNavigator.navigateLink(url, undefined, false, () => {});
+            });
+            try {
+                assert.equal(navigatingA, true);
+                assert.equal(navigatingB, false);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
