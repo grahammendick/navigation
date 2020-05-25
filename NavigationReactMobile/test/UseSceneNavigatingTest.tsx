@@ -334,4 +334,73 @@ describe('UseSceneNavigating', function () {
             }
         })
     });
+
+    describe('A -> B to C -> D', function () {
+        it('should not call navigating hook on A, B, C or D', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC' },
+                { key: 'sceneD', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB, sceneC, sceneD} = stateNavigator.states;
+            var navigatingA, navigatingB, navigatingC, navigatingD;
+            var SceneA = () => {
+                useSceneNavigating(() => {
+                    navigatingA = true;
+                })
+                return <div />;
+            };
+            var SceneB = () => {
+                useSceneNavigating(() => {
+                    navigatingB = true;
+                })
+                return <div />;
+            };
+            var SceneC = () => {
+                useSceneNavigating(() => {
+                    navigatingC = true;
+                })
+                return <div />;
+            };
+            var SceneD = () => {
+                useSceneNavigating(() => {
+                    navigatingD = true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            sceneC.renderScene = () => <SceneC />;
+            sceneD.renderScene = () => <SceneD />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+                stateNavigator.navigate('sceneB');
+            });
+            act(() => {
+                navigatingA = navigatingB = navigatingC = navigatingD = false;
+                var url = stateNavigator.fluent()
+                    .navigate('sceneC')
+                    .navigate('sceneD').url;
+                stateNavigator.navigateLink(url);
+            });
+            try {
+                assert.equal(navigatingA, false);
+                assert.equal(navigatingB, false);
+                assert.equal(navigatingC, false);
+                assert.equal(navigatingD, false);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
