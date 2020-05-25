@@ -653,4 +653,43 @@ describe('UseSceneNavigating', function () {
             }
         })
     });
+
+    describe('Navigating handler', function () {
+        it('should access current context', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA} = stateNavigator.states;
+            var oldState;
+            var SceneA = () => {
+                var navigationEvent = useContext(NavigationContext);
+                useSceneNavigating(() => {
+                    var {stateContext} = navigationEvent.stateNavigator;
+                    oldState = stateContext.oldState;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                stateNavigator.navigate('sceneA');
+            });
+            try {
+                assert.strictEqual(oldState, null);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
