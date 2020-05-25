@@ -179,7 +179,7 @@ describe('UseSceneNavigated', function () {
             });
             act(() => {
                 navigatedA = navigatedB = false;
-                stateNavigator.navigate('sceneA');
+                stateNavigator.navigateBack(1);
             });
             try {
                 assert.equal(navigatedA, true);
