@@ -6,9 +6,11 @@ var useSceneNavigating = (handler: () => void) => {
     useEffect(() => {
         var {stateNavigator} = navigationEvent;
         var {crumbs} = stateNavigator.stateContext;
-        var beforeNavigateHandler = (_state, _data, url) => {
+        var beforeNavigateHandler = (state, _data, url, _history, {url: oldUrl, state: oldState}) => {
             var crumb = url.split('crumb=').length - 1;
-            if (crumbs.length === crumb)
+            var oldCrumb = oldUrl.split('crumb=').length - 1;
+            var replace = crumb === oldCrumb && state !== oldState;
+            if (crumbs.length === crumb && !replace)
                 handler();
             return true;
         }
