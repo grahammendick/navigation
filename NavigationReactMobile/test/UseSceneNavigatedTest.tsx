@@ -486,7 +486,6 @@ describe('UseSceneNavigated', function () {
                     </NavigationHandler>,
                     container
                 );
-                stateNavigator.navigate('sceneB');
             });
             act(() => {
                 navigatedA = navigatedB = navigatedC = false;
