@@ -1,5 +1,5 @@
 import assert from 'assert';
-import mocha from 'mocha';
+import 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
 import { NavigationMotion, useSceneNavigating } from 'navigation-react-mobile';
