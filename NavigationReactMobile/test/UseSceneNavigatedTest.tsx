@@ -680,4 +680,45 @@ describe('UseSceneNavigated', function () {
             }
         })
     });
+
+    describe('Navigated hook', function () {
+        it('should call latest handler', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA} = stateNavigator.states;
+            var countA, setCountA;
+            var SceneA = () => {
+                var [count, setCount]  = useState(0);
+                setCountA = setCount;
+                useSceneNavigated(() => {
+                    countA = count;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+                setCountA(1);
+            });
+            act(() => {
+                countA = 0;
+                stateNavigator.navigate('sceneA');
+            });
+            try {
+                assert.equal(countA, 1);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
