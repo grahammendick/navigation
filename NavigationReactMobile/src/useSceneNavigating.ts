@@ -8,8 +8,8 @@ var useSceneNavigating = (handler: () => void) => {
         var {crumbs} = stateNavigator.stateContext;
         var beforeNavigateHandler = (state, _data, url, _history, currentContext) => {
             var {url: currentUrl, state: currentState} = currentContext;
-            var crumb = url.split('crumb=').length - 1;
             var currentCrumb = currentUrl.split('crumb=').length - 1;
+            var crumb = url.split('crumb=').length - 1;
             var replace = crumb === currentCrumb && state !== currentState;
             if (crumbs.length === crumb && !replace)
                 handler();
