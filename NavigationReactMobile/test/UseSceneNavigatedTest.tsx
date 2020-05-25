@@ -682,7 +682,7 @@ describe('UseSceneNavigated', function () {
     });
 
     describe('Navigated hook', function () {
-        it('should call latest handler', function(){
+        it('should call updated handler', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' }
             ]);
