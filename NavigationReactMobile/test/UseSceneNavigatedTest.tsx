@@ -95,47 +95,6 @@ describe('UseSceneNavigated', function () {
         })
     });
 
-    describe('AA', function () {
-        it('should not call navigated hook', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 'sceneA' }
-            ]);
-            stateNavigator.navigate('sceneA');
-            var {sceneA} = stateNavigator.states;
-            var navigatedA;
-            var setCountA;
-            var SceneA = () => {
-                var [count, setCount]  = useState(0);
-                setCountA = setCount;
-                useSceneNavigated(() => {
-                    navigatedA = true;
-                })
-                return <div />;
-            };
-            sceneA.renderScene = () => <SceneA />;
-            var container = document.createElement('div');
-            act(() => {
-                ReactDOM.render(
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationMotion>
-                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
-                        </NavigationMotion>
-                    </NavigationHandler>,
-                    container
-                );
-            });
-            act(() => {
-                navigatedA = false;
-                setCountA(1);
-            });
-            try {
-                assert.equal(navigatedA, false);
-            } finally {
-                ReactDOM.unmountComponentAtNode(container);
-            }
-        })
-    });
-
     describe('A to A -> B', function () {
         it('should call navigated hook on B and not on A', function(){
             var stateNavigator = new StateNavigator([
@@ -627,6 +586,47 @@ describe('UseSceneNavigated', function () {
                 assert.equal(navigatedA, false);
                 assert.equal(navigatedB, true);
                 assert.equal(navigatedC, false);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
+
+    describe('Set state', function () {
+        it('should not call navigated hook', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA} = stateNavigator.states;
+            var navigatedA;
+            var setCountA;
+            var SceneA = () => {
+                var [count, setCount]  = useState(0);
+                setCountA = setCount;
+                useSceneNavigated(() => {
+                    navigatedA = true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                navigatedA = false;
+                setCountA(1);
+            });
+            try {
+                assert.equal(navigatedA, false);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
