@@ -592,6 +592,54 @@ describe('UseSceneNavigated', function () {
         })
     });
 
+    describe('Cancel navigation', function () {
+        it('should not call navigated hook', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var navigatedA, navigatedB;
+            var SceneA = () => {
+                useSceneNavigated(() => {
+                    navigatedA = true;
+                })
+                return <div />;
+            };
+            var SceneB = () => {
+                useSceneNavigated(() => {
+                    navigatedB = true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                navigatedA = navigatedB = false;
+                stateNavigator.onBeforeNavigate(() => false);
+                stateNavigator.navigate('sceneB');
+            });
+            try {
+                assert.equal(navigatedA, false);
+                assert.equal(navigatedB, false);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
+
     describe('Set state', function () {
         it('should not call navigated hook', function(){
             var stateNavigator = new StateNavigator([
