@@ -22,17 +22,17 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA} = stateNavigator.states;
-            var navigatingA;
+            var navigatedA;
             var SceneA = () => {
                 useSceneNavigated(() => {
-                    navigatingA = true;
+                    navigatedA = true;
                 })
                 return <div />;
             };
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
             act(() => {
-                navigatingA = false;
+                navigatedA = false;
                 ReactDOM.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
@@ -43,7 +43,7 @@ describe('UseSceneNavigated', function () {
                 );
             });
             try {
-                assert.equal(navigatingA, true);
+                assert.equal(navigatedA, true);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
@@ -59,16 +59,16 @@ describe('UseSceneNavigated', function () {
             stateNavigator.navigate('sceneA');
             stateNavigator.navigate('sceneB');
             var {sceneA, sceneB} = stateNavigator.states;
-            var navigatingA, navigatingB;
+            var navigatedA, navigatedB;
             var SceneA = () => {
                 useSceneNavigated(() => {
-                    navigatingA = true;
+                    navigatedA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
                 useSceneNavigated(() => {
-                    navigatingB = true;
+                    navigatedB = true;
                 })
                 return <div />;
             };
@@ -76,7 +76,7 @@ describe('UseSceneNavigated', function () {
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
             act(() => {
-                navigatingA = navigatingB = false;
+                navigatedA = navigatedB = false;
                 ReactDOM.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
@@ -87,8 +87,8 @@ describe('UseSceneNavigated', function () {
                 );
             });
             try {
-                assert.equal(navigatingA, false);
-                assert.equal(navigatingB, true);
+                assert.equal(navigatedA, false);
+                assert.equal(navigatedB, true);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
@@ -102,13 +102,13 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA} = stateNavigator.states;
-            var navigatingA;
+            var navigatedA;
             var setCountA;
             var SceneA = () => {
                 var [count, setCount]  = useState(0);
                 setCountA = setCount;
                 useSceneNavigated(() => {
-                    navigatingA = true;
+                    navigatedA = true;
                 })
                 return <div />;
             };
@@ -125,11 +125,11 @@ describe('UseSceneNavigated', function () {
                 );
             });
             act(() => {
-                navigatingA = false;
+                navigatedA = false;
                 setCountA(1);
             });
             try {
-                assert.equal(navigatingA, false);
+                assert.equal(navigatedA, false);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
@@ -144,16 +144,16 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA, sceneB} = stateNavigator.states;
-            var navigatingA, navigatingB;
+            var navigatedA, navigatedB;
             var SceneA = () => {
                 useSceneNavigated(() => {
-                    navigatingA = true;
+                    navigatedA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
                 useSceneNavigated(() => {
-                    navigatingB = true;
+                    navigatedB = true;
                 })
                 return <div />;
             };
@@ -171,12 +171,12 @@ describe('UseSceneNavigated', function () {
                 );
             });
             act(() => {
-                navigatingA = navigatingB = false;
+                navigatedA = navigatedB = false;
                 stateNavigator.navigate('sceneB');
             });
             try {
-                assert.equal(navigatingA, false);
-                assert.equal(navigatingB, true);
+                assert.equal(navigatedA, false);
+                assert.equal(navigatedB, true);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
@@ -191,16 +191,16 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA, sceneB} = stateNavigator.states;
-            var navigatingA, navigatingB;
+            var navigatedA, navigatedB;
             var SceneA = () => {
                 useSceneNavigated(() => {
-                    navigatingA = true;
+                    navigatedA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
                 useSceneNavigated(() => {
-                    navigatingB = true;
+                    navigatedB = true;
                 })
                 return <div />;
             };
@@ -219,12 +219,12 @@ describe('UseSceneNavigated', function () {
                 stateNavigator.navigate('sceneB');
             });
             act(() => {
-                navigatingA = navigatingB = false;
+                navigatedA = navigatedB = false;
                 stateNavigator.navigate('sceneA');
             });
             try {
-                assert.equal(navigatingA, true);
-                assert.equal(navigatingB, false);
+                assert.equal(navigatedA, true);
+                assert.equal(navigatedB, false);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
@@ -238,10 +238,10 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA} = stateNavigator.states;
-            var navigatingA;
+            var navigatedA;
             var SceneA = () => {
                 useSceneNavigated(() => {
-                    navigatingA = true;
+                    navigatedA = true;
                 })
                 return <div />;
             };
@@ -258,11 +258,11 @@ describe('UseSceneNavigated', function () {
                 );
             });
             act(() => {
-                navigatingA = false;
+                navigatedA = false;
                 stateNavigator.navigate('sceneA');
             });
             try {
-                assert.equal(navigatingA, true);
+                assert.equal(navigatedA, true);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
@@ -277,16 +277,16 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA, sceneB} = stateNavigator.states;
-            var navigatingA, navigatingB;
+            var navigatedA, navigatedB;
             var SceneA = () => {
                 useSceneNavigated(() => {
-                    navigatingA = true;
+                    navigatedA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
                 useSceneNavigated(() => {
-                    navigatingB = true;
+                    navigatedB = true;
                 })
                 return <div />;
             };
@@ -304,12 +304,12 @@ describe('UseSceneNavigated', function () {
                 );
             });
             act(() => {
-                navigatingA = navigatingB = false;
+                navigatedA = navigatedB = false;
                 stateNavigator.navigate('sceneB');
             });
             try {
-                assert.equal(navigatingA, false);
-                assert.equal(navigatingB, true);
+                assert.equal(navigatedA, false);
+                assert.equal(navigatedB, true);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
@@ -325,22 +325,22 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA, sceneB, sceneC} = stateNavigator.states;
-            var navigatingA, navigatingB, navigatingC;
+            var navigatedA, navigatedB, navigatedC;
             var SceneA = () => {
                 useSceneNavigated(() => {
-                    navigatingA = true;
+                    navigatedA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
                 useSceneNavigated(() => {
-                    navigatingB = true;
+                    navigatedB = true;
                 })
                 return <div />;
             };
             var SceneC = () => {
                 useSceneNavigated(() => {
-                    navigatingC = true;
+                    navigatedC = true;
                 })
                 return <div />;
             };
@@ -360,16 +360,16 @@ describe('UseSceneNavigated', function () {
                 stateNavigator.navigate('sceneB');
             });
             act(() => {
-                navigatingA = navigatingB = navigatingC = false;
+                navigatedA = navigatedB = navigatedC = false;
                 var url = stateNavigator.fluent()
                     .navigate('sceneC')
                     .navigate('sceneB').url;
                 stateNavigator.navigateLink(url);
             });
             try {
-                assert.equal(navigatingA, false);
-                assert.equal(navigatingB, true);
-                assert.equal(navigatingC, false);
+                assert.equal(navigatedA, false);
+                assert.equal(navigatedB, true);
+                assert.equal(navigatedC, false);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
@@ -386,28 +386,28 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA, sceneB, sceneC, sceneD} = stateNavigator.states;
-            var navigatingA, navigatingB, navigatingC, navigatingD;
+            var navigatedA, navigatedB, navigatedC, navigatedD;
             var SceneA = () => {
                 useSceneNavigated(() => {
-                    navigatingA = true;
+                    navigatedA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
                 useSceneNavigated(() => {
-                    navigatingB = true;
+                    navigatedB = true;
                 })
                 return <div />;
             };
             var SceneC = () => {
                 useSceneNavigated(() => {
-                    navigatingC = true;
+                    navigatedC = true;
                 })
                 return <div />;
             };
             var SceneD = () => {
                 useSceneNavigated(() => {
-                    navigatingD = true;
+                    navigatedD = true;
                 })
                 return <div />;
             };
@@ -428,17 +428,17 @@ describe('UseSceneNavigated', function () {
                 stateNavigator.navigate('sceneB');
             });
             act(() => {
-                navigatingA = navigatingB = navigatingC = navigatingD = false;
+                navigatedA = navigatedB = navigatedC = navigatedD = false;
                 var url = stateNavigator.fluent()
                     .navigate('sceneC')
                     .navigate('sceneD').url;
                 stateNavigator.navigateLink(url);
             });
             try {
-                assert.equal(navigatingA, false);
-                assert.equal(navigatingB, false);
-                assert.equal(navigatingC, false);
-                assert.equal(navigatingD, true);
+                assert.equal(navigatedA, false);
+                assert.equal(navigatedB, false);
+                assert.equal(navigatedC, false);
+                assert.equal(navigatedD, true);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
