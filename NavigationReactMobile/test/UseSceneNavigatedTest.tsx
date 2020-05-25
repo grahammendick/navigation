@@ -78,8 +78,10 @@ describe('UseSceneNavigated', function () {
                     container
                 );
             });
-            navigatingA = false;
-            setCountA(1);
+            act(() => {
+                navigatingA = false;
+                setCountA(1);
+            });
             try {
                 assert.equal(navigatingA, false);
             } finally {
@@ -122,8 +124,10 @@ describe('UseSceneNavigated', function () {
                     container
                 );
             });
-            navigatingA = navigatingB = false;
-            stateNavigator.navigate('sceneB');
+            act(() => {
+                navigatingA = navigatingB = false;
+                stateNavigator.navigate('sceneB');
+            });
             try {
                 assert.equal(navigatingA, false);
                 assert.equal(navigatingB, true);
@@ -167,9 +171,13 @@ describe('UseSceneNavigated', function () {
                     container
                 );
             });
-            stateNavigator.navigate('sceneB');
-            navigatingA = navigatingB = false;
-            stateNavigator.navigate('sceneA');
+            act(() => {
+                stateNavigator.navigate('sceneB');
+            });
+            act(() => {
+                navigatingA = navigatingB = false;
+                stateNavigator.navigate('sceneA');
+            });
             try {
                 assert.equal(navigatingA, true);
                 assert.equal(navigatingB, false);
@@ -205,8 +213,10 @@ describe('UseSceneNavigated', function () {
                     container
                 );
             });
-            navigatingA = false;
-            stateNavigator.navigate('sceneA');
+            act(() => {
+                navigatingA = false;
+                stateNavigator.navigate('sceneA');
+            });
             try {
                 assert.equal(navigatingA, true);
             } finally {
@@ -249,8 +259,10 @@ describe('UseSceneNavigated', function () {
                     container
                 );
             });
-            navigatingA = navigatingB = false;
-            stateNavigator.navigate('sceneB');
+            act(() => {
+                navigatingA = navigatingB = false;
+                stateNavigator.navigate('sceneB');
+            });
             try {
                 assert.equal(navigatingA, false);
                 assert.equal(navigatingB, true);
@@ -302,12 +314,16 @@ describe('UseSceneNavigated', function () {
                     container
                 );
             });
-            stateNavigator.navigate('sceneB');
-            navigatingA = navigatingB = navigatingC = false;
-            var url = stateNavigator.fluent()
-                .navigate('sceneC')
-                .navigate('sceneB').url;
-            stateNavigator.navigateLink(url);
+            act(() => {
+                stateNavigator.navigate('sceneB');
+            });
+            act(() => {
+                navigatingA = navigatingB = navigatingC = false;
+                var url = stateNavigator.fluent()
+                    .navigate('sceneC')
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+            });
             try {
                 assert.equal(navigatingA, false);
                 assert.equal(navigatingB, true);
@@ -368,12 +384,16 @@ describe('UseSceneNavigated', function () {
                     container
                 );
             });
-            stateNavigator.navigate('sceneB');
-            navigatingA = navigatingB = navigatingC = navigatingD = false;
-            var url = stateNavigator.fluent()
-                .navigate('sceneC')
-                .navigate('sceneD').url;
-            stateNavigator.navigateLink(url);
+            act(() => {
+                stateNavigator.navigate('sceneB');
+            });
+            act(() => {
+                navigatingA = navigatingB = navigatingC = navigatingD = false;
+                var url = stateNavigator.fluent()
+                    .navigate('sceneC')
+                    .navigate('sceneD').url;
+                stateNavigator.navigateLink(url);
+            });
             try {
                 assert.equal(navigatingA, false);
                 assert.equal(navigatingB, false);
