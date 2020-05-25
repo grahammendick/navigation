@@ -170,8 +170,6 @@ describe('UseSceneNavigated', function () {
                     </NavigationHandler>,
                     container
                 );
-            });
-            act(() => {
                 stateNavigator.navigate('sceneB');
             });
             act(() => {
@@ -313,8 +311,6 @@ describe('UseSceneNavigated', function () {
                     </NavigationHandler>,
                     container
                 );
-            });
-            act(() => {
                 stateNavigator.navigate('sceneB');
             });
             act(() => {
@@ -383,8 +379,6 @@ describe('UseSceneNavigated', function () {
                     </NavigationHandler>,
                     container
                 );
-            });
-            act(() => {
                 stateNavigator.navigate('sceneB');
             });
             act(() => {
