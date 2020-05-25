@@ -16,7 +16,7 @@ global.document = window.document;
 
 describe('UseSceneNavigated', function () {
     describe('A', function () {
-        it('should call navigating hook', function(){
+        it('should call navigated hook', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' }
             ]);
@@ -51,7 +51,7 @@ describe('UseSceneNavigated', function () {
     });
 
     describe('A -> B', function () {
-        it('should call navigating hook on B and not on A', function(){
+        it('should call navigated hook on B and not on A', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true }
@@ -96,7 +96,7 @@ describe('UseSceneNavigated', function () {
     });
 
     describe('AA', function () {
-        it('should not call navigating hook', function(){
+        it('should not call navigated hook', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' }
             ]);
@@ -137,7 +137,7 @@ describe('UseSceneNavigated', function () {
     });
 
     describe('A to A -> B', function () {
-        it('should call navigating hook on B and not on A', function(){
+        it('should call navigated hook on B and not on A', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true }
@@ -184,7 +184,7 @@ describe('UseSceneNavigated', function () {
     });
 
     describe('A -> B to A', function () {
-        it('should call navigating hook on A and not on B', function(){
+        it('should call navigated hook on A and not on B', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true }
@@ -232,7 +232,7 @@ describe('UseSceneNavigated', function () {
     });
 
     describe('A to A', function () {
-        it('should call navigating hook', function(){
+        it('should call navigated hook', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' }
             ]);
@@ -270,7 +270,7 @@ describe('UseSceneNavigated', function () {
     });
 
     describe('A to B', function () {
-        it('should call navigating hook on B and not on A', function(){
+        it('should call navigated hook on B and not on A', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB' }
@@ -317,7 +317,7 @@ describe('UseSceneNavigated', function () {
     });
 
     describe('A -> B to C -> B', function () {
-        it('should call navigating hook on B and not on A or C', function(){
+        it('should call navigated hook on B and not on A or C', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -377,7 +377,7 @@ describe('UseSceneNavigated', function () {
     });
 
     describe('A -> B to C -> D', function () {
-        it('should call navigating hook on D and not on A, B or C', function(){
+        it('should call navigated hook on D and not on A, B or C', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
