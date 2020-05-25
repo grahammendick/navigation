@@ -22,7 +22,7 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA} = stateNavigator.states;
-            var navigatingA = false;
+            var navigatingA;
             var SceneA = () => {
                 useSceneNavigated(() => {
                     navigatingA = true;
@@ -32,6 +32,7 @@ describe('UseSceneNavigated', function () {
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
             act(() => {
+                navigatingA = false;
                 ReactDOM.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
@@ -59,7 +60,6 @@ describe('UseSceneNavigated', function () {
             stateNavigator.navigate('sceneB');
             var {sceneA, sceneB} = stateNavigator.states;
             var navigatingA, navigatingB;
-            navigatingA = navigatingB = false;
             var SceneA = () => {
                 useSceneNavigated(() => {
                     navigatingA = true;
@@ -76,6 +76,7 @@ describe('UseSceneNavigated', function () {
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
             act(() => {
+                navigatingA = navigatingB = false;
                 ReactDOM.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
@@ -101,7 +102,7 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA} = stateNavigator.states;
-            var navigatingA = false;
+            var navigatingA;
             var setCountA;
             var SceneA = () => {
                 var [count, setCount]  = useState(0);
@@ -143,7 +144,7 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA, sceneB} = stateNavigator.states;
-            var navigatingA, navigatingB = false;
+            var navigatingA, navigatingB;
             var SceneA = () => {
                 useSceneNavigated(() => {
                     navigatingA = true;
@@ -190,7 +191,7 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA, sceneB} = stateNavigator.states;
-            var navigatingA, navigatingB = false;
+            var navigatingA, navigatingB;
             var SceneA = () => {
                 useSceneNavigated(() => {
                     navigatingA = true;
@@ -237,7 +238,7 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA} = stateNavigator.states;
-            var navigatingA = false;
+            var navigatingA;
             var SceneA = () => {
                 useSceneNavigated(() => {
                     navigatingA = true;
@@ -276,7 +277,7 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA, sceneB} = stateNavigator.states;
-            var navigatingA, navigatingB = false;
+            var navigatingA, navigatingB;
             var SceneA = () => {
                 useSceneNavigated(() => {
                     navigatingA = true;
@@ -324,7 +325,7 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA, sceneB, sceneC} = stateNavigator.states;
-            var navigatingA, navigatingB, navigatingC = false;
+            var navigatingA, navigatingB, navigatingC;
             var SceneA = () => {
                 useSceneNavigated(() => {
                     navigatingA = true;
@@ -385,7 +386,7 @@ describe('UseSceneNavigated', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA, sceneB, sceneC, sceneD} = stateNavigator.states;
-            var navigatingA, navigatingB, navigatingC, navigatingD = false;
+            var navigatingA, navigatingB, navigatingC, navigatingD;
             var SceneA = () => {
                 useSceneNavigated(() => {
                     navigatingA = true;
