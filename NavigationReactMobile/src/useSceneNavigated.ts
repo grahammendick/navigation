@@ -2,12 +2,12 @@ import { useContext, useEffect, useRef } from 'react';
 import { NavigationContext } from 'navigation-react';
 
 var useSceneNavigated = (handler: () => void) => {
-    var prevNavigationEvent = useRef(null);
+    var navigationEventRef = useRef(null);
     var navigationEvent = useContext(NavigationContext);
     useEffect(() => {
-        if (navigationEvent !== prevNavigationEvent.current)
+        if (navigationEvent !== navigationEventRef.current)
             handler();
-        prevNavigationEvent.current = navigationEvent;
+        navigationEventRef.current = navigationEvent;
     }, [navigationEvent, handler]);
 };
 
