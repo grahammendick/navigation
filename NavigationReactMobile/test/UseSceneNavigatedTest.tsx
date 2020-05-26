@@ -708,14 +708,14 @@ describe('UseSceneNavigated', function () {
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' }
             ]);
-            stateNavigator.navigate('sceneA');
+            stateNavigator.navigate('sceneA', {x: 0});
             var {sceneA} = stateNavigator.states;
-            var oldState;
+            var stateContextA;
             var SceneA = () => {
                 var navigationEvent = useContext(NavigationContext);
                 useSceneNavigated(() => {
                     var {stateContext} = navigationEvent.stateNavigator;
-                    oldState = stateContext.oldState;
+                    stateContextA = stateContext;
                 })
                 return <div />;
             };
@@ -732,10 +732,12 @@ describe('UseSceneNavigated', function () {
                 );
             });
             act(() => {
-                stateNavigator.navigate('sceneA');
+                stateNavigator.navigate('sceneA', {y: 1});
             });
             try {
-                assert.equal(oldState, sceneA);
+                assert.equal(stateContextA.oldState, sceneA);
+                assert.equal(stateContextA.oldData.x, 0);
+                assert.equal(stateContextA.data.y, 1);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
