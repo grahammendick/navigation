@@ -146,4 +146,54 @@ describe('UseSceneUnloading', function () {
             }
         })
     });
+
+    describe('A -> B to A', function () {
+        it('should call unloading hook on B and not on A', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var unloadingA, unloadingB;
+            var SceneA = () => {
+                useSceneUnloading(() => {
+                    unloadingA = true;
+                    return true;
+                })
+                return <div />;
+            };
+            var SceneB = () => {
+                useSceneUnloading(() => {
+                    unloadingB = true;
+                    return true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+                stateNavigator.navigate('sceneB');
+            });
+            act(() => {
+                unloadingA = unloadingB = false;
+                stateNavigator.navigateBack(1);
+            });
+            try {
+                assert.equal(unloadingA, false);
+                assert.equal(unloadingB, true);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
