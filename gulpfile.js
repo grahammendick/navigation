@@ -99,7 +99,8 @@ var tests = [
     { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' },
     { name: 'FluentLink', to: 'fluentLink.test.js', folder: 'React', ext: 'tsx' },
     { name: 'UseSceneNavigating', to: 'useSceneNavigating.test.js', folder: 'ReactMobile', ext: 'tsx' },
-    { name: 'UseSceneNavigated', to: 'useSceneNavigated.test.js', folder: 'ReactMobile', ext: 'tsx' }
+    { name: 'UseSceneNavigated', to: 'useSceneNavigated.test.js', folder: 'ReactMobile', ext: 'tsx' },
+    { name: 'UseSceneUnloading', to: 'useSceneUnloading.test.js', folder: 'ReactMobile', ext: 'tsx' },
 ];
 function testTask(name, input, file) {
     var globals = [
