@@ -523,6 +523,56 @@ describe('UseSceneNavigated', function () {
         })
     });
 
+    describe('A to A -> B to A to A -> B to A', function () {
+        it('should call navigated hook on A and not B', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var navigatedA, navigatedB;
+            var SceneA = () => {
+                useSceneNavigated(() => {
+                    navigatedA = true;
+                })
+                return <div />;
+            };
+            var SceneB = () => {
+                useSceneNavigated(() => {
+                    navigatedB = true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+                stateNavigator.navigate('sceneB');
+                stateNavigator.navigate('sceneA');
+                stateNavigator.navigate('sceneB');
+            });
+            act(() => {
+                navigatedA = navigatedB = false;
+                stateNavigator.navigate('sceneA');
+            });
+            try {
+                assert.equal(navigatedA, true);
+                assert.equal(navigatedB, false);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
+
     describe('Suspend navigation', function () {
         it('should not call navigated hook', function(){
             var stateNavigator = new StateNavigator([
