@@ -721,4 +721,54 @@ describe('UseSceneUnloading', function () {
             }
         })
     });
+
+    describe('Suspend navigation', function () {
+        it('should call unloading hook', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var unloadingA, unloadingB;
+            var SceneA = () => {
+                useSceneUnloading(() => {
+                    unloadingA = true;
+                    return true;
+                })
+                return <div />;
+            };
+            var SceneB = () => {
+                useSceneUnloading(() => {
+                    unloadingB = true;
+                    return true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                unloadingA = unloadingB = false;
+                var url = stateNavigator.getNavigationLink('sceneB');
+                stateNavigator.navigateLink(url, undefined, false, () => {});
+            });
+            try {
+                assert.equal(unloadingA, true);
+                assert.equal(unloadingB, false);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
