@@ -858,4 +858,49 @@ describe('UseSceneUnloading', function () {
             }
         })
     });
+
+    describe('Unloading handler context', function () {
+        it('should access current context', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var stateContextA;
+            var SceneA = () => {
+                var navigationEvent = useContext(NavigationContext);
+                useSceneUnloading(() => {
+                    var {stateContext} = navigationEvent.stateNavigator;
+                    stateContextA = stateContext;
+                    return true;
+                })
+                return <div />;
+            };
+            var SceneB = () => <div />;
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                stateContextA = null;
+                stateNavigator.navigate('sceneB');
+            });
+            try {
+                assert.equal(stateContextA.oldState, null);
+                assert.equal(stateContextA.state, sceneA);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
