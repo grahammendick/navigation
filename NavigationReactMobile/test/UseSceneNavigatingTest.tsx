@@ -693,7 +693,7 @@ describe('UseSceneNavigating', function () {
         })
     });
 
-    describe.only('Navigating handler', function () {
+    describe('Navigating handler', function () {
         it('should access data', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA', defaultTypes: {x: 'number', y:'number'} }
