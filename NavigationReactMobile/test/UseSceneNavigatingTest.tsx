@@ -613,7 +613,7 @@ describe('UseSceneNavigating', function () {
         })
     });
 
-    describe('Navigating handler', function () {
+    describe('Navigating handler state', function () {
         it('should access latest state', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' }
@@ -654,7 +654,7 @@ describe('UseSceneNavigating', function () {
         })
     });
 
-    describe('Navigating handler', function () {
+    describe('Navigating handler context', function () {
         it('should access current context', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' }
@@ -693,7 +693,7 @@ describe('UseSceneNavigating', function () {
         })
     });
 
-    describe('Navigating handler', function () {
+    describe('Navigating handler data', function () {
         it('should access data', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA', defaultTypes: {x: 'number', y:'number'} }

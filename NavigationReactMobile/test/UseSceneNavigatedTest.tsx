@@ -612,7 +612,7 @@ describe('UseSceneNavigated', function () {
         })
     });
 
-    describe('Navigated handler', function () {
+    describe('Navigated handler state', function () {
         it('should access latest state', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' }
@@ -653,7 +653,7 @@ describe('UseSceneNavigated', function () {
         })
     });
 
-    describe('Navigated handler', function () {
+    describe('Navigated handler context', function () {
         it('should access latest context', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' }
