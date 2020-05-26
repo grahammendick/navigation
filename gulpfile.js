@@ -1,6 +1,7 @@
 ﻿'use strict'
 var cleanup = require('rollup-plugin-cleanup');
 var { src, dest, series, parallel } = require('gulp');
+var events = require('events');
 var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
 var nodeResolve = require('rollup-plugin-node-resolve');
@@ -9,6 +10,8 @@ var rollup = require('rollup');
 var rollupTypescript = require('rollup-plugin-typescript');
 var typescript = require('typescript');
 var uglify = require('gulp-uglify');
+
+events.EventEmitter.defaultMaxListeners = 0;
 
 var items = [
     require('./build/npm/navigation/package.json'),
