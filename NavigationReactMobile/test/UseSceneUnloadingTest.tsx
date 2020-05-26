@@ -813,4 +813,49 @@ describe('UseSceneUnloading', function () {
             }
         })
     });
+
+    describe('Unloading handler state', function () {
+        it('should access latest state', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var countA, setCountA;
+            var SceneA = () => {
+                var [count, setCount]  = useState(0);
+                setCountA = setCount;
+                useSceneUnloading(() => {
+                    countA = count;
+                    return true;
+                })
+                return <div />;
+            };
+            var SceneB = () => <div />;
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+                setCountA(1);
+            });
+            act(() => {
+                countA = 0;
+                stateNavigator.navigate('sceneB');
+            });
+            try {
+                assert.equal(countA, 1);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
