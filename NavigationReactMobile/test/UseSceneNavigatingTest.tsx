@@ -692,4 +692,49 @@ describe('UseSceneNavigating', function () {
             }
         })
     });
+
+    describe.only('Navigating handler', function () {
+        it('should access data', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA', defaultTypes: {x: 'number', y:'number'} }
+            ]);
+            stateNavigator.navigate('sceneA', {x: 0});
+            var {sceneA} = stateNavigator.states;
+            var dataA, urlA, historyA, currentContextA;
+            var SceneA = () => {
+                useSceneNavigating((data, url, history, currentContext) => {
+                    dataA = data;
+                    urlA = url;
+                    historyA = history;
+                    currentContextA = currentContext;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                dataA = urlA = historyA = currentContextA = null;
+                stateNavigator.navigate('sceneA', {y: 1});
+            });
+            try {
+                assert.equal(dataA.y, 1);
+                assert.equal(urlA, '/sceneA?y=1');
+                assert.equal(historyA, false);
+                assert.equal(currentContextA.data.x, 0);
+                assert.equal(currentContextA.url, '/sceneA?x=0');
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
