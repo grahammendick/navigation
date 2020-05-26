@@ -5,13 +5,10 @@ var useSceneNavigating = (handler: (data, url, history, currentContext) => void)
     var navigationEvent = useContext(NavigationContext);
     useEffect(() => {
         var {stateNavigator} = navigationEvent;
-        var {crumbs} = stateNavigator.stateContext;
         var beforeNavigateHandler = (state, data, url, history, currentContext) => {
-            var {url: currentUrl, state: currentState} = currentContext;
-            var currentCrumb = currentUrl.split('crumb=').length - 1;
             var crumb = url.split('crumb=').length - 1;
-            var replace = crumb === currentCrumb && state !== currentState;
-            if (crumbs.length === crumb && !replace)
+            var {crumbs, state: currentState} = stateNavigator.stateContext;
+            if (crumbs.length === crumb && currentState === state)
                 handler(data, url, history, currentContext);
             return true;
         }
