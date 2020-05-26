@@ -917,12 +917,12 @@ describe('UseSceneUnloading', function () {
             var SceneA = () => <div />;
             var SceneB = () => <div />;
             var SceneC = () => {
-                useSceneUnloading((state, data, url, crumbs, history) => {
+                useSceneUnloading((state, data, url, history, crumbs) => {
                     stateC = state;
                     dataC = data;
                     urlC = url;
-                    crumbsC = crumbs;
                     historyC = history;
+                    crumbsC = crumbs;
                     return true;
                 })
                 return <div />;
