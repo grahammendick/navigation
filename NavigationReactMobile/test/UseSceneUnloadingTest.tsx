@@ -347,4 +347,77 @@ describe('UseSceneUnloading', function () {
             }
         })
     });
+
+    describe('A -> B to C -> D', function () {
+        it('should call unloading hook on B and not on A, C, or D', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC' },
+                { key: 'sceneD', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB, sceneC, sceneD} = stateNavigator.states;
+            var unloadingA, unloadingB, unloadingC, unloadingD;
+            var SceneA = () => {
+                useSceneUnloading(() => {
+                    unloadingA = true;
+                    return true;
+                })
+                return <div />;
+            };
+            var SceneB = () => {
+                useSceneUnloading(() => {
+                    unloadingB = true;
+                    return true;
+                })
+                return <div />;
+            };
+            var SceneC = () => {
+                useSceneUnloading(() => {
+                    unloadingC = true;
+                    return true;
+                })
+                return <div />;
+            };
+            var SceneD = () => {
+                useSceneUnloading(() => {
+                    unloadingD = true;
+                    return true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            sceneC.renderScene = () => <SceneC />;
+            sceneD.renderScene = () => <SceneD />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+                stateNavigator.navigate('sceneB');
+            });
+            act(() => {
+                unloadingA = unloadingB = unloadingC = unloadingD = false;
+                var url = stateNavigator.fluent()
+                    .navigate('sceneC')
+                    .navigate('sceneD').url;
+                stateNavigator.navigateLink(url);
+            });
+            try {
+                assert.equal(unloadingA, false);
+                assert.equal(unloadingB, true);
+                assert.equal(unloadingC, false);
+                assert.equal(unloadingD, false);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
