@@ -1,16 +1,18 @@
 import { useContext, useEffect } from 'react';
 import { NavigationContext } from 'navigation-react';
 
-var useSceneUnloading = (handler: () => boolean) => {
+var useSceneUnloading = (handler: (state, data, url, crumbs, history) => boolean) => {
     var navigationEvent = useContext(NavigationContext);
     useEffect(() => {
         var {stateNavigator} = navigationEvent;
-        var beforeNavigateHandler = (state, _data, url, _history, currentContext) => {
+        var beforeNavigateHandler = (state, data, url, history, currentContext) => {
             var crumb = url.split('crumb=').length - 1;
-            var {crumbs, state: sceneState} = stateNavigator.stateContext;
-            if (stateNavigator.stateContext === currentContext
-                && !(crumbs.length === crumb && sceneState === state))
-                return handler();
+            var {crumbs: sceneCrumbs, state: sceneState} = stateNavigator.stateContext;
+            if (!(sceneCrumbs.length === crumb && sceneState === state)
+                && stateNavigator.stateContext === currentContext) {
+                var {crumbs} = stateNavigator.parseLink(url);
+                return handler(state, data, url, crumbs, history);
+            }
             return true;
         }
         stateNavigator.onBeforeNavigate(beforeNavigateHandler);

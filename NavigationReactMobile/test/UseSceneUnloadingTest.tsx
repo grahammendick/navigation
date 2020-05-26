@@ -903,4 +903,61 @@ describe('UseSceneUnloading', function () {
             }
         })
     });
+
+    describe('Unloading handler data', function () {
+        it('should access data', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA', defaultTypes: {x: 'number'} },
+                { key: 'sceneB', defaultTypes: {y: 'number'}, trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('sceneA', {x: 0});
+            var {sceneA, sceneB, sceneC} = stateNavigator.states;
+            var stateC, dataC, urlC, crumbsC, historyC;
+            var SceneA = () => <div />;
+            var SceneB = () => <div />;
+            var SceneC = () => {
+                useSceneUnloading((state, data, url, crumbs, history) => {
+                    stateC = state;
+                    dataC = data;
+                    urlC = url;
+                    crumbsC = crumbs;
+                    historyC = history;
+                    return true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            sceneC.renderScene = () => <SceneC />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+                stateNavigator.navigate('sceneB', {y: 1});
+                stateNavigator.navigate('sceneC');
+            });
+            act(() => {
+                stateC = dataC = urlC = crumbsC = historyC = null;
+                stateNavigator.navigateBack(1);
+            });
+            try {
+                assert.equal(stateC, sceneB);
+                assert.equal(dataC.y, 1);
+                assert.equal(urlC, '/sceneB?y=1&crumb=%2FsceneA%3Fx%3D0');
+                assert.equal(crumbsC.length, 1);
+                assert.equal(crumbsC[0].state, sceneA);
+                assert.equal(crumbsC[0].data.x, 0);
+                assert.equal(historyC, false);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
