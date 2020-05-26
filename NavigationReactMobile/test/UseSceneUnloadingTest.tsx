@@ -771,4 +771,46 @@ describe('UseSceneUnloading', function () {
             }
         })
     });
+
+    describe('Set state', function () {
+        it('should not call unloading hook', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA} = stateNavigator.states;
+            var unloadingA;
+            var setCountA;
+            var SceneA = () => {
+                var [count, setCount]  = useState(0);
+                setCountA = setCount;
+                useSceneUnloading(() => {
+                    unloadingA = true;
+                    return true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                unloadingA = false;
+                setCountA(1);
+            });
+            try {
+                assert.equal(unloadingA, false);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
