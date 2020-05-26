@@ -733,6 +733,7 @@ describe('UseSceneNavigating', function () {
                 );
             });
             act(() => {
+                stateContextA = null;
                 stateNavigator.navigate('sceneA', {y: 1});
             });
             try {
