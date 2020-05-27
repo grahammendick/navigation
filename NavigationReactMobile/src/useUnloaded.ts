@@ -16,7 +16,7 @@ var useUnloaded = (handler: (state, data, stateContext) => void) => {
         stateNavigator.onNavigate(navigateHandler);
         return () => {
             cancelled = true;
-            stateNavigator.onNavigate(navigateHandler)
+            stateNavigator.offNavigate(navigateHandler)
         };
     }, [navigationEvent, handler]);
 };
