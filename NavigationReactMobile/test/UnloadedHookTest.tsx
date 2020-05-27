@@ -334,4 +334,73 @@ describe('UnloadedHook', function () {
             }
         })
     });
+
+    describe('A -> B to C -> D', function () {
+        it('should call unloaded hook on B and not on A, C, or D', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC' },
+                { key: 'sceneD', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB, sceneC, sceneD} = stateNavigator.states;
+            var unloadedA, unloadedB, unloadedC, unloadedD;
+            var SceneA = () => {
+                useUnloaded(() => {
+                    unloadedA = true;
+                })
+                return <div />;
+            };
+            var SceneB = () => {
+                useUnloaded(() => {
+                    unloadedB = true;
+                })
+                return <div />;
+            };
+            var SceneC = () => {
+                useUnloaded(() => {
+                    unloadedC = true;
+                })
+                return <div />;
+            };
+            var SceneD = () => {
+                useUnloaded(() => {
+                    unloadedD = true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            sceneC.renderScene = () => <SceneC />;
+            sceneD.renderScene = () => <SceneD />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+                stateNavigator.navigate('sceneB');
+            });
+            act(() => {
+                unloadedA = unloadedB = unloadedC = unloadedD = false;
+                var url = stateNavigator.fluent()
+                    .navigate('sceneC')
+                    .navigate('sceneD').url;
+                stateNavigator.navigateLink(url);
+            });
+            try {
+                assert.equal(unloadedA, false);
+                assert.equal(unloadedB, true);
+                assert.equal(unloadedC, false);
+                assert.equal(unloadedD, false);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
