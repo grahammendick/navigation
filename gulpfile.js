@@ -101,6 +101,7 @@ var tests = [
     { name: 'NavigatingHook', to: 'navigatingHook.test.js', folder: 'ReactMobile', ext: 'tsx' },
     { name: 'NavigatedHook', to: 'navigatedHook.test.js', folder: 'ReactMobile', ext: 'tsx' },
     { name: 'UnloadingHook', to: 'unloadingHook.test.js', folder: 'ReactMobile', ext: 'tsx' },
+    { name: 'UnloadedHook', to: 'unloadedHook.test.js', folder: 'ReactMobile', ext: 'tsx' }
 ];
 function testTask(name, input, file) {
     var globals = [
