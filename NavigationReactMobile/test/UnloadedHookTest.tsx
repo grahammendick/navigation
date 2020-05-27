@@ -188,4 +188,43 @@ describe('UnloadedHook', function () {
                 ReactDOM.unmountComponentAtNode(container);
             }
         })
-    });});
+    });
+
+    describe('A to A', function () {
+        it('should not call unloaded hook', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA} = stateNavigator.states;
+            var unloadedA;
+            var SceneA = () => {
+                useUnloaded(() => {
+                    unloadedA = true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                unloadedA = false;
+                stateNavigator.navigate('sceneA');
+            });
+            try {
+                assert.equal(unloadedA, false);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
+});
