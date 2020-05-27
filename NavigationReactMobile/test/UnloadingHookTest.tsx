@@ -2,7 +2,7 @@ import assert from 'assert';
 import 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { NavigationMotion, useSceneUnloading } from 'navigation-react-mobile';
+import { NavigationMotion, useUnloading } from 'navigation-react-mobile';
 import React, { useState, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
@@ -14,7 +14,7 @@ window.addEventListener = () => {};
 global.window = window;
 global.document = window.document;
 
-describe('UseSceneUnloading', function () {
+describe('UnloadingHook', function () {
     describe('A', function () {
         it('should not call unloading hook', function(){
             var stateNavigator = new StateNavigator([
@@ -24,7 +24,7 @@ describe('UseSceneUnloading', function () {
             var {sceneA} = stateNavigator.states;
             var unloadingA;
             var SceneA = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingA = true;
                     return true;
                 })
@@ -62,14 +62,14 @@ describe('UseSceneUnloading', function () {
             var {sceneA, sceneB} = stateNavigator.states;
             var unloadingA, unloadingB;
             var SceneA = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingA = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingB = true;
                     return true;
                 })
@@ -108,14 +108,14 @@ describe('UseSceneUnloading', function () {
             var {sceneA, sceneB} = stateNavigator.states;
             var unloadingA, unloadingB;
             var SceneA = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingA = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingB = true;
                     return true;
                 })
@@ -157,14 +157,14 @@ describe('UseSceneUnloading', function () {
             var {sceneA, sceneB} = stateNavigator.states;
             var unloadingA, unloadingB;
             var SceneA = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingA = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingB = true;
                     return true;
                 })
@@ -206,7 +206,7 @@ describe('UseSceneUnloading', function () {
             var {sceneA} = stateNavigator.states;
             var unloadingA;
             var SceneA = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingA = true;
                     return true;
                 })
@@ -246,14 +246,14 @@ describe('UseSceneUnloading', function () {
             var {sceneA, sceneB} = stateNavigator.states;
             var unloadingA, unloadingB;
             var SceneA = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingA = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingB = true;
                     return true;
                 })
@@ -296,21 +296,21 @@ describe('UseSceneUnloading', function () {
             var {sceneA, sceneB, sceneC} = stateNavigator.states;
             var unloadingA, unloadingB, unloadingC;
             var SceneA = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingA = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingB = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneC = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingC = true;
                     return true;
                 })
@@ -360,28 +360,28 @@ describe('UseSceneUnloading', function () {
             var {sceneA, sceneB, sceneC, sceneD} = stateNavigator.states;
             var unloadingA, unloadingB, unloadingC, unloadingD;
             var SceneA = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingA = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingB = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneC = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingC = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneD = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingD = true;
                     return true;
                 })
@@ -432,21 +432,21 @@ describe('UseSceneUnloading', function () {
             var {sceneA, sceneB, sceneC} = stateNavigator.states;
             var unloadingA, unloadingB, unloadingC;
             var SceneA = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingA = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingB = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneC = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingC = true;
                     return true;
                 })
@@ -494,21 +494,21 @@ describe('UseSceneUnloading', function () {
             var {sceneA, sceneB, sceneC} = stateNavigator.states;
             var unloadingA, unloadingB, unloadingC;
             var SceneA = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingA = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingB = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneC = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingC = true;
                     return true;
                 })
@@ -556,14 +556,14 @@ describe('UseSceneUnloading', function () {
             var {sceneA, sceneB} = stateNavigator.states;
             var unloadingA, unloadingB;
             var SceneA = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingA = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingB = true;
                     return true;
                 })
@@ -609,21 +609,21 @@ describe('UseSceneUnloading', function () {
             var {sceneA, sceneB, sceneC} = stateNavigator.states;
             var unloadingA, unloadingB, unloadingC;
             var SceneA = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingA = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingB = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneC = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingC = true;
                     return true;
                 })
@@ -670,21 +670,21 @@ describe('UseSceneUnloading', function () {
             var {sceneA, sceneB, sceneC} = stateNavigator.states;
             var unloadingA, unloadingB, unloadingC;
             var SceneA = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingA = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingB = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneC = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingC = true;
                     return true;
                 })
@@ -732,14 +732,14 @@ describe('UseSceneUnloading', function () {
             var {sceneA, sceneB} = stateNavigator.states;
             var unloadingA, unloadingB;
             var SceneA = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingA = true;
                     return true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingB = true;
                     return true;
                 })
@@ -784,7 +784,7 @@ describe('UseSceneUnloading', function () {
             var SceneA = () => {
                 var [count, setCount]  = useState(0);
                 setCountA = setCount;
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     unloadingA = true;
                     return true;
                 })
@@ -826,7 +826,7 @@ describe('UseSceneUnloading', function () {
             var SceneA = () => {
                 var [count, setCount]  = useState(0);
                 setCountA = setCount;
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     countA = count;
                     return true;
                 })
@@ -870,7 +870,7 @@ describe('UseSceneUnloading', function () {
             var stateContextA;
             var SceneA = () => {
                 var navigationEvent = useContext(NavigationContext);
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     var {stateContext} = navigationEvent.stateNavigator;
                     stateContextA = stateContext;
                     return true;
@@ -917,7 +917,7 @@ describe('UseSceneUnloading', function () {
             var SceneA = () => <div />;
             var SceneB = () => <div />;
             var SceneC = () => {
-                useSceneUnloading((state, data, url, history, crumbs) => {
+                useUnloading((state, data, url, history, crumbs) => {
                     stateC = state;
                     dataC = data;
                     urlC = url;
@@ -970,7 +970,7 @@ describe('UseSceneUnloading', function () {
             stateNavigator.navigate('sceneA');
             var {sceneA, sceneB} = stateNavigator.states;
             var SceneA = () => {
-                useSceneUnloading(() => {
+                useUnloading(() => {
                     return false;
                 })
                 return <div />;

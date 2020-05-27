@@ -4,6 +4,6 @@ import SharedElement from './SharedElement';
 import SharedElementMotion from './SharedElementMotion';
 import useNavigating from './useNavigating';
 import useNavigated from './useNavigated';
-import useSceneUnloading from './useSceneUnloading';
+import useUnloading from './useUnloading';
 
-export { MobileHistoryManager, NavigationMotion, SharedElement, SharedElementMotion, useNavigating, useNavigated, useSceneUnloading };
+export { MobileHistoryManager, NavigationMotion, SharedElement, SharedElementMotion, useNavigating, useNavigated, useUnloading };
