@@ -1,11 +1,11 @@
 import { useContext, useEffect } from 'react';
 import { NavigationContext } from 'navigation-react';
 
-var useSceneNavigated = (handler: () => void) => {
+var useNavigated = (handler: () => void) => {
     var navigationEvent = useContext(NavigationContext);
     useEffect(() => {
         handler();
     }, [navigationEvent]);
 };
 
-export default useSceneNavigated;
+export default useNavigated;
