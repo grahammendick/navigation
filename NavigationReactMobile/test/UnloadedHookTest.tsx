@@ -49,4 +49,49 @@ describe('UnloadedHook', function () {
             }
         })
     });
+
+    describe('A -> B', function () {
+        it('should not call unloaded hook on on A or B', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('sceneA');
+            stateNavigator.navigate('sceneB');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var unloadedA, unloadedB;
+            var SceneA = () => {
+                useUnloaded(() => {
+                    unloadedA = true;
+                })
+                return <div />;
+            };
+            var SceneB = () => {
+                useUnloaded(() => {
+                    unloadedB = true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            act(() => {
+                unloadedA = unloadedB = false;
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            try {
+                assert.equal(unloadedA, false);
+                assert.equal(unloadedB, false);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
