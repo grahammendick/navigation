@@ -274,4 +274,64 @@ describe('UnloadedHook', function () {
             }
         })
     });
+
+    describe('A -> B to C -> B', function () {
+        it('should not call unloaded hook on A, B or C', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB, sceneC} = stateNavigator.states;
+            var unloadedA, unloadedB, unloadedC;
+            var SceneA = () => {
+                useUnloaded(() => {
+                    unloadedA = true;
+                })
+                return <div />;
+            };
+            var SceneB = () => {
+                useUnloaded(() => {
+                    unloadedB = true;
+                })
+                return <div />;
+            };
+            var SceneC = () => {
+                useUnloaded(() => {
+                    unloadedC = true;
+                })
+                return <div />;
+            };
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            sceneC.renderScene = () => <SceneC />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+                stateNavigator.navigate('sceneB');
+            });
+            act(() => {
+                unloadedA = unloadedB = unloadedC = false;
+                var url = stateNavigator.fluent()
+                    .navigate('sceneC')
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+            });
+            try {
+                assert.equal(unloadedA, false);
+                assert.equal(unloadedB, false);
+                assert.equal(unloadedC, false);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
