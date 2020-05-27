@@ -403,6 +403,7 @@ describe('UnloadedHook', function () {
             }
         })
     });
+
     describe('A to A --> B -> C', function () {
         it('should call unloaded hook on A and not on B or C', function(){
             var stateNavigator = new StateNavigator([
