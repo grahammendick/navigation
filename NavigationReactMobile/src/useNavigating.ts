@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { NavigationContext } from 'navigation-react';
 
-var useSceneNavigating = (handler: (data, url, history, currentContext) => void) => {
+var useNavigating = (handler: (data, url, history, currentContext) => void) => {
     var navigationEvent = useContext(NavigationContext);
     useEffect(() => {
         var {stateNavigator} = navigationEvent;
@@ -19,4 +19,4 @@ var useSceneNavigating = (handler: (data, url, history, currentContext) => void)
     }, [navigationEvent, handler]);
 };
 
-export default useSceneNavigating;
+export default useNavigating;

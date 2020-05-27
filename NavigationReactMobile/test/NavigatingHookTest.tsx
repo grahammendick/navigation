@@ -2,7 +2,7 @@ import assert from 'assert';
 import 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { NavigationMotion, useSceneNavigating } from 'navigation-react-mobile';
+import { NavigationMotion, useNavigating } from 'navigation-react-mobile';
 import React, { useState, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
@@ -14,7 +14,7 @@ window.addEventListener = () => {};
 global.window = window;
 global.document = window.document;
 
-describe('UseSceneNavigating', function () {
+describe('NavigatingHook', function () {
     describe('A', function () {
         it('should not call navigating hook', function(){
             var stateNavigator = new StateNavigator([
@@ -24,7 +24,7 @@ describe('UseSceneNavigating', function () {
             var {sceneA} = stateNavigator.states;
             var navigatingA;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingA = true;
                 })
                 return <div />;
@@ -61,13 +61,13 @@ describe('UseSceneNavigating', function () {
             var {sceneA, sceneB} = stateNavigator.states;
             var navigatingA, navigatingB;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingB = true;
                 })
                 return <div />;
@@ -105,13 +105,13 @@ describe('UseSceneNavigating', function () {
             var {sceneA, sceneB} = stateNavigator.states;
             var navigatingA, navigatingB;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingB = true;
                 })
                 return <div />;
@@ -152,13 +152,13 @@ describe('UseSceneNavigating', function () {
             var {sceneA, sceneB} = stateNavigator.states;
             var navigatingA, navigatingB;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingB = true;
                 })
                 return <div />;
@@ -199,7 +199,7 @@ describe('UseSceneNavigating', function () {
             var {sceneA} = stateNavigator.states;
             var navigatingA;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingA = true;
                 })
                 return <div />;
@@ -238,13 +238,13 @@ describe('UseSceneNavigating', function () {
             var {sceneA, sceneB} = stateNavigator.states;
             var navigatingA, navigatingB;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingB = true;
                 })
                 return <div />;
@@ -286,19 +286,19 @@ describe('UseSceneNavigating', function () {
             var {sceneA, sceneB, sceneC} = stateNavigator.states;
             var navigatingA, navigatingB, navigatingC;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingB = true;
                 })
                 return <div />;
             };
             var SceneC = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingC = true;
                 })
                 return <div />;
@@ -347,25 +347,25 @@ describe('UseSceneNavigating', function () {
             var {sceneA, sceneB, sceneC, sceneD} = stateNavigator.states;
             var navigatingA, navigatingB, navigatingC, navigatingD;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingB = true;
                 })
                 return <div />;
             };
             var SceneC = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingC = true;
                 })
                 return <div />;
             };
             var SceneD = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingD = true;
                 })
                 return <div />;
@@ -415,19 +415,19 @@ describe('UseSceneNavigating', function () {
             var {sceneA, sceneB, sceneC} = stateNavigator.states;
             var navigatingA, navigatingB, navigatingC;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingB = true;
                 })
                 return <div />;
             };
             var SceneC = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingC = true;
                 })
                 return <div />;
@@ -474,19 +474,19 @@ describe('UseSceneNavigating', function () {
             var {sceneA, sceneB, sceneC} = stateNavigator.states;
             var navigatingA, navigatingB, navigatingC;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingB = true;
                 })
                 return <div />;
             };
             var SceneC = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingC = true;
                 })
                 return <div />;
@@ -533,13 +533,13 @@ describe('UseSceneNavigating', function () {
             var {sceneA, sceneB} = stateNavigator.states;
             var navigatingA, navigatingB;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingB = true;
                 })
                 return <div />;
@@ -584,19 +584,19 @@ describe('UseSceneNavigating', function () {
             var {sceneA, sceneB, sceneC} = stateNavigator.states;
             var navigatingA, navigatingB, navigatingC;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingB = true;
                 })
                 return <div />;
             };
             var SceneC = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingC = true;
                 })
                 return <div />;
@@ -642,19 +642,19 @@ describe('UseSceneNavigating', function () {
             var {sceneA, sceneB, sceneC} = stateNavigator.states;
             var navigatingA, navigatingB, navigatingC;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingB = true;
                 })
                 return <div />;
             };
             var SceneC = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingC = true;
                 })
                 return <div />;
@@ -701,13 +701,13 @@ describe('UseSceneNavigating', function () {
             var {sceneA, sceneB} = stateNavigator.states;
             var navigatingA, navigatingB;
             var SceneA = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingA = true;
                 })
                 return <div />;
             };
             var SceneB = () => {
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingB = true;
                 })
                 return <div />;
@@ -752,7 +752,7 @@ describe('UseSceneNavigating', function () {
             var SceneA = () => {
                 var [count, setCount]  = useState(0);
                 setCountA = setCount;
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     navigatingA = true;
                 })
                 return <div />;
@@ -792,7 +792,7 @@ describe('UseSceneNavigating', function () {
             var SceneA = () => {
                 var [count, setCount]  = useState(0);
                 setCountA = setCount;
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     countA = count;
                 })
                 return <div />;
@@ -832,7 +832,7 @@ describe('UseSceneNavigating', function () {
             var stateContextA;
             var SceneA = () => {
                 var navigationEvent = useContext(NavigationContext);
-                useSceneNavigating(() => {
+                useNavigating(() => {
                     var {stateContext} = navigationEvent.stateNavigator;
                     stateContextA = stateContext;
                 })
@@ -873,7 +873,7 @@ describe('UseSceneNavigating', function () {
             var {sceneA} = stateNavigator.states;
             var dataA, urlA, historyA, currentContextA;
             var SceneA = () => {
-                useSceneNavigating((data, url, history, currentContext) => {
+                useNavigating((data, url, history, currentContext) => {
                     dataA = data;
                     urlA = url;
                     historyA = history;
