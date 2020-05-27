@@ -1,6 +1,7 @@
 ﻿'use strict'
 var cleanup = require('rollup-plugin-cleanup');
 var { src, dest, series, parallel } = require('gulp');
+var events = require('events');
 var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
 var nodeResolve = require('rollup-plugin-node-resolve');
@@ -9,6 +10,8 @@ var rollup = require('rollup');
 var rollupTypescript = require('rollup-plugin-typescript');
 var typescript = require('typescript');
 var uglify = require('gulp-uglify');
+
+events.EventEmitter.defaultMaxListeners = 0;
 
 var items = [
     require('./build/npm/navigation/package.json'),
@@ -94,12 +97,16 @@ var tests = [
     { name: 'NavigationLink', to: 'navigationLink.test.js', folder: 'React', ext: 'tsx' },
     { name: 'NavigationBackLink', to: 'navigationBackLink.test.js', folder: 'React', ext: 'tsx' },
     { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' },
-    { name: 'FluentLink', to: 'fluentLink.test.js', folder: 'React', ext: 'tsx' }
+    { name: 'FluentLink', to: 'fluentLink.test.js', folder: 'React', ext: 'tsx' },
+    { name: 'NavigatingHook', to: 'navigatingHook.test.js', folder: 'ReactMobile', ext: 'tsx' },
+    { name: 'NavigatedHook', to: 'navigatedHook.test.js', folder: 'ReactMobile', ext: 'tsx' },
+    { name: 'UnloadingHook', to: 'unloadingHook.test.js', folder: 'ReactMobile', ext: 'tsx' },
+    { name: 'UnloadedHook', to: 'unloadedHook.test.js', folder: 'ReactMobile', ext: 'tsx' }
 ];
 function testTask(name, input, file) {
     var globals = [
-        'assert', 'react', 'react-dom', 'react-dom/test-utils',
-        'jsdom', 'tslib', 'navigation', 'navigation-react'
+        'mocha', 'assert', 'react', 'react-dom', 'react-dom/test-utils', 'jsdom',
+        'tslib', 'navigation', 'navigation-react',  'navigation-react-mobile'
     ];
     return rollupTask(name, input, file, globals, 'cjs')
         .then(() => 
@@ -117,7 +124,8 @@ var testTasks = tests.reduce((tasks, test) => {
 }, []);
 var packageDeps = parallel(
     itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigation'),
-    itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigationReact')
+    itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigationReact'),
+    itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigationReactMobile')
 );
 exports.build = parallel(...itemTasks.buildTasks);
 exports.package = parallel(packageNative, ...itemTasks.packageTasks);

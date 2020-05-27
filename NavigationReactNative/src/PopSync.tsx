@@ -37,7 +37,7 @@ class PopSync<T> extends React.Component<PopSyncProps<T>, any> {
             if (Platform.OS === 'android' && !poppedItem.reactPop)
                 return null;
             var items = prevItems.filter(item => item.key !== key);
-            return {items};            
+            return {items};
         });
     }
     render() {

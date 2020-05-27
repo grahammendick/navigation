@@ -12,26 +12,26 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
         progress: 0,
     }
     static getDerivedStateFromProps(props, {items: prevItems}) {
-        var tick = typeof performance !== 'undefined' ? performance.now() : 0;
+        var tick = typeof window.performance !== 'undefined' ? window.performance.now() : 0;
         var {items, moving} = Motion.move(tick, prevItems, props);
         return {items, restart: moving};
     }
     componentDidMount() {
-        this.animateId = requestAnimationFrame(this.animate);
+        this.animateId = window.requestAnimationFrame(this.animate);
     }
     componentDidUpdate() {
         if (!this.animateId && this.state.restart)
-            this.animateId = requestAnimationFrame(this.animate);
+            this.animateId = window.requestAnimationFrame(this.animate);
     }
     componentWillUnmount() {
-        cancelAnimationFrame(this.animateId);
+        window.cancelAnimationFrame(this.animateId);
     }
     animate(tick) {
         this.setState(({items: prevItems}) => {
             var {items, moving} = Motion.move(tick, prevItems, this.props);
             this.animateId = null;
             if (moving)
-                this.animateId = requestAnimationFrame(this.animate);
+                this.animateId = window.requestAnimationFrame(this.animate);
             return {items, restart: false};
         })
     }
