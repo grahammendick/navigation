@@ -57,12 +57,12 @@
         <div id="article">
             <h1>Scene Navigation Lifecycle</h1>
             <p>
-                When the user navigates from scene A to scene B then the first scene isn’t unmounted. It’s still mounted because it stays in the stack. When the user navigates back then scene B is popped and scene A reappears. The Navigation router has a <code>useNavigated</code> hook that tells you when the user navigates to scene A. It also has a <code>useUnloaded</code> hook that tells you when the user navigates away from scene A to scene B.
+                When the user navigates from scene A to scene B then the first scene isn't unmounted. It's still mounted because it stays in the stack. When the user navigates back then scene B is popped and scene A reappears. The Navigation router has a <code>useNavigated</code> hook that tells you when the user navigates to scene A. It also has a <code>useUnloaded</code> hook that tells you when the user navigates away from scene A to scene B.
             </p>
             <p>
-                The inbox scene in our example app polls an endpoint to check if the user has any new mail. We can use the scene lifecycle hooks to make sure we only poll when the user is browsing their inbox. We stop the polling when the user navigates to an email and then start it again when they go back to their inbox.
+                The 'inbox' scene in our example app polls an endpoint to check if the user has any new mail. We can use the scene lifecycle hooks to make sure we only poll when the user is browsing their inbox. We stop the polling when the user navigates to an email and then start it again when they go back to their inbox.
             </p>
-            <pre><code class="language-js">import {useNavigated, useUnloaded} from 'navigation-react-native’;
+            <pre><code class="language-js">import {useNavigated, useUnloaded} from 'navigation-react-native';
 
 var Inbox = () => (
   useNavigated(() => {
@@ -71,8 +71,11 @@ var Inbox = () => (
   useUnloaded(() => {
     // Stop polling for new emails
   });</code></pre>
-            <h2>Swiping Back on iOS</h2>
-            <pre><code class="language-js">import {useNavigating} from 'navigation-react-native’;
+            <h2>Peeking Back on iOS</h2>
+            <p>
+                On iOS, when the user is reading a mail they can half swipe left so they can peek at their inbox without navigating to it. We want to show them their latest mail but we don't want to start polling because they're still on the 'email' scene. The Navigation router has a <code>useNavigating</code> hook that notifies us when the swipe starts. We use this to issue a one-time call to refresh the inbox. If the user completes the swipe the <code>useNavigated</code> fires and we start polling again.
+            </p>
+            <pre><code class="language-js">import {useNavigating} from 'navigation-react-native';
 
 useNavigating(() => {
   // Fetch new emails
