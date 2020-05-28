@@ -127,6 +127,42 @@ describe('NavigationMotion', function () {
                 { key: 'sceneB', trackCrumbTrail: true },
             ]);
             stateNavigator.navigate('sceneA');
+            stateNavigator.navigate('sceneB');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var SceneA = () => <div id="sceneA" />;
+            var SceneB = () => <div id="sceneB" />;
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationMotion>
+                        {(_style, scene, key) =>  (
+                            <div className="scene" key={key}>{scene}</div>
+                        )}
+                    </NavigationMotion>
+                </NavigationHandler>,
+                container
+            );
+            stateNavigator.navigateBack(1);
+            try {
+                var scenes = container.querySelectorAll(".scene");                
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
+
+    describe('A to A -> B to A', function () {
+        it('should render A', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
             var {sceneA, sceneB} = stateNavigator.states;
             var SceneA = () => <div id="sceneA" />;
             var SceneB = () => <div id="sceneB" />;
