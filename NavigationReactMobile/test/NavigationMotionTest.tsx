@@ -13,7 +13,11 @@ var { window } = new JSDOM('<!doctype html><html><body></body></html>');
 window.addEventListener = () => {};
 global.window = window;
 global.document = window.document;
-window.requestAnimationFrame = () => {};
+var now = window.performance.now()
+window.performance.now = () => now+=500;
+window.requestAnimationFrame = callback => {
+    callback(window.performance.now())
+};
 window.cancelAnimationFrame = () => {};
 
 describe('NavigationMotion', function () {
@@ -27,19 +31,53 @@ describe('NavigationMotion', function () {
             var SceneA = () => <div id="sceneA" />;
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
-            act(() => {
-                ReactDOM.render(
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationMotion>
-                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
-                        </NavigationMotion>
-                    </NavigationHandler>,
-                    container
-                );
-            });
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationMotion>
+                        {(_style, scene, key) =>  (
+                            <div className="scene" key={key}>{scene}</div>
+                        )}
+                    </NavigationMotion>
+                </NavigationHandler>,
+                container
+            );
             try {
-                assert.equal(container.childNodes.length, 1);
+                assert.equal(container.querySelectorAll(".scene").length, 1);
                 assert.notEqual(container.querySelector("#sceneA"), null);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
+
+    describe('A to A -> B', function () {
+        it('should render stack', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var SceneA = () => <div id="sceneA" />;
+            var SceneB = () => <div id="sceneB" />;
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationMotion>
+                        {(_style, scene, key) =>  (
+                            <div className="scene" key={key}>{scene}</div>
+                        )}
+                    </NavigationMotion>
+                </NavigationHandler>,
+                container
+            );
+            stateNavigator.navigate('sceneB');
+            try {
+                assert.equal(container.querySelectorAll(".scene").length, 2);
+                assert.notEqual(container.querySelector("#sceneA"), null);
+                assert.notEqual(container.querySelector("#sceneB"), null);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
