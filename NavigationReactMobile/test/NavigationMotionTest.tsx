@@ -151,4 +151,34 @@ describe('NavigationMotion', function () {
             }
         })
     });
+
+    describe('A to A', function () {
+        it('should render A', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA} = stateNavigator.states;
+            var SceneA = () => <div id="sceneA" />;
+            sceneA.renderScene = () => <SceneA />;
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationMotion>
+                        {(_style, scene, key) =>  (
+                            <div className="scene" key={key}>{scene}</div>
+                        )}
+                    </NavigationMotion>
+                </NavigationHandler>,
+                container
+            );
+            stateNavigator.navigate('sceneA');
+            try {
+                assert.equal(container.querySelectorAll(".scene").length, 1);
+                assert.notEqual(container.querySelector("#sceneA"), null);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
