@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Drawer</title>
+    <title>Scene Navigation Lifecycle</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="../../css/prism.css">
     <link rel="stylesheet" href="../../css/navigation.css">
@@ -48,57 +48,40 @@
             <a href="navigation-bar.html">Navigation Bar</a>
             <a href="tab-bar.html">Tab Bar</a>
             <a href="modal.html">Modal</a>
-            <a href="drawer.html" class="selected">Drawer</a>
-            <a href="scene-navigation-lifecycle.html">Scene Navigation Lifecycle</a>
+            <a href="drawer.html">Drawer</a>            
+            <a href="scene-navigation-lifecycle.html" class="selected">Scene Navigation Lifecycle</a>
             <a href="custom-animation.html">Custom Animation (Android)</a>
             <a href="shared-element-transition.html">Shared Element Transition (Android)</a>
             <a href="deep-links.html">Deep Links</a>
             <a href="examples.html">Examples</a>
         </div>
         <div id="article">
-            <h1>Drawer</h1>
+            <h1>Scene Navigation Lifecycle</h1>
             <p>
-                You can use any third-party Drawer component with the Navigation router.  In our email example, we use the <code>DrawerLayout</code> component from react-native-gesture-handler, but any other one would work just as well. We add the drawer to the 'inbox' scene so the user can view their sent email. When the user taps the 'sent' button we close the drawer and navigate to their sent email when the close animation completes.
+                When the user navigates from scene A to scene B then the first scene isn't unmounted. It's still mounted because it stays in the stack. When the user navigates back then scene B is popped and scene A reappears. The Navigation router has a <code>useNavigated</code> hook that tells you when the user navigates to scene A. It also has a <code>useUnloaded</code> hook that tells you when the user navigates away from scene A to scene B.
             </p>
-            <pre><code class="language-jsx">import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
+            <p>
+                The 'inbox' scene in our example app polls an endpoint to check if the user has any new mail. We can use the scene lifecycle hooks to make sure we only poll when the user is browsing their inbox. We stop the polling when the user navigates to an email and then start it again when they go back to their inbox.
+            </p>
+            <pre><code class="language-js">import {useNavigated, useUnloaded} from 'navigation-react-native';
 
-&lt;DrawerLayout
-  ref={this.ref}
-  onDrawerClose={() => {
-    if (this.state.selected)
-      stateNavigator.navigate('sent');
-  }}
-  renderNavigationView={() => (
-    &lt;View>
-      &lt;TouchableHighlight
-        onPress={() => {
-          this.setState({selected: true});
-          this.ref.current.closeDrawer();
-      }}>
-        &lt;Text>Sent&lt;/Text>
-      &lt;/TouchableHighlight>
-    &lt;/View>
-  )}>
-  ...
-&lt;/DrawerLayout></code></pre>
+var Inbox = () => (
+  useNavigated(() => {
+    // Start polling for new emails
+  });
+  useUnloaded(() => {
+    // Stop polling for new emails
+  });</code></pre>
+            <h2>Peeking Back on iOS</h2>
             <p>
-                Remember that the Navigation router manages the stack by dropping a breadcrumb at each visited scene. You disable the breadcrumb trail by setting <code>trackCrumbTrail</code> to false (the default) against a <code>State</code>. When navigating to that <code>State</code> the stack of scenes will start from scratch. In our email example, we disable the breadcrumb trail for the 'sent' <code>State</code> so that the 'sent' scene replaces the 'inbox' scene in the stack.
+                On iOS, when the user is reading a mail they can half swipe left so they can peek at their inbox without navigating to it. We want to show them their latest mail but we don't want to start polling because they're still on the 'email' scene. The Navigation router has a <code>useNavigating</code> hook that notifies us when the swipe starts. We use this to issue a one-time call to refresh the inbox. If the user completes the swipe the <code>useNavigated</code> fires and we start polling again.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
-  {key: 'inbox'},
-  {key: 'mail', trackCrumbTrail: true},
-  {key: 'compose', trackCrumbTrail: true},
-  {key: 'sent'}
-]);
+            <pre><code class="language-js">import {useNavigating} from 'navigation-react-native';
 
-var {sent} = stateNavigator.states;
-sent.renderScene = () => &lt;Sent />;</code></pre>
-            <p>
-                When one scene replaces another, the Navigation router animates the transition. We can use the <a href="custom-animation.html">custom animation API</a> to disable the animation so that the 'sent' scene immediately appears in place of the inbox. When the user taps the 'sent' button in the drawer, the Navigation router calls our <code>unmountStyle</code> prop passing in the target <code>State</code>. We return an empty string that tells the Navigation router to disable the animation.
-            </p>
-            <pre><code class="language-jsx">&lt;NavigationHandler stateNavigator={stateNavigator}>
-  &lt;NavigationStack unmountStyle={(from, state) => state === sent ? '' : null} />
-&lt;/NavigationHandler></code></pre>
+useNavigating(() => {
+  // Fetch new emails
+});
+</code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>

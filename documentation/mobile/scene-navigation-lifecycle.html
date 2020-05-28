@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Examples</title>
+    <title>Scene Navigation Lifecycle</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="../../css/prism.css">
     <link rel="stylesheet" href="../../css/navigation.css">
@@ -36,9 +36,9 @@
             <a href="animated-navigation.html">Animated Navigation</a>
             <a href="non-animated-navigation.html">Non-Animated Navigation</a>
             <a href="clean-urls.html">Clean Urls</a>
-            <a href="scene-navigation-lifecycle.html">Scene Navigation Lifecycle</a>
+            <a href="scene-navigation-lifecycle.html" class="selected">Scene Navigation Lifecycle</a>
             <a href="shared-element-navigation.html">Shared Element Navigation</a>
-            <a href="examples.html" class="selected">Examples</a>
+            <a href="examples.html">Examples</a>
             <div class="separator"></div>
             <h2>NATIVE</h2>
             <a href="../native/setup.html">Setup</a>
@@ -56,13 +56,23 @@
             <a href="../native/examples.html">Examples</a>
         </div>
         <div id="article">
-            <h1>Examples</h1>
+            <h1>Scene Navigation Lifecycle</h1>
             <p>
-                Below is the email example from the <a href="animated-navigation.html">Mobile guide to the Navigation router</a>. You'll find more examples in the <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReactMobile/sample">Navigation React Mobile samples folder</a>.
+                When the user navigates from scene A to scene B then the first scene isn't unmounted. It's still mounted because it stays in the stack. When the user navigates back then scene B is popped and scene A reappears. The Navigation router has a <code>useNavigated</code> hook that tells you when the user navigates to scene A. It also has a <code>useUnloaded</code> hook that tells you when the user navigates away from scene A to scene B.
             </p>
-            <iframe width="100%" height="400" src="//jsfiddle.net/navigation/yrcyoz2w/5/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+            <p>
+                The 'inbox' scene in our example app polls an endpoint to check if the user has any new mail. We can use the scene lifecycle hooks to make sure we only poll when the user is browsing their inbox. We stop the polling when the user navigates to an email and then start it again when they go back to their inbox.
+            </p>
+            <pre><code class="language-js">import {useNavigated, useUnloaded} from 'navigation-react-native';
+
+var Inbox = () => (
+  useNavigated(() => {
+    // Start polling for new emails
+  });
+  useUnloaded(() => {
+    // Stop polling for new emails
+  });</code></pre>
         </div>
-    </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
 </html>
