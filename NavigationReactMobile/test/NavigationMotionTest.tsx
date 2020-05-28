@@ -5,7 +5,6 @@ import { NavigationHandler } from 'navigation-react';
 import { NavigationMotion } from 'navigation-react-mobile';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
 declare var global: any;
