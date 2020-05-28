@@ -58,7 +58,20 @@
             <h1>Scene Navigation Lifecycle</h1>
             <p>
             </p>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-js">import {useNavigated, useUnloaded} from 'navigation-react-native’;
+
+useNavigated(() => {
+  // Start polling for new emails
+});
+useUnloaded(() => {
+  // Stop polling for new emails
+});</code></pre>
+            <pre><code class="language-js">import {useNavigating} from 'navigation-react-native’;
+
+useNavigating(() => {
+  // Fetch new emails
+});
+</code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
