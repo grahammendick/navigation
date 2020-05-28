@@ -36,6 +36,7 @@
             <a href="../mobile/animated-navigation.html">Animated Navigation</a>
             <a href="../mobile/non-animated-navigation.html">Non-Animated Navigation</a>
             <a href="../mobile/clean-urls.html">Clean Urls</a>
+            <a href="scene-navigation-lifecycle.html" class="selected">Scene Navigation Lifecycle</a>
             <a href="../mobile/shared-element-navigation.html">Shared Element Navigation</a>
             <a href="../mobile/examples.html">Examples</a>
             <div class="separator"></div>
@@ -48,7 +49,6 @@
             <a href="tab-bar.html">Tab Bar</a>
             <a href="modal.html">Modal</a>
             <a href="drawer.html">Drawer</a>            
-            <a href="scene-navigation-lifecycle.html" class="selected">Scene Navigation Lifecycle</a>
             <a href="custom-animation.html">Custom Animation (Android)</a>
             <a href="shared-element-transition.html">Shared Element Transition (Android)</a>
             <a href="deep-links.html">Deep Links</a>
@@ -71,16 +71,6 @@ var Inbox = () => (
   useUnloaded(() => {
     // Stop polling for new emails
   });</code></pre>
-            <h2>Peeking Back on iOS</h2>
-            <p>
-                On iOS, when the user is reading a mail they can half swipe left so they can peek at their inbox without navigating to it. We want to show them their latest mail but we don't want to start polling because they're still on the 'email' scene. The Navigation router has a <code>useNavigating</code> hook that notifies us when the swipe starts. We use this to issue a one-time call to refresh the inbox. If the user completes the swipe the <code>useNavigated</code> fires and we start polling again.
-            </p>
-            <pre><code class="language-js">import {useNavigating} from 'navigation-react-native';
-
-useNavigating(() => {
-  // Fetch new emails
-});
-</code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
