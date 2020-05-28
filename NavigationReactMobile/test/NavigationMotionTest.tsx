@@ -257,4 +257,47 @@ describe('NavigationMotion', function () {
             }
         })
     });
+
+    describe('A -> B to C -> B to C', function () {
+        it('should render C', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC' },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB, sceneC} = stateNavigator.states;
+            var SceneA = () => <div id="sceneA" />;
+            var SceneB = () => <div id="sceneB" />;
+            var SceneC = () => <div id="sceneC" />;
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            sceneC.renderScene = () => <SceneC />;
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationMotion>
+                        {(_style, scene, key) =>  (
+                            <div className="scene" key={key}>{scene}</div>
+                        )}
+                    </NavigationMotion>
+                </NavigationHandler>,
+                container
+            );
+            stateNavigator.navigate('sceneB');
+            var url = stateNavigator.fluent()
+                .navigate('sceneC')
+                .navigate('sceneB').url;
+            stateNavigator.navigateLink(url);
+            stateNavigator.navigateBack(1);
+            try {
+                assert.equal(container.querySelectorAll(".scene").length, 1);
+                assert.notEqual(container.children[0].querySelector("#sceneC"), null);
+                assert.equal(container.querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
