@@ -4,7 +4,9 @@ import { NavigationContext } from 'navigation-react';
 var useNavigated = (handler: () => void) => {
     var navigationEvent = useContext(NavigationContext);
     useEffect(() => {
-        handler();
+        var {stateContext} = navigationEvent.stateNavigator;
+        if (!stateContext['peek'])
+            handler();
     }, [navigationEvent]);
 };
 

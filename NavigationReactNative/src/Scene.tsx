@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { requireNativeComponent, StyleSheet } from 'react-native';
+import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
@@ -49,7 +49,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     }
     onBeforeNavigate(_state, _data, url: string) {
         var {crumb, navigationEvent} = this.props;
-        if (url.split('crumb=').length - 1 !== crumb)
+        if (url.split('crumb=').length - 1 !== crumb || Platform.OS === 'android')
             return true;
         var {crumbs, nextCrumb} = navigationEvent.stateNavigator.stateContext;
         var changed = !this.state.navigationEvent && crumb < crumbs.length;
@@ -79,6 +79,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     static createStateContext(crumbs: Crumb[], nextCrumb: Crumb, crumb: number) {
         var stateContext = new StateContext();
         var {state, data, url, title} = crumbs[crumb];
+        stateContext['peek'] = true;
         stateContext.state = state;
         stateContext.data = data;
         stateContext.url = url;
