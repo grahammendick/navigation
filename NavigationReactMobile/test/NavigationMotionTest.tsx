@@ -42,7 +42,7 @@ describe('NavigationMotion', function () {
             );
             try {
                 assert.equal(container.querySelectorAll(".scene").length, 1);
-                assert.notEqual(container.querySelector("#sceneA"), null);
+                assert.notEqual(container.children[0].querySelector("#sceneA"), null);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
@@ -76,7 +76,7 @@ describe('NavigationMotion', function () {
             try {
                 assert.equal(container.querySelectorAll(".scene").length, 2);
                 assert.equal(container.querySelector("#sceneA"), null);
-                assert.notEqual(container.querySelector("#sceneB"), null);
+                assert.notEqual(container.children[1].querySelector("#sceneB"), null);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
@@ -109,8 +109,8 @@ describe('NavigationMotion', function () {
             stateNavigator.navigate('sceneB');
             try {
                 assert.equal(container.querySelectorAll(".scene").length, 2);
-                assert.notEqual(container.querySelector("#sceneA"), null);
-                assert.notEqual(container.querySelector("#sceneB"), null);
+                assert.notEqual(container.children[0].querySelector("#sceneA"), null);
+                assert.notEqual(container.children[1].querySelector("#sceneB"), null);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
@@ -144,7 +144,7 @@ describe('NavigationMotion', function () {
             stateNavigator.navigateBack(1);
             try {
                 assert.equal(container.querySelectorAll(".scene").length, 1);
-                assert.notEqual(container.querySelector("#sceneA"), null);
+                assert.notEqual(container.children[0].querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
@@ -175,7 +175,7 @@ describe('NavigationMotion', function () {
             stateNavigator.navigate('sceneA');
             try {
                 assert.equal(container.querySelectorAll(".scene").length, 1);
-                assert.notEqual(container.querySelector("#sceneA"), null);
+                assert.notEqual(container.children[0].querySelector("#sceneA"), null);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
@@ -208,7 +208,7 @@ describe('NavigationMotion', function () {
             stateNavigator.navigate('sceneB');
             try {
                 assert.equal(container.querySelectorAll(".scene").length, 1);
-                assert.notEqual(container.querySelector("#sceneB"), null);
+                assert.notEqual(container.children[0].querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneA"), null);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
@@ -249,8 +249,8 @@ describe('NavigationMotion', function () {
             stateNavigator.navigateLink(url);
             try {
                 assert.equal(container.querySelectorAll(".scene").length, 2);
-                assert.notEqual(container.querySelector("#sceneA"), null);
-                assert.notEqual(container.querySelector("#sceneB"), null);
+                assert.notEqual(container.children[0].querySelector("#sceneA"), null);
+                assert.notEqual(container.children[1].querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
