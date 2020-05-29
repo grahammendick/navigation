@@ -4,11 +4,9 @@ var { src, dest, series, parallel } = require('gulp');
 var events = require('events');
 var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
-var nodeResolve = require('rollup-plugin-node-resolve');
 var rename = require('gulp-rename');
 var rollup = require('rollup');
-var rollupTypescript = require('rollup-plugin-typescript');
-var typescript = require('typescript');
+var typescript = require('@rollup/plugin-typescript');
 var uglify = require('gulp-uglify');
 
 events.EventEmitter.defaultMaxListeners = 0;
@@ -31,14 +29,12 @@ function rollupTask(name, input, file, globals, format) {
         input,
         external: Array.isArray(globals) ? globals : Object.keys(globals),
         plugins: [
-            rollupTypescript({
-                typescript: typescript,
-                importHelpers: true,
+            typescript({
                 target: 'es3',
-                module: 'es6',
-                jsx: 'react'
+                jsx: 'react',
+                esModuleInterop: true,
+                include: input.replace(name + '.ts', '**'),
             }),
-            nodeResolve({ jsnext: true, main: true }),
             cleanup()
         ]
     }).then((bundle) => bundle.write({ format, name, globals, file }));

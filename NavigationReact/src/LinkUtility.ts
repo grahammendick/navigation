@@ -66,7 +66,7 @@ class LinkUtility {
                 var { navigating, historyAction, defer } = props;
                 if (!navigating || navigating(e, link)) {
                     e.preventDefault();
-                    stateNavigator.navigateLink(link, historyAction, false, undefined, defer);
+                    stateNavigator.navigateLink(link, historyAction, false, undefined, undefined, defer);
                 }
             }
         };

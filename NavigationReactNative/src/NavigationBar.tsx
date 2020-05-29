@@ -29,7 +29,7 @@ class NavigationBar extends React.Component<any, any> {
                     })
                 ))
             ), []);
-        var collapsingBar = childrenArray.find(({type}) => type === CollapsingBar);
+        var collapsingBar = childrenArray.filter(({type}) => type === CollapsingBar)[0];
         return (
             <>
                 <NVNavigationBar
@@ -56,12 +56,12 @@ class NavigationBar extends React.Component<any, any> {
                                     if (onPress)
                                         onPress();
                                 }}>
-                                {childrenArray.find(({type}) => type === TitleBar)}
+                                {childrenArray.filter(({type}) => type === TitleBar)}
                             </NVToolbar>
-                            {childrenArray.find(({type}) => type === TabBar)}
+                            {childrenArray.filter(({type}) => type === TabBar)}
                         </Container>}
                 </NVNavigationBar>
-                {Platform.OS === 'ios' ? null : childrenArray.find(({type}) => type === SearchBar)}
+                {Platform.OS === 'ios' ? null : childrenArray.filter(({type}) => type === SearchBar)}
             </>
         )
     }
