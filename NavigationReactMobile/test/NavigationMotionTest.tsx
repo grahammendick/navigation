@@ -939,4 +939,55 @@ describe('NavigationMotion', function () {
             }
         })
     });
+
+    describe('A to A -> A to A -> B to A -> B -> C to A -> B to A -> C', function () {
+        it('should render A -> C++', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA', trackCrumbTrail: true },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB, sceneC} = stateNavigator.states;
+            var SceneA = () => <div id="sceneA" />;
+            var SceneB = () => <div id="sceneB" />;
+            var SceneC = () => <div id="sceneC" />;
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            sceneC.renderScene = () => <SceneC />;
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationMotion>
+                        {(_style, scene, key) =>  (
+                            <div className="scene" id={key} key={key}>{scene}</div>
+                        )}
+                    </NavigationMotion>
+                </NavigationHandler>,
+                container
+            );
+            stateNavigator.navigate('sceneA');
+            var url = stateNavigator.fluent(true)
+                .navigateBack(1)
+                .navigate('sceneB').url;
+            stateNavigator.navigateLink(url);
+            stateNavigator.navigate('sceneC');
+            stateNavigator.navigateBack(1);
+            url = stateNavigator.fluent(true)
+                .navigateBack(1)
+                .navigate('sceneC').url;
+            stateNavigator.navigateLink(url);
+            try {
+                var scenes = container.querySelectorAll(".scene");                
+                assert.equal(scenes.length, 2);
+                assert.equal(scenes[0].id, "0");
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(scenes[1].id, "1++");
+                assert.notEqual(scenes[1].querySelector("#sceneC"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
