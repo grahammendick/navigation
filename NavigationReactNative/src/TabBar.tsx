@@ -41,7 +41,7 @@ class TabBar extends React.Component<any, any> {
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
         primary = (Platform.OS === 'android' && swipeable != null) ? !swipeable : primary;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
-        var titleOnly = !tabBarItems.filter(({props}: any) => props.title && props.image)[0];
+        var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
         var tabViewHeight = !primary ? (titleOnly ? 48 : 72) : 56
         tabViewHeight = Platform.OS === 'android' ? tabViewHeight : 28;
         var TabBar = (Platform.OS === 'android' || primary) ? NVTabBar : View;

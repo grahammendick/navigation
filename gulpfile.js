@@ -30,9 +30,7 @@ function rollupTask(name, input, file, globals, format) {
         external: Array.isArray(globals) ? globals : Object.keys(globals),
         plugins: [
             typescript({
-                target: 'es3',
-                jsx: 'react',
-                esModuleInterop: true,
+                tsconfig: input.replace(name + '.ts', 'tsconfig.json'),
                 include: input.replace(name + '.ts', '**'),
             }),
             cleanup()

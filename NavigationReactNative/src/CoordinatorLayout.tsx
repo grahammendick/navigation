@@ -8,7 +8,7 @@ const CoordinatorLayout = ({overlap, children}) => {
         .reduce((val: any, child: any) => {
             if (child.type === NavigationBar) {
                 var barChildren = React.Children.toArray(child.props.children);
-                val.searchBar = barChildren.filter(({type}: any) => type === SearchBar);
+                val.searchBar = barChildren.find(({type}: any) => type === SearchBar);
                 child = React.cloneElement(child, child.props, barChildren.filter(c => c !== val.searchBar))
             }
             val.clonedChildren.push(child);
