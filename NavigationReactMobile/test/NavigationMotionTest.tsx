@@ -489,7 +489,7 @@ describe('NavigationMotion', function () {
     });
 
     describe('A to A -> B to C -> D', function () {
-        it('should render A -> D', function(){
+        it('should render A -> D+', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
