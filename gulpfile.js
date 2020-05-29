@@ -26,13 +26,14 @@ var items = [
 ];
 function rollupTask(name, input, file, globals, format) {
     var fileStart = input.lastIndexOf(name);
+    var filePath = input.substring(0, fileStart);
     return rollup.rollup({
         input,
         external: Array.isArray(globals) ? globals : Object.keys(globals),
         plugins: [
             typescript({
-                tsconfig: input.substring(0, fileStart) + "tsconfig.json",
-                include: input.substring(0, fileStart) + "**",
+                tsconfig: filePath + "tsconfig.json",
+                include: filePath + "**",
             }),
             cleanup()
         ]
