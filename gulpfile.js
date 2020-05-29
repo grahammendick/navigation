@@ -25,13 +25,14 @@ var items = [
         require('./build/npm/navigation-react-native/package.json')),
 ];
 function rollupTask(name, input, file, globals, format) {
+    var fileStart = input.lastIndexOf(name);
     return rollup.rollup({
         input,
         external: Array.isArray(globals) ? globals : Object.keys(globals),
         plugins: [
             typescript({
-                tsconfig: input.replace(name + '.ts', 'tsconfig.json'),
-                include: input.replace(name + '.ts', '**'),
+                tsconfig: input.substring(0, fileStart) + "tsconfig.json",
+                include: input.substring(0, fileStart) + "**",
             }),
             cleanup()
         ]
