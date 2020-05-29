@@ -6,8 +6,8 @@ var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
 var rollup = require('rollup');
+var terser = require('gulp-terser');
 var typescript = require('@rollup/plugin-typescript');
-var uglify = require('gulp-uglify');
 
 events.EventEmitter.defaultMaxListeners = 0;
 
@@ -52,7 +52,7 @@ function buildTask(name, input, file, globals, details) {
                 .pipe(insert.prepend(info))
                 .pipe(dest('./build/dist'))
                 .pipe(rename(file.replace(/js$/, 'min.js')))
-                .pipe(uglify({ mangle: { reserved: details.reserved } }))
+                .pipe(terser())
                 .pipe(insert.prepend(info))
                 .pipe(dest('.'))
         ));
