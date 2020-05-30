@@ -5,7 +5,9 @@ var events = require('events');
 var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
+var resolve = require('@rollup/plugin-node-resolve').default;
 var rollup = require('rollup');
+var sucrase = require('@rollup/plugin-sucrase');
 var terser = require('gulp-terser');
 var typescript = require('@rollup/plugin-typescript');
 
@@ -30,13 +32,16 @@ function rollupTask(name, input, file, globals, format) {
     return rollup.rollup({
         input,
         external: Array.isArray(globals) ? globals : Object.keys(globals),
-        plugins: [
-            typescript({
-                tsconfig: filePath + "tsconfig.json",
-                include: filePath + "**",
-            }),
-            cleanup()
-        ]
+        plugins: (input.indexOf('Test') === -1
+            ? [
+                typescript({ include: `${filePath}**`, tsconfig: `${filePath}tsconfig.json`}),
+                cleanup()
+            ] 
+            : [
+                resolve({ extensions: ['.tsx', '.ts'] }),
+                sucrase({ include: `${filePath}**`, transforms: ['typescript','jsx'] })
+            ]
+        )
     }).then((bundle) => bundle.write({ format, name, globals, file }));
 }
 function buildTask(name, input, file, globals, details) {
