@@ -31,10 +31,9 @@ function rollupTask(name, input, file, globals, format) {
     return rollup.rollup({
         input,
         external: Array.isArray(globals) ? globals : Object.keys(globals),
-        plugins: (input.indexOf('Test') === -1
+        plugins: input.indexOf('Test') === -1
             ? [ typescript({ include, tsconfig }), cleanup({ comments: 'none' }) ] 
             : [ sucrase({ include: input, transforms: ['typescript','jsx'] }) ]
-        )
     }).then((bundle) => bundle.write({ format, name, globals, file }));
 }
 function buildTask(name, input, file, globals, details) {
