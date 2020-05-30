@@ -5,7 +5,6 @@ var events = require('events');
 var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
-var resolve = require('@rollup/plugin-node-resolve').default;
 var rollup = require('rollup');
 var sucrase = require('@rollup/plugin-sucrase');
 var terser = require('gulp-terser');
@@ -37,7 +36,6 @@ function rollupTask(name, input, file, globals, format) {
                 cleanup({ comments: 'none' })
             ] 
             : [
-                resolve({ extensions: ['.tsx', '.ts'] }),
                 sucrase({ include: input, transforms: ['typescript','jsx'] })
             ]
         )
