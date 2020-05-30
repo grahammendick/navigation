@@ -34,7 +34,7 @@ function rollupTask(name, input, file, globals, format) {
         external: Array.isArray(globals) ? globals : Object.keys(globals),
         plugins: (input.indexOf('Test') === -1
             ? [
-                typescript({ include: `${filePath}**`, tsconfig: `${filePath}tsconfig.json`}),
+                typescript({ include: `${filePath}**`, tsconfig: `${filePath}tsconfig.json` }),
                 cleanup()
             ] 
             : [
