@@ -35,9 +35,7 @@ function rollupTask(name, input, file, globals, format) {
                 typescript({ include: files('**'), tsconfig: files('tsconfig.json') }),
                 cleanup({ comments: 'none' })
             ] 
-            : [
-                sucrase({ include: input, transforms: ['typescript','jsx'] })
-            ]
+            : [ sucrase({ include: input, transforms: ['typescript','jsx'] }) ]
         )
     }).then((bundle) => bundle.write({ format, name, globals, file }));
 }
