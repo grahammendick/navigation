@@ -753,7 +753,7 @@ describe('Fluent', function () {
                 { key: 's', route: 'r' }
             ]);
             try {
-                stateNavigator.configure([<any>
+                stateNavigator.configure([
                     { key: '' }
                 ]);
             } catch(e) {
@@ -773,7 +773,7 @@ describe('Fluent', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             try {
-                stateNavigator.configure([<any>
+                stateNavigator.configure([
                     { key: '' }
                 ]);
             } catch(e) {
@@ -794,7 +794,7 @@ describe('Fluent', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             try {
-                stateNavigator.configure([<any>
+                stateNavigator.configure([
                     { key: '' }
                 ]);
             } catch(e) {
@@ -817,7 +817,7 @@ describe('Fluent', function () {
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
             try {
-                stateNavigator.configure([<any>
+                stateNavigator.configure([
                     { key: '' }
                 ]);
             } catch(e) {

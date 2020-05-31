@@ -4,12 +4,11 @@ var { src, dest, series, parallel } = require('gulp');
 var events = require('events');
 var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
-var nodeResolve = require('rollup-plugin-node-resolve');
 var rename = require('gulp-rename');
 var rollup = require('rollup');
-var rollupTypescript = require('rollup-plugin-typescript');
-var typescript = require('typescript');
-var uglify = require('gulp-uglify');
+var sucrase = require('@rollup/plugin-sucrase');
+var terser = require('gulp-terser');
+var typescript = require('@rollup/plugin-typescript');
 
 events.EventEmitter.defaultMaxListeners = 0;
 
@@ -27,20 +26,14 @@ var items = [
         require('./build/npm/navigation-react-native/package.json')),
 ];
 function rollupTask(name, input, file, globals, format) {
+    var include = input.replace(name + '.ts', '**');
+    var tsconfig = input.replace(name + '.ts', 'tsconfig.json');
     return rollup.rollup({
         input,
         external: Array.isArray(globals) ? globals : Object.keys(globals),
-        plugins: [
-            rollupTypescript({
-                typescript: typescript,
-                importHelpers: true,
-                target: 'es3',
-                module: 'es6',
-                jsx: 'react'
-            }),
-            nodeResolve({ jsnext: true, main: true }),
-            cleanup()
-        ]
+        plugins: input.indexOf('Test') === -1
+            ? [ typescript({ include, tsconfig }), cleanup({ comments: 'none' }) ] 
+            : [ sucrase({ include: input, transforms: ['typescript','jsx'] }) ]
     }).then((bundle) => bundle.write({ format, name, globals, file }));
 }
 function buildTask(name, input, file, globals, details) {
@@ -56,7 +49,7 @@ function buildTask(name, input, file, globals, details) {
                 .pipe(insert.prepend(info))
                 .pipe(dest('./build/dist'))
                 .pipe(rename(file.replace(/js$/, 'min.js')))
-                .pipe(uglify({ mangle: { reserved: details.reserved } }))
+                .pipe(terser())
                 .pipe(insert.prepend(info))
                 .pipe(dest('.'))
         ));

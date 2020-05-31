@@ -5,7 +5,7 @@ import SearchBar from './SearchBar';
 
 const CoordinatorLayout = ({overlap, children}) => {
     var {clonedChildren, searchBar} = React.Children.toArray(children)
-        .reduce((val, child: any) => {
+        .reduce((val: any, child: any) => {
             if (child.type === NavigationBar) {
                 var barChildren = React.Children.toArray(child.props.children);
                 val.searchBar = barChildren.find(({type}: any) => type === SearchBar);

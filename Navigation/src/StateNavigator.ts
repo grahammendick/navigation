@@ -46,7 +46,7 @@ class StateNavigator {
     }
 
     private isStateInfos(stateInfos: StateInfo[] | StateNavigator): stateInfos is StateInfo[] {
-        return !(<StateNavigator> stateInfos).stateHandler;
+        return !(stateInfos as StateNavigator).stateHandler;
     };
 
     private createStateContext(state: State, data: any, crumbs: Crumb[], url: string, asyncData: any, history: boolean, currentContext: StateContext): StateContext {

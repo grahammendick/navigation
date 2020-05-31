@@ -446,9 +446,9 @@ describe('StateConfigTest', function () {
     describe('Missing State Key', function () {
         it('should throw error', function() {
             assert.throws(() => {
-                var stateNavigator = new StateNavigator(<any> [
+                var stateNavigator = new StateNavigator([
                     { key: 's0', route: 'd0s0', title: 's0'},
-                    { route: 'd0s1', title: 's1' }
+                    { route: 'd0s1', title: 's1' } as any
                 ]);
             }, /key is mandatory/);
         })
@@ -457,7 +457,7 @@ describe('StateConfigTest', function () {
     describe('Blank State Key', function () {
         it('should throw error', function() {
             assert.throws(() => {
-                var stateNavigator = new StateNavigator(<any> [
+                var stateNavigator = new StateNavigator([
                     { key: '', route: 'r0', title: 's0'},
                 ]);
             }, /key is mandatory/);
@@ -483,8 +483,8 @@ describe('StateConfigTest', function () {
                 { key: 's2', route: 'r2' }
             ]);
             try {
-                var stateNavigator = new StateNavigator(<any> [
-                    { route: 'xxx' }
+                var stateNavigator = new StateNavigator([
+                    { route: 'xxx' } as any
                 ]);
             } catch(e) {
             }
