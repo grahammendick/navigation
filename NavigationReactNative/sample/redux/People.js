@@ -7,13 +7,14 @@ import PersonItem from './PersonItem';
 const mapStateToProps = ({people: {allIds}}) => ({ids: allIds});
 
 const People = ({ids}) => (
-  <ScrollView contentInsetAdjustmentBehavior="automatic">
+  <>
     <NavigationBarIOS title="People" />
     <FlatList
       data={ids}
       keyExtractor={id => id}
+      contentInsetAdjustmentBehavior="automatic"
       renderItem={({item}) => <PersonItem id={item} />} />
-  </ScrollView>
+  </>
 );
 
 export default connect(mapStateToProps)(People);
