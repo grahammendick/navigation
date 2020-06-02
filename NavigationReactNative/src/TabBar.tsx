@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent, Platform, StyleSheet, View } from 'react-native';
+import { requireNativeComponent, Platform, StyleSheet, View, UIManager, findNodeHandle } from 'react-native';
 import BackButton from './BackButton';
 
 class TabBar extends React.Component<any, any> {
@@ -36,6 +36,37 @@ class TabBar extends React.Component<any, any> {
         }
         return false;
     }
+    
+    public hide() {
+        switch(Platform.OS) {
+            case 'ios':
+                (UIManager as any).dispatchViewManagerCommand(
+                    findNodeHandle(this),
+                    'hideTabBar',
+                    []
+                );
+                break        
+            default:
+                console.warn(`Hide TabBar is not supported on ${Platform.OS}`);
+                break;
+            }
+    }
+    
+    public show() {
+        switch(Platform.OS) {
+            case 'ios':
+                (UIManager as any).dispatchViewManagerCommand(
+                    findNodeHandle(this),
+                    'showTabBar',
+                    []
+                );
+                break;
+            default:
+                console.warn(`Show TabBar is not supported on ${Platform.OS}`);
+                break;
+        }
+    }
+
     render() {
         var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, swipeable} = this.props;
         bottomTabs = bottomTabs != null ? bottomTabs : primary;

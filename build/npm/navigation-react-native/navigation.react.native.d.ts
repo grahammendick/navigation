@@ -381,7 +381,16 @@ export class TabBarIOS extends Component<TabBarProps> {}
 /**
  * Renders a tab bar
  */
-export class TabBar extends Component<TabBarProps> {}
+export class TabBar extends Component<TabBarProps> {
+    /**
+     * Hides the tab bar
+     */
+    show: () => void;
+    /**
+     * Hides the tab bar
+     */
+    hide: () => void;
+}
 
 /**
  * Defines the Modal Back Handler Props contract
