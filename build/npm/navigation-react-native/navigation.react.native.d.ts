@@ -317,9 +317,34 @@ export interface TabBarItemProps {
 }
 
 /**
+ * Defines the Tab Bar Item Props contract
+ */
+export interface TabBarItemIOSProps extends TabBarItemProps {
+    /**
+     * The tab font family
+     */
+    fontFamily?: string;
+    /**
+     * The tab font size
+     */
+    fontSize?: number;
+    /**
+     * The tab badge text style
+     */
+    badgeStyle?: {
+        color?: string;
+        fontFamily?: string;
+        fontSize?: number;
+        letterSpacing?: number;
+        lineHeight?: number;
+        textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify';    
+    };
+}
+
+/**
  * Renders a tab in the UI tab bar
  */
-export class TabBarItemIOS extends Component<TabBarItemProps> {}
+export class TabBarItemIOS extends Component<TabBarItemIOSProps> {}
 
 /**
  * Renders a tab in the tab bar

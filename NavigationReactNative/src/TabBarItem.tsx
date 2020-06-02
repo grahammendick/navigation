@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent, Image, Platform, StyleSheet } from 'react-native';
+import { requireNativeComponent, Image, Platform, StyleSheet, processColor } from 'react-native';
 import BackButton from './BackButton';
 import BackHandlerContext from './BackHandlerContext';
 import PrimaryStackContext from './PrimaryStackContext';
@@ -16,12 +16,14 @@ class TabBarItem extends React.Component<any> {
         return this.props.selected && this.backHandler.handleBack();
     }
     render() {
-        var {onPress, children, image, badge, index, primary, ...props} = this.props;
+        var {onPress, children, image, badge, index, primary, badgeStyle, ...props} = this.props;
         image = typeof image === 'string' ? (Platform.OS === 'ios' ? null : {uri: image}) : image;
+        if (badgeStyle && badgeStyle.color) badgeStyle.color = processColor(badgeStyle.color)
         return (
             <NVTabBarItem
                 {...props}
                 badge={badge != null ? '' + badge : undefined}
+                badgeStyle={badgeStyle}
                 image={Platform.OS === 'ios' ? image : Image.resolveAssetSource(image)}
                 style={styles.tabBarItem}
                 onPress={event => {
