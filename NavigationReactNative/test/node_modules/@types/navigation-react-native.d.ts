@@ -2,6 +2,10 @@ import { Component, Context, ReactNode } from 'react';
 import { BackHandler, ImageRequireSource, ImageURISource, NativeSyntheticEvent, StyleProp, ViewStyle } from 'react-native';
 import { Crumb, State, StateContext } from 'navigation';
 
+declare global {
+    interface Location {}
+}
+
 /**
  * Defines the Navigation Stack Props contract
  */
