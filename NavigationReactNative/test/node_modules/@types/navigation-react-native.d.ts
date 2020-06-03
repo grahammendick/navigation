@@ -25,15 +25,15 @@ export interface NavigationStackProps {
     /**
      * A Scene's to and from crumb trail style
      */
-    crumbStyle?: (from: boolean, state: State, data: any, nextState?: State, nextData?: any) => string;
+    crumbStyle?: (from: boolean, state: State, data: any, crumbs: Crumb[], nextState?: State, nextData?: any) => string;
     /**
      * A Scene's to and from unmount style
      */
-    unmountStyle?: (from: boolean, state: State, data: any, nextState?: State, nextData?: any) => string;
+    unmountStyle?: (from: boolean, state: State, data: any, crumbs: Crumb[]) => string;
     /**
      * A scene's shared elements
      */
-    sharedElements?: (state: State, data: any) => string[];
+    sharedElements?: (state: State, data: any, crumbs: Crumb[]) => string[];
     /**
      * Renders the scene for the State and data
      */
