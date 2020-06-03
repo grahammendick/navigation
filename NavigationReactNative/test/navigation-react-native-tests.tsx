@@ -1,3 +1,4 @@
+// tsc --jsx react --target es6 --lib ES2015 --noImplicitAny true navigation-react-native-tests.tsx
 import * as React from 'react';
 import { View, Text, ScrollView, TouchableHighlight } from 'react-native';
 import { StateNavigator } from 'navigation';
@@ -13,7 +14,7 @@ var List = ({people, children}: any) => (
     <NavigationContext.Consumer>
         {({stateNavigator}) => (
             <ScrollView>
-                {people.map(name => (
+                {people.map((name: any) => (
                     <TouchableHighlight
                         onPress={() => {
                             stateNavigator.navigate('person', {name});
@@ -30,7 +31,7 @@ var List = ({people, children}: any) => (
 );
 
 class People extends React.Component<any, any> {
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.state = {text: ''};
     }
@@ -60,7 +61,7 @@ class People extends React.Component<any, any> {
     }    
 }
 
-var Person = ({ name }) => (
+var Person = ({ name }: any) => (
     <NavigationContext.Consumer>
         {({stateNavigator}) => (
             <>
@@ -83,7 +84,7 @@ var Person = ({ name }) => (
 
 var { people, person } = stateNavigator.states;
 people.renderScene = () => <People />;
-person.renderScene = ({ name }) => <Person name={name}/>;
+person.renderScene = ({ name }: any) => <Person name={name}/>;
 
 var App = () => (
     <TabBar>
