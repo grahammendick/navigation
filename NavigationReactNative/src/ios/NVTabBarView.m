@@ -9,6 +9,7 @@
     UITabBarController *_tabBarController;
     NSInteger _selectedTab;
     NSInteger _nativeEventCount;
+    bool _doubleSelect;
 }
 
 - (id)init
@@ -100,6 +101,33 @@
         _selectedTab = selectedIndex;
         [self selectTab];
     }
+    if (_doubleSelect) {
+        UIViewController *sceneController = ((UINavigationController *) viewController).viewControllers[0];
+        UIScrollView *scrollView =[self findScrollView:sceneController.view];
+        [scrollView setContentOffset:CGPointMake(0, -sceneController.topLayoutGuide.length) animated:YES];
+    }
+}
+
+- (UIScrollView *)findScrollView:(UIView *)parentView
+{
+    for (UIView *subview in parentView.subviews) {
+        if ([subview isKindOfClass:[UIScrollView class]]){
+            return (UIScrollView *) subview;
+        }
+        UIScrollView *scrollView = [self findScrollView:subview];
+        if (scrollView != nil) {
+            return scrollView;
+        }
+    }
+    return nil;
+}
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+{
+    NSInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
+    NSArray *viewControllers = ((UINavigationController *) viewController).viewControllers;
+    _doubleSelect = _selectedTab == selectedIndex && viewControllers.count == 1;
+    return YES;
 }
 
 -(void) selectTab
