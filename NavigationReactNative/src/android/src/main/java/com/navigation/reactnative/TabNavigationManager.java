@@ -43,6 +43,11 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
         view.setItemIconTintList(view.getItemTextColor());
     }
 
+    @ReactProp(name = "scrollsToTop")
+    public void setScrollsToTop(TabNavigationView view, boolean scrollsToTop) {
+        view.scrollsToTop = scrollsToTop;
+    }
+
     @Nonnull
     @Override
     protected TabNavigationView createViewInstance(@Nonnull ThemedReactContext reactContext) {

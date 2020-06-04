@@ -4,7 +4,7 @@ import Home from './Home';
 import Notifications from './Notifications';
 
 export default ({tweets, notifications}) => (
-  <TabBar primary={true} selectedTintColor="#1da1f2">
+  <TabBar primary={true} selectedTintColor="#1da1f2" scrollsToTop={true}>
     <TabBarItem title="Home" image={require('./home.png')}>
       <Home tweets={tweets} notifications={notifications} />
     </TabBarItem>

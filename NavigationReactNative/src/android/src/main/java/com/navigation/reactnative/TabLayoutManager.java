@@ -48,7 +48,7 @@ public class TabLayoutManager extends ViewGroupManager<TabLayoutView> {
     }
 
     @ReactProp(name = "scrollsToTop")
-    public void setTitleEnabled(TabLayoutView view, boolean scrollsToTop) {
+    public void setScrollsToTop(TabLayoutView view, boolean scrollsToTop) {
         view.scrollsToTop = scrollsToTop;
     }
 
