@@ -7,12 +7,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TabNavigationView extends BottomNavigationView implements TabView {
@@ -23,6 +26,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     private ViewPager.OnPageChangeListener pageChangeListener;
     private DataSetObserver dataSetObserver;
     private boolean layoutRequested = false;
+    private boolean autoSelected = false;
 
     public TabNavigationView(Context context) {
         super(context);
@@ -57,6 +61,18 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
             setOnNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    if (!autoSelected && viewPager.getCurrentItem() == menuItem.getOrder()) {
+                        View tab = ((TabBarView) viewPager).getTabAt(0);
+                        if (tab instanceof CoordinatorLayout) {
+                            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) tab;
+                            for(int i = 0; i < coordinatorLayout.getChildCount(); i++) {
+                                if (coordinatorLayout.getChildAt(i) instanceof AppBarLayout)
+                                    ((AppBarLayout) coordinatorLayout.getChildAt(i)).setExpanded(true);
+                                if (coordinatorLayout.getChildAt(i) instanceof ScrollView)
+                                    ((ScrollView) coordinatorLayout.getChildAt(i)).smoothScrollTo(0,0);
+                            }
+                        }
+                    }
                     viewPager.setCurrentItem(menuItem.getOrder(), false);
                     return true;
                 }
@@ -70,7 +86,9 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
 
                 @Override
                 public void onPageSelected(int position) {
+                    autoSelected = true;
                     setSelectedItemId(position);
+                    autoSelected = false;
                 }
 
                 @Override
@@ -88,7 +106,9 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                 }
             };
             pagerAdapter.registerDataSetObserver(dataSetObserver);
+            autoSelected = true;
             setSelectedItemId(viewPager.getCurrentItem());
+            autoSelected = false;
         }
     }
 
