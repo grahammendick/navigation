@@ -17,6 +17,7 @@ public class TabLayoutView extends TabLayout implements TabView {
     int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
+    boolean scrollsToTop;
     private boolean layoutRequested = false;
     private OnTabSelectedListener tabSelectedListener;
 
@@ -69,7 +70,7 @@ public class TabLayoutView extends TabLayout implements TabView {
 
             @Override
             public void onTabReselected(Tab tab) {
-                if (viewPager != null) {
+                if (viewPager != null && scrollsToTop) {
                     View tabBarItem = ((TabBarView) viewPager).getTabAt(0);
                     if (tabBarItem instanceof ScrollView)
                         ((ScrollView) tabBarItem).smoothScrollTo(0, 0);
