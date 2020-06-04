@@ -4,6 +4,10 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
+
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -46,6 +50,28 @@ public class TabLayoutView extends TabLayout implements TabView {
                 return (TabBarView) child;
         }
         return null;
+    }
+
+    @Override
+    public void setupWithViewPager(@Nullable final ViewPager viewPager) {
+        super.setupWithViewPager(viewPager);
+        //remove listener as well if added again
+        addOnTabSelectedListener(new OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(Tab tab) {
+            }
+
+            @Override
+            public void onTabUnselected(Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(Tab tab) {
+                View tabBarItem = ((TabBarView) viewPager).getTabAt(0);
+                if (tabBarItem instanceof ScrollView)
+                    ((ScrollView) tabBarItem).smoothScrollTo(0,0);
+            }
+        });
     }
 
     @Override
