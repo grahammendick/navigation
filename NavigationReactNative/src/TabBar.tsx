@@ -14,6 +14,7 @@ class TabBar extends React.Component<any, any> {
         defaultTab: 0,
         scrollable: false,
         primary: Platform.OS === 'ios',
+        scrollsToTop: false,
     }
     static getDerivedStateFromProps({tab}, {selectedTab}) {
         if (tab != null && tab !== selectedTab)
@@ -37,7 +38,7 @@ class TabBar extends React.Component<any, any> {
         return false;
     }
     render() {
-        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, swipeable} = this.props;
+        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, swipeable, scrollsToTop} = this.props;
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
         primary = (Platform.OS === 'android' && swipeable != null) ? !swipeable : primary;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
@@ -58,6 +59,7 @@ class TabBar extends React.Component<any, any> {
                 selectedIndicatorAtTop={bottomTabs}
                 titles={tabBarItems.map(({props}: any) => props.title)}
                 scrollable={scrollable}
+                scrollsToTop={scrollsToTop}
                 style={{
                     height: tabViewHeight,
                     backgroundColor: barTintColor
@@ -75,6 +77,7 @@ class TabBar extends React.Component<any, any> {
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}
                     swipeable={!primary}
+                    scrollsToTop={scrollsToTop}
                     style={styles.tabBar}>
                         <BackButton onPress={() => this.changeTab(0)} />
                         {tabBarItems
