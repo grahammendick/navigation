@@ -3,6 +3,7 @@
 
 #import <UIKit/UIKit.h>
 #import <React/UIView+React.h>
+#import <React/RCTScrollView.h>
 
 @implementation NVTabBarView
 {
@@ -103,7 +104,16 @@
     }
     if (_doubleSelect) {
         UIViewController *sceneController = ((UINavigationController *) viewController).viewControllers[0];
-        UIScrollView *scrollView =[self findScrollView:sceneController.view];
+        UIScrollView *scrollView;
+        for (UIView *subview in [sceneController.view subviews]) {
+            if ([subview isKindOfClass:[RCTScrollView class]]){
+                for (UIView *subsubview in subview.subviews) {
+                    if ([subsubview isKindOfClass:[UIScrollView class]]){
+                        scrollView = (UIScrollView *) subsubview;
+                    }
+                }
+            }
+        }
         CGFloat topLayoutOffset = sceneController.topLayoutGuide.length;
         CGFloat bottomLayoutOffset = sceneController.bottomLayoutGuide.length;
         CGRect safeArea = sceneController.view.bounds;
@@ -113,20 +123,6 @@
         CGFloat top = MAX(0, CGRectGetMinY(localSafeArea) - CGRectGetMinY(scrollView.bounds));
         [scrollView setContentOffset:CGPointMake(0, -top) animated:YES];
     }
-}
-
-- (UIScrollView *)findScrollView:(UIView *)parentView
-{
-    for (UIView *subview in parentView.subviews) {
-        if ([subview isKindOfClass:[UIScrollView class]]){
-            return (UIScrollView *) subview;
-        }
-        UIScrollView *scrollView = [self findScrollView:subview];
-        if (scrollView != nil) {
-            return scrollView;
-        }
-    }
-    return nil;
 }
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
