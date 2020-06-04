@@ -104,7 +104,14 @@
     if (_doubleSelect) {
         UIViewController *sceneController = ((UINavigationController *) viewController).viewControllers[0];
         UIScrollView *scrollView =[self findScrollView:sceneController.view];
-        [scrollView setContentOffset:CGPointMake(0, -sceneController.topLayoutGuide.length) animated:YES];
+        CGFloat topLayoutOffset = sceneController.topLayoutGuide.length;
+        CGFloat bottomLayoutOffset = sceneController.bottomLayoutGuide.length;
+        CGRect safeArea = sceneController.view.bounds;
+        safeArea.origin.y += topLayoutOffset;
+        safeArea.size.height -= topLayoutOffset + bottomLayoutOffset;
+        CGRect localSafeArea = [sceneController.view convertRect:safeArea toView:scrollView];
+        CGFloat top = MAX(0, CGRectGetMinY(localSafeArea) - CGRectGetMinY(scrollView.bounds));
+        [scrollView setContentOffset:CGPointMake(0, -top) animated:YES];
     }
 }
 
