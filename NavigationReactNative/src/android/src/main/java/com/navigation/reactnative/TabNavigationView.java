@@ -65,8 +65,8 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                         if (tabBarItem instanceof ViewGroup) {
                             ViewGroup viewGroup = (ViewGroup) tabBarItem;
                             for(int i = 0; i < viewGroup.getChildCount(); i++) {
-                                if (viewGroup.getChildAt(i) instanceof AppBarLayout)
-                                    ((AppBarLayout) viewGroup.getChildAt(i)).setExpanded(true);
+                                if (viewGroup.getChildAt(i) instanceof NavigationBarView)
+                                    ((NavigationBarView) viewGroup.getChildAt(i)).setExpanded(true);
                                 if (viewGroup.getChildAt(i) instanceof ScrollView)
                                     ((ScrollView) viewGroup.getChildAt(i)).smoothScrollTo(0,0);
                             }
