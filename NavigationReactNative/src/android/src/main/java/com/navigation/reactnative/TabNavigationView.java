@@ -61,9 +61,9 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     if (!autoSelected && viewPager.getCurrentItem() == menuItem.getOrder()) {
-                        View tab = ((TabBarView) viewPager).getTabAt(0);
-                        if (tab instanceof ViewGroup) {
-                            ViewGroup viewGroup = (ViewGroup) tab;
+                        View tabBarItem = ((TabBarView) viewPager).getTabAt(0);
+                        if (tabBarItem instanceof ViewGroup) {
+                            ViewGroup viewGroup = (ViewGroup) tabBarItem;
                             for(int i = 0; i < viewGroup.getChildCount(); i++) {
                                 if (viewGroup.getChildAt(i) instanceof AppBarLayout)
                                     ((AppBarLayout) viewGroup.getChildAt(i)).setExpanded(true);
