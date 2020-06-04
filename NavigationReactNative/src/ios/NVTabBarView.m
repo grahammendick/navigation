@@ -104,16 +104,8 @@
     }
     if (_doubleSelect) {
         UIViewController *sceneController = ((UINavigationController *) viewController).viewControllers[0];
-        UIScrollView *scrollView;
-        for (UIView *subview in [sceneController.view subviews]) {
-            if ([subview isKindOfClass:[RCTScrollView class]]){
-                for (UIView *subsubview in subview.subviews) {
-                    if ([subsubview isKindOfClass:[UIScrollView class]]){
-                        scrollView = (UIScrollView *) subsubview;
-                    }
-                }
-            }
-        }
+        UIView *scrollContainer = [self findSubview:sceneController.view withType:[RCTScrollView class]];
+        UIScrollView *scrollView = (UIScrollView *) [self findSubview:scrollContainer withType:[UIScrollView class]];
         CGFloat topLayoutOffset = sceneController.topLayoutGuide.length;
         CGFloat bottomLayoutOffset = sceneController.bottomLayoutGuide.length;
         CGRect safeArea = sceneController.view.bounds;
@@ -123,6 +115,16 @@
         CGFloat top = MAX(0, CGRectGetMinY(localSafeArea) - CGRectGetMinY(scrollView.bounds));
         [scrollView setContentOffset:CGPointMake(0, -top) animated:YES];
     }
+}
+
+- (UIView *)findSubview:(UIView *)view withType:(Class)type
+{
+    for (UIView *subview in view.subviews) {
+        if ([subview isKindOfClass:type]){
+            return subview;
+        }
+    }
+    return nil;
 }
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
