@@ -18,6 +18,7 @@ public class TabLayoutView extends TabLayout implements TabView {
     int selectedTintColor;
     int unselectedTintColor;
     private boolean layoutRequested = false;
+    private OnTabSelectedListener tabSelectedListener;
 
     public TabLayoutView(Context context) {
         super(context);
@@ -55,8 +56,9 @@ public class TabLayoutView extends TabLayout implements TabView {
     @Override
     public void setupWithViewPager(@Nullable final ViewPager viewPager) {
         super.setupWithViewPager(viewPager);
-        //remove listener as well if added again
-        addOnTabSelectedListener(new OnTabSelectedListener() {
+        if (tabSelectedListener != null)
+            removeOnTabSelectedListener(tabSelectedListener);
+        tabSelectedListener = new OnTabSelectedListener() {
             @Override
             public void onTabSelected(Tab tab) {
             }
@@ -71,7 +73,8 @@ public class TabLayoutView extends TabLayout implements TabView {
                 if (tabBarItem instanceof ScrollView)
                     ((ScrollView) tabBarItem).smoothScrollTo(0,0);
             }
-        });
+        };
+        addOnTabSelectedListener(tabSelectedListener);
     }
 
     @Override
