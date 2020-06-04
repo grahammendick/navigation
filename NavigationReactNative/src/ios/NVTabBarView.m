@@ -10,7 +10,7 @@
     UITabBarController *_tabBarController;
     NSInteger _selectedTab;
     NSInteger _nativeEventCount;
-    bool _doubleSelect;
+    bool _firstSceneReselected;
 }
 
 - (id)init
@@ -102,7 +102,7 @@
         _selectedTab = selectedIndex;
         [self selectTab];
     }
-    if (_doubleSelect) {
+    if (_firstSceneReselected) {
         UIViewController *sceneController = ((UINavigationController *) viewController).viewControllers[0];
         UIScrollView *scrollView;
         for (UIView *subview in sceneController.view.subviews) {
@@ -125,7 +125,7 @@
 {
     NSInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
     NSArray *viewControllers = ((UINavigationController *) viewController).viewControllers;
-    _doubleSelect = _selectedTab == selectedIndex && viewControllers.count == 1;
+    _firstSceneReselected = _selectedTab == selectedIndex && viewControllers.count == 1;
     return YES;
 }
 
