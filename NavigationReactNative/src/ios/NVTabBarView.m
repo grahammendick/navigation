@@ -1,5 +1,6 @@
 #import "NVTabBarView.h"
 #import "NVTabBarItemView.h"
+#import "NVSegmentedTabView.h"
 
 #import <UIKit/UIKit.h>
 #import <React/UIView+React.h>
@@ -102,12 +103,17 @@
         _selectedTab = selectedIndex;
         [self selectTab];
     }
-    if (_firstSceneReselected) {
+    if (_firstSceneReselected && _scrollsToTop) {
         UIViewController *sceneController = ((UINavigationController *) viewController).viewControllers[0];
         UIScrollView *scrollView;
         for (UIView *subview in sceneController.view.subviews) {
             if ([subview isKindOfClass:[RCTScrollView class]]){
                 scrollView = ((RCTScrollView *) subview).scrollView;
+            }
+            for (UIView *subsubview in subview.subviews) {
+                if ([subsubview isKindOfClass:[NVSegmentedTabView class]]){
+                    [((NVSegmentedTabView *) subsubview) scrollToTop];
+                }
             }
         }
         CGFloat topLayoutOffset = sceneController.topLayoutGuide.length;

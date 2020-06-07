@@ -7,4 +7,6 @@
 @property (nonatomic, assign) NSInteger mostRecentEventCount;
 @property (nonatomic, copy) RCTDirectEventBlock onTabSelected;
 
+-(void)scrollToTop;
+
 @end
