@@ -14,7 +14,7 @@ class TabBar extends React.Component<any, any> {
         defaultTab: 0,
         scrollable: false,
         primary: Platform.OS === 'ios',
-        scrollsToTop: false,
+        scrollsToTop: true,
     }
     static getDerivedStateFromProps({tab}, {selectedTab}) {
         if (tab != null && tab !== selectedTab)
