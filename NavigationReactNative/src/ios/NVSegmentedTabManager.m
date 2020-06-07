@@ -16,6 +16,7 @@ RCT_EXPORT_VIEW_PROPERTY(backgroundColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(selectedTintColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(unselectedTintColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(titles, NSArray<NSString *>)
+RCT_EXPORT_VIEW_PROPERTY(scrollsToTop, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(mostRecentEventCount, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(onTabSelected, RCTDirectEventBlock)
 

@@ -85,7 +85,7 @@
 - (void)scrollToTop
 {
     UIView *tabBarItem = _selectedTabBarItem.subviews[0];
-    if ([tabBarItem isKindOfClass:[RCTScrollView class]]) {
+    if ([tabBarItem isKindOfClass:[RCTScrollView class]] && _scrollsToTop) {
         UIScrollView *scrollView = ((RCTScrollView *) tabBarItem).scrollView;
         [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
     }
