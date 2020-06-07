@@ -21,7 +21,6 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
-    boolean scrollsToTop;
     private ViewPager.OnPageChangeListener pageChangeListener;
     private DataSetObserver dataSetObserver;
     private boolean layoutRequested = false;
@@ -60,7 +59,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
             setOnNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    if (!autoSelected && viewPager.getCurrentItem() == menuItem.getOrder() && scrollsToTop)
+                    if (!autoSelected && viewPager.getCurrentItem() == menuItem.getOrder())
                         ((TabBarView) viewPager).scrollToTop();;
                     viewPager.setCurrentItem(menuItem.getOrder(), false);
                     return true;

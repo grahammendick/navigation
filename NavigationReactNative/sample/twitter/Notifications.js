@@ -12,9 +12,9 @@ export default ({notifications}) => {
         <NavigationBar
           title="Notifications"
           barTintColor={Platform.OS === 'android' ? 'rgba(255,255,255, 0)' : null}>
-          <TabBar selectedTintColor="#1da1f2" scrollsToTop={true} />
+          <TabBar selectedTintColor="#1da1f2" />
         </NavigationBar>
-        <TabBar primary={false}>
+        <TabBar primary={false} scrollsToTop={true}>
           <TabBarItem title="All">
             <FlatList
               data={notifications}

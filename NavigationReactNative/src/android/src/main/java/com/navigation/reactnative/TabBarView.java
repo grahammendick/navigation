@@ -25,6 +25,7 @@ import java.util.List;
 public class TabBarView extends ViewPager {
     int selectedTab = 0;
     boolean swipeable = true;
+    boolean scrollsToTop;
     private boolean layoutRequested = false;
     int nativeEventCount;
     int mostRecentEventCount;
@@ -76,6 +77,8 @@ public class TabBarView extends ViewPager {
     }
 
     void scrollToTop() {
+        if (!scrollsToTop)
+            return;
         View tabBarItem = getTabAt(getCurrentItem());
         if (tabBarItem instanceof ViewGroup) {
             ViewGroup viewGroup = (ViewGroup) tabBarItem;
