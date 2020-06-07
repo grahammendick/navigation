@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -60,7 +59,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     if (!autoSelected && viewPager.getCurrentItem() == menuItem.getOrder())
-                        ((TabBarView) viewPager).scrollToTop();;
+                        ((TabBarView) viewPager).scrollToTop();
                     viewPager.setCurrentItem(menuItem.getOrder(), false);
                     return true;
                 }

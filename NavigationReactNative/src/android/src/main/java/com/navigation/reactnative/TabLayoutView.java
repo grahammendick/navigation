@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
@@ -70,7 +69,7 @@ public class TabLayoutView extends TabLayout implements TabView {
             @Override
             public void onTabReselected(Tab tab) {
                 if (viewPager != null)
-                    ((TabBarView) viewPager).scrollToTop();;
+                    ((TabBarView) viewPager).scrollToTop();
             }
         };
         addOnTabSelectedListener(tabSelectedListener);
