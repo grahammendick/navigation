@@ -5,6 +5,7 @@ import android.database.DataSetObserver;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -72,6 +73,21 @@ public class TabBarView extends ViewPager {
                 return (TabView) child;
         }
         return null;
+    }
+
+    void scrollToTop() {
+        View tabBarItem = getTabAt(getCurrentItem());
+        if (tabBarItem instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) tabBarItem;
+            for(int i = 0; i < viewGroup.getChildCount(); i++) {
+                if (viewGroup.getChildAt(i) instanceof NavigationBarView)
+                    ((NavigationBarView) viewGroup.getChildAt(i)).setExpanded(true);
+                if (viewGroup.getChildAt(i) instanceof ScrollView)
+                    ((ScrollView) viewGroup.getChildAt(i)).smoothScrollTo(0,0);
+            }
+        }
+        if (tabBarItem instanceof ScrollView)
+            ((ScrollView) tabBarItem).smoothScrollTo(0, 0);
     }
 
     @Override

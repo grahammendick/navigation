@@ -70,11 +70,8 @@ public class TabLayoutView extends TabLayout implements TabView {
 
             @Override
             public void onTabReselected(Tab tab) {
-                if (viewPager != null && scrollsToTop) {
-                    View tabBarItem = ((TabBarView) viewPager).getTabAt(tab.getPosition());
-                    if (tabBarItem instanceof ScrollView)
-                        ((ScrollView) tabBarItem).smoothScrollTo(0, 0);
-                }
+                if (viewPager != null && scrollsToTop)
+                    ((TabBarView) viewPager).scrollToTop();;
             }
         };
         addOnTabSelectedListener(tabSelectedListener);
