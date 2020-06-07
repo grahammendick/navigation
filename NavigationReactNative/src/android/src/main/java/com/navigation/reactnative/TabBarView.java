@@ -84,6 +84,8 @@ public class TabBarView extends ViewPager {
                     ((NavigationBarView) viewGroup.getChildAt(i)).setExpanded(true);
                 if (viewGroup.getChildAt(i) instanceof ScrollView)
                     ((ScrollView) viewGroup.getChildAt(i)).smoothScrollTo(0,0);
+                if (viewGroup.getChildAt(i) instanceof TabBarView)
+                    ((TabBarView) viewGroup.getChildAt(i)).scrollToTop();
             }
         }
         if (tabBarItem instanceof ScrollView)
