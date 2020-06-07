@@ -49,6 +49,11 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
         view.swipeable = swipeable;
     }
 
+    @ReactProp(name = "scrollsToTop")
+    public void setScrollsToTop(TabBarView view, boolean scrollsToTop) {
+        view.scrollsToTop = scrollsToTop;
+    }
+
     @Override
     public int getChildCount(TabBarView parent) {
         return parent.getTabsCount();

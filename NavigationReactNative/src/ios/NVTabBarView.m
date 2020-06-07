@@ -1,14 +1,17 @@
 #import "NVTabBarView.h"
 #import "NVTabBarItemView.h"
+#import "NVSegmentedTabView.h"
 
 #import <UIKit/UIKit.h>
 #import <React/UIView+React.h>
+#import <React/RCTScrollView.h>
 
 @implementation NVTabBarView
 {
     UITabBarController *_tabBarController;
     NSInteger _selectedTab;
     NSInteger _nativeEventCount;
+    bool _firstSceneReselected;
 }
 
 - (id)init
@@ -100,6 +103,36 @@
         _selectedTab = selectedIndex;
         [self selectTab];
     }
+    if (_firstSceneReselected && _scrollsToTop) {
+        UIViewController *sceneController = ((UINavigationController *) viewController).viewControllers[0];
+        UIScrollView *scrollView;
+        for (UIView *subview in sceneController.view.subviews) {
+            if ([subview isKindOfClass:[RCTScrollView class]]){
+                scrollView = ((RCTScrollView *) subview).scrollView;
+            }
+            for (UIView *subsubview in subview.subviews) {
+                if ([subsubview isKindOfClass:[NVSegmentedTabView class]]){
+                    [((NVSegmentedTabView *) subsubview) scrollToTop];
+                }
+            }
+        }
+        CGFloat topLayoutOffset = sceneController.topLayoutGuide.length;
+        CGFloat bottomLayoutOffset = sceneController.bottomLayoutGuide.length;
+        CGRect safeArea = sceneController.view.bounds;
+        safeArea.origin.y += topLayoutOffset;
+        safeArea.size.height -= topLayoutOffset + bottomLayoutOffset;
+        CGRect localSafeArea = [sceneController.view convertRect:safeArea toView:scrollView];
+        CGFloat top = MAX(0, CGRectGetMinY(localSafeArea) - CGRectGetMinY(scrollView.bounds));
+        [scrollView setContentOffset:CGPointMake(0, -top) animated:YES];
+    }
+}
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+{
+    NSInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
+    NSArray *viewControllers = ((UINavigationController *) viewController).viewControllers;
+    _firstSceneReselected = _selectedTab == selectedIndex && viewControllers.count == 1;
+    return YES;
 }
 
 -(void) selectTab

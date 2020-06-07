@@ -5,6 +5,9 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 
@@ -14,6 +17,7 @@ public class TabLayoutView extends TabLayout implements TabView {
     int selectedTintColor;
     int unselectedTintColor;
     private boolean layoutRequested = false;
+    private OnTabSelectedListener tabSelectedListener;
 
     public TabLayoutView(Context context) {
         super(context);
@@ -46,6 +50,29 @@ public class TabLayoutView extends TabLayout implements TabView {
                 return (TabBarView) child;
         }
         return null;
+    }
+
+    @Override
+    public void setupWithViewPager(@Nullable final ViewPager viewPager) {
+        super.setupWithViewPager(viewPager);
+        if (tabSelectedListener != null)
+            removeOnTabSelectedListener(tabSelectedListener);
+        tabSelectedListener = new OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(Tab tab) {
+            }
+
+            @Override
+            public void onTabUnselected(Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(Tab tab) {
+                if (viewPager != null)
+                    ((TabBarView) viewPager).scrollToTop();
+            }
+        };
+        addOnTabSelectedListener(tabSelectedListener);
     }
 
     @Override

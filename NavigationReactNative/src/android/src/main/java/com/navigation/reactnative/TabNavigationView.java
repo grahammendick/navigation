@@ -23,6 +23,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     private ViewPager.OnPageChangeListener pageChangeListener;
     private DataSetObserver dataSetObserver;
     private boolean layoutRequested = false;
+    private boolean autoSelected = false;
 
     public TabNavigationView(Context context) {
         super(context);
@@ -57,6 +58,8 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
             setOnNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    if (!autoSelected && viewPager.getCurrentItem() == menuItem.getOrder())
+                        ((TabBarView) viewPager).scrollToTop();
                     viewPager.setCurrentItem(menuItem.getOrder(), false);
                     return true;
                 }
@@ -70,7 +73,9 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
 
                 @Override
                 public void onPageSelected(int position) {
+                    autoSelected = true;
                     setSelectedItemId(position);
+                    autoSelected = false;
                 }
 
                 @Override
@@ -88,7 +93,9 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                 }
             };
             pagerAdapter.registerDataSetObserver(dataSetObserver);
+            autoSelected = true;
             setSelectedItemId(viewPager.getCurrentItem());
+            autoSelected = false;
         }
     }
 

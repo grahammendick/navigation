@@ -2,6 +2,7 @@
 #import "NVTabBarItemView.h"
 
 #import <React/UIView+React.h>
+#import <React/RCTScrollView.h>
 
 @implementation NVSegmentedTabView
 {
@@ -79,6 +80,15 @@
     BOOL press = self.selectedSegmentIndex != _selectedTab;
     self.selectedSegmentIndex = _selectedTab;
     [self selectTab:press];
+}
+
+- (void)scrollToTop
+{
+    UIView *tabBarItem = _selectedTabBarItem.subviews[0];
+    if ([tabBarItem isKindOfClass:[RCTScrollView class]] && _scrollsToTop) {
+        UIScrollView *scrollView = ((RCTScrollView *) tabBarItem).scrollView;
+        [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+    }
 }
 
 - (void)didMoveToWindow

@@ -364,6 +364,10 @@ export interface TabBarProps {
      */
     swipeable?: boolean;
     /**
+     * Indicates whether to scroll to the top when the tab is reselected
+     */
+    scrollsToTop?: boolean;
+    /**
      * The default selected tab index
      */
     defaultTab?: number;
