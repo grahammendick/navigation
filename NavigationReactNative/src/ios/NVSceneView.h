@@ -5,7 +5,7 @@
 
 @property (nonatomic, copy) NSString *sceneKey;
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, assign) BOOL hidesTabs;
+@property (nonatomic, assign) BOOL hidesTabBar;
 @property (nonatomic, copy) RCTDirectEventBlock onPopped;
 
 -(void)willAppear;

@@ -33,7 +33,7 @@ export interface NavigationStackProps {
     /**
      * Indicates whether a Scene should display the tab bar
      */
-    hideTabs?: (state: State, data: any, crumbs: Crumb[]) => boolean;
+    hidesTabBar?: (state: State, data: any, crumbs: Crumb[]) => boolean;
     /**
      * A scene's shared elements
      */
