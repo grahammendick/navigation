@@ -109,8 +109,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
             var enterAnim = crumbStyle(true, prevState, prevData, prevCrumbs, state, data);
         }
         var exitAnim = unmountStyle(false, state, data, currentCrumbs);
-        var hideTabs = hideTabs(state, data, currentCrumbs);
-        return {enterAnim, exitAnim, hideTabs};
+        var hidesTabs = hideTabs(state, data, currentCrumbs);
+        return {enterAnim, exitAnim, hidesTabs};
     }
     render() {
         var {navigationEvent} = this.state;
