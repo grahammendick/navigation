@@ -6,7 +6,7 @@ import BackButton from './BackButton';
 import PopSync from './PopSync';
 import Scene from './Scene';
 import PrimaryStackContext from './PrimaryStackContext';
-type NavigationStackProps = {stateNavigator: AsyncStateNavigator, primary: boolean, fragmentMode: boolean, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
+type NavigationStackProps = {stateNavigator: AsyncStateNavigator, primary: boolean, fragmentMode: boolean, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hideTabs: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
 type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], finish: boolean};
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
@@ -24,6 +24,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         fragmentMode: true,
         unmountStyle: () => null,
         crumbStyle: () => null,
+        hideTabs: () => false,
         sharedElements: () => null
     }
     static getDerivedStateFromProps({stateNavigator}: NavigationStackProps, {keys: prevKeys, stateNavigator: prevStateNavigator}: NavigationStackState) {
@@ -87,7 +88,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     }
     render() {
         var {keys, finish} = this.state;
-        var {stateNavigator, primary, fragmentMode, unmountStyle, crumbStyle, title, renderScene} = this.props;
+        var {stateNavigator, primary, fragmentMode, unmountStyle, crumbStyle, hideTabs, title, renderScene} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
             <NVNavigationStack
@@ -113,6 +114,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                                 sceneKey={key}
                                 unmountStyle={unmountStyle}
                                 crumbStyle={crumbStyle}
+                                hideTabs={hideTabs}
                                 title={title}
                                 popped={popNative}
                                 renderScene={renderScene} />
