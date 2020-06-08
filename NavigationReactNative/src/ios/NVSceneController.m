@@ -77,7 +77,7 @@
 
 - (BOOL)hidesBottomBarWhenPushed
 {
-    return _view.hidesTabs;
+    return [self.navigationController.visibleViewController isEqual:self] && _view.hidesTabs;
 }
 
 - (void)dealloc
