@@ -75,6 +75,11 @@
     }
 }
 
+- (BOOL)hidesBottomBarWhenPushed
+{
+    return _view.hidesTabs;
+}
+
 - (void)dealloc
 {
     [_view didPop];
