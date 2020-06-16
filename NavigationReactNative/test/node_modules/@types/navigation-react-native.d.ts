@@ -31,6 +31,10 @@ export interface NavigationStackProps {
      */
     unmountStyle?: (from: boolean, state: State, data: any, crumbs: Crumb[]) => string;
     /**
+     * Indicates whether a Scene should display the tab bar
+     */
+    hidesTabBar?: (state: State, data: any, crumbs: Crumb[]) => boolean;
+    /**
      * A scene's shared elements
      */
     sharedElements?: (state: State, data: any, crumbs: Crumb[]) => string[];

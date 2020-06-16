@@ -75,6 +75,11 @@
     }
 }
 
+- (BOOL)hidesBottomBarWhenPushed
+{
+    return [self.navigationController.visibleViewController isEqual:self] && _view.hidesTabBar;
+}
+
 - (void)dealloc
 {
     [_view didPop];

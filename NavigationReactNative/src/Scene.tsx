@@ -3,7 +3,7 @@ import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
-type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any) => ReactNode, crumbStyle: any, unmountStyle: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
+type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any) => ReactNode, crumbStyle: any, unmountStyle: any, hidesTabBar: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
 type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
@@ -99,17 +99,18 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return stateContext;
     }
     getAnimation() {
-        var {crumb, navigationEvent: {stateNavigator}, unmountStyle, crumbStyle} = this.props;
+        var {crumb, navigationEvent: {stateNavigator}, unmountStyle, crumbStyle, hidesTabBar} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         var {state, data} = crumbs[crumb] || nextCrumb;
         var currentCrumbs = crumbs.slice(0, crumb);
-        var exitAnim = unmountStyle(false, state, data, currentCrumbs);
         if (crumb > 0) {
             var {state: prevState, data: prevData} = crumbs[crumb - 1];
             var prevCrumbs = crumbs.slice(0, crumb - 1);
             var enterAnim = crumbStyle(true, prevState, prevData, prevCrumbs, state, data);
         }
-        return {enterAnim, exitAnim};
+        var exitAnim = unmountStyle(false, state, data, currentCrumbs);
+        var hidesTabBar = hidesTabBar(state, data, currentCrumbs);
+        return {enterAnim, exitAnim, hidesTabBar};
     }
     render() {
         var {navigationEvent} = this.state;
