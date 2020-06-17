@@ -38,8 +38,7 @@ class SharedElementTransitioner {
                 transition = TransitionInflater.from(context).inflateTransition(transitionId);
                 transitions.put(transitionKey, transition);
             }
-            if (sharedElementContainer.canAddTarget())
-                transition.addTarget(sharedElement);
+            transition.addTarget(sharedElement);
         }
         if(sharedElements.size() == loadedSharedElements.size()) {
             TransitionSet transitionSet = new TransitionSet();
