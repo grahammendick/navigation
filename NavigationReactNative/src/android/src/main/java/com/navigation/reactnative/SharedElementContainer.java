@@ -7,9 +7,9 @@ import androidx.core.app.SharedElementCallback;
 interface SharedElementContainer {
     SceneView getScene();
 
-    boolean canAddTarget();
-
     void setEnterTransition(Transition transition);
+
+    void setReturnTransition(Transition transition);
 
     void setExitCallback(SharedElementCallback sharedElementCallback);
 

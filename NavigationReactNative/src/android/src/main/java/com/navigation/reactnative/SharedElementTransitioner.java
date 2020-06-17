@@ -38,8 +38,7 @@ class SharedElementTransitioner {
                 transition = TransitionInflater.from(context).inflateTransition(transitionId);
                 transitions.put(transitionKey, transition);
             }
-            if (sharedElementContainer.canAddTarget())
-                transition.addTarget(sharedElement);
+            transition.addTarget(sharedElement);
         }
         if(sharedElements.size() == loadedSharedElements.size()) {
             TransitionSet transitionSet = new TransitionSet();
@@ -47,6 +46,7 @@ class SharedElementTransitioner {
                 transitionSet.addTransition(transitions.get(key));
             }
             sharedElementContainer.setEnterTransition(transitionSet);
+            sharedElementContainer.setReturnTransition(transitionSet);
             sharedElementContainer.startPostponedEnterTransition();
             sharedElementContainer.getScene().transitioner = null;
         }
