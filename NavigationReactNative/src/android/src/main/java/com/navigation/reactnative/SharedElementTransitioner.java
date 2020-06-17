@@ -47,6 +47,7 @@ class SharedElementTransitioner {
                 transitionSet.addTransition(transitions.get(key));
             }
             sharedElementContainer.setEnterTransition(transitionSet);
+            sharedElementContainer.setReturnTransition(transitionSet);
             sharedElementContainer.startPostponedEnterTransition();
             sharedElementContainer.getScene().transitioner = null;
         }

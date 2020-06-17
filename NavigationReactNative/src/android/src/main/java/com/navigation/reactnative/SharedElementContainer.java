@@ -11,6 +11,8 @@ interface SharedElementContainer {
 
     void setEnterTransition(Transition transition);
 
+    void setReturnTransition(Transition transition);
+
     void setExitCallback(SharedElementCallback sharedElementCallback);
 
     void setEnterCallback(SharedElementCallback sharedElementCallback);

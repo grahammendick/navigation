@@ -81,6 +81,10 @@ public class SceneActivity extends ReactActivity implements DefaultHardwareBackB
     }
 
     @Override
+    public void setReturnTransition(Transition transition) {
+    }
+
+    @Override
     public void setExitCallback(SharedElementCallback sharedElementCallback) {
         setExitSharedElementCallback(sharedElementCallback);
     }

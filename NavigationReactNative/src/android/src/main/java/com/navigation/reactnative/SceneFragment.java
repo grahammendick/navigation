@@ -48,12 +48,17 @@ public class SceneFragment extends Fragment implements SharedElementContainer {
 
     @Override
     public boolean canAddTarget() {
-        return false;
+        return true;
     }
 
     @Override
     public void setEnterTransition(Transition transition) {
         setSharedElementEnterTransition(transition);
+    }
+
+    @Override
+    public void setReturnTransition(Transition transition) {
+        setSharedElementReturnTransition(transition);
     }
 
     @Override

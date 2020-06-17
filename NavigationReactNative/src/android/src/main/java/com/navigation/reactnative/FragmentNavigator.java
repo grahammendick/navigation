@@ -23,7 +23,7 @@ class FragmentNavigator extends SceneNavigator {
     void navigateBack(int currentCrumb, int crumb, Activity activity, NavigationStackView stack) {
         FragmentManager fragmentManager = stack.fragment.getChildFragmentManager();
         SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKey);
-        Pair[] sharedElements = fragment != null ? getOldSharedElements(currentCrumb, crumb, fragment, stack) : null;
+        Pair[] sharedElements = fragment != null ? getOldSharedElements(currentCrumb, crumb, fragment, stack, activity) : null;
         SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(stack.keys.getString(crumb));
         if (sharedElements != null && prevFragment != null && prevFragment.getScene() != null)
             prevFragment.getScene().transitioner = new SharedElementTransitioner(prevFragment, getSharedElementSet(stack.oldSharedElementNames));
@@ -84,10 +84,19 @@ class FragmentNavigator extends SceneNavigator {
         fragmentTransaction.commit();
     }
 
-    private Pair[] getOldSharedElements(int currentCrumb, int crumb, SharedElementContainer sharedElementContainer, final NavigationStackView stack) {
+    private Pair[] getOldSharedElements(int currentCrumb, int crumb, SharedElementContainer sharedElementContainer, final NavigationStackView stack, final Activity activity) {
         final HashMap<String, View> oldSharedElementsMap = getSharedElementMap(sharedElementContainer.getScene());
         final Pair[] oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementsMap, stack.oldSharedElementNames) : null;
         if (oldSharedElements != null && oldSharedElements.length != 0) {
+            final SharedElementTransitioner transitioner = new SharedElementTransitioner(sharedElementContainer, getSharedElementSet(stack.oldSharedElementNames));
+            for(int i = 0; i < stack.oldSharedElementNames.size(); i++) {
+                String name = stack.oldSharedElementNames.getString(i);
+                if (oldSharedElementsMap.containsKey(name)) {
+                    View oldSharedElement = oldSharedElementsMap.get(name);
+                    SharedElementView oldSharedElementView = (SharedElementView) oldSharedElement.getParent();
+                    transitioner.load(name, oldSharedElementView.exitTransition, activity);
+                }
+            }
             sharedElementContainer.setEnterCallback(new SharedElementCallback() {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> elements) {
