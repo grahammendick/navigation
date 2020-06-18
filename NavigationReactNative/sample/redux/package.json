@@ -12,7 +12,7 @@
   "dependencies": {
     "navigation": "^5.3.1",
     "navigation-react": "^4.1.1",
-    "navigation-react-native": "^6.15.0",
+    "navigation-react-native": "^6.17.0",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-redux": "^7.2.0",
