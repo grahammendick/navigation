@@ -46,6 +46,7 @@ public class TabBarItemView extends ViewGroup {
     void setIconSource(@Nullable ReadableMap source) {
         IconResolver.setIconSource(source, tabIconResolverListener, getContext());
     }
+
     void setBadge(@Nullable Integer badge) {
         this.badge = badge;
         if (tabView == null)
