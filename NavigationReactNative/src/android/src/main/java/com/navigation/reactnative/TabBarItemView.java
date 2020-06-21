@@ -50,10 +50,13 @@ public class TabBarItemView extends ViewGroup {
         this.badge = badge;
         if (tabView == null)
             return;
-        if (badge != null)
-            tabView.getBadgeIcon(index).setNumber(badge);
-        else
-            tabView.removeBadgeIcon(index);
+        try {
+            if (badge != null)
+                tabView.getBadgeIcon(index).setNumber(badge);
+            else
+                tabView.removeBadgeIcon(index);
+        } catch(IllegalArgumentException ignored) {
+        }
         setBadgeColor(badgeColor);
     }
 
@@ -61,12 +64,15 @@ public class TabBarItemView extends ViewGroup {
         this.badgeColor = badgeColor;
         if (tabView == null || badge == null)
             return;
-        if (defaultBadgeColor == null)
-            defaultBadgeColor = tabView.getBadgeIcon(index).getBackgroundColor();
-        if (badgeColor != null)
-            tabView.getBadgeIcon(index).setBackgroundColor(badgeColor);
-        else
-            tabView.getBadgeIcon(index).setBackgroundColor(defaultBadgeColor);
+        try {
+            if (defaultBadgeColor == null)
+                defaultBadgeColor = tabView.getBadgeIcon(index).getBackgroundColor();
+            if (badgeColor != null)
+                tabView.getBadgeIcon(index).setBackgroundColor(badgeColor);
+            else
+                tabView.getBadgeIcon(index).setBackgroundColor(defaultBadgeColor);
+        } catch(IllegalArgumentException ignored) {
+        }
     }
 
     void setTabView(TabView tabView, int index) {
