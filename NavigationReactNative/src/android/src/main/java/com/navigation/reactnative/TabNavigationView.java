@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,10 +11,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TabNavigationView extends BottomNavigationView implements TabView {
@@ -150,5 +153,9 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     @Override
     public void removeBadgeIcon(int index) {
         removeBadge(index);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            BottomNavigationItemView itemView = (BottomNavigationItemView) getTouchables().get(index);
+            itemView.getChildAt(0).getOverlay().clear();
+        }
     }
 }
