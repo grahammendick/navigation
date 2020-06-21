@@ -28,6 +28,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
 
     public TabNavigationView(Context context) {
         super(context);
+        setBackground(null);
         TabLayoutView tabLayout = new TabLayoutView(context);
         selectedTintColor = unselectedTintColor = defaultTextColor = tabLayout.defaultTextColor;
     }
