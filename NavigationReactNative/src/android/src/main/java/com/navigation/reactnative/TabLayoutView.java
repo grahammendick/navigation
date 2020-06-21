@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
 
 public class TabLayoutView extends TabLayout implements TabView {
@@ -106,5 +107,18 @@ public class TabLayoutView extends TabLayout implements TabView {
         TabLayout.Tab tab = getTabAt(index);
         if (tab != null)
             tab.setIcon(icon);
+    }
+
+    @Override
+    public BadgeDrawable getBadgeIcon(int index) {
+        TabLayout.Tab tab = getTabAt(index);
+        return tab != null ? tab.getOrCreateBadge() : null;
+    }
+
+    @Override
+    public void removeBadgeIcon(int index) {
+        TabLayout.Tab tab = getTabAt(index);
+        if (tab != null)
+            tab.removeBadge();
     }
 }

@@ -19,6 +19,9 @@ public class TabBarItemView extends ViewGroup {
     protected String title;
     private Drawable icon;
     private TabView tabView;
+    private Integer badge;
+    private Integer badgeColor;
+    private Integer defaultBadgeColor;
     List<View> content = new ArrayList<>();
     private IconResolver.IconResolverListener tabIconResolverListener;
 
@@ -43,12 +46,35 @@ public class TabBarItemView extends ViewGroup {
     void setIconSource(@Nullable ReadableMap source) {
         IconResolver.setIconSource(source, tabIconResolverListener, getContext());
     }
+    void setBadge(@Nullable Integer badge) {
+        this.badge = badge;
+        if (tabView == null)
+            return;
+        if (badge != null)
+            tabView.getBadgeIcon(index).setNumber(badge);
+        else
+            tabView.removeBadgeIcon(index);
+        setBadgeColor(badgeColor);
+    }
+
+    void setBadgeColor(@Nullable Integer badgeColor) {
+        this.badgeColor = badgeColor;
+        if (tabView == null || badge == null)
+            return;
+        if (defaultBadgeColor == null)
+            defaultBadgeColor = tabView.getBadgeIcon(index).getBackgroundColor();
+        if (badgeColor != null)
+            tabView.getBadgeIcon(index).setBackgroundColor(badgeColor);
+        else
+            tabView.getBadgeIcon(index).setBackgroundColor(defaultBadgeColor);
+    }
 
     void setTabView(TabView tabView, int index) {
         this.tabView = tabView;
         this.index = index;
         if (icon != null)
             tabView.setIcon(index, icon);
+        setBadge(badge);
     }
 
     protected void pressed() {
