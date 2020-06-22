@@ -94,7 +94,7 @@ contactsNavigator.navigate('contacts');</code></pre>
             </p>
             <pre><code class="language-jsx">var App = () => (
   &lt;TabBar primary={true}>
-    &lt;TabBarItem title="Inbox" image={require('./home.png')}>
+    &lt;TabBarItem title="Inbox" image={require('./home.png')} badge={unreadCount}>
       &lt;NavigationHandler stateNavigator={stateNavigator}>
         &lt;NavigationStack />
       &lt;/NavigationHandler>
@@ -106,6 +106,10 @@ contactsNavigator.navigate('contacts');</code></pre>
     &lt;/TabBarItem>
   &lt;/TabBar>
 );</code></pre>
+            <p>
+                We assign the 'inbox' tab a badge that shows the number of unread emails. The badge won't display on Android unless we change to a <code>MaterialComponents</code> theme in the styles.xml.
+            </p>
+            <pre><code class="language-jsx">&lt;style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge"></style></code></pre>
             <h2>Scrolling the Navigation Bar on Android</h2>
             <p>
                 By wrapping the contacts scene in a <code>CoordinatorLayout</code> component we prevent the navigation bar from getting in the way on Android. The navigation bar gradually scrolls offscreen as the user moves down through their contacts. As soon as the user starts to scroll back up the navigation bar reappears. We render an empty <code>TabBar</code> inside the navigation bar to prevent the tabs scrolling off the screen, too. This functionality is only available on API level 21+ because we have to enable nested scrolling on the React Native <code>ScrollViews</code>.
