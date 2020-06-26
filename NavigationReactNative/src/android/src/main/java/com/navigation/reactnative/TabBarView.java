@@ -2,7 +2,6 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -41,7 +40,7 @@ public class TabBarView extends ViewPager {
         super(context);
         addOnPageChangeListener(new TabChangeListener());
         FragmentActivity activity = (FragmentActivity) ((ReactContext) context).getCurrentActivity();
-        Adapter adapter = new Adapter(activity.getSupportFragmentManager());
+        Adapter adapter = new Adapter(activity != null ? activity.getSupportFragmentManager() : null);
         adapter.registerDataSetObserver(new DataSetObserver() {
             @Override
             public void onChanged() {
