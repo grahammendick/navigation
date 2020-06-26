@@ -227,18 +227,20 @@ public class TabBarView extends ViewPager {
 
     public static class TabFragment extends Fragment {
         TabBarItemView tabBarItem;
+        View view;
 
         TabFragment(TabBarItemView tabBarItem) {
             super();
             this.tabBarItem = tabBarItem;
-            if (tabBarItem.content.get(0) instanceof NavigationStackView)
-                ((NavigationStackView) tabBarItem.content.get(0)).onAfterUpdateTransaction();
+            view = tabBarItem.content.get(0);
+            if (view instanceof NavigationStackView)
+                ((NavigationStackView) view).onAfterUpdateTransaction();
         }
 
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            return tabBarItem.content.get(0);
+            return view;
         }
     }
 
