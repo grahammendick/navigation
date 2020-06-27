@@ -28,7 +28,7 @@
     [super insertReactSubview:subview atIndex:atIndex];
     UIViewController *viewController = [[UIViewController alloc] init];
     viewController.view = subview;
-    [_tabs addObject:viewController];
+    [_tabs insertObject:viewController atIndex:atIndex];
 }
 
 - (void)removeReactSubview:(UIView *)subview
