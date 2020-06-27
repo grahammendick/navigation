@@ -2,6 +2,9 @@
 #import "NVTabBarItemView.h"
 
 @implementation NVSegmentedTabView
+{
+    NVTabBarPagerView *_tabBarPager;
+}
 
 - (id)init
 {
@@ -17,7 +20,6 @@
     for (NSString *title in titles) {
         [self insertSegmentWithTitle:title atIndex:self.numberOfSegments animated:NO];
     }
-    self.selectedSegmentIndex = 0;
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
@@ -58,9 +60,15 @@
     }
 }
 
+- (void)setupWithPager:(NVTabBarPagerView *)pager
+{
+    _tabBarPager = pager;
+    self.selectedSegmentIndex = pager.selectedTab;
+}
+
 - (void)tabPressed
 {
-    [self.tabBarPager setCurrentTab:self.selectedSegmentIndex];
+    [_tabBarPager setCurrentTab:self.selectedSegmentIndex];
 }
 
 @end

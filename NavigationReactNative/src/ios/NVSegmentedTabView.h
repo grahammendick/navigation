@@ -4,6 +4,6 @@
 
 @interface NVSegmentedTabView : UISegmentedControl
 
-@property (nonatomic, weak) NVTabBarPagerView *tabBarPager;
+-(void)setupWithPager:(NVTabBarPagerView *) pager;
 
 @end

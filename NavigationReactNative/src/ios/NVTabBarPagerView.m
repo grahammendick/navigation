@@ -7,7 +7,6 @@
 
 @implementation NVTabBarPagerView
 {
-    NSInteger _selectedTab;
     UIPageViewController *_pageViewController;
     NSMutableArray<UIViewController *> *_tabs;
     NSInteger _nativeEventCount;
@@ -43,16 +42,18 @@
 
 - (void)didUpdateReactSubviews
 {
-    [self setCurrentTab:0];
 }
 
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    for(NSInteger i = 0; !!self.window && i < [self.superview subviews].count; i++) {
-        UIView *view = [self.superview subviews][i];
-        if ([view isKindOfClass:[NVSegmentedTabView class]])
-            ((NVSegmentedTabView *) view).tabBarPager = self;
+    if (!!self.window) {
+        [self setCurrentTab:_selectedTab];
+        for(NSInteger i = 0; i < [self.superview subviews].count; i++) {
+            UIView *view = [self.superview subviews][i];
+            if ([view isKindOfClass:[NVSegmentedTabView class]])
+                [((NVSegmentedTabView *) view) setupWithPager:self];
+        }
     }
 }
 
