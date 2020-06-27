@@ -74,12 +74,18 @@
 - (void)setupWithPager:(NVTabBarPagerView *)pager
 {
     _tabBarPager = pager;
+    _tabBarPager.tabChange = self;
     self.selectedSegmentIndex = pager.selectedTab;
 }
 
 - (void)tabPressed
 {
     [_tabBarPager setCurrentTab:self.selectedSegmentIndex];
+}
+
+- (void)tabSelected:(NSInteger)index
+{
+    self.selectedSegmentIndex = index;
 }
 
 @end

@@ -68,6 +68,7 @@
 - (void)setCurrentTab:(NSInteger)index
 {
     _nativeEventCount++;
+    [self.tabChange tabSelected:index];
     self.onTabSelected(@{
         @"tab": @(index),
         @"eventCount": @(_nativeEventCount),
