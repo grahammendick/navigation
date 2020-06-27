@@ -45,7 +45,7 @@ class TabBar extends React.Component<any, any> {
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
         var tabViewHeight = !primary ? (titleOnly ? 48 : 72) : 56
         tabViewHeight = Platform.OS === 'android' ? tabViewHeight : 28;
-        var TabBar = (Platform.OS === 'android' || primary) ? NVTabBar : View;
+        var TabBar = (Platform.OS === 'android' || primary) ? NVTabBar : NVTabBarPager;
         var TabView = !primary ? NVTabLayout : NVTabNavigation;
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedTab;
         var tabLayout = (Platform.OS === 'android' || !primary) && (
@@ -97,6 +97,7 @@ var NVTabLayout = requireNativeComponent<any>('NVTabLayout', null);
 var NVTabNavigation = requireNativeComponent<any>('NVTabNavigation', null);
 var NVSegmentedTab = requireNativeComponent<any>('NVSegmentedTab', null);
 var NVTabBar = requireNativeComponent<any>('NVTabBar', null);
+var NVTabBarPager = requireNativeComponent<any>('NVTabBarPager', null);
 
 const styles = StyleSheet.create({
     tabBar: {
