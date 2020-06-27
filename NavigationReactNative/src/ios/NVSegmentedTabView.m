@@ -17,10 +17,12 @@
 
 - (void)setTitles:(NSArray<NSString *> *)titles
 {
+    NSInteger _selectedIndex = self.selectedSegmentIndex;
     [self removeAllSegments];
     for (NSString *title in titles) {
         [self insertSegmentWithTitle:title atIndex:self.numberOfSegments animated:NO];
     }
+    self.selectedSegmentIndex = _selectedIndex;
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
