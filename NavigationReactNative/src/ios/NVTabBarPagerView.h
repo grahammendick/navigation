@@ -1,13 +1,6 @@
-//
-//  NVTabBarPagerView.h
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 27/06/2020.
-//  Copyright © 2020 Graham Mendick. All rights reserved.
-//
+#import "NVTabBarPagerView.h"
 
-#ifndef NVTabBarPagerView_h
-#define NVTabBarPagerView_h
+#import <UIKit/UIKit.h>
 
-
-#endif /* NVTabBarPagerView_h */
+@interface NVTabBarPagerView : UIView
+@end
