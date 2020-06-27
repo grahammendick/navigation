@@ -1,4 +1,5 @@
 #import "NVTabBarPagerView.h"
+#import "NVSegmentedTabView.h"
 
 #import <React/UIView+React.h>
 
@@ -38,8 +39,22 @@
 
 - (void)didUpdateReactSubviews
 {
-    [_pageViewController setViewControllers:@[_tabs[0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    [self setCurrentTab:0];
 }
 
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    for(NSInteger i = 0; !!self.window && i < [self.superview subviews].count; i++) {
+        UIView *view = [self.superview subviews][i];
+        if ([view isKindOfClass:[NVSegmentedTabView class]])
+            ((NVSegmentedTabView *) view).tabBarPager = self;
+    }
+}
+
+- (void)setCurrentTab:(NSInteger)index
+{
+    [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+}
 
 @end

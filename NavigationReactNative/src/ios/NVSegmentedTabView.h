@@ -1,3 +1,5 @@
+#import "NVTabBarPagerView.h"
+
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
 
@@ -5,6 +7,7 @@
 
 @property (nonatomic, assign) BOOL bottomTabs;
 @property (nonatomic, assign) BOOL scrollsToTop;
+@property (nonatomic, weak) NVTabBarPagerView *tabBarPager;
 @property (nonatomic, assign) NSInteger mostRecentEventCount;
 @property (nonatomic, copy) RCTDirectEventBlock onTabSelected;
 

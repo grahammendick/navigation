@@ -120,8 +120,9 @@
             @"tab": @(self.selectedSegmentIndex),
             @"eventCount": @(_nativeEventCount),
         });
+        [self.tabBarPager setCurrentTab:self.selectedSegmentIndex];
     }
-    for(NSInteger i = 0; i < [tabBar.reactSubviews count]; i++) {
+    /*for(NSInteger i = 0; i < [tabBar.reactSubviews count]; i++) {
         NVTabBarItemView *tabBarItem = (NVTabBarItemView *) [tabBar.reactSubviews objectAtIndex:i];
         tabBarItem.alpha = (i == self.selectedSegmentIndex ? 1 : 0);
         if (i == self.selectedSegmentIndex) {
@@ -130,7 +131,7 @@
             if (tabChanged && !!tabBarItem.onPress)
                 tabBarItem.onPress(nil);
         }
-    }
+    }*/
 }
 
 @end
