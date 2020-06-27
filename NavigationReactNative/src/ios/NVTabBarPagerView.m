@@ -3,9 +3,11 @@
 #import "NVTabBarItemView.h"
 
 #import <React/UIView+React.h>
+#import <React/RCTScrollView.h>
 
 @implementation NVTabBarPagerView
 {
+    NSInteger _selectedTab;
     UIPageViewController *_pageViewController;
     NSMutableArray<UIViewController *> *_tabs;
     NSInteger _nativeEventCount;
@@ -74,6 +76,16 @@
         tabBarItem.onPress(nil);
     }
     [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    _selectedTab = index;
+}
+
+- (void)scrollToTop
+{
+    UIView *tabBarItem = _tabs[_selectedTab].view.subviews[0];
+    if ([tabBarItem isKindOfClass:[RCTScrollView class]] && _scrollsToTop) {
+        UIScrollView *scrollView = ((RCTScrollView *) tabBarItem).scrollView;
+        [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+    }
 }
 
 @end

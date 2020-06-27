@@ -1,6 +1,6 @@
 #import "NVTabBarView.h"
 #import "NVTabBarItemView.h"
-#import "NVSegmentedTabView.h"
+#import "NVTabBarPagerView.h"
 
 #import <UIKit/UIKit.h>
 #import <React/UIView+React.h>
@@ -111,8 +111,8 @@
                 scrollView = ((RCTScrollView *) subview).scrollView;
             }
             for (UIView *subsubview in subview.subviews) {
-                if ([subsubview isKindOfClass:[NVSegmentedTabView class]]){
-                    [((NVSegmentedTabView *) subsubview) scrollToTop];
+                if ([subsubview isKindOfClass:[NVTabBarPagerView class]]){
+                    [((NVTabBarPagerView *) subsubview) scrollToTop];
                 }
             }
         }
