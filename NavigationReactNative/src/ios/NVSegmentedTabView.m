@@ -1,5 +1,6 @@
 #import "NVSegmentedTabView.h"
 #import "NVTabBarItemView.h"
+#import "NVTabBarPagerView.h"
 
 @implementation NVSegmentedTabView
 {
@@ -57,6 +58,16 @@
             titleAttributes[NSForegroundColorAttributeName] = unselectedTintColor;
         }
         [self setTitleTextAttributes:titleAttributes forState:UIControlStateNormal];
+    }
+}
+
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    for(NSInteger i = 0; !!self.window && i < [self.superview subviews].count; i++) {
+        UIView *view = [self.superview subviews][i];
+        if ([view isKindOfClass:[NVTabBarPagerView class]])
+            [self setupWithPager:(NVTabBarPagerView *) view];
     }
 }
 
