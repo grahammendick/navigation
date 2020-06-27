@@ -1,8 +1,6 @@
 #import "NVSegmentedTabView.h"
 #import "NVTabBarItemView.h"
 
-#import <React/UIView+React.h>
-
 @implementation NVSegmentedTabView
 
 - (id)init
