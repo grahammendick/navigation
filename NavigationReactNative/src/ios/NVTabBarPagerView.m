@@ -69,7 +69,7 @@
 - (void)setSelectedTab:(NSInteger)selectedTab
 {
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    if (eventLag == 0 && _tabs.count > selectedTab) {
+    if (eventLag == 0 && _selectedTab != selectedTab && _tabs.count > selectedTab) {
         [self setCurrentTab:selectedTab];
     }
 }
