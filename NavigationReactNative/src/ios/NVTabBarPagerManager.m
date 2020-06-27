@@ -10,4 +10,8 @@ RCT_EXPORT_MODULE()
     return [[NVTabBarPagerView alloc] init];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(selectedTab, NSInteger)
+RCT_EXPORT_VIEW_PROPERTY(mostRecentEventCount, NSInteger)
+RCT_EXPORT_VIEW_PROPERTY(onTabSelected, RCTDirectEventBlock)
+
 @end

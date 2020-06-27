@@ -50,10 +50,7 @@ class TabBar extends React.Component<any, any> {
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedTab;
         var tabLayout = (Platform.OS === 'android' || !primary) && (
             <TabView
-                ref={Platform.OS === 'ios' ? this.ref : undefined}
                 bottomTabs={bottomTabs}
-                onTabSelected={this.onTabSelected}
-                selectedTab={this.state.selectedTab}
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
@@ -69,7 +66,7 @@ class TabBar extends React.Component<any, any> {
             <>
                 {!bottomTabs && tabLayout}
                 {!!tabBarItems.length && <TabBar
-                    ref={(Platform.OS === 'android' || primary) ? this.ref : undefined}
+                    ref={this.ref}
                     tabCount={tabBarItems.length}
                     onTabSelected={this.onTabSelected}
                     selectedTab={this.state.selectedTab}

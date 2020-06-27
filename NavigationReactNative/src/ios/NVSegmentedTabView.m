@@ -20,14 +20,6 @@
     return self;
 }
 
-- (void)setSelectedTab:(NSInteger)selectedTab
-{
-    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    if (eventLag == 0) {
-        _selectedTab = selectedTab;
-    }
-}
-
 - (void)setTitles:(NSArray<NSString *> *)titles
 {
     [self removeAllSegments];
@@ -115,11 +107,11 @@
         tabChanged = _selectedTab != self.selectedSegmentIndex;
     }
     if (tabChanged) {
-        _nativeEventCount++;
+        /*_nativeEventCount++;
         self.onTabSelected(@{
             @"tab": @(self.selectedSegmentIndex),
             @"eventCount": @(_nativeEventCount),
-        });
+        });*/
         [self.tabBarPager setCurrentTab:self.selectedSegmentIndex];
     }
     /*for(NSInteger i = 0; i < [tabBar.reactSubviews count]; i++) {

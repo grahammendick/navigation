@@ -1,5 +1,6 @@
 #import "NVTabBarPagerView.h"
 #import "NVSegmentedTabView.h"
+#import "NVTabBarItemView.h"
 
 #import <React/UIView+React.h>
 
@@ -7,6 +8,7 @@
 {
     UIPageViewController *_pageViewController;
     NSMutableArray<UIViewController *> *_tabs;
+    NSInteger _nativeEventCount;
 }
 
 - (id)init
@@ -52,8 +54,25 @@
     }
 }
 
+- (void)setSelectedTab:(NSInteger)selectedTab
+{
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if (eventLag == 0 && _tabs.count > selectedTab) {
+        [self setCurrentTab:selectedTab];
+    }
+}
+
 - (void)setCurrentTab:(NSInteger)index
 {
+    _nativeEventCount++;
+    self.onTabSelected(@{
+        @"tab": @(index),
+        @"eventCount": @(_nativeEventCount),
+    });
+    NVTabBarItemView *tabBarItem = ((NVTabBarItemView *) _tabs[index].view);
+    if (!!tabBarItem.onPress) {
+        tabBarItem.onPress(nil);
+    }
     [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
 
