@@ -54,16 +54,11 @@
 
 - (void)didUpdateReactSubviews
 {
-    BOOL tabChanged = !_selectedTabView;
     if (!!_selectedTabView) {
         NSInteger reselectedTab = [_tabs indexOfObject:_selectedTabView];
-        NSInteger selectedIndex = reselectedTab != NSNotFound ? reselectedTab : MIN(_selectedTab, _tabs.count - 1);
-        tabChanged = _selectedTab != selectedIndex;
-        _selectedTab = selectedIndex;
+        _selectedTab = reselectedTab != NSNotFound ? reselectedTab : MIN(_selectedTab, _tabs.count - 1);
     }
-    if (tabChanged) {
-        [self setCurrentTab:_selectedTab];
-    }
+    [self setCurrentTab:_selectedTab];
 }
 
 - (void)didMoveToWindow
