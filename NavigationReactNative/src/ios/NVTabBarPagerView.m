@@ -76,15 +76,17 @@
 - (void)setCurrentTab:(NSInteger)index
 {
     _nativeEventCount++;
-    [self.tabChange tabSelected:index];
-    self.onTabSelected(@{
-        @"tab": @(index),
-        @"eventCount": @(_nativeEventCount),
-    });
-    NVTabBarItemView *tabBarItem = ((NVTabBarItemView *) _tabs[index].view);
-    if (!!tabBarItem.onPress) {
-        tabBarItem.onPress(nil);
+    if (index != _selectedTab) {
+        self.onTabSelected(@{
+            @"tab": @(index),
+            @"eventCount": @(_nativeEventCount),
+        });
+        NVTabBarItemView *tabBarItem = ((NVTabBarItemView *) _tabs[index].view);
+        if (!!tabBarItem.onPress) {
+            tabBarItem.onPress(nil);
+        }
     }
+    [self.tabChange tabSelected:index];
     [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     _selectedTab = index;
     _selectedTabView = _tabs[index];
