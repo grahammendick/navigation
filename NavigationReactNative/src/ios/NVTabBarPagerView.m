@@ -23,6 +23,17 @@
     return self;
 }
 
+- (void)setSelectedTab:(NSInteger)selectedTab
+{
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if (eventLag == 0 && _selectedTab != selectedTab) {
+        _selectedTab = selectedTab;
+        if (_tabs.count > selectedTab) {
+            [self setCurrentTab:selectedTab];
+        }
+    }
+}
+
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
@@ -63,17 +74,6 @@
             UIView *view = [self.superview subviews][i];
             if ([view isKindOfClass:[NVSegmentedTabView class]])
                 [((NVSegmentedTabView *) view) setupWithPager:self];
-        }
-    }
-}
-
-- (void)setSelectedTab:(NSInteger)selectedTab
-{
-    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    if (eventLag == 0 && _selectedTab != selectedTab) {
-        _selectedTab = selectedTab;
-        if (_tabs.count > selectedTab) {
-            [self setCurrentTab:selectedTab];
         }
     }
 }
