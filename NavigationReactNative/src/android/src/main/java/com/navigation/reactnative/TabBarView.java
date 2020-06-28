@@ -63,7 +63,7 @@ public class TabBarView extends ViewPager {
     void populateTabs() {
         TabView tabView = getTabView();
         if (tabView != null && getAdapter() != null) {
-            for(int i = 0; i < tabView.getTabCount(); i++) {
+            for(int i = 0; i < getAdapter().tabFragments.size(); i++) {
                 getAdapter().tabFragments.get(i).tabBarItem.setTabView(tabView, i);
             }
         }

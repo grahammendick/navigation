@@ -131,11 +131,6 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     };
 
     @Override
-    public int getTabCount() {
-        return getMenu().size();
-    }
-
-    @Override
     public void setTitle(int index, String title) {
         getMenu().getItem(index).setTitle(title);
     }
