@@ -11,6 +11,7 @@
     UIViewController *_selectedTabView;
     NSMutableArray<UIViewController *> *_tabs;
     NSInteger _nativeEventCount;
+    NSInteger _selectedIndex;
 }
 
 - (id)init
@@ -19,6 +20,7 @@
         _pageViewController = [[UIPageViewController alloc] init];
         [self addSubview:_pageViewController.view];
         _tabs = [[NSMutableArray alloc] init];
+        _selectedIndex = NSNotFound;
     }
     return self;
 }
@@ -76,7 +78,7 @@
 - (void)setCurrentTab:(NSInteger)index
 {
     _nativeEventCount++;
-    if (index != _selectedTab) {
+    if (index != _selectedIndex && _selectedIndex != NSNotFound) {
         self.onTabSelected(@{
             @"tab": @(index),
             @"eventCount": @(_nativeEventCount),
@@ -88,7 +90,7 @@
     }
     [self.tabChange tabSelected:index];
     [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-    _selectedTab = index;
+    _selectedTab = _selectedIndex = index;
     _selectedTabView = _tabs[index];
 }
 
