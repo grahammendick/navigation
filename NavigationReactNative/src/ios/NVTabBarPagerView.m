@@ -20,7 +20,7 @@
         _pageViewController = [[UIPageViewController alloc] init];
         [self addSubview:_pageViewController.view];
         _tabs = [[NSMutableArray alloc] init];
-        _selectedIndex = NSNotFound;
+        _selectedIndex = 0;
     }
     return self;
 }
@@ -77,7 +77,7 @@
 
 - (void)setCurrentTab:(NSInteger)index
 {
-    if (index != _selectedIndex && _selectedIndex != NSNotFound) {
+    if (index != _selectedIndex) {
         _nativeEventCount++;
         self.onTabSelected(@{
             @"tab": @(index),
