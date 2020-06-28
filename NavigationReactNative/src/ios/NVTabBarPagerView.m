@@ -77,8 +77,8 @@
 
 - (void)setCurrentTab:(NSInteger)index
 {
-    _nativeEventCount++;
     if (index != _selectedIndex && _selectedIndex != NSNotFound) {
+        _nativeEventCount++;
         self.onTabSelected(@{
             @"tab": @(index),
             @"eventCount": @(_nativeEventCount),
