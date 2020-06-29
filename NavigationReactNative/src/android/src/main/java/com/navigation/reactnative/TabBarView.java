@@ -228,6 +228,10 @@ public class TabBarView extends ViewPager {
         TabBarItemView tabBarItem;
         View view;
 
+        public TabFragment() {
+            super();
+        }
+
         TabFragment(TabBarItemView tabBarItem) {
             super();
             this.tabBarItem = tabBarItem;
@@ -239,7 +243,7 @@ public class TabBarView extends ViewPager {
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            return view;
+            return view != null ? view : new View(getContext());
         }
     }
 
