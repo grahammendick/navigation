@@ -8,7 +8,6 @@
 @property (nonatomic, assign) BOOL hidesTabBar;
 @property (nonatomic, copy) RCTDirectEventBlock onPopped;
 
--(void)willAppear;
 -(void)didPop;
 
 @end

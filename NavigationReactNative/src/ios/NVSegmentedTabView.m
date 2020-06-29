@@ -1,40 +1,28 @@
 #import "NVSegmentedTabView.h"
 #import "NVTabBarItemView.h"
-
-#import <React/UIView+React.h>
-#import <React/RCTScrollView.h>
+#import "NVTabBarPagerView.h"
 
 @implementation NVSegmentedTabView
 {
-    NSInteger _selectedTab;
-    NVTabBarItemView *_selectedTabBarItem;
-    NSInteger _nativeEventCount;
+    NVTabBarPagerView *_tabBarPager;
 }
 
 - (id)init
 {
     if (self = [super init]) {
-        _selectedTab = 0;
         [self addTarget:self action:@selector(tabPressed) forControlEvents:UIControlEventValueChanged];
     }
     return self;
 }
 
-- (void)setSelectedTab:(NSInteger)selectedTab
-{
-    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    if (eventLag == 0) {
-        _selectedTab = selectedTab;
-    }
-}
-
 - (void)setTitles:(NSArray<NSString *> *)titles
 {
+    NSInteger _selectedIndex = self.selectedSegmentIndex;
     [self removeAllSegments];
     for (NSString *title in titles) {
         [self insertSegmentWithTitle:title atIndex:self.numberOfSegments animated:NO];
     }
-    self.selectedSegmentIndex = _selectedTab;
+    self.selectedSegmentIndex = _selectedIndex;
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
@@ -48,14 +36,7 @@
 - (void)setSelectedTintColor:(UIColor *)selectedTintColor
 {
     if (@available(iOS 13.0, *)) {
-        NSMutableDictionary *titleAttributes = [[self titleTextAttributesForState:UIControlStateSelected] mutableCopy];
-        if (titleAttributes == nil) {
-            titleAttributes = @{}.mutableCopy;
-        }
-        [titleAttributes removeObjectForKey:NSForegroundColorAttributeName];
-        if (selectedTintColor != nil) {
-            titleAttributes[NSForegroundColorAttributeName] = selectedTintColor;
-        }
+        NSDictionary *titleAttributes = [self setForeground:selectedTintColor :[self titleTextAttributesForState:UIControlStateSelected]];
         [self setTitleTextAttributes:titleAttributes forState:UIControlStateSelected];
     }
 }
@@ -63,74 +44,46 @@
 - (void)setUnselectedTintColor:(UIColor *)unselectedTintColor
 {
     if (@available(iOS 13.0, *)) {
-        NSMutableDictionary *titleAttributes = [[self titleTextAttributesForState:UIControlStateNormal] mutableCopy];
-        if (titleAttributes == nil) {
-            titleAttributes = @{}.mutableCopy;
-        }
-        [titleAttributes removeObjectForKey:NSForegroundColorAttributeName];
-        if (unselectedTintColor != nil) {
-            titleAttributes[NSForegroundColorAttributeName] = unselectedTintColor;
-        }
+        NSDictionary *titleAttributes = [self setForeground:unselectedTintColor :[self titleTextAttributesForState:UIControlStateNormal]];
         [self setTitleTextAttributes:titleAttributes forState:UIControlStateNormal];
     }
 }
 
-- (void)didSetProps:(NSArray<NSString *> *)changedProps
+-(NSDictionary *)setForeground:(UIColor *)color :(NSDictionary *)attributes
 {
-    BOOL press = self.selectedSegmentIndex != _selectedTab;
-    self.selectedSegmentIndex = _selectedTab;
-    [self selectTab:press];
-}
-
-- (void)scrollToTop
-{
-    UIView *tabBarItem = _selectedTabBarItem.subviews[0];
-    if ([tabBarItem isKindOfClass:[RCTScrollView class]] && _scrollsToTop) {
-        UIScrollView *scrollView = ((RCTScrollView *) tabBarItem).scrollView;
-        [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+    NSMutableDictionary *attributesCopy = [attributes != nil ? attributes : @{} mutableCopy];
+    [attributesCopy removeObjectForKey:NSForegroundColorAttributeName];
+    if (color != nil) {
+        attributesCopy[NSForegroundColorAttributeName] = color;
     }
+    return attributesCopy;
 }
 
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    if (!!self.window) {
-        [self selectTab:_selectedTabBarItem == nil && self.selectedSegmentIndex > 0];
+    for(NSInteger i = 0; !!self.window && i < [self.superview subviews].count; i++) {
+        UIView *view = [self.superview subviews][i];
+        if ([view isKindOfClass:[NVTabBarPagerView class]])
+            [self setupWithPager:(NVTabBarPagerView *) view];
     }
+}
+
+- (void)setupWithPager:(NVTabBarPagerView *)pager
+{
+    _tabBarPager = pager;
+    _tabBarPager.tabChange = self;
+    self.selectedSegmentIndex = pager.selectedTab;
 }
 
 - (void)tabPressed
 {
-    [self selectTab:YES];
+    [_tabBarPager setCurrentTab:self.selectedSegmentIndex];
 }
 
-- (void)selectTab:(BOOL) press
+- (void)tabSelected:(NSInteger)index
 {
-    BOOL tabChanged = press;
-    NSInteger tabBarIndex = [self.superview.subviews indexOfObject:self] + (self.bottomTabs ? -1 : 1);
-    UIView* tabBar = [self.superview.subviews objectAtIndex:tabBarIndex];
-    if (!press) {
-        NSInteger reselectedTab = [tabBar.reactSubviews indexOfObject:_selectedTabBarItem];
-        self.selectedSegmentIndex = reselectedTab != NSNotFound ? reselectedTab : MAX(self.selectedSegmentIndex, 0);
-        tabChanged = _selectedTab != self.selectedSegmentIndex;
-    }
-    if (tabChanged) {
-        _nativeEventCount++;
-        self.onTabSelected(@{
-            @"tab": @(self.selectedSegmentIndex),
-            @"eventCount": @(_nativeEventCount),
-        });
-    }
-    for(NSInteger i = 0; i < [tabBar.reactSubviews count]; i++) {
-        NVTabBarItemView *tabBarItem = (NVTabBarItemView *) [tabBar.reactSubviews objectAtIndex:i];
-        tabBarItem.alpha = (i == self.selectedSegmentIndex ? 1 : 0);
-        if (i == self.selectedSegmentIndex) {
-            _selectedTab = i;
-            _selectedTabBarItem = tabBarItem;
-            if (tabChanged && !!tabBarItem.onPress)
-                tabBarItem.onPress(nil);
-        }
-    }
+    self.selectedSegmentIndex = index;
 }
 
 @end

@@ -45,21 +45,16 @@ class TabBar extends React.Component<any, any> {
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
         var tabViewHeight = !primary ? (titleOnly ? 48 : 72) : 56
         tabViewHeight = Platform.OS === 'android' ? tabViewHeight : 28;
-        var TabBar = (Platform.OS === 'android' || primary) ? NVTabBar : View;
+        var TabBar = (Platform.OS === 'android' || primary) ? NVTabBar : NVTabBarPager;
         var TabView = !primary ? NVTabLayout : NVTabNavigation;
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedTab;
         var tabLayout = (Platform.OS === 'android' || !primary) && (
             <TabView
-                ref={Platform.OS === 'ios' ? this.ref : undefined}
-                bottomTabs={bottomTabs}
-                onTabSelected={this.onTabSelected}
-                selectedTab={this.state.selectedTab}
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
                 titles={tabBarItems.map(({props}: any) => props.title)}
                 scrollable={scrollable}
-                scrollsToTop={scrollsToTop}
                 style={{
                     height: tabViewHeight,
                     backgroundColor: barTintColor
@@ -69,7 +64,7 @@ class TabBar extends React.Component<any, any> {
             <>
                 {!bottomTabs && tabLayout}
                 {!!tabBarItems.length && <TabBar
-                    ref={(Platform.OS === 'android' || primary) ? this.ref : undefined}
+                    ref={this.ref}
                     tabCount={tabBarItems.length}
                     onTabSelected={this.onTabSelected}
                     selectedTab={this.state.selectedTab}
@@ -97,6 +92,7 @@ var NVTabLayout = requireNativeComponent<any>('NVTabLayout', null);
 var NVTabNavigation = requireNativeComponent<any>('NVTabNavigation', null);
 var NVSegmentedTab = requireNativeComponent<any>('NVSegmentedTab', null);
 var NVTabBar = requireNativeComponent<any>('NVTabBar', null);
+var NVTabBarPager = requireNativeComponent<any>('NVTabBarPager', null);
 
 const styles = StyleSheet.create({
     tabBar: {

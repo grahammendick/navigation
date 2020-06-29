@@ -10,8 +10,6 @@ import com.google.android.material.badge.BadgeDrawable;
 public interface TabView {
     void setupWithViewPager(@Nullable ViewPager viewPager);
 
-    int getTabCount();
-
     void setTitle(int index, String title);
 
     void setIcon(int index, Drawable icon);

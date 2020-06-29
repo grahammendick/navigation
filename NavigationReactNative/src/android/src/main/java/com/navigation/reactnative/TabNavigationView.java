@@ -131,11 +131,6 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     };
 
     @Override
-    public int getTabCount() {
-        return getMenu().size();
-    }
-
-    @Override
     public void setTitle(int index, String title) {
         getMenu().getItem(index).setTitle(title);
     }
@@ -152,7 +147,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     @Override
     public void removeBadgeIcon(int index) {
         removeBadge(index);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 && getTouchables().size() > index) {
             BottomNavigationItemView itemView = (BottomNavigationItemView) getTouchables().get(index);
             itemView.getChildAt(0).getOverlay().clear();
         }

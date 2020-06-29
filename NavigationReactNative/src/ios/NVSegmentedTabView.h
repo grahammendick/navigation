@@ -1,13 +1,10 @@
+#import "NVTabBarPagerView.h"
+#import "NVTabBarPagerView.h"
+
 #import <UIKit/UIKit.h>
-#import <React/RCTComponent.h>
 
-@interface NVSegmentedTabView : UISegmentedControl
+@interface NVSegmentedTabView : UISegmentedControl <TabChangeDelegate>
 
-@property (nonatomic, assign) BOOL bottomTabs;
-@property (nonatomic, assign) BOOL scrollsToTop;
-@property (nonatomic, assign) NSInteger mostRecentEventCount;
-@property (nonatomic, copy) RCTDirectEventBlock onTabSelected;
-
--(void)scrollToTop;
+-(void)setupWithPager:(NVTabBarPagerView *) pager;
 
 @end
