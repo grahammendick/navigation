@@ -124,14 +124,19 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     public static class StackFragment extends Fragment {
         private NavigationStackView stack;
 
+        public StackFragment() {
+            super();
+        }
+
         StackFragment(NavigationStackView stack) {
+            super();
             this.stack = stack;
         }
 
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            return stack;
+            return stack != null ? stack : new View(getContext());
         }
     }
 }
