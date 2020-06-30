@@ -61,7 +61,7 @@ class FragmentNavigator extends SceneNavigator {
                 fragmentTransaction.setCustomAnimations(oldCrumb != -1 ? enter : 0, exit, popEnter, popExit);
             }
             SceneFragment fragment = new SceneFragment(scene, getSharedElementSet(stack.sharedElementNames));
-            fragmentTransaction.replace(stack.getChildAt(0).getId(), fragment, key);
+            fragmentTransaction.replace(stack.getId(), fragment, key);
             fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
             fragmentTransaction.commit();
         }
