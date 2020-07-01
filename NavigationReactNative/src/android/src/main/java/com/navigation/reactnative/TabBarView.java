@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.facebook.react.bridge.ReactContext;
@@ -14,20 +15,28 @@ import java.util.List;
 
 public class TabBarView extends ViewGroup {
     List<TabFragment> tabFragments = new ArrayList<>();
+    FragmentManager fragmentManager;
+    int selectedTab = 0;
+    int nativeEventCount;
+    int mostRecentEventCount;
 
     public TabBarView(Context context) {
         super(context);
+        FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
+        fragmentManager = activity != null ? activity.getSupportFragmentManager() : null;
+    }
+
+    void setCurrentTab(int index) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(getId(), tabFragments.get(index), "TabBar" + getId());
+        transaction.commit();
+        selectedTab = index;
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
-        if (activity != null) {
-            FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-            transaction.add(getId(), tabFragments.get(0), "TabBar" + getId());
-            transaction.commit();
-        }
+        setCurrentTab(selectedTab);
     }
 
     void populateTabs() {

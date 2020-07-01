@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.annotations.ReactProp;
 
 public class TabBarManager extends ViewGroupManager<TabBarView> {
 
@@ -19,6 +20,21 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
     @Override
     protected TabBarView createViewInstance(@NonNull ThemedReactContext reactContext) {
         return new TabBarView(reactContext);
+    }
+
+    @ReactProp(name = "selectedTab")
+    public void setSelectedTab(TabBarView view, int selectedTab) {
+        int eventLag = view.nativeEventCount - view.mostRecentEventCount;
+        if (eventLag == 0 && view.selectedTab != selectedTab) {
+            view.selectedTab = selectedTab;
+            if (view.tabFragments.size() > selectedTab)
+                view.setCurrentTab(selectedTab);
+        }
+    }
+
+    @ReactProp(name = "mostRecentEventCount")
+    public void setMostRecentEventCount(TabBarPagerView view, int mostRecentEventCount) {
+        view.mostRecentEventCount = mostRecentEventCount;
     }
 
     @Override
