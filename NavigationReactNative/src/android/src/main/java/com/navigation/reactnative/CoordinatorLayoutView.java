@@ -57,8 +57,8 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
         for(int i = 0; i < getChildCount(); i++) {
             if (getChildAt(i) instanceof ScrollView)
                 return (ScrollView) getChildAt(i);
-            if (getChildAt(i) instanceof TabBarView) {
-                TabBarView tabBarView = ((TabBarView) getChildAt(i));
+            if (getChildAt(i) instanceof TabBarPagerView) {
+                TabBarPagerView tabBarView = ((TabBarPagerView) getChildAt(i));
                 View tab = tabBarView.getTabAt(tabBarView.getCurrentItem());
                 return tab instanceof ScrollView ? (ScrollView) tab : null;
             }
