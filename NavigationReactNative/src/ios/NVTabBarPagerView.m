@@ -66,9 +66,7 @@
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    NVSegmentedTabView *segmentedTab = [self getSegmentedTab];
-    if (!!segmentedTab)
-        segmentedTab.selectedSegmentIndex = _selectedTab;
+    [self getSegmentedTab].selectedSegmentIndex = _selectedTab;
 }
 
 - (NVSegmentedTabView *)getSegmentedTab
