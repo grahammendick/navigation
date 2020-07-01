@@ -1,7 +1,6 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.Menu;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.facebook.react.bridge.ReadableArray;
@@ -37,7 +35,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                 /*if (!autoSelected && viewPager.getCurrentItem() == menuItem.getOrder())
                     ((TabBarPagerView) viewPager).scrollToTop();
                 viewPager.setCurrentItem(menuItem.getOrder(), false);*/
-                if (getTabBar().selectedTab != menuItem.getOrder())
+                if (getTabBar() != null && getTabBar().selectedTab != menuItem.getOrder())
                     getTabBar().setCurrentTab(menuItem.getOrder());
                 return true;
             }
@@ -89,11 +87,6 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
-
-    @Override
-    public void setupWithViewPager(@Nullable ViewPager viewPager) {
-        setSelectedItemId(getTabBar().selectedTab);
-    }
 
     @Override
     public void setTitle(int index, String title) {

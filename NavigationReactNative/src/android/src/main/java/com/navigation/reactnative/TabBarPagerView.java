@@ -55,13 +55,13 @@ public class TabBarPagerView extends ViewPager {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         requestLayout();
-        if (getTabView() != null)
-            getTabView().setupWithViewPager(this);
+        if (getTabLayout() != null)
+            getTabLayout().setupWithViewPager(this);
         populateTabs();
     }
 
     void populateTabs() {
-        TabView tabView = getTabView();
+        TabLayoutView tabView = getTabLayout();
         if (tabView != null && getAdapter() != null) {
             for(int i = 0; i < getAdapter().tabFragments.size(); i++) {
                 getAdapter().tabFragments.get(i).tabBarItem.setTabView(tabView, i);
@@ -69,7 +69,7 @@ public class TabBarPagerView extends ViewPager {
         }
     }
 
-    private TabView getTabView() {
+    private TabLayoutView getTabLayout() {
         ViewGroup parent = (ViewGroup) getParent();
         if (parent instanceof CoordinatorLayout) {
             parent = (ViewGroup) parent.getChildAt(0);
@@ -77,7 +77,7 @@ public class TabBarPagerView extends ViewPager {
         for(int i = 0; parent != null && i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
             if (child instanceof TabView)
-                return (TabView) child;
+                return (TabLayoutView) child;
         }
         return null;
     }
