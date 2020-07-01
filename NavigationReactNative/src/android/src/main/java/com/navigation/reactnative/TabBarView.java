@@ -18,12 +18,12 @@ import java.util.List;
 
 public class TabBarView extends ViewGroup {
     List<TabFragment> tabFragments = new ArrayList<>();
-    FragmentManager fragmentManager;
-    TabFragment selectedTabFragment;
+    private FragmentManager fragmentManager;
+    private TabFragment selectedTabFragment;
     int selectedTab = 0;
     int nativeEventCount;
     int mostRecentEventCount;
-    int selectedIndex = 0;
+    private int selectedIndex = 0;
 
     public TabBarView(Context context) {
         super(context);
