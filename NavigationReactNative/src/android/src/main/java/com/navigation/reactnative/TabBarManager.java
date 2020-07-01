@@ -4,9 +4,12 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+
+import java.util.Map;
 
 public class TabBarManager extends ViewGroupManager<TabBarView> {
 
@@ -33,7 +36,7 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
     }
 
     @ReactProp(name = "mostRecentEventCount")
-    public void setMostRecentEventCount(TabBarPagerView view, int mostRecentEventCount) {
+    public void setMostRecentEventCount(TabBarView view, int mostRecentEventCount) {
         view.mostRecentEventCount = mostRecentEventCount;
     }
 
@@ -55,5 +58,12 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
     @Override
     public void removeViewAt(TabBarView parent, int index) {
         parent.tabFragments.remove(index);
+    }
+
+    @Override
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+                .put("onTabSelected", MapBuilder.of("registrationName", "onTabSelected"))
+                .build();
     }
 }

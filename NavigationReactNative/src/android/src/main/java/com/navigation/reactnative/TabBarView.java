@@ -8,7 +8,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,13 @@ public class TabBarView extends ViewGroup {
     }
 
     void setCurrentTab(int index) {
+        nativeEventCount++;
+        WritableMap event = Arguments.createMap();
+        event.putInt("tab", index);
+        event.putInt("eventCount", nativeEventCount);
+        ReactContext reactContext = (ReactContext) getContext();
+        reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onTabSelected", event);
+        tabFragments.get(index).tabBarItem.pressed();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(getId(), tabFragments.get(index), "TabBar" + getId());
         transaction.commit();
