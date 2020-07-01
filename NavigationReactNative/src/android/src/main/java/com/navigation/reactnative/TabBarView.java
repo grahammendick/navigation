@@ -23,7 +23,7 @@ public class TabBarView extends ViewGroup {
         super.onAttachedToWindow();
         FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-        transaction.add(getId(), tabFragments.get(0));
+        transaction.add(getId(), tabFragments.get(0), "TabBar" + getId());
         transaction.commit();
     }
 
