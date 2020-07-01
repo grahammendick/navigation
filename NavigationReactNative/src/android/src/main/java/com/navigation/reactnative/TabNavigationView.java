@@ -37,7 +37,8 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                 /*if (!autoSelected && viewPager.getCurrentItem() == menuItem.getOrder())
                     ((TabBarPagerView) viewPager).scrollToTop();
                 viewPager.setCurrentItem(menuItem.getOrder(), false);*/
-                getTabBar().setCurrentTab(menuItem.getOrder());
+                if (getTabBar().selectedTab != menuItem.getOrder())
+                    getTabBar().setCurrentTab(menuItem.getOrder());
                 return true;
             }
         });

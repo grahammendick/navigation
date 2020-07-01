@@ -37,10 +37,11 @@ public class TabBarView extends ViewGroup {
         ReactContext reactContext = (ReactContext) getContext();
         reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onTabSelected", event);
         tabFragments.get(index).tabBarItem.pressed();
+        selectedTab = index;
+        getTabNavigation().setSelectedItemId(index);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(getId(), tabFragments.get(index), "TabBar" + getId());
         transaction.commit();
-        selectedTab = index;
     }
 
     @Override
