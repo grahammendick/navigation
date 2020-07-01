@@ -61,6 +61,12 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
     }
 
     @Override
+    protected void onAfterUpdateTransaction(@NonNull TabBarView view) {
+        super.onAfterUpdateTransaction(view);
+        view.onAfterUpdateTransaction();
+    }
+
+    @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
                 .put("onTabSelected", MapBuilder.of("registrationName", "onTabSelected"))

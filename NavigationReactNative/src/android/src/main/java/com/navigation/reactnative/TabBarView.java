@@ -19,30 +19,16 @@ import java.util.List;
 public class TabBarView extends ViewGroup {
     List<TabFragment> tabFragments = new ArrayList<>();
     FragmentManager fragmentManager;
+    TabFragment selectedTabFragment;
     int selectedTab = 0;
     int nativeEventCount;
     int mostRecentEventCount;
+    int selectedIndex = 0;
 
     public TabBarView(Context context) {
         super(context);
         FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
         fragmentManager = activity != null ? activity.getSupportFragmentManager() : null;
-    }
-
-    void setCurrentTab(int index) {
-        nativeEventCount++;
-        WritableMap event = Arguments.createMap();
-        event.putInt("tab", index);
-        event.putInt("eventCount", nativeEventCount);
-        ReactContext reactContext = (ReactContext) getContext();
-        reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onTabSelected", event);
-        tabFragments.get(index).tabBarItem.pressed();
-        selectedTab = index;
-        if (getTabNavigation() != null)
-            getTabNavigation().setSelectedItemId(index);
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(getId(), tabFragments.get(index), "TabBar" + getId());
-        transaction.commit();
     }
 
     @Override
@@ -68,6 +54,35 @@ public class TabBarView extends ViewGroup {
                 return (TabNavigationView) child;
         }
         return null;
+    }
+
+    void onAfterUpdateTransaction() {
+        if (tabFragments.size() == 0)
+            return;
+        if (selectedTabFragment != null) {
+            int reselectedTab = tabFragments.indexOf(selectedTabFragment);
+            selectedTab = reselectedTab != -1 ? reselectedTab : Math.min(selectedTab, tabFragments.size() - 1);
+        }
+        setCurrentTab(selectedTab);
+    }
+
+    void setCurrentTab(int index) {
+        if (index != selectedIndex) {
+            nativeEventCount++;
+            WritableMap event = Arguments.createMap();
+            event.putInt("tab", index);
+            event.putInt("eventCount", nativeEventCount);
+            ReactContext reactContext = (ReactContext) getContext();
+            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onTabSelected", event);
+            tabFragments.get(index).tabBarItem.pressed();
+        }
+        selectedTab = selectedIndex = index;
+        selectedTabFragment = tabFragments.get(index);
+        if (getTabNavigation() != null)
+            getTabNavigation().setSelectedItemId(index);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(getId(), tabFragments.get(index), "TabBar" + getId());
+        transaction.commit();
     }
 
     @Override
