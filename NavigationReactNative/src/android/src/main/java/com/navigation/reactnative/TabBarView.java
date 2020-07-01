@@ -91,8 +91,9 @@ public class TabBarView extends ViewGroup {
         }
         selectedTab = selectedIndex = index;
         selectedTabFragment = tabFragments.get(index);
-        if (getTabNavigation() != null)
-            getTabNavigation().tabSelected(index);
+        TabNavigationView tabNavigation = getTabNavigation();
+        if (tabNavigation != null)
+            tabNavigation.tabSelected(index);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(getId(), tabFragments.get(index));
         transaction.commit();
