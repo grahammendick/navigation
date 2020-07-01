@@ -25,6 +25,10 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
         return new TabBarView(reactContext);
     }
 
+    @ReactProp(name = "tabCount")
+    public void setTabCount(TabBarView view, int tabCount) {
+    }
+
     @ReactProp(name = "selectedTab")
     public void setSelectedTab(TabBarView view, int selectedTab) {
         int eventLag = view.nativeEventCount - view.mostRecentEventCount;
