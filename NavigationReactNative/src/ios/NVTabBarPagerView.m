@@ -94,9 +94,7 @@
             tabBarItem.onPress(nil);
         }
     }
-    NVSegmentedTabView *segmentedTab = [self getSegmentedTab];
-    if (!!segmentedTab)
-        segmentedTab.selectedSegmentIndex = index;
+    [self getSegmentedTab].selectedSegmentIndex = index;
     [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     _selectedTab = _selectedIndex = index;
     _selectedTabView = _tabs[index];
