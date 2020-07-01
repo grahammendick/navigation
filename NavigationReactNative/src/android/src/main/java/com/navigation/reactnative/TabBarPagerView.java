@@ -224,29 +224,6 @@ public class TabBarPagerView extends ViewPager {
         }
     }
 
-    public static class TabFragment extends Fragment {
-        TabBarItemView tabBarItem;
-        View view;
-
-        public TabFragment() {
-            super();
-        }
-
-        TabFragment(TabBarItemView tabBarItem) {
-            super();
-            this.tabBarItem = tabBarItem;
-            view = tabBarItem.content.get(0);
-            if (view instanceof NavigationStackView)
-                ((NavigationStackView) view).onAfterUpdateTransaction();
-        }
-
-        @Nullable
-        @Override
-        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            return view != null ? view : new View(getContext());
-        }
-    }
-
     private class TabChangeListener implements ViewPager.OnPageChangeListener {
 
         @Override
