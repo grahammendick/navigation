@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -24,9 +23,11 @@ public class TabBarView extends ViewGroup {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
-        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-        transaction.add(getId(), tabFragments.get(0), "TabBar" + getId());
-        transaction.commit();
+        if (activity != null) {
+            FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+            transaction.add(getId(), tabFragments.get(0), "TabBar" + getId());
+            transaction.commit();
+        }
     }
 
     void populateTabs() {
