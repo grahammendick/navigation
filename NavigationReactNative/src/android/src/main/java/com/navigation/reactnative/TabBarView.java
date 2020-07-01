@@ -1,10 +1,15 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,6 +25,7 @@ import java.util.List;
 public class TabBarView extends ViewGroup {
     List<TabFragment> tabFragments = new ArrayList<>();
     private FragmentManager fragmentManager;
+    private Fragment fragment;
     private TabFragment selectedTabFragment;
     int selectedTab = 0;
     boolean scrollsToTop;
@@ -30,7 +36,13 @@ public class TabBarView extends ViewGroup {
     public TabBarView(Context context) {
         super(context);
         FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
-        fragmentManager = activity != null ? activity.getSupportFragmentManager() : null;
+        if (activity != null) {
+            fragment = new TabBarFragment(this);
+            FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+            transaction.add(fragment, "TabBar" + getId());
+            transaction.commitNowAllowingStateLoss();
+            fragmentManager = fragment.getChildFragmentManager();
+        }
     }
 
     @Override
@@ -83,7 +95,7 @@ public class TabBarView extends ViewGroup {
         if (getTabNavigation() != null)
             getTabNavigation().tabSelected(index);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(getId(), tabFragments.get(index), "TabBar" + getId());
+        transaction.replace(getId(), tabFragments.get(index));
         transaction.commit();
     }
 
@@ -108,5 +120,24 @@ public class TabBarView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    }
+
+    public static class TabBarFragment extends Fragment {
+        private TabBarView tabBar;
+
+        public TabBarFragment() {
+            super();
+        }
+
+        TabBarFragment(TabBarView tabBar) {
+            super();
+            this.tabBar = tabBar;
+        }
+
+        @Nullable
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            return tabBar != null ? tabBar : new View(getContext());
+        }
     }
 }
