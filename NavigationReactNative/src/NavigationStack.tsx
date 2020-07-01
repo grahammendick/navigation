@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { requireNativeComponent, Platform, StyleSheet, View } from 'react-native';
+import { requireNativeComponent, StyleSheet, View } from 'react-native';
 import { Crumb, State } from 'navigation';
 import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
 import BackButton from './BackButton';
@@ -102,7 +102,6 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 onWillNavigateBack={this.onWillNavigateBack}
                 onDidNavigateBack={this.onDidNavigateBack}>
                 <BackButton onPress={this.handleBack} />
-                {Platform.OS === 'android' && <NVFragmentContainer style={styles.stack} />}
                 <PrimaryStackContext.Provider value={false}>
                     <PopSync<{crumb: number}>
                         data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
@@ -126,7 +125,6 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     }
 };
 
-var NVFragmentContainer = requireNativeComponent<any>('NVFragmentContainer', null);
 var NVNavigationStack = requireNativeComponent<any>('NVNavigationStack', null);
 
 const styles = StyleSheet.create({

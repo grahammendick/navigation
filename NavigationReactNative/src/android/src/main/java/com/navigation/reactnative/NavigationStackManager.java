@@ -68,37 +68,27 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
 
     @Override
     public void addView(NavigationStackView parent, View child, int index) {
-        if (child instanceof FragmentContainerView) {
-            parent.addView(child, index);
-            return;
-        }
         SceneView scene = (SceneView) child;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && index > 0)
             scene.setElevation(getChildAt(parent, index - 1).getElevation() + 1);
-        parent.sceneKeys.add(index - 1, scene.sceneKey);
+        parent.sceneKeys.add(index, scene.sceneKey);
         parent.scenes.put(scene.sceneKey, scene);
     }
 
     @Override
     public void removeViewAt(NavigationStackView parent, int index) {
-        if (index == 0) {
-            parent.removeViewAt(index);
-            return;
-        }
-        String sceneKey = parent.sceneKeys.remove(index - 1);
+        String sceneKey = parent.sceneKeys.remove(index);
         parent.scenes.remove(sceneKey);
     }
 
     @Override
     public int getChildCount(NavigationStackView parent) {
-        return parent.scenes.size() + 1;
+        return parent.scenes.size();
     }
 
     @Override
     public View getChildAt(NavigationStackView parent, int index) {
-        if (index == 0)
-            return parent.getChildAt(index);
-        return parent.scenes.get(parent.sceneKeys.get(index - 1));
+        return parent.scenes.get(parent.sceneKeys.get(index));
     }
 
     @Override
