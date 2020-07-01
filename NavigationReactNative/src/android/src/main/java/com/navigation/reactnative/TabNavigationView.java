@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.google.android.material.badge.BadgeDrawable;
