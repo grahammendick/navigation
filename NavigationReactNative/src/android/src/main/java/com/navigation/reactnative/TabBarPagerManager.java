@@ -44,11 +44,6 @@ public class TabBarPagerManager extends ViewGroupManager<TabBarPagerView> {
     public void setImages(TabBarPagerView view, int tabCount) {
     }
 
-    @ReactProp(name = "swipeable")
-    public void setSwipeable(TabBarPagerView view, boolean swipeable) {
-        view.swipeable = swipeable;
-    }
-
     @ReactProp(name = "scrollsToTop")
     public void setScrollsToTop(TabBarPagerView view, boolean scrollsToTop) {
         view.scrollsToTop = scrollsToTop;

@@ -2,8 +2,6 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +27,6 @@ import java.util.List;
 
 public class TabBarPagerView extends ViewPager {
     int selectedTab = 0;
-    boolean swipeable = true;
     boolean scrollsToTop;
     private boolean layoutRequested = false;
     int nativeEventCount;
@@ -152,22 +149,12 @@ public class TabBarPagerView extends ViewPager {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         try {
-            if (swipeable && super.onInterceptTouchEvent(ev)) {
+            if (super.onInterceptTouchEvent(ev)) {
                 NativeGestureUtil.notifyNativeGestureStarted(this, ev);
                 return true;
             }
         } catch (IllegalArgumentException ignored) {
         }
-        return false;
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        try {
-            return swipeable && super.onTouchEvent(ev);
-        } catch (IllegalArgumentException ignored) {
-        }
-
         return false;
     }
 

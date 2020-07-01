@@ -72,7 +72,6 @@ class TabBar extends React.Component<any, any> {
                     barTintColor={barTintColor}
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}
-                    swipeable={!primary}
                     scrollsToTop={scrollsToTop}
                     style={styles.tabBar}>
                         <BackButton onPress={() => this.changeTab(0)} />
