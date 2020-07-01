@@ -25,7 +25,6 @@ import java.util.List;
 public class TabBarView extends ViewGroup {
     List<TabFragment> tabFragments = new ArrayList<>();
     private FragmentManager fragmentManager;
-    private Fragment fragment;
     private TabFragment selectedTabFragment;
     int selectedTab = 0;
     boolean scrollsToTop;
@@ -37,7 +36,7 @@ public class TabBarView extends ViewGroup {
         super(context);
         FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
         if (activity != null) {
-            fragment = new TabBarFragment(this);
+            Fragment fragment = new TabBarFragment(this);
             FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
             transaction.add(fragment, "TabBar" + getId());
             transaction.commitNowAllowingStateLoss();

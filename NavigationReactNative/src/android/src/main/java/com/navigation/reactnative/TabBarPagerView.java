@@ -2,6 +2,8 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.facebook.react.bridge.Arguments;
@@ -37,7 +40,13 @@ public class TabBarPagerView extends ViewPager {
         super(context);
         addOnPageChangeListener(new TabChangeListener());
         FragmentActivity activity = (FragmentActivity) ((ReactContext) context).getCurrentActivity();
-        Adapter adapter = new Adapter(activity != null ? activity.getSupportFragmentManager() : null);
+        Fragment fragment = new TabBarPagerFragment(this);
+        if (activity != null) {
+            FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+            transaction.add(fragment, "TabBarPager" + getId());
+            transaction.commitNowAllowingStateLoss();
+        }
+        Adapter adapter = new Adapter(fragment.getChildFragmentManager());
         adapter.registerDataSetObserver(new DataSetObserver() {
             @Override
             public void onChanged() {
@@ -233,6 +242,25 @@ public class TabBarPagerView extends ViewPager {
 
         @Override
         public void onPageScrollStateChanged(int state) {
+        }
+    }
+
+    public static class TabBarPagerFragment extends Fragment {
+        private TabBarPagerView tabBarPager;
+
+        public TabBarPagerFragment() {
+            super();
+        }
+
+        TabBarPagerFragment(TabBarPagerView tabBarPager) {
+            super();
+            this.tabBarPager = tabBarPager;
+        }
+
+        @Nullable
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            return tabBarPager != null ? tabBarPager : new View(getContext());
         }
     }
 }
