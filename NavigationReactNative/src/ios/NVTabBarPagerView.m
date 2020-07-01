@@ -66,13 +66,19 @@
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    if (!!self.window) {
-        for(NSInteger i = 0; i < [self.superview subviews].count; i++) {
-            UIView *view = [self.superview subviews][i];
-            if ([view isKindOfClass:[NVSegmentedTabView class]])
-                [((NVSegmentedTabView *) view) setupWithPager:self];
-        }
+    NVSegmentedTabView *segmentedTab = [self getSegmentedTab];
+    if (!!segmentedTab)
+        segmentedTab.selectedSegmentIndex = _selectedTab;
+}
+
+- (NVSegmentedTabView *)getSegmentedTab
+{
+    for(NSInteger i = 0; i < [self.superview subviews].count; i++) {
+        UIView *view = [self.superview subviews][i];
+        if ([view isKindOfClass:[NVSegmentedTabView class]])
+            return (NVSegmentedTabView *) view;
     }
+    return nil;
 }
 
 - (void)setCurrentTab:(NSInteger)index
@@ -88,7 +94,9 @@
             tabBarItem.onPress(nil);
         }
     }
-    [self.tabChange tabSelected:index];
+    NVSegmentedTabView *segmentedTab = [self getSegmentedTab];
+    if (!!segmentedTab)
+        segmentedTab.selectedSegmentIndex = index;
     [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     _selectedTab = _selectedIndex = index;
     _selectedTabView = _tabs[index];

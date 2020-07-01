@@ -3,9 +3,6 @@
 #import "NVTabBarPagerView.h"
 
 @implementation NVSegmentedTabView
-{
-    NVTabBarPagerView *_tabBarPager;
-}
 
 - (id)init
 {
@@ -49,7 +46,7 @@
     }
 }
 
--(NSDictionary *)setForeground:(UIColor *)color :(NSDictionary *)attributes
+- (NSDictionary *)setForeground:(UIColor *)color :(NSDictionary *)attributes
 {
     NSMutableDictionary *attributesCopy = [attributes != nil ? attributes : @{} mutableCopy];
     [attributesCopy removeObjectForKey:NSForegroundColorAttributeName];
@@ -62,28 +59,24 @@
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    for(NSInteger i = 0; !!self.window && i < [self.superview subviews].count; i++) {
-        UIView *view = [self.superview subviews][i];
-        if ([view isKindOfClass:[NVTabBarPagerView class]])
-            [self setupWithPager:(NVTabBarPagerView *) view];
-    }
+    NVTabBarPagerView *tabBarPager = [self getTabBarPager];
+    if (!!tabBarPager)
+        self.selectedSegmentIndex = tabBarPager.selectedTab;
 }
 
-- (void)setupWithPager:(NVTabBarPagerView *)pager
+- (NVTabBarPagerView *)getTabBarPager
 {
-    _tabBarPager = pager;
-    _tabBarPager.tabChange = self;
-    self.selectedSegmentIndex = pager.selectedTab;
+    for(NSInteger i = 0; i < [self.superview subviews].count; i++) {
+        UIView *view = [self.superview subviews][i];
+        if ([view isKindOfClass:[NVTabBarPagerView class]])
+            return (NVTabBarPagerView *) view;
+    }
+    return nil;
 }
 
 - (void)tabPressed
 {
-    [_tabBarPager setCurrentTab:self.selectedSegmentIndex];
-}
-
-- (void)tabSelected:(NSInteger)index
-{
-    self.selectedSegmentIndex = index;
+    [[self getTabBarPager] setCurrentTab:self.selectedSegmentIndex];
 }
 
 @end
