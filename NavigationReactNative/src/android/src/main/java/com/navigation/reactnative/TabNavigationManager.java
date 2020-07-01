@@ -4,6 +4,7 @@ import android.content.res.ColorStateList;
 
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -16,6 +17,11 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
     @Override
     public String getName() {
         return "NVTabNavigation";
+    }
+
+    @ReactProp(name = "titles")
+    public void setTitles(TabNavigationView view, ReadableArray titles) {
+        view.setTitles(titles);
     }
 
     @ReactProp(name = "bottomTabs")

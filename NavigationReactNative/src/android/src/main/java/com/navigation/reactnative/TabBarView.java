@@ -1,8 +1,10 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -25,6 +27,25 @@ public class TabBarView extends ViewGroup {
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
         transaction.add(getId(), tabFragments.get(0), "TabBar" + getId());
         transaction.commit();
+    }
+
+    void populateTabs() {
+        TabNavigationView tabNavigation = getTabNavigation();
+        if (tabNavigation != null) {
+            for(int i = 0; i < tabFragments.size(); i++) {
+                tabFragments.get(i).tabBarItem.setTabView(tabNavigation, i);
+            }
+        }
+    }
+
+    private TabNavigationView getTabNavigation() {
+        ViewGroup parent = (ViewGroup) getParent();
+        for(int i = 0; parent != null && i < parent.getChildCount(); i++) {
+            View child = parent.getChildAt(i);
+            if (child instanceof TabNavigationView)
+                return (TabNavigationView) child;
+        }
+        return null;
     }
 
     @Override

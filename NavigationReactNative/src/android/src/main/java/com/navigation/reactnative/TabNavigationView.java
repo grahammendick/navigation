@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.facebook.react.bridge.ReadableArray;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -35,21 +36,28 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         selectedTintColor = unselectedTintColor = defaultTextColor = tabLayout.defaultTextColor;
     }
 
+    void setTitles(ReadableArray titles) {
+        getMenu().clear();
+        for(int i = 0; i < titles.size(); i++) {
+            getMenu().add(Menu.NONE, i, i, titles.getString(i));
+        }
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        TabBarPagerView tabBar = getTabBar();
+        TabBarView tabBar = getTabBar();
         if (bottomTabs && tabBar != null) {
-            setupWithViewPager(tabBar);
+            //setupWithViewPager(tabBar);
             tabBar.populateTabs();
         }
     }
 
-    private TabBarPagerView getTabBar() {
+    private TabBarView getTabBar() {
         for(int i = 0; getParent() != null && i < ((ViewGroup) getParent()).getChildCount(); i++) {
             View child = ((ViewGroup) getParent()).getChildAt(i);
-            if (child instanceof TabBarPagerView)
-                return (TabBarPagerView) child;
+            if (child instanceof TabBarView)
+                return (TabBarView) child;
         }
         return null;
     }
