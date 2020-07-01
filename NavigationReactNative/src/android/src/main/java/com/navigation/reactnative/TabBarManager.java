@@ -25,10 +25,6 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
         return new TabBarView(reactContext);
     }
 
-    @ReactProp(name = "tabCount")
-    public void setTabCount(TabBarView view, int tabCount) {
-    }
-
     @ReactProp(name = "selectedTab")
     public void setSelectedTab(TabBarView view, int selectedTab) {
         int eventLag = view.nativeEventCount - view.mostRecentEventCount;
@@ -42,6 +38,15 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(TabBarView view, int mostRecentEventCount) {
         view.mostRecentEventCount = mostRecentEventCount;
+    }
+
+    @ReactProp(name = "tabCount")
+    public void setTabCount(TabBarView view, int tabCount) {
+    }
+
+    @ReactProp(name = "scrollsToTop")
+    public void setScrollsToTop(TabBarView view, boolean scrollsToTop) {
+        view.scrollsToTop = scrollsToTop;
     }
 
     @Override

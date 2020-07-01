@@ -22,6 +22,7 @@ public class TabBarView extends ViewGroup {
     private FragmentManager fragmentManager;
     private TabFragment selectedTabFragment;
     int selectedTab = 0;
+    boolean scrollsToTop;
     int nativeEventCount;
     int mostRecentEventCount;
     private int selectedIndex = 0;
@@ -87,8 +88,8 @@ public class TabBarView extends ViewGroup {
     }
 
     void scrollToTop() {
-        //if (!scrollsToTop)
-          //  return;
+        if (!scrollsToTop)
+            return;
         View tabBarItem = tabFragments.get(selectedTab).tabBarItem.content.get(0);
         if (tabBarItem instanceof ViewGroup) {
             ViewGroup viewGroup = (ViewGroup) tabBarItem;
