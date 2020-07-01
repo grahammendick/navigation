@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -79,10 +80,29 @@ public class TabBarView extends ViewGroup {
         selectedTab = selectedIndex = index;
         selectedTabFragment = tabFragments.get(index);
         if (getTabNavigation() != null)
-            getTabNavigation().setSelectedItemId(index);
+            getTabNavigation().tabSelected(index);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(getId(), tabFragments.get(index), "TabBar" + getId());
         transaction.commit();
+    }
+
+    void scrollToTop() {
+        //if (!scrollsToTop)
+          //  return;
+        View tabBarItem = tabFragments.get(selectedTab).tabBarItem.content.get(0);
+        if (tabBarItem instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) tabBarItem;
+            for(int i = 0; i < viewGroup.getChildCount(); i++) {
+                if (viewGroup.getChildAt(i) instanceof NavigationBarView)
+                    ((NavigationBarView) viewGroup.getChildAt(i)).setExpanded(true);
+                if (viewGroup.getChildAt(i) instanceof ScrollView)
+                    ((ScrollView) viewGroup.getChildAt(i)).smoothScrollTo(0,0);
+                if (viewGroup.getChildAt(i) instanceof TabBarPagerView)
+                    ((TabBarPagerView) viewGroup.getChildAt(i)).scrollToTop();
+            }
+        }
+        if (tabBarItem instanceof ScrollView)
+            ((ScrollView) tabBarItem).smoothScrollTo(0, 0);
     }
 
     @Override

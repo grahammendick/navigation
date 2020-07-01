@@ -21,6 +21,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     int selectedTintColor;
     int unselectedTintColor;
     private boolean layoutRequested = false;
+    private boolean autoSelected = false;
 
     public TabNavigationView(Context context) {
         super(context);
@@ -30,11 +31,11 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         setOnNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                /*if (!autoSelected && viewPager.getCurrentItem() == menuItem.getOrder())
-                    ((TabBarPagerView) viewPager).scrollToTop();
-                viewPager.setCurrentItem(menuItem.getOrder(), false);*/
-                if (getTabBar() != null && getTabBar().selectedTab != menuItem.getOrder())
-                    getTabBar().setCurrentTab(menuItem.getOrder());
+                TabBarView tabBar = getTabBar();
+                if (!autoSelected && tabBar != null && tabBar.selectedTab == menuItem.getOrder())
+                    tabBar.scrollToTop();
+                if (tabBar != null && tabBar.selectedTab != menuItem.getOrder())
+                    tabBar.setCurrentTab(menuItem.getOrder());
                 return true;
             }
         });
@@ -52,7 +53,9 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         super.onAttachedToWindow();
         TabBarView tabBar = getTabBar();
         if (bottomTabs && tabBar != null) {
+            autoSelected = true;
             setSelectedItemId(tabBar.selectedTab);
+            autoSelected = false;
             tabBar.populateTabs();
         }
     }
@@ -64,6 +67,12 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                 return (TabBarView) child;
         }
         return null;
+    }
+
+    void tabSelected(int index) {
+        autoSelected = true;
+        setSelectedItemId(index);
+        autoSelected = false;
     }
 
     @Override
