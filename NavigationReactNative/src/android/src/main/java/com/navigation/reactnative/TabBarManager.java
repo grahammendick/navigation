@@ -77,6 +77,7 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
 
     @Override
     public void onDropViewInstance(@NonNull TabBarView view) {
+        view.removeFragment();
         super.onDropViewInstance(view);
     }
 
