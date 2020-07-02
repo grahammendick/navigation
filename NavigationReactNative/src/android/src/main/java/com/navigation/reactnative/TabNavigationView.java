@@ -42,10 +42,12 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     }
 
     void setTitles(ReadableArray titles) {
+        int selectedIndex = getSelectedItemId();
         getMenu().clear();
         for(int i = 0; i < titles.size(); i++) {
             getMenu().add(Menu.NONE, i, i, titles.getString(i));
         }
+        setSelectedItemId(selectedIndex);
         TabBarView tabBar = getTabBar();
         if (tabBar != null)
             tabBar.populateTabs();
