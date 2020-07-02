@@ -92,7 +92,7 @@ public class TabBarPagerView extends ViewPager {
     void scrollToTop() {
         if (!scrollsToTop)
             return;
-        View tabBarItem = getTabAt(getCurrentItem()).content.get(0);
+        View tabBarItem = getTabAt(getCurrentItem());
         if (tabBarItem instanceof ViewGroup) {
             ViewGroup viewGroup = (ViewGroup) tabBarItem;
             for(int i = 0; i < viewGroup.getChildCount(); i++) {
@@ -138,8 +138,8 @@ public class TabBarPagerView extends ViewPager {
         return getAdapter() != null ? getAdapter().tabFragments.size() : 0;
     }
 
-    TabBarItemView getTabAt(int index) {
-        return getAdapter() != null ? getAdapter().tabFragments.get(index).tabBarItem : null;
+    View getTabAt(int index) {
+        return getAdapter() != null ? getAdapter().tabFragments.get(index).tabBarItem.content.get(0) : null;
     }
 
     void addTab(TabBarItemView tab, int index) {
