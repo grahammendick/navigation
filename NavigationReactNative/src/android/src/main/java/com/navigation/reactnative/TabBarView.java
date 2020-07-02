@@ -49,6 +49,7 @@ public class TabBarView extends ViewGroup {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         setCurrentTab(selectedTab);
+        populateTabs();
     }
 
     void populateTabs() {
