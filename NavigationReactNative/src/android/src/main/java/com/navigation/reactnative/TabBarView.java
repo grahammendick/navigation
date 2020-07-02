@@ -54,6 +54,8 @@ public class TabBarView extends ViewGroup {
     void populateTabs() {
         TabNavigationView tabNavigation = getTabNavigation();
         if (tabNavigation != null) {
+            if (tabNavigation.getMenu().size() != tabFragments.size())
+                return;
             for(int i = 0; i < tabFragments.size(); i++) {
                 tabFragments.get(i).tabBarItem.setTabView(tabNavigation, i);
             }
@@ -73,6 +75,7 @@ public class TabBarView extends ViewGroup {
     void onAfterUpdateTransaction() {
         if (tabFragments.size() == 0)
             return;
+        populateTabs();
         if (selectedTabFragment != null) {
             int reselectedTab = tabFragments.indexOf(selectedTabFragment);
             selectedTab = reselectedTab != -1 ? reselectedTab : Math.min(selectedTab, tabFragments.size() - 1);

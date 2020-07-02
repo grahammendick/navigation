@@ -46,6 +46,9 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         for(int i = 0; i < titles.size(); i++) {
             getMenu().add(Menu.NONE, i, i, titles.getString(i));
         }
+        TabBarView tabBar = getTabBar();
+        if (tabBar != null)
+            tabBar.populateTabs();
     }
 
     @Override
