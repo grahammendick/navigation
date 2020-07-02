@@ -10,7 +10,6 @@ RCT_EXPORT_MODULE()
     return [[NVSegmentedTabView alloc] init];
 }
 
-RCT_EXPORT_VIEW_PROPERTY(bottomTabs, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(backgroundColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(selectedTintColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(unselectedTintColor, UIColor)

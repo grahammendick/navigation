@@ -1,7 +1,6 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.Menu;
@@ -10,10 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
+import com.facebook.react.bridge.ReadableArray;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,8 +20,6 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
-    private ViewPager.OnPageChangeListener pageChangeListener;
-    private DataSetObserver dataSetObserver;
     private boolean layoutRequested = false;
     private boolean autoSelected = false;
 
@@ -33,6 +28,29 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         setBackground(null);
         TabLayoutView tabLayout = new TabLayoutView(context);
         selectedTintColor = unselectedTintColor = defaultTextColor = tabLayout.defaultTextColor;
+        setOnNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                TabBarView tabBar = getTabBar();
+                if (!autoSelected && tabBar != null && tabBar.selectedTab == menuItem.getOrder())
+                    tabBar.scrollToTop();
+                if (tabBar != null && tabBar.selectedTab != menuItem.getOrder())
+                    tabBar.setCurrentTab(menuItem.getOrder());
+                return true;
+            }
+        });
+    }
+
+    void setTitles(ReadableArray titles) {
+        int selectedIndex = getSelectedItemId();
+        getMenu().clear();
+        for(int i = 0; i < titles.size(); i++) {
+            getMenu().add(Menu.NONE, i, i, titles.getString(i));
+        }
+        setSelectedItemId(selectedIndex);
+        TabBarView tabBar = getTabBar();
+        if (tabBar != null)
+            tabBar.populateTabs();
     }
 
     @Override
@@ -40,7 +58,9 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         super.onAttachedToWindow();
         TabBarView tabBar = getTabBar();
         if (bottomTabs && tabBar != null) {
-            setupWithViewPager(tabBar);
+            autoSelected = true;
+            setSelectedItemId(tabBar.selectedTab);
+            autoSelected = false;
             tabBar.populateTabs();
         }
     }
@@ -54,60 +74,10 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         return null;
     }
 
-    @Override
-    public void setupWithViewPager(@Nullable final ViewPager viewPager) {
-        if (viewPager != null && viewPager.getAdapter() != null) {
-            final PagerAdapter pagerAdapter = viewPager.getAdapter();
-            buildMenu(pagerAdapter);
-            setOnNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    if (!autoSelected && viewPager.getCurrentItem() == menuItem.getOrder())
-                        ((TabBarView) viewPager).scrollToTop();
-                    viewPager.setCurrentItem(menuItem.getOrder(), false);
-                    return true;
-                }
-            });
-            if (pageChangeListener != null)
-                viewPager.removeOnPageChangeListener(pageChangeListener);
-            pageChangeListener = new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    autoSelected = true;
-                    setSelectedItemId(position);
-                    autoSelected = false;
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-                }
-            };
-            viewPager.addOnPageChangeListener(pageChangeListener);
-            if (dataSetObserver != null)
-                pagerAdapter.unregisterDataSetObserver(dataSetObserver);
-            dataSetObserver = new DataSetObserver() {
-                @Override
-                public void onChanged() {
-                    buildMenu(pagerAdapter);
-                    setSelectedItemId(viewPager.getCurrentItem());
-                }
-            };
-            pagerAdapter.registerDataSetObserver(dataSetObserver);
-            autoSelected = true;
-            setSelectedItemId(viewPager.getCurrentItem());
-            autoSelected = false;
-        }
-    }
-
-    private void buildMenu(PagerAdapter pagerAdapter) {
-        getMenu().clear();
-        for (int i = 0; i < pagerAdapter.getCount(); i++) {
-            getMenu().add(Menu.NONE, i, i, pagerAdapter.getPageTitle(i));
-        }
+    void tabSelected(int index) {
+        autoSelected = true;
+        setSelectedItemId(index);
+        autoSelected = false;
     }
 
     @Override

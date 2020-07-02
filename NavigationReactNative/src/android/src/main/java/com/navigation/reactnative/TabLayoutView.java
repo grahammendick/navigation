@@ -37,18 +37,18 @@ public class TabLayoutView extends TabLayout implements TabView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        TabBarView tabBar = getTabBar();
+        TabBarPagerView tabBar = getTabBar();
         if (bottomTabs && tabBar != null) {
             setupWithViewPager(tabBar);
             tabBar.populateTabs();
         }
     }
 
-    private TabBarView getTabBar() {
+    private TabBarPagerView getTabBar() {
         for(int i = 0; getParent() != null && i < ((ViewGroup) getParent()).getChildCount(); i++) {
             View child = ((ViewGroup) getParent()).getChildAt(i);
-            if (child instanceof TabBarView)
-                return (TabBarView) child;
+            if (child instanceof TabBarPagerView)
+                return (TabBarPagerView) child;
         }
         return null;
     }
@@ -70,7 +70,7 @@ public class TabLayoutView extends TabLayout implements TabView {
             @Override
             public void onTabReselected(Tab tab) {
                 if (viewPager != null)
-                    ((TabBarView) viewPager).scrollToTop();
+                    ((TabBarPagerView) viewPager).scrollToTop();
             }
         };
         addOnTabSelectedListener(tabSelectedListener);
