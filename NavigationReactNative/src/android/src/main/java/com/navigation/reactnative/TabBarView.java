@@ -53,12 +53,10 @@ public class TabBarView extends ViewGroup {
 
     void populateTabs() {
         TabNavigationView tabNavigation = getTabNavigation();
-        if (tabNavigation != null) {
-            if (tabNavigation.getMenu().size() != tabFragments.size())
-                return;
-            for(int i = 0; i < tabFragments.size(); i++) {
-                tabFragments.get(i).tabBarItem.setTabView(tabNavigation, i);
-            }
+        if (tabNavigation == null || tabNavigation.getMenu().size() != tabFragments.size())
+            return;
+        for(int i = 0; i < tabFragments.size(); i++) {
+            tabFragments.get(i).tabBarItem.setTabView(tabNavigation, i);
         }
     }
 
