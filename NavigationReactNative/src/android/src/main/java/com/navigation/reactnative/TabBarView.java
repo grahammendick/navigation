@@ -26,6 +26,7 @@ public class TabBarView extends ViewGroup {
     List<TabFragment> tabFragments = new ArrayList<>();
     private FragmentManager fragmentManager;
     private TabFragment selectedTabFragment;
+    private Fragment fragment;
     int selectedTab = 0;
     boolean scrollsToTop;
     int nativeEventCount;
@@ -36,7 +37,7 @@ public class TabBarView extends ViewGroup {
         super(context);
         FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
         if (activity != null) {
-            Fragment fragment = new TabBarFragment(this);
+            fragment = new TabBarFragment(this);
             FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
             transaction.add(fragment, "TabBar" + getId());
             transaction.commitNowAllowingStateLoss();
@@ -116,6 +117,16 @@ public class TabBarView extends ViewGroup {
         }
         if (tabBarItem instanceof ScrollView)
             ((ScrollView) tabBarItem).smoothScrollTo(0, 0);
+    }
+
+    void removeFragment() {
+        FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
+        if (activity != null && fragment != null) {
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.remove(fragment);
+            fragmentTransaction.commitAllowingStateLoss();
+        }
     }
 
     @Override

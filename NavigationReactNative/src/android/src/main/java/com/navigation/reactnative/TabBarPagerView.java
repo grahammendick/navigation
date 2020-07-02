@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TabBarPagerView extends ViewPager {
+    private Fragment fragment;
     int selectedTab = 0;
     boolean scrollsToTop;
     private boolean layoutRequested = false;
@@ -40,7 +41,7 @@ public class TabBarPagerView extends ViewPager {
         super(context);
         addOnPageChangeListener(new TabChangeListener());
         FragmentActivity activity = (FragmentActivity) ((ReactContext) context).getCurrentActivity();
-        Fragment fragment = new TabBarPagerFragment(this);
+        fragment = new TabBarPagerFragment(this);
         if (activity != null) {
             FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
             transaction.add(fragment, "TabBarPager" + getId());
@@ -165,6 +166,16 @@ public class TabBarPagerView extends ViewPager {
         } catch (IllegalArgumentException ignored) {
         }
         return false;
+    }
+
+    void removeFragment() {
+        FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
+        if (activity != null && fragment != null) {
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.remove(fragment);
+            fragmentTransaction.commitAllowingStateLoss();
+        }
     }
 
     private class Adapter extends FragmentPagerAdapter {

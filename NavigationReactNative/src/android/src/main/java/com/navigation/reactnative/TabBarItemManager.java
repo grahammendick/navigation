@@ -56,13 +56,23 @@ public class TabBarItemManager extends ViewGroupManager<TabBarItemView> {
     }
 
     @Override
+    public int getChildCount(TabBarItemView parent) {
+        return parent.content.size();
+    }
+
+    @Override
+    public View getChildAt(TabBarItemView parent, int index) {
+        return parent.content.get(index);
+    }
+
+    @Override
     public void addView(TabBarItemView parent, View child, int index) {
         parent.content.add(index, child);
     }
 
     @Override
-    public void removeView(TabBarItemView parent, View view) {
-        parent.content.remove(view);
+    public void removeViewAt(TabBarItemView parent, int index) {
+        parent.content.remove(index);
     }
 }
 

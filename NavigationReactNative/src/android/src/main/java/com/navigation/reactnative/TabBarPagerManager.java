@@ -2,6 +2,8 @@ package com.navigation.reactnative;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -80,5 +82,11 @@ public class TabBarPagerManager extends ViewGroupManager<TabBarPagerView> {
     protected void onAfterUpdateTransaction(@Nonnull TabBarPagerView view) {
         super.onAfterUpdateTransaction(view);
         view.populateTabs();
+    }
+
+    @Override
+    public void onDropViewInstance(@NonNull TabBarPagerView view) {
+        view.removeFragment();
+        super.onDropViewInstance(view);
     }
 }
