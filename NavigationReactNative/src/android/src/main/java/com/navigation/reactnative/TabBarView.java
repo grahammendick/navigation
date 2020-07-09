@@ -106,8 +106,17 @@ public class TabBarView extends ViewGroup {
         if (!scrollsToTop)
             return;
         View tabBarItem = tabFragments.get(selectedTab).tabBarItem.content.get(0);
-        if (tabBarItem instanceof CoordinatorLayoutView)
-            ((CoordinatorLayoutView) tabBarItem).scrollToTop();
+        if (tabBarItem instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) tabBarItem;
+            for(int i = 0; i < viewGroup.getChildCount(); i++) {
+                if (viewGroup.getChildAt(i) instanceof NavigationBarView)
+                    ((NavigationBarView) viewGroup.getChildAt(i)).setExpanded(true);
+                if (viewGroup.getChildAt(i) instanceof ScrollView)
+                    ((ScrollView) viewGroup.getChildAt(i)).smoothScrollTo(0,0);
+                if (viewGroup.getChildAt(i) instanceof TabBarPagerView)
+                    ((TabBarPagerView) viewGroup.getChildAt(i)).scrollToTop();
+            }
+        }
         if (tabBarItem instanceof ScrollView)
             ((ScrollView) tabBarItem).smoothScrollTo(0, 0);
         if (tabBarItem instanceof NavigationStackView)
