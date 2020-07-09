@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,9 +17,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.facebook.react.bridge.LifecycleEventListener;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,6 +96,26 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         ((ThemedReactContext) getContext()).removeLifecycleEventListener(this);
+    }
+
+    void scrollToTop() {
+        if (keys.size() > 1) {
+            ReactContext reactContext = (ReactContext) getContext();
+            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onNavigateToTop", null);
+        }
+        if (keys.size() == 1) {
+            SceneView scene = scenes.get(keys.getString(0));
+            for (int i = 0; i < scene.getChildCount(); i++) {
+                if (scene.getChildAt(i) instanceof CoordinatorLayoutView)
+                    ((CoordinatorLayoutView) scene.getChildAt(i)).scrollToTop();
+                if (scene.getChildAt(i) instanceof NavigationBarView)
+                    ((NavigationBarView) scene.getChildAt(i)).setExpanded(true);
+                if (scene.getChildAt(i) instanceof ScrollView)
+                    ((ScrollView) scene.getChildAt(i)).smoothScrollTo(0, 0);
+                if (scene.getChildAt(i) instanceof TabBarPagerView)
+                    ((TabBarPagerView) scene.getChildAt(i)).scrollToTop();
+            }
+        }
     }
 
     void removeFragment() {

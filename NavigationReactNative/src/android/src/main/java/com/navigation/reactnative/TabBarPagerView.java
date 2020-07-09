@@ -106,6 +106,8 @@ public class TabBarPagerView extends ViewPager {
         }
         if (tabBarItem instanceof ScrollView)
             ((ScrollView) tabBarItem).smoothScrollTo(0, 0);
+        if (tabBarItem instanceof NavigationStackView)
+            ((NavigationStackView) tabBarItem).scrollToTop();
     }
 
     @Override
