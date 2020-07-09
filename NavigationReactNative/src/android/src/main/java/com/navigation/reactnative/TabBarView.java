@@ -110,6 +110,8 @@ public class TabBarView extends ViewGroup {
             ((CoordinatorLayoutView) tabBarItem).scrollToTop();
         if (tabBarItem instanceof ScrollView)
             ((ScrollView) tabBarItem).smoothScrollTo(0, 0);
+        if (tabBarItem instanceof NavigationStackView)
+            ((NavigationStackView) tabBarItem).scrollToTop();
     }
 
     void removeFragment() {

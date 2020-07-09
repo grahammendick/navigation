@@ -6,9 +6,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -101,5 +104,12 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     public void onDropViewInstance(@NonNull NavigationStackView view) {
         view.removeFragment();
         super.onDropViewInstance(view);
+    }
+
+    @Override
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+                .put("onNavigateToTop", MapBuilder.of("registrationName", "onNavigateToTop"))
+                .build();
     }
 }

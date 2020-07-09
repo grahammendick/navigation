@@ -16,9 +16,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.facebook.react.bridge.LifecycleEventListener;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,6 +95,13 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         ((ThemedReactContext) getContext()).removeLifecycleEventListener(this);
+    }
+
+    void scrollToTop() {
+        if (keys.size() > 1) {
+            ReactContext reactContext = (ReactContext) getContext();
+            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onNavigateToTop", null);
+        }
     }
 
     void removeFragment() {
