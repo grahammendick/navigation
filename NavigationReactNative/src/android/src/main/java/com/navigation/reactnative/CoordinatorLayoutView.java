@@ -53,6 +53,17 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
         }
     };
 
+    void scrollToTop() {
+        for(int i = 0; i < getChildCount(); i++) {
+            if (getChildAt(i) instanceof NavigationBarView)
+                ((NavigationBarView) getChildAt(i)).setExpanded(true);
+            if (getChildAt(i) instanceof ScrollView)
+                ((ScrollView) getChildAt(i)).smoothScrollTo(0,0);
+            if (getChildAt(i) instanceof TabBarPagerView)
+                ((TabBarPagerView) getChildAt(i)).scrollToTop();
+        }
+    }
+
     ScrollView getScrollView() {
         for(int i = 0; i < getChildCount(); i++) {
             if (getChildAt(i) instanceof ScrollView)
