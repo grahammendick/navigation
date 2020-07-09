@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -101,6 +102,16 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         if (keys.size() > 1) {
             ReactContext reactContext = (ReactContext) getContext();
             reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onNavigateToTop", null);
+        }
+        if (keys.size() == 1) {
+            SceneView scene = scenes.get(keys.getString(0));
+            View sceneItem = scene.getChildAt(0);
+            if (sceneItem instanceof CoordinatorLayoutView)
+                ((CoordinatorLayoutView) sceneItem).scrollToTop();
+            if (sceneItem instanceof ScrollView)
+                ((ScrollView) sceneItem).smoothScrollTo(0,0);
+            if (sceneItem instanceof TabBarPagerView)
+                ((TabBarPagerView) sceneItem).scrollToTop();
         }
     }
 
