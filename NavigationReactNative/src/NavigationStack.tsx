@@ -19,6 +19,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         this.handleBack = this.handleBack.bind(this);
         this.onWillNavigateBack = this.onWillNavigateBack.bind(this);
         this.onDidNavigateBack = this.onDidNavigateBack.bind(this);
+        this.onNavigateToTop = this.onNavigateToTop.bind(this);
     }
     static defaultProps = {
         fragmentMode: true,
@@ -55,6 +56,12 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         this.ref.current.setNativeProps({mostRecentEventCount});
         if (this.resumeNavigation)
             this.resumeNavigation();
+    }
+    onNavigateToTop() {
+        var {stateNavigator} = this.props;
+        var {crumbs} = stateNavigator.stateContext;
+        if (crumbs.length > 0)
+            stateNavigator.navigateBack(crumbs.length);
     }
     handleBack() {
         var {primary, fragmentMode} = this.props;
@@ -100,7 +107,8 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 style={[styles.stack, fragmentMode ? {backgroundColor: '#000'} : null]}
                 {...this.getAnimation()}
                 onWillNavigateBack={this.onWillNavigateBack}
-                onDidNavigateBack={this.onDidNavigateBack}>
+                onDidNavigateBack={this.onDidNavigateBack}
+                onNavigateToTop={this.onNavigateToTop}>
                 <BackButton onPress={this.handleBack} />
                 <PrimaryStackContext.Provider value={false}>
                     <PopSync<{crumb: number}>
