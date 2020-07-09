@@ -105,13 +105,16 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         }
         if (keys.size() == 1) {
             SceneView scene = scenes.get(keys.getString(0));
-            View sceneItem = scene.getChildAt(0);
-            if (sceneItem instanceof CoordinatorLayoutView)
-                ((CoordinatorLayoutView) sceneItem).scrollToTop();
-            if (sceneItem instanceof ScrollView)
-                ((ScrollView) sceneItem).smoothScrollTo(0,0);
-            if (sceneItem instanceof TabBarPagerView)
-                ((TabBarPagerView) sceneItem).scrollToTop();
+            for (int i = 0; i < scene.getChildCount(); i++) {
+                if (scene.getChildAt(i) instanceof CoordinatorLayoutView)
+                    ((CoordinatorLayoutView) scene.getChildAt(i)).scrollToTop();
+                if (scene.getChildAt(i) instanceof NavigationBarView)
+                    ((NavigationBarView) scene.getChildAt(i)).setExpanded(true);
+                if (scene.getChildAt(i) instanceof ScrollView)
+                    ((ScrollView) scene.getChildAt(i)).smoothScrollTo(0, 0);
+                if (scene.getChildAt(i) instanceof TabBarPagerView)
+                    ((TabBarPagerView) scene.getChildAt(i)).scrollToTop();
+            }
         }
     }
 
