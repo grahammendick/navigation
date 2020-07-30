@@ -80,6 +80,8 @@ public class TabBarPagerView extends ViewPager {
         ViewGroup parent = (ViewGroup) getParent();
         if (parent instanceof CoordinatorLayout) {
             parent = (ViewGroup) parent.getChildAt(0);
+            if (parent.getChildAt(0) instanceof CollapsingBarView)
+                parent = (ViewGroup) parent.getChildAt(0);
         }
         for(int i = 0; parent != null && i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);

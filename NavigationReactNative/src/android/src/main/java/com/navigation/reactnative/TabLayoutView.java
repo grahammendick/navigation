@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -9,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
 
@@ -32,6 +34,14 @@ public class TabLayoutView extends TabLayout implements TabView {
 
     public void setScrollable(boolean scrollable) {
         setTabMode(scrollable ? TabLayout.MODE_SCROLLABLE : TabLayout.MODE_FIXED);
+    }
+
+    @Override
+    public void setLayoutParams(ViewGroup.LayoutParams params) {
+        super.setLayoutParams(params);
+        if (params instanceof CollapsingToolbarLayout.LayoutParams) {
+            ((CollapsingToolbarLayout.LayoutParams) params).gravity = Gravity.BOTTOM;
+        }
     }
 
     @Override

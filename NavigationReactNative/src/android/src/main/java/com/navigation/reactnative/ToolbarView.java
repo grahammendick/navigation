@@ -40,6 +40,7 @@ public class ToolbarView extends Toolbar {
     private IconResolver.IconResolverListener navIconResolverListener;
     private IconResolver.IconResolverListener overflowIconResolverListener;
     private boolean layoutRequested = false;
+    int marginBottom = 0;
 
     public ToolbarView(Context context) {
         super(context);

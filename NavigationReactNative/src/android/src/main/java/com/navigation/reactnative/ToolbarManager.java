@@ -1,5 +1,6 @@
 package com.navigation.reactnative;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableArray;
@@ -78,6 +79,11 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         view.getLayoutParams().height = (int) PixelUtil.toPixelFromDIP(height);
     }
 
+    @ReactProp(name = "marginBottom")
+    public void setMarginBottom(ToolbarView view, double marginBottom) {
+        view.marginBottom = (int) PixelUtil.toPixelFromDIP(marginBottom);
+    }
+
     @ReactProp(name = "pin")
     public void setPin(ToolbarView view, boolean pin) {
         if (pin) {
@@ -89,6 +95,13 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
             params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
             view.setLayoutParams(params);
         }
+    }
+
+    @Override
+    protected void onAfterUpdateTransaction(@NonNull ToolbarView view) {
+        super.onAfterUpdateTransaction(view);
+        if (view.getLayoutParams() instanceof CollapsingToolbarLayout.LayoutParams)
+            ((CollapsingToolbarLayout.LayoutParams) view.getLayoutParams()).setMargins(0, 0, 0, view.marginBottom);
     }
 
     @Override
