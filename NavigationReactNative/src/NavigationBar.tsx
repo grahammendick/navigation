@@ -31,6 +31,7 @@ class NavigationBar extends React.Component<any, any> {
             ), []);
         var collapsingBar = childrenArray.find(({type}) => type === CollapsingBar);
         var tabBar = childrenArray.find(({type}) => type === TabBar);
+        var marginBottom = (collapsingBar && tabBar) ? (tabBar.props.tabsHeight || 48) : null;
         return (
             <>
                 <NVNavigationBar
@@ -51,7 +52,7 @@ class NavigationBar extends React.Component<any, any> {
                                 pin={!!collapsingBar}
                                 {...otherProps}
                                 barTintColor={!collapsingBar ? otherProps.barTintColor : null}
-                                style={{height: 56, marginBottom: (!!collapsingBar && !!tabBar) ? 48 : null}}
+                                style={{height: 56, marginBottom}}
                                 onActionSelected={({nativeEvent}) => {
                                     var onPress = menuItems[nativeEvent.position].onPress;
                                     if (onPress)

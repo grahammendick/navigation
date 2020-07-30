@@ -38,13 +38,14 @@ class TabBar extends React.Component<any, any> {
         return false;
     }
     render() {
-        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, swipeable, scrollsToTop} = this.props;
+        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, swipeable, scrollsToTop, tabsHeight} = this.props;
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
         primary = (Platform.OS === 'android' && swipeable != null) ? !swipeable : primary;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
         var tabViewHeight = !primary ? (titleOnly ? 48 : 72) : 56
         tabViewHeight = Platform.OS === 'android' ? tabViewHeight : 28;
+        tabViewHeight = (tabBarItems.length || !tabsHeight) ? tabViewHeight : tabsHeight;
         var TabBar = primary ? NVTabBar : NVTabBarPager;
         var TabView = primary ? NVTabNavigation : NVTabLayout;
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedTab;
