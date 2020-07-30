@@ -31,7 +31,7 @@ class NavigationBar extends React.Component<any, any> {
             ), []);
         var collapsingBar = childrenArray.find(({type}) => type === CollapsingBar);
         var tabBar = childrenArray.find(({type}) => type === TabBar);
-        var marginBottom = (collapsingBar && tabBar) ? (tabBar.props.tabsHeight || 48) : null;
+        var marginBottom = (collapsingBar && tabBar) ? (!tabBar.props.hasImages ? 48 : 72) : null;
         return (
             <>
                 <NVNavigationBar
