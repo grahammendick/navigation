@@ -100,7 +100,7 @@ public class TabLayoutView extends TabLayout implements TabView {
         super.onSizeChanged(w, h, oldw, oldh);
         if (getParent() instanceof CollapsingBarView) {
             CollapsingBarView parent = (CollapsingBarView) getParent();
-            for(int i = 0; parent != null && i < parent.getChildCount(); i++) {
+            for(int i = 0; i < parent.getChildCount(); i++) {
                 View child = parent.getChildAt(i);
                 if (child instanceof ToolbarView) {
                     if (child.getLayoutParams() instanceof CollapsingToolbarLayout.LayoutParams)
