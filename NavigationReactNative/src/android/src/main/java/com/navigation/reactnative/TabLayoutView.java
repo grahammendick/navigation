@@ -98,7 +98,6 @@ public class TabLayoutView extends TabLayout implements TabView {
                         ((CollapsingToolbarLayout.LayoutParams) child.getLayoutParams()).setMargins(0, 0, 0, h);
                 }
             }
-
         }
     }
 
