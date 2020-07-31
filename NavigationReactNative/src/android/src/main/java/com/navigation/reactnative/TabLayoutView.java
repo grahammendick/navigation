@@ -87,15 +87,6 @@ public class TabLayoutView extends TabLayout implements TabView {
     }
 
     @Override
-    public void requestLayout() {
-        super.requestLayout();
-        if (!layoutRequested) {
-            layoutRequested = true;
-            post(measureAndLayout);
-        }
-    }
-
-    @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         if (getParent() instanceof CollapsingBarView) {
@@ -108,6 +99,15 @@ public class TabLayoutView extends TabLayout implements TabView {
                 }
             }
 
+        }
+    }
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        if (!layoutRequested) {
+            layoutRequested = true;
+            post(measureAndLayout);
         }
     }
 
