@@ -95,6 +95,22 @@ public class TabLayoutView extends TabLayout implements TabView {
         }
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (getParent() instanceof CollapsingBarView) {
+            CollapsingBarView parent = (CollapsingBarView) getParent();
+            for(int i = 0; parent != null && i < parent.getChildCount(); i++) {
+                View child = parent.getChildAt(i);
+                if (child instanceof ToolbarView) {
+                    if (child.getLayoutParams() instanceof CollapsingToolbarLayout.LayoutParams)
+                        ((CollapsingToolbarLayout.LayoutParams) child.getLayoutParams()).setMargins(0, 0, 0, h);
+                }
+            }
+
+        }
+    }
+
     private final Runnable measureAndLayout = new Runnable() {
         @Override
         public void run() {
