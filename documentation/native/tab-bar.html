@@ -128,6 +128,24 @@ contactsNavigator.navigate('contacts');</code></pre>
   &lt;/TabBar>
 &lt;/CoordinatorLayout>
 </code></pre>
+            <p>
+                Any content inside a <code>CollapsingBar</code> component will collapse as the user scrolls down. We can spruce up our contacts scene by placing an image in the navigation bar. We use an <code>Animated.Image</code> component so we can add a parallax scrolling effect. As the navigation bar collapses the <code>offsetChanged</code> event fires and we scale and reposition the image to match.
+            </p>
+            <pre><code class="language-jsx">&lt;CoordinatorLayout>
+  &lt;NavigationBar
+    style={{height: 240}}
+    onOffsetChanged={Animated.event(
+        [{nativeEvent: {offset}}]
+      )}>
+    &lt;CollapsingBar>
+      &lt;Animated.Image style={{
+        transform: [{scaleY}, {translateY}]}} 
+      }} />
+    &lt;/CollapsingBar>
+    &lt;TabBar primary={false} />
+  &lt;/NavigationBar>
+&lt;/CoordinatorLayout>
+</code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
