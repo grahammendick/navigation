@@ -53,16 +53,6 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
         view.oldSharedElementNames = oldSharedElements;
     }
 
-    @ReactProp(name = "primary")
-    public void setPrimary(NavigationStackView view, boolean primary) {
-        view.primary = primary;
-    }
-
-    @ReactProp(name = "finish")
-    public void setFinish(NavigationStackView view, boolean finish) {
-        view.finish = finish;
-    }
-
     @Nonnull
     @Override
     protected NavigationStackView createViewInstance(@Nonnull ThemedReactContext reactContext) {

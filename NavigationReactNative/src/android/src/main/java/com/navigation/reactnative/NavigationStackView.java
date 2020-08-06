@@ -36,8 +36,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected String exitAnim;
     protected ReadableArray sharedElementNames;
     protected ReadableArray oldSharedElementNames;
-    protected boolean primary = true;
-    protected boolean finish = false;
     SceneNavigator navigator;
 
     public NavigationStackView(Context context) {
@@ -56,10 +54,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 DeviceEventManagerModule deviceEventManagerModule = ((ThemedReactContext) getContext()).getNativeModule(DeviceEventManagerModule.class);
                 deviceEventManagerModule.emitNewIntentReceived(uri);
             }
-        }
-        if (finish) {
-            currentActivity.finishAffinity();
-            return;
         }
         if (fragment == null) {
             fragment = new StackFragment(this);
