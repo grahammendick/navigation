@@ -46,6 +46,9 @@
         self.reactViewController.navigationItem.scrollEdgeAppearance = [self updateColors:navigationBar.scrollEdgeAppearance];
         self.reactViewController.navigationItem.compactAppearance = [self updateColors:navigationBar.compactAppearance];
     } else {
+        bool transparent = self.barTintColor && CGColorGetAlpha(self.barTintColor.CGColor) == 0;
+        [navigationBar setValue:@(transparent) forKey:@"hidesShadow"];
+        [navigationBar setBackgroundImage:(transparent ? [UIImage new] : nil) forBarMetrics:UIBarMetricsDefault];
         [navigationBar setBarTintColor:self.barTintColor];
         [navigationBar setTintColor: self.tintColor];
         [navigationBar setTitleTextAttributes:[self setForeground:self.titleColor :navigationBar.titleTextAttributes]];
