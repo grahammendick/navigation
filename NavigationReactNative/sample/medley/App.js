@@ -28,10 +28,12 @@ west.getUnmountStyle = from => from ? 'west_in' : 'west_out';
 
 stateNavigator.navigate('north');
 
-export default () => (
+const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
     <NavigationStack
       crumbStyle={(from, state) => state.getCrumbStyle(from)}
       unmountStyle={(from, state) => state.getUnmountStyle(from)} />
   </NavigationHandler>
 );
+
+export default App;
