@@ -53,6 +53,11 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
         view.oldSharedElementNames = oldSharedElements;
     }
 
+    @ReactProp(name = "finish")
+    public void setFinish(NavigationStackView view, boolean finish) {
+        view.finish = finish;
+    }
+
     @Nonnull
     @Override
     protected NavigationStackView createViewInstance(@Nonnull ThemedReactContext reactContext) {
