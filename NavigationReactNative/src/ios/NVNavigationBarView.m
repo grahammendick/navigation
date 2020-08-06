@@ -46,6 +46,9 @@
         self.reactViewController.navigationItem.scrollEdgeAppearance = [self updateColors:navigationBar.scrollEdgeAppearance];
         self.reactViewController.navigationItem.compactAppearance = [self updateColors:navigationBar.compactAppearance];
     } else {
+        bool transparent = self.barTintColor && CGColorGetAlpha(self.barTintColor.CGColor) == 0;
+        [navigationBar setValue:@(transparent) forKey:@"hidesShadow"];
+        [navigationBar setBackgroundImage:(transparent ? [UIImage new] : nil) forBarMetrics:UIBarMetricsDefault];
         [navigationBar setBarTintColor:self.barTintColor];
         [navigationBar setTintColor: self.tintColor];
         [navigationBar setTitleTextAttributes:[self setForeground:self.titleColor :navigationBar.titleTextAttributes]];
@@ -59,6 +62,11 @@
 API_AVAILABLE(ios(13.0))
 {
     UINavigationBarAppearance *appearanceCopy = appearance != nil ? [appearance copy] : [UINavigationBarAppearance new];
+    bool transparent = self.barTintColor && CGColorGetAlpha(self.barTintColor.CGColor) == 0;
+    [appearanceCopy configureWithDefaultBackground];
+    if (transparent) {
+        [appearanceCopy configureWithTransparentBackground];
+    }
     [appearanceCopy setBackgroundColor:self.barTintColor];
     [appearanceCopy.buttonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.buttonAppearance.normal.titleTextAttributes]];
     [appearanceCopy.doneButtonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.doneButtonAppearance.normal.titleTextAttributes]];
