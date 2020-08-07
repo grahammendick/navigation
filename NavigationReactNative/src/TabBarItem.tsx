@@ -2,7 +2,6 @@ import React from 'react';
 import { requireNativeComponent, Image, Platform, StyleSheet } from 'react-native';
 import BackButton from './BackButton';
 import BackHandlerContext from './BackHandlerContext';
-import PrimaryStackContext from './PrimaryStackContext';
 import createBackHandler from './createBackHandler';
 
 class TabBarItem extends React.Component<any> {
@@ -16,7 +15,7 @@ class TabBarItem extends React.Component<any> {
         return this.props.selected && this.backHandler.handleBack();
     }
     render() {
-        var {onPress, children, image, badge, index, primary, ...props} = this.props;
+        var {onPress, children, image, badge, index, ...props} = this.props;
         image = typeof image === 'string' ? (Platform.OS === 'ios' ? null : {uri: image}) : image;
         return (
             <NVTabBarItem
@@ -30,11 +29,9 @@ class TabBarItem extends React.Component<any> {
                         onPress(event);
                 }}>
                 <BackButton onPress={this.handleBack} />
-                <PrimaryStackContext.Provider value={primary && index === 0}>
-                    <BackHandlerContext.Provider value={this.backHandler}>
-                        {children}
-                    </BackHandlerContext.Provider>
-                </PrimaryStackContext.Provider>
+                <BackHandlerContext.Provider value={this.backHandler}>
+                    {children}
+                </BackHandlerContext.Provider>
             </NVTabBarItem>
         );
     }
@@ -50,8 +47,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default (props) => (
-    <PrimaryStackContext.Consumer>
-        {(primary) => <TabBarItem {...props} primary={primary} />}
-    </PrimaryStackContext.Consumer>    
-);
+export default TabBarItem;

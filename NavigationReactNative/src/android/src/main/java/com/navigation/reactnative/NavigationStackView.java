@@ -36,7 +36,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected String exitAnim;
     protected ReadableArray sharedElementNames;
     protected ReadableArray oldSharedElementNames;
-    protected boolean primary = true;
     protected boolean finish = false;
     SceneNavigator navigator;
 

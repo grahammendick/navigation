@@ -5,8 +5,7 @@ import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
 import BackButton from './BackButton';
 import PopSync from './PopSync';
 import Scene from './Scene';
-import PrimaryStackContext from './PrimaryStackContext';
-type NavigationStackProps = {stateNavigator: AsyncStateNavigator, primary: boolean, fragmentMode: boolean, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
+type NavigationStackProps = {stateNavigator: AsyncStateNavigator, fragmentMode: boolean, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
 type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], finish: boolean};
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
@@ -64,9 +63,9 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
             stateNavigator.navigateBack(crumbs.length);
     }
     handleBack() {
-        var {primary, fragmentMode} = this.props;
-        this.setState(() => (!fragmentMode || primary) ? ({finish: true}): null);
-        return !fragmentMode || primary;
+        var {fragmentMode} = this.props;
+        this.setState(() => !fragmentMode ? ({finish: true}): null);
+        return !fragmentMode;
     }
     getAnimation() {
         var {stateNavigator, unmountStyle, crumbStyle, sharedElements: getSharedElements} = this.props;
@@ -95,13 +94,12 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     }
     render() {
         var {keys, finish} = this.state;
-        var {stateNavigator, primary, fragmentMode, unmountStyle, crumbStyle, hidesTabBar, title, renderScene} = this.props;
+        var {stateNavigator, fragmentMode, unmountStyle, crumbStyle, hidesTabBar, title, renderScene} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
             <NVNavigationStack
                 ref={this.ref}
                 keys={keys}
-                primary={primary}
                 finish={finish}
                 fragmentMode={fragmentMode}
                 style={[styles.stack, fragmentMode ? {backgroundColor: '#000'} : null]}
@@ -110,24 +108,22 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 onDidNavigateBack={this.onDidNavigateBack}
                 onNavigateToTop={this.onNavigateToTop}>
                 <BackButton onPress={this.handleBack} />
-                <PrimaryStackContext.Provider value={false}>
-                    <PopSync<{crumb: number}>
-                        data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
-                        getKey={({crumb}) => keys[crumb]}>
-                        {(scenes, popNative) => scenes.map(({key, data: {crumb}}) => (
-                            <Scene
-                                key={key}
-                                crumb={crumb}
-                                sceneKey={key}
-                                unmountStyle={unmountStyle}
-                                crumbStyle={crumbStyle}
-                                hidesTabBar={hidesTabBar}
-                                title={title}
-                                popped={popNative}
-                                renderScene={renderScene} />
-                        ))}
-                    </PopSync>
-                </PrimaryStackContext.Provider>
+                <PopSync<{crumb: number}>
+                    data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
+                    getKey={({crumb}) => keys[crumb]}>
+                    {(scenes, popNative) => scenes.map(({key, data: {crumb}}) => (
+                        <Scene
+                            key={key}
+                            crumb={crumb}
+                            sceneKey={key}
+                            unmountStyle={unmountStyle}
+                            crumbStyle={crumbStyle}
+                            hidesTabBar={hidesTabBar}
+                            title={title}
+                            popped={popNative}
+                            renderScene={renderScene} />
+                    ))}
+                </PopSync>
             </NVNavigationStack>
         );
     }
@@ -143,10 +139,6 @@ const styles = StyleSheet.create({
 
 export default props => (
     <NavigationContext.Consumer>
-        {({stateNavigator}) => (
-            <PrimaryStackContext.Consumer>
-                {(primary) => <NavigationStack stateNavigator={stateNavigator} {...props} primary={primary} />}
-            </PrimaryStackContext.Consumer>
-        )}
+        {({stateNavigator}) => <NavigationStack stateNavigator={stateNavigator} {...props} />}
     </NavigationContext.Consumer>
 );
