@@ -15,8 +15,8 @@ const useStateNavigator = start => {
   }, [])
 };
 
-const Stack = ({navigator}) => (
-  <NavigationHandler stateNavigator={navigator}>
+const Stack = ({stateNavigator}) => (
+  <NavigationHandler stateNavigator={stateNavigator}>
     <NavigationStack />
   </NavigationHandler>
 );
@@ -32,7 +32,7 @@ export default ({tweets, notifications}) => {
         <TabBarItem title="Home" image={require('./home.png')}>
           {Platform.OS === 'android'
             ? <Home tweets={tweets} />
-            : <Stack navigator={homeNavigator} />}
+            : <Stack stateNavigator={homeNavigator} />}
         </TabBarItem>
         <TabBarItem
           title="Notifications"
@@ -41,7 +41,7 @@ export default ({tweets, notifications}) => {
           onPress={() => {setNotified(true)}}>
           {Platform.OS === 'android'
             ? <Notifications notifications={notifications} />
-            : <Stack navigator={notificationsNavigator} />}        
+            : <Stack stateNavigator={notificationsNavigator} />}        
         </TabBarItem>
       </TabBar>
     </>
