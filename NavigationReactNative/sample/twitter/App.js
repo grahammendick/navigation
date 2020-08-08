@@ -17,7 +17,7 @@ const stateNavigator = new StateNavigator([
   {key: 'timeline', trackCrumbTrail: true}
 ]);
 const {tabs, home, notifications, tweet, timeline} = stateNavigator.states;
-tabs.renderScene = () => <Tabs  tweets={getHome()} notifications={getNotifications()} />;
+tabs.renderScene = () => <Tabs tweets={getHome()} notifications={getNotifications()} />;
 home.renderScene = () => <Home tweets={getHome()} />;
 notifications.renderScene = () => <Notifications notifications={getNotifications()} />;
 tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)}  />;
