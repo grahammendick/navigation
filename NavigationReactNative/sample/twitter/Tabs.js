@@ -6,12 +6,6 @@ import {NavigationStack, TabBar, TabBarItem, NavigationBar} from 'navigation-rea
 import Home from './Home';
 import Notifications from './Notifications';
 
-const Stack = ({navigator}) => (
-  <NavigationHandler stateNavigator={navigator}>
-    <NavigationStack />
-  </NavigationHandler>
-);
-
 const useStateNavigator = start => {
   const {stateNavigator} = useContext(NavigationContext);
   return useMemo(() => {
@@ -20,6 +14,12 @@ const useStateNavigator = start => {
     return navigator;
   }, [])
 };
+
+const Stack = ({navigator}) => (
+  <NavigationHandler stateNavigator={navigator}>
+    <NavigationStack />
+  </NavigationHandler>
+);
 
 export default ({tweets, notifications}) => {
   const [notified, setNotified] = useState(false);
