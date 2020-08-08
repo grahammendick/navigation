@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
-import {Platform} from 'react-native';
+import React from 'react';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
-import {NavigationStack, TabBar, TabBarItem} from 'navigation-react-native';
+import {NavigationStack} from 'navigation-react-native';
 import Home from './Home';
 import Notifications from './Notifications';
 import Tabs from './Tabs';
@@ -11,48 +10,27 @@ import Timeline from './Timeline';
 import {getHome, getNotifications, getTweet, getTimeline} from './data';
 
 const stateNavigator = new StateNavigator([
+  {key: 'tabs'},
   {key: 'home'},
   {key: 'notifications'},
   {key: 'tweet', trackCrumbTrail: true},
   {key: 'timeline', trackCrumbTrail: true}
 ]);
-const {home, notifications, tweet, timeline} = stateNavigator.states;
-const HomeLayout = Platform.OS === 'ios' ? Home : Tabs;
-home.renderScene = () => <HomeLayout tweets={getHome()} notifications={getNotifications()} />;
+const {tabs, home, notifications, tweet, timeline} = stateNavigator.states;
+tabs.renderScene = () => <Tabs  tweets={getHome()} notifications={getNotifications()} />;
+home.renderScene = () => <Home tweets={getHome()} />;
 notifications.renderScene = () => <Notifications notifications={getNotifications()} />;
 tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)}  />;
 timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)}  />;
 
-const notificationsNavigator = new StateNavigator(stateNavigator);
-stateNavigator.navigate('home');
-notificationsNavigator.navigate('notifications');
+stateNavigator.navigate('tabs');
 
-const Stack = ({navigator}) => (
-  <NavigationHandler stateNavigator={navigator}>
+const App = () => (
+  <NavigationHandler stateNavigator={stateNavigator}>
     <NavigationStack
       crumbStyle={from => from ? 'scale_in' : 'scale_out'}
       unmountStyle={from => from ? 'slide_in' : 'slide_out'} />
   </NavigationHandler>
 );
-
-const App = () => {
-  const [notified, setNotified] = useState(false);
-  return Platform.OS === 'ios' ? (
-    <TabBar primary={true}>
-      <TabBarItem title="Home" image={require('./home.png')}>
-        <Stack navigator={stateNavigator} />
-      </TabBarItem>
-      <TabBarItem
-        title="Notifications"
-        image={require('./notifications.png')}
-        badge={!notified ? getNotifications().length : null} 
-        onPress={() => {setNotified(true)}}>
-        <Stack navigator={notificationsNavigator} />
-      </TabBarItem>
-    </TabBar>
-  ) : (
-    <Stack navigator={stateNavigator} />
-  );
-};
 
 export default App;
