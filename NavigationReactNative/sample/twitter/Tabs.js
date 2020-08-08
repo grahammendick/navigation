@@ -28,7 +28,9 @@ export default ({tweets, notifications}) => {
   return (
     <>
       <NavigationBar hidden={true} />
-      <TabBar primary={true} selectedTintColor="#1da1f2">
+      <TabBar
+        primary={true}
+        selectedTintColor={Platform.OS === 'android' ? '#1da1f2' : null}>
         <TabBarItem title="Home" image={require('./home.png')}>
           {Platform.OS === 'android'
             ? <Home tweets={tweets} />
