@@ -109,6 +109,9 @@ contactsNavigator.navigate('contacts');</code></pre>
     &lt;/TabBar>
   &lt;/>
 );</code></pre>
+            <p>
+                We replace the <code>States</code> in the top-level <code>StateNavigator</code> with a single one for the 'tabs' scene. Remember that the 'inbox', 'details' and 'compose' <code>States</code> now live inside <code>StateNavigator</code> of the 'inbox' tab. We navigate to the 'tabs' <code>State</code> so that the tabs display when the app starts.
+            </p>
             <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
   {key: 'tabs'}
 ]);
