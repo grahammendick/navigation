@@ -90,7 +90,7 @@ contact.renderScene = ({id}) => &lt;Contact id={id} />;
 
 contactsNavigator.navigate('contacts');</code></pre>
             <p>
-              We create a scene that returns a <code>TabBar</code> component. We give each tab its own <code>NavigationStack</code> and <code>StateNavigator</code>. For example, we give the 'contacts' tab the <code>contactsNavigator</code> we just created. To make them look like top level tabs, we assign each one an image as well as a title. We hide the navigation bar so it doesn't block the navigation bar of the scenes inside the tabs.
+              We create a scene that returns a <code>TabBar</code> component. We give each tab its own <code>NavigationStack</code> and <code>StateNavigator</code>. For example, we give the 'contacts' tab the <code>contactsNavigator</code> we just created. To make them look like top level tabs, we assign each one an image as well as a title. We hide the navigation bar otherwise, on iOS, it would block the navigation bar of the scenes inside the tabs.
             </p>
             <pre><code class="language-jsx">var Tabs = () => (
   &lt;>
