@@ -89,6 +89,48 @@ contacts.renderScene = () => &lt;Contacts />;
 contact.renderScene = ({id}) => &lt;Contact id={id} />;
 
 contactsNavigator.navigate('contacts');</code></pre>
+            <pre><code class="language-jsx">var Tabs = () => (
+  &lt;>
+    &lt;NavigationBar hidden={true}>
+    &lt;TabBar primary={true}>
+      &lt;TabBarItem title="Inbox" image={require('./home.png')}>
+        &lt;NavigationHandler stateNavigator={inboxNavigator}>
+          &lt;NavigationStack />
+        &lt;/NavigationHandler>
+      &lt;/TabBarItem>
+      &lt;TabBarItem title="Contacts" image={require('./contacts.png')}>
+        &lt;NavigationHandler stateNavigator={contactsNavigator}>
+          &lt;NavigationStack />
+        &lt;/NavigationHandler>
+      &lt;/TabBarItem>
+    &lt;/TabBar>
+  &lt;/>
+);</code></pre>
+            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+  {key: 'tabs'}
+]);
+
+var {tabs} = stateNavigator.states;
+tabs.renderScene = () => &lt;Tabs />;
+
+stateNavigator.navigate('tabs');</code></pre>
+            <pre><code class="language-jsx">&lt;TabBarItem title="Inbox" image={require('./home.png')} badge={unreadMailCount}></code></pre>
+            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx"></code></pre>
+
+
+
+            <pre><code class="language-jsx">var contactsNavigator = new StateNavigator([
+  {key: 'contacts'},
+  {key: 'contact', trackCrumbTrail: true}
+]);
+
+var {contacts, contact} = contactsNavigator.states;
+contacts.renderScene = () => &lt;Contacts />;
+contact.renderScene = ({id}) => &lt;Contact id={id} />;
+
+contactsNavigator.navigate('contacts');</code></pre>
             <p>
                 We change the <code>App</code> code from the <a href="setup.html">Setup instructions</a> to return a <code>TabBar</code> component. We give each tab its own <code>NavigationStack</code> and <code>StateNavigator</code>. For example, we give the 'contacts' tab the <code>contactsNavigator</code> we just created. To make them look like top level tabs, we assign each one an image as well as a title.
             </p>
