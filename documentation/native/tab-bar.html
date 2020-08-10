@@ -77,7 +77,7 @@ var Contacts = () => (
                 Top level navigation tabs are different. On iOS, and sometimes Android, they stay at the bottom of the screen the whole time. Each tab has its own stack of scenes. You navigate forward and back within the tab. To recreate these you render a <code>TabBar</code> component and set its <code>primary</code> prop to true. Then you assign each <code>TabBarItem</code> a <code>NavigationStack</code> component with its own <code>StateNavigator</code>.
             </p>
             <p>
-                Let's add top level tabs to our email example. One tab for the user's inbox and another for their list of contacts. We create a new <code>StateNavigator</code> for each of the tabs. The <code>StateNavigator</code> for the 'inbox' tab has the 'inbox', 'details' and 'compose' <code>States</code> that we're already familiar with. The <code>StateNavigator</code> for the 'contacts' tab contains two <code>States</code> so the user can view all their contacts and edit the details of an individual contact.
+                Let's add top level tabs to our email example. One tab for the user's inbox and another for their list of contacts. We create a new <code>StateNavigator</code> for each of the tabs. The <code>StateNavigator</code> for the 'inbox' tab has the 'inbox', 'mail' and 'compose' <code>States</code> that we're already familiar with. The <code>StateNavigator</code> for the 'contacts' tab contains two <code>States</code> so the user can view all their contacts and edit the details of an individual contact.
             </p>
             <pre><code class="language-jsx">var contactsNavigator = new StateNavigator([
   {key: 'contacts'},
