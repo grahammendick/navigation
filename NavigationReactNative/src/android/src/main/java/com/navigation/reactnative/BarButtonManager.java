@@ -33,7 +33,7 @@ public class BarButtonManager extends ViewGroupManager<BarButtonView> {
     }
 
     @ReactProp(name = "search")
-    public void setSearch(BarButtonView view, boolean search) {
-        view.search = search;
+    public void setSearch(BarButtonView view, @Nullable Boolean search) {
+        view.search = search != null ? search : false;
     }
 }
