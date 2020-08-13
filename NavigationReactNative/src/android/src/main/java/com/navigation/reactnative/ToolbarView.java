@@ -73,16 +73,6 @@ public class ToolbarView extends Toolbar {
                 reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onNavigationPress", null);
             }
         });
-        setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                WritableMap event = Arguments.createMap();
-                event.putInt("position", item.getOrder());
-                ReactContext reactContext = (ReactContext) getContext();
-                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onActionSelected", event);
-                return true;
-            }
-        });
     }
 
     private int getDefaultTitleTextColor() {
