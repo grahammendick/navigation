@@ -5,6 +5,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -28,6 +29,11 @@ public class BarButtonManager extends ViewGroupManager<BarButtonView> {
     @ReactProp(name = "title")
     public void setTitle(BarButtonView view, @Nullable String title) {
         view.setTitle(title);
+    }
+
+    @ReactProp(name = "image")
+    public void setImage(BarButtonView view, @Nullable ReadableMap icon) {
+        view.setIconSource(icon);
     }
 
     @ReactProp(name = "show")

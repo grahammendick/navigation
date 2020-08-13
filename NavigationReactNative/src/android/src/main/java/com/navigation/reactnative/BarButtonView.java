@@ -1,10 +1,14 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
+
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 public class BarButtonView extends ViewGroup {
@@ -12,9 +16,19 @@ public class BarButtonView extends ViewGroup {
     private int showAsAction;
     private boolean search;
     private MenuItem menuItem;
+    private Drawable icon;
+    private IconResolver.IconResolverListener iconResolverListener;
 
     public BarButtonView(Context context) {
         super(context);
+        iconResolverListener = new IconResolver.IconResolverListener() {
+            @Override
+            public void setDrawable(Drawable d) {
+                icon = d;
+                if (menuItem != null)
+                    menuItem.setIcon(d);
+            }
+        };
     }
 
     boolean getSearch() {
@@ -25,6 +39,10 @@ public class BarButtonView extends ViewGroup {
         this.title = title;
         if (menuItem != null)
             menuItem.setTitle(title);
+    }
+
+    void setIconSource(@Nullable ReadableMap source) {
+        IconResolver.setIconSource(source, iconResolverListener, getContext());
     }
 
     void setShowAsAction(int showAsAction) {
@@ -41,6 +59,7 @@ public class BarButtonView extends ViewGroup {
     void setMenuItem(MenuItem menuItem) {
         this.menuItem = menuItem;
         setTitle(title);
+        menuItem.setIcon(icon);
         setShowAsAction(showAsAction);
         menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
