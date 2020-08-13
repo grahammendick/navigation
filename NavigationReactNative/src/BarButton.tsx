@@ -5,6 +5,7 @@ const BarButton = ({image, show, search, ...props}) => {
     var constants = (UIManager as any).getViewManagerConfig('NVNavigationBar').Constants;
     return (Platform.OS === 'android' || !search) && (
         <NVBarButton
+            search={search}
             show={Platform.OS === 'android' ? constants.ShowAsAction[show] : null}
             image={Platform.OS === 'android' ? Image.resolveAssetSource(image) : image}
             {...props} />
