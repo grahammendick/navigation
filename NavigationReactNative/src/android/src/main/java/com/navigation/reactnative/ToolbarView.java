@@ -31,10 +31,6 @@ public class ToolbarView extends Toolbar {
     private Integer tintColor;
     private ImageButton collapseSearchButton;
     private OnSearchListener onSearchAddedListener;
-    private static final String PROP_ACTION_ICON = "image";
-    private static final String PROP_ACTION_SHOW = "show";
-    private static final String PROP_ACTION_TITLE = "title";
-    private static final String PROP_ACTION_SEARCH = "search";
     int defaultTitleTextColor;
     Drawable defaultOverflowIcon;
     private Integer defaultMenuTintColor;
