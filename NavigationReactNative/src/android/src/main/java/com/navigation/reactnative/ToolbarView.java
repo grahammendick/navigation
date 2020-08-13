@@ -16,11 +16,8 @@ import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
 
@@ -177,11 +174,6 @@ public class ToolbarView extends Toolbar {
         }
     }
 
-    private void setMenuItemIcon(final MenuItem item, ReadableMap iconSource) {
-        ActionIconControllerListener controllerListener = new ActionIconControllerListener(item);
-        IconResolver.setIconSource(iconSource, controllerListener, getContext());
-    }
-
     void setOnSearchListener(OnSearchListener onSearchListener) {
         this.onSearchAddedListener = onSearchListener;
         if (searchMenuItem != null)
@@ -222,20 +214,6 @@ public class ToolbarView extends Toolbar {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
-
-    class ActionIconControllerListener implements IconResolver.IconResolverListener {
-        private final MenuItem item;
-
-        ActionIconControllerListener(MenuItem item) {
-            this.item = item;
-        }
-
-        @Override
-        public void setDrawable(Drawable d) {
-            item.setIcon(d);
-            setTintColor(item.getIcon());
-        }
-    }
 
     interface OnSearchListener {
         void onSearchAdd(MenuItem searchMenuItem);
