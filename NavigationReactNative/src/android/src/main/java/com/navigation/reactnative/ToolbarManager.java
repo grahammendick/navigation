@@ -4,7 +4,6 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
@@ -52,11 +51,6 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         view.setOverflowIconSource(overflowIcon);
     }
 
-    @ReactProp(name = "menuItems")
-    public void setMenuItems(ToolbarView view, @Nullable ReadableArray menuItems) {
-        view.setMenuItems(menuItems);
-    }
-
     @ReactProp(name = "barTintColor", customType = "Color")
     public void setBarTintColor(ToolbarView view, @Nullable Integer barTintColor) {
         if (barTintColor != null)
@@ -98,6 +92,8 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         parent.children.add(index, child);
         if (child instanceof TitleBarView)
             parent.addView(child);
+        if (child instanceof BarButtonView)
+            parent.setMenuItems();
     }
 
     @Override
@@ -105,6 +101,8 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         View child = parent.children.remove(index);
         if (child instanceof TitleBarView)
             parent.removeView(child);
+        if (child instanceof BarButtonView)
+            parent.setMenuItems();
     }
 
     @Override

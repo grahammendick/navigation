@@ -143,39 +143,37 @@ public class ToolbarView extends Toolbar {
         }
     }
 
-    void setMenuItems(@Nullable ReadableArray menuItems) {
+    void setMenuItems() {
         getMenu().clear();
-        for (int i = 0; menuItems != null && i < menuItems.size(); i++) {
-            ReadableMap menuItemProps = menuItems.getMap(i);
-            if (menuItemProps == null)
-                continue;
-            String title = menuItemProps.hasKey(PROP_ACTION_TITLE) ? menuItemProps.getString(PROP_ACTION_TITLE) : "";
-            ReadableMap iconSource = menuItemProps.getMap(PROP_ACTION_ICON);
-            MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, title);
-            if (iconSource != null)
-                setMenuItemIcon(menuItem, iconSource);
-            int showAsAction = menuItemProps.hasKey(PROP_ACTION_SHOW) ? menuItemProps.getInt(PROP_ACTION_SHOW) : MenuItem.SHOW_AS_ACTION_NEVER;
-            boolean search = menuItemProps.hasKey(PROP_ACTION_SEARCH) && menuItemProps.getBoolean(PROP_ACTION_SEARCH);
-            if (search) {
-                searchMenuItem = menuItem;
-                showAsAction = MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction;
-                if (onSearchAddedListener != null)
-                    onSearchAddedListener.onSearchAdd(searchMenuItem);
-                menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-                    @Override
-                    public boolean onMenuItemActionCollapse(MenuItem item) {
-                        onSearchAddedListener.onSearchCollapse();
-                        return true;
-                    }
+        for (int i = 0; i < children.size(); i++) {
+            if (children.get(i) instanceof BarButtonView) {
+                BarButtonView barButton = (BarButtonView) children.get(i);
+                //ReadableMap iconSource = menuItemProps.getMap(PROP_ACTION_ICON);
+                MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, barButton.title);
+                //if (iconSource != null)
+                    //setMenuItemIcon(menuItem, iconSource);
+                int showAsAction = barButton.showAsAction;
+                if (barButton.search) {
+                    searchMenuItem = menuItem;
+                    showAsAction = MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | barButton.showAsAction;
+                    if (onSearchAddedListener != null)
+                        onSearchAddedListener.onSearchAdd(searchMenuItem);
+                    menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+                        @Override
+                        public boolean onMenuItemActionCollapse(MenuItem item) {
+                            onSearchAddedListener.onSearchCollapse();
+                            return true;
+                        }
 
-                    @Override
-                    public boolean onMenuItemActionExpand(MenuItem item) {
-                        onSearchAddedListener.onSearchExpand();
-                        return true;
-                    }
-                });
+                        @Override
+                        public boolean onMenuItemActionExpand(MenuItem item) {
+                            onSearchAddedListener.onSearchExpand();
+                            return true;
+                        }
+                    });
+                }
+                menuItem.setShowAsAction(showAsAction);
             }
-            menuItem.setShowAsAction(showAsAction);
         }
         setMenuTintColor();
     }
