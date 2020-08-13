@@ -144,14 +144,10 @@ public class ToolbarView extends Toolbar {
         for (int i = 0; i < children.size(); i++) {
             if (children.get(i) instanceof BarButtonView) {
                 BarButtonView barButton = (BarButtonView) children.get(i);
-                //ReadableMap iconSource = menuItemProps.getMap(PROP_ACTION_ICON);
-                MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, barButton.title);
-                //if (iconSource != null)
-                    //setMenuItemIcon(menuItem, iconSource);
-                int showAsAction = barButton.showAsAction;
-                if (barButton.search) {
+                MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, "");
+                barButton.setMenuItem(menuItem);
+                if (barButton.getSearch()) {
                     searchMenuItem = menuItem;
-                    showAsAction = MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | barButton.showAsAction;
                     if (onSearchAddedListener != null)
                         onSearchAddedListener.onSearchAdd(searchMenuItem);
                     menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
@@ -168,7 +164,6 @@ public class ToolbarView extends Toolbar {
                         }
                     });
                 }
-                menuItem.setShowAsAction(showAsAction);
             }
         }
         setMenuTintColor();

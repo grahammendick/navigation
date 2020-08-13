@@ -24,16 +24,16 @@ public class BarButtonManager extends ViewGroupManager<BarButtonView> {
 
     @ReactProp(name = "title")
     public void setTitle(BarButtonView view, @Nullable String title) {
-        view.title = title;
+        view.setTitle(title);
     }
 
     @ReactProp(name = "show")
     public void setShow(BarButtonView view, @Nullable Integer showAsAction) {
-        view.showAsAction = showAsAction != null ? showAsAction : MenuItem.SHOW_AS_ACTION_NEVER;
+        view.setShowAsAction(showAsAction != null ? showAsAction : MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
     @ReactProp(name = "search")
     public void setSearch(BarButtonView view, @Nullable Boolean search) {
-        view.search = search != null ? search : false;
+        view.setSearch(search != null ? search : false);
     }
 }
