@@ -114,9 +114,6 @@ public class ToolbarView extends Toolbar {
         setTintColor(getLogo());
         setTintColor(getOverflowIcon());
         setMenuTintColor();
-        for(int i = 0; i < getMenu().size(); i++) {
-            setTintColor(getMenu().getItem(i).getIcon());
-        }
         setCollapseSearchTintColor();
     }
 
@@ -171,6 +168,11 @@ public class ToolbarView extends Toolbar {
                         menuItem.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
                     }
                 }
+            }
+        }
+        for (int i = 0; i < children.size(); i++) {
+            if (children.get(i) instanceof BarButtonView) {
+                ((BarButtonView) children.get(i)).setTintColor(tintColor);
             }
         }
     }

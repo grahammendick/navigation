@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ public class BarButtonView extends ViewGroup {
     private int showAsAction;
     private boolean search;
     private MenuItem menuItem;
+    private Integer tintColor;
     private Drawable icon;
     private IconResolver.IconResolverListener iconResolverListener;
 
@@ -25,6 +27,7 @@ public class BarButtonView extends ViewGroup {
             @Override
             public void setDrawable(Drawable d) {
                 icon = d;
+                setTintColor(tintColor);
                 if (menuItem != null)
                     menuItem.setIcon(d);
             }
@@ -69,6 +72,16 @@ public class BarButtonView extends ViewGroup {
                 return true;
             }
         });
+    }
+
+    void setTintColor(Integer tintColor) {
+        this.tintColor = tintColor;
+        if (icon != null) {
+            if (tintColor != null)
+                icon.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
+            else
+                icon.clearColorFilter();
+        }
     }
 
     @Override
