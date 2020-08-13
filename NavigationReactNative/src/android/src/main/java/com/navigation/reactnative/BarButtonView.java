@@ -4,9 +4,7 @@ import android.content.Context;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 public class BarButtonView extends ViewGroup {
