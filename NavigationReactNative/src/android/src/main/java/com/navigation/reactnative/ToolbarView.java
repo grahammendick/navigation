@@ -24,6 +24,8 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
 
+import java.util.ArrayList;
+
 public class ToolbarView extends Toolbar {
     private MenuItem searchMenuItem;
     private Integer tintColor;
@@ -40,6 +42,7 @@ public class ToolbarView extends Toolbar {
     private IconResolver.IconResolverListener navIconResolverListener;
     private IconResolver.IconResolverListener overflowIconResolverListener;
     private boolean layoutRequested = false;
+    ArrayList<View> children = new ArrayList<>();
 
     public ToolbarView(Context context) {
         super(context);

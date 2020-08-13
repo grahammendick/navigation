@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import android.view.View;
+
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableArray;
@@ -89,6 +91,30 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
             params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
             view.setLayoutParams(params);
         }
+    }
+
+    @Override
+    public void addView(ToolbarView parent, View child, int index) {
+        parent.children.add(index, child);
+        if (child instanceof TitleBarView)
+            parent.addView(child);
+    }
+
+    @Override
+    public void removeViewAt(ToolbarView parent, int index) {
+        View child = parent.children.remove(index);
+        if (child instanceof TitleBarView)
+            parent.removeView(child);
+    }
+
+    @Override
+    public int getChildCount(ToolbarView parent) {
+        return parent.children.size();
+    }
+
+    @Override
+    public View getChildAt(ToolbarView parent, int index) {
+        return parent.children.get(index);
     }
 
     @Override
