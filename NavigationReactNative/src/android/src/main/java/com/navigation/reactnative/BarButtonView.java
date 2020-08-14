@@ -41,6 +41,10 @@ public class BarButtonView extends ViewGroup {
         return search;
     }
 
+    MenuItem getMenuItem() {
+        return menuItem;
+    }
+
     void setTitle(String title) {
         this.title = title;
         if (menuItem != null)
@@ -75,14 +79,6 @@ public class BarButtonView extends ViewGroup {
         menuItem.setIcon(icon);
         setShowAsAction(showAsAction);
         setShowActionView(showActionView);
-        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                ReactContext reactContext = (ReactContext) getContext();
-                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onPress", null);
-                return true;
-            }
-        });
     }
 
     void setTintColor(Integer tintColor) {
@@ -93,6 +89,11 @@ public class BarButtonView extends ViewGroup {
             else
                 icon.clearColorFilter();
         }
+    }
+
+    protected void press() {
+        ReactContext reactContext = (ReactContext) getContext();
+        reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onPress", null);
     }
 
     @Override

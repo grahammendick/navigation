@@ -70,6 +70,21 @@ public class ToolbarView extends Toolbar {
                 reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onNavigationPress", null);
             }
         });
+        setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                for (int i = 0; i < children.size(); i++) {
+                    if (children.get(i) instanceof BarButtonView) {
+                        BarButtonView barButtonView = (BarButtonView) children.get(i);
+                        if (barButtonView.getMenuItem() != item)
+                            barButtonView.getMenuItem().collapseActionView();
+                        else
+                            barButtonView.press();
+                    }
+                }
+                return true;
+            }
+        });
     }
 
     private int getDefaultTitleTextColor() {
