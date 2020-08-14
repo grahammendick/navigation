@@ -151,6 +151,7 @@ public class ToolbarView extends Toolbar {
             }
         }
         setMenuTintColor();
+        requestLayout();
     }
 
     private void setMenuTintColor()  {
