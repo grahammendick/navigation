@@ -46,6 +46,11 @@ public class BarButtonManager extends ViewGroupManager<BarButtonView> {
         view.setSearch(search != null ? search : false);
     }
 
+    @ReactProp(name = "showActionView")
+    public void setShowActionView(BarButtonView view, boolean showActionView) {
+        view.setShowActionView(showActionView);
+    }
+
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()

@@ -16,6 +16,7 @@ public class BarButtonView extends ViewGroup {
     private String title;
     private int showAsAction;
     private boolean search;
+    private boolean showActionView;
     private MenuItem menuItem;
     private Integer tintColor;
     private Drawable icon;
@@ -51,7 +52,7 @@ public class BarButtonView extends ViewGroup {
     void setShowAsAction(int showAsAction) {
         this.showAsAction = showAsAction;
         if (menuItem != null)
-            menuItem.setShowAsAction(!search ? showAsAction : MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction);
+            menuItem.setShowAsAction((!search && !showActionView) ? showAsAction : MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction);
     }
 
     void setSearch(boolean search) {
@@ -59,11 +60,19 @@ public class BarButtonView extends ViewGroup {
         setShowAsAction(showAsAction);
     }
 
+    void setShowActionView(boolean showActionView) {
+        this.showActionView = showActionView;
+        setShowAsAction(showAsAction);
+        if (menuItem != null)
+            menuItem.setActionView(showActionView ? this : null);
+    }
+
     void setMenuItem(MenuItem menuItem) {
         this.menuItem = menuItem;
         setTitle(title);
         menuItem.setIcon(icon);
         setShowAsAction(showAsAction);
+        setShowActionView(showActionView);
         menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
