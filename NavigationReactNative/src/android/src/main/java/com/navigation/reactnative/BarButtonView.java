@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 public class BarButtonView extends ViewGroup {
@@ -95,5 +97,23 @@ public class BarButtonView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    }
+
+    @Override
+    protected void onSizeChanged(final int w, final int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (getChildCount() == 0)
+            return;
+        final int viewTag = getChildAt(0).getId();
+        final ReactContext reactContext = (ReactContext) getContext();
+        reactContext.runOnNativeModulesQueueThread(
+            new GuardedRunnable(reactContext) {
+                @Override
+                public void runGuarded() {
+                    UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
+                    if (uiManager != null)
+                        uiManager.updateNodeSize(viewTag, w, h);
+                }
+            });
     }
 }
