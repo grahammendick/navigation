@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { requireNativeComponent, Image, Platform, UIManager, View, StyleSheet } from 'react-native';
 
 const BarButton = ({image, show, search, style, children, ...props}) => {
