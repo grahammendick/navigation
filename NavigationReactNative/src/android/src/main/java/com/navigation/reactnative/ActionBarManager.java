@@ -24,7 +24,7 @@ public class ActionBarManager extends ViewGroupManager<ActionBarView> {
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("onExpanded", MapBuilder.of("registrationName", "onCollapsed"))
+            .put("onExpanded", MapBuilder.of("registrationName", "onExpanded"))
             .put("onCollapsed", MapBuilder.of("registrationName", "onCollapsed"))
             .build();
     }

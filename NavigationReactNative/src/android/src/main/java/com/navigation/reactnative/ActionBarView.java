@@ -23,6 +23,6 @@ public class ActionBarView extends ViewGroup {
 
     void collapsed() {
         ReactContext reactContext = (ReactContext) getContext();
-        reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onExpanded", null);
+        reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onCollapsed", null);
     }
 }
