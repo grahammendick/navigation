@@ -10,10 +10,8 @@ const BarButton = ({image, show, search, style, children, ...props}) => {
             show={Platform.OS === 'android' ? constants.ShowAsAction[show] : null}
             image={Platform.OS === 'android' ? Image.resolveAssetSource(image) : image}
             style={styles.actionView}
-            {...props}>            
-            {Platform.OS === 'android' && children
-                ? <View collapsable={false} style={{flex: 1}}>{children}</View> : null}
-        </NVBarButton>
+            children={children}
+            {...props} />
     )
 }
 
