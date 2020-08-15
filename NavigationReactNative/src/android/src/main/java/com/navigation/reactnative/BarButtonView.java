@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.CollapsibleActionView;
 
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
@@ -14,7 +15,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
-public class BarButtonView extends ViewGroup {
+public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     private String title;
     private int showAsAction;
     private boolean search;
@@ -116,5 +117,18 @@ public class BarButtonView extends ViewGroup {
                         uiManager.updateNodeSize(viewTag, w, h);
                 }
             });
+    }
+
+    @Override
+    public void onActionViewExpanded() {
+        if (getChildAt(0) instanceof ActionBarView)
+            ((ActionBarView) getChildAt(0)).expanded();
+    }
+
+    @Override
+    public void onActionViewCollapsed() {
+        if (getChildAt(0) instanceof ActionBarView)
+            ((ActionBarView) getChildAt(0)).collapsed();
+
     }
 }
