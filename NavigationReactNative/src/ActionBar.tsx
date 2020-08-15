@@ -1,8 +1,8 @@
 import React from 'react';
 import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 
-const ActionBar = ({children}) => (
-    Platform.OS == 'android' ? <NVActionBar style={styles.actionView}>{children}</NVActionBar> : null
+const ActionBar = props => (
+    Platform.OS == 'android' ? <NVActionBar {...props} style={styles.actionView} /> : null
 )
 
 const NVActionBar = requireNativeComponent<any>('NVActionBar', null)
