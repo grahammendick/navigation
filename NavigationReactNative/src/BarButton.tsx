@@ -3,11 +3,17 @@ import { requireNativeComponent, Image, Platform, UIManager, View, StyleSheet } 
 
 const BarButton = ({image, show, search, style, children, ...props}) => {
     var constants = (UIManager as any).getViewManagerConfig('NVNavigationBar').Constants;
+    var showActionView = !!children;
+    if (Platform.OS === 'android') {
+        var showAsAction = constants.ShowAsAction[show];
+        var collapseActionView = constants.ShowAsAction['collapseActionView'];
+        showAsAction = (!search && !showActionView) ? showAsAction : collapseActionView | showAsAction;
+    }
     return (Platform.OS === 'android' || !search) && (
         <NVBarButton
             search={search}
-            showActionView={!!children}
-            show={Platform.OS === 'android' ? constants.ShowAsAction[show] : null}
+            showActionView={showActionView}
+            showAsAction={showAsAction}
             image={Platform.OS === 'android' ? Image.resolveAssetSource(image) : image}
             style={styles.actionView}
             children={children}

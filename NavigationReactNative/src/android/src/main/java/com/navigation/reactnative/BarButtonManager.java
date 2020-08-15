@@ -36,8 +36,8 @@ public class BarButtonManager extends ViewGroupManager<BarButtonView> {
         view.setIconSource(icon);
     }
 
-    @ReactProp(name = "show")
-    public void setShow(BarButtonView view, @Nullable Integer showAsAction) {
+    @ReactProp(name = "showAsAction")
+    public void setShowAsAction(BarButtonView view, @Nullable Integer showAsAction) {
         view.setShowAsAction(showAsAction != null ? showAsAction : MenuItem.SHOW_AS_ACTION_NEVER);
     }
 

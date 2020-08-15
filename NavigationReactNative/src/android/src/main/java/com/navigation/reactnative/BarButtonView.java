@@ -59,17 +59,15 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     void setShowAsAction(int showAsAction) {
         this.showAsAction = showAsAction;
         if (menuItem != null)
-            menuItem.setShowAsAction((!search && !showActionView) ? showAsAction : MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction);
+            menuItem.setShowAsAction(showAsAction);
     }
 
     void setSearch(boolean search) {
         this.search = search;
-        setShowAsAction(showAsAction);
     }
 
     void setShowActionView(boolean showActionView) {
         this.showActionView = showActionView;
-        setShowAsAction(showAsAction);
         if (menuItem != null)
             menuItem.setActionView(showActionView ? this : null);
     }
