@@ -71,7 +71,6 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
             MapBuilder.of(
                 "never", MenuItem.SHOW_AS_ACTION_NEVER,
                 "always", MenuItem.SHOW_AS_ACTION_ALWAYS,
-                "ifRoom", MenuItem.SHOW_AS_ACTION_IF_ROOM,
-                "collapseActionView", MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW));
+                "ifRoom", MenuItem.SHOW_AS_ACTION_IF_ROOM));
     }
 }
