@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.CollapsibleActionView;
@@ -123,6 +124,9 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     public void onActionViewExpanded() {
         if (getChildAt(0) instanceof ActionBarView)
             ((ActionBarView) getChildAt(0)).expanded();
+        ToolbarView toolbarView = (ToolbarView) getParent();
+        if (toolbarView.getChildAt(1) instanceof ImageButton)
+            toolbarView.setCollapseButton((ImageButton) toolbarView.getChildAt(1));
     }
 
     @Override

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class ToolbarView extends Toolbar {
     private MenuItem searchMenuItem;
     private Integer tintColor;
-    private ImageButton collapseSearchButton;
+    private ImageButton collapseButton;
     private OnSearchListener onSearchAddedListener;
     int defaultTitleTextColor;
     Drawable defaultOverflowIcon;
@@ -197,17 +197,17 @@ public class ToolbarView extends Toolbar {
 
     }
 
-    void setCollapseSearchButton(ImageButton collapseSearchButton) {
-        this.collapseSearchButton = collapseSearchButton;
+    void setCollapseButton(ImageButton collapseButton) {
+        this.collapseButton = collapseButton;
         setCollapseSearchTintColor();
     }
 
     void setCollapseSearchTintColor() {
-        if (collapseSearchButton != null) {
+        if (collapseButton != null) {
             if (tintColor != null)
-                collapseSearchButton.setColorFilter(tintColor);
+                collapseButton.setColorFilter(tintColor);
             else
-                collapseSearchButton.clearColorFilter();
+                collapseButton.clearColorFilter();
         }
     }
 
