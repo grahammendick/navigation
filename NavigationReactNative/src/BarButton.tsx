@@ -7,7 +7,7 @@ const BarButton = ({image, show, search, style, children, ...props}) => {
         <NVBarButton
             search={search}
             showActionView={!!children}
-            show={Platform.OS === 'android' ? constants.ShowAsAction[show] : null}
+            showAsAction={Platform.OS === 'android' ? constants.ShowAsAction[show] : null}
             image={Platform.OS === 'android' ? Image.resolveAssetSource(image) : image}
             style={styles.actionView}
             children={children}
