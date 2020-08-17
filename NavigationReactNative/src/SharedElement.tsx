@@ -1,16 +1,15 @@
 import React from 'react';
 import { requireNativeComponent, Platform, View } from 'react-native';
 
-var SharedElement = ({transition, ...props}) => {
-    var enterTransition = typeof transition !== 'function' ? transition : transition(true);
-    var exitTransition = typeof transition !== 'function' ? transition : transition(false);
-    return Platform.OS == 'android' ? (
+var SharedElement = ({transition, ...props}) => (
+    Platform.OS == 'android' ? (
         <NVSharedElement
-            enterTransition={enterTransition}
-            exitTransition={exitTransition}
+            enterTransition={typeof transition !== 'function' ? transition : transition(true)}
+            exitTransition={typeof transition !== 'function' ? transition : transition(false)}
             {...props} />
-    ) : <View {...props} />;
-};
+    ) : <View {...props} />
+);
+
 var NVSharedElement = requireNativeComponent<any>('NVSharedElement', null);
 
 export default SharedElement;
