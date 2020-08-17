@@ -23,8 +23,6 @@
 		709F32D522A7FFD600A0358A /* NVTabBarItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F32D422A7FFD600A0358A /* NVTabBarItemView.m */; };
 		709F32D922A7FFFA00A0358A /* NVTabBarItemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F32D822A7FFFA00A0358A /* NVTabBarItemManager.m */; };
 		709F331222A8657700A0358A /* NVSceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F331122A8657700A0358A /* NVSceneController.m */; };
-		70AFBC3221DCD2CC006355EE /* NVSharedElementManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AFBC3121DCD2CC006355EE /* NVSharedElementManager.m */; };
-		70AFBC3521DCD320006355EE /* NVSharedElementView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AFBC3421DCD320006355EE /* NVSharedElementView.m */; };
 		70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3290212B2BC700DE0D13 /* NVRightBarView.m */; };
 		70BB3294212B2C0A00DE0D13 /* NVRightBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3293212B2C0A00DE0D13 /* NVRightBarManager.m */; };
 		70BB3298212B2C4000DE0D13 /* NVLeftBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3297212B2C4000DE0D13 /* NVLeftBarView.m */; };
@@ -84,10 +82,6 @@
 		709F32D822A7FFFA00A0358A /* NVTabBarItemManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTabBarItemManager.m; sourceTree = "<group>"; };
 		709F331122A8657700A0358A /* NVSceneController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSceneController.m; sourceTree = "<group>"; };
 		709F331322A8658500A0358A /* NVSceneController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSceneController.h; sourceTree = "<group>"; };
-		70AFBC3121DCD2CC006355EE /* NVSharedElementManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSharedElementManager.m; sourceTree = "<group>"; };
-		70AFBC3321DCD2F6006355EE /* NVSharedElementManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSharedElementManager.h; sourceTree = "<group>"; };
-		70AFBC3421DCD320006355EE /* NVSharedElementView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSharedElementView.m; sourceTree = "<group>"; };
-		70AFBC3621DCD32A006355EE /* NVSharedElementView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSharedElementView.h; sourceTree = "<group>"; };
 		70BB3290212B2BC700DE0D13 /* NVRightBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVRightBarView.m; sourceTree = "<group>"; };
 		70BB3292212B2BEB00DE0D13 /* NVRightBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVRightBarView.h; sourceTree = "<group>"; };
 		70BB3293212B2C0A00DE0D13 /* NVRightBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVRightBarManager.m; sourceTree = "<group>"; };
@@ -162,10 +156,6 @@
 				704B593E22A2AC30008C05C6 /* NVNavigationStackManager.h */,
 				704B593D22A2AC20008C05C6 /* NVNavigationStackView.h */,
 				704B593B22A2AC14008C05C6 /* NVNavigationStackView.m */,
-				70AFBC3621DCD32A006355EE /* NVSharedElementView.h */,
-				70AFBC3421DCD320006355EE /* NVSharedElementView.m */,
-				70AFBC3321DCD2F6006355EE /* NVSharedElementManager.h */,
-				70AFBC3121DCD2CC006355EE /* NVSharedElementManager.m */,
 				EE17B6DE231E86B800C62B81 /* NVTitleBarManager.h */,
 				EE17B6DF231E86B800C62B81 /* NVTitleBarManager.m */,
 				EE17B6DB231E85C000C62B81 /* NVTitleBarView.h */,
@@ -260,7 +250,6 @@
 				70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */,
 				70922F8422C0D143009CECB0 /* NVNavigationBarView.m in Sources */,
 				704B593C22A2AC14008C05C6 /* NVNavigationStackView.m in Sources */,
-				70AFBC3221DCD2CC006355EE /* NVSharedElementManager.m in Sources */,
 				EE17B6DD231E85C000C62B81 /* NVTitleBarView.m in Sources */,
 				70587C89229A86B8009457B7 /* NVSearchBarManager.m in Sources */,
 				709F32D322A7FFBF00A0358A /* NVTabBarManager.m in Sources */,
@@ -270,7 +259,6 @@
 				70BB329A212B2C5100DE0D13 /* NVLeftBarManager.m in Sources */,
 				70BB32A0212B2CA000DE0D13 /* NVBarButtonView.m in Sources */,
 				70922F8622C0D153009CECB0 /* NVNavigationBarManager.m in Sources */,
-				70AFBC3521DCD320006355EE /* NVSharedElementView.m in Sources */,
 				707F41B324A74F6700A06BF2 /* NVTabBarPagerManager.m in Sources */,
 				70E99F2A24461103004B520A /* NVSegmentedTabView.m in Sources */,
 				70BB32A4212B2D4100DE0D13 /* NVBarView.m in Sources */,
