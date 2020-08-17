@@ -27,7 +27,9 @@ public class NavigationPackage implements ReactPackage {
             new TitleBarManager(),
             new SearchBarManager(),
             new CoordinatorLayoutManager(),
-            new CollapsingBarManager()
+            new CollapsingBarManager(),
+            new BarButtonManager(),
+            new ActionBarManager()
         );
     }
 

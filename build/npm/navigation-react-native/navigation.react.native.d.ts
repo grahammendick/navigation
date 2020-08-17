@@ -260,6 +260,25 @@ export class CoordinatorLayout extends Component<CoordinatorLayoutProps> {}
 export class CollapsingBar extends Component {}
 
 /**
+ * Defines the Action Bar Props contract
+ */
+export interface ActionBarProps {
+    /**
+     * Handles action bar expanded events
+     */
+    onExpanded?: () => void;
+    /**
+     * Handles action bar collapsed events
+     */
+    onCollapsed?: () => void;
+}
+
+/**
+ * Renders an action bar in the UI navigation bar
+ */
+export class ActionBar extends Component<ActionBarProps> {}
+
+/**
  * Defines the Shared Element Props contract
  */
 export interface SharedElementProps {

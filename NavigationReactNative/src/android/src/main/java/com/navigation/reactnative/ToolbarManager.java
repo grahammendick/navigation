@@ -1,8 +1,9 @@
 package com.navigation.reactnative;
 
+import android.view.View;
+
 import androidx.annotation.Nullable;
 
-import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
@@ -50,11 +51,6 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         view.setOverflowIconSource(overflowIcon);
     }
 
-    @ReactProp(name = "menuItems")
-    public void setMenuItems(ToolbarView view, @Nullable ReadableArray menuItems) {
-        view.setMenuItems(menuItems);
-    }
-
     @ReactProp(name = "barTintColor", customType = "Color")
     public void setBarTintColor(ToolbarView view, @Nullable Integer barTintColor) {
         if (barTintColor != null)
@@ -92,11 +88,37 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
     }
 
     @Override
-    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
-        return MapBuilder.<String, Object>builder()
-                .put("onNavigationPress", MapBuilder.of("registrationName", "onNavigationPress"))
-                .put("onActionSelected", MapBuilder.of("registrationName", "onActionSelected"))
-                .build();
+    public void addView(ToolbarView parent, View child, int index) {
+        parent.children.add(index, child);
+        if (child instanceof TitleBarView)
+            parent.addView(child);
+        if (child instanceof BarButtonView)
+            parent.setMenuItems();
     }
 
+    @Override
+    public void removeViewAt(ToolbarView parent, int index) {
+        View child = parent.children.remove(index);
+        if (child instanceof TitleBarView)
+            parent.removeView(child);
+        if (child instanceof BarButtonView)
+            parent.setMenuItems();
+    }
+
+    @Override
+    public int getChildCount(ToolbarView parent) {
+        return parent.children.size();
+    }
+
+    @Override
+    public View getChildAt(ToolbarView parent, int index) {
+        return parent.children.get(index);
+    }
+
+    @Override
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+            .put("onNavigationPress", MapBuilder.of("registrationName", "onNavigationPress"))
+            .build();
+    }
 }

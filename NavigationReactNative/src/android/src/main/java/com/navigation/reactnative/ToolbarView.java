@@ -16,23 +16,18 @@ import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
+
+import java.util.ArrayList;
 
 public class ToolbarView extends Toolbar {
     private MenuItem searchMenuItem;
     private Integer tintColor;
-    private ImageButton collapseSearchButton;
+    private ImageButton collapseButton;
     private OnSearchListener onSearchAddedListener;
-    private static final String PROP_ACTION_ICON = "image";
-    private static final String PROP_ACTION_SHOW = "show";
-    private static final String PROP_ACTION_TITLE = "title";
-    private static final String PROP_ACTION_SEARCH = "search";
     int defaultTitleTextColor;
     Drawable defaultOverflowIcon;
     private Integer defaultMenuTintColor;
@@ -40,6 +35,7 @@ public class ToolbarView extends Toolbar {
     private IconResolver.IconResolverListener navIconResolverListener;
     private IconResolver.IconResolverListener overflowIconResolverListener;
     private boolean layoutRequested = false;
+    ArrayList<View> children = new ArrayList<>();
 
     public ToolbarView(Context context) {
         super(context);
@@ -74,13 +70,18 @@ public class ToolbarView extends Toolbar {
                 reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onNavigationPress", null);
             }
         });
-        setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        setOnMenuItemClickListener(new OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                WritableMap event = Arguments.createMap();
-                event.putInt("position", item.getOrder());
-                ReactContext reactContext = (ReactContext) getContext();
-                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onActionSelected", event);
+                for (int i = 0; i < children.size(); i++) {
+                    if (children.get(i) instanceof BarButtonView) {
+                        BarButtonView barButtonView = (BarButtonView) children.get(i);
+                        if (barButtonView.getMenuItem() != item)
+                            barButtonView.getMenuItem().collapseActionView();
+                        else
+                            barButtonView.press();
+                    }
+                }
                 return true;
             }
         });
@@ -125,9 +126,6 @@ public class ToolbarView extends Toolbar {
         setTintColor(getLogo());
         setTintColor(getOverflowIcon());
         setMenuTintColor();
-        for(int i = 0; i < getMenu().size(); i++) {
-            setTintColor(getMenu().getItem(i).getIcon());
-        }
         setCollapseSearchTintColor();
     }
 
@@ -140,41 +138,35 @@ public class ToolbarView extends Toolbar {
         }
     }
 
-    void setMenuItems(@Nullable ReadableArray menuItems) {
+    void setMenuItems() {
         getMenu().clear();
-        for (int i = 0; menuItems != null && i < menuItems.size(); i++) {
-            ReadableMap menuItemProps = menuItems.getMap(i);
-            if (menuItemProps == null)
-                continue;
-            String title = menuItemProps.hasKey(PROP_ACTION_TITLE) ? menuItemProps.getString(PROP_ACTION_TITLE) : "";
-            ReadableMap iconSource = menuItemProps.getMap(PROP_ACTION_ICON);
-            MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, title);
-            if (iconSource != null)
-                setMenuItemIcon(menuItem, iconSource);
-            int showAsAction = menuItemProps.hasKey(PROP_ACTION_SHOW) ? menuItemProps.getInt(PROP_ACTION_SHOW) : MenuItem.SHOW_AS_ACTION_NEVER;
-            boolean search = menuItemProps.hasKey(PROP_ACTION_SEARCH) && menuItemProps.getBoolean(PROP_ACTION_SEARCH);
-            if (search) {
-                searchMenuItem = menuItem;
-                showAsAction = MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction;
-                if (onSearchAddedListener != null)
-                    onSearchAddedListener.onSearchAdd(searchMenuItem);
-                menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-                    @Override
-                    public boolean onMenuItemActionCollapse(MenuItem item) {
-                        onSearchAddedListener.onSearchCollapse();
-                        return true;
-                    }
+        for (int i = 0; i < children.size(); i++) {
+            if (children.get(i) instanceof BarButtonView) {
+                BarButtonView barButton = (BarButtonView) children.get(i);
+                MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, "");
+                barButton.setMenuItem(menuItem);
+                if (barButton.getSearch()) {
+                    searchMenuItem = menuItem;
+                    if (onSearchAddedListener != null)
+                        onSearchAddedListener.onSearchAdd(searchMenuItem);
+                    menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+                        @Override
+                        public boolean onMenuItemActionCollapse(MenuItem item) {
+                            onSearchAddedListener.onSearchCollapse();
+                            return true;
+                        }
 
-                    @Override
-                    public boolean onMenuItemActionExpand(MenuItem item) {
-                        onSearchAddedListener.onSearchExpand();
-                        return true;
-                    }
-                });
+                        @Override
+                        public boolean onMenuItemActionExpand(MenuItem item) {
+                            onSearchAddedListener.onSearchExpand();
+                            return true;
+                        }
+                    });
+                }
             }
-            menuItem.setShowAsAction(showAsAction);
         }
         setMenuTintColor();
+        requestLayout();
     }
 
     private void setMenuTintColor()  {
@@ -191,11 +183,11 @@ public class ToolbarView extends Toolbar {
                 }
             }
         }
-    }
-
-    private void setMenuItemIcon(final MenuItem item, ReadableMap iconSource) {
-        ActionIconControllerListener controllerListener = new ActionIconControllerListener(item);
-        IconResolver.setIconSource(iconSource, controllerListener, getContext());
+        for (int i = 0; i < children.size(); i++) {
+            if (children.get(i) instanceof BarButtonView) {
+                ((BarButtonView) children.get(i)).setTintColor(tintColor);
+            }
+        }
     }
 
     void setOnSearchListener(OnSearchListener onSearchListener) {
@@ -205,17 +197,17 @@ public class ToolbarView extends Toolbar {
 
     }
 
-    void setCollapseSearchButton(ImageButton collapseSearchButton) {
-        this.collapseSearchButton = collapseSearchButton;
+    void setCollapseButton(ImageButton collapseButton) {
+        this.collapseButton = collapseButton;
         setCollapseSearchTintColor();
     }
 
     void setCollapseSearchTintColor() {
-        if (collapseSearchButton != null) {
+        if (collapseButton != null) {
             if (tintColor != null)
-                collapseSearchButton.setColorFilter(tintColor);
+                collapseButton.setColorFilter(tintColor);
             else
-                collapseSearchButton.clearColorFilter();
+                collapseButton.clearColorFilter();
         }
     }
 
@@ -238,20 +230,6 @@ public class ToolbarView extends Toolbar {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
-
-    class ActionIconControllerListener implements IconResolver.IconResolverListener {
-        private final MenuItem item;
-
-        ActionIconControllerListener(MenuItem item) {
-            this.item = item;
-        }
-
-        @Override
-        public void setDrawable(Drawable d) {
-            item.setIcon(d);
-            setTintColor(item.getIcon());
-        }
-    }
 
     interface OnSearchListener {
         void onSearchAdd(MenuItem searchMenuItem);

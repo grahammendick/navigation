@@ -50,7 +50,7 @@ public class SearchBarView extends ReactViewGroup {
                 if (hasFocus) {
                     ToolbarView toolbarView = (ToolbarView) searchView.getParent();
                     if (toolbarView.getChildAt(1) instanceof ImageButton)
-                        toolbarView.setCollapseSearchButton((ImageButton) toolbarView.getChildAt(1));
+                        toolbarView.setCollapseButton((ImageButton) toolbarView.getChildAt(1));
                 }
             }
         });
