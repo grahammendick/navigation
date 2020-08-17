@@ -4,37 +4,34 @@ import {NavigationContext} from 'navigation-react';
 import {SharedElement, NavigationBar, SearchBar, RightBar, BarButton} from 'navigation-react-native';
 
 const Colors = ({colors, children, filter}) => {
+  const {stateNavigator} = useContext(NavigationContext);
   const suffix = filter != null ? '_search' : '';
   const matchedColors = colors.filter(color => (
     !filter || color.indexOf(filter.toLowerCase()) !== -1
   ));
   return (
-    <NavigationContext.Consumer>
-      {({stateNavigator}) => (
-        <ScrollView
-          style={styles.scene}
-          contentInsetAdjustmentBehavior="automatic">
-          <View style={styles.colors}>
-            {matchedColors.map(color => (
-              <TouchableHighlight
-                key={color}
-                style={styles.color}
-                underlayColor={color}                
-                onPress={() => {
-                  stateNavigator.navigate('detail', {
-                    color, name: color + suffix, filter, search: filter != null
-                  });
-                }}>
-                <SharedElement name={color + suffix} style={{flex: 1}}>
-                  <View style={{backgroundColor: color, flex: 1}} />
-                </SharedElement>
-              </TouchableHighlight>
-            ))}
-            {children}
-          </View>
-        </ScrollView>
-      )}
-    </NavigationContext.Consumer>
+    <ScrollView
+      style={styles.scene}
+      contentInsetAdjustmentBehavior="automatic">
+      <View style={styles.colors}>
+        {matchedColors.map(color => (
+          <TouchableHighlight
+            key={color}
+            style={styles.color}
+            underlayColor={color}                
+            onPress={() => {
+              stateNavigator.navigate('detail', {
+                color, name: color + suffix, filter, search: filter != null
+              });
+            }}>
+            <SharedElement name={color + suffix} style={{flex: 1}}>
+              <View style={{backgroundColor: color, flex: 1}} />
+            </SharedElement>
+          </TouchableHighlight>
+        ))}
+        {children}
+      </View>
+    </ScrollView>
   );
 }
 
