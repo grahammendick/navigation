@@ -120,7 +120,18 @@
             <h2>Adding an Action Bar on Android</h2>
             <p>              
             </p>
-            <pre><code class="language-jsx">
+            <pre><code class="language-jsx">import {ActionBar} from 'navigation-react-native';
+
+&lt;BarButton title="find" show="always">
+  &lt;ActionBar>
+    &lt;View style={{flex: 'row'}}>
+      &lt;TextInput onChangeText={text => find(text)}>
+      &lt;TouchableHighlight onPress={() => findNextMatch()}>
+        &lt;Image source={require('./arrow.png')} />
+      &lt;/TouchableHighlight>
+    &lt;/View>
+  &lt;/ActionBar>
+&lt;/BarButton>
 </code></pre>
             <h2 id="scrolling">Scrolling the Navigation Bar on Android</h2>
             <p>
