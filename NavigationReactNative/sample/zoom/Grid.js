@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {Platform, StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {SharedElement, NavigationBar, SearchBar, RightBar, BarButton} from 'navigation-react-native';
@@ -42,39 +42,34 @@ const Container = (props) => (
   Platform.OS === 'ios' ? <ScrollView {...props}/> : <View {...props} />
 );
 
-export default class Grid extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {text: ''};
-  }
-  render() {
-    const {colors} = this.props;
-    const {text} = this.state;
-    return (
-      <Container
-        style={styles.scene}
-        collapsable={false}
-        contentInsetAdjustmentBehavior="automatic">
-        <NavigationBar
-          largeTitle={true}
-          title="Colors"
-          barTintColor={Platform.OS === 'android' ? '#fff' : null}>
-          <SearchBar
-            text={text}
-            autoCapitalize="none"
-            obscureBackground={false}
-            onChangeText={text => this.setState({text})}>
-            <Colors colors={colors} filter={text} />
-          </SearchBar>
-          <RightBar>
-            <BarButton title="search" show="always" search={true} />
-          </RightBar>
-        </NavigationBar>
-        <Colors colors={colors} />
-      </Container>
-    );
-  }
-}
+const Grid = ({colors}) => {
+  const [text, setText] = useState('');
+  return (
+    <Container
+      style={styles.scene}
+      collapsable={false}
+      contentInsetAdjustmentBehavior="automatic">
+      <NavigationBar
+        largeTitle={true}
+        title="Colors"
+        barTintColor={Platform.OS === 'android' ? '#fff' : null}>
+        <SearchBar
+          text={text}
+          autoCapitalize="none"
+          obscureBackground={false}
+          onChangeText={text => setText(text)}>
+          <Colors colors={colors} filter={text} />
+        </SearchBar>
+        <RightBar>
+          <BarButton title="search" show="always" search={true} />
+        </RightBar>
+      </NavigationBar>
+      <Colors colors={colors} />
+    </Container>
+  );
+};
+
+export default Grid;
 
 const styles = StyleSheet.create({
   scene: {
