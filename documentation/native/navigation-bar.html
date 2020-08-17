@@ -93,7 +93,7 @@
 </code></pre>
             <h2>Adding a Search Bar</h2>
             <p>
-                The <code>SearchBar</code> component displays a search bar below the title in the navigation bar. It calls the <code>onChangeText</code> prop whenever the search text changes. Any search results you render into the component’s children are displayed in a new native screen that sits over the top of the current one. On Android, you trigger the search via a <code>BarButton</code> with the <code>search</code> prop set to 'true'. We allow the user to search their inbox in our example application by adding a <code>SearchBar</code> component to the 'mail' scene.
+                The <code>SearchBar</code> component displays a search bar in the navigation bar. It calls the <code>onChangeText</code> prop whenever the search text changes. Any search results you render into the component's children are displayed in a new native screen that sits over the top of the current one. On Android, you trigger the search via a <code>BarButton</code> with the <code>search</code> prop set to 'true'. We allow the user to search their inbox in our example application by adding a <code>SearchBar</code> component to the 'mail' scene.
             </p>
             <div class="Note">
                 <h2>Note</h2>
@@ -116,6 +116,23 @@
     &lt;BarButton title="search" search={true} />
   &lt;/RightBar>
 &lt;/NavigationBar>
+</code></pre>
+            <h2>Adding an Action Bar on Android</h2>
+            <p>
+                The <code>ActionBar</code> component displays a view in the navigation bar on Android. It's the child of a <code>BarButton</code> component. When the user taps the button the <code>ActionBar</code> children render in place of the title. It's like the <code>SearchBar</code> component but for your own custom views. We add a view to the navigation bar on the 'mail' scene so users can locate a specific word in their email. Alongside the input we render an arrow that moves the user to the next match.
+            </p>
+            <pre><code class="language-jsx">import {ActionBar} from 'navigation-react-native';
+
+&lt;BarButton title="find" show="always">
+  &lt;ActionBar>
+    &lt;View style={{flex: 'row'}}>
+      &lt;TextInput onChangeText={text => find(text)}>
+      &lt;TouchableHighlight onPress={() => findNextMatch()}>
+        &lt;Image source={require('./arrow.png')} />
+      &lt;/TouchableHighlight>
+    &lt;/View>
+  &lt;/ActionBar>
+&lt;/BarButton>
 </code></pre>
             <h2 id="scrolling">Scrolling the Navigation Bar on Android</h2>
             <p>
