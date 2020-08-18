@@ -12,15 +12,15 @@
   "dependencies": {
     "navigation": "^5.3.1",
     "navigation-react": "^4.1.1",
-    "navigation-react-native": "^6.17.0",
+    "navigation-react-native": "^6.23.0",
     "react": "16.11.0",
     "react-native": "0.62.2",
-    "react-redux": "^7.2.0",
+    "react-redux": "^7.2.1",
     "redux": "^4.0.5"
   },
   "devDependencies": {
-    "@babel/core": "7.10.2",
-    "@babel/runtime": "7.10.2",
+    "@babel/core": "7.11.1",
+    "@babel/runtime": "7.11.2",
     "@react-native-community/eslint-config": "0.0.5",
     "babel-jest": "24.9.0",
     "eslint": "6.8.0",
