@@ -20,6 +20,7 @@ public class TabLayoutView extends TabLayout implements TabView {
     int selectedTintColor;
     int unselectedTintColor;
     private boolean layoutRequested = false;
+    private boolean measured = false;
     private OnTabSelectedListener tabSelectedListener;
 
     public TabLayoutView(Context context) {
@@ -84,6 +85,13 @@ public class TabLayoutView extends TabLayout implements TabView {
             }
         };
         addOnTabSelectedListener(tabSelectedListener);
+        if (!measured) {
+            measure(
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+            layout(getLeft(), getTop(), getRight(), getBottom());
+            measured = true;
+        }
     }
 
     @Override

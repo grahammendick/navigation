@@ -33,6 +33,7 @@ public class TabBarPagerView extends ViewPager {
     int selectedTab = 0;
     boolean scrollsToTop;
     private boolean layoutRequested = false;
+    private boolean measured = false;
     int nativeEventCount;
     int mostRecentEventCount;
     private boolean dataSetChanged = false;
@@ -65,6 +66,13 @@ public class TabBarPagerView extends ViewPager {
         if (getTabLayout() != null)
             getTabLayout().setupWithViewPager(this);
         populateTabs();
+        if (!measured) {
+            measure(
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+            layout(getLeft(), getTop(), getRight(), getBottom());
+            measured = true;
+        }
     }
 
     void populateTabs() {
