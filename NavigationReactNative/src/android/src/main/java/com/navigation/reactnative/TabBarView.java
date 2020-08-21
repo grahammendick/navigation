@@ -99,7 +99,7 @@ public class TabBarView extends ViewGroup {
             tabNavigation.tabSelected(index);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(getId(), tabFragments.get(index));
-        transaction.commit();
+        transaction.commitNowAllowingStateLoss();
     }
 
     void scrollToTop() {
