@@ -87,18 +87,17 @@ compose.renderScene = () => &lt;Compose />;</code></pre>
             </p>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
 
-var Inbox = () => (
-  &lt;NavigationContext.Consumer>
-    {({stateNavigator}) => (
-      &lt;TouchableHighlight
-        onPress={() => {
-          stateNavigator.navigate('compose');
-        }}>
-        &lt;Text>Compose Mail&lt;/Text>
-      &lt;/TouchableHighlight>
-    )}
-  &lt;/NavigationContext.Consumer>
-);</code></pre>
+var Inbox = () => {
+  var {stateNavigator} = useContext(NavigationContext);
+  return (
+    &lt;TouchableHighlight
+      onPress={() => {
+        stateNavigator.navigate('compose');
+      }}>
+      &lt;Text>Compose Mail&lt;/Text>
+    &lt;/TouchableHighlight>
+  );
+};</code></pre>
             <h2>Passing Data</h2>
             <p>
                 You pass data between scenes via the second parameter of the <code>navigate</code> function. You can pass any data of type string, number, boolean and date; or any array of these types. When a user opens an email in our example app, we pass along the selected id to the 'mail' scene.
