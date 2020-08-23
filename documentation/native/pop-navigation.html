@@ -63,18 +63,17 @@
             </p>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
 
-var Compose = () => (
-  &lt;NavigationContext.Consumer>
-    {({stateNavigator}) => (
-      &lt;TouchableHighlight
-        onPress={() => {
-          stateNavigator.navigateBack(1);
-        }}>
-        &lt;Text>Back to Inbox&lt;/Text>
-      &lt;/TouchableHighlight>
-    )}
-  &lt;/NavigationContext.Consumer>
-);</code></pre>
+var Compose = () => {
+  var {stateNavigator} = useContext(NavigationContext);
+  return (
+    &lt;TouchableHighlight
+      onPress={() => {
+        stateNavigator.navigateBack(1);
+      }}>
+      &lt;Text>Back to Inbox&lt;/Text>
+    &lt;/TouchableHighlight>
+  );
+};</code></pre>
             <h2>Popping to Top</h2>
             <p>
                 The Navigation router is the only React Native router that navigates natively on Android and iOS where you can interrogate the stack in JavaScript. You recall that the Navigation router drops a breadcrumb at each visited scene, just like the fairy-tale characters Hansel and Gretel. The stack of visited scenes is represented in JavaScript as an array of breadcrumbs. Each crumb corresponds to a visited scene and holds the <code>State</code> and navigation data associated with it.
