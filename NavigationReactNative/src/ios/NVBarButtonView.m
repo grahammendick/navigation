@@ -16,6 +16,16 @@
     return self;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    UIView *buttonView = ((UIView *) [self.button valueForKey:@"view"]);
+    UIView *rightBarView = buttonView.superview;
+    UIView *labelView = buttonView.subviews.count > 0 ? buttonView.subviews[0] : buttonView;
+    CGRect labelFrameInBar = [buttonView convertRect:labelView.frame toView:rightBarView];
+    self.frame = [rightBarView convertRect:labelFrameInBar toView:nil];
+}
+
 - (void)setTitle:(NSString *)title
 {
     self.button.title = title;
