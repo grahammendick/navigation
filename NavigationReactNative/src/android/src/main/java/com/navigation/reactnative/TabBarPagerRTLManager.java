@@ -126,8 +126,8 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
             @Override
             public void run() {
                 view.measure(
-                        View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY),
-                        View.MeasureSpec.makeMeasureSpec(view.getHeight(), View.MeasureSpec.EXACTLY));
+                    View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(view.getHeight(), View.MeasureSpec.EXACTLY));
                 view.layout(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
             }
         });
