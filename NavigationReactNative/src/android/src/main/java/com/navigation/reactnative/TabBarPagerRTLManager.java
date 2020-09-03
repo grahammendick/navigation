@@ -103,8 +103,8 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
         });
         tabBarPagerAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
-            public void onChanged() {
-                super.onChanged();
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
                 if (tabBarPager.getCurrentItem() != tabBarPagerAdapter.selectedTab
                         && tabBarPagerAdapter.getTabsCount() > tabBarPagerAdapter.selectedTab) {
                     setCurrentItem(tabBarPager, tabBarPagerAdapter.selectedTab);

@@ -67,14 +67,14 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     void addTab(TabBarItemView tab, int index) {
         tabBarItems.add(index, tab);
         dataSetChanged = true;
-        notifyDataSetChanged();
+        notifyItemInserted(index);
         dataSetChanged = false;
     }
 
     void removeTab(int index) {
         tabBarItems.remove(index);
         dataSetChanged = true;
-        notifyDataSetChanged();
+        notifyItemRemoved(index);
         dataSetChanged = false;
     }
 
