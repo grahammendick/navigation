@@ -178,9 +178,9 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-                .put("onTabSelected", MapBuilder.of("registrationName", "onTabSelected"))
-                .put("onTabSwipeStateChanged", MapBuilder.of("registrationName", "onTabSwipeStateChanged"))
-                .build();
+            .put("onTabSelected", MapBuilder.of("registrationName", "onTabSelected"))
+            .put("onTabSwipeStateChanged", MapBuilder.of("registrationName", "onTabSwipeStateChanged"))
+            .build();
     }
 
     @Override
