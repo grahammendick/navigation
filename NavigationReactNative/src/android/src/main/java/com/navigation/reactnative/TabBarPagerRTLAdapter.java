@@ -20,7 +20,6 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     int nativeEventCount;
     int mostRecentEventCount;
     boolean dataSetChanged = false;
-    boolean initialisedScroll = false;
 
     public TabBarPagerRTLAdapter(@NonNull Fragment fragment) {
         super(fragment);
