@@ -57,6 +57,11 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
+                if (!tabBarPagerAdapter.initialisedScroll) {
+                    tabBarPagerAdapter.initialisedScroll = true;
+                    if (position == 0)
+                        return;
+                }
                 if (!tabBarPagerAdapter.dataSetChanged)
                     tabBarPagerAdapter.nativeEventCount++;
                 tabBarPagerAdapter.selectedTab = position;
