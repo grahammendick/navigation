@@ -79,12 +79,12 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
                 TabLayoutRTLView tabLayout = getTabLayout(v);
                 if (tabLayout != null) {
                     new TabLayoutMediator(tabLayout, tabBarPager,
-                            new TabLayoutMediator.TabConfigurationStrategy() {
-                                @Override
-                                public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                                    tab.setText(tabBarPagerAdapter.getTabAt(position).title);
-                                }
+                        new TabLayoutMediator.TabConfigurationStrategy() {
+                            @Override
+                            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                                tab.setText(tabBarPagerAdapter.getTabAt(position).title);
                             }
+                        }
                     ).attach();
                     tabBarPagerAdapter.populateTabs(tabLayout);
                 }
