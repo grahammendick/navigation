@@ -20,6 +20,7 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     int nativeEventCount;
     int mostRecentEventCount;
     boolean dataSetChanged = false;
+    boolean initialisedScroll = false;
 
     public TabBarPagerRTLAdapter(@NonNull Fragment fragment) {
         super(fragment);
@@ -66,14 +67,14 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     void addTab(TabBarItemView tab, int index) {
         tabBarItems.add(index, tab);
         dataSetChanged = true;
-        notifyItemInserted(index);
+        notifyDataSetChanged();
         dataSetChanged = false;
     }
 
     void removeTab(int index) {
         tabBarItems.remove(index);
         dataSetChanged = true;
-        notifyItemRemoved(index);
+        notifyDataSetChanged();
         dataSetChanged = false;
     }
 
