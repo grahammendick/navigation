@@ -4,11 +4,13 @@ import BackButton from './BackButton';
 
 class TabBar extends React.Component<any, any> {
     private ref: React.RefObject<View>;
+    private swiping = false;
     constructor(props) {
         super(props);
         this.state = {selectedTab: props.tab || props.defaultTab};
         this.ref = React.createRef<View>();
         this.onTabSelected = this.onTabSelected.bind(this);
+        this.onTabSwipeStateChanged = this.onTabSwipeStateChanged.bind(this);
     }
     static defaultProps = {
         defaultTab: 0,
@@ -25,6 +27,9 @@ class TabBar extends React.Component<any, any> {
         var {eventCount: mostRecentEventCount, tab} = nativeEvent;
         this.ref.current.setNativeProps({mostRecentEventCount});
         this.changeTab(tab);
+    }
+    onTabSwipeStateChanged({nativeEvent}) {
+        this.swiping = nativeEvent.swiping;
     }
     changeTab(selectedTab) {
         var {tab, onChangeTab} = this.props;
@@ -69,7 +74,8 @@ class TabBar extends React.Component<any, any> {
                     ref={this.ref}
                     tabCount={tabBarItems.length}
                     onTabSelected={this.onTabSelected}
-                    selectedTab={this.state.selectedTab}
+                    onTabSwipeStateChanged={this.onTabSwipeStateChanged}
+                    onMoveShouldSetResponderCapture={() => this.swiping}                    selectedTab={this.state.selectedTab}
                     barTintColor={barTintColor}
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}
