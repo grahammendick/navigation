@@ -75,7 +75,8 @@ class TabBar extends React.Component<any, any> {
                     tabCount={tabBarItems.length}
                     onTabSelected={this.onTabSelected}
                     onTabSwipeStateChanged={this.onTabSwipeStateChanged}
-                    onMoveShouldSetResponderCapture={() => this.swiping}                    selectedTab={this.state.selectedTab}
+                    onMoveShouldSetResponderCapture={() => this.swiping}
+                    selectedTab={this.state.selectedTab}
                     barTintColor={barTintColor}
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}
