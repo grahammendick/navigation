@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -42,6 +43,7 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
     @Override
     protected ViewPager2 createViewInstance(@Nonnull final ThemedReactContext reactContext) {
         final ViewPager2 tabBarPager = new ViewPager2(reactContext);
+        ViewCompat.setLayoutDirection(tabBarPager, ViewCompat.LAYOUT_DIRECTION_RTL);
         FragmentActivity activity = (FragmentActivity) reactContext.getCurrentActivity();
         Fragment fragment = new TabBarPagerFragment(tabBarPager);
         if (activity != null) {

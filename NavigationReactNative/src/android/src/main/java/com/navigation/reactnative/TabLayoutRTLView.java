@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.AppBarLayout;
@@ -23,6 +24,7 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
 
     public TabLayoutRTLView(Context context) {
         super(context);
+        ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_RTL);
         AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.WRAP_CONTENT);
         params.setScrollFlags(0);
         setLayoutParams(params);
