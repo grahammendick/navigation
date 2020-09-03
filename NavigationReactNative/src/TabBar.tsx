@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent, Platform, StyleSheet, View } from 'react-native';
+import { requireNativeComponent, Platform, StyleSheet, View, I18nManager } from 'react-native';
 import BackButton from './BackButton';
 
 class TabBar extends React.Component<any, any> {
@@ -45,8 +45,9 @@ class TabBar extends React.Component<any, any> {
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
         var tabViewHeight = !primary ? (titleOnly ? 48 : 72) : 56
         tabViewHeight = Platform.OS === 'android' ? tabViewHeight : 28;
-        var TabBar = primary ? NVTabBar : NVTabBarPager;
-        var TabView = primary ? NVTabNavigation : NVTabLayout;
+        var TabBarPager = (Platform.OS === 'ios' || !I18nManager.isRTL) ? NVTabBarPager : NVTabBarPagerRTL;
+        var TabBar = primary ? NVTabBar : TabBarPager;
+        var TabView = primary ? NVTabNavigation : (!I18nManager.isRTL ? NVTabLayout : NVTabLayoutRTL);
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedTab;
         var tabLayout = (Platform.OS === 'android' || !primary) && (
             <TabView
@@ -89,10 +90,12 @@ class TabBar extends React.Component<any, any> {
 }
 
 var NVTabLayout = requireNativeComponent<any>('NVTabLayout', null);
+var NVTabLayoutRTL = requireNativeComponent<any>('NVTabLayoutRTL', null);
 var NVTabNavigation = requireNativeComponent<any>('NVTabNavigation', null);
 var NVSegmentedTab = requireNativeComponent<any>('NVSegmentedTab', null);
 var NVTabBar = requireNativeComponent<any>('NVTabBar', null);
 var NVTabBarPager = requireNativeComponent<any>('NVTabBarPager', null);
+var NVTabBarPagerRTL = requireNativeComponent<any>('NVTabBarPagerRTL', null);
 
 const styles = StyleSheet.create({
     tabBar: {
