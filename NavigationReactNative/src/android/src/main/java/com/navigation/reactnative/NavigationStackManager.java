@@ -24,7 +24,7 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     }
 
     @ReactProp(name = "keys")
-    public void setkeys(NavigationStackView view, ReadableArray keys) {
+    public void setKeys(NavigationStackView view, ReadableArray keys) {
         view.keys = keys;
     }
 
@@ -71,6 +71,8 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
             scene.setElevation(getChildAt(parent, index - 1).getElevation() + 1);
         parent.sceneKeys.add(index, scene.sceneKey);
         parent.scenes.put(scene.sceneKey, scene);
+        if (parent.startNavigation && parent.keys.size() == parent.scenes.size())
+            parent.onAfterUpdateTransaction();
     }
 
     @Override

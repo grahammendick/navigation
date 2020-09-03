@@ -21,8 +21,6 @@ public class TabFragment extends Fragment {
         super();
         this.tabBarItem = tabBarItem;
         view = tabBarItem.content.get(0);
-        if (view instanceof NavigationStackView)
-            ((NavigationStackView) view).onAfterUpdateTransaction();
     }
 
     @Nullable

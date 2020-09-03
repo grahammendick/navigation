@@ -36,6 +36,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected String exitAnim;
     protected ReadableArray sharedElementNames;
     protected ReadableArray oldSharedElementNames;
+    protected Boolean startNavigation = null;
     protected boolean finish = false;
     SceneNavigator navigator;
 
@@ -67,6 +68,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             transaction.add(fragment, "Stack" + getId());
             transaction.commitNowAllowingStateLoss();
         }
+        startNavigation = startNavigation == null ? keys.size() != 0 : false;
         if (scenes.size() == 0 || !navigator.canNavigate(currentActivity, this))
             return;
         int crumb = keys.size() - 1;
