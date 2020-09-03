@@ -14,7 +14,7 @@ public class TabLayoutRTLManager extends ViewGroupManager<TabLayoutRTLView> {
     @Nonnull
     @Override
     public String getName() {
-        return "NVTabLayout";
+        return "NVTabLayoutRTL";
     }
 
     @ReactProp(name = "selectedTintColor", customType = "Color")
