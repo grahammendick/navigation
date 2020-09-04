@@ -62,6 +62,8 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
                 ((ScrollView) getChildAt(i)).smoothScrollTo(0,0);
             if (getChildAt(i) instanceof TabBarPagerView)
                 ((TabBarPagerView) getChildAt(i)).scrollToTop();
+            if (getChildAt(i) instanceof ViewPager2)
+                TabBarPagerRTLManager.getAdapter((ViewPager2) getChildAt(i)).scrollToTop();
         }
     }
 

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
@@ -115,6 +116,8 @@ public class TabBarView extends ViewGroup {
                     ((ScrollView) viewGroup.getChildAt(i)).smoothScrollTo(0,0);
                 if (viewGroup.getChildAt(i) instanceof TabBarPagerView)
                     ((TabBarPagerView) viewGroup.getChildAt(i)).scrollToTop();
+                if (viewGroup.getChildAt(i) instanceof ViewPager2)
+                    TabBarPagerRTLManager.getAdapter((ViewPager2) viewGroup.getChildAt(i)).scrollToTop();
             }
         }
         if (tabBarItem instanceof ScrollView)

@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
@@ -115,6 +116,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     ((ScrollView) scene.getChildAt(i)).smoothScrollTo(0, 0);
                 if (scene.getChildAt(i) instanceof TabBarPagerView)
                     ((TabBarPagerView) scene.getChildAt(i)).scrollToTop();
+                if (scene.getChildAt(i) instanceof ViewPager2)
+                    TabBarPagerRTLManager.getAdapter((ViewPager2) scene.getChildAt(i)).scrollToTop();
             }
         }
     }
