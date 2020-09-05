@@ -4,6 +4,7 @@
 
 #import <UIKit/UIKit.h>
 #import <React/UIView+React.h>
+#import <React/RCTI18nUtil.h>
 #import <React/RCTScrollView.h>
 
 @implementation NVTabBarView
@@ -18,6 +19,7 @@
 {
     if (self = [super init]) {
         _tabBarController = [[UITabBarController alloc] init];
+        _tabBarController.tabBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         [self addSubview:_tabBarController.view];
         _tabBarController.delegate = self;
     }
