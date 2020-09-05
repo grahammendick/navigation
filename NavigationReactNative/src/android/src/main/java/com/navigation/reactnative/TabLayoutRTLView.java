@@ -67,12 +67,12 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
         final ViewPager2 tabBarPager = getTabBar();
         if (tabBarPager != null && tabBarPager.getAdapter() != null) {
             new TabLayoutMediator(this, tabBarPager,
-                    new TabLayoutMediator.TabConfigurationStrategy() {
-                        @Override
-                        public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                            tab.setText(((TabBarPagerRTLAdapter) tabBarPager.getAdapter()).getTabAt(position).title);
-                        }
+                new TabLayoutMediator.TabConfigurationStrategy() {
+                    @Override
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                        tab.setText(((TabBarPagerRTLAdapter) tabBarPager.getAdapter()).getTabAt(position).title);
                     }
+                }
             ).attach();
             TabBarPagerRTLManager.getAdapter(tabBarPager).populateTabs(this);
         }
