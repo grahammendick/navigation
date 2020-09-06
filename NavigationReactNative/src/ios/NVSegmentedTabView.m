@@ -2,12 +2,15 @@
 #import "NVTabBarItemView.h"
 #import "NVTabBarPagerView.h"
 
+#import <React/RCTI18nUtil.h>
+
 @implementation NVSegmentedTabView
 
 - (id)init
 {
     if (self = [super init]) {
         [self addTarget:self action:@selector(tabPressed) forControlEvents:UIControlEventValueChanged];
+        self.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
     }
     return self;
 }

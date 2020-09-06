@@ -6,33 +6,47 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
-public class TabLayoutView extends TabLayout implements TabView {
-    boolean bottomTabs;
+public class TabLayoutRTLView extends TabLayout implements TabView {
     int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
     private boolean layoutRequested = false;
-    private boolean measured = false;
-    private OnTabSelectedListener tabSelectedListener;
 
-    public TabLayoutView(Context context) {
+    public TabLayoutRTLView(Context context) {
         super(context);
-        ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_LTR);
+        ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_RTL);
         AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.WRAP_CONTENT);
         params.setScrollFlags(0);
         setLayoutParams(params);
         if (getTabTextColors() != null)
             selectedTintColor = unselectedTintColor = defaultTextColor = getTabTextColors().getDefaultColor();
         setSelectedTabIndicatorColor(defaultTextColor);
+        addOnTabSelectedListener(new OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(Tab tab) {
+            }
+
+            @Override
+            public void onTabUnselected(Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(Tab tab) {
+                ViewPager2 tabBarPager = getTabBar();
+                if (tabBarPager != null && tabBarPager.getAdapter() != null)
+                    ((TabBarPagerRTLAdapter) tabBarPager.getAdapter()).scrollToTop();
+            }
+        });
     }
 
     public void setScrollable(boolean scrollable) {
@@ -50,50 +64,32 @@ public class TabLayoutView extends TabLayout implements TabView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        TabBarPagerView tabBar = getTabBar();
-        if (bottomTabs && tabBar != null) {
-            setupWithViewPager(tabBar);
-            tabBar.populateTabs();
+        final ViewPager2 tabBarPager = getTabBar();
+        if (tabBarPager != null && tabBarPager.getAdapter() != null) {
+            new TabLayoutMediator(this, tabBarPager,
+                new TabLayoutMediator.TabConfigurationStrategy() {
+                    @Override
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                        tab.setText(((TabBarPagerRTLAdapter) tabBarPager.getAdapter()).getTabAt(position).title);
+                    }
+                }
+            ).attach();
+            TabBarPagerRTLManager.getAdapter(tabBarPager).populateTabs(this);
         }
     }
 
-    private TabBarPagerView getTabBar() {
-        for(int i = 0; getParent() != null && i < ((ViewGroup) getParent()).getChildCount(); i++) {
-            View child = ((ViewGroup) getParent()).getChildAt(i);
-            if (child instanceof TabBarPagerView)
-                return (TabBarPagerView) child;
+    private ViewPager2 getTabBar() {
+        ViewGroup parent = (ViewGroup) getParent();
+        if (parent instanceof CoordinatorLayoutView)
+            return null;
+        if (parent instanceof NavigationBarView)
+            parent = (ViewGroup) parent.getParent();
+        for(int i = 0; parent != null && i < parent.getChildCount(); i++) {
+            View child = parent.getChildAt(i);
+            if (child instanceof ViewPager2)
+                return (ViewPager2) child;
         }
         return null;
-    }
-
-    @Override
-    public void setupWithViewPager(@Nullable final ViewPager viewPager) {
-        super.setupWithViewPager(viewPager);
-        if (tabSelectedListener != null)
-            removeOnTabSelectedListener(tabSelectedListener);
-        tabSelectedListener = new OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(Tab tab) {
-            }
-
-            @Override
-            public void onTabUnselected(Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(Tab tab) {
-                if (viewPager != null)
-                    ((TabBarPagerView) viewPager).scrollToTop();
-            }
-        };
-        addOnTabSelectedListener(tabSelectedListener);
-        if (!measured) {
-            measure(
-                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-            measured = true;
-        }
     }
 
     @Override

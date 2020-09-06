@@ -4,6 +4,7 @@
 
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
+#import <React/RCTI18nUtil.h>
 #import <React/RCTUIManager.h>
 #import <React/UIView+React.h>
 
@@ -19,6 +20,8 @@
     if (self = [super init]) {
         _bridge = bridge;
         _navigationController = [[UINavigationController alloc] init];
+        _navigationController.view.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
+        _navigationController.navigationBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         [self addSubview:_navigationController.view];
         _navigationController.delegate = self;
         _scenes = [[NSMutableDictionary alloc] init];

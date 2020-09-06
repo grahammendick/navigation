@@ -8,6 +8,7 @@ import android.view.ViewConfiguration;
 import android.widget.ScrollView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.facebook.react.uimanager.events.NativeGestureUtil;
 
@@ -61,6 +62,8 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
                 ((ScrollView) getChildAt(i)).smoothScrollTo(0,0);
             if (getChildAt(i) instanceof TabBarPagerView)
                 ((TabBarPagerView) getChildAt(i)).scrollToTop();
+            if (getChildAt(i) instanceof ViewPager2)
+                TabBarPagerRTLManager.getAdapter((ViewPager2) getChildAt(i)).scrollToTop();
         }
     }
 
@@ -71,6 +74,11 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
             if (getChildAt(i) instanceof TabBarPagerView) {
                 TabBarPagerView tabBarView = ((TabBarPagerView) getChildAt(i));
                 View tab = tabBarView.getTabAt(tabBarView.getCurrentItem()).content.get(0);
+                return tab instanceof ScrollView ? (ScrollView) tab : null;
+            }
+            if (getChildAt(i) instanceof ViewPager2) {
+                ViewPager2 tabBarView = ((ViewPager2) getChildAt(i));
+                View tab = TabBarPagerRTLManager.getAdapter(tabBarView).getTabAt(tabBarView.getCurrentItem()).content.get(0);
                 return tab instanceof ScrollView ? (ScrollView) tab : null;
             }
         }

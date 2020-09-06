@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
@@ -36,6 +37,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected String exitAnim;
     protected ReadableArray sharedElementNames;
     protected ReadableArray oldSharedElementNames;
+    protected Boolean startNavigation = null;
     protected boolean finish = false;
     SceneNavigator navigator;
 
@@ -67,6 +69,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             transaction.add(fragment, "Stack" + getId());
             transaction.commitNowAllowingStateLoss();
         }
+        startNavigation = startNavigation == null ? keys.size() != 0 : false;
         if (scenes.size() == 0 || !navigator.canNavigate(currentActivity, this))
             return;
         int crumb = keys.size() - 1;
@@ -113,6 +116,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     ((ScrollView) scene.getChildAt(i)).smoothScrollTo(0, 0);
                 if (scene.getChildAt(i) instanceof TabBarPagerView)
                     ((TabBarPagerView) scene.getChildAt(i)).scrollToTop();
+                if (scene.getChildAt(i) instanceof ViewPager2)
+                    TabBarPagerRTLManager.getAdapter((ViewPager2) scene.getChildAt(i)).scrollToTop();
             }
         }
     }

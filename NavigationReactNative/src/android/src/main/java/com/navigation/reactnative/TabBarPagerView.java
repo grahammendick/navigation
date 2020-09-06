@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
@@ -12,6 +11,7 @@ import android.widget.ScrollView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -22,7 +22,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.uimanager.events.NativeGestureUtil;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import java.util.ArrayList;
@@ -40,6 +39,7 @@ public class TabBarPagerView extends ViewPager {
 
     public TabBarPagerView(Context context) {
         super(context);
+        ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_LTR);
         addOnPageChangeListener(new TabChangeListener());
         FragmentActivity activity = (FragmentActivity) ((ReactContext) context).getCurrentActivity();
         fragment = new TabBarPagerFragment(this);
@@ -168,18 +168,6 @@ public class TabBarPagerView extends ViewPager {
         }
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        try {
-            if (super.onInterceptTouchEvent(ev)) {
-                NativeGestureUtil.notifyNativeGestureStarted(this, ev);
-                return true;
-            }
-        } catch (IllegalArgumentException ignored) {
-        }
-        return false;
-    }
-
     void removeFragment() {
         FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
         if (activity != null && fragment != null) {
@@ -265,6 +253,10 @@ public class TabBarPagerView extends ViewPager {
 
         @Override
         public void onPageScrollStateChanged(int state) {
+            WritableMap event = Arguments.createMap();
+            event.putBoolean("swiping", state == ViewPager.SCROLL_STATE_DRAGGING);
+            ReactContext reactContext = (ReactContext) getContext();
+            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onTabSwipeStateChanged", event);
         }
     }
 

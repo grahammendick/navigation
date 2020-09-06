@@ -3,6 +3,7 @@
 
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
+#import <React/RCTI18nUtil.h>
 #import <React/RCTUIManager.h>
 #import <React/UIView+React.h>
 
@@ -20,6 +21,7 @@
         self.tag = SEARCH_BAR;
         NVSearchResultsController *viewController = [[NVSearchResultsController alloc] init];
         self.searchController = [[UISearchController alloc] initWithSearchResultsController:viewController];
+        self.searchController.searchBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         self.searchController.searchResultsUpdater = self;
         __weak typeof(self) weakSelf = self;
         viewController.boundsDidChangeBlock = ^(CGRect newBounds) {
