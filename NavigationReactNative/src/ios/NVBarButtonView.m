@@ -4,6 +4,10 @@
 #import <React/UIView+React.h>
 
 @implementation NVBarButtonView
+{
+    NSString *_title;
+    UIImage *_image;
+}
 
 - (id)init
 {
@@ -28,17 +32,28 @@
 
 - (void)setTitle:(NSString *)title
 {
+    _title = title;
     self.button.title = title;
 }
 
 - (void)setImage:(UIImage *)image
 {
+    _image = image;
     self.button.image = image;
 }
 
 - (void)setSystemItem:(UIBarButtonSystemItem)systemItem
 {
-    self.button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem target:self action:@selector(buttonPressed)];
+    if (systemItem != NSNotFound) {
+        self.button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem target:self action:@selector(buttonPressed)];
+    } else {
+        self.button = [[UIBarButtonItem alloc] init];
+        self.button.style = UIBarButtonItemStylePlain;
+        self.button.target = self;
+        self.button.action = @selector(buttonPressed);
+        self.button.image = _image;
+        self.button.title = _title;
+    }
 }
 
 -(void)buttonPressed

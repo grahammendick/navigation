@@ -18,7 +18,8 @@
     @"search": @(UITabBarSystemItemSearch),
     @"downloads": @(UITabBarSystemItemDownloads),
     @"most-recent": @(UITabBarSystemItemMostRecent),
-    @"most-viewed": @(UITabBarSystemItemMostViewed)
+    @"most-viewed": @(UITabBarSystemItemMostViewed),
+    @"": @(NSNotFound)
 }), NSNotFound, integerValue)
 
 @end
