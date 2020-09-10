@@ -6,7 +6,7 @@ const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search, 
     return (Platform.OS === 'android' || !search) && (
         <NVBarButton
             ref={ref}
-            key={systemItem || undefined}
+            key={(Platform.OS === 'ios' && systemItem) || undefined}
             search={search}
             showActionView={!!children}
             showAsAction={Platform.OS === 'android' ? constants.ShowAsAction[show] : null}
