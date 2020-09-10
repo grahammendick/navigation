@@ -29,7 +29,8 @@ RCT_ENUM_CONVERTER(UIBarButtonSystemItem, (@{
     @"rewind": @(UIBarButtonSystemItemRewind),
     @"fast-forward": @(UIBarButtonSystemItemFastForward),
     @"undo": @(UIBarButtonSystemItemUndo),
-    @"redo": @(UIBarButtonSystemItemRedo)
+    @"redo": @(UIBarButtonSystemItemRedo),
+    @"": @(NSNotFound)
 }), NSNotFound, integerValue);
 
 @end
