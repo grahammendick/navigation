@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     String fontFamily;
     String fontWeight;
     String fontStyle;
+    Integer fontSize;
     private int showAsAction;
     private boolean search;
     private boolean showActionView;
@@ -100,6 +102,8 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
             titleSpannable.setSpan(new TypefaceSpan(fontFamily), 0, title.length(), 0);
             titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontWeight(fontWeight)), 0, title.length(), 0);
             titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontStyle(fontStyle)), 0, title.length(), 0);
+            if (fontSize != null)
+                titleSpannable.setSpan(new AbsoluteSizeSpan(fontSize, true), 0, title.length(), 0);
             menuItem.setTitle(titleSpannable);
         }
     }

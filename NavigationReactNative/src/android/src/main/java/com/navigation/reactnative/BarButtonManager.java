@@ -46,6 +46,11 @@ public class BarButtonManager extends ViewGroupManager<BarButtonView> {
         view.fontStyle  = fontStyle;
     }
 
+    @ReactProp(name = "fontSize")
+    public void setFontSize(BarButtonView view, Integer fontSize) {
+        view.fontSize  = fontSize;
+    }
+
     @ReactProp(name = "image")
     public void setImage(BarButtonView view, ReadableMap icon) {
         view.setIconSource(icon);
