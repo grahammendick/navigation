@@ -24,6 +24,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     String title;
     String fontFamily;
     String fontWeight;
+    String fontStyle;
     private int showAsAction;
     private boolean search;
     private boolean showActionView;
@@ -98,7 +99,8 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
             SpannableString titleSpannable = new SpannableString(title);
             TypefaceSpan typefaceSpan = new TypefaceSpan(fontFamily);
             titleSpannable.setSpan(typefaceSpan, 0, title.length(), 0);
-            StyleSpan styleSpan = new StyleSpan(ReactTypefaceUtils.parseFontWeight(fontWeight));
+            int style = ReactTypefaceUtils.parseFontWeight(fontWeight) | ReactTypefaceUtils.parseFontStyle(fontStyle);
+            StyleSpan styleSpan = new StyleSpan(style);
             titleSpannable.setSpan(styleSpan, 0, title.length(), 0);
             menuItem.setTitle(titleSpannable);
         }
