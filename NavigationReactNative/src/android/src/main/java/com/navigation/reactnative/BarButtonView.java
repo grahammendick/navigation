@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -17,10 +18,12 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.facebook.react.views.text.ReactTypefaceUtils;
 
 public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     String title;
     String fontFamily;
+    String fontWeight;
     private int showAsAction;
     private boolean search;
     private boolean showActionView;
@@ -95,6 +98,8 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
             SpannableString titleSpannable = new SpannableString(title);
             TypefaceSpan typefaceSpan = new TypefaceSpan(fontFamily);
             titleSpannable.setSpan(typefaceSpan, 0, title.length(), 0);
+            StyleSpan styleSpan = new StyleSpan(ReactTypefaceUtils.parseFontWeight(fontWeight));
+            titleSpannable.setSpan(styleSpan, 0, title.length(), 0);
             menuItem.setTitle(titleSpannable);
         }
     }
