@@ -97,11 +97,8 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     void styleTitle() {
         if (menuItem != null) {
             SpannableString titleSpannable = new SpannableString(title);
-            TypefaceSpan typefaceSpan = new TypefaceSpan(fontFamily);
-            titleSpannable.setSpan(typefaceSpan, 0, title.length(), 0);
-            int style = ReactTypefaceUtils.parseFontWeight(fontWeight) | ReactTypefaceUtils.parseFontStyle(fontStyle);
-            StyleSpan styleSpan = new StyleSpan(style);
-            titleSpannable.setSpan(styleSpan, 0, title.length(), 0);
+            titleSpannable.setSpan(new TypefaceSpan(fontFamily), 0, title.length(), 0);
+            titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontWeight(fontWeight) | ReactTypefaceUtils.parseFontStyle(fontStyle)), 0, title.length(), 0);
             menuItem.setTitle(titleSpannable);
         }
     }
