@@ -27,28 +27,39 @@ public class BarButtonManager extends ViewGroupManager<BarButtonView> {
     }
 
     @ReactProp(name = "title")
-    public void setTitle(BarButtonView view, @Nullable String title) {
-        view.setTitle(title);
+    public void setTitle(BarButtonView view, String title) {
+        view.title  = title;
+    }
+
+    @ReactProp(name = "fontFamily")
+    public void setFontFamily(BarButtonView view, String fontFamily) {
+        view.fontFamily  = fontFamily;
     }
 
     @ReactProp(name = "image")
-    public void setImage(BarButtonView view, @Nullable ReadableMap icon) {
+    public void setImage(BarButtonView view, ReadableMap icon) {
         view.setIconSource(icon);
     }
 
     @ReactProp(name = "showAsAction")
-    public void setShowAsAction(BarButtonView view, @Nullable Integer showAsAction) {
+    public void setShowAsAction(BarButtonView view, Integer showAsAction) {
         view.setShowAsAction(showAsAction != null ? showAsAction : MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
     @ReactProp(name = "search")
-    public void setSearch(BarButtonView view, @Nullable Boolean search) {
+    public void setSearch(BarButtonView view, Boolean search) {
         view.setSearch(search != null ? search : false);
     }
 
     @ReactProp(name = "showActionView")
     public void setShowActionView(BarButtonView view, boolean showActionView) {
         view.setShowActionView(showActionView);
+    }
+
+    @Override
+    protected void onAfterUpdateTransaction(@NonNull BarButtonView view) {
+        super.onAfterUpdateTransaction(view);
+        view.styleTitle();
     }
 
     @Override

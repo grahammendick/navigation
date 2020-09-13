@@ -3,6 +3,8 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.text.SpannableString;
+import android.text.style.TypefaceSpan;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -17,7 +19,8 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 public class BarButtonView extends ViewGroup implements CollapsibleActionView {
-    private String title;
+    String title;
+    String fontFamily;
     private int showAsAction;
     private boolean search;
     private boolean showActionView;
@@ -47,12 +50,6 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
         return menuItem;
     }
 
-    void setTitle(String title) {
-        this.title = title;
-        if (menuItem != null)
-            menuItem.setTitle(title);
-    }
-
     void setIconSource(@Nullable ReadableMap source) {
         IconResolver.setIconSource(source, iconResolverListener, getContext());
     }
@@ -77,7 +74,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
 
     void setMenuItem(MenuItem menuItem) {
         this.menuItem = menuItem;
-        setTitle(title);
+        styleTitle();
         menuItem.setIcon(icon);
         setShowAsAction(showAsAction);
         setShowActionView(showActionView);
@@ -90,6 +87,15 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
                 icon.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
             else
                 icon.clearColorFilter();
+        }
+    }
+
+    void styleTitle() {
+        if (menuItem != null) {
+            SpannableString titleSpannable = new SpannableString(title);
+            TypefaceSpan typefaceSpan = new TypefaceSpan(fontFamily);
+            titleSpannable.setSpan(typefaceSpan, 0, title.length(), 0);
+            menuItem.setTitle(titleSpannable);
         }
     }
 
