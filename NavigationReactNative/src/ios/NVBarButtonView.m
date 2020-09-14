@@ -59,18 +59,21 @@
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
-    UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
-    NSNumber *size = !self.fontSize ? @(UIFont.labelFontSize) : self.fontSize;
-    UIFont *font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
-    NSMutableDictionary *attributes = [NSMutableDictionary new];
-    if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
-        attributes[NSFontAttributeName] = font;
+    if ([changedProps containsObject:@"fontFamily"] || [changedProps containsObject:@"fontWeight"]
+        || [changedProps containsObject:@"fontStyle"] || [changedProps containsObject:@"fontSize"]) {
+        UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
+        NSNumber *size = !self.fontSize ? @(UIFont.labelFontSize) : self.fontSize;
+        UIFont *font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
+        NSMutableDictionary *attributes = [NSMutableDictionary new];
+        if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
+            attributes[NSFontAttributeName] = font;
+        }
+        [self.button setTitleTextAttributes:attributes forState:UIControlStateNormal];
+        [self.button setTitleTextAttributes:attributes forState:UIControlStateHighlighted];
+        [self.button setTitleTextAttributes:attributes forState:UIControlStateDisabled];
+        [self.button setTitleTextAttributes:attributes forState:UIControlStateSelected];
+        [self.button setTitleTextAttributes:attributes forState:UIControlStateFocused];
     }
-    [self.button setTitleTextAttributes:attributes forState:UIControlStateNormal];
-    [self.button setTitleTextAttributes:attributes forState:UIControlStateHighlighted];
-    [self.button setTitleTextAttributes:attributes forState:UIControlStateDisabled];
-    [self.button setTitleTextAttributes:attributes forState:UIControlStateSelected];
-    [self.button setTitleTextAttributes:attributes forState:UIControlStateFocused];
 }
 
 -(void)buttonPressed
