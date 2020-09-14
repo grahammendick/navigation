@@ -69,10 +69,7 @@
             attributes[NSFontAttributeName] = font;
         }
         [self.button setTitleTextAttributes:attributes forState:UIControlStateNormal];
-        [self.button setTitleTextAttributes:attributes forState:UIControlStateHighlighted];
-        [self.button setTitleTextAttributes:attributes forState:UIControlStateDisabled];
         [self.button setTitleTextAttributes:attributes forState:UIControlStateSelected];
-        [self.button setTitleTextAttributes:attributes forState:UIControlStateFocused];
     }
 }
 
