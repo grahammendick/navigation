@@ -61,25 +61,14 @@
 {
     UIFont *systemFont = [UIFont systemFontOfSize:UIFont.labelFontSize];
     UIFont *font = [RCTFont updateFont:(self.fontFamily == nil ? systemFont : nil) withFamily:self.fontFamily size:@(UIFont.labelFontSize) weight:nil style:nil variant:nil scaleMultiplier:1];
-    NSMutableDictionary *attrs = [NSMutableDictionary new];
-    attrs[NSFontAttributeName] = font;
-    [self.button setTitleTextAttributes:[self setFont:font :[self.button titleTextAttributesForState:UIControlStateNormal]] forState:UIControlStateNormal];
-    [self.button setTitleTextAttributes:[self setFont:font :[self.button titleTextAttributesForState:UIControlStateHighlighted]] forState:UIControlStateHighlighted];
-    [self.button setTitleTextAttributes:[self setFont:font :[self.button titleTextAttributesForState:UIControlStateDisabled]] forState:UIControlStateDisabled];
-    [self.button setTitleTextAttributes:[self setFont:font :[self.button titleTextAttributesForState:UIControlStateSelected]] forState:UIControlStateSelected];
-    [self.button setTitleTextAttributes:[self setFont:font :[self.button titleTextAttributesForState:UIControlStateFocused]] forState:UIControlStateFocused];
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    attributes[NSFontAttributeName] = font;
+    [self.button setTitleTextAttributes:attributes forState:UIControlStateNormal];
+    [self.button setTitleTextAttributes:attributes forState:UIControlStateHighlighted];
+    [self.button setTitleTextAttributes:attributes forState:UIControlStateDisabled];
+    [self.button setTitleTextAttributes:attributes forState:UIControlStateSelected];
+    [self.button setTitleTextAttributes:attributes forState:UIControlStateFocused];
 }
-
--(NSDictionary *)setFont:(UIFont *)font :(NSDictionary *)attributes
-{
-    NSMutableDictionary *attributesCopy = [attributes != nil ? attributes : @{} mutableCopy];
-    [attributesCopy removeObjectForKey:NSFontAttributeName];
-    if (font != nil) {
-        attributesCopy[NSFontAttributeName] = font;
-    }
-    return attributesCopy;
-}
-
 
 -(void)buttonPressed
 {
