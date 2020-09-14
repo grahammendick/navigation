@@ -62,7 +62,9 @@
     UIFont *systemFont = [UIFont systemFontOfSize:UIFont.labelFontSize];
     UIFont *font = [RCTFont updateFont:(self.fontFamily == nil ? systemFont : nil) withFamily:self.fontFamily size:@(UIFont.labelFontSize) weight:nil style:nil variant:nil scaleMultiplier:1];
     NSMutableDictionary *attributes = [NSMutableDictionary new];
-    attributes[NSFontAttributeName] = font;
+    if (self.fontFamily != nil) {
+        attributes[NSFontAttributeName] = font;
+    }
     [self.button setTitleTextAttributes:attributes forState:UIControlStateNormal];
     [self.button setTitleTextAttributes:attributes forState:UIControlStateHighlighted];
     [self.button setTitleTextAttributes:attributes forState:UIControlStateDisabled];
