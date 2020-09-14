@@ -4,6 +4,7 @@
 @interface NVBarButtonView : UIView
 
 @property UIBarButtonItem *button;
+@property (nonatomic, copy) NSString *fontFamily;
 @property (nonatomic, copy) RCTBubblingEventBlock onPress;
 
 @end
