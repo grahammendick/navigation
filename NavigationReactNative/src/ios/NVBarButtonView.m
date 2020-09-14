@@ -60,9 +60,9 @@
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     UIFont *systemFont = [UIFont systemFontOfSize:UIFont.labelFontSize];
-    UIFont *font = [RCTFont updateFont:(self.fontFamily == nil ? systemFont : nil) withFamily:self.fontFamily size:@(UIFont.labelFontSize) weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
+    UIFont *font = [RCTFont updateFont:(!self.fontFamily ? systemFont : nil) withFamily:self.fontFamily size: @(!self.fontSize ? UIFont.labelFontSize : [self.fontSize integerValue]) weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
     NSMutableDictionary *attributes = [NSMutableDictionary new];
-    if (self.fontFamily != nil || self.fontWeight != nil || self.fontStyle != nil) {
+    if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
         attributes[NSFontAttributeName] = font;
     }
     [self.button setTitleTextAttributes:attributes forState:UIControlStateNormal];
