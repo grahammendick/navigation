@@ -59,8 +59,9 @@
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
-    UIFont *systemFont = [UIFont systemFontOfSize:UIFont.labelFontSize];
-    UIFont *font = [RCTFont updateFont:(!self.fontFamily ? systemFont : nil) withFamily:self.fontFamily size: @(!self.fontSize ? UIFont.labelFontSize : [self.fontSize integerValue]) weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
+    UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
+    NSNumber *size = !self.fontSize ? @(UIFont.labelFontSize) : self.fontSize;
+    UIFont *font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
     NSMutableDictionary *attributes = [NSMutableDictionary new];
     if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
         attributes[NSFontAttributeName] = font;
