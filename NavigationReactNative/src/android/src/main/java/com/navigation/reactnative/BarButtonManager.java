@@ -28,27 +28,27 @@ public class BarButtonManager extends ViewGroupManager<BarButtonView> {
 
     @ReactProp(name = "title")
     public void setTitle(BarButtonView view, String title) {
-        view.title  = title;
+        view.setTitle(title);
     }
 
     @ReactProp(name = "fontFamily")
     public void setFontFamily(BarButtonView view, String fontFamily) {
-        view.fontFamily  = fontFamily;
+        view.setFontFamily(fontFamily);
     }
 
     @ReactProp(name = "fontWeight")
     public void setFontWeight(BarButtonView view, String fontWeight) {
-        view.fontWeight  = fontWeight;
+        view.setFontWeight(fontWeight);
     }
 
     @ReactProp(name = "fontStyle")
     public void setFontStyle(BarButtonView view, String fontStyle) {
-        view.fontStyle  = fontStyle;
+        view.setFontStyle(fontStyle);
     }
 
     @ReactProp(name = "fontSize")
     public void setFontSize(BarButtonView view, Integer fontSize) {
-        view.fontSize  = fontSize;
+        view.setFontSize(fontSize);
     }
 
     @ReactProp(name = "image")

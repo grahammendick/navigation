@@ -22,11 +22,12 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.text.ReactTypefaceUtils;
 
 public class BarButtonView extends ViewGroup implements CollapsibleActionView {
-    String title;
-    String fontFamily;
-    String fontWeight;
-    String fontStyle;
-    Integer fontSize;
+    private String title;
+    private String fontFamily;
+    private String fontWeight;
+    private String fontStyle;
+    private Integer fontSize;
+    private boolean titleChanged = false;
     private int showAsAction;
     private boolean search;
     private boolean showActionView;
@@ -56,6 +57,31 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
         return menuItem;
     }
 
+    void setTitle(String title) {
+        this.title = title;
+        titleChanged = true;
+    }
+
+    void setFontFamily(String fontFamily) {
+        this.fontFamily = fontFamily;
+        titleChanged = true;
+    }
+
+    void setFontWeight(String fontWeight) {
+        this.fontWeight = fontWeight;
+        titleChanged = true;
+    }
+
+    void setFontStyle(String fontStyle) {
+        this.fontStyle = fontStyle;
+        titleChanged = true;
+    }
+
+    void setFontSize(Integer fontSize) {
+        this.fontSize = fontSize;
+        titleChanged = true;
+    }
+
     void setIconSource(@Nullable ReadableMap source) {
         IconResolver.setIconSource(source, iconResolverListener, getContext());
     }
@@ -80,6 +106,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
 
     void setMenuItem(MenuItem menuItem) {
         this.menuItem = menuItem;
+        titleChanged = true;
         styleTitle();
         menuItem.setIcon(icon);
         setShowAsAction(showAsAction);
@@ -97,7 +124,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     }
 
     void styleTitle() {
-        if (menuItem != null) {
+        if (menuItem != null && titleChanged) {
             SpannableString titleSpannable = new SpannableString(title);
             if (fontFamily != null)
                 titleSpannable.setSpan(new TypefaceSpan(fontFamily), 0, title.length(), 0);
@@ -108,6 +135,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
             if (fontSize != null)
                 titleSpannable.setSpan(new AbsoluteSizeSpan(fontSize, true), 0, title.length(), 0);
             menuItem.setTitle(titleSpannable);
+            titleChanged = false;
         }
     }
 
