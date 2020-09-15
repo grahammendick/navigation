@@ -36,24 +36,24 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         view.setPlainTitle(title);
     }
 
-    @ReactProp(name = "fontFamily")
-    public void setFontFamily(ToolbarView view, String fontFamily) {
-        view.setFontFamily(fontFamily);
+    @ReactProp(name = "titleFontFamily")
+    public void setTitleFontFamily(ToolbarView view, String titleFontFamily) {
+        view.setTitleFontFamily(titleFontFamily);
     }
 
-    @ReactProp(name = "fontWeight")
-    public void setFontWeight(ToolbarView view, String fontWeight) {
-        view.setFontWeight(fontWeight);
+    @ReactProp(name = "titleFontWeight")
+    public void setTitleFontWeight(ToolbarView view, String titleFontWeight) {
+        view.setTitleFontWeight(titleFontWeight);
     }
 
-    @ReactProp(name = "fontStyle")
-    public void setFontStyle(ToolbarView view, String fontStyle) {
-        view.setFontStyle(fontStyle);
+    @ReactProp(name = "titleFontStyle")
+    public void setTitleFontStyle(ToolbarView view, String titleFontStyle) {
+        view.setTitleFontStyle(titleFontStyle);
     }
 
-    @ReactProp(name = "fontSize")
-    public void setFontSize(ToolbarView view, Integer fontSize) {
-        view.setFontSize(fontSize);
+    @ReactProp(name = "titleFontSize")
+    public void setTitleFontSize(ToolbarView view, Integer titleFontSize) {
+        view.setTitleFontSize(titleFontSize);
     }
 
     @ReactProp(name = "logo")

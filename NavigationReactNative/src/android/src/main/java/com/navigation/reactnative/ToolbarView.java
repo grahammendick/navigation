@@ -31,10 +31,10 @@ import java.util.ArrayList;
 public class ToolbarView extends Toolbar {
     private MenuItem searchMenuItem;
     private String title;
-    private String fontFamily;
-    private String fontWeight;
-    private String fontStyle;
-    private Integer fontSize;
+    private String titleFontFamily;
+    private String titleFontWeight;
+    private String titleFontStyle;
+    private Integer titleFontSize;
     boolean titleChanged = false;
     private Integer tintColor;
     private ImageButton collapseButton;
@@ -121,23 +121,23 @@ public class ToolbarView extends Toolbar {
         titleChanged = true;
     }
 
-    void setFontFamily(String fontFamily) {
-        this.fontFamily = fontFamily;
+    void setTitleFontFamily(String titleFontFamily) {
+        this.titleFontFamily = titleFontFamily;
         titleChanged = true;
     }
 
-    void setFontWeight(String fontWeight) {
-        this.fontWeight = fontWeight;
+    void setTitleFontWeight(String titleFontWeight) {
+        this.titleFontWeight = titleFontWeight;
         titleChanged = true;
     }
 
-    void setFontStyle(String fontStyle) {
-        this.fontStyle = fontStyle;
+    void setTitleFontStyle(String titleFontStyle) {
+        this.titleFontStyle = titleFontStyle;
         titleChanged = true;
     }
 
-    void setFontSize(Integer fontSize) {
-        this.fontSize = fontSize;
+    void setTitleFontSize(Integer titleFontSize) {
+        this.titleFontSize = titleFontSize;
         titleChanged = true;
     }
 
@@ -229,14 +229,14 @@ public class ToolbarView extends Toolbar {
     void styleTitle() {
         if (titleChanged) {
             SpannableString titleSpannable = new SpannableString(title);
-            if (fontFamily != null)
-                titleSpannable.setSpan(new TypefaceSpan(fontFamily), 0, title.length(), 0);
-            if (ReactTypefaceUtils.parseFontWeight(fontWeight) != ReactTypefaceUtils.UNSET)
-                titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontWeight(fontWeight)), 0, title.length(), 0);
-            if (ReactTypefaceUtils.parseFontStyle(fontStyle) != ReactTypefaceUtils.UNSET)
-                titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontStyle(fontStyle)), 0, title.length(), 0);
-            if (fontSize != null)
-                titleSpannable.setSpan(new AbsoluteSizeSpan(fontSize, true), 0, title.length(), 0);
+            if (titleFontFamily != null)
+                titleSpannable.setSpan(new TypefaceSpan(titleFontFamily), 0, title.length(), 0);
+            if (ReactTypefaceUtils.parseFontWeight(titleFontWeight) != ReactTypefaceUtils.UNSET)
+                titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontWeight(titleFontWeight)), 0, title.length(), 0);
+            if (ReactTypefaceUtils.parseFontStyle(titleFontStyle) != ReactTypefaceUtils.UNSET)
+                titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontStyle(titleFontStyle)), 0, title.length(), 0);
+            if (titleFontSize != null)
+                titleSpannable.setSpan(new AbsoluteSizeSpan(titleFontSize, true), 0, title.length(), 0);
             setTitle(titleSpannable);
             titleChanged = false;
         }
