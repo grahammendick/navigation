@@ -40,6 +40,10 @@
 
 -(void)updateColors {
     UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
+    NSMutableDictionary *titleAttributes = [NSMutableDictionary new];
+    if (self.titleColor != nil) {
+        titleAttributes[NSForegroundColorAttributeName] = self.titleColor;
+    }
     if (@available(iOS 13.0, *)) {
         [navigationBar setTintColor: self.tintColor];
         UINavigationBarAppearance *appearance = [UINavigationBarAppearance new];
@@ -55,10 +59,6 @@
         [appearance setBackgroundColor:self.barTintColor];
         [appearance.buttonAppearance.normal setTitleTextAttributes:attributes];
         [appearance.doneButtonAppearance.normal setTitleTextAttributes:attributes];
-        NSMutableDictionary *titleAttributes = [NSMutableDictionary new];
-        if (self.titleColor != nil) {
-            titleAttributes[NSForegroundColorAttributeName] = self.titleColor;
-        }
         [appearance setTitleTextAttributes:titleAttributes];
         [appearance setLargeTitleTextAttributes:titleAttributes];
         self.reactViewController.navigationItem.standardAppearance = appearance;
@@ -70,13 +70,9 @@
         [navigationBar setBackgroundImage:(transparent ? [UIImage new] : nil) forBarMetrics:UIBarMetricsDefault];
         [navigationBar setBarTintColor:self.barTintColor];
         [navigationBar setTintColor: self.tintColor];
-        NSMutableDictionary *attributes = [NSMutableDictionary new];
-        if (self.titleColor != nil) {
-            attributes[NSForegroundColorAttributeName] = self.titleColor;
-        }
-        [navigationBar setTitleTextAttributes:attributes];
+        [navigationBar setTitleTextAttributes:titleAttributes];
         if (@available(iOS 11.0, *)) {
-            [navigationBar setLargeTitleTextAttributes:attributes];
+            [navigationBar setLargeTitleTextAttributes:titleAttributes];
         }
     }
 }
