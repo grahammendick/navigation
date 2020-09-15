@@ -42,47 +42,44 @@
     UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
     if (@available(iOS 13.0, *)) {
         [navigationBar setTintColor: self.tintColor];
-        self.reactViewController.navigationItem.standardAppearance = [self updateColors:navigationBar.standardAppearance];
-        self.reactViewController.navigationItem.scrollEdgeAppearance = [self updateColors:navigationBar.scrollEdgeAppearance];
-        self.reactViewController.navigationItem.compactAppearance = [self updateColors:navigationBar.compactAppearance];
+        UINavigationBarAppearance *appearance = [UINavigationBarAppearance new];
+        bool transparent = self.barTintColor && CGColorGetAlpha(self.barTintColor.CGColor) == 0;
+        [appearance configureWithDefaultBackground];
+        if (transparent) {
+            [appearance configureWithTransparentBackground];
+        }
+        NSMutableDictionary *attributes = [NSMutableDictionary new];
+        if (self.tintColor != nil) {
+            attributes[NSForegroundColorAttributeName] = self.tintColor;
+        }
+        [appearance setBackgroundColor:self.barTintColor];
+        [appearance.buttonAppearance.normal setTitleTextAttributes:attributes];
+        [appearance.doneButtonAppearance.normal setTitleTextAttributes:attributes];
+        NSMutableDictionary *titleAttributes = [NSMutableDictionary new];
+        if (self.titleColor != nil) {
+            titleAttributes[NSForegroundColorAttributeName] = self.titleColor;
+        }
+        [appearance setTitleTextAttributes:titleAttributes];
+        [appearance setLargeTitleTextAttributes:titleAttributes];
+        self.reactViewController.navigationItem.standardAppearance = appearance;
+        self.reactViewController.navigationItem.scrollEdgeAppearance = appearance;
+        self.reactViewController.navigationItem.compactAppearance = appearance;
     } else {
         bool transparent = self.barTintColor && CGColorGetAlpha(self.barTintColor.CGColor) == 0;
         [navigationBar setValue:@(transparent) forKey:@"hidesShadow"];
         [navigationBar setBackgroundImage:(transparent ? [UIImage new] : nil) forBarMetrics:UIBarMetricsDefault];
         [navigationBar setBarTintColor:self.barTintColor];
         [navigationBar setTintColor: self.tintColor];
-        [navigationBar setTitleTextAttributes:[self setForeground:self.titleColor :navigationBar.titleTextAttributes]];
+        NSMutableDictionary *attributes = [NSMutableDictionary new];
+        if (self.titleColor != nil) {
+            attributes[NSForegroundColorAttributeName] = self.titleColor;
+        }
+        [navigationBar setTitleTextAttributes:attributes];
         if (@available(iOS 11.0, *)) {
-            [navigationBar setLargeTitleTextAttributes:[self setForeground:self.titleColor :navigationBar.largeTitleTextAttributes]];
+            [navigationBar setLargeTitleTextAttributes:attributes];
         }
     }
 }
 
--(UINavigationBarAppearance *)updateColors:(UINavigationBarAppearance *)appearance
-API_AVAILABLE(ios(13.0))
-{
-    UINavigationBarAppearance *appearanceCopy = appearance != nil ? [appearance copy] : [UINavigationBarAppearance new];
-    bool transparent = self.barTintColor && CGColorGetAlpha(self.barTintColor.CGColor) == 0;
-    [appearanceCopy configureWithDefaultBackground];
-    if (transparent) {
-        [appearanceCopy configureWithTransparentBackground];
-    }
-    [appearanceCopy setBackgroundColor:self.barTintColor];
-    [appearanceCopy.buttonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.buttonAppearance.normal.titleTextAttributes]];
-    [appearanceCopy.doneButtonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.doneButtonAppearance.normal.titleTextAttributes]];
-    [appearanceCopy setTitleTextAttributes:[self setForeground:self.titleColor :appearanceCopy.titleTextAttributes]];
-    [appearanceCopy setLargeTitleTextAttributes:[self setForeground:self.titleColor :appearanceCopy.largeTitleTextAttributes]];
-    return appearanceCopy;
-}
-
--(NSDictionary *)setForeground:(UIColor *)color :(NSDictionary *)attributes
-{
-    NSMutableDictionary *attributesCopy = [attributes != nil ? attributes : @{} mutableCopy];
-    [attributesCopy removeObjectForKey:NSForegroundColorAttributeName];
-    if (color != nil) {
-        attributesCopy[NSForegroundColorAttributeName] = color;
-    }
-    return attributesCopy;
-}
 
 @end
