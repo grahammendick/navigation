@@ -6,6 +6,10 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.StyleSpan;
+import android.text.style.TypefaceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,12 +23,19 @@ import androidx.appcompat.widget.Toolbar;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.ArrayList;
 
 public class ToolbarView extends Toolbar {
     private MenuItem searchMenuItem;
+    private String title;
+    private String fontFamily;
+    private String fontWeight;
+    private String fontStyle;
+    private Integer fontSize;
+    boolean titleChanged = false;
     private Integer tintColor;
     private ImageButton collapseButton;
     private OnSearchListener onSearchAddedListener;
@@ -103,6 +114,31 @@ public class ToolbarView extends Toolbar {
 
     private static int getIdentifier(Context context, String name) {
         return context.getResources().getIdentifier(name, "attr", context.getPackageName());
+    }
+
+    void setPlainTitle(String title) {
+        this.title = title;
+        titleChanged = true;
+    }
+
+    void setFontFamily(String fontFamily) {
+        this.fontFamily = fontFamily;
+        titleChanged = true;
+    }
+
+    void setFontWeight(String fontWeight) {
+        this.fontWeight = fontWeight;
+        titleChanged = true;
+    }
+
+    void setFontStyle(String fontStyle) {
+        this.fontStyle = fontStyle;
+        titleChanged = true;
+    }
+
+    void setFontSize(Integer fontSize) {
+        this.fontSize = fontSize;
+        titleChanged = true;
     }
 
     void setLogoSource(@Nullable ReadableMap source) {
@@ -187,6 +223,22 @@ public class ToolbarView extends Toolbar {
             if (children.get(i) instanceof BarButtonView) {
                 ((BarButtonView) children.get(i)).setTintColor(tintColor);
             }
+        }
+    }
+
+    void styleTitle() {
+        if (titleChanged) {
+            SpannableString titleSpannable = new SpannableString(title);
+            if (fontFamily != null)
+                titleSpannable.setSpan(new TypefaceSpan(fontFamily), 0, title.length(), 0);
+            if (ReactTypefaceUtils.parseFontWeight(fontWeight) != ReactTypefaceUtils.UNSET)
+                titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontWeight(fontWeight)), 0, title.length(), 0);
+            if (ReactTypefaceUtils.parseFontStyle(fontStyle) != ReactTypefaceUtils.UNSET)
+                titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontStyle(fontStyle)), 0, title.length(), 0);
+            if (fontSize != null)
+                titleSpannable.setSpan(new AbsoluteSizeSpan(fontSize, true), 0, title.length(), 0);
+            setTitle(titleSpannable);
+            titleChanged = false;
         }
     }
 
