@@ -41,26 +41,8 @@
 
 -(void)updateColors {
     UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
-    NSMutableDictionary *titleAttributes = [NSMutableDictionary new];
-    NSMutableDictionary *largeTitleAttributes = [NSMutableDictionary new];
-    if (self.titleColor != nil) {
-        titleAttributes[NSForegroundColorAttributeName] = self.titleColor;
-        largeTitleAttributes[NSForegroundColorAttributeName] = self.titleColor;
-    }
-    UIFont *baseTitleFont = !self.titleFontFamily ? [UIFont preferredFontForTextStyle: UIFontTextStyleHeadline] : nil;
-    NSNumber *titleSize = !self.titleFontSize ? @([UIFont preferredFontForTextStyle: UIFontTextStyleHeadline].pointSize) : self.titleFontSize;
-    UIFont *titleFont = [RCTFont updateFont:baseTitleFont withFamily:self.titleFontFamily size:titleSize weight:self.titleFontWeight style:self.titleFontStyle variant:nil scaleMultiplier:1];
-    if (self.titleFontFamily || self.titleFontWeight || self.titleFontStyle || self.titleFontSize) {
-        titleAttributes[NSFontAttributeName] = titleFont;
-    }
-    if (@available(iOS 11.0, *)) {
-        UIFont *baseLargeTitleFont = !self.titleFontFamily ? [UIFont preferredFontForTextStyle: UIFontTextStyleLargeTitle] : nil;
-        NSNumber *largeTitleSize = @([UIFont preferredFontForTextStyle: UIFontTextStyleLargeTitle].pointSize);
-        UIFont *largeTitlefont = [RCTFont updateFont:baseLargeTitleFont withFamily:self.titleFontFamily size:largeTitleSize weight:self.titleFontWeight style:self.titleFontStyle variant:nil scaleMultiplier:1];
-        if (self.titleFontFamily || self.titleFontWeight || self.titleFontStyle) {
-            largeTitleAttributes[NSFontAttributeName] = largeTitlefont;
-        }
-    }
+    NSMutableDictionary *titleAttributes = [self titleAttributes];
+    NSMutableDictionary *largeTitleAttributes = [self largeTitleAttributes];
     if (@available(iOS 13.0, *)) {
         [navigationBar setTintColor: self.tintColor];
         UINavigationBarAppearance *appearance = [UINavigationBarAppearance new];
@@ -94,5 +76,36 @@
     }
 }
 
+- (NSMutableDictionary *) titleAttributes
+{
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    if (self.titleColor != nil) {
+        attributes[NSForegroundColorAttributeName] = self.titleColor;
+    }
+    UIFont *baseFont = !self.titleFontFamily ? [UIFont preferredFontForTextStyle: UIFontTextStyleHeadline] : nil;
+    NSNumber *size = !self.titleFontSize ? @([UIFont preferredFontForTextStyle: UIFontTextStyleHeadline].pointSize) : self.titleFontSize;
+    UIFont *font = [RCTFont updateFont:baseFont withFamily:self.titleFontFamily size:size weight:self.titleFontWeight style:self.titleFontStyle variant:nil scaleMultiplier:1];
+    if (self.titleFontFamily || self.titleFontWeight || self.titleFontStyle || self.titleFontSize) {
+        attributes[NSFontAttributeName] = font;
+    }
+    return attributes;
+}
+
+- (NSMutableDictionary *) largeTitleAttributes
+{
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    if (self.titleColor != nil) {
+        attributes[NSForegroundColorAttributeName] = self.titleColor;
+    }
+    if (@available(iOS 11.0, *)) {
+        UIFont *baseFont = !self.titleFontFamily ? [UIFont preferredFontForTextStyle: UIFontTextStyleLargeTitle] : nil;
+        NSNumber *size = @([UIFont preferredFontForTextStyle: UIFontTextStyleLargeTitle].pointSize);
+        UIFont *font = [RCTFont updateFont:baseFont withFamily:self.titleFontFamily size:size weight:self.titleFontWeight style:self.titleFontStyle variant:nil scaleMultiplier:1];
+        if (self.titleFontFamily || self.titleFontWeight || self.titleFontStyle) {
+            attributes[NSFontAttributeName] = font;
+        }
+    }
+    return attributes;
+}
 
 @end
