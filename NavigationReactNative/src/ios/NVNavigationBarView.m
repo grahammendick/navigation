@@ -1,5 +1,6 @@
 #import "NVNavigationBarView.h"
 
+#import <React/RCTFont.h>
 #import <React/UIView+React.h>
 
 @implementation NVNavigationBarView
@@ -43,6 +44,12 @@
     NSMutableDictionary *titleAttributes = [NSMutableDictionary new];
     if (self.titleColor != nil) {
         titleAttributes[NSForegroundColorAttributeName] = self.titleColor;
+    }
+    UIFont *baseFont = !self.titleFontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
+    NSNumber *size = !self.titleFontSize ? @([UIFont preferredFontForTextStyle: UIFontTextStyleHeadline].pointSize) : self.titleFontSize;
+    UIFont *font = [RCTFont updateFont:baseFont withFamily:self.titleFontFamily size:size weight:self.titleFontWeight style:self.titleFontStyle variant:nil scaleMultiplier:1];
+    if (self.titleFontFamily || self.titleFontWeight || self.titleFontStyle || self.titleFontSize) {
+        titleAttributes[NSFontAttributeName] = font;
     }
     if (@available(iOS 13.0, *)) {
         [navigationBar setTintColor: self.tintColor];
