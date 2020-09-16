@@ -231,9 +231,9 @@ public class ToolbarView extends Toolbar {
             SpannableString titleSpannable = new SpannableString(title);
             if (titleFontFamily != null)
                 titleSpannable.setSpan(new TypefaceSpan(titleFontFamily), 0, title.length(), 0);
-            if (ReactTypefaceUtils.parseFontWeight(titleFontWeight) != ReactTypefaceUtils.UNSET)
+            if (titleFontWeight != null && ReactTypefaceUtils.parseFontWeight(titleFontWeight) != ReactTypefaceUtils.UNSET)
                 titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontWeight(titleFontWeight)), 0, title.length(), 0);
-            if (ReactTypefaceUtils.parseFontStyle(titleFontStyle) != ReactTypefaceUtils.UNSET)
+            if (titleFontStyle != null && ReactTypefaceUtils.parseFontStyle(titleFontStyle) != ReactTypefaceUtils.UNSET)
                 titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontStyle(titleFontStyle)), 0, title.length(), 0);
             if (titleFontSize != null)
                 titleSpannable.setSpan(new AbsoluteSizeSpan(titleFontSize, true), 0, title.length(), 0);
