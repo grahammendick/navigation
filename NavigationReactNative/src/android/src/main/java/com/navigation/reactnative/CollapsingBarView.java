@@ -47,9 +47,7 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
 
     void styleTitle() {
         if (titleFontChanged) {
-            int fontWeight = ReactTypefaceUtils.parseFontWeight(titleFontWeight);
-            int fontStyle = ReactTypefaceUtils.parseFontStyle(titleFontStyle);
-            if (titleFontFamily != null || fontWeight != ReactTypefaceUtils.UNSET || fontStyle != ReactTypefaceUtils.UNSET) {
+            if (titleFontFamily != null || titleFontWeight != null || titleFontStyle != null) {
                 setCollapsedTitleTypeface(ReactTypefaceUtils.applyStyles(defaultCollapsedTitleTypeface, ReactTypefaceUtils.parseFontStyle(titleFontStyle), ReactTypefaceUtils.parseFontWeight(titleFontWeight), titleFontFamily, getContext().getAssets()));
                 setExpandedTitleTypeface(ReactTypefaceUtils.applyStyles(defaultExpandedTitleTypeface, ReactTypefaceUtils.parseFontStyle(titleFontStyle), ReactTypefaceUtils.parseFontWeight(titleFontWeight), titleFontFamily, getContext().getAssets()));
             } else {
