@@ -42,8 +42,10 @@
 -(void)updateColors {
     UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
     NSMutableDictionary *titleAttributes = [NSMutableDictionary new];
+    NSMutableDictionary *largeTitleAttributes = [NSMutableDictionary new];
     if (self.titleColor != nil) {
         titleAttributes[NSForegroundColorAttributeName] = self.titleColor;
+        largeTitleAttributes[NSForegroundColorAttributeName] = self.titleColor;
     }
     UIFont *baseFont = !self.titleFontFamily ? [UIFont preferredFontForTextStyle: UIFontTextStyleHeadline] : nil;
     NSNumber *size = !self.titleFontSize ? @([UIFont preferredFontForTextStyle: UIFontTextStyleHeadline].pointSize) : self.titleFontSize;
@@ -67,7 +69,7 @@
         [appearance.buttonAppearance.normal setTitleTextAttributes:attributes];
         [appearance.doneButtonAppearance.normal setTitleTextAttributes:attributes];
         [appearance setTitleTextAttributes:titleAttributes];
-        [appearance setLargeTitleTextAttributes:titleAttributes];
+        [appearance setLargeTitleTextAttributes:largeTitleAttributes];
         self.reactViewController.navigationItem.standardAppearance = appearance;
         self.reactViewController.navigationItem.scrollEdgeAppearance = appearance;
         self.reactViewController.navigationItem.compactAppearance = appearance;
@@ -79,7 +81,7 @@
         [navigationBar setTintColor: self.tintColor];
         [navigationBar setTitleTextAttributes:titleAttributes];
         if (@available(iOS 11.0, *)) {
-            [navigationBar setLargeTitleTextAttributes:titleAttributes];
+            [navigationBar setLargeTitleTextAttributes:largeTitleAttributes];
         }
     }
 }
