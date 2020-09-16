@@ -45,7 +45,7 @@
     if (self.titleColor != nil) {
         titleAttributes[NSForegroundColorAttributeName] = self.titleColor;
     }
-    UIFont *baseFont = !self.titleFontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
+    UIFont *baseFont = !self.titleFontFamily ? [UIFont preferredFontForTextStyle: UIFontTextStyleHeadline] : nil;
     NSNumber *size = !self.titleFontSize ? @([UIFont preferredFontForTextStyle: UIFontTextStyleHeadline].pointSize) : self.titleFontSize;
     UIFont *font = [RCTFont updateFont:baseFont withFamily:self.titleFontFamily size:size weight:self.titleFontWeight style:self.titleFontStyle variant:nil scaleMultiplier:1];
     if (self.titleFontFamily || self.titleFontWeight || self.titleFontStyle || self.titleFontSize) {
