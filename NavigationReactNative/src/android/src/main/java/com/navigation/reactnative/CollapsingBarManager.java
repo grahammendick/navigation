@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.graphics.drawable.ColorDrawable;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -29,6 +30,21 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
         view.setTitle(title);
     }
 
+    @ReactProp(name = "titleFontFamily")
+    public void setTitleFontFamily(CollapsingBarView view, String titleFontFamily) {
+        view.setTitleFontFamily(titleFontFamily);
+    }
+
+    @ReactProp(name = "titleFontWeight")
+    public void setTitleFontWeight(CollapsingBarView view, String titleFontWeight) {
+        view.setTitleFontWeight(titleFontWeight);
+    }
+
+    @ReactProp(name = "titleFontStyle")
+    public void setTitleFontStyle(CollapsingBarView view, String titleFontStyle) {
+        view.setTitleFontStyle(titleFontStyle);
+    }
+
     @ReactProp(name = "titleEnabled")
     public void setTitleEnabled(CollapsingBarView view, boolean titleEnabled) {
         view.setTitleEnabled(titleEnabled);
@@ -47,6 +63,12 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
     @ReactProp(name = "expandedTitleColor", customType = "Color")
     public void setExpandedTitleColor(CollapsingBarView view, @Nullable Integer expandedTitleColor) {
         view.setExpandedTitleColor(expandedTitleColor != null ? expandedTitleColor : view.defaultTitleTextColor);
+    }
+
+    @Override
+    protected void onAfterUpdateTransaction(@NonNull CollapsingBarView view) {
+        super.onAfterUpdateTransaction(view);
+        view.styleTitle();
     }
 
     @Override
