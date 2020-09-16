@@ -35,7 +35,7 @@ public class ToolbarView extends Toolbar {
     private String titleFontWeight;
     private String titleFontStyle;
     private Integer titleFontSize;
-    boolean titleChanged = false;
+    private boolean titleChanged = false;
     private Integer tintColor;
     private ImageButton collapseButton;
     private OnSearchListener onSearchAddedListener;
