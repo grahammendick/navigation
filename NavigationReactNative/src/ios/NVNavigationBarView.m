@@ -28,7 +28,7 @@
             previousController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
         }
     }
-    [self updateColors];
+    [self updateStyle];
 }
 
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview
@@ -39,7 +39,7 @@
     }
 }
 
--(void)updateColors {
+-(void)updateStyle {
     UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
     NSMutableDictionary *titleAttributes = [self titleAttributes];
     NSMutableDictionary *largeTitleAttributes = [self largeTitleAttributes];

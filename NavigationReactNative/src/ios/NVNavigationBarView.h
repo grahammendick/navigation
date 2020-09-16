@@ -14,7 +14,7 @@
 @property (nonatomic, copy) UIColor *titleColor;
 @property (nonatomic, copy) NSString *backTitle;
 
--(void)updateColors;
+-(void)updateStyle;
 
 #define NAVIGATION_BAR ((int) 28)
 

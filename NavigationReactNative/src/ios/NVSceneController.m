@@ -46,7 +46,7 @@
     if (navigationBar.title.length != 0) {
         [self.navigationItem setTitle:navigationBar.title];
     }
-    [navigationBar updateColors];
+    [navigationBar updateStyle];
     NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
     previousController.navigationItem.backBarButtonItem = nil;
@@ -63,7 +63,7 @@
 {
     [super viewDidAppear:animated];
     NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
-    [navigationBar updateColors];
+    [navigationBar updateStyle];
 }
 
 - (void)viewDidLayoutSubviews
