@@ -47,11 +47,19 @@
         titleAttributes[NSForegroundColorAttributeName] = self.titleColor;
         largeTitleAttributes[NSForegroundColorAttributeName] = self.titleColor;
     }
-    UIFont *baseFont = !self.titleFontFamily ? [UIFont preferredFontForTextStyle: UIFontTextStyleHeadline] : nil;
-    NSNumber *size = !self.titleFontSize ? @([UIFont preferredFontForTextStyle: UIFontTextStyleHeadline].pointSize) : self.titleFontSize;
-    UIFont *font = [RCTFont updateFont:baseFont withFamily:self.titleFontFamily size:size weight:self.titleFontWeight style:self.titleFontStyle variant:nil scaleMultiplier:1];
+    UIFont *baseTitleFont = !self.titleFontFamily ? [UIFont preferredFontForTextStyle: UIFontTextStyleHeadline] : nil;
+    NSNumber *titleSize = !self.titleFontSize ? @([UIFont preferredFontForTextStyle: UIFontTextStyleHeadline].pointSize) : self.titleFontSize;
+    UIFont *titleFont = [RCTFont updateFont:baseTitleFont withFamily:self.titleFontFamily size:titleSize weight:self.titleFontWeight style:self.titleFontStyle variant:nil scaleMultiplier:1];
     if (self.titleFontFamily || self.titleFontWeight || self.titleFontStyle || self.titleFontSize) {
-        titleAttributes[NSFontAttributeName] = font;
+        titleAttributes[NSFontAttributeName] = titleFont;
+    }
+    if (@available(iOS 11.0, *)) {
+        UIFont *baseLargeTitleFont = !self.titleFontFamily ? [UIFont preferredFontForTextStyle: UIFontTextStyleLargeTitle] : nil;
+        NSNumber *largeTitleSize = @([UIFont preferredFontForTextStyle: UIFontTextStyleLargeTitle].pointSize);
+        UIFont *largeTitlefont = [RCTFont updateFont:baseLargeTitleFont withFamily:self.titleFontFamily size:largeTitleSize weight:self.titleFontWeight style:self.titleFontStyle variant:nil scaleMultiplier:1];
+        if (self.titleFontFamily || self.titleFontWeight || self.titleFontStyle) {
+            largeTitleAttributes[NSFontAttributeName] = largeTitlefont;
+        }
     }
     if (@available(iOS 13.0, *)) {
         [navigationBar setTintColor: self.tintColor];
