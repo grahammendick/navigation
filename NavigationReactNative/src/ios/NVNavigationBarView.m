@@ -21,11 +21,10 @@
         [self.reactViewController.navigationItem setTitle:self.title];
     }
     if ([changedProps containsObject:@"backTitle"]) {
-        NSInteger crumb = [self.reactViewController.navigationController.viewControllers indexOfObject:self.reactViewController];
-        UIViewController *previousController = crumb > 0 ? [self.reactViewController.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
-        previousController.navigationItem.backBarButtonItem = nil;
+        UINavigationItem *previousNavigationItem = [self previousNavigationItem];
+        previousNavigationItem.backBarButtonItem = nil;
         if (self.backTitle != nil) {
-            previousController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
+            previousNavigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
         }
     }
     [self updateStyle];
@@ -39,7 +38,7 @@
     }
 }
 
--(void)updateStyle {
+- (void)updateStyle {
     UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
     NSMutableDictionary *titleAttributes = [self titleAttributes];
     NSMutableDictionary *largeTitleAttributes = [self largeTitleAttributes];
@@ -76,16 +75,13 @@
         if (@available(iOS 11.0, *)) {
             [navigationBar setLargeTitleTextAttributes:largeTitleAttributes];
         }
-        NSInteger crumb = [self.reactViewController.navigationController.viewControllers indexOfObject:self.reactViewController];
-        UIViewController *previousController = crumb > 0 ? [self.reactViewController.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
-        UIBarButtonItem *backButton;
+        UINavigationItem *previousNavigationItem = [self previousNavigationItem];
         if ([backAttributes objectForKey:NSFontAttributeName]) {
-            NSString *title = self.backTitle ? self.backTitle : previousController.navigationItem.title;
-            backButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:nil action:nil];
-            previousController.navigationItem.backBarButtonItem = backButton;
+            NSString *title = self.backTitle ? self.backTitle : previousNavigationItem.title;
+            previousNavigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:nil action:nil];
         }
-        [backButton setTitleTextAttributes:backAttributes forState:UIControlStateNormal];
-        [backButton setTitleTextAttributes:backAttributes forState:UIControlStateSelected];
+        [previousNavigationItem.backBarButtonItem setTitleTextAttributes:backAttributes forState:UIControlStateNormal];
+        [previousNavigationItem.backBarButtonItem setTitleTextAttributes:backAttributes forState:UIControlStateSelected];
     }
 }
 
@@ -119,6 +115,12 @@
         }
     }
     return attributes;
+}
+
+- (UINavigationItem *) previousNavigationItem {
+    NSInteger crumb = [self.reactViewController.navigationController.viewControllers indexOfObject:self.reactViewController];
+    UIViewController *previousController = crumb > 0 ? [self.reactViewController.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
+    return previousController.navigationItem;
 }
 
 - (NSMutableDictionary *) backAttributes
