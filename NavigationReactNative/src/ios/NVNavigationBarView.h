@@ -19,7 +19,6 @@
 @property (nonatomic, copy) NSString *backTitle;
 
 -(void)updateStyle;
--(NSMutableDictionary *)backAttributes;
 
 #define NAVIGATION_BAR ((int) 28)
 
