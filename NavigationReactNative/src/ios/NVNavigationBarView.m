@@ -119,8 +119,9 @@
 
 - (UINavigationItem *) previousNavigationItem {
     NSInteger crumb = [self.reactViewController.navigationController.viewControllers indexOfObject:self.reactViewController];
-    UIViewController *previousController = crumb > 0 ? [self.reactViewController.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
-    return previousController.navigationItem;
+    if (crumb > 0)
+        return [self.reactViewController.navigationController.viewControllers objectAtIndex:crumb - 1].navigationItem;
+    return nil;
 }
 
 - (NSMutableDictionary *) backAttributes
