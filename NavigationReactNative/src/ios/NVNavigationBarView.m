@@ -43,6 +43,7 @@
     UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
     NSMutableDictionary *titleAttributes = [self titleAttributes];
     NSMutableDictionary *largeTitleAttributes = [self largeTitleAttributes];
+    NSMutableDictionary *backAttributes = [self backAttributes];
     if (@available(iOS 13.0, *)) {
         [navigationBar setTintColor: self.tintColor];
         UINavigationBarAppearance *appearance = [UINavigationBarAppearance new];
@@ -60,6 +61,8 @@
         [appearance.doneButtonAppearance.normal setTitleTextAttributes:attributes];
         [appearance setTitleTextAttributes:titleAttributes];
         [appearance setLargeTitleTextAttributes:largeTitleAttributes];
+        appearance.backButtonAppearance = [UIBarButtonItemAppearance new];
+        appearance.backButtonAppearance.normal.titleTextAttributes = backAttributes;
         self.reactViewController.navigationItem.standardAppearance = appearance;
         self.reactViewController.navigationItem.scrollEdgeAppearance = appearance;
         self.reactViewController.navigationItem.compactAppearance = appearance;
@@ -73,6 +76,16 @@
         if (@available(iOS 11.0, *)) {
             [navigationBar setLargeTitleTextAttributes:largeTitleAttributes];
         }
+        NSInteger crumb = [self.reactViewController.navigationController.viewControllers indexOfObject:self.reactViewController];
+        UIViewController *previousController = crumb > 0 ? [self.reactViewController.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
+        UIBarButtonItem *backButton;
+        if ([backAttributes objectForKey:NSFontAttributeName]) {
+            NSString *title = self.backTitle ? self.backTitle : previousController.navigationItem.title;
+            backButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:nil action:nil];
+            previousController.navigationItem.backBarButtonItem = backButton;
+        }
+        [backButton setTitleTextAttributes:backAttributes forState:UIControlStateNormal];
+        [backButton setTitleTextAttributes:backAttributes forState:UIControlStateSelected];
     }
 }
 
@@ -104,6 +117,18 @@
         if (self.titleFontFamily || self.titleFontWeight || self.titleFontStyle) {
             attributes[NSFontAttributeName] = font;
         }
+    }
+    return attributes;
+}
+
+- (NSMutableDictionary *) backAttributes
+{
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    UIFont *baseFont = !self.backFontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
+    NSNumber *size = !self.backFontSize ? @(UIFont.labelFontSize) : self.backFontSize;
+    UIFont *font = [RCTFont updateFont:baseFont withFamily:self.backFontFamily size:size weight:self.backFontWeight style:self.backFontStyle variant:nil scaleMultiplier:1];
+    if (self.backFontFamily || self.backFontWeight || self.backFontStyle || self.backFontSize) {
+        attributes[NSFontAttributeName] = font;
     }
     return attributes;
 }
