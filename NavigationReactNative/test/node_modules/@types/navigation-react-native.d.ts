@@ -94,6 +94,40 @@ export interface NavigationBarProps {
      */
     navigationImage?: ImageRequireSource | ImageURISource;
     /**
+     * The title font family
+     */
+    titleFontFamily?: string;
+    /**
+     * The title font weight
+     */
+    titleFontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500'
+        | '600' | '700' | '800' | '900';
+    /**
+     * The title font style
+     */
+    titleFontStyle?: 'normal' | 'italic';
+    /**
+     * The title font size
+     */
+    titleFontSize?: number;
+    /**
+     * The back button font family
+     */
+    backFontFamily?: string;
+    /**
+     * The back button font weight
+     */
+    backFontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500'
+        | '600' | '700' | '800' | '900';
+    /**
+     * The back button font style
+     */
+    backFontStyle?: 'normal' | 'italic';
+    /**
+     * The back button font size
+     */
+    backFontSize?: number;
+    /**
      * Handles navigation button press events
      */
     onNavigationPress?: () => void;
@@ -173,10 +207,6 @@ export interface BarButtonProps {
         | 'bookmarks' | 'search' | 'refresh' | 'stop' | 'camera'
         | 'trash' | 'play' | 'pause' | 'rewind' | 'fastForward';
     /**
-     * Handles button press events
-     */
-    onPress?: () => void;
-    /**
      * Determines when this item should appear in the navigation bar
      */
     show?: 'ifRoom' | 'never' | 'always';
@@ -184,6 +214,27 @@ export interface BarButtonProps {
      * Indicates whether this item opens the search bar
      */
     search?: boolean;
+    /**
+     * The button font family
+     */
+    fontFamily?: string;
+    /**
+     * The button font weight
+     */
+    fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500'
+        | '600' | '700' | '800' | '900';
+    /**
+     * The button font style
+     */
+    fontStyle?: 'normal' | 'italic';
+    /**
+     * The button font size
+     */
+    fontSize?: number;
+    /**
+     * Handles button press events
+     */
+    onPress?: () => void;
 }
 
 /**
