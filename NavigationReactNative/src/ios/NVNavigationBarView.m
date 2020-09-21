@@ -40,9 +40,6 @@
 
 - (void)updateStyle {
     UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
-    NSMutableDictionary *titleAttributes = [self titleAttributes];
-    NSMutableDictionary *largeTitleAttributes = [self largeTitleAttributes];
-    NSMutableDictionary *backAttributes = [self backAttributes];
     if (@available(iOS 13.0, *)) {
         [navigationBar setTintColor: self.tintColor];
         UINavigationBarAppearance *appearance = [UINavigationBarAppearance new];
@@ -58,10 +55,10 @@
         [appearance setBackgroundColor:self.barTintColor];
         [appearance.buttonAppearance.normal setTitleTextAttributes:attributes];
         [appearance.doneButtonAppearance.normal setTitleTextAttributes:attributes];
-        [appearance setTitleTextAttributes:titleAttributes];
-        [appearance setLargeTitleTextAttributes:largeTitleAttributes];
+        [appearance setTitleTextAttributes:[self titleAttributes]];
+        [appearance setLargeTitleTextAttributes:[self largeTitleAttributes]];
         appearance.backButtonAppearance = [UIBarButtonItemAppearance new];
-        appearance.backButtonAppearance.normal.titleTextAttributes = backAttributes;
+        appearance.backButtonAppearance.normal.titleTextAttributes = [self backAttributes];
         self.reactViewController.navigationItem.standardAppearance = appearance;
         self.reactViewController.navigationItem.scrollEdgeAppearance = appearance;
         self.reactViewController.navigationItem.compactAppearance = appearance;
@@ -71,11 +68,12 @@
         [navigationBar setBackgroundImage:(transparent ? [UIImage new] : nil) forBarMetrics:UIBarMetricsDefault];
         [navigationBar setBarTintColor:self.barTintColor];
         [navigationBar setTintColor: self.tintColor];
-        [navigationBar setTitleTextAttributes:titleAttributes];
+        [navigationBar setTitleTextAttributes:[self titleAttributes]];
         if (@available(iOS 11.0, *)) {
-            [navigationBar setLargeTitleTextAttributes:largeTitleAttributes];
+            [navigationBar setLargeTitleTextAttributes:[self largeTitleAttributes]];
         }
         UINavigationItem *previousNavigationItem = [self previousNavigationItem];
+        NSMutableDictionary *backAttributes = [self backAttributes];
         if ([backAttributes objectForKey:NSFontAttributeName]) {
             NSString *title = self.backTitle ? self.backTitle : previousNavigationItem.title;
             previousNavigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:nil action:nil];
