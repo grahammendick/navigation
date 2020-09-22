@@ -41,7 +41,7 @@ const Container = (props) => (
 
 const Grid = ({colors}) => {
   const [text, setText] = useState('');
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(Platform.OS === 'android' || +Platform.Version < 14);
   useLayoutEffect(() => {setTimeout(setShow, 0, true)}, []);
   return (    
     <Container
