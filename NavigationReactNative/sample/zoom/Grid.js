@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useLayoutEffect} from 'react';
 import {Platform, StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {SharedElement, NavigationBar, SearchBar, RightBar, BarButton} from 'navigation-react-native';
@@ -41,7 +41,9 @@ const Container = (props) => (
 
 const Grid = ({colors}) => {
   const [text, setText] = useState('');
-  return (
+  const [show, setShow] = useState(false);
+  useLayoutEffect(() => {setTimeout(setShow, 0, true)}, []);
+  return (    
     <Container
       style={styles.scene}
       collapsable={false}
@@ -61,7 +63,7 @@ const Grid = ({colors}) => {
           <BarButton title="search" show="always" search={true} />
         </RightBar>
       </NavigationBar>
-      <Colors colors={colors} />
+      {show && <Colors colors={colors} />}
     </Container>
   );
 };
