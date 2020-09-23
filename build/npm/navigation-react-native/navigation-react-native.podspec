@@ -8,5 +8,5 @@ Pod::Spec.new do |spec|
   spec.author       = "Graham Mendick"
   spec.source       = { :git => "git://github.com/grahammendick/navigation.git", :tag => "v6.25.1-NavigationReactNative" }
   spec.source_files = "ios/**/*.{h,m}"
-  spec.dependency "React"
+  spec.dependency "React-Core"
 end
