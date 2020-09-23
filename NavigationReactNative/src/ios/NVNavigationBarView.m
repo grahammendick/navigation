@@ -1,5 +1,6 @@
 #import "NVNavigationBarView.h"
 
+#import <React/RCTFont.h>
 #import <React/UIView+React.h>
 
 @implementation NVNavigationBarView
@@ -20,14 +21,13 @@
         [self.reactViewController.navigationItem setTitle:self.title];
     }
     if ([changedProps containsObject:@"backTitle"]) {
-        NSInteger crumb = [self.reactViewController.navigationController.viewControllers indexOfObject:self.reactViewController];
-        UIViewController *previousController = crumb > 0 ? [self.reactViewController.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
-        previousController.navigationItem.backBarButtonItem = nil;
+        UINavigationItem *previousNavigationItem = [self previousNavigationItem];
+        previousNavigationItem.backBarButtonItem = nil;
         if (self.backTitle != nil) {
-            previousController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
+            previousNavigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
         }
     }
-    [self updateColors];
+    [self updateStyle];
 }
 
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview
@@ -38,51 +38,100 @@
     }
 }
 
--(void)updateColors {
+- (void)updateStyle {
     UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
     if (@available(iOS 13.0, *)) {
         [navigationBar setTintColor: self.tintColor];
-        self.reactViewController.navigationItem.standardAppearance = [self updateColors:navigationBar.standardAppearance];
-        self.reactViewController.navigationItem.scrollEdgeAppearance = [self updateColors:navigationBar.scrollEdgeAppearance];
-        self.reactViewController.navigationItem.compactAppearance = [self updateColors:navigationBar.compactAppearance];
+        UINavigationBarAppearance *appearance = [UINavigationBarAppearance new];
+        bool transparent = self.barTintColor && CGColorGetAlpha(self.barTintColor.CGColor) == 0;
+        [appearance configureWithDefaultBackground];
+        if (transparent) {
+            [appearance configureWithTransparentBackground];
+        }
+        NSMutableDictionary *attributes = [NSMutableDictionary new];
+        if (self.tintColor != nil) {
+            attributes[NSForegroundColorAttributeName] = self.tintColor;
+        }
+        [appearance setBackgroundColor:self.barTintColor];
+        [appearance.buttonAppearance.normal setTitleTextAttributes:attributes];
+        [appearance.doneButtonAppearance.normal setTitleTextAttributes:attributes];
+        [appearance setTitleTextAttributes:[self titleAttributes]];
+        [appearance setLargeTitleTextAttributes:[self largeTitleAttributes]];
+        appearance.backButtonAppearance = [UIBarButtonItemAppearance new];
+        appearance.backButtonAppearance.normal.titleTextAttributes = [self backAttributes];
+        self.reactViewController.navigationItem.standardAppearance = appearance;
+        self.reactViewController.navigationItem.scrollEdgeAppearance = appearance;
+        self.reactViewController.navigationItem.compactAppearance = appearance;
     } else {
         bool transparent = self.barTintColor && CGColorGetAlpha(self.barTintColor.CGColor) == 0;
         [navigationBar setValue:@(transparent) forKey:@"hidesShadow"];
         [navigationBar setBackgroundImage:(transparent ? [UIImage new] : nil) forBarMetrics:UIBarMetricsDefault];
         [navigationBar setBarTintColor:self.barTintColor];
         [navigationBar setTintColor: self.tintColor];
-        [navigationBar setTitleTextAttributes:[self setForeground:self.titleColor :navigationBar.titleTextAttributes]];
+        [navigationBar setTitleTextAttributes:[self titleAttributes]];
         if (@available(iOS 11.0, *)) {
-            [navigationBar setLargeTitleTextAttributes:[self setForeground:self.titleColor :navigationBar.largeTitleTextAttributes]];
+            [navigationBar setLargeTitleTextAttributes:[self largeTitleAttributes]];
+        }
+        UINavigationItem *previousNavigationItem = [self previousNavigationItem];
+        NSMutableDictionary *backAttributes = [self backAttributes];
+        if ([backAttributes objectForKey:NSFontAttributeName]) {
+            NSString *title = self.backTitle ? self.backTitle : previousNavigationItem.title;
+            previousNavigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:nil action:nil];
+        }
+        [previousNavigationItem.backBarButtonItem setTitleTextAttributes:backAttributes forState:UIControlStateNormal];
+        [previousNavigationItem.backBarButtonItem setTitleTextAttributes:backAttributes forState:UIControlStateSelected];
+    }
+}
+
+- (NSMutableDictionary *) titleAttributes
+{
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    if (self.titleColor != nil) {
+        attributes[NSForegroundColorAttributeName] = self.titleColor;
+    }
+    UIFont *baseFont = !self.titleFontFamily ? [UIFont preferredFontForTextStyle: UIFontTextStyleHeadline] : nil;
+    NSNumber *size = !self.titleFontSize ? @([UIFont preferredFontForTextStyle: UIFontTextStyleHeadline].pointSize) : self.titleFontSize;
+    UIFont *font = [RCTFont updateFont:baseFont withFamily:self.titleFontFamily size:size weight:self.titleFontWeight style:self.titleFontStyle variant:nil scaleMultiplier:1];
+    if (self.titleFontFamily || self.titleFontWeight || self.titleFontStyle || self.titleFontSize) {
+        attributes[NSFontAttributeName] = font;
+    }
+    return attributes;
+}
+
+- (NSMutableDictionary *) largeTitleAttributes
+{
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    if (self.titleColor != nil) {
+        attributes[NSForegroundColorAttributeName] = self.titleColor;
+    }
+    if (@available(iOS 11.0, *)) {
+        UIFont *baseFont = !self.titleFontFamily ? [UIFont preferredFontForTextStyle: UIFontTextStyleLargeTitle] : nil;
+        NSNumber *size = @([UIFont preferredFontForTextStyle: UIFontTextStyleLargeTitle].pointSize);
+        UIFont *font = [RCTFont updateFont:baseFont withFamily:self.titleFontFamily size:size weight:self.titleFontWeight style:self.titleFontStyle variant:nil scaleMultiplier:1];
+        if (self.titleFontFamily || self.titleFontWeight || self.titleFontStyle) {
+            attributes[NSFontAttributeName] = font;
         }
     }
+    return attributes;
 }
 
--(UINavigationBarAppearance *)updateColors:(UINavigationBarAppearance *)appearance
-API_AVAILABLE(ios(13.0))
-{
-    UINavigationBarAppearance *appearanceCopy = appearance != nil ? [appearance copy] : [UINavigationBarAppearance new];
-    bool transparent = self.barTintColor && CGColorGetAlpha(self.barTintColor.CGColor) == 0;
-    [appearanceCopy configureWithDefaultBackground];
-    if (transparent) {
-        [appearanceCopy configureWithTransparentBackground];
-    }
-    [appearanceCopy setBackgroundColor:self.barTintColor];
-    [appearanceCopy.buttonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.buttonAppearance.normal.titleTextAttributes]];
-    [appearanceCopy.doneButtonAppearance.normal setTitleTextAttributes:[self setForeground:self.tintColor :appearanceCopy.doneButtonAppearance.normal.titleTextAttributes]];
-    [appearanceCopy setTitleTextAttributes:[self setForeground:self.titleColor :appearanceCopy.titleTextAttributes]];
-    [appearanceCopy setLargeTitleTextAttributes:[self setForeground:self.titleColor :appearanceCopy.largeTitleTextAttributes]];
-    return appearanceCopy;
+- (UINavigationItem *) previousNavigationItem {
+    NSInteger crumb = [self.reactViewController.navigationController.viewControllers indexOfObject:self.reactViewController];
+    if (crumb > 0)
+        return [self.reactViewController.navigationController.viewControllers objectAtIndex:crumb - 1].navigationItem;
+    return nil;
 }
 
--(NSDictionary *)setForeground:(UIColor *)color :(NSDictionary *)attributes
+- (NSMutableDictionary *) backAttributes
 {
-    NSMutableDictionary *attributesCopy = [attributes != nil ? attributes : @{} mutableCopy];
-    [attributesCopy removeObjectForKey:NSForegroundColorAttributeName];
-    if (color != nil) {
-        attributesCopy[NSForegroundColorAttributeName] = color;
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    UIFont *baseFont = !self.backFontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
+    NSNumber *size = !self.backFontSize ? @(UIFont.labelFontSize) : self.backFontSize;
+    UIFont *font = [RCTFont updateFont:baseFont withFamily:self.backFontFamily size:size weight:self.backFontWeight style:self.backFontStyle variant:nil scaleMultiplier:1];
+    if (self.backFontFamily || self.backFontWeight || self.backFontStyle || self.backFontSize) {
+        attributes[NSFontAttributeName] = font;
     }
-    return attributesCopy;
+    return attributes;
 }
 
 @end

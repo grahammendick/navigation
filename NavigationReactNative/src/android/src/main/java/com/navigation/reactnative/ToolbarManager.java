@@ -2,7 +2,7 @@ package com.navigation.reactnative;
 
 import android.view.View;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
@@ -32,27 +32,47 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
     }
 
     @ReactProp(name = "title")
-    public void setTitle(ToolbarView view, @Nullable String title) {
-        view.setTitle(title);
+    public void setTitle(ToolbarView view, String title) {
+        view.setPlainTitle(title);
+    }
+
+    @ReactProp(name = "titleFontFamily")
+    public void setTitleFontFamily(ToolbarView view, String titleFontFamily) {
+        view.setTitleFontFamily(titleFontFamily);
+    }
+
+    @ReactProp(name = "titleFontWeight")
+    public void setTitleFontWeight(ToolbarView view, String titleFontWeight) {
+        view.setTitleFontWeight(titleFontWeight);
+    }
+
+    @ReactProp(name = "titleFontStyle")
+    public void setTitleFontStyle(ToolbarView view, String titleFontStyle) {
+        view.setTitleFontStyle(titleFontStyle);
+    }
+
+    @ReactProp(name = "titleFontSize")
+    public void setTitleFontSize(ToolbarView view, Integer titleFontSize) {
+        view.setTitleFontSize(titleFontSize);
     }
 
     @ReactProp(name = "logo")
-    public void setLogo(ToolbarView view, @Nullable ReadableMap logo) {
+    public void setLogo(ToolbarView view, ReadableMap logo) {
         view.setLogoSource(logo);
     }
 
     @ReactProp(name = "navigationImage")
-    public void setNavIcon(ToolbarView view, @Nullable ReadableMap navIcon) {
+    public void setNavIcon(ToolbarView view, ReadableMap navIcon) {
         view.setNavIconSource(navIcon);
     }
 
     @ReactProp(name = "overflowImage")
-    public void setOverflowIcon(ToolbarView view, @Nullable ReadableMap overflowIcon) {
+    public void setOverflowIcon(ToolbarView view, ReadableMap overflowIcon) {
         view.setOverflowIconSource(overflowIcon);
     }
 
     @ReactProp(name = "barTintColor", customType = "Color")
-    public void setBarTintColor(ToolbarView view, @Nullable Integer barTintColor) {
+    public void setBarTintColor(ToolbarView view, Integer barTintColor) {
         if (barTintColor != null)
             view.setBackgroundColor(barTintColor);
         else
@@ -60,12 +80,12 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
     }
 
     @ReactProp(name = "tintColor", customType = "Color")
-    public void setTintColor(ToolbarView view, @Nullable Integer tintColor) {
+    public void setTintColor(ToolbarView view, Integer tintColor) {
         view.setTintColor(tintColor);
     }
 
     @ReactProp(name = "titleColor", customType = "Color")
-    public void setTitleColor(ToolbarView view, @Nullable Integer textColor) {
+    public void setTitleColor(ToolbarView view, Integer textColor) {
         view.setTitleTextColor(textColor != null ? textColor : view.defaultTitleTextColor);
     }
 
@@ -113,6 +133,13 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
     @Override
     public View getChildAt(ToolbarView parent, int index) {
         return parent.children.get(index);
+    }
+
+
+    @Override
+    protected void onAfterUpdateTransaction(@NonNull ToolbarView view) {
+        super.onAfterUpdateTransaction(view);
+        view.styleTitle();
     }
 
     @Override
