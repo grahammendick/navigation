@@ -1,6 +1,7 @@
 #import "NVTabBarItemView.h"
 #import "NVNavigationStackView.h"
 
+#import <React/RCTFont.h>
 #import <React/UIView+React.h>
 
 @implementation NVTabBarItemView
@@ -56,6 +57,21 @@
         self.tab.badgeColor = oldTab.badgeColor;
     }
     self.navigationController.tabBarItem = self.tab;
+}
+
+- (void)didSetProps:(NSArray<NSString *> *)changedProps
+{
+    if ([changedProps containsObject:@"fontFamily"] || [changedProps containsObject:@"fontWeight"]
+        || [changedProps containsObject:@"fontStyle"] || [changedProps containsObject:@"fontSize"]) {
+        UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
+        NSNumber *size = !self.fontSize ? @(UIFont.labelFontSize) : self.fontSize;
+        UIFont *font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
+        NSMutableDictionary *attributes = [NSMutableDictionary new];
+        if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
+            attributes[NSFontAttributeName] = font;
+        }
+        [self.tab setTitleTextAttributes:attributes forState:UIControlStateNormal];
+    }
 }
 
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
