@@ -128,7 +128,7 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
     };
 
     @Override
-    public void setTitle(int index, String title) {
+    public void setTitle(int index, CharSequence title) {
         TabLayout.Tab tab = getTabAt(index);
         if (tab != null)
             tab.setText(title);

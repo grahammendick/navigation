@@ -2,6 +2,10 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.StyleSpan;
+import android.text.style.TypefaceSpan;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,13 +14,19 @@ import androidx.annotation.Nullable;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.facebook.react.views.text.ReactTypefaceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TabBarItemView extends ViewGroup {
     protected int index;
-    protected String title;
+    String title;
+    private String fontFamily;
+    private String fontWeight;
+    private String fontStyle;
+    private Integer fontSize;
+    private boolean titleChanged = false;
     private Drawable icon;
     private TabView tabView;
     private Integer badge;
@@ -39,8 +49,27 @@ public class TabBarItemView extends ViewGroup {
 
     void setTitle(String title) {
         this.title = title;
-        if (tabView != null)
-            tabView.setTitle(index, title);
+        titleChanged = true;
+    }
+
+    void setFontFamily(String fontFamily) {
+        this.fontFamily = fontFamily;
+        titleChanged = true;
+    }
+
+    void setFontWeight(String fontWeight) {
+        this.fontWeight = fontWeight;
+        titleChanged = true;
+    }
+
+    void setFontStyle(String fontStyle) {
+        this.fontStyle = fontStyle;
+        titleChanged = true;
+    }
+
+    void setFontSize(Integer fontSize) {
+        this.fontSize = fontSize;
+        titleChanged = true;
     }
 
     void setIconSource(@Nullable ReadableMap source) {
@@ -82,6 +111,23 @@ public class TabBarItemView extends ViewGroup {
         if (icon != null)
             tabView.setIcon(index, icon);
         setBadge(badge);
+        styleTitle();
+    }
+
+    void styleTitle() {
+        if (tabView != null && titleChanged) {
+            SpannableString titleSpannable = new SpannableString(title);
+            if (fontFamily != null)
+                titleSpannable.setSpan(new TypefaceSpan(fontFamily), 0, title.length(), 0);
+            if (fontWeight != null)
+                titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontWeight(fontWeight)), 0, title.length(), 0);
+            if (fontStyle != null)
+                titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontStyle(fontStyle)), 0, title.length(), 0);
+            if (fontSize != null)
+                titleSpannable.setSpan(new AbsoluteSizeSpan(fontSize, true), 0, title.length(), 0);
+            tabView.setTitle(index, titleSpannable);
+            titleChanged = false;
+        }
     }
 
     protected void pressed() {

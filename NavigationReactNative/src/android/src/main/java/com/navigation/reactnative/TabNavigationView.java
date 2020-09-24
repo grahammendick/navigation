@@ -106,7 +106,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     };
 
     @Override
-    public void setTitle(int index, String title) {
+    public void setTitle(int index, CharSequence title) {
         getMenu().getItem(index).setTitle(title);
     }
 

@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableMap;
@@ -27,6 +28,26 @@ public class TabBarItemManager extends ViewGroupManager<TabBarItemView> {
         view.setTitle(title);
     }
 
+    @ReactProp(name = "fontFamily")
+    public void setFontFamily(TabBarItemView view, String fontFamily) {
+        view.setFontFamily(fontFamily);
+    }
+
+    @ReactProp(name = "fontWeight")
+    public void setFontWeight(TabBarItemView view, String fontWeight) {
+        view.setFontWeight(fontWeight);
+    }
+
+    @ReactProp(name = "fontStyle")
+    public void setFontStyle(TabBarItemView view, String fontStyle) {
+        view.setFontStyle(fontStyle);
+    }
+
+    @ReactProp(name = "fontSize")
+    public void setFontSize(TabBarItemView view, Integer fontSize) {
+        view.setFontSize(fontSize);
+    }
+
     @ReactProp(name = "image")
     public void setImage(TabBarItemView view, @Nullable ReadableMap icon) {
         view.setIconSource(icon);
@@ -40,6 +61,12 @@ public class TabBarItemManager extends ViewGroupManager<TabBarItemView> {
     @ReactProp(name = "badgeColor", customType = "Color")
     public void setBadgeColor(TabBarItemView view, @Nullable Integer badgeColor) {
         view.setBadgeColor(badgeColor);
+    }
+
+    @Override
+    protected void onAfterUpdateTransaction(@NonNull TabBarItemView view) {
+        super.onAfterUpdateTransaction(view);
+        view.styleTitle();
     }
 
     @Nonnull

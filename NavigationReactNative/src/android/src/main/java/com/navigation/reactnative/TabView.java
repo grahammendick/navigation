@@ -8,7 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.badge.BadgeDrawable;
 
 public interface TabView {
-    void setTitle(int index, String title);
+    void setTitle(int index, CharSequence title);
 
     void setIcon(int index, Drawable icon);
 
