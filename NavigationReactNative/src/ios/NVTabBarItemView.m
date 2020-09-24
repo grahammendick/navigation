@@ -64,8 +64,9 @@
     if ([changedProps containsObject:@"fontFamily"] || [changedProps containsObject:@"fontWeight"]
         || [changedProps containsObject:@"fontStyle"] || [changedProps containsObject:@"fontSize"]) {
         UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
-        NSNumber *size = !self.fontSize ? @(UIFont.labelFontSize) : self.fontSize;
-        UIFont *font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
+        NSNumber *size = !self.fontSize ? @10 : self.fontSize;
+        NSString *weight = !self.fontWeight ? @"500" : self.fontWeight;
+        UIFont *font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:weight style:self.fontStyle variant:nil scaleMultiplier:1];
         NSMutableDictionary *attributes = [NSMutableDictionary new];
         if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
             attributes[NSFontAttributeName] = font;
