@@ -21,7 +21,8 @@ import java.util.List;
 
 public class TabBarItemView extends ViewGroup {
     protected int index;
-    String title;
+    CharSequence styledTitle;
+    private String title;
     private String fontFamily;
     private String fontWeight;
     private String fontStyle;
@@ -111,11 +112,11 @@ public class TabBarItemView extends ViewGroup {
         if (icon != null)
             tabView.setIcon(index, icon);
         setBadge(badge);
-        styleTitle();
+        tabView.setTitle(index, styledTitle);
     }
 
     void styleTitle() {
-        if (tabView != null && titleChanged) {
+        if (titleChanged) {
             SpannableString titleSpannable = new SpannableString(title);
             if (fontFamily != null)
                 titleSpannable.setSpan(new TypefaceSpan(fontFamily), 0, title.length(), 0);
@@ -125,7 +126,9 @@ public class TabBarItemView extends ViewGroup {
                 titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontStyle(fontStyle)), 0, title.length(), 0);
             if (fontSize != null)
                 titleSpannable.setSpan(new AbsoluteSizeSpan(fontSize, true), 0, title.length(), 0);
-            tabView.setTitle(index, titleSpannable);
+            styledTitle = titleSpannable;
+            if (tabView != null)
+                tabView.setTitle(index, styledTitle);
             titleChanged = false;
         }
     }

@@ -213,7 +213,7 @@ public class TabBarPagerView extends ViewPager {
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
-            return tabFragments.get(position).tabBarItem.title;
+            return tabFragments.get(position).tabBarItem.styledTitle;
         }
 
         @Override
