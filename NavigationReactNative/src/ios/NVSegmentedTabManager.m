@@ -14,6 +14,10 @@ RCT_EXPORT_VIEW_PROPERTY(backgroundColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(selectedTintColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(unselectedTintColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(titles, NSArray<NSString *>)
+RCT_EXPORT_VIEW_PROPERTY(fontFamily, NSString)
+RCT_EXPORT_VIEW_PROPERTY(fontWeight, NSString)
+RCT_EXPORT_VIEW_PROPERTY(fontStyle, NSString)
+RCT_EXPORT_VIEW_PROPERTY(fontSize, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(scrollsToTop, BOOL)
 
 @end

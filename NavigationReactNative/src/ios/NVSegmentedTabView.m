@@ -2,6 +2,7 @@
 #import "NVTabBarItemView.h"
 #import "NVTabBarPagerView.h"
 
+#import <React/RCTFont.h>
 #import <React/RCTI18nUtil.h>
 
 @implementation NVSegmentedTabView
@@ -36,27 +37,29 @@
 - (void)setSelectedTintColor:(UIColor *)selectedTintColor
 {
     if (@available(iOS 13.0, *)) {
-        NSDictionary *titleAttributes = [self setForeground:selectedTintColor :[self titleTextAttributesForState:UIControlStateSelected]];
-        [self setTitleTextAttributes:titleAttributes forState:UIControlStateSelected];
+        NSMutableDictionary *attributes = [NSMutableDictionary new];
+        if (selectedTintColor != nil) {
+            attributes[NSForegroundColorAttributeName] = selectedTintColor;
+        }
+        [self setTitleTextAttributes:attributes forState:UIControlStateSelected];
     }
 }
 
-- (void)setUnselectedTintColor:(UIColor *)unselectedTintColor
+- (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
+    UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
+    NSNumber *size = !self.fontSize ? @13 : self.fontSize;
+    UIFont *font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
+        attributes[NSFontAttributeName] = font;
+    }
     if (@available(iOS 13.0, *)) {
-        NSDictionary *titleAttributes = [self setForeground:unselectedTintColor :[self titleTextAttributesForState:UIControlStateNormal]];
-        [self setTitleTextAttributes:titleAttributes forState:UIControlStateNormal];
+        if (self.unselectedTintColor != nil) {
+            attributes[NSForegroundColorAttributeName] = self.unselectedTintColor;
+        }
     }
-}
-
-- (NSDictionary *)setForeground:(UIColor *)color :(NSDictionary *)attributes
-{
-    NSMutableDictionary *attributesCopy = [attributes != nil ? attributes : @{} mutableCopy];
-    [attributesCopy removeObjectForKey:NSForegroundColorAttributeName];
-    if (color != nil) {
-        attributesCopy[NSForegroundColorAttributeName] = color;
-    }
-    return attributesCopy;
+    [self setTitleTextAttributes:attributes forState:UIControlStateNormal];
 }
 
 - (void)didMoveToWindow
