@@ -389,6 +389,23 @@ export interface TabBarItemProps {
         | 'featured' | 'history' | 'more' | 'most-recent' | 'most-viewed'
         | 'recents' | 'search' | 'top-rated';
     /**
+     * The tab font family
+     */
+    fontFamily?: string;
+    /**
+     * The tab font weight
+     */
+    fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500'
+        | '600' | '700' | '800' | '900';
+    /**
+     * The tab font style
+     */
+    fontStyle?: 'normal' | 'italic';
+    /**
+     * The tab font size
+     */
+    fontSize?: number;
+    /**
      * Handles button press events
      */
     onPress?: () => void;
