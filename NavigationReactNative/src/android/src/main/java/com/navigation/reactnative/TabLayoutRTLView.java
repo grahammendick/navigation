@@ -70,7 +70,7 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
                 new TabLayoutMediator.TabConfigurationStrategy() {
                     @Override
                     public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                        tab.setText(((TabBarPagerRTLAdapter) tabBarPager.getAdapter()).getTabAt(position).title);
+                        tab.setText(((TabBarPagerRTLAdapter) tabBarPager.getAdapter()).getTabAt(position).styledTitle);
                     }
                 }
             ).attach();
@@ -128,7 +128,7 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
     };
 
     @Override
-    public void setTitle(int index, String title) {
+    public void setTitle(int index, CharSequence title) {
         TabLayout.Tab tab = getTabAt(index);
         if (tab != null)
             tab.setText(title);

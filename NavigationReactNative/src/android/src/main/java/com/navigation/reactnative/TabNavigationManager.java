@@ -19,11 +19,6 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
         return "NVTabNavigation";
     }
 
-    @ReactProp(name = "titles")
-    public void setTitles(TabNavigationView view, ReadableArray titles) {
-        view.setTitles(titles);
-    }
-
     @ReactProp(name = "bottomTabs")
     public void setBottomTabs(TabNavigationView view, boolean bottomTabs) {
         view.bottomTabs = bottomTabs;

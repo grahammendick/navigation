@@ -48,6 +48,7 @@ class TabBar extends React.Component<any, any> {
         primary = (Platform.OS === 'android' && swipeable != null) ? !swipeable : primary;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
+        var {fontFamily, fontWeight, fontStyle, fontSize} = (tabBarItems[0] as any)?.props || {};
         var tabViewHeight = !primary ? (titleOnly ? 48 : 72) : 56
         tabViewHeight = Platform.OS === 'android' ? tabViewHeight : 28;
         var TabBarPager = (Platform.OS === 'ios' || !I18nManager.isRTL) ? NVTabBarPager : NVTabBarPagerRTL;
@@ -61,6 +62,8 @@ class TabBar extends React.Component<any, any> {
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
                 titles={tabBarItems.map(({props}: any) => props.title)}
+                fontFamily={fontFamily} fontWeight={fontWeight}
+                fontStyle={fontStyle} fontSize={fontSize}
                 scrollable={scrollable}
                 style={{
                     height: tabViewHeight,

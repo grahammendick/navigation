@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 
-import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.modules.i18nmanager.I18nUtil;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
@@ -44,18 +43,16 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         });
     }
 
-    void setTitles(ReadableArray titles) {
+    void setTitles() {
         int selectedIndex = getSelectedItemId();
         getMenu().clear();
-        for(int i = 0; i < titles.size(); i++) {
-            getMenu().add(Menu.NONE, i, i, titles.getString(i));
+        TabBarView tabBar = getTabBar();
+        for (int i = 0; tabBar != null && i < tabBar.tabFragments.size(); i++) {
+            getMenu().add(Menu.NONE, i, i, getTabBar().tabFragments.get(i).tabBarItem.styledTitle);
         }
         autoSelected = true;
         setSelectedItemId(selectedIndex);
         autoSelected = false;
-        TabBarView tabBar = getTabBar();
-        if (tabBar != null)
-            tabBar.populateTabs();
     }
 
     @Override
@@ -106,7 +103,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     };
 
     @Override
-    public void setTitle(int index, String title) {
+    public void setTitle(int index, CharSequence title) {
         getMenu().getItem(index).setTitle(title);
     }
 

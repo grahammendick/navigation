@@ -28,6 +28,7 @@ public class TabBarView extends ViewGroup {
     private FragmentManager fragmentManager;
     private TabFragment selectedTabFragment;
     private Fragment fragment;
+    boolean tabsChanged = false;
     int selectedTab = 0;
     boolean scrollsToTop;
     int nativeEventCount;
@@ -55,10 +56,14 @@ public class TabBarView extends ViewGroup {
 
     void populateTabs() {
         TabNavigationView tabNavigation = getTabNavigation();
-        if (tabNavigation == null || tabNavigation.getMenu().size() != tabFragments.size())
+        if (tabNavigation == null)
             return;
-        for(int i = 0; i < tabFragments.size(); i++) {
-            tabFragments.get(i).tabBarItem.setTabView(tabNavigation, i);
+        if (tabsChanged) {
+            tabNavigation.setTitles();
+            for (int i = 0; i < tabFragments.size(); i++) {
+                tabFragments.get(i).tabBarItem.setTabView(tabNavigation, i);
+            }
+            tabsChanged = false;
         }
     }
 

@@ -84,7 +84,7 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
                         new TabLayoutMediator.TabConfigurationStrategy() {
                             @Override
                             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                                tab.setText(tabBarPagerAdapter.getTabAt(position).title);
+                                tab.setText(tabBarPagerAdapter.getTabAt(position).styledTitle);
                             }
                         }
                     ).attach();
