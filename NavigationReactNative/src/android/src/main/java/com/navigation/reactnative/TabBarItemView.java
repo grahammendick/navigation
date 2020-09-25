@@ -117,9 +117,9 @@ public class TabBarItemView extends ViewGroup {
 
     void styleTitle() {
         if (titleChanged) {
-            styledTitle = null;
+            SpannableString titleSpannable = null;
             if (title != null) {
-                SpannableString titleSpannable = new SpannableString(title);
+                titleSpannable = new SpannableString(title);
                 if (fontFamily != null)
                     titleSpannable.setSpan(new TypefaceSpan(fontFamily), 0, title.length(), 0);
                 if (fontWeight != null)
@@ -128,8 +128,8 @@ public class TabBarItemView extends ViewGroup {
                     titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontStyle(fontStyle)), 0, title.length(), 0);
                 if (fontSize != null)
                     titleSpannable.setSpan(new AbsoluteSizeSpan(fontSize, true), 0, title.length(), 0);
-                styledTitle = titleSpannable;
             }
+            styledTitle = titleSpannable;
             if (tabView != null)
                 tabView.setTitle(index, styledTitle);
             titleChanged = false;
