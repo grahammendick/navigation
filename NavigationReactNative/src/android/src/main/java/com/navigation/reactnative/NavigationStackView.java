@@ -94,7 +94,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             transaction.add(fragment, "Stack" + getId());
             transaction.commitNowAllowingStateLoss();
         }
-        startNavigation = startNavigation == null ? keys.size() != 0 : false;
+        startNavigation = startNavigation == null && keys.size() != 0;
         if (scenes.size() == 0 || fragment.getChildFragmentManager().isStateSaved())
             return;
         int crumb = keys.size() - 1;
