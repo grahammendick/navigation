@@ -54,6 +54,20 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
 
     public NavigationStackView(Context context) {
         super(context);
+        defaultAnimation = new SparseIntArray();
+        TypedArray activityStyle = context.getTheme().obtainStyledAttributes(new int[] {android.R.attr.windowAnimationStyle});
+        int windowAnimationStyleResId = activityStyle.getResourceId(0, 0);
+        activityStyle.recycle();
+
+        activityStyle = context.getTheme().obtainStyledAttributes(windowAnimationStyleResId, new int[] {
+                android.R.attr.activityOpenEnterAnimation, android.R.attr.activityOpenExitAnimation,
+                android.R.attr.activityCloseEnterAnimation, android.R.attr.activityCloseExitAnimation
+        });
+        defaultAnimation.put(android.R.attr.activityOpenEnterAnimation, activityStyle.getResourceId(0, 0));
+        defaultAnimation.put(android.R.attr.activityOpenExitAnimation, activityStyle.getResourceId(1, 0));
+        defaultAnimation.put(android.R.attr.activityCloseEnterAnimation, activityStyle.getResourceId(2, 0));
+        defaultAnimation.put(android.R.attr.activityCloseExitAnimation, activityStyle.getResourceId(3, 0));
+        activityStyle.recycle();
     }
 
     protected void onAfterUpdateTransaction() {
@@ -149,22 +163,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     }
 
     int getAnimationResourceId(Context context, String animationName, int defaultId) {
-        if (defaultAnimation == null) {
-            defaultAnimation = new SparseIntArray();
-            TypedArray activityStyle = context.getTheme().obtainStyledAttributes(new int[] {android.R.attr.windowAnimationStyle});
-            int windowAnimationStyleResId = activityStyle.getResourceId(0, 0);
-            activityStyle.recycle();
-
-            activityStyle = context.getTheme().obtainStyledAttributes(windowAnimationStyleResId, new int[] {
-                    android.R.attr.activityOpenEnterAnimation, android.R.attr.activityOpenExitAnimation,
-                    android.R.attr.activityCloseEnterAnimation, android.R.attr.activityCloseExitAnimation
-            });
-            defaultAnimation.put(android.R.attr.activityOpenEnterAnimation, activityStyle.getResourceId(0, 0));
-            defaultAnimation.put(android.R.attr.activityOpenExitAnimation, activityStyle.getResourceId(1, 0));
-            defaultAnimation.put(android.R.attr.activityCloseEnterAnimation, activityStyle.getResourceId(2, 0));
-            defaultAnimation.put(android.R.attr.activityCloseExitAnimation, activityStyle.getResourceId(3, 0));
-            activityStyle.recycle();
-        }
         if (animationName == null)
             return defaultAnimation.get(defaultId);
         if (animationName.equals(""))
