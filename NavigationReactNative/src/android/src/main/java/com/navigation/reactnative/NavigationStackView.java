@@ -50,7 +50,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected ReadableArray oldSharedElementNames;
     protected Boolean startNavigation = null;
     protected boolean finish = false;
-    SceneNavigator navigator;
 
     public NavigationStackView(Context context) {
         super(context);

@@ -28,11 +28,6 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
         view.keys = keys;
     }
 
-    @ReactProp(name = "fragmentMode")
-    public void setFragmentMode(NavigationStackView view, Boolean fragmentMode) {
-        view.navigator = !fragmentMode ? new ActivityNavigator() : new FragmentNavigator();
-    }
-
     @ReactProp(name = "enterAnim")
     public void setEnterAnim(NavigationStackView view, String enterAnim) {
         view.enterAnim = enterAnim;
