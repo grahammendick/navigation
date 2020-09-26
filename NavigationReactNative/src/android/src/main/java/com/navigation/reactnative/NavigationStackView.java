@@ -202,11 +202,11 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         return sharedElementPairs.toArray(new Pair[0]);
     }
 
-    private Pair[] getOldSharedElements(int currentCrumb, int crumb, SharedElementContainer sharedElementContainer, final Activity activity) {
-        final HashMap<String, View> oldSharedElementsMap = getSharedElementMap(sharedElementContainer.getScene());
+    private Pair[] getOldSharedElements(int currentCrumb, int crumb, SceneFragment sceneFragment, final Activity activity) {
+        final HashMap<String, View> oldSharedElementsMap = getSharedElementMap(sceneFragment.getScene());
         final Pair[] oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
         if (oldSharedElements != null && oldSharedElements.length != 0) {
-            final SharedElementTransitioner transitioner = new SharedElementTransitioner(sharedElementContainer, getSharedElementSet(oldSharedElementNames));
+            final SharedElementTransitioner transitioner = new SharedElementTransitioner(sceneFragment, getSharedElementSet(oldSharedElementNames));
             for(int i = 0; i < oldSharedElementNames.size(); i++) {
                 String name = oldSharedElementNames.getString(i);
                 if (oldSharedElementsMap.containsKey(name)) {
@@ -215,7 +215,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     transitioner.load(name, oldSharedElementView.exitTransition, activity);
                 }
             }
-            sharedElementContainer.setEnterCallback(new SharedElementCallback() {
+            sceneFragment.setEnterCallback(new SharedElementCallback() {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> elements) {
                     for(int i = 0; i < oldSharedElementNames.size(); i++) {
@@ -232,11 +232,11 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         return null;
     }
 
-    private Pair[] getSharedElements(int currentCrumb, int crumb, SharedElementContainer sharedElementContainer) {
-        final HashMap<String, View> sharedElementsMap = getSharedElementMap(sharedElementContainer.getScene());
+    private Pair[] getSharedElements(int currentCrumb, int crumb, SceneFragment sceneFragment) {
+        final HashMap<String, View> sharedElementsMap = getSharedElementMap(sceneFragment.getScene());
         final Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements(sharedElementsMap, sharedElementNames) : null;
         if (sharedElements != null && sharedElements.length != 0) {
-            sharedElementContainer.setExitCallback(new SharedElementCallback() {
+            sceneFragment.setExitCallback(new SharedElementCallback() {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> elements) {
                     for(int i = 0; i < names.size(); i++) {

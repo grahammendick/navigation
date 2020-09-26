@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.HashSet;
 
-public class SceneFragment extends Fragment implements SharedElementContainer {
+public class SceneFragment extends Fragment {
     private SceneView scene;
 
     public SceneFragment() {
@@ -48,27 +48,22 @@ public class SceneFragment extends Fragment implements SharedElementContainer {
             scene.popped();
     }
 
-    @Override
     public SceneView getScene() {
         return scene;
     }
 
-    @Override
     public void setEnterTransition(Transition transition) {
         setSharedElementEnterTransition(transition);
     }
 
-    @Override
     public void setReturnTransition(Transition transition) {
         setSharedElementReturnTransition(transition);
     }
 
-    @Override
     public void setExitCallback(SharedElementCallback sharedElementCallback) {
         setExitSharedElementCallback(sharedElementCallback);
     }
 
-    @Override
     public void setEnterCallback(SharedElementCallback sharedElementCallback) {
         setEnterSharedElementCallback(sharedElementCallback);
     }

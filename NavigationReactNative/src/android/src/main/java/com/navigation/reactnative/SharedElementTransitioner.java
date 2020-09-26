@@ -10,14 +10,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 class SharedElementTransitioner {
-    private SharedElementContainer sharedElementContainer;
+    private SceneFragment sceneFragment;
     private HashSet<String> sharedElements;
     private HashSet<String> loadedSharedElements = new HashSet<>();
     private HashMap<String, Transition> transitions = new HashMap<>();
 
-    SharedElementTransitioner(SharedElementContainer sharedElementContainer, HashSet<String> sharedElements) {
+    SharedElementTransitioner(SceneFragment sceneFragment, HashSet<String> sharedElements) {
         this.sharedElements = sharedElements;
-        this.sharedElementContainer = sharedElementContainer;
+        this.sceneFragment = sceneFragment;
     }
 
     void load(String sharedElement, String transitionKey, Context context) {
@@ -45,10 +45,10 @@ class SharedElementTransitioner {
             for(String key : transitions.keySet()) {
                 transitionSet.addTransition(transitions.get(key));
             }
-            sharedElementContainer.setEnterTransition(transitionSet);
-            sharedElementContainer.setReturnTransition(transitionSet);
-            sharedElementContainer.startPostponedEnterTransition();
-            sharedElementContainer.getScene().transitioner = null;
+            sceneFragment.setEnterTransition(transitionSet);
+            sceneFragment.setReturnTransition(transitionSet);
+            sceneFragment.startPostponedEnterTransition();
+            sceneFragment.getScene().transitioner = null;
         }
     }
 }
