@@ -46,8 +46,8 @@ class SharedElementTransitioner {
             for(String key : transitions.keySet()) {
                 transitionSet.addTransition(transitions.get(key));
             }
-            sceneFragment.setEnterTransition(transitionSet);
-            sceneFragment.setReturnTransition(transitionSet);
+            sceneFragment.setSharedElementEnterTransition(transitionSet);
+            sceneFragment.setSharedElementReturnTransition(transitionSet);
             sceneFragment.startPostponedEnterTransition();
             sceneFragment.getScene().transitioner = null;
         }

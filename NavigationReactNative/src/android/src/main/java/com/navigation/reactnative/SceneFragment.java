@@ -51,20 +51,4 @@ public class SceneFragment extends Fragment {
     public SceneView getScene() {
         return scene;
     }
-
-    public void setEnterTransition(Transition transition) {
-        setSharedElementEnterTransition(transition);
-    }
-
-    public void setReturnTransition(Transition transition) {
-        setSharedElementReturnTransition(transition);
-    }
-
-    public void setExitCallback(SharedElementCallback sharedElementCallback) {
-        setExitSharedElementCallback(sharedElementCallback);
-    }
-
-    public void setEnterCallback(SharedElementCallback sharedElementCallback) {
-        setEnterSharedElementCallback(sharedElementCallback);
-    }
 }

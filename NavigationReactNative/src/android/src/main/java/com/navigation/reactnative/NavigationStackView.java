@@ -210,7 +210,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     transitioner.load(name, oldSharedElementView.exitTransition, activity);
                 }
             }
-            sceneFragment.setEnterCallback(new SharedElementCallback() {
+            sceneFragment.setEnterSharedElementCallback(new SharedElementCallback() {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> elements) {
                     for(int i = 0; i < oldSharedElementNames.size(); i++) {
@@ -231,7 +231,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         final HashMap<String, View> sharedElementsMap = getSharedElementMap(sceneFragment.getScene());
         final Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements(sharedElementsMap, sharedElementNames) : null;
         if (sharedElements != null && sharedElements.length != 0) {
-            sceneFragment.setExitCallback(new SharedElementCallback() {
+            sceneFragment.setExitSharedElementCallback(new SharedElementCallback() {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> elements) {
                     for(int i = 0; i < names.size(); i++) {
