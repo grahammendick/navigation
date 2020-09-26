@@ -119,9 +119,9 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 Pair[] sharedElements = null;
                 if (nextCrumb > 0) {
                     String prevKey = keys.getString(nextCrumb - 1);
-                    SceneFragment prevFramgent = (SceneFragment) fragmentManager.findFragmentByTag(prevKey);
-                    if (prevFramgent != null)
-                        sharedElements = getSharedElements(currentCrumb, crumb, prevFramgent);
+                    SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(prevKey);
+                    if (prevFragment != null)
+                        sharedElements = getSharedElements(currentCrumb, crumb, prevFragment);
                 }
                 if (sharedElements != null) {
                     for(Pair sharedElement : sharedElements) {
