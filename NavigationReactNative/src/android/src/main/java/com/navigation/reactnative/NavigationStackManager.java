@@ -28,11 +28,6 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
         view.keys = keys;
     }
 
-    @ReactProp(name = "fragmentMode")
-    public void setFragmentMode(NavigationStackView view, Boolean fragmentMode) {
-        view.navigator = !fragmentMode ? new ActivityNavigator() : new FragmentNavigator();
-    }
-
     @ReactProp(name = "enterAnim")
     public void setEnterAnim(NavigationStackView view, String enterAnim) {
         view.enterAnim = enterAnim;
@@ -51,11 +46,6 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     @ReactProp(name = "oldSharedElements")
     public void setOldSharedElements(NavigationStackView view, ReadableArray oldSharedElements) {
         view.oldSharedElementNames = oldSharedElements;
-    }
-
-    @ReactProp(name = "finish")
-    public void setFinish(NavigationStackView view, boolean finish) {
-        view.finish = finish;
     }
 
     @Nonnull

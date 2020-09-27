@@ -10,14 +10,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 class SharedElementTransitioner {
-    private SharedElementContainer sharedElementContainer;
+    private SceneFragment sceneFragment;
     private HashSet<String> sharedElements;
     private HashSet<String> loadedSharedElements = new HashSet<>();
     private HashMap<String, Transition> transitions = new HashMap<>();
 
-    SharedElementTransitioner(SharedElementContainer sharedElementContainer, HashSet<String> sharedElements) {
+    SharedElementTransitioner(SceneFragment sceneFragment, HashSet<String> sharedElements) {
         this.sharedElements = sharedElements;
-        this.sharedElementContainer = sharedElementContainer;
+        this.sceneFragment = sceneFragment;
     }
 
     void load(String sharedElement, String transitionKey, Context context) {
@@ -38,17 +38,18 @@ class SharedElementTransitioner {
                 transition = TransitionInflater.from(context).inflateTransition(transitionId);
                 transitions.put(transitionKey, transition);
             }
-            transition.addTarget(sharedElement);
+            if (transition != null)
+                transition.addTarget(sharedElement);
         }
         if(sharedElements.size() == loadedSharedElements.size()) {
             TransitionSet transitionSet = new TransitionSet();
             for(String key : transitions.keySet()) {
                 transitionSet.addTransition(transitions.get(key));
             }
-            sharedElementContainer.setEnterTransition(transitionSet);
-            sharedElementContainer.setReturnTransition(transitionSet);
-            sharedElementContainer.startPostponedEnterTransition();
-            sharedElementContainer.getScene().transitioner = null;
+            sceneFragment.setSharedElementEnterTransition(transitionSet);
+            sceneFragment.setSharedElementReturnTransition(transitionSet);
+            sceneFragment.startPostponedEnterTransition();
+            sceneFragment.getScene().transitioner = null;
         }
     }
 }

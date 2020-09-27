@@ -1,8 +1,2 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.navigation.reactnative">
-
-    <application>
-        <activity android:name=".SceneActivity" />
-    </application>
-
+<manifest package="com.navigation.reactnative">
 </manifest>

@@ -15,10 +15,6 @@ export interface NavigationStackProps {
      */
     primary?: boolean;
     /**
-     * Indicates whether to use Fragments on Android
-     */
-    fragmentMode?: boolean;
-    /**
      * A Scene's title
      */
     title?: (state: State, data: any) => string;
