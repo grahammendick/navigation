@@ -408,10 +408,6 @@ export interface TabBarProps {
      */
     scrollable?: boolean;
     /**
-     * Indicates whether the selected tab can be changed by swiping 
-     */
-    swipeable?: boolean;
-    /**
      * Indicates whether to scroll to the top when the tab is reselected
      */
     scrollsToTop?: boolean;
