@@ -11,10 +11,6 @@ declare global {
  */
 export interface NavigationStackProps {
     /**
-     * Indicates whether the app finishes with the stack
-     */
-    primary?: boolean;
-    /**
      * A Scene's title
      */
     title?: (state: State, data: any) => string;
