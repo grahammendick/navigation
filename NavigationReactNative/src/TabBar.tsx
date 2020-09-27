@@ -43,9 +43,8 @@ class TabBar extends React.Component<any, any> {
         return false;
     }
     render() {
-        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, swipeable, scrollsToTop} = this.props;
+        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, scrollsToTop} = this.props;
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
-        primary = (Platform.OS === 'android' && swipeable != null) ? !swipeable : primary;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
         var {fontFamily, fontWeight, fontStyle, fontSize} = (tabBarItems[0] as any)?.props || {};
