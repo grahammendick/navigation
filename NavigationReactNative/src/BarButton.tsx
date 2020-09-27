@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent, Image, Platform, UIManager, View, StyleSheet } from 'react-native';
+import { requireNativeComponent, Image, Platform, UIManager, StyleSheet } from 'react-native';
 
 const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search, style, children, ...props}, ref) => {
     var constants = (UIManager as any).getViewManagerConfig('NVNavigationBar').Constants;
