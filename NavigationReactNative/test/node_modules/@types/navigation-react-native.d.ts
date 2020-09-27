@@ -139,11 +139,6 @@ export interface NavigationBarProps {
 export class NavigationBar extends Component<NavigationBarProps> { }
 
 /**
- * Controls the appearance of the UI navigation bar
- */
-export class NavigaitonBarIOS extends Component<NavigationBarProps> {}
-
-/**
  * Renders buttons in the left UI bar
  */
 export class LeftBar extends Component { }
@@ -152,16 +147,6 @@ export class LeftBar extends Component { }
  * Renders buttons in the right UI bar
  */
 export class RightBar extends Component { }
-
-/**
- * Renders buttons in the left UI bar
- */
-export class LeftBarIOS extends Component { }
-
-/**
- * Renders buttons in the right UI bar
- */
-export class RightBarIOS extends Component { }
 
 /**
  * Defines the Title Bar Props contract
@@ -177,11 +162,6 @@ export interface TitleBarProps {
  * Renders titleView in the UI navigation bar
  */
 export class TitleBar extends Component<TitleBarProps> {  }
-
-/**
- * Renders titleView in the UI navigation bar
- */
-export class TitleBarIOS extends Component<TitleBarProps> {  }
 
 /**
  * Defines the Bar Button Props contract
@@ -279,11 +259,6 @@ export interface SearchBarProps {
 /**
  * Renders a serach bar in the UI navigation bar
  */
-export class SearchBarIOS extends Component<SearchBarProps> { }
-
-/**
- * Renders a serach bar in the UI navigation bar
- */
 export class SearchBar extends Component<SearchBarProps> { }
 
 /**
@@ -346,11 +321,6 @@ export interface SharedElementProps {
 /**
  * Shares its child UI element between scenes during navigation
  */
-export class SharedElementAndroid extends Component<SharedElementProps> {}
-
-/**
- * Shares its child UI element between scenes during navigation
- */
 export class SharedElement extends Component<SharedElementProps> {}
 
 /**
@@ -408,11 +378,6 @@ export interface TabBarItemProps {
 }
 
 /**
- * Renders a tab in the UI tab bar
- */
-export class TabBarItemIOS extends Component<TabBarItemProps> {}
-
-/**
  * Renders a tab in the tab bar
  */
 export class TabBarItem extends Component<TabBarItemProps> {}
@@ -421,7 +386,7 @@ export class TabBarItem extends Component<TabBarItemProps> {}
  * Defines the Tab Bar Props contract
  */
 export interface TabBarProps {
-    children: React.ReactElement<TabBarItemIOS> | React.ReactElement<TabBarItemIOS>[];
+    children: React.ReactElement<TabBarItem> | React.ReactElement<TabBarItem>[];
     /**
      * The background color of the tab bar
      */
@@ -467,11 +432,6 @@ export interface TabBarProps {
      */
     onChangeTab?: (tab: number) => void;
 }
-
-/**
- * Renders the UI tab bar
- */
-export class TabBarIOS extends Component<TabBarProps> {}
 
 /**
  * Renders a tab bar

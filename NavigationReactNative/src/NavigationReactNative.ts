@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import NavigationStack from './NavigationStack';
 import Scene from './Scene';
 import NavigationBar from './NavigationBar';
@@ -20,14 +19,4 @@ import useNavigated from './useNavigated';
 import useUnloading from './useUnloading';
 import useUnloaded from './useUnloaded';
 
-var NavigationBarIOS = Platform.OS === 'ios' ? NavigationBar : () => null;
-var TitleBarIOS = Platform.OS === 'ios' ? TitleBar : () => null;
-var RightBarIOS = Platform.OS === 'ios' ? RightBar : () => null;
-var LeftBarIOS = Platform.OS === 'ios' ? LeftBar : () => null;
-var BarButtonIOS = Platform.OS === 'ios' ? BarButton : () => null;
-var SearchBarIOS = Platform.OS === 'ios' ? SearchBar : () => null;
-var TabBarIOS = Platform.OS === 'ios' ? TabBar : () => null;
-var TabBarItemIOS = Platform.OS === 'ios' ? TabBarItem : () => null;
-var SharedElementAndroid = Platform.OS === 'android' ? SharedElement : () => null;
-
-export { NavigationStack, Scene, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, NavigationBarIOS, LeftBarIOS, RightBarIOS, BarButtonIOS, TitleBarIOS, SearchBar, SearchBarIOS, TabBar, TabBarItem, TabBarIOS, TabBarItemIOS, SharedElement, SharedElementAndroid, BackHandlerContext, ModalBackHandler, CoordinatorLayout, CollapsingBar, ActionBar, useNavigating, useNavigated, useUnloading, useUnloaded };
+export { NavigationStack, Scene, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, SearchBar, TabBar, TabBarItem, SharedElement, BackHandlerContext, ModalBackHandler, CoordinatorLayout, CollapsingBar, ActionBar, useNavigating, useNavigated, useUnloading, useUnloaded };
