@@ -1,18 +1,23 @@
 #import "NVBarButtonView.h"
 
 #import <UIKit/UIKit.h>
+#import <React/RCTBridge.h>
 #import <React/RCTFont.h>
+#import <React/RCTImageLoaderProtocol.h>
+#import <React/RCTImageSource.h>
 #import <React/UIView+React.h>
 
 @implementation NVBarButtonView
 {
+    __weak RCTBridge *_bridge;
     NSString *_title;
     UIImage *_image;
 }
 
-- (id)init
+- (id)initWithBridge:(RCTBridge *)bridge
 {
     if (self = [super init]) {
+        _bridge = bridge;
         self.button = [[UIBarButtonItem alloc] init];
         self.button.style = UIBarButtonItemStylePlain;
         self.button.target = self;
@@ -37,10 +42,14 @@
     self.button.title = title;
 }
 
-- (void)setImage:(UIImage *)image
+- (void)setImage:(RCTImageSource *)source
 {
-    _image = image;
-    self.button.image = image;
+    [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request callback:^(NSError *error, UIImage *image) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self -> _image = image;
+            self -> _button.image = image;
+        });
+    }];
 }
 
 - (void)setSystemItem:(UIBarButtonSystemItem)systemItem

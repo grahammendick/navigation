@@ -3,6 +3,7 @@
 
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
+#import <React/RCTImageSource.h>
 
 @implementation RCTConvert (UIBarButtonSystemItem)
 
@@ -41,7 +42,7 @@ RCT_EXPORT_MODULE()
 
 - (UIView *)view
 {
-    return [[NVBarButtonView alloc] init];
+    return [[NVBarButtonView alloc] initWithBridge:self.bridge];
 }
 
 RCT_EXPORT_VIEW_PROPERTY(title, NSString)
@@ -49,7 +50,7 @@ RCT_EXPORT_VIEW_PROPERTY(fontFamily, NSString)
 RCT_EXPORT_VIEW_PROPERTY(fontWeight, NSString)
 RCT_EXPORT_VIEW_PROPERTY(fontStyle, NSString)
 RCT_EXPORT_VIEW_PROPERTY(fontSize, NSNumber)
-RCT_EXPORT_VIEW_PROPERTY(image, UIImage)
+RCT_EXPORT_VIEW_PROPERTY(image, RCTImageSource)
 RCT_EXPORT_VIEW_PROPERTY(systemItem, UIBarButtonSystemItem)
 RCT_EXPORT_VIEW_PROPERTY(onPress, RCTBubblingEventBlock)
 

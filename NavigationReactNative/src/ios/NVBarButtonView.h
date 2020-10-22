@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import <React/RCTBridge.h>
 #import <React/RCTComponent.h>
 
 @interface NVBarButtonView : UIView
@@ -9,5 +10,7 @@
 @property (nonatomic, copy) NSString *fontStyle;
 @property (nonatomic, copy) NSNumber *fontSize;
 @property (nonatomic, copy) RCTBubblingEventBlock onPress;
+
+-(id)initWithBridge: (RCTBridge *)bridge;
 
 @end
