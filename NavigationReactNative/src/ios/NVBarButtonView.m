@@ -44,12 +44,17 @@
 
 - (void)setImage:(RCTImageSource *)source
 {
-    [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request callback:^(NSError *error, UIImage *image) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self -> _image = image;
-            self -> _button.image = image;
-        });
-    }];
+    if (!!source) {
+        [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request callback:^(NSError *error, UIImage *image) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self -> _image = image;
+                self -> _button.image = image;
+            });
+        }];
+    } else {
+        _image = nil;
+        _button.image = nil;
+    }
 }
 
 - (void)setSystemItem:(UIBarButtonSystemItem)systemItem
