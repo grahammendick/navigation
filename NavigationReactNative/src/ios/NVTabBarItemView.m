@@ -1,18 +1,24 @@
 #import "NVTabBarItemView.h"
 #import "NVNavigationStackView.h"
 
+#import <React/RCTBridge.h>
 #import <React/RCTFont.h>
+#import <React/RCTImageLoaderProtocol.h>
+#import <React/RCTImageSource.h>
+#import <React/RCTResizeMode.h>
 #import <React/UIView+React.h>
 
 @implementation NVTabBarItemView
 {
+    __weak RCTBridge *_bridge;
     NSString *_title;
     UIImage *_image;
 }
 
-- (id)init
+- (id)initWithBridge:(RCTBridge *)bridge
 {
     if (self = [super init]) {
+        _bridge = bridge;
         self.tab = [[UITabBarItem alloc] init];
     }
     return self;
@@ -36,10 +42,19 @@
     }
 }
 
-- (void)setImage:(UIImage *)image
+- (void)setImage:(RCTImageSource *)source
 {
-    _image = image;
-    self.tab.image = image;
+    if (!!source) {
+        [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request size:source.size scale:source.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self -> _image = image;
+                self -> _tab.image = image;
+            });
+        }];
+    } else {
+        _image = nil;
+        _tab.image = nil;
+    }
 }
 
 - (void)setSystemItem:(UITabBarSystemItem)systemItem
