@@ -5,6 +5,7 @@
 #import <React/RCTFont.h>
 #import <React/RCTImageLoaderProtocol.h>
 #import <React/RCTImageSource.h>
+#import <React/RCTResizeMode.h>
 #import <React/UIView+React.h>
 
 @implementation NVBarButtonView
@@ -45,7 +46,7 @@
 - (void)setImage:(RCTImageSource *)source
 {
     if (!!source) {
-        [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request callback:^(NSError *error, UIImage *image) {
+        [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request size:source.size scale:source.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self -> _image = image;
                 self -> _button.image = image;
