@@ -21,7 +21,7 @@ class TabBarItem extends React.Component<any> {
             <NVTabBarItem
                 {...props}
                 badge={badge != null ? (Platform.OS === 'ios' ? '' + badge : +badge) : undefined}
-                image={Platform.OS === 'ios' ? image : Image.resolveAssetSource(image)}
+                image={Image.resolveAssetSource(image)}
                 systemItem={systemItem || ''}
                 style={styles.tabBarItem}
                 onPress={event => {

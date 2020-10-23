@@ -3,6 +3,7 @@
 
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
+#import <React/RCTImageSource.h>
 
  @implementation RCTConvert (UITabBarSystemItem)
 
@@ -30,7 +31,7 @@ RCT_EXPORT_MODULE()
 
 - (UIView *)view
 {
-    return [[NVTabBarItemView alloc] init];
+    return [[NVTabBarItemView alloc] initWithBridge:self.bridge];
 }
 
 RCT_EXPORT_VIEW_PROPERTY(title, NSString)
@@ -40,7 +41,7 @@ RCT_EXPORT_VIEW_PROPERTY(fontStyle, NSString)
 RCT_EXPORT_VIEW_PROPERTY(fontSize, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(badge, NSString)
 RCT_EXPORT_VIEW_PROPERTY(badgeColor, UIColor)
-RCT_EXPORT_VIEW_PROPERTY(image, UIImage)
+RCT_EXPORT_VIEW_PROPERTY(image, RCTImageSource)
 RCT_EXPORT_VIEW_PROPERTY(systemItem, UITabBarSystemItem)
 RCT_EXPORT_VIEW_PROPERTY(onPress, RCTBubblingEventBlock)
 
