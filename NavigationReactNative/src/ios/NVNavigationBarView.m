@@ -39,7 +39,10 @@
 }
 
 - (void)updateStyle {
-    UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
+    UINavigationBar *navigationBar;
+    if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
+        navigationBar = self.reactViewController.navigationController.navigationBar;
+    }
     if (@available(iOS 13.0, *)) {
         [navigationBar setTintColor: self.tintColor];
         UINavigationBarAppearance *appearance = [UINavigationBarAppearance new];
