@@ -45,8 +45,11 @@
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
     NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
     BOOL hidden = navigationBar.hidden;
-    if (@available(iOS 11.0, *)) {
-        hidden = hidden || previousController.navigationItem.searchController.active;
+    if (@available(iOS 13.0, *)) {
+    } else {
+        if (@available(iOS 11.0, *)) {
+            hidden = hidden || previousController.navigationItem.searchController.active;
+        }
     }
     [self.navigationController setNavigationBarHidden:hidden];
     if (navigationBar.title.length != 0) {
