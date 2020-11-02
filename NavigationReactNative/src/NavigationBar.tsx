@@ -23,7 +23,7 @@ class NavigationBar extends React.Component<any, any> {
                     hidden={hidden}
                     style={{height: Platform.OS === 'android' && collapsingBar ? style.height : null}}
                     {...otherProps}>
-                    {Platform.OS === 'ios' ? children :
+                    {Platform.OS === 'ios' ? !hidden && children :
                         <Container
                             collapse={!!collapsingBar}
                             {...otherProps}
