@@ -44,13 +44,11 @@
     NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
     NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
-    BOOL setHidden = YES;
+    BOOL hidden = navigationBar.hidden;
     if (@available(iOS 11.0, *)) {
-        setHidden = !previousController.navigationItem.searchController.active;
+        hidden = hidden || previousController.navigationItem.searchController.active;
     }
-    if (setHidden) {
-        [self.navigationController setNavigationBarHidden:navigationBar.hidden];
-    }
+    [self.navigationController setNavigationBarHidden:hidden];
     if (navigationBar.title.length != 0) {
         [self.navigationItem setTitle:navigationBar.title];
     }
