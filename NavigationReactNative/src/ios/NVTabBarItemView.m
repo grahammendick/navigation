@@ -74,6 +74,11 @@
     self.navigationController.tabBarItem = self.tab;
 }
 
+- (void)setTestID:(NSString *)testID
+{
+    self.tab.accessibilityIdentifier = testID;
+}
+
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     if ([changedProps containsObject:@"fontFamily"] || [changedProps containsObject:@"fontWeight"]
