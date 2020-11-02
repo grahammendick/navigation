@@ -41,13 +41,19 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
+    UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
     NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
-    [self.navigationController setNavigationBarHidden:navigationBar.hidden];
+    BOOL setHidden = YES;
+    if (@available(iOS 11.0, *)) {
+        setHidden = !previousController.navigationItem.searchController.active;
+    }
+    if (setHidden) {
+        [self.navigationController setNavigationBarHidden:navigationBar.hidden];
+    }
     if (navigationBar.title.length != 0) {
         [self.navigationItem setTitle:navigationBar.title];
     }
-    NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
-    UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
     previousController.navigationItem.backBarButtonItem = nil;
     if (navigationBar.backTitle != nil) {
         previousController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:navigationBar.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -62,8 +68,14 @@
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
+    NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
+    UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
     NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
-    [self.navigationController setNavigationBarHidden:navigationBar.hidden];
+    if (@available(iOS 11.0, *)) {
+        if (previousController.navigationItem.searchController.active) {
+            [self.navigationController setNavigationBarHidden:navigationBar.hidden];
+        }
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
