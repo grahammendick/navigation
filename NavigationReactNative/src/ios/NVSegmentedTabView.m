@@ -6,6 +6,9 @@
 #import <React/RCTI18nUtil.h>
 
 @implementation NVSegmentedTabView
+{
+    NSMutableDictionary<NSValue *, NSString *> *segmentTestIDs;
+}
 
 - (id)init
 {
@@ -16,14 +19,32 @@
     return self;
 }
 
-- (void)setTitles:(NSArray<NSString *> *)titles
+- (void)setTabs:(NSArray<NSDictionary *> *)tabs
 {
+    segmentTestIDs = [[NSMutableDictionary alloc] init];
     NSInteger selectedIndex = self.selectedSegmentIndex;
     [self removeAllSegments];
-    for (NSString *title in titles) {
-        [self insertSegmentWithTitle:title atIndex:self.numberOfSegments animated:NO];
+    for (NSDictionary *tab in tabs) {
+        NSUInteger index = self.numberOfSegments;
+        [self insertSegmentWithTitle:tab[@"title"] atIndex:index animated:NO];
+        UIView *segment = [self subviews][index];
+        if (segment) {
+            segmentTestIDs[[NSValue valueWithNonretainedObject:segment]] = tab[@"testID"];
+        }
     }
     self.selectedSegmentIndex = selectedIndex;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    for (UIView *view in [self subviews]) {
+        if ([view isKindOfClass:NSClassFromString(@"UISegment")]) {
+            for (UIView *child in [view subviews]) {
+                child.accessibilityIdentifier = segmentTestIDs[[NSValue valueWithNonretainedObject:view]];
+            }
+        }
+    }
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
