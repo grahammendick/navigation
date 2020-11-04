@@ -38,6 +38,23 @@
     }
 }
 
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
+        UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
+        for (UIView *view in [navigationBar subviews]) {
+            if ([view isKindOfClass:NSClassFromString(@"_UINavigationBarContentView")]) {
+                for (UIView *child in [view subviews]) {
+                    if ([child isKindOfClass:NSClassFromString(@"_UIButtonBarButton")]) {
+                        child.accessibilityIdentifier = self.backTestID;
+                    }
+                }
+            }
+        }
+    }
+}
+
 - (void)updateStyle {
     UINavigationBar *navigationBar;
     if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
