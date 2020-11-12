@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, SafeAreaView, Text, TextInput, View} from 'react-native';
-import {NavigationBarIOS} from 'navigation-react-native';
+import {NavigationBar} from 'navigation-react-native';
 import {connect} from 'react-redux';
 
 const mapStateToProps = ({people: {byId}}, {id}) => ({person: byId[id]});
@@ -12,7 +12,7 @@ const edit = (id, name) => ({
 
 const Person = ({person: {id, name, dateOfBirth, email, phone}, edit}) => (
   <SafeAreaView>
-    <NavigationBarIOS title="Person" />
+    <NavigationBar title="Person" />
     <View style={styles.field}>
       <Text style={styles.label}>Name</Text>
       <TextInput
