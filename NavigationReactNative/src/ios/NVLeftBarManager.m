@@ -10,4 +10,6 @@ RCT_EXPORT_MODULE()
     return [[NVLeftBarView alloc] init];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(supplementBack, BOOL)
+
 @end
