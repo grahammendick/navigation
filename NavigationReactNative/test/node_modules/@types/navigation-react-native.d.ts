@@ -135,9 +135,19 @@ export interface NavigationBarProps {
 export class NavigationBar extends Component<NavigationBarProps> { }
 
 /**
+ * Defines the Left Bar Props contract
+ */
+export interface LeftBarProps {
+    /**
+     * Indicates whether bar buttons display in addition to the back button
+     */
+    supplementBack?: boolean;
+}
+
+    /**
  * Renders buttons in the left UI bar
  */
-export class LeftBar extends Component { }
+export class LeftBar extends Component<LeftBarProps> { }
 
 /**
  * Renders buttons in the right UI bar
