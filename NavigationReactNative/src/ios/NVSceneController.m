@@ -105,9 +105,19 @@
     return nil;
 }
 
+- (UIViewController *)childViewControllerForStatusBarHidden
+{
+    return nil;
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return _statusBarStyle;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return false;
 }
 
 - (BOOL)hidesBottomBarWhenPushed

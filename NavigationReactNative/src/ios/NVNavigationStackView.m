@@ -134,8 +134,18 @@
 
 - (UIViewController *)navigation_childViewControllerForStatusBarStyle
 {
-    NVNavigationStackView *stack = (NVNavigationStackView *) [self.view viewWithTag:NAVIGATION_STACK];
-    return [stack.navigationController presentedViewController] ?: [stack.navigationController topViewController];
+    return [self activeScene];
+}
+
+- (UIViewController *)navigation_childViewControllerForStatusBarHidden
+{
+    return [self activeScene];
+}
+
+-(UIViewController *)activeScene
+{
+    UINavigationController *navigationController = ((NVNavigationStackView *) [self.view viewWithTag:NAVIGATION_STACK]).navigationController;
+    return [navigationController presentedViewController] ?: [navigationController topViewController];
 }
 
 + (void)load
@@ -143,6 +153,7 @@
     static dispatch_once_t once_token;
     dispatch_once(&once_token, ^{
         RCTSwapInstanceMethods([UIViewController class], @selector(childViewControllerForStatusBarStyle), @selector(navigation_childViewControllerForStatusBarStyle));
+        RCTSwapInstanceMethods([UIViewController class], @selector(childViewControllerForStatusBarHidden), @selector(navigation_childViewControllerForStatusBarHidden));
     });
 }
 
