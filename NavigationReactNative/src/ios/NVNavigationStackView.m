@@ -9,6 +9,8 @@
 #import <React/RCTUtils.h>
 #import <React/UIView+React.h>
 
+#define NAVIGATION_STACK ((int) 25)
+
 @implementation NVNavigationStackView
 {
     __weak RCTBridge *_bridge;
@@ -19,7 +21,7 @@
 - (id)initWithBridge:(RCTBridge *)bridge
 {
     if (self = [super init]) {
-        self.tag = 333;
+        self.tag = NAVIGATION_STACK;
         _bridge = bridge;
         _navigationController = [[UINavigationController alloc] init];
         _navigationController.view.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
@@ -132,7 +134,7 @@
 
 - (UIViewController *)navigation_childViewControllerForStatusBarStyle
 {
-    NVNavigationStackView *stack = (NVNavigationStackView *) [self.view viewWithTag:333];
+    NVNavigationStackView *stack = (NVNavigationStackView *) [self.view viewWithTag:NAVIGATION_STACK];
     return [stack.navigationController presentedViewController] ?: [stack.navigationController topViewController];
 }
 
