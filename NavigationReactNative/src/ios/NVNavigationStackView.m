@@ -134,6 +134,8 @@
 
 - (UIViewController *)navigation_childViewControllerForStatusBarStyle
 {
+    if ([self isKindOfClass:[NVSceneController class]])
+        return nil;
     NVNavigationStackView *stack = (NVNavigationStackView *) [self.view viewWithTag:NAVIGATION_STACK];
     return [stack.navigationController presentedViewController] ?: [stack.navigationController topViewController];
 }
