@@ -2,11 +2,13 @@
 #import "NVSceneView.h"
 #import "NVNavigationBarView.h"
 #import "NVSearchBarView.h"
+#import "NVStatusBarView.h"
 
 @implementation NVSceneController
 {
     NVSceneView *_view;
     CGRect _lastViewFrame;
+    UIStatusBarStyle _statusBarStyle;
 }
 
 - (id)initWithScene:(NVSceneView *)view
@@ -64,6 +66,9 @@
         self.navigationController.navigationBar.prefersLargeTitles = true;
         [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
     }
+    NVStatusBarView *statusBar = [navigationBar viewWithTag:STATUS_BAR];
+    _statusBarStyle = statusBar.barStyle ?: UIStatusBarStyleDefault;
+    [UIApplication.sharedApplication.keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)viewWillLayoutSubviews
@@ -93,6 +98,16 @@
         self.boundsDidChangeBlock(self);
         _lastViewFrame = self.view.frame;
     }
+}
+
+- (UIViewController *)childViewControllerForStatusBarStyle
+{
+    return nil;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return _statusBarStyle;
 }
 
 - (BOOL)hidesBottomBarWhenPushed
