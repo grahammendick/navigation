@@ -69,7 +69,7 @@
     }
     NVStatusBarView *statusBar = [navigationBar viewWithTag:STATUS_BAR];
     _statusBarStyle = statusBar.barStyle ?: UIStatusBarStyleDefault;
-    _statusBarHidden = statusBar.hidden ?: NO;
+    _statusBarHidden = !!statusBar.hidden;
     [UIApplication.sharedApplication.keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
 }
 
