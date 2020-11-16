@@ -9,8 +9,6 @@
 #import <React/RCTUtils.h>
 #import <React/UIView+React.h>
 
-#import <objc/runtime.h>
-
 @implementation NVNavigationStackView
 {
     __weak RCTBridge *_bridge;
@@ -142,7 +140,7 @@
 {
     static dispatch_once_t once_token;
     dispatch_once(&once_token,  ^{
-     method_exchangeImplementations(class_getInstanceMethod([UIViewController class], @selector(childViewControllerForStatusBarStyle)), class_getInstanceMethod([UIViewController class], @selector(navigation_childViewControllerForStatusBarStyle)));
+        RCTSwapInstanceMethods([UIViewController class], @selector(childViewControllerForStatusBarStyle), @selector(navigation_childViewControllerForStatusBarStyle));
     });
 }
 
