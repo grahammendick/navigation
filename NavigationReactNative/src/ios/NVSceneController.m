@@ -9,6 +9,7 @@
     NVSceneView *_view;
     CGRect _lastViewFrame;
     UIStatusBarStyle _statusBarStyle;
+    BOOL _statusBarHidden;
 }
 
 - (id)initWithScene:(NVSceneView *)view
@@ -68,6 +69,7 @@
     }
     NVStatusBarView *statusBar = [navigationBar viewWithTag:STATUS_BAR];
     _statusBarStyle = statusBar.barStyle ?: UIStatusBarStyleDefault;
+    _statusBarHidden = statusBar.hidden ?: NO;
     [UIApplication.sharedApplication.keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -117,7 +119,7 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return false;
+    return _statusBarHidden;
 }
 
 - (BOOL)hidesBottomBarWhenPushed
