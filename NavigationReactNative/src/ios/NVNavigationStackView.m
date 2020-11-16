@@ -6,7 +6,10 @@
 #import <React/RCTBridge.h>
 #import <React/RCTI18nUtil.h>
 #import <React/RCTUIManager.h>
+#import <React/RCTUtils.h>
 #import <React/UIView+React.h>
+
+#import <objc/runtime.h>
 
 @implementation NVNavigationStackView
 {
@@ -18,6 +21,7 @@
 - (id)initWithBridge:(RCTBridge *)bridge
 {
     if (self = [super init]) {
+        self.tag = 333;
         _bridge = bridge;
         _navigationController = [[UINavigationController alloc] init];
         _navigationController.view.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
@@ -122,6 +126,24 @@
         _nativeEventCount++;
         self.onDidNavigateBack(@{ @"eventCount": @(_nativeEventCount) });
     }
+}
+
+@end
+
+@implementation UIViewController (Navigation)
+
+- (UIViewController *)navigation_childViewControllerForStatusBarStyle
+{
+    NVNavigationStackView *stack = (NVNavigationStackView *) [self.view viewWithTag:333];
+    return [stack.navigationController presentedViewController] ?: [stack.navigationController topViewController];
+}
+
++ (void)load
+{
+    static dispatch_once_t once_token;
+    dispatch_once(&once_token,  ^{
+     method_exchangeImplementations(class_getInstanceMethod([UIViewController class], @selector(childViewControllerForStatusBarStyle)), class_getInstanceMethod([UIViewController class], @selector(navigation_childViewControllerForStatusBarStyle)));
+    });
 }
 
 @end
