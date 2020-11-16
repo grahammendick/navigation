@@ -134,18 +134,12 @@
 
 - (UIViewController *)navigation_childViewControllerForStatusBarStyle
 {
-    return [self activeScene];
+    return ((NVNavigationStackView *) [self.view viewWithTag:NAVIGATION_STACK]).navigationController.visibleViewController;
 }
 
 - (UIViewController *)navigation_childViewControllerForStatusBarHidden
 {
-    return [self activeScene];
-}
-
--(UIViewController *)activeScene
-{
-    UINavigationController *navigationController = ((NVNavigationStackView *) [self.view viewWithTag:NAVIGATION_STACK]).navigationController;
-    return [navigationController presentedViewController] ?: [navigationController topViewController];
+    return ((NVNavigationStackView *) [self.view viewWithTag:NAVIGATION_STACK]).navigationController.visibleViewController;
 }
 
 + (void)load
