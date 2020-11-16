@@ -143,7 +143,7 @@
 + (void)load
 {
     static dispatch_once_t once_token;
-    dispatch_once(&once_token,  ^{
+    dispatch_once(&once_token, ^{
         RCTSwapInstanceMethods([UIViewController class], @selector(childViewControllerForStatusBarStyle), @selector(navigation_childViewControllerForStatusBarStyle));
     });
 }
