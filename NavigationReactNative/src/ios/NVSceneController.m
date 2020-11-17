@@ -119,8 +119,11 @@
     } else {
         if (self.navigationController.topViewController == self
             && (!self.navigationController.presentedViewController || self.navigationController.presentedViewController.modalPresentationStyle != UIModalPresentationFullScreen)) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             [UIApplication.sharedApplication setStatusBarStyle:_statusBarStyle];
             [UIApplication.sharedApplication setStatusBarHidden:_statusBarHidden];
+#pragma clang diagnostic pop
         }
     }
 }
