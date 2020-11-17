@@ -99,16 +99,30 @@
     }
 }
 
+- (BOOL)viewControllerBasedStatusBarAppearance
+{
+  static BOOL value;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    value = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"] ?: @YES boolValue];
+  });
+
+  return value;
+}
+
 - (void)statusBarDidUpdate:(NVStatusBarView *)statusBar
 {
     _statusBarStyle = statusBar.barStyle ?: UIStatusBarStyleDefault;
     _statusBarHidden = !!statusBar.hidden;
-    if (self.navigationController.topViewController == self
-        && (!self.navigationController.presentedViewController || self.navigationController.presentedViewController.modalPresentationStyle != UIModalPresentationFullScreen)) {
-        [UIApplication.sharedApplication setStatusBarStyle:_statusBarStyle];
-        [UIApplication.sharedApplication setStatusBarHidden:_statusBarHidden];
+    if ([self viewControllerBasedStatusBarAppearance]) {
+        [UIApplication.sharedApplication.keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
+    } else {
+        if (self.navigationController.topViewController == self
+            && (!self.navigationController.presentedViewController || self.navigationController.presentedViewController.modalPresentationStyle != UIModalPresentationFullScreen)) {
+            [UIApplication.sharedApplication setStatusBarStyle:_statusBarStyle];
+            [UIApplication.sharedApplication setStatusBarHidden:_statusBarHidden];
+        }
     }
-    //[UIApplication.sharedApplication.keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle
