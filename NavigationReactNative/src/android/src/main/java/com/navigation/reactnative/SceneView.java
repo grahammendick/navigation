@@ -29,6 +29,7 @@ public class SceneView extends ViewGroup {
     public SharedElementTransitioner transitioner;
     private CustomGlobalLayoutListener customGlobalLayoutListener;
     boolean fragmentMode;
+    protected boolean statusBar = false;
 
     public SceneView(Context context) {
         super(context);

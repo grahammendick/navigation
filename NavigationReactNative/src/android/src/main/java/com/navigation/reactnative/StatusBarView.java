@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import androidx.core.view.ViewCompat;
 
@@ -13,6 +14,18 @@ public class StatusBarView extends ViewGroup {
 
     public StatusBarView(Context context) {
         super(context);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        ViewParent ancestor = getParent();
+        while (ancestor != null && !(ancestor instanceof SceneView))
+            ancestor = ancestor.getParent();
+        if (ancestor == null)
+            return;
+        SceneView scene = (SceneView) ancestor;
+        scene.statusBar = true;
     }
 
     void onAfterUpdateTransaction() {
