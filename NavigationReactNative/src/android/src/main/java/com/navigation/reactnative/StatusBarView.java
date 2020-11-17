@@ -2,7 +2,6 @@ package com.navigation.reactnative;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Build;
 import android.view.ViewGroup;
 import android.view.ViewParent;
