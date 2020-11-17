@@ -67,10 +67,7 @@
         self.navigationController.navigationBar.prefersLargeTitles = true;
         [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
     }
-    NVStatusBarView *statusBar = [navigationBar viewWithTag:STATUS_BAR];
-    _statusBarStyle = statusBar.barStyle ?: UIStatusBarStyleDefault;
-    _statusBarHidden = !!statusBar.hidden;
-    [UIApplication.sharedApplication.keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
+    [self statusBarDidUpdate:[navigationBar viewWithTag:STATUS_BAR]];
 }
 
 - (void)viewWillLayoutSubviews
