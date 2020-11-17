@@ -3,7 +3,10 @@
 
 #import <React/RCTBridge.h>
 #import <React/RCTFont.h>
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnullability-completeness"
 #import <React/RCTImageLoaderProtocol.h>
+#pragma clang diagnostic pop
 #import <React/RCTImageSource.h>
 #import <React/RCTResizeMode.h>
 #import <React/UIView+React.h>
