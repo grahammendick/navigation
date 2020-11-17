@@ -103,7 +103,12 @@
 {
     _statusBarStyle = statusBar.barStyle ?: UIStatusBarStyleDefault;
     _statusBarHidden = !!statusBar.hidden;
-    [UIApplication.sharedApplication.keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
+    if (self.navigationController.topViewController == self
+        && (!self.navigationController.presentedViewController || self.navigationController.presentedViewController.modalPresentationStyle != UIModalPresentationFullScreen)) {
+        [UIApplication.sharedApplication setStatusBarStyle:_statusBarStyle];
+        [UIApplication.sharedApplication setStatusBarHidden:_statusBarHidden];
+    }
+    //[UIApplication.sharedApplication.keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle
