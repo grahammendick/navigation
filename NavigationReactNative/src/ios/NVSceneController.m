@@ -102,6 +102,13 @@
     }
 }
 
+- (void)statusBarDidChange:(NVStatusBarView *)statusBar
+{
+    _statusBarStyle = statusBar.barStyle ?: UIStatusBarStyleDefault;
+    _statusBarHidden = !!statusBar.hidden;
+    [UIApplication.sharedApplication.keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
+}
+
 - (UIViewController *)childViewControllerForStatusBarStyle
 {
     return nil;
