@@ -26,6 +26,8 @@ public class StatusBarView extends ViewGroup {
             return;
         SceneView scene = (SceneView) ancestor;
         scene.statusBar = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            ((ReactContext) getContext()).getCurrentActivity().getWindow().setStatusBarColor(SceneFragment.defaultStatusBarColor);
     }
 
     void onAfterUpdateTransaction() {
