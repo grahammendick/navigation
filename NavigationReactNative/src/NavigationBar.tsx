@@ -6,6 +6,7 @@ import SearchBar from './SearchBar';
 import TitleBar from './TitleBar';
 import CollapsingBar from './CollapsingBar';
 import TabBar from './TabBar';
+import StatusBar from './StatusBar';
 
 class NavigationBar extends React.Component<any, any> {
     constructor(props) {
@@ -45,6 +46,7 @@ class NavigationBar extends React.Component<any, any> {
                             </NVToolbar>
                             {childrenArray.find(({type}) => type === TabBar)}
                         </Container>}
+                        {childrenArray.find(({type}) => type === StatusBar)}
                 </NVNavigationBar>
                 {Platform.OS === 'ios' ? null : childrenArray.find(({type}) => type === SearchBar)}
             </>
