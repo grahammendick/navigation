@@ -1,6 +1,5 @@
 package com.navigation.reactnative;
 
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,12 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.facebook.react.bridge.ReactContext;
-
 import java.util.HashSet;
 
 public class SceneFragment extends Fragment {
     private SceneView scene;
+    static Integer defaultStatusBarColor;
 
     public SceneFragment() {
         super();
@@ -46,11 +44,13 @@ public class SceneFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (!scene.statusBar) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                getActivity().getWindow().setStatusBarColor(Color.BLACK);
-            scene.statusBar = false;
+        if (getActivity() != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (defaultStatusBarColor == null)
+                defaultStatusBarColor = getActivity().getWindow().getStatusBarColor();
+            if (!scene.statusBar)
+                getActivity().getWindow().setStatusBarColor(defaultStatusBarColor);
         }
+        scene.statusBar = false;
     }
 
     @Override
