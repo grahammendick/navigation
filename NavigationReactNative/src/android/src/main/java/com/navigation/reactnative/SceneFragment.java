@@ -31,6 +31,10 @@ public class SceneFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (getActivity() != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (defaultStatusBarColor == null)
+                defaultStatusBarColor = getActivity().getWindow().getStatusBarColor();
+        }
         if (scene != null) {
             if (scene.getParent() != null)
                 ((ViewGroup) scene.getParent()).endViewTransition(scene);
@@ -45,12 +49,10 @@ public class SceneFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (getActivity() != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (defaultStatusBarColor == null)
-                defaultStatusBarColor = getActivity().getWindow().getStatusBarColor();
             if (!scene.statusBar)
                 getActivity().getWindow().setStatusBarColor(defaultStatusBarColor);
+            scene.statusBar = false;
         }
-        scene.statusBar = false;
     }
 
     @Override
