@@ -15,7 +15,9 @@
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
-    [((NVSceneController *) self.reactViewController) statusBarDidChange:self];
+    if ([self.reactViewController isKindOfClass:[NVSceneController class]]) {
+        [((NVSceneController *) self.reactViewController) statusBarDidChange:self];
+    }
 }
 
 @end
