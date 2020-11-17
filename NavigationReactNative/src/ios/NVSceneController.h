@@ -6,6 +6,6 @@
 @property (nonatomic, copy) void (^boundsDidChangeBlock)(NVSceneController *controller);
 
 - (id)initWithScene:(UIView *)view;
-- (void)statusBarDidChange:(NVStatusBarView *)statusBar;
+- (void)statusBarDidUpdate:(NVStatusBarView *)statusBar;
 
 @end

@@ -102,7 +102,7 @@
     }
 }
 
-- (void)statusBarDidChange:(NVStatusBarView *)statusBar
+- (void)statusBarDidUpdate:(NVStatusBarView *)statusBar
 {
     _statusBarStyle = statusBar.barStyle ?: UIStatusBarStyleDefault;
     _statusBarHidden = !!statusBar.hidden;
