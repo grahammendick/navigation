@@ -16,6 +16,7 @@ public class StatusBarView extends ViewGroup {
     int barTintColor;
     int defaultStatusBarColor;
     String tintStyle;
+    boolean hidden;
 
     public StatusBarView(Context context) {
         super(context);
@@ -47,10 +48,16 @@ public class StatusBarView extends ViewGroup {
         if (activity != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             activity.getWindow().setStatusBarColor(barTintColor);
         int systemUiVisibilityFlags = getSystemUiVisibility();
-        if ("dark".equals(tintStyle))
-            systemUiVisibilityFlags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if ("dark".equals(tintStyle))
+                systemUiVisibilityFlags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            else
+                systemUiVisibilityFlags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        }
+        if (hidden)
+            systemUiVisibilityFlags |= View.SYSTEM_UI_FLAG_FULLSCREEN;
         else
-            systemUiVisibilityFlags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            systemUiVisibilityFlags &= ~View.SYSTEM_UI_FLAG_FULLSCREEN;
         setSystemUiVisibility(systemUiVisibilityFlags);
     }
 

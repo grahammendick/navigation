@@ -24,6 +24,7 @@ public class StatusBarManager extends ViewGroupManager<StatusBarView> {
 
     @ReactProp(name = "hidden")
     public void setHidden(StatusBarView view, boolean hidden) {
+        view.hidden = hidden;
     }
 
     @ReactProp(name = "tintStyle")
