@@ -11,7 +11,7 @@ RCT_EXPORT_MODULE()
     return [[NVStatusBarView alloc] init];
 }
 
-RCT_EXPORT_VIEW_PROPERTY(barStyle, UIStatusBarStyle)
+RCT_EXPORT_VIEW_PROPERTY(tintStyle, UIStatusBarStyle)
 RCT_EXPORT_VIEW_PROPERTY(hidden, BOOL)
 
 @end

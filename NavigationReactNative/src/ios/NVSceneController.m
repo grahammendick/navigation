@@ -112,7 +112,7 @@
 
 - (void)statusBarDidUpdate:(NVStatusBarView *)statusBar
 {
-    _statusBarStyle = statusBar.barStyle ?: UIStatusBarStyleDefault;
+    _statusBarStyle = statusBar.tintStyle ?: UIStatusBarStyleDefault;
     _statusBarHidden = !!statusBar.hidden;
     if ([self viewControllerBasedStatusBarAppearance]) {
         [UIApplication.sharedApplication.keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
