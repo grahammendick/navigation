@@ -34,6 +34,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     private MenuItem menuItem;
     private Integer tintColor;
     private Drawable icon;
+    private String testID;
     private IconResolver.IconResolverListener iconResolverListener;
 
     public BarButtonView(Context context) {
@@ -102,6 +103,14 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
         setShowAsAction(showAsAction);
         if (menuItem != null)
             menuItem.setActionView(showActionView ? this : null);
+    }
+
+    public String getTestID() {
+        return testID;
+    }
+
+    void setTestID(String testID) {
+        this.testID = testID;
     }
 
     void setMenuItem(MenuItem menuItem) {

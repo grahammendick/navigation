@@ -112,6 +112,11 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         view.setBackTestID(backTestID);
     }
 
+    @ReactProp(name = "overflowButtonTestID")
+    public void setOverflowButtonTestID(ToolbarView view, String overflowButtonTestID) {
+        view.setOverflowButtonTestID(overflowButtonTestID);
+    }
+
     @Override
     public void addView(ToolbarView parent, View child, int index) {
         parent.children.add(index, child);

@@ -1,5 +1,6 @@
 package com.navigation.reactnative;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -17,8 +18,10 @@ import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.view.menu.MenuPresenter;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.facebook.react.bridge.ReactContext;
@@ -44,6 +47,7 @@ public class ToolbarView extends Toolbar {
     Drawable defaultOverflowIcon;
     private Integer defaultMenuTintColor;
     private String backTestID;
+    private String overflowButtonTestID;
     private IconResolver.IconResolverListener logoResolverListener;
     private IconResolver.IconResolverListener navIconResolverListener;
     private IconResolver.IconResolverListener overflowIconResolverListener;
@@ -186,6 +190,10 @@ public class ToolbarView extends Toolbar {
         this.backTestID = backTestID;
     }
 
+    void setOverflowButtonTestID(String overflowButtonTestID) {
+        this.overflowButtonTestID = overflowButtonTestID;
+    }
+
     void setMenuItems() {
         getMenu().clear();
         for (int i = 0; i < children.size(); i++) {
@@ -193,6 +201,17 @@ public class ToolbarView extends Toolbar {
                 BarButtonView barButton = (BarButtonView) children.get(i);
                 MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, "");
                 barButton.setMenuItem(menuItem);
+                for (int j = 0; j < getChildCount(); j++) {
+                    View child = getChildAt(j);
+                    if (child instanceof ActionMenuView) {
+                        for (int k = 0; k < ((ActionMenuView) child).getChildCount(); k++) {
+                            View subchild = ((ActionMenuView) child).getChildAt(k);
+                            if (subchild instanceof ActionMenuItemView) {
+                                subchild.setTag(barButton.getTestID());
+                            }
+                        }
+                    }
+                }
                 if (barButton.getSearch()) {
                     searchMenuItem = menuItem;
                     if (onSearchAddedListener != null)
@@ -210,6 +229,17 @@ public class ToolbarView extends Toolbar {
                             return true;
                         }
                     });
+                }
+            }
+        }
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            if (child instanceof ActionMenuView) {
+                for (int j = 0; j < ((ActionMenuView) child).getChildCount(); j++) {
+                    View subchild = ((ActionMenuView) child).getChildAt(j);
+                    if (subchild instanceof AppCompatImageView) {
+                        subchild.setTag(overflowButtonTestID);
+                    }
                 }
             }
         }
