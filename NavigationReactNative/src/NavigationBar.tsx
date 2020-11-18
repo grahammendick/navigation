@@ -14,9 +14,9 @@ class NavigationBar extends React.Component<any, any> {
     }
     render() {
         var {hidden, logo, navigationImage, overflowImage, children, style = {height: undefined}, ...otherProps} = this.props;
-        if (Platform.OS === 'android' && hidden)
-            return null
         var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
+        if (Platform.OS === 'android' && hidden)
+            return childrenArray.find(({type}) => type === StatusBar)
         var collapsingBar = childrenArray.find(({type}) => type === CollapsingBar);
         return (
             <>
