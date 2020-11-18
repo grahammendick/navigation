@@ -15,13 +15,12 @@
 
 - (BOOL)viewControllerBasedStatusBarAppearance
 {
-  static BOOL value;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    value = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"] ?: @YES boolValue];
-  });
-
-  return value;
+    static BOOL value;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        value = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"] ?: @YES boolValue];
+    });
+    return value;
 }
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
