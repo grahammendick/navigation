@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
@@ -11,10 +12,14 @@ import androidx.core.view.ViewCompat;
 import com.facebook.react.bridge.ReactContext;
 
 public class StatusBarView extends ViewGroup {
-    int barTintColor = Integer.MAX_VALUE;
+    int barTintColor;
+    int defaultStatusBarColor;
 
     public StatusBarView(Context context) {
         super(context);
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+        barTintColor = defaultStatusBarColor = typedValue.data;
     }
 
     @Override
@@ -38,7 +43,7 @@ public class StatusBarView extends ViewGroup {
     private void updateStatusBar() {
         Activity activity = ((ReactContext) getContext()).getCurrentActivity();
         if (activity != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            activity.getWindow().setStatusBarColor(barTintColor != Integer.MAX_VALUE ? barTintColor : SceneFragment.defaultStatusBarColor);
+            activity.getWindow().setStatusBarColor(barTintColor);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import java.util.HashSet;
 
 public class SceneFragment extends Fragment {
     private SceneView scene;
-    static Integer defaultStatusBarColor;
+    int defaultStatusBarColor;
 
     public SceneFragment() {
         super();
@@ -22,6 +23,9 @@ public class SceneFragment extends Fragment {
 
     SceneFragment(SceneView scene, HashSet<String> sharedElements) {
         super();
+        TypedValue typedValue = new TypedValue();
+        scene.getContext().getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+        defaultStatusBarColor = typedValue.data;
         this.scene = scene;
         scene.fragmentMode = true;
         if (sharedElements != null )
@@ -31,10 +35,6 @@ public class SceneFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (getActivity() != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (defaultStatusBarColor == null)
-                defaultStatusBarColor = getActivity().getWindow().getStatusBarColor();
-        }
         if (scene != null) {
             if (scene.getParent() != null)
                 ((ViewGroup) scene.getParent()).endViewTransition(scene);

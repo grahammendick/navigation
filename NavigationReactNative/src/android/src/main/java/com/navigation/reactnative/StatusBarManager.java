@@ -28,7 +28,7 @@ public class StatusBarManager extends ViewGroupManager<StatusBarView> {
 
     @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
     public void setBarTintColor(StatusBarView view, int barTintColor) {
-        view.barTintColor = barTintColor;
+        view.barTintColor = barTintColor != Integer.MAX_VALUE ? barTintColor : view.defaultStatusBarColor;
     }
 
     @Override
