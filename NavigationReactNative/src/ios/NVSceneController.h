@@ -4,8 +4,9 @@
 @interface NVSceneController : UIViewController
 
 @property (nonatomic, copy) void (^boundsDidChangeBlock)(NVSceneController *controller);
+@property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
+@property (nonatomic, assign) BOOL statusBarHidden;
 
 - (id)initWithScene:(UIView *)view;
-- (void)statusBarDidUpdate:(NVStatusBarView *)statusBar;
 
 @end

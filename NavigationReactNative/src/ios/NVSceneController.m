@@ -8,8 +8,6 @@
 {
     NVSceneView *_view;
     CGRect _lastViewFrame;
-    UIStatusBarStyle _statusBarStyle;
-    BOOL _statusBarHidden;
 }
 
 - (id)initWithScene:(NVSceneView *)view
@@ -67,7 +65,29 @@
         self.navigationController.navigationBar.prefersLargeTitles = true;
         [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
     }
-    [self statusBarDidUpdate:[navigationBar viewWithTag:STATUS_BAR]];
+    NVStatusBarView *statusBar = [navigationBar viewWithTag:STATUS_BAR];
+    self.statusBarStyle = statusBar.tintStyle;
+    self.statusBarHidden = statusBar.hidden;
+    if ([self viewControllerBasedStatusBarAppearance]) {
+        [UIApplication.sharedApplication.keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        [UIApplication.sharedApplication setStatusBarStyle: self.statusBarStyle];
+        [UIApplication.sharedApplication setStatusBarHidden: self.statusBarHidden];
+#pragma clang diagnostic pop
+    }
+}
+
+- (BOOL)viewControllerBasedStatusBarAppearance
+{
+  static BOOL value;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    value = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"] ?: @YES boolValue];
+  });
+
+  return value;
 }
 
 - (void)viewWillLayoutSubviews
@@ -99,35 +119,6 @@
     }
 }
 
-- (BOOL)viewControllerBasedStatusBarAppearance
-{
-  static BOOL value;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    value = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"] ?: @YES boolValue];
-  });
-
-  return value;
-}
-
-- (void)statusBarDidUpdate:(NVStatusBarView *)statusBar
-{
-    _statusBarStyle = statusBar.tintStyle ?: UIStatusBarStyleDefault;
-    _statusBarHidden = !!statusBar.hidden;
-    if ([self viewControllerBasedStatusBarAppearance]) {
-        [UIApplication.sharedApplication.keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
-    } else {
-        if (self.navigationController.topViewController == self
-            && (!self.navigationController.presentedViewController || self.navigationController.presentedViewController.modalPresentationStyle != UIModalPresentationFullScreen)) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            [UIApplication.sharedApplication setStatusBarStyle:_statusBarStyle];
-            [UIApplication.sharedApplication setStatusBarHidden:_statusBarHidden];
-#pragma clang diagnostic pop
-        }
-    }
-}
-
 - (UIViewController *)childViewControllerForStatusBarStyle
 {
     return nil;
@@ -140,12 +131,12 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return _statusBarStyle;
+    return self.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-    return _statusBarHidden;
+    return self.statusBarHidden;
 }
 
 - (BOOL)hidesBottomBarWhenPushed
