@@ -107,6 +107,11 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         }
     }
 
+    @ReactProp(name = "backTestID")
+    public void setBackTestID(ToolbarView view, String backTestID) {
+        view.setBackTestID(backTestID);
+    }
+
     @Override
     public void addView(ToolbarView parent, View child, int index) {
         parent.children.add(index, child);

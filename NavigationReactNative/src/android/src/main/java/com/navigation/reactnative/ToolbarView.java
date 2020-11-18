@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
 
 import com.facebook.react.bridge.ReactContext;
@@ -42,6 +43,7 @@ public class ToolbarView extends Toolbar {
     int defaultTitleTextColor;
     Drawable defaultOverflowIcon;
     private Integer defaultMenuTintColor;
+    private String backTestID;
     private IconResolver.IconResolverListener logoResolverListener;
     private IconResolver.IconResolverListener navIconResolverListener;
     private IconResolver.IconResolverListener overflowIconResolverListener;
@@ -65,6 +67,12 @@ public class ToolbarView extends Toolbar {
             public void setDrawable(Drawable d) {
                 setNavigationIcon(d);
                 setTintColor(getNavigationIcon());
+                for (int i = 0; i < getChildCount();  i++) {
+                    View child = getChildAt(i);
+                    if (child instanceof AppCompatImageButton) {
+                        child.setTag(backTestID);
+                    }
+                }
             }
         };
         overflowIconResolverListener = new IconResolver.IconResolverListener() {
@@ -172,6 +180,10 @@ public class ToolbarView extends Toolbar {
             else
                 icon.clearColorFilter();
         }
+    }
+
+    void setBackTestID(String backTestID) {
+        this.backTestID = backTestID;
     }
 
     void setMenuItems() {
