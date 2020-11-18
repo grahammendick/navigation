@@ -1,20 +1,24 @@
 package com.navigation.reactnative;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 
+import javax.annotation.Nonnull;
+
 public class StatusBarManager extends ViewGroupManager<StatusBarView> {
+
+    @Nonnull
     @Override
     public String getName() {
         return "NVStatusBar";
     }
 
+    @Nonnull
     @Override
-    protected StatusBarView createViewInstance(ThemedReactContext reactContext) {
+    protected StatusBarView createViewInstance(@Nonnull ThemedReactContext reactContext) {
         return new StatusBarView(reactContext);
     }
 
