@@ -1,6 +1,5 @@
 package com.navigation.reactnative;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -18,7 +17,6 @@ import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.menu.ActionMenuItemView;
-import androidx.appcompat.view.menu.MenuPresenter;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -196,21 +194,17 @@ public class ToolbarView extends Toolbar {
 
     void setMenuItems() {
         getMenu().clear();
+        ArrayList<BarButtonView> visibleBarButtons = new ArrayList<>();
+
+
+
         for (int i = 0; i < children.size(); i++) {
             if (children.get(i) instanceof BarButtonView) {
                 BarButtonView barButton = (BarButtonView) children.get(i);
                 MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, "");
                 barButton.setMenuItem(menuItem);
-                for (int j = 0; j < getChildCount(); j++) {
-                    View child = getChildAt(j);
-                    if (child instanceof ActionMenuView) {
-                        for (int k = 0; k < ((ActionMenuView) child).getChildCount(); k++) {
-                            View subchild = ((ActionMenuView) child).getChildAt(k);
-                            if (subchild instanceof ActionMenuItemView) {
-                                subchild.setTag(barButton.getTestID());
-                            }
-                        }
-                    }
+                if (barButton.getShowAsAction() != MenuItem.SHOW_AS_ACTION_NEVER) {
+                    visibleBarButtons.add(barButton);
                 }
                 if (barButton.getSearch()) {
                     searchMenuItem = menuItem;
@@ -235,11 +229,34 @@ public class ToolbarView extends Toolbar {
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             if (child instanceof ActionMenuView) {
+                View overflowButton = null;
+                ArrayList<View> actionButtons = new ArrayList<>();
                 for (int j = 0; j < ((ActionMenuView) child).getChildCount(); j++) {
                     View subchild = ((ActionMenuView) child).getChildAt(j);
                     if (subchild instanceof AppCompatImageView) {
-                        subchild.setTag(overflowButtonTestID);
+                        overflowButton = subchild;
                     }
+                    if (subchild instanceof ActionMenuItemView) {
+                        actionButtons.add(subchild);
+                    }
+                }
+                if (overflowButton != null) {
+                    overflowButton.setTag(overflowButtonTestID);
+                }
+                while (visibleBarButtons.size() > actionButtons.size()) {
+                    int lastIfRoomIndex = visibleBarButtons.size() - 1;
+                    for (int j = visibleBarButtons.size() - 1; j > 0; j--) {
+                        if (visibleBarButtons.get(j).getShowAsAction() == MenuItem.SHOW_AS_ACTION_IF_ROOM) {
+                            lastIfRoomIndex = j;
+                            break;
+                        }
+                    }
+                    visibleBarButtons.remove(lastIfRoomIndex);
+                }
+                for (int j = 0; j < visibleBarButtons.size(); j++) {
+                    View subchild = ((ActionMenuView) child).getChildAt(j);
+                    if (subchild != null && subchild instanceof ActionMenuItemView)
+                        subchild.setTag(visibleBarButtons.get(j).getTestID());
                 }
             }
         }

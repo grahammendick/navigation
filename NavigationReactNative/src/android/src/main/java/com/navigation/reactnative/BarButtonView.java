@@ -87,6 +87,10 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
         IconResolver.setIconSource(source, iconResolverListener, getContext());
     }
 
+    public int getShowAsAction() {
+        return showAsAction;
+    }
+
     void setShowAsAction(int showAsAction) {
         this.showAsAction = showAsAction;
         if (menuItem != null)
