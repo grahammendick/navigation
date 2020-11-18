@@ -15,7 +15,7 @@ import java.util.HashSet;
 
 public class SceneFragment extends Fragment {
     private SceneView scene;
-    int defaultStatusBarColor;
+    private int defaultStatusBarColor;
 
     public SceneFragment() {
         super();
