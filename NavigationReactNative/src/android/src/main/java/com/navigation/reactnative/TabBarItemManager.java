@@ -63,6 +63,11 @@ public class TabBarItemManager extends ViewGroupManager<TabBarItemView> {
         view.setBadgeColor(badgeColor);
     }
 
+    @ReactProp(name = "testID")
+    public void setTestID(TabBarItemView view, String testID) {
+        view.setTestID(testID);
+    }
+
     @Override
     protected void onAfterUpdateTransaction(@NonNull TabBarItemView view) {
         super.onAfterUpdateTransaction(view);

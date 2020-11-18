@@ -12,6 +12,8 @@ public interface TabView {
 
     void setIcon(int index, Drawable icon);
 
+    void setTestID(int index, String testID);
+
     BadgeDrawable getBadgeIcon(int index);
 
     void removeBadgeIcon(int index);

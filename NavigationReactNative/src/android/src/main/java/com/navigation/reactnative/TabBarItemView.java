@@ -33,6 +33,7 @@ public class TabBarItemView extends ViewGroup {
     private Integer badge;
     private Integer badgeColor;
     private Integer defaultBadgeColor;
+    private String testID;
     List<View> content = new ArrayList<>();
     private IconResolver.IconResolverListener tabIconResolverListener;
 
@@ -106,6 +107,13 @@ public class TabBarItemView extends ViewGroup {
         }
     }
 
+    void setTestID(String testID) {
+        this.testID = testID;
+        if (tabView == null)
+            return;
+        this.tabView.setTestID(index, testID);
+    }
+
     void setTabView(TabView tabView, int index) {
         this.tabView = tabView;
         this.index = index;
@@ -113,6 +121,7 @@ public class TabBarItemView extends ViewGroup {
             tabView.setIcon(index, icon);
         setBadge(badge);
         tabView.setTitle(index, styledTitle);
+        tabView.setTestID(index, testID);
     }
 
     void styleTitle() {

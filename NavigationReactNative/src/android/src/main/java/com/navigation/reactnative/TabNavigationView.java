@@ -112,6 +112,10 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     }
 
     @Override
+    public void setTestID(int index, String testID) {
+    }
+
+    @Override
     public BadgeDrawable getBadgeIcon(int index) {
         return getOrCreateBadge(index);
     }
