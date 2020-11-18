@@ -26,6 +26,11 @@ public class StatusBarManager extends ViewGroupManager<StatusBarView> {
     public void setHidden(StatusBarView view, boolean hidden) {
     }
 
+    @ReactProp(name = "tintStyle")
+    public void setTintStyle(StatusBarView view, String tintStyle) {
+        view.tintStyle = tintStyle;
+    }
+
     @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
     public void setBarTintColor(StatusBarView view, int barTintColor) {
         view.barTintColor = barTintColor != Integer.MAX_VALUE ? barTintColor : view.defaultStatusBarColor;
