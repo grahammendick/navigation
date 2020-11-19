@@ -195,9 +195,6 @@ public class ToolbarView extends Toolbar {
     void setMenuItems() {
         getMenu().clear();
         ArrayList<BarButtonView> visibleBarButtons = new ArrayList<>();
-
-
-
         for (int i = 0; i < children.size(); i++) {
             if (children.get(i) instanceof BarButtonView) {
                 BarButtonView barButton = (BarButtonView) children.get(i);
@@ -226,55 +223,20 @@ public class ToolbarView extends Toolbar {
                 }
             }
         }
-        for (int i = 0; i < getChildCount(); i++) {
-            View child = getChildAt(i);
-            if (child instanceof ActionMenuView) {
-                View overflowButton = null;
-                ArrayList<View> actionButtons = new ArrayList<>();
-                for (int j = 0; j < ((ActionMenuView) child).getChildCount(); j++) {
-                    View subchild = ((ActionMenuView) child).getChildAt(j);
-                    if (subchild instanceof AppCompatImageView) {
-                        overflowButton = subchild;
-                    }
-                    if (subchild instanceof ActionMenuItemView) {
-                        actionButtons.add(subchild);
-                    }
-                }
-                if (overflowButton != null) {
-                    overflowButton.setTag(overflowButtonTestID);
-                }
-                while (visibleBarButtons.size() > actionButtons.size()) {
-                    int lastIfRoomIndex = visibleBarButtons.size() - 1;
-                    for (int j = visibleBarButtons.size() - 1; j > 0; j--) {
-                        if (visibleBarButtons.get(j).getShowAsAction() == MenuItem.SHOW_AS_ACTION_IF_ROOM) {
-                            lastIfRoomIndex = j;
-                            break;
-                        }
-                    }
-                    visibleBarButtons.remove(lastIfRoomIndex);
-                }
-                for (int j = 0; j < visibleBarButtons.size(); j++) {
-                    View subchild = ((ActionMenuView) child).getChildAt(j);
-                    if (subchild != null && subchild instanceof ActionMenuItemView)
-                        subchild.setTag(visibleBarButtons.get(j).getTestID());
-                }
-            }
-        }
+        setMenuTestIDs(visibleBarButtons);
         setMenuTintColor();
         requestLayout();
     }
 
     private void setMenuTintColor()  {
-        for (int i = 0; i < getChildCount(); i++) {
-            if (getChildAt(i) instanceof ActionMenuView) {
-                ActionMenuView menu = (ActionMenuView) getChildAt(i);
-                for(int j = 0; j < menu.getChildCount(); j++) {
-                    if (menu.getChildAt(j) instanceof ActionMenuItemView) {
-                        ActionMenuItemView menuItem = (ActionMenuItemView) menu.getChildAt(j);
-                        if (defaultMenuTintColor == null)
-                            defaultMenuTintColor = menuItem.getCurrentTextColor();
-                        menuItem.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
-                    }
+        ActionMenuView menu = getMenuView();
+        if (menu != null) {
+            for (int j = 0; j < menu.getChildCount(); j++) {
+                if (menu.getChildAt(j) instanceof ActionMenuItemView) {
+                    ActionMenuItemView menuItem = (ActionMenuItemView) menu.getChildAt(j);
+                    if (defaultMenuTintColor == null)
+                        defaultMenuTintColor = menuItem.getCurrentTextColor();
+                    menuItem.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
                 }
             }
         }
@@ -283,6 +245,50 @@ public class ToolbarView extends Toolbar {
                 ((BarButtonView) children.get(i)).setTintColor(tintColor);
             }
         }
+    }
+
+    private void setMenuTestIDs(ArrayList<BarButtonView> visibleBarButtons) {
+        ActionMenuView menuView = getMenuView();
+        if (menuView != null) {
+            View overflowButton = null;
+            ArrayList<View> actionButtons = new ArrayList<>();
+            for (int j = 0; j < menuView.getChildCount(); j++) {
+                View subchild = ((ActionMenuView) menuView).getChildAt(j);
+                if (subchild instanceof AppCompatImageView) {
+                    overflowButton = subchild;
+                }
+                if (subchild instanceof ActionMenuItemView) {
+                    actionButtons.add(subchild);
+                }
+            }
+            if (overflowButton != null) {
+                overflowButton.setTag(overflowButtonTestID);
+            }
+            while (visibleBarButtons.size() > actionButtons.size()) {
+                int lastIfRoomIndex = visibleBarButtons.size() - 1;
+                for (int j = visibleBarButtons.size() - 1; j > 0; j--) {
+                    if (visibleBarButtons.get(j).getShowAsAction() == MenuItem.SHOW_AS_ACTION_IF_ROOM) {
+                        lastIfRoomIndex = j;
+                        break;
+                    }
+                }
+                visibleBarButtons.remove(lastIfRoomIndex);
+            }
+            for (int j = 0; j < visibleBarButtons.size(); j++) {
+                View menuItem = menuView.getChildAt(j);
+                if (menuItem instanceof ActionMenuItemView)
+                    menuItem.setTag(visibleBarButtons.get(j).getTestID());
+            }
+        }
+    }
+
+    private ActionMenuView getMenuView() {
+        for (int i = 0; i < getChildCount(); i++) {
+            if (getChildAt(i) instanceof ActionMenuView) {
+                return (ActionMenuView) getChildAt(i);
+            }
+        }
+        return null;
     }
 
     void styleTitle() {
