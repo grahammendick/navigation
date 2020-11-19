@@ -107,6 +107,15 @@
     [super viewDidAppear:animated];
     NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
     [navigationBar updateStyle];
+    if ([self viewControllerBasedStatusBarAppearance]) {
+        [UIApplication.sharedApplication.keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        [UIApplication.sharedApplication setStatusBarStyle: self.statusBarStyle];
+        [UIApplication.sharedApplication setStatusBarHidden: self.statusBarHidden];
+#pragma clang diagnostic pop
+    }
 }
 
 - (void)viewDidLayoutSubviews

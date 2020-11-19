@@ -25,23 +25,12 @@
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
-    if ([self.reactViewController isKindOfClass:[NVSceneController class]]) {
-        NVSceneController *sceneController = ((NVSceneController *) self.reactViewController);
-        sceneController.statusBarStyle = self.tintStyle;
-        sceneController.statusBarHidden = self.hidden;
-    }
-    [self update];
-}
-
-- (void)didMoveToWindow
-{
-    [super didMoveToWindow];
-    [self update];
-}
-
-- (void)update
-{
     if (!!self.window) {
+        if ([self.reactViewController isKindOfClass:[NVSceneController class]]) {
+            NVSceneController *sceneController = ((NVSceneController *) self.reactViewController);
+            sceneController.statusBarStyle = self.tintStyle;
+            sceneController.statusBarHidden = self.hidden;
+        }
         if ([self viewControllerBasedStatusBarAppearance]) {
             [UIApplication.sharedApplication.keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
         } else {
