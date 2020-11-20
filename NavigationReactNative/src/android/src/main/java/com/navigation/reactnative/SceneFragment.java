@@ -15,7 +15,6 @@ import java.util.HashSet;
 
 public class SceneFragment extends Fragment {
     private SceneView scene;
-    private int defaultStatusBarColor;
 
     public SceneFragment() {
         super();
@@ -23,9 +22,6 @@ public class SceneFragment extends Fragment {
 
     SceneFragment(SceneView scene, HashSet<String> sharedElements) {
         super();
-        TypedValue typedValue = new TypedValue();
-        scene.getContext().getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
-        defaultStatusBarColor = typedValue.data;
         this.scene = scene;
         scene.fragmentMode = true;
         if (sharedElements != null )
@@ -43,16 +39,6 @@ public class SceneFragment extends Fragment {
             return scene;
         }
         return new View(getContext());
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (!scene.statusBar)
-                getActivity().getWindow().setStatusBarColor(defaultStatusBarColor);
-            scene.statusBar = false;
-        }
     }
 
     @Override

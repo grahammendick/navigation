@@ -28,13 +28,6 @@ public class StatusBarView extends ViewGroup {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        ViewParent ancestor = getParent();
-        while (ancestor != null && !(ancestor instanceof SceneView))
-            ancestor = ancestor.getParent();
-        if (ancestor == null)
-            return;
-        SceneView scene = (SceneView) ancestor;
-        scene.statusBar = true;
         updateStatusBar();
     }
 
