@@ -120,6 +120,14 @@ export interface NavigationBarProps {
      */
     backFontSize?: number;
     /**
+     * The testID for the back button (iOS) or the navigationImage (Android)
+     */
+    navigationTestID?: string;
+    /**
+     * The testID for the overflow menu (Android only)
+     */
+    overflowTestID?: string;
+    /**
      * Handles navigation button press events
      */
     onNavigationPress?: () => void;
@@ -203,6 +211,10 @@ export interface BarButtonProps {
      * The button font size
      */
     fontSize?: number;
+    /**
+     * The testID for this bar button
+     */
+    testID?: string;
     /**
      * Handles button press events
      */
@@ -367,6 +379,10 @@ export interface TabBarItemProps {
      * The tab font size
      */
     fontSize?: number;
+    /**
+     * The testID for this tab item
+     */
+    testID?: string;
     /**
      * Handles button press events
      */

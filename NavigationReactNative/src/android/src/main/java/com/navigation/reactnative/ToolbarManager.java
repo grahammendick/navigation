@@ -107,14 +107,14 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         }
     }
 
-    @ReactProp(name = "backTestID")
-    public void setBackTestID(ToolbarView view, String backTestID) {
-        view.setBackTestID(backTestID);
+    @ReactProp(name = "navigationTestID")
+    public void setNavigationTestID(ToolbarView view, String navigationTestID) {
+        view.setNavigationTestID(navigationTestID);
     }
 
-    @ReactProp(name = "overflowButtonTestID")
-    public void setOverflowButtonTestID(ToolbarView view, String overflowButtonTestID) {
-        view.setOverflowButtonTestID(overflowButtonTestID);
+    @ReactProp(name = "overflowTestID")
+    public void setOverflowTestID(ToolbarView view, String overflowTestID) {
+        view.setOverflowTestID(overflowTestID);
     }
 
     @Override

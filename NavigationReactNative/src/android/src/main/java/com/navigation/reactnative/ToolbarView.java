@@ -44,8 +44,8 @@ public class ToolbarView extends Toolbar {
     int defaultTitleTextColor;
     Drawable defaultOverflowIcon;
     private Integer defaultMenuTintColor;
-    private String backTestID;
-    private String overflowButtonTestID;
+    private String navigationTestID;
+    private String overflowTestID;
     private IconResolver.IconResolverListener logoResolverListener;
     private IconResolver.IconResolverListener navIconResolverListener;
     private IconResolver.IconResolverListener overflowIconResolverListener;
@@ -72,7 +72,7 @@ public class ToolbarView extends Toolbar {
                 for (int i = 0; i < getChildCount();  i++) {
                     View child = getChildAt(i);
                     if (child instanceof AppCompatImageButton) {
-                        child.setTag(backTestID);
+                        child.setTag(navigationTestID);
                     }
                 }
             }
@@ -184,12 +184,12 @@ public class ToolbarView extends Toolbar {
         }
     }
 
-    void setBackTestID(String backTestID) {
-        this.backTestID = backTestID;
+    void setNavigationTestID(String navigationTestID) {
+        this.navigationTestID = navigationTestID;
     }
 
-    void setOverflowButtonTestID(String overflowButtonTestID) {
-        this.overflowButtonTestID = overflowButtonTestID;
+    void setOverflowTestID(String overflowTestID) {
+        this.overflowTestID = overflowTestID;
     }
 
     void setMenuItems() {
@@ -262,7 +262,7 @@ public class ToolbarView extends Toolbar {
                 }
             }
             if (overflowButton != null) {
-                overflowButton.setTag(overflowButtonTestID);
+                overflowButton.setTag(overflowTestID);
             }
             while (visibleBarButtons.size() > actionButtons.size()) {
                 int lastIfRoomIndex = visibleBarButtons.size() - 1;
