@@ -143,12 +143,14 @@
 
 - (UIViewController *)navigation_childViewControllerForStatusBarStyle
 {
-    return ((UINavigationController *) [[self childViewControllers] lastObject]).visibleViewController;
+    UIViewController *viewController = [[self childViewControllers] lastObject];
+    return [viewController isKindOfClass:[UINavigationController class]] ? ((UINavigationController *) viewController).visibleViewController : nil;
 }
 
 - (UIViewController *)navigation_childViewControllerForStatusBarHidden
 {
-    return ((UINavigationController *) [[self childViewControllers] lastObject]).visibleViewController;
+    UIViewController *viewController = [[self childViewControllers] lastObject];
+    return [viewController isKindOfClass:[UINavigationController class]] ? ((UINavigationController *) viewController).visibleViewController : nil;
 }
 
 + (void)load
