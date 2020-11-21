@@ -9,8 +9,6 @@
 #import <React/RCTUtils.h>
 #import <React/UIView+React.h>
 
-#define NAVIGATION_STACK ((int) 25)
-
 @implementation NVNavigationStackView
 {
     __weak RCTBridge *_bridge;
@@ -21,7 +19,6 @@
 - (id)initWithBridge:(RCTBridge *)bridge
 {
     if (self = [super init]) {
-        self.tag = NAVIGATION_STACK;
         _bridge = bridge;
         _navigationController = [[UINavigationController alloc] init];
         _navigationController.view.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
@@ -128,18 +125,30 @@
     }
 }
 
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    UIView *parentView = (UIView *)self.superview;
+    while (!self.navigationController.parentViewController && parentView) {
+        if (parentView.reactViewController) {
+            [parentView.reactViewController addChildViewController:self.navigationController];
+        }
+        parentView = parentView.superview;
+    }
+}
+
 @end
 
 @implementation UIViewController (Navigation)
 
 - (UIViewController *)navigation_childViewControllerForStatusBarStyle
 {
-    return ((NVNavigationStackView *) [self.view viewWithTag:NAVIGATION_STACK]).navigationController.visibleViewController;
+    return ((UINavigationController *) [[self childViewControllers] lastObject]).visibleViewController;
 }
 
 - (UIViewController *)navigation_childViewControllerForStatusBarHidden
 {
-    return ((NVNavigationStackView *) [self.view viewWithTag:NAVIGATION_STACK]).navigationController.visibleViewController;
+    return ((UINavigationController *) [[self childViewControllers] lastObject]).visibleViewController;
 }
 
 + (void)load
