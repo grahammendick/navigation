@@ -25,7 +25,12 @@
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
-    if (!!self.window) {
+    [self updateStyle];
+}
+
+- (void)updateStyle
+{
+    if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
         if ([self.reactViewController isKindOfClass:[NVSceneController class]]) {
             NVSceneController *sceneController = ((NVSceneController *) self.reactViewController);
             sceneController.statusBarStyle = self.tintStyle;
