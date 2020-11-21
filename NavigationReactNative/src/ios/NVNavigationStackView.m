@@ -92,6 +92,18 @@
     }
 }
 
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    UIView *parentView = (UIView *)self.superview;
+    while (!self.navigationController.parentViewController && parentView) {
+        if (parentView.reactViewController) {
+            [parentView.reactViewController addChildViewController:self.navigationController];
+        }
+        parentView = parentView.superview;
+    }
+}
+
 - (void)notifyForBoundsChange:(NVSceneController *)controller
 {
     [_bridge.uiManager setSize:controller.view.bounds.size forView:controller.view];
@@ -122,18 +134,6 @@
     if (crumb < [self.keys count] - 1) {
         _nativeEventCount++;
         self.onDidNavigateBack(@{ @"eventCount": @(_nativeEventCount) });
-    }
-}
-
-- (void)didMoveToWindow
-{
-    [super didMoveToWindow];
-    UIView *parentView = (UIView *)self.superview;
-    while (!self.navigationController.parentViewController && parentView) {
-        if (parentView.reactViewController) {
-            [parentView.reactViewController addChildViewController:self.navigationController];
-        }
-        parentView = parentView.superview;
     }
 }
 
