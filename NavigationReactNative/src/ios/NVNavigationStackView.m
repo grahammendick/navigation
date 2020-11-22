@@ -157,12 +157,24 @@
     return [viewController isKindOfClass:[UINavigationController class]] ? ((UINavigationController *) viewController).visibleViewController : nil;
 }
 
+- (UIStatusBarStyle)navigation_preferredStatusBarStyle
+{
+    return self.presentingViewController.preferredStatusBarStyle;
+}
+
+- (BOOL)navigation_prefersStatusBarHidden
+{
+    return self.presentingViewController.prefersStatusBarHidden;
+}
+
 + (void)load
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         RCTSwapInstanceMethods([UIViewController class], @selector(childViewControllerForStatusBarStyle), @selector(navigation_childViewControllerForStatusBarStyle));
         RCTSwapInstanceMethods([UIViewController class], @selector(childViewControllerForStatusBarHidden), @selector(navigation_childViewControllerForStatusBarHidden));
+        RCTSwapInstanceMethods([UIViewController class], @selector(preferredStatusBarStyle), @selector(navigation_preferredStatusBarStyle));
+        RCTSwapInstanceMethods([UIViewController class], @selector(prefersStatusBarHidden), @selector(navigation_prefersStatusBarHidden));
     });
 }
 
