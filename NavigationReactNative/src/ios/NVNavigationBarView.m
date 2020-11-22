@@ -63,8 +63,6 @@
         appearance.backButtonAppearance = [UIBarButtonItemAppearance new];
         appearance.backButtonAppearance.normal.titleTextAttributes = [self backAttributes];
         self.reactViewController.navigationItem.standardAppearance = appearance;
-        self.reactViewController.navigationItem.scrollEdgeAppearance = appearance;
-        self.reactViewController.navigationItem.compactAppearance = appearance;
     } else {
         bool transparent = self.barTintColor && CGColorGetAlpha(self.barTintColor.CGColor) == 0;
         [navigationBar setValue:@(transparent) forKey:@"hidesShadow"];
