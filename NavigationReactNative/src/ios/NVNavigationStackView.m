@@ -157,15 +157,20 @@
 
 - (UIViewController *)navigation_childViewControllerForStatusBarStyle
 {
-    UIViewController *viewController = [[self childViewControllers] lastObject];
-    return [viewController isKindOfClass:[UINavigationController class]] ? viewController : nil;
+    return [self childViewControllerForStatusBar];
 }
 
 - (UIViewController *)navigation_childViewControllerForStatusBarHidden
 {
-    UIViewController *viewController = [[self childViewControllers] lastObject];
-    return [viewController isKindOfClass:[UINavigationController class]] ? viewController : nil;
+    return [self childViewControllerForStatusBar];
 }
+
+- (UIViewController *)childViewControllerForStatusBar
+{
+    UIViewController *viewController = [[self childViewControllers] lastObject];
+    return ([viewController isKindOfClass:[UINavigationController class]] || [viewController isKindOfClass:[UITabBarController class]]) ? viewController : nil;
+}
+
 
 + (void)load
 {
