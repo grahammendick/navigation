@@ -307,6 +307,29 @@ export interface ActionBarProps {
 export class ActionBar extends Component<ActionBarProps> {}
 
 /**
+ * Defines the Status Bar Props contract
+ */
+export interface StatusBarProps {
+    /**
+     * Indicates whether to hide the status bar
+     */
+    hidden?: boolean;
+    /**
+     * The color of foreground elements on the status bar
+     */
+    tintStyle?: 'light' | 'dark';
+    /**
+     * The background color of the status bar
+     */
+    barTintColor?: string;
+}
+
+/**
+ * Renders the status bar
+ */
+export class StatusBar extends Component<StatusBarProps> {}
+
+/**
  * Defines the Shared Element Props contract
  */
 export interface SharedElementProps {

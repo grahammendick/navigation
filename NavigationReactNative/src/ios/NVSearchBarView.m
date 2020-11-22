@@ -20,7 +20,7 @@
         _bridge = bridge;
         self.tag = SEARCH_BAR;
         NVSearchResultsController *viewController = [[NVSearchResultsController alloc] init];
-        self.searchController = [[UISearchController alloc] initWithSearchResultsController:viewController];
+        self.searchController = [[NVSearchController alloc] initWithSearchResultsController:viewController];
         self.searchController.searchBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         self.searchController.searchResultsUpdater = self;
         __weak typeof(self) weakSelf = self;
@@ -126,6 +126,20 @@
             @"eventCount": @(_nativeEventCount),
         });
     }
+}
+
+@end
+
+@implementation NVSearchController
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return self.presentingViewController.preferredStatusBarStyle;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return self.presentingViewController.prefersStatusBarHidden;
 }
 
 @end

@@ -6,6 +6,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTI18nUtil.h>
 #import <React/RCTUIManager.h>
+#import <React/RCTUtils.h>
 #import <React/UIView+React.h>
 
 @implementation NVNavigationStackView
@@ -19,7 +20,7 @@
 {
     if (self = [super init]) {
         _bridge = bridge;
-        _navigationController = [[UINavigationController alloc] init];
+        _navigationController = [[NVStackController alloc] init];
         _navigationController.view.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         _navigationController.navigationBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         [self addSubview:_navigationController.view];
@@ -91,6 +92,18 @@
     }
 }
 
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    UIView *parentView = (UIView *)self.superview;
+    while (!self.navigationController.parentViewController && parentView) {
+        if (parentView.reactViewController) {
+            [parentView.reactViewController addChildViewController:self.navigationController];
+        }
+        parentView = parentView.superview;
+    }
+}
+
 - (void)notifyForBoundsChange:(NVSceneController *)controller
 {
     [_bridge.uiManager setSize:controller.view.bounds.size forView:controller.view];
@@ -122,6 +135,49 @@
         _nativeEventCount++;
         self.onDidNavigateBack(@{ @"eventCount": @(_nativeEventCount) });
     }
+}
+
+@end
+
+@implementation NVStackController
+
+- (UIViewController *)childViewControllerForStatusBarStyle
+{
+    return self.visibleViewController;
+}
+
+- (UIViewController *)childViewControllerForStatusBarHidden
+{
+    return self.visibleViewController;
+}
+
+@end
+
+@implementation UIViewController (Navigation)
+
+- (UIViewController *)navigation_childViewControllerForStatusBarStyle
+{
+    return [self childViewControllerForStatusBar];
+}
+
+- (UIViewController *)navigation_childViewControllerForStatusBarHidden
+{
+    return [self childViewControllerForStatusBar];
+}
+
+- (UIViewController *)childViewControllerForStatusBar
+{
+    UIViewController *viewController = [[self childViewControllers] lastObject];
+    return ([viewController isKindOfClass:[UINavigationController class]] || [viewController isKindOfClass:[UITabBarController class]]) ? viewController : nil;
+}
+
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        RCTSwapInstanceMethods([UIViewController class], @selector(childViewControllerForStatusBarStyle), @selector(navigation_childViewControllerForStatusBarStyle));
+        RCTSwapInstanceMethods([UIViewController class], @selector(childViewControllerForStatusBarHidden), @selector(navigation_childViewControllerForStatusBarHidden));
+    });
 }
 
 @end

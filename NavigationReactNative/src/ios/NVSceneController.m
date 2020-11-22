@@ -2,6 +2,7 @@
 #import "NVSceneView.h"
 #import "NVNavigationBarView.h"
 #import "NVSearchBarView.h"
+#import "NVStatusBarView.h"
 
 @implementation NVSceneController
 {
@@ -64,6 +65,10 @@
         self.navigationController.navigationBar.prefersLargeTitles = true;
         [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
     }
+    NVStatusBarView *statusBar = [navigationBar viewWithTag:STATUS_BAR];
+    self.statusBarStyle = statusBar.tintStyle;
+    self.statusBarHidden = statusBar.hidden;
+    [statusBar updateStyle];
 }
 
 - (void)viewWillLayoutSubviews
@@ -83,7 +88,9 @@
 {
     [super viewDidAppear:animated];
     NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
+    NVStatusBarView *statusBar = [navigationBar viewWithTag:STATUS_BAR];
     [navigationBar updateStyle];
+    [statusBar updateStyle];
 }
 
 - (void)viewDidLayoutSubviews
@@ -93,6 +100,26 @@
         self.boundsDidChangeBlock(self);
         _lastViewFrame = self.view.frame;
     }
+}
+
+- (UIViewController *)childViewControllerForStatusBarStyle
+{
+    return [[self childViewControllers] lastObject];
+}
+
+- (UIViewController *)childViewControllerForStatusBarHidden
+{
+    return [[self childViewControllers] lastObject];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return self.statusBarStyle;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return self.statusBarHidden;
 }
 
 - (BOOL)hidesBottomBarWhenPushed

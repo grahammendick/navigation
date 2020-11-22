@@ -1,14 +1,12 @@
 package com.navigation.reactnative;
 
 import android.os.Bundle;
-import android.transition.Transition;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.SharedElementCallback;
 import androidx.fragment.app.Fragment;
 
 import java.util.HashSet;
