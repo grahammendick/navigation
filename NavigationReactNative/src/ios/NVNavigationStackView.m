@@ -174,7 +174,7 @@
         RCTSwapInstanceMethods([UIViewController class], @selector(childViewControllerForStatusBarStyle), @selector(navigation_childViewControllerForStatusBarStyle));
         RCTSwapInstanceMethods([UIViewController class], @selector(childViewControllerForStatusBarHidden), @selector(navigation_childViewControllerForStatusBarHidden));
         RCTSwapInstanceMethods([UIViewController class], @selector(preferredStatusBarStyle), @selector(navigation_preferredStatusBarStyle));
-        RCTSwapInstanceMethods([UIViewController class], @selector(prefersStatusBarHidden), @selector(navigation_prefersStatusBarHidden));
+        RCTSwapInstanceMethods([UISearchController class], @selector(prefersStatusBarHidden), @selector(navigation_prefersStatusBarHidden));
     });
 }
 
