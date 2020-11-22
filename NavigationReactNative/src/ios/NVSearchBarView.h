@@ -14,3 +14,7 @@
 -(id)initWithBridge: (RCTBridge *)bridge;
 
 @end
+
+@interface NVSearchController : UISearchController
+
+@end

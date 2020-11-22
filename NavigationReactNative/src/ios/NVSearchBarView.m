@@ -7,23 +7,6 @@
 #import <React/RCTUIManager.h>
 #import <React/UIView+React.h>
 
-@interface NVSearchController : UISearchController
-@end
-
-@implementation NVSearchController
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return self.presentingViewController.preferredStatusBarStyle;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return self.presentingViewController.prefersStatusBarHidden;
-}
-
-@end
-
 @implementation NVSearchBarView
 {
     __weak RCTBridge *_bridge;
@@ -143,6 +126,20 @@
             @"eventCount": @(_nativeEventCount),
         });
     }
+}
+
+@end
+
+@implementation NVSearchController
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return self.presentingViewController.preferredStatusBarStyle;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return self.presentingViewController.prefersStatusBarHidden;
 }
 
 @end

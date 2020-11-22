@@ -9,23 +9,6 @@
 #import <React/RCTUtils.h>
 #import <React/UIView+React.h>
 
-@interface NVStackController : UINavigationController
-@end
-
-@implementation NVStackController
-
-- (UIViewController *)childViewControllerForStatusBarStyle
-{
-    return self.visibleViewController;
-}
-
-- (UIViewController *)childViewControllerForStatusBarHidden
-{
-    return self.visibleViewController;
-}
-
-@end
-
 @implementation NVNavigationStackView
 {
     __weak RCTBridge *_bridge;
@@ -152,6 +135,20 @@
         _nativeEventCount++;
         self.onDidNavigateBack(@{ @"eventCount": @(_nativeEventCount) });
     }
+}
+
+@end
+
+@implementation NVStackController
+
+- (UIViewController *)childViewControllerForStatusBarStyle
+{
+    return self.visibleViewController;
+}
+
+- (UIViewController *)childViewControllerForStatusBarHidden
+{
+    return self.visibleViewController;
 }
 
 @end
