@@ -102,6 +102,16 @@
     }
 }
 
+- (UIViewController *)childViewControllerForStatusBarStyle
+{
+    return [[self childViewControllers] lastObject];
+}
+
+- (UIViewController *)childViewControllerForStatusBarHidden
+{
+    return [[self childViewControllers] lastObject];
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return self.statusBarStyle;

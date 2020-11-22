@@ -83,6 +83,18 @@
     }
 }
 
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    UIView *parentView = (UIView *)self.superview;
+    while (!_tabBarController.parentViewController && parentView) {
+        if (parentView.reactViewController) {
+            [parentView.reactViewController addChildViewController:_tabBarController];
+        }
+        parentView = parentView.superview;
+    }
+}
+
 - (void)didUpdateReactSubviews
 {
 }
