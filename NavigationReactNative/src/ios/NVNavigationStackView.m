@@ -9,6 +9,23 @@
 #import <React/RCTUtils.h>
 #import <React/UIView+React.h>
 
+@interface NVStackController : UINavigationController
+@end
+
+@implementation NVStackController
+
+- (UIViewController *)childViewControllerForStatusBarStyle
+{
+    return self.visibleViewController;
+}
+
+- (UIViewController *)childViewControllerForStatusBarHidden
+{
+    return self.visibleViewController;
+}
+
+@end
+
 @implementation NVNavigationStackView
 {
     __weak RCTBridge *_bridge;
@@ -20,7 +37,7 @@
 {
     if (self = [super init]) {
         _bridge = bridge;
-        _navigationController = [[UINavigationController alloc] init];
+        _navigationController = [[NVStackController alloc] init];
         _navigationController.view.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         _navigationController.navigationBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         [self addSubview:_navigationController.view];
@@ -154,17 +171,7 @@
 - (UIViewController *)childViewControllerForStatusBar
 {
     UIViewController *viewController = [[self childViewControllers] lastObject];
-    return [viewController isKindOfClass:[UINavigationController class]] ? ((UINavigationController *) viewController).visibleViewController : nil;
-}
-
-- (UIStatusBarStyle)navigation_preferredStatusBarStyle
-{
-    return self.presentingViewController.preferredStatusBarStyle;
-}
-
-- (BOOL)navigation_prefersStatusBarHidden
-{
-    return self.presentingViewController.prefersStatusBarHidden;
+    return [viewController isKindOfClass:[UINavigationController class]] ? viewController : nil;
 }
 
 + (void)load
@@ -173,8 +180,6 @@
     dispatch_once(&onceToken, ^{
         RCTSwapInstanceMethods([UIViewController class], @selector(childViewControllerForStatusBarStyle), @selector(navigation_childViewControllerForStatusBarStyle));
         RCTSwapInstanceMethods([UIViewController class], @selector(childViewControllerForStatusBarHidden), @selector(navigation_childViewControllerForStatusBarHidden));
-        RCTSwapInstanceMethods([UIViewController class], @selector(preferredStatusBarStyle), @selector(navigation_preferredStatusBarStyle));
-        RCTSwapInstanceMethods([UISearchController class], @selector(prefersStatusBarHidden), @selector(navigation_prefersStatusBarHidden));
     });
 }
 
