@@ -171,7 +171,6 @@
     return ([viewController isKindOfClass:[UINavigationController class]] || [viewController isKindOfClass:[UITabBarController class]]) ? viewController : nil;
 }
 
-
 + (void)load
 {
     static dispatch_once_t onceToken;
