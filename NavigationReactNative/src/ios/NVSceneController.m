@@ -102,16 +102,6 @@
     }
 }
 
-- (UIViewController *)childViewControllerForStatusBarStyle
-{
-    return nil;
-}
-
-- (UIViewController *)childViewControllerForStatusBarHidden
-{
-    return nil;
-}
-
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return self.statusBarStyle;
