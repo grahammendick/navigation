@@ -7,7 +7,7 @@
 
 @implementation NVSegmentedTabView
 {
-    NSMutableDictionary<NSValue *, NSString *> *segmentTestIDs;
+    NSArray<NSDictionary<NSString *, NSString *> *> *segmentedTabs;
 }
 
 - (id)init
@@ -19,18 +19,13 @@
     return self;
 }
 
-- (void)setTabs:(NSArray<NSDictionary *> *)tabs
+- (void)setTabs:(NSArray<NSDictionary<NSString *, NSString *> *> *)tabs
 {
-    segmentTestIDs = [[NSMutableDictionary alloc] init];
+    segmentedTabs = tabs;
     NSInteger selectedIndex = self.selectedSegmentIndex;
     [self removeAllSegments];
     for (NSDictionary *tab in tabs) {
-        NSUInteger index = self.numberOfSegments;
-        [self insertSegmentWithTitle:tab[@"title"] atIndex:index animated:NO];
-        UIView *segment = [self subviews][index];
-        if (segment) {
-            segmentTestIDs[[NSValue valueWithNonretainedObject:segment]] = tab[@"testID"];
-        }
+        [self insertSegmentWithTitle:tab[@"title"] atIndex:self.numberOfSegments animated:NO];
     }
     self.selectedSegmentIndex = selectedIndex;
 }
@@ -38,12 +33,9 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    for (UIView *view in [self subviews]) {
-        if ([view isKindOfClass:NSClassFromString(@"UISegment")]) {
-            for (UIView *child in [view subviews]) {
-                child.accessibilityIdentifier = segmentTestIDs[[NSValue valueWithNonretainedObject:view]];
-            }
-        }
+    for (int i = 0; i < self.accessibilityElements.count; i++) {
+        UIView *segment = ((UIView *) self.accessibilityElements[i]);
+        segment.subviews[0].accessibilityIdentifier = segmentedTabs[i][@"testID"];
     }
 }
 
