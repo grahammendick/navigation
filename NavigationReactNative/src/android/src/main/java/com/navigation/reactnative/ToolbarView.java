@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -29,6 +30,7 @@ import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ToolbarView extends Toolbar {
     private MenuItem searchMenuItem;
@@ -171,7 +173,7 @@ public class ToolbarView extends Toolbar {
         setTintColor(getNavigationIcon());
         setTintColor(getLogo());
         setTintColor(getOverflowIcon());
-        setMenuTintColor();
+        setMenuTintColor(null);
         setCollapseSearchTintColor();
     }
 
@@ -194,15 +196,13 @@ public class ToolbarView extends Toolbar {
 
     void setMenuItems() {
         getMenu().clear();
-        ArrayList<BarButtonView> visibleBarButtons = new ArrayList<>();
+        HashMap<MenuItem, String> testIDs = new HashMap<>();
         for (int i = 0; i < children.size(); i++) {
             if (children.get(i) instanceof BarButtonView) {
                 BarButtonView barButton = (BarButtonView) children.get(i);
                 MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, "");
                 barButton.setMenuItem(menuItem);
-                if (barButton.getShowAsAction() != MenuItem.SHOW_AS_ACTION_NEVER) {
-                    visibleBarButtons.add(barButton);
-                }
+                testIDs.put(menuItem, barButton.getTestID());
                 if (barButton.getSearch()) {
                     searchMenuItem = menuItem;
                     if (onSearchAddedListener != null)
@@ -223,20 +223,29 @@ public class ToolbarView extends Toolbar {
                 }
             }
         }
-        setMenuTestIDs(visibleBarButtons);
-        setMenuTintColor();
+        setMenuTintColor(testIDs);
         requestLayout();
     }
 
-    private void setMenuTintColor()  {
-        ActionMenuView menu = getMenuView();
-        if (menu != null) {
-            for (int j = 0; j < menu.getChildCount(); j++) {
-                if (menu.getChildAt(j) instanceof ActionMenuItemView) {
-                    ActionMenuItemView menuItem = (ActionMenuItemView) menu.getChildAt(j);
-                    if (defaultMenuTintColor == null)
-                        defaultMenuTintColor = menuItem.getCurrentTextColor();
-                    menuItem.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
+    private void setMenuTintColor(HashMap<MenuItem, String> testIDs)  {
+        for (int i = 0; i < getChildCount(); i++) {
+            if (getChildAt(i) instanceof ActionMenuView) {
+                ActionMenuView menu = (ActionMenuView) getChildAt(i);
+                for (int j = 0; j < menu.getChildCount(); j++) {
+                    if (menu.getChildAt(j) instanceof ActionMenuItemView) {
+                        ActionMenuItemView menuItemView = (ActionMenuItemView) menu.getChildAt(j);
+                        if (defaultMenuTintColor == null)
+                            defaultMenuTintColor = menuItemView.getCurrentTextColor();
+                        menuItemView.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
+                        if (testIDs != null) {
+                            MenuItem menuItem = ((MenuView.ItemView) menuItemView).getItemData();
+                            menuItemView.setTag(testIDs.get(menuItem));
+                        }
+                    }
+                    if (menu.getChildAt(j) instanceof AppCompatImageView) {
+                        AppCompatImageView overflowButton = (AppCompatImageView) menu.getChildAt(j);
+                        overflowButton.setTag(overflowTestID);
+                    }
                 }
             }
         }
@@ -245,50 +254,6 @@ public class ToolbarView extends Toolbar {
                 ((BarButtonView) children.get(i)).setTintColor(tintColor);
             }
         }
-    }
-
-    private void setMenuTestIDs(ArrayList<BarButtonView> visibleBarButtons) {
-        ActionMenuView menuView = getMenuView();
-        if (menuView != null) {
-            View overflowButton = null;
-            ArrayList<View> actionButtons = new ArrayList<>();
-            for (int j = 0; j < menuView.getChildCount(); j++) {
-                View subchild = ((ActionMenuView) menuView).getChildAt(j);
-                if (subchild instanceof AppCompatImageView) {
-                    overflowButton = subchild;
-                }
-                if (subchild instanceof ActionMenuItemView) {
-                    actionButtons.add(subchild);
-                }
-            }
-            if (overflowButton != null) {
-                overflowButton.setTag(overflowTestID);
-            }
-            while (visibleBarButtons.size() > actionButtons.size()) {
-                int lastIfRoomIndex = visibleBarButtons.size() - 1;
-                for (int j = visibleBarButtons.size() - 1; j > 0; j--) {
-                    if (visibleBarButtons.get(j).getShowAsAction() == MenuItem.SHOW_AS_ACTION_IF_ROOM) {
-                        lastIfRoomIndex = j;
-                        break;
-                    }
-                }
-                visibleBarButtons.remove(lastIfRoomIndex);
-            }
-            for (int j = 0; j < visibleBarButtons.size(); j++) {
-                View menuItem = menuView.getChildAt(j);
-                if (menuItem instanceof ActionMenuItemView)
-                    menuItem.setTag(visibleBarButtons.get(j).getTestID());
-            }
-        }
-    }
-
-    private ActionMenuView getMenuView() {
-        for (int i = 0; i < getChildCount(); i++) {
-            if (getChildAt(i) instanceof ActionMenuView) {
-                return (ActionMenuView) getChildAt(i);
-            }
-        }
-        return null;
     }
 
     void styleTitle() {
