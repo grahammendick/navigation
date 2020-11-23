@@ -30,16 +30,6 @@
     return self;
 }
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    UIView *buttonView = ((UIView *) [self.button valueForKey:@"view"]);
-    UIView *barView = buttonView.superview;
-    UIView *labelView = buttonView.subviews.count > 0 ? buttonView.subviews[0] : buttonView;
-    CGRect labelFrameInBar = [buttonView convertRect:labelView.frame toView:barView];
-    self.frame = [barView convertRect:labelFrameInBar toView:nil];
-}
-
 - (void)setTitle:(NSString *)title
 {
     _title = title;
@@ -94,6 +84,11 @@
 -(void)buttonPressed
 {
     if (!!self.onPress) {
+        UIView *buttonView = ((UIView *) [self.button valueForKey:@"view"]);
+        UIView *barView = buttonView.superview;
+        UIView *labelView = buttonView.subviews.count > 0 ? buttonView.subviews[0] : buttonView;
+        CGRect labelFrameInBar = [buttonView convertRect:labelView.frame toView:barView];
+        self.frame = [barView convertRect:labelFrameInBar toView:nil];
         self.onPress(nil);
     }
 }
