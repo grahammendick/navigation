@@ -38,11 +38,10 @@
     }
 }
 
--(void)layoutSubviews
-{
-    [super layoutSubviews];
+- (void)updateStyle {
+    UINavigationBar *navigationBar;
     if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
-        UINavigationBar *navigationBar = self.reactViewController.navigationController.navigationBar;
+        navigationBar = self.reactViewController.navigationController.navigationBar;
         for (UIView *view in [navigationBar subviews]) {
             if ([view isKindOfClass:NSClassFromString(@"_UINavigationBarContentView")]) {
                 for (UIView *child in [view subviews]) {
@@ -52,13 +51,6 @@
                 }
             }
         }
-    }
-}
-
-- (void)updateStyle {
-    UINavigationBar *navigationBar;
-    if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
-        navigationBar = self.reactViewController.navigationController.navigationBar;
     }
     if (@available(iOS 13.0, *)) {
         [navigationBar setTintColor: self.tintColor];
