@@ -21,7 +21,6 @@ public class SceneFragment extends Fragment {
     SceneFragment(SceneView scene, HashSet<String> sharedElements) {
         super();
         this.scene = scene;
-        scene.fragmentMode = true;
         if (sharedElements != null )
             scene.transitioner = new SharedElementTransitioner(this, sharedElements);
     }
