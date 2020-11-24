@@ -7,7 +7,7 @@
 
 @implementation NVSegmentedTabView
 {
-    NSArray<NSDictionary<NSString *, NSString *> *> *segmentedTabs;
+    NSArray<NSDictionary<NSString *, NSString *> *> *_tabs;
 }
 
 - (id)init
@@ -21,7 +21,7 @@
 
 - (void)setTabs:(NSArray<NSDictionary<NSString *, NSString *> *> *)tabs
 {
-    segmentedTabs = tabs;
+    _tabs = tabs;
     NSInteger selectedIndex = self.selectedSegmentIndex;
     [self removeAllSegments];
     for (NSDictionary *tab in tabs) {
@@ -35,7 +35,7 @@
     [super layoutSubviews];
     for (int i = 0; i < self.accessibilityElements.count; i++) {
         UIView *segment = ((UIView *) self.accessibilityElements[i]);
-        segment.subviews[0].accessibilityIdentifier = segmentedTabs[i][@"testID"];
+        segment.subviews[0].accessibilityIdentifier = _tabs[i][@"testID"];
     }
 }
 
