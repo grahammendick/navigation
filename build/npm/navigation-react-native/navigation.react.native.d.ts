@@ -120,6 +120,10 @@ export interface NavigationBarProps {
      */
     backFontSize?: number;
     /**
+     * The id of the back button in end-to-end tests
+     */
+    backTestID?: string;
+    /**
      * The id of the navigation button in end-to-end tests
      */
     navigationTestID?: string;

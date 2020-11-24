@@ -88,7 +88,7 @@
         if ([view isKindOfClass:NSClassFromString(@"_UINavigationBarContentView")]) {
             for (UIView *child in [view subviews]) {
                 if ([child isKindOfClass:NSClassFromString(@"_UIButtonBarButton")]) {
-                    child.accessibilityIdentifier = self.navigationTestID;
+                    child.accessibilityIdentifier = self.backTestID;
                 }
             }
         }
