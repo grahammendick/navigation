@@ -107,6 +107,16 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         }
     }
 
+    @ReactProp(name = "navigationTestID")
+    public void setNavigationTestID(ToolbarView view, String navigationTestID) {
+        view.setNavigationTestID(navigationTestID);
+    }
+
+    @ReactProp(name = "overflowTestID")
+    public void setOverflowTestID(ToolbarView view, String overflowTestID) {
+        view.setOverflowTestID(overflowTestID);
+    }
+
     @Override
     public void addView(ToolbarView parent, View child, int index) {
         parent.children.add(index, child);

@@ -112,6 +112,14 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     }
 
     @Override
+    public void setTestID(int index, String testID) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 && getTouchables().size() > index) {
+            BottomNavigationItemView itemView = (BottomNavigationItemView) getTouchables().get(index);
+            itemView.setTag(testID);
+        }
+    }
+
+    @Override
     public BadgeDrawable getBadgeIcon(int index) {
         return getOrCreateBadge(index);
     }

@@ -17,7 +17,10 @@ import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.facebook.react.bridge.ReactContext;
@@ -27,6 +30,7 @@ import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ToolbarView extends Toolbar {
     private MenuItem searchMenuItem;
@@ -42,6 +46,8 @@ public class ToolbarView extends Toolbar {
     int defaultTitleTextColor;
     Drawable defaultOverflowIcon;
     private Integer defaultMenuTintColor;
+    private String navigationTestID;
+    private String overflowTestID;
     private IconResolver.IconResolverListener logoResolverListener;
     private IconResolver.IconResolverListener navIconResolverListener;
     private IconResolver.IconResolverListener overflowIconResolverListener;
@@ -65,6 +71,7 @@ public class ToolbarView extends Toolbar {
             public void setDrawable(Drawable d) {
                 setNavigationIcon(d);
                 setTintColor(getNavigationIcon());
+                setTestID();
             }
         };
         overflowIconResolverListener = new IconResolver.IconResolverListener() {
@@ -161,7 +168,7 @@ public class ToolbarView extends Toolbar {
         setTintColor(getNavigationIcon());
         setTintColor(getLogo());
         setTintColor(getOverflowIcon());
-        setMenuTintColor();
+        setMenuTintColor(null);
         setCollapseSearchTintColor();
     }
 
@@ -174,13 +181,25 @@ public class ToolbarView extends Toolbar {
         }
     }
 
+    void setNavigationTestID(String navigationTestID) {
+        this.navigationTestID = navigationTestID;
+        setTestID();
+    }
+
+    void setOverflowTestID(String overflowTestID) {
+        this.overflowTestID = overflowTestID;
+        setTestID();
+    }
+
     void setMenuItems() {
         getMenu().clear();
+        HashMap<MenuItem, String> testIDs = new HashMap<>();
         for (int i = 0; i < children.size(); i++) {
             if (children.get(i) instanceof BarButtonView) {
                 BarButtonView barButton = (BarButtonView) children.get(i);
                 MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, "");
                 barButton.setMenuItem(menuItem);
+                testIDs.put(menuItem, barButton.testID);
                 if (barButton.getSearch()) {
                     searchMenuItem = menuItem;
                     if (onSearchAddedListener != null)
@@ -201,20 +220,25 @@ public class ToolbarView extends Toolbar {
                 }
             }
         }
-        setMenuTintColor();
+        setMenuTintColor(testIDs);
+        setTestID();
         requestLayout();
     }
 
-    private void setMenuTintColor()  {
+    private void setMenuTintColor(HashMap<MenuItem, String> testIDs)  {
         for (int i = 0; i < getChildCount(); i++) {
             if (getChildAt(i) instanceof ActionMenuView) {
                 ActionMenuView menu = (ActionMenuView) getChildAt(i);
-                for(int j = 0; j < menu.getChildCount(); j++) {
+                for (int j = 0; j < menu.getChildCount(); j++) {
                     if (menu.getChildAt(j) instanceof ActionMenuItemView) {
-                        ActionMenuItemView menuItem = (ActionMenuItemView) menu.getChildAt(j);
+                        ActionMenuItemView menuItemView = (ActionMenuItemView) menu.getChildAt(j);
                         if (defaultMenuTintColor == null)
-                            defaultMenuTintColor = menuItem.getCurrentTextColor();
-                        menuItem.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
+                            defaultMenuTintColor = menuItemView.getCurrentTextColor();
+                        menuItemView.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
+                        if (testIDs != null) {
+                            MenuItem menuItem = ((MenuView.ItemView) menuItemView).getItemData();
+                            menuItemView.setTag(testIDs.get(menuItem));
+                        }
                     }
                 }
             }
@@ -222,6 +246,24 @@ public class ToolbarView extends Toolbar {
         for (int i = 0; i < children.size(); i++) {
             if (children.get(i) instanceof BarButtonView) {
                 ((BarButtonView) children.get(i)).setTintColor(tintColor);
+            }
+        }
+    }
+
+    private void setTestID() {
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            if (child instanceof AppCompatImageButton) {
+                child.setTag(navigationTestID);
+            }
+            if (child instanceof ActionMenuView) {
+                ActionMenuView menu = (ActionMenuView) child;
+                for (int j = 0; j < menu.getChildCount(); j++) {
+                    if (menu.getChildAt(j) instanceof AppCompatImageView) {
+                        AppCompatImageView overflowButton = (AppCompatImageView) menu.getChildAt(j);
+                        overflowButton.setTag(overflowTestID);
+                    }
+                }
             }
         }
     }

@@ -15,6 +15,7 @@
 {
     __weak RCTBridge *_bridge;
     NSString *_title;
+    NSString *_testID;
     UIImage *_image;
 }
 
@@ -34,6 +35,12 @@
 {
     _title = title;
     self.button.title = title;
+}
+
+- (void)setTestID:(NSString *)testID
+{
+    _testID = testID;
+    self.button.accessibilityIdentifier = testID;
 }
 
 - (void)setImage:(RCTImageSource *)source
@@ -62,6 +69,7 @@
         self.button.action = @selector(buttonPressed);
         self.button.image = _image;
         self.button.title = _title;
+        self.button.accessibilityIdentifier = _testID;
     }
 }
 

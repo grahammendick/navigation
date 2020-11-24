@@ -44,5 +44,6 @@ RCT_EXPORT_VIEW_PROPERTY(badgeColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(image, RCTImageSource)
 RCT_EXPORT_VIEW_PROPERTY(systemItem, UITabBarSystemItem)
 RCT_EXPORT_VIEW_PROPERTY(onPress, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(testID, NSString)
 
 @end

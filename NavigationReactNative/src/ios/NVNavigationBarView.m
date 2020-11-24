@@ -82,6 +82,15 @@
         [previousNavigationItem.backBarButtonItem setTitleTextAttributes:backAttributes forState:UIControlStateNormal];
         [previousNavigationItem.backBarButtonItem setTitleTextAttributes:backAttributes forState:UIControlStateSelected];
     }
+    for (UIView *view in [navigationBar subviews]) {
+        if ([view isKindOfClass:NSClassFromString(@"_UINavigationBarContentView")]) {
+            for (UIView *child in [view subviews]) {
+                if ([child isKindOfClass:NSClassFromString(@"_UIButtonBarButton")]) {
+                    child.accessibilityIdentifier = self.backTestID;
+                }
+            }
+        }
+    }
 }
 
 - (NSMutableDictionary *) titleAttributes

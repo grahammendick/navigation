@@ -22,6 +22,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.text.ReactTypefaceUtils;
 
 public class BarButtonView extends ViewGroup implements CollapsibleActionView {
+    String testID;
     private String title;
     private String fontFamily;
     private String fontWeight;
@@ -84,6 +85,10 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
 
     void setIconSource(@Nullable ReadableMap source) {
         IconResolver.setIconSource(source, iconResolverListener, getContext());
+    }
+
+    public int getShowAsAction() {
+        return showAsAction;
     }
 
     void setShowAsAction(int showAsAction) {

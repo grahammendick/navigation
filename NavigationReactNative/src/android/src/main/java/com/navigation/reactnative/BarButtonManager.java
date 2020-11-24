@@ -70,6 +70,11 @@ public class BarButtonManager extends ViewGroupManager<BarButtonView> {
         view.setShowActionView(showActionView);
     }
 
+    @ReactProp(name = "testID")
+    public void setTestID(BarButtonView view, String testID) {
+        view.testID = testID;
+    }
+
     @Override
     protected void onAfterUpdateTransaction(@NonNull BarButtonView view) {
         super.onAfterUpdateTransaction(view);

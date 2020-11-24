@@ -17,6 +17,7 @@
 @property (nonatomic, copy) UIColor *tintColor;
 @property (nonatomic, copy) UIColor *titleColor;
 @property (nonatomic, copy) NSString *backTitle;
+@property (nonatomic, copy) NSString *backTestID;
 
 -(void)updateStyle;
 

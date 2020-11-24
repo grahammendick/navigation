@@ -141,6 +141,13 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
     }
 
     @Override
+    public void setTestID(int index, String testID) {
+        TabLayout.Tab tab = getTabAt(index);
+        if (tab != null)
+            tab.view.setTag(testID);
+    }
+
+    @Override
     public BadgeDrawable getBadgeIcon(int index) {
         TabLayout.Tab tab = getTabAt(index);
         return tab != null ? tab.getOrCreateBadge() : null;

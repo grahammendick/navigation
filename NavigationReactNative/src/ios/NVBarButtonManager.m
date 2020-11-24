@@ -53,5 +53,6 @@ RCT_EXPORT_VIEW_PROPERTY(fontSize, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(image, RCTImageSource)
 RCT_EXPORT_VIEW_PROPERTY(systemItem, UIBarButtonSystemItem)
 RCT_EXPORT_VIEW_PROPERTY(onPress, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(testID, NSString)
 
 @end
