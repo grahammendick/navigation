@@ -42,15 +42,6 @@
     UINavigationBar *navigationBar;
     if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
         navigationBar = self.reactViewController.navigationController.navigationBar;
-        for (UIView *view in [navigationBar subviews]) {
-            if ([view isKindOfClass:NSClassFromString(@"_UINavigationBarContentView")]) {
-                for (UIView *child in [view subviews]) {
-                    if ([child isKindOfClass:NSClassFromString(@"_UIButtonBarButton")]) {
-                        child.accessibilityIdentifier = self.navigationTestID;
-                    }
-                }
-            }
-        }
     }
     if (@available(iOS 13.0, *)) {
         [navigationBar setTintColor: self.tintColor];
@@ -92,6 +83,15 @@
         }
         [previousNavigationItem.backBarButtonItem setTitleTextAttributes:backAttributes forState:UIControlStateNormal];
         [previousNavigationItem.backBarButtonItem setTitleTextAttributes:backAttributes forState:UIControlStateSelected];
+    }
+    for (UIView *view in [navigationBar subviews]) {
+        if ([view isKindOfClass:NSClassFromString(@"_UINavigationBarContentView")]) {
+            for (UIView *child in [view subviews]) {
+                if ([child isKindOfClass:NSClassFromString(@"_UIButtonBarButton")]) {
+                    child.accessibilityIdentifier = self.navigationTestID;
+                }
+            }
+        }
     }
 }
 
