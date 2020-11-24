@@ -1,12 +1,13 @@
 import React from 'react';
 import { requireNativeComponent, Image, Platform, UIManager, StyleSheet } from 'react-native';
 
-const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search, style, children, ...props}, ref) => {
+const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search, style, children, testID, ...props}, ref) => {
     var constants = (UIManager as any).getViewManagerConfig('NVNavigationBar').Constants;
     return (Platform.OS === 'android' || !search) && (
         <NVBarButton
             ref={ref}
-            key={(Platform.OS === 'ios' && systemItem) || undefined}
+            key={Platform.OS === 'ios' ? systemItem : testID}
+            testID={testID}
             search={search}
             showActionView={!!children}
             showAsAction={Platform.OS === 'android' ? constants.ShowAsAction[show] : null}
