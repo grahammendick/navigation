@@ -202,7 +202,7 @@ public class ToolbarView extends Toolbar {
                 BarButtonView barButton = (BarButtonView) children.get(i);
                 MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, "");
                 barButton.setMenuItem(menuItem);
-                testIDs.put(menuItem, barButton.getTestID());
+                testIDs.put(menuItem, barButton.testID);
                 if (barButton.getSearch()) {
                     searchMenuItem = menuItem;
                     if (onSearchAddedListener != null)

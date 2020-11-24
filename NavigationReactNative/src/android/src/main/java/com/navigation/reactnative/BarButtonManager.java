@@ -72,7 +72,7 @@ public class BarButtonManager extends ViewGroupManager<BarButtonView> {
 
     @ReactProp(name = "testID")
     public void setTestID(BarButtonView view, String testID) {
-        view.setTestID(testID);
+        view.testID = testID;
     }
 
     @Override
