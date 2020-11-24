@@ -71,12 +71,7 @@ public class ToolbarView extends Toolbar {
             public void setDrawable(Drawable d) {
                 setNavigationIcon(d);
                 setTintColor(getNavigationIcon());
-                for (int i = 0; i < getChildCount();  i++) {
-                    View child = getChildAt(i);
-                    if (child instanceof AppCompatImageButton) {
-                        child.setTag(navigationTestID);
-                    }
-                }
+                setTestID();
             }
         };
         overflowIconResolverListener = new IconResolver.IconResolverListener() {
@@ -188,10 +183,12 @@ public class ToolbarView extends Toolbar {
 
     void setNavigationTestID(String navigationTestID) {
         this.navigationTestID = navigationTestID;
+        setTestID();
     }
 
     void setOverflowTestID(String overflowTestID) {
         this.overflowTestID = overflowTestID;
+        setTestID();
     }
 
     void setMenuItems() {
@@ -224,6 +221,7 @@ public class ToolbarView extends Toolbar {
             }
         }
         setMenuTintColor(testIDs);
+        setTestID();
         requestLayout();
     }
 
@@ -242,16 +240,30 @@ public class ToolbarView extends Toolbar {
                             menuItemView.setTag(testIDs.get(menuItem));
                         }
                     }
-                    if (menu.getChildAt(j) instanceof AppCompatImageView) {
-                        AppCompatImageView overflowButton = (AppCompatImageView) menu.getChildAt(j);
-                        overflowButton.setTag(overflowTestID);
-                    }
                 }
             }
         }
         for (int i = 0; i < children.size(); i++) {
             if (children.get(i) instanceof BarButtonView) {
                 ((BarButtonView) children.get(i)).setTintColor(tintColor);
+            }
+        }
+    }
+
+    private void setTestID() {
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            if (child instanceof AppCompatImageButton) {
+                child.setTag(navigationTestID);
+            }
+            if (child instanceof ActionMenuView) {
+                ActionMenuView menu = (ActionMenuView) child;
+                for (int j = 0; j < menu.getChildCount(); j++) {
+                    if (menu.getChildAt(j) instanceof AppCompatImageView) {
+                        AppCompatImageView overflowButton = (AppCompatImageView) menu.getChildAt(j);
+                        overflowButton.setTag(overflowTestID);
+                    }
+                }
             }
         }
     }
