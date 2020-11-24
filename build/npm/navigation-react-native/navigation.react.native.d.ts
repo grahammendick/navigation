@@ -120,11 +120,11 @@ export interface NavigationBarProps {
      */
     backFontSize?: number;
     /**
-     * The testID for the back button (iOS) or the navigationImage (Android)
+     * The id of the navigation button in end-to-end tests
      */
     navigationTestID?: string;
     /**
-     * The testID for the overflow menu (Android only)
+     * The id of the overflow button in end-to-end tests
      */
     overflowTestID?: string;
     /**
@@ -212,7 +212,7 @@ export interface BarButtonProps {
      */
     fontSize?: number;
     /**
-     * The testID for this bar button
+     * The id of the button in end-to-end tests
      */
     testID?: string;
     /**
@@ -380,7 +380,7 @@ export interface TabBarItemProps {
      */
     fontSize?: number;
     /**
-     * The testID for this tab item
+     * The id of the tab in end-to-end tests
      */
     testID?: string;
     /**
