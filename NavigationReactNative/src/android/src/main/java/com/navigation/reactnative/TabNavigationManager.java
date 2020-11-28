@@ -24,9 +24,9 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
         view.bottomTabs = bottomTabs;
     }
 
-    @ReactProp(name = "selectedTintColor", customType = "Color")
-    public void setSelectedTintColor(TabNavigationView view, @Nullable Integer selectedTintColor) {
-        view.selectedTintColor = selectedTintColor != null ? selectedTintColor : view.defaultTextColor;
+    @ReactProp(name = "selectedTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setSelectedTintColor(TabNavigationView view, int selectedTintColor) {
+        view.selectedTintColor = selectedTintColor != Integer.MAX_VALUE ? selectedTintColor : view.defaultTextColor;
         view.setItemTextColor(new ColorStateList(
             new int[][]{ new int[]{-android.R.attr.state_checked}, new int[]{android.R.attr.state_checked }},
             new int[]{ view.unselectedTintColor, view.selectedTintColor }
