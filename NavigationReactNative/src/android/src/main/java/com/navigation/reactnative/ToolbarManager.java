@@ -71,22 +71,22 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         view.setOverflowIconSource(overflowIcon);
     }
 
-    @ReactProp(name = "barTintColor", customType = "Color")
-    public void setBarTintColor(ToolbarView view, Integer barTintColor) {
-        if (barTintColor != null)
+    @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setBarTintColor(ToolbarView view, int barTintColor) {
+        if (barTintColor != Integer.MAX_VALUE)
             view.setBackgroundColor(barTintColor);
         else
             view.setBackground(null);
     }
 
-    @ReactProp(name = "tintColor", customType = "Color")
-    public void setTintColor(ToolbarView view, Integer tintColor) {
-        view.setTintColor(tintColor);
+    @ReactProp(name = "tintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setTintColor(ToolbarView view, int tintColor) {
+        view.setTintColor(tintColor != Integer.MAX_VALUE ? tintColor : null);
     }
 
-    @ReactProp(name = "titleColor", customType = "Color")
-    public void setTitleColor(ToolbarView view, Integer textColor) {
-        view.setTitleTextColor(textColor != null ? textColor : view.defaultTitleTextColor);
+    @ReactProp(name = "titleColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setTitleColor(ToolbarView view, int textColor) {
+        view.setTitleTextColor(textColor != Integer.MAX_VALUE ? textColor : view.defaultTitleTextColor);
     }
 
     @ReactProp(name = "height")

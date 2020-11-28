@@ -17,17 +17,17 @@ public class TabLayoutRTLManager extends ViewGroupManager<TabLayoutRTLView> {
         return "NVTabLayoutRTL";
     }
 
-    @ReactProp(name = "selectedTintColor", customType = "Color")
-    public void setSelectedTintColor(TabLayoutRTLView view, @Nullable Integer selectedTintColor) {
-        view.selectedTintColor = selectedTintColor != null ? selectedTintColor : view.defaultTextColor;
+    @ReactProp(name = "selectedTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setSelectedTintColor(TabLayoutRTLView view, int selectedTintColor) {
+        view.selectedTintColor = selectedTintColor != Integer.MAX_VALUE ? selectedTintColor : view.defaultTextColor;
         view.setTabTextColors(view.unselectedTintColor, view.selectedTintColor);
         view.setSelectedTabIndicatorColor(view.selectedTintColor);
         view.setTabIconTint(view.getTabTextColors());
     }
 
-    @ReactProp(name = "unselectedTintColor", customType = "Color")
-    public void setUnselectedTintColor(TabLayoutRTLView view, @Nullable Integer  unselectedTintColor) {
-        view.unselectedTintColor = unselectedTintColor != null ? unselectedTintColor : view.defaultTextColor;
+    @ReactProp(name = "unselectedTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setUnselectedTintColor(TabLayoutRTLView view, int unselectedTintColor) {
+        view.unselectedTintColor = unselectedTintColor != Integer.MAX_VALUE ? unselectedTintColor : view.defaultTextColor;
         view.setTabTextColors(view.unselectedTintColor, view.selectedTintColor);
         view.setTabIconTint(view.getTabTextColors());
     }

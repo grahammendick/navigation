@@ -40,9 +40,9 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
         view.searchView.setInputType(autoCapitalize);
     }
 
-    @ReactProp(name = "barTintColor", customType = "Color")
-    public void setBarTintColor(SearchBarView view, @Nullable Integer barTintColor) {
-        view.setBarTintColor(barTintColor);
+    @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setBarTintColor(SearchBarView view, int barTintColor) {
+        view.setBarTintColor(barTintColor != Integer.MAX_VALUE ? barTintColor : null);
     }
 
     @Nonnull
