@@ -79,9 +79,9 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
             view.setBackground(null);
     }
 
-    @ReactProp(name = "tintColor", customType = "Color")
-    public void setTintColor(ToolbarView view, Integer tintColor) {
-        view.setTintColor(tintColor);
+    @ReactProp(name = "tintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setTintColor(ToolbarView view, int tintColor) {
+        view.setTintColor(tintColor != Integer.MAX_VALUE ? tintColor : null);
     }
 
     @ReactProp(name = "titleColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
