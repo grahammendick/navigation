@@ -31,9 +31,9 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
         return new NavigationBarView(reactContext);
     }
 
-    @ReactProp(name = "barTintColor", customType = "Color")
-    public void setBarTintColor(NavigationBarView view, @Nullable Integer barTintColor) {
-        if (barTintColor != null) {
+    @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setBarTintColor(NavigationBarView view, int barTintColor) {
+        if (barTintColor != Integer.MAX_VALUE) {
             view.setBackground(new ColorDrawable(barTintColor));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if (Color.alpha(barTintColor) < 255)

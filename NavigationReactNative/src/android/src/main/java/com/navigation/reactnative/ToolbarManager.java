@@ -71,9 +71,9 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         view.setOverflowIconSource(overflowIcon);
     }
 
-    @ReactProp(name = "barTintColor", customType = "Color")
-    public void setBarTintColor(ToolbarView view, Integer barTintColor) {
-        if (barTintColor != null)
+    @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setBarTintColor(ToolbarView view, int barTintColor) {
+        if (barTintColor != Integer.MAX_VALUE)
             view.setBackgroundColor(barTintColor);
         else
             view.setBackground(null);
