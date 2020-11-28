@@ -34,9 +34,9 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
         view.setItemIconTintList(view.getItemTextColor());
     }
 
-    @ReactProp(name = "unselectedTintColor", customType = "Color")
-    public void setUnselectedTintColor(TabNavigationView view, @Nullable Integer unselectedTintColor) {
-        view.unselectedTintColor = unselectedTintColor != null ? unselectedTintColor : view.defaultTextColor;
+    @ReactProp(name = "unselectedTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setUnselectedTintColor(TabNavigationView view, int unselectedTintColor) {
+        view.unselectedTintColor = unselectedTintColor != Integer.MAX_VALUE ? unselectedTintColor : view.defaultTextColor;
         view.setItemTextColor(new ColorStateList(
             new int[][]{ new int[]{-android.R.attr.state_checked}, new int[]{android.R.attr.state_checked }},
             new int[]{ view.unselectedTintColor, view.selectedTintColor }
