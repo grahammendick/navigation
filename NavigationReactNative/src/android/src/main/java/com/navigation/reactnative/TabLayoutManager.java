@@ -22,9 +22,9 @@ public class TabLayoutManager extends ViewGroupManager<TabLayoutView> {
         view.bottomTabs = bottomTabs;
     }
 
-    @ReactProp(name = "selectedTintColor", customType = "Color")
-    public void setSelectedTintColor(TabLayoutView view, @Nullable Integer selectedTintColor) {
-        view.selectedTintColor = selectedTintColor != null ? selectedTintColor : view.defaultTextColor;
+    @ReactProp(name = "selectedTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setSelectedTintColor(TabLayoutView view, int selectedTintColor) {
+        view.selectedTintColor = selectedTintColor != Integer.MAX_VALUE ? selectedTintColor : view.defaultTextColor;
         view.setTabTextColors(view.unselectedTintColor, view.selectedTintColor);
         view.setSelectedTabIndicatorColor(view.selectedTintColor);
         view.setTabIconTint(view.getTabTextColors());
