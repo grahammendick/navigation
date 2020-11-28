@@ -55,14 +55,14 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
         view.setContentScrim(contentScrimColor != null ? new ColorDrawable(contentScrimColor) : view.defaultContentScrim);
     }
 
-    @ReactProp(name = "collapsedTitleColor", customType = "Color")
-    public void setCollapsedTitleColor(CollapsingBarView view, @Nullable Integer collapsedTitleColor) {
-        view.setCollapsedTitleTextColor(collapsedTitleColor != null ? collapsedTitleColor : view.defaultTitleTextColor);
+    @ReactProp(name = "collapsedTitleColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setCollapsedTitleColor(CollapsingBarView view, int collapsedTitleColor) {
+        view.setCollapsedTitleTextColor(collapsedTitleColor != Integer.MAX_VALUE ? collapsedTitleColor : view.defaultTitleTextColor);
     }
 
-    @ReactProp(name = "expandedTitleColor", customType = "Color")
-    public void setExpandedTitleColor(CollapsingBarView view, @Nullable Integer expandedTitleColor) {
-        view.setExpandedTitleColor(expandedTitleColor != null ? expandedTitleColor : view.defaultTitleTextColor);
+    @ReactProp(name = "expandedTitleColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setExpandedTitleColor(CollapsingBarView view, int expandedTitleColor) {
+        view.setExpandedTitleColor(expandedTitleColor != Integer.MAX_VALUE ? expandedTitleColor : view.defaultTitleTextColor);
     }
 
     @Override
