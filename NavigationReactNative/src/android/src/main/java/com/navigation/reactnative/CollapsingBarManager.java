@@ -50,9 +50,9 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
         view.setTitleEnabled(titleEnabled);
     }
 
-    @ReactProp(name = "contentScrimColor", customType = "Color")
-    public void setContentScrimColor(CollapsingBarView view, @Nullable Integer contentScrimColor) {
-        view.setContentScrim(contentScrimColor != null ? new ColorDrawable(contentScrimColor) : view.defaultContentScrim);
+    @ReactProp(name = "contentScrimColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setContentScrimColor(CollapsingBarView view, int contentScrimColor) {
+        view.setContentScrim(contentScrimColor != Integer.MAX_VALUE ? new ColorDrawable(contentScrimColor) : view.defaultContentScrim);
     }
 
     @ReactProp(name = "collapsedTitleColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
