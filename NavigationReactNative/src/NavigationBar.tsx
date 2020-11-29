@@ -16,8 +16,9 @@ class NavigationBar extends React.Component<any, any> {
         var {hidden, logo, navigationImage, overflowImage, children, style = {height: undefined}, ...otherProps} = this.props;
         var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
         var statusBar = childrenArray.find(({type}) => type === StatusBar);
+        statusBar = (Platform.OS === 'android' || !statusBar) && (statusBar || <StatusBar />);
         if (Platform.OS === 'android' && hidden)
-            return statusBar || <StatusBar />;
+            return statusBar;
         var collapsingBar = childrenArray.find(({type}) => type === CollapsingBar);
         return (
             <>
@@ -47,7 +48,7 @@ class NavigationBar extends React.Component<any, any> {
                             </NVToolbar>
                             {childrenArray.find(({type}) => type === TabBar)}
                         </Container>}
-                        {(Platform.OS === 'android' || !statusBar) && (statusBar || <StatusBar />)}
+                        {statusBar}
                 </NVNavigationBar>
                 {Platform.OS === 'ios' ? null : childrenArray.find(({type}) => type === SearchBar)}
             </>
