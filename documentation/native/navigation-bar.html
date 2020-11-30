@@ -117,6 +117,15 @@
   &lt;/RightBar>
 &lt;/NavigationBar>
 </code></pre>
+            <h2>Updating the Status Bar</h2>
+            <p>
+            </p>
+            <pre><code class="language-jsx">import {StatusBar} from 'navigation-react-native';
+
+&lt;NavigationBar title="Inbox">
+  &lt;StatusBar tintStyle="light" />
+&lt;/NavigationBar>
+</code></pre>
             <h2>Adding an Action Bar on Android</h2>
             <p>
                 The <code>ActionBar</code> component displays a view in the navigation bar on Android. It's the child of a <code>BarButton</code> component. When the user taps the button the <code>ActionBar</code> children render in place of the title. It's like the <code>SearchBar</code> component but for your own custom views. We add a view to the navigation bar on the 'mail' scene so users can locate a specific word in their email. Alongside the input we render an arrow that moves the user to the next match.
