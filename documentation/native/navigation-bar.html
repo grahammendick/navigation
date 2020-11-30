@@ -68,7 +68,7 @@
             <p>
                 You can customise the title view using the <code>TitleBar</code> component. In our email example app, we can add an image next to the 'inbox' title.
             </p>
-            <pre><code class="language-jsx">import {NavigationBar, TitleBar} from 'navigation-react-native';
+            <pre><code class="language-jsx">import {TitleBar} from 'navigation-react-native';
 
 &lt;NavigationBar>
   &lt;TitleBar>
@@ -81,7 +81,7 @@
             <p>
                 Alongside the scene's title, you can add your own buttons using the <code>BarButton</code> component. You can pass your own text and image using the <code>title</code> and <code>image</code> props. Your buttons appear on the right or left of the navigation bar on iOS, depending on whether you wrap them in a <code>RightBar</code> or <code>LeftBar</code> component. On Android they  appear on the right of the navigation bar or in the overflow menu depending on the value you assign to the <code>show</code> prop. In our email example, we can add a 'compose' button to the right of the navigation bar that navigates to the 'compose' scene. We set the <code>systemItem</code> prop so it displays the inbuilt 'compose' icon on iOS.
             </p>
-            <pre><code class="language-jsx">import {NavigationBar, RightBar, BarButton} from 'navigation-react-native';
+            <pre><code class="language-jsx">import {RightBar, BarButton} from 'navigation-react-native';
 
 &lt;NavigationBar title="Inbox">
   &lt;RightBar>
@@ -99,7 +99,7 @@
                 <h2>Note</h2>
                 On Android, wrap the scene in a <code>View</code> component with <code>collapsable</code> set to 'false'. On iOS, wrap the scene in a <code>ScrollView</code> component with <code>contentInsetAdjustmentBehavior</code> set to 'automatic'
             </div>
-            <pre><code class="language-jsx">import {NavigationBar, RightBar, BarButton, SearchBar} from 'navigation-react-native';
+            <pre><code class="language-jsx">import {SearchBar} from 'navigation-react-native';
 
 &lt;NavigationBar title="Inbox">
   &lt;SearchBar
@@ -115,6 +115,16 @@
   &lt;RightBar>
     &lt;BarButton title="search" search={true} />
   &lt;/RightBar>
+&lt;/NavigationBar>
+</code></pre>
+            <h2>Updating the Status Bar</h2>
+            <p>
+                To update the status bar, render a <code>StatusBar</code> component in the navigation bar. The  <code>barTint</code> prop controls the background color on Android. On iOS, the background color comes from the <code>barTint</code> prop of the navigation bar. We add the <code>StatusBar</code> to the 'inbox' scene to change the status bar text color to white.
+            </p>
+            <pre><code class="language-jsx">import {StatusBar} from 'navigation-react-native';
+
+&lt;NavigationBar title="Inbox">
+  &lt;StatusBar tintStyle="light" />
 &lt;/NavigationBar>
 </code></pre>
             <h2>Adding an Action Bar on Android</h2>
