@@ -119,7 +119,7 @@
 </code></pre>
             <h2>Updating the Status Bar</h2>
             <p>
-                To update the status bar, render a <code>StatusBar</code> component in the navigation bar. The  <code>barTint</code> prop controls the background color on Android. On iOS, the background color comes from the <code>barTint</code> prop of the navigation bar. We add the <code>StatusBar</code> to the 'inbox' scene to change the status bar text color to white.
+                To update the status bar, render a <code>StatusBar</code> component in the navigation bar. The  <code>barTintColor</code> prop controls the background color on Android. On iOS, it inherits the background color of the navigation bar. We add a <code>StatusBar</code> to the 'inbox' scene to change the status bar text and icon color to white.
             </p>
             <pre><code class="language-jsx">import {StatusBar} from 'navigation-react-native';
 
