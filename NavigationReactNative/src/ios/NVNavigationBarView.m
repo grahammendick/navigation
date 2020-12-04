@@ -46,10 +46,12 @@
     if (@available(iOS 13.0, *)) {
         [navigationBar setTintColor: self.tintColor];
         UINavigationBarAppearance *appearance = [UINavigationBarAppearance new];
-        bool transparent = self.barTintColor && CGColorGetAlpha(self.barTintColor.CGColor) == 0;
         [appearance configureWithDefaultBackground];
-        if (transparent) {
-            [appearance configureWithTransparentBackground];
+        if (self.barTintColor) {
+            [appearance configureWithOpaqueBackground];
+            if (CGColorGetAlpha(self.barTintColor.CGColor) == 0) {
+                [appearance configureWithTransparentBackground];
+            }
         }
         NSMutableDictionary *attributes = [NSMutableDictionary new];
         if (self.tintColor != nil) {
@@ -63,6 +65,9 @@
         appearance.backButtonAppearance = [UIBarButtonItemAppearance new];
         appearance.backButtonAppearance.normal.titleTextAttributes = [self backAttributes];
         self.reactViewController.navigationItem.standardAppearance = appearance;
+        if (self.barTintColor) {
+            self.reactViewController.navigationItem.scrollEdgeAppearance = appearance;
+        }
     } else {
         bool transparent = self.barTintColor && CGColorGetAlpha(self.barTintColor.CGColor) == 0;
         [navigationBar setValue:@(transparent) forKey:@"hidesShadow"];
