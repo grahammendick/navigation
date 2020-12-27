@@ -4,6 +4,9 @@
   <title>The Navigation router</title>
   <meta name="viewport" content="width=device-width">
   <style>
+    body {
+      font-family: Palatino;
+    }
     div.tabs {
       display: flex;
       flex-direction: row;
@@ -12,13 +15,23 @@
       width: 33.33333333%;
       text-align: center;
     }
+    div.tab:nth-child(1) {
+      border: 6px solid #f9858b;
+      border-bottom: 0;
+      border-radius: 15px 15px 0 0;      
+    }
     ol {
       display: flex;
       flex-wrap: wrap;
+      background-color: #f9858b;
+      border-radius: 0 0 20px 20px;
+      padding: 20px 0 0 0;
+      margin: 0;
     }
     li {
       flex: 1;
-      border: 1px solid #f9858b;
+      background-color: #fff;
+      border: 4px solid #f9858b;
       height: 400px;
       width: 42%;
       margin: 0px 4%;
@@ -28,10 +41,10 @@
       box-sizing: border-box;
     }
     li:nth-child(2) {
-      margin-top: 200px;
+      margin-top: 150px;
     }
     li:nth-child(3) {
-      margin-top: -200px;
+      margin-top: -150px;
     }
   </style>
 </head>
