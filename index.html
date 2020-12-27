@@ -48,17 +48,39 @@
       margin: 5px 0;
       font-weight: normal;
     }
-    ol {
-      display: flex;
+    div.content {
       width: 90%;
+      position: relative;
       margin: 0 auto;
-      flex-wrap: wrap;
       background-color: #f9858b;
       border: 6px solid #ed335f;
       border-top: 0;
       border-radius: 0 0 20px 20px;
-      padding: 20px 0 0 0;
       box-sizing: border-box;
+
+    }
+    p.summary {
+      position: absolute;
+      right: 3%;
+      width: 47%;
+      font-size: 1.2em;
+      color: #761137;
+      margin-top: 25px;
+    }
+    p.note {
+      position: absolute;
+      left: 3%;
+      bottom: 0;
+      width: 47%;
+      font-size: 1.2em;
+      color: #761137;
+      margin-bottom: 25px;
+    }
+    ol {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px 0 0 0;
+      margin: 0;
     }
     li {
       flex: 1;
@@ -98,61 +120,69 @@
       <a>Mobile</a>
     </div>
   </div>
-  <ol>
-    <li>
-      <h3>Define Your States</h3>
-      <pre><code class="language-jsx">import { StateNavigator } from 'navigation';
+  <div class="content">
+    <p class="summary">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+    </p>
+    <p class="note">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+    </p>
+    <ol>
+      <li>
+        <h3>Define Your States</h3>
+        <pre><code class="language-jsx">import { StateNavigator } from 'navigation';
 
-const stateNavigator = new StateNavigator([
-  { key: 'hello', route: '' },
-  { key: 'world' }
-]);</code></pre>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu.
-      </p>
-    </li>
-    <li>
-      <h3>Create Your Scenes</h3>
-      <pre><code class="language-jsx">const { hello, world } = stateNavigator.states;
+  const stateNavigator = new StateNavigator([
+    { key: 'hello', route: '' },
+    { key: 'world' }
+  ]);</code></pre>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu.
+        </p>
+      </li>
+      <li>
+        <h3>Create Your Scenes</h3>
+        <pre><code class="language-jsx">const { hello, world } = stateNavigator.states;
 
-hello.renderScene = = () => &lt;Hello />;
-world.renderScene = = () => &lt;World />;</code></pre>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-      </p>
-    </li>
-    <li>
-        <h3>Navigate to a Scene</h3>
-        <pre><code class="language-jsx">import { NavigationLink } from 'navigation-react';
+  hello.renderScene = = () => &lt;Hello />;
+  world.renderScene = = () => &lt;World />;</code></pre>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+        </p>
+      </li>
+      <li>
+          <h3>Navigate to a Scene</h3>
+          <pre><code class="language-jsx">import { NavigationLink } from 'navigation-react';
 
-const Hello = () => (
-  &lt;NavigationLink
-    stateKey="hello"
-    navigationData={{ size: 20 }}>
-    Hello
-  &lt;/NavigationLink>
-);</code></pre>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      </p>
-    </li>
-    <li>
-      <h3>Get the Data</h3>
-      <pre><code class="language-jsx">import { NavigationContext } from 'navigation-react';
+  const Hello = () => (
+    &lt;NavigationLink
+      stateKey="hello"
+      navigationData={{ size: 20 }}>
+      Hello
+    &lt;/NavigationLink>
+  );</code></pre>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+      </li>
+      <li>
+        <h3>Get the Data</h3>
+        <pre><code class="language-jsx">import { NavigationContext } from 'navigation-react';
 
-const World = () => {
-  const { data } = useContext(NavigationContext);
-  return (
-    &lt;div style={{ fontSize: data.size }}>
-      World
-    &lt;/div>
-  );
-};</code></pre>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-      </p>
-    </li>
-  </ol>
+  const World = () => {
+    const { data } = useContext(NavigationContext);
+    return (
+      &lt;div style={{ fontSize: data.size }}>
+        World
+      &lt;/div>
+    );
+  };</code></pre>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+        </p>
+      </li>
+    </ol>
+  </div>
   <script src="js/prism.js"></script>
 </body>
 </html>
