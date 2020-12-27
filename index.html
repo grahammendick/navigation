@@ -20,7 +20,8 @@
     </div>
   </div>
   <div>
-    <div>
+  <ol>
+    <li>
       <h3>Define Your States</h3>
       <pre><code class="language-jsx">import { StateNavigator } from 'navigation';
 
@@ -30,19 +31,19 @@ const stateNavigator = new StateNavigator([
 ]);</code></pre>
       <p>
       </p>
-    </div>
-    <div>
-      <h3>Map Your Scenes</h3>
+    </li>
+    <li>
+      <h3>Render Your Scenes</h3>
       <pre><code class="language-jsx">const { hello, world } = stateNavigator.scenes;
 
 hello.renderScene = = () => &lt;Hello />;
 world.renderScene = = () => &lt;World />;</code></pre>
-            <p>
-            </p>
-        </div>
-        <div>
-            <h3>Navigate Between Scenes</h3>
-            <pre><code class="language-jsx">import { NavigationLink } from 'navigation-react';
+      <p>
+      </p>
+    </li>
+    <li>
+        <h3>Navigate Between Scenes</h3>
+        <pre><code class="language-jsx">import { NavigationLink } from 'navigation-react';
 
 const Hello = () => (
   &lt;NavigationLink
@@ -53,8 +54,8 @@ const Hello = () => (
 );</code></pre>
       <p>
       </p>
-    </div>
-    <div>
+    </li>
+    <li>
       <h3>Use Navigation Data</h3>
       <pre><code class="language-jsx">import { NavigationContext } from 'navigation-react';
 
@@ -65,11 +66,10 @@ const World = () => {
       World
     &lt;/div>
   );
-};
-            </code></pre>
-            <p>
-            </p>
-        </div>
-    </div>
+};</code></pre>
+      <p>
+      </p>
+    </li>
+  </ol>
 </body>
 </html>
