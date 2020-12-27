@@ -3,19 +3,29 @@
 <head>
   <title>The Navigation router</title>
   <meta name="viewport" content="width=device-width">
+  <style>
+    div.tabs {
+      display: flex;
+      flex-direction: row;
+    }
+    div.tab {
+      width: 33.33333333%;
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
   <h1>The Navigation router</h1>
   <p>Scene-based navigation for React and React Native</p>
-  <div>
-    <div>
+  <div class="tabs">
+    <div class="tab">
       <h2>Web</h2>
     </div>
-    <div>
+    <div class="tab">
       Native
     </div>
-    <div>
+    <div class="tab">
       Mobile
     </div>
   </div>
