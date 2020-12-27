@@ -3,6 +3,7 @@
 <head>
   <title>The Navigation router</title>
   <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="css/prism.css">
   <style>
     body {
       font-family: Palatino;
@@ -91,7 +92,7 @@ world.renderScene = = () => &lt;World />;</code></pre>
 const Hello = () => (
   &lt;NavigationLink
     stateKey="hello"
-    navigationData={{ size: 20 }}
+    navigationData={{ size: 20 }}>
     Hello
   &lt;/NavigationLink>
 );</code></pre>
@@ -114,5 +115,6 @@ const World = () => {
       </p>
     </li>
   </ol>
+  <script src="js/prism.js"></script>
 </body>
 </html>
