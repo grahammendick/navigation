@@ -1,133 +1,75 @@
 <html>
+
 <head>
-    <title>Navigation</title>
-    <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="css/prism.css">
-    <link rel="stylesheet" href="css/navigation.css">
+  <title>The Navigation router</title>
+  <meta name="viewport" content="width=device-width">
 </head>
+
 <body>
-    <div id="banner">
+  <h1>The Navigation router</h1>
+  <p>Scene-based navigation for React and React Native</p>
+  <div>
+    <div>
+      <h2>Web</h2>
+    </div>
+    <div>
+      Native
+    </div>
+    <div>
+      Mobile
+    </div>
+  </div>
+  <div>
+    <div>
+      <h3>Define Your States</h3>
+      <pre><code class="language-jsx">import { StateNavigator } from 'navigation';
+
+const stateNavigator = new StateNavigator([
+  { key: 'hello', route: '' },
+  { key: 'world' }
+]);</code></pre>
+      <p>
+      </p>
+    </div>
+    <div>
+      <h3>Map Your Scenes</h3>
+      <pre><code class="language-jsx">const { hello, world } = stateNavigator.scenes;
+
+hello.renderScene = = () => &lt;Hello />;
+world.renderScene = = () => &lt;World />;</code></pre>
+            <p>
+            </p>
+        </div>
         <div>
-            <a href="index.html" class="selected">Navigation</a>
-            <a href="documentation/hello-world.html">Docs</a>
-            <a href="download/index.html">Download</a>
-            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
+            <h3>Navigate Between Scenes</h3>
+            <pre><code class="language-jsx">import { NavigationLink } from 'navigation-react';
+
+const Hello = () => (
+  &lt;NavigationLink
+    stateKey="hello"
+    navigationData={{ size: 20 }}
+    Hello
+  &lt;/NavigationLink>
+);</code></pre>
+      <p>
+      </p>
+    </div>
+    <div>
+      <h3>Use Navigation Data</h3>
+      <pre><code class="language-jsx">import { NavigationContext } from 'navigation-react';
+
+const World = () => {
+  const { data } = useContext(NavigationContext);
+  return (
+    &lt;div style={{ fontSize: data.size }}>
+      World
+    &lt;/div>
+  );
+};
+            </code></pre>
+            <p>
+            </p>
         </div>
     </div>
-    <div id="logo">
-        <h1>Navigation</h1>
-        <img alt="cursor hand" src="img/cursor.png" />
-        <div>The data-first JavaScript router</div>
-    </div>
-    <div id="content" class="home">
-        <div class="plug">
-            <h2>Data First</h2>
-            Other JavaScript routers have got it all back to front. They want you to configure your routes before you even know what data you're passing. With the Navigation router, you can delay your route configuration until after your application's up and running.
-        </div>
-        <div class="plug">
-            <h2>Routes Last</h2>
-            How can your application run if you haven't set any routes? The Navigation router generates interim routes and passes all data in the query string. At any time, you can configure the real routes and introduce route parameters without changing any code.
-        </div>
-        <h2>Try It Out</h2>
-        <p>
-            Take a look at this working application. It's a Hyperlink you can click to indicate whether you like something. It works even though there's no route configured yet. Click the toggle Hyperlink below then take a look at the browser Url. The Navigation router's generated an interim Url of '/?like=true1_1', but you can change it to '/example/true' without touching the code:
-        </p>
-        <ol>
-            <li>Start by setting a route in the configuration below. Type the word 'example' in the route text box. As you type, watch the browser Url automatically update to '/example?like=true1_1'</li>
-            <li>Next, change the 'like' indicator from a query string to a route parameter. Update the route text box to 'example/{like}'. Keep your eye on the Url as it changes to '/example/true1_1'</li>
-            <li>The Navigation router passes around the 'like' indicator as a boolean. It uses the trailing characters of the Url to keep track of the type. Tidy up the Url by configuring the type instead. Pick 'boolean' from the drop down below and watch the Url become 'example/true'</li>
-        </ol>
-        <p>
-        </p>
-        <div class="app">
-            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
-  {key: 'example', </code><label for="route"><code class="language-jsx">route:</code></label><input id="route"/><code class="language-jsx">, </code><label for="defType"><code class="language-jsx">defaultTypes: {like:</code></label><select id="defType">
-      <option value="string"></string>
-      <option value="boolean">boolean</string>
-  </select><code class="language-jsx">}}
-]);
-
-stateNavigator.states.example.renderView = data => (
-  &lt;NavigationReact.NavigationLink 
-    stateKey="example"
-    navigationData={{like: !data.like}}>
-    You {data.like ? 'like' : 'haven\'t liked'} this. Click to toggle.
-  &lt;/NavigationReact.NavigationLink>
-);
-
-stateNavigator.start();
-
-ReactDOM.render(
-  &lt;NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
-      &lt;NavigationReact.NavigationContext.Consumer>
-        {({ state, data }) => state.renderView(data)}
-      &lt;/NavigationReact.NavigationContext.Consumer>
-  &lt;/NavigationReact.NavigationLink>,
-  document.getElementById('app')
-);
-</code></pre>
-        </div>
-        <div id="app"/>
-    </div>
-    <div id="footer">
-        Thanks to <a href="https://www.browserstack.com/">BrowserStack</a> for their help with cross browser testing
-    </div>
-    <script src="js/prism.js"></script>
-    <script src="https://unpkg.com/react@16.4.0/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@16.4.0/umd/react-dom.development.js"></script>
-    <script src="download/navigation-5.2.0.js"></script>
-    <script src="download/navigation.react-4.1.1.js"></script>
-    <script>
-var stateNavigator = new Navigation.StateNavigator([{ key: 'example', route: '' }]);
-
-renderView();
-stateNavigator.start(location.hash ? '/' : '');
-render();
-
-document.getElementById('route').addEventListener('keyup', reconfigure);
-document.getElementById('defType').addEventListener('change', reconfigure);
-
-function reconfigure() {
-    var navigationData = stateNavigator.stateContext.includeCurrentData({});
-    try {
-        stateNavigator.configure([
-            {key: 'example', route: document.getElementById('route').value, defaultTypes: { 'like': document.getElementById('defType').value }}
-        ]);
-        renderView();
-        stateNavigator.navigate('example', navigationData);
-    } catch(ex) {
-        render();
-    }    
-}
-
-function renderView() {
-    stateNavigator.states.example.renderView = function(data) {
-        return React.createElement(
-            NavigationReact.NavigationLink,
-            {
-                stateKey: 'example',
-                navigationData: { like: !data.like }
-            },
-            'You ',
-            data.like ? 'like' : 'haven\'t liked',
-            ' this. Click to toggle.'
-        );
-    };
-}
-
-function render() {
-    ReactDOM.render(React.createElement(
-        NavigationReact.NavigationHandler,
-        { stateNavigator: stateNavigator, key: stateNavigator.states.example.route },
-        React.createElement(
-            NavigationReact.NavigationContext.Consumer,
-            null,
-            function (context) {
-                return context.state.renderView(context.data);
-            }
-        )
-    ), document.getElementById('app'));
-}
-    </script>
 </body>
 </html>
