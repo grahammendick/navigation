@@ -48,7 +48,31 @@
       border-radius: 15px 15px 0 0;
     }
     h1 {
+      text-align: center;
+      margin: 0;
+    }
+    p.strapline {
+      text-align: center;
+      margin: 5px 0 15px 0;
+      font-style: italic;
+      font-size: 1.1em;
+    }
+    div.intro {
+      display: flex;
+      flex-direction: row;
+    }
+    div.intro div {
+      flex: 1;
+      width: 50%;
+      padding: 0 2%;
+      line-height: 1.4em;
+    }
+    div.intro h2 {
+      text-align: center;
       font-weight: normal;
+      color: #6d6d6d;
+      font-size: 1.3em;
+      margin: 0;
     }
     h3 {
       text-align: center;
@@ -115,8 +139,22 @@
 </head>
 
 <body>
-  <p>The Navigation router</p>
-  <h1>Scene-based Navigation for React and React Native</h1>
+  <h1>The Navigation router</h1>
+  <p class="strapline">Scene-Based Navigation for React and React Native</p>
+  <div class="intro">
+    <div>
+      <h2>Scene-Based Navigation</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+      </p>
+    </div>
+    <div>
+      <h2>React and React Native</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+      </p>
+    </div>
+  </div>
   <div class="tabs">
     <div class="end"></div>
     <div class="tab">
