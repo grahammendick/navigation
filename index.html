@@ -11,6 +11,24 @@
       width: 95%;
       padding: 15px 0;
     }
+    div.banner {
+      height: 35px;
+      background-color: #fff;
+      margin-bottom: 15px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;      
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+    }
+    div.banner a {
+      color: #ed335f;
+      padding: 0 2%;
+      font-weight: bold;
+    }
     div.tabs {
       display: flex;
       flex-direction: row;
@@ -50,6 +68,7 @@
     h1 {
       text-align: center;
       margin: 0;
+      padding-top: 35px;
     }
     p.strapline {
       text-align: center;
@@ -135,8 +154,12 @@
     }
   </style>
 </head>
-
 <body>
+  <div class="banner">
+    <a>Docs</a>
+    <a>Download</a>
+    <a>Github</a>
+  </div>
   <h1>The Navigation router</h1>
   <p class="strapline">Scene-Based Navigation for React and React Native</p>
   <div class="intro">
