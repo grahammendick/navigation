@@ -160,13 +160,13 @@ const stateNavigator = new StateNavigator([
           <h3>Navigate to a Scene</h3>
           <pre><code class="language-jsx">import { NavigationLink } from 'navigation-react';
 
-  const Hello = () => (
-    &lt;NavigationLink
-      stateKey="world"
-      navigationData={{ size: 20 }}>
-      Hello
-    &lt;/NavigationLink>
-  );</code></pre>
+const Hello = () => (
+  &lt;NavigationLink
+    stateKey="world"
+    navigationData={{ size: 20 }}>
+    Hello
+  &lt;/NavigationLink>
+);</code></pre>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </p>
@@ -175,14 +175,14 @@ const stateNavigator = new StateNavigator([
         <h3>Get the Data</h3>
         <pre><code class="language-jsx">import { NavigationContext } from 'navigation-react';
 
-  const World = () => {
-    const { data } = useContext(NavigationContext);
-    return (
-      &lt;div style={{ fontSize: data.size }}>
-        World
-      &lt;/div>
-    );
-  };</code></pre>
+const World = () => {
+  const { data } = useContext(NavigationContext);
+  return (
+    &lt;div style={{ fontSize: data.size }}>
+      World
+    &lt;/div>
+  );
+};</code></pre>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
         </p>
