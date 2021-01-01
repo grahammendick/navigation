@@ -61,6 +61,10 @@ div.tab {
   align-items: center;
   justify-content: space-around;
 }
+div.tab.web {
+  border-left: 2px solid #000;
+  border-right: 0;
+}
 div.tab.active {
   background-color: var(--primary-color);
   color: var(--foreground-color);

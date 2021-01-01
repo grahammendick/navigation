@@ -4,12 +4,12 @@
   <meta name="viewport" content="width=device-width">
   <style>
     :root {
-      --primary-color: #f9858b;
-      --secondary-color: #ed335f;
+      --primary-color: #9cc3d5ff;
+      --secondary-color: #0063b2ff;
     }    
   </style>
-  <link rel="stylesheet" href="css/prism.css">
-  <link rel="stylesheet" href="css/navigationv2.css">
+  <link rel="stylesheet" href="../css/prism.css">
+  <link rel="stylesheet" href="../css/navigationv2.css">
 </head>
 <body>
   <div class="banner">
@@ -19,7 +19,7 @@
   </div>
   <div class="heading">
     <div>
-      <img alt="logo" src="img/logo.png" />
+      <img alt="logo" src="../img/logo.png" />
       <h1>The Navigation router</h1>
     </div>
   </div>
@@ -40,22 +40,22 @@
   </div>
   <div class="tabs">
     <div class="end"></div>
-    <div class="tab web active">
+    <div class="tab web">
       <div>
-        <img alt="web" src="img/web.png" />
+        <img alt="web" src="../img/web-off.png" />
         <h2>Web</h2>
       </div>
     </div>
-    <div class="tab">
+    <div class="tab active">
       <div>
-        <img alt="native" src="img/native-off.png" />
+        <img alt="native" src="../img/native.png" />
         <a href="#">Native</a>
       </div>
     </div>
     <div class="tab mobile">
       <div>
-        <img alt="web" src="img/web-off.png" />
-        <img alt="native" src="img/native-off.png" />
+        <img alt="web" src="../img/web-off.png" />
+        <img alt="native" src="../img/native-off.png" />
         <a href="#">Mobile</a>
       </div>
     </div>
@@ -74,7 +74,7 @@ const stateNavigator = new StateNavigator([
         <p>
           You create one <code>State</code> for each scene (page) in your app. You don't need to define your routes yet. The Navigation router generates interim routes. You can define your real routes at any time without changing any code. With scene-based navigation, there aren't any hard-coded Urls for you to update.
         </p>
-        <img class="arrow" alt="Next - create your scenes" src="img/arrow.png" />
+        <img class="arrow" alt="Next - create your scenes" src="../img/arrow.png" />
       </li>
       <li>
         <h3>Create Your Scenes</h3>
@@ -85,7 +85,7 @@ world.renderScene = = () => &lt;World />;</code></pre>
         <p>
           For each scene, you create a component that renders its UI. You map these scene components to their corresponding <code>States</code>. All the other routers for React force you to think in terms of routes. But this is confusing because routes and scenes aren't the same thing. One scene can have more than one route, for example, a master/details page.
         </p>
-        <img class="arrow" alt="Next - navigate to a scene" src="img/arrow.png" />
+        <img class="arrow" alt="Next - navigate to a scene" src="../img/arrow.png" />
       </li>
       <li>
           <h3>Navigate to a Scene</h3>
@@ -101,7 +101,7 @@ const Hello = () => (
         <p>
           The <code>NavigationLink</code> component changes scene. You pass the name of the scene and the data. The Navigation router builds the Url. If you've configured more than one route it uses the best match.
         </p>
-        <img class="arrow" alt="Next - use the data" src="img/arrow.png" />
+        <img class="arrow" alt="Next - use the data" src="../img/arrow.png" />
       </li>
       <li>
         <h3>Use the Data</h3>
@@ -124,6 +124,6 @@ const World = () => {
       Take a look at the <a href="#">complete Hello World example</a>
     </p>
   </div>
-  <script src="js/prism.js"></script>
+  <script src="../js/prism.js"></script>
 </body>
 </html>
