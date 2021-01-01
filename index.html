@@ -65,7 +65,7 @@
       align-items: center;
       justify-content: space-around;
     }
-    div.tab:nth-child(2) {
+    div.tab.active {
       background-color: #f9858b;
       color: #761137;
       text-transform: uppercase;
@@ -85,14 +85,14 @@
     div.tab a {
       color: #000;
     }
-    div.tab:nth-child(2) img {
+    div.tab.active img {
       height: 32px;
       padding: 0 5%;
     }
-    div.tab:nth-child(4) img:nth-of-type(1) {
+    div.tab.mobile img:nth-of-type(1) {
       padding: 0;
     }
-    div.tab:nth-child(4) img:nth-of-type(2) {
+    div.tab.mobile img:nth-of-type(2) {
       padding-left: 4%;
     }
     div.heading {
@@ -220,7 +220,7 @@
         height: 16px;
         padding: 0 4%;
       }
-      div.tab:nth-child(2) img {
+      div.tab.active img {
         height: 25px;
       }
       li {
@@ -274,7 +274,7 @@
   </div>
   <div class="tabs">
     <div class="end"></div>
-    <div class="tab">
+    <div class="tab active">
       <div>
         <img alt="web" src="img/web.png" />
         <h2>Web</h2>
@@ -286,7 +286,7 @@
         <a href="#">Native</a>
       </div>
     </div>
-    <div class="tab">
+    <div class="tab mobile">
       <div>
         <img alt="web" src="img/web-off.png" />
         <img alt="native" src="img/native-off.png" />
