@@ -68,8 +68,8 @@
         <pre><code class="language-jsx">import { StateNavigator } from 'navigation';
 
 const stateNavigator = new StateNavigator([
-  { key: 'hello', route: '' },
-  { key: 'world' }
+  { key: 'hello' },
+  { key: 'world', trackCrumbTrail: true }
 ]);</code></pre>
         <p>
           You create one <code>State</code> for each scene (page) in your app. You don't need to define your routes yet. The Navigation router generates interim routes. You can define your real routes at any time without changing any code. With scene-based navigation, there aren't any hard-coded Urls for you to update.
@@ -89,17 +89,19 @@ world.renderScene = = () => &lt;World />;</code></pre>
       </li>
       <li>
           <h3>Navigate to a Scene</h3>
-          <pre><code class="language-jsx">import { NavigationLink } from 'navigation-react';
+          <pre><code class="language-jsx">import { NavigationContext } from 'navigation-react';
 
-const Hello = () => (
-  &lt;NavigationLink
-    stateKey="world"
-    navigationData={{ size: 20 }}>
-    Hello
-  &lt;/NavigationLink>
-);</code></pre>
+const Hello = () => {
+  const { stateNavigator } = useContext(NavigationContext);
+  return (
+    &lt;Button title="Hello"
+      onPress={() => {
+        stateNavigator.navigate('world', {size: 20});
+      }} />
+  );
+};</code></pre>
         <p>
-          The <code>NavigationLink</code> component changes scene. You pass the name of the scene and the data. The Navigation router builds the Url. If you've configured more than one route it uses the best match.
+          The <code>NavigationLink</code> component changes scene. You pass the name of the scene and the data.
         </p>
         <img class="arrow" alt="Next - use the data" src="../img/arrow.png" />
       </li>
@@ -110,9 +112,9 @@ const Hello = () => (
 const World = () => {
   const { data } = useContext(NavigationContext);
   return (
-    &lt;div style={{ fontSize: data.size }}>
+    &lt;Text style={{ fontSize: data.size }}>
       World
-    &lt;/div>
+    &lt;/Text>
   );
 };</code></pre>
         <p>
