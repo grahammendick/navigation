@@ -10,7 +10,7 @@ p {
 code {
   font-family: source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;
   font-size: 0.9em;
-  color: #ed335f;      
+  color: var(--highlight-color);      
 }
 div.banner {
   height: 35px;
@@ -26,7 +26,7 @@ div.banner {
   flex-direction: row;
 }
 div.banner a {
-  color: #ed335f;
+  color: var(--highlight-color);
   text-decoration: none;
   padding: 0 2%;
   font-weight: bold;
@@ -43,13 +43,13 @@ div.tab {
 }
 div.end {
   width: 2%;
-  border-bottom: 4px solid #ed335f;      
+  border-bottom: 4px solid var(--highlight-color);      
 }
 div.tab {
   color: #000;
   text-transform: uppercase;
   border: 2px solid #000;
-  border-bottom: 4px solid #ed335f;
+  border-bottom: 4px solid var(--highlight-color);
   border-left: 0;
   margin-top: 10px;
   border-radius: 15px 15px 0 0;
@@ -59,11 +59,11 @@ div.tab {
   justify-content: space-around;
 }
 div.tab.active {
-  background-color: #f9858b;
-  color: #761137;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
   text-transform: uppercase;
   margin-top: 0;
-  border: 4px solid #ed335f;
+  border: 4px solid var(--highlight-color);
   border-bottom: 0;
   border-radius: 15px 15px 0 0;
 }
@@ -137,8 +137,8 @@ div.content {
   width: 90%;
   position: relative;
   margin: 0 auto;
-  background-color: #f9858b;
-  border: 4px solid #ed335f;
+  background-color: var(--background-color);
+  border: 4px solid var(--foreground-color)335f;
   border-top: 0;
   border-radius: 0 0 20px 20px;
   box-sizing: border-box;
@@ -163,7 +163,7 @@ ol {
   margin: 0;
 }
 li {
-  border: 3px solid #ed335f;
+  border: 3px solid var(--highlight-color);
   background-color: #fff;
   height: 355px;
   width: 46%;
