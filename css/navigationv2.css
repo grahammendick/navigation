@@ -61,7 +61,7 @@ div.tab {
   align-items: center;
   justify-content: space-around;
 }
-div.tab.web {
+div.tab.web, div.tab.native {
   border-left: 2px solid #000;
   border-right: 0;
 }
