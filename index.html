@@ -219,7 +219,7 @@
     <div>
       <h2>React and React Native</h2>
       <p>
-        You don’t need a different routing library for React and React Native apps anymore. The Navigation router has a single API that works on both. What’s more, it doesn’t compromise the UX. On React Native, the navigation is 100% native on Android and iOS. On React, you can have whatever URLs you want. 
+        You don't need a different routing library for React and React Native apps anymore. The Navigation router has a single API that works on both. What's more, it doesn't compromise the UX. On React Native, the navigation is 100% native on Android and iOS. On React, you can have whatever URLs you want. 
       </p>
     </div>
   </div>
@@ -260,7 +260,7 @@ const stateNavigator = new StateNavigator([
   { key: 'world' }
 ]);</code></pre>
         <p>
-          You create one State for each scene (page) in your app. You don’t need to define your routes yet. The Navigation router generates interim routes. You can define your real routes at any time without changing any code. With scene-based navigation, there aren't any hard-coded Urls for you to update.
+          You create one State for each scene (page) in your app. You don't need to define your routes yet. The Navigation router generates interim routes. You can define your real routes at any time without changing any code. With scene-based navigation, there aren't any hard-coded Urls for you to update.
         </p>
         <img class="arrow" alt="Next - create your scenes" src="img/arrow.png" />
       </li>
@@ -271,7 +271,7 @@ const stateNavigator = new StateNavigator([
 hello.renderScene = = () => &lt;Hello />;
 world.renderScene = = () => &lt;World />;</code></pre>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          For each scene, you create a component that renders its UI. You map these scene components to their corresponding States. All the other routers for React force you to think in terms of routes. But this is confusing because routes and scenes aren't the same thing. A scene can have more than one route, for example, a master/details page.
         </p>
         <img class="arrow" alt="Next - navigate to a scene" src="img/arrow.png" />
       </li>
