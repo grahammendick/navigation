@@ -95,6 +95,9 @@
       display: flex;
       justify-content: center;      
     }
+    div.heading div {
+      text-align: center;
+    }
     div.heading img {
       height: 40px;
       margin-top: 25px;      
@@ -103,6 +106,7 @@
       text-align: center;
       margin: 0;
       padding-top: 35px;
+      display: inline;
     }
     p.strapline {
       text-align: center;
@@ -245,8 +249,10 @@
     <a>Github</a>
   </div>
   <div class="heading">
-    <img alt="logo" src="img/logo.png" />
-    <h1>The Navigation router</h1>
+    <div>
+      <img alt="logo" src="img/logo.png" />
+      <h1>The Navigation router</h1>
+    </div>
   </div>
   <p class="strapline">Scene-Based Navigation for React and React Native</p>
   <div class="intro">
