@@ -144,14 +144,6 @@
       box-sizing: border-box;
 
     }
-    p.summary {
-      position: absolute;
-      right: 3%;
-      width: 47%;
-      color: #761137;
-      margin-top: 20px;
-      font-weight: bold;
-    }
     p.note {
       position: absolute;
       left: 3%;
@@ -160,6 +152,9 @@
       color: #761137;
       margin-bottom: 20px;
       font-weight: bold;
+    }
+    p.note a {
+      color: #761137;
     }
     ol {
       display: flex;
@@ -252,9 +247,6 @@
     <div class="end"></div>
   </div>
   <div class="content">
-    <p class="summary">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-    </p>
     <ol>
       <li>
         <h3>Define Your States</h3>
@@ -314,7 +306,7 @@ const World = () => {
       </li>
     </ol>
     <p class="note">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+      Take a look at the <a href="#">complete Hello World example</a>
     </p>
   </div>
   <script src="js/prism.js"></script>
