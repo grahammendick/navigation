@@ -14,6 +14,11 @@
     p {
       line-height: 1.4em;
     }
+    code {
+      font-family: source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;
+      font-size: 0.9em;
+      color: #ed335f;      
+    }
     div.banner {
       height: 35px;
       background-color: #fff;
@@ -260,7 +265,7 @@ const stateNavigator = new StateNavigator([
   { key: 'world' }
 ]);</code></pre>
         <p>
-          You create one State for each scene (page) in your app. You don't need to define your routes yet. The Navigation router generates interim routes. You can define your real routes at any time without changing any code. With scene-based navigation, there aren't any hard-coded Urls for you to update.
+          You create one <code>State</code> for each scene (page) in your app. You don't need to define your routes yet. The Navigation router generates interim routes. You can define your real routes at any time without changing any code. With scene-based navigation, there aren't any hard-coded Urls for you to update.
         </p>
         <img class="arrow" alt="Next - create your scenes" src="img/arrow.png" />
       </li>
@@ -271,7 +276,7 @@ const stateNavigator = new StateNavigator([
 hello.renderScene = = () => &lt;Hello />;
 world.renderScene = = () => &lt;World />;</code></pre>
         <p>
-          For each scene, you create a component that renders its UI. You map these scene components to their corresponding States. All the other routers for React force you to think in terms of routes. But this is confusing because routes and scenes aren't the same thing. One scene can have more than one route, for example, a master/details page.
+          For each scene, you create a component that renders its UI. You map these scene components to their corresponding <code>States</code>. All the other routers for React force you to think in terms of routes. But this is confusing because routes and scenes aren't the same thing. One scene can have more than one route, for example, a master/details page.
         </p>
         <img class="arrow" alt="Next - navigate to a scene" src="img/arrow.png" />
       </li>
@@ -287,7 +292,7 @@ const Hello = () => (
   &lt;/NavigationLink>
 );</code></pre>
         <p>
-          The NavigationLink component changes the scene. You pass the name of the scene and the data. The Navigation router builds the Url. If you've configured more than one route it uses the best match
+          The <code>NavigationLink</code> component changes scene. You pass the name of the scene and the data. The Navigation router builds the Url. If you've configured more than one route it uses the best match
         </p>
         <img class="arrow" alt="Next - use the data" src="img/arrow.png" />
       </li>
