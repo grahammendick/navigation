@@ -205,7 +205,7 @@ li:nth-child(3) img {
   top: 540px;
 }
 li p {
-  margin-top: 2px;
+  margin-top: 4px;
 }
 @media (max-width:600px) {
   div.intro {
