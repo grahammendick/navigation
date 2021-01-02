@@ -191,8 +191,8 @@ li:nth-child(3) {
 img.arrow {
   position: absolute;
   height: 140px;
-  transform: rotate(160deg);
-  left: 48%;
+  transform: rotate(159deg);
+  left: 48.16%;
 }
 li:nth-child(1) img {
   top: 180px;
