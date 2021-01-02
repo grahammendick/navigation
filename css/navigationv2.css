@@ -38,7 +38,7 @@ div.banner a {
 div.tabs {
   display: flex;
   flex-direction: row;
-  width: 90%;
+  width: 99%;
   margin: 0 auto;
 }
 div.tab {
@@ -142,7 +142,7 @@ h3 {
   color: #6d6d6d;
 }
 div.content {
-  width: 90%;
+  width: 99%;
   position: relative;
   margin: 0 auto;
   background-color: var(--primary-color);
