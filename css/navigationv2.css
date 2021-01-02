@@ -192,13 +192,13 @@ img.arrow {
   position: absolute;
   height: 140px;
   transform: rotate(160deg);
-  left: 47.665%;
+  left: 48%;
 }
 li:nth-child(1) img {
   top: 180px;
 }
 li:nth-child(2) img {
-  transform: rotate(205deg);
+  transform: rotate(200deg);
   top: 360px;
 }
 li:nth-child(3) img {
