@@ -335,13 +335,16 @@
     font-size: 0.8em;
     color: var(--secondary-color);
   }
-  #content pre{
+  #content pre {
      border: 2px solid var(--secondary-color);
      border-radius: 0;
      padding:1.5%;
   }
   #article pre[class*="language-"] {
     font-size: 1em;
+  }
+  #article pre + pre, #article pre + .Note {
+    margin-top: 15px;
   }
   #article h2 {
     font-weight: normal;
