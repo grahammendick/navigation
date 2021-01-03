@@ -1,5 +1,6 @@
 :root {
     --foreground-color: #761137;
+    --heading-color: #6d6d6d;
   }    
   body {
     font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
@@ -13,7 +14,7 @@
   code {
     font-family: source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;
     font-size: 0.8em;
-    color: var(--secondary-color);      
+    color: var(--secondary-color);
   }
   #banner {
     height: 35px;
@@ -23,7 +24,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 100;      
+    z-index: 100;
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -49,7 +50,7 @@
   }
   div.end {
     width: 7%;
-    border-bottom: 4px solid var(--secondary-color);      
+    border-bottom: 4px solid var(--secondary-color);
   }
   div.tab {
     color: #000;
@@ -101,14 +102,14 @@
   }
   #heading {
     display: flex;
-    justify-content: center;      
+    justify-content: center;
   }
   #heading div {
     text-align: center;
   }
   #heading img {
     height: 40px;
-    margin-top: 25px;      
+    margin-top: 25px;
   }
   h1 {
     text-align: center;
@@ -133,7 +134,7 @@
   div.intro h2 {
     text-align: center;
     font-weight: normal;
-    color: #6d6d6d;
+    color: var(--heading-color);;
     font-size: 1.3em;
     margin: 0;
   }
@@ -142,7 +143,7 @@
     font-size: 1.4em;
     margin: 5px 0;
     font-weight: normal;
-    color: #6d6d6d;
+    color: var(--heading-color);;
   }
   #tabContent {
     width: 99%;
@@ -313,7 +314,7 @@
     font-weight: normal;
     text-align: center;
     padding: 10px 0;
-    color: #6d6d6d;
+    color: var(--heading-color);;
     font-size: 1.3em;
     margin: 0;
   }
@@ -383,7 +384,7 @@
   #article .Note  h2{
     margin: 2px 0;
     font-size: 1.3em;
-    color: #6d6d6d;
+    color: var(--heading-color);;
   }
   @media (min-width:1250px) {
     #menu {
