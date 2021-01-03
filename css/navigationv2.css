@@ -160,12 +160,12 @@ p.note {
   left: 3%;
   bottom: 0;
   width: 47%;
-  color: #761137;
+  color: var(--foreground-color);
   margin-bottom: 20px;
   font-weight: bold;
 }
 p.note a {
-  color: #761137;
+  color: var(--foreground-color);
 }
 ol {
   display: flex;
@@ -263,21 +263,21 @@ li p {
   display: block;
 }
 #menu {
-  background-color: #f9858b;
+  background-color: var(--primary-color);
   position: fixed;
   top: 0;
   bottom: 10;
   margin-top: 45px;
   width: 32%;
   border-radius: 15px;
-  border: 4px solid #ed335f;
+  border: 4px solid var(--secondary-color);
   box-sizing: border-box;
 }
 #menu #items {
   background-color: white;
   height: calc(100% - 70px);
   margin: 10px 5%;
-  border: 2px solid #ed335f;
+  border: 2px solid var(--secondary-color);
   padding: 15px 5%;
   display: flex;
   overflow: auto;
@@ -286,7 +286,7 @@ li p {
 }
 #menu h2 {
   width: 100%;
-  color: #761137;
+  color: var(--foreground-color);
   font-weight: bold;
   font-size: 1.2em;
   margin: 0;
@@ -304,8 +304,8 @@ li p {
   padding: 4px 0;
 }
 #menu a.selected {
-  background-color: #f9858b;
-  color: #761137;
+  background-color: var(--primary-color);
+  color: var(--foreground-color);
   font-weight: bold;
   text-decoration: none;  
 }
@@ -328,10 +328,10 @@ p {
 code {
   font-family: source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;
   font-size: 0.8em;
-  color: #ed335f;
+  color: var(--secondary-color);
 }
 #content pre{
-   border:2px solid #ed335f;
+   border:2px solid var(--secondary-color);
    border-radius: 0;
    padding:1.5%;
 }
