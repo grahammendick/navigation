@@ -336,7 +336,7 @@
     color: var(--secondary-color);
   }
   #content pre{
-     border:2px solid var(--secondary-color);
+     border: 2px solid var(--secondary-color);
      border-radius: 0;
      padding:1.5%;
   }
@@ -346,8 +346,41 @@
   #article h2 {
     font-weight: normal;
   }
+  #article h3 {
+    color: #000;
+    text-align: unset;
+    font-weight: normal;
+    font-size: 1.3em;
+    margin: 15px 0;
+  }
   #article a {
     color: #000;
+  }
+  #article table {
+    font-size: inherit;
+    width: 100%;
+    margin: 0 0 2% 0;
+    border-collapse: collapse;
+    word-break: break-word;    
+  }
+  #article th, #article td {
+    border: 0.1em solid #000;
+    padding: 1% 0;    
+  }
+  #article td {
+    padding-left: 5%;
+  }
+  #article .Note {
+    width: 90%;
+    margin: 0 auto;
+    border-left: 6px solid var(--secondary-color);
+    padding: 10px 3%;
+    line-height: 1.2em;
+  }
+  #article .Note  h2{
+    margin: 2px 0;
+    font-size: 1.3em;
+    color: #6d6d6d;
   }
   @media (min-width:1250px) {
     #menu {
