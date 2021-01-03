@@ -38,7 +38,7 @@ h1 {
 div#menu {
   background-color: #f9858b;
   position: fixed;
-  width: 23%;
+  width: 32%;
   height: 100%;
   border-radius: 15px;
   border: 4px solid #ed335f;
@@ -56,8 +56,7 @@ div#menu h2 {
   margin: 0;
 }
 div#article {
-  margin-left: 24.2105%;
-  width: 75%;
+  margin-left: 34.7368%;
   padding-left: 2%;
   box-sizing: border-box;
 }
@@ -80,6 +79,14 @@ pre[class*="language-"] {
 div#article h2 {
   font-weight: normal;
 }
+@media (min-width:1250px) {
+  div#menu {
+    width: 400px;
+  }
+  div#article {
+    margin-left: 400px;
+  }
+}
     </style>
 </head>
 <body>
@@ -89,6 +96,7 @@ div#article h2 {
       <a href="../download/index.html">Download</a>
       <a id="github" href="https://github.com/grahammendick/navigation">GitHub</a>
     </div>
+    <div id="spacer"></div>
     <div id="content">
         <div id="menu">
           <div>
