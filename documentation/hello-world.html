@@ -4,23 +4,40 @@
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="../css/prism.css">
     <style>
-      body {
-        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
-        margin: 0 auto;
-        width: 95%;
-        max-width: 1240px;
-        padding: 15px 0;
-      }
+body {
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+  margin: 0 auto;
+  width: 95%;
+  max-width: 1240px;
+  padding: 15px 0;
+}
+div#banner {
+  height: 35px;
+  background-color: #fff;
+  margin-bottom: 15px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;      
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+div#banner a {
+  color: #ed335f;
+  text-decoration: none;
+  padding: 0 2%;
+  font-weight: bold;
+}
     </style>
 </head>
 <body>
     <div id="banner">
-        <div>
-            <a href="../index.html">Navigation</a>
-            <a href="hello-world.html" class="selected">Docs</a>
-            <a href="../download/index.html">Download</a>
-            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
-        </div>
+      <a href="..">Navigation</a>
+      <a href="hello-world.html" class="selected">Docs</a>
+      <a href="../download/index.html">Download</a>
+      <a id="github" href="https://github.com/grahammendick/navigation">GitHub</a>
     </div>
     <div id="content">
         <div id="menu">
