@@ -141,7 +141,7 @@ h3 {
   font-weight: normal;
   color: #6d6d6d;
 }
-#content {
+#tabContent {
   width: 99%;
   position: relative;
   margin: 0 auto;
@@ -245,5 +245,130 @@ li p {
     text-align: center;
     width: 100%;
     margin-top: 0;
+  }
+}
+
+
+
+body {
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+  margin: 0 auto;
+  width: 95%;
+  padding: 15px 0;
+}
+#banner {
+  height: 35px;
+  background-color: #fff;
+  margin-bottom: 15px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;      
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+#banner a {
+  color: #ed335f;
+  text-decoration: none;
+  padding: 0 2%;
+  font-weight: bold;
+}
+#banner img {
+  height: 25px;
+}
+#content {
+  padding-top: 35px;
+}
+h1 {
+  margin: 0;
+  text-align: center;
+}
+#menu {
+  background-color: #f9858b;
+  position: fixed;
+  top: 0;
+  bottom: 10;
+  margin-top: 45px;
+  width: 32%;
+  border-radius: 15px;
+  border: 4px solid #ed335f;
+  box-sizing: border-box;
+}
+#menu #items {
+  background-color: white;
+  height: calc(100% - 70px);
+  margin: 10px 5%;
+  border: 2px solid #ed335f;
+  padding: 15px 5%;
+  display: flex;
+  overflow: auto;
+  box-sizing: border-box;
+  flex-direction: column;
+}
+#menu h2 {
+  width: 100%;
+  color: #761137;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin: 0;
+  padding-top: 3%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#menu h2 img {
+  height: 32px;
+  padding-right: 2%;
+}
+#menu a {
+  color: #000;
+  padding: 4px 0;
+}
+#menu a.selected {
+  background-color: #f9858b;
+  color: #761137;
+  font-weight: bold;
+  text-decoration: none;  
+}
+#menu h3 {
+  font-weight: normal;
+  text-align: center;
+  padding: 10px 0;
+  color: #6d6d6d;
+  font-size: 1.3em;
+  margin: 0;
+}
+#article {
+  margin-left: 34.7368%;
+  padding-left: 2%;
+  box-sizing: border-box;
+}
+p {
+  line-height: 1.4em;
+}
+code {
+  font-family: source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;
+  font-size: 0.8em;
+  color: #ed335f;
+}
+#content pre{
+   border:2px solid #ed335f;
+   border-radius: 0;
+   padding:1.5%;
+}
+#article pre[class*="language-"] {
+  font-size: 1em;
+}
+#article h2 {
+  font-weight: normal;
+}
+@media (min-width:1250px) {
+  #menu {
+    width: 400px;
+  }
+  #article {
+    margin-left: 400px;
   }
 }
