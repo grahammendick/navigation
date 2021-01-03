@@ -8,7 +8,6 @@ body {
   font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
   margin: 0 auto;
   width: 95%;
-  max-width: 1240px;
   padding: 15px 0;
 }
 div#banner {
@@ -31,9 +30,7 @@ div#banner a {
   font-weight: bold;
 }
 div#content {
-  display: flex;
   padding-top: 35px;
-  width: 100%;
 }
 h1 {
   margin: 0;
@@ -43,6 +40,14 @@ div#menu {
   position: fixed;
   width: 23%;
   height: 100%;
+  border-radius: 15px;
+  border: 4px solid #ed335f;
+  box-sizing: border-box;
+
+}
+#menu div {
+  background-color: white;
+  margin: 15px 5%;
 }
 div#menu h2 {
   font-weight: normal;
@@ -52,7 +57,9 @@ div#menu h2 {
 }
 div#article {
   margin-left: 24.2105%;
+  width: 75%;
   padding-left: 2%;
+  box-sizing: border-box;
 }
 p {
   line-height: 1.4em;
@@ -84,8 +91,8 @@ div#article h2 {
     </div>
     <div id="content">
         <div id="menu">
+          <div>
             <a href="hello-world.html" class="selected">Hello World</a>
-            <a href="thinking-in-navigation.html">Thinking in Navigation</a>
             <div class="separator"></div>
             <h2>THE ABC</h2>
             <a href="state-navigation.html">A. State Navigation</a>
@@ -94,6 +101,7 @@ div#article h2 {
             <a href="examples.html">Examples</a>
             <div class="separator"></div>
             <h2>FURTHER GUIDES</h2>
+            <a href="thinking-in-navigation.html">Thinking in Navigation</a>
             <a href="current-data.html">Current Data</a>
             <a href="html5-history.html">HTML5 History</a>
             <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
@@ -108,6 +116,7 @@ div#article h2 {
             <a href="mobile/shared-element-navigation.html">Shared Element Navigation</a>
             <a href="mobile/examples.html">Examples</a>
             <div class="separator"></div>
+          </div>
         </div>
         <div id="article">
             <h1>Hello World</h1>
