@@ -40,7 +40,7 @@ div#menu {
   background-color: #f9858b;
   position: fixed;
   top: 0;
-  bottom: 0;
+  bottom: 10;
   margin-top: 45px;
   width: 32%;
   border-radius: 15px;
@@ -49,14 +49,30 @@ div#menu {
 }
 #menu #items {
   background-color: white;
-  height: 90%;
-  margin: 5% 5%;
+  height: 80%;
+  margin: 15% 5% 5% 5%;
   border: 2px solid #ed335f;
   padding: 15px 5%;
   display: flex;
   overflow: auto;
   box-sizing: border-box;
   flex-direction: column;
+}
+#menu #heading {
+  position: absolute;
+  width: 100%;
+  color: #761137;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+#menu #heading {
+  display: flex;
+  justify-content: center;
+  padding-top: 3%;
+}
+#menu #heading img {
+  height: 32px;
+  vertical-align: middle;
 }
 #menu #items a {
   color: #000;
@@ -114,6 +130,12 @@ div#article h2 {
     <div id="spacer"></div>
     <div id="content">
         <div id="menu">
+          <div id="heading">
+            <div>
+              <img alt="web" src="../img/web.png" />
+              React
+            </div>
+          </div>
           <div id="items">
             <a href="hello-world.html" class="selected">Hello World</a>
             <div class="separator"></div>
