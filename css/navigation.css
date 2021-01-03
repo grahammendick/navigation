@@ -341,6 +341,9 @@
   #article h2 {
     font-weight: normal;
   }
+  #article a {
+    color: #000;
+  }
   @media (min-width:1250px) {
     #menu {
       width: 400px;
