@@ -15,7 +15,7 @@ code {
   font-size: 0.8em;
   color: var(--secondary-color);      
 }
-div#banner {
+#banner {
   height: 35px;
   background-color: #fff;
   margin-bottom: 15px;
@@ -28,13 +28,13 @@ div#banner {
   align-items: center;
   flex-direction: row;
 }
-div#banner a {
+#banner a {
   color: var(--secondary-color);
   text-decoration: none;
   padding: 0 2%;
   font-weight: bold;
 }
-div#tabs {
+#tabs {
   display: flex;
   flex-direction: row;
   width: 99%;
@@ -96,14 +96,14 @@ div.tab.mobile img:nth-of-type(1) {
 div.tab.mobile img:nth-of-type(2) {
   padding-left: 4%;
 }
-div#heading {
+#heading {
   display: flex;
   justify-content: center;      
 }
-div#heading div {
+#heading div {
   text-align: center;
 }
-div#heading img {
+#heading img {
   height: 40px;
   margin-top: 25px;      
 }
@@ -113,7 +113,7 @@ h1 {
   padding-top: 35px;
   display: inline;
 }
-p#subheading {
+#subheading {
   text-align: center;
   margin: 5px 0 15px 0;
   font-size: 1.1em;
@@ -141,7 +141,7 @@ h3 {
   font-weight: normal;
   color: #6d6d6d;
 }
-div#content {
+#content {
   width: 99%;
   position: relative;
   margin: 0 auto;
