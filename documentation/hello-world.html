@@ -77,9 +77,15 @@ div#menu {
   height: 32px;
   vertical-align: middle;
 }
-#menu #items a {
+#menu a {
   color: #000;
   line-height: 1.4em;
+}
+#menu a.selected {
+  background-color: #f9858b;
+  color: #761137;
+  font-weight: bold;
+  text-decoration: none;  
 }
 div#menu h2 {
   font-weight: normal;
@@ -126,9 +132,9 @@ div#article h2 {
 <body>
     <div id="banner">
       <a href=".."><img alt="logo" src="../img/logo.png" /></a>
-      <a href="hello-world.html" class="selected">Docs</a>
-      <a href="../download/index.html">Download</a>
+      <a href="../download">Download</a>
       <a href="https://github.com/grahammendick/navigation">GitHub</a>
+      <a href="../native">React Native</a>
     </div>
     <div id="spacer"></div>
     <div id="content">
