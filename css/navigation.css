@@ -343,7 +343,7 @@
   #article pre[class*="language-"] {
     font-size: 1em;
   }
-  #article pre + pre, #article pre + .Note {
+  #article pre + pre, #article pre + .Note, #article .Note + pre {
     margin-top: 15px;
   }
   #article h2 {
