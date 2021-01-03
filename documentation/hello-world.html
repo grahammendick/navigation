@@ -61,20 +61,20 @@ div#menu {
   box-sizing: border-box;
   flex-direction: column;
 }
-#menu #heading {
+#menu h2 {
   width: 100%;
   color: #761137;
   font-weight: bold;
   font-size: 1.2em;
-}
-#menu #heading {
+  margin: 0;
+  padding-top: 3%;
   display: flex;
   justify-content: center;
-  padding-top: 3%;
+  align-items: center;
 }
-#menu #heading img {
+#menu h2 img {
   height: 32px;
-  vertical-align: middle;
+  padding-right: 2%;
 }
 #menu a {
   color: #000;
@@ -86,7 +86,7 @@ div#menu {
   font-weight: bold;
   text-decoration: none;  
 }
-div#menu h2 {
+div#menu h3 {
   font-weight: normal;
   text-align: center;
   padding: 10px 0;
@@ -138,29 +138,27 @@ div#article h2 {
     <div id="spacer"></div>
     <div id="content">
         <div id="menu">
-          <div id="heading">
-            <div>
-              <img alt="web" src="../img/web.png" />
-              React
-            </div>
-          </div>
+          <h2>
+            <img alt="web" src="../img/web.png" />
+            React
+          </h2>
           <div id="items">
             <a href="hello-world.html" class="selected">Hello World</a>
             <div class="separator"></div>
-            <h2>The ABC</h2>
+            <h3>The ABC</h3>
             <a href="state-navigation.html">A. State Navigation</a>
             <a href="navigation-data.html">B. Navigation Data</a>
             <a href="routes.html">C. Routes</a>
             <a href="examples.html">Examples</a>
             <div class="separator"></div>
-            <h2>Further Guides</h2>
+            <h3>Further Guides</h3>
             <a href="thinking-in-navigation.html">Thinking in Navigation</a>
             <a href="current-data.html">Current Data</a>
             <a href="html5-history.html">HTML5 History</a>
             <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
             <a href="reusable-components.html">Reusable Components</a>
             <div class="separator"></div>
-            <h2>Mobile</h2>
+            <h3>Mobile</h3>
             <a href="mobile/hello-world.html">Hello World</a>
             <a href="mobile/animated-navigation.html">Animated Navigation</a>
             <a href="mobile/non-animated-navigation.html">Non-Animated Navigation</a>
