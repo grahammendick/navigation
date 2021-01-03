@@ -38,8 +38,10 @@ h1 {
 div#menu {
   background-color: #f9858b;
   position: fixed;
+  top: 0;
+  bottom: 0;
+  margin-top: 45px;
   width: 32%;
-  height: 100%;
   border-radius: 15px;
   border: 4px solid #ed335f;
   box-sizing: border-box;
@@ -47,10 +49,14 @@ div#menu {
 }
 #menu #items {
   background-color: white;
-  margin: 15px 5%;
+  height: 90%;
+  margin: 5% 5%;
   border: 2px solid #ed335f;
   padding: 15px 5%;
-
+  display: flex;
+  overflow: auto;
+  box-sizing: border-box;
+  flex-direction: column;
 }
 div#menu h2 {
   font-weight: normal;
