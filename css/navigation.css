@@ -59,9 +59,8 @@
     margin-top: 10px;
     border-radius: 15px 15px 0 0;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
   }
   div.tab.web {
     border-left: 2px solid #000;
@@ -79,20 +78,20 @@
     border-bottom: 0;
     border-radius: 15px 15px 0 0;
   }
-  div.tab div {
-    display: flex;
-    align-items: center;
-  }
   div.tab img {
     height: 22px;
-    padding: 0 8%;
+    padding: 0 1% 0 0;
   }
   div.tab a {
     color: #000;
+    white-space: nowrap;
+  }
+  div.tab h2 {
+    white-space: nowrap;
   }
   div.tab.active img {
     height: 32px;
-    padding: 0 5%;
+    padding: 0 2% 0 0;
   }
   div.tab.mobile img:nth-of-type(1) {
     padding: 0;
