@@ -34,6 +34,9 @@ code {
   padding: 0 2%;
   font-weight: bold;
 }
+#banner img {
+  height: 25px;
+}
 #tabs {
   display: flex;
   flex-direction: row;
@@ -250,40 +253,14 @@ li p {
 
 
 
-body {
-  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
-  margin: 0 auto;
-  width: 95%;
-  padding: 15px 0;
-}
-#banner {
-  height: 35px;
-  background-color: #fff;
-  margin-bottom: 15px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;      
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-}
-#banner a {
-  color: #ed335f;
-  text-decoration: none;
-  padding: 0 2%;
-  font-weight: bold;
-}
-#banner img {
-  height: 25px;
-}
 #content {
   padding-top: 35px;
 }
-h1 {
+#article h1 {
   margin: 0;
   text-align: center;
+  padding-top: 0;
+  display: block;
 }
 #menu {
   background-color: #f9858b;
