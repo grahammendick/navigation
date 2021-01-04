@@ -25,6 +25,7 @@
             React
           </h2>
           <div id="items">
+            <a href="setup.html">Setup</a>
             <a href="hello-world.html">Hello World</a>
             <h3>The ABC</h3>
             <a href="state-navigation.html">A. State Navigation</a>
@@ -52,7 +53,7 @@
             <p>
                 You change from Hash to HTML5 history by passing in a new <code>HTML5HistoryManager</code> into the <code>StateNavigator</code>. If your Url's look like 'http://domain/app/route' then pass the 'app' base path into the <code>HTML5HistoryManager</code> constructor.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'mail'},
   {key: 'compose'}
