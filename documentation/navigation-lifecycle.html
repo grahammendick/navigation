@@ -25,6 +25,7 @@
             React
           </h2>
           <div id="items">
+            <a href="setup.html">Setup</a>
             <a href="hello-world.html">Hello World</a>
             <h3>The ABC</h3>
             <a href="state-navigation.html">A. State Navigation</a>
@@ -53,16 +54,16 @@
             <p>
                 The <code>onBeforeNavigate</code> event gives you a chance to cancel a navigation. You're passed in details of the <code>State</code> being navigated to as well as a <code>history</code> flag that indicates whether the navigation was caused by the browser back button. In our email example, we can add an <code>onBeforeNavigate</code> listener that prompts the user to confirm they want to leave without sending their email.
             </p>
-            <pre><code class="language-jsx">componentDidMount() {
-  this.beforeNavigate = function(state, data, url, history) {
-    return history || confirm('You\'ve not sent your email. Continue?');
-  }
-  this.props.stateNavigator.onBeforeNavigate(this.beforeNavigate);
-}
+            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
 
-componentWillUnmount() {
-  this.props.stateNavigator.offBeforeNavigate(this.beforeNavigate);
-}</code></pre>
+const {stateNavigator} = useContext(NavigationContext);
+useEffect(() => {
+  const beforeNavigate = (state, data, url, history) => (
+    history || confirm('You\'ve not sent your email. Continue?')
+  )
+  stateNavigator.onBeforeNavigate(beforeNavigate);
+  return () => stateNavigator.offBeforeNavigate(beforeNavigate)
+}, [stateNavigator]);</code></pre>
             <p>
                 There's also an <code>onNavigate</code> event that fires after the navigation's happened. We could add an <code>onNavigate</code> listener that tracks page visits in our email app.
             </p>
@@ -70,23 +71,23 @@ componentWillUnmount() {
             <p>
                 You can intercept a navigation by attaching a function to the destination <code>State's navigating</code> property. This gives you a chance to suspend the navigation until an async operation, like data-fetching or code-splitting, completes. In the email example, when a user opens a mail we fetch the mail data inside a <code>navigating</code> function to avoid displaying a blank screen while the data loads. Once the data returns we pass it into the <code>navigate</code> continuation function.
             </p>
-            <pre><code class="language-jsx">stateNavigator.states.mail.navigating = function(data, url, navigate, history) {
-  $.getJSON('api/mail/' + data.id, function(resp) {
-    navigate({mail: resp});
+            <pre><code class="language-jsx">const {mail} = stateNavigator.states;
+
+mail.navigating = (data, url, navigate, history) => {
+  fetch('api/mail/' + data.id)
+    .then(res => res.json())
+    .then(data => navigate({mail: data});
   });
 };</code></pre>
             <p>
-                Update the <code>Consumer's</code> child render <code>prop</code> to pass this asynchronous data along in the second parameter of the call to the active <code>State's renderView</code> function.
+                We can access this asynchronous mail data from <code>NavigationContext</code> just like the other navigation data.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationReact.NavigationContext.Consumer>
-  {({ state, data, asyncData }) => state.renderView(data, asyncData)}
-&lt;/NavigationReact.NavigationContext.Consumer></code></pre>
-            <p>
-                The 'mail' <code>State's renderView</code> function passes the asynchronous mail data as a <code>prop</code> to the <code>Mail</code> component.
-            </p>
-            <pre><code class="language-jsx">stateNavigator.states.mail.renderView = function(data, asyncData) {
-  return &lt;Mail mail={asyncData.mail} />;
-};</code></pre>
+            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+
+mail.renderScene = () => {
+  const {asyncData} = useContext(NavigationContext);
+  const {mail} = asyncData;
+}</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>
