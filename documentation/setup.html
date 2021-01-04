@@ -1,0 +1,85 @@
+<html>
+<head>
+    <title>Setup</title>
+    <meta name="viewport" content="width=device-width">
+    <style>
+      :root {
+        --primary-color: #f9858b;
+        --secondary-color: #ed335f;
+      }    
+    </style>
+    <link rel="stylesheet" href="../css/prism.css">
+    <link rel="stylesheet" href="../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+      <a href=".."><img alt="logo" src="../img/logo.png" /></a>
+      <a href="../download">Download</a>
+      <a href="../native">React Native</a>
+      <a href="https://github.com/grahammendick/navigation">GitHub</a>
+    </div>
+    <div id="content">
+        <div id="menu">
+          <h2>
+            <img alt="web" src="../img/web.png" />
+            React
+          </h2>
+          <div id="items">
+            <a href="setup.html" class="selected">Setup</a>
+            <a href="hello-world.html">Hello World</a>
+            <h3>The ABC</h3>
+            <a href="state-navigation.html">A. State Navigation</a>
+            <a href="navigation-data.html">B. Navigation Data</a>
+            <a href="routes.html">C. Routes</a>
+            <a href="examples.html">Examples</a>
+            <h3>Further Guides</h3>
+            <a href="thinking-in-navigation.html">Thinking in Navigation</a>
+            <a href="current-data.html">Current Data</a>
+            <a href="html5-history.html">HTML5 History</a>
+            <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="reusable-components.html">Reusable Components</a>
+            <h3>Mobile</h3>
+            <a href="mobile/hello-world.html">Hello World</a>
+            <a href="mobile/animated-navigation.html">Animated Navigation</a>
+            <a href="mobile/non-animated-navigation.html">Non-Animated Navigation</a>
+            <a href="mobile/clean-urls.html">Clean Urls</a>
+            <a href="mobile/scene-navigation-lifecycle.html">Scene Navigation Lifecycle</a>
+            <a href="mobile/shared-element-navigation.html">Shared Element Navigation</a>
+            <a href="mobile/examples.html">Examples</a>
+          </div>
+        </div>
+        <div id="article">
+            <h1>Setup</h1>
+            <p>
+              Install the two navigation packages from npm.
+            </p>
+            <pre><code class="language-js">npm install navigation navigation-react --save</code></pre>
+            <p>
+                Replace the code in <code>index.js</code> (or equivalent) with the following:
+            </p>
+            <pre><code class="language-jsx">import React, {useContext} from 'react';
+import ReactDOM from 'react-dom';
+import {StateNavigator} from 'navigation';
+import {NavigationHandler, NavigationContext} from 'navigation-react';
+
+const stateNavigator = new StateNavigator([
+]);
+
+stateNavigator.start();
+
+const App = () => {
+  const {state, data} = useContext(NavigationContext);
+  return state.renderView(data)
+};
+
+ReactDOM.render(
+  &lt;NavigationHandler stateNavigator={stateNavigator}>
+    &lt;App />
+  &lt;/NavigationHandler>,
+  document.getElementById('root')
+);</code></pre>
+        </div>
+    </div>
+    <script type="text/javascript" src="../js/prism.js"></script>
+</body>
+</html>
