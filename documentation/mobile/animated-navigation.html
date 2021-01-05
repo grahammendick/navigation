@@ -56,19 +56,6 @@
   {key: 'inbox', route: ''},
   {key: 'mail', trackCrumbTrail: true}
 ]);</code></pre>
-            <h2>Defining Scenes</h2>
-            <p>
-                You define the scenes in functions attached to the <code>renderScene</code> property of each <code>State</code>. When you navigate to a <code>State</code>, the Navigation router creates the scene by calling the corresponding <code>renderScene</code> function. It pushes the new scene onto the top of the stack and renders it. We can define the two scenes in the email example using our <code>Inbox</code> and <code>Mail</code> components.
-            </p>
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
-
-const {inbox, mail} = stateNavigator.state
-inbox.renderScene = () => &lt;Inbox />;
-
-mail.renderScene = () => {
-  const {data} = useContext(NavigationContext);
-  return &lt;Mail mailId={data.id} />;
-};</code></pre>
             <h2>Animating</h2>
             <p>
                 The <code>NavigationMotion</code> component renders the scenes in the stack. It lets you animate the scenes as they progress through the stack. A scene is said to be either unmounted, mounted or a crumb. It's unmounted when it's not on the stack; it's mounted when it's at the top of the stack; and it's a crumb when it's anywhere else in the stack (in the breadcrumb trail).
