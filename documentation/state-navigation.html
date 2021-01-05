@@ -53,7 +53,7 @@
             <p>
                 The Navigation router helps you navigate between scenes (or pages) in your application. After following the <a href="setup.html">Setup instructions</a>, you end up with a <code>StateNavigator</code> that accepts an array of <code>States</code> that represent the scenes in your application. Assign the empty route to the <code>State</code> you want to show when the application first loads. You can put off assigning the other routes until your application is up and running. In an email application we might have <code>States</code> representing the inbox and the scenes for reading and writing an email.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+            <pre><code class="language-jsx">const stateNavigator = new StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'mail'},
   {key: 'compose'}

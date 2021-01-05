@@ -55,7 +55,7 @@
             <p>
                 After following the <a href="setup.html">Setup instructions</a>, we'll add two <code>States</code> to the <code>StateNavigator</code> array that represent the scenes in our example. There'll be one <code>State</code> for the 'hello' scene and another for the 'world' scene. With other routers, you'd have to configure your routes at this stage. With the Navigation router, you can leave your routes until the end. All routes apart from the empty route, that is, which we'll assign to the 'hello' <code>State</code> so that it's active when the page first loads.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+            <pre><code class="language-jsx">const stateNavigator = new StateNavigator([
   {key: 'hello', route: ''},
   {key: 'world'}
 ]);</code></pre>
@@ -99,7 +99,7 @@ world.renderScene = () => {
             <p>
                 Our example's up and running. But, because we haven't set a route for the 'world' <code>State</code>, the Navigation router auto-generates the Url. It turns <code>size</code> into a query string parameter and adds trailing digits to track the type of the <code>size</code> parameter. We'll tidy up the Url by making <code>size</code> a route parameter and defaulting its type to 'number'. The rest of the code remains unchanged because the data we're passing around hasn't changed.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+            <pre><code class="language-jsx">const stateNavigator = new StateNavigator([
   {key: 'hello', route: ''},
   {key: 'world', route: '{size}', defaultTypes: {size: 'number'}}
 ]);</code></pre>

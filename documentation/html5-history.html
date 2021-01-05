@@ -52,11 +52,13 @@
             <p>
                 You change from Hash to HTML5 history by passing in a new <code>HTML5HistoryManager</code> into the <code>StateNavigator</code>. If your Url's look like 'http://domain/app/route' then pass the 'app' base path into the <code>HTML5HistoryManager</code> constructor.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+            <pre><code class="language-jsx">import {HTML5HistoryManager} from 'navigation';
+
+const stateNavigator = new StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'mail'},
   {key: 'compose'}
-], new Navigation.HTML5HistoryManager());</code></pre>
+], new HTML5HistoryManager());</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>

@@ -47,7 +47,7 @@
             <p>
                 After following the <a href="setup.html">Setup instructions</a>, we'll add two <code>States</code> to the <code>StateNavigator</code> array in <code>App.js</code>. There's one <code>State</code> for the 'hello' scene and another for the 'world' scene. The Navigation router manages the stack as a 'breadcrumb trail'. Named after the trail of breadcrumbs Hansel and Gretel dropped to remember their journey back, each breadcrumb in the trail represents a scene in the stack. We'll enable the breadcrumb trail by setting <code>trackCrumbTrail</code> to true on the 'world' State.
             </p>
-            <pre><code class="language-js">var stateNavigator = new StateNavigator([
+            <pre><code class="language-js">const stateNavigator = new StateNavigator([
   {key: 'hello'},
   {key: 'world', trackCrumbTrail: true}
 ]);</code></pre>

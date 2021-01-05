@@ -99,7 +99,7 @@ mail.renderScene = () => {
             <p>
                 The Navigation router lets you define default navigation data values for each scene. The data available on the <code>NavigationContext</code> includes these default values for any item that you don't supply with a value when navigating. If we give the <code>expand</code> item in the email example a default value of false then we don't have to explicitly pass it in navigation data when the mail's opened.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+            <pre><code class="language-jsx">const stateNavigator = new StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'mail', defaults: {expand: false}},
   {key: 'compose'}
