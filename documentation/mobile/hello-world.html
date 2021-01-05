@@ -55,7 +55,7 @@
             <p>
               After following the <a href="setup.html">Setup instructions</a>, we'll begin by adding two <code>States</code> to the <code>StateNavigator</code> - one per scene. Our first step to achieve native-like navigation is to enable the 'breadcrumb trail'. Named after the trail of breadcrumbs Hansel and Gretel dropped in the woods so they could safely retrace their steps, the breadcrumb trail keeps track of the scenes a user visits. When we click the 'Hello' Hyperlink, the Navigation router drops a breadcrumb so that we can return to the 'hello' Scene later on. We'll enable the breadcrumb trail by setting <code>trackCrumbTrail</code> to true on the 'world' State.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
   {key: 'hello', route: ''},
   {key: 'world', trackCrumbTrail: true}
 ]);</code></pre>
