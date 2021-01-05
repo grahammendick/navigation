@@ -55,9 +55,9 @@
             <p>
                 The 'inbox' scene in our example app polls an endpoint to check if the user has any new mail. We can use the scene lifecycle hooks to make sure we only poll when the user is browsing their inbox. We stop the polling when the user navigates to an email and then start it again when they go back to their inbox.
             </p>
-            <pre><code class="language-js">import {useNavigated, useUnloaded} from 'navigation-react-native';
+            <pre><code class="language-js">import {useNavigated, useUnloaded} from 'navigation-react-mobile';
 
-var Inbox = () => (
+const Inbox = () => (
   useNavigated(() => {
     // Start polling for new emails
   });
