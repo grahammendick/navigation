@@ -1,133 +1,117 @@
 <html>
 <head>
-    <title>Navigation</title>
-    <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="css/prism.css">
-    <link rel="stylesheet" href="css/navigation.css">
+  <title>The Navigation router</title>
+  <meta name="viewport" content="width=device-width">
+  <style>
+    :root {
+      --primary-color: #f9858b;
+      --secondary-color: #ed335f;
+    }    
+  </style>
+  <link rel="stylesheet" href="css/prism.css">
+  <link rel="stylesheet" href="css/navigation.css">
 </head>
 <body>
-    <div id="banner">
-        <div>
-            <a href="index.html" class="selected">Navigation</a>
-            <a href="documentation/hello-world.html">Docs</a>
-            <a href="download/index.html">Download</a>
-            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
-        </div>
+  <div id="banner">
+    <a href="documentation/setup.html">Docs</a>
+    <a href="https://github.com/grahammendick/navigation">Github</a>
+  </div>
+  <div id="heading">
+    <div>
+      <img alt="logo" src="img/logo.png" />
+      <h1>The Navigation router</h1>
     </div>
-    <div id="logo">
-        <h1>Navigation</h1>
-        <img alt="cursor hand" src="img/cursor.png" />
-        <div>The data-first JavaScript router</div>
+  </div>
+  <p id="subheading">Scene-Based Navigation for React and React Native</p>
+  <div class="intro">
+    <div>
+      <h2>Scene-Based Navigation</h2>
+      <p>
+        Native apps have always had scene-based navigation. The Navigation router is the first to bring it to the web. You give the Navigation router a list of your scenes. After you navigate to a scene, the Navigation router gets out of your way so you can build your UI however you want.
+      </p>
     </div>
-    <div id="content" class="home">
-        <div class="plug">
-            <h2>Data First</h2>
-            Other JavaScript routers have got it all back to front. They want you to configure your routes before you even know what data you're passing. With the Navigation router, you can delay your route configuration until after your application's up and running.
-        </div>
-        <div class="plug">
-            <h2>Routes Last</h2>
-            How can your application run if you haven't set any routes? The Navigation router generates interim routes and passes all data in the query string. At any time, you can configure the real routes and introduce route parameters without changing any code.
-        </div>
-        <h2>Try It Out</h2>
+    <div>
+      <h2>React and React Native</h2>
+      <p>
+        You don't need a different routing library for React and React Native anymore. The Navigation router works on both. What's more, it doesn't compromise the UX. On React Native, the navigation is 100% native on Android and iOS. On React, you can have whatever URLs you want. 
+      </p>
+    </div>
+  </div>
+  <div id="tabs">
+    <div class="end"></div>
+    <div class="tab web active">
+      <img alt="web" src="img/web.png" />
+      <h2>React</h2>
+    </div>
+    <div class="tab native">
+      <img alt="native" src="img/native-off.png" />
+      <a href="native">React Native</a>
+    </div>
+    <div class="end"></div>
+  </div>
+  <div id="tabContent">
+    <ol>
+      <li>
+        <h3>Define Your States</h3>
+        <pre><code class="language-jsx">import { StateNavigator } from 'navigation';
+
+const stateNavigator = new StateNavigator([
+  { key: 'hello', route: '' },
+  { key: 'world' }
+]);</code></pre>
         <p>
-            Take a look at this working application. It's a Hyperlink you can click to indicate whether you like something. It works even though there's no route configured yet. Click the toggle Hyperlink below then take a look at the browser Url. The Navigation router's generated an interim Url of '/?like=true1_1', but you can change it to '/example/true' without touching the code:
+          You create one <code>State</code> for each scene (page) in your app. You don't need to define your routes yet. The Navigation router generates interim routes. You can define your real routes at any time without changing any code. With scene-based navigation, there aren't any hard-coded Urls for you to update.
         </p>
-        <ol>
-            <li>Start by setting a route in the configuration below. Type the word 'example' in the route text box. As you type, watch the browser Url automatically update to '/example?like=true1_1'</li>
-            <li>Next, change the 'like' indicator from a query string to a route parameter. Update the route text box to 'example/{like}'. Keep your eye on the Url as it changes to '/example/true1_1'</li>
-            <li>The Navigation router passes around the 'like' indicator as a boolean. It uses the trailing characters of the Url to keep track of the type. Tidy up the Url by configuring the type instead. Pick 'boolean' from the drop down below and watch the Url become 'example/true'</li>
-        </ol>
+        <img class="arrow" alt="Next - create your scenes" src="img/arrow.png" />
+      </li>
+      <li>
+        <h3>Create Your Scenes</h3>
+        <pre><code class="language-jsx">const { hello, world } = stateNavigator.states;
+
+hello.renderScene = = () => &lt;Hello />;
+world.renderScene = = () => &lt;World />;</code></pre>
         <p>
+          For each scene, you create a component that renders its UI. You map these scene components to their corresponding <code>States</code>. All the other routers for React force you to think in terms of routes. But this is confusing because routes and scenes aren't the same thing. One scene can have more than one route, for example, a master/details page.
         </p>
-        <div class="app">
-            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
-  {key: 'example', </code><label for="route"><code class="language-jsx">route:</code></label><input id="route"/><code class="language-jsx">, </code><label for="defType"><code class="language-jsx">defaultTypes: {like:</code></label><select id="defType">
-      <option value="string"></string>
-      <option value="boolean">boolean</string>
-  </select><code class="language-jsx">}}
-]);
+        <img class="arrow" alt="Next - navigate to a scene" src="img/arrow.png" />
+      </li>
+      <li>
+          <h3>Navigate to a Scene</h3>
+          <pre><code class="language-jsx">import { NavigationLink } from 'navigation-react';
 
-stateNavigator.states.example.renderView = data => (
-  &lt;NavigationReact.NavigationLink 
-    stateKey="example"
-    navigationData={{like: !data.like}}>
-    You {data.like ? 'like' : 'haven\'t liked'} this. Click to toggle.
-  &lt;/NavigationReact.NavigationLink>
-);
+const Hello = () => (
+  &lt;NavigationLink
+    stateKey="world"
+    navigationData={{ size: 20 }}>
+    Hello
+  &lt;/NavigationLink>
+);</code></pre>
+        <p>
+          The <code>NavigationLink</code> component changes scene. You pass the name of the scene and the data. The Navigation router builds the Url. If you've configured more than one route it uses the best match.
+        </p>
+        <img class="arrow" alt="Next - use the data" src="img/arrow.png" />
+      </li>
+      <li>
+        <h3>Use the Data</h3>
+        <pre><code class="language-jsx">import { NavigationContext } from 'navigation-react';
 
-stateNavigator.start();
-
-ReactDOM.render(
-  &lt;NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
-      &lt;NavigationReact.NavigationContext.Consumer>
-        {({ state, data }) => state.renderView(data)}
-      &lt;/NavigationReact.NavigationContext.Consumer>
-  &lt;/NavigationReact.NavigationLink>,
-  document.getElementById('app')
-);
-</code></pre>
-        </div>
-        <div id="app"/>
-    </div>
-    <div id="footer">
-        Thanks to <a href="https://www.browserstack.com/">BrowserStack</a> for their help with cross browser testing
-    </div>
-    <script src="js/prism.js"></script>
-    <script src="https://unpkg.com/react@16.4.0/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@16.4.0/umd/react-dom.development.js"></script>
-    <script src="download/navigation-5.2.0.js"></script>
-    <script src="download/navigation.react-4.1.1.js"></script>
-    <script>
-var stateNavigator = new Navigation.StateNavigator([{ key: 'example', route: '' }]);
-
-renderView();
-stateNavigator.start(location.hash ? '/' : '');
-render();
-
-document.getElementById('route').addEventListener('keyup', reconfigure);
-document.getElementById('defType').addEventListener('change', reconfigure);
-
-function reconfigure() {
-    var navigationData = stateNavigator.stateContext.includeCurrentData({});
-    try {
-        stateNavigator.configure([
-            {key: 'example', route: document.getElementById('route').value, defaultTypes: { 'like': document.getElementById('defType').value }}
-        ]);
-        renderView();
-        stateNavigator.navigate('example', navigationData);
-    } catch(ex) {
-        render();
-    }    
-}
-
-function renderView() {
-    stateNavigator.states.example.renderView = function(data) {
-        return React.createElement(
-            NavigationReact.NavigationLink,
-            {
-                stateKey: 'example',
-                navigationData: { like: !data.like }
-            },
-            'You ',
-            data.like ? 'like' : 'haven\'t liked',
-            ' this. Click to toggle.'
-        );
-    };
-}
-
-function render() {
-    ReactDOM.render(React.createElement(
-        NavigationReact.NavigationHandler,
-        { stateNavigator: stateNavigator, key: stateNavigator.states.example.route },
-        React.createElement(
-            NavigationReact.NavigationContext.Consumer,
-            null,
-            function (context) {
-                return context.state.renderView(context.data);
-            }
-        )
-    ), document.getElementById('app'));
-}
-    </script>
+const World = () => {
+  const { data } = useContext(NavigationContext);
+  return (
+    &lt;div style={{ fontSize: data.size }}>
+      World
+    &lt;/div>
+  );
+};</code></pre>
+        <p>
+          In the next scene, you access the data from the <code>NavigationContext</code>. The Navigation router passes strongly-typed data. Here, the size is a number.
+        </p>
+      </li>
+    </ol>
+    <p class="note">
+      Take a look at the <a href="documentation/hello-world.html">complete Hello World example</a>
+    </p>
+  </div>
+  <script src="js/prism.js"></script>
 </body>
 </html>

@@ -2,36 +2,41 @@
 <head>
     <title>Navigation Data</title>
     <meta name="viewport" content="width=device-width">
+    <style>
+      :root {
+        --primary-color: #f9858b;
+        --secondary-color: #ed335f;
+      }    
+    </style>
     <link rel="stylesheet" href="../css/prism.css">
     <link rel="stylesheet" href="../css/navigation.css">
 </head>
 <body>
     <div id="banner">
-        <div>
-            <a href="../index.html">Navigation</a>
-            <a href="hello-world.html" class="selected">Docs</a>
-            <a href="../download/index.html">Download</a>
-            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
-        </div>
+      <a href=".."><img alt="logo" src="../img/logo.png" /></a>
+      <a href="native/setup.html">React Native</a>
+      <a href="https://github.com/grahammendick/navigation">GitHub</a>
     </div>
     <div id="content">
         <div id="menu">
+          <h2>
+            <img alt="web" src="../img/web.png" />
+            React
+          </h2>
+          <div id="items">
+            <a href="setup.html">Setup</a>
             <a href="hello-world.html">Hello World</a>
+            <a href="state-navigation.html">State Navigation</a>
+            <a href="navigation-data.html" class="selected">Navigation Data</a>
+            <a href="routes.html">Routes</a>
             <a href="thinking-in-navigation.html">Thinking in Navigation</a>
-            <div class="separator"></div>
-            <h2>THE ABC</h2>
-            <a href="state-navigation.html">A. State Navigation</a>
-            <a href="navigation-data.html" class="selected">B. Navigation Data</a>
-            <a href="routes.html">C. Routes</a>
-            <a href="examples.html">Examples</a>
-            <div class="separator"></div>
-            <h2>FURTHER GUIDES</h2>
             <a href="current-data.html">Current Data</a>
             <a href="html5-history.html">HTML5 History</a>
             <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
             <a href="reusable-components.html">Reusable Components</a>
-            <div class="separator"></div>
-            <h2>MOBILE</h2>
+            <a href="examples.html">Examples</a>
+            <h3>Mobile</h3>
+            <a href="mobile/setup.html">Setup</a>
             <a href="mobile/hello-world.html">Hello World</a>
             <a href="mobile/animated-navigation.html">Animated Navigation</a>
             <a href="mobile/non-animated-navigation.html">Non-Animated Navigation</a>
@@ -39,55 +44,48 @@
             <a href="mobile/scene-navigation-lifecycle.html">Scene Navigation Lifecycle</a>
             <a href="mobile/shared-element-navigation.html">Shared Element Navigation</a>
             <a href="mobile/examples.html">Examples</a>
-            <div class="separator"></div>
-            <h2>NATIVE</h2>
-            <a href="native/setup.html">Setup</a>
-            <a href="native/hello-world.html">Hello World</a>
-            <a href="native/push-navigation.html">Push Navigation</a>
-            <a href="native/pop-navigation.html">Pop Navigation</a>
-            <a href="native/navigation-bar.html">Navigation Bar</a>
-            <a href="native/tab-bar.html">Tab Bar</a>
-            <a href="native/modal.html">Modal</a>
-            <a href="native/drawer.html">Drawer</a>
-            <a href="native/scene-navigation-lifecycle.html">Scene Navigation Lifecycle</a>
-            <a href="native/custom-animation.html">Custom Animation (Android)</a>
-            <a href="native/shared-element-transition.html">Shared Element Transition (Android)</a>
-            <a href="native/deep-links.html">Deep Links</a>
-            <a href="native/examples.html">Examples</a>
+          </div>
         </div>
         <div id="article">
             <h1>Navigation Data</h1>
             <h2>Passing Data</h2>
             <p>
-                When it comes to passing data between views, the Navigation router isn't like other routers. Other routers make you define your routes and parameters up front. The Navigation router thinks in terms of <code>States</code> and data so you don't need to think about routes and parameters until your application's working.
+                When it comes to passing data between scenes, the Navigation router isn't like other routers. Other routers make you define your routes and parameters up front. The Navigation router thinks in terms of scenes and data so you don't need to think about routes and parameters until your application's working.
             </p>
             <p>
-                You can use the <code>NavigationLink</code> component to build Hyperlinks that navigate between <code>States</code>. As well as a <code>stateKey prop</code> that holds the destination <code>State</code>, the <code>NavigationLink</code> component has a <code>navigationData prop</code> that holds the data to pass. You don't have to convert data to strings because it accepts numbers, booleans and dates. In an email application, for example, a Hyperlink that opens an email might pass along the email id together with a flag that indicates the thread's history should be initially collapsed.
+                You can use the <code>NavigationLink</code> component to build Hyperlinks that navigate between scenes. As well as a <code>stateKey prop</code> that holds the destination <code>State</code>, the <code>NavigationLink</code> component has a <code>navigationData prop</code> that holds the data to pass. You don't have to convert data to strings because it accepts numbers, booleans and dates. In an email application, for example, a Hyperlink that opens an email might pass along the email id together with a flag that indicates the thread's history should be initially collapsed.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
+            <pre><code class="language-jsx">import {NavigationReact} from 'navigation-react';
+
+&lt;NavigationLink 
   stateKey="mail"
   navigationData={{id: 12, expand: false}}>
   Open Mail
-&lt;/NavigationReact.NavigationLink></code></pre>
+&lt;/NavigationLink></code></pre>
             <p>
                 For navigating without Hyperlinks, you can pass data in the second parameter of the <code>navigate</code> function on the <code>stateNavigator</code>.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationReact.NavigationContext.Consumer>
-  {({ stateNavigator }) => (
-    &lt;div onClick={() => stateNavigator.navigate('mail', {id: 12, expand: false})}>
-      Open Mail
-    &lt;/div>
-  )}
-&lt;/NavigationReact.NavigationContext.Consumer></code></pre>
+            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react'
+
+const {stateNavigator} = useContext(NavigationContext);
+
+&lt;div onClick={() => {
+  stateNavigator.navigate('mail', {id: 12, expand: false})
+}}>
+  Open Mail
+&lt;/div></code></pre>
             <p>
                 You can even pass along arrays of strings, numbers, booleans or dates. So, instead of expanding and collapsing the whole thread in our email application, we could pass along an array of ids that identify which mails in the thread to expand. 
             </p>
             <h2>Receiving Data</h2>
             <p>
-                You'll recall that the <code>NavigationContext Consumer</code> notifies you when a <code>State</code> becomes active. Along with the new <code>State</code>, the Consumer passes you the associated navigation data. It’s your job to call the function assigned to the <code>renderView</code> property of the active <code>State</code> and pass in the navigation data. In the email example, when the mail <code>State</code> is active we use the <code>id</code> and <code>expand</code> data items passed in to set the respective <code>props</code> on our <code>Mail</code> component.
+                You can access the data from the <code>NavigationContext</code>. In the email example, when the mail scene is active we get the <code>id</code> and <code>expand</code> data items passed by the Hyperlink.
             </p>
-            <pre><code class="language-jsx">stateNavigator.states.mail.renderView = function(data) {
-  return &lt;Mail id={data.id} expand={data.expand} />;
+            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react'
+              
+mail.renderScene = () => {
+  const {data} = useContext(NavigationContext)
+  const {id, expand} = data;
 };</code></pre>
             <p>
                 You don't have to convert the data from strings because the Navigation router remembers their original types. Adding <code>prop type</code> validation to the <code>Mail</code> component, for example, wouldn't raise an exception.
@@ -98,16 +96,16 @@
 };</code></pre>
             <h2>Setting Default Values</h2>
             <p>
-                The Navigation router lets you define default navigation data values for each <code>State</code>. The data passed into a <code>State's navigated</code> function includes these default values for any item that you don't supply with a value when navigating. If we give the <code>expand</code> item in the email example a default value of false then we don't have to explicitly pass it in navigation data when the mail's opened.
+                The Navigation router lets you define default navigation data values for each scene. The data available on the <code>NavigationContext</code> includes these default values for any item that you don't supply with a value when navigating. If we give the <code>expand</code> item in the email example a default value of false then we don't have to explicitly pass it in navigation data when the mail's opened.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+            <pre><code class="language-jsx">const stateNavigator = new StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'mail', defaults: {expand: false}},
   {key: 'compose'}
 ]);</code></pre>
             <h2>Setting Constraints</h2>
             <p>
-                You can also define navigation data constraints in a function attached to the <code>validate</code> property of the <code>State</code>. This function receives the navigation data as a parameter and you return true only if the data meets your constraints. The Navigation router will only navigate to a <code>State</code> if the constraints are met. For example, we could create a constraint to ensure that the mail id is greater than zero.  
+                You can also define navigation data constraints in a function attached to the <code>validate</code> property of the <code>State</code>. This function receives the navigation data as a parameter and you return true only if the data meets your constraints. The Navigation router will only navigate to a scene if the constraints are met. For example, we could create a constraint to ensure that the mail id is greater than zero.  
             </p>
             <pre><code class="language-jsx">stateNavigator.states.mail.validate = function(data) {
   return data.id > 0;

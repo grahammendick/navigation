@@ -2,36 +2,41 @@
 <head>
     <title>State Navigation</title>
     <meta name="viewport" content="width=device-width">
+    <style>
+      :root {
+        --primary-color: #f9858b;
+        --secondary-color: #ed335f;
+      }    
+    </style>
     <link rel="stylesheet" href="../css/prism.css">
     <link rel="stylesheet" href="../css/navigation.css">
 </head>
 <body>
     <div id="banner">
-        <div>
-            <a href="../index.html">Navigation</a>
-            <a href="hello-world.html" class="selected">Docs</a>
-            <a href="../download/index.html">Download</a>
-            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
-        </div>
+      <a href=".."><img alt="logo" src="../img/logo.png" /></a>
+      <a href="native/setup.html">React Native</a>
+      <a href="https://github.com/grahammendick/navigation">GitHub</a>
     </div>
     <div id="content">
         <div id="menu">
+          <h2>
+            <img alt="web" src="../img/web.png" />
+            React
+          </h2>
+          <div id="items">
+            <a href="setup.html">Setup</a>
             <a href="hello-world.html">Hello World</a>
+            <a href="state-navigation.html" class="selected">State Navigation</a>
+            <a href="navigation-data.html">Navigation Data</a>
+            <a href="routes.html">Routes</a>
             <a href="thinking-in-navigation.html">Thinking in Navigation</a>
-            <div class="separator"></div>
-            <h2>THE ABC</h2>
-            <a href="state-navigation.html" class="selected">A. State Navigation</a>
-            <a href="navigation-data.html">B. Navigation Data</a>
-            <a href="routes.html">C. Routes</a>
-            <a href="examples.html">Examples</a>
-            <div class="separator"></div>
-            <h2>FURTHER GUIDES</h2>
             <a href="current-data.html">Current Data</a>
             <a href="html5-history.html">HTML5 History</a>
             <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
             <a href="reusable-components.html">Reusable Components</a>
-            <div class="separator"></div>
-            <h2>MOBILE</h2>
+            <a href="examples.html">Examples</a>
+            <h3>Mobile</h3>
+            <a href="mobile/setup.html">Setup</a>
             <a href="mobile/hello-world.html">Hello World</a>
             <a href="mobile/animated-navigation.html">Animated Navigation</a>
             <a href="mobile/non-animated-navigation.html">Non-Animated Navigation</a>
@@ -39,76 +44,46 @@
             <a href="mobile/scene-navigation-lifecycle.html">Scene Navigation Lifecycle</a>
             <a href="mobile/shared-element-navigation.html">Shared Element Navigation</a>
             <a href="mobile/examples.html">Examples</a>
-            <div class="separator"></div>
-            <h2>NATIVE</h2>
-            <a href="native/setup.html">Setup</a>
-            <a href="native/hello-world.html">Hello World</a>
-            <a href="native/push-navigation.html">Push Navigation</a>
-            <a href="native/pop-navigation.html">Pop Navigation</a>
-            <a href="native/navigation-bar.html">Navigation Bar</a>
-            <a href="native/tab-bar.html">Tab Bar</a>
-            <a href="native/modal.html">Modal</a>
-            <a href="native/drawer.html">Drawer</a>
-            <a href="native/scene-navigation-lifecycle.html">Scene Navigation Lifecycle</a>
-            <a href="native/custom-animation.html">Custom Animation (Android)</a>
-            <a href="native/shared-element-transition.html">Shared Element Transition (Android)</a>
-            <a href="native/deep-links.html">Deep Links</a>
-            <a href="native/examples.html">Examples</a>
+          </div>
         </div>
         <div id="article">
             <h1>State Navigation</h1>
             <h2>Defining States</h2>
             <p>
-                The Navigation router helps you navigate between views in your application. To get started, create a new <code>StateNavigator</code> passing in an array of <code>States</code> that represent the views in your application. Assign the empty route to the <code>State</code> you want to show when the application first loads. You can put off assigning the other routes until your application is up and running. In an email application we might have <code>States</code> representing the inbox and the views for reading and writing an email.
+                The Navigation router helps you navigate between scenes (or pages) in your application. After following the <a href="setup.html">Setup instructions</a>, you end up with a <code>StateNavigator</code> that accepts an array of <code>States</code> that represent the scenes in your application. Assign the empty route to the <code>State</code> you want to show when the application first loads. You can put off assigning the other routes until your application is up and running. In an email application we might have <code>States</code> representing the inbox and the scenes for reading and writing an email.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+            <pre><code class="language-jsx">const stateNavigator = new StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'mail'},
   {key: 'compose'}
 ]);</code></pre>
-            <h2 id="defining-views">Defining Views</h2>
+            <h2 id="defining-views">Defining Scenes</h2>
             <p>
-                Each <code>State</code> needs a matching view which you’ll display when that <code>State</code> is active. You define the view in a function attached to the <code>renderView</code> property of the <code>State</code>. We can define two of the views in the email example using <code>Inbox</code> and <code>Compose</code> components.
+                Each <code>State</code> needs a matching scene which you’ll display when that <code>State</code> is active. You define the scene in a function attached to the <code>renderScene</code> property of the <code>State</code>. We can define two of the scenes in the email example using <code>Inbox</code> and <code>Compose</code> components.
             </p>
-            <pre><code class="language-jsx">stateNavigator.states.inbox.renderView = function() {
-  return &lt;Inbox />;
-};
+            <pre><code class="language-jsx">const {inbox, compose} stateNavigator.states;
 
-stateNavigator.states.compose.renderView = function() {
-  return &lt;Compose />;
-};</code></pre>
-            <p>
-                Calling <code>start</code> on the <code>stateNavigator</code> activates the <code>State</code> whose route matches with the browser Url. In our example, the 'inbox' <code>State</code> will be active on first load.
-            </p>
-            <pre><code class="language-jsx">stateNavigator.start();</code></pre>
-            <h2>Rendering</h2>
-            <p>
-                It's your job to keep the UI up to date by calling the <code>renderView</code> function on the active <code>State</code>. You render a <code>NavigationContext Consumer</code> with a child <code>prop</code> that returns the view of the passed in <code>State</code>. Wrapping the <code>Consumer</code> inside a <code>NavigationHandler</code> ensures that every time the <code>State</code> changes your child render <code>prop</code> is called with the new <code>State</code>. Make sure you pass <code>data</code> into the <code>renderView</code> function otherwise this rendering code will break when it comes to passing <a href="navigation-data.html">navigation data</a> between States.
-            </p>
-            <pre><code class="language-jsx">ReactDOM.render(
-  &lt;NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
-    &lt;NavigationReact.NavigationContext.Consumer>
-      {({ state, data }) => state.renderView(data)}
-    &lt;/NavigationReact.NavigationContext.Consumer>
-  &lt;/NavigationReact.NavigationHandler>,
-  document.getElementById('app')
-);</code></pre>
+inbox.renderScene = () => &lt;Inbox />;
+compose.renderScene = () =>  &lt;Compose />;</code></pre>
             <h2>Navigating</h2>
             <p>
-                <code>States</code> become active when you navigate to them. One way to navigate to a <code>State</code> is with a Hyperlink. The Navigation router encourages you to think about <code>States</code> rather than Urls. You can build Hyperlinks using the <code>NavigationLink</code> component, passing in the destination <code>State</code> via the <code>stateKey prop</code>.
+                <code>States</code> become active when you navigate to them. One way to navigate to a <code>State</code> is with a Hyperlink. The Navigation router encourages you to think about scenes rather than Urls. You can build Hyperlinks using the <code>NavigationLink</code> component, passing in the destination <code>State</code> via the <code>stateKey prop</code>.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink stateKey="compose">
+            <pre><code class="language-jsx">import {NavigationLink} from 'navigation-react'
+
+&lt;NavigationLink stateKey="compose">
   Compose Mail
-&lt;/NavigationReact.NavigationLink></code></pre>
+&lt;/NavigationLink></code></pre>
             <p>
-                When Hyperlinks aren't appropriate, you can navigate programmatically by passing the <code>State key</code> into the <code>navigate</code> function on the <code>stateNavigator</code>. You can access the <code>stateNavigator</code> inside the child render <code>prop</code> of a <code>NavigationContext Consumer</code>.
+                When Hyperlinks aren't appropriate, you can navigate programmatically by passing the <code>State key</code> into the <code>navigate</code> function on the <code>stateNavigator</code>. You can access the <code>stateNavigator</code> from the <code>NavigationContext</code>.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationReact.NavigationContext.Consumer>
-  {({ stateNavigator }) => (
-    &lt;div onClick={() => stateNavigator.navigate('compose')}>Compose Mail&lt;/div>
-  )}
-&lt;/NavigationReact.NavigationContext.Consumer>
-</code></pre>
+            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react'
+
+const {stateNavigator} = useContext(NavigationContext);
+
+&lt;div onClick={() => stateNavigator.navigate('compose')}>
+  Compose Mail
+&lt;/div></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>

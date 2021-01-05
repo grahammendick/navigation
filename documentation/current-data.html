@@ -2,36 +2,41 @@
 <head>
     <title>Current Data</title>
     <meta name="viewport" content="width=device-width">
+    <style>
+      :root {
+        --primary-color: #f9858b;
+        --secondary-color: #ed335f;
+      }    
+    </style>
     <link rel="stylesheet" href="../css/prism.css">
     <link rel="stylesheet" href="../css/navigation.css">
 </head>
 <body>
     <div id="banner">
-        <div>
-            <a href="../index.html">Navigation</a>
-            <a href="hello-world.html" class="selected">Docs</a>
-            <a href="../download/index.html">Download</a>
-            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
-        </div>
+      <a href=".."><img alt="logo" src="../img/logo.png" /></a>
+      <a href="native/setup.html">React Native</a>
+      <a href="https://github.com/grahammendick/navigation">GitHub</a>
     </div>
     <div id="content">
         <div id="menu">
+          <h2>
+            <img alt="web" src="../img/web.png" />
+            React
+          </h2>
+          <div id="items">
+            <a href="setup.html">Setup</a>
             <a href="hello-world.html">Hello World</a>
+            <a href="state-navigation.html">State Navigation</a>
+            <a href="navigation-data.html">Navigation Data</a>
+            <a href="routes.html">Routes</a>
             <a href="thinking-in-navigation.html">Thinking in Navigation</a>
-            <div class="separator"></div>
-            <h2>THE ABC</h2>
-            <a href="state-navigation.html">A. State Navigation</a>
-            <a href="navigation-data.html">B. Navigation Data</a>
-            <a href="routes.html">C. Routes</a>
-            <a href="examples.html">Examples</a>
-            <div class="separator"></div>
-            <h2>FURTHER GUIDES</h2>
             <a href="current-data.html" class="selected">Current Data</a>
             <a href="html5-history.html">HTML5 History</a>
             <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
             <a href="reusable-components.html">Reusable Components</a>
-            <div class="separator"></div>
-            <h2>MOBILE</h2>
+            <a href="examples.html">Examples</a>
+            <h3>Mobile</h3>
+            <a href="mobile/setup.html">Setup</a>
             <a href="mobile/hello-world.html">Hello World</a>
             <a href="mobile/animated-navigation.html">Animated Navigation</a>
             <a href="mobile/non-animated-navigation.html">Non-Animated Navigation</a>
@@ -39,55 +44,41 @@
             <a href="mobile/scene-navigation-lifecycle.html">Scene Navigation Lifecycle</a>
             <a href="mobile/shared-element-navigation.html">Shared Element Navigation</a>
             <a href="mobile/examples.html">Examples</a>
-            <div class="separator"></div>
-            <h2>NATIVE</h2>
-            <a href="native/setup.html">Setup</a>
-            <a href="native/hello-world.html">Hello World</a>
-            <a href="native/push-navigation.html">Push Navigation</a>
-            <a href="native/pop-navigation.html">Pop Navigation</a>
-            <a href="native/navigation-bar.html">Navigation Bar</a>
-            <a href="native/tab-bar.html">Tab Bar</a>
-            <a href="native/modal.html">Modal</a>
-            <a href="native/drawer.html">Drawer</a>
-            <a href="native/scene-navigation-lifecycle.html">Scene Navigation Lifecycle</a>
-            <a href="native/custom-animation.html">Custom Animation (Android)</a>
-            <a href="native/shared-element-transition.html">Shared Element Transition (Android)</a>
-            <a href="native/deep-links.html">Deep Links</a>
-            <a href="native/examples.html">Examples</a>
+          </div>
         </div>
         <div id="article">
             <h1>Current Data</h1>
             <h2>Refreshing</h2>
             <p>
-                You've seen how the Navigation router helps you pass data between different <code>States</code> in your application. But, you often want to pass data without changing <code>State</code>. You can build Hyperlinks that change data without changing <code>State</code> using the <code>RefreshLink</code> component. It's similar to the <code>NavigationLink</code> component except there's no <code>stateKey prop</code>, because the destination <code>State</code> always matches the current one. 
+                You've seen how the Navigation router helps you pass data between different scenes in your application. But, you often want to pass data without changing scene. You can build Hyperlinks that change data without changing scene using the <code>RefreshLink</code> component. It's similar to the <code>NavigationLink</code> component except there's no <code>stateKey prop</code>, because the destination scene always matches the current one. 
             </p>
             <p>
-                In the email example, when the user opens an email we can add a Hyperlink that expands the mail so they can view the full conversation. When they click the Hyperlink, we change the <code>expand</code> data item to true and stay on the 'mail' <code>State</code>. Because we’re not changing <code>State</code>, we use the <code>RefreshLink</code> component to build the Hyperlink.
+                In the email example, when the user opens an email we can add a Hyperlink that expands the mail so they can view the full conversation. When they click the Hyperlink, we change the <code>expand</code> data item to true and stay on the 'mail' scene. Because we’re not changing scene, we use the <code>RefreshLink</code> component to build the Hyperlink.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationReact.RefreshLink 
-  navigationData={{id: 12, expand: true}}>
+            <pre><code class="language-jsx">import {RefreshLink} from 'navigation-react';
+
+&lt;RefreshLink navigationData={{id: 12, expand: true}}>
   Expand Thread
-&lt;/NavigationReact.RefreshLink></code></pre>
+&lt;/RefreshLink></code></pre>
             <p>
                 Alternatively, you can programmatically pass the new data into the <code>refresh</code> function on the <code>stateNavigator</code>.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationReact.NavigationContext.Consumer>
-  {({ stateNavigator }) => (
-    &lt;div onClick={() => stateNavigator.refresh({id: 12, expand: false})}>
-      Expand Thread
-    &lt;/div>
-  )}
-&lt;/NavigationReact.NavigationContext.Consumer>
-</code></pre>
+            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+
+const {stateNavigator} = useContext(NavigationContext);
+
+&lt;div onClick={() => stateNavigator.refresh({id: 12, expand: false})}>
+  Expand Thread
+&lt;/div></code></pre>
             <h2>Remembering Data</h2>
             <p>
-                When you navigate to the same <code>State</code>, you often want to keep most of the current data unchanged. Instead of manually passing all these current data values into the <code>navigationData prop</code>, you can get the <code>RefreshLink</code> component to remember them for you. When you set <code>includeCurrentData</code> to true, the <code>RefreshLink</code> adds the current data to your navigation data and builds the Hyperlink out of the combined data. In the email example, the Hyperlink that expands the email must remember the current email id. We set <code>includeCurrentData</code> to true so we only have to pass the new <code>expand</code> value into the navigation data.
+                When you navigate to the same scene, you often want to keep most of the current data unchanged. Instead of manually passing all these current data values into the <code>navigationData prop</code>, you can get the <code>RefreshLink</code> component to remember them for you. When you set <code>includeCurrentData</code> to true, the <code>RefreshLink</code> adds the current data to your navigation data and builds the Hyperlink out of the combined data. In the email example, the Hyperlink that expands the email must remember the current email id. We set <code>includeCurrentData</code> to true so we only have to pass the new <code>expand</code> value into the navigation data.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationReact.RefreshLink 
+            <pre><code class="language-jsx">&lt;RefreshLink 
   navigationData={{expand: true}}
   includeCurrentData={true}>
   Expand Thread
-&lt;/NavigationReact.RefreshLink>
+&lt;/RefreshLink>
 </code></pre>
         </div>
     </div>

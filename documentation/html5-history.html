@@ -2,36 +2,41 @@
 <head>
     <title>HTML5 History</title>
     <meta name="viewport" content="width=device-width">
+    <style>
+      :root {
+        --primary-color: #f9858b;
+        --secondary-color: #ed335f;
+      }    
+    </style>
     <link rel="stylesheet" href="../css/prism.css">
     <link rel="stylesheet" href="../css/navigation.css">
 </head>
 <body>
     <div id="banner">
-        <div>
-            <a href="../index.html">Navigation</a>
-            <a href="hello-world.html" class="selected">Docs</a>
-            <a href="../download/index.html">Download</a>
-            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
-        </div>
+      <a href=".."><img alt="logo" src="../img/logo.png" /></a>
+      <a href="native/setup.html">React Native</a>
+      <a href="https://github.com/grahammendick/navigation">GitHub</a>
     </div>
     <div id="content">
         <div id="menu">
+          <h2>
+            <img alt="web" src="../img/web.png" />
+            React
+          </h2>
+          <div id="items">
+            <a href="setup.html">Setup</a>
             <a href="hello-world.html">Hello World</a>
+            <a href="state-navigation.html">State Navigation</a>
+            <a href="navigation-data.html">Navigation Data</a>
+            <a href="routes.html">Routes</a>
             <a href="thinking-in-navigation.html">Thinking in Navigation</a>
-            <div class="separator"></div>
-            <h2>THE ABC</h2>
-            <a href="state-navigation.html">A. State Navigation</a>
-            <a href="navigation-data.html">B. Navigation Data</a>
-            <a href="routes.html">C. Routes</a>
-            <a href="examples.html">Examples</a>
-            <div class="separator"></div>
-            <h2>FURTHER GUIDES</h2>
             <a href="current-data.html">Current Data</a>
             <a href="html5-history.html" class="selected">HTML5 History</a>
             <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
             <a href="reusable-components.html">Reusable Components</a>
-            <div class="separator"></div>
-            <h2>MOBILE</h2>
+            <a href="examples.html">Examples</a>
+            <h3>Mobile</h3>
+            <a href="mobile/setup.html">Setup</a>
             <a href="mobile/hello-world.html">Hello World</a>
             <a href="mobile/animated-navigation.html">Animated Navigation</a>
             <a href="mobile/non-animated-navigation.html">Non-Animated Navigation</a>
@@ -39,32 +44,20 @@
             <a href="mobile/scene-navigation-lifecycle.html">Scene Navigation Lifecycle</a>
             <a href="mobile/shared-element-navigation.html">Shared Element Navigation</a>
             <a href="mobile/examples.html">Examples</a>
-            <div class="separator"></div>
-            <h2>NATIVE</h2>
-            <a href="native/setup.html">Setup</a>
-            <a href="native/hello-world.html">Hello World</a>
-            <a href="native/push-navigation.html">Push Navigation</a>
-            <a href="native/pop-navigation.html">Pop Navigation</a>
-            <a href="native/navigation-bar.html">Navigation Bar</a>
-            <a href="native/tab-bar.html">Tab Bar</a>
-            <a href="native/modal.html">Modal</a>
-            <a href="native/drawer.html">Drawer</a>
-            <a href="native/scene-navigation-lifecycle.html">Scene Navigation Lifecycle</a>
-            <a href="native/custom-animation.html">Custom Animation (Android)</a>
-            <a href="native/shared-element-transition.html">Shared Element Transition (Android)</a>
-            <a href="native/deep-links.html">Deep Links</a>
-            <a href="native/examples.html">Examples</a>
+          </div>
         </div>
         <div id="article">
             <h1>HTML5 History</h1>
             <p>
                 You change from Hash to HTML5 history by passing in a new <code>HTML5HistoryManager</code> into the <code>StateNavigator</code>. If your Url's look like 'http://domain/app/route' then pass the 'app' base path into the <code>HTML5HistoryManager</code> constructor.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+            <pre><code class="language-jsx">import {HTML5HistoryManager} from 'navigation';
+
+const stateNavigator = new StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'mail'},
   {key: 'compose'}
-], new Navigation.HTML5HistoryManager());</code></pre>
+], new HTML5HistoryManager());</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>

@@ -8,6 +8,7 @@ pre[class*="language-"] {
 	word-break: normal;
 	word-wrap: normal;
 
+	font-size: .85em;
 	line-height: 1.5;
 
 	-moz-tab-size: 4;
@@ -22,7 +23,7 @@ pre[class*="language-"] {
 
 /* Code blocks */
 pre[class*="language-"] {
-	padding: 0 1em;
+	padding: 0.9em 0;
 	margin: 0;
 	overflow: auto;
 	border-radius: 0.3em;
@@ -30,7 +31,7 @@ pre[class*="language-"] {
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-	background-color: #fff5d7;
+	background-color: #fff;
 }
 
 /* Inline code */

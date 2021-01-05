@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Examples</title>
+    <title>Setup</title>
     <meta name="viewport" content="width=device-width">
     <style>
       :root {
@@ -24,7 +24,7 @@
             React
           </h2>
           <div id="items">
-            <a href="setup.html">Setup</a>
+            <a href="setup.html" class="selected">Setup</a>
             <a href="hello-world.html">Hello World</a>
             <a href="state-navigation.html">State Navigation</a>
             <a href="navigation-data.html">Navigation Data</a>
@@ -34,7 +34,7 @@
             <a href="html5-history.html">HTML5 History</a>
             <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
             <a href="reusable-components.html">Reusable Components</a>
-            <a href="examples.html" class="selected">Examples</a>
+            <a href="examples.html">Examples</a>
             <h3>Mobile</h3>
             <a href="mobile/setup.html">Setup</a>
             <a href="mobile/hello-world.html">Hello World</a>
@@ -47,12 +47,37 @@
           </div>
         </div>
         <div id="article">
-            <h1>Examples</h1>
+            <h1>Setup</h1>
             <p>
-                Below is the email example from the <a href="state-navigation.html">ABC guide to the Navigation router</a>. You'll find more, including <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReact/sample/redux">redux</a> and <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReact/sample/relay">relay</a> examples, in the <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReact/sample">Navigation React samples folder</a>.
+              Install the two navigation packages from npm.
             </p>
-            <iframe width="100%" height="400" src="//jsfiddle.net/navigation/tp69vhz5/6/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+            <pre><code class="language-js">npm install navigation navigation-react</code></pre>
+            <p>
+                Replace the code in <code>index.js</code> (or equivalent) with the following:
+            </p>
+            <pre><code class="language-jsx">import React, {useContext} from 'react';
+import ReactDOM from 'react-dom';
+import {StateNavigator} from 'navigation';
+import {NavigationHandler, NavigationContext} from 'navigation-react';
+
+const stateNavigator = new StateNavigator([
+]);
+
+stateNavigator.start();
+
+const App = () => {
+  const {state} = useContext(NavigationContext);
+  return state.renderScene()
+};
+
+ReactDOM.render(
+  &lt;NavigationHandler stateNavigator={stateNavigator}>
+    &lt;App />
+  &lt;/NavigationHandler>,
+  document.getElementById('root')
+);</code></pre>
         </div>
     </div>
+    <script type="text/javascript" src="../js/prism.js"></script>
 </body>
 </html>

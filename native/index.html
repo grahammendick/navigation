@@ -1,0 +1,119 @@
+<html>
+<head>
+  <title>The Navigation router</title>
+  <meta name="viewport" content="width=device-width">
+  <style>
+    :root {
+      --primary-color: #9cc3d5ff;
+      --secondary-color: #0063b2ff;
+    }    
+  </style>
+  <link rel="stylesheet" href="../css/prism.css">
+  <link rel="stylesheet" href="../css/navigation.css">
+</head>
+<body>
+  <div id="banner">
+    <a href="../documentation/native/setup.html">Docs</a>
+    <a href="https://github.com/grahammendick/navigation">Github</a>
+  </div>
+  <div id="heading">
+    <div>
+      <img alt="logo" src="../img/logo.png" />
+      <h1>The Navigation router</h1>
+    </div>
+  </div>
+  <p id="subheading">Scene-Based Navigation for React and React Native</p>
+  <div class="intro">
+    <div>
+      <h2>Scene-Based Navigation</h2>
+      <p>
+        Native apps have always had scene-based navigation. The Navigation router is the first to bring it to the web. You give the Navigation router a list of your scenes. After you navigate to a scene, the Navigation router gets out of your way so you can build your UI however you want.
+      </p>
+    </div>
+    <div>
+      <h2>React and React Native</h2>
+      <p>
+        You don't need a different routing library for React and React Native anymore. The Navigation router works on both. What's more, it doesn't compromise the UX. On React Native, the navigation is 100% native on Android and iOS. On React, you can have whatever URLs you want. 
+      </p>
+    </div>
+  </div>
+  <div id="tabs">
+    <div class="end"></div>
+    <div class="tab web">
+      <img alt="web" src="../img/web-off.png" />
+      <a href="..">React</a>
+    </div>
+    <div class="tab native active">
+      <img alt="native" src="../img/native.png" />
+      <h2>React Native</h2>
+    </div>
+    <div class="end"></div>
+  </div>
+  <div id="tabContent">
+    <ol>
+      <li>
+        <h3>Define Your States</h3>
+        <pre><code class="language-jsx">import { StateNavigator } from 'navigation';
+
+const stateNavigator = new StateNavigator([
+  { key: 'hello' },
+  { key: 'world', trackCrumbTrail: true }
+]);</code></pre>
+        <p>
+          You create one <code>State</code> for each scene (screen) in your app. You can think of the stack of scenes as a trail of breadcrumbs. Each scene is one crumb. Like Hansel and Gretel in the fairy story, the Navigation router drops a crumb every time it visits a scene (if you set 'trackCrumbTrail' to true).
+        </p>
+        <img class="arrow" alt="Next - create your scenes" src="../img/arrow.png" />
+      </li>
+      <li>
+        <h3>Create Your Scenes</h3>
+        <pre><code class="language-jsx">const { hello, world } = stateNavigator.states;
+
+hello.renderScene = = () => &lt;Hello />;
+world.renderScene = = () => &lt;World />;</code></pre>
+        <p>
+          For each scene, you create a component that renders its UI. You map these scene components to their corresponding States. The Navigation router provides React components to help you build your scenes. All of these components render to the same native primitives as other native apps. For example, the <code>TabBar</code> component renders to a <code>BottomNavigationView</code> on Android and a <code>UITabBarController</code> on iOS.
+        </p>
+        <img class="arrow" alt="Next - navigate to a scene" src="../img/arrow.png" />
+      </li>
+      <li>
+          <h3>Navigate to a Scene</h3>
+          <pre><code class="language-jsx">import { NavigationContext } from 'navigation-react';
+
+const Hello = () => {
+  const { stateNavigator } = useContext(NavigationContext);
+  return (
+    &lt;Button title="Hello"
+      onPress={() => {
+        stateNavigator.navigate('world', { size: 20 });
+      }} />
+  );
+};</code></pre>
+        <p>
+          You use the <code>stateNavigator</code> from the <code>NavigationContext</code> to change scenes. You pass the name of the scene and the data. The navigation is 100% native on Android and iOS.
+        </p>
+        <img class="arrow" alt="Next - use the data" src="../img/arrow.png" />
+      </li>
+      <li>
+        <h3>Use the Data</h3>
+        <pre><code class="language-jsx">import { NavigationContext } from 'navigation-react';
+
+const World = () => {
+  const { data } = useContext(NavigationContext);
+  return (
+    &lt;Text style={{ fontSize: data.size }}>
+      World
+    &lt;/Text>
+  );
+};</code></pre>
+        <p>
+          In the next scene, you access the data from the <code>NavigationContext</code>. You can return to the 'hello' scene via the Android back button or swiping/pressing back on iOS.
+        </p>
+      </li>
+    </ol>
+    <p class="note">
+      Take a look at the <a href="../documentation/native/hello-world.html">complete Hello World example</a>
+    </p>
+  </div>
+  <script src="../js/prism.js"></script>
+</body>
+</html>

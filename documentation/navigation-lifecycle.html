@@ -2,36 +2,41 @@
 <head>
     <title>Navigation Lifecycle</title>
     <meta name="viewport" content="width=device-width">
+    <style>
+      :root {
+        --primary-color: #f9858b;
+        --secondary-color: #ed335f;
+      }    
+    </style>
     <link rel="stylesheet" href="../css/prism.css">
     <link rel="stylesheet" href="../css/navigation.css">
 </head>
 <body>
     <div id="banner">
-        <div>
-            <a href="../index.html">Navigation</a>
-            <a href="hello-world.html" class="selected">Docs</a>
-            <a href="../download/index.html">Download</a>
-            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
-        </div>
+      <a href=".."><img alt="logo" src="../img/logo.png" /></a>
+      <a href="native/setup.html">React Native</a>
+      <a href="https://github.com/grahammendick/navigation">GitHub</a>
     </div>
     <div id="content">
         <div id="menu">
+          <h2>
+            <img alt="web" src="../img/web.png" />
+            React
+          </h2>
+          <div id="items">
+            <a href="setup.html">Setup</a>
             <a href="hello-world.html">Hello World</a>
+            <a href="state-navigation.html">State Navigation</a>
+            <a href="navigation-data.html">Navigation Data</a>
+            <a href="routes.html">Routes</a>
             <a href="thinking-in-navigation.html">Thinking in Navigation</a>
-            <div class="separator"></div>
-            <h2>THE ABC</h2>
-            <a href="state-navigation.html">A. State Navigation</a>
-            <a href="navigation-data.html">B. Navigation Data</a>
-            <a href="routes.html">C. Routes</a>
-            <a href="examples.html">Examples</a>
-            <div class="separator"></div>
-            <h2>FURTHER GUIDES</h2>
             <a href="current-data.html">Current Data</a>
             <a href="html5-history.html">HTML5 History</a>
             <a href="navigation-lifecycle.html" class="selected">Navigation Lifecycle</a>
             <a href="reusable-components.html">Reusable Components</a>
-            <div class="separator"></div>
-            <h2>MOBILE</h2>
+            <a href="examples.html">Examples</a>
+            <h3>Mobile</h3>
+            <a href="mobile/setup.html">Setup</a>
             <a href="mobile/hello-world.html">Hello World</a>
             <a href="mobile/animated-navigation.html">Animated Navigation</a>
             <a href="mobile/non-animated-navigation.html">Non-Animated Navigation</a>
@@ -39,21 +44,7 @@
             <a href="mobile/scene-navigation-lifecycle.html">Scene Navigation Lifecycle</a>
             <a href="mobile/shared-element-navigation.html">Shared Element Navigation</a>
             <a href="mobile/examples.html">Examples</a>
-            <div class="separator"></div>
-            <h2>NATIVE</h2>
-            <a href="native/setup.html">Setup</a>
-            <a href="native/hello-world.html">Hello World</a>
-            <a href="native/push-navigation.html">Push Navigation</a>
-            <a href="native/pop-navigation.html">Pop Navigation</a>
-            <a href="native/navigation-bar.html">Navigation Bar</a>
-            <a href="native/tab-bar.html">Tab Bar</a>
-            <a href="native/modal.html">Modal</a>
-            <a href="native/drawer.html">Drawer</a>
-            <a href="native/scene-navigation-lifecycle.html">Scene Navigation Lifecycle</a>
-            <a href="native/custom-animation.html">Custom Animation (Android)</a>
-            <a href="native/shared-element-transition.html">Shared Element Transition (Android)</a>
-            <a href="native/deep-links.html">Deep Links</a>
-            <a href="native/examples.html">Examples</a>
+          </div>
         </div>
         <div id="article">
             <h1>Navigation Lifecycle</h1>
@@ -61,16 +52,16 @@
             <p>
                 The <code>onBeforeNavigate</code> event gives you a chance to cancel a navigation. You're passed in details of the <code>State</code> being navigated to as well as a <code>history</code> flag that indicates whether the navigation was caused by the browser back button. In our email example, we can add an <code>onBeforeNavigate</code> listener that prompts the user to confirm they want to leave without sending their email.
             </p>
-            <pre><code class="language-jsx">componentDidMount() {
-  this.beforeNavigate = function(state, data, url, history) {
-    return history || confirm('You\'ve not sent your email. Continue?');
-  }
-  this.props.stateNavigator.onBeforeNavigate(this.beforeNavigate);
-}
+            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
 
-componentWillUnmount() {
-  this.props.stateNavigator.offBeforeNavigate(this.beforeNavigate);
-}</code></pre>
+const {stateNavigator} = useContext(NavigationContext);
+useEffect(() => {
+  const beforeNavigate = (state, data, url, history) => (
+    history || confirm('You\'ve not sent your email. Continue?')
+  )
+  stateNavigator.onBeforeNavigate(beforeNavigate);
+  return () => stateNavigator.offBeforeNavigate(beforeNavigate)
+}, [stateNavigator]);</code></pre>
             <p>
                 There's also an <code>onNavigate</code> event that fires after the navigation's happened. We could add an <code>onNavigate</code> listener that tracks page visits in our email app.
             </p>
@@ -78,23 +69,23 @@ componentWillUnmount() {
             <p>
                 You can intercept a navigation by attaching a function to the destination <code>State's navigating</code> property. This gives you a chance to suspend the navigation until an async operation, like data-fetching or code-splitting, completes. In the email example, when a user opens a mail we fetch the mail data inside a <code>navigating</code> function to avoid displaying a blank screen while the data loads. Once the data returns we pass it into the <code>navigate</code> continuation function.
             </p>
-            <pre><code class="language-jsx">stateNavigator.states.mail.navigating = function(data, url, navigate, history) {
-  $.getJSON('api/mail/' + data.id, function(resp) {
-    navigate({mail: resp});
+            <pre><code class="language-jsx">const {mail} = stateNavigator.states;
+
+mail.navigating = (data, url, navigate, history) => {
+  fetch('api/mail/' + data.id)
+    .then(res => res.json())
+    .then(data => navigate({mail: data});
   });
 };</code></pre>
             <p>
-                Update the <code>Consumer's</code> child render <code>prop</code> to pass this asynchronous data along in the second parameter of the call to the active <code>State's renderView</code> function.
+                We can access this asynchronous mail data from <code>NavigationContext</code> just like the other navigation data.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationReact.NavigationContext.Consumer>
-  {({ state, data, asyncData }) => state.renderView(data, asyncData)}
-&lt;/NavigationReact.NavigationContext.Consumer></code></pre>
-            <p>
-                The 'mail' <code>State's renderView</code> function passes the asynchronous mail data as a <code>prop</code> to the <code>Mail</code> component.
-            </p>
-            <pre><code class="language-jsx">stateNavigator.states.mail.renderView = function(data, asyncData) {
-  return &lt;Mail mail={asyncData.mail} />;
-};</code></pre>
+            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+
+mail.renderScene = () => {
+  const {asyncData} = useContext(NavigationContext);
+  const {mail} = asyncData;
+}</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>
