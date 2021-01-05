@@ -74,7 +74,7 @@
                 You've seen how the <code>RefreshLink</code> component lets us focus on the data instead of worrying about URLs. That means we can avoid hard-coding href attributes and create reusable navigational components. Let's use this technique to create a reusable Pager component. It will have 'First', 'Previous', 'Next' and 'Last' Hyperlinks that each change the current page number. For example, the 'First' Hyperlink sets the page number to 1 and the 'Previous' Hyperlink decrements the page number:
             </p>
             <pre><code class="language-jsx">const Pager = ({page, size, total}) => {
-  var pages = [
+  const pages = [
     {text: 'First', page: 1},
     {text: 'Previous', page: Math.max(page - 1, 1)},
     {text: 'Next', page: Math.min(page + 1, Math.ceil(total / size))},

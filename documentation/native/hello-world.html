@@ -61,10 +61,10 @@
             </p>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
 
-var {hello} = stateNavigator.states;
+const {hello} = stateNavigator.states;
 
 hello.renderScene = () => {
-  var {stateNavigator} = useContext(NavigationContext);
+  const {stateNavigator} = useContext(NavigationContext);
   return (
     &lt;TouchableHighlight
       onPress={() => {
@@ -77,7 +77,7 @@ hello.renderScene = () => {
             <p>
                 We build the 'world' scene inside the <code>renderScene</code> function of the 'world' <code>State</code>. We'll destructure the size from the incoming navigation data and assign it to <code>Text</code> component’s font size.
             </p>
-            <pre><code class="language-jsx">var {world} = stateNavigator.states;
+            <pre><code class="language-jsx">const {world} = stateNavigator.states;
 
 world.renderScene = ({size}) => (
   &lt;Text style={{fontSize: data.size}}>World&lt;/Text>
@@ -87,7 +87,7 @@ world.renderScene = ({size}) => (
                 We pop scenes off the stack by navigating backwards. How far we navigate back determines the number of scenes popped. We'll change the 'world' scene so that it renders a button instead of plain text. Inside the <code>onPress</code> handler, we'll call the <code>navigateBack</code> function passing in a distance of 1. Because the Navigation router uses the underlying native APIs, you can also return to the 'hello' scene using the back button on Android or by swiping/pressing back on iOS.
             </p>
             <pre><code class="language-jsx">world.renderScene = ({size}) => {
-  var {stateNavigator} = useContext(NavigationContext);
+  const {stateNavigator} = useContext(NavigationContext);
   return (
     &lt;TouchableHighlight        
       onPress={() => {
