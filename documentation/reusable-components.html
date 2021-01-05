@@ -58,7 +58,9 @@
             <p>
                 A reusable Sorter component consists of a Hyperlink that toggles the sort order. Remember that it's just the UI we're reusing and not the sorting logic itself. With the Navigation router we think in terms of typed data rather than URLs. We'll model the sort order as a boolean called 'up'. A value of true represents a sort direction of ascending. We can then use the Navigation router's <code>RefreshLink</code> component to build a Sorter component that toggles this 'up' value:
             </p>
-            <pre><code class="language-jsx">const Sorter = ({up, children}) => (
+            <pre><code class="language-jsx">import {RefreshLink} from 'navigation-react';
+
+const Sorter = ({up, children}) => (
   &lt;RefreshLink navigationData={{up: !up}}>
     {children}
   &lt;/RefreshLink>
