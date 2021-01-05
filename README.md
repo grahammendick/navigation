@@ -73,7 +73,7 @@ const { hello, world } = stateNavigator.states;
 hello.renderScene = = () => <Hello />;
 world.renderScene = = () => <World />;
 ```
-For each scene, you create a component that renders its UI. You map these scene components to their corresponding States. The Navigation router provides React components to help you build your scenes. All of these components render to the same native primitives as other native apps. For example, the `TabBar` component renders to a `BottomNavigationView` on `Android` and a `UITabBarController` on iOS.
+For each scene, you create a component that renders its UI. You map these scene components to their corresponding States. The Navigation router provides React components to help you build your scenes. All of these components render to the same native primitives as other native apps. For example, the `TabBar` component renders to a `BottomNavigationView` on Android and a `UITabBarController` on iOS.
 
 ### Navigate to a Scene
 ```jsx
