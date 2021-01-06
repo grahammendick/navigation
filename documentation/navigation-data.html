@@ -79,11 +79,11 @@ const {stateNavigator} = useContext(NavigationContext);
             </p>
             <h2>Receiving Data</h2>
             <p>
-                You can access the data from the <code>NavigationContext</code>. In the email example, when the mail scene is active we get the <code>id</code> and <code>expand</code> data items passed by the Hyperlink.
+                You can access the data from the <code>NavigationContext</code>. In the email example, when the 'mail' scene is active we get the <code>id</code> and <code>expand</code> data items passed by the Hyperlink.
             </p>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react'
               
-mail.renderScene = () => {
+const Mail = () => {
   const {data} = useContext(NavigationContext)
   const {id, expand} = data;
 };</code></pre>

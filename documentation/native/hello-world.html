@@ -61,9 +61,7 @@
             </p>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
 
-const {hello} = stateNavigator.states;
-
-hello.renderScene = () => {
+const Hello = () => {
   const {stateNavigator} = useContext(NavigationContext);
   return (
     &lt;TouchableHighlight
@@ -73,27 +71,34 @@ hello.renderScene = () => {
       &lt;Text>Hello&lt;/Text>
     &lt;/TouchableHighlight>
   );
-};</code></pre>
-            <p>
-                We build the 'world' scene inside the <code>renderScene</code> function of the 'world' <code>State</code>. We'll destructure the size from the incoming navigation data and assign it to <code>Text</code> component’s font size.
-            </p>
-            <pre><code class="language-jsx">const {world} = stateNavigator.states;
+};
 
-world.renderScene = ({size}) => (
-  &lt;Text style={{fontSize: data.size}}>World&lt;/Text>
-);</code></pre>
+const {hello} = stateNavigator.states;
+hello.renderScene = () => &lt;Hello />;</code></pre>
+            <p>
+                We return the 'world' scene from the <code>renderScene</code> function of the 'world' <code>State</code>. We'll get the size from the <code>NavigationContext</code> and assign it to <code>Text</code> component’s font size.
+            </p>
+            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+
+const World = () => {
+  const {data} = useContext(NavigationContext);
+  return &lt;Text style={{fontSize: data.size}}>World&lt;/Text>;
+}
+
+const {world} = stateNavigator.states;
+world.renderScene = () => &lt;World />;</code></pre>
             <h2>Pop</h2>
             <p>
                 We pop scenes off the stack by navigating backwards. How far we navigate back determines the number of scenes popped. We'll change the 'world' scene so that it renders a button instead of plain text. Inside the <code>onPress</code> handler, we'll call the <code>navigateBack</code> function passing in a distance of 1. Because the Navigation router uses the underlying native APIs, you can also return to the 'hello' scene using the back button on Android or by swiping/pressing back on iOS.
             </p>
-            <pre><code class="language-jsx">world.renderScene = ({size}) => {
-  const {stateNavigator} = useContext(NavigationContext);
+            <pre><code class="language-jsx">const World = () => {
+  const {data, stateNavigator} = useContext(NavigationContext);
   return (
     &lt;TouchableHighlight        
       onPress={() => {
         stateNavigator.navigateBack(1);
       }}>
-      &lt;Text style={{fontSize: size}}>World&lt;/Text>
+      &lt;Text style={{fontSize: data.size}}>World&lt;/Text>
     &lt;/TouchableHighlight>
   );
 };</code></pre>
