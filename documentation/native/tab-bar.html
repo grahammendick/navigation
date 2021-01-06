@@ -46,7 +46,7 @@
             </p>
             <pre><code class="language-jsx">import {TabBar, TabBarItem} from 'navigation-react-native';
 
-var Contacts = () => (
+const Contacts = () => (
   &lt;TabBar primary={false}>
     &lt;TabBarItem title="Personal">
       &lt;ScrollView />
@@ -63,20 +63,20 @@ var Contacts = () => (
             <p>
                 Let's add top level tabs to our email example. One tab for the user's inbox and another for their list of contacts. We create a new <code>StateNavigator</code> for each of the tabs. The <code>StateNavigator</code> for the 'inbox' tab has the 'inbox', 'mail' and 'compose' <code>States</code> that we're already familiar with. The <code>StateNavigator</code> for the 'contacts' tab contains two <code>States</code> so the user can view all their contacts and edit the details of an individual contact.
             </p>
-            <pre><code class="language-jsx">var contactsNavigator = new StateNavigator([
+            <pre><code class="language-jsx">const contactsNavigator = new StateNavigator([
   {key: 'contacts'},
   {key: 'contact', trackCrumbTrail: true}
 ]);
 
-var {contacts, contact} = contactsNavigator.states;
+const {contacts, contact} = contactsNavigator.states;
 contacts.renderScene = () => &lt;Contacts />;
-contact.renderScene = ({id}) => &lt;Contact id={id} />;
+contact.renderScene = () => &lt;Contact />;
 
 contactsNavigator.navigate('contacts');</code></pre>
             <p>
               We create a scene that returns a <code>TabBar</code> component. We give each tab its own <code>NavigationStack</code> and <code>StateNavigator</code>. For example, we give the 'contacts' tab the <code>contactsNavigator</code> we just created. To make them look like top level tabs, we assign each one an image as well as a title. We hide the navigation bar otherwise, on iOS, it would block the navigation bar of the scenes inside the tabs.
             </p>
-            <pre><code class="language-jsx">var Tabs = () => (
+            <pre><code class="language-jsx">const Tabs = () => (
   &lt;>
     &lt;NavigationBar hidden={true}>
     &lt;TabBar primary={true}>
@@ -96,11 +96,11 @@ contactsNavigator.navigate('contacts');</code></pre>
             <p>
                 We replace the <code>States</code> in the top-level <code>StateNavigator</code> with a single one for the 'tabs' scene. Remember that the 'inbox', 'mail' and 'compose' <code>States</code> now live inside <code>StateNavigator</code> of the 'inbox' tab. We navigate to the 'tabs' <code>State</code> so that the tabs display when the app starts.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+            <pre><code class="language-jsx">const stateNavigator = new StateNavigator([
   {key: 'tabs'}
 ]);
 
-var {tabs} = stateNavigator.states;
+const {tabs} = stateNavigator.states;
 tabs.renderScene = () => &lt;Tabs />;
 
 stateNavigator.navigate('tabs');</code></pre>
