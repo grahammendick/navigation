@@ -55,11 +55,12 @@
 ]);</code></pre>
             <h2>Defining Scenes</h2>
             <p>
-                Each <code>State</code> needs a matching scene which the Navigation router displays when that <code>State</code> is active. You define the scene in a function assigned to the <code>renderScene</code> property of the <code>State</code>. We can define two of the scenes in our email application using <code>Inbox</code> and <code>Compose</code> components.
+                Each <code>State</code> needs a matching scene which the Navigation router displays when that <code>State</code> is active. You define the scene in a function assigned to the <code>renderScene</code> property of the <code>State</code>. We can define the scenes in our email application using <code>Inbox</code>, <code>Mail</code> and <code>Compose</code> components.
             </p>
-            <pre><code class="language-jsx">const {inbox, compose} = stateNavigator.states;
+            <pre><code class="language-jsx">const {inbox, mail, compose} = stateNavigator.states;
 
 inbox.renderScene = () => &lt;Inbox />;
+mail.renderScene = () => &lt;Mail />;
 compose.renderScene = () => &lt;Compose />;</code></pre>
             <h2>Pushing</h2>
             <p>
@@ -100,10 +101,7 @@ const Inbox = () => {
 const Mail = () => {
   const {data} = useContext(NavigationContext); 
   const {id} = data;
-}
-              
-const {mail} = stateNavigator.states;
-mail.renderScene = () => &lt;Mail />;</code></pre>
+}</code></pre>
             <div class="Note">
                 <h2>Note</h2>
                 Wrap each scene in a <code>SafeAreaView</code> component or a <code>ScrollView</code> component with <code>contentInsetAdjustmentBehavior</code> set to 'automatic' to prevent the iOS navigation bar overlapping the content
