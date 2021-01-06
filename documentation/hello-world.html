@@ -59,38 +59,41 @@
   {key: 'world'}
 ]);</code></pre>
             <p>
-                We define the scene for the 'hello' <code>State</code> in a function attached to its <code>renderScene</code> property. Inside the function we'll render a Hyperlink that navigates to the 'world' <code>State</code>. We'll let the <code>NavigationLink</code> component handle the rendering. It has a <code>stateKey prop</code> that holds the key of the destination State. 
+                We define the scene for the 'hello' <code>State</code> in a function attached to its <code>renderScene</code> property. Inside the function 
+                we'll return the <code>Hello</code> component. It renders a Hyperlink that navigates to the 'world' <code>State</code>. We'll let the <code>NavigationLink</code> component handle the rendering. It has a <code>stateKey prop</code> that holds the key of the destination State. 
             </p>
             <pre><code class="language-jsx">import {NavigationLink} from 'navigation-react';
 
-const {hello} = stateNavigator.states;
-
-hello.renderScene = () => (
+const Hello = () => (
   &lt;NavigationLink stateKey="world">
     Hello
   &lt;/NavigationLink>
-);</code></pre>
+);
+
+const {hello} = stateNavigator.states;
+hello.renderScene = () => &lt;Hello /></code></pre>
             <p>
                 We'll also add a <code>renderScene</code> function to the 'world' <code>State</code> so we can render the div after the Hyperlink is clicked.
             </p>
-            <pre><code class="language-jsx">const {hello} = stateNavigator.states;
+            <pre><code class="language-jsx">const World = () => &lt;div>World&lt;/div>;
 
-world.renderScene = () => &lt;div>World&lt;/div>;</code></pre>
+const {hello} = stateNavigator.states;
+world.renderScene = () => &lt;World /></code></pre>
             <h2>Data First</h2>
             <p>
                 We'll change the Hyperlink to pass across a number that will become the font-size of the div. With other routers, we'd have to decide now whether to pass it as a route or query string parameter. With the Navigation router, we can leave this decision to the end. The <code>NavigationLink</code> component has a <code>navigationData prop</code> that holds the data to pass to the destination <code>State</code>. We'll pass the number 20 as the <code>size</code> to the 'world' <code>State</code>.
             </p>
-            <pre><code class="language-jsx">hello.renderScene = () => (
+            <pre><code class="language-jsx">const Hello = () => (
   &lt;NavigationLink stateKey="world" navigationData={{size: 20}}>
     Hello
   &lt;/NavigationLink>
 );</code></pre>
             <p>
-                We'll change the 'world' <code>State's renderScene</code> function to retrieve the data from the <code>NavigationContext</code> and use the number to set the div's font-size.
+                We'll change the <code>World</code> component to retrieve the data from the <code>NavigationContext</code> and use the number to set the div's font-size.
             </p>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
 
-world.renderScene = () => {
+const World = () => {
   const {data} = useContext(NavigationContext);
   return &lt;div style={{fontSize: data.size}}>World&lt;/div>;
 };</code></pre>
