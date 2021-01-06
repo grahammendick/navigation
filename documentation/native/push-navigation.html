@@ -48,7 +48,7 @@
             <p>
                 Both Android and iOS allow a user to navigate back through their stack of visited scenes. The Navigation router manages this stack by dropping a breadcrumb at each visited scene, like the fairy-tale characters Hansel and Gretel. You enable the breadcrumb trail by setting <code>trackCrumbTrail</code> to true against each <code>State</code>. In an email application, we set <code>trackCrumbTrail</code> to true on the 'mail' <code>State</code> so that the user can return to the 'inbox' scene after opening an email.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+            <pre><code class="language-jsx">const stateNavigator = new StateNavigator([
   {key: 'inbox'},
   {key: 'mail', trackCrumbTrail: true},
   {key: 'compose', trackCrumbTrail: true}
@@ -57,7 +57,7 @@
             <p>
                 Each <code>State</code> needs a matching scene which the Navigation router displays when that <code>State</code> is active. You define the scene in a function assigned to the <code>renderScene</code> property of the <code>State</code>. We can define two of the scenes in our email application using <code>Inbox</code> and <code>Compose</code> components.
             </p>
-            <pre><code class="language-jsx">var {inbox, compose} = stateNavigator.states;
+            <pre><code class="language-jsx">const {inbox, compose} = stateNavigator.states;
 
 inbox.renderScene = () => &lt;Inbox />;
 compose.renderScene = () => &lt;Compose />;</code></pre>
@@ -71,8 +71,8 @@ compose.renderScene = () => &lt;Compose />;</code></pre>
             </p>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
 
-var Inbox = () => {
-  var {stateNavigator} = useContext(NavigationContext);
+const Inbox = () => {
+  const {stateNavigator} = useContext(NavigationContext);
   return (
     &lt;TouchableHighlight
       onPress={() => {
@@ -93,11 +93,17 @@ var Inbox = () => {
   &lt;Text>Open Mail&lt;/Text>
 &lt;/TouchableHighlight></code></pre>
             <p>
-                The Navigation router passes this navigation data into the <code>renderScene</code> function of the target <code>State</code>. In the email application, we can destructure the selected id from the incoming data and pass it as a <code>prop</code> to the <code>Mail</code> component.
+                We can get the selected id from the <code>NavigationContext</code>.
             </p>
-            <pre><code class="language-jsx">var {mail} = stateNavigator.states;
+            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
 
-mail.renderScene = ({id}) => &lt;Mail mailId={id} />;</code></pre>
+const Mail = () => {
+  const {data} = useContext(NavigationContext); 
+  const {id} = data;
+}
+              
+const {mail} = stateNavigator.states;
+mail.renderScene = () => &lt;Mail />;</code></pre>
             <div class="Note">
                 <h2>Note</h2>
                 Wrap each scene in a <code>SafeAreaView</code> component or a <code>ScrollView</code> component with <code>contentInsetAdjustmentBehavior</code> set to 'automatic' to prevent the iOS navigation bar overlapping the content
