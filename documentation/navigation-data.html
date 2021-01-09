@@ -78,7 +78,7 @@ const {stateNavigator} = useContext(NavigationContext);
             </p>
             <h2>Receiving Data</h2>
             <p>
-                You can access the data from the <code>NavigationContext</code>. In the email example, when the 'mail' scene is active we get the <code>id</code> and <code>expand</code> data items passed by the Hyperlink.
+                You can access the data from the <code>NavigationContext</code>. In the email example, when the 'mail' scene is active we get the <code>id</code> and <code>expand</code> data items passed by the Hyperlink. You don't have to convert the data from strings because the Navigation router remembers their original types.
             </p>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react'
               
@@ -86,8 +86,6 @@ const Mail = () => {
   const {data} = useContext(NavigationContext)
   const {id, expand} = data;
 };</code></pre>
-            <p>
-                You don't have to convert the data from strings because the Navigation router remembers their original types.
             <h2>Setting Default Values</h2>
             <p>
                 The Navigation router lets you define default navigation data values for each scene. The data available on the <code>NavigationContext</code> includes these default values for any item that you don't supply with a value when navigating. If we give the <code>expand</code> item in the email example a default value of false then we don't have to explicitly pass it in navigation data when the mail's opened.
