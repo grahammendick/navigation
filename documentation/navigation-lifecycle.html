@@ -64,27 +64,6 @@ useEffect(() => {
             <p>
                 There's also an <code>onNavigate</code> event that fires after the navigation's happened. We could add an <code>onNavigate</code> listener that tracks page visits in our email app.
             </p>
-            <h2>Fetching Data</h2>
-            <p>
-                You can intercept a navigation by attaching a function to the destination <code>State's navigating</code> property. This gives you a chance to suspend the navigation until an async operation, like data-fetching or code-splitting, completes. In the email example, when a user opens a mail we fetch the mail data inside a <code>navigating</code> function to avoid displaying a blank screen while the data loads. Once the data returns we pass it into the <code>navigate</code> continuation function.
-            </p>
-            <pre><code class="language-jsx">const {mail} = stateNavigator.states;
-
-mail.navigating = (data, url, navigate, history) => {
-  fetch('api/mail/' + data.id)
-    .then(res => res.json())
-    .then(data => navigate({mail: data});
-  });
-};</code></pre>
-            <p>
-                We can access this asynchronous mail data from <code>NavigationContext</code> just like the other navigation data.
-            </p>
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
-
-const Mail = () => {
-  const {asyncData} = useContext(NavigationContext);
-  const {mail} = asyncData;
-}</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>
