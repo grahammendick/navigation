@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import ReactDOM from 'react-dom';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
 import { StateNavigator } from 'navigation';
@@ -6,13 +6,17 @@ import { configure } from './Router';
 
 var stateNavigator = new StateNavigator();
 configure(stateNavigator);
+
 stateNavigator.start();
+
+const App = () => {
+    const {state, data} = useContext(NavigationContext);
+    return state.renderScene(data)
+};
 
 ReactDOM.render(
     <NavigationHandler stateNavigator={stateNavigator}>
-        <NavigationContext.Consumer>
-            {({ state, data }) => state.renderView(data)}
-        </NavigationContext.Consumer>        
+        <App />
     </NavigationHandler>,
     document.getElementById('content')
 );
