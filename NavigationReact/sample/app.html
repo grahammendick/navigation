@@ -17,9 +17,9 @@
     <script src="../../build/dist/navigation.js"></script>
     <script src="../../build/dist/navigation.react.js"></script>
     <script type="text/jsx">
-        const { useContext } = React
-        const { StateNavigator } = Navigation;
-        const { NavigationContext, NavigationHandler, NavigationLink, RefreshLink, NavigationBackLink } = NavigationReact;
+        const {useContext} = React
+        const {StateNavigator} = Navigation;
+        const {NavigationContext, NavigationHandler, NavigationLink, RefreshLink, NavigationBackLink} = NavigationReact;
 
         const List = () => {
             const {data} = useContext(NavigationContext);
@@ -53,7 +53,7 @@
         }
 
         const Filter = ({name}) => {
-            const {stateNavigator, data} = useContext(NavigationContext);
+            const {stateNavigator} = useContext(NavigationContext);
             const {stateContext} = stateNavigator;
             const nameChange = (event) => {
                 stateNavigator.refresh(stateContext.includeCurrentData({ name: event.target.value, startRowIndex: null }));
@@ -72,10 +72,10 @@
         }
 
         const Pager = ({startRowIndex, maximumRows, totalRowCount}) => {
-            var remainder = totalRowCount % maximumRows;
-            var previous = Math.max(0, startRowIndex - maximumRows);
-            var next = startRowIndex + maximumRows;
-            var last = remainder != 0 ? totalRowCount - remainder : totalRowCount - maximumRows;
+            const remainder = totalRowCount % maximumRows;
+            const previous = Math.max(0, startRowIndex - maximumRows);
+            let next = startRowIndex + maximumRows;
+            let last = remainder != 0 ? totalRowCount - remainder : totalRowCount - maximumRows;
             if (next >= totalRowCount)
                 next = last = startRowIndex;
             return (
@@ -91,23 +91,20 @@
             );
         }
 
-        class Details extends React.Component {
-            shouldComponentUpdate(nextProps) {
-                return nextProps.id !== this.props.id;
-            }
-            render() {
-                var person = personSearch.getDetails(this.props.id);
-                return (
+        const Details = () => {
+            const {data} = useContext(NavigationContext);
+            const {id} = data;
+            const person = personSearch.getDetails(id);
+            return (
+                <div>
+                    <NavigationBackLink distance={1}>Person Search</NavigationBackLink>
                     <div>
-                        <NavigationBackLink distance={1}>Person Search</NavigationBackLink>
-                        <div>
-                            Name: {person.name}<br />
-                            Date of Birth: {person.dateOfBirth}
-                        </div>
+                        Name: {person.name}<br />
+                        Date of Birth: {person.dateOfBirth}
                     </div>
-                );
-            }
-        };
+                </div>
+            );
+        }
 
         const stateNavigator = new StateNavigator([
             { key: 'people', route: '{startRowIndex?}/{maximumRows?}/{sortExpression?}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search' },
