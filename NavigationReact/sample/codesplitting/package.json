@@ -9,8 +9,8 @@
     "babel-loader": "^8.0.4",
     "navigation": "*",
     "navigation-react": "*",
-    "react": "*",
-    "react-dom": "*",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2"
   },
