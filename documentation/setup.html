@@ -65,8 +65,8 @@ const stateNavigator = new StateNavigator([
 stateNavigator.start();
 
 const App = () => {
-  const {state} = useContext(NavigationContext);
-  return state.renderScene()
+  const {state, data} = useContext(NavigationContext);
+  return state.renderScene(data)
 };
 
 ReactDOM.render(
