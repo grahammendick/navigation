@@ -8,8 +8,8 @@
     "babel-loader": "^8.0.5",
     "navigation": "*",
     "navigation-react": "*",
-    "react": "*",
-    "react-dom": "*",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
     "webpack-dev-server": "^3.1.14"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { QueryRenderer } from 'react-relay';
 import { Environment, Network, RecordSource, Store } from 'relay-runtime';
@@ -47,20 +47,23 @@ const modernEnvironment = new Environment({
 
 stateNavigator.start();
 
+const App = () => {
+    const {state, data} = useContext(NavigationContext);
+    return (
+    <QueryRenderer
+        environment={modernEnvironment}
+        query={state.query}
+        variables={data}
+        render={({ error, props }) => (
+            props ? <state.component {...props} /> : <div>Loading</div>
+        )}
+    />                
+    );
+};
+
 ReactDOM.render(
     <NavigationHandler stateNavigator={stateNavigator}>
-        <NavigationContext.Consumer>
-            {({ state, data }) => (
-                <QueryRenderer
-                    environment={modernEnvironment}
-                    query={state.query}
-                    variables={data}
-                    render={({ error, props }) => (
-                        props ? <state.component {...props} /> : <div>Loading</div>
-                    )}
-                />                
-            )}
-        </NavigationContext.Consumer>        
+        <App />
     </NavigationHandler>,
     document.getElementById('content')
 );

@@ -1,9 +1,10 @@
 import express from 'express';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { NavigationContext, NavigationHandler } from 'navigation-react';
+import { NavigationHandler } from 'navigation-react';
 import getStateNavigator from './getStateNavigator';
 import { searchPeople, getPerson } from './Data';
+import App from './App';
 
 var app = express();
 
@@ -34,9 +35,7 @@ app.get('*', function(req, res) {
                 <body>
                     <div id="content">${ReactDOMServer.renderToString(
                         <NavigationHandler stateNavigator={stateNavigator}>
-                            <NavigationContext.Consumer>
-                                {({ state, asyncData }) => state.renderView(asyncData)}
-                            </NavigationContext.Consumer>        
+                            <App />
                         </NavigationHandler>
                     )}</div>
                     <script>var serverProps = ${safeStringify(asyncData)};</script>
