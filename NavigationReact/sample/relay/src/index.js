@@ -48,8 +48,8 @@ const modernEnvironment = new Environment({
 stateNavigator.start();
 
 const App = () => {
-  const {state, data} = useContext(NavigationContext);
-  return (
+    const {state, data} = useContext(NavigationContext);
+    return (
     <QueryRenderer
         environment={modernEnvironment}
         query={state.query}
@@ -58,12 +58,12 @@ const App = () => {
             props ? <state.component {...props} /> : <div>Loading</div>
         )}
     />                
-  );
+    );
 };
 
 ReactDOM.render(
-  <NavigationHandler stateNavigator={stateNavigator}>
-    <App />
-  </NavigationHandler>,
-  document.getElementById('content')
+    <NavigationHandler stateNavigator={stateNavigator}>
+        <App />
+    </NavigationHandler>,
+    document.getElementById('content')
 );
