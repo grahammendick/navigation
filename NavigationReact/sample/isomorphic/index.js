@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { NavigationContext, NavigationHandler } from 'navigation-react';
+import { NavigationHandler } from 'navigation-react';
 import getStateNavigator from './getStateNavigator';
+import App from './App';
 
 var stateNavigator = getStateNavigator();
 registerControllers(stateNavigator);
+
 stateNavigator.start();
 
 ReactDOM.hydrate(
     <NavigationHandler stateNavigator={stateNavigator}>
-        <NavigationContext.Consumer>
-            {({ state, asyncData }) => state.renderView(asyncData)}
-        </NavigationContext.Consumer>        
+        <App />
     </NavigationHandler>,
     document.getElementById('content')
 );

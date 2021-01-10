@@ -10,8 +10,8 @@
     "express": "^4.14.0",
     "navigation": "*",
     "navigation-react": "*",
-    "react": "*",
-    "react-dom": "*",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "webpack": "^1.13.2"
   },
   "scripts": {

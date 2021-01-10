@@ -10,8 +10,8 @@ function getStateNavigator() {
     ], new HTML5HistoryManager());
 
     var { people, person } = stateNavigator.states;
-    people.renderView = data => <People {...data} />;
-    person.renderView = data => <Person {...data} />;
+    people.renderScene = data => <People {...data} />;
+    person.renderScene = data => <Person {...data} />;
     return stateNavigator;
 }
 
