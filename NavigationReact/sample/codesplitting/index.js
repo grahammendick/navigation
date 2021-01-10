@@ -18,15 +18,15 @@ person.renderScene = ({id}) => <Person person={getPerson(id)} />;
 stateNavigator.start();
 
 const App = () => {
-  const {state, data} = useContext(NavigationContext);
-  return state.renderScene(data)
+    const {state, data} = useContext(NavigationContext);
+    return state.renderScene(data)
 };
 
 ReactDOM.render(
-  <NavigationHandler stateNavigator={stateNavigator}>
-    <Suspense fallback={<div>Loading...</div>}>
-        <App />
-    </Suspense>
-  </NavigationHandler>,
-  document.getElementById('content')
+    <NavigationHandler stateNavigator={stateNavigator}>
+        <Suspense fallback={<div>Loading...</div>}>
+            <App />
+        </Suspense>
+    </NavigationHandler>,
+    document.getElementById('content')
 );
