@@ -230,14 +230,14 @@
     div.tab.active img {
       height: 25px;
     }
-    li {
+    #tabContent li {
       width: 100%;
       height: unset;
     }
-    li:nth-child(2) {
+    #tabContent li:nth-child(2) {
       margin-top: 0;
     }
-    li:nth-child(3) {
+    #tabContent li:nth-child(3) {
       margin-top: 0;
     }
     .arrow {
