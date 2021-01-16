@@ -13,6 +13,7 @@
     "navigation": "^5.3.1",
     "navigation-react": "^4.1.1",
     "navigation-react-native": "^6.23.0",
+    "patch-package": "^6.2.2",
     "react": "16.13.1",
     "react-native": "0.63.2"
   },
