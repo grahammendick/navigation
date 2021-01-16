@@ -41,8 +41,6 @@ const Container = (props) => (
 
 const Grid = ({colors}) => {
   const [text, setText] = useState('');
-  const [show, setShow] = useState(Platform.OS === 'android' || +Platform.Version < 14);
-  useLayoutEffect(() => {setTimeout(setShow, 0, true)}, []);
   return (    
     <Container
       style={styles.scene}
@@ -63,7 +61,7 @@ const Grid = ({colors}) => {
           <BarButton title="search" show="always" search={true} />
         </RightBar>
       </NavigationBar>
-      {show && <Colors colors={colors} />}
+      <Colors colors={colors} />
     </Container>
   );
 };
