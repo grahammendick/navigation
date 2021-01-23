@@ -23,9 +23,9 @@ const NVBarButton = requireNativeComponent<any>('NVBarButton', null)
 
 const styles = StyleSheet.create({
     actionView: {
+        position: 'absolute',
         ...Platform.select({
             android: {
-                position: 'absolute',
                 top: 0, right: 0,
                 bottom: 0, left: 0,
             },
