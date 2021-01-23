@@ -1,38 +1,44 @@
 # Hello World
+```jsx
+import { StateNavigator } from 'navigation';
+import { NavigationHandler, NavigationLink, NavigationContext } from 'navigation-react';
 
-```js
-var Navigation = require('navigation');
-var NavigationReact = require('navigation-react');
-
-var stateNavigator = new Navigation.StateNavigator([
-  {key: 'hello', route: ''},
-  {key: 'world'}
+const stateNavigator = new StateNavigator([
+  { key: 'hello', route: '' },
+  { key: 'world' }
 ]);
 
-stateNavigator.states.hello.renderView = function() {
-  return (
-    <NavigationReact.NavigationLink 
-      stateKey="world"
-      navigationData={{size: 20}}>
-      Hello
-    </NavigationReact.NavigationLink>
-  );
-};
+const { hello, world } = stateNavigator.states;
 
-stateNavigator.states.world.renderView = function(data) {
+hello.renderScene = = () => <Hello />;
+world.renderScene = = () => <World />;
+
+const Hello = () => (
+  <NavigationLink 
+    stateKey="world"
+    navigationData={{ size: 20 }}>
+    Hello
+  </NavigationReact.NavigationLink>
+);
+
+const World = () => {
+  const { data } = useContext(NavigationContext);
   return (
-    <div style={{fontSize: data.size}}>World</div>
+    <div style={{ fontSize: data.size }}>World</div>
   );
 };
 
 stateNavigator.start();
 
+const App = () => {
+  const { state, data } = useContext(NavigationContext);
+  return state.renderScene(data);
+};
+
 ReactDOM.render(
-  <NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
-    <NavigationReact.NavigationContext.Consumer>
-      {({ state, data }) => state.renderView(data)}
-    </NavigationReact.NavigationContext.Consumer>
-  </NavigationReact.NavigationHandler>,
-  document.getElementById('app')
+  <NavigationHandler stateNavigator={stateNavigator}>
+    <App />
+  </NavigationHandler>,
+  document.getElementById('root')
 );
 ```
