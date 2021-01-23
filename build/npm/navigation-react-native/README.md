@@ -1,35 +1,44 @@
 # Hello World
 
 ```js
-import {StateNavigator} from 'navigation';
-import {NavigationHandler} from 'navigation-react';
-import {NavigationStack} from 'navigation-react-native';
+import { StateNavigator } from 'navigation';
+import { NavigationHandler, NavigationContext } from 'navigation-react';
+import { NavigationStack } from 'navigation-react-native';
 
-var stateNavigator = new StateNavigator([
-  {key: 'hello'},
-  {key: 'world', trackCrumbTrail: true},
+const stateNavigator = new StateNavigator([
+  { key: 'hello' },
+  { key: 'world', trackCrumbTrail: true },
 ]);
 
-const {hello, world} = stateNavigator.states;
+const Hello = () => {
+  const { stateNavigator } = useContext(NavigationContext);
+  return (
+    <TouchableHighlight
+      onPress={() => {
+        stateNavigator.navigate('world', { size: 20 });
+      }}>
+      <Text>Hello</Text>
+    </TouchableHighlight>
+  );
+};
 
-hello.renderScene = () => (
-  <TouchableHighlight
-    onPress={() => {
-      stateNavigator.navigate('world', {size: 20});
-    }}>
-    <Text>Hello</Text>
-  </TouchableHighlight>
-);
+const World = () => {
+  const { data } = useContext(NavigationContext);
+  return <Text style={{ fontSize: data.size }}>World</Text>;
+};
 
-world.renderScene = ({size}) => (
-  <Text style={{fontSize: size}}>World</Text>
-);
+const { hello, world } = stateNavigator.states;
+
+hello.renderScene = () => <Hello />;
+world.renderScene = () => <World />;
 
 stateNavigator.navigate('hello');
 
-export default () => (
+const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
     <NavigationStack />
   </NavigationHandler>
 );
+
+export default App;
 ```
