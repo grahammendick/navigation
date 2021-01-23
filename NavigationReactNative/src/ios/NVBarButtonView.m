@@ -73,6 +73,23 @@
     }
 }
 
+- (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
+{
+    [super insertReactSubview:subview atIndex:atIndex];
+    [self.button setCustomView:subview];
+}
+
+- (void)removeReactSubview:(UIView *)subview
+{
+    [super removeReactSubview:subview];
+    if (self.button.customView == subview)
+        [self.button setCustomView:nil];
+}
+
+- (void)didUpdateReactSubviews
+{
+}
+
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     if ([changedProps containsObject:@"fontFamily"] || [changedProps containsObject:@"fontWeight"]
