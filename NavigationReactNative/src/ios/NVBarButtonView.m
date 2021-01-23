@@ -14,9 +14,7 @@
 @implementation NVBarButtonView
 {
     __weak RCTBridge *_bridge;
-    NSString *_title;
     NSString *_testID;
-    UIImage *_image;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -33,7 +31,6 @@
 
 - (void)setTitle:(NSString *)title
 {
-    _title = title;
     self.button.title = title;
 }
 
@@ -48,12 +45,10 @@
     if (!!source) {
         [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request size:source.size scale:source.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self -> _image = image;
                 self -> _button.image = image;
             });
         }];
     } else {
-        _image = nil;
         _button.image = nil;
     }
 }
@@ -62,13 +57,6 @@
 {
     if (systemItem != NSNotFound) {
         self.button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem target:self action:@selector(buttonPressed)];
-    } else {
-        self.button = [[UIBarButtonItem alloc] init];
-        self.button.style = UIBarButtonItemStylePlain;
-        self.button.target = self;
-        self.button.action = @selector(buttonPressed);
-        self.button.image = _image;
-        self.button.title = _title;
         self.button.accessibilityIdentifier = _testID;
     }
 }
