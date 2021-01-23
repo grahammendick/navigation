@@ -14,7 +14,7 @@ hello.renderScene = = () => <Hello />;
 world.renderScene = = () => <World />;
 
 const Hello = () => (
-  <NavigationLink 
+  <NavigationLink
     stateKey="world"
     navigationData={{ size: 20 }}>
     Hello
