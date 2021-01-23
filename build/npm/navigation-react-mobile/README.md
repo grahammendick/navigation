@@ -10,11 +10,6 @@ const stateNavigator = new Navigation.StateNavigator([
   { key: 'world', trackCrumbTrail: true }
 ]);
 
-const { hello, world } = stateNavigator.states;
-
-hello.renderScene = = () => <Hello />;
-world.renderScene = = () => <World />;
-
 const Hello = () => (
   <NavigationLink stateKey="world">
     Hello
@@ -26,6 +21,11 @@ const World = () => (
     World
   </NavigationBackLink>
 );
+
+const { hello, world } = stateNavigator.states;
+
+hello.renderScene = () => <Hello />;
+world.renderScene = () => <World />;
 
 stateNavigator.start();
 
@@ -46,3 +46,4 @@ ReactDOM.render(
   </NavigationHandler>,
   document.getElementById('root')
 );
+```

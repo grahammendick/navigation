@@ -8,11 +8,6 @@ const stateNavigator = new StateNavigator([
   { key: 'world' }
 ]);
 
-const { hello, world } = stateNavigator.states;
-
-hello.renderScene = = () => <Hello />;
-world.renderScene = = () => <World />;
-
 const Hello = () => (
   <NavigationLink
     stateKey="world"
@@ -27,6 +22,11 @@ const World = () => {
     <div style={{ fontSize: data.size }}>World</div>
   );
 };
+
+const { hello, world } = stateNavigator.states;
+
+hello.renderScene = () => <Hello />;
+world.renderScene = () => <World />;
 
 stateNavigator.start();
 
