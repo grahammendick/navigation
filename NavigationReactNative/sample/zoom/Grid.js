@@ -1,4 +1,4 @@
-import React, {useContext, useState, useLayoutEffect} from 'react';
+import React, {useContext, useState} from 'react';
 import {Platform, StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {SharedElement, NavigationBar, SearchBar, RightBar, BarButton} from 'navigation-react-native';
