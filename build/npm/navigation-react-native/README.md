@@ -1,6 +1,6 @@
 # Hello World
 
-```js
+```jsx
 import { StateNavigator } from 'navigation';
 import { NavigationHandler, NavigationContext } from 'navigation-react';
 import { NavigationStack } from 'navigation-react-native';
