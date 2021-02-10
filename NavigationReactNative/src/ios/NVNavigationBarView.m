@@ -16,7 +16,9 @@
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     [super didSetProps:changedProps];
-    [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];
+    if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
+        [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];
+    }
     if ([changedProps containsObject:@"title"]) {
         [self.reactViewController.navigationItem setTitle:self.title];
     }
@@ -28,14 +30,6 @@
         }
     }
     [self updateStyle];
-}
-
-- (void)willMoveToSuperview:(nullable UIView *)newSuperview
-{
-    [super willMoveToSuperview:newSuperview];
-    if (!newSuperview) {
-        [self.reactViewController.navigationController setNavigationBarHidden:false];
-    }
 }
 
 - (void)updateStyle {
