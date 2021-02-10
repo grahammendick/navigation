@@ -16,7 +16,7 @@
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     [super didSetProps:changedProps];
-    if ([changedProps containsObject:@"hidden"]) {
+    if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
         [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];
     }
     if ([changedProps containsObject:@"title"]) {
