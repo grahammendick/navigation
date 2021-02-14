@@ -1,9 +1,8 @@
-// tsc --jsx react --target es3 --lib ES2015,DOM --noImplicitAny true navigation-react-tests.tsx
+// tsc --jsx react --target es3 --lib ES2015,DOM --esModuleInterop --noImplicitAny true navigation-react-tests.tsx
 import { StateNavigator } from 'navigation';
 import { NavigationHandler, NavigationContext, NavigationBackLink, NavigationLink, RefreshLink } from 'navigation-react';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
+import ReactDOM from 'react-dom';
 
 const stateNavigator = new StateNavigator([
     { key: 'people', route: 'people/{page?}', defaults: { page: 0 } },

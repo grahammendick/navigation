@@ -1,8 +1,8 @@
-// tsc --jsx react --target es3 --lib ES2015,DOM --noImplicitAny true navigation-react-mobile-tests.tsx
+// tsc --jsx react --target es3 --lib ES2015,DOM --esModuleInterop --noImplicitAny true navigation-react-mobile-tests.tsx
 import { StateNavigator } from 'navigation';
 import { NavigationLink } from 'navigation-react';
 import { NavigationMotion, MobileHistoryManager, SharedElement, SharedElementMotion } from 'navigation-react-mobile';
-import * as React from 'react';
+import React from 'react';
 
 const stateNavigator: StateNavigator = new StateNavigator([
     { key: 'people', route: 'people/{page}' },

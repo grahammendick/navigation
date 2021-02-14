@@ -2,6 +2,7 @@
     "compilerOptions": {
         "target": "es3",
         "jsx": "react",
-        "lib": ["ES2015", "DOM"]
+        "lib": ["ES2015", "DOM"],
+        "esModuleInterop": true
     }
 }
