@@ -10,7 +10,7 @@ class LogHistoryManager extends HashHistoryManager  {
 }
 
 type AppNavigation = {
-    people: { page?: number, sort?: string },
+    people: { page?: number, sort?: string, pageSize?: number },
     person: { id: number }
 }
 
