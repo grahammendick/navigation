@@ -1,3 +1,4 @@
+// tsc --jsx react --target es3 --lib ES2015,DOM --noImplicitAny true navigation-react-mobile-tests.tsx
 import { StateNavigator } from 'navigation';
 import { NavigationLink } from 'navigation-react';
 import { NavigationMotion, MobileHistoryManager, SharedElement, SharedElementMotion } from 'navigation-react-mobile';
@@ -13,7 +14,7 @@ const stateNavigator: StateNavigator = new StateNavigator([
         .navigate(state.key, data).url;
 }));
 
-var People = ({ page }) => (
+var People = ({ page }: any) => (
     <ul>
         {['Bob', 'Brenda'].map(id => (
             <li>
@@ -27,17 +28,17 @@ var People = ({ page }) => (
     </ul>
 );
 
-var Person = ({ id }) => (
+var Person = ({ id }: any) => (
     <SharedElement name={id} data={{ id }}>
         <div>Bob</div>
     </SharedElement>    
 );
 
 var { people, person } = stateNavigator.states;
-people.renderScene = ({ page }) => <People page={page}/>;
-person.renderScene = ({ id }) => <Person id={id}/>;
+people.renderScene = ({ page }: any) => <People page={page}/>;
+person.renderScene = ({ id }: any) => <Person id={id}/>;
 
-var Zoom = (props) => (
+var Zoom = (props: any) => (
     <SharedElementMotion
         {...props}
         onAnimating={(name, ref) => {ref.style.opacity = '0'}}
