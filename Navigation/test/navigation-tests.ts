@@ -9,18 +9,19 @@ class LogHistoryManager extends HashHistoryManager  {
     }
 }
 
+type AppNavigation = {
+    people: { page?: number, sort?: string },
+    person: { id: number }
+}
+
 // Configuration
-const config = [
+const stateNavigator = new StateNavigator<AppNavigation>([
     { key: 'people', route: ['people/{page}', 'people/{page}/sort/{sort}'], defaults: { page: 1 }, help: 'people.htm' },
     { key: 'person', route: 'person/{id}', trackTypes: false, defaultTypes: { id: 'number' }, trackCrumbTrail: true }
-];
-const stateNavigator = new StateNavigator(config);
-stateNavigator.configure(config, new LogHistoryManager());
+], new LogHistoryManager());
 
 // States
-const states = stateNavigator.states;
-const people = states['people'];
-const person = states['person'];
+const { people, person } = stateNavigator.states;
 const help = people['help'];
 const pageDefault = people.defaults.page;
 const idDefaultType = person.defaultTypes.id;
