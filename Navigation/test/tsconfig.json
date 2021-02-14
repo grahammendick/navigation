@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "target": "es3",
-        "jsx": "react"
+        "target": "es3"
     }
 }
