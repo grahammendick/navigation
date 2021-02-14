@@ -36,14 +36,14 @@ person.navigating = (data, url, navigate) => {
     navigate();
 };
 person.navigated = (data) => {};
-person.urlEncode = function urlEncode(state: State, key: string, val: string, queryString: boolean): string {
+person.urlEncode = function urlEncode(state, key, val, queryString): string {
     return queryString ? val.replace(/\s/g, '+') : encodeURIComponent(val);
 };
-person.urlDecode = function urlDecode(state: State, key: string, val: string, queryString: boolean): string {
+person.urlDecode = function urlDecode(state, key, val, queryString): string {
     return queryString ? val.replace(/\+/g, ' ') : decodeURIComponent(val);
 };
 person.validate = (data: any) => data.id > 0;
-person.truncateCrumbTrail = (state: State, data: any, crumbs: Crumb[]) => crumbs;
+person.truncateCrumbTrail = (state, data, crumbs) => crumbs;
 
 // Navigation Event
 const navigationListener = (oldState: State, state: State, data: any, asyncData: any) => {
