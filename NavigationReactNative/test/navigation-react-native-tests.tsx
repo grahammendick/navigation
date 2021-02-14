@@ -80,15 +80,11 @@ const { people, person } = stateNavigator.states;
 people.renderScene = () => <People />;
 person.renderScene = () => <Person />;
 
+stateNavigator.navigate('people');
+
 const App = () => (
-    <TabBar>
-        <TabBarItem title="Home">
-            <NavigationHandler stateNavigator={stateNavigator}>
-                <NavigationStack
-                    title={({title}, {name}) => name || title}
-                    unmountStyle={(from) => from ? 'slide_in' : 'slide_out'}
-                    sharedElements={({name}) => name && [name]} />
-                </NavigationHandler>
-        </TabBarItem>
-    </TabBar>
-);
+    <NavigationHandler stateNavigator={stateNavigator}>
+      <NavigationStack />
+    </NavigationHandler>
+  );
+  

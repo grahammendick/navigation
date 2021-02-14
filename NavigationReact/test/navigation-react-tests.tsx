@@ -50,6 +50,8 @@ const { people, person } = stateNavigator.states;
 people.renderScene = () => <People />; 
 person.renderScene = () => <Person />;
 
+stateNavigator.start();
+
 const App = () => {
     const {state, data} = useContext(NavigationContext);
     return state.renderScene(data);

@@ -43,12 +43,14 @@ const { people, person } = stateNavigator.states;
 people.renderScene = () => <People />;
 person.renderScene = () => <Person />;
 
+stateNavigator.start();
+
 const Zoom = (props: any) => (
     <SharedElementMotion
         {...props}
         onAnimating={(_, ref) => {ref.style.opacity = '0'}}
         onAnimated={(_, ref) => {ref.style.opacity = '1'}}>
-        {({ left, top, width, height, size }, name, { id }) => (
+        {({ left, top, width, height }, name, { id }) => (
             <div
                 key={name}
                 style={{
