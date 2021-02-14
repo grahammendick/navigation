@@ -6750,8 +6750,8 @@ describe('Navigation Data', function () {
                     .navigate('s0', data0);
                 var fluentB = stateNavigator1.fluent()
                     .navigate('s2', data1);
-                var fluent0 = fluent0.navigate('s1');
-                var fluent1 = fluent1.navigate('s3');
+                var fluent0 = fluentA.navigate('s1');
+                var fluent1 = fluentB.navigate('s3');
                 var link = fluent0
                     .navigateBack(1)
                     .url;
