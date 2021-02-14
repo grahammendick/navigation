@@ -15,23 +15,19 @@ const stateNavigator: StateNavigator = new StateNavigator([
         .navigate(state.key, data).url;
 }));
 
-const People = () => {
-    const { data } = useContext(NavigationContext);
-    const { page } = data;
-    return (
-        <ul>
-            {['Bob', 'Brenda'].map(id => (
-                <li>
-                    <NavigationLink stateKey="person" navigationData={{ id }}>
-                        <SharedElement name={id} data={{ id }}>
-                            <div>Bob</div>
-                        </SharedElement>
-                    </NavigationLink>
-                </li>
-            ))}
-        </ul>
-    );
-}
+const People = () => (
+    <ul>
+        {['Bob', 'Brenda'].map(id => (
+            <li>
+                <NavigationLink stateKey="person" navigationData={{ id }}>
+                    <SharedElement name={id} data={{ id }}>
+                        <div>Bob</div>
+                    </SharedElement>
+                </NavigationLink>
+            </li>
+        ))}
+    </ul>
+);
 
 const Person = () => {
     const { data } = useContext(NavigationContext);
@@ -50,8 +46,8 @@ person.renderScene = () => <Person />;
 const Zoom = (props: any) => (
     <SharedElementMotion
         {...props}
-        onAnimating={(name, ref) => {ref.style.opacity = '0'}}
-        onAnimated={(name, ref) => {ref.style.opacity = '1'}}>
+        onAnimating={(_, ref) => {ref.style.opacity = '0'}}
+        onAnimated={(_, ref) => {ref.style.opacity = '1'}}>
         {({ left, top, width, height, size }, name, { id }) => (
             <div
                 key={name}
