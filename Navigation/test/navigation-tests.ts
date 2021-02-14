@@ -42,7 +42,7 @@ person.urlEncode = function urlEncode(state, key, val, queryString): string {
 person.urlDecode = function urlDecode(state, key, val, queryString): string {
     return queryString ? val.replace(/\+/g, ' ') : decodeURIComponent(val);
 };
-person.validate = (data: any) => data.id > 0;
+person.validate = (data) => data.id > 0;
 person.truncateCrumbTrail = (state, data, crumbs) => crumbs;
 
 // Navigation Event
