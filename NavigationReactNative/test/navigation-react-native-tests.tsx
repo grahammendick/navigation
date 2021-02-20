@@ -2,16 +2,21 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, ScrollView, TouchableHighlight } from 'react-native';
 import { StateNavigator } from 'navigation';
-import { NavigationContext, NavigationHandler } from 'navigation-react';
+import { NavigationContext, NavigationEvent, NavigationHandler } from 'navigation-react';
 import { NavigationStack, NavigationBar, CoordinatorLayout, RightBar, BarButton, SearchBar, SharedElement } from 'navigation-react-native';
 
-const stateNavigator: StateNavigator = new StateNavigator([
+type AppNavigation = {
+    people: null,
+    person: { name: string }
+}
+
+const stateNavigator = new StateNavigator<AppNavigation>([
     { key: 'people' },
     { key: 'person', trackCrumbTrail: true }
 ]);
 
 const List = ({people, children}: any) => {
-    const { stateNavigator } = useContext(NavigationContext);
+    const { stateNavigator } = useContext<NavigationEvent<AppNavigation, 'people'>>(NavigationContext);
     return (
         <ScrollView>
             {people.map((name: any) => (
@@ -56,7 +61,7 @@ const People = () => {
 
 
 var Person = () => {
-    const { stateNavigator, data } = useContext(NavigationContext);
+    const { stateNavigator, data } = useContext<NavigationEvent<AppNavigation, 'person'>>(NavigationContext);
     const { name } = data
     return (
         <>
