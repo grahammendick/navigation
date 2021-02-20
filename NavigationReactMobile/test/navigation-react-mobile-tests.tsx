@@ -14,10 +14,10 @@ const stateNavigator: StateNavigator<AppNavigation> = new StateNavigator<AppNavi
     { key: 'people', route: 'people/{page}' },
     { key: 'person', route: 'person/{id}', trackCrumbTrail: true }
 ], new MobileHistoryManager(url => {
-    const { state, data } = stateNavigator.parseLink<keyof AppNavigation>(url);
+    const { state, data } = stateNavigator.parseLink(url);
     return stateNavigator.fluent()
         .navigate('people')
-        .navigate(state.key, data).url;
+        .navigate(state.key as any, data).url;
 }));
 
 const People = () => (
