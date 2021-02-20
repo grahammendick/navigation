@@ -41,7 +41,7 @@ const People = () => {
 }
 
 const Person = () => {
-    const { data } = useContext(NavigationContext);
+    const { data } = useContext<NavigationEvent<AppNavigation, 'person'>>(NavigationContext);
     const { name } = data;
     return (
         <div>
