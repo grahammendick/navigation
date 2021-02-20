@@ -1,12 +1,12 @@
 // tsc --jsx react --target es3 --lib ES2015,DOM --esModuleInterop --noImplicitAny true navigation-react-tests.tsx
 import { StateNavigator } from 'navigation';
 import { NavigationHandler, NavigationContext, NavigationEvent, NavigationBackLink, NavigationLink, RefreshLink } from 'navigation-react';
-import React, { useContext, Context } from 'react';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 
 type AppNavigation = {
     people: { page?: number },
-    person: { id: number }
+    person: { name: string }
 }
 
 const stateNavigator = new StateNavigator<AppNavigation>([
@@ -22,7 +22,7 @@ const People = () => {
             <ul>
                 {['Bob', 'Brenda'].map(name => (
                     <li>
-                        <NavigationLink
+                        <NavigationLink<AppNavigation, 'person'>
                             stateKey="person"
                             navigationData={{ name }}>
                             {name}
