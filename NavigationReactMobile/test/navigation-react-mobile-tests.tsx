@@ -24,7 +24,7 @@ const People = () => (
     <ul>
         {['Bob', 'Brenda'].map(id => (
             <li>
-                <NavigationLink<AppNavigation, "person"> stateKey="person" navigationData={{ id }}>
+                <NavigationLink<AppNavigation, 'person'> stateKey="person" navigationData={{ id }}>
                     <SharedElement name={id} data={{ id }}>
                         <div>Bob</div>
                     </SharedElement>
@@ -35,7 +35,7 @@ const People = () => (
 );
 
 const Person = () => {
-    const { data } = useContext<NavigationEvent<AppNavigation, "person">>(NavigationContext);
+    const { data } = useContext<NavigationEvent<AppNavigation, 'person'>>(NavigationContext);
     const { id } = data;
     return (
         <SharedElement name={id} data={{ id }}>
