@@ -30,7 +30,7 @@ const People = () => {
                     </li>
                 ))}
             </ul>
-            <RefreshLink
+            <RefreshLink<AppNavigation, 'people'>
                 navigationData={{ page: page + 1 }}
                 disableActive={true}
                 includeCurrentData={true}>
