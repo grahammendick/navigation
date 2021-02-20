@@ -1,16 +1,21 @@
 // tsc --jsx react --target es3 --lib ES2015,DOM --esModuleInterop --noImplicitAny true navigation-react-tests.tsx
 import { StateNavigator } from 'navigation';
-import { NavigationHandler, NavigationContext, NavigationBackLink, NavigationLink, RefreshLink } from 'navigation-react';
-import React, { useContext } from 'react';
+import { NavigationHandler, NavigationContext, NavigationEvent, NavigationBackLink, NavigationLink, RefreshLink } from 'navigation-react';
+import React, { useContext, Context } from 'react';
 import ReactDOM from 'react-dom';
 
-const stateNavigator = new StateNavigator([
+type AppNavigation = {
+    people: { page?: number },
+    person: { id: number }
+}
+
+const stateNavigator = new StateNavigator<AppNavigation>([
     { key: 'people', route: 'people/{page?}', defaults: { page: 0 } },
     { key: 'person', route: 'person/{name}', trackCrumbTrail: true }
 ]);
 
 const People = () => {
-    const { data } = useContext(NavigationContext);
+    const { data } = useContext<NavigationEvent<AppNavigation, 'people'>>(NavigationContext);
     const { page } = data;
     return (
         <div>
