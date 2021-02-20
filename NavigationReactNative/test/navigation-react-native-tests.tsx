@@ -15,11 +15,11 @@ const stateNavigator = new StateNavigator<AppNavigation>([
     { key: 'person', trackCrumbTrail: true }
 ]);
 
-const List = ({people, children}: any) => {
+const List = ({people, children}: {people: string[], children?: any}) => {
     const { stateNavigator } = useContext<NavigationEvent<AppNavigation, 'people'>>(NavigationContext);
     return (
         <ScrollView>
-            {people.map((name: any) => (
+            {people.map((name) => (
                 <TouchableHighlight
                     onPress={() => {
                         stateNavigator.navigate('person', {name});
