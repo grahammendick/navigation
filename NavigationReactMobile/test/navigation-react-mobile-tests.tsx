@@ -1,15 +1,20 @@
 // tsc --jsx react --target es3 --lib ES2015,DOM --esModuleInterop --noImplicitAny true navigation-react-mobile-tests.tsx
 import { StateNavigator } from 'navigation';
-import { NavigationContext, NavigationLink } from 'navigation-react';
+import { NavigationContext, NavigationEvent, NavigationLink } from 'navigation-react';
 import { NavigationMotion, MobileHistoryManager, SharedElement, SharedElementMotion } from 'navigation-react-mobile';
 import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 
-const stateNavigator: StateNavigator = new StateNavigator([
+type AppNavigation = {
+    people: { page?: number },
+    person: { id: string }
+}
+
+const stateNavigator: StateNavigator<AppNavigation> = new StateNavigator<AppNavigation>([
     { key: 'people', route: 'people/{page}' },
     { key: 'person', route: 'person/{id}', trackCrumbTrail: true }
 ], new MobileHistoryManager(url => {
-    const { state, data } = stateNavigator.parseLink(url);
+    const { state, data } = stateNavigator.parseLink<keyof AppNavigation>(url);
     return stateNavigator.fluent()
         .navigate('people')
         .navigate(state.key, data).url;
@@ -19,7 +24,7 @@ const People = () => (
     <ul>
         {['Bob', 'Brenda'].map(id => (
             <li>
-                <NavigationLink stateKey="person" navigationData={{ id }}>
+                <NavigationLink<AppNavigation, "person"> stateKey="person" navigationData={{ id }}>
                     <SharedElement name={id} data={{ id }}>
                         <div>Bob</div>
                     </SharedElement>
@@ -30,7 +35,7 @@ const People = () => (
 );
 
 const Person = () => {
-    const { data } = useContext(NavigationContext);
+    const { data } = useContext<NavigationEvent<AppNavigation, "person">>(NavigationContext);
     const { id } = data;
     return (
         <SharedElement name={id} data={{ id }}>

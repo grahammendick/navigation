@@ -1,11 +1,11 @@
 /**
  * Defines a contract a class must implement in order to configure a State
  */
-export interface StateInfo {
+export interface StateInfo<Key extends string> {
     /**
      * Gets the unique key
      */
-    key: string;
+    key: Key;
     /**
      * Gets the default NavigationData for this State
      */
@@ -40,15 +40,15 @@ export interface StateInfo {
 /**
  * Represents a view and is the destination of a navigation
  */
-export class State implements StateInfo {
+export class State<Key extends string = string, Data extends object = any> implements StateInfo<Key> {
     /**
      * Gets the unique key
      */
-    key: string;
+    key: Key;
     /**
      * Gets the default NavigationData for this State
      */
-    defaults: any;
+    defaults: Partial<Data>;
     /**
      * Gets the default NavigationData Types for  this State
      */
@@ -104,7 +104,7 @@ export class State implements StateInfo {
      * @param data The current NavigationData
      * @param asyncData The data passed asynchronously while navigating
      */
-    navigated: (data: any, asyncData: any) => void;
+    navigated: (data: Data, asyncData: any) => void;
     /**
      * Called on the new State before navigating to it
      * @param data The new NavigationData
@@ -112,7 +112,7 @@ export class State implements StateInfo {
      * @param navigate The function to call to continue to navigate
      * @param history A value indicating whether browser history was used
      */
-    navigating: (data: any, url: string, navigate: (asyncData?: any) => void, history: boolean) => void;
+    navigating: (data: Data, url: string, navigate: (asyncData?: any) => void, history: boolean) => void;
     /**
      * Encodes the Url value
      * @param state The State navigated to
@@ -121,7 +121,7 @@ export class State implements StateInfo {
      * @param queryString A value indicating the Url value's location
      * @param index The index of the navigation data array item
      */
-    urlEncode(state: State, key: string, val: string, queryString: boolean, index?: number): string;
+    urlEncode(state: State<Key, Data>, key: keyof Data & string, val: string, queryString: boolean, index?: number): string;
     /**
      * Decodes the Url value
      * @param state The State navigated to
@@ -129,13 +129,13 @@ export class State implements StateInfo {
      * @param val The Url value of the navigation data item
      * @param queryString A value indicating the Url value's location
      */
-    urlDecode(state: State, key: string, val: string, queryString: boolean): string;
+    urlDecode(state: State<Key, Data>, key: keyof Data & string, val: string, queryString: boolean): string;
     /**
      * Validates the NavigationData before navigating to the new State
      * @param data The new NavigationData
      * @returns Validation success indicator
      */
-    validate(data: any): boolean;
+    validate(data: Data): boolean;
     /**
      * Truncates the crumb trail whenever a repeated or initial State is
      * encountered
@@ -144,7 +144,7 @@ export class State implements StateInfo {
      * @param The Crumb collection representing the crumb trail
      * @returns Truncated crumb trail
      */
-    truncateCrumbTrail(state: State, data: any, crumbs: Crumb[]): Crumb[];
+    truncateCrumbTrail(state: State<Key, Data>, data: Data, crumbs: Crumb[]): Crumb[];
 }
 
 /**
@@ -286,16 +286,16 @@ export class HTML5HistoryManager implements HistoryManager {
  * Represents one piece of the crumb trail and holds the information needed
  * to return to and recreate the State as previously visited
  */
-export class Crumb {
+export class Crumb<Key extends string = string, Data extends object = any> {
     /**
      * Gets the Context Data held at the time of navigating away from this
      * State
      */
-    data: any;
+    data: Data;
     /**
      * Gets the configuration information associated with this navigation
      */
-    state: State;
+    state: State<Key, Data>;
     /**
      * Gets a value indicating whether the Crumb is the last in the crumb
      * trail
@@ -328,14 +328,14 @@ export class Crumb {
      * @param last A value indicating whether the Crumb is the last in the
      * crumb trail
      */
-    constructor(data: any, state: State, link: string, crumblessLink: string, last: boolean);
+    constructor(data: Data, state: State<Key, Data>, link: string, crumblessLink: string, last: boolean);
 }
 
 /**
  * Provides properties for accessing context sensitive navigation
  * information. Holds the current State and NavigationData
  */
-export class StateContext {
+export class StateContext<Key extends string = string, Data extends object = any> {
     /**
      * Gets the last State displayed before the current State
      */
@@ -363,11 +363,11 @@ export class StateContext {
     /**
      * Gets the current State
      */
-    state: State;
+    state: State<Key, Data>;
     /**
      * Gets the NavigationData for the current State
      */
-    data: any;
+    data: Data;
     /**
      * Gets the current Url
      */
@@ -392,7 +392,7 @@ export class StateContext {
     /**
      * Gets the next crumb
      */
-    nextCrumb: Crumb;
+    nextCrumb: Crumb<Key, Data>;
     /**
      * Clears the Context Data
      */
@@ -402,14 +402,14 @@ export class StateContext {
      * @param The data to add to the current NavigationData
      * @returns The combined data
      */
-    includeCurrentData(data: any, keys?: string[]): any;
+    includeCurrentData(data: Data, keys?: string[]): Data;
 }
 
 /**
  * Fluently manages all navigation. These can be forward, backward or
  * refreshing the current State
  */
-export interface FluentNavigator {
+export interface FluentNavigator<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string>  {
     /**
      * Gets the current Url
      */
@@ -423,7 +423,7 @@ export interface FluentNavigator {
      * NavigationData that cannot be converted to a String
      * @throws A mandatory route parameter has not been supplied a value
      */
-    navigate(stateKey: string, navigationData?: any): FluentNavigator;
+    navigate<StateKey extends keyof NavigationInfo>(stateKey: StateKey, navigationData?: null | NavigationInfo[StateKey]): FluentNavigator<NavigationInfo, StateKey>;
     /**
      * Navigates back along the crumb trail
      * @param distance Starting at 1, the number of Crumb steps to go back
@@ -439,18 +439,18 @@ export interface FluentNavigator {
      * @throws There is NavigationData that cannot be converted to a String
      * @throws A mandatory route parameter has not been supplied a value
      */
-    refresh(navigationData?: any): FluentNavigator;
+    refresh(navigationData?: null | NavigationInfo[Key]): FluentNavigator<NavigationInfo, Key>;
 }
 
 /**
  * Manages all navigation. These can be forward, backward or refreshing the
  * current State
  */
-export class StateNavigator {
+export class StateNavigator<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string> {
     /**
      * Provides access to context sensitive navigation information
      */
-    stateContext: StateContext;
+    stateContext: StateContext<Key & string, Key extends keyof NavigationInfo ? NavigationInfo[Key] : any>;
     /**
      * Gets the browser Url manager
      */
@@ -458,19 +458,19 @@ export class StateNavigator {
     /**
      * Gets a list of States
      */
-    states: { [index: string]: State; };
+    states: { [Key in keyof NavigationInfo & string]: State<Key, NavigationInfo[Key]> };
     /**
      * Initializes a new instance of the StateNavigator class
      * @param stateInfos A collection of State Infos or another State Navigator
      * @param historyManager The manager of the browser Url
      */
-    constructor(stateInfos?: StateInfo[] | StateNavigator, historyManager?: HistoryManager);
+    constructor(stateInfos?: StateInfo<keyof NavigationInfo & string | string>[] | StateNavigator<NavigationInfo>, historyManager?: HistoryManager);
     /**
      * Configures the StateNavigator
      * @param stateInfos A collection of State Infos or another State Navigator
      * @param historyManager The manager of the browser Url
      */
-    configure(stateInfos: StateInfo[] | StateNavigator, historyManager?: HistoryManager): void;
+    configure(stateInfos: StateInfo<keyof NavigationInfo & string | string>[] | StateNavigator<NavigationInfo>, historyManager?: HistoryManager): void;
     /**
      * Registers a before navigate event listener
      * @param handler The before navigate event listener
@@ -501,7 +501,7 @@ export class StateNavigator {
      * NavigationData that cannot be converted to a String
      * @throws A mandatory route parameter has not been supplied a value
      */
-    navigate(stateKey: string, navigationData?: any, historyAction?: 'add' | 'replace' | 'none'): void;
+    navigate<StateKey extends keyof NavigationInfo>(stateKey: StateKey, navigationData?: null | NavigationInfo[StateKey], historyAction?: 'add' | 'replace' | 'none'): void;
     /**
      * Gets a Url to navigate to a State
      * @param stateKey The key of a State
@@ -511,7 +511,7 @@ export class StateNavigator {
      * @throws state does not match the key of a State or there is
      * NavigationData that cannot be converted to a String
      */
-    getNavigationLink(stateKey: string, navigationData?: any): string;
+    getNavigationLink<StateKey extends keyof NavigationInfo>(stateKey: StateKey, navigationData?: null | NavigationInfo[StateKey]): string;
     /**
      * Determines if the distance specified is within the bounds of the
      * crumb trail represented by the Crumbs collection
@@ -539,7 +539,7 @@ export class StateNavigator {
      * @throws There is NavigationData that cannot be converted to a String
      * @throws A mandatory route parameter has not been supplied a value
      */
-    refresh(navigationData?: any, historyAction?: 'add' | 'replace' | 'none'): void;
+    refresh(navigationData?: null | NavigationInfo[Key], historyAction?: 'add' | 'replace' | 'none'): void;
     /**
      * Gets a Url to navigate to the current State
      * @param navigationData The NavigationData to be passed to the current
@@ -547,7 +547,7 @@ export class StateNavigator {
      * @returns Url that will navigate to the current State
      * @throws There is NavigationData that cannot be converted to a String
      */
-    getRefreshLink(navigationData?: any): string;
+    getRefreshLink(navigationData?: null | NavigationInfo[Key]): string;
     /**
      * Navigates to the url
      * @param url The target location
@@ -558,19 +558,20 @@ export class StateNavigator {
      */
     navigateLink(url: string, historyAction?: 'add' | 'replace' | 'none', history?: boolean,
         suspendNavigation?: (stateContext: StateContext, resumeNavigation: () => void) => void,
-        currentContext?: StateContext): void;
+        currentContext?: StateContext<Key & string, Key extends keyof NavigationInfo ? NavigationInfo[Key] : any>): void;
     /**
      * Parses the url out into State and Navigation Data
      * @param url The url to parse
      */
-    parseLink(url: string): { state: State; data: any; crumbs: Crumb[] };
+
+    parseLink<StateKey extends keyof NavigationInfo = undefined>(url: string): { state: StateKey extends undefined ? State : State<StateKey & string>; data: StateKey extends undefined ? any : NavigationInfo[StateKey]; crumbs: Crumb[] };
     /**
      * Creates a FluentNavigator
      * @param withContext a value indicating whether to inherit the current
      * context
      * @returns A FluentNavigator
      */
-    fluent(withContext?: boolean): FluentNavigator;
+    fluent<B extends boolean>(withContext?: B): FluentNavigator<NavigationInfo, B extends true ? Key : string>
     /**
      * Navigates to the passed in url
      * @param url The url to navigate to
