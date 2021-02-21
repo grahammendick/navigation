@@ -6746,12 +6746,12 @@ describe('Navigation Data', function () {
 
         describe('Fluent Navigate', function() {
             beforeEach(function() {
-                var fluent0 = stateNavigator0.fluent()
+                var fluentA = stateNavigator0.fluent()
                     .navigate('s0', data0);
-                var fluent1 = stateNavigator1.fluent()
+                var fluentB = stateNavigator1.fluent()
                     .navigate('s2', data1);
-                fluent0 = fluent0.navigate('s1');
-                fluent1 = fluent1.navigate('s3');
+                var fluent0 = fluentA.navigate('s1');
+                var fluent1 = fluentB.navigate('s3');
                 var link = fluent0
                     .navigateBack(1)
                     .url;

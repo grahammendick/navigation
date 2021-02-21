@@ -483,7 +483,7 @@ describe('StateConfigTest', function () {
                 { key: 's2', route: 'r2' }
             ]);
             try {
-                var stateNavigator = new StateNavigator([
+                stateNavigator = new StateNavigator([
                     { route: 'xxx' } as any
                 ]);
             } catch(e) {

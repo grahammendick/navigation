@@ -4,7 +4,7 @@ import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent
 /**
  * Navigation event data
  */
-export interface NavigationEvent {
+export interface NavigationEvent<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string> {
     /**
      * The last State displayed before the current State
      */
@@ -12,11 +12,11 @@ export interface NavigationEvent {
     /**
      * The current State
      */
-    state: State;
+    state: State<Key & string, Key extends keyof NavigationInfo ? NavigationInfo[Key] : any>;
     /**
      * The NavigationData for the current State
      */
-    data: any;
+    data: Key extends keyof NavigationInfo ? NavigationInfo[Key] : any;
     /**
      * The current asynchronous data
      */
@@ -24,13 +24,13 @@ export interface NavigationEvent {
     /**
      * State navigator for the current context
      */
-    stateNavigator: StateNavigator;
+    stateNavigator: StateNavigator<NavigationInfo, Key>;
 }
 
 /**
  * The context for providers and consumers of navigation event data
  */
-export var NavigationContext: Context<NavigationEvent>;
+export var NavigationContext: Context<NavigationEvent<any, any>> & Context<NavigationEvent<any, string>>;
 
 /**
  * Provides the navigation event data
@@ -54,11 +54,11 @@ export interface LinkProps extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAn
 /**
  * Defines the Refresh Link Props contract
  */
-export interface RefreshLinkProps extends LinkProps {
+export interface RefreshLinkProps<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string> extends LinkProps {
     /**
      * The NavigationData to pass
      */
-    navigationData?: any;
+    navigationData?: Key extends keyof NavigationInfo ? NavigationInfo[Key] : any;
     /**
      * Indicates whether to include all the current NavigationData
      */
@@ -66,7 +66,7 @@ export interface RefreshLinkProps extends LinkProps {
     /**
      * The data to add from the current NavigationData
      */
-    currentDataKeys?: string | string[];
+    currentDataKeys?: string & (Key extends keyof NavigationInfo ? keyof NavigationInfo[Key] : any) | (string & (Key extends keyof NavigationInfo ? keyof NavigationInfo[Key] : any))[];
     /**
      * The style to display when the Link is active
      */
@@ -84,22 +84,22 @@ export interface RefreshLinkProps extends LinkProps {
 /**
  * Hyperlink Component that navigates to the current State
  */
-export class RefreshLink extends Component<RefreshLinkProps> { }
+export class RefreshLink<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string> extends Component<RefreshLinkProps<NavigationInfo, Key>> { }
 
 /**
  * Defines the Navigation Link Props contract
  */
-export interface NavigationLinkProps extends RefreshLinkProps {
+export interface NavigationLinkProps<NavigationInfo extends { [index: string]: any } = any, StateKey extends keyof NavigationInfo = string> extends RefreshLinkProps<NavigationInfo, StateKey> {
     /**
      * The key of the State to navigate to
      */
-    stateKey: string;
+    stateKey: StateKey & keyof NavigationInfo;
 }
 
 /**
  * Hyperlink Component that navigates to a State
  */
-export class NavigationLink extends Component<NavigationLinkProps> { }
+export class NavigationLink<NavigationInfo extends { [index: string]: any } = any, StateKey extends keyof NavigationInfo = string> extends Component<NavigationLinkProps<NavigationInfo, StateKey>> { }
 
 /**
  * Defines the Navigation Back Link Props contract
@@ -119,7 +119,7 @@ export class NavigationBackLink extends Component<NavigationBackLinkProps> { }
 /**
  * Defines the Fluent Link Props contract
  */
-export interface FluentLinkProps extends LinkProps {
+export interface FluentLinkProps<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string> extends LinkProps {
     /**
      * Indicates whether to inherit the current context
      */
@@ -127,10 +127,10 @@ export interface FluentLinkProps extends LinkProps {
     /**
      * The function that fluently navigates to a State
      */
-    navigate: (fluentNavigator: FluentNavigator) => FluentNavigator;
+    navigate: (fluentNavigator: FluentNavigator<NavigationInfo, Key>) => FluentNavigator<NavigationInfo>;
 }
 
 /**
  * Hyperlink Component that fluently navigates to a State
  */
-export class FluentLink extends Component<FluentLinkProps> { }
+export class FluentLink<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string> extends Component<FluentLinkProps<NavigationInfo, Key>> { }

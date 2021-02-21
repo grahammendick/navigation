@@ -1,23 +1,30 @@
+// tsc --jsx react --target es3 --lib ES2015,DOM --esModuleInterop --noImplicitAny true navigation-react-mobile-tests.tsx
 import { StateNavigator } from 'navigation';
-import { NavigationLink } from 'navigation-react';
+import { NavigationContext, NavigationEvent, NavigationLink } from 'navigation-react';
 import { NavigationMotion, MobileHistoryManager, SharedElement, SharedElementMotion } from 'navigation-react-mobile';
-import * as React from 'react';
+import React, { useContext } from 'react';
+import ReactDOM from 'react-dom';
 
-const stateNavigator: StateNavigator = new StateNavigator([
+type AppNavigation = {
+    people: { page?: number },
+    person: { id: string }
+}
+
+const stateNavigator: StateNavigator<AppNavigation> = new StateNavigator<AppNavigation>([
     { key: 'people', route: 'people/{page}' },
     { key: 'person', route: 'person/{id}', trackCrumbTrail: true }
 ], new MobileHistoryManager(url => {
-    var { state, data } = stateNavigator.parseLink(url);
+    const { state, data } = stateNavigator.parseLink(url);
     return stateNavigator.fluent()
         .navigate('people')
-        .navigate(state.key, data).url;
+        .navigate(state.key as any, data).url;
 }));
 
-var People = ({ page }) => (
+const People = () => (
     <ul>
         {['Bob', 'Brenda'].map(id => (
             <li>
-                <NavigationLink stateKey="person" navigationData={{ id }}>
+                <NavigationLink<AppNavigation, 'person'> stateKey="person" navigationData={{ id }}>
                     <SharedElement name={id} data={{ id }}>
                         <div>Bob</div>
                     </SharedElement>
@@ -27,22 +34,28 @@ var People = ({ page }) => (
     </ul>
 );
 
-var Person = ({ id }) => (
-    <SharedElement name={id} data={{ id }}>
-        <div>Bob</div>
-    </SharedElement>    
-);
+const Person = () => {
+    const { data } = useContext<NavigationEvent<AppNavigation, 'person'>>(NavigationContext);
+    const { id } = data;
+    return (
+        <SharedElement name={id} data={{ id }}>
+            <div>Bob</div>
+        </SharedElement>    
+    );
+}
 
-var { people, person } = stateNavigator.states;
-people.renderScene = ({ page }) => <People page={page}/>;
-person.renderScene = ({ id }) => <Person id={id}/>;
+const { people, person } = stateNavigator.states;
+people.renderScene = () => <People />;
+person.renderScene = () => <Person />;
 
-var Zoom = (props) => (
+stateNavigator.start();
+
+const Zoom = (props: any) => (
     <SharedElementMotion
         {...props}
-        onAnimating={(name, ref) => {ref.style.opacity = '0'}}
-        onAnimated={(name, ref) => {ref.style.opacity = '1'}}>
-        {({ left, top, width, height, size }, name, { id }) => (
+        onAnimating={(_, ref) => {ref.style.opacity = '0'}}
+        onAnimated={(_, ref) => {ref.style.opacity = '1'}}>
+        {({ left, top, width, height }, name, { id }) => (
             <div
                 key={name}
                 style={{
@@ -55,7 +68,7 @@ var Zoom = (props) => (
     </SharedElementMotion>
 );
 
-var App = () => (
+ReactDOM.render(
     <NavigationMotion
         unmountedStyle={{opacity: 1, translate: 100}}
         mountedStyle={{opacity: 1, translate: 0}}
@@ -71,5 +84,6 @@ var App = () => (
                 {scene}
             </div>
         )}
-    </NavigationMotion>
+    </NavigationMotion>,
+    document.getElementById('root')
 );

@@ -1,4 +1,5 @@
-import { Crumb, HashHistoryManager, StateNavigator, State } from 'navigation';
+// tsc --target es3 --lib ES2015,DOM --noImplicitAny true navigation-tests.ts
+import { HashHistoryManager, StateNavigator, State } from 'navigation';
 
 // History Manager
 class LogHistoryManager extends HashHistoryManager  {
@@ -8,18 +9,19 @@ class LogHistoryManager extends HashHistoryManager  {
     }
 }
 
+type AppNavigation = {
+    people: { page?: number, sort?: string, pageSize?: number },
+    person: { id: number }
+}
+
 // Configuration
-const config = [
+const stateNavigator = new StateNavigator<AppNavigation>([
     { key: 'people', route: ['people/{page}', 'people/{page}/sort/{sort}'], defaults: { page: 1 }, help: 'people.htm' },
     { key: 'person', route: 'person/{id}', trackTypes: false, defaultTypes: { id: 'number' }, trackCrumbTrail: true }
-];
-const stateNavigator = new StateNavigator(config);
-stateNavigator.configure(config, new LogHistoryManager());
+], new LogHistoryManager());
 
 // States
-const states = stateNavigator.states;
-const people = states['people'];
-const person = states['person'];
+const { people, person } = stateNavigator.states;
 const help = people['help'];
 const pageDefault = people.defaults.page;
 const idDefaultType = person.defaultTypes.id;
@@ -34,14 +36,14 @@ person.navigating = (data, url, navigate) => {
     navigate();
 };
 person.navigated = (data) => {};
-person.urlEncode = function urlEncode(state: State, key: string, val: string, queryString: boolean): string {
+person.urlEncode = function urlEncode(state, key, val, queryString): string {
     return queryString ? val.replace(/\s/g, '+') : encodeURIComponent(val);
 };
-person.urlDecode = function urlDecode(state: State, key: string, val: string, queryString: boolean): string {
+person.urlDecode = function urlDecode(state, key, val, queryString): string {
     return queryString ? val.replace(/\+/g, ' ') : decodeURIComponent(val);
 };
-person.validate = (data: any) => data.id > 0;
-person.truncateCrumbTrail = (state: State, data: any, crumbs: Crumb[]) => crumbs;
+person.validate = (data) => data.id > 0;
+person.truncateCrumbTrail = (state, data, crumbs) => crumbs;
 
 // Navigation Event
 const navigationListener = (oldState: State, state: State, data: any, asyncData: any) => {
