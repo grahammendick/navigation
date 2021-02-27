@@ -55,6 +55,9 @@
   inbox: null,
   mail: {id: number, expand?: boolean},
 }</code></pre>
+            <p>
+                When we create the <code>StateNavigator</code> we pass our <code>EmailNavigation</code> type as the generic parameter. Then TypeScript will validate our keys are spelt correctly in our configuration and when we destructure the <code>States</code> to render the scenes.
+            </p>
             <pre><code class="language-jsx">const stateNavigator = new StateNavigator&lt;EmailNavigation>([
   {key: 'inbox', route: ''},
   {key: 'mail'},
