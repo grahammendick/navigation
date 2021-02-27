@@ -49,6 +49,7 @@
         <div id="article">
             <h1>TypeScript</h1>
             <p>
+                To get the most out of the Navigation router's TypeScript support, you create a type that describes the possible navigation in your app. The type is an object whose keys are the valid scenes and whose values list the corresponding navigation data. In our email example, we create a type with keys for the 'inbox' and 'mail' scenes. The 'mail' scene expects a number id for the selected email and an optional boolean that indicates whether to expand the email thread.
             </p>
             <pre><code class="language-js">type EmailNavigation = {
   inbox: null,
