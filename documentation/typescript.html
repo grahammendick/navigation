@@ -63,11 +63,16 @@
   {key: 'mail'},
 ]);
 
-const {inbox, mail} = stateNavigator.states;</code></pre>
+// Error because inbox is misspelt
+const {inbx, mail} = stateNavigator.states;</code></pre>
             <h2>Navigating and Passing Data</h2>
-            <pre><code class="language-jsx">&lt;NavigationLink&lt;EmailNavigation, 'mail'>
+            <p>
+                You can use this same type when you navigate to make sure that the navigation is valid. TypeScript checks the target scene exists and that the navigation data matches up with what that scene expects. The <code>NavigationLink</code> component accepts the type and the target scene as generic parameters. When we navigate to the mail scene, for example, TypeScript will tell us if we accidentally pass the id as a string instead of a number.
+            </p>
+            <pre><code class="language-jsx">// Error because id is a string
+&lt;NavigationLink&lt;EmailNavigation, 'mail'>
   stateKey="mail"
-  navigationData={{id: 12}}>
+  navigationData={{id: '12'}}>
   Open Mail
 &lt;/NavigationLink></code></pre>
             <pre><code class="language-jsx">import {NavigationEvent} from 'navigation-react'
