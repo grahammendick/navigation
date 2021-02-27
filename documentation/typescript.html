@@ -1,0 +1,84 @@
+<html>
+<head>
+    <title>TypeScript</title>
+    <meta name="viewport" content="width=device-width">
+    <style>
+      :root {
+        --primary-color: #f9858b;
+        --secondary-color: #ed335f;
+      }    
+    </style>
+    <link rel="stylesheet" href="../css/prism.css">
+    <link rel="stylesheet" href="../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+      <a href=".."><img alt="logo" src="../img/logo.png" /></a>
+      <a href="native/setup.html">React Native</a>
+      <a href="https://github.com/grahammendick/navigation">GitHub</a>
+    </div>
+    <div id="content">
+        <div id="menu">
+          <h2>
+            <img alt="web" src="../img/web.png" />
+            React
+          </h2>
+          <div id="items">
+            <a href="setup.html">Setup</a>
+            <a href="hello-world.html">Hello World</a>
+            <a href="state-navigation.html">State Navigation</a>
+            <a href="navigation-data.html">Navigation Data</a>
+            <a href="routes.html">Routes</a>
+            <a href="current-data.html">Current Data</a>
+            <a href="html5-history.html">HTML5 History</a>
+            <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="reusable-components.html">Reusable Components</a>
+            <a href="typescript.html" class="selected">TypeScript</a>
+            <a href="examples.html">Examples</a>
+            <h3>Mobile</h3>
+            <a href="mobile/setup.html">Setup</a>
+            <a href="mobile/hello-world.html">Hello World</a>
+            <a href="mobile/animated-navigation.html">Animated Navigation</a>
+            <a href="mobile/non-animated-navigation.html">Non-Animated Navigation</a>
+            <a href="mobile/clean-urls.html">Clean Urls</a>
+            <a href="mobile/scene-navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="mobile/shared-element-navigation.html">Shared Element Navigation</a>
+            <a href="mobile/examples.html">Examples</a>
+          </div>
+        </div>
+        <div id="article">
+            <h1>TypeScript</h1>
+            <p>
+            </p>
+            <pre><code class="language-js">type EmailNavigation = {
+  inbox: null,
+  mail: { id: number, expand?: boolean },
+}</code></pre>
+            <pre><code class="language-jsx">const stateNavigator = new StateNavigator&lt;EmailNavigation>([
+  {key: 'inbox', route: ''},
+  {key: 'mail'},
+]);
+
+const {inbox, mail} = stateNavigator.states;</code></pre>
+            <h2>Navigating and Passing Data</h2>
+            <pre><code class="language-jsx">&lt;NavigationLink&lt;EmailNavigation, 'mail'>
+  stateKey="mail"
+  navigationData={{id: 12}}>
+  Open Mail
+&lt;/NavigationLink></code></pre>
+            <pre><code class="language-jsx">import {NavigationEvent} from 'navigation-react'
+
+const {stateNavigator} = useContext&lt;NavigationEvent&lt;EmailNavigation>>(NavigationContext);
+
+&lt;div onClick={() => stateNavigator.navigate('mail', {id: 12})}>
+  Open Mail
+&lt;/div></code></pre>
+          <pre><code class="language-jsx">const Mail = () => {
+  const {data} = useContext&lt;NavigationEvent&lt;EmailNavigation, 'mail'>>(NavigationContext);
+  const {id, expand} = data;
+};</code></pre>
+        </div>
+    </div>
+    <script type="text/javascript" src="../js/prism.js"></script>
+</body>
+</html>
