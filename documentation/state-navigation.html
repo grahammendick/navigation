@@ -60,7 +60,7 @@
             <p>
                 Each <code>State</code> needs a matching scene which you’ll display when that <code>State</code> is active. You define the scene in a function attached to the <code>renderScene</code> property of the <code>State</code>. We can define two of the scenes in the email example using <code>Inbox</code> and <code>Compose</code> components.
             </p>
-            <pre><code class="language-jsx">const {inbox, compose} stateNavigator.states;
+            <pre><code class="language-jsx">const {inbox, compose} = stateNavigator.states;
 
 inbox.renderScene = () => &lt;Inbox />;
 compose.renderScene = () =>  &lt;Compose />;</code></pre>
