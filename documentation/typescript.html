@@ -73,10 +73,8 @@ const {stateNavigator} = useContext&lt;NavigationEvent&lt;EmailNavigation>>(Navi
 &lt;div onClick={() => stateNavigator.navigate('mail', {id: 12})}>
   Open Mail
 &lt;/div></code></pre>
-          <pre><code class="language-jsx">const Mail = () => {
-  const {data} = useContext&lt;NavigationEvent&lt;EmailNavigation, 'mail'>>(NavigationContext);
-  const {id, expand} = data;
-};</code></pre>
+          <pre><code class="language-jsx">const {data} = useContext&lt;NavigationEvent&lt;EmailNavigation, 'mail'>>(NavigationContext);
+const {id, expand} = data;</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>
