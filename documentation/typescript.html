@@ -1,0 +1,99 @@
+<html>
+<head>
+    <title>TypeScript</title>
+    <meta name="viewport" content="width=device-width">
+    <style>
+      :root {
+        --primary-color: #f9858b;
+        --secondary-color: #ed335f;
+      }    
+    </style>
+    <link rel="stylesheet" href="../css/prism.css">
+    <link rel="stylesheet" href="../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+      <a href=".."><img alt="logo" src="../img/logo.png" /></a>
+      <a href="native/setup.html">React Native</a>
+      <a href="https://github.com/grahammendick/navigation">GitHub</a>
+    </div>
+    <div id="content">
+        <div id="menu">
+          <h2>
+            <img alt="web" src="../img/web.png" />
+            React
+          </h2>
+          <div id="items">
+            <a href="setup.html">Setup</a>
+            <a href="hello-world.html">Hello World</a>
+            <a href="state-navigation.html">State Navigation</a>
+            <a href="navigation-data.html">Navigation Data</a>
+            <a href="routes.html">Routes</a>
+            <a href="current-data.html">Current Data</a>
+            <a href="html5-history.html">HTML5 History</a>
+            <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="reusable-components.html">Reusable Components</a>
+            <a href="typescript.html" class="selected">TypeScript</a>
+            <a href="examples.html">Examples</a>
+            <h3>Mobile</h3>
+            <a href="mobile/setup.html">Setup</a>
+            <a href="mobile/hello-world.html">Hello World</a>
+            <a href="mobile/animated-navigation.html">Animated Navigation</a>
+            <a href="mobile/non-animated-navigation.html">Non-Animated Navigation</a>
+            <a href="mobile/clean-urls.html">Clean Urls</a>
+            <a href="mobile/scene-navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="mobile/shared-element-navigation.html">Shared Element Navigation</a>
+            <a href="mobile/examples.html">Examples</a>
+          </div>
+        </div>
+        <div id="article">
+            <h1>TypeScript</h1>
+            <p>
+                To get the most out of the Navigation router's TypeScript support, you create a type that describes the possible navigation in your app. The type is an object whose keys are the valid scenes and whose values list the corresponding navigation data. In our email example, we create a type with keys for the 'inbox' and 'mail' scenes. The 'mail' scene expects a number id for the selected email and an optional boolean that indicates whether to expand the email thread.
+            </p>
+            <pre><code class="language-js">type EmailNavigation = {
+  inbox: null,
+  mail: {id: number, expand?: boolean},
+}</code></pre>
+            <p>
+                When we create the <code>StateNavigator</code> we pass our <code>EmailNavigation</code> type as the generic parameter. Then TypeScript will validate our keys are spelt correctly in our configuration and when we destructure the <code>States</code> to render the scenes.
+            </p>
+            <pre><code class="language-jsx">const stateNavigator = new StateNavigator&lt;EmailNavigation>([
+  {key: 'inbox', route: ''},
+  {key: 'mail'},
+]);
+
+// Error because inbox is mistyped
+onst {inbx, mail} = stateNavigator.states;</code></pre>
+            <h2>Navigating and Passing Data</h2>
+            <p>
+                You can use this same type when you navigate to make sure that the navigation is valid. TypeScript checks the target scene exists and that the navigation data matches up with what that scene expects. The <code>NavigationLink</code> component accepts the type and the target scene as generic parameters. When we navigate to the mail scene, for example, TypeScript will tell us if we accidentally pass the id as a string instead of a number.
+            </p>
+            <pre><code class="language-jsx">// Error because id is a string
+&lt;NavigationLink&lt;EmailNavigation, 'mail'>
+  stateKey="mail"
+  navigationData={{id: '12'}}>
+  Open Mail
+&lt;/NavigationLink></code></pre>
+            <p>
+                TypeScript will also check our programmatic navigation if we use the <code>EmailNavigation</code> type when accessing the <code>NavigationContext</code>.
+            </p>
+            <pre><code class="language-jsx">import {NavigationEvent} from 'navigation-react'
+
+const {stateNavigator} = useContext&lt;NavigationEvent&lt;EmailNavigation>>(NavigationContext);
+
+// Error because id is a string
+&lt;div onClick={() => stateNavigator.navigate('mail', {id: '12'})}>
+  Open Mail
+&lt;/div></code></pre>
+            <p>
+                TypeScript will validate the navigation data you receive as long as you tell it the current scene. You pass this as the second generic parameter when using the <code>NavigationContext</code>. In our email example, when we're on the mail scene, TypeScript will point out any mistypings and it knows that 'id' is a number and that 'expand' is a boolean.
+            </p>
+            <pre><code class="language-jsx">const {data} = useContext&lt;NavigationEvent&lt;EmailNavigation, 'mail'>>(NavigationContext);
+// Error because expand is mistyped
+const {id, expad} = data;</code></pre>
+        </div>
+    </div>
+    <script type="text/javascript" src="../js/prism.js"></script>
+</body>
+</html>
