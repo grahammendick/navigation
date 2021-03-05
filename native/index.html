@@ -68,8 +68,8 @@ const stateNavigator = new StateNavigator([
         <h3>Create Your Scenes</h3>
         <pre><code class="language-jsx">const { hello, world } = stateNavigator.states;
 
-hello.renderScene = = () => &lt;Hello />;
-world.renderScene = = () => &lt;World />;</code></pre>
+hello.renderScene = () => &lt;Hello />;
+world.renderScene = () => &lt;World />;</code></pre>
         <p>
           For each scene, you create a component that renders its UI. You map these scene components to their corresponding States. The Navigation router provides React components to help you build your scenes. All of these components render to the same native primitives as other native apps. For example, the <code>TabBar</code> component renders to a <code>BottomNavigationView</code> on Android and a <code>UITabBarController</code> on iOS.
         </p>

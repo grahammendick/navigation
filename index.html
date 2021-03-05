@@ -68,8 +68,8 @@ const stateNavigator = new StateNavigator([
         <h3>Create Your Scenes</h3>
         <pre><code class="language-jsx">const { hello, world } = stateNavigator.states;
 
-hello.renderScene = = () => &lt;Hello />;
-world.renderScene = = () => &lt;World />;</code></pre>
+hello.renderScene = () => &lt;Hello />;
+world.renderScene = () => &lt;World />;</code></pre>
         <p>
           For each scene, you create a component that renders its UI. You map these scene components to their corresponding <code>States</code>. All the other routers for React force you to think in terms of routes. But this is confusing because routes and scenes aren't the same thing. One scene can have more than one route, for example, a master/details page.
         </p>
