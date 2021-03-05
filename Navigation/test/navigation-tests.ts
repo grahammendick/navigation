@@ -1,4 +1,4 @@
-// tsc --target es3 --lib ES2015,DOM --noImplicitAny true navigation-tests.ts
+// tsc --target es3 --lib ES2015,DOM --noImplicitAny true --strict true navigation-tests.ts
 import { HashHistoryManager, StateNavigator, State } from 'navigation';
 
 // History Manager
