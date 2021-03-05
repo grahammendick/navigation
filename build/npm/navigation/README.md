@@ -19,8 +19,8 @@ You create one `State` for each scene (page) in your app. You don't need to defi
 ```jsx
 const { hello, world } = stateNavigator.states;
 
-hello.renderScene = = () => <Hello />;
-world.renderScene = = () => <World />;
+hello.renderScene = () => <Hello />;
+world.renderScene = () => <World />;
 ```
 For each scene, you create a component that renders its UI. You map these scene components to their corresponding `States`. All the other routers for React force you to think in terms of routes. But this is confusing because routes and scenes aren't the same thing. One scene can have more than one route, for example, a master/details page.
 
@@ -70,8 +70,8 @@ You create one `State` for each scene (screen) in your app. You can think of the
 ```jsx
 const { hello, world } = stateNavigator.states;
 
-hello.renderScene = = () => <Hello />;
-world.renderScene = = () => <World />;
+hello.renderScene = () => <Hello />;
+world.renderScene = () => <World />;
 ```
 For each scene, you create a component that renders its UI. You map these scene components to their corresponding States. The Navigation router provides React components to help you build your scenes. All of these components render to the same native primitives as other native apps. For example, the `TabBar` component renders to a `BottomNavigationView` on Android and a `UITabBarController` on iOS.
 
