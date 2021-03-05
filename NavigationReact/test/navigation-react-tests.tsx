@@ -1,4 +1,4 @@
-// tsc --jsx react --target es3 --lib ES2015,DOM --esModuleInterop --noImplicitAny true navigation-react-tests.tsx
+// tsc --jsx react --target es3 --lib ES2015,DOM --esModuleInterop --noImplicitAny true --strict true navigation-react-tests.tsx
 import { StateNavigator } from 'navigation';
 import { NavigationHandler, NavigationContext, NavigationEvent, NavigationBackLink, NavigationLink, RefreshLink } from 'navigation-react';
 import React, { useContext } from 'react';
@@ -31,7 +31,7 @@ const People = () => {
                 ))}
             </ul>
             <RefreshLink<AppNavigation, 'people'>
-                navigationData={{ page: page + 1 }}
+                navigationData={{ page: page! + 1 }}
                 disableActive={true}
                 includeCurrentData={true}>
                 Next

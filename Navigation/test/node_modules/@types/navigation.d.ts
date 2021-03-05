@@ -563,8 +563,8 @@ export class StateNavigator<NavigationInfo extends { [index: string]: any } = an
      * Parses the url out into State and Navigation Data
      * @param url The url to parse
      */
-
-    parseLink<StateKey extends keyof NavigationInfo = undefined>(url: string): { state: StateKey extends undefined ? State : State<StateKey & string, NavigationInfo[StateKey]>; data: StateKey extends undefined ? any : NavigationInfo[StateKey]; crumbs: Crumb[] };
+    parseLink(url: string): { state: State; data: any; crumbs: Crumb[] };
+    parseLink<StateKey extends keyof NavigationInfo>(url: string): { state: State<StateKey & string, NavigationInfo[StateKey]>; data: NavigationInfo[StateKey]; crumbs: Crumb[] };
     /**
      * Creates a FluentNavigator
      * @param withContext a value indicating whether to inherit the current
