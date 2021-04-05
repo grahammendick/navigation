@@ -84,7 +84,7 @@ class StateHandler {
         if (query.length > 0)
             routeInfo.route += '?' + query.join('&');
         if (hash)
-            routeInfo.route += '#' + encodeURIComponent(hash)
+            routeInfo.route += '#' + encodeURIComponent(hash);
         return routeInfo.route;
     }
 
