@@ -134,7 +134,7 @@ class StateHandler {
         var valid = state.validate(data);
         if (valid) {
             data[state.crumbTrailKey] = this.getCrumbs(crumbTrail)
-            return { state: state, data: data };
+            return { state, data };
         }
         return null;
     }

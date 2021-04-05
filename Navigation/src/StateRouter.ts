@@ -20,7 +20,7 @@ class StateRouter {
                     separableData[param.name] = true;
             }
         }
-        return { state: state, data: data, separableData: separableData, route: route };
+        return { state, data, separableData, route };
     }
 
     getRoute(state: State, data: any, arrayData: { [index: string]: string[] } = {}): { route: string; data: any } {
