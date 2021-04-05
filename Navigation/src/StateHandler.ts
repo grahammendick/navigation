@@ -91,7 +91,6 @@ class StateHandler {
     parseLink(url: string, fromRoute?: Route, err = ''): { state: State, data: any, hash: string } {
         var hashIndex = url.lastIndexOf('#');
         var urlPath = hashIndex < 0 ? url : url.substring(0, hashIndex);
-        var hash = hashIndex >= 0 ? decodeURIComponent(url.substring(hashIndex + 1)) : null;
         var queryIndex = urlPath.indexOf('?');
         var path = queryIndex < 0 ? urlPath : urlPath.substring(0, queryIndex);
         var query = queryIndex >= 0 ? urlPath.substring(queryIndex + 1) : null;
@@ -104,7 +103,11 @@ class StateHandler {
         } catch(e) {
             err += '\n' + e.message;
         }
-        return navigationData ? { ...navigationData, hash } : this.parseLink(url, route, err);        
+        if (navigationData) {
+            var hash = hashIndex >= 0 ? decodeURIComponent(url.substring(hashIndex + 1)) : null;
+            return { ...navigationData, hash }
+        }
+        return this.parseLink(url, route, err);        
     }
 
     private getNavigationData(query: string, state: State, data: any, separableData: any): { state: State, data: any } {
