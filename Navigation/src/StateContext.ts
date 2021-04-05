@@ -10,6 +10,7 @@ class StateContext {
     previousUrl: string = null;
     state: State = null;
     data: any = {};
+    hash: string = null;
     url: string = null;
     asyncData: any = undefined;
     title: string = null;

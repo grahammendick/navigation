@@ -46,7 +46,7 @@ class StateHandler {
         return builtStates;
     }
 
-    getLink(state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb, hash?: string): string {
+    getLink(state: State, navigationData: any, hash?: string, crumbs?: Crumb[], nextCrumb?: Crumb): string {
         var crumbTrail = [];
         if (crumbs) {
             crumbs = crumbs.slice();
@@ -88,10 +88,13 @@ class StateHandler {
         return routeInfo.route;
     }
 
-    parseLink(url: string, fromRoute?: Route, err = ''): { state: State, data: any } {
-        var queryIndex = url.indexOf('?');
-        var path = queryIndex < 0 ? url : url.substring(0, queryIndex);
-        var query = queryIndex >= 0 ? url.substring(queryIndex + 1) : null;
+    parseLink(url: string, fromRoute?: Route, err = ''): { state: State, data: any, hash: string } {
+        var hashIndex = url.lastIndexOf('#');
+        var urlPath = hashIndex < 0 ? url : url.substring(0, hashIndex);
+        var hash = hashIndex >= 0 ? url.substring(hashIndex + 1) : null;
+        var queryIndex = urlPath.indexOf('?');
+        var path = queryIndex < 0 ? urlPath : urlPath.substring(0, queryIndex);
+        var query = queryIndex >= 0 ? urlPath.substring(queryIndex + 1) : null;
         var match = this.router.getData(path, fromRoute);
         if (!match)
             throw new Error('The Url ' + url + ' is invalid' + (err || '\nNo match found'));
@@ -101,7 +104,7 @@ class StateHandler {
         } catch(e) {
             err += '\n' + e.message;
         }
-        return navigationData || this.parseLink(url, route, err);        
+        return navigationData ? { ...navigationData, hash } : this.parseLink(url, route, err);        
     }
 
     private getNavigationData(query: string, state: State, data: any, separableData: any): { state: State, data: any } {
@@ -140,10 +143,10 @@ class StateHandler {
             var crumblessUrl = crumbTrail[i];
             if (crumblessUrl.substring(0, 1) !== '/')
                 crumblessUrl = '/' + crumblessUrl;
-            var { state, data } = this.parseLink(crumblessUrl);
+            var { state, data, hash } = this.parseLink(crumblessUrl);
             delete data[state.crumbTrailKey];
-            var url = this.getNavigationLink(state, data, crumbTrail.slice(0, i));
-            crumbs.push(new Crumb(data, state, url, crumblessUrl, i + 1 === len));
+            var url = this.getNavigationLink(state, data, crumbTrail.slice(0, i), hash);
+            crumbs.push(new Crumb(data, state, hash, url, crumblessUrl, i + 1 === len));
         }
         return crumbs;
     }

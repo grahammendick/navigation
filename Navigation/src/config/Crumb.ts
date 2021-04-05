@@ -3,14 +3,16 @@
 class Crumb {
     data: any;
     state: State;
+    hash: string;
     last: boolean;
     title: string;
     url: string;
     crumblessUrl: string;
 
-    constructor(data: any, state: State, url: string, crumblessUrl: string, last: boolean) {
+    constructor(data: any, state: State, hash: string, url: string, crumblessUrl: string, last: boolean) {
         this.data = data ? data : {};
         this.state = state;
+        this.hash = hash;
         this.last = last;
         this.title = state.title;
         this.url = url;
