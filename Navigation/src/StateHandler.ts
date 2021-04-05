@@ -46,7 +46,7 @@ class StateHandler {
         return builtStates;
     }
 
-    getLink(state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb): string {
+    getLink(state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb, hash?: string): string {
         var crumbTrail = [];
         if (crumbs) {
             crumbs = crumbs.slice();
@@ -56,10 +56,10 @@ class StateHandler {
             for(var i = 0; i < crumbs.length; i++)
                 crumbTrail.push(crumbs[i].crumblessUrl)
         }
-        return this.getNavigationLink(state, navigationData, crumbTrail);
+        return this.getNavigationLink(state, navigationData, crumbTrail, hash);
     }
 
-    private getNavigationLink(state: State, navigationData: any, crumbTrail: string[]): string {
+    private getNavigationLink(state: State, navigationData: any, crumbTrail: string[], hash?: string): string {
         var { data, arrayData } = this.navigationDataManager.formatData(state, navigationData, crumbTrail);
         var routeInfo = this.router.getRoute(state, data, arrayData);
         if (routeInfo.route == null)
@@ -83,6 +83,8 @@ class StateHandler {
         }
         if (query.length > 0)
             routeInfo.route += '?' + query.join('&');
+        if (hash)
+            routeInfo.route += '#' + encodeURIComponent(hash)
         return routeInfo.route;
     }
 

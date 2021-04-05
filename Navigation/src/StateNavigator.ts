@@ -74,18 +74,18 @@ class StateNavigator {
         return stateContext;
     }
 
-    navigate(stateKey: string, navigationData?: any, historyAction?: 'add' | 'replace' | 'none') {
-        var url = this.getNavigationLink(stateKey, navigationData);
+    navigate(stateKey: string, navigationData?: any, historyAction?: 'add' | 'replace' | 'none', hash?: string) {
+        var url = this.getNavigationLink(stateKey, navigationData, hash);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
         this.navigateLink(url, historyAction);
     }
 
-    getNavigationLink(stateKey: string, navigationData?: any): string {
+    getNavigationLink(stateKey: string, navigationData?: any, hash?: string): string {
         if (!this.states[stateKey])
             throw new Error(stateKey + ' is not a valid State');
         var { crumbs, nextCrumb } = this.stateContext;
-        return this.stateHandler.getLink(this.states[stateKey], navigationData, crumbs, nextCrumb);
+        return this.stateHandler.getLink(this.states[stateKey], navigationData, crumbs, nextCrumb, hash);
     }
 
     canNavigateBack(distance: number) {
@@ -103,16 +103,16 @@ class StateNavigator {
         return this.stateContext.crumbs[this.stateContext.crumbs.length - distance].url;
     }
 
-    refresh(navigationData?: any, historyAction?: 'add' | 'replace' | 'none') {
+    refresh(navigationData?: any, historyAction?: 'add' | 'replace' | 'none', hash?: string) {
         var url = this.getRefreshLink(navigationData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
         this.navigateLink(url, historyAction);
     }
 
-    getRefreshLink(navigationData?: any): string {
+    getRefreshLink(navigationData?: any, hash?: string): string {
         var { crumbs, nextCrumb } = this.stateContext;
-        return this.stateHandler.getLink(this.stateContext.state, navigationData, crumbs, nextCrumb);
+        return this.stateHandler.getLink(this.stateContext.state, navigationData, crumbs, nextCrumb, hash);
     }
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false,
