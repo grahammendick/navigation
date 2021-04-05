@@ -90,10 +90,10 @@ class StateHandler {
 
     parseLink(url: string, fromRoute?: Route, err = ''): { state: State, data: any, hash: string } {
         var hashIndex = url.lastIndexOf('#');
-        var urlPath = hashIndex < 0 ? url : url.substring(0, hashIndex);
-        var queryIndex = urlPath.indexOf('?');
-        var path = queryIndex < 0 ? urlPath : urlPath.substring(0, queryIndex);
-        var query = queryIndex >= 0 ? urlPath.substring(queryIndex + 1) : null;
+        var pathAndQuery = hashIndex < 0 ? url : url.substring(0, hashIndex);
+        var queryIndex = pathAndQuery.indexOf('?');
+        var path = queryIndex < 0 ? pathAndQuery : pathAndQuery.substring(0, queryIndex);
+        var query = queryIndex >= 0 ? pathAndQuery.substring(queryIndex + 1) : null;
         var match = this.router.getData(path, fromRoute);
         if (!match)
             throw new Error('The Url ' + url + ' is invalid' + (err || '\nNo match found'));
