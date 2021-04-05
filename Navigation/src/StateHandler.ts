@@ -56,10 +56,10 @@ class StateHandler {
             for(var i = 0; i < crumbs.length; i++)
                 crumbTrail.push(crumbs[i].crumblessUrl)
         }
-        return this.getNavigationLink(state, navigationData, crumbTrail, hash);
+        return this.getNavigationLink(state, navigationData, hash, crumbTrail);
     }
 
-    private getNavigationLink(state: State, navigationData: any, crumbTrail: string[], hash?: string): string {
+    private getNavigationLink(state: State, navigationData: any, hash: string, crumbTrail: string[]): string {
         var { data, arrayData } = this.navigationDataManager.formatData(state, navigationData, crumbTrail);
         var routeInfo = this.router.getRoute(state, data, arrayData);
         if (routeInfo.route == null)
@@ -145,7 +145,7 @@ class StateHandler {
                 crumblessUrl = '/' + crumblessUrl;
             var { state, data, hash } = this.parseLink(crumblessUrl);
             delete data[state.crumbTrailKey];
-            var url = this.getNavigationLink(state, data, crumbTrail.slice(0, i), hash);
+            var url = this.getNavigationLink(state, data, hash, crumbTrail.slice(0, i));
             crumbs.push(new Crumb(data, state, hash, url, crumblessUrl, i + 1 === len));
         }
         return crumbs;
