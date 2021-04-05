@@ -105,7 +105,7 @@ class StateHandler {
         }
         if (navigationData) {
             var hash = hashIndex >= 0 ? decodeURIComponent(url.substring(hashIndex + 1)) : null;
-            return { ...navigationData, hash }
+            return { ...navigationData, hash };
         }
         return this.parseLink(url, route, err);        
     }
