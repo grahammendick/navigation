@@ -286,10 +286,10 @@ describe('Navigation', function () {
                 assert.equal(stateNavigator.stateContext.hash, 'anchor');
                 assert.equal(stateNavigator.stateContext.url, '/r1#anchor');
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
-                assert.equal(stateNavigator.stateContext.oldHash, null);
+                assert.strictEqual(stateNavigator.stateContext.oldHash, null);
                 assert.equal(stateNavigator.stateContext.oldUrl, '/r0');
                 assert.equal(stateNavigator.stateContext.previousState, null);
-                assert.equal(stateNavigator.stateContext.previousHash, null);
+                assert.strictEqual(stateNavigator.stateContext.previousHash, null);
                 assert.equal(stateNavigator.stateContext.previousUrl, null);
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
@@ -325,11 +325,11 @@ describe('Navigation', function () {
         
         function test() {
             it('should populate context', function() {
-                assert.equal(stateNavigator.stateContext.hash, null);
+                assert.strictEqual(stateNavigator.stateContext.hash, null);
                 assert.equal(stateNavigator.stateContext.url, '/r1');
                 assert.equal(stateNavigator.stateContext.oldHash, 'anchor');
                 assert.equal(stateNavigator.stateContext.oldUrl, '/r0#anchor');
-                assert.equal(stateNavigator.stateContext.previousHash, null);
+                assert.strictEqual(stateNavigator.stateContext.previousHash, null);
                 assert.equal(stateNavigator.stateContext.previousUrl, null);
             });
         }
@@ -368,7 +368,7 @@ describe('Navigation', function () {
                 assert.equal(stateNavigator.stateContext.url, '/r1#anchor1');
                 assert.equal(stateNavigator.stateContext.oldHash, 'anchor0');
                 assert.equal(stateNavigator.stateContext.oldUrl, '/r0#anchor0');
-                assert.equal(stateNavigator.stateContext.previousHash, null);
+                assert.strictEqual(stateNavigator.stateContext.previousHash, null);
                 assert.equal(stateNavigator.stateContext.previousUrl, null);
             });
         }
