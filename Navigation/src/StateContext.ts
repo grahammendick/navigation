@@ -4,9 +4,11 @@ import State from './config/State';
 class StateContext {
     oldState: State = null;
     oldData: any = {};
+    oldHash: string = null;
     oldUrl: string = null;
     previousState: State = null;
     previousData: any = {};
+    previousHash: string = null;
     previousUrl: string = null;
     state: State = null;
     data: any = {};

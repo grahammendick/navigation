@@ -53,6 +53,7 @@ class StateNavigator {
         var stateContext = new StateContext();
         stateContext.oldState = currentContext.state;
         stateContext.oldData = currentContext.data;
+        stateContext.oldHash = currentContext.hash;
         stateContext.oldUrl = currentContext.url;
         stateContext.state = state;
         stateContext.url = url;
@@ -70,6 +71,7 @@ class StateNavigator {
             var previousStateCrumb = stateContext.crumbs.slice(-1)[0];
             stateContext.previousState = previousStateCrumb.state;
             stateContext.previousData = previousStateCrumb.data;
+            stateContext.previousHash = previousStateCrumb.hash;
             stateContext.previousUrl = previousStateCrumb.url;
         }
         return stateContext;
