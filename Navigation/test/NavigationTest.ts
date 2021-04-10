@@ -237,15 +237,61 @@ describe('Navigation', function () {
         function test() {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.hash, null);
                 assert.equal(stateNavigator.stateContext.url, '/r1');
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.oldHash, null);
                 assert.equal(stateNavigator.stateContext.oldUrl, '/r0');
                 assert.equal(stateNavigator.stateContext.previousState, null);
+                assert.equal(stateNavigator.stateContext.previousHash, null);
                 assert.equal(stateNavigator.stateContext.previousUrl, null);
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
             it('should not mutate context', function() {
                 assert.notStrictEqual(stateNavigator.stateContext, stateContext);
+            });
+        }
+    });
+
+    describe('Transition Hash', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1', null, undefined, 'anchor');
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1', undefined, 'anchor');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.hash, 'anchor');
+                assert.equal(stateNavigator.stateContext.url, '/r1#anchor');
+                assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.oldHash, null);
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r0');
+                assert.equal(stateNavigator.stateContext.previousState, null);
+                assert.equal(stateNavigator.stateContext.previousHash, null);
+                assert.equal(stateNavigator.stateContext.previousUrl, null);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
     });
