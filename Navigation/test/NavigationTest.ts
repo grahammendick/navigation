@@ -30,6 +30,39 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
                 assert.equal(stateNavigator.stateContext.history, false);
+                assert.equal(stateNavigator.stateContext.hash, null);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+            });
+        }
+    });
+
+    describe('State Hash', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+        });
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s', null, undefined, 'anchor');
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s', undefined, 'anchor');
+                stateNavigator.navigateLink(link);
+            });            
+            test();
+        });
+        
+        function test(){
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+                assert.equal(stateNavigator.stateContext.hash, 'anchor');
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
