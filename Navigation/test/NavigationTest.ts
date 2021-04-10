@@ -296,6 +296,84 @@ describe('Navigation', function () {
         }
     });
 
+    describe('Hash Transition', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0', null, undefined, 'anchor');
+                stateNavigator.navigate('s1');
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0', undefined, 'anchor');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.hash, null);
+                assert.equal(stateNavigator.stateContext.url, '/r1');
+                assert.equal(stateNavigator.stateContext.oldHash, 'anchor');
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r0#anchor');
+                assert.equal(stateNavigator.stateContext.previousHash, null);
+                assert.equal(stateNavigator.stateContext.previousUrl, null);
+            });
+        }
+    });
+
+    describe('Hash Transition Hash', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0', null, undefined, 'anchor0');
+                stateNavigator.navigate('s1', null, undefined, 'anchor1');
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0', undefined, 'anchor0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1', undefined, 'anchor1');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.hash, 'anchor1');
+                assert.equal(stateNavigator.stateContext.url, '/r1#anchor1');
+                assert.equal(stateNavigator.stateContext.oldHash, 'anchor0');
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r0#anchor0');
+                assert.equal(stateNavigator.stateContext.previousHash, null);
+                assert.equal(stateNavigator.stateContext.previousUrl, null);
+            });
+        }
+    });
+
     describe('Transition With Trail', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
