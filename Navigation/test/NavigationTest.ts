@@ -404,10 +404,139 @@ describe('Navigation', function () {
         function test() {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.hash, null);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.oldHash, null);
                 assert.equal(stateNavigator.stateContext.oldUrl, '/r0');
                 assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.previousHash, null);
                 assert.equal(stateNavigator.stateContext.previousUrl, '/r0');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+            });
+        }
+    });
+
+    describe('Transition Hash With Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+        });
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1', null, undefined, 'anchor');
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1', null, 'anchor');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.hash, 'anchor');
+                assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.oldHash, null);
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r0');
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.previousHash, null);
+                assert.equal(stateNavigator.stateContext.previousUrl, '/r0');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+            });
+        }
+    });
+
+    describe('Hash Transition With Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+        });
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0', null, undefined, 'anchor');
+                stateNavigator.navigate('s1');
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0', null, 'anchor');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.hash, null);
+                assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.oldHash, 'anchor');
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r0#anchor');
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.previousHash, 'anchor');
+                assert.equal(stateNavigator.stateContext.previousUrl, '/r0#anchor');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+            });
+        }
+    });
+
+    describe('Hash Transition Hash With Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+        });
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0', null, undefined, 'anchor0');
+                stateNavigator.navigate('s1', null, undefined, 'anchor1');
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0', null, 'anchor0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1', null, 'anchor1');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.hash, 'anchor1');
+                assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.oldHash, 'anchor0');
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r0#anchor0');
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.previousHash, 'anchor0');
+                assert.equal(stateNavigator.stateContext.previousUrl, '/r0#anchor0');
                 assert.equal(stateNavigator.stateContext.crumbs.length, 1);
             });
         }
