@@ -107,7 +107,7 @@ class StateNavigator {
     }
 
     refresh(navigationData?: any, historyAction?: 'add' | 'replace' | 'none', hash?: string) {
-        var url = this.getRefreshLink(navigationData);
+        var url = this.getRefreshLink(navigationData, hash);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
         this.navigateLink(url, historyAction);
