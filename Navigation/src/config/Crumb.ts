@@ -9,7 +9,7 @@ class Crumb {
     url: string;
     crumblessUrl: string;
 
-    constructor(data: any, state: State, hash: string, url: string, crumblessUrl: string, last: boolean) {
+    constructor(data: any, state: State, url: string, crumblessUrl: string, last: boolean, hash: string) {
         this.data = data ? data : {};
         this.state = state;
         this.hash = hash;

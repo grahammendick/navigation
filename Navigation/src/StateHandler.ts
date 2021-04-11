@@ -149,7 +149,7 @@ class StateHandler {
             var { state, data, hash } = this.parseLink(crumblessUrl);
             delete data[state.crumbTrailKey];
             var url = this.getNavigationLink(state, data, hash, crumbTrail.slice(0, i));
-            crumbs.push(new Crumb(data, state, hash, url, crumblessUrl, i + 1 === len));
+            crumbs.push(new Crumb(data, state, url, crumblessUrl, i + 1 === len, hash));
         }
         return crumbs;
     }

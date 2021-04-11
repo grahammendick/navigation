@@ -27,7 +27,7 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
         fluentContext.crumbs = crumbs;
         fluentContext.data = data;
         fluentContext.hash = hash;
-        fluentContext.nextCrumb = new Crumb(data, state, hash, url, stateHandler.getLink(state, data, hash), false);
+        fluentContext.nextCrumb = new Crumb(data, state, url, stateHandler.getLink(state, data, hash), false, hash);
         return createFluentNavigator(states, stateHandler, fluentContext);
     }
 
