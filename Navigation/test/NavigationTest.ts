@@ -46,14 +46,14 @@ describe('Navigation', function () {
 
         describe('Navigate', function() {
             beforeEach(function() {
-                stateNavigator.navigate('s', null, undefined, 'anchor');
+                stateNavigator.navigate('s', null, undefined, 'f');
             });
             test();
         });
         
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateNavigator.getNavigationLink('s', undefined, 'anchor');
+                var link = stateNavigator.getNavigationLink('s', undefined, 'f');
                 stateNavigator.navigateLink(link);
             });            
             test();
@@ -62,7 +62,7 @@ describe('Navigation', function () {
         function test(){
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
-                assert.equal(stateNavigator.stateContext.hash, 'anchor');
+                assert.equal(stateNavigator.stateContext.hash, 'f');
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
@@ -265,7 +265,7 @@ describe('Navigation', function () {
         describe('Navigate', function() {
             beforeEach(function() {
                 stateNavigator.navigate('s0');
-                stateNavigator.navigate('s1', null, undefined, 'anchor');
+                stateNavigator.navigate('s1', null, undefined, 'f');
             });
             test();
         });
@@ -274,7 +274,7 @@ describe('Navigation', function () {
             beforeEach(function() {
                 var link = stateNavigator.getNavigationLink('s0');
                 stateNavigator.navigateLink(link);
-                link = stateNavigator.getNavigationLink('s1', undefined, 'anchor');
+                link = stateNavigator.getNavigationLink('s1', undefined, 'f');
                 stateNavigator.navigateLink(link);
             });
             test();
@@ -283,8 +283,8 @@ describe('Navigation', function () {
         function test() {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
-                assert.equal(stateNavigator.stateContext.hash, 'anchor');
-                assert.equal(stateNavigator.stateContext.url, '/r1#anchor');
+                assert.equal(stateNavigator.stateContext.hash, 'f');
+                assert.equal(stateNavigator.stateContext.url, '/r1#f');
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
                 assert.strictEqual(stateNavigator.stateContext.oldHash, null);
                 assert.equal(stateNavigator.stateContext.oldUrl, '/r0');
@@ -307,7 +307,7 @@ describe('Navigation', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateNavigator.navigate('s0', null, undefined, 'anchor');
+                stateNavigator.navigate('s0', null, undefined, 'f');
                 stateNavigator.navigate('s1');
             });
             test();
@@ -315,7 +315,7 @@ describe('Navigation', function () {
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateNavigator.getNavigationLink('s0', undefined, 'anchor');
+                var link = stateNavigator.getNavigationLink('s0', undefined, 'f');
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getNavigationLink('s1');
                 stateNavigator.navigateLink(link);
@@ -327,8 +327,8 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.strictEqual(stateNavigator.stateContext.hash, null);
                 assert.equal(stateNavigator.stateContext.url, '/r1');
-                assert.equal(stateNavigator.stateContext.oldHash, 'anchor');
-                assert.equal(stateNavigator.stateContext.oldUrl, '/r0#anchor');
+                assert.equal(stateNavigator.stateContext.oldHash, 'f');
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r0#f');
                 assert.strictEqual(stateNavigator.stateContext.previousHash, null);
                 assert.equal(stateNavigator.stateContext.previousUrl, null);
             });
@@ -346,17 +346,17 @@ describe('Navigation', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateNavigator.navigate('s0', null, undefined, 'anchor0');
-                stateNavigator.navigate('s1', null, undefined, 'anchor1');
+                stateNavigator.navigate('s0', null, undefined, 'f0');
+                stateNavigator.navigate('s1', null, undefined, 'f1');
             });
             test();
         });
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateNavigator.getNavigationLink('s0', undefined, 'anchor0');
+                var link = stateNavigator.getNavigationLink('s0', undefined, 'f0');
                 stateNavigator.navigateLink(link);
-                link = stateNavigator.getNavigationLink('s1', undefined, 'anchor1');
+                link = stateNavigator.getNavigationLink('s1', undefined, 'f1');
                 stateNavigator.navigateLink(link);
             });
             test();
@@ -364,10 +364,10 @@ describe('Navigation', function () {
         
         function test() {
             it('should populate context', function() {
-                assert.equal(stateNavigator.stateContext.hash, 'anchor1');
-                assert.equal(stateNavigator.stateContext.url, '/r1#anchor1');
-                assert.equal(stateNavigator.stateContext.oldHash, 'anchor0');
-                assert.equal(stateNavigator.stateContext.oldUrl, '/r0#anchor0');
+                assert.equal(stateNavigator.stateContext.hash, 'f1');
+                assert.equal(stateNavigator.stateContext.url, '/r1#f1');
+                assert.equal(stateNavigator.stateContext.oldHash, 'f0');
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r0#f0');
                 assert.strictEqual(stateNavigator.stateContext.previousHash, null);
                 assert.equal(stateNavigator.stateContext.previousUrl, null);
             });
@@ -428,7 +428,7 @@ describe('Navigation', function () {
         describe('Navigate', function() {
             beforeEach(function() {
                 stateNavigator.navigate('s0');
-                stateNavigator.navigate('s1', null, undefined, 'anchor');
+                stateNavigator.navigate('s1', null, undefined, 'f');
             });
             test();
         });
@@ -437,7 +437,7 @@ describe('Navigation', function () {
             beforeEach(function() {
                 var link = stateNavigator.getNavigationLink('s0');
                 stateNavigator.navigateLink(link);
-                link = stateNavigator.getNavigationLink('s1', null, 'anchor');
+                link = stateNavigator.getNavigationLink('s1', null, 'f');
                 stateNavigator.navigateLink(link);
             });
             test();
@@ -446,7 +446,7 @@ describe('Navigation', function () {
         function test() {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
-                assert.equal(stateNavigator.stateContext.hash, 'anchor');
+                assert.equal(stateNavigator.stateContext.hash, 'f');
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
                 assert.strictEqual(stateNavigator.stateContext.oldHash, null);
                 assert.equal(stateNavigator.stateContext.oldUrl, '/r0');
@@ -469,7 +469,7 @@ describe('Navigation', function () {
 
         describe('Navigate', function() {
             beforeEach(function() {
-                stateNavigator.navigate('s0', null, undefined, 'anchor');
+                stateNavigator.navigate('s0', null, undefined, 'f');
                 stateNavigator.navigate('s1');
             });
             test();
@@ -477,7 +477,7 @@ describe('Navigation', function () {
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateNavigator.getNavigationLink('s0', null, 'anchor');
+                var link = stateNavigator.getNavigationLink('s0', null, 'f');
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getNavigationLink('s1');
                 stateNavigator.navigateLink(link);
@@ -490,11 +490,11 @@ describe('Navigation', function () {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
                 assert.strictEqual(stateNavigator.stateContext.hash, null);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
-                assert.equal(stateNavigator.stateContext.oldHash, 'anchor');
-                assert.equal(stateNavigator.stateContext.oldUrl, '/r0#anchor');
+                assert.equal(stateNavigator.stateContext.oldHash, 'f');
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r0#f');
                 assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
-                assert.equal(stateNavigator.stateContext.previousHash, 'anchor');
-                assert.equal(stateNavigator.stateContext.previousUrl, '/r0#anchor');
+                assert.equal(stateNavigator.stateContext.previousHash, 'f');
+                assert.equal(stateNavigator.stateContext.previousUrl, '/r0#f');
                 assert.equal(stateNavigator.stateContext.crumbs.length, 1);
             });
         }
@@ -511,17 +511,17 @@ describe('Navigation', function () {
 
         describe('Navigate', function() {
             beforeEach(function() {
-                stateNavigator.navigate('s0', null, undefined, 'anchor0');
-                stateNavigator.navigate('s1', null, undefined, 'anchor1');
+                stateNavigator.navigate('s0', null, undefined, 'f0');
+                stateNavigator.navigate('s1', null, undefined, 'f1');
             });
             test();
         });
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateNavigator.getNavigationLink('s0', null, 'anchor0');
+                var link = stateNavigator.getNavigationLink('s0', null, 'f0');
                 stateNavigator.navigateLink(link);
-                link = stateNavigator.getNavigationLink('s1', null, 'anchor1');
+                link = stateNavigator.getNavigationLink('s1', null, 'f1');
                 stateNavigator.navigateLink(link);
             });
             test();
@@ -530,13 +530,13 @@ describe('Navigation', function () {
         function test() {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
-                assert.equal(stateNavigator.stateContext.hash, 'anchor1');
+                assert.equal(stateNavigator.stateContext.hash, 'f1');
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
-                assert.equal(stateNavigator.stateContext.oldHash, 'anchor0');
-                assert.equal(stateNavigator.stateContext.oldUrl, '/r0#anchor0');
+                assert.equal(stateNavigator.stateContext.oldHash, 'f0');
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r0#f0');
                 assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
-                assert.equal(stateNavigator.stateContext.previousHash, 'anchor0');
-                assert.equal(stateNavigator.stateContext.previousUrl, '/r0#anchor0');
+                assert.equal(stateNavigator.stateContext.previousHash, 'f0');
+                assert.equal(stateNavigator.stateContext.previousUrl, '/r0#f0');
                 assert.equal(stateNavigator.stateContext.crumbs.length, 1);
             });
         }
