@@ -48,7 +48,7 @@ describe('Fluent', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            assert.throws(() =>  stateNavigator.fluent().navigate('s0'), /is not a valid State/);
+            assert.throws(() =>  (stateNavigator as StateNavigator<any>).fluent().navigate('s0'), /is not a valid State/);
         });
     });
 
@@ -675,7 +675,7 @@ describe('Fluent', function () {
             stateNavigator.configure([
                 { key: 's1', route: 'r' }
             ]);
-            var url = stateNavigator.fluent()
+            var url = (stateNavigator as StateNavigator<any>).fluent()
                 .navigate('s1')
                 .url;
             assert.strictEqual(url, '/r');
@@ -694,7 +694,7 @@ describe('Fluent', function () {
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
-            var url = stateNavigator.fluent()
+            var url = (stateNavigator as StateNavigator<any>).fluent()
                 .navigate('s0')
                 .navigate('s1')
                 .url;
@@ -714,7 +714,7 @@ describe('Fluent', function () {
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
-            var url = stateNavigator.fluent()
+            var url = (stateNavigator as StateNavigator<any>).fluent()
                 .navigate('s0')
                 .navigate('s1')
                 .refresh()
@@ -736,7 +736,7 @@ describe('Fluent', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
-            var url = stateNavigator.fluent()
+            var url = (stateNavigator as StateNavigator<any>).fluent()
                 .navigate('s0')
                 .navigate('s1')
                 .navigate('s2')
@@ -895,14 +895,14 @@ describe('Fluent', function () {
                 .navigate('s0');
             var fluent1 = stateNavigator1.fluent()
                 .navigate('s2');
-            fluent0 = fluent0
+            var fluent2 = fluent0
                 .navigate('s1');
-            fluent1 = fluent1
+            var fluent3 = fluent1
                 .navigate('s3');
-            var url0 = fluent0
+            var url0 = fluent2
                 .refresh()
                 .url;
-            var url1 = fluent1
+            var url1 = fluent3
                 .refresh()
                 .url;
             assert.strictEqual(url0, '/r1?crumb=%2Fr0&crumb=%2Fr1');
@@ -928,18 +928,18 @@ describe('Fluent', function () {
                 .navigate('s0');
             var fluent1 = stateNavigator1.fluent()
                 .navigate('s3');
-            fluent0 = fluent0
+            var fluent2 = fluent0
                 .navigate('s1');
-            fluent1 = fluent1
+            var fluent3 = fluent1
                 .navigate('s4');
-            fluent0 = fluent0
+            var fluent4 = fluent2
                 .navigate('s2');
-            fluent1 = fluent1
+            var fluent5 = fluent3
                 .navigate('s5');
-            var url0 = fluent0
+            var url0 = fluent4
                 .navigateBack(1)
                 .url;
-            var url1 = fluent1
+            var url1 = fluent5
                 .navigateBack(1)
                 .url;
             assert.strictEqual(url0, '/r1?crumb=%2Fr0');
