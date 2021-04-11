@@ -896,6 +896,49 @@ describe('Navigation', function () {
             });
         }
     });
+
+    describe('Refresh Hash', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+        });
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1');
+                stateNavigator.refresh(null, undefined, 'f');
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getRefreshLink(null, 'f');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.hash, 'f');
+                assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
+                assert.strictEqual(stateNavigator.stateContext.oldHash, null);
+                assert.equal(stateNavigator.stateContext.previousState, null);
+                assert.strictEqual(stateNavigator.stateContext.previousHash, null);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+            });
+        }
+    });
     
     describe('Back With Trail', function() {
         var stateNavigator: StateNavigator;
