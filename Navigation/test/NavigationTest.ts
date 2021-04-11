@@ -1040,6 +1040,58 @@ describe('Navigation', function () {
         }
     });
 
+    describe('Hash Hash Hash Back With Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0', null, undefined, 'f0');
+                stateNavigator.navigate('s1', null, undefined, 'f1');
+                stateNavigator.navigate('s2', null, undefined, 'f2');
+                stateNavigator.navigateBack(1);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0', null, 'f0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1', null, 'f1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s2', null, 'f2');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationBackLink(1);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+                assert.strictEqual(stateNavigator.stateContext.hash, 'f1');
+                assert.equal(stateNavigator.stateContext.url, '/r1?crumb=%2Fr0%23f0#f1');
+                assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s2']);
+                assert.equal(stateNavigator.stateContext.oldHash, 'f2');
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r2?crumb=%2Fr0%23f0&crumb=%2Fr1%23f1#f2');
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.previousHash, 'f0');
+                assert.equal(stateNavigator.stateContext.previousUrl, '/r0#f0');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.crumbs[0].hash, 'f0');
+                assert.ok(stateNavigator.stateContext.crumbs[0].last);
+            });
+        }
+    });
 
     describe('Back', function() {
         var stateNavigator: StateNavigator;
