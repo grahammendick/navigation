@@ -1093,7 +1093,7 @@ describe('Navigation', function () {
         }
     });
 
-    describe('Hash Transition Hash Transition Trail', function() {
+    describe('Hash Transition Hash Transition With Trail', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
