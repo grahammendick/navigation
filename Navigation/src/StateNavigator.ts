@@ -77,8 +77,8 @@ class StateNavigator {
         return stateContext;
     }
 
-    navigate(stateKey: string, navigationData?: any, historyAction?: 'add' | 'replace' | 'none', hash?: string) {
-        var url = this.getNavigationLink(stateKey, navigationData, hash);
+    navigate(stateKey: string, navigationData?: any, historyAction?: 'add' | 'replace' | 'none') {
+        var url = this.getNavigationLink(stateKey, navigationData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
         this.navigateLink(url, historyAction);
@@ -106,8 +106,8 @@ class StateNavigator {
         return this.stateContext.crumbs[this.stateContext.crumbs.length - distance].url;
     }
 
-    refresh(navigationData?: any, historyAction?: 'add' | 'replace' | 'none', hash?: string) {
-        var url = this.getRefreshLink(navigationData, hash);
+    refresh(navigationData?: any, historyAction?: 'add' | 'replace' | 'none') {
+        var url = this.getRefreshLink(navigationData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
         this.navigateLink(url, historyAction);
