@@ -68,6 +68,38 @@ describe('Navigation', function () {
         }
     });
 
+    describe('State Reserved Url Character Hash', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+        });
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s', null, undefined, '*="/()\'-_+~@:?><.;[],{}!£$%^#&');
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s', undefined, '*="/()\'-_+~@:?><.;[],{}!£$%^#&');
+                stateNavigator.navigateLink(link);
+            });            
+            test();
+        });
+        
+        function test(){
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+                assert.equal(stateNavigator.stateContext.hash, '*="/()\'-_+~@:?><.;[],{}!£$%^#&');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+            });
+        }
+    });
+
     describe('Second State', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
@@ -935,6 +967,45 @@ describe('Navigation', function () {
                 assert.strictEqual(stateNavigator.stateContext.oldHash, null);
                 assert.equal(stateNavigator.stateContext.previousState, null);
                 assert.strictEqual(stateNavigator.stateContext.previousHash, null);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+            });
+        }
+    });
+
+    describe('Refresh Reserved Url Character Hash', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+        });
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1');
+                stateNavigator.refresh(null, undefined, '*="/()\'-_+~@:?><.;[],{}!£$%^#&');
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getRefreshLink(null, '*="/()\'-_+~@:?><.;[],{}!£$%^#&');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.hash, '*="/()\'-_+~@:?><.;[],{}!£$%^#&');
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
