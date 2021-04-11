@@ -1093,6 +1093,51 @@ describe('Navigation', function () {
         }
     });
 
+    describe('Hash Transition Hash Transition Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+                { key: 's3', route: 'r3', trackCrumbTrail: true }
+            ]);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0', null, undefined, 'f0');
+                stateNavigator.navigate('s1');
+                stateNavigator.navigate('s2', null, undefined, 'f2');
+                stateNavigator.navigate('s3');
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0', null, 'f0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s2', null, 'f2');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s3');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.crumbs[0].hash, 'f0');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].hash, null);
+                assert.equal(stateNavigator.stateContext.crumbs[2].hash, 'f2');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 3);
+            });
+        }
+    });
+
     describe('Back', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
