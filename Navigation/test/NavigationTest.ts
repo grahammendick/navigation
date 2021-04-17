@@ -800,6 +800,24 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Refresh Null Hash', function() {
+        it('should populate context', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            var link = stateNavigator.getNavigationLink('s0');
+            stateNavigator.navigateLink(link);
+            link = stateNavigator.getNavigationLink('s1');
+            stateNavigator.navigateLink(link);
+            link = stateNavigator.getRefreshLink(null, null);
+            stateNavigator.navigateLink(link);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            assert.equal(stateNavigator.stateContext.url, '/r1');
+            assert.equal(stateNavigator.stateContext.hash, null);
+        });
+    });
+
     describe('Refresh Reserved Url Character Hash', function() {
         it('should populate context', function() {
             var stateNavigator = new StateNavigator([
