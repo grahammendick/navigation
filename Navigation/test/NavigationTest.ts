@@ -5604,6 +5604,32 @@ describe('Navigation', function () {
             });
         }
     });
+    
+    describe('Hash Refresh Hash Back', function() {
+        it('should populate context', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var link = stateNavigator.getNavigationLink('s0', null, 'f0');
+            stateNavigator.navigateLink(link);
+            link = stateNavigator.getNavigationLink('s1');
+            stateNavigator.navigateLink(link);
+            link = stateNavigator.getRefreshLink(null, 'f1');
+            stateNavigator.navigateLink(link);
+            link = stateNavigator.getNavigationBackLink(1);
+            stateNavigator.navigateLink(link);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            assert.equal(stateNavigator.stateContext.hash, null);
+            assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
+            assert.equal(stateNavigator.stateContext.oldHash, 'f1');
+            assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.previousHash, 'f0');
+            assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+            assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
+            assert.ok(stateNavigator.stateContext.crumbs[0].last);
+        });
+    });
 
     describe('Refresh Back Custom Trail', function() {
         var stateNavigator: StateNavigator;
