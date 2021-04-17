@@ -29,6 +29,32 @@ describe('Fluent', function () {
         });
     });
 
+    describe('State Null Hash', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s', null, null)
+                .url;
+            assert.strictEqual(url, '/r');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('State Empty Hash', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s', null, '')
+                .url;
+            assert.strictEqual(url, '/r');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
     describe('Second State', function () {
         it('should navigate', function() {
             var stateNavigator = new StateNavigator([
