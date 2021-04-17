@@ -49,6 +49,32 @@ describe('Navigation', function () {
         });
     });
 
+    describe('State Null Hash', function() {
+        it('should populate context', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var link = stateNavigator.getNavigationLink('s', undefined, null);
+            stateNavigator.navigateLink(link);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+            assert.equal(stateNavigator.stateContext.url, '/r');
+            assert.equal(stateNavigator.stateContext.hash, null);
+        });
+    });
+
+    describe('State Empty Hash', function() {
+        it('should populate context', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var link = stateNavigator.getNavigationLink('s', undefined, '');
+            stateNavigator.navigateLink(link);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+            assert.equal(stateNavigator.stateContext.url, '/r');
+            assert.equal(stateNavigator.stateContext.hash, null);
+        });
+    });
+
     describe('State Reserved Url Character Hash', function() {
         it('should populate context', function() {
             var stateNavigator = new StateNavigator([
