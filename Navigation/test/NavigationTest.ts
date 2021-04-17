@@ -814,6 +814,7 @@ describe('Navigation', function () {
             stateNavigator.navigateLink(link);
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
             assert.equal(stateNavigator.stateContext.hash, '*="/()\'-_+~@:?><.;[],{}!£$%^#&');
+            assert.equal(stateNavigator.stateContext.url, '/r1#*="/()\'-_+~@:?><.;[],{}!£$%^#&');
             assert.equal(stateNavigator.stateContext.crumbs.length, 0);
         });
     });
