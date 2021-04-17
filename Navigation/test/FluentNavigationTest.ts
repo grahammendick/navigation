@@ -16,6 +16,19 @@ describe('Fluent', function () {
         });
     });
 
+    describe('State Hash', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s', null, 'f')
+                .url;
+            assert.strictEqual(url, '/r#f');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
     describe('Second State', function () {
         it('should navigate', function() {
             var stateNavigator = new StateNavigator([
