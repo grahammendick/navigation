@@ -791,10 +791,36 @@ describe('Navigation', function () {
             link = stateNavigator.getRefreshLink(null, 'f');
             stateNavigator.navigateLink(link);
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            assert.equal(stateNavigator.stateContext.url, '/r1#f');
             assert.equal(stateNavigator.stateContext.hash, 'f');
             assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
             assert.strictEqual(stateNavigator.stateContext.oldHash, null);
             assert.equal(stateNavigator.stateContext.previousState, null);
+            assert.strictEqual(stateNavigator.stateContext.previousHash, null);
+            assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+        });
+    });
+
+    describe('Hash Refresh', function() {
+        it('should populate context', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            var link = stateNavigator.getNavigationLink('s0');
+            stateNavigator.navigateLink(link);
+            link = stateNavigator.getNavigationLink('s1', null, 'f');
+            stateNavigator.navigateLink(link);
+            link = stateNavigator.getRefreshLink(null);
+            stateNavigator.navigateLink(link);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            assert.equal(stateNavigator.stateContext.url, '/r1');
+            assert.equal(stateNavigator.stateContext.hash, null);
+            assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
+            assert.equal(stateNavigator.stateContext.oldUrl, '/r1#f');
+            assert.strictEqual(stateNavigator.stateContext.oldHash, 'f');
+            assert.equal(stateNavigator.stateContext.previousState, null);
+            assert.equal(stateNavigator.stateContext.previousUrl, null);
             assert.strictEqual(stateNavigator.stateContext.previousHash, null);
             assert.equal(stateNavigator.stateContext.crumbs.length, 0);
         });
