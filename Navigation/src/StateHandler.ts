@@ -84,12 +84,12 @@ class StateHandler {
         if (query.length > 0)
             routeInfo.route += '?' + query.join('&');
         if (hash)
-            routeInfo.route += '#' + encodeURIComponent(hash);
+            routeInfo.route += '#' + hash;
         return routeInfo.route;
     }
 
     parseLink(url: string, fromRoute?: Route, err = ''): { state: State, data: any, hash: string } {
-        var hashIndex = url.lastIndexOf('#');
+        var hashIndex = url.indexOf('#');
         var pathAndQuery = hashIndex < 0 ? url : url.substring(0, hashIndex);
         var queryIndex = pathAndQuery.indexOf('?');
         var path = queryIndex < 0 ? pathAndQuery : pathAndQuery.substring(0, queryIndex);
@@ -104,7 +104,7 @@ class StateHandler {
             err += '\n' + e.message;
         }
         if (navigationData) {
-            var hash = hashIndex >= 0 ? decodeURIComponent(url.substring(hashIndex + 1)) : null;
+            var hash = hashIndex >= 0 ? url.substring(hashIndex + 1) : null;
             return { ...navigationData, hash };
         }
         return this.parseLink(url, route, err);        
