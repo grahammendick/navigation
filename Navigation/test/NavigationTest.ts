@@ -1057,6 +1057,32 @@ describe('Navigation', function () {
         }
     });
 
+    describe('Hash Hash Back', function() {
+        it('should populate context', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            var link = stateNavigator.getNavigationLink('s0');
+            stateNavigator.navigateLink(link);
+            link = stateNavigator.getNavigationLink('s1', null, 'f1');
+            stateNavigator.navigateLink(link);
+            link = stateNavigator.getNavigationLink('s2', null, 'f2');
+            stateNavigator.navigateLink(link);
+            link = stateNavigator.getNavigationBackLink(1);
+            stateNavigator.navigateLink(link);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            assert.equal(stateNavigator.stateContext.url, '/r1#f1');
+            assert.equal(stateNavigator.stateContext.hash, 'f1');
+            assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s2']);
+            assert.equal(stateNavigator.stateContext.oldHash, 'f2');
+            assert.equal(stateNavigator.stateContext.previousState, null);
+            assert.equal(stateNavigator.stateContext.previousHash, null);
+            assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+        });
+    });
+
     describe('Back Two With Trail', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
