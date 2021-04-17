@@ -55,6 +55,19 @@ describe('Fluent', function () {
         });
     });
 
+    describe('State Reserved Url Character Hash', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s', null, '*="/()\'-_+~@:?><.;[],{}!£$%^#&')
+                .url;
+            assert.strictEqual(url, '/r#*="/()\'-_+~@:?><.;[],{}!£$%^#&');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
     describe('Second State', function () {
         it('should navigate', function() {
             var stateNavigator = new StateNavigator([
