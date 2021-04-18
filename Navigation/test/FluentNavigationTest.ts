@@ -1271,6 +1271,23 @@ describe('Fluent', function () {
         });
     });
 
+    describe('Hash Refresh Hash Back', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0', null, 'f0')
+                .navigate('s1')
+                .refresh(null, 'f1')
+                .navigateBack(1)
+                .url;
+            assert.strictEqual(url, '/r1?crumb=%2Fr0%23f0');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
     describe('Refresh Back Custom Trail', function () {
         it('should navigate', function() {
             var stateNavigator = new StateNavigator([
