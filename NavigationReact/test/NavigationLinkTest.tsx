@@ -83,6 +83,7 @@ describe('NavigationLinkTest', function () {
                         navigationData={{x: 'a'}}
                         includeCurrentData={true}
                         currentDataKeys="y"
+                        hash='f'
                         activeStyle={{color: 'green', fontWeight: 'bold'}}
                         activeCssClass="active"
                         disableActive={true}
@@ -96,7 +97,7 @@ describe('NavigationLinkTest', function () {
                 container
             );
             var link = container.querySelector<HTMLAnchorElement>('a');
-            assert.equal(link.hash, '#/r?x=a');
+            assert.equal(link.hash, '#/r?x=a#f');
             assert.equal(link.innerHTML, 'link text');
             assert.equal(link.getAttribute('aria-label'), 'z');
             assert.equal(link.target, '_blank');
