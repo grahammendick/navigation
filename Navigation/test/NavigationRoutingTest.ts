@@ -111,13 +111,15 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            var { data } = stateNavigator.parseLink('/abcd');
+            var { data, hash } = stateNavigator.parseLink('/abcd');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'abcd');
-            var { data } = stateNavigator.parseLink('/ab?y=cd');
+            assert.strictEqual(hash, null);
+            var { data, hash } = stateNavigator.parseLink('/ab?y=cd');
             assert.strictEqual(Object.keys(data).length, 2);
             assert.strictEqual(data.x, 'ab');
             assert.strictEqual(data.y, 'cd');
+            assert.strictEqual(hash, null);
         });
 
         it('should not match', function() {
