@@ -410,6 +410,45 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Array Data Splat Hash', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r0/{*array_string}' }
+            ]);
+        });
+        var arrayNavigationData = {};
+        arrayNavigationData['array_string'] = ['He-llo', 'World'];
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s', arrayNavigationData, 'f');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s', arrayNavigationData, 'f')
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.data['array_string'][0], 'He-llo');
+                assert.strictEqual(stateNavigator.stateContext.data['array_string'][1], 'World');
+                assert.strictEqual(stateNavigator.stateContext.data['array_string'].length, 2);
+                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 1);
+                assert.strictEqual(stateNavigator.stateContext.hash, 'f');
+            });
+        }
+    });
+
     describe('Invalid Data', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
