@@ -59,7 +59,7 @@ class LinkUtility {
         }
         return htmlProps;
     }
-    
+
     static getOnClick(stateNavigator: AsyncStateNavigator, props: LinkProps, link: string) {
         return e => {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
