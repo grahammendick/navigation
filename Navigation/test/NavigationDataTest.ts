@@ -2238,6 +2238,75 @@ describe('Navigation Data', function () {
         }
     });
 
+
+    describe('Hash Transition Hash Transition Hash', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+        });
+        var data1 = {};
+        data1['s'] = 1;
+        var data2 = {};
+        data2['s'] = 2;
+        data2['t'] = '2';
+        var data3 = {};
+        data3['s'] = 3;
+        data3['t'] = '3';
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0', data1, 'f1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1', data2, 'f2');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s2', data3, 'f3');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0', data1, 'f1')
+                    .navigate('s1', data2, 'f2')
+                    .url;
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.fluent(true)
+                    .navigate('s2', data3, 'f3')
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.oldData['s'], 2);
+                assert.strictEqual(stateNavigator.stateContext.oldData['t'], '2');
+                assert.strictEqual(stateNavigator.stateContext.oldHash, 'f2');
+                assert.strictEqual(stateNavigator.stateContext.previousData['s'], 2);
+                assert.strictEqual(stateNavigator.stateContext.previousData['t'], '2');
+                assert.strictEqual(stateNavigator.stateContext.previousHash, 'f2');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['s'], 1);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['t'], undefined);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].hash, 'f1');
+                assert.equal(Object.keys(stateNavigator.stateContext.crumbs[0].data).length, 1);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['s'], 2);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['t'], '2');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].hash, 'f2');
+                assert.equal(Object.keys(stateNavigator.stateContext.crumbs[1].data).length, 2);
+                assert.strictEqual(stateNavigator.stateContext.data['s'], 3);
+                assert.strictEqual(stateNavigator.stateContext.data['t'], '3');
+                assert.strictEqual(stateNavigator.stateContext.hash, 'f3');
+            });
+        }
+    });
+
     describe('Transition Transition Crumb Trail Key', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
