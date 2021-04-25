@@ -1819,6 +1819,57 @@ describe('Navigation Data', function () {
         }
     });
 
+
+    describe('Refresh Data Hash', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+        });
+        var data = {};
+        data['string'] = 'Hello';
+        data['boolean'] = true;
+        data['number'] = 0;
+        data['date'] = new Date(2010, 3, 7);
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getRefreshLink(data, 'f');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0')
+                    .navigate('s1')
+                    .refresh(data, 'f')
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.data['string'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.data['boolean'], true);
+                assert.strictEqual(stateNavigator.stateContext.data['number'], 0);
+                assert.strictEqual(+stateNavigator.stateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(stateNavigator.stateContext.hash, 'f');
+                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 4);
+            });
+        }
+    });
+
     describe('Refresh Data Blank', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
