@@ -138,6 +138,35 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('One Param Hash', function () {
+        var stateNavigator: StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: '{x}' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data, hash } = stateNavigator.parseLink('/abcd#f');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'abcd');
+            assert.strictEqual(hash, 'f');
+            var { data, hash } = stateNavigator.parseLink('/ab?y=cd#f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y, 'cd');
+            assert.strictEqual(hash, 'f');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ab/cd#f'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('/ab//#f'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//a#f'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('/#f'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('/a?x=b#f'), /The Url .+ is invalid/);
+        });
+    });
+
     describe('One Param Two Segment', function () {
         var stateNavigator: StateNavigator;
         beforeEach(function () {
