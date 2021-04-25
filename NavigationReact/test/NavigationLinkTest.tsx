@@ -318,6 +318,28 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Hash Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        hash='f'>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r#f');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
     describe('Active Style Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
