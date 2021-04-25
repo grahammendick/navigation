@@ -5,10 +5,10 @@ import * as React from 'react';
 
 var RefreshLink = (props: RefreshLinkProps) => {
     var htmlProps = LinkUtility.toHtmlProps(props);
-    var { navigationData, includeCurrentData, currentDataKeys, stateNavigator } = props;
+    var { navigationData, includeCurrentData, currentDataKeys, hash, stateNavigator } = props;
     navigationData = LinkUtility.getData(stateNavigator, navigationData, includeCurrentData, currentDataKeys);
     try {
-        var link = stateNavigator.getRefreshLink(navigationData);
+        var link = stateNavigator.getRefreshLink(navigationData, hash);
     } catch {}
     htmlProps.href = link && stateNavigator.historyManager.getHref(link);
     htmlProps.onClick = link && LinkUtility.getOnClick(stateNavigator, props, link);
