@@ -150,6 +150,92 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Individual Data Hash', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+        });
+        var individualNavigationData = {};
+        individualNavigationData['string'] = 'Hello';
+        individualNavigationData['boolean'] = true;
+        individualNavigationData['number'] = 0;
+        individualNavigationData['date'] = new Date(2010, 3, 7);
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s', individualNavigationData, 'f');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s', individualNavigationData, 'f')
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.data['string'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.data['boolean'], true);
+                assert.strictEqual(stateNavigator.stateContext.data['number'], 0);
+                assert.strictEqual(+stateNavigator.stateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(stateNavigator.stateContext.hash, 'f');
+                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 4);
+            });
+        }
+    });
+
+    describe('Individual Data Route Hash', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r/{string}/{boolean}/{number}/{date}' }
+            ]);
+        });
+        var individualNavigationData = {};
+        individualNavigationData['string'] = 'Hello';
+        individualNavigationData['boolean'] = true;
+        individualNavigationData['number'] = 0;
+        individualNavigationData['date'] = new Date(2010, 3, 7);
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s', individualNavigationData, 'f');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s', individualNavigationData, 'f')
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.data['string'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.data['boolean'], true);
+                assert.strictEqual(stateNavigator.stateContext.data['number'], 0);
+                assert.strictEqual(+stateNavigator.stateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(stateNavigator.stateContext.hash, 'f');
+                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 4);
+            });
+        }
+    });
+
     describe('Array Data', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
