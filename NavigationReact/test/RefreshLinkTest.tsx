@@ -83,6 +83,7 @@ describe('RefreshLinkTest', function () {
                         navigationData={{x: 'a'}}
                         includeCurrentData={true}
                         currentDataKeys="y"
+                        hash='f'
                         activeStyle={{color: 'green', fontWeight: 'bold'}}
                         activeCssClass="active"
                         disableActive={true}
@@ -96,7 +97,7 @@ describe('RefreshLinkTest', function () {
                 container
             );
             var link = container.querySelector<HTMLAnchorElement>('a');
-            assert.equal(link.hash, '#/r?x=a');
+            assert.equal(link.hash, '#/r?x=a#f');
             assert.equal(link.innerHTML, 'link text');
             assert.equal(link.getAttribute('aria-label'), 'z');
             assert.equal(link.target, '_blank');
@@ -306,6 +307,69 @@ describe('RefreshLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?y=a&z=c');
             assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
+    describe('Hash Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink hash='f'>
+                        <span>link text</span>
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r#f');
+            assert.equal(link.innerHTML, '<span>link text</span>');
+        })
+    });
+
+    describe('Null Hash Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink hash={null}>
+                        <span>link text</span>
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r');
+            assert.equal(link.innerHTML, '<span>link text</span>');
+        })
+    });
+
+    describe('Empty Hash Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink hash=''>
+                        <span>link text</span>
+                    </RefreshLink>
+                </NavigationHandler>,
+                container
+            );
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r');
+            assert.equal(link.innerHTML, '<span>link text</span>');
         })
     });
 
