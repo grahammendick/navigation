@@ -4,4 +4,6 @@
 
 @interface NVTitleBarView : UIView
 
+-(id)initWithBridge: (RCTBridge *)bridge;
+
 @end
