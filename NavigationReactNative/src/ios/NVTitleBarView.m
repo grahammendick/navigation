@@ -6,6 +6,7 @@
 @implementation NVTitleBarView
 {
     __weak RCTBridge *_bridge;
+    CGRect _lastViewFrame;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -32,7 +33,10 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    [_bridge.uiManager setSize:self.bounds.size forView:self];
+    if (!CGRectEqualToRect(_lastViewFrame, self.frame)) {
+        [_bridge.uiManager setSize:self.frame.size forView:self];
+        _lastViewFrame = self.frame;
+    }
 }
 
 @end
