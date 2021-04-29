@@ -19,9 +19,6 @@ public class TitleBarView extends ViewGroup {
     @Override
     protected void onSizeChanged(final int w, final int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if (w == oldw && h == oldh) {
-            return;
-        }
         final int viewTag = getId();
         final ReactContext reactContext = (ReactContext) getContext();
         reactContext.runOnNativeModulesQueueThread(
