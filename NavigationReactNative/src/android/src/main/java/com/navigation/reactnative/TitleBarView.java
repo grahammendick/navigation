@@ -22,13 +22,13 @@ public class TitleBarView extends ViewGroup {
         final int viewTag = getId();
         final ReactContext reactContext = (ReactContext) getContext();
         reactContext.runOnNativeModulesQueueThread(
-                new GuardedRunnable(reactContext) {
-                    @Override
-                    public void runGuarded() {
-                        UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
-                        if (uiManager != null)
-                            uiManager.updateNodeSize(viewTag, w, h);
-                    }
-                });
+            new GuardedRunnable(reactContext) {
+                @Override
+                public void runGuarded() {
+                    UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
+                    if (uiManager != null)
+                        uiManager.updateNodeSize(viewTag, w, h);
+                }
+            });
     }
 }
