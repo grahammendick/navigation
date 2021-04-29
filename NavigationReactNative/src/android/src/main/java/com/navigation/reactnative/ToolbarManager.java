@@ -145,6 +145,10 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         return parent.children.get(index);
     }
 
+    @Override
+    public boolean needsCustomLayoutForChildren() {
+        return true;
+    }
 
     @Override
     protected void onAfterUpdateTransaction(@NonNull ToolbarView view) {
