@@ -120,8 +120,8 @@
 
 &lt;BarButton title="find" show="always">
   &lt;ActionBar>
-    &lt;View style={{flex: 'row'}}>
-      &lt;TextInput onChangeText={text => find(text)}>
+    &lt;View style={{flexDirection: 'row'}}>
+      &lt;TextInput onChangeText={text => find(text)} />
       &lt;TouchableHighlight onPress={() => findNextMatch()}>
         &lt;Image source={require('./arrow.png')} />
       &lt;/TouchableHighlight>
