@@ -28,10 +28,12 @@ class MobileHistoryManager extends HTML5HistoryManager {
     }
 
     getHref(url: string): string {
-        var queryIndex = url.indexOf('?');
+        var hashIndex = url.indexOf('#');
+        var pathAndQuery = hashIndex < 0 ? url : url.substring(0, hashIndex);
+        var queryIndex = pathAndQuery.indexOf('?');
         if (queryIndex >= 0) {
-            var path = url.substring(0, queryIndex);            
-            var query = url.substring(queryIndex + 1);
+            var path = pathAndQuery.substring(0, queryIndex);
+            var query = pathAndQuery.substring(queryIndex + 1);
             var params = query.split('&');
             var crumblessParams = [];
             for (var i = 0; i < params.length; i++) {
@@ -40,7 +42,8 @@ class MobileHistoryManager extends HTML5HistoryManager {
                 }
             }
             var crumblessQuery = crumblessParams.join('&');
-            url = `${path}${crumblessQuery && '?'}${crumblessQuery}`;
+            var hash = hashIndex >= 0 ? url.substring(hashIndex) : '';
+            url = `${path}${crumblessQuery && '?'}${crumblessQuery}${hash}`;
         }
         return !this.hash ? super.getHref(url) : '#' + url;
     }
