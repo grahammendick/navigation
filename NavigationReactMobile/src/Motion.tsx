@@ -12,7 +12,7 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
         progress: 0,
     }
     static getDerivedStateFromProps(props, {items: prevItems}) {
-        var tick = typeof window.performance !== 'undefined' ? window.performance.now() : 0;
+        var tick = typeof window !== 'undefined' && window.performance ? window.performance.now() : 0;
         var {items, moving} = Motion.move(tick, prevItems, props);
         return {items, restart: moving};
     }
