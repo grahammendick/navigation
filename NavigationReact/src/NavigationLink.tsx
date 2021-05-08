@@ -5,11 +5,11 @@ import * as React from 'react';
 
 var NavigationLink = (props: NavigationLinkProps) => {
     var htmlProps = LinkUtility.toHtmlProps(props);
-    var { stateKey, navigationData, includeCurrentData, currentDataKeys, stateNavigator } = props;
+    var { stateKey, navigationData, includeCurrentData, currentDataKeys, hash, stateNavigator } = props;
     var { state } = stateNavigator.stateContext;
     navigationData = LinkUtility.getData(stateNavigator, navigationData, includeCurrentData, currentDataKeys);
     try {
-        var link = stateNavigator.getNavigationLink(stateKey, navigationData);
+        var link = stateNavigator.getNavigationLink(stateKey, navigationData, hash);
     } catch {}
     htmlProps.href = link && stateNavigator.historyManager.getHref(link);
     htmlProps.onClick = link && LinkUtility.getOnClick(stateNavigator, props, link);

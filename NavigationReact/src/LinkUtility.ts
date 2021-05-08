@@ -51,15 +51,15 @@ class LinkUtility {
         var htmlProps = {};
         for(var key in props) {
             if (key !== 'stateNavigator' && key !== 'stateKey' && key !== 'navigationData'
-                && key !== 'includeCurrentData' && key !== 'currentDataKeys'&& key !== 'activeStyle'
-                && key !== 'activeCssClass' && key !== 'disableActive' && key !== 'distance'
-                && key !== 'historyAction' && key !== 'navigating' && key !== 'navigate'
-                && key !== 'withContext' && key !== 'defer')
+                && key !== 'includeCurrentData' && key !== 'currentDataKeys' && key !== 'hash'
+                && key !== 'activeStyle' && key !== 'activeCssClass' && key !== 'disableActive'
+                && key !== 'distance' && key !== 'historyAction' && key !== 'navigating'
+                && key !== 'navigate' && key !== 'withContext' && key !== 'defer')
                 htmlProps[key] = props[key];
         }
         return htmlProps;
     }
-    
+
     static getOnClick(stateNavigator: AsyncStateNavigator, props: LinkProps, link: string) {
         return e => {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {

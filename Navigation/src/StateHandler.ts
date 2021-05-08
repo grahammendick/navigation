@@ -46,7 +46,7 @@ class StateHandler {
         return builtStates;
     }
 
-    getLink(state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb): string {
+    getLink(state: State, navigationData: any, hash?: string, crumbs?: Crumb[], nextCrumb?: Crumb): string {
         var crumbTrail = [];
         if (crumbs) {
             crumbs = crumbs.slice();
@@ -56,10 +56,10 @@ class StateHandler {
             for(var i = 0; i < crumbs.length; i++)
                 crumbTrail.push(crumbs[i].crumblessUrl)
         }
-        return this.getNavigationLink(state, navigationData, crumbTrail);
+        return this.getNavigationLink(state, navigationData, hash, crumbTrail);
     }
 
-    private getNavigationLink(state: State, navigationData: any, crumbTrail: string[]): string {
+    private getNavigationLink(state: State, navigationData: any, hash: string, crumbTrail: string[]): string {
         var { data, arrayData } = this.navigationDataManager.formatData(state, navigationData, crumbTrail);
         var routeInfo = this.router.getRoute(state, data, arrayData);
         if (routeInfo.route == null)
@@ -83,13 +83,17 @@ class StateHandler {
         }
         if (query.length > 0)
             routeInfo.route += '?' + query.join('&');
+        if (hash)
+            routeInfo.route += '#' + hash;
         return routeInfo.route;
     }
 
-    parseLink(url: string, fromRoute?: Route, err = ''): { state: State, data: any } {
-        var queryIndex = url.indexOf('?');
-        var path = queryIndex < 0 ? url : url.substring(0, queryIndex);
-        var query = queryIndex >= 0 ? url.substring(queryIndex + 1) : null;
+    parseLink(url: string, fromRoute?: Route, err = ''): { state: State, data: any, hash: string } {
+        var hashIndex = url.indexOf('#');
+        var pathAndQuery = hashIndex < 0 ? url : url.substring(0, hashIndex);
+        var queryIndex = pathAndQuery.indexOf('?');
+        var path = queryIndex < 0 ? pathAndQuery : pathAndQuery.substring(0, queryIndex);
+        var query = queryIndex >= 0 ? pathAndQuery.substring(queryIndex + 1) : null;
         var match = this.router.getData(path, fromRoute);
         if (!match)
             throw new Error('The Url ' + url + ' is invalid' + (err || '\nNo match found'));
@@ -99,7 +103,11 @@ class StateHandler {
         } catch(e) {
             err += '\n' + e.message;
         }
-        return navigationData || this.parseLink(url, route, err);        
+        if (navigationData) {
+            var hash = hashIndex >= 0 ? url.substring(hashIndex + 1) : null;
+            return { ...navigationData, hash };
+        }
+        return this.parseLink(url, route, err);        
     }
 
     private getNavigationData(query: string, state: State, data: any, separableData: any): { state: State, data: any } {
@@ -126,7 +134,7 @@ class StateHandler {
         var valid = state.validate(data);
         if (valid) {
             data[state.crumbTrailKey] = this.getCrumbs(crumbTrail)
-            return { state: state, data: data };
+            return { state, data };
         }
         return null;
     }
@@ -138,10 +146,10 @@ class StateHandler {
             var crumblessUrl = crumbTrail[i];
             if (crumblessUrl.substring(0, 1) !== '/')
                 crumblessUrl = '/' + crumblessUrl;
-            var { state, data } = this.parseLink(crumblessUrl);
+            var { state, data, hash } = this.parseLink(crumblessUrl);
             delete data[state.crumbTrailKey];
-            var url = this.getNavigationLink(state, data, crumbTrail.slice(0, i));
-            crumbs.push(new Crumb(data, state, url, crumblessUrl, i + 1 === len));
+            var url = this.getNavigationLink(state, data, hash, crumbTrail.slice(0, i));
+            crumbs.push(new Crumb(data, state, url, crumblessUrl, i + 1 === len, hash));
         }
         return crumbs;
     }

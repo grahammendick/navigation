@@ -49,10 +49,11 @@ class StateNavigator {
         return !(stateInfos as StateNavigator).stateHandler;
     };
 
-    private createStateContext(state: State, data: any, crumbs: Crumb[], url: string, asyncData: any, history: boolean, currentContext: StateContext): StateContext {
+    private createStateContext(state: State, data: any, hash: string, crumbs: Crumb[], url: string, asyncData: any, history: boolean, currentContext: StateContext): StateContext {
         var stateContext = new StateContext();
         stateContext.oldState = currentContext.state;
         stateContext.oldData = currentContext.data;
+        stateContext.oldHash = currentContext.hash;
         stateContext.oldUrl = currentContext.url;
         stateContext.state = state;
         stateContext.url = url;
@@ -61,7 +62,8 @@ class StateNavigator {
         stateContext.history = history;
         stateContext.crumbs = crumbs;
         stateContext.data = data;
-        stateContext.nextCrumb = new Crumb(data, state, url, this.stateHandler.getLink(state, data), false);
+        stateContext.hash = hash;
+        stateContext.nextCrumb = new Crumb(data, state, url, this.stateHandler.getLink(state, data, hash), false, hash);
         stateContext.previousState = null;
         stateContext.previousData = {};
         stateContext.previousUrl = null;
@@ -69,6 +71,7 @@ class StateNavigator {
             var previousStateCrumb = stateContext.crumbs.slice(-1)[0];
             stateContext.previousState = previousStateCrumb.state;
             stateContext.previousData = previousStateCrumb.data;
+            stateContext.previousHash = previousStateCrumb.hash;
             stateContext.previousUrl = previousStateCrumb.url;
         }
         return stateContext;
@@ -81,11 +84,11 @@ class StateNavigator {
         this.navigateLink(url, historyAction);
     }
 
-    getNavigationLink(stateKey: string, navigationData?: any): string {
+    getNavigationLink(stateKey: string, navigationData?: any, hash?: string): string {
         if (!this.states[stateKey])
             throw new Error(stateKey + ' is not a valid State');
         var { crumbs, nextCrumb } = this.stateContext;
-        return this.stateHandler.getLink(this.states[stateKey], navigationData, crumbs, nextCrumb);
+        return this.stateHandler.getLink(this.states[stateKey], navigationData, hash, crumbs, nextCrumb);
     }
 
     canNavigateBack(distance: number) {
@@ -110,9 +113,9 @@ class StateNavigator {
         this.navigateLink(url, historyAction);
     }
 
-    getRefreshLink(navigationData?: any): string {
+    getRefreshLink(navigationData?: any, hash?: string): string {
         var { crumbs, nextCrumb } = this.stateContext;
-        return this.stateHandler.getLink(this.stateContext.state, navigationData, crumbs, nextCrumb);
+        return this.stateHandler.getLink(this.stateContext.state, navigationData, hash, crumbs, nextCrumb);
     }
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false,
@@ -121,14 +124,14 @@ class StateNavigator {
         if (history && this.stateContext.url === url)
             return;
         var context = this.stateContext;
-        var { state, data, crumbs } = this.parseLink(url);
+        var { state, data, hash, crumbs } = this.parseLink(url);
         for (var id in this.onBeforeNavigateCache.handlers) {
             var handler = this.onBeforeNavigateCache.handlers[id];
             if (context !== this.stateContext || !handler(state, data, url, history, currentContext))
                 return;
         }
         var navigateContinuation = (asyncData?: any) => {
-            var nextContext = this.createStateContext(state, data, crumbs, url, asyncData, history, currentContext);
+            var nextContext = this.createStateContext(state, data, hash, crumbs, url, asyncData, history, currentContext);
             if (context === this.stateContext) {
                 suspendNavigation(nextContext, () => {
                     if (context === this.stateContext)
@@ -164,10 +167,10 @@ class StateNavigator {
         }
     }
 
-    parseLink(url: string): { state: State, data: any, crumbs: Crumb[] } {
-        var { state, data } = this.stateHandler.parseLink(url);
+    parseLink(url: string): { state: State, data: any, hash: string, crumbs: Crumb[] } {
+        var { state, data, hash } = this.stateHandler.parseLink(url);
         var { [state.crumbTrailKey]: crumbs, ...data } = data;
-        return { state, data, crumbs };
+        return { state, data, hash, crumbs };
     }
 
     fluent(withContext = false): FluentNavigator {

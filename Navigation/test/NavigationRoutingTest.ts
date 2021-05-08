@@ -111,13 +111,15 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            var { data } = stateNavigator.parseLink('/abcd');
+            var { data, hash } = stateNavigator.parseLink('/abcd');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'abcd');
-            var { data } = stateNavigator.parseLink('/ab?y=cd');
+            assert.strictEqual(hash, null);
+            var { data, hash } = stateNavigator.parseLink('/ab?y=cd');
             assert.strictEqual(Object.keys(data).length, 2);
             assert.strictEqual(data.x, 'ab');
             assert.strictEqual(data.y, 'cd');
+            assert.strictEqual(hash, null);
         });
 
         it('should not match', function() {
@@ -135,6 +137,35 @@ describe('MatchTest', function () {
 
         it('should not build', function() {
             assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
+        });
+    });
+
+    describe('One Param Hash', function () {
+        var stateNavigator: StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: '{x}' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data, hash } = stateNavigator.parseLink('/abcd#f');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'abcd');
+            assert.strictEqual(hash, 'f');
+            var { data, hash } = stateNavigator.parseLink('/ab?y=cd#f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y, 'cd');
+            assert.strictEqual(hash, 'f');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ab/cd#f'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('/ab//#f'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//a#f'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('/#f'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('/a?x=b#f'), /The Url .+ is invalid/);
         });
     });
 

@@ -37,7 +37,7 @@ class HTML5HistoryManager implements HistoryManager {
     }
 
     getUrl(hrefElement: HTMLAnchorElement | Location) {
-        return hrefElement.pathname.substring(this.applicationPath.length) + hrefElement.search;
+        return hrefElement.pathname.substring(this.applicationPath.length) + hrefElement.search + hrefElement.hash;
     }
     
     stop() {
