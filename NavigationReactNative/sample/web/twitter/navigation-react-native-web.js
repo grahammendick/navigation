@@ -27,7 +27,11 @@ const NavigationBar = ({navigationImage, navigationHref, onNavigationPress, isAc
         accessibilityRole="link"
         href={navigationHref}
         underlayColor={barTintColor}
-        onPress={onNavigationPress}
+        onPress={(e) => {
+          if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
+          e.preventDefault()
+          onNavigationPress()
+        }}
         style={{marginRight: 20}}>
         <Image source={navigationImage} style={{width: 24, height: 24, tintColor}} />
       </TouchableHighlight>}
@@ -63,7 +67,9 @@ const TabBar = ({children, selectedIndex, selectedTintColor}) => {
               accessibilityRole="link"
               href={stateNavigator.historyManager.getHref(child.props.link)}
               underlayColor="#fff"
-              onPress={() => {
+              onPress={(e) => {
+                if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
+                e.preventDefault()
                 if (selectedIndex === index)
                   return;
                 if (index === 1)

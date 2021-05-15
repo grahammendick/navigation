@@ -34,7 +34,9 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
                 href={stateNavigator.historyManager.getHref(
                   stateNavigator.getNavigationLink('timeline', {id: accountId})
                 )}
-                onPress={() => {
+                onPress={(e) => {
+                  if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
+                  e.preventDefault()
                   stateNavigator.navigate('timeline', {id: accountId});
               }}>
                 <Image style={styles.logo} source={logo} />

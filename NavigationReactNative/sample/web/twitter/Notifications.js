@@ -1,12 +1,12 @@
 import React, {useContext} from 'react';
 import {Platform, StyleSheet, Text, Image, FlatList, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBar} from 'navigation-react-native';
+import {NavigationBar, CoordinatorLayout} from 'navigation-react-native';
 
 export default ({follows}) => {
   const {stateNavigator} = useContext(NavigationContext);
   return (
-    <>
+    <CoordinatorLayout>
       <NavigationBar
         title="Notifications"
         isActive={({tab}) => tab === 1}
@@ -23,7 +23,9 @@ export default ({follows}) => {
             href={stateNavigator.historyManager.getHref(
               stateNavigator.getNavigationLink('timeline', {id})
             )}
-            onPress={() => {
+            onPress={(e) => {
+              if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
+              e.preventDefault()
               stateNavigator.navigate('timeline', {id});
           }}>
           <View style={styles.follow}>
@@ -37,7 +39,7 @@ export default ({follows}) => {
           </View>
         </TouchableHighlight>
       )} />
-    </>
+    </CoordinatorLayout>
   );
 };
 

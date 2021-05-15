@@ -1,3 +1,7 @@
+diff --git a/node_modules/react-native/React/FBReactNativeSpec/FBReactNativeSpec/.DS_Store b/node_modules/react-native/React/FBReactNativeSpec/FBReactNativeSpec/.DS_Store
+new file mode 100644
+index 0000000..5008ddf
+Binary files /dev/null and b/node_modules/react-native/React/FBReactNativeSpec/FBReactNativeSpec/.DS_Store differ
 diff --git a/node_modules/react-native/React/Views/ScrollView/RCTScrollContentView.m b/node_modules/react-native/React/Views/ScrollView/RCTScrollContentView.m
 index cf6a0b1..4d187db 100644
 --- a/node_modules/react-native/React/Views/ScrollView/RCTScrollContentView.m

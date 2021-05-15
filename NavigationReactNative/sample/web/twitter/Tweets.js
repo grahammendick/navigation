@@ -20,7 +20,9 @@ export default ({renderHeader, tweets, onTimeline}) => {
             href={stateNavigator.historyManager.getHref(
               stateNavigator.getNavigationLink('timeline', {id: accountId})
             )}
-            onPress={() => {
+            onPress={(e) => {
+              if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
+              e.preventDefault()
               if (!onTimeline || onTimeline(accountId))
                 stateNavigator.navigate('timeline', {id: accountId});
           }}>
@@ -33,7 +35,9 @@ export default ({renderHeader, tweets, onTimeline}) => {
             href={stateNavigator.historyManager.getHref(
               stateNavigator.getNavigationLink('tweet', {id})
             )}
-            onPress={() => {
+            onPress={(e) => {
+              if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
+              e.preventDefault()
               stateNavigator.navigate('tweet', {id});
           }}>
           <View>
