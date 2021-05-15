@@ -19,7 +19,9 @@ export default ({colors}) => (
                 href={stateNavigator.historyManager.getHref(
                   stateNavigator.getNavigationLink('detail', {color})
                 )}
-                onPress={() => {
+                onPress={(e) => {
+                  if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
+                  e.preventDefault()
                   stateNavigator.navigate('detail', {color});
                 }}>
                 <SharedElement name={color} data={{color}} style={{flex: 1}}>

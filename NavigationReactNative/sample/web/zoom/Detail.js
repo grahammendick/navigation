@@ -17,7 +17,9 @@ export default ({colors, color}) => (
               href={stateNavigator.historyManager.getHref(
                 stateNavigator.getNavigationBackLink(1)
               )}
-              onPress={() => {
+              onPress={(e) => {
+                if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
+                e.preventDefault()
                 if (Platform.OS !== 'web')
                   stateNavigator.navigateBack(1);
                 else
@@ -41,7 +43,9 @@ export default ({colors, color}) => (
                   href={stateNavigator.historyManager.getHref(
                     stateNavigator.getNavigationLink('detail', {color: subcolor})
                   )}
-                  onPress={() => {
+                  onPress={(e) => {
+                    if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
+                    e.preventDefault()
                     stateNavigator.navigate('detail', {color: subcolor}, 'replace');
                   }}>
                     <View />
