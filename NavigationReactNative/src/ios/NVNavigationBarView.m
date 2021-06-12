@@ -85,7 +85,7 @@ API_AVAILABLE(ios(13.0)){
     if (self.tintColor != nil) {
         attributes[NSForegroundColorAttributeName] = self.tintColor;
     }
-    [appearance setBackgroundColor:self.barTintColor];
+    [appearance setBackgroundColor:color];
     [appearance.buttonAppearance.normal setTitleTextAttributes:attributes];
     [appearance.doneButtonAppearance.normal setTitleTextAttributes:attributes];
     [appearance setTitleTextAttributes:[self titleAttributes]];
