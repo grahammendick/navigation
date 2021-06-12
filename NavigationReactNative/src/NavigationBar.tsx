@@ -8,12 +8,32 @@ import CollapsingBar from './CollapsingBar';
 import TabBar from './TabBar';
 import StatusBar from './StatusBar';
 
+var getValue = (prop: string | ((large: boolean) => string), large: boolean) => (
+    typeof prop === 'function' ? prop(large) : prop
+)
+
 class NavigationBar extends React.Component<any, any> {
     constructor(props) {
         super(props);
     }
     render() {
-        var {hidden, logo, navigationImage, overflowImage, children, style = {height: undefined}, ...otherProps} = this.props;
+        var {hidden, logo, navigationImage, overflowImage, barTintColor, titleColor,
+            titleFontFamily, titleFontWeight, titleFontStyle, titleFontSize,
+            children, style = {height: undefined}, ...otherProps} = this.props;
+        var scrollEdgeProps = {
+            barTintColor: getValue(barTintColor, false),
+            largeBarTintColor: getValue(barTintColor, true),
+            titleColor: getValue(titleColor, false),
+            largeTtleColor: getValue(titleColor, true),
+            titleFontFamily: getValue(titleFontFamily, false),
+            largeTitleFontFamily: getValue(titleFontFamily, true),
+            titleFontWeight: getValue(titleFontWeight, false),
+            largeTitleFontWeight: getValue(titleFontWeight, true),
+            titleFontStyle: getValue(titleFontStyle, false),
+            largeTitleFontStyle: getValue(titleFontStyle, true),
+            titleFontSize: getValue(titleFontSize, false),
+            largeTitleFontSize: getValue(titleFontSize, true)
+        }
         var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
         var statusBar = childrenArray.find(({type}) => type === StatusBar);
         statusBar = (Platform.OS === 'android' || !statusBar) && (statusBar || <StatusBar />);
@@ -25,6 +45,7 @@ class NavigationBar extends React.Component<any, any> {
                 <NVNavigationBar
                     hidden={hidden}
                     style={{height: Platform.OS === 'android' && collapsingBar ? style.height : null}}
+                    {...scrollEdgeProps}
                     {...otherProps}>
                     {Platform.OS === 'ios' ? !hidden && children :
                         <Container
