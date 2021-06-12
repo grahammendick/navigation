@@ -24,7 +24,7 @@ class NavigationBar extends React.Component<any, any> {
             barTintColor: getValue(barTintColor, false),
             largeBarTintColor: getValue(barTintColor, true),
             titleColor: getValue(titleColor, false),
-            largeTtleColor: getValue(titleColor, true),
+            largeTitleColor: getValue(titleColor, true),
             titleFontFamily: getValue(titleFontFamily, false),
             largeTitleFontFamily: getValue(titleFontFamily, true),
             titleFontWeight: getValue(titleFontWeight, false),
