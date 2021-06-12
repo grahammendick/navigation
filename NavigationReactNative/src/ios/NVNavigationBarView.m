@@ -42,10 +42,10 @@
         UINavigationBarAppearance *appearance = [UINavigationBarAppearance new];
         [appearance configureWithDefaultBackground];
         if (self.barTintColor) {
-            [appearance configureWithOpaqueBackground];
-            if (CGColorGetAlpha(self.barTintColor.CGColor) == 0) {
+            if (CGColorGetAlpha(self.barTintColor.CGColor) == 0)
                 [appearance configureWithTransparentBackground];
-            }
+            if (CGColorGetAlpha(self.barTintColor.CGColor) == 1)
+                [appearance configureWithOpaqueBackground];
         }
         NSMutableDictionary *attributes = [NSMutableDictionary new];
         if (self.tintColor != nil) {
