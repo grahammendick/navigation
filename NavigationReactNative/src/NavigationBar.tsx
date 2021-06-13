@@ -44,13 +44,14 @@ class NavigationBar extends React.Component<any, any> {
             <>
                 <NVNavigationBar
                     hidden={hidden}
-                    style={{height: Platform.OS === 'android' && collapsingBar ? style.height : null}}
-                    {...scrollEdgeProps}
-                    {...otherProps}>
+                    style={{height: Platform.OS === 'android' && collapsingBar ? style.height : null}}                    
+                    {...otherProps}
+                    {...scrollEdgeProps}>
                     {Platform.OS === 'ios' ? !hidden && children :
                         <Container
                             collapse={!!collapsingBar}
                             {...otherProps}
+                            {...scrollEdgeProps}
                             {...(collapsingBar && collapsingBar.props)}>
                             {collapsingBar && collapsingBar.props.children}
                             <NVToolbar
@@ -59,6 +60,7 @@ class NavigationBar extends React.Component<any, any> {
                                 overflowImage={Image.resolveAssetSource(overflowImage)}
                                 pin={!!collapsingBar}
                                 {...otherProps}
+                                {...scrollEdgeProps}
                                 barTintColor={!collapsingBar ? otherProps.barTintColor : null}
                                 style={{height: 56}}>
                                 {[
