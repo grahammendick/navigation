@@ -8,8 +8,8 @@ import CollapsingBar from './CollapsingBar';
 import TabBar from './TabBar';
 import StatusBar from './StatusBar';
 
-var getValue = (prop: string | ((standard: boolean) => string), standard: boolean, defaultValue = prop) => (
-    typeof prop === 'function' ? prop(standard) : defaultValue
+var getValue = (prop: string | ((standard: boolean) => string), standard: boolean) => (
+    typeof prop === 'function' ? prop(standard) : prop
 )
 
 class NavigationBar extends React.Component<any, any> {
@@ -32,7 +32,7 @@ class NavigationBar extends React.Component<any, any> {
             titleFontStyle: getValue(titleFontStyle, true),
             largeTitleFontStyle: getValue(titleFontStyle, false),
             titleFontSize: getValue(titleFontSize, true),
-            largeTitleFontSize: getValue(titleFontSize, false, null)
+            largeTitleFontSize: getValue(titleFontSize, false)
         }
         var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
         var statusBar = childrenArray.find(({type}) => type === StatusBar);
