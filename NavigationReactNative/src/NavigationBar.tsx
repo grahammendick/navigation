@@ -8,8 +8,8 @@ import CollapsingBar from './CollapsingBar';
 import TabBar from './TabBar';
 import StatusBar from './StatusBar';
 
-var getValue = (prop: string | ((large: boolean) => string), large: boolean) => (
-    typeof prop === 'function' ? prop(large) : prop
+var getValue = (prop: string | ((standard: boolean) => string), standard: boolean) => (
+    typeof prop === 'function' ? prop(standard) : prop
 )
 
 class NavigationBar extends React.Component<any, any> {
@@ -21,18 +21,18 @@ class NavigationBar extends React.Component<any, any> {
             titleFontFamily, titleFontWeight, titleFontStyle, titleFontSize,
             children, style = {height: undefined}, ...otherProps} = this.props;
         var scrollEdgeProps = {
-            barTintColor: getValue(barTintColor, false),
-            largeBarTintColor: getValue(barTintColor, true),
-            titleColor: getValue(titleColor, false),
-            largeTitleColor: getValue(titleColor, true),
-            titleFontFamily: getValue(titleFontFamily, false),
-            largeTitleFontFamily: getValue(titleFontFamily, true),
-            titleFontWeight: getValue(titleFontWeight, false),
-            largeTitleFontWeight: getValue(titleFontWeight, true),
-            titleFontStyle: getValue(titleFontStyle, false),
-            largeTitleFontStyle: getValue(titleFontStyle, true),
-            titleFontSize: getValue(titleFontSize, false),
-            largeTitleFontSize: getValue(titleFontSize, true)
+            barTintColor: getValue(barTintColor, true),
+            largeBarTintColor: getValue(barTintColor, false),
+            titleColor: getValue(titleColor, true),
+            largeTitleColor: getValue(titleColor, false),
+            titleFontFamily: getValue(titleFontFamily, true),
+            largeTitleFontFamily: getValue(titleFontFamily, false),
+            titleFontWeight: getValue(titleFontWeight, true),
+            largeTitleFontWeight: getValue(titleFontWeight, false),
+            titleFontStyle: getValue(titleFontStyle, true),
+            largeTitleFontStyle: getValue(titleFontStyle, false),
+            titleFontSize: getValue(titleFontSize, true),
+            largeTitleFontSize: getValue(titleFontSize, false)
         }
         var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
         var statusBar = childrenArray.find(({type}) => type === StatusBar);
