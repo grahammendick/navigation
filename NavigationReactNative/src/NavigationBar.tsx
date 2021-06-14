@@ -8,32 +8,30 @@ import CollapsingBar from './CollapsingBar';
 import TabBar from './TabBar';
 import StatusBar from './StatusBar';
 
-var getValue = (prop: string | ((standard: boolean) => string), standard: boolean, defaultValue = prop) => (
-    typeof prop === 'function' ? prop(standard) : defaultValue
-)
-
 class NavigationBar extends React.Component<any, any> {
     constructor(props) {
         super(props);
     }
-    render() {
-        var {hidden, logo, navigationImage, overflowImage, barTintColor, titleColor,
-            titleFontFamily, titleFontWeight, titleFontStyle, titleFontSize,
-            children, style = {height: undefined}, ...otherProps} = this.props;
-        var scrollEdgeProps = {
-            barTintColor: getValue(barTintColor, true),
-            largeBarTintColor: getValue(barTintColor, false),
-            titleColor: getValue(titleColor, true),
-            largeTitleColor: getValue(titleColor, false),
-            titleFontFamily: getValue(titleFontFamily, true),
-            largeTitleFontFamily: getValue(titleFontFamily, false),
-            titleFontWeight: getValue(titleFontWeight, true),
-            largeTitleFontWeight: getValue(titleFontWeight, false),
-            titleFontStyle: getValue(titleFontStyle, true),
-            largeTitleFontStyle: getValue(titleFontStyle, false),
-            titleFontSize: getValue(titleFontSize, true),
-            largeTitleFontSize: getValue(titleFontSize, false, null)
+    getScrollEdgeProps() {
+        var {barTintColor, titleColor, titleFontFamily, titleFontWeight, titleFontStyle, titleFontSize } = this.props;
+        return {
+            barTintColor: typeof barTintColor === 'function' ? barTintColor(true) : barTintColor,
+            largeBarTintColor: typeof barTintColor === 'function' ? barTintColor(false) : barTintColor,
+            titleColor: typeof titleColor === 'function' ? titleColor(true) : titleColor,
+            largeTitleColor: typeof titleColor === 'function' ? titleColor(false) : titleColor,
+            titleFontFamily: typeof titleFontFamily === 'function' ? titleFontFamily(true) : titleFontFamily,
+            largeTitleFontFamily: typeof titleFontFamily === 'function' ? titleFontFamily(false) : titleFontFamily,
+            titleFontWeight: typeof titleFontWeight === 'function' ? titleFontWeight(true) : titleFontWeight,
+            largeTitleFontWeight: typeof titleFontWeight === 'function' ? titleFontWeight(false) : titleFontWeight,
+            titleFontStyle: typeof titleFontStyle === 'function' ? titleFontStyle(true) : titleFontStyle,
+            largeTitleFontStyle: typeof titleFontStyle === 'function' ? titleFontStyle(false) : titleFontStyle,
+            titleFontSize: typeof titleFontSize === 'function' ? titleFontSize(true) : titleFontSize,
+            largeTitleFontSize: typeof titleFontSize === 'function' ? titleFontSize(false) : null,
         }
+    }
+    render() {
+        var {hidden, logo, navigationImage, overflowImage, children, style = {height: undefined}, ...otherProps} = this.props;
+        var scrollEdgeProps = this.getScrollEdgeProps()
         var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
         var statusBar = childrenArray.find(({type}) => type === StatusBar);
         statusBar = (Platform.OS === 'android' || !statusBar) && (statusBar || <StatusBar />);
