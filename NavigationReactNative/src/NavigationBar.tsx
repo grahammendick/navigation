@@ -44,7 +44,8 @@ class NavigationBar extends React.Component<any, any> {
                     hidden={hidden}
                     style={{height: Platform.OS === 'android' && collapsingBar ? style.height : null}}                    
                     {...otherProps}
-                    {...scrollEdgeProps}>
+                    {...scrollEdgeProps}
+                    barTintColor={(Platform.OS === 'ios' || !collapsingBar) ? scrollEdgeProps.barTintColor : scrollEdgeProps.largeBarTintColor}>
                     {Platform.OS === 'ios' ? !hidden && children :
                         <Container
                             collapse={!!collapsingBar}
@@ -59,7 +60,7 @@ class NavigationBar extends React.Component<any, any> {
                                 pin={!!collapsingBar}
                                 {...otherProps}
                                 {...scrollEdgeProps}
-                                barTintColor={!collapsingBar ? otherProps.barTintColor : null}
+                                barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : null}
                                 style={{height: 56}}>
                                 {[
                                     childrenArray.find(({type}) => type === TitleBar),
