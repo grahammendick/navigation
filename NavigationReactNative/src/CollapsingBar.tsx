@@ -2,7 +2,7 @@ import React from 'react';
 import { requireNativeComponent, Platform } from 'react-native';
 
 var CollapsingBar: any = ({largeTitle = false, title, largeBarTintColor, titleColor, largeTitleColor,
-    largeTitleFontFamily, largeTitleFontWeight, largeTitleFontStyle}) => (
+    largeTitleFontFamily, largeTitleFontWeight, largeTitleFontStyle, children}) => (
     <NVCollapsingBar
         title={title}
         titleEnabled={largeTitle}
@@ -11,7 +11,9 @@ var CollapsingBar: any = ({largeTitle = false, title, largeBarTintColor, titleCo
         expandedTitleColor={largeTitleColor}
         titleFontFamily={largeTitleFontFamily}
         titleFontWeight={largeTitleFontWeight}
-        titleFontStyle={largeTitleFontStyle} />
+        titleFontStyle={largeTitleFontStyle}>
+        {children}
+    </NVCollapsingBar>
 )
 
 var NVCollapsingBar = requireNativeComponent<any>('NVCollapsingBar', null);
