@@ -1,22 +1,13 @@
 import React from 'react';
 import { requireNativeComponent, Platform } from 'react-native';
 
-var CollapsingBar: any = ({largeTitle = false, title, barTintColor, titleColor, largeTitleColor, titleFontFamily,
-    titleFontWeight, titleFontStyle, largeTitleFontFamily, largeTitleFontWeight, largeTitleFontStyle, children}) => (
+var CollapsingBar: any = ({largeTitle = false, barTintColor, titleColor, largeTitleColor, style, ...props}) => (
     <NVCollapsingBar
-        title={title}
         titleEnabled={largeTitle}
         contentScrimColor={barTintColor}
         collapsedTitleColor={titleColor}
         expandedTitleColor={largeTitleColor}
-        titleFontFamily={titleFontFamily}
-        titleFontWeight={titleFontWeight}
-        titleFontStyle={titleFontStyle}
-        largeTitleFontFamily={largeTitleFontFamily}
-        largeTitleFontWeight={largeTitleFontWeight}
-        largeTitleFontStyle={largeTitleFontStyle}>
-        {children}
-    </NVCollapsingBar>
+        {...props} />
 )
 
 var NVCollapsingBar = requireNativeComponent<any>('NVCollapsingBar', null);
