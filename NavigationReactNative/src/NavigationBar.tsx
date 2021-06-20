@@ -37,15 +37,15 @@ class NavigationBar extends React.Component<any, any> {
         statusBar = (Platform.OS === 'android' || !statusBar) && (statusBar || <StatusBar />);
         if (Platform.OS === 'android' && hidden)
             return statusBar;
-        var collapsingBar = childrenArray.find(({type}) => type === CollapsingBar);
+        var collapsingBar = Platform.OS === 'android' && childrenArray.find(({type}) => type === CollapsingBar);
         return (
             <>
                 <NVNavigationBar
                     hidden={hidden}
-                    style={{height: Platform.OS === 'android' && collapsingBar ? style.height : null}}                    
+                    style={{height: !!collapsingBar ? style.height : null}}                    
                     {...otherProps}
                     {...scrollEdgeProps}
-                    barTintColor={(Platform.OS === 'ios' || !collapsingBar) ? scrollEdgeProps.barTintColor : scrollEdgeProps.largeBarTintColor}>
+                    barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : scrollEdgeProps.largeBarTintColor}>
                     {Platform.OS === 'ios' ? !hidden && children :
                         <Container
                             collapse={!!collapsingBar}
