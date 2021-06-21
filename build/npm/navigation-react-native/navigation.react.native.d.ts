@@ -60,11 +60,11 @@ export interface NavigationBarProps {
     /**
      * The background color of the navigation bar
      */
-    barTintColor?: string;
+    barTintColor?: string | ((standard: boolean) => string);
     /**
      * The color of foreground elements on the navigation bar
      */
-    tintColor?: string;
+    tintColor?: string | ((standard: boolean) => string);
     /**
      * The color of the title view
      */
@@ -88,20 +88,21 @@ export interface NavigationBarProps {
     /**
      * The title font family
      */
-    titleFontFamily?: string;
+    titleFontFamily?: string | ((standard: boolean) => string);
     /**
      * The title font weight
      */
     titleFontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500'
-        | '600' | '700' | '800' | '900';
+        | '600' | '700' | '800' | '900' | ((standard: boolean) => 'normal' | 'bold'
+        | '100' | '200' | '300' | '400' | '500'| '600' | '700' | '800' | '900');
     /**
      * The title font style
      */
-    titleFontStyle?: 'normal' | 'italic';
+    titleFontStyle?: 'normal' | 'italic' | ((standard: boolean) => 'normal' | 'italic');
     /**
      * The title font size
      */
-    titleFontSize?: number;
+    titleFontSize?: number | ((standard: boolean) => number);
     /**
      * The back button font family
      */
