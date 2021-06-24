@@ -12,7 +12,11 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
     private String titleFontFamily;
     private String titleFontWeight;
     private String titleFontStyle;
+    private String largeTitleFontFamily;
+    private String largeTitleFontWeight;
+    private String largeTitleFontStyle;
     private boolean titleFontChanged = false;
+    private boolean largeTitleFontChanged = false;
     Drawable defaultContentScrim;
     int defaultTitleTextColor;
     Typeface defaultCollapsedTitleTypeface;
@@ -45,13 +49,33 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
         titleFontChanged = true;
     }
 
+    void setLargeTitleFontFamily(String largeTitleFontFamily) {
+        this.largeTitleFontFamily = largeTitleFontFamily;
+        largeTitleFontChanged = true;
+    }
+
+    void setLargeTitleFontWeight(String largeTitleFontWeight) {
+        this.largeTitleFontWeight = largeTitleFontWeight;
+        titleFontChanged = true;
+    }
+
+    void setLargeTitleFontStyle(String largeTitleFontStyle) {
+        this.largeTitleFontStyle = largeTitleFontStyle;
+        largeTitleFontChanged = true;
+    }
+
     void styleTitle() {
         if (titleFontChanged) {
             if (titleFontFamily != null || titleFontWeight != null || titleFontStyle != null) {
                 setCollapsedTitleTypeface(ReactTypefaceUtils.applyStyles(defaultCollapsedTitleTypeface, ReactTypefaceUtils.parseFontStyle(titleFontStyle), ReactTypefaceUtils.parseFontWeight(titleFontWeight), titleFontFamily, getContext().getAssets()));
-                setExpandedTitleTypeface(ReactTypefaceUtils.applyStyles(defaultExpandedTitleTypeface, ReactTypefaceUtils.parseFontStyle(titleFontStyle), ReactTypefaceUtils.parseFontWeight(titleFontWeight), titleFontFamily, getContext().getAssets()));
             } else {
                 setCollapsedTitleTypeface(defaultCollapsedTitleTypeface);
+            }
+        }
+        if (largeTitleFontChanged) {
+            if (largeTitleFontFamily != null || largeTitleFontWeight != null || largeTitleFontStyle != null) {
+                setExpandedTitleTypeface(ReactTypefaceUtils.applyStyles(defaultExpandedTitleTypeface, ReactTypefaceUtils.parseFontStyle(largeTitleFontStyle), ReactTypefaceUtils.parseFontWeight(largeTitleFontWeight), largeTitleFontFamily, getContext().getAssets()));
+            } else {
                 setExpandedTitleTypeface(defaultExpandedTitleTypeface);
             }
         }

@@ -12,24 +12,45 @@ class NavigationBar extends React.Component<any, any> {
     constructor(props) {
         super(props);
     }
+    getScrollEdgeProps() {
+        var {barTintColor, titleColor, titleFontFamily, titleFontWeight, titleFontStyle, titleFontSize } = this.props;
+        return {
+            barTintColor: typeof barTintColor === 'function' ? barTintColor(true) : barTintColor,
+            largeBarTintColor: typeof barTintColor === 'function' ? barTintColor(false) : barTintColor,
+            titleColor: typeof titleColor === 'function' ? titleColor(true) : titleColor,
+            largeTitleColor: typeof titleColor === 'function' ? titleColor(false) : titleColor,
+            titleFontFamily: typeof titleFontFamily === 'function' ? titleFontFamily(true) : titleFontFamily,
+            largeTitleFontFamily: typeof titleFontFamily === 'function' ? titleFontFamily(false) : titleFontFamily,
+            titleFontWeight: typeof titleFontWeight === 'function' ? titleFontWeight(true) : titleFontWeight,
+            largeTitleFontWeight: typeof titleFontWeight === 'function' ? titleFontWeight(false) : titleFontWeight,
+            titleFontStyle: typeof titleFontStyle === 'function' ? titleFontStyle(true) : titleFontStyle,
+            largeTitleFontStyle: typeof titleFontStyle === 'function' ? titleFontStyle(false) : titleFontStyle,
+            titleFontSize: typeof titleFontSize === 'function' ? titleFontSize(true) : titleFontSize,
+            largeTitleFontSize: typeof titleFontSize === 'function' ? titleFontSize(false) : null,
+        }
+    }
     render() {
         var {hidden, logo, navigationImage, overflowImage, children, style = {height: undefined}, ...otherProps} = this.props;
+        var scrollEdgeProps = this.getScrollEdgeProps()
         var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
         var statusBar = childrenArray.find(({type}) => type === StatusBar);
         statusBar = (Platform.OS === 'android' || !statusBar) && (statusBar || <StatusBar />);
         if (Platform.OS === 'android' && hidden)
             return statusBar;
-        var collapsingBar = childrenArray.find(({type}) => type === CollapsingBar);
+        var collapsingBar = Platform.OS === 'android' && childrenArray.find(({type}) => type === CollapsingBar);
         return (
             <>
                 <NVNavigationBar
                     hidden={hidden}
-                    style={{height: Platform.OS === 'android' && collapsingBar ? style.height : null}}
-                    {...otherProps}>
+                    style={{height: !!collapsingBar ? style.height : null}}                    
+                    {...otherProps}
+                    {...scrollEdgeProps}
+                    barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : scrollEdgeProps.largeBarTintColor}>
                     {Platform.OS === 'ios' ? !hidden && children :
                         <Container
                             collapse={!!collapsingBar}
                             {...otherProps}
+                            {...scrollEdgeProps}
                             {...(collapsingBar && collapsingBar.props)}>
                             {collapsingBar && collapsingBar.props.children}
                             <NVToolbar
@@ -38,7 +59,8 @@ class NavigationBar extends React.Component<any, any> {
                                 overflowImage={Image.resolveAssetSource(overflowImage)}
                                 pin={!!collapsingBar}
                                 {...otherProps}
-                                barTintColor={!collapsingBar ? otherProps.barTintColor : null}
+                                {...scrollEdgeProps}
+                                barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : null}
                                 style={{height: 56}}>
                                 {[
                                     childrenArray.find(({type}) => type === TitleBar),
