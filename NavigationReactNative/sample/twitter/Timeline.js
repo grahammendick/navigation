@@ -18,16 +18,14 @@ export default ({timeline: {id, name, username, logo, bio,
         title={name}
         onOffsetChanged={Animated.event([{nativeEvent:{offset}}], {useNativeDriver: true})}
         navigationImage={require('./arrow.png')}
-        barTintColor={Platform.OS === 'android' ? colors[0] : null}
+        barTintColor={Platform.OS === 'android' ? standard => standard ? colors[0] : colors[1] : null}
         tintColor={Platform.OS === 'android' ? "#fff" : null}
         titleColor={Platform.OS === 'android' ? "#fff" : null}
         style={{height: 120}}
         onNavigationPress={() => {
           stateNavigator.navigateBack(1)
         }}>
-        <CollapsingBar>
-          <View style={{backgroundColor: colors[1], flex: 1}} />
-        </CollapsingBar>
+        <CollapsingBar />
       </NavigationBar>
       <Tweets
         tweets={tweets}
