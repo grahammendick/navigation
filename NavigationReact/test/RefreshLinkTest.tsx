@@ -2838,7 +2838,7 @@ describe('RefreshLinkTest', function () {
             });
             assert.equal(stateNavigator.stateContext.data.x, 'a');
             assert.equal(stateNavigator.stateContext.data.y, null);
-            stateNavigator.refresh({y: 'b'});
+            act(() => stateNavigator.refresh({y: 'b'}));
             assert.equal(stateNavigator.stateContext.data.x, 'a');
             assert.equal(stateNavigator.stateContext.data.y, null);
         })
@@ -2907,7 +2907,7 @@ describe('RefreshLinkTest', function () {
                     container
                 );
             });
-            stateNavigator.navigate('s1', {y: 'b'});
+            act(() => stateNavigator.navigate('s1', {y: 'b'}));
             var link = container.querySelector<HTMLAnchorElement>('a');
             act(() => Simulate.click(link));
             assert.equal(stateNavigator.stateContext.url, '/r0?z=c&crumb=%2Fr0%3Fx%3Da');
