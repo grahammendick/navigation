@@ -717,7 +717,7 @@ describe('FluentLinkTest', function () {
             });
             assert.equal(stateNavigator.stateContext.state.key, 's0');
             var link = stateNavigator.fluent(true).navigate('s1').url;
-            stateNavigator.navigateLink(link);
+            act(() => stateNavigator.navigateLink(link));
             assert.equal(stateNavigator.stateContext.state.key, 's0');
         })
     });
