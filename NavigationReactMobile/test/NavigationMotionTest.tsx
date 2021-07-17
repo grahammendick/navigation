@@ -201,10 +201,8 @@ describe('NavigationMotion', function () {
                     container
                 );
             });
-            act(() => {
-                stateNavigator.navigate('sceneB');
-                stateNavigator.navigateBack(1);
-            });
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => stateNavigator.navigateBack(1));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
@@ -420,8 +418,8 @@ describe('NavigationMotion', function () {
                     .navigate('sceneC')
                     .navigate('sceneB').url;
                 stateNavigator.navigateLink(url);
-                stateNavigator.navigateBack(1)
             });
+            act(() => stateNavigator.navigateBack(1));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
@@ -464,8 +462,8 @@ describe('NavigationMotion', function () {
                     container
                 );
             });
+            act(() => stateNavigator.navigate('sceneB'));
             act(() => {
-                stateNavigator.navigate('sceneB');
                 var url = stateNavigator.fluent()
                     .navigate('sceneC')
                     .navigate('sceneB').url;
@@ -673,8 +671,8 @@ describe('NavigationMotion', function () {
                     .navigate('sceneB')
                     .navigate('sceneC').url;
                 stateNavigator.navigateLink(url);
-                stateNavigator.navigateBack(1);
             });
+            act(() => stateNavigator.navigateBack(1));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 2);
@@ -726,7 +724,9 @@ describe('NavigationMotion', function () {
                     .navigate('sceneB')
                     .navigate('sceneC').url;
                 stateNavigator.navigateLink(url);
-                url = stateNavigator.fluent(true)
+            });
+            act(() => {
+                var url = stateNavigator.fluent(true)
                     .navigateBack(2)
                     .navigate('sceneD')
                     .navigate('sceneC').url;
@@ -785,13 +785,15 @@ describe('NavigationMotion', function () {
                     .navigate('sceneB')
                     .navigate('sceneC').url;
                 stateNavigator.navigateLink(url);
-                url = stateNavigator.fluent(true)
+            });
+            act(() => {
+                var url = stateNavigator.fluent(true)
                     .navigateBack(2)
                     .navigate('sceneD')
                     .navigate('sceneC').url;
                 stateNavigator.navigateLink(url);
-                stateNavigator.navigateBack(1);
             });
+            act(() => stateNavigator.navigateBack(1));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 2);
@@ -841,8 +843,8 @@ describe('NavigationMotion', function () {
                     .navigate('sceneB')
                     .navigate('sceneC').url;
                 stateNavigator.navigateLink(url);
-                stateNavigator.navigateBack(2);
             });
+            act(() => stateNavigator.navigateBack(2));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
