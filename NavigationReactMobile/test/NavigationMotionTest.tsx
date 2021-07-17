@@ -5,6 +5,7 @@ import { NavigationHandler } from 'navigation-react';
 import { NavigationMotion } from 'navigation-react-mobile';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
 declare var global: any;
@@ -30,23 +31,26 @@ describe('NavigationMotion', function () {
             var SceneA = () => <div id="sceneA" />;
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -65,16 +69,19 @@ describe('NavigationMotion', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 2);
@@ -83,7 +90,7 @@ describe('NavigationMotion', function () {
                 assert.equal(scenes[1].id, "1");
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -101,17 +108,20 @@ describe('NavigationMotion', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            stateNavigator.navigate('sceneB');
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => stateNavigator.navigate('sceneB'));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 2);
@@ -120,7 +130,7 @@ describe('NavigationMotion', function () {
                 assert.equal(scenes[1].id, "1");
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -139,17 +149,20 @@ describe('NavigationMotion', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            stateNavigator.navigateBack(1);
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => stateNavigator.navigateBack(1));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
@@ -157,7 +170,7 @@ describe('NavigationMotion', function () {
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -175,18 +188,23 @@ describe('NavigationMotion', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            stateNavigator.navigate('sceneB');
-            stateNavigator.navigateBack(1);
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                stateNavigator.navigate('sceneB');
+                stateNavigator.navigateBack(1);
+            });
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
@@ -194,7 +212,7 @@ describe('NavigationMotion', function () {
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -209,24 +227,27 @@ describe('NavigationMotion', function () {
             var SceneA = () => <div id="sceneA" />;
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            stateNavigator.navigate('sceneA');
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => stateNavigator.navigate('sceneA'));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -244,17 +265,20 @@ describe('NavigationMotion', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            stateNavigator.navigate('sceneB');
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => stateNavigator.navigate('sceneB'));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
@@ -262,7 +286,7 @@ describe('NavigationMotion', function () {
                 assert.notEqual(scenes[0].querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneA"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -283,18 +307,21 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            stateNavigator.navigate('sceneB');
-            stateNavigator.navigate('sceneC');
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => stateNavigator.navigate('sceneC'));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
@@ -303,7 +330,7 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -325,20 +352,25 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            var url = stateNavigator.fluent()
-                .navigate('sceneC')
-                .navigate('sceneB').url;
-            stateNavigator.navigateLink(url);
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                var url = stateNavigator.fluent()
+                    .navigate('sceneC')
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+            });
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 2);
@@ -348,7 +380,7 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -370,21 +402,26 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            var url = stateNavigator.fluent()
-                .navigate('sceneC')
-                .navigate('sceneB').url;
-            stateNavigator.navigateLink(url);
-            stateNavigator.navigateBack(1)
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                var url = stateNavigator.fluent()
+                    .navigate('sceneC')
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+                stateNavigator.navigateBack(1)
+            });
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
@@ -393,7 +430,7 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -414,21 +451,26 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            stateNavigator.navigate('sceneB');
-            var url = stateNavigator.fluent()
-                .navigate('sceneC')
-                .navigate('sceneB').url;
-            stateNavigator.navigateLink(url);
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                stateNavigator.navigate('sceneB');
+                var url = stateNavigator.fluent()
+                    .navigate('sceneC')
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+            });
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 2);
@@ -438,7 +480,7 @@ describe('NavigationMotion', function () {
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -459,22 +501,27 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            stateNavigator.navigate('sceneB');
-            var url = stateNavigator.fluent()
-                .navigate('sceneC')
-                .navigate('sceneB').url;
-            stateNavigator.navigateLink(url);
-            stateNavigator.navigateBack(1);
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => {
+                var url = stateNavigator.fluent()
+                    .navigate('sceneC')
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+            });
+            act(() => stateNavigator.navigateBack(1));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
@@ -483,7 +530,7 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -507,21 +554,26 @@ describe('NavigationMotion', function () {
             sceneC.renderScene = () => <SceneC />;
             sceneD.renderScene = () => <SceneD />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            stateNavigator.navigate('sceneB');
-            var url = stateNavigator.fluent()
-                .navigate('sceneC')
-                .navigate('sceneD').url;
-            stateNavigator.navigateLink(url);
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => {
+                var url = stateNavigator.fluent()
+                    .navigate('sceneC')
+                    .navigate('sceneD').url;
+                stateNavigator.navigateLink(url);
+            });
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 2);
@@ -532,7 +584,7 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -553,20 +605,25 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            var url = stateNavigator.fluent(true)
-                .navigate('sceneB')
-                .navigate('sceneC').url;
-            stateNavigator.navigateLink(url);
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            })
+            act(() => {
+                var url = stateNavigator.fluent(true)
+                    .navigate('sceneB')
+                    .navigate('sceneC').url;
+                stateNavigator.navigateLink(url);
+            });
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 3);
@@ -577,7 +634,7 @@ describe('NavigationMotion', function () {
                 assert.notEqual(scenes[2].querySelector("#sceneC"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -598,21 +655,26 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            var url = stateNavigator.fluent(true)
-                .navigate('sceneB')
-                .navigate('sceneC').url;
-            stateNavigator.navigateLink(url);
-            stateNavigator.navigateBack(1);
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                var url = stateNavigator.fluent(true)
+                    .navigate('sceneB')
+                    .navigate('sceneC').url;
+                stateNavigator.navigateLink(url);
+                stateNavigator.navigateBack(1);
+            });
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 2);
@@ -622,7 +684,7 @@ describe('NavigationMotion', function () {
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -646,25 +708,30 @@ describe('NavigationMotion', function () {
             sceneC.renderScene = () => <SceneC />;
             sceneD.renderScene = () => <SceneD />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            var url = stateNavigator.fluent(true)
-                .navigate('sceneB')
-                .navigate('sceneC').url;
-            stateNavigator.navigateLink(url);
-            url = stateNavigator.fluent(true)
-                .navigateBack(2)
-                .navigate('sceneD')
-                .navigate('sceneC').url;
-            stateNavigator.navigateLink(url);
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                var url = stateNavigator.fluent(true)
+                    .navigate('sceneB')
+                    .navigate('sceneC').url;
+                stateNavigator.navigateLink(url);
+                url = stateNavigator.fluent(true)
+                    .navigateBack(2)
+                    .navigate('sceneD')
+                    .navigate('sceneC').url;
+                stateNavigator.navigateLink(url);
+            });
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 3);
@@ -676,7 +743,7 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneD"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -700,26 +767,31 @@ describe('NavigationMotion', function () {
             sceneC.renderScene = () => <SceneC />;
             sceneD.renderScene = () => <SceneD />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            var url = stateNavigator.fluent(true)
-                .navigate('sceneB')
-                .navigate('sceneC').url;
-            stateNavigator.navigateLink(url);
-            url = stateNavigator.fluent(true)
-                .navigateBack(2)
-                .navigate('sceneD')
-                .navigate('sceneC').url;
-            stateNavigator.navigateLink(url);
-            stateNavigator.navigateBack(1);
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                var url = stateNavigator.fluent(true)
+                    .navigate('sceneB')
+                    .navigate('sceneC').url;
+                stateNavigator.navigateLink(url);
+                url = stateNavigator.fluent(true)
+                    .navigateBack(2)
+                    .navigate('sceneD')
+                    .navigate('sceneC').url;
+                stateNavigator.navigateLink(url);
+                stateNavigator.navigateBack(1);
+            });
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 2);
@@ -730,7 +802,7 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -751,21 +823,26 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            var url = stateNavigator.fluent(true)
-                .navigate('sceneB')
-                .navigate('sceneC').url;
-            stateNavigator.navigateLink(url);
-            stateNavigator.navigateBack(2);
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                var url = stateNavigator.fluent(true)
+                    .navigate('sceneB')
+                    .navigate('sceneC').url;
+                stateNavigator.navigateLink(url);
+                stateNavigator.navigateBack(2);
+            });
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
@@ -774,7 +851,7 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -797,17 +874,20 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            stateNavigator.navigateBack(2);
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => stateNavigator.navigateBack(2));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
@@ -816,7 +896,7 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -839,19 +919,24 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            var url = stateNavigator.fluent()
-                .navigate('sceneB').url;
-            stateNavigator.navigateLink(url);
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                var url = stateNavigator.fluent()
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+            });
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
@@ -860,7 +945,7 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -875,17 +960,20 @@ describe('NavigationMotion', function () {
             var SceneA = () => <div id="sceneA" />;
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            stateNavigator.navigate('sceneA');
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => stateNavigator.navigate('sceneA'));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 2);
@@ -894,7 +982,7 @@ describe('NavigationMotion', function () {
                 assert.equal(scenes[1].id, "1");
                 assert.notEqual(scenes[1].querySelector("#sceneA"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -912,21 +1000,26 @@ describe('NavigationMotion', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            stateNavigator.navigate('sceneA');
-            var url = stateNavigator.fluent(true)
-                .navigateBack(1)
-                .navigate('sceneB').url;
-            stateNavigator.navigateLink(url);
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => stateNavigator.navigate('sceneA'));
+            act(() => {
+                var url = stateNavigator.fluent(true)
+                    .navigateBack(1)
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+            });
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 2);
@@ -935,7 +1028,7 @@ describe('NavigationMotion', function () {
                 assert.equal(scenes[1].id, "1+");
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -956,27 +1049,34 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationMotion>
-                        {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
-                        )}
-                    </NavigationMotion>
-                </NavigationHandler>,
-                container
-            );
-            stateNavigator.navigate('sceneA');
-            var url = stateNavigator.fluent(true)
-                .navigateBack(1)
-                .navigate('sceneB').url;
-            stateNavigator.navigateLink(url);
-            stateNavigator.navigate('sceneC');
-            stateNavigator.navigateBack(1);
-            url = stateNavigator.fluent(true)
-                .navigateBack(1)
-                .navigate('sceneC').url;
-            stateNavigator.navigateLink(url);
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => stateNavigator.navigate('sceneA'));
+            act(() => {
+                var url = stateNavigator.fluent(true)
+                    .navigateBack(1)
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+            });
+            act(() => stateNavigator.navigate('sceneC'));
+            act(() => stateNavigator.navigateBack(1));
+            act(() => {
+                var url = stateNavigator.fluent(true)
+                    .navigateBack(1)
+                    .navigate('sceneC').url;
+                stateNavigator.navigateLink(url);
+            });
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 2);
@@ -986,7 +1086,7 @@ describe('NavigationMotion', function () {
                 assert.notEqual(scenes[1].querySelector("#sceneC"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
