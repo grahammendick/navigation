@@ -595,11 +595,9 @@ describe('UnloadingHook', function () {
                     container
                 );
             });
-            act(() => {
-                stateNavigator.navigate('sceneB');
-                stateNavigator.navigate('sceneA');
-                stateNavigator.navigate('sceneB');
-            });
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => stateNavigator.navigate('sceneA'));
+            act(() => stateNavigator.navigate('sceneB'));
             act(() => {
                 unloadingA = unloadingB = false;
                 stateNavigator.navigate('sceneA');
@@ -659,10 +657,8 @@ describe('UnloadingHook', function () {
                     container
                 );
             });
-            act(() => {
-                stateNavigator.navigate('sceneB');
-                stateNavigator.navigate('sceneC');
-            });
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => stateNavigator.navigate('sceneC'));
             act(() => {
                 unloadingA = unloadingB = unloadingC = false;
                 stateNavigator.navigateBack(2);
@@ -723,10 +719,8 @@ describe('UnloadingHook', function () {
                     container
                 );
             });
-            act(() => {
-                stateNavigator.navigate('sceneB');
-                stateNavigator.navigate('sceneC');
-            });
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => stateNavigator.navigate('sceneC'));
             act(() => {
                 unloadingA = unloadingB = unloadingC = false;
                 var url = stateNavigator.fluent()
@@ -967,10 +961,8 @@ describe('UnloadingHook', function () {
                     container
                 );
             });
-            act(() => {
-                stateNavigator.navigate('sceneB', {y: 1});
-                stateNavigator.navigate('sceneC');
-            });
+            act(() => stateNavigator.navigate('sceneB', {y: 1}));
+            act(() => stateNavigator.navigate('sceneC'));
             act(() => {
                 stateC = dataC = urlC = crumbsC = historyC = null;
                 stateNavigator.navigateBack(1);
@@ -1018,9 +1010,7 @@ describe('UnloadingHook', function () {
                     container
                 );
             });
-            act(() => {
-                stateNavigator.navigate('sceneB');
-            });
+            act(() => stateNavigator.navigate('sceneB'));
             try {
                 assert.equal(stateNavigator.stateContext.state, sceneA);
             } finally {
