@@ -31,9 +31,10 @@ describe('NavigatingHook', function () {
             };
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
                 navigatingA = false;
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -45,7 +46,7 @@ describe('NavigatingHook', function () {
             try {
                 assert.equal(navigatingA, false);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -75,9 +76,10 @@ describe('NavigatingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
                 navigatingA = navigatingB = false;
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -90,7 +92,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingA, false);
                 assert.equal(navigatingB, false);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -119,8 +121,9 @@ describe('NavigatingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -137,7 +140,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingA, false);
                 assert.equal(navigatingB, false);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -166,8 +169,9 @@ describe('NavigatingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -175,8 +179,8 @@ describe('NavigatingHook', function () {
                     </NavigationHandler>,
                     container
                 );
-                stateNavigator.navigate('sceneB');
             });
+            act(() => stateNavigator.navigate('sceneB'));
             act(() => {
                 navigatingA = navigatingB = false;
                 stateNavigator.navigateBack(1);
@@ -185,7 +189,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingA, true);
                 assert.equal(navigatingB, false);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -206,8 +210,9 @@ describe('NavigatingHook', function () {
             };
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -223,7 +228,7 @@ describe('NavigatingHook', function () {
             try {
                 assert.equal(navigatingA, true);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -252,8 +257,9 @@ describe('NavigatingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -270,7 +276,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingA, false);
                 assert.equal(navigatingB, false);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -307,8 +313,9 @@ describe('NavigatingHook', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -316,8 +323,8 @@ describe('NavigatingHook', function () {
                     </NavigationHandler>,
                     container
                 );
-                stateNavigator.navigate('sceneB');
             });
+            act(() => stateNavigator.navigate('sceneB'));
             act(() => {
                 navigatingA = navigatingB = navigatingC = false;
                 var url = stateNavigator.fluent()
@@ -330,7 +337,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingB, true);
                 assert.equal(navigatingC, false);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -375,8 +382,9 @@ describe('NavigatingHook', function () {
             sceneC.renderScene = () => <SceneC />;
             sceneD.renderScene = () => <SceneD />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -384,8 +392,8 @@ describe('NavigatingHook', function () {
                     </NavigationHandler>,
                     container
                 );
-                stateNavigator.navigate('sceneB');
             });
+            act(() => stateNavigator.navigate('sceneB'));
             act(() => {
                 navigatingA = navigatingB = navigatingC = navigatingD = false;
                 var url = stateNavigator.fluent()
@@ -399,7 +407,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingC, false);
                 assert.equal(navigatingD, false);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -436,8 +444,9 @@ describe('NavigatingHook', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -458,7 +467,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingB, false);
                 assert.equal(navigatingC, false);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -495,8 +504,9 @@ describe('NavigatingHook', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -504,6 +514,8 @@ describe('NavigatingHook', function () {
                     </NavigationHandler>,
                     container
                 );
+            });
+            act(() => {
                 var url = stateNavigator.fluent(true)
                     .navigate('sceneB')
                     .navigate('sceneC').url;
@@ -518,7 +530,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingB, false);
                 assert.equal(navigatingC, false);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -547,8 +559,9 @@ describe('NavigatingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -556,10 +569,12 @@ describe('NavigatingHook', function () {
                     </NavigationHandler>,
                     container
                 );
+            });
+            act(() => {
                 stateNavigator.navigate('sceneB');
                 stateNavigator.navigate('sceneA');
                 stateNavigator.navigate('sceneB');
-            });
+            })
             act(() => {
                 navigatingA = navigatingB = false;
                 stateNavigator.navigate('sceneA');
@@ -568,7 +583,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingA, true);
                 assert.equal(navigatingB, false);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -605,8 +620,9 @@ describe('NavigatingHook', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -614,6 +630,8 @@ describe('NavigatingHook', function () {
                     </NavigationHandler>,
                     container
                 );
+            });
+            act(() => {
                 stateNavigator.navigate('sceneB');
                 stateNavigator.navigate('sceneC');
             });
@@ -626,7 +644,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingB, false);
                 assert.equal(navigatingC, false);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -663,8 +681,9 @@ describe('NavigatingHook', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -672,6 +691,8 @@ describe('NavigatingHook', function () {
                     </NavigationHandler>,
                     container
                 );
+            });
+            act(() => {
                 stateNavigator.navigate('sceneB');
                 stateNavigator.navigate('sceneC');
             });
@@ -686,7 +707,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingB, false);
                 assert.equal(navigatingC, false);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -715,8 +736,9 @@ describe('NavigatingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -724,8 +746,8 @@ describe('NavigatingHook', function () {
                     </NavigationHandler>,
                     container
                 );
-                stateNavigator.navigate('sceneB');
             });
+            act(() => stateNavigator.navigate('sceneB'));
             act(() => {
                 navigatingA = navigatingB = false;
                 var url = stateNavigator.getNavigationBackLink(1);
@@ -735,7 +757,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingA, true);
                 assert.equal(navigatingB, false);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -759,8 +781,9 @@ describe('NavigatingHook', function () {
             };
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -776,7 +799,7 @@ describe('NavigatingHook', function () {
             try {
                 assert.equal(navigatingA, false);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -799,8 +822,9 @@ describe('NavigatingHook', function () {
             };
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -808,8 +832,8 @@ describe('NavigatingHook', function () {
                     </NavigationHandler>,
                     container
                 );
-                setCountA(1);
             });
+            act(() => setCountA(1));
             act(() => {
                 countA = 0;
                 stateNavigator.navigate('sceneA');
@@ -817,7 +841,7 @@ describe('NavigatingHook', function () {
             try {
                 assert.equal(countA, 1);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -840,8 +864,9 @@ describe('NavigatingHook', function () {
             };
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -859,7 +884,7 @@ describe('NavigatingHook', function () {
                 assert.equal(stateContextA.oldData.x, undefined);
                 assert.equal(stateContextA.data.x, 0);
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
@@ -883,8 +908,9 @@ describe('NavigatingHook', function () {
             };
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -904,7 +930,7 @@ describe('NavigatingHook', function () {
                 assert.equal(currentContextA.data.x, 0);
                 assert.equal(currentContextA.url, '/sceneA?x=0');
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                root.unmount();
             }
         })
     });
