@@ -570,11 +570,9 @@ describe('NavigatedHook', function () {
                     container
                 );
             });
-            act(() => {
-                stateNavigator.navigate('sceneB');
-                stateNavigator.navigate('sceneA');
-                stateNavigator.navigate('sceneB');
-            });
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => stateNavigator.navigate('sceneA'));
+            act(() => stateNavigator.navigate('sceneB'));
             act(() => {
                 navigatedA = navigatedB = false;
                 stateNavigator.navigate('sceneA');
@@ -631,10 +629,8 @@ describe('NavigatedHook', function () {
                     container
                 );
             });
-            act(() => {
-                stateNavigator.navigate('sceneB');
-                stateNavigator.navigate('sceneC');
-            });
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => stateNavigator.navigate('sceneC'));
             act(() => {
                 navigatedA = navigatedB = navigatedC = false;
                 stateNavigator.navigateBack(2);
@@ -692,10 +688,8 @@ describe('NavigatedHook', function () {
                     container
                 );
             });
-            act(() => {
-                stateNavigator.navigate('sceneB');
-                stateNavigator.navigate('sceneC');
-            });
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => stateNavigator.navigate('sceneC'));
             act(() => {
                 navigatedA = navigatedB = navigatedC = false;
                 var url = stateNavigator.fluent()
