@@ -31,7 +31,7 @@ class AsyncStateNavigator extends StateNavigator {
     }
 
     private suspendNavigation(asyncNavigator: AsyncStateNavigator, resumeNavigation: () => void) {
-        var { oldState, oldUrl, state, data, url, asyncData } = asyncNavigator.stateContext;
+        var { oldState, state, data, url, asyncData } = asyncNavigator.stateContext;
         this.navigationHandler.setState(() => (
             { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: asyncNavigator } }
         ), () => {
