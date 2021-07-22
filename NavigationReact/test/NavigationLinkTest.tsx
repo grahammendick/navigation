@@ -2916,7 +2916,7 @@ describe('NavigationLinkTest', function () {
                 );
             });
             assert.equal(stateNavigator.stateContext.state.key, 's0');
-            act(() => stateNavigator.navigate('s1'));
+            stateNavigator.navigate('s1');
             assert.equal(stateNavigator.stateContext.state.key, 's0');
         })
     });
@@ -2985,7 +2985,7 @@ describe('NavigationLinkTest', function () {
                     container
                 );
             });
-            act(() => stateNavigator.navigate('s1', {y: 'b'}));
+            stateNavigator.navigate('s1', {y: 'b'});
             var link = container.querySelector<HTMLAnchorElement>('a');
             act(() => Simulate.click(link));
             assert.equal(stateNavigator.stateContext.url, '/r2?z=c&crumb=%2Fr0%3Fx%3Da');
