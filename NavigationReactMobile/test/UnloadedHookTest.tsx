@@ -570,9 +570,11 @@ describe('UnloadedHook', function () {
                     container
                 );
             });
-            act(() => stateNavigator.navigate('sceneB'));
-            act(() => stateNavigator.navigate('sceneA'));
-            act(() => stateNavigator.navigate('sceneB'));
+            act(() => {
+                stateNavigator.navigate('sceneB');
+                stateNavigator.navigate('sceneA');
+                stateNavigator.navigate('sceneB');
+            });
             act(() => {
                 unloadedA = unloadedB = false;
                 stateNavigator.navigate('sceneA');
@@ -629,8 +631,10 @@ describe('UnloadedHook', function () {
                     container
                 );
             });
-            act(() => stateNavigator.navigate('sceneB'));
-            act(() => stateNavigator.navigate('sceneC'));
+            act(() => {
+                stateNavigator.navigate('sceneB');
+                stateNavigator.navigate('sceneC');
+            });
             act(() => {
                 unloadedA = unloadedB = unloadedC = false;
                 stateNavigator.navigateBack(2);
@@ -688,8 +692,10 @@ describe('UnloadedHook', function () {
                     container
                 );
             });
-            act(() => stateNavigator.navigate('sceneB'));
-            act(() => stateNavigator.navigate('sceneC'));
+            act(() => {
+                stateNavigator.navigate('sceneB');
+                stateNavigator.navigate('sceneC');
+            });
             act(() => {
                 unloadedA = unloadedB = unloadedC = false;
                 var url = stateNavigator.fluent()
@@ -922,8 +928,10 @@ describe('UnloadedHook', function () {
                     container
                 );
             });
-            act(() => stateNavigator.navigate('sceneB', {y: 1}));
-            act(() => stateNavigator.navigate('sceneC'));
+            act(() => {
+                stateNavigator.navigate('sceneB', {y: 1});
+                stateNavigator.navigate('sceneC');
+            });
             act(() => {
                 stateC = dataC = stateContextC = null;
                 stateNavigator.navigateBack(1);
