@@ -3019,7 +3019,7 @@ describe('NavigationLinkTest', function () {
                     }}>
                         {data.x}
                     </div>
-                )
+                );
             }
             s.renderView = () => <Scene />;
             stateNavigator.navigate('s', {x: 'a'});
@@ -3041,6 +3041,37 @@ describe('NavigationLinkTest', function () {
             assert.equal(div.innerHTML, 'c');
             assert.equal(stateNavigator.stateContext.oldData.x, 'a');
             assert.equal(stateNavigator.stateContext.data.x, 'c');
+        })
+    });
+
+    describe('Mutate Navigation', function () {
+        it('should flush sync', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var {s} = stateNavigator.states;
+            const Scene = () => {
+                const { data } = useContext(NavigationContext);
+                return <div>{data.x}</div>;
+            }
+            s.renderView = () => <Scene />;
+            stateNavigator.navigate('s', {x: 'a'});
+            var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderView(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            stateNavigator.navigate('s', {x: 'b'});
+            var div = container.querySelector<HTMLDivElement>('div');
+            assert.equal(div.innerHTML, 'b');
+            assert.equal(stateNavigator.stateContext.data.x, 'b');
         })
     });
 
