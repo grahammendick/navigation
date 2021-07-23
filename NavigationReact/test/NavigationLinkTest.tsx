@@ -2,7 +2,7 @@ import assert from 'assert';
 import mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationLink, NavigationHandler, NavigationContext } from 'navigation-react';
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { act, Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
@@ -3072,6 +3072,59 @@ describe('NavigationLinkTest', function () {
             var div = container.querySelector<HTMLDivElement>('div');
             assert.equal(div.innerHTML, 'b');
             assert.equal(stateNavigator.stateContext.data.x, 'b');
+        })
+    });
+
+    describe('Start Transition Navigation Link', function () {
+        it('should delay update', function(done: MochaDone){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var {s} = stateNavigator.states;
+            var xy = undefined;
+            const Scene = () => {
+                const { data } = useContext(NavigationContext);
+                const [ y, setY ] = useState(1);
+                useEffect(() => {
+                    if (xy === null) xy = `${data.x} ${y}`;
+                    if (xy === undefined) xy = null;
+                })
+                return (
+                    <NavigationLink
+                        stateKey='s'
+                        navigationData={{x: 'b'}}
+                        startTransition={(React as any).startTransition}
+                        navigating={() => {
+                            setY(2)
+                            return true;
+                        }}
+                    >
+                        {`${data.x} ${y}`}
+                    </NavigationLink>
+                );
+            }
+            s.renderView = () => <Scene />;
+            stateNavigator.navigate('s', {x: 'a'});
+            var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderView(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link);
+            stateNavigator.onNavigate(() => {
+                link = container.querySelector<HTMLAnchorElement>('a');
+                assert.equal(xy, 'a 2');
+                assert.equal(link.innerHTML, 'b 2');
+                done()
+            })
         })
     });
 
