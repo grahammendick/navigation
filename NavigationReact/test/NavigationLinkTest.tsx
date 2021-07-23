@@ -1,9 +1,9 @@
-import * as assert from 'assert';
-import * as mocha from 'mocha';
+import assert from 'assert';
+import mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationLink, NavigationHandler, NavigationContext } from 'navigation-react';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React, { useContext } from 'react';
+import ReactDOM from 'react-dom';
 import { act, Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
@@ -3001,6 +3001,46 @@ describe('NavigationLinkTest', function () {
             assert.equal(stateNavigator.stateContext.crumbs[0].url, '/r0?x=a');
             assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
             assert.equal(stateNavigator.stateContext.crumbs[0].data.x, 'a');
+        })
+    });
+
+    describe('Batch Navigation', function () {
+        it('should update once', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var {s} = stateNavigator.states;
+            const Scene = () => {
+                const { stateNavigator, data } = useContext(NavigationContext);
+                return (
+                    <div onClick={() => {
+                        stateNavigator.navigate('s', {x: 'b'});
+                        stateNavigator.navigate('s', {x: 'c'});
+                    }}>
+                        {data.x}
+                    </div>
+                )
+            }
+            s.renderView = () => <Scene />;
+            stateNavigator.navigate('s', {x: 'a'});
+            var container = document.createElement('div');
+            const root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderView(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            var div = container.querySelector<HTMLDivElement>('div');
+            act(() => Simulate.click(div));
+            div = container.querySelector<HTMLDivElement>('div');
+            assert.equal(div.innerHTML, 'c');
+            assert.equal(stateNavigator.stateContext.oldData.x, 'a');
+            assert.equal(stateNavigator.stateContext.data.x, 'c');
         })
     });
 
