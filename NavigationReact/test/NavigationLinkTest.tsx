@@ -2916,7 +2916,7 @@ describe('NavigationLinkTest', function () {
                 );
             });
             assert.equal(stateNavigator.stateContext.state.key, 's0');
-            stateNavigator.navigate('s1');
+            act(() => stateNavigator.navigate('s1'));
             assert.equal(stateNavigator.stateContext.state.key, 's0');
         })
     });

@@ -601,7 +601,7 @@ describe('NavigationBackLinkTest', function () {
                 );
             });
             assert.equal(stateNavigator.stateContext.state.key, 's1');
-            stateNavigator.navigateBack(1);
+            act(() => stateNavigator.navigateBack(1));
             assert.equal(stateNavigator.stateContext.state.key, 's1');
         })
     });

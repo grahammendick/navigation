@@ -2838,7 +2838,7 @@ describe('RefreshLinkTest', function () {
             });
             assert.equal(stateNavigator.stateContext.data.x, 'a');
             assert.equal(stateNavigator.stateContext.data.y, null);
-            stateNavigator.refresh({y: 'b'});
+            act(() => stateNavigator.refresh({y: 'b'}));
             assert.equal(stateNavigator.stateContext.data.x, 'a');
             assert.equal(stateNavigator.stateContext.data.y, null);
         })
