@@ -2,6 +2,7 @@ import AsyncStateNavigator from './AsyncStateNavigator';
 import NavigationContext from './NavigationContext';
 import { StateNavigator, State } from 'navigation';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom'
 type NavigationHandlerState = { context: { oldState: State, state: State, data: any, asyncData: any, nextState: State, nextData: any, stateNavigator: AsyncStateNavigator } };
 
 class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, NavigationHandlerState> {
@@ -25,11 +26,14 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
     onNavigate() {
         var { stateNavigator } = this.props;
         if (this.state.context.stateNavigator.stateContext !== stateNavigator.stateContext) {
-            this.setState(() => {
-                var { oldState, state, data, asyncData } = stateNavigator.stateContext;
-                var asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
-                return { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: asyncNavigator } };
-            });
+            const flushSync = ReactDOM.flushSync || ((setState: () => void) => setState());
+            flushSync(() => {
+                this.setState(() => {
+                    var { oldState, state, data, asyncData } = stateNavigator.stateContext;
+                    var asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
+                    return { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: asyncNavigator } };
+                });
+            })
         }
     }
 
