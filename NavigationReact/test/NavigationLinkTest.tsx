@@ -3082,11 +3082,15 @@ describe('NavigationLinkTest', function () {
             ]);
             var {s} = stateNavigator.states;
             var xy = undefined;
+            var stateContext;
             var Scene = () => {
                 var { data } = useContext(NavigationContext);
                 var [ y, setY ] = useState(1);
                 useEffect(() => {
-                    if (xy === null) xy = `${data.x} ${y}`;
+                    if (xy === null) {
+                        stateContext = stateNavigator.stateContext;
+                        xy = `${data.x} ${y}`;
+                    }
                     if (xy === undefined) xy = null;
                 })
                 return (
@@ -3123,6 +3127,9 @@ describe('NavigationLinkTest', function () {
                 link = container.querySelector<HTMLAnchorElement>('a');
                 assert.equal(xy, 'a 2');
                 assert.equal(link.innerHTML, 'b 2');
+                assert.equal(stateContext.data.x, 'a');
+                assert.equal(stateNavigator.stateContext.oldData.x, 'a');
+                assert.equal(stateNavigator.stateContext.data.x, 'b');
                 done()
             })
         })
