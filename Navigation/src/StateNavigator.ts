@@ -9,7 +9,7 @@ import StateContext from './StateContext';
 import StateHandler from './StateHandler';
 type BeforeNavigateHandler = (state: State, data: any, url: string, history: boolean, currentContext: StateContext) => boolean;
 type NavigateHandler = (oldState: State, state: State, data: any, asyncData: any, stateContext: StateContext) => void;
-type AfterNavigateHandler = (historyAction: 'add' | 'replace' | 'none', stateContext: StateContext) => void;
+type AfterNavigateHandler = (stateContext: StateContext) => void;
 
 class StateNavigator {
     private stateHandler = new StateHandler();
@@ -171,7 +171,7 @@ class StateNavigator {
         }
         for (var id in this.onAfterNavigateCache.handlers) {
             if (stateContext === this.stateContext)
-                this.onAfterNavigateCache.handlers[id](historyAction, stateContext);
+                this.onAfterNavigateCache.handlers[id](stateContext);
         }
     }
 
