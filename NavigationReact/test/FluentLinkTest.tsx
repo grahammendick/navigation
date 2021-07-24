@@ -21,7 +21,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -45,7 +45,7 @@ describe('FluentLinkTest', function () {
     describe('Without State Navigator Fluent Link', function () {
         it('should render', function(){
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <FluentLink navigate={fluentNavigator => (
@@ -69,7 +69,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -97,7 +97,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -135,7 +135,7 @@ describe('FluentLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -167,7 +167,7 @@ describe('FluentLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -197,7 +197,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -226,7 +226,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -254,7 +254,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -282,7 +282,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -310,7 +310,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -338,7 +338,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -366,7 +366,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -397,7 +397,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -428,7 +428,7 @@ describe('FluentLinkTest', function () {
             ]);
             var navigatingEvt, navigatingLink;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -463,7 +463,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -493,7 +493,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -525,7 +525,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -557,7 +557,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -588,7 +588,7 @@ describe('FluentLinkTest', function () {
             ]);
             stateNavigator.historyManager.getHref = () => '#/hello/world';
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -634,7 +634,7 @@ describe('FluentLinkTest', function () {
             s2.renderView = ({hello}) => <h1>{hello}</h1>
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -660,7 +660,7 @@ describe('FluentLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -704,7 +704,7 @@ describe('FluentLinkTest', function () {
             }
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -729,7 +729,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>

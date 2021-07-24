@@ -21,7 +21,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -41,7 +41,7 @@ describe('RefreshLinkTest', function () {
     describe('Without State Navigator Refresh Link', function () {
         it('should render', function(){
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <RefreshLink>
@@ -62,7 +62,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -86,7 +86,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -124,7 +124,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -148,7 +148,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -174,7 +174,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -200,7 +200,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -226,7 +226,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -252,7 +252,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -278,7 +278,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -304,7 +304,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -330,7 +330,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -356,7 +356,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -380,7 +380,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -404,7 +404,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -428,7 +428,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -456,7 +456,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -484,7 +484,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -511,7 +511,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -538,7 +538,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -564,7 +564,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -590,7 +590,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -620,7 +620,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -648,7 +648,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -676,7 +676,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -704,7 +704,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -731,7 +731,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -758,7 +758,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -785,7 +785,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -811,7 +811,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -837,7 +837,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -863,7 +863,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -891,7 +891,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -919,7 +919,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -947,7 +947,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -975,7 +975,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1003,7 +1003,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1031,7 +1031,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1058,7 +1058,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1085,7 +1085,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1112,7 +1112,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1139,7 +1139,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1166,7 +1166,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1193,7 +1193,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1219,7 +1219,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1245,7 +1245,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1271,7 +1271,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1297,7 +1297,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1323,7 +1323,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1349,7 +1349,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: '1', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1377,7 +1377,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: '1', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1404,7 +1404,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: '1', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1430,7 +1430,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1458,7 +1458,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1486,7 +1486,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1514,7 +1514,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1542,7 +1542,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1570,7 +1570,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1599,7 +1599,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1627,7 +1627,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1655,7 +1655,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1682,7 +1682,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1709,7 +1709,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1736,7 +1736,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1763,7 +1763,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1790,7 +1790,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1818,7 +1818,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1845,7 +1845,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1872,7 +1872,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1898,7 +1898,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1924,7 +1924,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1950,7 +1950,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1976,7 +1976,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2002,7 +2002,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2029,7 +2029,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2055,7 +2055,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2081,7 +2081,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2109,7 +2109,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2136,7 +2136,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2162,7 +2162,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2193,7 +2193,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2224,7 +2224,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2252,7 +2252,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2280,7 +2280,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2304,7 +2304,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2328,7 +2328,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2352,7 +2352,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2376,7 +2376,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2400,7 +2400,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2424,7 +2424,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2448,7 +2448,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2473,7 +2473,7 @@ describe('RefreshLinkTest', function () {
             stateNavigator.navigate('s');
             var navigatingEvt, navigatingLink;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2503,7 +2503,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2529,7 +2529,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2555,7 +2555,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2582,7 +2582,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2610,7 +2610,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2638,7 +2638,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2668,7 +2668,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2696,7 +2696,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2724,7 +2724,7 @@ describe('RefreshLinkTest', function () {
             stateNavigator.historyManager.getHref = () => '#/hello/world';
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2759,7 +2759,7 @@ describe('RefreshLinkTest', function () {
             );
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2784,7 +2784,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2825,7 +2825,7 @@ describe('RefreshLinkTest', function () {
             }
             stateNavigator.navigate('s', {x: 'a'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2851,7 +2851,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2893,7 +2893,7 @@ describe('RefreshLinkTest', function () {
             }
             stateNavigator.navigate('s0', {x: 'a'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2933,7 +2933,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2974,7 +2974,7 @@ describe('RefreshLinkTest', function () {
             );
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -3006,7 +3006,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a'});
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -3043,7 +3043,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -3073,7 +3073,7 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -3121,7 +3121,7 @@ describe('RefreshLinkTest', function () {
             );
             stateNavigator.navigate('s');
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
