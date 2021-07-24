@@ -7,13 +7,15 @@ import State from './config/State';
 import StateInfo from './config/StateInfo';
 import StateContext from './StateContext';
 import StateHandler from './StateHandler';
-type NavigateHandler = (oldState: State, state: State, data: any, asyncData: any, stateContext: StateContext) => void;
 type BeforeNavigateHandler = (state: State, data: any, url: string, history: boolean, currentContext: StateContext) => boolean;
+type NavigateHandler = (oldState: State, state: State, data: any, asyncData: any, stateContext: StateContext) => void;
+type AfterNavigateHandler = (historyAction: 'add' | 'replace' | 'none', stateContext: StateContext) => void;
 
 class StateNavigator {
     private stateHandler = new StateHandler();
     private onBeforeNavigateCache = new EventHandlerCache<BeforeNavigateHandler>('beforeNavigateHandler');
     private onNavigateCache = new EventHandlerCache<NavigateHandler>('navigateHandler');
+    private onAfterNavigateCache = new EventHandlerCache<AfterNavigateHandler>('afterNavigateHandler');
     stateContext = new StateContext();
     historyManager: HistoryManager;
     states: { [index: string]: State } = {};
@@ -21,6 +23,8 @@ class StateNavigator {
     offBeforeNavigate = (handler: BeforeNavigateHandler) => this.onBeforeNavigateCache.offEvent(handler);
     onNavigate = (handler: NavigateHandler) => this.onNavigateCache.onEvent(handler);
     offNavigate = (handler: NavigateHandler) => this.onNavigateCache.offEvent(handler);
+    onAfterNavigate = (handler: AfterNavigateHandler) => this.onAfterNavigateCache.onEvent(handler);
+    offAfterNavigate = (handler: AfterNavigateHandler) => this.onAfterNavigateCache.offEvent(handler);
 
     constructor(stateInfos?: StateInfo[] | StateNavigator, historyManager?: HistoryManager) {
         if (stateInfos)
@@ -164,6 +168,10 @@ class StateNavigator {
                 this.historyManager.addHistory(url, historyAction === 'replace', this.stateContext);
             if (this.stateContext.title && (typeof document !== 'undefined'))
                 document.title = this.stateContext.title;
+        }
+        for (var id in this.onAfterNavigateCache.handlers) {
+            if (stateContext === this.stateContext)
+                this.onAfterNavigateCache.handlers[id](historyAction, stateContext);
         }
     }
 

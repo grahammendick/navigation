@@ -12,18 +12,18 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         var { oldState, state, data, asyncData } = stateNavigator.stateContext;
         var asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
         this.state = { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: asyncNavigator } };
-        this.onNavigate = this.onNavigate.bind(this);
+        this.onAfterNavigate = this.onAfterNavigate.bind(this);
     }
 
     componentDidMount() {
-        this.props.stateNavigator.onNavigate(this.onNavigate);
+        this.props.stateNavigator.onAfterNavigate(this.onAfterNavigate);
     }
 
     componentWillUnmount() {
-        this.props.stateNavigator.offNavigate(this.onNavigate);
+        this.props.stateNavigator.offAfterNavigate(this.onAfterNavigate);
     }
 
-    onNavigate() {
+    onAfterNavigate() {
         var { stateNavigator } = this.props;
         if (this.state.context.stateNavigator.stateContext !== stateNavigator.stateContext) {
             const flushSync = ReactDOM.flushSync || ((setState: () => void) => setState());
