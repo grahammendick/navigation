@@ -2829,14 +2829,14 @@ describe('NavigationLinkTest', function () {
                 { key: 's1', route: 'r1' }
             ]);
             var {s0, s1} = stateNavigator.states;
-            s0.renderView = () => (
+            s0.renderScene = () => (
                 <NavigationLink
                     stateKey="s1"
                     navigationData={{hello: 'world'}}>
                     link text
                 </NavigationLink>
             );
-            s1.renderView = ({hello}) => <h1>{hello}</h1>
+            s1.renderScene = ({hello}) => <h1>{hello}</h1>
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
             var root = (ReactDOM as any).createRoot(container)
@@ -2844,7 +2844,7 @@ describe('NavigationLinkTest', function () {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
-                            {({state, data}) => state.renderView(data)}
+                            {({state, data}) => state.renderScene(data)}
                         </NavigationContext.Consumer>
                     </NavigationHandler>,
                     container
@@ -3025,9 +3025,9 @@ describe('NavigationLinkTest', function () {
                 var { data } = useContext(NavigationContext);
                 return <div>{data.x}</div>
             }
-            s0.renderView = () => <Scene0 />;
-            s1.renderView = () => <Scene />;
-            s2.renderView = () => <Scene />;
+            s0.renderScene = () => <Scene0 />;
+            s1.renderScene = () => <Scene />;
+            s2.renderScene = () => <Scene />;
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
             var root = (ReactDOM as any).createRoot(container)
@@ -3035,7 +3035,7 @@ describe('NavigationLinkTest', function () {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
-                            {({state, data}) => state.renderView(data)}
+                            {({state, data}) => state.renderScene(data)}
                         </NavigationContext.Consumer>
                     </NavigationHandler>,
                     container
@@ -3060,8 +3060,8 @@ describe('NavigationLinkTest', function () {
             var {s0, s1} = stateNavigator.states;
             var Scene0 = () => <div>0</div>;
             var Scene1 = () => <div>1</div>;
-            s0.renderView = () => <Scene0 />;
-            s1.renderView = () => <Scene1 />;
+            s0.renderScene = () => <Scene0 />;
+            s1.renderScene = () => <Scene1 />;
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
             var root = (ReactDOM as any).createRoot(container)
@@ -3069,7 +3069,7 @@ describe('NavigationLinkTest', function () {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
-                            {({state, data}) => state.renderView(data)}
+                            {({state, data}) => state.renderScene(data)}
                         </NavigationContext.Consumer>
                     </NavigationHandler>,
                     container
@@ -3112,8 +3112,8 @@ describe('NavigationLinkTest', function () {
                     />
                 );
             }
-            s0.renderView = () => <Scene />;
-            s1.renderView = () => <div>b</div>;
+            s0.renderScene = () => <Scene />;
+            s1.renderScene = () => <div>b</div>;
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
             var root = (ReactDOM as any).createRoot(container)
@@ -3121,7 +3121,7 @@ describe('NavigationLinkTest', function () {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
-                            {({state, data}) => state.renderView(data)}
+                            {({state, data}) => state.renderScene(data)}
                         </NavigationContext.Consumer>
                     </NavigationHandler>,
                     container

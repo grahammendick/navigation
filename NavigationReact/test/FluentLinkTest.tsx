@@ -619,7 +619,7 @@ describe('FluentLinkTest', function () {
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
             var {s0, s1, s2} = stateNavigator.states;
-            s0.renderView = () => (
+            s0.renderScene = () => (
                 <FluentLink
                     withContext={true}
                     navigate={fluentNavigator => (
@@ -630,8 +630,8 @@ describe('FluentLinkTest', function () {
                     link text
                 </FluentLink>
             );
-            s1.renderView = () => <h1>s1</h1>
-            s2.renderView = ({hello}) => <h1>{hello}</h1>
+            s1.renderScene = () => <h1>s1</h1>
+            s2.renderScene = ({hello}) => <h1>{hello}</h1>
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
             var root = (ReactDOM as any).createRoot(container)
@@ -639,7 +639,7 @@ describe('FluentLinkTest', function () {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
-                            {({state, data}) => state.renderView(data)}
+                            {({state, data}) => state.renderScene(data)}
                         </NavigationContext.Consumer>
                     </NavigationHandler>,
                     container

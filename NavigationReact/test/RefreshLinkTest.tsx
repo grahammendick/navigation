@@ -2749,7 +2749,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var {s} = stateNavigator.states;
-            s.renderView = ({hello}) => (
+            s.renderScene = ({hello}) => (
                 <div>
                     <h1>{hello}</h1>
                     <RefreshLink navigationData={{hello: 'world'}}>
@@ -2764,7 +2764,7 @@ describe('RefreshLinkTest', function () {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
-                            {({state, data}) => state.renderView(data)}
+                            {({state, data}) => state.renderScene(data)}
                         </NavigationContext.Consumer>
                     </NavigationHandler>,
                     container
@@ -2962,7 +2962,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' },
             ]);
             var {s} = stateNavigator.states;
-            s.renderView = ({hello}, nextState, {hello: nextHello}) => (
+            s.renderScene = ({hello}, nextState, {hello: nextHello}) => (
                 <div>
                     <h1>{hello || 'empty'} {(nextState && `${nextState.key} `)}{(nextHello || 'empty')}</h1>
                     <RefreshLink
@@ -2979,7 +2979,7 @@ describe('RefreshLinkTest', function () {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
-                            {({state, data, nextState, nextData}) => state.renderView(data, nextState, nextData)}
+                            {({state, data, nextState, nextData}) => state.renderScene(data, nextState, nextData)}
                         </NavigationContext.Consumer>
                     </NavigationHandler>,
                     container
@@ -3109,7 +3109,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var {s} = stateNavigator.states;
-            s.renderView = (_, nextState, {hello}) => (
+            s.renderScene = (_, nextState, {hello}) => (
                 <div>
                     <h1>{hello || 'empty'} {(nextState && nextState.key) || 'first'}</h1>
                     <RefreshLink
@@ -3126,7 +3126,7 @@ describe('RefreshLinkTest', function () {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
-                            {({state, data, nextState, nextData}) => state.renderView(data, nextState, nextData)}
+                            {({state, data, nextState, nextData}) => state.renderScene(data, nextState, nextData)}
                         </NavigationContext.Consumer>
                     </NavigationHandler>,
                     container

@@ -514,8 +514,8 @@ describe('NavigationBackLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var {s0, s1} = stateNavigator.states;
-            s0.renderView = ({hello}) => <h1>{hello}</h1>
-            s1.renderView = () => (
+            s0.renderScene = ({hello}) => <h1>{hello}</h1>
+            s1.renderScene = () => (
                 <NavigationBackLink distance={1}>
                     link text
                 </NavigationBackLink>
@@ -528,7 +528,7 @@ describe('NavigationBackLinkTest', function () {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
-                            {({state, data}) => state.renderView(data)}
+                            {({state, data}) => state.renderScene(data)}
                         </NavigationContext.Consumer>
                     </NavigationHandler>,
                     container
@@ -728,8 +728,8 @@ describe('NavigationBackLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var {s0, s1} = stateNavigator.states;
-            s0.renderView = ({hello}, nextState) => <h1>{hello} {(nextState && nextState.key) || 'first'}</h1>
-            s1.renderView = (_, nextState, {hello}) => (
+            s0.renderScene = ({hello}, nextState) => <h1>{hello} {(nextState && nextState.key) || 'first'}</h1>
+            s1.renderScene = (_, nextState, {hello}) => (
                 <div>
                     <h1>{hello || 'empty'} {(nextState && nextState.key) || 'second'}</h1>
                     <NavigationBackLink
@@ -747,7 +747,7 @@ describe('NavigationBackLinkTest', function () {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
-                            {({state, data, nextState, nextData}) => state.renderView(data, nextState, nextData)}
+                            {({state, data, nextState, nextData}) => state.renderScene(data, nextState, nextData)}
                         </NavigationContext.Consumer>
                     </NavigationHandler>,
                     container
@@ -884,7 +884,7 @@ describe('NavigationBackLinkTest', function () {
                 { key: 's', route: 'r', trackCrumbTrail: true },
             ]);
             var {s} = stateNavigator.states;
-            s.renderView = (_, nextState, {hello}) => (
+            s.renderScene = (_, nextState, {hello}) => (
                 <div>
                     <h1>{hello || 'empty'} {(nextState && nextState.key) || 'first'}</h1>
                     <NavigationBackLink
@@ -903,7 +903,7 @@ describe('NavigationBackLinkTest', function () {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
-                            {({state, data, nextState, nextData}) => state.renderView(data, nextState, nextData)}
+                            {({state, data, nextState, nextData}) => state.renderScene(data, nextState, nextData)}
                         </NavigationContext.Consumer>
                     </NavigationHandler>,
                     container
