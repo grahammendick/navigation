@@ -3007,22 +3007,28 @@ describe('NavigationLinkTest', function () {
     describe('Batch Navigation', function () {
         it('should update once', function(){
             var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
             ]);
-            var {s} = stateNavigator.states;
-            var Scene = () => {
-                var { stateNavigator, data } = useContext(NavigationContext);
+            var {s0, s1, s2} = stateNavigator.states;
+            var Scene0 = () => {
+                var { stateNavigator } = useContext(NavigationContext);
                 return (
                     <div onClick={() => {
-                        stateNavigator.navigate('s', {x: 'b'});
-                        stateNavigator.navigate('s', {x: 'c'});
-                    }}>
-                        {data.x}
-                    </div>
+                        stateNavigator.navigate('s1', {x: 'a'});
+                        stateNavigator.navigate('s2', {x: 'b'});
+                    }} />
                 );
             }
-            s.renderView = () => <Scene />;
-            stateNavigator.navigate('s', {x: 'a'});
+            var Scene = () => {
+                var { data } = useContext(NavigationContext);
+                return <div>{data.x}</div>
+            }
+            s0.renderView = () => <Scene0 />;
+            s1.renderView = () => <Scene />;
+            s2.renderView = () => <Scene />;
+            stateNavigator.navigate('s0');
             var container = document.createElement('div');
             var root = (ReactDOM as any).createRoot(container)
             act(() => {
@@ -3038,9 +3044,10 @@ describe('NavigationLinkTest', function () {
             var div = container.querySelector<HTMLDivElement>('div');
             act(() => Simulate.click(div));
             div = container.querySelector<HTMLDivElement>('div');
-            assert.equal(div.innerHTML, 'c');
-            assert.equal(stateNavigator.stateContext.oldData.x, 'a');
-            assert.equal(stateNavigator.stateContext.data.x, 'c');
+            assert.equal(div.innerHTML, 'b');
+            assert.equal(stateNavigator.stateContext.oldState, s0);
+            assert.equal(stateNavigator.stateContext.data.x, 'b');
+            assert.equal(stateNavigator.stateContext.state, s2);
         })
     });
 
