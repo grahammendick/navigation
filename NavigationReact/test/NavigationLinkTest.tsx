@@ -3086,37 +3086,35 @@ describe('NavigationLinkTest', function () {
     describe('Start Transition Navigation Link', function () {
         it('should delay update', function(done: MochaDone){
             var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
             ]);
-            var {s} = stateNavigator.states;
-            var xy = undefined;
-            var stateContext;
+            var {s0, s1} = stateNavigator.states;
+            var yVal = undefined;
+            var stateContextVal;
             var Scene = () => {
-                var { data } = useContext(NavigationContext);
-                var [ y, setY ] = useState(1);
+                var [ y, setY ] = useState(null);
                 useEffect(() => {
-                    if (xy === null) {
-                        stateContext = stateNavigator.stateContext;
-                        xy = `${data.x} ${y}`;
+                    if (y) {
+                        yVal = y;
+                        stateContextVal = stateNavigator.stateContext;
                     }
-                    if (xy === undefined) xy = null;
                 })
                 return (
                     <NavigationLink
-                        stateKey='s'
-                        navigationData={{x: 'b'}}
+                        stateKey='s1'
+                        navigationData={{x: 1}}
                         startTransition={(React as any).startTransition}
                         navigating={() => {
-                            setY(2)
+                            setY('a')
                             return true;
                         }}
-                    >
-                        {`${data.x} ${y}`}
-                    </NavigationLink>
+                    />
                 );
             }
-            s.renderView = () => <Scene />;
-            stateNavigator.navigate('s', {x: 'a'});
+            s0.renderView = () => <Scene />;
+            s1.renderView = () => <div>b</div>;
+            stateNavigator.navigate('s0');
             var container = document.createElement('div');
             var root = (ReactDOM as any).createRoot(container)
             act(() => {
@@ -3132,12 +3130,13 @@ describe('NavigationLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             Simulate.click(link);
             stateNavigator.onNavigate(() => {
-                link = container.querySelector<HTMLAnchorElement>('a');
-                assert.equal(xy, 'a 2');
-                assert.equal(link.innerHTML, 'b 2');
-                assert.equal(stateContext.data.x, 'a');
-                assert.equal(stateNavigator.stateContext.oldData.x, 'a');
-                assert.equal(stateNavigator.stateContext.data.x, 'b');
+                var div = container.querySelector<HTMLDivElement>('div');
+                assert.equal(yVal, 'a');
+                assert.equal(div.innerHTML, 'b');
+                assert.equal(stateContextVal.state, s0)
+                assert.equal(stateContextVal.data.x, undefined)
+                assert.equal(stateNavigator.stateContext.state, s1);
+                assert.equal(stateNavigator.stateContext.data.x, 1);
                 done()
             })
         })
