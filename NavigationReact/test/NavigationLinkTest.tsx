@@ -3051,7 +3051,7 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('Mutate Navigation', function () {
+    describe('Outside React Navigation', function () {
         it('should flush sync', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
