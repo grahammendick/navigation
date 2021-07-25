@@ -26,7 +26,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
     onAfterNavigate() {
         var { stateNavigator } = this.props;
         if (this.state.context.stateNavigator.stateContext !== stateNavigator.stateContext) {
-            const flushSync = ReactDOM.flushSync || ((setState: () => void) => setState());
+            const flushSync = (ReactDOM as any).flushSync || ((setState: () => void) => setState());
             flushSync(() => {
                 this.setState(() => {
                     var { oldState, state, data, asyncData } = stateNavigator.stateContext;
