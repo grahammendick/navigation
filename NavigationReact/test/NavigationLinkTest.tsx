@@ -3054,15 +3054,15 @@ describe('NavigationLinkTest', function () {
     describe('Mutate Navigation', function () {
         it('should flush sync', function(){
             var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
             ]);
-            var {s} = stateNavigator.states;
-            var Scene = () => {
-                var { data } = useContext(NavigationContext);
-                return <div>{data.x}</div>;
-            }
-            s.renderView = () => <Scene />;
-            stateNavigator.navigate('s', {x: 'a'});
+            var {s0, s1} = stateNavigator.states;
+            var Scene0 = () => <div>0</div>;
+            var Scene1 = () => <div>1</div>;
+            s0.renderView = () => <Scene0 />;
+            s1.renderView = () => <Scene1 />;
+            stateNavigator.navigate('s0');
             var container = document.createElement('div');
             var root = (ReactDOM as any).createRoot(container)
             act(() => {
@@ -3075,10 +3075,11 @@ describe('NavigationLinkTest', function () {
                     container
                 );
             });
-            stateNavigator.navigate('s', {x: 'b'});
+            stateNavigator.navigate('s1', {x: 'a'});
             var div = container.querySelector<HTMLDivElement>('div');
-            assert.equal(div.innerHTML, 'b');
-            assert.equal(stateNavigator.stateContext.data.x, 'b');
+            assert.equal(div.innerHTML, '1');
+            assert.equal(stateNavigator.stateContext.state, s1);
+            assert.equal(stateNavigator.stateContext.data.x, 'a');
         })
     });
 
