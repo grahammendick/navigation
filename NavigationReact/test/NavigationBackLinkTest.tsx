@@ -773,6 +773,65 @@ describe('NavigationBackLinkTest', function () {
         })
     });
 
+    describe('Start Transition Back Navigation Link', function () {
+        it('should delay update', function(done: MochaDone){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var {s0, s1} = stateNavigator.states;
+            var yVal = undefined;
+            var stateContextVal;
+            var Scene = () => {
+                var [ y, setY ] = useState(null);
+                useEffect(() => {
+                    if (y) {
+                        yVal = y;
+                        stateContextVal = stateNavigator.stateContext;
+                    }
+                })
+                return (
+                    <NavigationBackLink
+                        distance={1}
+                        startTransition={(React as any).startTransition}
+                        navigating={() => {
+                            setY('a')
+                            return true;
+                        }}
+                    />
+                );
+            }
+            s0.renderScene = () => <div>b</div>;
+            s1.renderScene = () => <Scene />;
+            stateNavigator.navigate('s0', {x: 1});
+            stateNavigator.navigate('s1');
+            var container = document.createElement('div');
+            var root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderScene(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link);
+            stateNavigator.onNavigate(() => {
+                var div = container.querySelector<HTMLDivElement>('div');
+                assert.equal(yVal, 'a');
+                assert.equal(div.innerHTML, 'b');
+                assert.equal(stateContextVal.state, s1)
+                assert.equal(stateContextVal.data.x, undefined)
+                assert.equal(stateNavigator.stateContext.state, s0);
+                assert.equal(stateNavigator.stateContext.data.x, 1);
+                done()
+            })
+        })
+    });
+
     /*describe('Click Deferred Navigation Back Link', function () {
         it('should navigate async', function(done){
             var stateNavigator = new StateNavigator([
