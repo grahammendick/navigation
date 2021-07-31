@@ -3015,7 +3015,7 @@ describe('NavigationLinkTest', function () {
             var Scene0 = () => {
                 var { stateNavigator } = useContext(NavigationContext);
                 return (
-                    <div onClick={() => {
+                    <button onClick={() => {
                         stateNavigator.navigate('s1', {x: 'a'});
                         stateNavigator.navigate('s2', {x: 'b'});
                     }} />
@@ -3041,9 +3041,9 @@ describe('NavigationLinkTest', function () {
                     container
                 );
             });
+            var button = container.querySelector<HTMLButtonElement>('button');
+            act(() => Simulate.click(button));
             var div = container.querySelector<HTMLDivElement>('div');
-            act(() => Simulate.click(div));
-            div = container.querySelector<HTMLDivElement>('div');
             assert.equal(div.innerHTML, 'b');
             assert.equal(stateNavigator.stateContext.oldState, s0);
             assert.equal(stateNavigator.stateContext.data.x, 'b');
