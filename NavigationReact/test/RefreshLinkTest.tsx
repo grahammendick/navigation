@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { RefreshLink, NavigationHandler, NavigationContext } from 'navigation-react';
-import * as React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import * as ReactDOM from 'react-dom';
 import { act, Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
@@ -2923,6 +2923,47 @@ describe('RefreshLinkTest', function () {
             assert.equal(stateNavigator.stateContext.crumbs[0].url, '/r0?x=a');
             assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
             assert.equal(stateNavigator.stateContext.crumbs[0].data.x, 'a');
+        })
+    });
+
+    describe('Batch Reresh', function () {
+        it('should update once', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var {s} = stateNavigator.states;
+            var Scene = () => {
+                var { data, stateNavigator } = useContext(NavigationContext);
+                return (
+                    <>
+                        <button onClick={() => {
+                            stateNavigator.navigate('s', {x: 'a'});
+                            stateNavigator.navigate('s', {x: 'b'});
+                        }} />
+                        <div>{data.x}</div>
+                    </>
+                );
+            }
+            s.renderScene = () => <Scene />;
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            var root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderScene(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            var button = container.querySelector<HTMLButtonElement>('button');
+            act(() => Simulate.click(button));
+            var div = container.querySelector<HTMLDivElement>('div');
+            assert.equal(div.innerHTML, 'b');
+            assert.equal(stateNavigator.stateContext.oldData.x, undefined);
+            assert.equal(stateNavigator.stateContext.data.x, 'b');
         })
     });
 
