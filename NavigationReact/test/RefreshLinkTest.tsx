@@ -2995,6 +2995,64 @@ describe('RefreshLinkTest', function () {
         })
     });
 
+    describe('Start Transition Refresh Link', function () {
+        it('should delay update', function(done: MochaDone){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var {s} = stateNavigator.states;
+            var yVal = undefined;
+            var stateContextVal;
+            var Scene = () => {
+                var [ y, setY ] = useState(null);
+                const { data } = useContext(NavigationContext);
+                useEffect(() => {
+                    if (y) {
+                        yVal = y;
+                        stateContextVal = stateNavigator.stateContext;
+                    }
+                })
+                return (
+                    <>
+                        <RefreshLink
+                            navigationData={{x: 1}}
+                            startTransition={(React as any).startTransition}
+                            navigating={() => {
+                                setY('a')
+                                return true;
+                            }}
+                        />
+                        <div>{data.x ? 'b' : null}</div>
+                    </>
+                );
+            }
+            s.renderScene = () => <Scene />;
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            var root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderScene(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link);
+            stateNavigator.onNavigate(() => {
+                var div = container.querySelector<HTMLDivElement>('div');
+                assert.equal(yVal, 'a');
+                assert.equal(div.innerHTML, 'b');
+                assert.equal(stateContextVal.data.x, undefined)
+                assert.equal(stateNavigator.stateContext.data.x, 1);
+                done()
+            })
+        })
+    });
+
     /*describe('Click Deferred Refresh Link', function () {
         it('should navigate async', function(done){
             var stateNavigator = new StateNavigator([
