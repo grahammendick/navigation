@@ -49,6 +49,10 @@ export interface LinkProps extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAn
      * Handles Link click events
      */
     navigating?(e: MouseEvent<HTMLAnchorElement>, link: string): boolean;
+    /**
+     * React function that enables concurrent rendering when navigating
+     */
+    startTransition?: (transition: () => void) => void;
 }
 
 /**
@@ -70,7 +74,7 @@ export interface RefreshLinkProps<NavigationInfo extends { [index: string]: any 
     /**
      * The fragment identifier
      */
-     hash?: string;
+    hash?: string;
     /**
      * The style to display when the Link is active
      */
