@@ -2933,7 +2933,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
                             {({stateNavigator}) => (
-                                <div onClick={() => stateNavigator.navigate('s', null, undefined, false)} />
+                                <div onClick={() => stateNavigator.navigate('s', null, undefined)} />
                             )}
                         </NavigationContext.Consumer>
                     </NavigationHandler>,

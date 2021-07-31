@@ -2857,7 +2857,7 @@ describe('RefreshLinkTest', function () {
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
                             {({stateNavigator}) => (
-                                <div onClick={() => stateNavigator.refresh({x: 'a'}, undefined, false)} />
+                                <div onClick={() => stateNavigator.refresh({x: 'a'}, undefined)} />
                             )}
                         </NavigationContext.Consumer>
                     </NavigationHandler>,

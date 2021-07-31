@@ -621,7 +621,7 @@ describe('NavigationBackLinkTest', function () {
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
                             {({stateNavigator}) => (
-                                <div onClick={() => stateNavigator.navigateBack(1, undefined, false)} />
+                                <div onClick={() => stateNavigator.navigateBack(1, undefined)} />
                             )}
                         </NavigationContext.Consumer>
                     </NavigationHandler>,
