@@ -739,6 +739,40 @@ describe('NavigationBackLinkTest', function () {
         })
     });
 
+    describe('Outside React Back Navigation', function () {
+        it('should flush sync', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var {s0, s1} = stateNavigator.states;
+            var Scene0 = () => <div>0</div>;
+            var Scene1 = () => <div>1</div>;
+            s0.renderScene = () => <Scene0 />;
+            s1.renderScene = () => <Scene1 />;
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1', {x: 'a'});
+            var container = document.createElement('div');
+            var root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderScene(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            stateNavigator.navigateBack(1);
+            var div = container.querySelector<HTMLDivElement>('div');
+            assert.equal(div.innerHTML, '0');
+            assert.equal(stateNavigator.stateContext.state, s0);
+            assert.equal(stateNavigator.stateContext.oldState, s1);
+            assert.equal(stateNavigator.stateContext.oldData.x, 'a');
+        })
+    });
+
     /*describe('Click Deferred Navigation Back Link', function () {
         it('should navigate async', function(done){
             var stateNavigator = new StateNavigator([
