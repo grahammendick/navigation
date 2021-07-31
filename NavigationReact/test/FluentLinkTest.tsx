@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { FluentLink, NavigationHandler, NavigationContext } from 'navigation-react';
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import * as ReactDOM from 'react-dom';
 import { act, Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
@@ -749,6 +749,70 @@ describe('FluentLinkTest', function () {
             act(() => Simulate.click(div));
             assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+        })
+    });
+
+    describe('Start Transition Fluent Link', function () {
+        it('should delay update', function(done: MochaDone){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            var {s0, s1} = stateNavigator.states;
+            var yVal = undefined;
+            var stateContextVal;
+            var Scene = () => {
+                var [ y, setY ] = useState(null);
+                useEffect(() => {
+                    if (y) {
+                        yVal = y;
+                        stateContextVal = stateNavigator.stateContext;
+                    }
+                })
+                return (
+                    <FluentLink
+                        withContext={true}
+                        startTransition={(React as any).startTransition}
+                        navigate={fluentNavigator => (
+                            fluentNavigator
+                                .navigate('s1', {x: 1})
+                        )}
+                        navigating={() => {
+                            setY('a')
+                            return true;
+                        }}
+                    >
+                        link text
+                    </FluentLink>
+                );
+            }
+            s0.renderScene = () => <Scene />;
+            s1.renderScene = () => <div>b</div>;
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            var root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderScene(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            Simulate.click(link);
+            stateNavigator.onNavigate(() => {
+                var div = container.querySelector<HTMLDivElement>('div');
+                assert.equal(yVal, 'a');
+                assert.equal(div.innerHTML, 'b');
+                assert.equal(stateContextVal.state, s0)
+                assert.equal(stateContextVal.data.x, undefined)
+                assert.equal(stateNavigator.stateContext.state, s1);
+                assert.equal(stateNavigator.stateContext.data.x, 1);
+                done()
+            })
         })
     });
 });
