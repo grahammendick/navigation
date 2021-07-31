@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationBackLink, NavigationHandler, NavigationContext } from 'navigation-react';
-import * as React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import * as ReactDOM from 'react-dom';
 import { act, Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
@@ -686,6 +686,56 @@ describe('NavigationBackLinkTest', function () {
             assert.equal(stateNavigator.stateContext.previousState, undefined);
             assert.equal(Object.keys(stateNavigator.stateContext.previousData).length, 0);
             assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+        })
+    });
+
+    describe('Batch Back Navigation', function () {
+        it('should update once', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+            ]);
+            var {s0, s1, s2} = stateNavigator.states;
+            var Scene = () => {
+                var { data } = useContext(NavigationContext);
+                return <div>{data.x}</div>
+            }
+            var Scene2 = () => {
+                var { stateNavigator } = useContext(NavigationContext);
+                return (
+                    <button onClick={() => {
+                        stateNavigator.navigateBack(1);
+                        stateNavigator.navigateBack(1);
+                    }} />
+                );
+            }
+            s0.renderScene = () => <Scene />;
+            s1.renderScene = () => <Scene />;
+            s2.renderScene = () => <Scene2 />;
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1', {x: 'a'});
+            stateNavigator.navigate('s2', {x: 'b'});
+            var container = document.createElement('div');
+            var root = (ReactDOM as any).createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderScene(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            var button = container.querySelector<HTMLButtonElement>('button');
+            act(() => Simulate.click(button));
+            var div = container.querySelector<HTMLDivElement>('div');
+            assert.equal(div.innerHTML, 'a');
+            assert.equal(stateNavigator.stateContext.oldData.x, 'b');
+            assert.equal(stateNavigator.stateContext.oldState, s2);
+            assert.equal(stateNavigator.stateContext.data.x, 'a');
+            assert.equal(stateNavigator.stateContext.state, s1);
         })
     });
 
