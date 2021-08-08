@@ -3355,6 +3355,21 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Duplicate On After Navigate', function () {
+        it('should throw error', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var stateContexts = [];
+            stateNavigator.navigate('s');
+            var afterNavigateHandler = (stateContext) => {
+                stateContexts.push(stateContext);
+            };
+            stateNavigator.onAfterNavigate(afterNavigateHandler);
+            assert.throws(() => stateNavigator.onAfterNavigate(afterNavigateHandler));
+        });
+    });
+
     describe('Duplicate On Off Before Navigate', function () {
         it('should call onBeforeNavigate listener', function() {
             var stateNavigator = new StateNavigator([
