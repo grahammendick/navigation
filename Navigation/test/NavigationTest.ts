@@ -3748,6 +3748,30 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Off After Navigate', function () {
+        it('should stop calling onAfterNavigate listener', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            var stateContexts = [];
+            stateNavigator.navigate('s0');
+            var afterNavigateHandler = (stateContext) => {
+                stateContexts.push(stateContext);
+            };
+            stateNavigator.onAfterNavigate(afterNavigateHandler);
+            var link = stateNavigator.getNavigationLink('s1');
+            stateNavigator.navigateLink(link);
+            stateNavigator.offAfterNavigate(afterNavigateHandler);
+            stateNavigator.offAfterNavigate(afterNavigateHandler);
+            stateNavigator.navigate('s2');
+            assert.equal(stateContexts[0].state, stateNavigator.states['s1']);
+            assert.equal(stateContexts.length, 1);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
+        });
+    });
+
     describe('Multiple Off Before Navigate', function () {
         it('should individually stop calling onBeforeNavigate listeners', function() {
             var stateNavigator = new StateNavigator([
