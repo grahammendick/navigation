@@ -3539,6 +3539,37 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Copy On After Navigate', function () {
+        it('should call both onAfterNavigate listeners', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            var stateContexts = [];
+            stateNavigator.navigate('s0');
+            var afterNavigateHandler1 = (stateContext) => {
+                stateContexts.push(stateContext);
+            };
+            var afterNavigateHandler2 = (stateContext) => {
+                stateContexts.push(stateContext);
+            };
+            stateNavigator.onAfterNavigate(afterNavigateHandler1);
+            stateNavigator.onAfterNavigate(afterNavigateHandler2);
+            var link = stateNavigator.getNavigationLink('s1');
+            stateNavigator.navigateLink(link);
+            stateNavigator.navigate('s2');
+            stateNavigator.offNavigate(afterNavigateHandler1);
+            stateNavigator.offNavigate(afterNavigateHandler2);
+            assert.equal(stateContexts[0].state, stateNavigator.states['s1']);
+            assert.equal(stateContexts[1].state, stateNavigator.states['s1']);
+            assert.equal(stateContexts[2].state, stateNavigator.states['s2']);
+            assert.equal(stateContexts[3].state, stateNavigator.states['s2']);
+            assert.equal(stateContexts.length, 4);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
+        });
+    });
+
     describe('Multiple On Before Navigate', function () {
         it('should call multiple onBeforeNavigate listeners', function() {
             var stateNavigator = new StateNavigator([
