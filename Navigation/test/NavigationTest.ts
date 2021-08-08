@@ -3296,6 +3296,30 @@ describe('Navigation', function () {
         });
     });
 
+    describe('On After Navigate', function () {
+        it('should call onAfterNavigate listener', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            var stateContexts = [];
+            stateNavigator.navigate('s0');
+            var afterNavigateHandler = (stateContext) => {
+                stateContexts.push(stateContext);
+            };
+            stateNavigator.onAfterNavigate(afterNavigateHandler);
+            var link = stateNavigator.getNavigationLink('s1');
+            stateNavigator.navigateLink(link);
+            stateNavigator.navigate('s2');
+            stateNavigator.offAfterNavigate(afterNavigateHandler);
+            assert.equal(stateContexts[0].state, stateNavigator.states['s1']);
+            assert.equal(stateContexts[1].state, stateNavigator.states['s2']);
+            assert.equal(stateContexts.length, 2);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
+        });
+    });
+
     describe('Duplicate On Before Navigate', function () {
         it('should throw error', function() {
             var stateNavigator = new StateNavigator([
