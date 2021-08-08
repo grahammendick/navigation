@@ -3856,6 +3856,38 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Multiple Off After Navigate', function () {
+        it('should individually stop calling onAfterNavigate listeners', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            var stateContexts1 = [];
+            var stateContexts2 = [];
+            stateNavigator.navigate('s0');
+            var afterNavigateHandler1 = (stateContext) => {
+                stateContexts1.push(stateContext);
+            };
+            var afterNavigateHandler2 = (stateContext) => {
+                stateContexts2.push(stateContext);
+            };
+            stateNavigator.onAfterNavigate(afterNavigateHandler1);
+            stateNavigator.onAfterNavigate(afterNavigateHandler2);
+            var link = stateNavigator.getNavigationLink('s1');
+            stateNavigator.navigateLink(link);
+            stateNavigator.offAfterNavigate(afterNavigateHandler1);
+            stateNavigator.navigate('s2');
+            stateNavigator.offAfterNavigate(afterNavigateHandler2);
+            assert.equal(stateContexts1[0].state, stateNavigator.states['s1']);
+            assert.equal(stateContexts2[0].state, stateNavigator.states['s1']);
+            assert.equal(stateContexts2[1].state, stateNavigator.states['s2']);
+            assert.equal(stateContexts1.length, 1);
+            assert.equal(stateContexts2.length, 2);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
+        });
+    });
+
     describe('Unloading Navigate And Continue', function () {
         it('should go to to State instead of initial State', function() {
             var stateNavigator = new StateNavigator([
