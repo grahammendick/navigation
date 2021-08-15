@@ -4255,6 +4255,27 @@ describe('Navigation', function () {
         });
     });
 
+    describe('History And Ater Navigate', function () {
+        it('should add history before onAfterNavigate', function() {
+            var historyManager = new HashHistoryManager();
+            var savedUrl = ''
+            var historyCalled = false
+            historyManager.addHistory = (url: string) => {
+                savedUrl = url
+            }
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ], historyManager);
+            var link = stateNavigator.getNavigationLink('s0');
+            stateNavigator.onAfterNavigate(() => {
+                historyCalled = !!savedUrl
+            });
+            stateNavigator.navigateLink(link, undefined, true);
+            assert.strictEqual(historyCalled, true);
+        });
+    });
+
     describe('History Navigate', function () {
         it('should pass history flag to lifecycle functions', function() {
             var stateNavigator = new StateNavigator([
