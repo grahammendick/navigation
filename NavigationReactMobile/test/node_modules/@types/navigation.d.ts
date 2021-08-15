@@ -510,6 +510,16 @@ export class StateNavigator<NavigationInfo extends { [index: string]: any } = an
      */
     offNavigate(handler: (oldState: State, state: State, data: any, asyncData: any, stateContext: StateContext) => void): void;
     /**
+     * Registers an after navigate event listener
+     * @param handler The after navigate event listener
+     */
+    onAfterNavigate(handler: (stateContext: StateContext) => void): void;
+    /**
+     * Unregisters an after navigate event listener
+     * @param handler The after navigate event listener
+     */
+    offAfterNavigate(handler: (stateContext: StateContext) => void): void;
+    /**
      * Navigates to a State
      * @param stateKey The key of a State
      * @param navigationData The NavigationData to be passed to the next
