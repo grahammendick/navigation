@@ -4052,6 +4052,38 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Navigate Navigate After Navigate', function () {
+        it('should call onAfterNavigate listener once', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2' },
+                { key: 's3', route: 'r3', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            var navigatedState;
+            var hits = 0;
+            var navigatedHandler = (_, state) => {
+                if (state.key === 's2') stateNavigator.navigate('s3');
+            };
+            var afterNavigateHandler = (stateContext) => {
+                navigatedState = stateContext.state;
+                hits++;
+            };
+            stateNavigator.onNavigate(navigatedHandler);
+            stateNavigator.onAfterNavigate(afterNavigateHandler);
+            stateNavigator.navigate('s2');
+            stateNavigator.offNavigate(navigatedHandler);
+            stateNavigator.offAfterNavigate(afterNavigateHandler);
+            assert.equal(hits, 1);
+            assert.equal(navigatedState, stateNavigator.stateContext.state);
+            assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s2']);
+            assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s2']);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s3']);
+        });
+    });
+
     describe('State Params Navigated', function () {
         it('should pass State and Data but no old State', function() {
             var stateNavigator = new StateNavigator([
