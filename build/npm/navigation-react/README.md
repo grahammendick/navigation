@@ -13,7 +13,7 @@ const Hello = () => (
     stateKey="world"
     navigationData={{ size: 20 }}>
     Hello
-  </NavigationLink>
+  </NavigationReact.NavigationLink>
 );
 
 const World = () => {
