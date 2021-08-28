@@ -12,14 +12,10 @@ public class BottomSheetView extends ViewGroup {
     public BottomSheetView(Context context) {
         super(context);
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.setBehavior(new BottomSheetBehavior());
+        BottomSheetBehavior bottomSheetBehavior = new BottomSheetBehavior();
+        bottomSheetBehavior.setPeekHeight((int) PixelUtil.toPixelFromDIP(200));
+        params.setBehavior(bottomSheetBehavior);
         setLayoutParams(params);
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        BottomSheetBehavior.from(this).setPeekHeight((int) PixelUtil.toPixelFromDIP(200));
     }
 
     @Override
