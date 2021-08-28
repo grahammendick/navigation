@@ -1,9 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -21,7 +19,7 @@ public class BottomSheetView extends ViewGroup {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        BottomSheetBehavior.from(this).setPeekHeight((int) PixelUtil.toPixelFromDIP(50));
+        BottomSheetBehavior.from(this).setPeekHeight((int) PixelUtil.toPixelFromDIP(200));
     }
 
     @Override
