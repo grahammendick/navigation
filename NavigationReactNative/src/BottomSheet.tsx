@@ -1,8 +1,8 @@
 import React from 'react';
 import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 
-var BottomSheet = ({ style, children }) => (
-    <NVBottomSheet style={style}>
+var BottomSheet = ({ children }) => (
+    <NVBottomSheet style={styles.bottomSheet}>
         {children}
     </NVBottomSheet>
 )
