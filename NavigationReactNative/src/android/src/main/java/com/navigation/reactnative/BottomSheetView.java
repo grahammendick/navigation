@@ -18,7 +18,7 @@ public class BottomSheetView extends ViewGroup {
     }
 
     void setPeekHeight(int peekHeight) {
-        bottomSheetBehavior.setPeekHeight(peekHeight);
+        bottomSheetBehavior.setPeekHeight(peekHeight, true);
     }
 
     void setExpandedOffset(int expandedOffset) {
