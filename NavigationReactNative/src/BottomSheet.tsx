@@ -1,16 +1,16 @@
 import React from 'react';
 import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 
-var BottomSheet = ({ height, expandOffset, peekHeight, children }) => (
+var BottomSheet = ({ height, expandedOffset, peekHeight, children }) => (
     <NVBottomSheet
         peekHeight={peekHeight}
-        expandOffset={expandOffset}
-        fitToContents={expandOffset == null}
+        expandOffset={expandedOffset}
+        fitToContents={expandedOffset == null}
         style={[
             styles.bottomSheet,
             height != null ? { height, top: 0 } : null,
-            expandOffset != null ? { top: expandOffset, bottom: 0 } : null,
-            height == null && expandOffset == null ? { top: 0, bottom: 0} : null
+            expandedOffset != null ? { top: expandedOffset, bottom: 0 } : null,
+            height == null && expandedOffset == null ? { top: 0, bottom: 0} : null
         ]}
     >
         {children}
