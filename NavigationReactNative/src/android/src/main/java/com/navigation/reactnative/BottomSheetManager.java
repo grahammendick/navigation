@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 
 import com.facebook.react.uimanager.PixelUtil;
@@ -28,6 +30,7 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
     @ReactProp(name = "expandedOffset")
     public void setExpandedOffset(BottomSheetView view, int expandedOffset) {
         view.setExpandedOffset((int) PixelUtil.toPixelFromDIP(expandedOffset));
+        view.requestLayout();
     }
 
     @ReactProp(name = "fitToContents")
@@ -37,6 +40,7 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
 
     @ReactProp(name = "height")
     public void setHeight(BottomSheetView view, double height) {
-        view.getLayoutParams().height = (int) PixelUtil.toPixelFromDIP(height);
+        view.getLayoutParams().height = height != 0 ? (int) PixelUtil.toPixelFromDIP(height) : ViewGroup.LayoutParams.WRAP_CONTENT;
+        view.requestLayout();
     }
 }
