@@ -8,25 +8,13 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class BottomSheetView extends ViewGroup {
-    private BottomSheetBehavior bottomSheetBehavior = new BottomSheetBehavior();
+    BottomSheetBehavior bottomSheetBehavior = new BottomSheetBehavior();
 
     public BottomSheetView(Context context) {
         super(context);
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         params.setBehavior(bottomSheetBehavior);
         setLayoutParams(params);
-    }
-
-    void setPeekHeight(int peekHeight) {
-        bottomSheetBehavior.setPeekHeight(peekHeight, true);
-    }
-
-    void setExpandedOffset(int expandedOffset) {
-        bottomSheetBehavior.setExpandedOffset(expandedOffset);
-    }
-
-    void setFitToContents(boolean fitToContents) {
-        bottomSheetBehavior.setFitToContents(fitToContents);
     }
 
     @Override

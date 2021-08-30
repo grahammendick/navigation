@@ -24,18 +24,18 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
 
     @ReactProp(name = "peekHeight")
     public void setPeekHeight(BottomSheetView view, int peekHeight) {
-        view.setPeekHeight((int) PixelUtil.toPixelFromDIP(peekHeight));
+        view.bottomSheetBehavior.setPeekHeight((int) PixelUtil.toPixelFromDIP(peekHeight), true);
     }
 
     @ReactProp(name = "expandedOffset")
     public void setExpandedOffset(BottomSheetView view, int expandedOffset) {
-        view.setExpandedOffset((int) PixelUtil.toPixelFromDIP(expandedOffset));
+        view.bottomSheetBehavior.setExpandedOffset((int) PixelUtil.toPixelFromDIP(expandedOffset));
         view.requestLayout();
     }
 
     @ReactProp(name = "fitToContents")
     public void setFitToContents(BottomSheetView view, boolean fitToContents) {
-        view.setFitToContents(fitToContents);
+        view.bottomSheetBehavior.setFitToContents(fitToContents);
     }
 
     @ReactProp(name = "height")
