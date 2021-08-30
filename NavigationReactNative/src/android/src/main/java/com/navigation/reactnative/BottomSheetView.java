@@ -8,7 +8,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class BottomSheetView extends ViewGroup {
-    BottomSheetBehavior bottomSheetBehavior = new BottomSheetBehavior();
+    BottomSheetBehavior<BottomSheetView> bottomSheetBehavior = new BottomSheetBehavior<>();
 
     public BottomSheetView(Context context) {
         super(context);
