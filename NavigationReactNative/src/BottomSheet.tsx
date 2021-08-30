@@ -4,7 +4,7 @@ import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 var BottomSheet = ({ height, expandedOffset, peekHeight, children }) => (
     <NVBottomSheet
         peekHeight={peekHeight}
-        expandOffset={expandedOffset}
+        expandedOffset={expandedOffset}
         fitToContents={expandedOffset == null}
         style={[
             styles.bottomSheet,
