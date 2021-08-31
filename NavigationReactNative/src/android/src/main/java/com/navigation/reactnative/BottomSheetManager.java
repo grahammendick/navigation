@@ -72,6 +72,11 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
         view.bottomSheetBehavior.setHideable(hideable);
     }
 
+    @ReactProp(name = "skipCollapsed")
+    public void setSkipCollapsed(BottomSheetView view, boolean skipCollapsed) {
+        view.bottomSheetBehavior.setSkipCollapsed(skipCollapsed);
+    }
+
     @Nullable
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
