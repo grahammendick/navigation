@@ -34,17 +34,12 @@ public class BottomSheetView extends ViewGroup {
         bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View view, int i) {
-                if (i == BottomSheetBehavior.STATE_HIDDEN
-                    || i == BottomSheetBehavior.STATE_COLLAPSED
-                    || i == BottomSheetBehavior.STATE_HALF_EXPANDED
-                    || i == BottomSheetBehavior.STATE_EXPANDED) {
-                    nativeEventCount++;
-                    WritableMap event = Arguments.createMap();
-                    event.putInt("detent", i);
-                    event.putInt("eventCount", nativeEventCount);
-                    ReactContext reactContext = (ReactContext) getContext();
-                    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onDetentChanged", event);
-                }
+                nativeEventCount++;
+                WritableMap event = Arguments.createMap();
+                event.putInt("detent", i);
+                event.putInt("eventCount", nativeEventCount);
+                ReactContext reactContext = (ReactContext) getContext();
+                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onDetentChanged", event);
             }
 
             @Override

@@ -3,6 +3,7 @@ import { requireNativeComponent, Platform, UIManager, View, StyleSheet } from 'r
 
 class BottomSheet extends React.Component<any, any> {
     private ref: React.RefObject<View>;
+    private dragging = false;
     constructor(props) {
         super(props);
         this.state = {activeDetent: props.detent || props.defaultDetent};
@@ -22,7 +23,8 @@ class BottomSheet extends React.Component<any, any> {
         this.ref.current.setNativeProps({mostRecentEventCount});
         var detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants.Detent
         var detent = Object.keys(detents).find(name => detents[name] === nativeDetent)
-        this.changeDetent(detent);
+        this.dragging = !detent
+        if (detent) this.changeDetent(detent);
     }
     changeDetent(activeDetent) {
         var {detent, onChangeDetent} = this.props;
@@ -43,6 +45,7 @@ class BottomSheet extends React.Component<any, any> {
                 peekHeight={peekHeight}
                 expandedOffset={expandedOffset}
                 fitToContents={expandedOffset == null}
+                onMoveShouldSetResponderCapture={() => this.dragging}
                 onDetentChanged={this.onDetentChanged}
                 style={[
                     styles.bottomSheet,
