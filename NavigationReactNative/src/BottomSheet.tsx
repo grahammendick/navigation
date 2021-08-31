@@ -18,7 +18,7 @@ class BottomSheet extends React.Component<any, any> {
         return null;
     }
     onDetentChanged({nativeEvent}) {
-        var {eventCount: mostRecentEventCount, nativeDetent} = nativeEvent;
+        var {eventCount: mostRecentEventCount, detent: nativeDetent} = nativeEvent;
         this.ref.current.setNativeProps({mostRecentEventCount});
         var detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants.Detent
         var detent = Object.keys(detents).find(name => detents[name] === nativeDetent)
@@ -38,10 +38,12 @@ class BottomSheet extends React.Component<any, any> {
         const detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants.Detent
         return (
             <NVBottomSheet
+                ref={this.ref}
                 detent={detents[this.state.activeDetent]}
                 peekHeight={peekHeight}
                 expandedOffset={expandedOffset}
                 fitToContents={expandedOffset == null}
+                onDetentChanged={this.onDetentChanged}
                 style={[
                     styles.bottomSheet,
                     height != null ? { height, top: 0 } : null,

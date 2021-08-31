@@ -59,6 +59,14 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
 
     @Nullable
     @Override
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+            .put("onDetentChanged", MapBuilder.of("registrationName", "onDetentChanged"))
+            .build();
+    }
+
+    @Nullable
+    @Override
     public Map<String, Object> getExportedViewConstants() {
         return MapBuilder.<String, Object>of(
             "Detent",
