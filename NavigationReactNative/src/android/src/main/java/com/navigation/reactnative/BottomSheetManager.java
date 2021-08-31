@@ -35,6 +35,11 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
         }
     }
 
+    @ReactProp(name = "mostRecentEventCount")
+    public void setMostRecentEventCount(BottomSheetView view, int mostRecentEventCount) {
+        view.mostRecentEventCount = mostRecentEventCount;
+    }
+
     @ReactProp(name = "peekHeight")
     public void setPeekHeight(BottomSheetView view, int peekHeight) {
         view.bottomSheetBehavior.setPeekHeight((int) PixelUtil.toPixelFromDIP(peekHeight), true);
