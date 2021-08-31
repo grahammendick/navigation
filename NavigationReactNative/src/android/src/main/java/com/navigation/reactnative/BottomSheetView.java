@@ -14,16 +14,19 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class BottomSheetView extends ViewGroup {
-    BottomSheetBehavior<BottomSheetView> bottomSheetBehavior = new BottomSheetBehavior<>();
+    BottomSheetBehavior<BottomSheetView> bottomSheetBehavior;
     BottomSheetBehavior.BottomSheetCallback bottomSheetCallback;
+    float defaultHalfExpandedRatio;
     int nativeEventCount;
     int mostRecentEventCount;
 
     public BottomSheetView(Context context) {
         super(context);
+        bottomSheetBehavior = new BottomSheetBehavior<>(context, null);
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         params.setBehavior(bottomSheetBehavior);
         setLayoutParams(params);
+        defaultHalfExpandedRatio = bottomSheetBehavior.getHalfExpandedRatio();
     }
 
     @Override
