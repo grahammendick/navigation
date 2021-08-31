@@ -6,16 +6,16 @@ class BottomSheet extends React.Component<any, any> {
     private dragging = false;
     constructor(props) {
         super(props);
-        this.state = {activeDetent: props.detent || props.defaultDetent};
+        this.state = {selectedDetent: props.detent || props.defaultDetent};
         this.ref = React.createRef<View>();
         this.onDetentChanged = this.onDetentChanged.bind(this);
     }
     static defaultProps = {
         defaultDetent: (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants.Detent.collapsed
     }
-    static getDerivedStateFromProps({detent}, {activeDetent}) {
-        if (detent != null && detent !== activeDetent)
-            return {activeDetent: detent};
+    static getDerivedStateFromProps({detent}, {selectedDetent}) {
+        if (detent != null && detent !== selectedDetent)
+            return {selectedDetent: detent};
         return null;
     }
     onDetentChanged({nativeEvent}) {
@@ -26,13 +26,13 @@ class BottomSheet extends React.Component<any, any> {
         this.dragging = !detent
         if (detent) this.changeDetent(detent);
     }
-    changeDetent(activeDetent) {
+    changeDetent(selectedDetent) {
         var {detent, onChangeDetent} = this.props;
-        if (this.state.activeDetent !== activeDetent) {
+        if (this.state.selectedDetent !== selectedDetent) {
             if (detent == null)
-                this.setState({activeDetent});
+                this.setState({selectedDetent});
             if (!!onChangeDetent)
-                onChangeDetent(activeDetent);
+                onChangeDetent(selectedDetent);
         }
     }
     render() {
@@ -41,7 +41,7 @@ class BottomSheet extends React.Component<any, any> {
         return (
             <NVBottomSheet
                 ref={this.ref}
-                detent={detents[this.state.activeDetent]}
+                detent={detents[this.state.selectedDetent]}
                 peekHeight={peekHeight}
                 expandedOffset={expandedOffset}
                 fitToContents={expandedOffset == null}
