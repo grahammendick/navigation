@@ -9,6 +9,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class BottomSheetView extends ViewGroup {
     BottomSheetBehavior<BottomSheetView> bottomSheetBehavior = new BottomSheetBehavior<>();
+    int nativeEventCount;
+    int mostRecentEventCount;
 
     public BottomSheetView(Context context) {
         super(context);

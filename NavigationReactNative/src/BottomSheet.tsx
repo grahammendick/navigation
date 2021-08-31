@@ -1,21 +1,59 @@
 import React from 'react';
-import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
+import { requireNativeComponent, Platform, UIManager, View, StyleSheet } from 'react-native';
 
-var BottomSheet = ({ height, expandedOffset, peekHeight, children }) => (
-    <NVBottomSheet
-        peekHeight={peekHeight}
-        expandedOffset={expandedOffset}
-        fitToContents={expandedOffset == null}
-        style={[
-            styles.bottomSheet,
-            height != null ? { height, top: 0 } : null,
-            expandedOffset != null ? { top: expandedOffset, bottom: 0 } : null,
-            height == null && expandedOffset == null ? { top: 0, bottom: 0} : null
-        ]}
-    >
-        {children}
-    </NVBottomSheet>
-)
+class BottomSheet extends React.Component<any, any> {
+    private ref: React.RefObject<View>;
+    constructor(props) {
+        super(props);
+        this.state = {activeDetent: props.detent || props.defaultDetent};
+        this.ref = React.createRef<View>();
+        this.onDetentChanged = this.onDetentChanged.bind(this);
+    }
+    static defaultProps = {
+        defaultDetent: (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants.Detent.collapsed
+    }
+    static getDerivedStateFromProps({detent}, {activeDetent}) {
+        if (detent != null && detent !== activeDetent)
+            return {activeDetent: detent};
+        return null;
+    }
+    onDetentChanged({nativeEvent}) {
+        var {eventCount: mostRecentEventCount, nativeDetent} = nativeEvent;
+        this.ref.current.setNativeProps({mostRecentEventCount});
+        var detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants.Detent
+        var detent = Object.keys(detents).find(name => detents[name] === nativeDetent)
+        this.changeDetent(detent);
+    }
+    changeDetent(activeDetent) {
+        var {detent, onChangeDetent} = this.props;
+        if (this.state.activeDetent !== activeDetent) {
+            if (detent == null)
+                this.setState({activeDetent});
+            if (!!onChangeDetent)
+                onChangeDetent(activeDetent);
+        }
+    }
+    render() {
+        var { height, expandedOffset, peekHeight, children } = this.props
+        const detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants.Detent
+        return (
+            <NVBottomSheet
+                detent={detents[this.state.activeDetent]}
+                peekHeight={peekHeight}
+                expandedOffset={expandedOffset}
+                fitToContents={expandedOffset == null}
+                style={[
+                    styles.bottomSheet,
+                    height != null ? { height, top: 0 } : null,
+                    expandedOffset != null ? { top: expandedOffset, bottom: 0 } : null,
+                    height == null && expandedOffset == null ? { top: 0, bottom: 0} : null
+                ]}
+            >
+                {children}
+            </NVBottomSheet>
+        )
+    }
+} 
 
 var NVBottomSheet = requireNativeComponent<any>('NVBottomSheet', null);
 
