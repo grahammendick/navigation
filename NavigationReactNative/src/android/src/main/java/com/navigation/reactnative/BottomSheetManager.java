@@ -65,6 +65,7 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
     @ReactProp(name = "halfExpandedRatio", defaultFloat = Float.MAX_VALUE)
     public void setHalfExpandedRatio(BottomSheetView view, float halfExpandedRatio) {
         view.bottomSheetBehavior.setHalfExpandedRatio(halfExpandedRatio != Float.MAX_VALUE ? halfExpandedRatio : view.defaultHalfExpandedRatio);
+        view.requestLayout();
     }
 
     @ReactProp(name = "hideable")
