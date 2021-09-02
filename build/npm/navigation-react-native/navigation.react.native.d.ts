@@ -485,6 +485,53 @@ export interface TabBarProps {
 export class TabBar extends Component<TabBarProps> {}
 
 /**
+ * Defines the Bottom Sheet Props contract
+ */
+export interface BottomSheetProps {
+    /**
+     * The height of the bottom sheet when it is collapsed
+     */
+    peekHeight?: number;
+    /**
+     * The height of the bottom sheet when it is expanded
+     */
+    expandedHeight?: number;
+    /**
+     * The top offset of the bottom sheet when it is expanded
+     */
+    expandedOffset?: number;
+    /**
+     * Determines the height of the bottom sheet when it is half expanded
+     */
+    halfExpandedRatio?: number;
+    /**
+     * Indicates whether the bottom sheet can hide when it is swiped down
+     */
+    hideable?: boolean;
+    /**
+     * Indicates whether swipe down hides the bottom sheet after it is expanded
+     */
+    skipCollapsed?: boolean;
+    /**
+     * The default resting state of the bottom sheet
+     */
+    defaultDetent?: 'hidden' | 'collapsed' | 'halfExpanded' | 'expanded';
+    /**
+     * The resting state of the bottom sheet
+     */
+    detent?: 'hidden' | 'collapsed' | 'halfExpanded' | 'expanded';
+    /**
+     * Handles the bottom sheet resting state change events
+     */
+    onChangeDetent?: (detent: 'hidden' | 'collapsed' | 'halfExpanded' | 'expanded') => void;
+}
+
+/**
+ * Renders a bottom sheet
+ */
+ export class BottomSheet extends Component<BottomSheetProps> {}
+
+/**
  * Defines the Modal Back Handler Props contract
  */
 export interface ModalBackHandlerProps {
