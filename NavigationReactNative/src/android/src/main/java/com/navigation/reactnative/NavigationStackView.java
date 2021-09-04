@@ -203,8 +203,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             for(int i = 0; i < oldSharedElementNames.size(); i++) {
                 String name = oldSharedElementNames.getString(i);
                 if (oldSharedElementsMap.containsKey(name)) {
-                    SharedElementView oldSharedElementView = oldSharedElementsMap.get(name);
-                    transitioner.load(name, oldSharedElementView.exitTransition, activity);
+                    transitioner.load(name);
                 }
             }
             sceneFragment.setEnterSharedElementCallback(new SharedElementCallback() {
