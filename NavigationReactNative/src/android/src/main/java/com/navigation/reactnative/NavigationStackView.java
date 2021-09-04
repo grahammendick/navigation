@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
 import android.util.SparseIntArray;
@@ -42,7 +41,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected ReadableArray keys;
     private int oldCrumb = -1;
     private String oldKey;
-    private SparseIntArray defaultAnimation;
+    private final SparseIntArray defaultAnimation = new SparseIntArray();
     private Activity mainActivity;
     protected String enterAnim;
     protected String exitAnim;
@@ -52,7 +51,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
 
     public NavigationStackView(Context context) {
         super(context);
-        defaultAnimation = new SparseIntArray();
         TypedArray activityStyle = context.getTheme().obtainStyledAttributes(new int[] {android.R.attr.windowAnimationStyle});
         int windowAnimationStyleResId = activityStyle.getResourceId(0, 0);
         activityStyle.recycle();
@@ -174,8 +172,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     }
 
     HashMap<String, SharedElementView> getSharedElementMap(SceneView scene) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-            return null;
         HashMap<String, SharedElementView> sharedElementMap = new HashMap<>();
         for(SharedElementView sharedElement : scene.sharedElements) {
             sharedElementMap.put(sharedElement.getTransitionName(), sharedElement);
