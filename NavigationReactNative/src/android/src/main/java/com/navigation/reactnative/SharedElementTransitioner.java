@@ -3,7 +3,6 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.os.Build;
 import androidx.transition.Transition;
-import androidx.transition.TransitionInflater;
 import androidx.transition.TransitionSet;
 
 import com.google.android.material.transition.MaterialContainerTransform;
