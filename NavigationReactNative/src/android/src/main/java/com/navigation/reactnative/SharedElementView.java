@@ -27,7 +27,7 @@ public class SharedElementView extends ViewGroup {
             public boolean onPreDraw() {
                 getViewTreeObserver().removeOnPreDrawListener(this);
                 if (scene.transitioner != null)
-                    scene.transitioner.load(getTransitionName());
+                    scene.transitioner.load(SharedElementView.this);
                 return true;
             }
         });

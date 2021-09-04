@@ -20,7 +20,8 @@ class SharedElementTransitioner {
         this.postponedScene = postponedScene;
     }
 
-    void load(String sharedElement) {
+    void load(SharedElementView sharedElementView) {
+        String sharedElement = sharedElementView.getTransitionName();
         if (sharedElements.contains(sharedElement) && !loadedSharedElements.contains(sharedElement)) {
             loadedSharedElements.add(sharedElement);
             MaterialContainerTransform transition = new MaterialContainerTransform();
