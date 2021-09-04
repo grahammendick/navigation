@@ -22,7 +22,7 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
 
     @ReactProp(name = "name")
     public void setName(SharedElementView view, String name) {
-        view.setName(name);
+        view.setTransitionName(name);
     }
 
     @ReactProp(name = "enterTransition")
