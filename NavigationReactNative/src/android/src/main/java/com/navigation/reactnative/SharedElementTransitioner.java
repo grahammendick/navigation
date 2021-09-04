@@ -8,14 +8,16 @@ import com.google.android.material.transition.MaterialContainerTransform;
 import java.util.HashSet;
 
 class SharedElementTransitioner {
-    private final SceneFragment sceneFragment;
+    private final SceneFragment transitionScene;
+    private final SceneFragment postponedScene;
     private final HashSet<String> sharedElements;
     private final HashSet<String> loadedSharedElements = new HashSet<>();
     private final HashSet<Transition> transitions = new HashSet<>();
 
-    SharedElementTransitioner(SceneFragment sceneFragment, HashSet<String> sharedElements) {
+    SharedElementTransitioner(SceneFragment transitionScene, SceneFragment postponedScene, HashSet<String> sharedElements) {
         this.sharedElements = sharedElements;
-        this.sceneFragment = sceneFragment;
+        this.transitionScene = transitionScene;
+        this.postponedScene = postponedScene;
     }
 
     void load(String sharedElement) {
@@ -30,10 +32,10 @@ class SharedElementTransitioner {
             for(Transition transition : transitions) {
                 transitionSet.addTransition(transition);
             }
-            sceneFragment.setSharedElementEnterTransition(transitionSet);
-            sceneFragment.setSharedElementReturnTransition(transitionSet);
-            sceneFragment.startPostponedEnterTransition();
-            sceneFragment.getScene().transitioner = null;
+            transitionScene.setSharedElementEnterTransition(transitionSet);
+            transitionScene.setSharedElementReturnTransition(transitionSet);
+            postponedScene.startPostponedEnterTransition();
+            postponedScene.getScene().transitioner = null;
         }
     }
 }

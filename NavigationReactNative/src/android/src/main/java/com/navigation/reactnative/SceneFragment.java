@@ -22,7 +22,7 @@ public class SceneFragment extends Fragment {
         super();
         this.scene = scene;
         if (sharedElements != null )
-            scene.transitioner = new SharedElementTransitioner(this, sharedElements);
+            scene.transitioner = new SharedElementTransitioner(this, this, sharedElements);
     }
 
     @Nullable
