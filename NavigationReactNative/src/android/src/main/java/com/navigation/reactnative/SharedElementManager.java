@@ -24,14 +24,4 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
     public void setName(SharedElementView view, String name) {
         view.setTransitionName(name);
     }
-
-    @ReactProp(name = "enterTransition")
-    public void setEnterTransition(SharedElementView view, String enterTransition) {
-        view.enterTransition = enterTransition;
-    }
-
-    @ReactProp(name = "exitTransition")
-    public void setExitTransition(SharedElementView view, String exitTransition) {
-        view.exitTransition = exitTransition;
-    }
 }

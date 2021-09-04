@@ -9,8 +9,6 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
 public class SharedElementView extends ViewGroup {
-    protected String enterTransition;
-    protected String exitTransition;
     private SceneView scene;
 
     public SharedElementView(Context context) {
