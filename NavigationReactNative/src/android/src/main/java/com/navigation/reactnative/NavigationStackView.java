@@ -127,10 +127,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     for(Pair sharedElement : sharedElements) {
                         fragmentTransaction.addSharedElement((View) sharedElement.first, (String) sharedElement.second);
                     }
-                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                } else {
-                    fragmentTransaction.setCustomAnimations(oldCrumb != -1 ? enter : 0, exit, popEnter, popExit);
                 }
+                fragmentTransaction.setCustomAnimations(oldCrumb != -1 ? enter : 0, exit, popEnter, popExit);
                 SceneFragment fragment = new SceneFragment(scene, getSharedElementSet(sharedElementNames));
                 fragmentTransaction.replace(getId(), fragment, key);
                 fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
