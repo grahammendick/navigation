@@ -1,12 +1,9 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
-import android.os.Build;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
 
 public class SharedElementView extends ViewGroup {
     private SceneView scene;
