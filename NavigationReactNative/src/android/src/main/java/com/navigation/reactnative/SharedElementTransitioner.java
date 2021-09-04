@@ -2,9 +2,11 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.os.Build;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.transition.TransitionSet;
+import androidx.transition.Transition;
+import androidx.transition.TransitionInflater;
+import androidx.transition.TransitionSet;
+
+import com.google.android.material.transition.MaterialContainerTransform;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,21 +27,9 @@ class SharedElementTransitioner {
             return;
         if (sharedElements.contains(sharedElement) && !loadedSharedElements.contains(sharedElement)) {
             loadedSharedElements.add(sharedElement);
-            if (transitionKey == null)
-                transitionKey = "move";
-            Transition transition;
-            if (transitions.containsKey(transitionKey))
-                transition = transitions.get(transitionKey);
-            else {
-                String packageName = context.getPackageName();
-                int transitionId = context.getResources().getIdentifier(transitionKey, "transition", packageName);
-                if (transitionId == 0)
-                    transitionId = context.getResources().getIdentifier("move", "transition", packageName);
-                transition = TransitionInflater.from(context).inflateTransition(transitionId);
-                transitions.put(transitionKey, transition);
-            }
-            if (transition != null)
-                transition.addTarget(sharedElement);
+            MaterialContainerTransform transition = new MaterialContainerTransform();
+            transition.addTarget(sharedElement);
+            transitions.put(transitionKey, transition);
         }
         if(sharedElements.size() == loadedSharedElements.size()) {
             TransitionSet transitionSet = new TransitionSet();
