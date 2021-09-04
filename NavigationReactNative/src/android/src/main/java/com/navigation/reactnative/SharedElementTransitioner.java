@@ -1,7 +1,5 @@
 package com.navigation.reactnative;
 
-import android.content.Context;
-import android.os.Build;
 import androidx.transition.Transition;
 import androidx.transition.TransitionSet;
 
@@ -10,10 +8,10 @@ import com.google.android.material.transition.MaterialContainerTransform;
 import java.util.HashSet;
 
 class SharedElementTransitioner {
-    private SceneFragment sceneFragment;
-    private HashSet<String> sharedElements;
-    private HashSet<String> loadedSharedElements = new HashSet<>();
-    private HashSet<Transition> transitions = new HashSet<>();
+    private final SceneFragment sceneFragment;
+    private final HashSet<String> sharedElements;
+    private final HashSet<String> loadedSharedElements = new HashSet<>();
+    private final HashSet<Transition> transitions = new HashSet<>();
 
     SharedElementTransitioner(SceneFragment sceneFragment, HashSet<String> sharedElements) {
         this.sharedElements = sharedElements;
@@ -21,8 +19,6 @@ class SharedElementTransitioner {
     }
 
     void load(String sharedElement) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-            return;
         if (sharedElements.contains(sharedElement) && !loadedSharedElements.contains(sharedElement)) {
             loadedSharedElements.add(sharedElement);
             MaterialContainerTransform transition = new MaterialContainerTransform();
