@@ -359,7 +359,7 @@ export interface SharedElementProps {
      */
     duration?: number;
     /**
-     * The fade mode used to swap the content of two views
+     * The fade mode used to swap the content of the two views
      */
     fadeMode?: 'in' | 'out' | 'cross' | 'through';
     /**
