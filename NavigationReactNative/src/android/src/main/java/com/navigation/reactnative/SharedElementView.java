@@ -5,11 +5,15 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 
+import com.google.android.material.transition.MaterialContainerTransform;
+
 public class SharedElementView extends ViewGroup {
     private SceneView scene;
+    MaterialContainerTransform transition;
 
     public SharedElementView(Context context) {
         super(context);
+        transition = new MaterialContainerTransform(context, false);
     }
 
     @Override

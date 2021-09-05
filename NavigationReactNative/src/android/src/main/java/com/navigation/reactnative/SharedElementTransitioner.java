@@ -24,7 +24,8 @@ class SharedElementTransitioner {
         String sharedElement = sharedElementView.getTransitionName();
         if (sharedElements.contains(sharedElement) && !loadedSharedElements.contains(sharedElement)) {
             loadedSharedElements.add(sharedElement);
-            MaterialContainerTransform transition = new MaterialContainerTransform();
+            MaterialContainerTransform transition = sharedElementView.transition;
+            transition.setTransitionDirection(transitionScene == postponedScene ? MaterialContainerTransform.TRANSITION_DIRECTION_ENTER : MaterialContainerTransform.TRANSITION_DIRECTION_RETURN);
             transition.addTarget(sharedElement);
             transitions.add(transition);
         }
