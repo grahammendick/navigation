@@ -351,13 +351,17 @@ export class StatusBar extends Component<StatusBarProps> {}
  */
 export interface SharedElementProps {
     /**
-     * The name shared across scenes by the two elements
+     * The name shared across scenes by the two views
      */
     name: string;
     /**
-     * The resource for the transition
+     * The duration of the transition
      */
-    transition?: string | ((mount: boolean) => string);
+    duration?: number;
+    /**
+     * The fade mode used to swap the content of two views
+     */
+    fadeMode?: 'in' | 'out' | 'cross' | 'through';
     /**
      * The style
      */

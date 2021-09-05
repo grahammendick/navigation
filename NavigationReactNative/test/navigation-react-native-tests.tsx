@@ -73,7 +73,7 @@ var Person = () => {
                 </RightBar>
             </NavigationBar>
             <View>
-                <SharedElement name={name} transition="bounce">
+                <SharedElement name={name}>
                     <Text>{name}</Text>
                 </SharedElement>
             </View>
