@@ -8,16 +8,16 @@ import com.google.android.material.transition.MaterialContainerTransform;
 import java.util.HashSet;
 
 class SharedElementTransitioner {
-    private final SceneFragment transitionScene;
-    private final SceneFragment postponedScene;
+    private final SceneFragment enterScene;
+    private final SceneFragment scene;
     private final HashSet<String> sharedElements;
     private final HashSet<String> loadedSharedElements = new HashSet<>();
     private final HashSet<Transition> transitions = new HashSet<>();
 
-    SharedElementTransitioner(SceneFragment transitionScene, SceneFragment postponedScene, HashSet<String> sharedElements) {
+    SharedElementTransitioner(SceneFragment enterScene, SceneFragment scene, HashSet<String> sharedElements) {
         this.sharedElements = sharedElements;
-        this.transitionScene = transitionScene;
-        this.postponedScene = postponedScene;
+        this.enterScene = enterScene;
+        this.scene = scene;
     }
 
     void load(SharedElementView sharedElementView) {
@@ -25,7 +25,7 @@ class SharedElementTransitioner {
         if (sharedElements.contains(sharedElement) && !loadedSharedElements.contains(sharedElement)) {
             loadedSharedElements.add(sharedElement);
             MaterialContainerTransform transition = sharedElementView.transition;
-            transition.setTransitionDirection(transitionScene == postponedScene ? MaterialContainerTransform.TRANSITION_DIRECTION_ENTER : MaterialContainerTransform.TRANSITION_DIRECTION_RETURN);
+            transition.setTransitionDirection(enterScene == scene ? MaterialContainerTransform.TRANSITION_DIRECTION_ENTER : MaterialContainerTransform.TRANSITION_DIRECTION_RETURN);
             transition.addTarget(sharedElement);
             transitions.add(transition);
         }
@@ -34,10 +34,10 @@ class SharedElementTransitioner {
             for(Transition transition : transitions) {
                 transitionSet.addTransition(transition);
             }
-            transitionScene.setSharedElementEnterTransition(transitionSet);
-            transitionScene.setSharedElementReturnTransition(transitionSet);
-            postponedScene.startPostponedEnterTransition();
-            postponedScene.getScene().transitioner = null;
+            enterScene.setSharedElementEnterTransition(transitionSet);
+            enterScene.setSharedElementReturnTransition(transitionSet);
+            scene.startPostponedEnterTransition();
+            scene.getScene().transitioner = null;
         }
     }
 }
