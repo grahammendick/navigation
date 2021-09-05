@@ -22,12 +22,8 @@ public class SharedElementView extends ViewGroup {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        ViewParent ancestor = getParent();
-        while (ancestor != null && !(ancestor instanceof SceneView))
-            ancestor = ancestor.getParent();
-        if (ancestor == null)
-            return;
-        final SceneView scene = (SceneView) ancestor;
+        final SceneView scene = getScene();
+        if (scene == null) return;
         scene.sharedElements.add(this);
         getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
@@ -38,6 +34,22 @@ public class SharedElementView extends ViewGroup {
                 return true;
             }
         });
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        SceneView scene = getScene();
+        if (scene != null) scene.sharedElements.remove(this);
+    }
+
+    private SceneView getScene() {
+        ViewParent ancestor = getParent();
+        while (ancestor != null && !(ancestor instanceof SceneView))
+            ancestor = ancestor.getParent();
+        if (ancestor == null)
+            return null;
+        return (SceneView) ancestor;
     }
 
     @Override
