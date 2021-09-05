@@ -41,9 +41,4 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
         if (("cross").equals(fadeMode)) view.transition.setFadeMode(MaterialContainerTransform.FADE_MODE_CROSS);
         if (("through").equals(fadeMode)) view.transition.setFadeMode(MaterialContainerTransform.FADE_MODE_THROUGH);
     }
-
-    @ReactProp(name = "drawingViewId", defaultInt = View.NO_ID)
-    public void setDrawingViewId(SharedElementView view, int drawingViewId) {
-        view.transition.setDrawingViewId(drawingViewId);
-    }
 }
