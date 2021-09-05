@@ -9,11 +9,15 @@ import com.google.android.material.transition.MaterialContainerTransform;
 
 public class SharedElementView extends ViewGroup {
     private SceneView scene;
-    MaterialContainerTransform transition;
+    final MaterialContainerTransform transition;
+    final long defaultDuration;
+    final int defaultFadeMode;
 
     public SharedElementView(Context context) {
         super(context);
         transition = new MaterialContainerTransform(context, false);
+        defaultDuration = transition.getDuration();
+        defaultFadeMode = transition.getFadeMode();
     }
 
     @Override
