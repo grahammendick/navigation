@@ -8,7 +8,6 @@ import android.view.ViewTreeObserver;
 import com.google.android.material.transition.MaterialContainerTransform;
 
 public class SharedElementView extends ViewGroup {
-    private SceneView scene;
     final MaterialContainerTransform transition;
     final long defaultDuration;
     final int defaultFadeMode;
@@ -28,7 +27,7 @@ public class SharedElementView extends ViewGroup {
             ancestor = ancestor.getParent();
         if (ancestor == null)
             return;
-        scene = (SceneView) ancestor;
+        final SceneView scene = (SceneView) ancestor;
         scene.sharedElements.add(this);
         getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
@@ -39,12 +38,6 @@ public class SharedElementView extends ViewGroup {
                 return true;
             }
         });
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        scene = null;
     }
 
     @Override
