@@ -36,10 +36,10 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
     @ReactProp(name = "fadeMode")
     public void setFadeMode(SharedElementView view, String fadeMode) {
         if (fadeMode == null) view.transition.setFadeMode(view.defaultFadeMode);
-        if (fadeMode == "in") view.transition.setFadeMode(MaterialContainerTransform.FADE_MODE_IN);
-        if (fadeMode == "out") view.transition.setFadeMode(MaterialContainerTransform.FADE_MODE_OUT);
-        if (fadeMode == "cross") view.transition.setFadeMode(MaterialContainerTransform.FADE_MODE_CROSS);
-        if (fadeMode == "through") view.transition.setFadeMode(MaterialContainerTransform.FADE_MODE_THROUGH);
+        if (("in").equals(fadeMode)) view.transition.setFadeMode(MaterialContainerTransform.FADE_MODE_IN);
+        if (("out").equals(fadeMode)) view.transition.setFadeMode(MaterialContainerTransform.FADE_MODE_OUT);
+        if (("cross").equals(fadeMode)) view.transition.setFadeMode(MaterialContainerTransform.FADE_MODE_CROSS);
+        if (("through").equals(fadeMode)) view.transition.setFadeMode(MaterialContainerTransform.FADE_MODE_THROUGH);
     }
 
     @ReactProp(name = "drawingViewId", defaultInt = View.NO_ID)
