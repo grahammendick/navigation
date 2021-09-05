@@ -1,7 +1,5 @@
 package com.navigation.reactnative;
 
-import android.view.View;
-
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
