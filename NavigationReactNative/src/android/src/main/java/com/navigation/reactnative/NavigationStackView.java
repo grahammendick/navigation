@@ -75,6 +75,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             if (uri != null) {
                 mainActivity.getIntent().setData(null);
                 DeviceEventManagerModule deviceEventManagerModule = ((ThemedReactContext) getContext()).getNativeModule(DeviceEventManagerModule.class);
+                assert deviceEventManagerModule != null;
                 deviceEventManagerModule.emitNewIntentReceived(uri);
             }
         }
@@ -109,6 +110,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 int nextCrumb = currentCrumb + i + 1;
                 String key = keys.getString(nextCrumb);
                 SceneView scene = scenes.get(key);
+                assert scene != null : "Scene is null";
                 int popEnter = getAnimationResourceId(currentActivity, scene.enterAnim, android.R.attr.activityCloseEnterAnimation);
                 int popExit = getAnimationResourceId(currentActivity, scene.exitAnim, android.R.attr.activityCloseExitAnimation);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -135,6 +137,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             int exit = getAnimationResourceId(currentActivity, exitAnim, android.R.attr.activityOpenExitAnimation);
             String key = keys.getString(crumb);
             SceneView scene = scenes.get(key);
+            assert scene != null : "Scene is null";
             int popEnter = getAnimationResourceId(currentActivity, scene.enterAnim, android.R.attr.activityCloseEnterAnimation);
             int popExit = getAnimationResourceId(currentActivity, scene.exitAnim, android.R.attr.activityCloseExitAnimation);
             FragmentManager fragmentManager = fragment.getChildFragmentManager();
@@ -229,6 +232,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         }
         if (keys.size() == 1) {
             SceneView scene = scenes.get(keys.getString(0));
+            assert scene != null : "Scene is null";
             for (int i = 0; i < scene.getChildCount(); i++) {
                 if (scene.getChildAt(i) instanceof CoordinatorLayoutView)
                     ((CoordinatorLayoutView) scene.getChildAt(i)).scrollToTop();
