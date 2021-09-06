@@ -1,7 +1,6 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.react.bridge.ReactContext;
@@ -14,7 +13,7 @@ public class SceneView extends ViewGroup {
     protected String enterAnim;
     protected String exitAnim;
     public HashSet<SharedElementView> sharedElements = new HashSet<>();
-    public SharedElementTransitioner transitioner;
+    public SharedElementMotion transitioner;
 
     public SceneView(Context context) {
         super(context);
