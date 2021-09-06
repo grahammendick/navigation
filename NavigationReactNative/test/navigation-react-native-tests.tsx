@@ -73,7 +73,7 @@ var Person = () => {
                 </RightBar>
             </NavigationBar>
             <View>
-                <SharedElement name={name} transition="bounce">
+                <SharedElement name={name}>
                     <Text>{name}</Text>
                 </SharedElement>
             </View>
@@ -89,7 +89,7 @@ stateNavigator.navigate('people');
 
 const App = () => (
     <NavigationHandler stateNavigator={stateNavigator}>
-      <NavigationStack />
+      <NavigationStack sharedElement={(_, { name }) => name} />
     </NavigationHandler>
   );
   
