@@ -93,7 +93,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         if (crumb < currentCrumb) {
             FragmentManager fragmentManager = fragment.getChildFragmentManager();
             SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKey);
-            Pair<SharedElementView, String> sharedElement = fragment != null ? getOldSharedElement(currentCrumb, crumb, fragment, currentActivity) : null;
+            Pair<SharedElementView, String> sharedElement = fragment != null ? getOldSharedElement(currentCrumb, crumb, fragment) : null;
             SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(keys.getString(crumb));
             if (sharedElement != null && prevFragment != null && prevFragment.getScene() != null)
                 prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, oldSharedElementName);
@@ -121,7 +121,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                         sharedElement = getSharedElement(currentCrumb, crumb, prevFragment);
                 }
                 if (sharedElement != null) {
-                    fragmentTransaction.addSharedElement((View) sharedElement.first, (String) sharedElement.second);
+                    fragmentTransaction.addSharedElement(sharedElement.first, sharedElement.second);
                 }
                 fragmentTransaction.setCustomAnimations(oldCrumb != -1 ? enter : 0, exit, popEnter, popExit);
                 SceneFragment fragment = new SceneFragment(scene, sharedElementName);
@@ -174,7 +174,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         return null;
     }
 
-    private Pair<SharedElementView, String> getOldSharedElement(int currentCrumb, int crumb, SceneFragment sceneFragment, final Activity activity) {
+    private Pair<SharedElementView, String> getOldSharedElement(int currentCrumb, int crumb, SceneFragment sceneFragment) {
         final HashMap<String, SharedElementView> oldSharedElementsMap = getSharedElementMap(sceneFragment.getScene());
         final Pair<SharedElementView, String> oldSharedElement = currentCrumb - crumb == 1 ? getSharedElement(oldSharedElementsMap, oldSharedElementName) : null;
         if (oldSharedElement != null) {
