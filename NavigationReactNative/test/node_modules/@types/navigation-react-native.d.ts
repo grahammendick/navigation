@@ -27,9 +27,9 @@ export interface NavigationStackProps {
      */
     hidesTabBar?: (state: State, data: any, crumbs: Crumb[]) => boolean;
     /**
-     * A scene's shared elements
+     * A scene's shared element
      */
-    sharedElements?: (state: State, data: any, crumbs: Crumb[]) => string[];
+    sharedElement?: (state: State, data: any, crumbs: Crumb[]) => string;
     /**
      * Renders the scene for the State and data
      */

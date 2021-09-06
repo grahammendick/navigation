@@ -89,7 +89,7 @@ stateNavigator.navigate('people');
 
 const App = () => (
     <NavigationHandler stateNavigator={stateNavigator}>
-      <NavigationStack />
+      <NavigationStack sharedElement={(_, { name }) => name} />
     </NavigationHandler>
   );
   
