@@ -47,7 +47,7 @@ Linking.addEventListener('url', ({url}) => openLink(url));
 
 const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
-    <NavigationStack sharedElements={(_, {name}) => name && [name]} />
+    <NavigationStack sharedElement={(_, {name}) => name} />
   </NavigationHandler>
 );
 export default App;

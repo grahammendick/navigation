@@ -18,11 +18,11 @@ public class SceneFragment extends Fragment {
         super();
     }
 
-    SceneFragment(SceneView scene, HashSet<String> sharedElements) {
+    SceneFragment(SceneView scene, String sharedElement) {
         super();
         this.scene = scene;
-        if (sharedElements != null )
-            scene.transitioner = new SharedElementTransitioner(this, this, sharedElements);
+        if (sharedElement != null )
+            scene.transitioner = new SharedElementTransitioner(this, this, sharedElement);
     }
 
     @Nullable

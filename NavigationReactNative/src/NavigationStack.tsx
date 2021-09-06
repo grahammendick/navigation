@@ -4,7 +4,7 @@ import { Crumb, State } from 'navigation';
 import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
 import PopSync from './PopSync';
 import Scene from './Scene';
-type NavigationStackProps = {stateNavigator: AsyncStateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElements: any, renderScene: (state: State, data: any) => ReactNode};
+type NavigationStackProps = {stateNavigator: AsyncStateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, renderScene: (state: State, data: any) => ReactNode};
 type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[]};
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
@@ -62,7 +62,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
             stateNavigator.navigateBack(crumbs.length);
     }
     getAnimation() {
-        var {stateNavigator, unmountStyle, crumbStyle, sharedElements: getSharedElements} = this.props;
+        var {stateNavigator, unmountStyle, crumbStyle, sharedElement: getSharedElement} = this.props;
         var {state, data, oldState, oldData, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
         if (!oldState)
             return null;
@@ -71,20 +71,20 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
             var {state: nextState, data: nextData} = crumbs.concat(nextCrumb)[oldCrumbs.length + 1];
             var enterAnim = unmountStyle(true, state, data, crumbs);
             var exitAnim = crumbStyle(false, oldState, oldData, oldCrumbs, nextState, nextData);
-            var sharedElements = getSharedElements(state, data, crumbs);
+            var sharedElement = getSharedElement(state, data, crumbs);
         }
         if (crumbs.length < oldCrumbs.length) {
             var nextCrumb = new Crumb(oldData, oldState, null, null, false);
             var {state: nextState, data: nextData} = oldCrumbs.concat(nextCrumb)[crumbs.length + 1];
             var enterAnim = crumbStyle(true, state, data, crumbs, nextState, nextData);
             var exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs);
-            var oldSharedElements = getSharedElements(oldState, oldData, oldCrumbs);
+            var oldSharedElement = getSharedElement(oldState, oldData, oldCrumbs);
         }
         if (crumbs.length === oldCrumbs.length) {
             var enterAnim = unmountStyle(true, state, data, crumbs);
             var exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs, state, data);
         }
-        return {enterAnim, exitAnim, sharedElements, oldSharedElements};
+        return {enterAnim, exitAnim, sharedElement, oldSharedElement};
     }
     render() {
         var {keys} = this.state;
