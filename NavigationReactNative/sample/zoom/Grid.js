@@ -21,7 +21,7 @@ const SearchResults = ({colors, text}) => {
           .map(color => (
             <TouchableHighlight
               key={color}
-              style={{flex: 1, flexDirection: 'row', margin: 10, alignItems: 'center'}}
+              style={styles.result}
               underlayColor="white"
               onPress={() => {
                 stateNavigator.navigate('detail', {color, search: true});
@@ -103,4 +103,10 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginBottom: 20,
   },
+  result: {
+    flex: 1,
+    flexDirection: 'row',
+    margin: 10,
+    alignItems: 'center'    
+  }
 });
