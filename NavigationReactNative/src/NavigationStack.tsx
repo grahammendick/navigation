@@ -22,7 +22,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         unmountStyle: () => null,
         crumbStyle: () => null,
         hidesTabBar: () => false,
-        sharedElements: () => null
+        sharedElement: () => null
     }
     static getDerivedStateFromProps({stateNavigator}: NavigationStackProps, {keys: prevKeys, stateNavigator: prevStateNavigator}: NavigationStackState) {
         if (stateNavigator === prevStateNavigator)
