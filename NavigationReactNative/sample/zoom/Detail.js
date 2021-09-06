@@ -21,7 +21,7 @@ const Detail = ({colors, color, name, filter, search}) => {
         </RightBar>
       </NavigationBar>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <SharedElement name={name} style={styles.color} transition="overshoot">
+        <SharedElement name={name} style={styles.color} duration={250}>
           <View style={{backgroundColor: color, flex: 1}} />
         </SharedElement>
         <Text style={styles.text}>{color}</Text>

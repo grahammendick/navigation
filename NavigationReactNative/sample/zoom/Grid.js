@@ -24,7 +24,7 @@ const Colors = ({colors, children, filter}) => {
                 color, name: color + suffix, filter, search: filter != null
               });
             }}>
-            <SharedElement name={color + suffix} style={{flex: 1}}>
+            <SharedElement name={color + suffix} style={{flex: 1}} duration={250}>
               <View style={{backgroundColor: color, flex: 1}} />
             </SharedElement>
           </TouchableHighlight>
