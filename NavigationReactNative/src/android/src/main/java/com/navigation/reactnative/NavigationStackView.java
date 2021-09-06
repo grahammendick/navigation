@@ -55,8 +55,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         activityStyle.recycle();
 
         activityStyle = context.getTheme().obtainStyledAttributes(windowAnimationStyleResId, new int[] {
-                android.R.attr.activityOpenEnterAnimation, android.R.attr.activityOpenExitAnimation,
-                android.R.attr.activityCloseEnterAnimation, android.R.attr.activityCloseExitAnimation
+            android.R.attr.activityOpenEnterAnimation, android.R.attr.activityOpenExitAnimation,
+            android.R.attr.activityCloseEnterAnimation, android.R.attr.activityCloseExitAnimation
         });
         defaultAnimation.put(android.R.attr.activityOpenEnterAnimation, activityStyle.getResourceId(0, 0));
         defaultAnimation.put(android.R.attr.activityOpenExitAnimation, activityStyle.getResourceId(1, 0));
