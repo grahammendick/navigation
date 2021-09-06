@@ -68,12 +68,13 @@ const Grid = ({colors}) => {
             <TouchableHighlight
               key={color}
               style={styles.color}
-              underlayColor={color}                
+              underlayColor="transparent"                
               onPress={() => {
                 stateNavigator.navigate('detail', {color});
               }}>
               <SharedElement name={color} style={{flex: 1}} duration={250}>
                 <View style={{backgroundColor: color, flex: 1}} />
+                <Text style={styles.text}>{color}</Text>
               </SharedElement>
             </TouchableHighlight>
           ))}
@@ -102,6 +103,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     marginBottom: 20,
+  },
+  text: {
+    fontSize: 25,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    backgroundColor: 'white'
   },
   result: {
     flex: 1,
