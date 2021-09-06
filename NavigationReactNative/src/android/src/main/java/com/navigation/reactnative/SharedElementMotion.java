@@ -22,7 +22,7 @@ class SharedElementMotion {
             enterScene.setSharedElementEnterTransition(transition);
             enterScene.setSharedElementReturnTransition(transition);
             scene.startPostponedEnterTransition();
-            scene.getScene().transitioner = null;
+            scene.getScene().sharedElementMotion = null;
         }
     }
 }

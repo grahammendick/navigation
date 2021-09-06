@@ -29,8 +29,8 @@ public class SharedElementView extends ViewGroup {
             @Override
             public boolean onPreDraw() {
                 getViewTreeObserver().removeOnPreDrawListener(this);
-                if (scene.transitioner != null)
-                    scene.transitioner.load(SharedElementView.this);
+                if (scene.sharedElementMotion != null)
+                    scene.sharedElementMotion.load(SharedElementView.this);
                 return true;
             }
         });

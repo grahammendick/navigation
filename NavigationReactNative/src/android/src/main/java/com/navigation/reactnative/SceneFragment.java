@@ -20,7 +20,7 @@ public class SceneFragment extends Fragment {
         super();
         this.scene = scene;
         if (sharedElement != null )
-            scene.transitioner = new SharedElementMotion(this, this, sharedElement);
+            scene.sharedElementMotion = new SharedElementMotion(this, this, sharedElement);
     }
 
     @Nullable
@@ -29,7 +29,7 @@ public class SceneFragment extends Fragment {
         if (scene != null) {
             if (scene.getParent() != null)
                 ((ViewGroup) scene.getParent()).endViewTransition(scene);
-            if (scene.transitioner != null)
+            if (scene.sharedElementMotion != null)
                 postponeEnterTransition();
             return scene;
         }
