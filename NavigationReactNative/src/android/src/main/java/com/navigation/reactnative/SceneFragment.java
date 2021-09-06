@@ -9,8 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.util.HashSet;
-
 public class SceneFragment extends Fragment {
     private SceneView scene;
 
@@ -18,11 +16,11 @@ public class SceneFragment extends Fragment {
         super();
     }
 
-    SceneFragment(SceneView scene, HashSet<String> sharedElements) {
+    SceneFragment(SceneView scene, String sharedElement) {
         super();
         this.scene = scene;
-        if (sharedElements != null )
-            scene.transitioner = new SharedElementTransitioner(this, sharedElements);
+        if (sharedElement != null )
+            scene.sharedElementMotion = new SharedElementMotion(this, this, sharedElement);
     }
 
     @Nullable
@@ -31,7 +29,7 @@ public class SceneFragment extends Fragment {
         if (scene != null) {
             if (scene.getParent() != null)
                 ((ViewGroup) scene.getParent()).endViewTransition(scene);
-            if (scene.transitioner != null)
+            if (scene.sharedElementMotion != null)
                 postponeEnterTransition();
             return scene;
         }
