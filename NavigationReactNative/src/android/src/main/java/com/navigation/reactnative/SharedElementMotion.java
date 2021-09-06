@@ -14,11 +14,10 @@ class SharedElementMotion {
     }
 
     void load(SharedElementView sharedElementView) {
-        String sharedElement = sharedElementView.getTransitionName();
-        if (sharedElementName.equals(sharedElement)) {
+        if (sharedElementName.equals(sharedElementView.getTransitionName())) {
             MaterialContainerTransform transition = sharedElementView.transition;
             transition.setTransitionDirection(enterScene == scene ? MaterialContainerTransform.TRANSITION_DIRECTION_ENTER : MaterialContainerTransform.TRANSITION_DIRECTION_RETURN);
-            transition.addTarget(sharedElement);
+            transition.addTarget(sharedElementView.getTransitionName());
             enterScene.setSharedElementEnterTransition(transition);
             enterScene.setSharedElementReturnTransition(transition);
             scene.startPostponedEnterTransition();
