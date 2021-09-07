@@ -71,22 +71,6 @@
   )} />
 &lt;/NavigationHandler>                
 </code></pre>
-            <h2>Customising Transitions</h2>
-            <p>
-                You can change the default shared element animation by creating an Android transition resource file. In our email example application, we want the email subject to overshoot its target slightly before settling into place. Inside Android Studio, we right click the root of our project and choose 'New -> Android Resource File'. In the pop-up dialog, we enter a name of 'email_overshoot', pick 'Transition' from the resource type dropdown and enter 'transition' for the directory name. We configure our animation using the built-in 'overshoot' interpolator.
-            </p>
-            <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
-&lt;transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
-  &lt;changeBounds android:interpolator="@android:interpolator/overshoot"/>
-  &lt;changeTransform android:interpolator="@android:interpolator/overshoot"/>
-&lt;/transitionSet></code></pre>
-            <p>
-                To get this animation to play when the 'mail' scene's <code>Text</code> component mounts and unmounts, we pass the name of our resource file to the <code>transition</code> prop of the <code>SharedElement</code> component.
-            </p>
-            <pre><code class="language-jsx">// The 'mail' scene
-&lt;SharedElement name={'email' + id} transition="email_overshoot">
-  &lt;Text>Meeting invite&lt;/Text>
-&lt;/SharedElement></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
