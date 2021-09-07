@@ -43,7 +43,7 @@
         <div id="article">
             <h1>Shared Element Transition (Android)</h1>
             <p>
-                Android supports shared element transitions, where you can smoothly animate between UI elements that are common across two scenes. The Navigation router exposes this functionality to React using the <code>SharedElement</code> component. To identify a pair of shareable elements, you wrap each one in a <code>SharedElement</code> component and give them both the same <code>name</code>.
+                Android supports shared element transitions, where you can smoothly animate changes between related Views across two scenes. The Navigation router exposes this functionality to React using the <code>SharedElement</code> component. To identify a pair of shareable elements, you wrap each one in a <code>SharedElement</code> component and give them both the same <code>name</code>.
             </p>
             <p>
                 In our email example app, we can smooth out the transition when a user opens an email by sharing the subject of the email between the 'inbox' scene and the 'mail' scene. We wrap the subject elements on each scene inside a <code>SharedElement</code> component and give them both the same name.
