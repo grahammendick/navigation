@@ -43,22 +43,25 @@
         <div id="article">
             <h1>Drawer</h1>
             <p>
-                You can use any third-party Drawer component with the Navigation router.  In our email example, we use the <code>DrawerLayout</code> component from react-native-gesture-handler, but any other one would work just as well. We add the drawer to the 'inbox' scene so the user can view their sent email. When the user taps the 'sent' button we close the drawer and navigate to their sent email when the close animation completes.
+                The Navigation router works with the built-in <code>DrawerLayoutAndroid</code> component from React Native. The <code>DrawerLayoutAndroid</code> component is 100% native on Android. You can see how it works on the <a href="https://reactnative.dev/docs/drawerlayoutandroid">the React Native website</a>, but make sure you add it at the top of the scene. We add the drawer to the 'inbox' scene so the user can view their sent email. When the user taps the 'sent' button we close the drawer and navigate to their sent email once the close animation completes.
             </p>
-            <pre><code class="language-jsx">import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
+            <pre><code class="language-jsx">import {DrawerLayoutAndroid, useState, useRef} from 'react-native';
+
+const [selected, setSelected] = useState(false);
+const drawer = useRef(null);
 
 &lt;DrawerLayout
-  ref={this.ref}
+  ref={drawer}
   onDrawerClose={() => {
-    if (this.state.selected)
+    if (selected)
       stateNavigator.navigate('sent');
   }}
   renderNavigationView={() => (
     &lt;View>
       &lt;TouchableHighlight
         onPress={() => {
-          this.setState({selected: true});
-          this.ref.current.closeDrawer();
+          setSelected(true);
+          drawer.closeDrawer();
       }}>
         &lt;Text>Sent&lt;/Text>
       &lt;/TouchableHighlight>
