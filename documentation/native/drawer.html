@@ -45,10 +45,7 @@
             <p>
                 The Navigation router works with the built-in <code>DrawerLayoutAndroid</code> component from React Native. The <code>DrawerLayoutAndroid</code> component is 100% native on Android. You can see how it works on the <a href="https://reactnative.dev/docs/drawerlayoutandroid">the React Native website</a>, but make sure you add it at the top of the scene. We add the drawer to the 'inbox' scene so the user can view their sent email. When the user taps the 'sent' button we close the drawer and navigate to their sent email once the close animation completes.
             </p>
-            <pre><code class="language-jsx">import {DrawerLayoutAndroid, useState, useRef} from 'react-native';
-
-const [selected, setSelected] = useState(false);
-const drawer = useRef(null);
+            <pre><code class="language-jsx">import {DrawerLayoutAndroid} from 'react-native';
 
 &lt;DrawerLayout
   ref={drawer}
