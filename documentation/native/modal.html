@@ -48,8 +48,8 @@
             <pre><code class="language-jsx">import {Modal} from 'react-native';
 
 &lt;Modal
-  visible={this.state.modalVisible}
-  onRequestClose={() => this.setState({modalVisible: false})}>
+  visible={modalVisible}
+  onRequestClose={() => setModalVisible(false)}>
   &lt;Contact />
 &lt;/Modal> </code></pre>
             <h2>Navigating in a Modal</h2>
