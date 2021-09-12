@@ -78,6 +78,11 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
         view.bottomSheetBehavior.setSkipCollapsed(skipCollapsed);
     }
 
+    @ReactProp(name = "draggable")
+    public void setDraggable(BottomSheetView view, boolean draggable) {
+        view.bottomSheetBehavior.setDraggable(draggable);
+    }
+
     @Nullable
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
