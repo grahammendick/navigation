@@ -517,6 +517,10 @@ export interface BottomSheetProps {
      */
     skipCollapsed?: boolean;
     /**
+     * Indicates whether the bottom sheet can be collapsed/expanded by dragging
+     */
+    draggable?: boolean;
+    /**
      * The default resting state of the bottom sheet
      */
     defaultDetent?: 'hidden' | 'collapsed' | 'halfExpanded' | 'expanded';
