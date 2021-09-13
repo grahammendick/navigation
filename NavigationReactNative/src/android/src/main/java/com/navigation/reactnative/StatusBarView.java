@@ -38,7 +38,7 @@ public class StatusBarView extends ViewGroup {
 
     private void updateStatusBar() {
         Activity activity = ((ReactContext) getContext()).getCurrentActivity();
-        if (activity != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        if (activity != null)
             activity.getWindow().setStatusBarColor(barTintColor);
         int systemUiVisibilityFlags = getSystemUiVisibility();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

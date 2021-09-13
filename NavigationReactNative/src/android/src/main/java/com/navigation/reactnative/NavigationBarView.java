@@ -26,9 +26,7 @@ public class NavigationBarView extends AppBarLayout {
         super(context);
         ViewCompat.setLayoutDirection(this, !I18nUtil.getInstance().isRTL(context) ? ViewCompat.LAYOUT_DIRECTION_LTR : ViewCompat.LAYOUT_DIRECTION_RTL);
         setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.WRAP_CONTENT));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            defaultOutlineProvider = getOutlineProvider();
-        }
+        defaultOutlineProvider = getOutlineProvider();
         defaultBackground = getBackground();
         addOnOffsetChangedListener(new OnOffsetChangedListener() {
             @Override
