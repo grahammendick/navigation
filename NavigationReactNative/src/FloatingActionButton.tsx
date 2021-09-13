@@ -1,9 +1,15 @@
 import React from "react";
-import { Platform, requireNativeComponent, Animated } from "react-native";
+import { Image, Platform, requireNativeComponent, Animated } from "react-native";
 
 class FloatingActionButton extends React.Component<any, any> {
     render() {
-        return <NVFloatingActionButton />        
+        var { image, ...props } = this.props;
+        return (
+            <NVFloatingActionButton
+                image={Image.resolveAssetSource(image)}
+                {...props}
+            />
+        );
     }
 }
 
