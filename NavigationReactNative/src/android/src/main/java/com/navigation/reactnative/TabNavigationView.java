@@ -30,7 +30,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         setBackground(null);
         TabLayoutView tabLayout = new TabLayoutView(context);
         selectedTintColor = unselectedTintColor = defaultTextColor = tabLayout.defaultTextColor;
-        setOnNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
+        setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 TabBarView tabBar = getTabBar();
