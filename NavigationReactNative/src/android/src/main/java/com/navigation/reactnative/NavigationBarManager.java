@@ -2,7 +2,6 @@ package com.navigation.reactnative;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.view.MenuItem;
 
 import com.facebook.react.common.MapBuilder;
@@ -15,8 +14,6 @@ import com.google.android.material.appbar.AppBarLayout;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
-
-import androidx.annotation.Nullable;
 
 public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
     @Nonnull
@@ -35,16 +32,13 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
     public void setBarTintColor(NavigationBarView view, int barTintColor) {
         if (barTintColor != Integer.MAX_VALUE) {
             view.setBackground(new ColorDrawable(barTintColor));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                if (Color.alpha(barTintColor) < 255)
-                    view.setOutlineProvider(null);
-                else
-                    view.setOutlineProvider(view.defaultOutlineProvider);
-            }
+            if (Color.alpha(barTintColor) < 255)
+                view.setOutlineProvider(null);
+            else
+                view.setOutlineProvider(view.defaultOutlineProvider);
         } else {
             view.setBackground(view.defaultBackground);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                view.setOutlineProvider(view.defaultOutlineProvider);
+            view.setOutlineProvider(view.defaultOutlineProvider);
         }
     }
 

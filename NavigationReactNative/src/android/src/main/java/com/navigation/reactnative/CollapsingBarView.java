@@ -17,10 +17,10 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
     private String largeTitleFontStyle;
     private boolean titleFontChanged = false;
     private boolean largeTitleFontChanged = false;
-    Drawable defaultContentScrim;
-    int defaultTitleTextColor;
-    Typeface defaultCollapsedTitleTypeface;
-    Typeface defaultExpandedTitleTypeface;
+    final Drawable defaultContentScrim;
+    final int defaultTitleTextColor;
+    final Typeface defaultCollapsedTitleTypeface;
+    final Typeface defaultExpandedTitleTypeface;
     private boolean layoutRequested = false;
 
     public CollapsingBarView(Context context) {

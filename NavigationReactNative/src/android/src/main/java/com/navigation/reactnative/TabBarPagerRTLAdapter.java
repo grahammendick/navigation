@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
-    private List<TabBarItemView> tabBarItems = new ArrayList<>();
-    Fragment fragment;
+    private final List<TabBarItemView> tabBarItems = new ArrayList<>();
+    final Fragment fragment;
     int selectedTab = 0;
     boolean scrollsToTop;
     int nativeEventCount;

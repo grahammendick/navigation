@@ -1,7 +1,6 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
-import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -15,11 +14,11 @@ import com.facebook.react.uimanager.events.NativeGestureUtil;
 public class CoordinatorLayoutView extends CoordinatorLayout {
     int overlap = 0;
     private boolean dragging = false;
-    private int touchSlop;
+    private final int touchSlop;
     private int lastMotionY;
     private int activePointerId;
-    private int[] scrollOffset = new int[2];
-    private int[] scrollConsumed = new int[2];
+    private final int[] scrollOffset = new int[2];
+    private final int[] scrollConsumed = new int[2];
     private boolean layoutRequested = false;
 
     public CoordinatorLayoutView(Context context){
@@ -89,7 +88,7 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         ScrollView scrollView = getScrollView();
         boolean cannotScroll = scrollView != null && scrollView.getScrollY() == 0 && !scrollView.canScrollVertically(1);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && cannotScroll) {
+        if (cannotScroll) {
             int action = ev.getAction();
             switch (action & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN: {
@@ -114,7 +113,7 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && dragging) {
+        if (dragging) {
             ScrollView scrollView = getScrollView();
             int action = ev.getAction();
             switch (action & MotionEvent.ACTION_MASK) {

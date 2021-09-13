@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TabBarPagerView extends ViewPager {
-    private Fragment fragment;
+    private final Fragment fragment;
     int selectedTab = 0;
     boolean scrollsToTop;
     private boolean layoutRequested = false;
@@ -179,7 +179,7 @@ public class TabBarPagerView extends ViewPager {
     }
 
     private class Adapter extends FragmentPagerAdapter {
-        private List<TabFragment> tabFragments = new ArrayList<>();
+        private final List<TabFragment> tabFragments = new ArrayList<>();
 
         Adapter(FragmentManager fragmentManager) {
             super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
