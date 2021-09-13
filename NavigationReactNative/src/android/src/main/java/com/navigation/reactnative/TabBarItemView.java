@@ -34,7 +34,7 @@ public class TabBarItemView extends ViewGroup {
     private Integer badgeColor;
     private Integer defaultBadgeColor;
     private String testID;
-    List<View> content = new ArrayList<>();
+    final List<View> content = new ArrayList<>();
     private final IconResolver.IconResolverListener tabIconResolverListener;
 
     public TabBarItemView(Context context) {

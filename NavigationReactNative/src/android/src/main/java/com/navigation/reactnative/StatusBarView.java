@@ -14,7 +14,7 @@ import com.facebook.react.bridge.ReactContext;
 
 public class StatusBarView extends ViewGroup {
     int barTintColor;
-    int defaultStatusBarColor;
+    final int defaultStatusBarColor;
     String tintStyle;
     boolean hidden;
 

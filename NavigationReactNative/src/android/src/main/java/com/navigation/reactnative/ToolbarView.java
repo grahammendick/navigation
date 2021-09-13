@@ -43,8 +43,8 @@ public class ToolbarView extends Toolbar {
     private Integer tintColor;
     private ImageButton collapseButton;
     private OnSearchListener onSearchAddedListener;
-    int defaultTitleTextColor;
-    Drawable defaultOverflowIcon;
+    final int defaultTitleTextColor;
+    final Drawable defaultOverflowIcon;
     private Integer defaultMenuTintColor;
     private String navigationTestID;
     private String overflowTestID;
@@ -52,7 +52,7 @@ public class ToolbarView extends Toolbar {
     private final IconResolver.IconResolverListener navIconResolverListener;
     private final IconResolver.IconResolverListener overflowIconResolverListener;
     private boolean layoutRequested = false;
-    ArrayList<View> children = new ArrayList<>();
+    final ArrayList<View> children = new ArrayList<>();
 
     public ToolbarView(Context context) {
         super(context);

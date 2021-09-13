@@ -18,7 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TabNavigationView extends BottomNavigationView implements TabView {
     boolean bottomTabs;
-    int defaultTextColor;
+    final int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
     private boolean layoutRequested = false;

@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TabBarView extends ViewGroup {
-    List<TabFragment> tabFragments = new ArrayList<>();
+    final List<TabFragment> tabFragments = new ArrayList<>();
     private FragmentManager fragmentManager;
     private TabFragment selectedTabFragment;
     private Fragment fragment;

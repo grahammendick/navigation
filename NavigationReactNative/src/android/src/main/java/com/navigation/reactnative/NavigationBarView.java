@@ -20,7 +20,7 @@ import com.google.android.material.appbar.AppBarLayout;
 
 public class NavigationBarView extends AppBarLayout {
     ViewOutlineProvider defaultOutlineProvider;
-    Drawable defaultBackground;
+    final Drawable defaultBackground;
 
     public NavigationBarView(Context context) {
         super(context);

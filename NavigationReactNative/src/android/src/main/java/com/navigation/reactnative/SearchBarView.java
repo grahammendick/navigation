@@ -18,8 +18,8 @@ import com.facebook.react.views.view.ReactViewGroup;
 import com.google.android.material.appbar.AppBarLayout;
 
 public class SearchBarView extends ReactViewGroup {
-    SearchView searchView;
-    AppBarLayout.OnOffsetChangedListener onOffsetChangedListener;
+    final SearchView searchView;
+    final AppBarLayout.OnOffsetChangedListener onOffsetChangedListener;
     private int barOffset = 0;
     int nativeEventCount;
     int mostRecentEventCount;
