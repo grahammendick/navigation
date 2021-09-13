@@ -26,8 +26,8 @@ class IconResolver {
     private static final String PROP_ICON_HEIGHT = "height";
 
     private static class DrawableWithIntrinsicSize extends BitmapDrawable {
-        private int width;
-        private int height;
+        private final int width;
+        private final int height;
 
         DrawableWithIntrinsicSize(Resources resources, Bitmap bitmap, ReadableMap source) {
             super(resources, bitmap);

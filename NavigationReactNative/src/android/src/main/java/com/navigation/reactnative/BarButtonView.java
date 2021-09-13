@@ -35,7 +35,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     private MenuItem menuItem;
     private Integer tintColor;
     private Drawable icon;
-    private IconResolver.IconResolverListener iconResolverListener;
+    private final IconResolver.IconResolverListener iconResolverListener;
 
     public BarButtonView(Context context) {
         super(context);

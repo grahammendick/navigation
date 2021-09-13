@@ -15,11 +15,11 @@ import com.facebook.react.uimanager.events.NativeGestureUtil;
 public class CoordinatorLayoutView extends CoordinatorLayout {
     int overlap = 0;
     private boolean dragging = false;
-    private int touchSlop;
+    private final int touchSlop;
     private int lastMotionY;
     private int activePointerId;
-    private int[] scrollOffset = new int[2];
-    private int[] scrollConsumed = new int[2];
+    private final int[] scrollOffset = new int[2];
+    private final int[] scrollConsumed = new int[2];
     private boolean layoutRequested = false;
 
     public CoordinatorLayoutView(Context context){

@@ -48,9 +48,9 @@ public class ToolbarView extends Toolbar {
     private Integer defaultMenuTintColor;
     private String navigationTestID;
     private String overflowTestID;
-    private IconResolver.IconResolverListener logoResolverListener;
-    private IconResolver.IconResolverListener navIconResolverListener;
-    private IconResolver.IconResolverListener overflowIconResolverListener;
+    private final IconResolver.IconResolverListener logoResolverListener;
+    private final IconResolver.IconResolverListener navIconResolverListener;
+    private final IconResolver.IconResolverListener overflowIconResolverListener;
     private boolean layoutRequested = false;
     ArrayList<View> children = new ArrayList<>();
 
