@@ -6,7 +6,6 @@ import android.os.Build;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import androidx.core.view.ViewCompat;
 
@@ -14,7 +13,7 @@ import com.facebook.react.bridge.ReactContext;
 
 public class StatusBarView extends ViewGroup {
     int barTintColor;
-    int defaultStatusBarColor;
+    final int defaultStatusBarColor;
     String tintStyle;
     boolean hidden;
 
@@ -38,7 +37,7 @@ public class StatusBarView extends ViewGroup {
 
     private void updateStatusBar() {
         Activity activity = ((ReactContext) getContext()).getCurrentActivity();
-        if (activity != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        if (activity != null)
             activity.getWindow().setStatusBarColor(barTintColor);
         int systemUiVisibilityFlags = getSystemUiVisibility();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

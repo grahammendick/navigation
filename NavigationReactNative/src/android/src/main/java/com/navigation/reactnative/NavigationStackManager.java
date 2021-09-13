@@ -1,6 +1,5 @@
 package com.navigation.reactnative;
 
-import android.os.Build;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -57,7 +56,7 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     @Override
     public void addView(NavigationStackView parent, View child, int index) {
         SceneView scene = (SceneView) child;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && index > 0)
+        if (index > 0)
             scene.setElevation(getChildAt(parent, index - 1).getElevation() + 1);
         parent.sceneKeys.add(index, scene.sceneKey);
         parent.scenes.put(scene.sceneKey, scene);

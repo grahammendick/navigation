@@ -2,7 +2,6 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TabNavigationView extends BottomNavigationView implements TabView {
     boolean bottomTabs;
-    int defaultTextColor;
+    final int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
     private boolean layoutRequested = false;
@@ -30,7 +29,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         setBackground(null);
         TabLayoutView tabLayout = new TabLayoutView(context);
         selectedTintColor = unselectedTintColor = defaultTextColor = tabLayout.defaultTextColor;
-        setOnNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
+        setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 TabBarView tabBar = getTabBar();
@@ -113,7 +112,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
 
     @Override
     public void setTestID(int index, String testID) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 && getTouchables().size() > index) {
+        if (getTouchables().size() > index) {
             BottomNavigationItemView itemView = (BottomNavigationItemView) getTouchables().get(index);
             itemView.setTag(testID);
         }
@@ -127,7 +126,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     @Override
     public void removeBadgeIcon(int index) {
         removeBadge(index);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 && getTouchables().size() > index) {
+        if (getTouchables().size() > index) {
             BottomNavigationItemView itemView = (BottomNavigationItemView) getTouchables().get(index);
             itemView.getChildAt(0).getOverlay().clear();
         }
