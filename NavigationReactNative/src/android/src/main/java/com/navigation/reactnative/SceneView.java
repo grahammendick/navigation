@@ -13,7 +13,7 @@ public class SceneView extends ViewGroup {
     protected String sceneKey;
     protected String enterAnim;
     protected String exitAnim;
-    public HashSet<SharedElementView> sharedElements = new HashSet<>();
+    public final HashSet<SharedElementView> sharedElements = new HashSet<>();
     public SharedElementMotion sharedElementMotion;
 
     public SceneView(Context context) {

@@ -34,8 +34,8 @@ import java.util.List;
 import java.util.Map;
 
 public class NavigationStackView extends ViewGroup implements LifecycleEventListener {
-    protected ArrayList<String> sceneKeys = new ArrayList<>();
-    protected HashMap<String, SceneView> scenes = new HashMap<>();
+    protected final ArrayList<String> sceneKeys = new ArrayList<>();
+    protected final HashMap<String, SceneView> scenes = new HashMap<>();
     Fragment fragment = null;
     protected ReadableArray keys;
     private int oldCrumb = -1;

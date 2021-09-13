@@ -7,12 +7,12 @@ import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
+import android.view.CollapsibleActionView;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.CollapsibleActionView;
 
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
@@ -35,7 +35,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     private MenuItem menuItem;
     private Integer tintColor;
     private Drawable icon;
-    private IconResolver.IconResolverListener iconResolverListener;
+    private final IconResolver.IconResolverListener iconResolverListener;
 
     public BarButtonView(Context context) {
         super(context);
