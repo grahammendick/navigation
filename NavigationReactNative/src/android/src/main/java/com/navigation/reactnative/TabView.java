@@ -2,9 +2,6 @@ package com.navigation.reactnative;
 
 import android.graphics.drawable.Drawable;
 
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
-
 import com.google.android.material.badge.BadgeDrawable;
 
 public interface TabView {

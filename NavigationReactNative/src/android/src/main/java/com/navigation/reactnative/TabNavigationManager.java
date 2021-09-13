@@ -2,9 +2,6 @@ package com.navigation.reactnative;
 
 import android.content.res.ColorStateList;
 
-import androidx.annotation.Nullable;
-
-import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;

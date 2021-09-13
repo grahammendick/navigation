@@ -1,6 +1,5 @@
 package com.navigation.reactnative;
 
-import android.os.Build;
 import android.view.View;
 
 import androidx.annotation.NonNull;

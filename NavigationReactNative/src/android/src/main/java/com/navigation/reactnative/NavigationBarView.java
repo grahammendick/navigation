@@ -2,7 +2,6 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.view.ViewOutlineProvider;
 
 import androidx.core.util.Pools;
@@ -19,7 +18,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
 
 public class NavigationBarView extends AppBarLayout {
-    ViewOutlineProvider defaultOutlineProvider;
+    final ViewOutlineProvider defaultOutlineProvider;
     final Drawable defaultBackground;
 
     public NavigationBarView(Context context) {

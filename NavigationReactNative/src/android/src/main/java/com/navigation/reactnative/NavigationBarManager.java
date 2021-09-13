@@ -2,7 +2,6 @@ package com.navigation.reactnative;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.view.MenuItem;
 
 import com.facebook.react.common.MapBuilder;
@@ -15,8 +14,6 @@ import com.google.android.material.appbar.AppBarLayout;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
-
-import androidx.annotation.Nullable;
 
 public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
     @Nonnull
