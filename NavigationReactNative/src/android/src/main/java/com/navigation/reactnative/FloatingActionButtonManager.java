@@ -8,9 +8,11 @@ import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Map;
 
@@ -106,6 +108,13 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
     @ReactProp(name = "contentDescription")
     public void setContentDescription(FloatingActionButtonView view, String contentDescription) {
         view.setContentDescription(contentDescription);
+    }
+
+    @ReactProp(name = "size")
+    public void setSize(FloatingActionButtonView view, int size) {
+        view.clearCustomSize();
+        if (size > 0) view.setCustomSize((int) PixelUtil.toPixelFromDIP(size));
+        else view.setSize(FloatingActionButton.SIZE_NORMAL);
     }
 
     private void requestCoordinatorLayout(FloatingActionButtonView view) {

@@ -23,6 +23,7 @@ public class FloatingActionButtonView extends FloatingActionButton {
 
     public FloatingActionButtonView(@NonNull Context context) {
         super(context);
+        setSize(SIZE_NORMAL);
         defaultBackgroundColor = getBackgroundTintList() != null ? getBackgroundTintList().getDefaultColor() : Color.BLACK;
         params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         setLayoutParams(params);
