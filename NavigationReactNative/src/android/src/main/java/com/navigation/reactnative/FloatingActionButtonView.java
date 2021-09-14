@@ -14,13 +14,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class FloatingActionButtonView extends FloatingActionButton {
     final int defaultBackgroundColor;
-    final CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    final CoordinatorLayout.LayoutParams params;
+    int marginTop, marginRight, marginBottom, marginLeft, margin;
     private final IconResolver.IconResolverListener iconResolverListener;
 
     public FloatingActionButtonView(@NonNull Context context) {
         super(context);
-        setLayoutParams(params);
         defaultBackgroundColor = getBackgroundTintList() != null ? getBackgroundTintList().getDefaultColor() : Color.BLACK;
+        params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        setLayoutParams(params);
         iconResolverListener = new IconResolver.IconResolverListener() {
             @Override
             public void setDrawable(Drawable d) {
