@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import android.content.res.ColorStateList;
+
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableMap;
@@ -23,5 +25,10 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
     @ReactProp(name = "image")
     public void setImage(FloatingActionButtonView view, ReadableMap icon) {
         view.setIconSource(icon);
+    }
+
+    @ReactProp(name = "backgroundColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setBackgroundColor(FloatingActionButtonView view, int backgroundColor) {
+        view.setBackgroundTintList(ColorStateList.valueOf(backgroundColor != Integer.MAX_VALUE ? backgroundColor : view.defaultBackgroundColor));
     }
 }
