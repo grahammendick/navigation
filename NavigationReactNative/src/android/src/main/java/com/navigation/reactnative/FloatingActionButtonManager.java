@@ -7,9 +7,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
+
+import java.util.Map;
 
 public class FloatingActionButtonManager extends SimpleViewManager<FloatingActionButtonView> {
     @NonNull
@@ -118,5 +121,12 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
         view.params.setMargins(
             Math.max(view.marginLeft, view.margin), Math.max(view.marginTop, view.margin),
             Math.max(view.marginRight, view.margin), Math.max(view.marginBottom, view.margin));
+    }
+
+    @Override
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+            .put("onPress", MapBuilder.of("registrationName", "onPress"))
+            .build();
     }
 }

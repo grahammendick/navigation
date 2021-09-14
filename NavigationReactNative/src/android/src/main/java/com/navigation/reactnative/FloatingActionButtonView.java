@@ -3,13 +3,16 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class FloatingActionButtonView extends FloatingActionButton {
@@ -29,6 +32,13 @@ public class FloatingActionButtonView extends FloatingActionButton {
                 setImageDrawable(d);
             }
         };
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ReactContext reactContext = (ReactContext) getContext();
+                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onPress", null);
+            }
+        });
     }
 
     void setIconSource(@Nullable ReadableMap source) {
