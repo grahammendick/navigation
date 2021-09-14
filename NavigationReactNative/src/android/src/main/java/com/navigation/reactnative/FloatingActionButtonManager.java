@@ -47,17 +47,27 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
 
     @ReactProp(name = "gravity")
     public void setGravity(FloatingActionButtonView view, String gravity) {
-        if ("topLeft".equals(gravity)) view.params.gravity = Gravity.TOP | Gravity.START;
-        else if ("top".equals(gravity)) view.params.gravity = Gravity.TOP | Gravity.CENTER;
-        else if ("topRight".equals(gravity)) view.params.gravity = Gravity.TOP | Gravity.END;
-        else if ("left".equals(gravity)) view.params.gravity = Gravity.CENTER | Gravity.START;
-        else if ("center".equals(gravity)) view.params.gravity = Gravity.CENTER;
-        else if ("right".equals(gravity)) view.params.gravity = Gravity.CENTER | Gravity.END;
-        else if ("bottomLeft".equals(gravity)) view.params.gravity = Gravity.BOTTOM | Gravity.START;
-        else if ("bottom".equals(gravity)) view.params.gravity = Gravity.BOTTOM | Gravity.CENTER;
-        else if ("bottomRight".equals(gravity)) view.params.gravity = Gravity.BOTTOM | Gravity.END;
-        else view.params.gravity = Gravity.NO_GRAVITY;
+        view.params.gravity = convertGravity(gravity);
         requestCoordinatorLayout(view);
+    }
+
+    @ReactProp(name = "anchorGravity")
+    public void setAnchorGravity(FloatingActionButtonView view, String anchorGravity) {
+        view.params.anchorGravity = convertGravity(anchorGravity);
+        requestCoordinatorLayout(view);
+    }
+
+    private int convertGravity(String gravity) {
+        if ("topLeft".equals(gravity)) return Gravity.TOP | Gravity.START;
+        if ("top".equals(gravity)) return Gravity.TOP | Gravity.CENTER;
+        if ("topRight".equals(gravity)) return Gravity.TOP | Gravity.END;
+        if ("left".equals(gravity)) return Gravity.CENTER | Gravity.START;
+        if ("center".equals(gravity)) return Gravity.CENTER;
+        if ("right".equals(gravity)) return Gravity.CENTER | Gravity.END;
+        if ("bottomLeft".equals(gravity)) return Gravity.BOTTOM | Gravity.START;
+        if ("bottom".equals(gravity)) return Gravity.BOTTOM | Gravity.CENTER;
+        if ("bottomRight".equals(gravity)) return Gravity.BOTTOM | Gravity.END;
+        return Gravity.NO_GRAVITY;
     }
 
     @ReactProp(name = "marginTop")
