@@ -100,6 +100,11 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
         requestCoordinatorLayout(view);
     }
 
+    @ReactProp(name = "contentDescription")
+    public void setContentDescription(FloatingActionButtonView view, String contentDescription) {
+        view.setContentDescription(contentDescription);
+    }
+
     private void requestCoordinatorLayout(FloatingActionButtonView view) {
         if (view.getParent() instanceof CoordinatorLayoutView) {
             CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) view.getParent();
