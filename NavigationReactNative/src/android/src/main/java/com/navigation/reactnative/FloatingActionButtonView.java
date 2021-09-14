@@ -1,8 +1,8 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.view.Gravity;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -20,7 +20,7 @@ public class FloatingActionButtonView extends FloatingActionButton {
     public FloatingActionButtonView(@NonNull Context context) {
         super(context);
         setLayoutParams(params);
-        defaultBackgroundColor = getBackgroundTintList().getDefaultColor();
+        defaultBackgroundColor = getBackgroundTintList() != null ? getBackgroundTintList().getDefaultColor() : Color.BLACK;
         iconResolverListener = new IconResolver.IconResolverListener() {
             @Override
             public void setDrawable(Drawable d) {
