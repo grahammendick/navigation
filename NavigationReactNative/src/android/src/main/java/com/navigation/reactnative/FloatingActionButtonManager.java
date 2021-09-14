@@ -31,4 +31,9 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
     public void setBackgroundColor(FloatingActionButtonView view, int backgroundColor) {
         view.setBackgroundTintList(ColorStateList.valueOf(backgroundColor != Integer.MAX_VALUE ? backgroundColor : view.defaultBackgroundColor));
     }
+
+    @ReactProp(name = "color", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setColor(FloatingActionButtonView view, int color) {
+        view.setImageTintList(color != Integer.MAX_VALUE ? ColorStateList.valueOf(color) : null);
+    }
 }
