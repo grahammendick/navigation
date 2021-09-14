@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.content.res.ColorStateList;
 import android.view.Gravity;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -36,6 +37,12 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
     @ReactProp(name = "color", customType = "Color", defaultInt = Integer.MAX_VALUE)
     public void setColor(FloatingActionButtonView view, int color) {
         view.setImageTintList(color != Integer.MAX_VALUE ? ColorStateList.valueOf(color) : null);
+    }
+
+    @ReactProp(name = "anchor", defaultInt = View.NO_ID)
+    public void setAnchor(FloatingActionButtonView view, int anchor) {
+        view.params.setAnchorId(anchor);
+        requestCoordinatorLayout(view);
     }
 
     @ReactProp(name = "gravity")
