@@ -26,6 +26,7 @@ public class FloatingActionButtonView extends FloatingActionButton {
         setSize(SIZE_NORMAL);
         defaultBackgroundColor = getBackgroundTintList() != null ? getBackgroundTintList().getDefaultColor() : Color.BLACK;
         params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setBehavior(getBehavior());
         setLayoutParams(params);
         iconResolverListener = new IconResolver.IconResolverListener() {
             @Override
