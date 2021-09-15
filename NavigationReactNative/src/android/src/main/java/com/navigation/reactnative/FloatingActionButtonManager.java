@@ -113,6 +113,11 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
         requestCoordinatorLayout(view);
     }
 
+    @ReactProp(name = "elevation")
+    public void setElevation(FloatingActionButtonView view, int elevation) {
+        view.setCompatElevation(PixelUtil.toPixelFromDIP(elevation));
+    }
+
     @ReactProp(name = "contentDescription")
     public void setContentDescription(FloatingActionButtonView view, String contentDescription) {
         view.setContentDescription(contentDescription);
