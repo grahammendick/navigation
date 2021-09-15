@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.modules.i18nmanager.I18nUtil;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -71,15 +72,21 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
     }
 
     private int convertGravity(String gravity) {
-        if ("topLeft".equals(gravity)) return Gravity.TOP | Gravity.START;
+        if ("topLeft".equals(gravity)) return Gravity.TOP | Gravity.LEFT;
+        if ("topStart".equals(gravity)) return Gravity.TOP | Gravity.START;
         if ("top".equals(gravity)) return Gravity.TOP | Gravity.CENTER;
-        if ("topRight".equals(gravity)) return Gravity.TOP | Gravity.END;
-        if ("left".equals(gravity)) return Gravity.CENTER | Gravity.START;
+        if ("topRight".equals(gravity)) return Gravity.TOP | Gravity.RIGHT;
+        if ("topEnd".equals(gravity)) return Gravity.TOP | Gravity.END;
+        if ("left".equals(gravity)) return Gravity.CENTER | Gravity.LEFT;
+        if ("start".equals(gravity)) return Gravity.CENTER | Gravity.START;
         if ("center".equals(gravity)) return Gravity.CENTER;
-        if ("right".equals(gravity)) return Gravity.CENTER | Gravity.END;
-        if ("bottomLeft".equals(gravity)) return Gravity.BOTTOM | Gravity.START;
+        if ("right".equals(gravity)) return Gravity.CENTER | Gravity.RIGHT;
+        if ("end".equals(gravity)) return Gravity.CENTER | Gravity.END;
+        if ("bottomLeft".equals(gravity)) return Gravity.BOTTOM | Gravity.LEFT;
+        if ("bottomStart".equals(gravity)) return Gravity.BOTTOM | Gravity.START;
         if ("bottom".equals(gravity)) return Gravity.BOTTOM | Gravity.CENTER;
-        if ("bottomRight".equals(gravity)) return Gravity.BOTTOM | Gravity.END;
+        if ("bottomRight".equals(gravity)) return Gravity.BOTTOM | Gravity.RIGHT;
+        if ("bottomEnd".equals(gravity)) return Gravity.BOTTOM | Gravity.END;
         return Gravity.NO_GRAVITY;
     }
 
@@ -98,6 +105,18 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
     @ReactProp(name = "marginBottom")
     public void setMarginBottom(FloatingActionButtonView view, int marginBottom) {
         view.marginBottom = marginBottom;
+        requestCoordinatorLayout(view);
+    }
+
+    @ReactProp(name = "marginStart")
+    public void setMarginStart(FloatingActionButtonView view, int marginStart) {
+        view.marginStart = marginStart;
+        requestCoordinatorLayout(view);
+    }
+
+    @ReactProp(name = "marginEnd")
+    public void setMarginEnd(FloatingActionButtonView view, int marginEnd) {
+        view.marginEnd = marginEnd;
         requestCoordinatorLayout(view);
     }
 
@@ -140,9 +159,12 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
     @Override
     protected void onAfterUpdateTransaction(@NonNull FloatingActionButtonView view) {
         super.onAfterUpdateTransaction(view);
+        boolean rtl = I18nUtil.getInstance().isRTL(view.getContext());
+        int marginLeft = Math.max(view.marginLeft, !rtl ? view.marginStart : view.marginEnd);
+        int marginRight = Math.max(view.marginRight, !rtl ? view.marginEnd : view.marginStart);
         view.params.setMargins(
-            Math.max(view.marginLeft, view.margin), Math.max(view.marginTop, view.margin),
-            Math.max(view.marginRight, view.margin), Math.max(view.marginBottom, view.margin));
+            Math.max(marginLeft, view.margin), Math.max(view.marginTop, view.margin),
+            Math.max(marginRight, view.margin), Math.max(view.marginBottom, view.margin));
     }
 
     @Override

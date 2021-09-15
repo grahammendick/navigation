@@ -7,8 +7,10 @@ import android.view.ViewConfiguration;
 import android.widget.ScrollView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.facebook.react.modules.i18nmanager.I18nUtil;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
 
 public class CoordinatorLayoutView extends CoordinatorLayout {
@@ -23,6 +25,7 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
 
     public CoordinatorLayoutView(Context context){
         super(context);
+        ViewCompat.setLayoutDirection(this, !I18nUtil.getInstance().isRTL(context) ? ViewCompat.LAYOUT_DIRECTION_LTR : ViewCompat.LAYOUT_DIRECTION_RTL);
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 

@@ -18,7 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class FloatingActionButtonView extends FloatingActionButton {
     final int defaultBackgroundColor;
     final CoordinatorLayout.LayoutParams params;
-    int marginTop, marginRight, marginBottom, marginLeft, margin;
+    int marginTop, marginRight, marginBottom, marginLeft, marginStart, marginEnd, margin;
     private final IconResolver.IconResolverListener iconResolverListener;
 
     public FloatingActionButtonView(@NonNull Context context) {
