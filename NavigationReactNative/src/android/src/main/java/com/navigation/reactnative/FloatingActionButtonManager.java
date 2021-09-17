@@ -163,8 +163,11 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
         int marginLeft = Math.max(view.marginLeft, !rtl ? view.marginStart : view.marginEnd);
         int marginRight = Math.max(view.marginRight, !rtl ? view.marginEnd : view.marginStart);
         view.params.setMargins(
-            Math.max(marginLeft, view.margin), Math.max(view.marginTop, view.margin),
-            Math.max(marginRight, view.margin), Math.max(view.marginBottom, view.margin));
+            (int) PixelUtil.toPixelFromDIP(Math.max(marginLeft, view.margin)),
+            (int) PixelUtil.toPixelFromDIP(Math.max(view.marginTop, view.margin)),
+            (int) PixelUtil.toPixelFromDIP(Math.max(marginRight, view.margin)),
+            (int) PixelUtil.toPixelFromDIP(Math.max(view.marginBottom, view.margin)
+        ));
     }
 
     @Override
