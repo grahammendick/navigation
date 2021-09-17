@@ -92,43 +92,43 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
 
     @ReactProp(name = "marginTop")
     public void setMarginTop(FloatingActionButtonView view, int marginTop) {
-        view.marginTop = marginTop;
+        view.marginTop = (int) PixelUtil.toPixelFromDIP(marginTop);
         requestCoordinatorLayout(view);
     }
 
     @ReactProp(name = "marginRight")
     public void setMarginRight(FloatingActionButtonView view, int marginRight) {
-        view.marginRight = marginRight;
+        view.marginRight = (int) PixelUtil.toPixelFromDIP(marginRight);
         requestCoordinatorLayout(view);
     }
 
     @ReactProp(name = "marginBottom")
     public void setMarginBottom(FloatingActionButtonView view, int marginBottom) {
-        view.marginBottom = marginBottom;
+        view.marginBottom = (int) PixelUtil.toPixelFromDIP(marginBottom);
         requestCoordinatorLayout(view);
     }
 
     @ReactProp(name = "marginStart")
     public void setMarginStart(FloatingActionButtonView view, int marginStart) {
-        view.marginStart = marginStart;
+        view.marginStart = (int) PixelUtil.toPixelFromDIP(marginStart);
         requestCoordinatorLayout(view);
     }
 
     @ReactProp(name = "marginEnd")
     public void setMarginEnd(FloatingActionButtonView view, int marginEnd) {
-        view.marginEnd = marginEnd;
+        view.marginEnd = (int) PixelUtil.toPixelFromDIP(marginEnd);
         requestCoordinatorLayout(view);
     }
 
     @ReactProp(name = "marginLeft")
     public void setMarginLeft(FloatingActionButtonView view, int marginLeft) {
-        view.marginLeft = marginLeft;
+        view.marginLeft = (int) PixelUtil.toPixelFromDIP(marginLeft);
         requestCoordinatorLayout(view);
     }
 
     @ReactProp(name = "margin")
     public void setMargin(FloatingActionButtonView view, int margin) {
-        view.margin = margin;
+        view.margin = (int) PixelUtil.toPixelFromDIP(margin);
         requestCoordinatorLayout(view);
     }
 
@@ -163,10 +163,8 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
         int marginLeft = Math.max(view.marginLeft, !rtl ? view.marginStart : view.marginEnd);
         int marginRight = Math.max(view.marginRight, !rtl ? view.marginEnd : view.marginStart);
         view.params.setMargins(
-            (int) PixelUtil.toPixelFromDIP(Math.max(marginLeft, view.margin)),
-            (int) PixelUtil.toPixelFromDIP(Math.max(view.marginTop, view.margin)),
-            (int) PixelUtil.toPixelFromDIP(Math.max(marginRight, view.margin)),
-            (int) PixelUtil.toPixelFromDIP(Math.max(view.marginBottom, view.margin)
+            Math.max(marginLeft, view.margin), Math.max(view.marginTop, view.margin),
+            Math.max(marginRight, view.margin), Math.max(view.marginBottom, view.margin
         ));
     }
 
