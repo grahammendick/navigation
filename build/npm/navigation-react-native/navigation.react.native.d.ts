@@ -1,5 +1,5 @@
 import { Component, Context, ReactNode } from 'react';
-import { BackHandler, ImageRequireSource, ImageURISource, NativeSyntheticEvent, StyleProp, ViewStyle } from 'react-native';
+import { BackHandler, ImageRequireSource, ImageURISource, NativeSyntheticEvent, StyleProp, ViewStyle, TransformsStyle } from 'react-native';
 import { Crumb, State, StateContext } from 'navigation';
 
 declare global {
@@ -487,6 +487,72 @@ export interface TabBarProps {
  * Renders a tab bar
  */
 export class TabBar extends Component<TabBarProps> {}
+
+/**
+ * Defines the Floating Action Button Props contract
+ */
+export interface FloatingActionButtonProps {
+    /**
+     * The floating action button image
+     */
+    image: ImageRequireSource | ImageURISource | string;
+    /**
+     * Indicates whether to hide the floating action button
+     */
+    hide?: boolean;
+    /**
+     * The view the floating action button is anchored to
+     */
+    anchor?: number | null;
+    /**
+     * The layout position of the floating action button
+     */
+    gravity?: 'topLeft' | 'topStart' | 'top' | 'topRight' | 'topEnd'
+        | 'left' | 'start' | 'center' | 'right' | 'end' | 'bottomLeft'
+        | 'bottomStart' | 'bottom' | 'bottomRight' |  'bottomEnd';
+    /**
+     * The relative position of the floating action button within the anchor
+     */
+    anchorGravity?: 'topLeft' | 'topStart' | 'top' | 'topRight' | 'topEnd'
+        | 'left' | 'start' | 'center' | 'right' | 'end' | 'bottomLeft'
+        | 'bottomStart' | 'bottom' | 'bottomRight' |  'bottomEnd';
+    /**
+     * The size of the floating action button
+     */
+    size?: number;
+    /**
+     * The accessible description of the floating action button
+     */
+    contentDescription?: string;
+    /**
+     * The style
+     */
+    style?: StyleProp<FloatingActionButtonStyle>;
+    /**
+     * Handles floating action button press events
+     */
+    onPress?: () => void;
+}
+
+export interface FloatingActionButtonStyle extends TransformsStyle {
+    backgroundColor?: string;
+    color?: string;
+    margin?: number;
+    marginBottom?: number;
+    marginEnd?: number;
+    marginHorizontal?: number;
+    marginLeft?: number;
+    marginRight?: number;
+    marginStart?: number;
+    marginTop?: number;
+    opacity?: number;
+    elevation?: number;
+}
+
+/**
+ * Renders a floating action button
+ */
+export class FloatingActionButton extends Component<FloatingActionButtonProps> {}
 
 /**
  * Defines the Modal Back Handler Props contract
