@@ -534,6 +534,9 @@ export interface FloatingActionButtonProps {
     onPress?: () => void;
 }
 
+/**
+ * Defines the Floating Action Button Style Prop contract
+ */
 export interface FloatingActionButtonStyle extends TransformsStyle {
     backgroundColor?: string;
     color?: string;
