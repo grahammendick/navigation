@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 
-public class BottomAppBarView extends BottomAppBar {
-    public BottomAppBarView(@NonNull Context context) {
+public class ToolbarBottomView extends BottomAppBar {
+    public ToolbarBottomView(@NonNull Context context) {
         super(context);
     }
 }

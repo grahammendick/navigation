@@ -5,16 +5,16 @@ import androidx.annotation.NonNull;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 
-public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
+public class ToolbarBottomManager extends ViewGroupManager<ToolbarBottomView> {
     @NonNull
     @Override
     public String getName() {
-        return "NVBottomAppBar";
+        return "NVToolbarBottom";
     }
 
     @NonNull
     @Override
-    protected BottomAppBarView createViewInstance(@NonNull ThemedReactContext reactContext) {
-        return new BottomAppBarView(reactContext);
+    protected ToolbarBottomView createViewInstance(@NonNull ThemedReactContext reactContext) {
+        return new ToolbarBottomView(reactContext);
     }
 }
