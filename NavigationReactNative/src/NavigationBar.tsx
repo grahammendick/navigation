@@ -7,6 +7,7 @@ import TitleBar from './TitleBar';
 import CollapsingBar from './CollapsingBar';
 import TabBar from './TabBar';
 import StatusBar from './StatusBar';
+import Toolbar from './Toolbar';
 
 class NavigationBar extends React.Component<any, any> {
     constructor(props) {
@@ -53,7 +54,7 @@ class NavigationBar extends React.Component<any, any> {
                             {...scrollEdgeProps}
                             {...(collapsingBar && collapsingBar.props)}>
                             {collapsingBar && collapsingBar.props.children}
-                            <NVToolbar
+                            <Toolbar
                                 bottom={false}
                                 pin={!!collapsingBar}
                                 {...otherProps}
@@ -64,7 +65,7 @@ class NavigationBar extends React.Component<any, any> {
                                     childrenArray.find(({type}) => type === LeftBar),
                                     childrenArray.find(({type}) => type === RightBar)
                                 ]}
-                            </NVToolbar>
+                            </Toolbar>
                             {childrenArray.find(({type}) => type === TabBar)}
                         </Container>}
                         {statusBar}
@@ -80,6 +81,5 @@ var Container: any = ({collapse, children, ...props}) => (
 )
 
 var NVNavigationBar = requireNativeComponent<any>('NVNavigationBar', null);
-var NVToolbar = requireNativeComponent<any>('NVToolbar', null);
 
 export default Animated.createAnimatedComponent(NavigationBar);
