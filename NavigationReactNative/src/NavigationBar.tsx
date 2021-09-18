@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { requireNativeComponent, Platform, Animated } from 'react-native';
+import { requireNativeComponent, Image, Platform, Animated } from 'react-native';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
 import SearchBar from './SearchBar';
@@ -7,7 +7,6 @@ import TitleBar from './TitleBar';
 import CollapsingBar from './CollapsingBar';
 import TabBar from './TabBar';
 import StatusBar from './StatusBar';
-import Toolbar from './Toolbar';
 
 class NavigationBar extends React.Component<any, any> {
     constructor(props) {
@@ -31,7 +30,7 @@ class NavigationBar extends React.Component<any, any> {
         }
     }
     render() {
-        var {hidden, children, style = {height: undefined}, ...otherProps} = this.props;
+        var {hidden, logo, navigationImage, overflowImage, children, style = {height: undefined}, ...otherProps} = this.props;
         var scrollEdgeProps = this.getScrollEdgeProps()
         var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
         var statusBar = childrenArray.find(({type}) => type === StatusBar);
@@ -54,18 +53,21 @@ class NavigationBar extends React.Component<any, any> {
                             {...scrollEdgeProps}
                             {...(collapsingBar && collapsingBar.props)}>
                             {collapsingBar && collapsingBar.props.children}
-                            <Toolbar
-                                bottom={false}
+                            <NVToolbar
+                                logo={Image.resolveAssetSource(logo)}
+                                navigationImage={Image.resolveAssetSource(navigationImage)}
+                                overflowImage={Image.resolveAssetSource(overflowImage)}
                                 pin={!!collapsingBar}
                                 {...otherProps}
                                 {...scrollEdgeProps}
-                                barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : null}>
+                                barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : null}
+                                style={{height: 56}}>
                                 {[
                                     childrenArray.find(({type}) => type === TitleBar),
                                     childrenArray.find(({type}) => type === LeftBar),
                                     childrenArray.find(({type}) => type === RightBar)
                                 ]}
-                            </Toolbar>
+                            </NVToolbar>
                             {childrenArray.find(({type}) => type === TabBar)}
                         </Container>}
                         {statusBar}
@@ -81,5 +83,6 @@ var Container: any = ({collapse, children, ...props}) => (
 )
 
 var NVNavigationBar = requireNativeComponent<any>('NVNavigationBar', null);
+var NVToolbar = requireNativeComponent<any>('NVToolbar', null);
 
 export default Animated.createAnimatedComponent(NavigationBar);
