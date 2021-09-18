@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { requireNativeComponent, Image, Platform, Animated } from 'react-native';
+import { requireNativeComponent, Platform, Animated } from 'react-native';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
 import SearchBar from './SearchBar';
@@ -30,7 +30,7 @@ class NavigationBar extends React.Component<any, any> {
         }
     }
     render() {
-        var {hidden, logo, navigationImage, overflowImage, children, style = {height: undefined}, ...otherProps} = this.props;
+        var {hidden, children, style = {height: undefined}, ...otherProps} = this.props;
         var scrollEdgeProps = this.getScrollEdgeProps()
         var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
         var statusBar = childrenArray.find(({type}) => type === StatusBar);
@@ -54,14 +54,11 @@ class NavigationBar extends React.Component<any, any> {
                             {...(collapsingBar && collapsingBar.props)}>
                             {collapsingBar && collapsingBar.props.children}
                             <NVToolbar
-                                logo={Image.resolveAssetSource(logo)}
-                                navigationImage={Image.resolveAssetSource(navigationImage)}
-                                overflowImage={Image.resolveAssetSource(overflowImage)}
+                                bottom={false}
                                 pin={!!collapsingBar}
                                 {...otherProps}
                                 {...scrollEdgeProps}
-                                barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : null}
-                                style={{height: 56}}>
+                                barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : null}>
                                 {[
                                     childrenArray.find(({type}) => type === TitleBar),
                                     childrenArray.find(({type}) => type === LeftBar),
