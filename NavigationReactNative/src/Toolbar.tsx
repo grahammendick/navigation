@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform, Image, StyleSheet, requireNativeComponent } from 'react-native';
 
-const Toolbar = ({ bottom, logo, navigationImage, overflowImage, children, style, ...props }: any) => {
+const Toolbar = ({ bottom = true, logo, navigationImage, overflowImage, children, style, ...props }: any) => {
     var Toolbar = !bottom ? NVToolbar : NVToolbarBottom;
     return (
         <Toolbar
