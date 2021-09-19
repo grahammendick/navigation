@@ -1,9 +1,11 @@
 import React from 'react';
-import { Platform, StyleSheet, requireNativeComponent } from 'react-native';
+import { Platform, Image, StyleSheet, requireNativeComponent } from 'react-native';
 
-const BottomAppBar = ({ children, style, ...props }: any) => {
+const BottomAppBar = ({ navigationImage, overflowImage, children, style, ...props }: any) => {
     return (
         <NVBottomAppBar
+            navigationImage={Image.resolveAssetSource(navigationImage)}
+            overflowImage={Image.resolveAssetSource(overflowImage)}
             style={styles.toolbar}
             {...props}>
             {children}
