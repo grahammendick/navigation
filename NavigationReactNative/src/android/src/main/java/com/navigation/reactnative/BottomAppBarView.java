@@ -18,7 +18,9 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
 import java.util.ArrayList;
@@ -56,6 +58,13 @@ public class BottomAppBarView extends BottomAppBar {
                 setTintColor(getOverflowIcon());
             }
         };
+        setNavigationOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ReactContext reactContext = (ReactContext) getContext();
+                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onNavigationPress", null);
+            }
+        });
         setOnMenuItemClickListener(new OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

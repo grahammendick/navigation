@@ -5,10 +5,13 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+
+import java.util.Map;
 
 public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
     @NonNull
@@ -81,5 +84,12 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
     @Override
     public View getChildAt(BottomAppBarView parent, int index) {
         return parent.children.get(index);
+    }
+
+    @Override
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+            .put("onNavigationPress", MapBuilder.of("registrationName", "onNavigationPress"))
+            .build();
     }
 }
