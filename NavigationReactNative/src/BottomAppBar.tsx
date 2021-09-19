@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Platform, Image, StyleSheet, requireNativeComponent } from 'react-native';
 
-const BottomAppBar = ({ navigationImage, overflowImage, children, style, ...props }: any) => {
+const BottomAppBar = forwardRef(({ navigationImage, overflowImage, children, style, ...props }: any, ref) => {
     return (
         <NVBottomAppBar
+            ref={ref}
             navigationImage={Image.resolveAssetSource(navigationImage)}
             overflowImage={Image.resolveAssetSource(overflowImage)}
             style={styles.toolbar}
@@ -11,7 +12,7 @@ const BottomAppBar = ({ navigationImage, overflowImage, children, style, ...prop
             {children}
         </NVBottomAppBar>
     );
-}
+})
 
 var NVBottomAppBar = requireNativeComponent<any>('NVBottomAppBar', null);
 
