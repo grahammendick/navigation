@@ -51,6 +51,16 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
         view.getLayoutParams().height = (int) PixelUtil.toPixelFromDIP(height);
     }
 
+    @ReactProp(name = "navigationTestID")
+    public void setNavigationTestID(BottomAppBarView view, String navigationTestID) {
+        view.setNavigationTestID(navigationTestID);
+    }
+
+    @ReactProp(name = "overflowTestID")
+    public void setOverflowTestID(BottomAppBarView view, String overflowTestID) {
+        view.setOverflowTestID(overflowTestID);
+    }
+
     @Override
     public void addView(BottomAppBarView parent, View child, int index) {
         parent.children.add(index, child);

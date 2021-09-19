@@ -12,18 +12,24 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.facebook.react.bridge.ReadableMap;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BottomAppBarView extends BottomAppBar {
     private Integer tintColor;
     final Drawable defaultOverflowIcon;
     private Integer defaultMenuTintColor;
+    private String navigationTestID;
+    private String overflowTestID;
     private final IconResolver.IconResolverListener navIconResolverListener;
     private final IconResolver.IconResolverListener overflowIconResolverListener;
     private boolean layoutRequested = false;
@@ -40,6 +46,7 @@ public class BottomAppBarView extends BottomAppBar {
             public void setDrawable(Drawable d) {
                 setNavigationIcon(d);
                 setTintColor(getNavigationIcon());
+                setTestID();
             }
         };
         overflowIconResolverListener = new IconResolver.IconResolverListener() {
@@ -66,7 +73,7 @@ public class BottomAppBarView extends BottomAppBar {
         this.tintColor = tintColor;
         setTintColor(getNavigationIcon());
         setTintColor(getOverflowIcon());
-        setMenuTintColor();
+        setMenuTintColor(null);
     }
 
     private void setTintColor(Drawable icon) {
@@ -78,20 +85,33 @@ public class BottomAppBarView extends BottomAppBar {
         }
     }
 
+    void setNavigationTestID(String navigationTestID) {
+        this.navigationTestID = navigationTestID;
+        setTestID();
+    }
+
+    void setOverflowTestID(String overflowTestID) {
+        this.overflowTestID = overflowTestID;
+        setTestID();
+    }
+
     void setMenuItems() {
         getMenu().clear();
+        HashMap<MenuItem, String> testIDs = new HashMap<>();
         for (int i = 0; i < children.size(); i++) {
             if (children.get(i) instanceof BarButtonView) {
                 BarButtonView barButton = (BarButtonView) children.get(i);
                 MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, "");
                 barButton.setMenuItem(menuItem);
+                testIDs.put(menuItem, barButton.testID);
             }
         }
-        setMenuTintColor();
+        setMenuTintColor(testIDs);
+        setTestID();
         requestLayout();
     }
 
-    private void setMenuTintColor()  {
+    private void setMenuTintColor(HashMap<MenuItem, String> testIDs)  {
         for (int i = 0; i < getChildCount(); i++) {
             if (getChildAt(i) instanceof ActionMenuView) {
                 ActionMenuView menu = (ActionMenuView) getChildAt(i);
@@ -101,6 +121,10 @@ public class BottomAppBarView extends BottomAppBar {
                         if (defaultMenuTintColor == null)
                             defaultMenuTintColor = menuItemView.getCurrentTextColor();
                         menuItemView.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
+                        if (testIDs != null) {
+                            MenuItem menuItem = ((MenuView.ItemView) menuItemView).getItemData();
+                            menuItemView.setTag(testIDs.get(menuItem));
+                        }
                     }
                 }
             }
@@ -108,6 +132,24 @@ public class BottomAppBarView extends BottomAppBar {
         for (int i = 0; i < children.size(); i++) {
             if (children.get(i) instanceof BarButtonView) {
                 ((BarButtonView) children.get(i)).setTintColor(tintColor);
+            }
+        }
+    }
+
+    private void setTestID() {
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            if (child instanceof AppCompatImageButton) {
+                child.setTag(navigationTestID);
+            }
+            if (child instanceof ActionMenuView) {
+                ActionMenuView menu = (ActionMenuView) child;
+                for (int j = 0; j < menu.getChildCount(); j++) {
+                    if (menu.getChildAt(j) instanceof AppCompatImageView) {
+                        AppCompatImageView overflowButton = (AppCompatImageView) menu.getChildAt(j);
+                        overflowButton.setTag(overflowTestID);
+                    }
+                }
             }
         }
     }
