@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableMap;
@@ -47,5 +49,27 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
     @ReactProp(name = "height")
     public void setHeight(BottomAppBarView view, double height) {
         view.getLayoutParams().height = (int) PixelUtil.toPixelFromDIP(height);
+    }
+
+    @Override
+    public void addView(BottomAppBarView parent, View child, int index) {
+        parent.children.add(index, child);
+        parent.setMenuItems();
+    }
+
+    @Override
+    public void removeViewAt(BottomAppBarView parent, int index) {
+        parent.children.remove(index);
+        parent.setMenuItems();
+    }
+
+    @Override
+    public int getChildCount(BottomAppBarView parent) {
+        return parent.children.size();
+    }
+
+    @Override
+    public View getChildAt(BottomAppBarView parent, int index) {
+        return parent.children.get(index);
     }
 }
