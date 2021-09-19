@@ -56,6 +56,19 @@ public class BottomAppBarView extends BottomAppBar {
                 setTintColor(getOverflowIcon());
             }
         };
+        setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                for (int i = 0; i < children.size(); i++) {
+                    if (children.get(i) instanceof BarButtonView) {
+                        BarButtonView barButtonView = (BarButtonView) children.get(i);
+                        if (barButtonView.getMenuItem() == item)
+                            barButtonView.press();
+                    }
+                }
+                return true;
+            }
+        });
     }
 
     void setNavIconSource(@Nullable ReadableMap source) {
