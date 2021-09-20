@@ -31,7 +31,9 @@ public class BottomAppBarView extends BottomAppBar {
     private Integer tintColor;
     final int defaultBackgroundColor;
     final Drawable defaultOverflowIcon;
+    int fabAlignmentMode;
     int defaultFabAlignmentMode;
+    int defaultFabAnimationMode;
     private Integer defaultMenuTintColor;
     private String navigationTestID;
     private String overflowTestID;
@@ -44,7 +46,8 @@ public class BottomAppBarView extends BottomAppBar {
         super(context, null);
         defaultBackgroundColor = getBackgroundTint() != null ? getBackgroundTint().getDefaultColor() : Color.WHITE;
         defaultOverflowIcon = getOverflowIcon();
-        defaultFabAlignmentMode = getFabAlignmentMode();
+        fabAlignmentMode = defaultFabAlignmentMode = getFabAlignmentMode();
+        defaultFabAnimationMode = getFabAnimationMode();
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.BOTTOM;
         setLayoutParams(params);

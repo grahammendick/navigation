@@ -49,10 +49,17 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
     }
 
     @ReactProp(name = "fabAlignmentMode")
-    public void setTintColor(BottomAppBarView view, String fabAlignmentMode) {
-        if ("center".equals(fabAlignmentMode)) view.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-        else if ("end".equals(fabAlignmentMode)) view.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-        else view.setFabAlignmentMode(view.defaultFabAlignmentMode);
+    public void setFabAlignmentMode(BottomAppBarView view, String fabAlignmentMode) {
+        if ("center".equals(fabAlignmentMode)) view.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER;
+        else if ("end".equals(fabAlignmentMode)) view.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END;
+        else view.fabAlignmentMode = view.defaultFabAlignmentMode;
+    }
+
+    @ReactProp(name = "fabAnimationMode")
+    public void setFabAnimationMode(BottomAppBarView view, String fabAnimationMode) {
+        if ("slide".equals(fabAnimationMode)) view.setFabAnimationMode(BottomAppBar.FAB_ANIMATION_MODE_SLIDE);
+        else if ("scale".equals(fabAnimationMode)) view.setFabAnimationMode(BottomAppBar.FAB_ANIMATION_MODE_SCALE);
+        else view.setFabAnimationMode(view.defaultFabAnimationMode);
     }
 
     @ReactProp(name = "height")
@@ -90,6 +97,12 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
     @Override
     public View getChildAt(BottomAppBarView parent, int index) {
         return parent.children.get(index);
+    }
+
+    @Override
+    protected void onAfterUpdateTransaction(@NonNull BottomAppBarView view) {
+        super.onAfterUpdateTransaction(view);
+        view.setFabAlignmentMode(view.fabAlignmentMode);
     }
 
     @Override
