@@ -77,6 +77,11 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
         view.setCradleVerticalOffset(fabCradleVerticalOffset != Float.MAX_VALUE ? PixelUtil.toPixelFromDIP(fabCradleVerticalOffset) : view.defaultFabCradleVerticalOffset);
     }
 
+    @ReactProp(name = "hideOnScroll")
+    public void setHideOnScroll(BottomAppBarView view, boolean hideOnScroll) {
+        view.setHideOnScroll(hideOnScroll);
+    }
+
     @ReactProp(name = "height")
     public void setHeight(BottomAppBarView view, double height) {
         view.getLayoutParams().height = (int) PixelUtil.toPixelFromDIP(height);
