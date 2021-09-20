@@ -39,7 +39,7 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
 
     @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
     public void setBarTintColor(BottomAppBarView view, int barTintColor) {
-        view.setBackgroundTintList(ColorStateList.valueOf(barTintColor != Integer.MAX_VALUE ? barTintColor : view.defaultBackgroundColor));
+        view.setBackgroundTint(ColorStateList.valueOf(barTintColor != Integer.MAX_VALUE ? barTintColor : view.defaultBackgroundColor));
     }
 
     @ReactProp(name = "tintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)

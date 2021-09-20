@@ -41,7 +41,7 @@ public class BottomAppBarView extends BottomAppBar {
 
     public BottomAppBarView(@NonNull Context context) {
         super(context, null);
-        defaultBackgroundColor = getBackgroundTintList() != null ? getBackgroundTintList().getDefaultColor() : Color.BLACK;
+        defaultBackgroundColor = getBackgroundTint() != null ? getBackgroundTint().getDefaultColor() : Color.BLACK;
         defaultOverflowIcon = getOverflowIcon();
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.BOTTOM;
