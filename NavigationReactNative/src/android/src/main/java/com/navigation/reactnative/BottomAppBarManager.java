@@ -1,5 +1,6 @@
 package com.navigation.reactnative;
 
+import android.content.res.ColorStateList;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -38,10 +39,7 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
 
     @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
     public void setBarTintColor(BottomAppBarView view, int barTintColor) {
-        if (barTintColor != Integer.MAX_VALUE)
-            view.setBackgroundColor(barTintColor);
-        else
-            view.setBackground(null);
+        view.setBackgroundTintList(ColorStateList.valueOf(barTintColor != Integer.MAX_VALUE ? barTintColor : view.defaultBackgroundColor));
     }
 
     @ReactProp(name = "tintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)

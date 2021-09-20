@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 
 public class BottomAppBarView extends BottomAppBar {
     private Integer tintColor;
+    final int defaultBackgroundColor;
     final Drawable defaultOverflowIcon;
     private Integer defaultMenuTintColor;
     private String navigationTestID;
@@ -39,6 +41,7 @@ public class BottomAppBarView extends BottomAppBar {
 
     public BottomAppBarView(@NonNull Context context) {
         super(context, null);
+        defaultBackgroundColor = getBackgroundTintList() != null ? getBackgroundTintList().getDefaultColor() : Color.BLACK;
         defaultOverflowIcon = getOverflowIcon();
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.BOTTOM;
