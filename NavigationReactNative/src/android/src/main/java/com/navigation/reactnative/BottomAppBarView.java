@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,6 +39,7 @@ public class BottomAppBarView extends BottomAppBar {
     float defaultFabCradleRoundedCornerRadius;
     float defaultFabCradleVerticalOffset;
     private Integer defaultMenuTintColor;
+    private ImageButton collapseButton;
     private String navigationTestID;
     private String overflowTestID;
     private final IconResolver.IconResolverListener navIconResolverListener;
@@ -85,7 +87,9 @@ public class BottomAppBarView extends BottomAppBar {
                 for (int i = 0; i < children.size(); i++) {
                     if (children.get(i) instanceof BarButtonView) {
                         BarButtonView barButtonView = (BarButtonView) children.get(i);
-                        if (barButtonView.getMenuItem() == item)
+                        if (barButtonView.getMenuItem() != item)
+                            barButtonView.getMenuItem().collapseActionView();
+                        else
                             barButtonView.press();
                     }
                 }
@@ -187,6 +191,20 @@ public class BottomAppBarView extends BottomAppBar {
                     }
                 }
             }
+        }
+    }
+
+    void setCollapseButton(ImageButton collapseButton) {
+        this.collapseButton = collapseButton;
+        setCollapseSearchTintColor();
+    }
+
+    void setCollapseSearchTintColor() {
+        if (collapseButton != null) {
+            if (tintColor != null)
+                collapseButton.setColorFilter(tintColor);
+            else
+                collapseButton.clearColorFilter();
         }
     }
 
