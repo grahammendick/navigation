@@ -72,6 +72,11 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
         view.setFabCradleRoundedCornerRadius(fabCradleRoundedCornerRadius != Float.MAX_VALUE ? PixelUtil.toPixelFromDIP(fabCradleRoundedCornerRadius) : view.defaultFabCradleRoundedCornerRadius);
     }
 
+    @ReactProp(name = "fabCradleVerticalOffset", defaultFloat = Float.MAX_VALUE)
+    public void setFabCradleVerticalOffset(BottomAppBarView view, float fabCradleVerticalOffset) {
+        view.setCradleVerticalOffset(fabCradleVerticalOffset != Float.MAX_VALUE ? PixelUtil.toPixelFromDIP(fabCradleVerticalOffset) : view.defaultFabCradleVerticalOffset);
+    }
+
     @ReactProp(name = "height")
     public void setHeight(BottomAppBarView view, double height) {
         view.getLayoutParams().height = (int) PixelUtil.toPixelFromDIP(height);

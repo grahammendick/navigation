@@ -36,6 +36,7 @@ public class BottomAppBarView extends BottomAppBar {
     int defaultFabAnimationMode;
     float defaultFabCradleMargin;
     float defaultFabCradleRoundedCornerRadius;
+    float defaultFabCradleVerticalOffset;
     private Integer defaultMenuTintColor;
     private String navigationTestID;
     private String overflowTestID;
@@ -52,6 +53,7 @@ public class BottomAppBarView extends BottomAppBar {
         defaultFabAnimationMode = getFabAnimationMode();
         defaultFabCradleMargin = getFabCradleMargin();
         defaultFabCradleRoundedCornerRadius = getFabCradleRoundedCornerRadius();
+        defaultFabCradleVerticalOffset = getCradleVerticalOffset();
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.BOTTOM;
         setLayoutParams(params);
