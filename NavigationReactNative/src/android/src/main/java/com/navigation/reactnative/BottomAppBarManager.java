@@ -62,6 +62,11 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
         else view.setFabAnimationMode(view.defaultFabAnimationMode);
     }
 
+    @ReactProp(name = "fabCradleMargin", defaultFloat = Float.MAX_VALUE)
+    public void setFabCradleMargin(BottomAppBarView view, float fabCradleMargin) {
+        view.setFabCradleMargin(fabCradleMargin != Float.MAX_VALUE ? fabCradleMargin : view.defaultFabCradleMargin);
+    }
+
     @ReactProp(name = "height")
     public void setHeight(BottomAppBarView view, double height) {
         view.getLayoutParams().height = (int) PixelUtil.toPixelFromDIP(height);
