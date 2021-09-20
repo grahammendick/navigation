@@ -11,6 +11,7 @@ import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.google.android.material.bottomappbar.BottomAppBar;
 
 import java.util.Map;
 
@@ -45,6 +46,13 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
     @ReactProp(name = "tintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
     public void setTintColor(BottomAppBarView view, int tintColor) {
         view.setTintColor(tintColor != Integer.MAX_VALUE ? tintColor : null);
+    }
+
+    @ReactProp(name = "fabAlignmentMode")
+    public void setTintColor(BottomAppBarView view, String fabAlignmentMode) {
+        if ("center".equals(fabAlignmentMode)) view.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+        else if ("end".equals(fabAlignmentMode)) view.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+        else view.setFabAlignmentMode(view.defaultFabAlignmentMode);
     }
 
     @ReactProp(name = "height")
