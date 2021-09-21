@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -103,6 +104,7 @@ public class SearchBarView extends ReactViewGroup {
 
                 @Override
                 public void onSearchExpand() {
+                    setZ(58);
                     ReactContext reactContext = (ReactContext) getContext();
                     WritableMap event = Arguments.createMap();
                     event.putInt("top", 56 + (int) PixelUtil.toDIPFromPixel(barOffset));
@@ -111,6 +113,7 @@ public class SearchBarView extends ReactViewGroup {
 
                 @Override
                 public void onSearchCollapse() {
+                    setZ(-58);
                     ReactContext reactContext = (ReactContext) getContext();
                     reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onCollapse", null);
                 }
