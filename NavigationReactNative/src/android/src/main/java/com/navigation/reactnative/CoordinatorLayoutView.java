@@ -10,7 +10,6 @@ import android.widget.ScrollView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.uimanager.ReactZIndexedViewGroup;
 import com.facebook.react.uimanager.ViewGroupDrawingOrderHelper;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
@@ -24,12 +23,12 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
     private final int[] scrollOffset = new int[2];
     private final int[] scrollConsumed = new int[2];
     private boolean layoutRequested = false;
-    private final ViewGroupDrawingOrderHelper mDrawingOrderHelper;
+    private final ViewGroupDrawingOrderHelper drawingOrderHelper;
 
     public CoordinatorLayoutView(Context context){
         super(context);
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-        mDrawingOrderHelper = new ViewGroupDrawingOrderHelper(this);
+        drawingOrderHelper = new ViewGroupDrawingOrderHelper(this);
     }
 
     @Override
@@ -146,34 +145,34 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
 
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        mDrawingOrderHelper.handleAddView(child);
-        setChildrenDrawingOrderEnabled(mDrawingOrderHelper.shouldEnableCustomDrawingOrder());
+        drawingOrderHelper.handleAddView(child);
+        setChildrenDrawingOrderEnabled(drawingOrderHelper.shouldEnableCustomDrawingOrder());
         super.addView(child, index, params);
     }
 
     @Override
     public void removeView(View view) {
-        mDrawingOrderHelper.handleRemoveView(view);
-        setChildrenDrawingOrderEnabled(mDrawingOrderHelper.shouldEnableCustomDrawingOrder());
+        drawingOrderHelper.handleRemoveView(view);
+        setChildrenDrawingOrderEnabled(drawingOrderHelper.shouldEnableCustomDrawingOrder());
         super.removeView(view);
     }
 
     @Override
     public void removeViewAt(int index) {
-        mDrawingOrderHelper.handleRemoveView(getChildAt(index));
-        setChildrenDrawingOrderEnabled(mDrawingOrderHelper.shouldEnableCustomDrawingOrder());
+        drawingOrderHelper.handleRemoveView(getChildAt(index));
+        setChildrenDrawingOrderEnabled(drawingOrderHelper.shouldEnableCustomDrawingOrder());
         super.removeViewAt(index);
     }
 
     @Override
     public int getZIndexMappedChildIndex(int index) {
-        return mDrawingOrderHelper.getChildDrawingOrder(getChildCount(), index);
+        return drawingOrderHelper.getChildDrawingOrder(getChildCount(), index);
     }
 
     @Override
     public void updateDrawingOrder() {
-        mDrawingOrderHelper.update();
-        setChildrenDrawingOrderEnabled(mDrawingOrderHelper.shouldEnableCustomDrawingOrder());
+        drawingOrderHelper.update();
+        setChildrenDrawingOrderEnabled(drawingOrderHelper.shouldEnableCustomDrawingOrder());
         invalidate();
     }
 }
