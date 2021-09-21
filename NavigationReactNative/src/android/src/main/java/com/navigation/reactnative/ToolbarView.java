@@ -214,6 +214,7 @@ public class ToolbarView extends Toolbar {
                         @Override
                         public boolean onMenuItemActionExpand(MenuItem item) {
                             onSearchAddedListener.onSearchExpand();
+                            ((NavigationBarView) getParent()).setExpanded(true);
                             return true;
                         }
                     });
