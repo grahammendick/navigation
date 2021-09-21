@@ -2,7 +2,6 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -13,10 +12,8 @@ import androidx.appcompat.widget.SearchView;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
-import com.google.android.material.appbar.AppBarLayout;
 
 public class SearchBarView extends ReactViewGroup {
     final SearchView searchView;
@@ -97,9 +94,7 @@ public class SearchBarView extends ReactViewGroup {
                 public void onSearchExpand() {
                     setZ(58);
                     ReactContext reactContext = (ReactContext) getContext();
-                    WritableMap event = Arguments.createMap();
-                    event.putInt("top", 56);
-                    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onExpand", event);
+                    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onExpand", null);
                 }
 
                 @Override
