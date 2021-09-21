@@ -20,8 +20,6 @@ import com.google.android.material.appbar.AppBarLayout;
 
 public class SearchBarView extends ReactViewGroup {
     final SearchView searchView;
-    final AppBarLayout.OnOffsetChangedListener onOffsetChangedListener;
-    private int barOffset = 0;
     int nativeEventCount;
     int mostRecentEventCount;
 
@@ -55,12 +53,6 @@ public class SearchBarView extends ReactViewGroup {
                 }
             }
         });
-        onOffsetChangedListener = new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
-                barOffset = offset;
-            }
-        };
     }
 
     void setQuery(String query) {
@@ -93,7 +85,6 @@ public class SearchBarView extends ReactViewGroup {
                 if (navigationBarView.getChildAt(i) instanceof ToolbarView)
                     toolbarView = (ToolbarView) navigationBarView.getChildAt(i);
             }
-            navigationBarView.addOnOffsetChangedListener(onOffsetChangedListener);
         }
         if (toolbarView != null) {
             toolbarView.setOnSearchListener(new ToolbarView.OnSearchListener() {
@@ -107,7 +98,7 @@ public class SearchBarView extends ReactViewGroup {
                     setZ(58);
                     ReactContext reactContext = (ReactContext) getContext();
                     WritableMap event = Arguments.createMap();
-                    event.putInt("top", 56 + (int) PixelUtil.toDIPFromPixel(barOffset));
+                    event.putInt("top", 56);
                     reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onExpand", event);
                 }
 
@@ -121,20 +112,8 @@ public class SearchBarView extends ReactViewGroup {
         }
     }
 
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        NavigationBarView navigationBarView = getNavigationBarView();
-        if (navigationBarView != null)
-            navigationBarView.removeOnOffsetChangedListener(onOffsetChangedListener);
-    }
-
     private NavigationBarView getNavigationBarView() {
         ViewGroup view = (ViewGroup) getParent();
-        for(int i = 0; i < view.getChildCount(); i++) {
-            if (view.getChildAt(i) instanceof  CoordinatorLayoutView)
-                view = (CoordinatorLayoutView) view.getChildAt(i);
-        }
         for(int i = 0; i < view.getChildCount(); i++) {
             if (view.getChildAt(i) instanceof NavigationBarView) {
                 return (NavigationBarView) view.getChildAt(i);
