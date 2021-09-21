@@ -37,7 +37,7 @@ class SearchBar extends React.Component<any, any> {
                 onChangeText={this.onChangeText}
                 onExpand={() => this.setState({show: true})}
                 onCollapse={() => this.setState({show: false})}
-                style={[styles.searchBar, show && showStyle]}>
+                style={[styles.searchBar, showStyle]}>
                 {Platform.OS === 'ios' || this.state.show ? children : null}
             </NVSearchBar>
         );
