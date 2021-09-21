@@ -76,11 +76,14 @@ public class SearchBarView extends ReactViewGroup {
                 inputMethodManager.showSoftInput(searchView.findFocus(), 0);
         }
         ToolbarView toolbarView = null;
-        final NavigationBarView navigationBarView = getNavigationBarView();
-        if (navigationBarView != null) {
-            for (int i = 0; i < navigationBarView.getChildCount(); i++) {
-                if (navigationBarView.getChildAt(i) instanceof ToolbarView)
-                    toolbarView = (ToolbarView) navigationBarView.getChildAt(i);
+        ViewGroup view = (ViewGroup) getParent();
+        for(int i = 0; i < view.getChildCount(); i++) {
+            if (view.getChildAt(i) instanceof NavigationBarView) {
+                NavigationBarView navigationBarView = (NavigationBarView) view.getChildAt(i);
+                for (int j = 0; j < navigationBarView.getChildCount(); j++) {
+                    if (navigationBarView.getChildAt(j) instanceof ToolbarView)
+                        toolbarView = (ToolbarView) navigationBarView.getChildAt(i);
+                }
             }
         }
         if (toolbarView != null) {
@@ -105,16 +108,6 @@ public class SearchBarView extends ReactViewGroup {
                 }
             });
         }
-    }
-
-    private NavigationBarView getNavigationBarView() {
-        ViewGroup view = (ViewGroup) getParent();
-        for(int i = 0; i < view.getChildCount(); i++) {
-            if (view.getChildAt(i) instanceof NavigationBarView) {
-                return (NavigationBarView) view.getChildAt(i);
-            }
-        }
-        return null;
     }
 
     @Override
