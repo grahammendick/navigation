@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Platform.OS === 'android' ? Animated.createAnimatedComponent(FloatingActionButton) : null;
+export default Platform.OS === 'android' ? Animated.createAnimatedComponent(FloatingActionButton) : () => null;
