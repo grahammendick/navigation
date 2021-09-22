@@ -36,7 +36,22 @@
 
 - (void)setBarTintColor:(UIColor *)barTintColor
 {
-    [_tabBarController.tabBar setBarTintColor:barTintColor];
+    if (@available(iOS 15.0, *)) {
+        UITabBarAppearance *appearance = nil;
+        if (barTintColor) {
+            appearance = [UITabBarAppearance new];
+            [appearance configureWithDefaultBackground];
+            if (CGColorGetAlpha(barTintColor.CGColor) == 0)
+                [appearance configureWithTransparentBackground];
+            if (CGColorGetAlpha(barTintColor.CGColor) == 1)
+                [appearance configureWithOpaqueBackground];
+            [appearance setBackgroundColor:barTintColor];
+        }
+        _tabBarController.tabBar.standardAppearance = appearance;
+        _tabBarController.tabBar.scrollEdgeAppearance = appearance;
+    } else {
+        [_tabBarController.tabBar setBarTintColor:barTintColor];
+    }
 }
 
 - (void)setSelectedTintColor:(UIColor *)selectedTintColor

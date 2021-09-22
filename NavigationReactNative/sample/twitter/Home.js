@@ -5,7 +5,7 @@ import Tweets from './Tweets';
 
 export default ({tweets}) => (
   <CoordinatorLayout>
-    <NavigationBar title="Home" barTintColor={Platform.OS === 'android' ? '#fff' : null} />
+    <NavigationBar title="Home" barTintColor={Platform.OS === 'android' ? '#fff' : 'rgb(247,247,247)'} />
     <Tweets tweets={tweets} />
   </CoordinatorLayout>
 );
