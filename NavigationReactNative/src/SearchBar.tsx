@@ -49,7 +49,11 @@ var NVSearchBar = requireNativeComponent<any>('NVSearchBar', null);
 var styles = StyleSheet.create({
     searchBar: {
         position: 'absolute',
-        top: 0, right: 0, bottom: 0, left: 0,
+        ...Platform.select({
+            android: {
+                top: 0, right: 0, bottom: 0, left: 0,
+            },
+        })
     },
 });
 
