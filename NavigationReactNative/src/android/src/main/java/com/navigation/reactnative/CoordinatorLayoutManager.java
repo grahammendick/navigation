@@ -41,7 +41,7 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
     @Override
     public void addView(CoordinatorLayoutView parent, View child, int index) {
         super.addView(parent, child, index);
-        if (child instanceof ScrollView || child instanceof ViewPager || child instanceof ViewPager2 || child instanceof SearchBarView) {
+        if (child instanceof ScrollView || child instanceof ViewPager || child instanceof ViewPager2) {
             CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
             AppBarLayout.ScrollingViewBehavior behavior = new AppBarLayout.ScrollingViewBehavior();
             behavior.setOverlayTop(parent.overlap);

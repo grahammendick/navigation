@@ -8,12 +8,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 
 import androidx.appcompat.widget.SearchView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
+import com.google.android.material.appbar.AppBarLayout;
 
 public class SearchBarView extends ReactViewGroup {
     final SearchView searchView;
@@ -23,6 +25,10 @@ public class SearchBarView extends ReactViewGroup {
     public SearchBarView(Context context) {
         super(context);
         searchView = new SearchView(context);
+        CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        AppBarLayout.ScrollingViewBehavior behavior = new AppBarLayout.ScrollingViewBehavior();
+        params.setBehavior(behavior);
+        setLayoutParams(params);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
