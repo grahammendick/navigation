@@ -2,6 +2,7 @@ import React, { forwardRef } from 'react';
 import { Platform, Image, StyleSheet, requireNativeComponent } from 'react-native';
 
 const BottomAppBar = forwardRef(({ navigationImage, overflowImage, children, style, ...props }: any, ref) => {
+    if (Platform.OS === 'ios') return null; 
     return (
         <NVBottomAppBar
             ref={ref}
@@ -22,4 +23,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Platform.OS === 'android' ? BottomAppBar : null;
+export default BottomAppBar;
