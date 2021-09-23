@@ -149,6 +149,11 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
         else view.setSize(FloatingActionButton.SIZE_NORMAL);
     }
 
+    @ReactProp(name = "testID")
+    public void setTestID(FloatingActionButtonView view, String testID) {
+        view.setTag(testID);
+    }
+
     private void requestCoordinatorLayout(FloatingActionButtonView view) {
         if (view.getParent() instanceof CoordinatorLayoutView) {
             CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) view.getParent();
