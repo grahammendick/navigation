@@ -15,10 +15,9 @@ import CollapsingBar from './CollapsingBar';
 import ActionBar from './ActionBar';
 import StatusBar from './StatusBar';
 import FloatingActionButton from './FloatingActionButton';
-import BottomAppBar from './BottomAppBar';
 import useNavigating from './useNavigating';
 import useNavigated from './useNavigated';
 import useUnloading from './useUnloading';
 import useUnloaded from './useUnloaded';
 
-export { NavigationStack, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, SearchBar, TabBar, TabBarItem, SharedElement, BackHandlerContext, ModalBackHandler, CoordinatorLayout, CollapsingBar, ActionBar, StatusBar, FloatingActionButton, BottomAppBar, useNavigating, useNavigated, useUnloading, useUnloaded };
+export { NavigationStack, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, SearchBar, TabBar, TabBarItem, SharedElement, BackHandlerContext, ModalBackHandler, CoordinatorLayout, CollapsingBar, ActionBar, StatusBar, FloatingActionButton, useNavigating, useNavigated, useUnloading, useUnloaded };
