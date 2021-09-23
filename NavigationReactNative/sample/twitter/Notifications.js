@@ -11,7 +11,7 @@ export default ({notifications}) => {
       <CoordinatorLayout>
         <NavigationBar
           title="Notifications"
-          barTintColor={Platform.OS === 'android' ? 'rgba(255,255,255, 0)' : null}>
+          barTintColor={Platform.OS === 'android' ? 'rgba(255,255,255, 0)' : 'rgb(247,247,247)'}>
           <TabBar selectedTintColor="#1da1f2" />
         </NavigationBar>
         <TabBar primary={false}>
