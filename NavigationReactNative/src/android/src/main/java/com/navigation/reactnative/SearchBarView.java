@@ -26,6 +26,7 @@ public class SearchBarView extends ReactViewGroup {
     public SearchBarView(Context context) {
         super(context);
         searchView = new SearchView(context);
+        setZ(-58);
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         AppBarLayout.ScrollingViewBehavior behavior = new AppBarLayout.ScrollingViewBehavior();
         params.setBehavior(behavior);
