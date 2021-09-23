@@ -20,8 +20,7 @@ const styles = StyleSheet.create({
     floatingActionButton: {
         position: 'absolute',
         height: 56,
-        width: 56,
-        zIndex: 78
+        width: 56
     },
 });
 
