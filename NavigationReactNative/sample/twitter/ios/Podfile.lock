@@ -58,7 +58,7 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - glog (0.3.5)
   - libevent (2.1.12)
-  - navigation-react-native (8.0.0):
+  - navigation-react-native (8.1.1):
     - React-Core
   - OpenSSL-Universal (1.1.180)
   - RCT-Folly (2020.01.13.00):
@@ -464,7 +464,7 @@ SPEC CHECKSUMS:
   FlipperKit: 8a20b5c5fcf9436cac58551dc049867247f64b00
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  navigation-react-native: 85c04b8a7b4ac4ef46f809405aed601c86e403bc
+  navigation-react-native: 45357e77573e1bd3da048d92dd908832e23aedb0
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: ec2ebc96b7bfba3ca5c32740f5a0c6a014a274d2
@@ -494,4 +494,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 441ec4570026291b569e86528ede4d4421393662
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.0
