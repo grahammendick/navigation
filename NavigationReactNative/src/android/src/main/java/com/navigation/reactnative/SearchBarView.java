@@ -19,6 +19,7 @@ import com.google.android.material.appbar.AppBarLayout;
 
 public class SearchBarView extends ReactViewGroup {
     final SearchView searchView;
+    boolean bottomBar = false;
     int nativeEventCount;
     int mostRecentEventCount;
 
@@ -50,9 +51,9 @@ public class SearchBarView extends ReactViewGroup {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    ToolbarView toolbarView = (ToolbarView) searchView.getParent();
-                    if (toolbarView.getChildAt(1) instanceof ImageButton)
-                        toolbarView.setCollapseButton((ImageButton) toolbarView.getChildAt(1));
+                    ActionView actionView = (ActionView) searchView.getParent();
+                    if (actionView.getChildAt(1) instanceof ImageButton)
+                        actionView.setCollapseButton((ImageButton) actionView.getChildAt(1));
                 }
             }
         });
@@ -81,19 +82,21 @@ public class SearchBarView extends ReactViewGroup {
             if (inputMethodManager != null)
                 inputMethodManager.showSoftInput(searchView.findFocus(), 0);
         }
-        ToolbarView toolbarView = null;
+        ActionView actionView = null;
         ViewGroup view = (ViewGroup) getParent();
-        for(int i = 0; i < view.getChildCount(); i++) {
-            if (view.getChildAt(i) instanceof NavigationBarView) {
+        for(int i = 0; i < view.getChildCount() && actionView == null; i++) {
+            if (!bottomBar && view.getChildAt(i) instanceof NavigationBarView) {
                 NavigationBarView navigationBarView = (NavigationBarView) view.getChildAt(i);
                 for (int j = 0; j < navigationBarView.getChildCount(); j++) {
-                    if (navigationBarView.getChildAt(j) instanceof ToolbarView)
-                        toolbarView = (ToolbarView) navigationBarView.getChildAt(i);
+                    if (navigationBarView.getChildAt(j) instanceof ActionView)
+                        actionView = (ActionView) navigationBarView.getChildAt(i);
                 }
             }
+            if (bottomBar && view.getChildAt(i) instanceof ActionView)
+                actionView = (ActionView) view.getChildAt(i);
         }
-        if (toolbarView != null) {
-            toolbarView.setOnSearchListener(new ToolbarView.OnSearchListener() {
+        if (actionView != null) {
+            actionView.setOnSearchListener(new ActionView.OnSearchListener() {
                 @Override
                 public void onSearchAdd(MenuItem searchMenuItem) {
                     searchMenuItem.setActionView(searchView);

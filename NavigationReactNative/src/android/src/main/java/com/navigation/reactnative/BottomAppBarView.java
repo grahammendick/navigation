@@ -146,6 +146,25 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
                 MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, "");
                 barButton.setMenuItem(menuItem);
                 testIDs.put(menuItem, barButton.testID);
+                if (barButton.getSearch()) {
+                    searchMenuItem = menuItem;
+                    if (onSearchAddedListener != null)
+                        onSearchAddedListener.onSearchAdd(searchMenuItem);
+                    menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+                        @Override
+                        public boolean onMenuItemActionCollapse(MenuItem item) {
+                            onSearchAddedListener.onSearchCollapse();
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onMenuItemActionExpand(MenuItem item) {
+                            onSearchAddedListener.onSearchExpand();
+                            BottomAppBarView.this.performShow();
+                            return true;
+                        }
+                    });
+                }
             }
         }
         setMenuTintColor(testIDs);

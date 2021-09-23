@@ -43,6 +43,11 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
         view.setBarTintColor(barTintColor != Integer.MAX_VALUE ? barTintColor : null);
     }
 
+    @ReactProp(name = "bottomBar")
+    public void setBottomBar(SearchBarView view, boolean bottomBar) {
+        view.bottomBar = bottomBar;
+    }
+
     @Nonnull
     @Override
     protected SearchBarView createViewInstance(@Nonnull ThemedReactContext reactContext) {
