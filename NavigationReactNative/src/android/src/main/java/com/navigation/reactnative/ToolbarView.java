@@ -32,7 +32,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ToolbarView extends Toolbar {
+public class ToolbarView extends Toolbar implements ActionView {
     private MenuItem searchMenuItem;
     private String title;
     private String titleFontFamily;
@@ -288,14 +288,14 @@ public class ToolbarView extends Toolbar {
         }
     }
 
-    void setOnSearchListener(OnSearchListener onSearchListener) {
+    public void setOnSearchListener(OnSearchListener onSearchListener) {
         this.onSearchAddedListener = onSearchListener;
         if (searchMenuItem != null)
             this.onSearchAddedListener.onSearchAdd(searchMenuItem);
 
     }
 
-    void setCollapseButton(ImageButton collapseButton) {
+    public void setCollapseButton(ImageButton collapseButton) {
         this.collapseButton = collapseButton;
         setCollapseSearchTintColor();
     }
@@ -328,10 +328,4 @@ public class ToolbarView extends Toolbar {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
-
-    interface OnSearchListener {
-        void onSearchAdd(MenuItem searchMenuItem);
-        void onSearchExpand();
-        void onSearchCollapse();
-    }
 }

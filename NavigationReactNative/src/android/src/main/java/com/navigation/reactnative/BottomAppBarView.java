@@ -28,7 +28,8 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BottomAppBarView extends BottomAppBar {
+public class BottomAppBarView extends BottomAppBar implements ActionView {
+    private MenuItem searchMenuItem;
     private Integer tintColor;
     final int defaultBackgroundColor;
     final Drawable defaultOverflowIcon;
@@ -40,6 +41,7 @@ public class BottomAppBarView extends BottomAppBar {
     float defaultFabCradleVerticalOffset;
     private Integer defaultMenuTintColor;
     private ImageButton collapseButton;
+    private OnSearchListener onSearchAddedListener;
     private String navigationTestID;
     private String overflowTestID;
     private final IconResolver.IconResolverListener navIconResolverListener;
@@ -194,7 +196,14 @@ public class BottomAppBarView extends BottomAppBar {
         }
     }
 
-    void setCollapseButton(ImageButton collapseButton) {
+    public void setOnSearchListener(OnSearchListener onSearchListener) {
+        this.onSearchAddedListener = onSearchListener;
+        if (searchMenuItem != null)
+            this.onSearchAddedListener.onSearchAdd(searchMenuItem);
+
+    }
+
+    public void setCollapseButton(ImageButton collapseButton) {
         this.collapseButton = collapseButton;
         setCollapseSearchTintColor();
     }

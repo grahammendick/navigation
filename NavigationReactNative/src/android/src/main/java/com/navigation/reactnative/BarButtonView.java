@@ -179,13 +179,10 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     public void onActionViewExpanded() {
         if (getChildAt(0) instanceof ActionBarView)
             ((ActionBarView) getChildAt(0)).expanded();
-        Toolbar toolbar = (Toolbar) getParent();
-        if (toolbar.getChildAt(1) instanceof ImageButton) {
-            ImageButton imageButton = (ImageButton) toolbar.getChildAt(1);
-            if (toolbar instanceof ToolbarView)
-                ((ToolbarView) toolbar).setCollapseButton(imageButton);
-            if (toolbar instanceof BottomAppBarView)
-                ((BottomAppBarView) toolbar).setCollapseButton(imageButton);
+        ActionView actionView = (ActionView) getParent();
+        if (actionView.getChildAt(1) instanceof ImageButton) {
+            ImageButton imageButton = (ImageButton) actionView.getChildAt(1);
+            actionView.setCollapseButton(imageButton);
         }
     }
 
