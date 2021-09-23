@@ -13,7 +13,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.google.android.material.appbar.AppBarLayout;
@@ -105,14 +104,14 @@ public class SearchBarView extends ReactViewGroup {
 
                 @Override
                 public void onSearchExpand() {
-                    setElevation(PixelUtil.toPixelFromDIP(5));
+                    setZ(58);
                     ReactContext reactContext = (ReactContext) getContext();
                     reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onExpand", null);
                 }
 
                 @Override
                 public void onSearchCollapse() {
-                    setElevation(PixelUtil.toPixelFromDIP(-5));
+                    setZ(-58);
                     ReactContext reactContext = (ReactContext) getContext();
                     reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onCollapse", null);
                 }
