@@ -28,7 +28,7 @@ class SearchBar extends React.Component<any, any> {
         var {autoCapitalize, children, ...props} = this.props;
         var constants = (UIManager as any).getViewManagerConfig('NVSearchBar').Constants;
         autoCapitalize = Platform.OS === 'android' ? constants.AutoCapitalize[autoCapitalize] : autoCapitalize;
-        var showStyle = Platform.OS === 'android' && {top: 56, zIndex: show ? 58 : -58}
+        var showStyle = Platform.OS === 'android' && {zIndex: show ? 58 : -58}
         return (
             <NVSearchBar
                 {...props}
@@ -51,7 +51,7 @@ var styles = StyleSheet.create({
         position: 'absolute',
         ...Platform.select({
             android: {
-                top: 0, right: 0, bottom: 0, left: 0,
+                top: 0, right: 0, bottom: 56, left: 0,
             },
         })
     },
