@@ -527,7 +527,7 @@ export interface FloatingActionButtonProps {
     /**
      * The id of the floating action button in end-to-end tests
      */
-     testID?: string;
+    testID?: string;
      /**
      * The style
      */
