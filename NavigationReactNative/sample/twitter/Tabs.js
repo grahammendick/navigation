@@ -22,7 +22,7 @@ export default ({tweets, notifications}) => {
   return (
     <>
       <NavigationBar hidden={true} />
-      <TabBar primary={true} selectedTintColor={Platform.OS === 'android' ? '#1da1f2' : null}>
+      <TabBar primary={true} barTintColor={Platform.OS === 'android' ? null : 'rgb(247,247,247)'} selectedTintColor={Platform.OS === 'android' ? '#1da1f2' : null}>
         <TabBarItem title="Home" image={require('./home.png')}>
           {Platform.OS === 'ios'
             ? (<NavigationHandler stateNavigator={homeNavigator}>
