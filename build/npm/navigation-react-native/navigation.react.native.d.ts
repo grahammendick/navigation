@@ -497,10 +497,6 @@ export interface FloatingActionButtonProps {
      */
     image: ImageRequireSource | ImageURISource | string;
     /**
-     * Indicates whether to hide the floating action button
-     */
-    hide?: boolean;
-    /**
      * The view the floating action button is anchored to
      */
     anchor?: number | null;
