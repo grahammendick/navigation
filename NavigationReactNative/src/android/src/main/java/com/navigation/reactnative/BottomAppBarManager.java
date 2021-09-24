@@ -82,12 +82,6 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
         view.setHideOnScroll(hideOnScroll);
     }
 
-    @ReactProp(name = "hide")
-    public void setHide(BottomAppBarView view, boolean hide) {
-        if (hide) view.performHide();
-        else view.performShow();
-    }
-
     @ReactProp(name = "height")
     public void setHeight(BottomAppBarView view, double height) {
         view.getLayoutParams().height = (int) PixelUtil.toPixelFromDIP(height);

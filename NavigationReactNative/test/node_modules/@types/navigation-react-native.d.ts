@@ -50,10 +50,6 @@ export interface NavigationBarProps {
      */
     hidden?: boolean;
     /**
-     * Indicates whether to hide the navigation bar
-     */
-    hide?: boolean;
-    /**
      * Indicates whether the title should be large
      */
     largeTitle?: boolean;
