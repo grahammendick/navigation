@@ -45,14 +45,6 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
         view.setImageTintList(color != Integer.MAX_VALUE ? ColorStateList.valueOf(color) : null);
     }
 
-    @ReactProp(name = "hide")
-    public void setHide(FloatingActionButtonView view, boolean hide) {
-        assert view.params.getBehavior() != null;
-        ((FloatingActionButton.Behavior) view.params.getBehavior()).setAutoHideEnabled(!hide);
-        if (hide) view.hide();
-        else view.show();
-    }
-
     @ReactProp(name = "anchor", defaultInt = View.NO_ID)
     public void setAnchor(FloatingActionButtonView view, int anchor) {
         view.params.setAnchorId(anchor);
