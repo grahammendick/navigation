@@ -46,7 +46,7 @@ export class NavigationStack extends Component<NavigationStackProps> { }
  */
 export interface NavigationBarProps {
     /**
-     * Indicates whether to display the navigation bar
+     * Indicates whether to hide the navigation bar
      */
     hidden?: boolean;
     /**
