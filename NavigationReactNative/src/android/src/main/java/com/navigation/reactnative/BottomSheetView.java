@@ -11,9 +11,10 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.facebook.react.views.view.ReactViewGroup;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-public class BottomSheetView extends ViewGroup {
+public class BottomSheetView extends ReactViewGroup {
     BottomSheetBehavior<BottomSheetView> bottomSheetBehavior;
     BottomSheetBehavior.BottomSheetCallback bottomSheetCallback;
     float defaultHalfExpandedRatio;
@@ -51,9 +52,5 @@ public class BottomSheetView extends ViewGroup {
             }
         };
         bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback);
-    }
-
-    @Override
-    protected void onLayout(boolean b, int i, int i1, int i2, int i3) {
     }
 }
