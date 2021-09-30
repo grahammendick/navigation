@@ -12,7 +12,7 @@ class BottomSheet extends React.Component<any, any> {
     }
     static defaultProps = {
         draggable: true,
-        defaultDetent: (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants.Detent.collapsed
+        defaultDetent: 'collapsed'
     }
     static getDerivedStateFromProps({detent}, {selectedDetent}) {
         if (detent != null && detent !== selectedDetent)
