@@ -60,6 +60,8 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
     public void setHeight(BottomSheetView view, double height) {
         view.getLayoutParams().height = height != 0 ? (int) PixelUtil.toPixelFromDIP(height) : ViewGroup.LayoutParams.WRAP_CONTENT;
         view.requestLayout();
+        if (view.getParent() != null)
+            view.getParent().requestLayout();
     }
 
     @ReactProp(name = "halfExpandedRatio", defaultFloat = Float.MAX_VALUE)
