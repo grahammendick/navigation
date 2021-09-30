@@ -47,7 +47,6 @@ public class BottomSheetView extends ReactViewGroup {
 
             @Override
             public void onSlide(@NonNull View view, float v) {
-
             }
         };
         bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback);
