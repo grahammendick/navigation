@@ -30,8 +30,8 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
     @ReactProp(name = "detent")
     public void setDetent(BottomSheetView view, int detent) {
         int eventLag = view.nativeEventCount - view.mostRecentEventCount;
-        if (eventLag == 0 && view.bottomSheetBehavior.getState() != detent) {
-            view.bottomSheetBehavior.setState(detent);
+        if (eventLag == 0) {
+            view.detent = detent;
         }
     }
 
@@ -83,6 +83,13 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
     @ReactProp(name = "draggable")
     public void setDraggable(BottomSheetView view, boolean draggable) {
         view.bottomSheetBehavior.setDraggable(draggable);
+    }
+
+    @Override
+    protected void onAfterUpdateTransaction(@NonNull BottomSheetView view) {
+        super.onAfterUpdateTransaction(view);
+        if (view.bottomSheetBehavior.getState() != view.detent)
+            view.bottomSheetBehavior.setState(view.detent);
     }
 
     @Nullable

@@ -17,6 +17,7 @@ public class BottomSheetView extends ReactViewGroup {
     BottomSheetBehavior<BottomSheetView> bottomSheetBehavior;
     BottomSheetBehavior.BottomSheetCallback bottomSheetCallback;
     float defaultHalfExpandedRatio;
+    int detent;
     int nativeEventCount;
     int mostRecentEventCount;
 
@@ -39,6 +40,7 @@ public class BottomSheetView extends ReactViewGroup {
             public void onStateChanged(@NonNull View view, int i) {
                 nativeEventCount++;
                 WritableMap event = Arguments.createMap();
+                detent = i;
                 event.putInt("detent", i);
                 event.putInt("eventCount", nativeEventCount);
                 ReactContext reactContext = (ReactContext) getContext();
