@@ -54,13 +54,14 @@
   &lt;/BottomSheet>
 &lt;/CoordinatorLayout></code></pre>
             <h2>Controlling the Bottom Sheet</h2>
-            <p>                
+            <p>
+                The resting states of a <code>BottomSheet</code> are called detents, for example, 'collapsed' or 'expanded'. By default the <code>BottomSheet</code> is uncontrolled, where only the user can change the detent (by dragging). But it can also be controlled so you can programmatically change the detent. In our email example, when the user presses the sender's icon button we expand the <code>BottomSheet</code> to reveal the sender's details.
             </p>
             <pre><code class="language-jsx">import {BottomSheet} from 'navigation-react-native';
 
 const [detent, setDetent] = useState('collapsed');
-const onPress = () => setDetent('expanded');
 
+&lt;Button onPress={() => setDetent('expanded')} />
 &lt;BottomSheet peekHeight={200} detent={detent} onChangeDetent={setDetent}>
   &lt;ScrollView nestedScrollEnabled={true} />
 &lt;/BottomSheet></code></pre>
