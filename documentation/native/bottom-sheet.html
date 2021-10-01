@@ -59,7 +59,7 @@
 const [detent, setDetent] = useState('hidden');
 const onPress = () => setDetent('collapsed');
 
-&lt;BottomSheet detent={detent} onChangeDetent={setDetent} peekHeight={200}>
+&lt;BottomSheet peekHeight={200} detent={detent} onChangeDetent={setDetent}>
   &lt;Contact />
 &lt;/BottomSheet></code></pre>
 
