@@ -45,7 +45,24 @@
             <h1>Bottom Sheet (Android)</h1>
             <p>
             </p>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx">import {BottomSheet} from 'navigation-react-native';
+
+&lt;CoordinatorLayout>
+  &lt;BottomSheet peekHeight={200}>
+    &lt;Contact />
+  &lt;/BottomSheet>
+&lt;/CoordinatorLayout></code></pre>
+
+
+            <pre><code class="language-jsx">import {BottomSheet} from 'navigation-react-native';
+
+const [detent, setDetent] = useState('hidden');
+const onPress = () => setDetent('collapsed');
+
+&lt;BottomSheet detent={detent} onChangeDetent={setDetent} peekHeight={200}>
+  &lt;Contact />
+&lt;/BottomSheet></code></pre>
+
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
