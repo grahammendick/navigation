@@ -24,6 +24,7 @@ public class BottomSheetView extends ReactViewGroup {
     public BottomSheetView(Context context) {
         super(context);
         bottomSheetBehavior = new BottomSheetBehavior<>(context, null);
+        detent = bottomSheetBehavior.getState();
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         params.setBehavior(bottomSheetBehavior);
         setLayoutParams(params);
