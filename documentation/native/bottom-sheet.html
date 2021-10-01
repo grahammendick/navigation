@@ -57,8 +57,8 @@
 
             <pre><code class="language-jsx">import {BottomSheet} from 'navigation-react-native';
 
-const [detent, setDetent] = useState('hidden');
-const onPress = () => setDetent('collapsed');
+const [detent, setDetent] = useState('collapsed');
+const onPress = () => setDetent('expanded');
 
 &lt;BottomSheet peekHeight={200} detent={detent} onChangeDetent={setDetent}>
   &lt;ScrollView nestedScrollEnabled={true} />
