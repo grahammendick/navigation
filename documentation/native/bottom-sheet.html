@@ -1,0 +1,71 @@
+<html>
+<head>
+    <title>Bottom Sheet (Android)</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../css/prism.css">
+    <link rel="stylesheet" href="../../css/navigation.css">
+    <style>
+      :root {
+        --primary-color: #9cc3d5ff;
+        --secondary-color: #0063b2ff;
+      }    
+    </style>
+</head>
+<body>
+    <div id="banner">
+      <a href="../../native"><img alt="logo" src="../../img/logo.png" /></a>
+      <a href="../setup.html">React</a>
+      <a href="https://github.com/grahammendick/navigation">GitHub</a>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <h2>
+                <img alt="native" src="../../img/native.png" />
+                React Native
+            </h2>
+            <div id="items">
+                <a href="setup.html">Setup</a>
+                <a href="hello-world.html">Hello World</a>
+                <a href="push-navigation.html">Push Navigation</a>
+                <a href="pop-navigation.html">Pop Navigation</a>
+                <a href="navigation-bar.html">Navigation Bar</a>
+                <a href="tab-bar.html">Tab Bar</a>
+                <a href="modal.html">Modal</a>
+                <a href="drawer.html">Drawer</a>
+                <a href="bottom-sheet.html" class="selected">Bottom Sheet (Android)</a>
+                <a href="scene-navigation-lifecycle.html">Navigation Lifecycle</a>
+                <a href="custom-animation.html">Custom Animation (Android)</a>
+                <a href="shared-element-transition.html">Shared Element Transition (Android)</a>
+                <a href="deep-links.html">Deep Links</a>
+                <a href="typescript.html">TypeScript</a>
+                <a href="examples.html">Examples</a>
+            </div>
+        </div>
+        <div id="article">
+            <h1>Bottom Sheet (Android)</h1>
+            <p>
+                On Android, you use the <code>BottomSheet</code> component to avoid cluttering up the main content. The sheet starts off collapsed and the user expands it by dragging. The <code>BottomSheet</code> is 100% native so it must be a child of a <code>CoordinatorLayout</code>. In our example application, when the user opens an email we display the sender's information in a <code>BottomSheet</code>. The <code>peekHeight</code> determines how much of the sender the user sees to start with. We turn on nested scrolling so that expanding the sheet seamlessly scrolls the sender.
+            </p>
+            <pre><code class="language-jsx">import {BottomSheet} from 'navigation-react-native';
+
+&lt;CoordinatorLayout>
+  &lt;BottomSheet peekHeight={200}>
+    &lt;ScrollView nestedScrollEnabled={true} />
+  &lt;/BottomSheet>
+&lt;/CoordinatorLayout></code></pre>
+            <h2>Controlling the Bottom Sheet</h2>
+            <p>
+                The resting states of a <code>BottomSheet</code> are called detents, for example, 'collapsed' or 'expanded'. By default the <code>BottomSheet</code> is uncontrolled, where only the user can change the detent (by dragging). But it can also be controlled so you can programmatically change the detent. In our email example, when the user presses the sender's icon button we expand the <code>BottomSheet</code> to reveal the sender's details.
+            </p>
+            <pre><code class="language-jsx">import {BottomSheet} from 'navigation-react-native';
+
+const [detent, setDetent] = useState('collapsed');
+
+&lt;Button onPress={() => setDetent('expanded')} />
+&lt;BottomSheet peekHeight={200} detent={detent} onChangeDetent={setDetent}>
+  &lt;ScrollView nestedScrollEnabled={true} />
+&lt;/BottomSheet></code></pre>
+        </div>
+    <script type="text/javascript" src="../../js/prism.js"></script>
+</body>
+</html>
