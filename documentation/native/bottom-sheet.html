@@ -53,8 +53,9 @@
     &lt;ScrollView nestedScrollEnabled={true} />
   &lt;/BottomSheet>
 &lt;/CoordinatorLayout></code></pre>
-
-
+            <h2>Controlling the Bottom Sheet</h2>
+            <p>                
+            </p>
             <pre><code class="language-jsx">import {BottomSheet} from 'navigation-react-native';
 
 const [detent, setDetent] = useState('collapsed');
@@ -63,7 +64,6 @@ const onPress = () => setDetent('expanded');
 &lt;BottomSheet peekHeight={200} detent={detent} onChangeDetent={setDetent}>
   &lt;ScrollView nestedScrollEnabled={true} />
 &lt;/BottomSheet></code></pre>
-
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
