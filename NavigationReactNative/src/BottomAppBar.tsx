@@ -6,7 +6,7 @@ const BottomAppBar = ({ navigationImage, overflowImage, children, style, ...prop
     if (Platform.OS === 'ios') return null;
     var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
     var searchBar: any = childrenArray.find(({type}) => type === SearchBar);
-    searchBar = cloneElement(searchBar, { bottomBar: true })
+    searchBar = searchBar && cloneElement(searchBar, { bottomBar: true });
     return (
         <>
             <NVBottomAppBar
