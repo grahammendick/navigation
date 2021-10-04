@@ -537,7 +537,7 @@ export class TabBar extends Component<TabBarProps> {}
 /**
  * Renders a bottom sheet
  */
- export class BottomSheet extends Component<BottomSheetProps> {}
+export class BottomSheet extends Component<BottomSheetProps> {}
 
 /**
  * Defines the Floating Action Button Props contract
