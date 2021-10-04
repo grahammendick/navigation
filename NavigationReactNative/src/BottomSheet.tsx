@@ -37,6 +37,7 @@ class BottomSheet extends React.Component<any, any> {
         }
     }
     render() {
+        if (Platform.OS === 'ios') return null;
         var { expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable, children } = this.props
         const detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants.Detent
         return (
@@ -77,4 +78,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Platform.OS === "android" ? BottomSheet : () => null;
+export default BottomSheet;
