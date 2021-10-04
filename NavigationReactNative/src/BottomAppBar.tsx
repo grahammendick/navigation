@@ -1,4 +1,4 @@
-import React, { forwardRef, cloneElement, ReactElement } from 'react';
+import React, { cloneElement, ReactElement } from 'react';
 import { Platform, Image, StyleSheet, requireNativeComponent } from 'react-native';
 import SearchBar from './SearchBar';
 
