@@ -121,6 +121,34 @@ export interface NavigationBarProps {
      */
     backFontSize?: number;
     /**
+     * Indicates whether to render as a bottom app bar
+     */
+    bottomBar?: boolean;
+    /**
+     * The position of the anchored floating action button
+     */
+    fabAlignmentMode?: 'center' | 'end';
+    /**
+     * The animation that runs when the floating action button changes position
+     */
+    fabAnimationMode?: 'slide' | 'scale';
+    /**
+     * The cradle margin for the floating action button cutout
+     */
+    fabCradleMargin?: number;
+    /**
+     * The rounded corner radius for the floating action button cutout
+     */
+    fabCradleRoundedCornerRadius?: number;
+    /**
+     * The vertical offset for the floating action button cutout
+     */
+    fabCradleVerticalOffset?: number;
+    /**
+     * Indicates whether to hide the bottom navigation bar when scrolling
+     */
+    hideOnScroll?: boolean;
+    /**
      * The id of the back button in end-to-end tests
      */
     backTestID?: string;

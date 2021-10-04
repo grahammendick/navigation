@@ -1,71 +1,66 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.text.SpannableString;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.StyleSpan;
-import android.text.style.TypefaceSpan;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-import com.facebook.react.views.text.ReactTypefaceUtils;
-import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.bottomappbar.BottomAppBar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ToolbarView extends Toolbar implements ActionView {
+public class BottomAppBarView extends BottomAppBar implements ActionView {
     private MenuItem searchMenuItem;
-    private String title;
-    private String titleFontFamily;
-    private String titleFontWeight;
-    private String titleFontStyle;
-    private Integer titleFontSize;
-    private boolean titleChanged = false;
     private Integer tintColor;
+    final int defaultBackgroundColor;
+    final Drawable defaultOverflowIcon;
+    int fabAlignmentMode;
+    int defaultFabAlignmentMode;
+    int defaultFabAnimationMode;
+    float defaultFabCradleMargin;
+    float defaultFabCradleRoundedCornerRadius;
+    float defaultFabCradleVerticalOffset;
+    private Integer defaultMenuTintColor;
     private ImageButton collapseButton;
     private OnSearchListener onSearchAddedListener;
-    final int defaultTitleTextColor;
-    final Drawable defaultOverflowIcon;
-    private Integer defaultMenuTintColor;
     private String navigationTestID;
     private String overflowTestID;
-    private final IconResolver.IconResolverListener logoResolverListener;
     private final IconResolver.IconResolverListener navIconResolverListener;
     private final IconResolver.IconResolverListener overflowIconResolverListener;
     private boolean layoutRequested = false;
     final ArrayList<View> children = new ArrayList<>();
 
-    public ToolbarView(Context context) {
-        super(context);
-        setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.MATCH_PARENT));
-        defaultTitleTextColor = getDefaultTitleTextColor();
+    public BottomAppBarView(@NonNull Context context) {
+        super(context, null);
+        defaultBackgroundColor = getBackgroundTint() != null ? getBackgroundTint().getDefaultColor() : Color.WHITE;
         defaultOverflowIcon = getOverflowIcon();
-        logoResolverListener = new IconResolver.IconResolverListener() {
-            @Override
-            public void setDrawable(Drawable d) {
-                setLogo(d);
-                setTintColor(getLogo());
-            }
-        };
+        fabAlignmentMode = defaultFabAlignmentMode = getFabAlignmentMode();
+        defaultFabAnimationMode = getFabAnimationMode();
+        defaultFabCradleMargin = getFabCradleMargin();
+        defaultFabCradleRoundedCornerRadius = getFabCradleRoundedCornerRadius();
+        defaultFabCradleVerticalOffset = getCradleVerticalOffset();
+        CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.BOTTOM;
+        setLayoutParams(params);
         navIconResolverListener = new IconResolver.IconResolverListener() {
             @Override
             public void setDrawable(Drawable d) {
@@ -105,53 +100,6 @@ public class ToolbarView extends Toolbar implements ActionView {
         });
     }
 
-    private int getDefaultTitleTextColor() {
-        Resources.Theme theme = getContext().getTheme();
-        TypedArray toolbarStyle = theme.obtainStyledAttributes(new int[] {getIdentifier(getContext(), "toolbarStyle")});
-        int toolbarStyleResId = toolbarStyle.getResourceId(0, 0);
-        toolbarStyle.recycle();
-        TypedArray textAppearances = theme.obtainStyledAttributes(toolbarStyleResId, new int[] {getIdentifier(getContext(), "titleTextAppearance")});
-        int titleTextAppearanceResId = textAppearances.getResourceId(0, 0);
-        textAppearances.recycle();
-        TypedArray titleTextAppearance = theme.obtainStyledAttributes(titleTextAppearanceResId, new int[]{android.R.attr.textColor});
-        int titleTextColor = titleTextAppearance.getColor(0, Color.BLACK);
-        titleTextAppearance.recycle();
-        return titleTextColor;
-    }
-
-    private static int getIdentifier(Context context, String name) {
-        return context.getResources().getIdentifier(name, "attr", context.getPackageName());
-    }
-
-    void setPlainTitle(String title) {
-        this.title = title;
-        titleChanged = true;
-    }
-
-    void setTitleFontFamily(String titleFontFamily) {
-        this.titleFontFamily = titleFontFamily;
-        titleChanged = true;
-    }
-
-    void setTitleFontWeight(String titleFontWeight) {
-        this.titleFontWeight = titleFontWeight;
-        titleChanged = true;
-    }
-
-    void setTitleFontStyle(String titleFontStyle) {
-        this.titleFontStyle = titleFontStyle;
-        titleChanged = true;
-    }
-
-    void setTitleFontSize(Integer titleFontSize) {
-        this.titleFontSize = titleFontSize;
-        titleChanged = true;
-    }
-
-    void setLogoSource(@Nullable ReadableMap source) {
-        IconResolver.setIconSource(source, logoResolverListener, getContext());
-    }
-
     void setNavIconSource(@Nullable ReadableMap source) {
         IconResolver.setIconSource(source, navIconResolverListener, getContext());
     }
@@ -166,10 +114,8 @@ public class ToolbarView extends Toolbar implements ActionView {
     void setTintColor(Integer tintColor) {
         this.tintColor = tintColor;
         setTintColor(getNavigationIcon());
-        setTintColor(getLogo());
         setTintColor(getOverflowIcon());
         setMenuTintColor(null);
-        setCollapseSearchTintColor();
     }
 
     private void setTintColor(Drawable icon) {
@@ -214,7 +160,7 @@ public class ToolbarView extends Toolbar implements ActionView {
                         @Override
                         public boolean onMenuItemActionExpand(MenuItem item) {
                             onSearchAddedListener.onSearchExpand();
-                            ((NavigationBarView) getParent()).setExpanded(true);
+                            BottomAppBarView.this.performShow();
                             return true;
                         }
                     });
@@ -266,25 +212,6 @@ public class ToolbarView extends Toolbar implements ActionView {
                     }
                 }
             }
-        }
-    }
-
-    void styleTitle() {
-        if (titleChanged) {
-            SpannableString titleSpannable = null;
-            if (title != null) {
-                titleSpannable = new SpannableString(title);
-                if (titleFontFamily != null)
-                    titleSpannable.setSpan(new TypefaceSpan(titleFontFamily), 0, title.length(), 0);
-                if (titleFontWeight != null)
-                    titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontWeight(titleFontWeight)), 0, title.length(), 0);
-                if (titleFontStyle != null)
-                    titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontStyle(titleFontStyle)), 0, title.length(), 0);
-                if (titleFontSize != null)
-                    titleSpannable.setSpan(new AbsoluteSizeSpan(titleFontSize, true), 0, title.length(), 0);
-            }
-            setTitle(titleSpannable);
-            titleChanged = false;
         }
     }
 
