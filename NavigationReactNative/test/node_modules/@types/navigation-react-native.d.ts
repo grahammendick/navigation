@@ -491,7 +491,7 @@ export class TabBar extends Component<TabBarProps> {}
 /**
  * Defines the Bottom Sheet Props contract
  */
- export interface BottomSheetProps {
+export interface BottomSheetProps {
     /**
      * The height of the bottom sheet when it is collapsed
      */
