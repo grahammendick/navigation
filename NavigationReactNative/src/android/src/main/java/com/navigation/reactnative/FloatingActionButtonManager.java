@@ -48,19 +48,19 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
     @ReactProp(name = "anchor", defaultInt = View.NO_ID)
     public void setAnchor(FloatingActionButtonView view, int anchor) {
         view.params.setAnchorId(anchor);
-        requestCoordinatorLayout(view);
+        if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "gravity")
     public void setGravity(FloatingActionButtonView view, String gravity) {
         view.params.gravity = convertGravity(gravity);
-        requestCoordinatorLayout(view);
+        if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "anchorGravity")
     public void setAnchorGravity(FloatingActionButtonView view, String anchorGravity) {
         view.params.anchorGravity = convertGravity(anchorGravity);
-        requestCoordinatorLayout(view);
+        if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     private int convertGravity(String gravity) {
@@ -85,43 +85,43 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
     @ReactProp(name = "marginTop")
     public void setMarginTop(FloatingActionButtonView view, int marginTop) {
         view.marginTop = (int) PixelUtil.toPixelFromDIP(marginTop);
-        requestCoordinatorLayout(view);
+        if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "marginRight")
     public void setMarginRight(FloatingActionButtonView view, int marginRight) {
         view.marginRight = (int) PixelUtil.toPixelFromDIP(marginRight);
-        requestCoordinatorLayout(view);
+        if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "marginBottom")
     public void setMarginBottom(FloatingActionButtonView view, int marginBottom) {
         view.marginBottom = (int) PixelUtil.toPixelFromDIP(marginBottom);
-        requestCoordinatorLayout(view);
+        if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "marginStart")
     public void setMarginStart(FloatingActionButtonView view, int marginStart) {
         view.marginStart = (int) PixelUtil.toPixelFromDIP(marginStart);
-        requestCoordinatorLayout(view);
+        if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "marginEnd")
     public void setMarginEnd(FloatingActionButtonView view, int marginEnd) {
         view.marginEnd = (int) PixelUtil.toPixelFromDIP(marginEnd);
-        requestCoordinatorLayout(view);
+        if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "marginLeft")
     public void setMarginLeft(FloatingActionButtonView view, int marginLeft) {
         view.marginLeft = (int) PixelUtil.toPixelFromDIP(marginLeft);
-        requestCoordinatorLayout(view);
+        if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "margin")
     public void setMargin(FloatingActionButtonView view, int margin) {
         view.margin = (int) PixelUtil.toPixelFromDIP(margin);
-        requestCoordinatorLayout(view);
+        if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "elevation")
@@ -144,13 +144,6 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
     @ReactProp(name = "testID")
     public void setTestID(FloatingActionButtonView view, String testID) {
         view.setTag(testID);
-    }
-
-    private void requestCoordinatorLayout(FloatingActionButtonView view) {
-        if (view.getParent() instanceof CoordinatorLayoutView) {
-            CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) view.getParent();
-            coordinatorLayoutView.requestLayout();
-        }
     }
 
     @Override
