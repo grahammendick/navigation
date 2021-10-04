@@ -19,9 +19,11 @@ import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.modules.i18nmanager.I18nUtil;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
@@ -51,6 +53,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
 
     public BottomAppBarView(@NonNull Context context) {
         super(context, null);
+        ViewCompat.setLayoutDirection(this, !I18nUtil.getInstance().isRTL(context) ? ViewCompat.LAYOUT_DIRECTION_LTR : ViewCompat.LAYOUT_DIRECTION_RTL);
         defaultBackgroundColor = getBackgroundTint() != null ? getBackgroundTint().getDefaultColor() : Color.WHITE;
         defaultOverflowIcon = getOverflowIcon();
         fabAlignmentMode = defaultFabAlignmentMode = getFabAlignmentMode();
