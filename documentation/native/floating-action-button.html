@@ -67,7 +67,8 @@
   &lt;BottomSheet ref={(ref) => setAnchor(findNodeHandle(ref))} />
 &lt;/CoordinatorLayout></code></pre>
             <h2>Cradling a Floating Action Button</h2>
-            <p>                
+            <p>
+                When a <code>FloatingActionButton</code> is anchored to a bottom <code>NavigationBar</code>, then the navigation bar changes its shape. It creates a cradle for the floating action button to nestle into. You create a bottom <code>NavigationBar</code> by setting the <code>bottomBar</code> prop to true. Any scrollable content that sits above a bottom navigation bar has to be padded to make room. Unless you make the bottom navigation bar scroll out of the way by setting its <code>hideOnScroll</code> prop to true.
             </p>
             <pre><code class="language-jsx">&lt;CoordinatorLayout>
   &lt;FloatingActionButton anchor={anchor} />
