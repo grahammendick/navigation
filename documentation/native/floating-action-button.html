@@ -58,7 +58,7 @@
 </code></pre>
             <h2>Anchoring the Floating Action Button</h2>
             <p>
-                When you anchor the <code>FloatingActionButton</code> to another component then they move in tandem. In our email application, for example, we anchor the floating compose button to the contact details <code>BottomSheet</code> on the 'mail' scene. This prevents the sheet from obscuring the compose button. When the user expands the sheet to see the contact information then the compose button moves up, too.
+                If you anchor the <code>FloatingActionButton</code> to another component then they will move in tandem. When the user opens an email in our example application, we anchor the floating compose button to the contact details <a href="bottom-sheet.html"><code>BottomSheet</code></a>. This prevents the sheet from obscuring the compose button. When the user expands the sheet to see the contact information then the compose button moves up, too.
             </p>
             <pre><code class="language-jsx">const [anchor, setAnchor] = useState(null);
 
