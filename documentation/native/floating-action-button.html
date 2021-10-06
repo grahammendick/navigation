@@ -61,7 +61,7 @@
             <pre><code class="language-jsx">const [anchor, setAnchor] = useState(null);
 
 &lt;CoordinatorLayout>
-  &lt;FloatingActionButton image={require('./compose.png')} anchor={anchor} />
+  &lt;FloatingActionButton anchor={anchor} />
   &lt;BottomSheet ref={(ref) => setAnchor(findNodeHandle(ref))} />
 &lt;/CoordinatorLayout></code></pre>
         </div>
