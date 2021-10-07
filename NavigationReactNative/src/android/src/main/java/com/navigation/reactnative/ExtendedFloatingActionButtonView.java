@@ -88,19 +88,19 @@ public class ExtendedFloatingActionButtonView extends ExtendedFloatingActionButt
 
     void styleText() {
         if (textChanged) {
-            SpannableString titleSpannable = null;
+            SpannableString textSpannable = null;
             if (text != null) {
-                titleSpannable = new SpannableString(text);
+                textSpannable = new SpannableString(text);
                 if (fontFamily != null)
-                    titleSpannable.setSpan(new TypefaceSpan(fontFamily), 0, text.length(), 0);
+                    textSpannable.setSpan(new TypefaceSpan(fontFamily), 0, text.length(), 0);
                 if (fontWeight != null)
-                    titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontWeight(fontWeight)), 0, text.length(), 0);
+                    textSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontWeight(fontWeight)), 0, text.length(), 0);
                 if (fontStyle != null)
-                    titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontStyle(fontStyle)), 0, text.length(), 0);
+                    textSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontStyle(fontStyle)), 0, text.length(), 0);
                 if (fontSize != null)
-                    titleSpannable.setSpan(new AbsoluteSizeSpan(fontSize, true), 0, text.length(), 0);
+                    textSpannable.setSpan(new AbsoluteSizeSpan(fontSize, true), 0, text.length(), 0);
             }
-            setText(titleSpannable);
+            setText(textSpannable);
             textChanged = false;
         }
     }
