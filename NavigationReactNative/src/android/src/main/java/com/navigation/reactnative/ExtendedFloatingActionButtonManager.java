@@ -117,6 +117,11 @@ public class ExtendedFloatingActionButtonManager extends SimpleViewManager<Exten
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
+    @ReactProp(name = "testID")
+    public void setTestID(ExtendedFloatingActionButtonView view, String testID) {
+        view.setTag(testID);
+    }
+
     @Override
     protected void onAfterUpdateTransaction(@NonNull ExtendedFloatingActionButtonView view) {
         super.onAfterUpdateTransaction(view);
