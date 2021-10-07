@@ -35,7 +35,7 @@ public class ExtendedFloatingActionButtonManager extends SimpleViewManager<Exten
 
     @ReactProp(name = "text")
     public void setText(ExtendedFloatingActionButtonView view, String text) {
-        view.setText(text);
+        view.setActionText(text);
     }
 
     @ReactProp(name = "backgroundColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
@@ -117,6 +117,26 @@ public class ExtendedFloatingActionButtonManager extends SimpleViewManager<Exten
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
+    @ReactProp(name = "fontFamily")
+    public void setFontFamily(ExtendedFloatingActionButtonView view, String fontFamily) {
+        view.setFontFamily(fontFamily);
+    }
+
+    @ReactProp(name = "fontWeight")
+    public void setFontWeight(ExtendedFloatingActionButtonView view, String fontWeight) {
+        view.setFontWeight(fontWeight);
+    }
+
+    @ReactProp(name = "fontStyle")
+    public void setFontStyle(ExtendedFloatingActionButtonView view, String fontStyle) {
+        view.setFontStyle(fontStyle);
+    }
+
+    @ReactProp(name = "fontSize")
+    public void setFontSize(ExtendedFloatingActionButtonView view, Integer fontSize) {
+        view.setFontSize(fontSize);
+    }
+
     @ReactProp(name = "testID")
     public void setTestID(ExtendedFloatingActionButtonView view, String testID) {
         view.setTag(testID);
@@ -132,6 +152,7 @@ public class ExtendedFloatingActionButtonManager extends SimpleViewManager<Exten
             Math.max(marginLeft, view.margin), Math.max(view.marginTop, view.margin),
             Math.max(marginRight, view.margin), Math.max(view.marginBottom, view.margin
         ));
+        view.styleText();
     }
 
     @Override
