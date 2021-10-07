@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.modules.i18nmanager.I18nUtil;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -71,6 +73,60 @@ public class ExtendedFloatingActionButtonManager extends SimpleViewManager<Exten
         if ("bottomRight".equals(gravity)) return Gravity.BOTTOM | Gravity.RIGHT;
         if ("bottomEnd".equals(gravity)) return Gravity.BOTTOM | Gravity.END;
         return Gravity.NO_GRAVITY;
+    }
+
+    @ReactProp(name = "marginTop")
+    public void setMarginTop(ExtendedFloatingActionButtonView view, int marginTop) {
+        view.marginTop = (int) PixelUtil.toPixelFromDIP(marginTop);
+        if (view.getParent() != null) view.getParent().requestLayout();
+    }
+
+    @ReactProp(name = "marginRight")
+    public void setMarginRight(ExtendedFloatingActionButtonView view, int marginRight) {
+        view.marginRight = (int) PixelUtil.toPixelFromDIP(marginRight);
+        if (view.getParent() != null) view.getParent().requestLayout();
+    }
+
+    @ReactProp(name = "marginBottom")
+    public void setMarginBottom(ExtendedFloatingActionButtonView view, int marginBottom) {
+        view.marginBottom = (int) PixelUtil.toPixelFromDIP(marginBottom);
+        if (view.getParent() != null) view.getParent().requestLayout();
+    }
+
+    @ReactProp(name = "marginStart")
+    public void setMarginStart(ExtendedFloatingActionButtonView view, int marginStart) {
+        view.marginStart = (int) PixelUtil.toPixelFromDIP(marginStart);
+        if (view.getParent() != null) view.getParent().requestLayout();
+    }
+
+    @ReactProp(name = "marginEnd")
+    public void setMarginEnd(ExtendedFloatingActionButtonView view, int marginEnd) {
+        view.marginEnd = (int) PixelUtil.toPixelFromDIP(marginEnd);
+        if (view.getParent() != null) view.getParent().requestLayout();
+    }
+
+    @ReactProp(name = "marginLeft")
+    public void setMarginLeft(ExtendedFloatingActionButtonView view, int marginLeft) {
+        view.marginLeft = (int) PixelUtil.toPixelFromDIP(marginLeft);
+        if (view.getParent() != null) view.getParent().requestLayout();
+    }
+
+    @ReactProp(name = "margin")
+    public void setMargin(ExtendedFloatingActionButtonView view, int margin) {
+        view.margin = (int) PixelUtil.toPixelFromDIP(margin);
+        if (view.getParent() != null) view.getParent().requestLayout();
+    }
+
+    @Override
+    protected void onAfterUpdateTransaction(@NonNull ExtendedFloatingActionButtonView view) {
+        super.onAfterUpdateTransaction(view);
+        boolean rtl = I18nUtil.getInstance().isRTL(view.getContext());
+        int marginLeft = Math.max(view.marginLeft, !rtl ? view.marginStart : view.marginEnd);
+        int marginRight = Math.max(view.marginRight, !rtl ? view.marginEnd : view.marginStart);
+        view.params.setMargins(
+            Math.max(marginLeft, view.margin), Math.max(view.marginTop, view.margin),
+            Math.max(marginRight, view.margin), Math.max(view.marginBottom, view.margin
+        ));
     }
 
     @Override

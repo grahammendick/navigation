@@ -19,6 +19,7 @@ public class ExtendedFloatingActionButtonView extends ExtendedFloatingActionButt
     final int defaultBackgroundColor;
     final int defaultColor;
     final CoordinatorLayout.LayoutParams params;
+    int marginTop, marginRight, marginBottom, marginLeft, marginStart, marginEnd, margin;
     private final IconResolver.IconResolverListener iconResolverListener;
 
     public ExtendedFloatingActionButtonView(@NonNull Context context) {
