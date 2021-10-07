@@ -137,6 +137,11 @@ public class ExtendedFloatingActionButtonManager extends SimpleViewManager<Exten
         view.setFontSize(fontSize);
     }
 
+    @ReactProp(name = "contentDescription")
+    public void setContentDescription(ExtendedFloatingActionButtonView view, String contentDescription) {
+        view.setContentDescription(contentDescription);
+    }
+
     @ReactProp(name = "testID")
     public void setTestID(ExtendedFloatingActionButtonView view, String testID) {
         view.setTag(testID);
