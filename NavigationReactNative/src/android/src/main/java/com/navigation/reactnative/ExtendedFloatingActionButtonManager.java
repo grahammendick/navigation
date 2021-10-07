@@ -24,4 +24,9 @@ public class ExtendedFloatingActionButtonManager extends SimpleViewManager<Exten
     public void setImage(ExtendedFloatingActionButtonView view, ReadableMap icon) {
         view.setIconSource(icon);
     }
+
+    @ReactProp(name = "text")
+    public void setText(ExtendedFloatingActionButtonView view, String text) {
+        view.setText(text);
+    }
 }

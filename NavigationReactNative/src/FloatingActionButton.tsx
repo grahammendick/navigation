@@ -7,6 +7,7 @@ class FloatingActionButton extends React.Component<any, any> {
         const NativeFAB = !text ? NVFloatingActionButton : NVExtendedFloatingActionButton;
         return (
             <NativeFAB
+                text={text}
                 image={Image.resolveAssetSource(image)}
                 style={[ styles.floatingActionButton, style ]}
                 {...props}
