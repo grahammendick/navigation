@@ -21,9 +21,7 @@ const NVExtendedFloatingActionButton = requireNativeComponent<any>("NVExtendedFl
 
 const styles = StyleSheet.create({
     floatingActionButton: {
-        position: 'absolute',
-        height: 56,
-        width: 56
+        position: 'absolute'
     },
 });
 
