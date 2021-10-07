@@ -41,6 +41,13 @@ public class ExtendedFloatingActionButtonManager extends SimpleViewManager<Exten
         view.setBackgroundTintList(ColorStateList.valueOf(backgroundColor != Integer.MAX_VALUE ? backgroundColor : view.defaultBackgroundColor));
     }
 
+    @ReactProp(name = "color", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setColor(ExtendedFloatingActionButtonView view, int color) {
+        ColorStateList colorList = ColorStateList.valueOf(color != Integer.MAX_VALUE ? color : view.defaultColor);
+        view.setIconTint(colorList);
+        view.setTextColor(colorList);
+    }
+
     @ReactProp(name = "gravity")
     public void setGravity(ExtendedFloatingActionButtonView view, String gravity) {
         view.params.gravity = convertGravity(gravity);

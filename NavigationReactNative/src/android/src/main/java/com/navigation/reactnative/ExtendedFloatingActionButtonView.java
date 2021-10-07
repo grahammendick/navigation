@@ -17,6 +17,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 
 public class ExtendedFloatingActionButtonView extends ExtendedFloatingActionButton {
     final int defaultBackgroundColor;
+    final int defaultColor;
     final CoordinatorLayout.LayoutParams params;
     private final IconResolver.IconResolverListener iconResolverListener;
 
@@ -25,6 +26,7 @@ public class ExtendedFloatingActionButtonView extends ExtendedFloatingActionButt
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(R.attr.colorSecondary, typedValue, true);
         defaultBackgroundColor = typedValue.data;
+        defaultColor = getCurrentTextColor();
         params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setBehavior(getBehavior());
         setLayoutParams(params);
