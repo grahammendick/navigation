@@ -49,6 +49,7 @@ class NavigationBar extends React.Component<any, any> {
                     {...otherProps}
                     {...scrollEdgeProps}
                     barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : scrollEdgeProps.largeBarTintColor}>
+                    {statusBar}
                     {Platform.OS === 'ios' ? !hidden && children :
                         <Container
                             collapse={!!collapsingBar}
@@ -73,7 +74,6 @@ class NavigationBar extends React.Component<any, any> {
                             </NVToolbar>
                             {childrenArray.find(({type}) => type === TabBar)}
                         </Container>}
-                        {statusBar}
                 </NVNavigationBar>
                 {Platform.OS === 'ios' ? null : childrenArray.find(({type}) => type === SearchBar)}
             </>
