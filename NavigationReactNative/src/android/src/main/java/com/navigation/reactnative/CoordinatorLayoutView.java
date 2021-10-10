@@ -40,7 +40,6 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
         requestLayout();
     }
 
-
     @Override
     public void requestLayout() {
         super.requestLayout();
