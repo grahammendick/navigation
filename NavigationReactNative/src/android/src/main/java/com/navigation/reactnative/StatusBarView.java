@@ -11,7 +11,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.uimanager.PixelUtil;
 
 public class StatusBarView extends ViewGroup {
     int barTintColor;
