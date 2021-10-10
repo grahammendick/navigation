@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.content.res.ColorStateList;
 import android.view.Gravity;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -50,9 +51,21 @@ public class ExtendedFloatingActionButtonManager extends SimpleViewManager<Exten
         view.setTextColor(colorList);
     }
 
+    @ReactProp(name = "anchor", defaultInt = View.NO_ID)
+    public void setAnchor(ExtendedFloatingActionButtonView view, int anchor) {
+        view.params.setAnchorId(anchor);
+        if (view.getParent() != null) view.getParent().requestLayout();
+    }
+
     @ReactProp(name = "gravity")
     public void setGravity(ExtendedFloatingActionButtonView view, String gravity) {
         view.params.gravity = convertGravity(gravity);
+        if (view.getParent() != null) view.getParent().requestLayout();
+    }
+
+    @ReactProp(name = "anchorGravity")
+    public void setAnchorGravity(ExtendedFloatingActionButtonView view, String anchorGravity) {
+        view.params.anchorGravity = convertGravity(anchorGravity);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 

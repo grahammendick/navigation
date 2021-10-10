@@ -104,4 +104,15 @@ public class ExtendedFloatingActionButtonView extends ExtendedFloatingActionButt
             textChanged = false;
         }
     }
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        if (getParent() != null) {
+            measure(
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+            layout(getLeft(), getTop(), getRight(), getBottom());
+        }
+    }
 }
