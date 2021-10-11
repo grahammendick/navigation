@@ -7,6 +7,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 
 import com.facebook.react.bridge.ReactContext;
@@ -20,6 +21,7 @@ public class StatusBarView extends ViewGroup {
     public StatusBarView(Context context) {
         super(context);
         TypedValue typedValue = new TypedValue();
+        setLayoutParams(new CoordinatorLayout.LayoutParams(0, 0));
         context.getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
         barTintColor = defaultStatusBarColor = typedValue.data;
     }

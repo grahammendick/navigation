@@ -35,6 +35,7 @@ public class NavigationPackage implements ReactPackage {
             new StatusBarManager(),
             new BottomSheetManager(),
             new FloatingActionButtonManager(),
+            new ExtendedFloatingActionButtonManager(),
             new BottomAppBarManager()
         );
     }

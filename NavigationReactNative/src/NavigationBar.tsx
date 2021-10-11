@@ -73,8 +73,9 @@ class NavigationBar extends React.Component<any, any> {
                             </NVToolbar>
                             {childrenArray.find(({type}) => type === TabBar)}
                         </Container>}
-                        {statusBar}
+                    {Platform.OS === 'ios' && statusBar}
                 </NVNavigationBar>
+                {Platform.OS === 'android' && statusBar}
                 {Platform.OS === 'ios' ? null : childrenArray.find(({type}) => type === SearchBar)}
             </>
         )

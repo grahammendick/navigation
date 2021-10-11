@@ -576,6 +576,10 @@ export interface FloatingActionButtonProps {
      */
     image: ImageRequireSource | ImageURISource | string;
     /**
+     * The floating action button text
+     */
+    text?: string;
+    /**
      * The view the floating action button is anchored to
      */
     anchor?: number | null;
@@ -629,6 +633,11 @@ export interface FloatingActionButtonStyle extends TransformsStyle {
     marginTop?: number;
     opacity?: number;
     elevation?: number;
+    fontFamily?: string;
+    fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500'
+        | '600' | '700' | '800' | '900';
+    fontStyle?: 'normal' | 'italic';
+    fontSize?: number;
 }
 
 /**
