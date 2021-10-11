@@ -576,6 +576,10 @@ export interface FloatingActionButtonProps {
      */
     image: ImageRequireSource | ImageURISource | string;
     /**
+     * The floating action button text
+     */
+    text?: string;
+    /**
      * The view the floating action button is anchored to
      */
     anchor?: number | null;
