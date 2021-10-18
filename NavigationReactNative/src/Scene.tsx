@@ -12,6 +12,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         this.state = {navigationEvent: null};
         this.handleBack = this.handleBack.bind(this);
         this.onBeforeNavigate = this.onBeforeNavigate.bind(this);
+        this.peekNavigate = this.peekNavigate.bind(this);
     }
     static defaultProps = {
         title: (state: State) => state.title,
@@ -20,6 +21,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     componentDidMount() {
         var {stateNavigator} = this.props.navigationEvent;
         stateNavigator.onBeforeNavigate(this.onBeforeNavigate);
+        if (this.fluentPeekable()) setTimeout(this.peekNavigate);
     }
     static getDerivedStateFromProps(props: SceneProps, {navigationEvent: prevNavigationEvent}: SceneState) {
         var {crumb, navigationEvent} = props;
@@ -33,11 +35,19 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return !replace ? {navigationEvent} : null;
     }
     shouldComponentUpdate(_nextProps, {navigationEvent}: SceneState) {
-        return navigationEvent !== this.state.navigationEvent;
+        return navigationEvent !== this.state.navigationEvent || this.fluentPeekable();
+    }
+    componentDidUpdate() {
+        if (this.fluentPeekable()) setTimeout(this.peekNavigate);
     }
     componentWillUnmount() {
         var {stateNavigator} = this.props.navigationEvent;
         stateNavigator.offBeforeNavigate(this.onBeforeNavigate);
+    }
+    fluentPeekable() {
+        var {navigationEvent, crumb} = this.props;
+        var {crumbs} = navigationEvent.stateNavigator.stateContext;
+        return Platform.OS === 'ios' && !this.state.navigationEvent && crumb === crumbs.length -1;
     }
     handleBack() {
         var {navigationEvent} = this.state;
@@ -51,7 +61,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {crumb, navigationEvent} = this.props;
         if (url.split('crumb=').length - 1 !== crumb || Platform.OS === 'android')
             return true;
-        var {crumbs, nextCrumb} = navigationEvent.stateNavigator.stateContext;
+        var {crumbs} = navigationEvent.stateNavigator.stateContext;
         var changed = !this.state.navigationEvent && crumb < crumbs.length;
         if (!changed && crumb < crumbs.length) {
             var {state: latestState, data: latestData} = crumbs[crumb];
@@ -61,20 +71,23 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 changed = changed || data[key] !== latestData[key];
             }
         }
-        if (changed) {
-            var {stateNavigator} = navigationEvent;
-            var peekNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
-            peekNavigator.stateContext = Scene.createStateContext(crumbs, nextCrumb, crumb);
-            peekNavigator.configure = stateNavigator.configure;
-            peekNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
-            peekNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
-            peekNavigator.onNavigate = stateNavigator.onNavigate;
-            peekNavigator.offNavigate = stateNavigator.offNavigate;
-            peekNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
-            var {oldState, state, data, asyncData} = peekNavigator.stateContext;
-            this.setState({navigationEvent: {oldState, state, data, asyncData, stateNavigator: peekNavigator, nextState: undefined, nextData: undefined}});
-        }
+        if (changed) this.peekNavigate();
         return true;
+    }
+    peekNavigate() {
+        var {crumb, navigationEvent} = this.props;
+        var {crumbs, nextCrumb} = navigationEvent.stateNavigator.stateContext;
+        var {stateNavigator} = navigationEvent;
+        var peekNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
+        peekNavigator.stateContext = Scene.createStateContext(crumbs, nextCrumb, crumb);
+        peekNavigator.configure = stateNavigator.configure;
+        peekNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
+        peekNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
+        peekNavigator.onNavigate = stateNavigator.onNavigate;
+        peekNavigator.offNavigate = stateNavigator.offNavigate;
+        peekNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
+        var {oldState, state, data, asyncData} = peekNavigator.stateContext;
+        this.setState({navigationEvent: {oldState, state, data, asyncData, stateNavigator: peekNavigator, nextState: undefined, nextData: undefined}});
     }
     static createStateContext(crumbs: Crumb[], nextCrumb: Crumb, crumb: number) {
         var stateContext = new StateContext();
