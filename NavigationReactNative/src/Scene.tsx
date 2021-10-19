@@ -59,7 +59,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     }
     onBeforeNavigate(_state, _data, url: string) {
         var {crumb, navigationEvent} = this.props;
-        if (url.split('crumb=').length - 1 !== crumb || Platform.OS === 'android')
+        if (url.split('crumb=').length - 1 !== crumb || Platform.OS !== 'ios')
             return true;
         var {crumbs} = navigationEvent.stateNavigator.stateContext;
         var changed = !this.state.navigationEvent && crumb < crumbs.length;
