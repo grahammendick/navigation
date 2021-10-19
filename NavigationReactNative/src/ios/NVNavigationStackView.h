@@ -15,6 +15,7 @@
 
 @end
 
-@interface NVStackController : UINavigationController
+@interface NVStackController : UINavigationController <UINavigationBarDelegate>
 
 @end
+

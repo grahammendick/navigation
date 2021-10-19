@@ -70,6 +70,9 @@
             controller.boundsDidChangeBlock = ^(NVSceneController *sceneController) {
                 [weakSelf notifyForBoundsChange:sceneController];
             };
+            scene.fluentDidChangeBlock = ^{
+                [weakSelf checkPeekability];
+            };
             controller.navigationItem.title = scene.title;
             [controllers addObject:controller];
         }
@@ -90,6 +93,7 @@
         [controllers replaceObjectAtIndex:crumb withObject:controller];
         [_navigationController setViewControllers:controllers animated:animate];
     }
+    [self checkPeekability];
 }
 
 - (void)didMoveToWindow
@@ -107,6 +111,17 @@
 - (void)notifyForBoundsChange:(NVSceneController *)controller
 {
     [_bridge.uiManager setSize:controller.view.bounds.size forView:controller.view];
+}
+
+- (void)checkPeekability
+{
+    BOOL peekable = YES;
+    if ([self.keys count] > 1) {
+        NSInteger crumb = [self.keys count] - 2;
+        NVSceneView *scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
+        peekable = !scene.fluent;
+    }
+    _navigationController.interactivePopGestureRecognizer.enabled = peekable;
 }
 
 - (void)layoutSubviews
@@ -149,6 +164,13 @@
 - (UIViewController *)childViewControllerForStatusBarHidden
 {
     return self.visibleViewController;
+}
+
+- (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
+{
+    NSInteger crumb = [[navigationBar items] indexOfObject:item];
+    NVSceneView *scene = ((NVSceneView *) [self.viewControllers objectAtIndex:crumb - 1].view);
+    return !scene.fluent;
 }
 
 @end

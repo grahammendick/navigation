@@ -135,6 +135,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 sceneKey={sceneKey}
                 {...this.getAnimation()}
                 title={title(state, data)}
+                fluent={!navigationEvent}
                 style={styles.scene}
                 onPopped={() => popped(sceneKey)}>
                 <BackButton onPress={this.handleBack} />
