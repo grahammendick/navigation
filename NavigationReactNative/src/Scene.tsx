@@ -7,6 +7,7 @@ type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State,
 type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
+    private timer: number;
     constructor(props) {
         super(props);
         this.state = {navigationEvent: null};
@@ -21,7 +22,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     componentDidMount() {
         var {stateNavigator} = this.props.navigationEvent;
         stateNavigator.onBeforeNavigate(this.onBeforeNavigate);
-        if (this.fluentPeekable()) setTimeout(this.peekNavigate);
+        if (this.fluentPeekable()) this.timer = setTimeout(this.peekNavigate);
     }
     static getDerivedStateFromProps(props: SceneProps, {navigationEvent: prevNavigationEvent}: SceneState) {
         var {crumb, navigationEvent} = props;
@@ -38,11 +39,12 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return navigationEvent !== this.state.navigationEvent || this.fluentPeekable();
     }
     componentDidUpdate() {
-        if (this.fluentPeekable()) setTimeout(this.peekNavigate);
+        if (this.fluentPeekable()) this.timer = setTimeout(this.peekNavigate);
     }
     componentWillUnmount() {
         var {stateNavigator} = this.props.navigationEvent;
         stateNavigator.offBeforeNavigate(this.onBeforeNavigate);
+        clearTimeout(this.timer);
     }
     fluentPeekable() {
         var {navigationEvent, crumb} = this.props;
