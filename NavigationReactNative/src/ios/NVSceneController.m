@@ -24,9 +24,9 @@
     self.view = _view;
 }
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
+    [super viewWillAppear:animated];
     NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
     NVSearchBarView *searchBar = (NVSearchBarView *) [navigationBar viewWithTag:SEARCH_BAR];
     self.definesPresentationContext = true;
@@ -37,14 +37,8 @@
             [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
         }
     }
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
     NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
-    NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
     BOOL hidden = navigationBar.hidden;
     if (@available(iOS 13.0, *)) {
     } else {

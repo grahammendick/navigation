@@ -70,7 +70,7 @@
             controller.boundsDidChangeBlock = ^(NVSceneController *sceneController) {
                 [weakSelf notifyForBoundsChange:sceneController];
             };
-            scene.fluentDidChangeBlock = ^{
+            scene.peekableDidChangeBlock = ^{
                 [weakSelf checkPeekability:[self.keys count] - 1];
             };
             controller.navigationItem.title = scene.title;
@@ -118,7 +118,7 @@
     if (crumb > 1) {
         scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb - 1]];
     }
-    _navigationController.interactivePopGestureRecognizer.enabled = scene ? !scene.fluent : YES;
+    _navigationController.interactivePopGestureRecognizer.enabled = scene ? scene.subviews.count > 0 : YES;
 }
 
 - (void)layoutSubviews
@@ -168,7 +168,7 @@
 {
     NSInteger crumb = [[navigationBar items] indexOfObject:item];
     NVSceneView *scene = ((NVSceneView *) [self.viewControllers objectAtIndex:crumb - 1].view);
-    return !scene.fluent;
+    return scene.subviews.count > 0;
 }
 
 @end

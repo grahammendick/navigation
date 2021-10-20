@@ -2,6 +2,9 @@
 #import <React/UIView+React.h>
 
 @implementation NVSceneView
+{
+    BOOL _notifiedPeekable;
+}
 
 - (id)init
 {
@@ -15,15 +18,15 @@
     self.onPopped(nil);
 }
 
-- (void)didSetProps:(NSArray<NSString *> *)changedProps
+- (void)didUpdateReactSubviews
 {
-    [super didSetProps:changedProps];
-    if ([changedProps containsObject:@"fluent"]) {
-        if (self.fluentDidChangeBlock) {
-            self.fluentDidChangeBlock();
+    [super didUpdateReactSubviews];
+    if (!_notifiedPeekable && self.subviews.count > 0) {
+        _notifiedPeekable = YES;
+        if (self.peekableDidChangeBlock) {
+            self.peekableDidChangeBlock();
         }
     }
 }
-
 
 @end
