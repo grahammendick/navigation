@@ -71,7 +71,7 @@
                 [weakSelf notifyForBoundsChange:sceneController];
             };
             scene.fluentDidChangeBlock = ^{
-                [weakSelf checkPeekability];
+                [weakSelf checkPeekability:weakSelf.navigationController.topViewController];
             };
             controller.navigationItem.title = scene.title;
             [controllers addObject:controller];
@@ -93,7 +93,6 @@
         [controllers replaceObjectAtIndex:crumb withObject:controller];
         [_navigationController setViewControllers:controllers animated:animate];
     }
-    [self checkPeekability];
 }
 
 - (void)didMoveToWindow
@@ -113,13 +112,13 @@
     [_bridge.uiManager setSize:controller.view.bounds.size forView:controller.view];
 }
 
-- (void)checkPeekability
+- (void)checkPeekability:(UIViewController *)controller
 {
     BOOL peekable = YES;
-    if ([self.keys count] > 1) {
-        NSInteger crumb = [self.keys count] - 2;
-        NVSceneView *scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
-        peekable = !scene.fluent;
+    NSInteger crumb = [_navigationController.viewControllers indexOfObject:controller];
+    if (crumb > 0) {
+        UIViewController *peekController = [_navigationController.viewControllers objectAtIndex:crumb - 1];
+        peekable = !((NVSceneView *) peekController.view).fluent;
     }
     _navigationController.interactivePopGestureRecognizer.enabled = peekable;
 }
@@ -145,6 +144,7 @@
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    [self checkPeekability:viewController];
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
     if (crumb < [self.keys count] - 1) {
         _nativeEventCount++;
