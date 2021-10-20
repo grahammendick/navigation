@@ -35,7 +35,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return !replace ? {navigationEvent} : null;
     }
     shouldComponentUpdate(_nextProps, {navigationEvent}: SceneState) {
-        return navigationEvent !== this.state.navigationEvent || this.fluentPeekable();
+        return navigationEvent !== this.state.navigationEvent || (this.fluentPeekable() && !this.timer);
     }
     componentDidUpdate() {
         this.backgroundPeekNavigate();
