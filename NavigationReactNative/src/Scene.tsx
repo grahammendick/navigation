@@ -39,7 +39,10 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return navigationEvent !== this.state.navigationEvent || this.fluentPeekable();
     }
     componentDidUpdate() {
-        if (this.fluentPeekable()) this.timer = setTimeout(this.peekNavigate);
+        if (this.fluentPeekable()) {
+            clearTimeout(this.timer);
+            this.timer = setTimeout(this.peekNavigate);
+        }
     }
     componentWillUnmount() {
         var {stateNavigator} = this.props.navigationEvent;
