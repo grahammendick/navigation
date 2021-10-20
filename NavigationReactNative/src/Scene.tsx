@@ -13,7 +13,6 @@ class Scene extends React.Component<SceneProps, SceneState> {
         this.state = {navigationEvent: null};
         this.handleBack = this.handleBack.bind(this);
         this.onBeforeNavigate = this.onBeforeNavigate.bind(this);
-        this.peekNavigate = this.peekNavigate.bind(this);
     }
     static defaultProps = {
         title: (state: State) => state.title,
@@ -22,7 +21,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     componentDidMount() {
         var {stateNavigator} = this.props.navigationEvent;
         stateNavigator.onBeforeNavigate(this.onBeforeNavigate);
-        if (this.fluentPeekable()) this.timer = setTimeout(this.peekNavigate);
+        this.backgroundPeekNavigate();
     }
     static getDerivedStateFromProps(props: SceneProps, {navigationEvent: prevNavigationEvent}: SceneState) {
         var {crumb, navigationEvent} = props;
@@ -39,7 +38,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return navigationEvent !== this.state.navigationEvent || this.fluentPeekable();
     }
     componentDidUpdate() {
-        if (this.fluentPeekable() && !this.timer) this.timer = setTimeout(this.peekNavigate);
+        this.backgroundPeekNavigate();
     }
     componentWillUnmount() {
         var {stateNavigator} = this.props.navigationEvent;
@@ -50,6 +49,14 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {navigationEvent, crumb} = this.props;
         var {crumbs} = navigationEvent.stateNavigator.stateContext;
         return Platform.OS === 'ios' && !this.state.navigationEvent && crumb === crumbs.length -1;
+    }
+    backgroundPeekNavigate() {
+        if (this.fluentPeekable() && !this.timer) {
+            this.timer = setTimeout(() => {
+                if (this.fluentPeekable()) this.peekNavigate();
+                else this.timer = null;
+            });
+        }
     }
     handleBack() {
         var {navigationEvent} = this.state;
