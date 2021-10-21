@@ -3,6 +3,7 @@
 
 @interface NVSceneView : UIView
 
+@property (nonatomic, copy) void (^peekableDidChangeBlock)(void);
 @property (nonatomic, copy) NSString *sceneKey;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, assign) BOOL hidesTabBar;
