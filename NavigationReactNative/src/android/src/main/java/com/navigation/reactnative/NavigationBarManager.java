@@ -42,6 +42,11 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
         }
     }
 
+    @ReactProp(name = "hide")
+    public void setHide(NavigationBarView view, boolean hide) {
+        view.setExpanded(!hide, true);
+    }
+
     @ReactProp(name = "height")
     public void setHeight(NavigationBarView view, double height) {
         view.getLayoutParams().height = height != 0 ? (int) PixelUtil.toPixelFromDIP(height) : AppBarLayout.LayoutParams.WRAP_CONTENT;

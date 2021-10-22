@@ -7,6 +7,7 @@ import TitleBar from './TitleBar';
 import CollapsingBar from './CollapsingBar';
 import TabBar from './TabBar';
 import StatusBar from './StatusBar';
+import BottomAppBar from './BottomAppBar';
 
 class NavigationBar extends React.Component<any, any> {
     constructor(props) {
@@ -30,13 +31,15 @@ class NavigationBar extends React.Component<any, any> {
         }
     }
     render() {
-        var {hidden, logo, navigationImage, overflowImage, children, style = {height: undefined}, ...otherProps} = this.props;
+        var {bottomBar, hidden, logo, navigationImage, overflowImage, children, style = {height: undefined}, ...otherProps} = this.props;
         var scrollEdgeProps = this.getScrollEdgeProps()
         var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
         var statusBar = childrenArray.find(({type}) => type === StatusBar);
         statusBar = (Platform.OS === 'android' || !statusBar) && (statusBar || <StatusBar />);
         if (Platform.OS === 'android' && hidden)
             return statusBar;
+        if (bottomBar)
+            return <BottomAppBar {...this.props} />
         var collapsingBar = Platform.OS === 'android' && childrenArray.find(({type}) => type === CollapsingBar);
         return (
             <>
@@ -70,8 +73,9 @@ class NavigationBar extends React.Component<any, any> {
                             </NVToolbar>
                             {childrenArray.find(({type}) => type === TabBar)}
                         </Container>}
-                        {statusBar}
+                    {Platform.OS === 'ios' && statusBar}
                 </NVNavigationBar>
+                {Platform.OS === 'android' && statusBar}
                 {Platform.OS === 'ios' ? null : childrenArray.find(({type}) => type === SearchBar)}
             </>
         )

@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.CollapsibleActionView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
@@ -178,9 +179,11 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     public void onActionViewExpanded() {
         if (getChildAt(0) instanceof ActionBarView)
             ((ActionBarView) getChildAt(0)).expanded();
-        ToolbarView toolbarView = (ToolbarView) getParent();
-        if (toolbarView.getChildAt(1) instanceof ImageButton)
-            toolbarView.setCollapseButton((ImageButton) toolbarView.getChildAt(1));
+        ActionView actionView = (ActionView) getParent();
+        if (actionView.getChildAt(1) instanceof ImageButton) {
+            ImageButton imageButton = (ImageButton) actionView.getChildAt(1);
+            actionView.setCollapseButton(imageButton);
+        }
     }
 
     @Override

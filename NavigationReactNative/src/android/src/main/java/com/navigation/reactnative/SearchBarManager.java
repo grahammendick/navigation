@@ -2,10 +2,14 @@ package com.navigation.reactnative;
 
 import android.text.InputType;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.Map;
 
@@ -41,6 +45,20 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
     @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
     public void setBarTintColor(SearchBarView view, int barTintColor) {
         view.setBarTintColor(barTintColor != Integer.MAX_VALUE ? barTintColor : null);
+    }
+
+    @ReactProp(name = "bottomBar")
+    public void setBottomBar(SearchBarView view, boolean bottomBar) {
+        view.bottomBar = bottomBar;
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+        if (!bottomBar) {
+            params.bottomMargin = 0;
+            AppBarLayout.ScrollingViewBehavior behavior = new AppBarLayout.ScrollingViewBehavior();
+            params.setBehavior(behavior);
+        } else {
+            params.bottomMargin = (int) PixelUtil.toPixelFromDIP(56);
+            params.setBehavior(null);
+        }
     }
 
     @Nonnull

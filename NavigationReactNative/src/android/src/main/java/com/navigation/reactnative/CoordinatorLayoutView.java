@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.facebook.react.modules.i18nmanager.I18nUtil;
 import com.facebook.react.uimanager.ReactZIndexedViewGroup;
 import com.facebook.react.uimanager.ViewGroupDrawingOrderHelper;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
@@ -27,6 +29,7 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
 
     public CoordinatorLayoutView(Context context){
         super(context);
+        ViewCompat.setLayoutDirection(this, !I18nUtil.getInstance().isRTL(context) ? ViewCompat.LAYOUT_DIRECTION_LTR : ViewCompat.LAYOUT_DIRECTION_RTL);
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         drawingOrderHelper = new ViewGroupDrawingOrderHelper(this);
     }
@@ -36,7 +39,6 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
         super.onAttachedToWindow();
         requestLayout();
     }
-
 
     @Override
     public void requestLayout() {

@@ -1,5 +1,5 @@
 import { Component, Context, ReactNode } from 'react';
-import { BackHandler, ImageRequireSource, ImageURISource, NativeSyntheticEvent, StyleProp, ViewStyle } from 'react-native';
+import { BackHandler, ImageRequireSource, ImageURISource, NativeSyntheticEvent, StyleProp, ViewStyle, TransformsStyle } from 'react-native';
 import { Crumb, State, StateContext } from 'navigation';
 
 declare global {
@@ -120,6 +120,34 @@ export interface NavigationBarProps {
      * The back button font size
      */
     backFontSize?: number;
+    /**
+     * Indicates whether to render as a bottom app bar
+     */
+    bottomBar?: boolean;
+    /**
+     * The position of the anchored floating action button
+     */
+    fabAlignmentMode?: 'center' | 'end';
+    /**
+     * The animation that runs when the floating action button changes position
+     */
+    fabAnimationMode?: 'slide' | 'scale';
+    /**
+     * The cradle margin for the floating action button cutout
+     */
+    fabCradleMargin?: number;
+    /**
+     * The rounded corner radius for the floating action button cutout
+     */
+    fabCradleRoundedCornerRadius?: number;
+    /**
+     * The vertical offset for the floating action button cutout
+     */
+    fabCradleVerticalOffset?: number;
+    /**
+     * Indicates whether to hide the bottom navigation bar when scrolling
+     */
+    hideOnScroll?: boolean;
     /**
      * The id of the back button in end-to-end tests
      */
@@ -487,6 +515,135 @@ export interface TabBarProps {
  * Renders a tab bar
  */
 export class TabBar extends Component<TabBarProps> {}
+
+/**
+ * Defines the Bottom Sheet Props contract
+ */
+export interface BottomSheetProps {
+    /**
+     * The height of the bottom sheet when it is collapsed
+     */
+    peekHeight?: number;
+    /**
+     * The height of the bottom sheet when it is expanded
+     */
+    expandedHeight?: number;
+    /**
+     * The top offset of the bottom sheet when it is expanded
+     */
+    expandedOffset?: number;
+    /**
+     * Determines the height of the bottom sheet when it is half expanded
+     */
+    halfExpandedRatio?: number;
+    /**
+     * Indicates whether the bottom sheet can hide when it is swiped down
+     */
+    hideable?: boolean;
+    /**
+     * Indicates whether swipe down hides the bottom sheet after it is expanded
+     */
+    skipCollapsed?: boolean;
+    /**
+     * Indicates whether the bottom sheet can be collapsed/expanded by dragging
+     */
+    draggable?: boolean;
+    /**
+     * The default resting state of the bottom sheet
+     */
+    defaultDetent?: 'hidden' | 'collapsed' | 'halfExpanded' | 'expanded';
+    /**
+     * The resting state of the bottom sheet
+     */
+    detent?: 'hidden' | 'collapsed' | 'halfExpanded' | 'expanded';
+    /**
+     * Handles the bottom sheet resting state change events
+     */
+    onChangeDetent?: (detent: 'hidden' | 'collapsed' | 'halfExpanded' | 'expanded') => void;
+}
+
+/**
+ * Renders a bottom sheet
+ */
+export class BottomSheet extends Component<BottomSheetProps> {}
+
+/**
+ * Defines the Floating Action Button Props contract
+ */
+export interface FloatingActionButtonProps {
+    /**
+     * The floating action button image
+     */
+    image: ImageRequireSource | ImageURISource | string;
+    /**
+     * The floating action button text
+     */
+    text?: string;
+    /**
+     * The view the floating action button is anchored to
+     */
+    anchor?: number | null;
+    /**
+     * The layout position of the floating action button
+     */
+    gravity?: 'topLeft' | 'topStart' | 'top' | 'topRight' | 'topEnd'
+        | 'left' | 'start' | 'center' | 'right' | 'end' | 'bottomLeft'
+        | 'bottomStart' | 'bottom' | 'bottomRight' |  'bottomEnd';
+    /**
+     * The relative position of the floating action button within the anchor
+     */
+    anchorGravity?: 'topLeft' | 'topStart' | 'top' | 'topRight' | 'topEnd'
+        | 'left' | 'start' | 'center' | 'right' | 'end' | 'bottomLeft'
+        | 'bottomStart' | 'bottom' | 'bottomRight' |  'bottomEnd';
+    /**
+     * The size of the floating action button
+     */
+    size?: number;
+    /**
+     * The accessible description of the floating action button
+     */
+    contentDescription?: string;
+    /**
+     * The id of the floating action button in end-to-end tests
+     */
+    testID?: string;
+     /**
+     * The style
+     */
+    style?: StyleProp<FloatingActionButtonStyle>;
+    /**
+     * Handles floating action button press events
+     */
+    onPress?: () => void;
+}
+
+/**
+ * Defines the Floating Action Button Style Prop contract
+ */
+export interface FloatingActionButtonStyle extends TransformsStyle {
+    backgroundColor?: string;
+    color?: string;
+    margin?: number;
+    marginBottom?: number;
+    marginEnd?: number;
+    marginHorizontal?: number;
+    marginLeft?: number;
+    marginRight?: number;
+    marginStart?: number;
+    marginTop?: number;
+    opacity?: number;
+    elevation?: number;
+    fontFamily?: string;
+    fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500'
+        | '600' | '700' | '800' | '900';
+    fontStyle?: 'normal' | 'italic';
+    fontSize?: number;
+}
+
+/**
+ * Renders a floating action button
+ */
+export class FloatingActionButton extends Component<FloatingActionButtonProps> {}
 
 /**
  * Defines the Modal Back Handler Props contract
