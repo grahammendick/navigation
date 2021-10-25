@@ -137,6 +137,12 @@
     }
 }
 
+- (void)dealloc
+{
+    [_reactSubview removeObserver:self forKeyPath:@"hidden"];
+}
+
+
 @end
 
 @implementation NVSearchController
