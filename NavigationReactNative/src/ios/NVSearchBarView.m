@@ -87,12 +87,21 @@
     [super insertReactSubview:subview atIndex:atIndex];
     self.searchController.searchResultsController.view = subview;
     _reactSubview = subview;
+    [_reactSubview addObserver:self forKeyPath:@"hidden" options:0 context:nil];
 }
 
 - (void)removeReactSubview:(UIView *)subview
 {
     [super removeReactSubview:subview];
+    [_reactSubview removeObserver:self forKeyPath:@"hidden"];
     _reactSubview = nil;
+}
+
+- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
+{
+    if (self.searchController.searchBar.text.length == 0 && !_reactSubview.isHidden) {
+        _reactSubview.hidden = YES;
+    }
 }
 
 - (void)didUpdateReactSubviews
@@ -127,6 +136,12 @@
         });
     }
 }
+
+- (void)dealloc
+{
+    [_reactSubview removeObserver:self forKeyPath:@"hidden"];
+}
+
 
 @end
 
