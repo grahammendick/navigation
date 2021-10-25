@@ -12,6 +12,7 @@
     __weak RCTBridge *_bridge;
     UIView *_reactSubview;
     NSInteger _nativeEventCount;
+    NSInteger _nativeButtonEventCount;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -23,6 +24,7 @@
         self.searchController = [[NVSearchController alloc] initWithSearchResultsController:viewController];
         self.searchController.searchBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         self.searchController.searchResultsUpdater = self;
+        self.searchController.searchBar.delegate = self;
         __weak typeof(self) weakSelf = self;
         viewController.boundsDidChangeBlock = ^(CGRect newBounds) {
             [weakSelf notifyForBoundsChange:newBounds];
@@ -71,6 +73,14 @@
 - (void)setScopeButtons:(NSArray *)scopeButtons
 {
     self.searchController.searchBar.scopeButtonTitles = scopeButtons;
+}
+
+- (void)setScopeButton:(NSInteger)scopeButton
+{
+    NSInteger eventLag = _nativeButtonEventCount - _mostRecentButtonEventCount;
+    if (eventLag == 0 && self.searchController.searchBar.selectedScopeButtonIndex != scopeButton) {
+        self.searchController.searchBar.selectedScopeButtonIndex = scopeButton;
+    }
 }
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
@@ -138,6 +148,16 @@
         self.onChangeText(@{
             @"text": searchController.searchBar.text,
             @"eventCount": @(_nativeEventCount),
+        });
+    }
+}
+
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
+{
+    if (!!self.onChangeScopeButton) {
+        self.onChangeScopeButton(@{
+            @"scopeButton": @(selectedScope),
+            @"eventCount": @(_nativeButtonEventCount),
         });
     }
 }
