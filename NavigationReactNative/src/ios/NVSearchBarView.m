@@ -68,6 +68,11 @@
     }
 }
 
+- (void)setScopeButtons:(NSArray *)scopeButtons
+{
+    self.searchController.searchBar.scopeButtonTitles = scopeButtons;
+}
+
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     if (@available(iOS 11.0, *)) {
