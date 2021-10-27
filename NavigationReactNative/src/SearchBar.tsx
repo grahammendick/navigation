@@ -42,7 +42,7 @@ class SearchBar extends React.Component<any, any> {
                 ref={this.ref}
                 bottomBar={bottomBar}
                 autoCapitalize={autoCapitalize}
-                scopeButton={scopeButton ? scopeButtons.indexOf(scopeButton) : 0}
+                scopeButton={scopeButton ? scopeButtons?.indexOf(scopeButton) : 0}
                 scopeButtons={scopeButtons}
                 onChangeText={this.onChangeText}
                 onChangeScopeButton={this.onChangeScopeButton}
