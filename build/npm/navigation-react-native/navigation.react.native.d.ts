@@ -302,9 +302,21 @@ export interface SearchBarProps {
      */
     barTintColor?: string;
     /**
+     * The selected scope button
+     */
+    scopeButton?: string;
+    /**
+     * The scope button titles
+     */
+    scopeButtons?: string[];
+    /**
      * Handles text change events
      */
     onChangeText?: (text: string) => void;
+    /**
+     * Handles scope button change events
+     */
+    onChangeScopeButton?: (scopeButton: string) => void;
 }
 
 /**
