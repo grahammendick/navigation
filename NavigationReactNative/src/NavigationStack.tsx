@@ -4,7 +4,7 @@ import { Crumb, State } from 'navigation';
 import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
 import PopSync from './PopSync';
 import Scene from './Scene';
-type NavigationStackProps = {stateNavigator: AsyncStateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, renderScene: (state: State, data: any) => ReactNode};
+type NavigationStackProps = {stateNavigator: AsyncStateNavigator, title: (state: State, data: any) => string, freezable: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, renderScene: (state: State, data: any) => ReactNode};
 type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[]};
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
@@ -19,6 +19,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         this.onNavigateToTop = this.onNavigateToTop.bind(this);
     }
     static defaultProps = {
+        freezable: false,
         unmountStyle: () => null,
         crumbStyle: () => null,
         hidesTabBar: () => false,
@@ -88,7 +89,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     }
     render() {
         var {keys} = this.state;
-        var {stateNavigator, unmountStyle, crumbStyle, hidesTabBar, title, renderScene} = this.props;
+        var {stateNavigator, freezable, unmountStyle, crumbStyle, hidesTabBar, title, renderScene} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
             <NVNavigationStack
@@ -107,6 +108,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                             key={key}
                             crumb={crumb}
                             sceneKey={key}
+                            freezable={freezable && typeof React.Suspense !== 'undefined'}
                             unmountStyle={unmountStyle}
                             crumbStyle={crumbStyle}
                             hidesTabBar={hidesTabBar}
