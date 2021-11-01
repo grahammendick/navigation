@@ -3,7 +3,7 @@ import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
-type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any) => ReactNode, crumbStyle: any, unmountStyle: any, hidesTabBar: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
+type SceneProps = { crumb: number, sceneKey: string, freezable: boolean, renderScene: (state: State, data: any) => ReactNode, crumbStyle: any, unmountStyle: any, hidesTabBar: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
 type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
@@ -34,8 +34,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var replace = oldCrumbs.length === crumb && oldState !== state;
         return !replace ? {navigationEvent} : null;
     }
-    shouldComponentUpdate(_nextProps, {navigationEvent}: SceneState) {
-        return navigationEvent !== this.state.navigationEvent || (this.fluentPeekable() && !this.timer);
+    shouldComponentUpdate({freezable}, {navigationEvent}: SceneState) {
+        return freezable || navigationEvent !== this.state.navigationEvent || (this.fluentPeekable() && !this.timer);
     }
     componentDidUpdate() {
         this.backgroundPeekNavigate();
