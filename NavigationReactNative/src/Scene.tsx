@@ -151,9 +151,9 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 <BackButton onPress={this.handleBack} />
                 <NavigationContext.Provider value={navigationEvent}>
                     <Freeze freeze={freezable && crumbs.length !== crumb}>
-                        <NVScene style={styles.scene}>
+                        <NVFreeze style={styles.scene}>
                             {navigationEvent && this.props.renderScene(state, data)}
-                        </NVScene>
+                        </NVFreeze>
                     </Freeze>
                 </NavigationContext.Provider>
             </NVScene>
@@ -162,6 +162,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
 }
 
 var  NVScene = requireNativeComponent<any>('NVScene', null);
+var  NVFreeze = requireNativeComponent<any>('NVFreeze', null);
 
 const styles = StyleSheet.create({
     scene: {
