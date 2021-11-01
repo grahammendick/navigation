@@ -126,6 +126,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         var {state, data} = crumbs[crumb] || nextCrumb;
         var currentCrumbs = crumbs.slice(0, crumb);
+        if (crumb > crumbs.length) return null;
         if (crumb > 0) {
             var {state: prevState, data: prevData} = crumbs[crumb - 1];
             var prevCrumbs = crumbs.slice(0, crumb - 1);
@@ -150,7 +151,9 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 <BackButton onPress={this.handleBack} />
                 <NavigationContext.Provider value={navigationEvent}>
                     <Freeze freeze={freezable && crumbs.length !== crumb}>
-                        {navigationEvent && this.props.renderScene(state, data)}
+                        <NVScene style={styles.scene}>
+                            {navigationEvent && this.props.renderScene(state, data)}
+                        </NVScene>
                     </Freeze>
                 </NavigationContext.Provider>
             </NVScene>

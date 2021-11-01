@@ -32,6 +32,10 @@ public class SceneManager extends ViewGroupManager<SceneView> {
         view.exitAnim = exitAnim;
     }
 
+    @ReactProp(name = "display")
+    public void setDisplay(SceneView view, String display) {
+    }
+
     @Nonnull
     @Override
     protected SceneView createViewInstance(@Nonnull ThemedReactContext reactContext) {
