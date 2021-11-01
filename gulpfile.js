@@ -21,7 +21,8 @@ var items = [
             'navigation-react': 'NavigationReact', react: 'React' } },
         require('./build/npm/navigation-react-mobile/package.json')),
     Object.assign({ globals: { navigation: 'Navigation', react: 'React',
-            'navigation-react': 'NavigationReact', 'react-native': 'ReactNative' },
+            'react-freeze': 'ReactFreeze', 'navigation-react': 'NavigationReact',
+            'react-native': 'ReactNative' },
             format: 'es' },
         require('./build/npm/navigation-react-native/package.json')),
 ];
