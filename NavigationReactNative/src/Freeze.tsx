@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 import React, { Suspense, useRef } from 'react';
+import { requireNativeComponent, StyleSheet } from 'react-native';
 
 var Suspender = ({freeze, children}) => {
     var promiseCache = useRef<any>({}).current;
@@ -36,7 +37,7 @@ var Suspender = ({freeze, children}) => {
         promiseCache.resolve();
         promiseCache.promise = undefined;
     }
-    return <>{children}</>;
+    return <NVFreeze style={styles.freeze}>{children}</NVFreeze>;
 };
 
 var Freeze = ({enabled, children}) => (
@@ -44,6 +45,14 @@ var Freeze = ({enabled, children}) => (
       <Suspender freeze={enabled}>{children}</Suspender>
     </Suspense>
 );
+
+var  NVFreeze = requireNativeComponent<any>('NVFreeze', null);
+
+const styles = StyleSheet.create({
+    freeze: {
+        flex: 1
+    },
+});
 
 export default Freeze;
 

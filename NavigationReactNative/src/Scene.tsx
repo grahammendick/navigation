@@ -143,9 +143,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 <NavigationContext.Provider value={navigationEvent}>
                     <Freeze enabled={freezable && crumbs.length !== crumb && navigationEvent
                         && (!stateContext['peek'] || stateContext['peek'] !== this.props.navigationEvent)}>
-                        <NVFreeze style={styles.freeze}>
-                            {navigationEvent && this.props.renderScene(state, data)}
-                        </NVFreeze>
+                        {navigationEvent && this.props.renderScene(state, data)}
                     </Freeze>
                 </NavigationContext.Provider>
             </NVScene>
@@ -154,7 +152,6 @@ class Scene extends React.Component<SceneProps, SceneState> {
 }
 
 var  NVScene = requireNativeComponent<any>('NVScene', null);
-var  NVFreeze = requireNativeComponent<any>('NVFreeze', null);
 
 const styles = StyleSheet.create({
     scene: {
@@ -162,9 +159,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0, right: 0,
         bottom: 0, left: 0,
-    },
-    freeze: {
-        flex: 1
     },
 });
 
