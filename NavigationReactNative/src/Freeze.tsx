@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import React, { Suspense, useRef } from "react";
+import React, { Suspense, useRef } from 'react';
 
 var Suspender = ({freeze, children}) => {
     var promiseCache = useRef<any>({}).current;
