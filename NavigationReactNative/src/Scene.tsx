@@ -96,6 +96,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         stateContext.data = data;
         stateContext.url = url;
         stateContext.title = title;
+        stateContext.history = true;
         stateContext.crumbs = crumbs.slice(0, crumb);
         stateContext.nextCrumb = crumbs[crumb];
         var {state, data, url} = nextCrumb;
