@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
-import { Freeze } from 'react-freeze';
 import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
+import Freeze from './Freeze';
 type SceneProps = { crumb: number, sceneKey: string, freezable: boolean, renderScene: (state: State, data: any) => ReactNode, crumbStyle: any, unmountStyle: any, hidesTabBar: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
 type SceneState = { navigationEvent: NavigationEvent };
 
@@ -141,7 +141,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 onPopped={() => popped(sceneKey)}>
                 <BackButton onPress={this.handleBack} />
                 <NavigationContext.Provider value={navigationEvent}>
-                    <Freeze freeze={freezable && crumbs.length !== crumb && navigationEvent
+                    <Freeze enabled={freezable && crumbs.length !== crumb && navigationEvent
                         && (!stateContext['peek'] || stateContext['peek'] !== this.props.navigationEvent)}>
                         <NVFreeze style={styles.freeze}>
                             {navigationEvent && this.props.renderScene(state, data)}
