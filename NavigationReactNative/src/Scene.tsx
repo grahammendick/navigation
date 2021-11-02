@@ -91,8 +91,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     static createStateContext(crumbs: Crumb[], nextCrumb: Crumb, crumb: number, navigationEvent: NavigationEvent) {
         var stateContext = new StateContext();
         var {state, data, url, title} = crumbs[crumb];
-        stateContext['peek'] = true;
-        stateContext['peekEvent'] = navigationEvent;
+        stateContext['peek'] = navigationEvent;
         stateContext.state = state;
         stateContext.data = data;
         stateContext.url = url;
@@ -143,7 +142,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 <BackButton onPress={this.handleBack} />
                 <NavigationContext.Provider value={navigationEvent}>
                     <Freeze freeze={freezable && crumbs.length !== crumb && navigationEvent
-                        && (!stateContext['peek'] || stateContext['peekEvent'] !== this.props.navigationEvent)}>
+                        && (!stateContext['peek'] || stateContext['peek'] !== this.props.navigationEvent)}>
                         <NVFreeze style={styles.scene}>
                             {navigationEvent && this.props.renderScene(state, data)}
                         </NVFreeze>
