@@ -150,7 +150,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 onPopped={() => popped(sceneKey)}>
                 <BackButton onPress={this.handleBack} />
                 <NavigationContext.Provider value={navigationEvent}>
-                    <Freeze freeze={freezable && crumbs.length !== crumb}>
+                    <Freeze freeze={freezable && crumbs.length !== crumb && navigationEvent
+                        && !navigationEvent.stateNavigator?.stateContext?.['peek']}>
                         <NVFreeze style={styles.scene}>
                             {navigationEvent && this.props.renderScene(state, data)}
                         </NVFreeze>
