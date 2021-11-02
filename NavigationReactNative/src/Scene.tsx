@@ -78,7 +78,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {crumbs, nextCrumb} = navigationEvent.stateNavigator.stateContext;
         var {stateNavigator} = navigationEvent;
         var peekNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
-        peekNavigator.stateContext = Scene.createStateContext(crumbs, nextCrumb, crumb);
+        peekNavigator.stateContext = Scene.createStateContext(crumbs, nextCrumb, crumb, navigationEvent);
         peekNavigator.configure = stateNavigator.configure;
         peekNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
         peekNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
@@ -88,11 +88,11 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {oldState, state, data, asyncData} = peekNavigator.stateContext;
         this.setState({navigationEvent: {oldState, state, data, asyncData, stateNavigator: peekNavigator, nextState: undefined, nextData: undefined}});
     }
-    static createStateContext(crumbs: Crumb[], nextCrumb: Crumb, crumb: number) {
+    static createStateContext(crumbs: Crumb[], nextCrumb: Crumb, crumb: number, navigationEvent: NavigationEvent) {
         var stateContext = new StateContext();
         var {state, data, url, title} = crumbs[crumb];
         stateContext['peek'] = true;
-        stateContext['peekTime'] = Date.now();
+        stateContext['peekEvent'] = navigationEvent;
         stateContext.state = state;
         stateContext.data = data;
         stateContext.url = url;
@@ -143,7 +143,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 <BackButton onPress={this.handleBack} />
                 <NavigationContext.Provider value={navigationEvent}>
                     <Freeze freeze={freezable && crumbs.length !== crumb && navigationEvent
-                        && (!stateContext?.['peek'] || stateContext['peekTime'] < Date.now() - 1000)}>
+                        && (!stateContext?.['peek'] || stateContext['peekEvent'] !== this.props.navigationEvent)}>
                         <NVFreeze style={styles.scene}>
                             {navigationEvent && this.props.renderScene(state, data)}
                         </NVFreeze>
