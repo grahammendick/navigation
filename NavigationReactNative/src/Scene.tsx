@@ -67,21 +67,10 @@ class Scene extends React.Component<SceneProps, SceneState> {
         }
         return false;
     }
-    onBeforeNavigate(_state, _data, url: string) {
-        var {crumb, navigationEvent} = this.props;
-        if (url.split('crumb=').length - 1 !== crumb || Platform.OS !== 'ios')
-            return true;
-        var {crumbs} = navigationEvent.stateNavigator.stateContext;
-        var changed = !this.state.navigationEvent && crumb < crumbs.length;
-        if (!changed && crumb < crumbs.length) {
-            var {state: latestState, data: latestData} = crumbs[crumb];
-            var {state, data} = this.state.navigationEvent.stateNavigator.stateContext;
-            changed = state !== latestState || Object.keys(data).length !== Object.keys(latestData).length;
-            for(var key in data) {
-                changed = changed || data[key] !== latestData[key];
-            }
-        }
-        if (changed) this.peekNavigate();
+    onBeforeNavigate(_state, _data, url: string, history: boolean) {
+        var {crumb} = this.props;
+        if (url.split('crumb=').length - 1 === crumb && history && Platform.OS === 'ios')
+            this.peekNavigate();
         return true;
     }
     peekNavigate() {
