@@ -151,7 +151,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     }
 }
 
-var  NVScene = requireNativeComponent<any>('NVScene', null);
+var NVScene = requireNativeComponent<any>('NVScene', null);
 
 const styles = StyleSheet.create({
     scene: {

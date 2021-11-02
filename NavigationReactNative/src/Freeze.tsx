@@ -46,7 +46,7 @@ var Freeze = ({enabled, children}) => (
     </Suspense>
 );
 
-var  NVFreeze = requireNativeComponent<any>('NVFreeze', null);
+var NVFreeze = requireNativeComponent<any>('NVFreeze', null);
 
 const styles = StyleSheet.create({
     freeze: {
