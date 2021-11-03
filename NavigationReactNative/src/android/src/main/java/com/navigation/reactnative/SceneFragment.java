@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 
 public class SceneFragment extends Fragment {
     private SceneView scene;
@@ -59,7 +60,9 @@ public class SceneFragment extends Fragment {
             });
             return anim;
         }
-        // Handle enter and nextAnim 0
+        if (nextAnim == 0 && enter && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+            ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+        }
         return super.onCreateAnimation(transit, enter, nextAnim);
     }
 
