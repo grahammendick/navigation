@@ -133,20 +133,20 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var stateContext = navigationEvent?.stateNavigator?.stateContext;
         var {state, data} = stateContext || crumbs[crumb];
         return (
-            <NVScene
-                sceneKey={sceneKey}
-                {...this.getAnimation()}
-                title={title(state, data)}
-                style={styles.scene}
-                onPopped={() => popped(sceneKey)}>
-                <BackButton onPress={this.handleBack} />
-                <NavigationContext.Provider value={navigationEvent}>
-                    <Freeze enabled={freezable && crumbs.length !== crumb && navigationEvent
-                        && (!stateContext['peek'] || stateContext['peek'] !== this.props.navigationEvent)}>
+            <Freeze enabled={freezable && crumbs.length !== crumb && navigationEvent
+                && (!stateContext['peek'] || stateContext['peek'] !== this.props.navigationEvent)}>
+                <NVScene
+                    sceneKey={sceneKey}
+                    {...this.getAnimation()}
+                    title={title(state, data)}
+                    style={styles.scene}
+                    onPopped={() => popped(sceneKey)}>
+                    <BackButton onPress={this.handleBack} />
+                    <NavigationContext.Provider value={navigationEvent}>
                         {navigationEvent && this.props.renderScene(state, data)}
-                    </Freeze>
-                </NavigationContext.Provider>
-            </NVScene>
+                    </NavigationContext.Provider>
+                </NVScene>
+            </Freeze>
         );
     }
 }
