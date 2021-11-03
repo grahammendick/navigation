@@ -17,6 +17,11 @@ public class SceneManager extends ViewGroupManager<SceneView> {
         return "NVScene";
     }
 
+    @ReactProp(name = "crumb")
+    public void setCrumb(SceneView view, int crumb) {
+        view.crumb = crumb;
+    }
+
     @ReactProp(name = "sceneKey")
     public void setSceneKey(SceneView view, String sceneKey) {
         view.sceneKey = sceneKey;

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +36,31 @@ public class SceneFragment extends Fragment {
             return scene;
         }
         return new View(getContext());
+    }
+
+    @Nullable
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        if (nextAnim != 0 && enter) {
+            Animation anim = AnimationUtils.loadAnimation(getContext(), nextAnim);
+            anim.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
+            return anim;
+        }
+        // Handle enter and nextAnim 0
+        return super.onCreateAnimation(transit, enter, nextAnim);
     }
 
     @Override

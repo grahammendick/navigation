@@ -95,7 +95,8 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-                .put("onNavigateToTop", MapBuilder.of("registrationName", "onNavigateToTop"))
-                .build();
+            .put("onNavigateToTop", MapBuilder.of("registrationName", "onNavigateToTop"))
+            .put("onRest", MapBuilder.of("registrationName", "onRest"))
+            .build();
     }
 }

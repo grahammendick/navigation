@@ -21,9 +21,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
@@ -255,6 +257,13 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             fragmentTransaction.remove(fragment);
             fragmentTransaction.commitAllowingStateLoss();
         }
+    }
+
+    void onRest(int crumb) {
+        WritableMap event = Arguments.createMap();
+        event.putInt("crumb", crumb);
+        ReactContext reactContext = (ReactContext) getContext();
+        reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onRest", event);
     }
 
     @Override
