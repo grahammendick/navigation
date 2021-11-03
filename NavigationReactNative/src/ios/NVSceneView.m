@@ -13,6 +13,10 @@
     return self;
 }
 
+- (void)setHidden:(BOOL)hidden
+{    
+}
+
 -(void)didPop
 {
     self.onPopped(nil);
