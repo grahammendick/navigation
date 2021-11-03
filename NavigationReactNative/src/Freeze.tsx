@@ -40,11 +40,11 @@ var Suspender = ({freeze, children}) => {
     return <NVFreeze style={styles.freeze}>{children}</NVFreeze>;
 };
 
-var Freeze = ({enabled, children}) => (
-    <Suspense fallback={null}>
-      <Suspender freeze={enabled}>{children}</Suspender>
-    </Suspense>
-);
+var Freeze = ({enabled, children}) => {
+    const suspendable = typeof React.Suspense !== 'undefined';
+    const suspender = <Suspender freeze={enabled && suspendable}>{children}</Suspender>;
+    return suspendable ? <Suspense fallback={null}>{suspender}</Suspense> : suspender;
+};
 
 var NVFreeze = requireNativeComponent<any>('NVFreeze', null);
 

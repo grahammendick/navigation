@@ -108,7 +108,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                             key={key}
                             crumb={crumb}
                             sceneKey={key}
-                            freezable={freezable && typeof React.Suspense !== 'undefined'}
+                            freezable={freezable}
                             unmountStyle={unmountStyle}
                             crumbStyle={crumbStyle}
                             hidesTabBar={hidesTabBar}
