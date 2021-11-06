@@ -136,6 +136,10 @@ class Scene extends React.Component<SceneProps, SceneState> {
             <Freeze enabled={freezable && crumbs.length !== crumb && navigationEvent
                 && (!stateContext['peek'] || stateContext['peek'] !== this.props.navigationEvent)}>
                 <NVScene
+                    ref={(ref: any) => {
+                        if (ref?.viewConfig?.validAttributes?.style?.display)
+                            ref.viewConfig.validAttributes.style.display = false;
+                    }}
                     crumb={crumb}
                     sceneKey={sceneKey}
                     {...this.getAnimation()}
