@@ -1029,4 +1029,44 @@ describe('NavigationMotion', function () {
             }
         })
     });
+
+    describe('Crumb set state navigate back', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var update;
+            var SceneA = () => {
+                var [updated, setUpdated] = useState(false)
+                update = setUpdated;
+                return <div id='sceneA' data-updated={updated} />;
+            };
+            var SceneB = () => <div id="sceneB" />;
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationMotion>
+                        {(_style, scene, key) =>  (
+                            <div className="scene" id={key} key={key}>{scene}</div>
+                        )}
+                    </NavigationMotion>
+                </NavigationHandler>,
+                container
+            );
+            stateNavigator.navigate('sceneB');
+            update(true);
+            stateNavigator.navigateBack(1);
+            try {
+                var scene = container.querySelector<HTMLDivElement>("#sceneA");                
+                assert.strictEqual(scene.dataset.updated, 'true');
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
