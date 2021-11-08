@@ -3,7 +3,7 @@ import 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationHandler } from 'navigation-react';
 import { NavigationMotion } from 'navigation-react-mobile';
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import { JSDOM } from 'jsdom';
 
@@ -985,6 +985,45 @@ describe('NavigationMotion', function () {
                 assert.equal(scenes[1].id, "1++");
                 assert.notEqual(scenes[1].querySelector("#sceneC"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
+
+    describe('Crumb set state', function () {
+        it('should not render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var update;
+            var SceneA = () => {
+                var [updated, setUpdated] = useState(false)
+                update = setUpdated;
+                return <div id='sceneA' data-updated={updated} />;
+            };
+            var SceneB = () => <div id="sceneB" />;
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            ReactDOM.render(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationMotion>
+                        {(_style, scene, key) =>  (
+                            <div className="scene" id={key} key={key}>{scene}</div>
+                        )}
+                    </NavigationMotion>
+                </NavigationHandler>,
+                container
+            );
+            stateNavigator.navigate('sceneB');
+            update(true);
+            try {
+                var scene = container.querySelector<HTMLDivElement>("#sceneA");                
+                assert.strictEqual(scene.dataset.updated, 'false');
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
