@@ -1052,7 +1052,7 @@ describe('NavigationMotion', function () {
                 <NavigationHandler stateNavigator={stateNavigator}>
                     <NavigationMotion>
                         {(_style, scene, key) =>  (
-                            <div className="scene" id={key} key={key}>{scene}</div>
+                            <div id={key} key={key}>{scene}</div>
                         )}
                     </NavigationMotion>
                 </NavigationHandler>,
