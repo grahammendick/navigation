@@ -10,8 +10,8 @@
     "navigation": "*",
     "navigation-react": "*",
     "navigation-react-mobile": "*",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "*",
+    "react-dom": "*",
     "webpack": "^1.12.10"
   },
   "scripts": {
