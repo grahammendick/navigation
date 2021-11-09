@@ -24,7 +24,7 @@
 import React, { Suspense, useRef } from 'react';
 
 var Suspender = ({freeze, children}) => {
-    var promiseCache = useRef<any>({}).current;
+    var promiseCache = useRef ? useRef<any>({}).current : {};
     if (freeze && !promiseCache.promise) {
         promiseCache.promise = new Promise((resolve) => {
           promiseCache.resolve = resolve;
