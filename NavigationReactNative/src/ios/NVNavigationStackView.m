@@ -146,8 +146,11 @@
     [self checkPeekability:crumb];
     if (crumb < [self.keys count] - 1) {
         _nativeEventCount++;
-        self.onDidNavigateBack(@{ @"eventCount": @(_nativeEventCount) });
     }
+    self.onRest(@{
+        @"crumb": @(crumb),
+        @"eventCount": crumb < [self.keys count] - 1 ? @(_nativeEventCount) : @0
+    });
 }
 
 @end

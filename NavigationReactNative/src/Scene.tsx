@@ -3,7 +3,8 @@ import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
-type SceneProps = { crumb: number, sceneKey: string, renderScene: (state: State, data: any) => ReactNode, crumbStyle: any, unmountStyle: any, hidesTabBar: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
+import Freeze from './Freeze';
+type SceneProps = { crumb: number, sceneKey: string, freezable: boolean, renderScene: (state: State, data: any) => ReactNode, crumbStyle: any, unmountStyle: any, hidesTabBar: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
 type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
@@ -34,8 +35,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var replace = oldCrumbs.length === crumb && oldState !== state;
         return !replace ? {navigationEvent} : null;
     }
-    shouldComponentUpdate(_nextProps, {navigationEvent}: SceneState) {
-        return navigationEvent !== this.state.navigationEvent || (this.fluentPeekable() && !this.timer);
+    shouldComponentUpdate({freezable}, {navigationEvent}: SceneState) {
+        return freezable || navigationEvent !== this.state.navigationEvent || (this.fluentPeekable() && !this.timer);
     }
     componentDidUpdate() {
         this.backgroundPeekNavigate();
@@ -66,21 +67,10 @@ class Scene extends React.Component<SceneProps, SceneState> {
         }
         return false;
     }
-    onBeforeNavigate(_state, _data, url: string) {
-        var {crumb, navigationEvent} = this.props;
-        if (url.split('crumb=').length - 1 !== crumb || Platform.OS !== 'ios')
-            return true;
-        var {crumbs} = navigationEvent.stateNavigator.stateContext;
-        var changed = !this.state.navigationEvent && crumb < crumbs.length;
-        if (!changed && crumb < crumbs.length) {
-            var {state: latestState, data: latestData} = crumbs[crumb];
-            var {state, data} = this.state.navigationEvent.stateNavigator.stateContext;
-            changed = state !== latestState || Object.keys(data).length !== Object.keys(latestData).length;
-            for(var key in data) {
-                changed = changed || data[key] !== latestData[key];
-            }
-        }
-        if (changed) this.peekNavigate();
+    onBeforeNavigate(_state, _data, url: string, history: boolean) {
+        var {crumb} = this.props;
+        if (url.split('crumb=').length - 1 === crumb && history && Platform.OS === 'ios')
+            this.peekNavigate();
         return true;
     }
     peekNavigate() {
@@ -88,7 +78,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {crumbs, nextCrumb} = navigationEvent.stateNavigator.stateContext;
         var {stateNavigator} = navigationEvent;
         var peekNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
-        peekNavigator.stateContext = Scene.createStateContext(crumbs, nextCrumb, crumb);
+        peekNavigator.stateContext = Scene.createStateContext(crumbs, nextCrumb, crumb, navigationEvent);
         peekNavigator.configure = stateNavigator.configure;
         peekNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
         peekNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
@@ -98,14 +88,15 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {oldState, state, data, asyncData} = peekNavigator.stateContext;
         this.setState({navigationEvent: {oldState, state, data, asyncData, stateNavigator: peekNavigator, nextState: undefined, nextData: undefined}});
     }
-    static createStateContext(crumbs: Crumb[], nextCrumb: Crumb, crumb: number) {
+    static createStateContext(crumbs: Crumb[], nextCrumb: Crumb, crumb: number, navigationEvent: NavigationEvent) {
         var stateContext = new StateContext();
         var {state, data, url, title} = crumbs[crumb];
-        stateContext['peek'] = true;
+        stateContext['peek'] = navigationEvent;
         stateContext.state = state;
         stateContext.data = data;
         stateContext.url = url;
         stateContext.title = title;
+        stateContext.history = true;
         stateContext.crumbs = crumbs.slice(0, crumb);
         stateContext.nextCrumb = crumbs[crumb];
         var {state, data, url} = nextCrumb;
@@ -125,6 +116,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         var {state, data} = crumbs[crumb] || nextCrumb;
         var currentCrumbs = crumbs.slice(0, crumb);
+        if (crumb > crumbs.length) return null;
         if (crumb > 0) {
             var {state: prevState, data: prevData} = crumbs[crumb - 1];
             var prevCrumbs = crumbs.slice(0, crumb - 1);
@@ -136,26 +128,39 @@ class Scene extends React.Component<SceneProps, SceneState> {
     }
     render() {
         var {navigationEvent} = this.state;
-        var {crumb, title, sceneKey, popped, navigationEvent: {stateNavigator}} = this.props;
+        var {crumb, title, sceneKey, freezable, popped, navigationEvent: {stateNavigator}} = this.props;
         var {crumbs} = stateNavigator.stateContext;
-        var {state, data} = navigationEvent ? navigationEvent.stateNavigator.stateContext : crumbs[crumb];
+        var stateContext = navigationEvent?.stateNavigator?.stateContext;
+        var {state, data} = stateContext || crumbs[crumb];
         return (
-            <NVScene
-                sceneKey={sceneKey}
-                {...this.getAnimation()}
-                title={title(state, data)}
-                style={styles.scene}
-                onPopped={() => popped(sceneKey)}>
-                <BackButton onPress={this.handleBack} />
-                <NavigationContext.Provider value={navigationEvent}>
-                    {navigationEvent && this.props.renderScene(state, data)}
-                </NavigationContext.Provider>
-            </NVScene>
+            <Freeze enabled={freezable && crumb < crumbs.length && navigationEvent
+                && (!stateContext['peek'] || stateContext['peek'] !== this.props.navigationEvent)}>
+                <NVScene
+                    ref={(ref: any) => {
+                        if (typeof React.Suspense !== 'undefined' && ref?.viewConfig?.validAttributes?.style) {
+                            ref.viewConfig.validAttributes.style = {
+                                ...ref.viewConfig.validAttributes.style,
+                                display: false
+                            };
+                        }
+                    }}
+                    crumb={crumb}
+                    sceneKey={sceneKey}
+                    {...this.getAnimation()}
+                    title={title(state, data)}
+                    style={styles.scene}
+                    onPopped={() => popped(sceneKey)}>
+                    <BackButton onPress={this.handleBack} />
+                    <NavigationContext.Provider value={navigationEvent}>
+                        {navigationEvent && this.props.renderScene(state, data)}
+                    </NavigationContext.Provider>
+                </NVScene>
+            </Freeze>
         );
     }
 }
 
-var  NVScene = requireNativeComponent<any>('NVScene', null);
+var NVScene = requireNativeComponent<any>('NVScene', null);
 
 const styles = StyleSheet.create({
     scene: {

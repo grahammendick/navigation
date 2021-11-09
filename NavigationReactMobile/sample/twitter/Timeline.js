@@ -1,5 +1,4 @@
 import React from 'react';
-import {NavigationLink} from 'navigation-react';
 import Banner from './Banner';
 import Tweets from './Tweets';
 
