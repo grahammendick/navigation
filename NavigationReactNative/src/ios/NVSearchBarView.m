@@ -12,6 +12,7 @@
     __weak RCTBridge *_bridge;
     UIView *_reactSubview;
     NSInteger _nativeEventCount;
+    NSInteger _nativeButtonEventCount;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -23,6 +24,7 @@
         self.searchController = [[NVSearchController alloc] initWithSearchResultsController:viewController];
         self.searchController.searchBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         self.searchController.searchResultsUpdater = self;
+        self.searchController.searchBar.delegate = self;
         __weak typeof(self) weakSelf = self;
         viewController.boundsDidChangeBlock = ^(CGRect newBounds) {
             [weakSelf notifyForBoundsChange:newBounds];
@@ -68,6 +70,19 @@
     }
 }
 
+- (void)setScopeButtons:(NSArray *)scopeButtons
+{
+    self.searchController.searchBar.scopeButtonTitles = scopeButtons;
+}
+
+- (void)setScopeButton:(NSInteger)scopeButton
+{
+    NSInteger eventLag = _nativeButtonEventCount - _mostRecentButtonEventCount;
+    if (eventLag == 0 && self.searchController.searchBar.selectedScopeButtonIndex != scopeButton) {
+        self.searchController.searchBar.selectedScopeButtonIndex = scopeButton;
+    }
+}
+
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     if (@available(iOS 11.0, *)) {
@@ -87,12 +102,21 @@
     [super insertReactSubview:subview atIndex:atIndex];
     self.searchController.searchResultsController.view = subview;
     _reactSubview = subview;
+    [_reactSubview addObserver:self forKeyPath:@"hidden" options:0 context:nil];
 }
 
 - (void)removeReactSubview:(UIView *)subview
 {
     [super removeReactSubview:subview];
+    [_reactSubview removeObserver:self forKeyPath:@"hidden"];
     _reactSubview = nil;
+}
+
+- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
+{
+    if (self.searchController.searchBar.text.length == 0 && !_reactSubview.isHidden) {
+        _reactSubview.hidden = YES;
+    }
 }
 
 - (void)didUpdateReactSubviews
@@ -127,6 +151,22 @@
         });
     }
 }
+
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
+{
+    if (!!self.onChangeScopeButton) {
+        self.onChangeScopeButton(@{
+            @"scopeButton": @(selectedScope),
+            @"eventCount": @(_nativeButtonEventCount),
+        });
+    }
+}
+
+- (void)dealloc
+{
+    [_reactSubview removeObserver:self forKeyPath:@"hidden"];
+}
+
 
 @end
 

@@ -5,18 +5,18 @@ import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
 import PopSync from './PopSync';
 import Scene from './Scene';
 type NavigationStackProps = {stateNavigator: AsyncStateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, renderScene: (state: State, data: any) => ReactNode};
-type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[]};
+type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], rest: boolean};
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
     private ref: React.RefObject<View>;
     private resumeNavigation: () => void;
     constructor(props) {
         super(props);
-        this.state = {stateNavigator: null, keys: []};
+        this.state = {stateNavigator: null, keys: [], rest: true};
         this.ref = React.createRef<View>();
         this.onWillNavigateBack = this.onWillNavigateBack.bind(this);
-        this.onDidNavigateBack = this.onDidNavigateBack.bind(this);
         this.onNavigateToTop = this.onNavigateToTop.bind(this);
+        this.onRest = this.onRest.bind(this);
     }
     static defaultProps = {
         unmountStyle: () => null,
@@ -27,7 +27,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     static getDerivedStateFromProps({stateNavigator}: NavigationStackProps, {keys: prevKeys, stateNavigator: prevStateNavigator}: NavigationStackState) {
         if (stateNavigator === prevStateNavigator)
             return null;
-        var {state, crumbs, nextCrumb} = stateNavigator.stateContext;
+        var {state, crumbs, nextCrumb, history} = stateNavigator.stateContext;
         if (!state)
             return {keys: []};
         var prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
@@ -36,7 +36,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         var keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
         if (prevKeys.length === keys.length && prevState !== state)
             keys[keys.length - 1] += '+';
-        return {keys, stateNavigator};
+        return {keys, stateNavigator, rest: history};
     }
     onWillNavigateBack({nativeEvent}) {
         var {stateNavigator} = this.props;
@@ -49,17 +49,23 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
             });
         }
     }
-    onDidNavigateBack({nativeEvent}) {
-        var mostRecentEventCount = nativeEvent.eventCount;
-        this.ref.current.setNativeProps({mostRecentEventCount});
-        if (this.resumeNavigation)
-            this.resumeNavigation();
-    }
     onNavigateToTop() {
         var {stateNavigator} = this.props;
         var {crumbs} = stateNavigator.stateContext;
         if (crumbs.length > 0)
             stateNavigator.navigateBack(crumbs.length);
+    }
+    onRest({nativeEvent}) {
+        var {stateNavigator} = this.props;
+        var {crumbs} = stateNavigator.stateContext;
+        var mostRecentEventCount = nativeEvent.eventCount;
+        if (mostRecentEventCount) {
+            this.ref.current.setNativeProps({mostRecentEventCount});
+            if (this.resumeNavigation)
+                this.resumeNavigation();
+        } else if (crumbs.length === nativeEvent.crumb) {
+            this.setState({rest: true});
+        }
     }
     getAnimation() {
         var {stateNavigator, unmountStyle, crumbStyle, sharedElement: getSharedElement} = this.props;
@@ -87,7 +93,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         return {enterAnim, exitAnim, sharedElement, oldSharedElement};
     }
     render() {
-        var {keys} = this.state;
+        var {keys, rest} = this.state;
         var {stateNavigator, unmountStyle, crumbStyle, hidesTabBar, title, renderScene} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
@@ -97,8 +103,8 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                 style={styles.stack}
                 {...this.getAnimation()}
                 onWillNavigateBack={this.onWillNavigateBack}
-                onDidNavigateBack={this.onDidNavigateBack}
-                onNavigateToTop={this.onNavigateToTop}>
+                onNavigateToTop={this.onNavigateToTop}
+                onRest={this.onRest}>
                 <PopSync<{crumb: number}>
                     data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
                     getKey={({crumb}) => keys[crumb]}>
@@ -107,6 +113,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
                             key={key}
                             crumb={crumb}
                             sceneKey={key}
+                            freezable={typeof React.Suspense !== 'undefined' && rest}
                             unmountStyle={unmountStyle}
                             crumbStyle={crumbStyle}
                             hidesTabBar={hidesTabBar}

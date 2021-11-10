@@ -5,6 +5,7 @@ import Scene from './Scene';
 import SharedElementContext from './SharedElementContext';
 import SharedElementRegistry from './SharedElementRegistry';
 import withStateNavigator from './withStateNavigator';
+import Freeze from './Freeze';
 import { NavigationMotionProps } from './Props';
 type NavigationMotionState = {stateNavigator: StateNavigator, keys: string[], rest: boolean};
 type SceneContext = {key: string, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, mount: boolean};
@@ -79,7 +80,11 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                         styles.map(({data: {key, state, data}, style}) => {
                             var crumb = +key.replace(/\++$/, '');
                             var scene = <Scene crumb={crumb} renderScene={renderScene} /> ;
-                            return children(style, scene, key, crumbs.length === crumb, state, data);
+                            return (
+                                <Freeze key={key} enabled={this.state.rest && crumb < this.getScenes().length - 1}>
+                                    {children(style, scene, key, crumbs.length === crumb, state, data)}
+                                </Freeze>
+                            );
                         }).concat(
                             sharedElementMotion && sharedElementMotion({
                                 key: 'sharedElements',

@@ -1028,4 +1028,46 @@ describe('UnloadingHook', function () {
             }
         })
     });
+
+    describe('Unloading set state', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var SceneA = () => {
+                var [unloading, setUnloading] = useState(false)
+                useUnloading(() => {
+                    setUnloading(true);
+                    return true;
+                })
+                return <div id='sceneA' data-unloading={unloading} />;
+            };
+            var SceneB = () => <div />;
+            sceneA.renderScene = () => <SceneA />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            act(() => {
+                ReactDOM.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                        </NavigationMotion>
+                    </NavigationHandler>,
+                    container
+                );
+            });
+            act(() => {
+                stateNavigator.navigate('sceneB');
+            });
+            try {
+                var scene = container.querySelector<HTMLDivElement>("#sceneA");                
+                assert.strictEqual(scene.dataset.unloading, 'true');
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });

@@ -8,6 +8,7 @@ class SearchBar extends React.Component<any, any> {
         this.state = {show: false};
         this.ref = React.createRef<View>();
         this.onChangeText = this.onChangeText.bind(this);
+        this.onChangeScopeButton = this.onChangeScopeButton.bind(this);
     }
     static defaultProps = {
         obscureBackground: true,
@@ -21,11 +22,17 @@ class SearchBar extends React.Component<any, any> {
         this.ref.current.setNativeProps({mostRecentEventCount});
         if (onChangeText)
             onChangeText(text)
-
+    }
+    onChangeScopeButton({nativeEvent}) {
+        var {onChangeScopeButton, scopeButtons} = this.props as any;
+        var {eventCount: mostRecentButtonEventCount, scopeButton} = nativeEvent;
+        this.ref.current.setNativeProps({mostRecentButtonEventCount});
+        if (onChangeScopeButton)
+            onChangeScopeButton(scopeButtons[scopeButton])
     }
     render() {
         var {show} = this.state;
-        var {autoCapitalize, children, bottomBar, ...props} = this.props;
+        var {autoCapitalize, children, bottomBar, scopeButton, scopeButtons, ...props} = this.props;
         var constants = (UIManager as any).getViewManagerConfig('NVSearchBar').Constants;
         autoCapitalize = Platform.OS === 'android' ? constants.AutoCapitalize[autoCapitalize] : autoCapitalize;
         var showStyle = Platform.OS === 'android' && {top: !bottomBar ? 56 : 0, bottom: !bottomBar ? 0: 56, zIndex: show ? 58 : -58}
@@ -35,7 +42,10 @@ class SearchBar extends React.Component<any, any> {
                 ref={this.ref}
                 bottomBar={bottomBar}
                 autoCapitalize={autoCapitalize}
+                scopeButton={scopeButton ? scopeButtons?.indexOf(scopeButton) : 0}
+                scopeButtons={scopeButtons}
                 onChangeText={this.onChangeText}
+                onChangeScopeButton={this.onChangeScopeButton}
                 onExpand={() => this.setState({show: true})}
                 onCollapse={() => this.setState({show: false})}
                 style={[styles.searchBar, showStyle]}>

@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 
 public class SceneFragment extends Fragment {
     private SceneView scene;
@@ -34,6 +37,33 @@ public class SceneFragment extends Fragment {
             return scene;
         }
         return new View(getContext());
+    }
+
+    @Nullable
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        if (nextAnim != 0 && enter) {
+            Animation anim = AnimationUtils.loadAnimation(getContext(), nextAnim);
+            anim.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
+            return anim;
+        }
+        if (nextAnim == 0 && enter && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+            ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+        }
+        return super.onCreateAnimation(transit, enter, nextAnim);
     }
 
     @Override

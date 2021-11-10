@@ -10,6 +10,7 @@ import com.facebook.react.views.view.ReactViewGroup;
 import java.util.HashSet;
 
 public class SceneView extends ReactViewGroup {
+    protected int crumb;
     protected String sceneKey;
     protected String enterAnim;
     protected String exitAnim;
