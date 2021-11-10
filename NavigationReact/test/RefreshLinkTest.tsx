@@ -8,6 +8,7 @@ import { act, Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
 declare var global: any;
+global.IS_REACT_ACT_ENVIRONMENT = true;
 var { window } = new JSDOM('<!doctype html><html><body></body></html>');
 window.addEventListener = () => {};
 global.window = window;
@@ -2988,7 +2989,13 @@ describe('RefreshLinkTest', function () {
                     container
                 );
             });
-            stateNavigator.navigate('s', {x: 'a'});
+            var error = console.error;
+            console.error = () => {};
+            try {
+                stateNavigator.navigate('s', {x: 'a'});
+            } finally {
+                console.error = error;
+            }
             var div = container.querySelector<HTMLDivElement>('div');
             assert.equal(div.innerHTML, '1');
             assert.equal(stateNavigator.stateContext.data.x, 'a');
@@ -3041,7 +3048,13 @@ describe('RefreshLinkTest', function () {
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
-            Simulate.click(link);
+            var error = console.error;
+            console.error = () => {};
+            try {
+                Simulate.click(link);
+            } finally {
+                console.error = error;
+            }
             stateNavigator.onNavigate(() => {
                 var div = container.querySelector<HTMLDivElement>('div');
                 assert.equal(yVal, 'a');

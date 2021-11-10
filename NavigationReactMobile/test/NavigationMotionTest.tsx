@@ -9,6 +9,7 @@ import { act } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
 declare var global: any;
+global.IS_REACT_ACT_ENVIRONMENT = true;
 var { window } = new JSDOM('<!doctype html><html><body></body></html>');
 window.addEventListener = () => {};
 global.window = window;
@@ -50,7 +51,7 @@ describe('NavigationMotion', function () {
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -90,7 +91,7 @@ describe('NavigationMotion', function () {
                 assert.equal(scenes[1].id, "1");
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -130,13 +131,13 @@ describe('NavigationMotion', function () {
                 assert.equal(scenes[1].id, "1");
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
     describe('A -> B to A', function () {
-        it('should render A', function(){
+        it('should render A', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -162,7 +163,7 @@ describe('NavigationMotion', function () {
                     container
                 );
             });
-            act(() => stateNavigator.navigateBack(1));
+            await act(async () => stateNavigator.navigateBack(1));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
@@ -170,13 +171,13 @@ describe('NavigationMotion', function () {
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
     describe('A to A -> B to A', function () {
-        it('should render A', function(){
+        it('should render A', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -201,7 +202,7 @@ describe('NavigationMotion', function () {
                     container
                 );
             });
-            act(() => {
+            await act(async () => {
                 stateNavigator.navigate('sceneB');
                 stateNavigator.navigateBack(1);
             });
@@ -212,7 +213,7 @@ describe('NavigationMotion', function () {
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -247,7 +248,7 @@ describe('NavigationMotion', function () {
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -286,7 +287,7 @@ describe('NavigationMotion', function () {
                 assert.notEqual(scenes[0].querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneA"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -330,13 +331,13 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
     describe('A -> B to C -> B', function () {
-        it('should render _ -> B', function(){
+        it('should render _ -> B', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -365,7 +366,7 @@ describe('NavigationMotion', function () {
                     container
                 );
             });
-            act(() => {
+            await act(async () => {
                 var url = stateNavigator.fluent()
                     .navigate('sceneC')
                     .navigate('sceneB').url;
@@ -380,13 +381,13 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
     describe('A -> B to C -> B to C', function () {
-        it('should render C', function(){
+        it('should render C', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -415,7 +416,7 @@ describe('NavigationMotion', function () {
                     container
                 );
             });
-            act(() => {
+            await act(async () => {
                 var url = stateNavigator.fluent()
                     .navigate('sceneC')
                     .navigate('sceneB').url;
@@ -430,13 +431,13 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
     describe('A to A -> B to C -> B', function () {
-        it('should render A -> B', function(){
+        it('should render A -> B', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -464,7 +465,7 @@ describe('NavigationMotion', function () {
                     container
                 );
             });
-            act(() => {
+            await act(async () => {
                 stateNavigator.navigate('sceneB');
                 var url = stateNavigator.fluent()
                     .navigate('sceneC')
@@ -480,13 +481,13 @@ describe('NavigationMotion', function () {
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
     describe('A to A -> B to C -> B to C', function () {
-        it('should render C', function(){
+        it('should render C', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -521,7 +522,7 @@ describe('NavigationMotion', function () {
                     .navigate('sceneB').url;
                 stateNavigator.navigateLink(url);
             });
-            act(() => stateNavigator.navigateBack(1));
+            await act(async () => stateNavigator.navigateBack(1));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
@@ -530,13 +531,13 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
     describe('A to A -> B to C -> D', function () {
-        it('should render A -> D+', function(){
+        it('should render A -> D+', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -568,7 +569,7 @@ describe('NavigationMotion', function () {
                 );
             });
             act(() => stateNavigator.navigate('sceneB'));
-            act(() => {
+            await act(async () => {
                 var url = stateNavigator.fluent()
                     .navigate('sceneC')
                     .navigate('sceneD').url;
@@ -584,7 +585,7 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -634,13 +635,13 @@ describe('NavigationMotion', function () {
                 assert.notEqual(scenes[2].querySelector("#sceneC"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
     describe('A to A -> B -> C to A -> B', function () {
-        it('should render A -> B', function(){
+        it('should render A -> B', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -668,7 +669,7 @@ describe('NavigationMotion', function () {
                     container
                 );
             });
-            act(() => {
+            await act(async () => {
                 var url = stateNavigator.fluent(true)
                     .navigate('sceneB')
                     .navigate('sceneC').url;
@@ -684,13 +685,13 @@ describe('NavigationMotion', function () {
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
     describe('A to A -> B -> C to A -> D -> C', function () {
-        it('should render A -> _ -> C', function(){
+        it('should render A -> _ -> C', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -721,7 +722,7 @@ describe('NavigationMotion', function () {
                     container
                 );
             });
-            act(() => {
+            await act(async () => {
                 var url = stateNavigator.fluent(true)
                     .navigate('sceneB')
                     .navigate('sceneC').url;
@@ -743,13 +744,13 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneD"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
     describe('A to A -> B -> C to A -> D -> C to A -> D', function () {
-        it('should render A -> D', function(){
+        it('should render A -> D', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -780,7 +781,7 @@ describe('NavigationMotion', function () {
                     container
                 );
             });
-            act(() => {
+            await act(async () => {
                 var url = stateNavigator.fluent(true)
                     .navigate('sceneB')
                     .navigate('sceneC').url;
@@ -802,13 +803,13 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
     describe('A to A -> B -> C to A', function () {
-        it('should render A', function(){
+        it('should render A', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -836,7 +837,7 @@ describe('NavigationMotion', function () {
                     container
                 );
             });
-            act(() => {
+            await act(async () => {
                 var url = stateNavigator.fluent(true)
                     .navigate('sceneB')
                     .navigate('sceneC').url;
@@ -851,13 +852,13 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
     describe('A -> B -> C to A', function () {
-        it('should render A', function(){
+        it('should render A', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -887,7 +888,7 @@ describe('NavigationMotion', function () {
                     container
                 );
             });
-            act(() => stateNavigator.navigateBack(2));
+            await act(async () => stateNavigator.navigateBack(2));
             try {
                 var scenes = container.querySelectorAll(".scene");                
                 assert.equal(scenes.length, 1);
@@ -896,13 +897,13 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
     describe('A -> B -> C to B', function () {
-        it('should render B', function(){
+        it('should render B', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -932,7 +933,7 @@ describe('NavigationMotion', function () {
                     container
                 );
             });
-            act(() => {
+            await act(async () => {
                 var url = stateNavigator.fluent()
                     .navigate('sceneB').url;
                 stateNavigator.navigateLink(url);
@@ -945,7 +946,7 @@ describe('NavigationMotion', function () {
                 assert.equal(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -982,13 +983,13 @@ describe('NavigationMotion', function () {
                 assert.equal(scenes[1].id, "1");
                 assert.notEqual(scenes[1].querySelector("#sceneA"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
     describe('A to A -> A to A -> B', function () {
-        it('should render A -> B+', function(){
+        it('should render A -> B+', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA', trackCrumbTrail: true },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -1014,7 +1015,7 @@ describe('NavigationMotion', function () {
                 );
             });
             act(() => stateNavigator.navigate('sceneA'));
-            act(() => {
+            await act(async () => {
                 var url = stateNavigator.fluent(true)
                     .navigateBack(1)
                     .navigate('sceneB').url;
@@ -1028,13 +1029,13 @@ describe('NavigationMotion', function () {
                 assert.equal(scenes[1].id, "1+");
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
     describe('A to A -> A to A -> B to A -> B -> C to A -> B to A -> C', function () {
-        it('should render A -> C++', function(){
+        it('should render A -> C++', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA', trackCrumbTrail: true },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -1063,15 +1064,15 @@ describe('NavigationMotion', function () {
                 );
             });
             act(() => stateNavigator.navigate('sceneA'));
-            act(() => {
+            await act(async () => {
                 var url = stateNavigator.fluent(true)
                     .navigateBack(1)
                     .navigate('sceneB').url;
                 stateNavigator.navigateLink(url);
             });
             act(() => stateNavigator.navigate('sceneC'));
-            act(() => stateNavigator.navigateBack(1));
-            act(() => {
+            await act(async () => stateNavigator.navigateBack(1));
+            await act(async () => {
                 var url = stateNavigator.fluent(true)
                     .navigateBack(1)
                     .navigate('sceneC').url;
@@ -1086,12 +1087,12 @@ describe('NavigationMotion', function () {
                 assert.notEqual(scenes[1].querySelector("#sceneC"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
 
-    describe('Set state', function () {
+    /*describe('Set state', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
@@ -1207,5 +1208,5 @@ describe('NavigationMotion', function () {
                 ReactDOM.unmountComponentAtNode(container);
             }
         })
-    });
+    });*/
 });

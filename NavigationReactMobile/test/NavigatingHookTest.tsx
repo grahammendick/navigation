@@ -9,6 +9,7 @@ import { act } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
 declare var global: any;
+global.IS_REACT_ACT_ENVIRONMENT = true;
 var { window } = new JSDOM('<!doctype html><html><body></body></html>', { pretendToBeVisual: true });
 window.addEventListener = () => {};
 global.window = window;
@@ -46,7 +47,7 @@ describe('NavigatingHook', function () {
             try {
                 assert.equal(navigatingA, false);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -92,7 +93,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingA, false);
                 assert.equal(navigatingB, false);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -140,7 +141,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingA, false);
                 assert.equal(navigatingB, false);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -189,7 +190,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingA, true);
                 assert.equal(navigatingB, false);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -228,7 +229,7 @@ describe('NavigatingHook', function () {
             try {
                 assert.equal(navigatingA, true);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -276,7 +277,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingA, false);
                 assert.equal(navigatingB, false);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -337,7 +338,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingB, true);
                 assert.equal(navigatingC, false);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -407,7 +408,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingC, false);
                 assert.equal(navigatingD, false);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -467,7 +468,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingB, false);
                 assert.equal(navigatingC, false);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -530,7 +531,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingB, false);
                 assert.equal(navigatingC, false);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -583,7 +584,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingA, true);
                 assert.equal(navigatingB, false);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -644,7 +645,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingB, false);
                 assert.equal(navigatingC, false);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -707,7 +708,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingB, false);
                 assert.equal(navigatingC, false);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -757,7 +758,7 @@ describe('NavigatingHook', function () {
                 assert.equal(navigatingA, true);
                 assert.equal(navigatingB, false);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -799,7 +800,7 @@ describe('NavigatingHook', function () {
             try {
                 assert.equal(navigatingA, false);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -841,7 +842,7 @@ describe('NavigatingHook', function () {
             try {
                 assert.equal(countA, 1);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -884,7 +885,7 @@ describe('NavigatingHook', function () {
                 assert.equal(stateContextA.oldData.x, undefined);
                 assert.equal(stateContextA.data.x, 0);
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
@@ -930,7 +931,7 @@ describe('NavigatingHook', function () {
                 assert.equal(currentContextA.data.x, 0);
                 assert.equal(currentContextA.url, '/sceneA?x=0');
             } finally {
-                root.unmount();
+                act(() => root.unmount());
             }
         })
     });
