@@ -1030,7 +1030,7 @@ describe('UnloadingHook', function () {
         })
     });
 
-    /*describe('Unloading set state', function () {
+    describe('Unloading set state', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
@@ -1050,8 +1050,9 @@ describe('UnloadingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
+            var root = (ReactDOM as any).createRoot(container)
             act(() => {
-                ReactDOM.render(
+                root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
@@ -1067,8 +1068,8 @@ describe('UnloadingHook', function () {
                 var scene = container.querySelector<HTMLDivElement>("#sceneA");                
                 assert.strictEqual(scene.dataset.unloading, 'true');
             } finally {
-                ReactDOM.unmountComponentAtNode(container);
+                act(() => root.unmount());
             }
         })
-    });*/
+    });
 });
