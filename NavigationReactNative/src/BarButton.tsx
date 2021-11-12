@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { requireNativeComponent, Image, Platform, UIManager, StyleSheet } from 'react-native';
+import ActionBar from './ActionBar';
 
 const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search, style, children, testID, ...props}, ref) => {
     var constants = (UIManager as any).getViewManagerConfig('NVNavigationBar').Constants;
+    var actionBar = !!((React.Children.toArray(children) as ReactElement<any>[])[0]?.type === ActionBar);
     return (Platform.OS === 'android' || !search) && (
         <NVBarButton
             ref={ref}
@@ -11,9 +13,10 @@ const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search, 
             search={search}
             showActionView={!!children}
             showAsAction={Platform.OS === 'android' ? constants.ShowAsAction[show] : null}
+            collapsible={actionBar}
             image={Image.resolveAssetSource(image)}
             systemItem={systemItem || ''}
-            style={styles.actionView}
+            style={actionBar ? styles.actionBar : {width: style?.width || 48, height: 56}}
             children={children}
             {...props} />
     )
@@ -22,7 +25,7 @@ const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search, 
 const NVBarButton = requireNativeComponent<any>('NVBarButton', null)
 
 const styles = StyleSheet.create({
-    actionView: {
+    actionBar: {
         position: 'absolute',
         ...Platform.select({
             android: {

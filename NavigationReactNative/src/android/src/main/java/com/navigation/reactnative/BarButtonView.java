@@ -13,7 +13,6 @@ import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.CollapsibleActionView;
-import androidx.appcompat.widget.Toolbar;
 
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
@@ -31,6 +30,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     private Integer fontSize;
     private boolean titleChanged = false;
     private int showAsAction;
+    private boolean collapsible;
     private boolean search;
     private boolean showActionView;
     private MenuItem menuItem;
@@ -88,14 +88,15 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
         IconResolver.setIconSource(source, iconResolverListener, getContext());
     }
 
-    public int getShowAsAction() {
-        return showAsAction;
-    }
-
     void setShowAsAction(int showAsAction) {
         this.showAsAction = showAsAction;
         if (menuItem != null)
-            menuItem.setShowAsAction((!search && !showActionView) ? showAsAction : MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction);
+            menuItem.setShowAsAction((!search && (!showActionView || !collapsible)) ? showAsAction : MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction);
+    }
+
+    void setCollapsible(boolean collapsible) {
+        this.collapsible = collapsible;
+        setShowAsAction(showAsAction);
     }
 
     void setSearch(boolean search) {
@@ -160,7 +161,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     @Override
     protected void onSizeChanged(final int w, final int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if (getChildCount() == 0)
+        if (getChildCount() == 0 || !collapsible)
             return;
         final int viewTag = getChildAt(0).getId();
         final ReactContext reactContext = (ReactContext) getContext();
