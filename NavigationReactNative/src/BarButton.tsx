@@ -16,7 +16,7 @@ const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search, 
             collapsible={actionBar}
             image={Image.resolveAssetSource(image)}
             systemItem={systemItem || ''}
-            style={actionBar ? styles.actionBar : {width: style?.width || 48, height: 56}}
+            style={actionBar ? styles.actionBar : [styles.actionView, style]}
             children={children}
             {...props} />
     )
@@ -31,6 +31,18 @@ const styles = StyleSheet.create({
             android: {
                 top: 0, right: 0,
                 bottom: 0, left: 0,
+            },
+        })
+    },
+    actionView: {
+        position: 'absolute',
+        flex: 1,
+        justifyContent:'center',
+        alignItems: 'center',
+        ...Platform.select({
+            android: {
+                width: 48,
+                height: 56,
             },
         })
     }
