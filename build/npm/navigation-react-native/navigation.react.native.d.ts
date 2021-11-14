@@ -185,7 +185,7 @@ export interface LeftBarProps {
     supplementBack?: boolean;
 }
 
-    /**
+/**
  * Renders buttons in the left UI bar
  */
 export class LeftBar extends Component<LeftBarProps> { }
@@ -199,10 +199,10 @@ export class RightBar extends Component { }
  * Defines the Title Bar Props contract
  */
 export interface TitleBarProps {
-  /**
-   * The style
-   */
-  style?: StyleProp<ViewStyle>;
+    /**
+     * The style
+     */
+    style?: StyleProp<ViewStyle>;
 }
 
 /**
@@ -259,6 +259,10 @@ export interface BarButtonProps {
      */
     testID?: string;
     /**
+     * The custom view style
+     */
+     style?: StyleProp<ViewStyle>;
+     /**
      * Handles button press events
      */
     onPress?: () => void;
