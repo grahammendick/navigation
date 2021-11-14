@@ -13,7 +13,7 @@ const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search, 
             search={search}
             showActionView={!!children}
             showAsAction={Platform.OS === 'android' ? constants.ShowAsAction[show] : null}
-            collapsible={actionBar}
+            actionBar={actionBar}
             image={Image.resolveAssetSource(image)}
             systemItem={systemItem || ''}
             style={actionBar ? styles.actionBar : [styles.actionView, style]}

@@ -30,7 +30,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     private Integer fontSize;
     private boolean titleChanged = false;
     private int showAsAction;
-    private boolean collapsible;
+    private boolean actionBar;
     private boolean search;
     private boolean showActionView;
     private MenuItem menuItem;
@@ -91,11 +91,11 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     void setShowAsAction(int showAsAction) {
         this.showAsAction = showAsAction;
         if (menuItem != null)
-            menuItem.setShowAsAction((!search && (!showActionView || !collapsible)) ? showAsAction : MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction);
+            menuItem.setShowAsAction((!search && (!showActionView || !actionBar)) ? showAsAction : MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | showAsAction);
     }
 
-    void setCollapsible(boolean collapsible) {
-        this.collapsible = collapsible;
+    void setActionBar(boolean actionBar) {
+        this.actionBar = actionBar;
         setShowAsAction(showAsAction);
     }
 
@@ -161,7 +161,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     @Override
     protected void onSizeChanged(final int w, final int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if (getChildCount() == 0 || !collapsible)
+        if (getChildCount() == 0 || !actionBar)
             return;
         final int viewTag = getChildAt(0).getId();
         final ReactContext reactContext = (ReactContext) getContext();

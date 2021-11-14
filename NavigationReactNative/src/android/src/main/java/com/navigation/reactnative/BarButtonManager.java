@@ -63,9 +63,9 @@ public class BarButtonManager extends ViewGroupManager<BarButtonView> {
         view.setShowAsAction(showAsAction != null ? showAsAction : MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
-    @ReactProp(name = "collapsible")
-    public void setCollapsible(BarButtonView view, Boolean collapsible) {
-        view.setCollapsible(collapsible != null ? collapsible : false);
+    @ReactProp(name = "actionBar")
+    public void setActionBar(BarButtonView view, Boolean actionBar) {
+        view.setActionBar(actionBar != null ? actionBar : false);
     }
 
     @ReactProp(name = "search")
