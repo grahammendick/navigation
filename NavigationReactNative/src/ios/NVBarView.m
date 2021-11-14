@@ -27,6 +27,10 @@
     [self setBarButtons:self.buttons];
 }
 
+- (void)didUpdateReactSubviews
+{
+}
+
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
