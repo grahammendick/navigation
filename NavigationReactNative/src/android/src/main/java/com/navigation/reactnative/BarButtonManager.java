@@ -75,7 +75,9 @@ public class BarButtonManager extends ViewGroupManager<BarButtonView> {
 
     @ReactProp(name = "width")
     public void setWidth(BarButtonView view, double width) {
-        view.setLayoutParams(new ActionMenuView.LayoutParams((int) PixelUtil.toPixelFromDIP(width), ViewGroup.LayoutParams.WRAP_CONTENT));
+        view.setLayoutParams(new ActionMenuView.LayoutParams(
+            width > 0 ? (int) PixelUtil.toPixelFromDIP(width) : ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        );
     }
 
     @ReactProp(name = "showActionView")

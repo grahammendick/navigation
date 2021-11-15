@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { requireNativeComponent, Image, Platform, UIManager, StyleSheet } from 'react-native';
+import { requireNativeComponent, Image, Platform, UIManager } from 'react-native';
 import ActionBar from './ActionBar';
 
 const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search, size = 48, style, children, testID, ...props}, ref) => {
@@ -16,24 +16,12 @@ const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search, 
             actionBar={actionBar}
             image={Image.resolveAssetSource(image)}
             systemItem={systemItem || ''}
-            style={actionBar ? styles.actionBar : {position: 'absolute', width: size}}
+            style={{position: 'absolute', width: actionBar ? undefined : size}}
             children={children}
             {...props} />
     )
 })
 
 const NVBarButton = requireNativeComponent<any>('NVBarButton', null)
-
-const styles = StyleSheet.create({
-    actionBar: {
-        position: 'absolute',
-        ...Platform.select({
-            android: {
-                top: 0, right: 0,
-                bottom: 0, left: 0,
-            },
-        })
-    }
-});
 
 export default BarButton;
