@@ -259,9 +259,9 @@ export interface BarButtonProps {
      */
     testID?: string;
     /**
-     * The custom view style
+     * The custom view size
      */
-     style?: StyleProp<ViewStyle>;
+     size?: number;
      /**
      * Handles button press events
      */
