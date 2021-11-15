@@ -36,13 +36,6 @@ const styles = StyleSheet.create({
     },
     actionView: {
         position: 'absolute',
-        ...Platform.select({
-            android: {
-                height: 56, flex: 1,
-                justifyContent:'center',
-                alignItems: 'center',
-            },
-        })
     }
 });
 
