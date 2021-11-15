@@ -16,7 +16,7 @@ const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search, 
             actionBar={actionBar}
             image={Image.resolveAssetSource(image)}
             systemItem={systemItem || ''}
-            style={actionBar ? styles.actionBar : [styles.actionView, {width: size}]}
+            style={actionBar ? styles.actionBar : {position: 'absolute', width: size}}
             children={children}
             {...props} />
     )
@@ -33,9 +33,6 @@ const styles = StyleSheet.create({
                 bottom: 0, left: 0,
             },
         })
-    },
-    actionView: {
-        position: 'absolute',
     }
 });
 
