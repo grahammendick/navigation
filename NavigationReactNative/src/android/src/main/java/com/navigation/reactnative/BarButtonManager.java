@@ -1,11 +1,14 @@
 package com.navigation.reactnative;
 
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.ActionMenuView;
 
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -60,9 +63,21 @@ public class BarButtonManager extends ViewGroupManager<BarButtonView> {
         view.setShowAsAction(showAsAction != null ? showAsAction : MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
+    @ReactProp(name = "actionBar")
+    public void setActionBar(BarButtonView view, Boolean actionBar) {
+        view.setActionBar(actionBar != null ? actionBar : false);
+    }
+
     @ReactProp(name = "search")
     public void setSearch(BarButtonView view, Boolean search) {
         view.setSearch(search != null ? search : false);
+    }
+
+    @ReactProp(name = "width")
+    public void setWidth(BarButtonView view, double width) {
+        view.setLayoutParams(new ActionMenuView.LayoutParams(
+            width > 0 ? (int) PixelUtil.toPixelFromDIP(width) : ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        );
     }
 
     @ReactProp(name = "showActionView")
