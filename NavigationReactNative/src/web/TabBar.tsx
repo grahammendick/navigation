@@ -1,22 +1,21 @@
 import React, {useState, useContext, useEffect} from 'react';
 import {View, TouchableHighlight, Image, StyleSheet} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import useNavigated from '../useNavigated';
 
 const TabBar = ({children, defaultTab = 0, tab, onChangeTab}) => {
     const {data} = useContext(NavigationContext);
-    const [selectedTab, setSelectedTab] = useState(data.tab != null ? data.tab : (tab || defaultTab));
-    useNavigated(() => {
-        if (selectedTab !== data.tab) {
-            if (tab == null)
-                setSelectedTab(data.tab)
-            if (!!onChangeTab)
-                onChangeTab(data.tab)
-        }
-    });
+    const [selectedTab, setSelectedTab] = useState(tab || (data.tab != null ? data.tab : defaultTab));
     useEffect(() => {
         setSelectedTab(tab)
     }, [tab]);
+    const changeTab = (i) => {
+        if (selectedTab !== i) {
+            if (tab == null)
+                setSelectedTab({i});
+            if (!!onChangeTab)
+                onChangeTab(i);
+        }
+    }
     return (
         <>
             {React.Children.toArray(children)
@@ -28,7 +27,7 @@ const TabBar = ({children, defaultTab = 0, tab, onChangeTab}) => {
             <View style={styles.tabLayout}>
                 {React.Children.toArray(children)
                     .map((child: any, i) => (
-                        <TouchableHighlight key={i}>
+                        <TouchableHighlight key={i} onPress={() => changeTab(i)}>
                             <Image source={child.props.image} />
                         </TouchableHighlight>
                     ))}
