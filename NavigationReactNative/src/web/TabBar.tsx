@@ -1,40 +1,51 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React from 'react';
 import {View, TouchableHighlight, Image, StyleSheet} from 'react-native';
-import {NavigationContext} from 'navigation-react';
 
-const TabBar = ({children, defaultTab = 0, tab, onChangeTab}) => {
-    const {data} = useContext(NavigationContext);
-    const [selectedTab, setSelectedTab] = useState(tab || (data.tab != null ? data.tab : defaultTab));
-    useEffect(() => {
-        if (tab != null)
-            setSelectedTab(tab)
-    }, [tab]);
-    const changeTab = (i) => {
-        if (selectedTab !== i) {
-            if (tab == null)
-                setSelectedTab({i});
-            if (!!onChangeTab)
-                onChangeTab(i);
-        }
+class TabBar extends React.Component<any, any> {
+    constructor(props) {
+        super(props);
+        this.state = {selectedTab: props.tab || props.defaultTab};
     }
-    return (
-        <>
-            {React.Children.toArray(children)
-                .map((child, i) => (
-                    <View key={i} style={{display: i === selectedTab ? 'flex' : 'none', flex: 1}}>
-                        {child}
-                    </View>
-                ))}
-            <View style={styles.tabLayout}>
+    static defaultProps = {
+        defaultTab: 0,
+    }
+    static getDerivedStateFromProps({tab}, {selectedTab}) {
+        if (tab != null && tab !== selectedTab)
+            return {selectedTab: tab};
+        return null;
+    }
+    changeTab(selectedTab) {
+        var {tab, onChangeTab} = this.props;
+        if (this.state.selectedTab !== selectedTab) {
+            if (tab == null)
+                this.setState({selectedTab});
+            if (!!onChangeTab)
+                onChangeTab(selectedTab);
+            return true;
+        }
+        return false;
+    }
+    render() {
+        var {children} = this.props;
+        return (
+            <>
                 {React.Children.toArray(children)
-                    .map((child: any, i) => (
-                        <TouchableHighlight key={i} onPress={() => changeTab(i)}>
-                            <Image source={child.props.image} />
-                        </TouchableHighlight>
+                    .map((child, i) => (
+                        <View key={i} style={{display: i === this.state.selectedTab ? 'flex' : 'none', flex: 1}}>
+                            {child}
+                        </View>
                     ))}
-            </View>
-          </>
-    );
+                <View style={styles.tabLayout}>
+                    {React.Children.toArray(children)
+                        .map((child: any, i) => (
+                            <TouchableHighlight key={i} onPress={() => this.changeTab(i)}>
+                                <Image source={child.props.image} />
+                            </TouchableHighlight>
+                        ))}
+                </View>
+            </>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
