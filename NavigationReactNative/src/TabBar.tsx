@@ -1,6 +1,7 @@
 import React from 'react';
 import { requireNativeComponent, Platform, StyleSheet, View, I18nManager } from 'react-native';
 import BackButton from './BackButton';
+import TabBarWeb from './web/TabBar';
 
 class TabBar extends React.Component<any, any> {
     private ref: React.RefObject<View>;
@@ -112,4 +113,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TabBar;
+export default Platform.OS !== 'web' ? TabBar : TabBarWeb;
