@@ -1,3 +1,1 @@
-const TabBarItem = ({children}) => children;
-
-export default TabBarItem;
+export default ({children}) => children;
