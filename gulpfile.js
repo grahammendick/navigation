@@ -72,13 +72,13 @@ var itemTasks = items.reduce((tasks, item) => {
     var jsTo = './build/dist/' + packageName.replace(/-/g, '.') + '.js';
     var jsPackageTo = './build/npm/' + packageName + '/' + packageName.replace(/-/g, '.') + '.js';
     item.name = upperName.replace(/-/g, ' ');
-    var { globals = {}, format = 'cjs' } = item;
+    var { globals = {}, format = 'cjs', web = false } = item;
     tasks.buildTasks.push(
         nameFunc(() => buildTask(name, tsFrom, jsTo, globals, item), 'build' + name));
     tasks.packageTasks.push(
         nameFunc(() => rollupTask(name, tsFrom, jsPackageTo, globals, format), 'package' + name)
     );
-    if (item.web) {
+    if (web) {
         tasks.packageTasks.push(
             nameFunc(() => rollupTask(name + '.web', tsFrom.replace('.ts', '.web.ts'), jsPackageTo.replace('.js', '.web.js'), globals, format), 'package' + name + 'Web')
         );
