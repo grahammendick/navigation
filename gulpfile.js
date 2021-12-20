@@ -24,6 +24,10 @@ var items = [
             'navigation-react': 'NavigationReact', 'react-native': 'ReactNative' },
             format: 'es' },
         require('./build/npm/navigation-react-native/package.json')),
+    Object.assign({ globals: { navigation: 'Navigation', react: 'React',
+            'navigation-react': 'NavigationReact', 'react-native': 'ReactNative',
+            'navigation-react-mobile': 'NavigationReactMobile' } },
+        require('./build/npm/navigation-react-native-web/package.json')),
 ];
 function rollupTask(name, input, file, globals, format) {
     var include = input.replace(name + '.ts', '**');

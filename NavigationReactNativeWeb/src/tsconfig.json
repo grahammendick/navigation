@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {
+        "target": "es3",
+        "allowSyntheticDefaultImports": true,
+        "jsx": "react"
+    }
+}
