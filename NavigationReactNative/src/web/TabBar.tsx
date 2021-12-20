@@ -27,21 +27,20 @@ class TabBar extends React.Component<any, any> {
     }
     render() {
         var {children} = this.props;
+        var childrenArray = React.Children.toArray(children);
         return (
             <>
-                {React.Children.toArray(children)
-                    .map((child, i) => (
-                        <View key={i} style={{display: i === this.state.selectedTab ? 'flex' : 'none', flex: 1}}>
-                            {child}
-                        </View>
-                    ))}
+                {childrenArray.map((child, i) => (
+                    <View key={i} style={{display: i === this.state.selectedTab ? 'flex' : 'none', flex: 1}}>
+                        {child}
+                    </View>
+                ))}
                 <View style={styles.tabLayout}>
-                    {React.Children.toArray(children)
-                        .map((child: any, i) => (
-                            <TouchableHighlight key={i} onPress={() => this.changeTab(i)}>
-                                <Image source={child.props.image} />
-                            </TouchableHighlight>
-                        ))}
+                    {childrenArray.map((child: any, i) => (
+                        <TouchableHighlight key={i} onPress={() => this.changeTab(i)}>
+                            <Image source={child.props.image} />
+                        </TouchableHighlight>
+                    ))}
                 </View>
             </>
         );
