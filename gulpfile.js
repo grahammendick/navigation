@@ -22,7 +22,7 @@ var items = [
         require('./build/npm/navigation-react-mobile/package.json')),
     Object.assign({ globals: { navigation: 'Navigation', react: 'React',
             'navigation-react': 'NavigationReact', 'react-native': 'ReactNative' },
-            format: 'es', web: true },
+            format: 'es' },
         require('./build/npm/navigation-react-native/package.json')),
 ];
 function rollupTask(name, input, file, globals, format) {
@@ -72,17 +72,12 @@ var itemTasks = items.reduce((tasks, item) => {
     var jsTo = './build/dist/' + packageName.replace(/-/g, '.') + '.js';
     var jsPackageTo = './build/npm/' + packageName + '/' + packageName.replace(/-/g, '.') + '.js';
     item.name = upperName.replace(/-/g, ' ');
-    var { globals = {}, format = 'cjs', web = false } = item;
+    var { globals = {}, format = 'cjs' } = item;
     tasks.buildTasks.push(
         nameFunc(() => buildTask(name, tsFrom, jsTo, globals, item), 'build' + name));
     tasks.packageTasks.push(
         nameFunc(() => rollupTask(name, tsFrom, jsPackageTo, globals, format), 'package' + name)
     );
-    if (web) {
-        tasks.packageTasks.push(
-            nameFunc(() => rollupTask(name + '.web', tsFrom.replace('.ts', '.web.ts'), jsPackageTo.replace('.js', '.web.js'), globals, format), 'package' + name + 'Web')
-        );
-    }
     return tasks;
 }, { buildTasks: [], packageTasks: [] });
 
@@ -129,4 +124,3 @@ var packageDeps = parallel(
 exports.build = parallel(...itemTasks.buildTasks);
 exports.package = parallel(packageNative, ...itemTasks.packageTasks);
 exports.test = series(packageDeps, parallel(...testTasks));
-
