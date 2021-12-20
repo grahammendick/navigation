@@ -6,7 +6,8 @@ const TabBar = ({children, defaultTab = 0, tab, onChangeTab}) => {
     const {data} = useContext(NavigationContext);
     const [selectedTab, setSelectedTab] = useState(tab || (data.tab != null ? data.tab : defaultTab));
     useEffect(() => {
-        setSelectedTab(tab)
+        if (tab != null)
+            setSelectedTab(tab)
     }, [tab]);
     const changeTab = (i) => {
         if (selectedTab !== i) {
