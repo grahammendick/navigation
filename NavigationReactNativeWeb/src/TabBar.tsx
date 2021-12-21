@@ -24,13 +24,13 @@ class TabBar extends React.Component<any, any> {
             return {selectedTab: tab};
         return null;
     }
-    changeTab(selectedTab) {
+    changeTab(selectedTab, e) {
         var {tab, onChangeTab} = this.props;
         if (this.state.selectedTab !== selectedTab) {
             if (tab == null)
                 this.setState({selectedTab});
             if (!!onChangeTab)
-                onChangeTab(selectedTab);
+                onChangeTab(selectedTab, e);
             return true;
         }
         return false;
@@ -47,7 +47,7 @@ class TabBar extends React.Component<any, any> {
                 ))}
                 <View style={{flexDirection: 'row'}}>
                     {childrenArray.map(({props: {image, title, href}}: any, i) => (
-                        <TouchableHighlight key={i} onPress={() => this.changeTab(i)} style={{flex: 1}}>
+                        <TouchableHighlight key={i} onPress={(e) => this.changeTab(i, e)} style={{flex: 1}}>
                             <View href={href} style={[styles.tab, {backgroundColor: barTintColor}]}>
                                 <Image
                                     source={image}

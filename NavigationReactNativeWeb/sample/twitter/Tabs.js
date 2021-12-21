@@ -1,18 +1,24 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {NavigationContext} from 'navigation-react';
 import {TabBar, TabBarItem} from 'navigation-react-native';
 import Home from './Home';
 import Notifications from './Notifications';
 
-export default ({tweets, follows, tab}) => {
+export default ({tweets, follows}) => {
   const {stateNavigator} = useContext(NavigationContext);
+  const [tab, setTab] = useState(0);
   const getHref = link => stateNavigator.historyManager.getHref(link);
   return (
     <TabBar
-      selectedIndex={tab}
+      tab={tab}
       bottomTabs={true}
       swipeable={false}
-      selectedTintColor="deepskyblue">
+      selectedTintColor="deepskyblue"
+      onChangeTab={(i, e) => {
+        if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
+        e.preventDefault();
+        setTab(i);
+      }}>
       <TabBarItem
         title="Home"
         image={require('./home.png')}
