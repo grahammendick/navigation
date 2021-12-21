@@ -31,9 +31,10 @@ class TabBar extends React.Component<any, any> {
                 this.setState({selectedTab});
             if (!!onChangeTab)
                 onChangeTab(selectedTab, e);
-            return true;
+        } else {
+            if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button)
+                e.preventDefault();
         }
-        return false;
     }
     render() {
         var {children, barTintColor, selectedTintColor, unselectedTintColor} = this.props;
