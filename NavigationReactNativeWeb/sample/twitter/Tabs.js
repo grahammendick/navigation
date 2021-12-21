@@ -18,8 +18,10 @@ export default ({tweets, follows}) => {
       onChangeTab={(selectedTab, e) => {
         if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
         e.preventDefault();
-        setTab(selectedTab);
-        stateNavigator.refresh({tab: selectedTab === 0 ? 'home' : 'notifications'});
+        if (selectedTab === 1)
+          stateNavigator.refresh({tab: selectedTab === 0 ? 'home' : 'notifications'});
+        else
+          history.back();
       }}>
       <TabBarItem
         title="Home"
