@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TouchableHighlight, Image, StyleSheet} from 'react-native';
+import { View, TouchableHighlight, Image, StyleSheet } from 'react-native';
 
 declare module 'react-native' {
     interface ViewProps {
