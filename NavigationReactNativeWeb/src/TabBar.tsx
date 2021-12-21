@@ -8,6 +8,9 @@ class TabBar extends React.Component<any, any> {
     }
     static defaultProps = {
         defaultTab: 0,
+        barTintColor: '#fff',
+        selectedTintColor: '#000',
+        unselectedTintColor: '#808080'
     }
     static getDerivedStateFromProps({tab}, {selectedTab}) {
         if (tab != null && tab !== selectedTab)
@@ -26,7 +29,7 @@ class TabBar extends React.Component<any, any> {
         return false;
     }
     render() {
-        var {children} = this.props;
+        var {children, barTintColor, selectedTintColor, unselectedTintColor} = this.props;
         var childrenArray = React.Children.toArray(children);
         return (
             <>
@@ -35,10 +38,12 @@ class TabBar extends React.Component<any, any> {
                         {child}
                     </View>
                 ))}
-                <View style={styles.tabLayout}>
+                <View style={{flexDirection: 'row'}}>
                     {childrenArray.map((child: any, i) => (
-                        <TouchableHighlight key={i} onPress={() => this.changeTab(i)}>
-                            <Image source={child.props.image} />
+                        <TouchableHighlight key={i} onPress={() => this.changeTab(i)} style={{flex: 1}}>
+                            <View style={[ styles.tab, {backgroundColor: barTintColor}]}>
+                                <Image source={child.props.image} style={{width: 24, height: 24, tintColor: i === this.state.selectedTab ? selectedTintColor : unselectedTintColor}} />
+                            </View>
                         </TouchableHighlight>
                     ))}
                 </View>
@@ -48,10 +53,10 @@ class TabBar extends React.Component<any, any> {
 }
 
 const styles = StyleSheet.create({
-    tabLayout: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center'
+    tab: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 72,
     },
 });
 
