@@ -10,7 +10,7 @@ const stateNavigator = createStateNavigator();
 const buildStartUrl = url => {
   const {state, data} = stateNavigator.parseLink(url);
   let fluent = stateNavigator.fluent().navigate('home');
-  if (state.key === 'home' && data.tab === 1)
+  if (state.key === 'home' && data.tab === 'notifications')
     stateNavigator.historyManager.addHistory(fluent.url, true);
   return fluent.navigate(state.key, data).url;
 };
