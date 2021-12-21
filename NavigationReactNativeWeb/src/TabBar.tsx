@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     tab: {
         justifyContent: 'center',
         alignItems: 'center',
-        height: 72,
+        height: 56,
     },
 });
 
