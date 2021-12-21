@@ -6,9 +6,9 @@ import Notifications from './Notifications';
 
 export default ({tweets, follows}) => {
   const {stateNavigator, data} = useContext(NavigationContext);
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(data.tab === 'home' ? 0 : 1);
   const getHref = link => stateNavigator.historyManager.getHref(link);
-  useNavigated(() => setTab(data.tab === 'home' ? 0 : 1))
+  useNavigated(() => setTab(data.tab === 'home' ? 0 : 1));
   return (
     <TabBar
       tab={tab}
