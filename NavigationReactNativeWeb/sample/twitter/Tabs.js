@@ -19,7 +19,7 @@ export default ({tweets, follows}) => {
         if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return;
         e.preventDefault();
         if (selectedTab === 1)
-          stateNavigator.refresh({tab: selectedTab === 0 ? 'home' : 'notifications'});
+          stateNavigator.refresh({tab: 'notifications'});
         else
           history.back();
       }}>
