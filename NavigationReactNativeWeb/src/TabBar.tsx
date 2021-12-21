@@ -1,6 +1,13 @@
 import React from 'react';
 import {View, TouchableHighlight, Image, StyleSheet} from 'react-native';
 
+declare module 'react-native' {
+    interface ViewProps {
+      href?: string;
+      accessibilityRole?: string;
+    }
+  }
+
 class TabBar extends React.Component<any, any> {
     constructor(props) {
         super(props);
@@ -39,12 +46,12 @@ class TabBar extends React.Component<any, any> {
                     </View>
                 ))}
                 <View style={{flexDirection: 'row'}}>
-                    {childrenArray.map((child: any, i) => (
+                    {childrenArray.map(({props: {image, title, href}}: any, i) => (
                         <TouchableHighlight key={i} onPress={() => this.changeTab(i)} style={{flex: 1}}>
-                            <View style={[ styles.tab, {backgroundColor: barTintColor}]}>
+                            <View href={href} style={[styles.tab, {backgroundColor: barTintColor}]}>
                                 <Image
-                                    source={child.props.image}
-                                    accessibilityLabel={child.props.title}
+                                    source={image}
+                                    accessibilityLabel={title}
                                     style={{width: 24, height: 24, tintColor: i === this.state.selectedTab ? selectedTintColor : unselectedTintColor}}
                                 />
                             </View>
