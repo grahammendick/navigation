@@ -16,7 +16,7 @@ export default ({tweets, follows}) => {
       swipeable={false}
       selectedTintColor="deepskyblue"
       onChangeTab={(selectedTab, e) => {
-        if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
+        if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return;
         e.preventDefault();
         if (selectedTab === 1)
           stateNavigator.refresh({tab: selectedTab === 0 ? 'home' : 'notifications'});
