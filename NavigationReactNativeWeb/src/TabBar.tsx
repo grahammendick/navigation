@@ -42,7 +42,11 @@ class TabBar extends React.Component<any, any> {
                     {childrenArray.map((child: any, i) => (
                         <TouchableHighlight key={i} onPress={() => this.changeTab(i)} style={{flex: 1}}>
                             <View style={[ styles.tab, {backgroundColor: barTintColor}]}>
-                                <Image source={child.props.image} style={{width: 24, height: 24, tintColor: i === this.state.selectedTab ? selectedTintColor : unselectedTintColor}} />
+                                <Image
+                                    source={child.props.image}
+                                    accessibilityLabel={child.props.title}
+                                    style={{width: 24, height: 24, tintColor: i === this.state.selectedTab ? selectedTintColor : unselectedTintColor}}
+                                />
                             </View>
                         </TouchableHighlight>
                     ))}
