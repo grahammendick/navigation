@@ -1,13 +1,14 @@
 import React, {useContext, useState} from 'react';
 import {NavigationContext} from 'navigation-react';
-import {TabBar, TabBarItem} from 'navigation-react-native';
+import {TabBar, TabBarItem, useNavigated} from 'navigation-react-native';
 import Home from './Home';
 import Notifications from './Notifications';
 
 export default ({tweets, follows}) => {
-  const {stateNavigator} = useContext(NavigationContext);
+  const {stateNavigator, data} = useContext(NavigationContext);
   const [tab, setTab] = useState(0);
   const getHref = link => stateNavigator.historyManager.getHref(link);
+  useNavigated(() => setTab(data.tab === 'home' ? 0 : 1))
   return (
     <TabBar
       tab={tab}
@@ -18,6 +19,7 @@ export default ({tweets, follows}) => {
         if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
         e.preventDefault();
         setTab(selectedTab);
+        stateNavigator.refresh({tab: selectedTab === 0 ? 'home' : 'notifications'});
       }}>
       <TabBarItem
         title="Home"
