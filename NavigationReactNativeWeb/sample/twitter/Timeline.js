@@ -25,7 +25,7 @@ export default ({timeline: {id, name, username, logo, bio,
           stateNavigator.getNavigationBackLink(1)
         )}
         style={{height: 120}}
-        onNavigationPress={() => {
+        onNavigationPress={(e) => {
           if (Platform.OS !== 'web')
             stateNavigator.navigateBack(1);
           else {
