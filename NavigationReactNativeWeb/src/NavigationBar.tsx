@@ -9,14 +9,14 @@ declare module 'react-native' {
 
 const NavigationBar = ({navigationImage, onNavigationPress, tintColor, title}) => {
     return (
-        <View style={{height: 56, flexDirection: 'row'}}>
-            <View>
-                {navigationImage && (
+        <View style={{height: 56, flexDirection: 'row', alignItems: 'center'}}>
+            {navigationImage && (
+                <View style={{width: 48, alignItems: 'center'}}>
                     <TouchableOpacity onPress={onNavigationPress}>
                         <Image source={navigationImage} style={{width: 24, height: 24, tintColor}} />
                     </TouchableOpacity>
-                )}
-            </View>
+                </View>
+            )}
             <Text accessibilityRole="heading" style={{flex: 1}}>{title}</Text>
         </View>
     );
