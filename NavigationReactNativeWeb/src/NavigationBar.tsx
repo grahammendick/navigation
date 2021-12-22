@@ -7,11 +7,11 @@ declare module 'react-native' {
     }
 }
 
-const NavigationBar = ({navigationImage, onNavigationPress, tintColor, title, titleFontSize = 20}) => {
+const NavigationBar = ({navigationImage, onNavigationPress, navigationHref, tintColor, title, titleFontSize = 20}) => {
     return (
         <View style={{height: 56, flexDirection: 'row', alignItems: 'center', paddingStart: 8}}>
             {navigationImage && (
-                <View style={{width: 32, alignItems: 'center'}}>
+                <View href={navigationHref} style={{width: 32, alignItems: 'center'}}>
                     <TouchableOpacity onPress={onNavigationPress}>
                         <Image source={navigationImage} style={{width: 24, height: 24, tintColor}} />
                     </TouchableOpacity>

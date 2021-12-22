@@ -17,11 +17,14 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         navigationHref={stateNavigator.historyManager.getHref(
           stateNavigator.getNavigationBackLink(1)
         )}
-        onNavigationPress={() => {
+        onNavigationPress={(e) => {
           if (Platform.OS !== 'web')
             stateNavigator.navigateBack(1);
-          else
+          else {
+            if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return;
+            e.preventDefault()  
             history.back();
+          }
         }} />
       <Tweets
         tweets={replies}
