@@ -6,7 +6,7 @@ declare module 'react-native' {
       href?: string;
       accessibilityRole?: string;
     }
-  }
+}
 
 class TabBar extends React.Component<any, any> {
     constructor(props) {
