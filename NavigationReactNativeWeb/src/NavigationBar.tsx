@@ -7,17 +7,17 @@ declare module 'react-native' {
     }
 }
 
-const NavigationBar = ({navigationImage, onNavigationPress, tintColor, title}) => {
+const NavigationBar = ({navigationImage, onNavigationPress, tintColor, title, titleFontSize = 20}) => {
     return (
-        <View style={{height: 56, flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{height: 56, flexDirection: 'row', alignItems: 'center', paddingStart: 8}}>
             {navigationImage && (
-                <View style={{width: 48, alignItems: 'center'}}>
+                <View style={{width: 32, alignItems: 'center'}}>
                     <TouchableOpacity onPress={onNavigationPress}>
                         <Image source={navigationImage} style={{width: 24, height: 24, tintColor}} />
                     </TouchableOpacity>
                 </View>
             )}
-            <Text accessibilityRole="heading" style={{flex: 1}}>{title}</Text>
+            <Text accessibilityRole="heading" style={{flex: 1, fontSize: titleFontSize, paddingStart: 8}}>{title}</Text>
         </View>
     );
 }
