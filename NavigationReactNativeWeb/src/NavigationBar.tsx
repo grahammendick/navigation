@@ -2,6 +2,7 @@ import React, { ReactElement, useRef, useLayoutEffect } from 'react';
 import { View, TouchableOpacity, Image, Text, StyleSheet } from 'react-native';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
+import NavigationBarContext from './NavigationBarContext';
 
 declare module 'react-native' {
     interface TextProps {
@@ -45,10 +46,12 @@ const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navi
                     fontStyle: titleFontStyle,
                     fontSize: titleFontSize
                 }}>{title}</Text>
-            {[
-                childrenArray.find(({type}) => type === LeftBar),
-                childrenArray.find(({type}) => type === RightBar)
-            ]}
+            <NavigationBarContext.Provider value={tintColor}>
+                {[
+                    childrenArray.find(({type}) => type === LeftBar),
+                    childrenArray.find(({type}) => type === RightBar)
+                ]}
+            </NavigationBarContext.Provider>
         </View>
     );
 }
