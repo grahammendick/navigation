@@ -261,7 +261,7 @@ export interface BarButtonProps {
     /**
      * The custom view size
      */
-     size?: number;
+    size?: number;
      /**
      * Handles button press events
      */
