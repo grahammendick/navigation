@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { View, TouchableOpacity, Image, Text, StyleSheet } from 'react-native';
+import LeftBar from './LeftBar';
+import RightBar from './RightBar';
 
 declare module 'react-native' {
     interface TextProps {
@@ -7,7 +9,8 @@ declare module 'react-native' {
     }
 }
 
-const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navigationHref, navigationTestID, barTintColor, tintColor, title, titleColor, titleFontFamily, titleFontWeight, titleFontStyle, titleFontSize}) => {
+const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navigationHref, navigationTestID,
+    barTintColor, tintColor, title, titleColor, titleFontFamily, titleFontWeight, titleFontStyle, titleFontSize, children}) => {
     barTintColor = (typeof barTintColor === 'function' ? barTintColor(true) : barTintColor) || '#fff';
     tintColor = (typeof tintColor === 'function' ? tintColor(true) : tintColor) || '#000';
     titleColor = (typeof titleColor === 'function' ? titleColor(true) : titleColor) || '#000';
@@ -15,6 +18,7 @@ const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navi
     titleFontWeight = (typeof titleFontWeight === 'function' ? titleFontWeight(true) : titleFontWeight);
     titleFontStyle = (typeof titleFontStyle === 'function' ? titleFontStyle(true) : titleFontStyle);
     titleFontSize = (typeof titleFontSize === 'function' ? titleFontSize(true) : titleFontSize) || 20;
+    var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
     if (hidden) return null;
     return (
         <View style={[styles.bar, {backgroundColor: barTintColor}]}>
@@ -35,6 +39,10 @@ const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navi
                     fontStyle: titleFontStyle,
                     fontSize: titleFontSize
                 }}>{title}</Text>
+            {[
+                childrenArray.find(({type}) => type === LeftBar),
+                childrenArray.find(({type}) => type === RightBar)
+            ]}
         </View>
     );
 }
@@ -45,6 +53,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingStart: 16,
+        paddingEnd: 16,
     },
 });
 
