@@ -23,7 +23,7 @@ const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navi
     return (
         <View style={[styles.bar, {backgroundColor: barTintColor}]}>
             {navigationImage && (
-                <View href={navigationHref} style={{width: 56}}>
+                <View href={navigationHref} style={{marginEnd: 32}}>
                     <TouchableOpacity testID={navigationTestID} onPress={onNavigationPress}>
                         <Image source={navigationImage} style={{width: 24, height: 24, tintColor}} />
                     </TouchableOpacity>
