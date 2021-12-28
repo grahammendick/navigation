@@ -45,7 +45,9 @@ const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navi
                     fontWeight: titleFontWeight,
                     fontStyle: titleFontStyle,
                     fontSize: titleFontSize
-                }}>{title}</Text>
+                }}>
+                {title}
+            </Text>
             <NavigationBarContext.Provider value={tintColor}>
                 {[
                     childrenArray.find(({type}) => type === LeftBar),
