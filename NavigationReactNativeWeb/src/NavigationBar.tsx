@@ -17,7 +17,7 @@ const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navi
     titleFontSize = (typeof titleFontSize === 'function' ? titleFontSize(true) : titleFontSize) || 20;
     if (hidden) return null;
     return (
-        <View style={{height: 56, flexDirection: 'row', alignItems: 'center', paddingStart: 16, backgroundColor: barTintColor}}>
+        <View style={[styles.bar, {backgroundColor: barTintColor}]}>
             {navigationImage && (
                 <View href={navigationHref} style={{width: 56}}>
                     <TouchableOpacity onPress={onNavigationPress}>
@@ -41,6 +41,10 @@ const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navi
 
 const styles = StyleSheet.create({
     bar: {
+        height: 56,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingStart: 16,
     },
 });
 
