@@ -7,10 +7,14 @@ declare module 'react-native' {
     }
 }
 
-const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navigationHref, barTintColor, tintColor, title, titleColor, titleFontSize = 20}) => {
+const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navigationHref, barTintColor, tintColor, title, titleColor, titleFontFamily, titleFontWeight, titleFontStyle, titleFontSize}) => {
     barTintColor = (typeof barTintColor === 'function' ? barTintColor(true) : barTintColor) || '#fff';
     tintColor = (typeof tintColor === 'function' ? tintColor(true) : tintColor) || '#000';
     titleColor = (typeof titleColor === 'function' ? titleColor(true) : titleColor) || '#000';
+    titleFontFamily = (typeof titleFontFamily === 'function' ? titleFontFamily(true) : titleFontFamily);
+    titleFontWeight = (typeof titleFontWeight === 'function' ? titleFontWeight(true) : titleFontWeight);
+    titleFontStyle = (typeof titleFontStyle === 'function' ? titleFontStyle(true) : titleFontStyle);
+    titleFontSize = (typeof titleFontSize === 'function' ? titleFontSize(true) : titleFontSize) || 20;
     if (hidden) return null;
     return (
         <View style={{height: 56, flexDirection: 'row', alignItems: 'center', paddingStart: 16, backgroundColor: barTintColor}}>
@@ -21,7 +25,16 @@ const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navi
                     </TouchableOpacity>
                 </View>
             )}
-            <Text accessibilityRole="heading" style={{flex: 1, color: titleColor, fontSize: titleFontSize}}>{title}</Text>
+            <Text
+                accessibilityRole="heading"
+                style={{
+                    flex: 1,
+                    color: titleColor,
+                    fontFamily: titleFontFamily,
+                    fontWeight: titleFontWeight,
+                    fontStyle: titleFontStyle,
+                    fontSize: titleFontSize
+                }}>{title}</Text>
         </View>
     );
 }
