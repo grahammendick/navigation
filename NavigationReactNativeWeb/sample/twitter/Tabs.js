@@ -9,7 +9,10 @@ export default ({tweets, follows}) => {
   const tabs = {home: 0, notifications: 1};
   const [tab, setTab] = useState(tabs[data.tab]);
   const getHref = link => stateNavigator.historyManager.getHref(link);
-  useNavigated(() => setTab(tabs[data.tab]));
+  useNavigated(() => {
+    document.title = !tabs[data.tab] ? 'Home' : 'Notifications';
+    setTab(tabs[data.tab])
+  });
   return (
     <TabBar
       tab={tab}
