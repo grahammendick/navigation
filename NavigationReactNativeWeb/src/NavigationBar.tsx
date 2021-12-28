@@ -1,8 +1,8 @@
 import React, { ReactElement, useRef, useLayoutEffect } from 'react';
 import { View, TouchableOpacity, Image, Text, StyleSheet } from 'react-native';
+import NavigationBarContext from './NavigationBarContext';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
-import NavigationBarContext from './NavigationBarContext';
 
 declare module 'react-native' {
     interface TextProps {
