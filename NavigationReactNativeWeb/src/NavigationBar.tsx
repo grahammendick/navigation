@@ -7,9 +7,11 @@ declare module 'react-native' {
     }
 }
 
-const NavigationBar = ({navigationImage, onNavigationPress, navigationHref, tintColor, title, titleFontSize = 20}) => {
+const NavigationBar = ({navigationImage, onNavigationPress, navigationHref, barTintColor, tintColor, title, titleFontSize = 20}) => {
+    var barTintColor = (typeof barTintColor === 'function' ? barTintColor(true) : barTintColor) || '#fff';
+    var tintColor = (typeof tintColor === 'function' ? tintColor(true) : tintColor) || '#000';
     return (
-        <View style={{height: 56, flexDirection: 'row', alignItems: 'center', paddingStart: 16}}>
+        <View style={{height: 56, flexDirection: 'row', alignItems: 'center', paddingStart: 16, backgroundColor: barTintColor}}>
             {navigationImage && (
                 <View href={navigationHref} style={{width: 56}}>
                     <TouchableOpacity onPress={onNavigationPress}>
