@@ -7,7 +7,7 @@ declare module 'react-native' {
     }
 }
 
-const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navigationHref, barTintColor, tintColor, title, titleColor, titleFontFamily, titleFontWeight, titleFontStyle, titleFontSize}) => {
+const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navigationHref, navigationTestID, barTintColor, tintColor, title, titleColor, titleFontFamily, titleFontWeight, titleFontStyle, titleFontSize}) => {
     barTintColor = (typeof barTintColor === 'function' ? barTintColor(true) : barTintColor) || '#fff';
     tintColor = (typeof tintColor === 'function' ? tintColor(true) : tintColor) || '#000';
     titleColor = (typeof titleColor === 'function' ? titleColor(true) : titleColor) || '#000';
@@ -20,7 +20,7 @@ const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navi
         <View style={[styles.bar, {backgroundColor: barTintColor}]}>
             {navigationImage && (
                 <View href={navigationHref} style={{width: 56}}>
-                    <TouchableOpacity onPress={onNavigationPress}>
+                    <TouchableOpacity testID={navigationTestID} onPress={onNavigationPress}>
                         <Image source={navigationImage} style={{width: 24, height: 24, tintColor}} />
                     </TouchableOpacity>
                 </View>
