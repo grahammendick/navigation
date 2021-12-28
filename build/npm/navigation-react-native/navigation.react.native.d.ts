@@ -68,7 +68,7 @@ export interface NavigationBarProps {
     /**
      * The color of the title view
      */
-    titleColor?: string;
+    titleColor?: string | ((standard: boolean) => string);
     /**
      * The title for the back button
      */
