@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Image, Text, StyleSheet } from 'react-native';
 import NavigationBarContext from './NavigationBarContext';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
+import TitleBar from './TitleBar';
 
 declare module 'react-native' {
     interface TextProps {
@@ -26,6 +27,7 @@ const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navi
     titleFontStyle = (typeof titleFontStyle === 'function' ? titleFontStyle(true) : titleFontStyle);
     titleFontSize = (typeof titleFontSize === 'function' ? titleFontSize(true) : titleFontSize) || 20;
     var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
+    var titleBar = childrenArray.find(({type}) => type === TitleBar);
     if (hidden) return null;
     return (
         <View ref={barRef} style={[styles.bar, {backgroundColor: barTintColor}]}>
@@ -36,18 +38,20 @@ const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navi
                     </TouchableOpacity>
                 </View>
             )}
-            <Text
-                accessibilityRole="heading"
-                style={{
-                    flex: 1,
-                    color: titleColor,
-                    fontFamily: titleFontFamily,
-                    fontWeight: titleFontWeight,
-                    fontStyle: titleFontStyle,
-                    fontSize: titleFontSize
-                }}>
-                {title}
-            </Text>
+            {!titleBar ? (
+                <Text
+                    accessibilityRole="heading"
+                    style={{
+                        flex: 1,
+                        color: titleColor,
+                        fontFamily: titleFontFamily,
+                        fontWeight: titleFontWeight,
+                        fontStyle: titleFontStyle,
+                        fontSize: titleFontSize
+                    }}>
+                    {title}
+                </Text>
+                ) : <View style={{flex: 1}}>{titleBar}</View>}
             <NavigationBarContext.Provider value={tintColor}>
                 {[
                     childrenArray.find(({type}) => type === LeftBar),
