@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         height: 56,
         flexDirection: 'row',
         alignItems: 'center',
-        position: 'fixed' as any,
+        position: 'absolute',
         width: '100%',
         top: 0,
         left: 0,
