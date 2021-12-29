@@ -14,10 +14,12 @@
     "react",
     "native"
   ],
+  "dependencies": {
+    "navigation-react-mobile": "*"
+  },
   "peerDependencies": {
     "navigation": "*",
     "navigation-react": "*",
-    "navigation-react-mobile": "*",
     "react": "*",
     "react-native": "*"
   },
