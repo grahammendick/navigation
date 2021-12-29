@@ -9,8 +9,9 @@ import {getFollows} from './data';
 var stateNavigator = createStateNavigator();
 
 const notificationsNavigator = new StateNavigator(stateNavigator);
-stateNavigator.navigate('home');
-notificationsNavigator.navigate('notifications');
+  stateNavigator.navigate('home');
+  if (Platform.OS !== 'web')
+    notificationsNavigator.navigate('notifications');
 
 const Stack = ({navigator}) => (
   <NavigationHandler stateNavigator={navigator}>
