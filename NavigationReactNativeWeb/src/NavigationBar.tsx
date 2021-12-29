@@ -9,6 +9,9 @@ declare module 'react-native' {
     interface TextProps {
       accessibilityRole?: string;
     }
+    interface TouchableOpacityProps {
+      href?: string;
+    }
 }
 
 const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navigationHref, navigationTestID,
@@ -32,11 +35,9 @@ const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navi
     return (
         <View ref={barRef} style={[styles.bar, {backgroundColor: barTintColor}]}>
             {navigationImage && (
-                <View href={navigationHref} style={{marginEnd: 32}}>
-                    <TouchableOpacity testID={navigationTestID} onPress={onNavigationPress}>
-                        <Image source={navigationImage} style={{width: 24, height: 24, tintColor}} />
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity href={navigationHref} testID={navigationTestID} onPress={onNavigationPress} style={{marginEnd: 32}}>
+                    <Image source={navigationImage} style={{width: 24, height: 24, tintColor}} />
+                </TouchableOpacity>
             )}
             {!titleBar ? (
                 <Text
