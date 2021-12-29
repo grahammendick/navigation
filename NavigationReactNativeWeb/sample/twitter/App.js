@@ -10,8 +10,9 @@ var stateNavigator = createStateNavigator();
 
 const notificationsNavigator = new StateNavigator(stateNavigator);
   stateNavigator.navigate('home');
-  if (Platform.OS !== 'web')
-    notificationsNavigator.navigate('notifications');
+  notificationsNavigator.historyManager.disabled = true;
+  notificationsNavigator.historyManager.stop();
+  notificationsNavigator.navigate('notifications');
 
 const Stack = ({navigator}) => (
   <NavigationHandler stateNavigator={navigator}>
