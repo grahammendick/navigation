@@ -1,6 +1,7 @@
 import React from 'react';
 import {Platform} from 'react-native';
 import {StateNavigator} from 'navigation';
+import {NativeHistoryManager} from 'navigation-react-native';
 import Home from './Home';
 import Notifications from './Notifications';
 import Tabs from './Tabs';
@@ -14,7 +15,7 @@ export default () => {
     {key: 'notifications', title: 'Notifications'},
     {key: 'tweet', route: 'tweet/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}, title: 'Tweet'},
     {key: 'timeline', route: 'timeline/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}, title: 'Timeline'}
-  ]);
+  ], new NativeHistoryManager());
   const {home, notifications, tweet, timeline} = stateNavigator.states;
   const HomeLayout = Platform.OS === 'ios' ? Home : Tabs;
   home.renderScene = ({tab}) => <HomeLayout tweets={getHome()} follows={getFollows()} tab={tab} />;
