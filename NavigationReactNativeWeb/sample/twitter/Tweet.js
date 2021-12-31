@@ -1,12 +1,15 @@
 import React, {useContext} from 'react';
 import {StyleSheet, Text, Image, Platform, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBar} from 'navigation-react-native';
+import {NavigationBar, useNavigated} from 'navigation-react-native';
 import Tweets from './Tweets';
 
 export default ({tweet: {account: {id: accountId, name, username, logo}, 
   text, time, retweets, likes, replies}}) => {
   const {stateNavigator} = useContext(NavigationContext);
+  useNavigated(() => {
+    document.title = 'Tweet';
+  });
   return (
     <>
       <NavigationBar
