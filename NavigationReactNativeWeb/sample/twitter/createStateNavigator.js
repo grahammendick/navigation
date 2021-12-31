@@ -11,10 +11,10 @@ import {getHome, getFollows, getTweet, getTimeline} from './data';
 
 export default () => {
   const stateNavigator = new StateNavigator([
-    {key: 'home', route: '{tab?}', defaults: {tab: 'home'}, title: 'Home'},
-    {key: 'notifications', title: 'Notifications'},
-    {key: 'tweet', route: 'tweet/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}, title: 'Tweet'},
-    {key: 'timeline', route: 'timeline/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}, title: 'Timeline'}
+    {key: 'home', route: '{tab?}', defaults: {tab: 'home'}},
+    {key: 'notifications'},
+    {key: 'tweet', route: 'tweet/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}},
+    {key: 'timeline', route: 'timeline/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}}
   ], new NativeHistoryManager(url => {
     const {state, data} = stateNavigator.parseLink(url);
     let fluent = stateNavigator.fluent().navigate('home');

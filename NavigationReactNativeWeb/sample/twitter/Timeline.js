@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {StyleSheet, Text, Platform, View, Animated} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBar, CoordinatorLayout, CollapsingBar} from 'navigation-react-native';
+import {NavigationBar, CoordinatorLayout, CollapsingBar, useNavigated} from 'navigation-react-native';
 import Tweets from './Tweets';
 
 export default ({timeline: {id, name, username, logo, bio, 
@@ -11,6 +11,9 @@ export default ({timeline: {id, name, username, logo, bio,
   const scale = offset.interpolate({
     inputRange:  [-64, 0],
     outputRange: [.8, 1],
+  });
+  useNavigated(() => {
+    document.title = name;
   });
   return (
     <CoordinatorLayout overlap={110}>
