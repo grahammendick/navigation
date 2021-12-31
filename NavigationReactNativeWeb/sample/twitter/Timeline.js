@@ -19,7 +19,7 @@ export default ({timeline: {id, name, username, logo, bio,
     <CoordinatorLayout overlap={110}>
       <NavigationBar
         title={name}
-        onOffsetChanged={Animated.event([{nativeEvent:{offset}}], {useNativeDriver: true})}
+        onOffsetChanged={Animated.event([{nativeEvent:{offset}}], {useNativeDriver: Platform.OS !== 'web'})}
         navigationImage={require('./arrow.png')}
         barTintColor={Platform.OS === 'android' ? colors[0] : null}
         tintColor={Platform.OS === 'android' ? "#fff" : (Platform.OS !== 'web' ? null : 'deepskyblue')}
