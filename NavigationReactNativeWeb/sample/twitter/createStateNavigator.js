@@ -29,5 +29,8 @@ export default () => {
   tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)}  />;
   timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)}  />;
   
+  if (Platform.OS !== 'web') stateNavigator.navigate('home');
+  else stateNavigator.start();
+  
   return stateNavigator;
 }
