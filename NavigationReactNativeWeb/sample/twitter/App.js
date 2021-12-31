@@ -9,12 +9,9 @@ import {getFollows} from './data';
 var stateNavigator = createStateNavigator();
 
 const notificationsNavigator = new StateNavigator(stateNavigator);
-if (Platform.OS !== 'web') {
-  stateNavigator.navigate('home');
-  notificationsNavigator.navigate('notifications');
-} else {
-  stateNavigator.start();
-}
+notificationsNavigator.historyManager.disabled = true;
+notificationsNavigator.historyManager.stop();
+notificationsNavigator.navigate('notifications');
 
 const Stack = ({navigator}) => (
   <NavigationHandler stateNavigator={navigator}>
