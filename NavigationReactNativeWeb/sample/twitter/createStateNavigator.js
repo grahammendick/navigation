@@ -15,7 +15,13 @@ export default () => {
     {key: 'notifications', title: 'Notifications'},
     {key: 'tweet', route: 'tweet/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}, title: 'Tweet'},
     {key: 'timeline', route: 'timeline/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}, title: 'Timeline'}
-  ], new NativeHistoryManager());
+  ], new NativeHistoryManager(url => {
+    const {state, data} = stateNavigator.parseLink(url);
+    let fluent = stateNavigator.fluent().navigate('home');
+    if (state.key === 'home' && data.tab === 'notifications')
+      stateNavigator.historyManager.addHistory(fluent.url, true);
+    return fluent.navigate(state.key, data).url;
+  }));
   const {home, notifications, tweet, timeline} = stateNavigator.states;
   const HomeLayout = Platform.OS === 'ios' ? Home : Tabs;
   home.renderScene = ({tab}) => <HomeLayout tweets={getHome()} follows={getFollows()} tab={tab} />;
