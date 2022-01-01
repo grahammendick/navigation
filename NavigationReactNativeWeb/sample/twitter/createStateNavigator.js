@@ -17,14 +17,16 @@ export default () => {
     {key: 'timeline', route: 'timeline/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}}
   ]);
 
-  const buildStartUrl = url => {
-    const {state, data} = stateNavigator.parseLink(url);
-    let fluent = stateNavigator.fluent().navigate('home');
-    if (state.key === 'home' && data.tab === 'notifications')
-      stateNavigator.historyManager.addHistory(fluent.url, true);
-    return fluent.navigate(state.key, data).url;
-  };
-  stateNavigator.configure(stateNavigator, new NavigationStack.HistoryManager(buildStartUrl));
+  if (Platform.OS === 'web') {
+    const buildStartUrl = url => {
+      const {state, data} = stateNavigator.parseLink(url);
+      let fluent = stateNavigator.fluent().navigate('home');
+      if (state.key === 'home' && data.tab === 'notifications')
+        stateNavigator.historyManager.addHistory(fluent.url, true);
+      return fluent.navigate(state.key, data).url;
+    };
+    stateNavigator.configure(stateNavigator, new NavigationStack.HistoryManager(buildStartUrl));
+  }
 
   const {home, notifications, tweet, timeline} = stateNavigator.states;
   const HomeLayout = Platform.OS === 'ios' ? Home : Tabs;
