@@ -7,7 +7,7 @@ export default ({colors}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <>
-        <NavigationBar title="Colors" />
+        <NavigationBar title="Colors" barTintColor="#fff" />
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <View style={styles.colors}>
             {colors.map(color => (

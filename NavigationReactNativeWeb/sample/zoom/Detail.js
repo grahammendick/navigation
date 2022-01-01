@@ -7,7 +7,7 @@ export default ({colors, color}) => (
   <NavigationContext.Consumer>
     {({stateNavigator}) => (
       <>
-        <NavigationBar title="Color">
+        <NavigationBar title="Color" barTintColor="#fff">
           <RightBar>
             <BarButton
               systemItem="cancel"
