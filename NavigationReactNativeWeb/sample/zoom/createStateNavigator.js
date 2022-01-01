@@ -24,13 +24,15 @@ export default () => {
     crumbs.slice(-1)[0].state === detail ? crumbs.slice(0, -1) : crumbs
   );
 
-  const buildStartUrl = url => {
-    const {state, data} = stateNavigator.parseLink(url);
-    return stateNavigator.fluent()
-      .navigate('grid')
-      .navigate(state.key, data).url;
-  };
-  stateNavigator.configure(stateNavigator, new NavigationStack.HistoryManager(buildStartUrl));
+  if (Platform.OS === 'web') {
+    const buildStartUrl = url => {
+      const {state, data} = stateNavigator.parseLink(url);
+      return stateNavigator.fluent()
+        .navigate('grid')
+        .navigate(state.key, data).url;
+    };
+    stateNavigator.configure(stateNavigator, new NavigationStack.HistoryManager(buildStartUrl));
+  }
   
   if (Platform.OS !== 'web') stateNavigator.navigate('grid');
   else stateNavigator.start();
