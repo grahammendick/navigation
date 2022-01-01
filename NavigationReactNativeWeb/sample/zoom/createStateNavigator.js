@@ -1,5 +1,7 @@
 import React from 'react';
+import {Platform} from 'react-native';
 import {StateNavigator} from 'navigation';
+import {NavigationStack} from 'navigation-react-native';
 import Grid from './Grid';
 import Detail from './Detail';
 
@@ -22,9 +24,16 @@ export default () => {
     crumbs.slice(-1)[0].state === detail ? crumbs.slice(0, -1) : crumbs
   );
 
-  stateNavigator.historyManager.disabled = true;
-  stateNavigator.historyManager.stop();
-  stateNavigator.navigate('grid');
+  const buildStartUrl = url => {
+    const {state, data} = stateNavigator.parseLink(url);
+    return stateNavigator.fluent()
+      .navigate('grid')
+      .navigate(state.key, data).url;
+  };
+  stateNavigator.configure(stateNavigator, new NavigationStack.HistoryManager(buildStartUrl));
+  
+  if (Platform.OS !== 'web') stateNavigator.navigate('grid');
+  else stateNavigator.start();
 
   return stateNavigator;
 }
