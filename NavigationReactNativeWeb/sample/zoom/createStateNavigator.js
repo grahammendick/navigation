@@ -32,10 +32,10 @@ export default () => {
         .navigate(state.key, data).url;
     };
     stateNavigator.configure(stateNavigator, new NavigationStack.HistoryManager(buildStartUrl));
+    stateNavigator.start()
+  } else {
+    stateNavigator.navigate('grid');
   }
   
-  if (Platform.OS !== 'web') stateNavigator.navigate('grid');
-  else stateNavigator.start();
-
   return stateNavigator;
 }
