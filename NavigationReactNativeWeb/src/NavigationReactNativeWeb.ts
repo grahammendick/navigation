@@ -9,9 +9,10 @@ import CollapsingBar from './CollapsingBar';
 import TabBar from './TabBar';
 import TabBarItem from './TabBarItem';
 import CoordinatorLayout from './CoordinatorLayout';
+import SharedElement from './SharedElement';
 import useNavigating from './useNavigating';
 import useNavigated from './useNavigated';
 import useUnloading from './useUnloading';
 import useUnloaded from './useUnloaded';
 
-export { NavigationStack, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, ActionBar, CollapsingBar, TabBar, TabBarItem, CoordinatorLayout, useNavigating, useNavigated, useUnloading, useUnloaded };
+export { NavigationStack, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, ActionBar, CollapsingBar, TabBar, TabBarItem, CoordinatorLayout, SharedElement, useNavigating, useNavigated, useUnloading, useUnloaded };
