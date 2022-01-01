@@ -10,8 +10,8 @@ const colors = [
 
 export default () => {
   const stateNavigator = new StateNavigator([
-    {key: 'grid', route: '', title: 'Colors'},
-    {key: 'detail', route: '{color}', trackCrumbTrail: true, title: 'Color'},
+    {key: 'grid', route: ''},
+    {key: 'detail', route: '{color}', trackCrumbTrail: true},
   ]);
 
   const {grid, detail} = stateNavigator.states;
@@ -21,6 +21,10 @@ export default () => {
   detail.truncateCrumbTrail = (state, data, crumbs) => (
     crumbs.slice(-1)[0].state === detail ? crumbs.slice(0, -1) : crumbs
   );
+
+  stateNavigator.historyManager.disabled = true;
+  stateNavigator.historyManager.stop();
+  stateNavigator.navigate('grid');
 
   return stateNavigator;
 }

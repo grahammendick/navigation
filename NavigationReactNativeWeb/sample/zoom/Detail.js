@@ -20,10 +20,10 @@ export default ({colors, color}) => (
               onPress={(e) => {
                 if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
                 e.preventDefault()
-                if (Platform.OS !== 'web')
+                //if (Platform.OS !== 'web')
                   stateNavigator.navigateBack(1);
-                else
-                  history.back();
+                //else
+                  //history.back();
               }} />
           </RightBar>
         </NavigationBar>
