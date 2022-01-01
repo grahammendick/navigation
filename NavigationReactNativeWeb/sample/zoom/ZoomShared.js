@@ -1,9 +1,9 @@
 import React from 'react';
 import {View} from 'react-native';
-import {SharedElementMotion} from 'navigation-react-mobile';
+import {NavigationStack} from 'navigation-react-native';
 
 export default (props) => (
-  <SharedElementMotion
+  <NavigationStack.SharedElementTransition
     {...props}
     onAnimating={(name, ref) => {ref.style.opacity = 0}}
     onAnimated={(name, ref) => {ref.style.opacity = 1}}>
@@ -23,5 +23,5 @@ export default (props) => (
         }}>
       </View>
     )}
-  </SharedElementMotion>
+  </NavigationStack.SharedElementTransition>
 );

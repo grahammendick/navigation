@@ -3,6 +3,7 @@ import {View} from 'react-native';
 import {NavigationHandler} from 'navigation-react';
 import {NavigationStack} from 'navigation-react-native';
 import createStateNavigator from './createStateNavigator';
+import ZoomShared from './ZoomShared';
 
 var stateNavigator = createStateNavigator();
 
@@ -12,7 +13,8 @@ const App = () => (
       unmountedStyle={{opacity: 0}}
       mountedStyle={{opacity: 1}}
       crumbedStyle={{opacity: 0}}
-      sharedElements={(_, {color}) => color && [color]}>
+      sharedElements={(_, {color}) => color && [color]}
+      sharedElementTransition={props => <ZoomShared {...props} />}>
       {({opacity}, scene, key) => (
         <View key={key}
           style={{
