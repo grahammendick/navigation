@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, ScrollView, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {NavigationBar, SharedElement} from 'navigation-react-native';
 
-export default ({colors}) => (
-  <NavigationContext.Consumer>
-    {({stateNavigator}) => (
+export default ({colors}) => {
+  const {stateNavigator} = useContext(NavigationContext);
+  return (
       <>
         <NavigationBar title="Colors" barTintColor="#fff" />
         <ScrollView contentInsetAdjustmentBehavior="automatic">
@@ -32,9 +32,8 @@ export default ({colors}) => (
           </View>
         </ScrollView>
       </>
-    )}
-  </NavigationContext.Consumer>
-);
+  );
+}
 
 const styles = StyleSheet.create({
   colors: {
