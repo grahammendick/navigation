@@ -7,6 +7,7 @@ import TitleBar from './TitleBar';
 import SearchBar from './SearchBar';
 import ActionBar from './ActionBar';
 import CollapsingBar from './CollapsingBar';
+import StatusBar from './StatusBar';
 import TabBar from './TabBar';
 import TabBarItem from './TabBarItem';
 import CoordinatorLayout from './CoordinatorLayout';
@@ -16,4 +17,4 @@ import useNavigated from './useNavigated';
 import useUnloading from './useUnloading';
 import useUnloaded from './useUnloaded';
 
-export { NavigationStack, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, SearchBar, ActionBar, CollapsingBar, TabBar, TabBarItem, CoordinatorLayout, SharedElement, useNavigating, useNavigated, useUnloading, useUnloaded };
+export { NavigationStack, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, SearchBar, ActionBar, CollapsingBar, StatusBar, TabBar, TabBarItem, CoordinatorLayout, SharedElement, useNavigating, useNavigated, useUnloading, useUnloaded };
