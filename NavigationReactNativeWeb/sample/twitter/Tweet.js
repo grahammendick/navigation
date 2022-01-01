@@ -8,7 +8,7 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
   text, time, retweets, likes, replies}}) => {
   const {stateNavigator} = useContext(NavigationContext);
   useNavigated(() => {
-    document.title = 'Tweet';
+    if (Platform.OS === 'web') document.title = 'Tweet';
   });
   return (
     <>

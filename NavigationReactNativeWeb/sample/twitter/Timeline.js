@@ -13,7 +13,7 @@ export default ({timeline: {id, name, username, logo, bio,
     outputRange: [.8, 1],
   });
   useNavigated(() => {
-    document.title = name;
+    if (Platform.OS === 'web') document.title = name;
   });
   return (
     <CoordinatorLayout overlap={110}>

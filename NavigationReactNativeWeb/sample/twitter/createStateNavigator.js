@@ -26,6 +26,9 @@ export default () => {
       return fluent.navigate(state.key, data).url;
     };
     stateNavigator.configure(stateNavigator, new NavigationStack.HistoryManager(buildStartUrl));
+    stateNavigator.start();
+  } else {
+    stateNavigator.navigate('home');
   }
 
   const {home, notifications, tweet, timeline} = stateNavigator.states;
@@ -34,9 +37,6 @@ export default () => {
   notifications.renderScene = () => <Notifications follows={getFollows()} />;
   tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)}  />;
   timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)}  />;
-  
-  if (Platform.OS !== 'web') stateNavigator.navigate('home');
-  else stateNavigator.start();
   
   return stateNavigator;
 }
