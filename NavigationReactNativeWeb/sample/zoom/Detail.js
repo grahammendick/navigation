@@ -1,10 +1,13 @@
 import React, {useContext} from 'react';
 import {StyleSheet, ScrollView, Text, View, Platform, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBar, RightBar, BarButton, SharedElement} from 'navigation-react-native';
+import {NavigationBar, RightBar, BarButton, SharedElement, useNavigated} from 'navigation-react-native';
 
 export default ({colors, color}) => {
   const {stateNavigator} = useContext(NavigationContext);
+  useNavigated(() => {
+    if (Platform.OS === 'web') document.title = 'Color';
+  });
   return (
       <>
         <NavigationBar title="Color" barTintColor="#fff">
