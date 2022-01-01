@@ -3,9 +3,10 @@ import { Image, Text, TouchableOpacity } from 'react-native';
 import NavigationBarContext from './NavigationBarContext';
 import ActionBar from './ActionBar';
 
-const BarButton = ({title, image, href, testID, onPress, children}) => {
+const BarButton = ({title, image, search, href, testID, onPress, children}) => {
     const tintColor = useContext(NavigationBarContext);
     const childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
+    if (search) return null;
     return (childrenArray.length === 0 || childrenArray[0]?.type === ActionBar)
         ? (
             <TouchableOpacity href={href} testID={testID} onPress={onPress} style={{marginStart: 24}}>
