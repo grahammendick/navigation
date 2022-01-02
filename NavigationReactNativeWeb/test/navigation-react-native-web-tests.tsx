@@ -35,8 +35,7 @@ const People = () => {
             </ScrollView>
         </CoordinatorLayout>
     );
-}    
-
+}
 
 var Person = () => {
     const { stateNavigator, data } = useContext<NavigationEvent<AppNavigation, 'person'>>(NavigationContext);
