@@ -25,7 +25,7 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
             stateNavigator.navigateBack(1);
           else {
             if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return;
-            e.preventDefault()  
+            e.preventDefault();
             history.back();
           }
         }} />
@@ -41,8 +41,8 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
                   stateNavigator.getNavigationLink('timeline', {id: accountId})
                 )}
                 onPress={(e) => {
-                  if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
-                  e.preventDefault()
+                  if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return;
+                  e.preventDefault();
                   stateNavigator.navigate('timeline', {id: accountId});
               }}>
                 <Image style={styles.logo} source={logo} />
