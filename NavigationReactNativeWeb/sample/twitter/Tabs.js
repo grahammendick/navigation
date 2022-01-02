@@ -21,7 +21,6 @@ export default ({tweets, follows}) => {
       tab={tab}
       primary={true}
       bottomTabs={true}
-      swipeable={false}
       selectedTintColor="deepskyblue"
       onChangeTab={(selectedTab, e) => {
         if (Platform.OS === 'web') {
