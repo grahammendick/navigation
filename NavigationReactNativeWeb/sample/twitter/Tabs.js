@@ -11,12 +11,15 @@ export default ({tweets, follows}) => {
   const [tab, setTab] = useState(tabs[data.tab]);
   const getHref = link => stateNavigator.historyManager.getHref(link);
   useNavigated(() => {
-    if (Platform.OS === 'web') document.title = !tabs[data.tab] ? 'Home' : 'Notifications';
-    setTab(tabs[data.tab])
+    if (Platform.OS === 'web') {
+      document.title = !tabs[data.tab] ? 'Home' : 'Notifications';
+      setTab(tabs[data.tab])
+    }
   });
   return (
     <TabBar
       tab={tab}
+      primary={true}
       bottomTabs={true}
       swipeable={false}
       selectedTintColor="deepskyblue"
