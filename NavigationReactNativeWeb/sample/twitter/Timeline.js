@@ -21,7 +21,7 @@ export default ({timeline: {id, name, username, logo, bio,
         title={name}
         onOffsetChanged={Animated.event([{nativeEvent:{offset}}], {useNativeDriver: Platform.OS !== 'web'})}
         navigationImage={require('./arrow.png')}
-        barTintColor={Platform.OS === 'android' ? colors[0] : null}
+        barTintColor={Platform.OS === 'android' ? colors[0] : '#fff'}
         tintColor={Platform.OS === 'android' ? "#fff" : (Platform.OS !== 'web' ? null : 'deepskyblue')}
         titleColor={Platform.OS === 'android' ? "#fff" : null}
         navigationHref={stateNavigator.historyManager.getHref(

@@ -8,7 +8,7 @@ export default ({tweets}) => (
     <NavigationBar
       title="Home"
       isActive={({tab}) => tab === 0}
-      barTintColor={Platform.OS === 'android' ? '#fff' : null} />
+      barTintColor="#fff" />
     <Tweets tweets={tweets} />
   </CoordinatorLayout>
 );
