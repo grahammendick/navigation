@@ -31,7 +31,7 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         }} />
       <Tweets
         tweets={replies}
-        renderHeader={() => (
+        renderHeader={(
           <View>
             <View style={styles.heading}>
               <TouchableHighlight
