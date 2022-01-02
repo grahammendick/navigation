@@ -36,7 +36,9 @@ const { hello, world } = stateNavigator.states;
 hello.renderScene = () => <Hello />;
 world.renderScene = () => <World />;
 
-stateNavigator.start();
+if (Platform.OS === 'web') stateNavigator.start();
+else stateNavigator.navigate('hello');
+
 
 const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
