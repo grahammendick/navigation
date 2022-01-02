@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+import { State } from 'navigation';
 import { MobileHistoryManager, SharedElementNavigationMotionProps, SharedElementMotion } from 'navigation-react-mobile';
 
 declare module 'navigation-react-native' {
@@ -28,9 +29,17 @@ declare module 'navigation-react-native' {
          */
         crumbedStyle?: any;
         /**
+         * The animation duration
+         */
+        duration?: number;
+        /**
          * The Shared Element Transitiom component
          */
         sharedElementTransition?: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
+        /**
+         * Renders the Scene with the interpoated styles
+         */
+        children?: (style: any, scene: ReactElement<any>, key: string, active: boolean, state: State, data: any) => ReactElement<any>;
     }
 
     interface TabBarItemProps {

@@ -3,12 +3,13 @@ import { View } from 'react-native';
 import { NavigationMotion, SharedElementMotion } from 'navigation-react-mobile';
 import { MobileHistoryManager } from 'navigation-react-mobile';
 
-const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, sharedElementTransition, children}) => (
+const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, sharedElementTransition, duration, children}) => (
     <NavigationMotion
         unmountedStyle={unmountedStyle || {translate: 100}}
         mountedStyle={mountedStyle || {translate: 0}}
-        crumbStyle={crumbedStyle || {translate: 0}}
-        sharedElementMotion={sharedElementTransition}>
+        crumbStyle={crumbedStyle || {translate: 0}}        
+        sharedElementMotion={sharedElementTransition}
+        duration={duration}>
           {typeof children !== 'function' ?
             ({translate}, scene, key) => (
                 <View key={key}
