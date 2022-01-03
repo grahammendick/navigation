@@ -6,9 +6,6 @@ import RightBar from './RightBar';
 import TitleBar from './TitleBar';
 
 declare module 'react-native' {
-    interface TextProps {
-      accessibilityRole?: string;
-    }
     interface TouchableOpacityProps {
       href?: string;
     }
@@ -41,7 +38,7 @@ const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navi
             )}
             {!titleBar ? (
                 <Text
-                    accessibilityRole="heading"
+                    accessibilityRole={"heading" as any}
                     style={{
                         flex: 1,
                         color: titleColor,
