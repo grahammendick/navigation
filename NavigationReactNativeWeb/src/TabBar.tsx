@@ -48,20 +48,23 @@ class TabBar extends React.Component<any, any> {
                     </View>
                 ))}
                 <View style={{flexDirection: 'row'}}>
-                    {childrenArray.map(({props: {image, title, fontFamily, fontWeight, fontStyle, fontSize = 12, href}}: any, i) => (
-                        <TouchableHighlight key={i} href={href} onPress={(e) => this.changeTab(i, e)} style={{flex: 1}}>
-                            <View style={[styles.tab, {backgroundColor: barTintColor, paddingTop: titleOrimageOnly ? 16 : 8}]}>
-                                <Image
-                                    source={image}
-                                    accessibilityLabel={title}
-                                    style={{width: 24, height: 24, tintColor: i === this.state.selectedTab ? selectedTintColor : unselectedTintColor}}
-                                />
-                                {title && (
-                                    <Text style={{fontFamily, fontWeight, fontStyle, fontSize, lineHeight: fontSize, color: i === this.state.selectedTab ? selectedTintColor : unselectedTintColor}}>{title}</Text>
-                                )}
-                            </View>
-                        </TouchableHighlight>
-                    ))}
+                    {childrenArray.map(({props: {image, title, fontFamily, fontWeight, fontStyle, fontSize = 12, href}}: any, i) => {
+                        const color = i === this.state.selectedTab ? selectedTintColor : unselectedTintColor
+                        return (
+                            <TouchableHighlight key={i} href={href} onPress={(e) => this.changeTab(i, e)} style={{flex: 1}}>
+                                <View style={[styles.tab, {backgroundColor: barTintColor, paddingTop: titleOrimageOnly ? 16 : 8}]}>
+                                    <Image
+                                        source={image}
+                                        accessibilityLabel={title}
+                                        style={{width: 24, height: 24, tintColor: color}}
+                                    />
+                                    {title && (
+                                        <Text style={{fontFamily, fontWeight, fontStyle, fontSize, lineHeight: fontSize, color: color}}>{title}</Text>
+                                    )}
+                                </View>
+                            </TouchableHighlight>
+                        )
+                    })}
                 </View>
             </>
         );
