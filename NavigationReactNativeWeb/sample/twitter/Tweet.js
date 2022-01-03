@@ -47,7 +47,7 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
               }}>
                 <Image style={styles.logo} source={logo} />
               </TouchableHighlight>
-              <View style={styles.details}>
+              <View>
                 <Text style={styles.name}>{name}</Text>
                 <Text>{username}</Text>
               </View>
