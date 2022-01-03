@@ -39,12 +39,11 @@ class TabBar extends React.Component<any, any> {
     render() {
         var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, primary} = this.props;
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
-        var childrenArray = React.Children.toArray(children);
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOrImageOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
         var tabLayout = (
             <View style={{flexDirection: 'row'}}>
-                {childrenArray.map(({props: {image, title, fontFamily, fontWeight, fontStyle, fontSize = 12, href}}: any, i) => {
+                {tabBarItems.map(({props: {image, title, fontFamily, fontWeight, fontStyle, fontSize = 12, href}}: any, i) => {
                     const color = i === this.state.selectedTab ? selectedTintColor : unselectedTintColor
                     return (
                         <TouchableHighlight key={i} href={href} onPress={(e) => this.changeTab(i, e)} style={{flex: 1}}>
@@ -62,7 +61,7 @@ class TabBar extends React.Component<any, any> {
         return (
             <>
                 {!bottomTabs && tabLayout}
-                {childrenArray.map((child, i) => (
+                {tabBarItems.map((child, i) => (
                     <View key={i} style={{display: i === this.state.selectedTab ? 'flex' : 'none', flex: 1}}>
                         {child}
                     </View>
