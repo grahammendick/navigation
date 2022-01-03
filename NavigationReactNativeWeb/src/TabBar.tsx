@@ -39,7 +39,7 @@ class TabBar extends React.Component<any, any> {
         var {children, barTintColor, selectedTintColor, unselectedTintColor} = this.props;
         var childrenArray = React.Children.toArray(children);
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
-        var titleOrimageOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
+        var titleOrImageOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
         return (
             <>
                 {childrenArray.map((child, i) => (
@@ -52,7 +52,7 @@ class TabBar extends React.Component<any, any> {
                         const color = i === this.state.selectedTab ? selectedTintColor : unselectedTintColor
                         return (
                             <TouchableHighlight key={i} href={href} onPress={(e) => this.changeTab(i, e)} style={{flex: 1}}>
-                                <View style={[styles.tab, {backgroundColor: barTintColor, paddingTop: titleOrimageOnly ? 16 : 8}]}>
+                                <View style={[styles.tab, {backgroundColor: barTintColor, paddingTop: titleOrImageOnly ? 16 : 8}]}>
                                     <Image
                                         source={image}
                                         accessibilityLabel={title}
