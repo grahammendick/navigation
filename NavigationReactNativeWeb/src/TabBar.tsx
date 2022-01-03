@@ -48,7 +48,7 @@ class TabBar extends React.Component<any, any> {
                     </View>
                 ))}
                 <View style={{flexDirection: 'row'}}>
-                    {childrenArray.map(({props: {image, title, href}}: any, i) => (
+                    {childrenArray.map(({props: {image, title, fontFamily, fontWeight, fontStyle, fontSize = 12, href}}: any, i) => (
                         <TouchableHighlight key={i} href={href} onPress={(e) => this.changeTab(i, e)} style={{flex: 1}}>
                             <View style={[styles.tab, {backgroundColor: barTintColor, paddingTop: titleOrimageOnly ? 16 : 8}]}>
                                 <Image
@@ -57,7 +57,7 @@ class TabBar extends React.Component<any, any> {
                                     style={{width: 24, height: 24, tintColor: i === this.state.selectedTab ? selectedTintColor : unselectedTintColor}}
                                 />
                                 {title && (
-                                    <Text style={{fontSize: 12, lineHeight: 12, color: i === this.state.selectedTab ? selectedTintColor : unselectedTintColor}}>{title}</Text>
+                                    <Text style={{fontFamily, fontWeight, fontStyle, fontSize, lineHeight: fontSize, color: i === this.state.selectedTab ? selectedTintColor : unselectedTintColor}}>{title}</Text>
                                 )}
                             </View>
                         </TouchableHighlight>
