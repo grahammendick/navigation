@@ -44,7 +44,7 @@ class TabBar extends React.Component<any, any> {
         var tabLayout = (
             <View style={{flexDirection: 'row'}}>
                 {tabBarItems.map(({props: {image, title, fontFamily, fontWeight, fontStyle, fontSize = 12, href}}: any, i) => {
-                    const color = i === this.state.selectedTab ? selectedTintColor : unselectedTintColor
+                    var color = i === this.state.selectedTab ? selectedTintColor : unselectedTintColor
                     return (
                         <TouchableHighlight key={i} href={href} onPress={(e) => this.changeTab(i, e)} style={{flex: 1}}>
                             <View style={[styles.tab, {backgroundColor: barTintColor, paddingTop: titleOrImageOnly ? 16 : 8}]}>
