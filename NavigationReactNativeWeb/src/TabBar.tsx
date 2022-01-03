@@ -51,7 +51,7 @@ class TabBar extends React.Component<any, any> {
                     return (
                         <TouchableHighlight key={i} href={href} onPress={(e) => this.changeTab(i, e)} style={{flex: 1}}>
                             <View style={{alignItems: 'center', height, backgroundColor: barTintColor, paddingTop, borderBottomWidth: highlight ? 2 : 0, borderBottomColor: highlight ? color : undefined}}>
-                                {image && (
+                                {(primary || !titleOrImageOnly || image) && (
                                     <Image source={image} accessibilityLabel={title} style={{width: 24, height: 24, tintColor: color}} />
                                 )}
                                 {title && (
