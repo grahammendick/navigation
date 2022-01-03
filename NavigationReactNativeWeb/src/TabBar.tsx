@@ -41,16 +41,19 @@ class TabBar extends React.Component<any, any> {
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOrImageOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
+        var height = !primary ? (titleOrImageOnly ? 48 : 72) : 56;
+        var paddingTop = !primary ? 12 : (titleOrImageOnly ? 16 : 8);
         var tabLayout = (
             <View style={{flexDirection: 'row'}}>
                 {tabBarItems.map(({props: {image, title, fontFamily, fontWeight, fontStyle, fontSize = 12, href}}: any, i) => {
-                    var color = i === this.state.selectedTab ? selectedTintColor : unselectedTintColor
+                    var color = i === this.state.selectedTab ? selectedTintColor : unselectedTintColor;
+                    var highlight = !primary && i === this.state.selectedTab;
                     return (
                         <TouchableHighlight key={i} href={href} onPress={(e) => this.changeTab(i, e)} style={{flex: 1}}>
-                            <View style={[styles.tab, {backgroundColor: barTintColor, paddingTop: titleOrImageOnly ? 16 : 8}]}>
+                            <View style={{alignItems: 'center', height, backgroundColor: barTintColor, paddingTop, borderBottomWidth: highlight ? 2 : 0, borderBottomColor: highlight ? color : undefined}}>
                                 <Image source={image} accessibilityLabel={title} style={{width: 24, height: 24, tintColor: color}} />
                                 {title && (
-                                    <Text style={{fontFamily, fontWeight, fontStyle, fontSize, lineHeight: fontSize, color: color}}>{title}</Text>
+                                    <Text style={{textTransform: !primary ? 'uppercase' : undefined, fontFamily, fontWeight, fontStyle, fontSize, lineHeight: !primary ? 20 : 12, marginTop: !primary ? 4 : 0, color: color}}>{title}</Text>
                                 )}
                             </View>
                         </TouchableHighlight>
@@ -71,12 +74,5 @@ class TabBar extends React.Component<any, any> {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    tab: {
-        alignItems: 'center',
-        height: 56,
-    },
-});
 
 export default TabBar;
