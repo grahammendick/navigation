@@ -3,7 +3,7 @@ import { View, TouchableHighlight, Image, Text } from 'react-native';
 
 declare module 'react-native' {
     interface TouchableHighlightProps {
-      href?: string;
+        href?: string;
     }
 }
 

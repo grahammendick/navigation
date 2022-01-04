@@ -7,7 +7,7 @@ import TitleBar from './TitleBar';
 
 declare module 'react-native' {
     interface TouchableOpacityProps {
-      href?: string;
+        href?: string;
     }
 }
 
