@@ -24,16 +24,16 @@ class TabBar extends React.Component<any, any> {
             return {selectedTab: tab};
         return null;
     }
-    changeTab(selectedTab, e) {
-        var {tab, onChangeTab} = this.props;
-        if (this.state.selectedTab !== selectedTab) {
-            if (tab == null)
-                this.setState({selectedTab});
-            if (!!onChangeTab)
-                onChangeTab(selectedTab, e);
-        } else {
-            if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button)
-                e.preventDefault();
+    changeTab(selectedTab, e, href) {
+        if (!href || (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button)) {
+            if (href) e.preventDefault();
+            var {tab, onChangeTab} = this.props;
+            if (this.state.selectedTab !== selectedTab) {
+                if (tab == null)
+                    this.setState({selectedTab});
+                if (!!onChangeTab)
+                    onChangeTab(selectedTab);
+            }
         }
     }
     render() {
@@ -49,7 +49,7 @@ class TabBar extends React.Component<any, any> {
                     var color = i === this.state.selectedTab ? selectedTintColor : unselectedTintColor;
                     var highlight = !primary && i === this.state.selectedTab;
                     return (
-                        <TouchableHighlight key={i} href={href} onPress={(e) => this.changeTab(i, e)} style={{flex: 1}}>
+                        <TouchableHighlight key={i} href={href} onPress={(e) => this.changeTab(i, e, href)} style={{flex: 1}}>
                             <View style={{alignItems: 'center', height, backgroundColor: barTintColor, paddingTop, borderBottomWidth: highlight ? 2 : 0, borderBottomColor: highlight ? color : undefined}}>
                                 {(primary || !titleOrImageOnly || image) && (
                                     <Image source={image} accessibilityLabel={title} style={{width: 24, height: 24, tintColor: color}} />

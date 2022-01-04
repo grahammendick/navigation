@@ -26,13 +26,19 @@ const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navi
     titleFontWeight = (typeof titleFontWeight === 'function' ? titleFontWeight(true) : titleFontWeight);
     titleFontStyle = (typeof titleFontStyle === 'function' ? titleFontStyle(true) : titleFontStyle);
     titleFontSize = (typeof titleFontSize === 'function' ? titleFontSize(true) : titleFontSize) || 20;
-    var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
-    var titleBar = childrenArray.find(({type}) => type === TitleBar);
+    const childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
+    const titleBar = childrenArray.find(({type}) => type === TitleBar);
     if (hidden) return null;
+    const onPress = (e) => {
+        if (!navigationHref || (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button)) {
+            if (navigationHref) e.preventDefault();
+            onNavigationPress();
+        }
+    }
     return (
         <View ref={barRef} style={[styles.bar, {backgroundColor: barTintColor}]}>
             {navigationImage && (
-                <TouchableOpacity href={navigationHref} testID={navigationTestID} onPress={onNavigationPress} style={{marginEnd: 32}}>
+                <TouchableOpacity href={navigationHref} testID={navigationTestID} onPress={onPress} style={{marginEnd: 32}}>
                     <Image source={navigationImage} style={{width: 24, height: 24, tintColor}} />
                 </TouchableOpacity>
             )}

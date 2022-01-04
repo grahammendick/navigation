@@ -23,10 +23,8 @@ export default ({tweets, follows}) => {
       bottomTabs={true}
       barTintColor="#fff"
       selectedTintColor="deepskyblue"
-      onChangeTab={(selectedTab, e) => {
+      onChangeTab={(selectedTab) => {
         if (Platform.OS === 'web') {
-          if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return;
-          e.preventDefault();
           if (selectedTab === 1)
             stateNavigator.refresh({tab: 'notifications'});
           else

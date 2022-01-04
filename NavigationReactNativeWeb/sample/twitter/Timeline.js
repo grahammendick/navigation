@@ -29,13 +29,8 @@ export default ({timeline: {id, name, username, logo, bio,
         )}
         style={{height: 120}}
         onNavigationPress={(e) => {
-          if (Platform.OS !== 'web')
-            stateNavigator.navigateBack(1);
-          else {
-            if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return;
-            e.preventDefault()  
-            history.back();
-          }
+          if (Platform.OS !== 'web') stateNavigator.navigateBack(1);
+          else history.back();
         }}>
         <CollapsingBar>
           <View style={{backgroundColor: colors[1], flex: 1}} />

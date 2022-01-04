@@ -21,13 +21,8 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
           stateNavigator.getNavigationBackLink(1)
         )}
         onNavigationPress={(e) => {
-          if (Platform.OS !== 'web')
-            stateNavigator.navigateBack(1);
-          else {
-            if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return;
-            e.preventDefault();
-            history.back();
-          }
+          if (Platform.OS !== 'web') stateNavigator.navigateBack(1);
+          else history.back();
         }} />
       <Tweets
         tweets={replies}

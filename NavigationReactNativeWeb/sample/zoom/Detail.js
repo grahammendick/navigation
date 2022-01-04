@@ -21,12 +21,8 @@ export default ({colors, color}) => {
                 stateNavigator.getNavigationBackLink(1)
               )}
               onPress={(e) => {
-                if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
-                e.preventDefault()
-                if (Platform.OS !== 'web')
-                  stateNavigator.navigateBack(1);
-                else
-                  history.back();
+                if (Platform.OS !== 'web') stateNavigator.navigateBack(1);
+                else history.back();
               }} />
           </RightBar>
         </NavigationBar>
