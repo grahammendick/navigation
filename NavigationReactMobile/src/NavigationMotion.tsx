@@ -79,9 +79,10 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     {styles => (
                         styles.map(({data: {key, state, data}, style}) => {
                             var crumb = +key.replace(/\++$/, '');
-                            var scene = <Scene crumb={crumb} renderScene={renderScene} /> ;
+                            var rest = this.state;
+                            var scene = <Scene crumb={crumb} rest={rest} renderScene={renderScene} /> ;
                             return (
-                                <Freeze key={key} enabled={this.state.rest && crumb < this.getScenes().length - 1}>
+                                <Freeze key={key} enabled={rest && crumb < this.getScenes().length - 1}>
                                     {children(style, scene, key, crumbs.length === crumb, state, data)}
                                 </Freeze>
                             );
