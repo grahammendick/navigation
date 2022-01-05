@@ -1143,4 +1143,43 @@ describe('NavigationMotion', function () {
             }
         })
     });
+
+    describe('Re-render NavigationStack', function () {
+        it('should not re-render crumb', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var {sceneA, sceneB} = stateNavigator.states;
+            var SceneA = ({updated}) => <div id='sceneA' data-updated={updated} />;
+            var SceneB = () => <div id='sceneB' />;
+            sceneA.renderScene = (updated) => <SceneA updated={updated} />;
+            sceneB.renderScene = () => <SceneB />;
+            var container = document.createElement('div');
+            var update;
+            var App = () => {
+                var [updated, setUpdated] = useState(false);
+                update = setUpdated;
+                return (
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion renderScene={(state) => state.renderScene(updated)}>
+                            {(_style, scene, key) =>  (
+                                <div id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>
+                );
+            }
+            ReactDOM.render(<App />, container);
+            stateNavigator.navigate('sceneB');
+            update(true);
+            try {
+                var scene = container.querySelector<HTMLDivElement>("#sceneA");                
+                assert.strictEqual(scene.dataset.updated, 'false');
+            } finally {
+                ReactDOM.unmountComponentAtNode(container);
+            }
+        })
+    });
 });
