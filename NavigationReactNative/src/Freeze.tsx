@@ -40,9 +40,8 @@ var Suspender = ({freeze, children}) => {
 };
 
 var Freeze = ({enabled, children}) => {
-    const suspendable = typeof React.Suspense !== 'undefined';
-    const suspender = <Suspender freeze={enabled && suspendable}>{children}</Suspender>;
-    return suspendable ? <Suspense fallback={null}>{suspender}</Suspense> : suspender;
+    const suspender = <Suspender freeze={enabled && !!React.Suspense}>{children}</Suspender>;
+    return !!React.Suspense ? <Suspense fallback={null}>{suspender}</Suspense> : suspender;
 };
 
 export default Freeze;
