@@ -40,8 +40,9 @@ var Suspender = ({freeze, children}) => {
 };
 
 var Freeze = ({enabled, children}) => {
-    const suspender = <Suspender freeze={enabled && !!React.Suspense}>{children}</Suspender>;
-    return !!React.Suspense ? <Suspense fallback={null}>{suspender}</Suspense> : suspender;
+    const suspendable = !!React.Suspense;
+    const suspender = <Suspender freeze={enabled && suspendable}>{children}</Suspender>;
+    return suspendable ? <Suspense fallback={null}>{suspender}</Suspense> : suspender;
 };
 
 export default Freeze;
