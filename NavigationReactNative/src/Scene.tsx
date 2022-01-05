@@ -35,8 +35,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var replace = oldCrumbs.length === crumb && oldState !== state;
         return !replace ? {navigationEvent} : null;
     }
-    shouldComponentUpdate({rest}: SceneProps, {navigationEvent}: SceneState) {
-        var {crumb, navigationEvent: {stateNavigator}} = this.props;
+    shouldComponentUpdate({crumb, rest, navigationEvent: {stateNavigator}}: SceneProps, {navigationEvent}: SceneState) {
         var {crumbs} = stateNavigator.stateContext;
         var freezableOrCurrent = rest && (!!React.Suspense || crumbs.length === crumb);
         return freezableOrCurrent || navigationEvent !== this.state.navigationEvent || (this.fluentPeekable() && !this.timer);
