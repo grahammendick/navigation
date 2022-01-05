@@ -1110,42 +1110,7 @@ describe('NavigationMotion', function () {
     });
 
     describe('Re-render NavigationStack', function () {
-        it('should re-render current scene', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 'sceneA' },
-            ]);
-            stateNavigator.navigate('sceneA');
-            var {sceneA} = stateNavigator.states;
-            var SceneA = ({updated}) => <div id='sceneA' data-updated={updated} />;
-            sceneA.renderScene = (updated) => <SceneA updated={updated} />;
-            var container = document.createElement('div');
-            var update;
-            var App = () => {
-                var [updated, setUpdated] = useState(false);
-                update = setUpdated;
-                return (
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationMotion renderScene={(state) => state.renderScene(updated)}>
-                            {(_style, scene, key) =>  (
-                                <div id={key} key={key}>{scene}</div>
-                            )}
-                        </NavigationMotion>
-                    </NavigationHandler>
-                );
-            }
-            ReactDOM.render(<App />, container);
-            update(true);
-            try {
-                var scene = container.querySelector<HTMLDivElement>("#sceneA");                
-                assert.strictEqual(scene.dataset.updated, 'true');
-            } finally {
-                ReactDOM.unmountComponentAtNode(container);
-            }
-        })
-    });
-
-    describe('Re-render NavigationStack', function () {
-        it('should not re-render crumb', function(){
+        it('should only re-render current scene', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
@@ -1153,9 +1118,9 @@ describe('NavigationMotion', function () {
             stateNavigator.navigate('sceneA');
             var {sceneA, sceneB} = stateNavigator.states;
             var SceneA = ({updated}) => <div id='sceneA' data-updated={updated} />;
-            var SceneB = () => <div id='sceneB' />;
+            var SceneB = ({updated}) => <div id='sceneB' data-updated={updated} />;
             sceneA.renderScene = (updated) => <SceneA updated={updated} />;
-            sceneB.renderScene = () => <SceneB />;
+            sceneB.renderScene = (updated) => <SceneB updated={updated} />;
             var container = document.createElement('div');
             var update;
             var App = () => {
@@ -1175,8 +1140,10 @@ describe('NavigationMotion', function () {
             stateNavigator.navigate('sceneB');
             update(true);
             try {
-                var scene = container.querySelector<HTMLDivElement>("#sceneA");                
+                var scene = container.querySelector<HTMLDivElement>("#sceneA");
                 assert.strictEqual(scene.dataset.updated, 'false');
+                scene = container.querySelector<HTMLDivElement>("#sceneB");
+                assert.strictEqual(scene.dataset.updated, 'true');
             } finally {
                 ReactDOM.unmountComponentAtNode(container);
             }
