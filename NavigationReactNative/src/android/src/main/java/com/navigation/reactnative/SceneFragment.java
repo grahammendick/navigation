@@ -60,7 +60,7 @@ public class SceneFragment extends Fragment {
             });
             return anim;
         }
-        if (nextAnim == 0 && enter && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+        if (nextAnim == 0 && enter && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
             ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
         }
         return super.onCreateAnimation(transit, enter, nextAnim);
