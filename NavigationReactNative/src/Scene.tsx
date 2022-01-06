@@ -4,7 +4,7 @@ import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
 import Freeze from './Freeze';
-type SceneProps = { crumb: number, sceneKey: string, freezable: boolean, renderScene: (state: State, data: any) => ReactNode, crumbStyle: any, unmountStyle: any, hidesTabBar: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
+type SceneProps = { crumb: number, sceneKey: string, rest: boolean, renderScene: (state: State, data: any) => ReactNode, crumbStyle: any, unmountStyle: any, hidesTabBar: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
 type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
@@ -35,8 +35,10 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var replace = oldCrumbs.length === crumb && oldState !== state;
         return !replace ? {navigationEvent} : null;
     }
-    shouldComponentUpdate({freezable}, {navigationEvent}: SceneState) {
-        return freezable || navigationEvent !== this.state.navigationEvent || (this.fluentPeekable() && !this.timer);
+    shouldComponentUpdate({crumb, rest, navigationEvent: {stateNavigator}}: SceneProps, {navigationEvent}: SceneState) {
+        var {crumbs} = stateNavigator.stateContext;
+        var freezableOrCurrent = rest && (!!React.Suspense || crumbs.length === crumb);
+        return freezableOrCurrent || navigationEvent !== this.state.navigationEvent || (this.fluentPeekable() && !this.timer);
     }
     componentDidUpdate() {
         this.backgroundPeekNavigate();
@@ -128,7 +130,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
     }
     render() {
         var {navigationEvent} = this.state;
-        var {crumb, title, sceneKey, freezable, popped, navigationEvent: {stateNavigator}} = this.props;
+        var {crumb, title, sceneKey, rest, popped, navigationEvent: {stateNavigator}} = this.props;
+        var freezable = rest && !!React.Suspense;
         var {crumbs} = stateNavigator.stateContext;
         var stateContext = navigationEvent?.stateNavigator?.stateContext;
         var {state, data} = stateContext || crumbs[crumb];
@@ -137,7 +140,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 && (!stateContext['peek'] || stateContext['peek'] !== this.props.navigationEvent)}>
                 <NVScene
                     ref={(ref: any) => {
-                        if (typeof React.Suspense !== 'undefined' && ref?.viewConfig?.validAttributes?.style) {
+                        if (!!React.Suspense && ref?.viewConfig?.validAttributes?.style) {
                             ref.viewConfig.validAttributes.style = {
                                 ...ref.viewConfig.validAttributes.style,
                                 display: false
