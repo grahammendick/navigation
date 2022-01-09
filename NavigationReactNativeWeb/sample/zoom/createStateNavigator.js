@@ -14,7 +14,12 @@ export default () => {
   const stateNavigator = new StateNavigator([
     {key: 'grid', route: ''},
     {key: 'detail', route: '{color}', trackCrumbTrail: true},
-  ]);
+  ], NavigationStack.HistoryManager && new NavigationStack.HistoryManager(url => {
+    const {state, data} = stateNavigator.parseLink(url);
+    return stateNavigator.fluent()
+      .navigate('grid')
+      .navigate(state.key, data).url;
+  }));
 
   const {grid, detail} = stateNavigator.states;
   grid.renderScene = () => <Grid colors={colors} />;
@@ -24,18 +29,8 @@ export default () => {
     crumbs.slice(-1)[0].state === detail ? crumbs.slice(0, -1) : crumbs
   );
 
-  if (Platform.OS === 'web') {
-    const buildStartUrl = url => {
-      const {state, data} = stateNavigator.parseLink(url);
-      return stateNavigator.fluent()
-        .navigate('grid')
-        .navigate(state.key, data).url;
-    };
-    stateNavigator.configure(stateNavigator, new NavigationStack.HistoryManager(buildStartUrl));
-    stateNavigator.start()
-  } else {
-    stateNavigator.navigate('grid');
-  }
+  if (Platform.OS === 'web') stateNavigator.start()
+  else stateNavigator.navigate('grid');
   
   return stateNavigator;
 }
