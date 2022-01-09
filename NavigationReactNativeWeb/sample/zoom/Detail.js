@@ -20,10 +20,7 @@ export default ({colors, color}) => {
               href={stateNavigator.historyManager.getHref(
                 stateNavigator.getNavigationBackLink(1)
               )}
-              onPress={(e) => {
-                if (Platform.OS !== 'web') stateNavigator.navigateBack(1);
-                else history.back();
-              }} />
+              onPress={() => stateNavigator.navigateBack(1)} />
           </RightBar>
         </NavigationBar>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
