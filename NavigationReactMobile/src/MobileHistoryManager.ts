@@ -23,8 +23,8 @@ class MobileHistoryManager extends HTML5HistoryManager {
                 if (typeof document !== 'undefined' && state.title)
                     document.title = state.title;
             }
-            if (distance < 0)
-                history.go(distance);
+            if (!this.disabled && distance < 0)
+                window.history.go(distance);
         }
         if (distance >= 0)
             super.addHistory(url, replace);
