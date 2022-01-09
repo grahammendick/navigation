@@ -15,21 +15,16 @@ export default () => {
     {key: 'notifications', route: 'x/y'},
     {key: 'tweet', route: 'tweet/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}},
     {key: 'timeline', route: 'timeline/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}}
-  ]);
+  ], NavigationStack.HistoryManager && new NavigationStack.HistoryManager(url => {
+    const {state, data} = stateNavigator.parseLink(url);
+    let fluent = stateNavigator.fluent().navigate('home');
+    if (state.key === 'home' && data.tab === 'notifications')
+      stateNavigator.historyManager.addHistory(fluent.url, true);
+    return fluent.navigate(state.key, data).url;
+  }));
 
-  if (Platform.OS === 'web') {
-    const buildStartUrl = url => {
-      const {state, data} = stateNavigator.parseLink(url);
-      let fluent = stateNavigator.fluent().navigate('home');
-      if (state.key === 'home' && data.tab === 'notifications')
-        stateNavigator.historyManager.addHistory(fluent.url, true);
-      return fluent.navigate(state.key, data).url;
-    };
-    stateNavigator.configure(stateNavigator, new NavigationStack.HistoryManager(buildStartUrl));
-    stateNavigator.start();
-  } else {
-    stateNavigator.navigate('home');
-  }
+  if (Platform.OS === 'web') stateNavigator.start();
+  else stateNavigator.navigate('home');
 
   const {home, notifications, tweet, timeline} = stateNavigator.states;
   const HomeLayout = Platform.OS === 'ios' ? Home : Tabs;
