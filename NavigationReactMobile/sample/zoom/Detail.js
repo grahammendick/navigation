@@ -4,13 +4,7 @@ import {SharedElement} from 'navigation-react-mobile';
 
 export default ({color}) => (
   <div className="color">
-    <NavigationBackLink
-      distance={1}
-      navigating={e => {
-        e.preventDefault();
-        history.back();
-        return false;
-      }}>
+    <NavigationBackLink distance={1}>
       X
     </NavigationBackLink>
     <SharedElement
