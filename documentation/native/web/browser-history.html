@@ -51,7 +51,19 @@
             <h1>Browser History</h1>
             <p>
             </p>
-            <pre><code class="language-js"></code></pre>
+            <pre><code class="language-js">inboxNavigator.historyManager.disabled = true;
+inboxNavigator.historyManager.stop();
+contactsNavigator.historyManager.disabled = true;
+contactsNavigator.historyManager.stop();
+</code></pre>
+            <p>
+            </p>
+            <pre><code class="language-jsx">&lt;NavigationBar
+  onNavigationPress={() => {
+    if (Platform.OS !== 'web') stateNavigator.navigateBack(1);
+    else history.back();
+}} />
+</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../../js/prism.js"></script>
