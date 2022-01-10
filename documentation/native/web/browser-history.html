@@ -60,14 +60,23 @@ stateNavigator.historyManager.stop();</code></pre>
             </div>
             <h2>Cleaning Urls</h2>
             <p>
-                By default, the Navigation router stores the stack of scenes in the Url. In our example app, when a user opens an email with an id of 12 the Url is '/mail?id=121_2&crumb=%2Finbox'. The <code>crumb</code> parameter in the query string marks that the 'inbox' is the first scene in the stack. We hide the stack from the Url by passing a <code>NavigationStack.HistoryManager</code> into the <code>StateNavigator</code> constructor. The <code>HistoryManager</code> turns the Url that opens the email into '/mail?id=121_2' (see the <a href="routes.html">Routes guide<a/> for how to remove the trailing characters '1_2').
+                By default, the Navigation router stores the stack of scenes in the Url. In our example app, when a user opens an email with an id of 12 the Url is '/mail?id=121_2&crumb=%2Finbox'. The <code>crumb</code> parameter in the query string marks that the 'inbox' is the first scene in the stack. We hide the stack from the Url by passing a <code>NavigationStack.HistoryManager</code> into the <code>StateNavigator</code> constructor. The <code>HistoryManager</code> turns the Url that opens the email into '/mail?id=121_2'.
             </p>
             <pre><code class="language-js">const stateNavigator = new StateNavigator([
   {key: 'inbox'},
   {key: 'mail', trackCrumbTrail: true},
   {key: 'compose', trackCrumbTrail: true}
 ], NavigationStack.HistoryManager && new NavigationStack.HistoryManager());</code></pre>
-            <h2>Removing Hashes</h2>
+            <h3>Configuring Types</h3>
+            <p>
+                The Navigation router keeps track of data types so we don’t have to convert the email id back to a number on the 'mail' scene. By default it uses the Url to keep track of this type information. In the example Url the last three characters track that the <code>id</code> is a number. We'll remove these trailing characters, so that the Url reads '/open?id=12' instead of '/open?id=121_2', by assigning the <code>id</code> a type of 'number'. The other supported types are 'boolean' and 'date' ('string' is the default).
+            </p>
+            <pre><code class="language-js">[
+  {key: 'inbox'},
+  {key: 'mail', trackCrumbTrail: true, defaultTypes: {id: 'number'}},
+  {key: 'compose', trackCrumbTrail: true}
+]</code></pre>
+            <h3>Removing Hashes</h3>
             <p>
                 By default, the <code>HistoryManager</code> operates in hash history mode. For example, the full Url that opens an email of id 12 is 'https://domain/#/mail?id=121_2'. To remove the hash and clean up the Url so it reads 'https://domain/mail?id=121_2', we pass an empty string as the second parameter to the <code>HistoryManager</code> constructor. If we wanted our Url to look like 'https://domain/app/mail?id=121_2', we'd pass the 'app' base path as the second parameter instead.
             </p>
