@@ -51,7 +51,20 @@
             <h1>Hyperlinks</h1>
             <p>
             </p>
-            <pre><code class="language-js"></code></pre>
+            <pre><code class="language-jsx">&lt;TouchableHighlight
+  href={stateNavigator.historyManager.getHref(
+    stateNavigator.getNavigationLink('mail', {id: 12})
+  )}
+  onPress={() => stateNavigator.navigate('mail', {id: 12})}}>
+  &lt;Text>Open Mail&lt;/Text>
+&lt;/TouchableHighlight></code></pre>
+            <p>
+            </p>
+            <pre><code class="language-jsx">&lt;NavigationBar
+  navigationHref={stateNavigator.historyManager.getHref(
+    stateNavigator.getNavigationBackLink(1)
+  )}
+  onNavigationPress={() => stateNavigator.navigateBack(1)}} /></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../../js/prism.js"></script>
