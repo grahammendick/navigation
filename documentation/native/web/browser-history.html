@@ -50,13 +50,23 @@
         <div id="article">
             <h1>Browser History</h1>
             <p>
-                On native, it’s up to you what happens when the user presses the back button. But on the web, the browser back button always steps back to the previously visited URL. Because browser history is linear, you can only connect it up to one <code>NavigationStack</code>. For all your other stacks you should disable the history manager of the associated <code>StateNavigator</code>.
+                On native, it's up to you what happens when the user presses the back button. But on the web, the browser back button always steps back to the previously visited URL. Because browser history is linear, you can only connect it up to one <code>NavigationStack</code>. For all your other stacks you should disable the history manager of the associated <code>StateNavigator</code>.
             </p>
             <pre><code class="language-js">stateNavigator.historyManager.disabled = true;
 stateNavigator.historyManager.stop();</code></pre>
+            <div class="Note">
+                <h2>Note</h2>
+                If your app has tabs that each contain stacks, then it doesn't make sense to connect just one of them to browser history. In that case you should disable the history manager of all your stacks. That way your app will still run, it's just that the browser back button won't do anything.
+            </div>
+            <h2>Cleaning Urls</h2>
             <p>
-                If your app has tabs that each contain stacks, then it doesn’t make sense to connect just one of them to browser history. In that case you should disable the history manager of all your stacks. That way your app will still run, it’s just that the browser back button won’t do anything.
+                By default, the Navigation router stores the stack of scenes in the Url. In our example app, when a user opens an email with an id of 12 the Url is '/mail?id=121_2&crumb=%2Finbox'. The <code>crumb</code> parameter in the query string marks that the 'inbox' is the first scene in the stack. We hide the stack from the Url by passing a <code>NavigationStack.HistoryManager</code> into the <code>StateNavigator</code> constructor. The <code>HistoryManager</code> turns the Url that opens the email into '/mail?id=121_2'. 
             </p>
+            <pre><code class="language-js">const stateNavigator = new StateNavigator([
+  {key: 'inbox'},
+  {key: 'mail', trackCrumbTrail: true},
+  {key: 'compose', trackCrumbTrail: true}
+], NavigationStack.HistoryManager && new NavigationStack.HistoryManager());</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../../js/prism.js"></script>
