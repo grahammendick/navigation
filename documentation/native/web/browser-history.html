@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <title>Browser History</title>
     <meta name="viewport" content="width=device-width">
@@ -45,6 +44,7 @@
                 <h3>Web</h3>
                 <a href="setup.html">Setup</a>
                 <a href="browser-history.html" class="selected">Browser History</a>
+                <a href="routes.html">Routes</a>
             </div>
         </div>
         <div id="article">
@@ -60,7 +60,7 @@ stateNavigator.historyManager.stop();</code></pre>
             </div>
             <h2>Cleaning Urls</h2>
             <p>
-                By default, the Navigation router stores the stack of scenes in the Url. In our example app, when a user opens an email with an id of 12 the Url is '/mail?id=121_2&crumb=%2Finbox'. The <code>crumb</code> parameter in the query string marks that the 'inbox' is the first scene in the stack. We hide the stack from the Url by passing a <code>NavigationStack.HistoryManager</code> into the <code>StateNavigator</code> constructor. The <code>HistoryManager</code> turns the Url that opens the email into '/mail?id=121_2' (see the <a href="">Routes guide<a/> for how to remove the trailing characters '1_2').
+                By default, the Navigation router stores the stack of scenes in the Url. In our example app, when a user opens an email with an id of 12 the Url is '/mail?id=121_2&crumb=%2Finbox'. The <code>crumb</code> parameter in the query string marks that the 'inbox' is the first scene in the stack. We hide the stack from the Url by passing a <code>NavigationStack.HistoryManager</code> into the <code>StateNavigator</code> constructor. The <code>HistoryManager</code> turns the Url that opens the email into '/mail?id=121_2' (see the <a href="routes.html">Routes guide<a/> for how to remove the trailing characters '1_2').
             </p>
             <pre><code class="language-js">const stateNavigator = new StateNavigator([
   {key: 'inbox'},
