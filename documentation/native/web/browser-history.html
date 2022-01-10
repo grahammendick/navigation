@@ -56,11 +56,11 @@
 stateNavigator.historyManager.stop();</code></pre>
             <div class="Note">
                 <h2>Note</h2>
-                If your app has tabs that each contain stacks, then it doesn't make sense to connect just one of them to browser history. Instead you should disable the history manager of all your stacks. That way your app will still run, it's just that the browser back button won't do anything.
+                If your app has tabs that each contain stacks, then it doesn't make sense to connect just one of them to browser history. Instead you should disable the history manager of all your stacks. That way your app will still run, it's just that the Url won't change.
             </div>
             <h2>Cleaning Urls</h2>
             <p>
-                By default, the Navigation router stores the stack of scenes in the Url. In our example app, when a user opens an email with an id of 12 the Url is '/mail?id=121_2&crumb=%2Finbox'. The <code>crumb</code> parameter in the query string marks that the 'inbox' is the first scene in the stack. We hide the stack from the Url by passing a <code>NavigationStack.HistoryManager</code> into the <code>StateNavigator</code> constructor. The <code>HistoryManager</code> turns the Url that opens the email into '/mail?id=121_2'. 
+                By default, the Navigation router stores the stack of scenes in the Url. In our example app, when a user opens an email with an id of 12 the Url is '/mail?id=121_2&crumb=%2Finbox'. The <code>crumb</code> parameter in the query string marks that the 'inbox' is the first scene in the stack. We hide the stack from the Url by passing a <code>NavigationStack.HistoryManager</code> into the <code>StateNavigator</code> constructor. The <code>HistoryManager</code> turns the Url that opens the email into '/mail?id=121_2' (see the <a href="">Routes guide<a/> for how to remove the trailing characters '1_2').
             </p>
             <pre><code class="language-js">const stateNavigator = new StateNavigator([
   {key: 'inbox'},
