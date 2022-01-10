@@ -50,6 +50,7 @@
         <div id="article">
             <h1>Hyperlinks</h1>
             <p>
+                React Native Web adds an <code>href</code> prop to all <code>Touchables</code> and <code>Buttons</code>. Populating this prop turns them into Hyperlinks (they render anchor tags). Instead of hard-coding the href, the Navigation router will generate Urls for you. Pass the target <code>State</code> and navigation data into the <code>getNavigationLink</code> function on the <code>StateNavigator</code>. In our example email app, we turn the open email button into a Hyperlink.
             </p>
             <pre><code class="language-jsx">&lt;TouchableHighlight
   href={stateNavigator.historyManager.getHref(
