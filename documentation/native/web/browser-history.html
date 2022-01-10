@@ -67,6 +67,11 @@ stateNavigator.historyManager.stop();</code></pre>
   {key: 'mail', trackCrumbTrail: true},
   {key: 'compose', trackCrumbTrail: true}
 ], NavigationStack.HistoryManager && new NavigationStack.HistoryManager());</code></pre>
+            <h2>Removing Hashes</h2>
+            <p>
+                By default, the <code>HistoryManager</code> operates in hash history mode. For example, the full Url that opens an email of id 12 is 'https://domain/#/mail?id=121_2'. To remove the hash and clean up the Url so it reads 'https://domain/mail?id=121_2', we pass an empty string as the second parameter to the <code>HistoryManager</code> constructor. If we wanted our Url to look like 'https://domain/app/mail?id=121_2', we’d pass the 'app' base path as the second parameter instead.
+            </p>
+            <pre><code class="language-jsx">new NavigationStack.HistoryManager(null, '')</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../../js/prism.js"></script>
