@@ -50,7 +50,7 @@
         <div id="article">
             <h1>Browser History</h1>
             <p>
-                On native, it's up to you what happens when the user presses the back button. But on the web, the browser back button always steps back to the previously visited URL. Because browser history is linear, you can only connect it up to one <code>NavigationStack</code>. For all your other stacks you should disable the history manager of the associated <code>StateNavigator</code>.
+                On native, it's up to you what happens when the user presses the back button. But on the web, the browser back button always steps back to the previously visited URL. Because browser history is linear, you can only connect it up to one <code>NavigationStack</code>. For all your other stacks you should disable the history manager of the associated <code>stateNavigator</code>.
             </p>
             <pre><code class="language-js">stateNavigator.historyManager.disabled = true;
 stateNavigator.historyManager.stop();</code></pre>
