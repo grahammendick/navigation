@@ -84,15 +84,19 @@
             </p>
             <pre><code class="language-jsx">import {NavigationBackLink} from 'navigation-react';
 
-&lt;NavigationBackLink 
-  distance={1}
-  navigating={e => {
-    e.preventDefault();
-    history.back();
-    return false;
-  }}>
+&lt;NavigationBackLink distance={1}>
   Back to Inbox
 &lt;/NavigationBackLink></code></pre>
+            <p>
+                Alternatively, you can programmatically???
+            </p>
+            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+
+const {stateNavigator} = useContext(NavigationContext);
+
+&lt;div onClick={() => stateNavigator.navigateBack(1}>
+  Back to Inbox
+&lt;/div></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
