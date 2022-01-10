@@ -50,23 +50,13 @@
         <div id="article">
             <h1>Browser History</h1>
             <p>
-                On native, it’s up to you what happens when the user presses the back button. But on the web, the browser back button always steps back to the previously visited URL. Because browser history is linear, you can only connect it up to one <code>NavigationStack</code>. In an app that has multiple stacks, like the 'inbox' and 'contacts' stacks in our example email app, the quickest way to get up and running is to disable browser history. That means stopping and disabling the history managers on the associated state navigators before making your first <code>navigate</code> call.
+                On native, it’s up to you what happens when the user presses the back button. But on the web, the browser back button always steps back to the previously visited URL. Because browser history is linear, you can only connect it up to one <code>NavigationStack</code>. For all your other stacks you should disable the history manager of the associated <code>StateNavigator</code>.
             </p>
-            <pre><code class="language-js">inboxNavigator.historyManager.disabled = true;
-inboxNavigator.historyManager.stop();
-
-contactsNavigator.historyManager.disabled = true;
-contactsNavigator.historyManager.stop();
-</code></pre>
-            <h2>Enabling the Browser Back Button</h2>
+            <pre><code class="language-js">stateNavigator.historyManager.disabled = true;
+stateNavigator.historyManager.stop();</code></pre>
             <p>
+                If your app has tabs that each contain stacks, then it doesn’t make sense to connect just one of them to browser history. In that case you should disable the history manager of all your stacks. That way your app will still run, it’s just that the browser back button won’t do anything.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationBar
-  onNavigationPress={() => {
-    if (Platform.OS !== 'web') stateNavigator.navigateBack(1);
-    else history.back();
-}} />
-</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../../js/prism.js"></script>
