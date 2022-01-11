@@ -56,7 +56,7 @@
                 In our example email application, we want the same <a href="../custom-animation.html">push and pop animations</a> that we've already got running on Android. When a user opens an email, the 'mail' scene slides in from the right and the 'inbox' scene fades out.  When the user presses back, the 'inbox' scene fades in as the 'mail' scene slides back out the way it came.
             </p>
             <p>
-                We assign a style <code>prop</code> for each of the three different stages a scene can be in - <code>mounted</code> is when the scene is pushed onto the stack, <code>unmounted</code> is when the scene is popped off the stack and <code>crumbed</code> is when the scene is hidden in the stack. The <code>NavigationStack</code> provides a child callback function that lets us animate between these styles as a scene moves from one stage to another. We use the callback's parameters to style the scene with the interpolated translation and opacity.
+                We assign a style <code>prop</code> for each of the three different stages a scene can be in - <code>mounted</code> is when the scene is pushed onto the stack, <code>unmounted</code> is when the scene is popped off the stack and <code>crumbed</code> is when the scene is hidden in the stack. On the web, the <code>NavigationStack</code> provides a child callback function that lets us animate between these styles as a scene moves from one stage to another. We use the callback's parameters to style the scene with the interpolated translation and opacity values.
             </p>
             <pre><code class="language-jsx">&lt;NavigationStack
   unmountedStyle={{translate: 100, opacity: 1}}
