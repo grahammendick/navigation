@@ -54,7 +54,48 @@
             <h1>Shared Element Transition</h1>
             <p>
             </p>
-            <pre><code class="language-js"></code></pre>
+            <pre><code class="language-jsx">// The 'inbox' scene
+&lt;SharedElement
+  data={{size: 14, subject: subject}}
+  name={'email' + id}>
+&lt;Text>{subject}&lt;/Text>
+&lt;/SharedElement></code></pre>
+            <pre><code class="language-jsx">// The 'mail' scene
+&lt;SharedElement
+  data={{size: 20, subject: subject}}
+  name={'email' + id}>
+  &lt;Text>{subject}&lt;/Text>
+  &lt;Text>Please come along to find out more about...&lt;/Text>
+&lt;/SharedElement></code></pre>
+            <pre><code class="language-jsx">const MailShared = (props) => (
+  &lt;NavigationStack.SharedElementTransition
+    onAnimating={(name, ref) => {ref.style.opacity = 0}}
+    onAnimated={(name, ref) => {ref.style.opacity = 1}}
+    {...props}>
+    {(style, name, data) => (
+      &lt;div
+        key={name}
+        style={{
+          position: 'absolute',
+          fontSize: `${data.size}px`,
+          left: data.left,
+          top: data.top,
+          width: data.width,
+          height: data.height,
+          transformOrigin: 'top left',
+          transform: `
+            translate(${style.left - data.left}px, ${style.top - data.top}px)
+            scale(${style.width / data.width}, ${style.height / data.height})
+          `
+        }}>
+        {data.subject}
+      &lt;/div>
+    )}
+  &lt;/NavigationStack.SharedElementTransition>
+);</code></pre>
+        <pre><code class="language-jsx">&lt;NavigationStack
+  sharedElementTransition={props => &lt;MailShared {...props} />}
+  ...</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../../js/prism.js"></script>
