@@ -55,13 +55,14 @@
             <p>
             </p>
             <pre><code class="language-jsx">&lt;NavigationStack
-  unmountedStyle={{opacity: 1}}
-  mountedStyle={{opacity: 1}}
-  crumbedStyle={{opacity: 0}}>
+  unmountedStyle={{translate: 100, opacity: 1}}
+  mountedStyle={{translate: 0, opacity: 1}}
+  crumbedStyle={{translate: 0, opacity: 0}}>
   {(style, scene, key) => (
     &lt;View
       key={key}
       style={{
+        transform: `translate(${style.translate}%)`,
         opacity: style.opactity,
         position: 'absolute',
         left: 0, right: 0, top: 0, bottom: 0,
