@@ -69,7 +69,7 @@ stateNavigator.historyManager.stop();</code></pre>
 ], NavigationStack.HistoryManager && new NavigationStack.HistoryManager());</code></pre>
             <h3>Configuring Types</h3>
             <p>
-                The Navigation router keeps track of data types so we don't have to convert the email id back to a number on the 'mail' scene. By default it uses the Url to keep track of this type information. In the example Url the last three characters track that the <code>id</code> is a number. We'll remove these trailing characters, so that the Url reads '/mail?id=12' instead of '/mail?id=121_2', by assigning the <code>id</code> a type of 'number'. The other supported types are 'boolean' and 'date' ('string' is the default).
+                The Navigation router keeps track of data types so we don't have to convert the email id back to a number on the 'mail' scene. By default it uses the Url to keep track of this type information. In the example Url the last three characters track that the <code>id</code> is a number. We'll remove these trailing characters, so that the Url reads '/mail?id=12' instead of '/mail?id=121_2', by assigning the <code>id</code> a type of 'number'. The other supported types are 'boolean', 'date',  'stringarray', 'booleanarray' and 'datearray' ('string' is the default).
             </p>
             <pre><code class="language-js">[
   {key: 'inbox'},
