@@ -5069,10 +5069,17 @@
   "resolved" "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   "version" "1.4.0"
 
-"navigation-react-mobile@^3.4.0":
+"navigation-react-mobile@*":
   "integrity" "sha512-ZDCYmUvtRaoNe7PEJ+3K5lv3GshkveNZ+Ma2M5XLGfERBBvNr1aUIP0fPJNqgMMGo56c0nprO1NWhYM4hZY5vg=="
   "resolved" "https://registry.npmjs.org/navigation-react-mobile/-/navigation-react-mobile-3.6.0.tgz"
   "version" "3.6.0"
+
+"navigation-react-native-web@^1.0.0":
+  "integrity" "sha512-Afxqk3bYoOfpvsce1oQk7rOAueUidXUpQfz243/nl1eBppTxTJjRjsmH/A6E10Ra2UaSoTeiiNOYqBUhAzt+Fg=="
+  "resolved" "https://registry.npmjs.org/navigation-react-native-web/-/navigation-react-native-web-1.0.0.tgz"
+  "version" "1.0.0"
+  dependencies:
+    "navigation-react-mobile" "*"
 
 "navigation-react-native@^8.7.1":
   "integrity" "sha512-so+i1Abe0x62r6orXSEoP6LBh12d8d4Xb7YoXbE8ToU8lhCeTNjxM7Uy2zAxX/243qzZ4366rhfQNMaO4j/e9Q=="
