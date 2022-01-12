@@ -62,4 +62,11 @@ declare module 'navigation-react-native' {
          */
         href?: string;
     }
+
+    interface SharedElementProps {
+        /**
+         * The Shared Element data
+         */
+        data?: any;
+    }
 }

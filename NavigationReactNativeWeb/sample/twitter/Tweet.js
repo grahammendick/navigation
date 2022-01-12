@@ -20,10 +20,7 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         navigationHref={stateNavigator.historyManager.getHref(
           stateNavigator.getNavigationBackLink(1)
         )}
-        onNavigationPress={(e) => {
-          if (Platform.OS !== 'web') stateNavigator.navigateBack(1);
-          else history.back();
-        }} />
+        onNavigationPress={() => stateNavigator.navigateBack(1)} />
       <Tweets
         tweets={replies}
         renderHeader={(

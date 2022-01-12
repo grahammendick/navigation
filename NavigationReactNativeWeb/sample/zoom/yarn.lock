@@ -5060,10 +5060,17 @@
   "resolved" "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   "version" "1.4.0"
 
-"navigation-react-mobile@^3.4.0":
-  "integrity" "sha512-F/eWJyzE+Um/8Z52LB4GGI77t4tE0D/rHZm52FqL60RrVWfZCZISV5Rokr8yAJ0dxbyj7I61MPa3NW70o3yLwg=="
-  "resolved" "https://registry.npmjs.org/navigation-react-mobile/-/navigation-react-mobile-3.4.0.tgz"
-  "version" "3.4.0"
+"navigation-react-mobile@*":
+  "integrity" "sha512-ZDCYmUvtRaoNe7PEJ+3K5lv3GshkveNZ+Ma2M5XLGfERBBvNr1aUIP0fPJNqgMMGo56c0nprO1NWhYM4hZY5vg=="
+  "resolved" "https://registry.npmjs.org/navigation-react-mobile/-/navigation-react-mobile-3.6.0.tgz"
+  "version" "3.6.0"
+
+"navigation-react-native-web@^1.0.0":
+  "integrity" "sha512-Afxqk3bYoOfpvsce1oQk7rOAueUidXUpQfz243/nl1eBppTxTJjRjsmH/A6E10Ra2UaSoTeiiNOYqBUhAzt+Fg=="
+  "resolved" "https://registry.npmjs.org/navigation-react-native-web/-/navigation-react-native-web-1.0.0.tgz"
+  "version" "1.0.0"
+  dependencies:
+    "navigation-react-mobile" "*"
 
 "navigation-react-native@^7.4.2":
   "integrity" "sha512-Iu56cAUkAdrZfgdhe//xF1ueSfNC8qGFWMoYWzawfeW139Feb+pFrUvON0m9Hi4ApHMMbhqp1zou4dW9jajM9Q=="
