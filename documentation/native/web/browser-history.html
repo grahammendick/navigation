@@ -1,0 +1,101 @@
+<html>
+<head>
+    <title>Browser History</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../../css/prism.css">
+    <link rel="stylesheet" href="../../../css/navigation.css">
+    <style>
+        :root {
+            --primary-color: #9cc3d5ff;
+            --secondary-color: #0063b2ff;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="banner">
+        <a href="../../../native"><img alt="logo" src="../../../img/logo.png" /></a>
+        <a href="../../setup.html">React</a>
+        <a href="https://github.com/grahammendick/navigation">GitHub</a>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <h2>
+                <img alt="native" src="../../../img/native.png" />
+                React Native
+            </h2>
+            <div id="items">
+                <a href="../setup.html">Setup</a>
+                <a href="../hello-world.html">Hello World</a>
+                <a href="../push-navigation.html">Push Navigation</a>
+                <a href="../pop-navigation.html">Pop Navigation</a>
+                <a href="../navigation-bar.html">Navigation Bar</a>
+                <a href="../tab-bar.html">Tab Bar</a>
+                <a href="../modal.html">Modal</a>
+                <a href="../drawer.html">Drawer</a>
+                <a href="../bottom-sheet.html">Bottom Sheet (Android)</a>
+                <a href="../floating-action-button.html">Floating Action Button (Android)</a>
+                <a href="../scene-navigation-lifecycle.html">Navigation Lifecycle</a>
+                <a href="../custom-animation.html">Custom Animation (Android)</a>
+                <a href="../shared-element-transition.html">Shared Element Transition (Android)</a>
+                <a href="../deep-links.html">Deep Links</a>
+                <a href="../typescript.html">TypeScript</a>
+                <a href="../examples.html">Examples</a>
+                <h3>Web</h3>
+                <a href="setup.html">Setup</a>
+                <a href="browser-history.html" class="selected">Browser History</a>
+                <a href="hyperlinks.html">Hyperlinks</a>
+                <a href="custom-animation.html">Custom Animation</a>
+                <a href="shared-element-transition.html">Shared Element Transition</a>
+                <a href="examples.html">Examples</a>
+            </div>
+        </div>
+        <div id="article">
+            <h1>Browser History</h1>
+            <p>
+                On native, it's up to you what happens when the user presses the back button. But on the web, the browser back button always steps back to the previously visited URL. Because browser history is linear, you can only connect it up to one <code>NavigationStack</code>. For all your other stacks you should disable the history manager of the associated <code>stateNavigator</code>.
+            </p>
+            <pre><code class="language-js">stateNavigator.historyManager.disabled = true;
+stateNavigator.historyManager.stop();</code></pre>
+            <div class="Note">
+                <h2>Note</h2>
+                If your app has tabs that each contain stacks, then it doesn't make sense to connect just one of them to browser history. Instead you should disable the history manager of all your stacks. That way your app will still run, it's just that the Url won't change.
+            </div>
+            <h2>Cleaning Urls</h2>
+            <p>
+                By default, the Navigation router stores the stack of scenes in the Url. In our example app, when a user opens an email with an id of 12 the Url is '/mail?id=121_2&crumb=%2Finbox'. The <code>crumb</code> parameter in the query string marks that the 'inbox' is the first scene in the stack. We hide the stack from the Url by passing a <code>NavigationStack.HistoryManager</code> into the <code>StateNavigator</code> constructor. The <code>HistoryManager</code> turns the Url that opens the email into '/mail?id=121_2'.
+            </p>
+            <pre><code class="language-js">const stateNavigator = new StateNavigator([
+  {key: 'inbox'},
+  {key: 'mail', trackCrumbTrail: true},
+  {key: 'compose', trackCrumbTrail: true}
+], NavigationStack.HistoryManager && new NavigationStack.HistoryManager());</code></pre>
+            <h3>Configuring Types</h3>
+            <p>
+                The Navigation router keeps track of data types so we don't have to convert the email id back to a number on the 'mail' scene. By default it uses the Url to keep track of this type information. In the example Url the last three characters track that the <code>id</code> is a number. We'll remove these trailing characters, so that the Url reads '/mail?id=12' instead of '/mail?id=121_2', by assigning the <code>id</code> a type of 'number'. The other supported types are 'boolean', 'date',  'stringarray', 'booleanarray' and 'datearray' ('string' is the default).
+            </p>
+            <pre><code class="language-js">[
+  {key: 'inbox'},
+  {key: 'mail', defaultTypes: {id: 'number'}, trackCrumbTrail: true},
+  {key: 'compose', trackCrumbTrail: true}
+]</code></pre>
+            <h3>Configuring Routes</h3>
+            <p>
+                You don't have to settle for the default Urls generated by the Navigation router. You can have whatever Url scheme you want. To change our Url from '/mail?id=12' to '/open/12' we configure a route with the <code>id</code> as a route parameter.
+            </p>
+            <pre><code class="language-js">[
+  {key: 'inbox'},
+  {key: 'mail', route: 'open/{id}', defaultTypes: {id: 'number'}, trackCrumbTrail: true},
+  {key: 'compose', trackCrumbTrail: true}
+]</code></pre>
+            <h3>Removing Hashes</h3>
+            <p>
+                By default, the <code>HistoryManager</code> operates in hash history mode. For example, the full Url that opens an email of id 12 is 'https://domain/#/mail?id=121_2'. To remove the hash and clean up the Url so it reads 'https://domain/mail?id=121_2', we pass an empty string as the second parameter to the <code>HistoryManager</code> constructor. If we wanted our Url to look like 'https://domain/app/mail?id=121_2', we'd pass the 'app' base path as the second parameter instead.
+            </p>
+            <pre><code class="language-jsx">new NavigationStack.HistoryManager(null, '')</code></pre>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../../js/prism.js"></script>
+</body>
+
+</html>

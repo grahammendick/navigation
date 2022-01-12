@@ -1,0 +1,107 @@
+<html>
+<head>
+    <title>Hyperlinks</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../../css/prism.css">
+    <link rel="stylesheet" href="../../../css/navigation.css">
+    <style>
+        :root {
+            --primary-color: #9cc3d5ff;
+            --secondary-color: #0063b2ff;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="banner">
+        <a href="../../../native"><img alt="logo" src="../../../img/logo.png" /></a>
+        <a href="../../setup.html">React</a>
+        <a href="https://github.com/grahammendick/navigation">GitHub</a>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <h2>
+                <img alt="native" src="../../../img/native.png" />
+                React Native
+            </h2>
+            <div id="items">
+                <a href="../setup.html">Setup</a>
+                <a href="../hello-world.html">Hello World</a>
+                <a href="../push-navigation.html">Push Navigation</a>
+                <a href="../pop-navigation.html">Pop Navigation</a>
+                <a href="../navigation-bar.html">Navigation Bar</a>
+                <a href="../tab-bar.html">Tab Bar</a>
+                <a href="../modal.html">Modal</a>
+                <a href="../drawer.html">Drawer</a>
+                <a href="../bottom-sheet.html">Bottom Sheet (Android)</a>
+                <a href="../floating-action-button.html">Floating Action Button (Android)</a>
+                <a href="../scene-navigation-lifecycle.html">Navigation Lifecycle</a>
+                <a href="../custom-animation.html">Custom Animation (Android)</a>
+                <a href="../shared-element-transition.html">Shared Element Transition (Android)</a>
+                <a href="../deep-links.html">Deep Links</a>
+                <a href="../typescript.html">TypeScript</a>
+                <a href="../examples.html">Examples</a>
+                <h3>Web</h3>
+                <a href="setup.html">Setup</a>
+                <a href="browser-history.html">Browser History</a>
+                <a href="hyperlinks.html" class="selected">Hyperlinks</a>
+                <a href="custom-animation.html">Custom Animation</a>
+                <a href="shared-element-transition.html">Shared Element Transition</a>
+                <a href="examples.html">Examples</a>
+            </div>
+        </div>
+        <div id="article">
+            <h1>Hyperlinks</h1>
+            <p>
+                React Native Web adds an <code>href</code> prop to all <code>Touchables</code> and <code>Buttons</code>. Populating this prop turns them into Hyperlinks (they render anchor tags). Instead of hard-coding the href, the Navigation router will generate Urls for you. Pass the target <code>State</code> and navigation data into the <code>getNavigationLink</code> function on the <code>stateNavigator</code>. In our example email app, we turn the open email button into a Hyperlink.
+            </p>
+            <pre><code class="language-jsx">&lt;TouchableHighlight
+  href={stateNavigator.historyManager.getHref(
+    stateNavigator.getNavigationLink('mail', {id: 12})
+  )}
+  onPress={() => stateNavigator.navigate('mail', {id: 12})}}>
+  &lt;Text>Open Mail&lt;/Text>
+&lt;/TouchableHighlight></code></pre>
+            <p>
+                The Navigation router also generates Urls that navigate back through the stack. Pass the <code>distance</code> you want to travel back into the <code>getNavigationBackLink</code> function on the <code>stateNavigator</code>. In our email example, we turn the 'Back to Inbox' button into an anchor tag.
+            </p>
+            <pre><code class="language-jsx">&lt;TouchableHighlight
+  href={stateNavigator.historyManager.getHref(
+    stateNavigator.getNavigationBackLink(1)
+  )}
+  onPress={() => {
+    stateNavigator.navigateBack(1);
+  }}>
+  &lt;Text>Back to Inbox&lt;/Text>
+&lt;/TouchableHighlight></code></pre>
+            <h2>Opening Hyperlinks in New Tabs</h2>
+            <p>
+                A user opening the email Hyperlink in a new tab will find that they're taken to their inbox instead of the email. That's because we've hard-coded the startup navigation. That works for native but on the web we need to use the incoming Url to decide where to go. The <code>start</code> function on the <code>stateNavigator</code> does this for us.
+            </p>
+            <pre><code class="language-jsx">if (Platform.OS !== 'web') {
+  stateNavigator.navigate('inbox');
+} else {
+  stateNavigator.start();
+}</code></pre>                  
+            </p>
+            <p>
+                Now the user is taken to their email but the button taking them back to their inbox is disabled. The new tab goes straight to their open email, bypassing the inbox, so the stack of scenes is empty and they can't navigate back. We can re-enable the button by prepopulating the stack so it looks like the user came from the 'inbox' scene. We can build this Url by using the Navigation router's fluent navigation to simulate the user opening the email from their inbox.
+            </p>
+            <pre><code class="language-jsx">const url = stateNavigator.fluent()
+  .navigate('inbox')
+  .navigate('mail', {id: 12}).url;</code></pre>
+            <p>
+                We change the startup Url by passing a function into the <code>NavigationStack.HistoryManager</code> constructor. The function receives the browser Url and we use fluent navigation to return the new Url with the 'inbox' scene included. We extract the email Id from the incoming Url using the <code>parseLink</code> function on the <code>stateNavigator</code>.
+            </p>
+            <pre><code class="language-jsx">new NavigationStack.HistoryManager(url => {
+  const {state, data} = stateNavigator.parseLink(url);
+  return stateNavigator.fluent()
+    .navigate('inbox')
+    .navigate(state.key, data).url;
+})</code></pre>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../../js/prism.js"></script>
+</body>
+
+</html>

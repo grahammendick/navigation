@@ -79,7 +79,7 @@ const stateNavigator = new StateNavigator([
 })</code></pre>
             <h2>Removing Hashes</h2>
             <p>
-                By default, the <code>MobileHistoryManager</code> operates in hash history mode. For example, the full Url that opens an email of id 12 is 'https://domain/#/mail?id=12'. To remove the hash and clean up the Url so it reads 'https://domain/mail?id=12', we pass an empty string as the second parameter to the <code>MobileHistoryManager</code> constructor. If we wanted our Url to look like 'https://domain/app/mail?id=12', we’d pass the 'app' base path as the second parameter instead.
+                By default, the <code>MobileHistoryManager</code> operates in hash history mode. For example, the full Url that opens an email of id 12 is 'https://domain/#/mail?id=12'. To remove the hash and clean up the Url so it reads 'https://domain/mail?id=12', we pass an empty string as the second parameter to the <code>MobileHistoryManager</code> constructor. If we wanted our Url to look like 'https://domain/app/mail?id=12', we'd pass the 'app' base path as the second parameter instead.
             </p>
             <pre><code class="language-jsx">new MobileHistoryManager(null, '')</code></pre>
             <div class="Note">
