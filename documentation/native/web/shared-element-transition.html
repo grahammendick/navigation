@@ -101,6 +101,9 @@
     )}
   &lt;/NavigationStack.SharedElementTransition>
 );</code></pre>
+        <p>
+            We assign our <code>MailShared</code> component to the <code>sharedElementTransition prop</code> of the <code>NavigationStack</code> component because the shared element transition has to run as part of the overall scene animation.
+        </p>
         <pre><code class="language-jsx">&lt;NavigationStack
   sharedElementTransition={props => &lt;MailShared {...props} />}
   ...</code></pre>
