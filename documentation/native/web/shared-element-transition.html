@@ -53,6 +53,7 @@
         <div id="article">
             <h1>Shared Element Transition</h1>
             <p>
+                On Android, our example email app has <a href="../shared-element-transition.html">a shared element transition</a> that runs when a user opens a mail. The title of the email smoothly animates from the 'inbox' scene to the 'mail' scene. We want that same shared element transition to run on the web, too. We've already wrapped the subject elements in <code>SharedElement</code> components. On the web, each <code>SharedElement</code> needs a <code>data prop</code>. It holds the subject line and font size so that we can scale the text during the scene navigation.
             </p>
             <pre><code class="language-jsx">// The 'inbox' scene
 &lt;SharedElement
@@ -67,6 +68,13 @@
   &lt;Text>{subject}&lt;/Text>
   &lt;Text>Please come along to find out more about...&lt;/Text>
 &lt;/SharedElement></code></pre>
+            <h2>Animating</h2>
+            <p>
+                During a navigation, the <code>NavigationStack.SharedElementTransition </code> component keeps track of the shared element between the two scenes. As the navigation progresses, it interpolates between the source and target element screen positions. It calls you back with a <code>style</code> parameter containing these interpolated values so you can animate the shared element. The <code>SharedElementTransition </code> component also accepts <code>onAnimating</code> and <code>onAnimated props</code> so you can style the source and target elements when the navigation starts and finishes.
+            </p>
+            <p>
+                Returning to the email example, we create a <code>MailShared</code> component that renders a <code>SharedElementTransition</code> component. Inside the child callback function we render the email subject inside a div. We style the div using the interpolated coordinates. To make it look like the subject is moving out of the 'inbox' scene and into the 'mail' scene, we supply an <code>onAnimating prop</code> that hides the subject on these scenes when the navigation begins. An <code>onAnimated prop</code> restores their visibility when the navigation completes.
+            </p>
             <pre><code class="language-jsx">const MailShared = (props) => (
   &lt;NavigationStack.SharedElementTransition
     onAnimating={(name, ref) => {ref.style.opacity = 0}}
