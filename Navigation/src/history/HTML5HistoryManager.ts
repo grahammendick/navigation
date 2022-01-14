@@ -17,12 +17,11 @@ class HTML5HistoryManager implements HistoryManager {
     }
 
     addHistory(url: string, replace: boolean) {
-        var href = this.getHref(url);
-        if (!this.disabled && this.getHref(this.getUrl(window.location)) !== href) {
+        if (!this.disabled && (window.history.state?.navigationLink || this.getUrl(window.location)) !== url) {
             if (!replace)            
-                window.history.pushState({navigationLink: url}, null, href);
+                window.history.pushState({navigationLink: url}, null, this.getHref(url));
             else
-                window.history.replaceState({navigationLink: url}, null, href);
+                window.history.replaceState({navigationLink: url}, null, this.getHref(url));
         }
     }
 
