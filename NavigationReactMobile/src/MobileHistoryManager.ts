@@ -1,6 +1,8 @@
 import { HTML5HistoryManager, StateContext } from 'navigation';
 
 class MobileHistoryManager extends HTML5HistoryManager {
+    private navigateHistory: (e: PopStateEvent) => void = null;
+    private backCrumb: number = null;
     private hash = false;
     private buildCurrentUrl: (url: string) => string; 
 
@@ -10,7 +12,27 @@ class MobileHistoryManager extends HTML5HistoryManager {
         this.hash = applicationPath === undefined;
     }
 
+    init(navigateHistory: (url?: string) => void) {
+        if (!this.disabled && !this.navigateHistory) {
+            this.navigateHistory = e => {
+                var link = e.state?.navigationLink;
+                if (link && this.backCrumb !== null) {
+                    var distance = this.backCrumb - link.split('crumb=').length + 1;
+                    if (distance < 0)
+                        window.history.go(distance);
+                    else
+                        this.backCrumb = null;
+                } else {
+                    this.backCrumb = null;
+                    navigateHistory(link);
+                }
+            };
+            window.addEventListener('popstate', this.navigateHistory);
+        }
+    }
+
     addHistory(url: string, replace: boolean, stateContext?: StateContext) {
+        this.backCrumb = null;
         var title = typeof document !== 'undefined' && document.title;
         var distance = 0;
         if (!!stateContext && !stateContext.history) {
@@ -23,10 +45,12 @@ class MobileHistoryManager extends HTML5HistoryManager {
                 if (typeof document !== 'undefined' && state.title)
                     document.title = state.title;
             }
-            if (!this.disabled && distance < 0)
+            if (!this.disabled && distance < 0) {
+                this.backCrumb = crumbs.length;
                 window.history.go(distance);
+            }
         }
-        if (distance >= 0)
+        if (this.backCrumb !== null)
             super.addHistory(url, replace);
         if (title)
             document.title = title;
