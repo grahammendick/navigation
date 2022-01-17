@@ -87,6 +87,12 @@ class MobileHistoryManager extends HTML5HistoryManager {
             url = this.buildCurrentUrl(url);
         return url;
     }
+    
+    stop() {
+        if (this.navigateHistory)
+            window.removeEventListener('popstate', this.navigateHistory);
+        this.navigateHistory = null;
+    }
 }
 
 export default MobileHistoryManager;
