@@ -50,7 +50,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
                 window.history.go(distance);
             }
         }
-        if (this.backCrumb !== null)
+        if (this.backCrumb === null)
             super.addHistory(url, replace);
         if (title)
             document.title = title;
