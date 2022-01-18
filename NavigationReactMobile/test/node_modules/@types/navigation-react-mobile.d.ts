@@ -141,7 +141,7 @@ export class MobileHistoryManager extends HTML5HistoryManager {
      * a friendly Url
      * @param applicationPath The application path
      */
-    constructor(buildCurrentUrl: (url: string) => string, applicationPath?: string);
+    constructor(buildCurrentUrl?: ((url: string) => string) | null, applicationPath?: string);
     /**
      * Gets a friendly Href from a Url
      */
