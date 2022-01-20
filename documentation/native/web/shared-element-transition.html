@@ -59,14 +59,13 @@
 &lt;SharedElement
   data={{size: 14, subject: subject}}
   name={'email' + id}>
-&lt;Text>{subject}&lt;/Text>
+  &lt;Text>{subject}&lt;/Text>
 &lt;/SharedElement></code></pre>
             <pre><code class="language-jsx">// The 'mail' scene
 &lt;SharedElement
   data={{size: 20, subject: subject}}
   name={'email' + id}>
   &lt;Text>{subject}&lt;/Text>
-  &lt;Text>Please come along to find out more about...&lt;/Text>
 &lt;/SharedElement></code></pre>
             <h2>Animating</h2>
             <p>
@@ -81,7 +80,7 @@
     onAnimated={(name, ref) => {ref.style.opacity = 1}}
     {...props}>
     {(style, name, data) => (
-      &lt;div
+      &lt;Text
         key={name}
         style={{
           position: 'absolute',
@@ -97,7 +96,7 @@
           `
         }}>
         {data.subject}
-      &lt;/div>
+      &lt;/Text>
     )}
   &lt;/NavigationStack.SharedElementTransition>
 );</code></pre>
