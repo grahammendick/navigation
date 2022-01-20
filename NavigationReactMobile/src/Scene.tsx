@@ -34,7 +34,7 @@ class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEve
         var {crumb, navigationEvent: {stateNavigator}} = this.props;
         var {crumbs} = stateNavigator.stateContext;
         var stateContext = navigationEvent?.stateNavigator?.stateContext;
-        var {state, data} = stateContext || crumbs[crumb];
+        var {state, data} = stateContext || crumbs[crumb] || {};
         return (
             <NavigationContext.Provider value={navigationEvent}>
                 {navigationEvent && this.props.renderScene(state, data)}
