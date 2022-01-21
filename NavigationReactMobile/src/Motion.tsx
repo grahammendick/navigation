@@ -28,10 +28,8 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
     }
     animate(tick) {
         this.setState(({items: prevItems}) => {
-            var {items, moving} = Motion.move(tick, prevItems, this.props);
+            var {items} = Motion.move(tick, prevItems, this.props);
             this.animateId = null;
-            if (moving)
-                this.animateId = window.requestAnimationFrame(this.animate);
             return {items, restart: false};
         })
     }
