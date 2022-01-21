@@ -61,7 +61,8 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
     getStyle(mounted: boolean, {state, data, crumbs, nextState, nextData, mount}: SceneContext) {
         var {unmountedStyle, mountedStyle, crumbStyle} = this.props;
         var styleProp = !mounted ? unmountedStyle : (mount ? mountedStyle : crumbStyle);
-        return typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData) : styleProp;
+        var style = typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData) : styleProp;
+        return {...style, __marker: !mounted ? 1 : (mount ? 0 : -1)};
     }
     render() {
         var {children, duration, renderScene, sharedElementMotion, stateNavigator} = this.props;
@@ -77,7 +78,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     onRest={({key}) => this.clearScene(key)}
                     duration={duration}>
                     {styles => (
-                        styles.map(({data: {key, state, data}, style}) => {
+                        styles.map(({data: {key, state, data}, style: {__marker, ...style}}) => {
                             var crumb = +key.replace(/\++$/, '');
                             var {rest} = this.state;
                             var scene = <Scene crumb={crumb} rest={rest} renderScene={renderScene} /> ;
