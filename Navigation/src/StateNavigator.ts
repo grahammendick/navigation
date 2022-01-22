@@ -64,9 +64,6 @@ class StateNavigator {
         stateContext.data = data;
         stateContext.hash = hash;
         stateContext.nextCrumb = new Crumb(data, state, url, this.stateHandler.getLink(state, data, hash), false, hash);
-        stateContext.previousState = null;
-        stateContext.previousData = {};
-        stateContext.previousUrl = null;
         if (stateContext.crumbs.length > 0) {
             var previousStateCrumb = stateContext.crumbs.slice(-1)[0];
             stateContext.previousState = previousStateCrumb.state;
