@@ -76,10 +76,10 @@
 &lt;/TouchableHighlight></code></pre>
             <h2>Refreshing a Scene</h2>
             <p>
-                You've seen how to create Hyperlinks from <code>Pressables</code> that navigate forward and back through the stack. But you also need to create Hyperlinks out of <code>Pressables</code> that change data without changing the scene. In our example email app, there's a button on the 'mail' scene that expands the email so the user can view the full conversation. If we don't turn this into a Hyperlink then the user can't bookmark the expanded email thread.
+                You've seen how to create Hyperlinks from <code>Pressables</code> that navigate forward and back through the stack. But you also need to create Hyperlinks out of <code>Pressables</code> that change data without changing the scene. In our example email app, there's a button on the 'mail' scene that expands the email so the user can view the full conversation. We must turn this into a Hyperlink so that the user can bookmark the expanded email thread.
             </p>
             <p>
-                When the user expands their email thread, we store an <code>expand</code> indicator in navigation data instead of in <code>useState</code>. We pass the new navigation data to the <code>refresh</code> function on the <code>stateNavigator</code>. The Navigation router updates the navigation data without leaving the 'mail' scene. There's a corresponding <code>getRefreshLink</code> function for generating the matching URL. We don't need any platform checks because refresh navigation works on native as well as the web.
+                When the user presses the 'Expand Thread' button, we store an <code>expand</code> indicator in navigation data instead of in <code>useState</code>. We pass the new navigation data to the <code>refresh</code> function on the <code>stateNavigator</code>. The Navigation router updates the navigation data without leaving the 'mail' scene. There's a corresponding <code>getRefreshLink</code> function for generating the matching URL. We don't need any platform checks because refresh navigation works on native as well as the web.
             </p>
             <pre><code class="language-jsx">&lt;TouchableHighlight
   href={stateNavigator.historyManager.getHref(
