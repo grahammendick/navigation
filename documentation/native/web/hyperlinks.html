@@ -75,6 +75,9 @@
   &lt;Text>Back to Inbox&lt;/Text>
 &lt;/TouchableHighlight></code></pre>
             <h2>Refreshing a Scene</h2>
+            <p>
+                You've seen how to create Hyperlinks from <code>Pressables</code> that navigate forward and back through the stack. But you also need to create Hyperlinks out of <code>Pressables</code> that change data without changing the scene. In our example email app, we have a button on the 'mail' scene that expands the email so the user can view the full conversation. If we don't turn this into a Hyperlink then the user can't bookmark the expanded email thread.
+            </p>
             <pre><code class="language-jsx">&lt;TouchableHighlight
   href={stateNavigator.historyManager.getHref(
     stateNavigator.getRefreshLink({id: 12, expand: true})
