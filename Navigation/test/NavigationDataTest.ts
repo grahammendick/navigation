@@ -2156,9 +2156,9 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateNavigator.stateContext.previousData['s'], 'Hello');
                 assert.strictEqual(stateNavigator.stateContext.previousData['n'], 5);
                 assert.strictEqual(stateNavigator.stateContext.previousData['b'], true);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['s'], 'Hello');
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['n'], 5);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['b'], true);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['s'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['n'], 5);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['b'], true);
                 assert.strictEqual(stateNavigator.stateContext.data['s'], 'Hello');
                 assert.strictEqual(stateNavigator.stateContext.data['n'], 5);
                 assert.strictEqual(stateNavigator.stateContext.data['b'], true);
@@ -2561,7 +2561,7 @@ describe('Navigation Data', function () {
         }
     });
 
-    describe('Refresh Individual Data Custom Trail', function() {
+    describe('Navigate Individual Data Custom Trail', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
@@ -2584,8 +2584,8 @@ describe('Navigation Data', function () {
         describe('Navigate', function() {
             beforeEach(function() {
                 stateNavigator.navigate('s');
-                stateNavigator.refresh();
-                stateNavigator.refresh(individualNavigationData);
+                stateNavigator.navigate('s');
+                stateNavigator.navigate('s', individualNavigationData);
             });
             test();
         });
@@ -2594,9 +2594,9 @@ describe('Navigation Data', function () {
             beforeEach(function() {
                 var link = stateNavigator.getNavigationLink('s');
                 stateNavigator.navigateLink(link);
-                var link = stateNavigator.getRefreshLink();
+                var link = stateNavigator.getNavigationLink('s');
                 stateNavigator.navigateLink(link);
-                link = stateNavigator.getRefreshLink(individualNavigationData);
+                link = stateNavigator.getNavigationLink('s', individualNavigationData);
                 stateNavigator.navigateLink(link);
             });
             test();
@@ -2606,8 +2606,8 @@ describe('Navigation Data', function () {
             beforeEach(function() {
                 var link = stateNavigator.fluent()
                     .navigate('s')
-                    .refresh()
-                    .refresh(individualNavigationData)
+                    .navigate('s')
+                    .navigate('s', individualNavigationData)
                     .url;
                 stateNavigator.navigateLink(link);
             });
@@ -5285,8 +5285,8 @@ describe('Navigation Data', function () {
             it('should populate old and previous data', function () {
                 assert.strictEqual(stateNavigator.stateContext.oldData['s'], 'Hello');
                 assert.strictEqual(stateNavigator.stateContext.oldData['t'], 1);
-                assert.strictEqual(stateNavigator.stateContext.previousData['s'], 'Hello');
-                assert.strictEqual(stateNavigator.stateContext.previousData['t'], 1);
+                assert.strictEqual(stateNavigator.stateContext.previousData['s'], undefined);
+                assert.strictEqual(stateNavigator.stateContext.previousData['t'], undefined);
                 assert.strictEqual(stateNavigator.stateContext.data['s'], undefined);
                 assert.strictEqual(stateNavigator.stateContext.data['t'], undefined);
             });
@@ -7222,7 +7222,7 @@ describe('Navigation Data', function () {
         }
     });
     
-    describe('Refresh Data Back Custom Trail', function() {
+    describe('Navigate Data Back Custom Trail', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
@@ -7242,7 +7242,7 @@ describe('Navigation Data', function () {
             beforeEach(function() {
                 stateNavigator.navigate('s0');
                 stateNavigator.navigate('s1', data);
-                stateNavigator.refresh();
+                stateNavigator.navigate('s1');
                 stateNavigator.navigateBack(1);
             });
             test();
@@ -7254,7 +7254,7 @@ describe('Navigation Data', function () {
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getNavigationLink('s1', data);
                 stateNavigator.navigateLink(link);
-                link = stateNavigator.getRefreshLink();
+                link = stateNavigator.getNavigationLink('s1');
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getNavigationBackLink(1);
                 stateNavigator.navigateLink(link);
@@ -7267,7 +7267,7 @@ describe('Navigation Data', function () {
                 var link = stateNavigator.fluent()
                     .navigate('s0')
                     .navigate('s1', data)
-                    .refresh()
+                    .navigate('s1')
                     .navigateBack(1)
                     .url;
                 stateNavigator.navigateLink(link);
