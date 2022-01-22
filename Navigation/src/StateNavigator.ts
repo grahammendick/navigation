@@ -114,8 +114,8 @@ class StateNavigator {
     }
 
     getRefreshLink(navigationData?: any, hash?: string): string {
-        var { crumbs, nextCrumb } = this.stateContext;
-        return this.stateHandler.getLink(this.stateContext.state, navigationData, hash, crumbs, nextCrumb);
+        var { crumbs } = this.stateContext;
+        return this.stateHandler.getLink(this.stateContext.state, navigationData, hash, crumbs);
     }
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false,
