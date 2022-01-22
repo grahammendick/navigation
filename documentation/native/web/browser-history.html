@@ -88,6 +88,31 @@ stateNavigator.historyManager.stop();</code></pre>
   {key: 'mail', route: 'open/{id}', defaultTypes: {id: 'number'}, trackCrumbTrail: true},
   {key: 'compose', trackCrumbTrail: true}
 ]</code></pre>
+            <h3>Patching Bookmarks</h3>
+            <p>
+                A user visiting a bookmarked email will find that they're taken to their inbox instead of the email. That's because we've hard-coded the startup navigation. That works for native but on the web we need to use the incoming Url to decide where to go. The <code>start</code> function on the <code>stateNavigator</code> does this for us.
+            </p>
+            <pre><code class="language-jsx">if (Platform.OS !== 'web') {
+  stateNavigator.navigate('inbox');
+} else {
+  stateNavigator.start();
+}</code></pre>                  
+            </p>
+            <p>
+                Now the user is taken to their email but the button taking them back to their inbox is disabled. The bookmark takes the user straight to their open email, bypassing the inbox, so the stack of scenes is empty and they can't navigate back. We can re-enable the button by prepopulating the stack so it looks like the user came from the 'inbox' scene. We can build this Url by using the Navigation router's fluent navigation to simulate the user opening the email from their inbox.
+            </p>
+            <pre><code class="language-jsx">const url = stateNavigator.fluent()
+  .navigate('inbox')
+  .navigate('mail', {id: 12}).url;</code></pre>
+            <p>
+                We change the startup Url by passing a function into the <code>NavigationStack.HistoryManager</code> constructor. The function receives the browser Url and we use fluent navigation to return the new Url with the 'inbox' scene included. We extract the email Id from the incoming Url using the <code>parseLink</code> function on the <code>stateNavigator</code>.
+            </p>
+            <pre><code class="language-jsx">new NavigationStack.HistoryManager(url => {
+  const {state, data} = stateNavigator.parseLink(url);
+  return stateNavigator.fluent()
+    .navigate('inbox')
+    .navigate(state.key, data).url;
+})</code></pre>
             <h3>Removing Hashes</h3>
             <p>
                 By default, the <code>HistoryManager</code> operates in hash history mode. For example, the full Url that opens an email of id 12 is 'https://domain/#/mail?id=121_2'. To remove the hash and clean up the Url so it reads 'https://domain/mail?id=121_2', we pass an empty string as the second parameter to the <code>HistoryManager</code> constructor. If we wanted our Url to look like 'https://domain/app/mail?id=121_2', we'd pass the 'app' base path as the second parameter instead.
