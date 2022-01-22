@@ -74,9 +74,16 @@
   }}>
   &lt;Text>Back to Inbox&lt;/Text>
 &lt;/TouchableHighlight></code></pre>
+            <h2>Refreshing a Scene</h2>
+            <pre><code class="language-jsx">&lt;TouchableHighlight
+  href={stateNavigator.historyManager.getHref(
+    stateNavigator.getRefreshLink({id: 12, expand: true})
+  )}
+  onPress={() => stateNavigator.refresh({id: 12, expand: true})}}>
+  &lt;Text>Expand Thread&lt;/Text>
+&lt;/TouchableHighlight></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../../js/prism.js"></script>
 </body>
-
 </html>
