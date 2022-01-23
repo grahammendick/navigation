@@ -69,7 +69,8 @@
   href={stateNavigator.historyManager.getHref(
     stateNavigator.getNavigationBackLink(1)
   )}
-  onPress={() => {
+  onPress={(e) => {
+    e.preventDefault();
     stateNavigator.navigateBack(1);
   }}>
   &lt;Text>Back to Inbox&lt;/Text>
@@ -85,7 +86,10 @@
   href={stateNavigator.historyManager.getHref(
     stateNavigator.getRefreshLink({id: 12, expand: true})
   )}
-  onPress={() => stateNavigator.refresh({id: 12, expand: true})}}>
+  onPress={(e) => {
+    e.preventDefault();
+    stateNavigator.refresh({id: 12, expand: true});
+  }}>
   &lt;Text>Expand Thread&lt;/Text>
 &lt;/TouchableHighlight></code></pre>
         </div>
