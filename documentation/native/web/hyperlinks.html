@@ -59,7 +59,10 @@
   href={stateNavigator.historyManager.getHref(
     stateNavigator.getNavigationLink('mail', {id: 12})
   )}
-  onPress={() => stateNavigator.navigate('mail', {id: 12})}>
+  onPress={(e) => {
+    e.preventDefault();
+    stateNavigator.navigate('mail', {id: 12});
+  }}>
   &lt;Text>Open Mail&lt;/Text>
 &lt;/TouchableHighlight></code></pre>
             <p>
