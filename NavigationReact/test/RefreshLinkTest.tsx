@@ -2627,7 +2627,7 @@ describe('RefreshLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r0?x=a');
             act(() => stateNavigator.navigate('s1', {y: 'b'}));
-            assert.equal(link.hash, '#/r1?y=b&x=a&crumb=%2Fr0&crumb=%2Fr1%3Fy%3Db');
+            assert.equal(link.hash, '#/r1?y=b&x=a&crumb=%2Fr0');
         })
     });
 
@@ -2713,7 +2713,7 @@ describe('RefreshLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
             act(() => stateNavigator.navigate('s1'));
-            assert.equal(link.hash, '#/r1?x=a&crumb=%2Fr0%3Fx%3Da&crumb=%2Fr1');
+            assert.equal(link.hash, '#/r1?x=a&crumb=%2Fr0%3Fx%3Da');
         })
     });
 
@@ -2911,19 +2911,16 @@ describe('RefreshLinkTest', function () {
             act(() => stateNavigator.navigate('s1', {y: 'b'}));
             var link = container.querySelector<HTMLAnchorElement>('a');
             act(() => Simulate.click(link));
-            assert.equal(stateNavigator.stateContext.url, '/r0?z=c&crumb=%2Fr0%3Fx%3Da');
+            assert.equal(stateNavigator.stateContext.url, '/r0?z=c');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
             assert.equal(stateNavigator.stateContext.data.z, 'c');
             assert.equal(stateNavigator.stateContext.oldUrl, '/r0?x=a');
             assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
             assert.equal(stateNavigator.stateContext.oldData.x, 'a');
-            assert.equal(stateNavigator.stateContext.previousUrl, '/r0?x=a');
-            assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
-            assert.equal(stateNavigator.stateContext.previousData.x, 'a');
-            assert.equal(stateNavigator.stateContext.crumbs.length, 1);
-            assert.equal(stateNavigator.stateContext.crumbs[0].url, '/r0?x=a');
-            assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
-            assert.equal(stateNavigator.stateContext.crumbs[0].data.x, 'a');
+            assert.equal(stateNavigator.stateContext.previousUrl, null);
+            assert.equal(stateNavigator.stateContext.previousState, null);
+            assert.equal(stateNavigator.stateContext.previousData.x, undefined);
+            assert.equal(stateNavigator.stateContext.crumbs.length, 0);
         })
     });
 
