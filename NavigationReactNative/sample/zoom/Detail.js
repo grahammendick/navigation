@@ -33,7 +33,7 @@ const Detail = ({colors, color, search}) => {
                 style={[styles.subcolor, {backgroundColor: subcolor}]}
                 underlayColor={subcolor}
                 onPress={() => {
-                  stateNavigator.navigate('detail', {color: subcolor, search});
+                  stateNavigator.refresh({color: subcolor, search});
                 }}>
                   <View />
               </TouchableHighlight>
