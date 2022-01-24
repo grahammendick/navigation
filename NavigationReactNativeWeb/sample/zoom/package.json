@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "babel-loader": "^8.2.2",
-    "navigation": "^5.5.0",
+    "navigation": "^6.0.0",
     "navigation-react": "^4.3.0",
     "navigation-react-native": "^7.4.2",
     "navigation-react-native-web": "^1.0.0",

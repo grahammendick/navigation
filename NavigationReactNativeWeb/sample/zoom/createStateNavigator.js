@@ -25,10 +25,6 @@ export default () => {
   grid.renderScene = () => <Grid colors={colors} />;
   detail.renderScene = ({color}) => <Detail colors={colors} color={color} />;
   
-  detail.truncateCrumbTrail = (state, data, crumbs) => (
-    crumbs.slice(-1)[0].state === detail ? crumbs.slice(0, -1) : crumbs
-  );
-
   if (Platform.OS === 'web') stateNavigator.start()
   else stateNavigator.navigate('grid');
   

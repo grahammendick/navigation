@@ -4749,10 +4749,10 @@
   "resolved" "https://registry.npmjs.org/navigation-react/-/navigation-react-4.3.0.tgz"
   "version" "4.3.0"
 
-"navigation@*", "navigation@^5.5.0":
-  "integrity" "sha512-FlhpzwFBrWEqXx7kT9YJZ/b50r3XWQwGWnmTt22SGFNwwxDuGUYAHMMdqU0U21G62VNmG0h91FiydB22wsJAEA=="
-  "resolved" "https://registry.npmjs.org/navigation/-/navigation-5.5.0.tgz"
-  "version" "5.5.0"
+"navigation@*", "navigation@^6.0.0":
+  "integrity" "sha512-f6CEAF2s5K+NyRYFGRq+fE+Y8W/VQEqdI6JshzMR3lSHENRksZnODt6Oy4Zrr+7bo5/bEoqpi00LaQqv+9snFA=="
+  "resolved" "https://registry.npmjs.org/navigation/-/navigation-6.0.0.tgz"
+  "version" "6.0.0"
 
 "negotiator@0.6.2":
   "integrity" "sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw=="

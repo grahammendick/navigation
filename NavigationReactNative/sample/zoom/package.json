@@ -11,7 +11,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "navigation": "^5.5.0",
+    "navigation": "^6.0.0",
     "navigation-react": "^4.3.0",
     "navigation-react-native": "^8.0.0",
     "patch-package": "^6.4.7",
