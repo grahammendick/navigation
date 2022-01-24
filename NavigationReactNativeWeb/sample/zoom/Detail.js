@@ -37,12 +37,12 @@ export default ({colors, color}) => {
                   underlayColor={subcolor}
                   accessibilityRole="link"
                   href={stateNavigator.historyManager.getHref(
-                    stateNavigator.getNavigationLink('detail', {color: subcolor})
+                    stateNavigator.getRefreshLink({color: subcolor})
                   )}
                   onPress={(e) => {
                     if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey || e.button) return
                     e.preventDefault()
-                    stateNavigator.navigate('detail', {color: subcolor}, 'replace');
+                    stateNavigator.refresh({color: subcolor}, 'replace');
                   }}>
                     <View />
                 </TouchableHighlight>
