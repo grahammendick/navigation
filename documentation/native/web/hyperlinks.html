@@ -78,7 +78,7 @@
   }}>
   &lt;Text>Back to Inbox&lt;/Text>
 &lt;/TouchableHighlight></code></pre>
-            <h2>Refreshing a Scene</h2>
+            <h2>Refreshing Scenes</h2>
             <p>
                 You've seen how to create Hyperlinks from <code>Pressables</code> that navigate forward and back through the stack. But you also need to create Hyperlinks out of <code>Pressables</code> that change data without changing the scene. In our example email app, there's a button on the 'mail' scene that expands the email so the user can view the full conversation. We must turn this into a Hyperlink so that the user can bookmark the expanded email thread.
             </p>
@@ -95,6 +95,15 @@
   }}>
   &lt;Text>Expand Thread&lt;/Text>
 &lt;/TouchableHighlight></code></pre>
+            <h3>Nesting Routes</h3>
+            <p>
+                By default, the Navigation router stores the <code>expand</code> indicator in the query string. The URL that expands the full email thread is '/open/12?expand=true'. But, remember that <a href="browser-history.html#configuring-routes">we can change these URLs</a> to be whatever we want without changing any code. To change it to 'open/12/thread/true', we configure a route of 'open/{id}+/thread/{expand}'. The '+' separator ensures the Navigation route still matches 'open/12' so that the Hyperlink from the inbox that opens the mail still works. 
+            </p>
+            <pre><code class="language-js">[
+  {key: 'inbox'},
+  {key: 'mail', route: 'open/{id}+/thread/{expand}', defaults: {expand: false}, trackCrumbTrail: true},
+  {key: 'compose', trackCrumbTrail: true}
+]</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../../js/prism.js"></script>
