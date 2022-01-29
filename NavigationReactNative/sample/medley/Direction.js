@@ -25,7 +25,8 @@ export default ({direction, color}) => {
   return (
       <>
         <NavigationBar
-          title={direction[0].toUpperCase() + direction.slice(1)}>
+          title={direction[0].toUpperCase() + direction.slice(1)}
+          barTintColor="white">
             <RightBar>
               <BarButton
                 show="always"
