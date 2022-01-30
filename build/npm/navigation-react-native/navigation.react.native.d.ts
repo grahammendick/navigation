@@ -11,6 +11,10 @@ declare global {
  */
 export interface NavigationStackProps {
     /**
+     * The color of the background behind the Scenes
+     */
+    underlayColor?: string;
+    /**
      * A Scene's title
      */
     title?: (state: State, data: any) => string;
