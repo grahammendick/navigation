@@ -4,7 +4,7 @@ import { Crumb, State } from 'navigation';
 import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
 import PopSync from './PopSync';
 import Scene from './Scene';
-type NavigationStackProps = {stateNavigator: AsyncStateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, renderScene: (state: State, data: any) => ReactNode};
+type NavigationStackProps = {stateNavigator: AsyncStateNavigator, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, underlayColor: string, renderScene: (state: State, data: any) => ReactNode};
 type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], rest: boolean};
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
@@ -22,7 +22,8 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         unmountStyle: () => null,
         crumbStyle: () => null,
         hidesTabBar: () => false,
-        sharedElement: () => null
+        sharedElement: () => null,
+        underlayColor: '#000'
     }
     static getDerivedStateFromProps({stateNavigator}: NavigationStackProps, {keys: prevKeys, stateNavigator: prevStateNavigator}: NavigationStackState) {
         if (stateNavigator === prevStateNavigator)
@@ -94,13 +95,13 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     }
     render() {
         var {keys, rest} = this.state;
-        var {stateNavigator, unmountStyle, crumbStyle, hidesTabBar, title, renderScene} = this.props;
+        var {stateNavigator, unmountStyle, crumbStyle, hidesTabBar, title, underlayColor, renderScene} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
             <NVNavigationStack
                 ref={this.ref}
                 keys={keys}
-                style={styles.stack}
+                style={[styles.stack, {backgroundColor: underlayColor}]}
                 {...this.getAnimation()}
                 onWillNavigateBack={this.onWillNavigateBack}
                 onNavigateToTop={this.onNavigateToTop}
@@ -132,7 +133,6 @@ var NVNavigationStack = requireNativeComponent<any>('NVNavigationStack', null);
 const styles = StyleSheet.create({
     stack: {
         flex: 1,
-        backgroundColor: '#000',
     },
 });
 
