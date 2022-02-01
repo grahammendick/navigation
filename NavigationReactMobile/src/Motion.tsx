@@ -47,7 +47,7 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
                 if (unchanged) {
                     nextItem.start = item.start;
                     nextItem.rest = item.progress === 1;
-                    var progressDelta = (nextItem.tick - item.tick) / duration;
+                    var progressDelta = Math.min(nextItem.tick - item.tick, 50) / duration;
                     nextItem.progress = Math.min(item.progress + progressDelta, 1);
                 } else {
                     nextItem.rest = false;

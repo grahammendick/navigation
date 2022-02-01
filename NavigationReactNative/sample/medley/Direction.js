@@ -25,7 +25,8 @@ export default ({direction, color}) => {
   return (
       <>
         <NavigationBar
-          title={direction[0].toUpperCase() + direction.slice(1)}>
+          title={direction[0].toUpperCase() + direction.slice(1)}
+          barTintColor="white">
             <RightBar>
               <BarButton
                 show="always"
@@ -59,6 +60,7 @@ export default ({direction, color}) => {
           <ModalBackHandler>
             {handleBack => (
               <Modal
+                transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
                   if (!handleBack())
@@ -67,6 +69,7 @@ export default ({direction, color}) => {
                 <ModalContext.Provider value={() => setModalVisible(false)}>
                   <NavigationHandler stateNavigator={modalNavigator}>
                     <NavigationStack
+                      underlayColor="rgba(0,0,0,0)"
                       crumbStyle={(from, state) => state.getCrumbStyle(from)}
                       unmountStyle={(from, state) => state.getUnmountStyle(from)} />
                   </NavigationHandler>
