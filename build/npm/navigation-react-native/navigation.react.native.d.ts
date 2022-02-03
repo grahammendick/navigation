@@ -90,6 +90,10 @@ export interface NavigationBarProps {
      */
     navigationImage?: ImageRequireSource | ImageURISource;
     /**
+     * The accessible description of the navigation button
+     */
+    navigationAccessibilityLabel?: string;
+    /**
      * The title font family
      */
     titleFontFamily?: string | ((standard: boolean) => string);
