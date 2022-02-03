@@ -66,6 +66,11 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         view.setNavIconSource(navIcon);
     }
 
+    @ReactProp(name = "navigationAccessibilityLabel")
+    public void setNavigationContentDescription(ToolbarView view, String navigationContentDescription) {
+        view.setNavigationContentDescription(navigationContentDescription);
+    }
+
     @ReactProp(name = "overflowImage")
     public void setOverflowIcon(ToolbarView view, ReadableMap overflowIcon) {
         view.setOverflowIconSource(overflowIcon);
