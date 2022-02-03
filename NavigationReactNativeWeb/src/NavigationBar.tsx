@@ -11,7 +11,7 @@ declare module 'react-native' {
     }
 }
 
-const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navigationHref, navigationTestID,
+const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navigationHref, navigationTestID, navigationAccessibilityLabel,
     barTintColor, tintColor, title, titleColor, titleFontFamily, titleFontWeight, titleFontStyle, titleFontSize, children}) => {
     const barRef = useRef<any>();
     useLayoutEffect(() => {
@@ -39,7 +39,7 @@ const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navi
         <View ref={barRef} style={[styles.bar, {backgroundColor: barTintColor}]}>
             {navigationImage && (
                 <TouchableOpacity href={navigationHref} testID={navigationTestID} onPress={onPress} style={{marginEnd: 32}}>
-                    <Image source={navigationImage} style={{width: 24, height: 24, tintColor}} />
+                    <Image source={navigationImage} accessibilityLabel={navigationAccessibilityLabel} style={{width: 24, height: 24, tintColor}} />
                 </TouchableOpacity>
             )}
             {!titleBar ? (
