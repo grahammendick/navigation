@@ -87,9 +87,9 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                                     </Freeze>
                                 );
                             }).concat(
-                                mountMoving && sharedElementMotion && sharedElementMotion({
+                                sharedElementMotion && sharedElementMotion({
                                     key: 'sharedElements',
-                                    sharedElements: this.getSharedElements(),
+                                    sharedElements: mountMoving ? this.getSharedElements() : [],
                                     progress: styles[crumbs.length] && styles[crumbs.length].progress,
                                     duration,
                                 })
