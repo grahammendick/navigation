@@ -85,12 +85,12 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
         return true;
     }
     static interpolateStyle({start, end, progress}) {
-        var style = {};
+        var style: any = {};
         for(var key in end) {
             if (key !== 'duration')
                 style[key] = start[key] + (progress * (end[key] - start[key]));
         }
-        style['duration'] = end['duration'];
+        style.duration = end.duration;
         return style;
     }
     render() {
