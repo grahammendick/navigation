@@ -7,14 +7,14 @@ import SharedElementRegistry from './SharedElementRegistry';
 import withStateNavigator from './withStateNavigator';
 import Freeze from './Freeze';
 import { NavigationMotionProps } from './Props';
-type NavigationMotionState = {stateNavigator: StateNavigator, keys: string[], rest: boolean};
+type NavigationMotionState = {stateNavigator: StateNavigator, keys: string[]};
 type SceneContext = {key: string, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, mount: boolean};
 
 class NavigationMotion extends React.Component<NavigationMotionProps, NavigationMotionState> {
     private sharedElementRegistry = new SharedElementRegistry();
     constructor(props: NavigationMotionProps) {
         super(props);
-        this.state = {stateNavigator: null, keys: [], rest: false};
+        this.state = {stateNavigator: null, keys: []};
     }
     static defaultProps = {
         duration: 300,
@@ -29,24 +29,20 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         var keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
         if (prevKeys.length === keys.length && prevState !== state)
             keys[keys.length - 1] += '+';
-        return {keys, rest: false, stateNavigator};
+        return {keys, stateNavigator};
     }
     getSharedElements() {
         var {crumbs, oldUrl} = this.props.stateNavigator.stateContext;
-        if (oldUrl !== null && !this.state.rest) {
+        if (oldUrl !== null) {
             var oldScene = oldUrl.split('crumb=').length - 1;
             return this.sharedElementRegistry.getSharedElements(crumbs.length, oldScene);
         }
         return [];
     }
     clearScene(index) {
-        this.setState(({rest: prevRest}) => {
-            var scene = this.getScenes().filter(scene => scene.key === index)[0];
-            if (!scene)
-                this.sharedElementRegistry.unregisterSharedElement(index);
-            var rest = prevRest || (scene && scene.mount);
-            return (rest !== prevRest) ? {rest} : null;
-        });
+        var scene = this.getScenes().filter(scene => scene.key === index)[0];
+        if (!scene)
+            this.sharedElementRegistry.unregisterSharedElement(index);
     }
     getScenes(): SceneContext[]{
         var {stateNavigator} = this.props;
