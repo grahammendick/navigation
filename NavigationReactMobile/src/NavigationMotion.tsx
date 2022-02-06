@@ -77,25 +77,29 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     leave={scene => this.getStyle(false, scene)}
                     onRest={({key}) => this.clearScene(key)}
                     duration={duration}>
-                    {styles => (
-                        styles.map(({data: {key, state, data}, style: {__marker, duration, ...style}, rest: sceneRest}) => {
-                            var crumb = +key.replace(/\++$/, '');
-                            var rest = sceneRest && this.state.rest;
-                            var scene = <Scene crumb={crumb} rest={rest} renderScene={renderScene} />;
-                            return (
-                                <Freeze key={key} enabled={rest && crumb < this.getScenes().length - 1}>
-                                    {children(style, scene, key, crumbs.length === crumb, state, data)}
-                                </Freeze>
-                            );
-                        }).concat(
-                            sharedElementMotion && sharedElementMotion({
-                                key: 'sharedElements',
-                                sharedElements: this.getSharedElements(),
-                                progress: styles[crumbs.length] && styles[crumbs.length].progress,
-                                duration,
-                            })
-                        )
-                    )}
+                    {styles => {
+                        var {moving, mountMoving} = styles.reduce(({moving, mountMoving}, {rest, data: {mount}}) => (
+                            {moving: moving || !rest, mountMoving: !mount ? mountMoving : !rest}
+                        ), {moving: false, mountMoving: false})
+                        return (
+                            styles.map(({data: {key, state, data}, style: {__marker, duration, ...style}, rest: sceneRest}) => {
+                                var crumb = +key.replace(/\++$/, '');
+                                var scene = <Scene crumb={crumb} rest={!moving} renderScene={renderScene} />;
+                                return (
+                                    <Freeze key={key} enabled={!moving && crumb < this.getScenes().length - 1}>
+                                        {children(style, scene, key, crumbs.length === crumb, state, data)}
+                                    </Freeze>
+                                );
+                            }).concat(
+                                mountMoving && sharedElementMotion && sharedElementMotion({
+                                    key: 'sharedElements',
+                                    sharedElements: this.getSharedElements(),
+                                    progress: styles[crumbs.length] && styles[crumbs.length].progress,
+                                    duration,
+                                })
+                            )
+                        )}
+                    }
                 </Motion>
             </SharedElementContext.Provider>
         );
