@@ -74,9 +74,14 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     onRest={({key}) => this.clearScene(key)}
                     duration={duration}>
                     {styles => {
-                        var {moving, mountMoving} = styles.reduce(({moving, mountMoving}, {rest, data: {mount}}) => (
-                            {moving: moving || !rest, mountMoving: !mount ? mountMoving : !rest}
-                        ), {moving: false, mountMoving: false})
+                        var {moving, mountMoving, mountDuration} = styles.reduce(
+                            ({moving, mountMoving, mountDuration}, {rest, data: {mount}, style: {duration}}) => (
+                                {
+                                    moving: moving || !rest,
+                                    mountMoving: !mount ? mountMoving : !rest,
+                                    mountDuration: !mount ? mountDuration : duration
+                                }
+                            ), {moving: false, mountMoving: false, mountDuration: 0});
                         return (
                             styles.map(({data: {key, state, data}, style: {__marker, duration, ...style}, rest: sceneRest}) => {
                                 var crumb = +key.replace(/\++$/, '');
@@ -91,7 +96,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                                     key: 'sharedElements',
                                     sharedElements: mountMoving ? this.getSharedElements() : [],
                                     progress: styles[crumbs.length] && styles[crumbs.length].progress,
-                                    duration,
+                                    duration: mountDuration ?? duration,
                                 })
                             )
                         )}
