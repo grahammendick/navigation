@@ -90,7 +90,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     {styles => {
                         var {rest, mountRest, mountDuration} = NavigationMotion.getRest(styles);
                         return (
-                            styles.map(({data: {key, state, data}, style: {__marker, duration, ...style}, rest: sceneRest}) => {
+                            styles.map(({data: {key, state, data}, style: {__marker, duration, ...style}}) => {
                                 var crumb = +key.replace(/\++$/, '');
                                 var scene = <Scene crumb={crumb} rest={rest} renderScene={renderScene} />;
                                 return (
