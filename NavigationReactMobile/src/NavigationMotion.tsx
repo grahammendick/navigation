@@ -62,14 +62,16 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         return {...style, __marker: !mounted ? 1 : (mount ? 0 : -1)};
     }
     getRest(styles: MotionStyle[]) {
-        return styles.reduce(
-            ({moving, mountMoving, mountDuration}, {rest, data: {mount}, style: {duration}}) => (
-                {
-                    moving: moving || !rest,
-                    mountMoving: !mount ? mountMoving : !rest,
-                    mountDuration: !mount ? mountDuration : duration
-                }
-            ), {moving: false, mountMoving: false, mountDuration: 0});
+        var moving, mountMoving = false;
+        var mountDuration;
+        for(var {rest, data: {mount}, style: {duration}} of styles) {
+            if (mount) {
+                mountMoving = !rest;
+                mountDuration = duration;
+            }
+            moving = moving || !rest;
+        }
+        return {rest: !moving, mountRest: !mountMoving, mountDuration};
     }
     render() {
         var {children, duration, renderScene, sharedElementMotion, stateNavigator} = this.props;
@@ -85,20 +87,20 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     onRest={({key}) => this.clearScene(key)}
                     duration={duration}>
                     {styles => {
-                        var {moving, mountMoving, mountDuration} = this.getRest(styles);
+                        var {rest, mountRest, mountDuration} = this.getRest(styles);
                         return (
                             styles.map(({data: {key, state, data}, style: {__marker, duration, ...style}, rest: sceneRest}) => {
                                 var crumb = +key.replace(/\++$/, '');
-                                var scene = <Scene crumb={crumb} rest={!moving} renderScene={renderScene} />;
+                                var scene = <Scene crumb={crumb} rest={rest} renderScene={renderScene} />;
                                 return (
-                                    <Freeze key={key} enabled={!moving && crumb < this.getScenes().length - 1}>
+                                    <Freeze key={key} enabled={rest && crumb < this.getScenes().length - 1}>
                                         {children(style, scene, key, crumbs.length === crumb, state, data)}
                                     </Freeze>
                                 );
                             }).concat(
                                 sharedElementMotion && sharedElementMotion({
                                     key: 'sharedElements',
-                                    sharedElements: mountMoving ? this.getSharedElements() : [],
+                                    sharedElements: !mountRest ? this.getSharedElements() : [],
                                     progress: styles[crumbs.length] && styles[crumbs.length].progress,
                                     duration: mountDuration ?? duration,
                                 })
