@@ -9,6 +9,7 @@ import Freeze from './Freeze';
 import { NavigationMotionProps } from './Props';
 type NavigationMotionState = {stateNavigator: StateNavigator, keys: string[]};
 type SceneContext = {key: string, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, mount: boolean};
+type MotionStyle = {style: any, data: SceneContext, key: string, rest: boolean, progress: number, start: any, end: any };
 
 class NavigationMotion extends React.Component<NavigationMotionProps, NavigationMotionState> {
     private sharedElementRegistry = new SharedElementRegistry();
@@ -60,6 +61,16 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         var style = typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData) : styleProp;
         return {...style, __marker: !mounted ? 1 : (mount ? 0 : -1)};
     }
+    getRest(styles: MotionStyle[]) {
+        return styles.reduce(
+            ({moving, mountMoving, mountDuration}, {rest, data: {mount}, style: {duration}}) => (
+                {
+                    moving: moving || !rest,
+                    mountMoving: !mount ? mountMoving : !rest,
+                    mountDuration: !mount ? mountDuration : duration
+                }
+            ), {moving: false, mountMoving: false, mountDuration: 0});
+    }
     render() {
         var {children, duration, renderScene, sharedElementMotion, stateNavigator} = this.props;
         var {stateContext: {crumbs, oldState}, stateContext} = stateNavigator;
@@ -74,14 +85,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     onRest={({key}) => this.clearScene(key)}
                     duration={duration}>
                     {styles => {
-                        var {moving, mountMoving, mountDuration} = styles.reduce(
-                            ({moving, mountMoving, mountDuration}, {rest, data: {mount}, style: {duration}}) => (
-                                {
-                                    moving: moving || !rest,
-                                    mountMoving: !mount ? mountMoving : !rest,
-                                    mountDuration: !mount ? mountDuration : duration
-                                }
-                            ), {moving: false, mountMoving: false, mountDuration: 0});
+                        var {moving, mountMoving, mountDuration} = this.getRest(styles);
                         return (
                             styles.map(({data: {key, state, data}, style: {__marker, duration, ...style}, rest: sceneRest}) => {
                                 var crumb = +key.replace(/\++$/, '');
