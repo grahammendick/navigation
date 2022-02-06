@@ -62,8 +62,9 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         return {...style, __marker: !mounted ? 1 : (mount ? 0 : -1)};
     }
     getRest(styles: MotionStyle[]) {
-        var moving, mountMoving = false;
-        var mountDuration;
+        var moving = false;
+        var mountMoving = false;
+        var mountDuration: number;
         for(var {rest, data: {mount}, style: {duration}} of styles) {
             if (mount) {
                 mountMoving = !rest;
