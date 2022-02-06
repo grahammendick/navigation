@@ -89,9 +89,8 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
         for(var key in end) {
             if (key !== 'duration')
                 style[key] = start[key] + (progress * (end[key] - start[key]));
-            else
-                style[key] = end[key];
         }
+        style['duration'] = end['duration'];
         return style;
     }
     render() {
