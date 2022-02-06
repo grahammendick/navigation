@@ -78,10 +78,10 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     onRest={({key}) => this.clearScene(key)}
                     duration={duration}>
                     {styles => (
-                        styles.map(({data: {key, state, data}, style: {__marker, ...style}}) => {
+                        styles.map(({data: {key, state, data}, style: {__marker, duration, ...style}, rest: sceneRest}) => {
                             var crumb = +key.replace(/\++$/, '');
-                            var {rest} = this.state;
-                            var scene = <Scene crumb={crumb} rest={rest} renderScene={renderScene} /> ;
+                            var rest = sceneRest && this.state.rest;
+                            var scene = <Scene crumb={crumb} rest={rest} renderScene={renderScene} />;
                             return (
                                 <Freeze key={key} enabled={rest && crumb < this.getScenes().length - 1}>
                                     {children(style, scene, key, crumbs.length === crumb, state, data)}

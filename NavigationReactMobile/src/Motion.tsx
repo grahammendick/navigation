@@ -47,7 +47,7 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
                 if (unchanged) {
                     nextItem.start = item.start;
                     nextItem.rest = item.progress === 1;
-                    var progressDelta = Math.min(nextItem.tick - item.tick, 50) / duration;
+                    var progressDelta = Math.min(nextItem.tick - item.tick, 50) / (nextItem.end.duration ?? duration);
                     nextItem.progress = Math.min(item.progress + progressDelta, 1);
                 } else {
                     nextItem.rest = false;
@@ -75,7 +75,7 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
             .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length);
         return {items, moving: items.filter(({rest}) => !rest).length !== 0};
     }
-    static areEqual(from = {}, to = {}) {
+    static areEqual({duration = 0, ...from} = {}, {duration: toDuration = 0, ...to} = {}) {
         if (Object.keys(from).length !== Object.keys(to).length)
             return false;
         for(var key in from) {
@@ -86,8 +86,10 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
     }
     static interpolateStyle({start, end, progress}) {
         var style = {};
-        for(var key in end)
-            style[key] = start[key] + (progress * (end[key] - start[key]));
+        for(var key in end) {
+            if (key !== 'duration')
+                style[key] = start[key] + (progress * (end[key] - start[key]));
+        }
         return style;
     }
     render() {
