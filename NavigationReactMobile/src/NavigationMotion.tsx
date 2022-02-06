@@ -62,17 +62,16 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         return {...style, __marker: !mounted ? 1 : (mount ? 0 : -1)};
     }
     static getRest(styles: MotionStyle[]) {
-        var moving = false;
-        var mountMoving = false;
-        var mountDuration: number;
-        for(var {rest, data: {mount}, style: {duration}} of styles) {
+        var moving = false, mountMoving = false, mountDuration: number, mountProgress: number;
+        for(var {rest, progress, data: {mount}, style: {duration}} of styles) {
             if (mount) {
                 mountMoving = !rest;
                 mountDuration = duration;
+                mountProgress = progress;
             }
             moving = moving || !rest;
         }
-        return {rest: !moving, mountRest: !mountMoving, mountDuration};
+        return {rest: !moving, mountRest: !mountMoving, mountDuration, mountProgress};
     }
     render() {
         var {children, duration, renderScene, sharedElementMotion, stateNavigator} = this.props;
@@ -88,7 +87,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     onRest={({key}) => this.clearScene(key)}
                     duration={duration}>
                     {styles => {
-                        var {rest, mountRest, mountDuration} = NavigationMotion.getRest(styles);
+                        var {rest, mountRest, mountDuration, mountProgress} = NavigationMotion.getRest(styles);
                         return (
                             styles.map(({data: {key, state, data}, style: {__marker, duration, ...style}}) => {
                                 var crumb = +key.replace(/\++$/, '');
@@ -102,7 +101,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                                 sharedElementMotion && sharedElementMotion({
                                     key: 'sharedElements',
                                     sharedElements: !mountRest ? this.getSharedElements() : [],
-                                    progress: styles[crumbs.length] && styles[crumbs.length].progress,
+                                    progress: mountProgress,
                                     duration: mountDuration ?? duration,
                                 })
                             )

@@ -68,7 +68,7 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
                     var newItem: any = {key: getKey(item), data: item, tick, rest: false, index};
                     newItem.start = newItem.style = enter(item);
                     newItem.end = update(item);
-                    newItem.progress = Motion.areEqual(newItem.start, newItem.end) ? 1 : 0;
+                    newItem.progress = Motion.areEqual(newItem.start, newItem.end) ? 1 : progress;
                     return newItem;
                 })
             )
