@@ -8,7 +8,7 @@ import withStateNavigator from './withStateNavigator';
 import Freeze from './Freeze';
 import { NavigationMotionProps } from './Props';
 type NavigationMotionState = {stateNavigator: StateNavigator, keys: string[]};
-type SceneContext = {key: string, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, mount: boolean};
+type SceneContext = {key: string, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, mount: boolean, fromUnmounted: boolean};
 type MotionStyle = {style: any, data: SceneContext, key: string, rest: boolean, progress: number, start: any, end: any };
 
 class NavigationMotion extends React.Component<NavigationMotionProps, NavigationMotionState> {
@@ -48,17 +48,21 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
     getScenes(): SceneContext[]{
         var {stateNavigator} = this.props;
         var {keys} = this.state;
-        var {crumbs, nextCrumb} = stateNavigator.stateContext;
+        var {crumbs, nextCrumb, oldUrl} = stateNavigator.stateContext;
+        var backward = oldUrl && oldUrl.split('crumb=').length > crumbs.length;
         return crumbs.concat(nextCrumb).map(({state, data, url}, index, crumbsAndNext) => {
             var preCrumbs = crumbsAndNext.slice(0, index);
             var {state: nextState, data: nextData} = crumbsAndNext[index + 1] || {state: undefined, data: undefined};
-            return {key: keys[index], state, data, url, crumbs: preCrumbs, nextState, nextData, mount: url === nextCrumb.url};
+            var mount = url === nextCrumb.url;
+            var fromUnmounted = mount && !backward;
+            return {key: keys[index], state, data, url, crumbs: preCrumbs, nextState, nextData, mount, fromUnmounted };
         });
     }
-    getStyle(mounted: boolean, {state, data, crumbs, nextState, nextData, mount}: SceneContext) {
+    getStyle(mounted: boolean, {state, data, crumbs, nextState, nextData, mount, fromUnmounted}: SceneContext) {
         var {unmountedStyle, mountedStyle, crumbStyle} = this.props;
         var styleProp = !mounted ? unmountedStyle : (mount ? mountedStyle : crumbStyle);
-        var style = typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData) : styleProp;
+        fromUnmounted = (mounted && mount) ? fromUnmounted : undefined;
+        var style = typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData, fromUnmounted) : styleProp;
         return {...style, __marker: !mounted ? 1 : (mount ? 0 : -1)};
     }
     static getMotion(styles: MotionStyle[]) {
