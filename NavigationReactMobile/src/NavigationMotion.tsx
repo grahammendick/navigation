@@ -61,7 +61,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         var style = typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData) : styleProp;
         return {...style, __marker: !mounted ? 1 : (mount ? 0 : -1)};
     }
-    static getRest(styles: MotionStyle[]) {
+    static getMotion(styles: MotionStyle[]) {
         var moving = false, mountMoving = false, mountDuration: number, mountProgress: number;
         for(var {rest, progress, data: {mount}, style: {duration}} of styles) {
             if (mount) {
@@ -87,7 +87,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     onRest={({key}) => this.clearScene(key)}
                     duration={duration}>
                     {styles => {
-                        var {rest, mountRest, mountDuration, mountProgress} = NavigationMotion.getRest(styles);
+                        var {rest, mountRest, mountDuration, mountProgress} = NavigationMotion.getMotion(styles);
                         return (
                             styles.map(({data: {key, state, data}, style: {__marker, duration, ...style}}) => {
                                 var crumb = +key.replace(/\++$/, '');
