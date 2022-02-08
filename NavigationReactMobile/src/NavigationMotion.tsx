@@ -49,7 +49,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         var {stateNavigator} = this.props;
         var {keys} = this.state;
         var {crumbs, nextCrumb, oldUrl} = stateNavigator.stateContext;
-        var backward = oldUrl && oldUrl.split('crumb=').length > crumbs.length;
+        var backward = oldUrl && oldUrl.split('crumb=').length > crumbs.length + 1;
         return crumbs.concat(nextCrumb).map(({state, data, url}, index, crumbsAndNext) => {
             var preCrumbs = crumbsAndNext.slice(0, index);
             var {state: nextState, data: nextData} = crumbsAndNext[index + 1] || {state: undefined, data: undefined};
