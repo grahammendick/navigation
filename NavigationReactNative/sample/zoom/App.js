@@ -25,16 +25,12 @@ stateNavigator.navigate('grid');
 const openLink = (url) => {
   if (url) {
     var color = url.split('=')[1];
-    var {state, data} = stateNavigator.stateContext;
-    if (state === detail) {
-      const {filter, search} = data;
-      const suffix = search ? '_search' : '';
-      const matched = !filter || color.indexOf(filter.toLowerCase()) !== -1;
-      const name = matched ? color + suffix : null;
-      stateNavigator.navigate('detail', {color, name, filter, search});
-    } else {
-      stateNavigator.navigate('detail', {color, name: color});
-    }
+    var {data} = stateNavigator.stateContext;
+    var {search} = data;
+    var url = stateNavigator.fluent()
+      .navigate('grid')
+      .navigate('detail', {color, search}).url;
+    stateNavigator.navigateLink(url);
   }
 };
 
