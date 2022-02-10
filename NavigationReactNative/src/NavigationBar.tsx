@@ -71,7 +71,6 @@ class NavigationBar extends React.Component<any, any> {
   render() {
     var {
       bottomBar,
-      labelVisibility = "auto",
       hidden,
       logo,
       navigationImage,
@@ -90,21 +89,10 @@ class NavigationBar extends React.Component<any, any> {
     var collapsingBar =
       Platform.OS === "android" &&
       childrenArray.find(({ type }) => type === CollapsingBar);
-
-    var labelVisibilityVal = -1;
-
-    if (labelVisibility === "selected") {
-      labelVisibilityVal = 0;
-    } else if (labelVisibility === "show") {
-      labelVisibilityVal = 1;
-    } else if (labelVisibility === "hide") {
-      labelVisibilityVal = 2;
-    }
     return (
       <>
         <NVNavigationBar
           hidden={hidden}
-          labelVisibility={labelVisibility}
           style={{ height: !!collapsingBar ? style.height : null }}
           {...otherProps}
           {...scrollEdgeProps}

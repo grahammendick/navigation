@@ -21,6 +21,12 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
         view.bottomTabs = bottomTabs;
     }
 
+    @ReactProp(name = "labelVisibility")
+    public void setLabelVisibilityMode (TabNavigationView view, int labelVisibilityMode) {
+        view.setLabelVisibilityMode(labelVisibilityMode);
+    }
+
+
     @ReactProp(name = "selectedTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
     public void setSelectedTintColor(TabNavigationView view, int selectedTintColor) {
         view.selectedTintColor = selectedTintColor != Integer.MAX_VALUE ? selectedTintColor : view.defaultTextColor;

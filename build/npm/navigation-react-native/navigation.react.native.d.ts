@@ -74,14 +74,6 @@ export interface NavigationBarProps {
    */
   hidden?: boolean;
   /**
-   * Whether to show or hide labels in the tab bar (Android Only)
-   * selected shows only the active tab's label
-   * auto will set to 'show' for less than 4 tabs, and 'selected' for more than 3.
-   * show = always show.
-   * hide = always hide (no labels)
-   */
-  labelVisibility?: "auto" | "selected" | "show" | "hide";
-  /**
    * Indicates whether the title should be large
    */
   largeTitle?: boolean;
@@ -641,6 +633,14 @@ export interface TabBarProps {
    * The selected tab index
    */
   tab?: number;
+  /**
+   * Whether to show or hide labels in the tab bar (Android Only)
+   * selected - currently not working
+   * auto - "show" when <4 tabs, "selected" when >3
+   * show - always show.
+   * hide - always hide (no labels)
+   */
+  labelVisibility?: "auto" | "show" | "hide";
   /**
    * Handles tab change events
    */
