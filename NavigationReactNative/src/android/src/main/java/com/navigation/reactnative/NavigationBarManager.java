@@ -42,6 +42,9 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
         }
     }
 
+    @ReactProp(name = "labelVisibility")
+    public void setLabelVisibilityMode (NavigationBarView view, int labelVisibilityMode) { view.setLabelVisibilityMode(labelVisibilityMode); }
+
     @ReactProp(name = "hide")
     public void setHide(NavigationBarView view, boolean hide) {
         view.setExpanded(!hide, true);
