@@ -23,7 +23,7 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
 
     @ReactProp(name = "labelVisibility")
     public void setLabelVisibilityMode (TabNavigationView view, int labelVisibilityMode) {
-        view.setLabelVisibilityMode(labelVisibilityMode);
+        view.labelVisibility = labelVisibilityMode;
     }
 
 

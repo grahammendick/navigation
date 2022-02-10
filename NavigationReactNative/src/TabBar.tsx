@@ -57,7 +57,9 @@ class TabBar extends React.Component<any, any> {
         // Default to auto
         var labelVisibilityVal = -1;
 
-        if (labelVisibility === "show") {
+        if(labelVisibility === "selected") {
+          labelVisibilityVal = 0;
+        } else if (labelVisibility === "show") {
           labelVisibilityVal = 1;
         } else if (labelVisibility === "hide") {
           labelVisibilityVal = 2;

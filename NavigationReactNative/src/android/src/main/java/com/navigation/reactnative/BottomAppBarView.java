@@ -35,7 +35,6 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
     private Integer tintColor;
     final int defaultBackgroundColor;
     final Drawable defaultOverflowIcon;
-    int labelVisibilityMode;
     int fabAlignmentMode;
     int defaultFabAlignmentMode;
     int defaultFabAnimationMode;

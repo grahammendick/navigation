@@ -527,12 +527,12 @@ export interface TabBarProps {
     defaultTab?: number;
     /**
      * Whether to show or hide labels in the tab bar (Android Only)
-     * selected - currently not working
+     * selected - only show on active tab
      * auto - "show" when <4 tabs, "selected" when >3
      * show - always show.
      * hide - always hide (no labels)
      */
-    labelVisibility?: "auto" | "show" | "hide";
+    labelVisibility?: "auto" | "show" | "hide" | "selected";
     /**
      * The selected tab index
      */
