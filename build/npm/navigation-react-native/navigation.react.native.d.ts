@@ -529,10 +529,10 @@ export interface TabBarProps {
      * Whether to show or hide labels in the tab bar (Android Only)
      * selected - only show on active tab
      * auto - "show" when <4 tabs, "selected" when >3
-     * show - always show.
-     * hide - always hide (no labels)
+     * labeled - always show
+     * unlabeled - always hide (no labels)
      */
-    labelVisibility?: "auto" | "show" | "hide" | "selected";
+    labelVisibility?: "auto" | "labeled" | "unlabeled" | "selected";
     /**
      * The selected tab index
      */

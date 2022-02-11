@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent, Platform, StyleSheet, View, I18nManager } from 'react-native';
+import { requireNativeComponent, Platform, StyleSheet, View, I18nManager , UIManager} from 'react-native';
 import BackButton from './BackButton';
 
 class TabBar extends React.Component<any, any> {
@@ -55,19 +55,13 @@ class TabBar extends React.Component<any, any> {
         var TabView = primary ? NVTabNavigation : (!I18nManager.isRTL ? NVTabLayout : NVTabLayoutRTL);
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedTab;
         // Default to auto
-        var labelVisibilityVal = -1;
 
-        if(labelVisibility === "selected") {
-          labelVisibilityVal = 0;
-        } else if (labelVisibility === "show") {
-          labelVisibilityVal = 1;
-        } else if (labelVisibility === "hide") {
-          labelVisibilityVal = 2;
-        }
+        var constants = (UIManager as any).getViewManagerConfig('NVTabNavigation').Constants;
+        labelVisibility = Platform.OS === 'android' ? constants.labelVisibility[labelVisibility] : labelVisibility;
         var tabLayout = (Platform.OS === 'android' || !primary) && (
             <TabView
                 bottomTabs={bottomTabs}
-                labelVisibility={labelVisibilityVal}
+                labelVisibility={labelVisibility}
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}

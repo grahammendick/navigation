@@ -23,6 +23,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     int unselectedTintColor;
     private boolean layoutRequested = false;
     private boolean autoSelected = false;
+    private boolean canSetVisibility = false;
 
     public TabNavigationView(Context context) {
         super(context);
@@ -64,6 +65,13 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
             setSelectedItemId(tabBar.selectedTab);
             autoSelected = false;
             tabBar.populateTabs();
+            canSetVisibility = true;
+            setVisibility();
+        }
+    }
+
+    public void setVisibility() {
+        if(canSetVisibility) {
             this.setLabelVisibilityMode(labelVisibility);
         }
     }
