@@ -17,6 +17,7 @@ class TabBar extends React.Component<any, any> {
         scrollable: false,
         primary: Platform.OS === 'ios',
         scrollsToTop: true,
+        labelVisibility: 'auto'
     }
     static getDerivedStateFromProps({tab}, {selectedTab}) {
         if (tab != null && tab !== selectedTab)
@@ -43,7 +44,7 @@ class TabBar extends React.Component<any, any> {
         return false;
     }
     render() {
-        var {children, labelVisibility = "auto", barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, scrollsToTop} = this.props;
+        var {children, labelVisibility, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, scrollsToTop} = this.props;
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
@@ -54,14 +55,19 @@ class TabBar extends React.Component<any, any> {
         var TabBar = primary ? NVTabBar : TabBarPager;
         var TabView = primary ? NVTabNavigation : (!I18nManager.isRTL ? NVTabLayout : NVTabLayoutRTL);
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedTab;
-        // Default to auto
 
-        var constants = (UIManager as any).getViewManagerConfig('NVTabNavigation').Constants;
-        labelVisibility = Platform.OS === 'android' ? constants.labelVisibility[labelVisibility] : labelVisibility;
+        var visibilityMode = labelVisibility;
+
+        if(Platform.OS === 'android'){
+            var constants = (UIManager as any).getViewManagerConfig('NVTabNavigation').Constants;
+            visibilityMode = (labelVisibility === 'selected' && tabBarItems.length > 3) ? constants.labelVisibility['auto'] : constants.labelVisibility[labelVisibility]
+        }
+
         var tabLayout = (Platform.OS === 'android' || !primary) && (
             <TabView
                 bottomTabs={bottomTabs}
-                labelVisibility={labelVisibility}
+                labelVisibility={visibilityMode}
+                itemHorizontalTranslation={!(labelVisibility === 'selected' && tabBarItems.length < 4)}
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}

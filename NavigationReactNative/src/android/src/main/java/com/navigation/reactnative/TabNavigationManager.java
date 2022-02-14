@@ -26,8 +26,12 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
 
     @ReactProp(name = "labelVisibility")
     public void setLabelVisibilityMode (TabNavigationView view, int labelVisibilityMode) {
-        view.labelVisibility = labelVisibilityMode;
-        view.setVisibility();
+        view.setLabelVisibilityMode(labelVisibilityMode);
+    }
+
+    @ReactProp(name = "itemHorizontalTranslation")
+    public void setItemHorizontalTranslation (TabNavigationView view, boolean itemHorizontalTranslation) {
+        view.setItemHorizontalTranslationEnabled(itemHorizontalTranslation);
     }
 
 

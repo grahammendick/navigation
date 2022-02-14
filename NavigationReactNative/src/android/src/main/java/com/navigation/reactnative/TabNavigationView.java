@@ -16,14 +16,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TabNavigationView extends BottomNavigationView implements TabView {
-    public int labelVisibility;
     boolean bottomTabs;
     final int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
     private boolean layoutRequested = false;
     private boolean autoSelected = false;
-    private boolean canSetVisibility = false;
 
     public TabNavigationView(Context context) {
         super(context);
@@ -65,14 +63,6 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
             setSelectedItemId(tabBar.selectedTab);
             autoSelected = false;
             tabBar.populateTabs();
-            canSetVisibility = true;
-            setVisibility();
-        }
-    }
-
-    public void setVisibility() {
-        if(canSetVisibility) {
-            this.setLabelVisibilityMode(labelVisibility);
         }
     }
 
