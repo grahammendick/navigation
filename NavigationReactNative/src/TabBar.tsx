@@ -56,7 +56,7 @@ class TabBar extends React.Component<any, any> {
         var TabView = primary ? NVTabNavigation : (!I18nManager.isRTL ? NVTabLayout : NVTabLayoutRTL);
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedTab;
 
-        var constants = (UIManager as any).getViewManagerConfig('NVTabNavigation').Constants;
+        var constants = Platform.OS === 'android' ? (UIManager as any).getViewManagerConfig('NVTabNavigation').Constants : null;
         labelVisibilityMode = !(labelVisibilityMode === 'selected' && tabBarItems.length > 3) ? labelVisibilityMode : 'auto';
         var tabLayout = (Platform.OS === 'android' || !primary) && (
             <TabView
