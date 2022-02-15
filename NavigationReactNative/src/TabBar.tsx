@@ -44,7 +44,7 @@ class TabBar extends React.Component<any, any> {
         return false;
     }
     render() {
-        var {children, labelVisibility, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, scrollsToTop} = this.props;
+        var {children, labelVisibilityMode, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, scrollsToTop} = this.props;
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
@@ -56,18 +56,13 @@ class TabBar extends React.Component<any, any> {
         var TabView = primary ? NVTabNavigation : (!I18nManager.isRTL ? NVTabLayout : NVTabLayoutRTL);
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedTab;
 
-        var visibilityMode = labelVisibility;
-
-        if(Platform.OS === 'android'){
-            var constants = (UIManager as any).getViewManagerConfig('NVTabNavigation').Constants;
-            visibilityMode = (labelVisibility === 'selected' && tabBarItems.length > 3) ? constants.labelVisibility['auto'] : constants.labelVisibility[labelVisibility]
-        }
-
+        var constants = (UIManager as any).getViewManagerConfig('NVTabNavigation').Constants;
+        var labelVisibility = !(labelVisibilityMode === 'selected' && tabBarItems.length > 3) ? labelVisibilityMode : 'auto';
         var tabLayout = (Platform.OS === 'android' || !primary) && (
             <TabView
                 bottomTabs={bottomTabs}
-                labelVisibility={visibilityMode}
-                itemHorizontalTranslation={!(labelVisibility === 'selected' && tabBarItems.length < 4)}
+                labelVisibilityMode={Platform.OS === 'android' ? constants.LabelVisibility[labelVisibility] : null}
+                itemHorizontalTranslation={labelVisibility !== 'selected'}
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}

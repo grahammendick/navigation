@@ -24,7 +24,7 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
         view.bottomTabs = bottomTabs;
     }
 
-    @ReactProp(name = "labelVisibility")
+    @ReactProp(name = "labelVisibilityMode")
     public void setLabelVisibilityMode (TabNavigationView view, int labelVisibilityMode) {
         view.setLabelVisibilityMode(labelVisibilityMode);
     }
@@ -58,7 +58,7 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
     @Override
     public Map<String, Object> getExportedViewConstants() {
         return MapBuilder.<String, Object>builder()
-                .put("labelVisibility", MapBuilder.of(
+                .put("LabelVisibility", MapBuilder.of(
                         "auto", com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_AUTO,
                         "labeled", com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_LABELED,
                         "unlabeled", com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_UNLABELED,
