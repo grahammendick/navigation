@@ -61,7 +61,7 @@ class TabBar extends React.Component<any, any> {
         var tabLayout = (Platform.OS === 'android' || !primary) && (
             <TabView
                 bottomTabs={bottomTabs}
-                labelVisibilityMode={Platform.OS === 'android' ? constants.LabelVisibility[labelVisibilityMode] : null}
+                labelVisibilityMode={constants?.LabelVisibility[labelVisibilityMode]}
                 itemHorizontalTranslation={labelVisibilityMode !== 'selected'}
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
