@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent, Platform, StyleSheet, View, I18nManager } from 'react-native';
+import { requireNativeComponent, Platform, StyleSheet, View, I18nManager , UIManager} from 'react-native';
 import BackButton from './BackButton';
 
 class TabBar extends React.Component<any, any> {
@@ -17,6 +17,7 @@ class TabBar extends React.Component<any, any> {
         scrollable: false,
         primary: Platform.OS === 'ios',
         scrollsToTop: true,
+        labelVisibilityMode: 'auto'
     }
     static getDerivedStateFromProps({tab}, {selectedTab}) {
         if (tab != null && tab !== selectedTab)
@@ -43,7 +44,7 @@ class TabBar extends React.Component<any, any> {
         return false;
     }
     render() {
-        var {children, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, scrollsToTop} = this.props;
+        var {children, labelVisibilityMode, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, scrollsToTop} = this.props;
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
@@ -54,9 +55,14 @@ class TabBar extends React.Component<any, any> {
         var TabBar = primary ? NVTabBar : TabBarPager;
         var TabView = primary ? NVTabNavigation : (!I18nManager.isRTL ? NVTabLayout : NVTabLayoutRTL);
         TabView = Platform.OS === 'android' ? TabView : NVSegmentedTab;
+
+        var constants = Platform.OS === 'android' ? (UIManager as any).getViewManagerConfig('NVTabNavigation').Constants : null;
+        labelVisibilityMode = !(labelVisibilityMode === 'selected' && tabBarItems.length > 3) ? labelVisibilityMode : 'auto';
         var tabLayout = (Platform.OS === 'android' || !primary) && (
             <TabView
                 bottomTabs={bottomTabs}
+                labelVisibilityMode={constants?.LabelVisibility[labelVisibilityMode]}
+                itemHorizontalTranslation={labelVisibilityMode !== 'selected'}
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
