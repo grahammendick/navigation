@@ -1,5 +1,10 @@
 package com.navigation.reactnative;
 
+import static com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_AUTO;
+import static com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_LABELED;
+import static com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_SELECTED;
+import static com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_UNLABELED;
+
 import android.content.res.ColorStateList;
 
 import com.facebook.react.common.MapBuilder;
@@ -24,7 +29,7 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
         view.bottomTabs = bottomTabs;
     }
 
-    @ReactProp(name = "labelVisibilityMode")
+    @ReactProp(name = "labelVisibilityMode", defaultInt = LABEL_VISIBILITY_AUTO)
     public void setLabelVisibilityMode (TabNavigationView view, int labelVisibilityMode) {
         view.setLabelVisibilityMode(labelVisibilityMode);
     }
@@ -33,7 +38,6 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
     public void setItemHorizontalTranslation (TabNavigationView view, boolean itemHorizontalTranslation) {
         view.setItemHorizontalTranslationEnabled(itemHorizontalTranslation);
     }
-
 
     @ReactProp(name = "selectedTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
     public void setSelectedTintColor(TabNavigationView view, int selectedTintColor) {
@@ -57,14 +61,13 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
 
     @Override
     public Map<String, Object> getExportedViewConstants() {
-        return MapBuilder.<String, Object>builder()
-                .put("LabelVisibility", MapBuilder.of(
-                        "auto", com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_AUTO,
-                        "labeled", com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_LABELED,
-                        "unlabeled", com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_UNLABELED,
-                        "selected", com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_SELECTED
-                        ))
-                .build();
+        return MapBuilder.<String, Object>of(
+            "LabelVisibility",
+            MapBuilder.of(
+                "auto", LABEL_VISIBILITY_AUTO,
+                "labeled", LABEL_VISIBILITY_LABELED,
+                "unlabeled", LABEL_VISIBILITY_UNLABELED,
+                "selected", LABEL_VISIBILITY_SELECTED));
     }
 
 
