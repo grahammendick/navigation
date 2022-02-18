@@ -526,6 +526,10 @@ export interface TabBarProps {
      */
     defaultTab?: number;
     /**
+     * Indicates how labels should be displayed in the tab bar
+     */
+    labelVisibilityMode?: "auto" | "labeled" | "unlabeled" | "selected";
+    /**
      * The selected tab index
      */
     tab?: number;
