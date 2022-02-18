@@ -70,7 +70,6 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
                 "selected", LABEL_VISIBILITY_SELECTED));
     }
 
-
     @Nonnull
     @Override
     protected TabNavigationView createViewInstance(@Nonnull ThemedReactContext reactContext) {
