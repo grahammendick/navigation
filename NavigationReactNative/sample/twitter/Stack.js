@@ -16,11 +16,12 @@ const Stack = ({ children, ...props }) => {
         try {
           stateNavigator.current.parseLink(url);
         } catch(e) {
+          stateNavigator.current.stateContext.clear();
           stateNavigator.current.navigate(states[0].key);
           forceUpdate({});
         }
       }
-  })
+  });
   return stateNavigator.current && (
     <NavigationHandler stateNavigator={stateNavigator.current}>
       <NavigationStack {...props} />
