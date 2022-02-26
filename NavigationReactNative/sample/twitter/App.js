@@ -1,7 +1,4 @@
 import React from 'react';
-import {StateNavigator} from 'navigation';
-import {NavigationHandler} from 'navigation-react';
-import {NavigationStack} from 'navigation-react-native';
 import Home from './Home';
 import Notifications from './Notifications';
 import Tabs from './Tabs';
