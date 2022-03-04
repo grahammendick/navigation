@@ -18,24 +18,21 @@ const Stack = ({ children, ...props }) => {
           newStatesLookup[name] = true;
           return { newStates, newStatesLookup };
         }, { newStates: [], newStatesLookup: {} })
-      if (newStates.length) {
-        for(const oldState of oldStates) {
-          if (!newStatesLookup[oldState.key])
-            newStates.push({ ...oldState, __deleted: true });
-        }
-        const { state, url } = stateNavigator.stateContext;
-        stateNavigator.configure(newStates);
-        let changed = !state;
-        if (!changed) {
-          const { state, crumbs } = stateNavigator.parseLink(url);
-          changed = state.__deleted || crumbs.filter(({ state }) => state.__deleted).length;
-        }
-        if (changed)
-          stateNavigator.navigate(newStates[0].key);
-        stateNavigator.onBeforeNavigate(validateNavigation);
-        return newStates;
+      for(const oldState of oldStates) {
+        if (!newStatesLookup[oldState.key])
+          newStates.push({ ...oldState, __deleted: true });
       }
-      return oldStates;
+      const { state, url } = stateNavigator.stateContext;
+      stateNavigator.configure(newStates);
+      let changed = !state;
+      if (!changed) {
+        const { state, crumbs } = stateNavigator.parseLink(url);
+        changed = state.__deleted || crumbs.filter(({ state }) => state.__deleted).length;
+      }
+      if (changed && newStates.length)
+        stateNavigator.navigate(newStates[0].key);
+      stateNavigator.onBeforeNavigate(validateNavigation);
+      return newStates;
     });
     return () => stateNavigator.offBeforeNavigate(validateNavigation);
   }, [ children ]);
