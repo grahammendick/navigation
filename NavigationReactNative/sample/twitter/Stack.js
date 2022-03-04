@@ -6,7 +6,7 @@ import { NavigationStack } from 'navigation-react-native';
 const Stack = ({ children, ...props }) => {
   const stateNavigatorRef = useRef(new StateNavigator([]))
   const stateNavigator = stateNavigatorRef.current;
-  const [, setStates] = useState([]);
+  const [states, setStates] = useState([]);
   useEffect(() => {
     const validateNavigation = ({ __deleted }, _data, _url, _history, { state }) => (
       !__deleted && stateNavigator.states[state.key] === state
@@ -36,7 +36,7 @@ const Stack = ({ children, ...props }) => {
     });
     return () => stateNavigator.offBeforeNavigate(validateNavigation);
   }, [ children ]);
-  return (
+  return !!states.length && (
     <NavigationHandler stateNavigator={stateNavigator}>
       <NavigationStack {...props} />
     </NavigationHandler>
