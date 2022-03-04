@@ -35,6 +35,7 @@ const Stack = ({ children, ...props }) => {
         stateNavigator.onBeforeNavigate(validateNavigation);
         return newStates;
       }
+      return oldStates;
     });
     return () => stateNavigator.offBeforeNavigate(validateNavigation);
   }, [ children ]);
