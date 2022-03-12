@@ -4,7 +4,7 @@ import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
 import { NavigationMotion, useUnloading } from 'navigation-react-mobile';
 import React, { useState, useContext } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
@@ -33,7 +33,7 @@ describe('UnloadingHook', function () {
             };
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 unloadingA = false;
                 root.render(
@@ -41,8 +41,7 @@ describe('UnloadingHook', function () {
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             try {
@@ -80,7 +79,7 @@ describe('UnloadingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 unloadingA = unloadingB = false;
                 root.render(
@@ -88,8 +87,7 @@ describe('UnloadingHook', function () {
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             try {
@@ -127,15 +125,14 @@ describe('UnloadingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {
@@ -177,15 +174,14 @@ describe('UnloadingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => stateNavigator.navigate('sceneB'));
@@ -219,15 +215,14 @@ describe('UnloadingHook', function () {
             };
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {
@@ -268,15 +263,14 @@ describe('UnloadingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {
@@ -327,15 +321,14 @@ describe('UnloadingHook', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => stateNavigator.navigate('sceneB'));
@@ -400,15 +393,14 @@ describe('UnloadingHook', function () {
             sceneC.renderScene = () => <SceneC />;
             sceneD.renderScene = () => <SceneD />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => stateNavigator.navigate('sceneB'));
@@ -465,15 +457,14 @@ describe('UnloadingHook', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {
@@ -528,15 +519,14 @@ describe('UnloadingHook', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {
@@ -585,15 +575,14 @@ describe('UnloadingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {
@@ -649,15 +638,14 @@ describe('UnloadingHook', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {
@@ -713,15 +701,14 @@ describe('UnloadingHook', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {
@@ -770,15 +757,14 @@ describe('UnloadingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {
@@ -815,15 +801,14 @@ describe('UnloadingHook', function () {
             };
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {
@@ -860,15 +845,14 @@ describe('UnloadingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => setCountA(1));
@@ -906,15 +890,14 @@ describe('UnloadingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {
@@ -957,15 +940,14 @@ describe('UnloadingHook', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {
@@ -1008,15 +990,14 @@ describe('UnloadingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {
@@ -1050,15 +1031,14 @@ describe('UnloadingHook', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationMotion>
                             {(_style, scene, key) =>  <div key={key}>{scene}</div>}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {

@@ -3,7 +3,7 @@ import mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationLink, NavigationHandler, NavigationContext } from 'navigation-react';
 import React, { useContext, useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { act, Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
@@ -21,15 +21,14 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationLink stateKey="s">
                             <span>link text</span>
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -41,13 +40,12 @@ describe('NavigationLinkTest', function () {
     describe('Without State Navigator Navigation Link', function () {
         it('should render', function(){
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationLink stateKey="s">
                         link text
-                    </NavigationLink>,
-                    container
+                    </NavigationLink>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -62,7 +60,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -70,8 +68,7 @@ describe('NavigationLinkTest', function () {
                             stateKey="x">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -86,7 +83,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -105,8 +102,7 @@ describe('NavigationLinkTest', function () {
                             target="_blank">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -124,7 +120,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -133,8 +129,7 @@ describe('NavigationLinkTest', function () {
                             navigationData={{x: 'a'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -150,7 +145,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -160,8 +155,7 @@ describe('NavigationLinkTest', function () {
                             includeCurrentData={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -177,7 +171,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -187,8 +181,7 @@ describe('NavigationLinkTest', function () {
                             includeCurrentData={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -204,7 +197,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -214,8 +207,7 @@ describe('NavigationLinkTest', function () {
                             currentDataKeys="y">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -231,7 +223,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -241,8 +233,7 @@ describe('NavigationLinkTest', function () {
                             currentDataKeys={['y']}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -258,7 +249,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -268,8 +259,7 @@ describe('NavigationLinkTest', function () {
                             currentDataKeys="y,z">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -285,7 +275,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -295,8 +285,7 @@ describe('NavigationLinkTest', function () {
                             currentDataKeys={['y','z']}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -312,7 +301,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -322,8 +311,7 @@ describe('NavigationLinkTest', function () {
                             currentDataKeys="y,z">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -339,7 +327,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -349,8 +337,7 @@ describe('NavigationLinkTest', function () {
                             currentDataKeys={['y','z']}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -365,7 +352,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -374,8 +361,7 @@ describe('NavigationLinkTest', function () {
                             hash='f'>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -390,7 +376,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -399,8 +385,7 @@ describe('NavigationLinkTest', function () {
                             hash={null}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -415,7 +400,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -424,8 +409,7 @@ describe('NavigationLinkTest', function () {
                             hash=''>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -441,7 +425,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -451,8 +435,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -470,7 +453,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -480,8 +463,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -499,7 +481,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -509,8 +491,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -527,7 +508,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -537,8 +518,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -555,7 +535,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -565,8 +545,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -582,7 +561,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -592,8 +571,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -609,7 +587,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -619,8 +597,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var navigated = false;
@@ -640,7 +617,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -650,8 +627,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -669,7 +645,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -679,8 +655,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -698,7 +673,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -708,8 +683,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -727,7 +701,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -737,8 +711,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -755,7 +728,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -765,8 +738,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -783,7 +755,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -793,8 +765,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -811,7 +782,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -821,8 +792,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -838,7 +808,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -848,8 +818,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -865,7 +834,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -875,8 +844,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -892,7 +860,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -902,8 +870,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -921,7 +888,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -931,8 +898,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -950,7 +916,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -960,8 +926,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -979,7 +944,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -989,8 +954,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1008,7 +972,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1018,8 +982,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1037,7 +1000,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1047,8 +1010,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1066,7 +1028,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1076,8 +1038,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1094,7 +1055,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1104,8 +1065,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1122,7 +1082,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1132,8 +1092,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1150,7 +1109,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1160,8 +1119,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1178,7 +1136,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1188,8 +1146,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1206,7 +1163,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1216,8 +1173,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1234,7 +1190,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1244,8 +1200,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1261,7 +1216,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1271,8 +1226,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1288,7 +1242,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1298,8 +1252,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1315,7 +1268,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1325,8 +1278,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1342,7 +1294,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1352,8 +1304,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1369,7 +1320,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1379,8 +1330,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1396,7 +1346,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: '1', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1406,8 +1356,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1425,7 +1374,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: '1', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1435,8 +1384,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1453,7 +1401,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: '1', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1463,8 +1411,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1480,7 +1427,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1490,8 +1437,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1509,7 +1455,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1519,8 +1465,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1538,7 +1483,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1548,8 +1493,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1567,7 +1511,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1577,8 +1521,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1596,7 +1539,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1606,8 +1549,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1625,7 +1567,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1635,8 +1577,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1654,7 +1595,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1664,8 +1605,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1683,7 +1623,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1693,8 +1633,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1712,7 +1651,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1722,8 +1661,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1740,7 +1678,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1750,8 +1688,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1768,7 +1705,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1778,8 +1715,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1796,7 +1732,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1806,8 +1742,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1824,7 +1759,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1834,8 +1769,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1852,7 +1786,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1862,8 +1796,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1880,7 +1813,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1890,8 +1823,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1908,7 +1840,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1918,8 +1850,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1936,7 +1867,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1946,8 +1877,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1963,7 +1893,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1973,8 +1903,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -1990,7 +1919,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2000,8 +1929,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2017,7 +1945,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2027,8 +1955,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2044,7 +1971,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2054,8 +1981,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2071,7 +1997,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2081,8 +2007,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2099,7 +2024,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2109,8 +2034,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2126,7 +2050,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2136,8 +2060,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2153,7 +2076,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2163,8 +2086,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2182,7 +2104,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2192,8 +2114,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2210,7 +2131,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2220,8 +2141,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2237,7 +2157,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2248,8 +2168,7 @@ describe('NavigationLinkTest', function () {
                             style={{color: 'red', fontSize: '14px'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2268,7 +2187,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2279,8 +2198,7 @@ describe('NavigationLinkTest', function () {
                             style={{color: 'red', fontSize: '14px'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2299,7 +2217,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2310,8 +2228,7 @@ describe('NavigationLinkTest', function () {
                             className="link">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2328,7 +2245,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2339,8 +2256,7 @@ describe('NavigationLinkTest', function () {
                             className="link">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2356,15 +2272,14 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationLink stateKey="s">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2379,15 +2294,14 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationLink stateKey="s">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2402,15 +2316,14 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationLink stateKey="s">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2425,15 +2338,14 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationLink stateKey="s">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2448,15 +2360,14 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationLink stateKey="s">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2471,15 +2382,14 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationLink stateKey="s">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2494,7 +2404,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2503,8 +2413,7 @@ describe('NavigationLinkTest', function () {
                             navigating={() => true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2519,7 +2428,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2528,8 +2437,7 @@ describe('NavigationLinkTest', function () {
                             navigating={() => false}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2545,7 +2453,7 @@ describe('NavigationLinkTest', function () {
             ]);
             var navigatingEvt, navigatingLink;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2558,8 +2466,7 @@ describe('NavigationLinkTest', function () {
                             }}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2575,15 +2482,14 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationLink stateKey="s">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2600,7 +2506,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2609,8 +2515,7 @@ describe('NavigationLinkTest', function () {
                             historyAction="replace">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2627,7 +2532,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2636,8 +2541,7 @@ describe('NavigationLinkTest', function () {
                             historyAction="none">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2656,7 +2560,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2666,8 +2570,7 @@ describe('NavigationLinkTest', function () {
                             includeCurrentData={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2685,7 +2588,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2695,8 +2598,7 @@ describe('NavigationLinkTest', function () {
                             includeCurrentData={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2714,7 +2616,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2724,8 +2626,7 @@ describe('NavigationLinkTest', function () {
                             activeStyle={{color: 'green', fontWeight: 'bold'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2745,7 +2646,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2755,8 +2656,7 @@ describe('NavigationLinkTest', function () {
                             activeCssClass="active">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2774,7 +2674,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2784,8 +2684,7 @@ describe('NavigationLinkTest', function () {
                             disableActive={true}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2802,7 +2701,7 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.historyManager.getHref = () => '#/hello/world';
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2811,8 +2710,7 @@ describe('NavigationLinkTest', function () {
                             navigationData={{x: 'a'}}>
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2840,15 +2738,14 @@ describe('NavigationLinkTest', function () {
             s1.renderScene = ({hello}) => <h1>{hello}</h1>
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
                             {({state, data}) => state.renderScene(data)}
                         </NavigationContext.Consumer>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -2865,7 +2762,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's1', route: 'r1' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2875,8 +2772,7 @@ describe('NavigationLinkTest', function () {
                         <NavigationLink stateKey="s1">
                             link text
                         </NavigationLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var firstLink = container.querySelectorAll<HTMLAnchorElement>('a')[0];
@@ -2905,15 +2801,14 @@ describe('NavigationLinkTest', function () {
             }
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
                             {({ stateNavigator }) => <Blocker stateNavigator={stateNavigator} />}
                         </NavigationContext.Consumer>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             assert.equal(stateNavigator.stateContext.state.key, 's0');
@@ -2928,7 +2823,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2937,8 +2832,7 @@ describe('NavigationLinkTest', function () {
                                 <div onClick={() => stateNavigator.navigate('s', null, undefined)} />
                             )}
                         </NavigationContext.Consumer>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var div = container.querySelector<HTMLDivElement>('div');
@@ -2971,7 +2865,7 @@ describe('NavigationLinkTest', function () {
             }
             stateNavigator.navigate('s0', {x: 'a'});
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -2982,8 +2876,7 @@ describe('NavigationLinkTest', function () {
                                 link text
                             </NavigationLink>
                         </FirstContext>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => stateNavigator.navigate('s1', {y: 'b'}));
@@ -3031,15 +2924,14 @@ describe('NavigationLinkTest', function () {
             s2.renderScene = () => <Scene />;
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
                             {({state, data}) => state.renderScene(data)}
                         </NavigationContext.Consumer>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var button = container.querySelector<HTMLButtonElement>('button');
@@ -3065,15 +2957,14 @@ describe('NavigationLinkTest', function () {
             s1.renderScene = () => <Scene1 />;
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
                             {({state, data}) => state.renderScene(data)}
                         </NavigationContext.Consumer>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var error = console.error;
@@ -3123,15 +3014,14 @@ describe('NavigationLinkTest', function () {
             s1.renderScene = () => <div>b</div>;
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
                             {({state, data}) => state.renderScene(data)}
                         </NavigationContext.Consumer>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');

@@ -4,7 +4,7 @@ import { StateNavigator } from 'navigation';
 import { NavigationHandler } from 'navigation-react';
 import { NavigationMotion } from 'navigation-react-mobile';
 import React, {useState} from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
@@ -32,7 +32,7 @@ describe('NavigationMotion', function () {
             var SceneA = () => <div id="sceneA" />;
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -41,8 +41,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             try {
@@ -70,7 +69,7 @@ describe('NavigationMotion', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -79,8 +78,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             try {
@@ -109,7 +107,7 @@ describe('NavigationMotion', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -118,8 +116,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => stateNavigator.navigate('sceneB'));
@@ -150,7 +147,7 @@ describe('NavigationMotion', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -159,8 +156,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             await act(async () => stateNavigator.navigateBack(1));
@@ -189,7 +185,7 @@ describe('NavigationMotion', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -198,8 +194,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             await act(async () => {
@@ -228,7 +223,7 @@ describe('NavigationMotion', function () {
             var SceneA = () => <div id="sceneA" />;
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -237,8 +232,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => stateNavigator.navigate('sceneA'));
@@ -266,7 +260,7 @@ describe('NavigationMotion', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -275,8 +269,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => stateNavigator.navigate('sceneB'));
@@ -308,7 +301,7 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -317,8 +310,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => stateNavigator.navigate('sceneB'));
@@ -353,7 +345,7 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -362,8 +354,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             await act(async () => {
@@ -403,7 +394,7 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -412,8 +403,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             await act(async () => {
@@ -452,7 +442,7 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -461,8 +451,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             await act(async () => {
@@ -502,7 +491,7 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -511,8 +500,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => stateNavigator.navigate('sceneB'));
@@ -555,7 +543,7 @@ describe('NavigationMotion', function () {
             sceneC.renderScene = () => <SceneC />;
             sceneD.renderScene = () => <SceneD />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -564,8 +552,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => stateNavigator.navigate('sceneB'));
@@ -606,7 +593,7 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -615,8 +602,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             })
             act(() => {
@@ -656,7 +642,7 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -665,8 +651,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             await act(async () => {
@@ -709,7 +694,7 @@ describe('NavigationMotion', function () {
             sceneC.renderScene = () => <SceneC />;
             sceneD.renderScene = () => <SceneD />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -718,8 +703,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             await act(async () => {
@@ -768,7 +752,7 @@ describe('NavigationMotion', function () {
             sceneC.renderScene = () => <SceneC />;
             sceneD.renderScene = () => <SceneD />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -777,8 +761,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             await act(async () => {
@@ -824,7 +807,7 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -833,8 +816,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             await act(async () => {
@@ -875,7 +857,7 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -884,8 +866,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             await act(async () => stateNavigator.navigateBack(2));
@@ -920,7 +901,7 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -929,8 +910,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             await act(async () => {
@@ -961,7 +941,7 @@ describe('NavigationMotion', function () {
             var SceneA = () => <div id="sceneA" />;
             sceneA.renderScene = () => <SceneA />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -970,8 +950,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => stateNavigator.navigate('sceneA'));
@@ -1001,7 +980,7 @@ describe('NavigationMotion', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1010,8 +989,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => stateNavigator.navigate('sceneA'));
@@ -1050,7 +1028,7 @@ describe('NavigationMotion', function () {
             sceneB.renderScene = () => <SceneB />;
             sceneC.renderScene = () => <SceneC />;
             var container = document.createElement('div');
-            const root = (ReactDOM as any).createRoot(container)
+            const root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1059,8 +1037,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => stateNavigator.navigate('sceneA'));
@@ -1110,7 +1087,7 @@ describe('NavigationMotion', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1119,8 +1096,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {
@@ -1154,7 +1130,7 @@ describe('NavigationMotion', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1163,8 +1139,7 @@ describe('NavigationMotion', function () {
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             act(() => {
@@ -1198,7 +1173,7 @@ describe('NavigationMotion', function () {
             sceneA.renderScene = () => <SceneA />;
             sceneB.renderScene = () => <SceneB />;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -1207,8 +1182,7 @@ describe('NavigationMotion', function () {
                                 <div id={key} key={key}>{scene}</div>
                             )}
                         </NavigationMotion>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             await act(async () => {
@@ -1252,8 +1226,8 @@ describe('NavigationMotion', function () {
                 );
             }
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
-            act(() => root.render(<App />, container));
+            var root = createRoot(container)
+            act(() => root.render(<App />));
             await act(async () => {
                 stateNavigator.navigate('sceneB');
                 update(true);

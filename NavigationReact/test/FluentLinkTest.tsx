@@ -3,7 +3,7 @@ import * as mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { FluentLink, NavigationHandler, NavigationContext } from 'navigation-react';
 import React, { useState, useEffect } from 'react';
-import * as ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { act, Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
@@ -22,7 +22,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -33,8 +33,7 @@ describe('FluentLinkTest', function () {
                         )}>
                             <span>link text</span>
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -46,15 +45,14 @@ describe('FluentLinkTest', function () {
     describe('Without State Navigator Fluent Link', function () {
         it('should render', function(){
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <FluentLink navigate={fluentNavigator => (
                         fluentNavigator.navigate('s')
                     )}>
                         link text
-                    </FluentLink>,
-                    container
+                    </FluentLink>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -70,7 +68,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -81,8 +79,7 @@ describe('FluentLinkTest', function () {
                         )}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -98,7 +95,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -114,8 +111,7 @@ describe('FluentLinkTest', function () {
                             target="_blank">
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -136,7 +132,7 @@ describe('FluentLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -149,8 +145,7 @@ describe('FluentLinkTest', function () {
                         )}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -168,7 +163,7 @@ describe('FluentLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -181,8 +176,7 @@ describe('FluentLinkTest', function () {
                         )}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -198,7 +192,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -209,8 +203,7 @@ describe('FluentLinkTest', function () {
                         )}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -227,7 +220,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -238,8 +231,7 @@ describe('FluentLinkTest', function () {
                         )}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -255,7 +247,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -266,8 +258,7 @@ describe('FluentLinkTest', function () {
                         )}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -283,7 +274,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -294,8 +285,7 @@ describe('FluentLinkTest', function () {
                         )}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -311,7 +301,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -322,8 +312,7 @@ describe('FluentLinkTest', function () {
                         )}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -339,7 +328,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -350,8 +339,7 @@ describe('FluentLinkTest', function () {
                         )}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -367,7 +355,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -380,8 +368,7 @@ describe('FluentLinkTest', function () {
                             navigating={() => true}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -398,7 +385,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -411,8 +398,7 @@ describe('FluentLinkTest', function () {
                             navigating={() => false}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -429,7 +415,7 @@ describe('FluentLinkTest', function () {
             ]);
             var navigatingEvt, navigatingLink;
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -446,8 +432,7 @@ describe('FluentLinkTest', function () {
                             }}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -464,7 +449,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -475,8 +460,7 @@ describe('FluentLinkTest', function () {
                         )}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -494,7 +478,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -507,8 +491,7 @@ describe('FluentLinkTest', function () {
                             historyAction="replace">
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -526,7 +509,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -539,8 +522,7 @@ describe('FluentLinkTest', function () {
                             historyAction="none">
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -558,7 +540,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -570,8 +552,7 @@ describe('FluentLinkTest', function () {
                         )}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -589,7 +570,7 @@ describe('FluentLinkTest', function () {
             ]);
             stateNavigator.historyManager.getHref = () => '#/hello/world';
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -600,8 +581,7 @@ describe('FluentLinkTest', function () {
                         )}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -635,15 +615,14 @@ describe('FluentLinkTest', function () {
             s2.renderScene = ({hello}) => <h1>{hello}</h1>
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
                             {({state, data}) => state.renderScene(data)}
                         </NavigationContext.Consumer>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
@@ -661,7 +640,7 @@ describe('FluentLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -674,8 +653,7 @@ describe('FluentLinkTest', function () {
                         )}>
                             link text
                         </FluentLink>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelectorAll<HTMLAnchorElement>('a')[0];
@@ -705,15 +683,14 @@ describe('FluentLinkTest', function () {
             }
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
                             {({ stateNavigator }) => <Blocker stateNavigator={stateNavigator} />}
                         </NavigationContext.Consumer>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             assert.equal(stateNavigator.stateContext.state.key, 's0');
@@ -730,7 +707,7 @@ describe('FluentLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
@@ -742,8 +719,7 @@ describe('FluentLinkTest', function () {
                                 } />
                             )}
                         </NavigationContext.Consumer>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var div = container.querySelector<HTMLAnchorElement>('div');
@@ -791,15 +767,14 @@ describe('FluentLinkTest', function () {
             s1.renderScene = () => <div>b</div>;
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            var root = (ReactDOM as any).createRoot(container)
+            var root = createRoot(container)
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationContext.Consumer>
                             {({state, data}) => state.renderScene(data)}
                         </NavigationContext.Consumer>
-                    </NavigationHandler>,
-                    container
+                    </NavigationHandler>
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
