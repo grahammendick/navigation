@@ -5,14 +5,14 @@ import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
 import PopSync from './PopSync';
 import Scene from './Scene';
 type NavigationStackProps = {stateNavigator: AsyncStateNavigator, underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, renderScene: (state: State, data: any) => ReactNode};
-type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], rest: boolean, counter: number};
+type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], rest: boolean};
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
     private ref: React.RefObject<View>;
     private resumeNavigation: () => void;
     constructor(props) {
         super(props);
-        this.state = {stateNavigator: null, keys: [], rest: true, counter: 0};
+        this.state = {stateNavigator: null, keys: [], rest: true};
         this.ref = React.createRef<View>();
         this.onWillNavigateBack = this.onWillNavigateBack.bind(this);
         this.onNavigateToTop = this.onNavigateToTop.bind(this);
@@ -25,19 +25,19 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         hidesTabBar: () => false,
         sharedElement: () => null,
     }
-    static getDerivedStateFromProps({stateNavigator}: NavigationStackProps, {keys: prevKeys, stateNavigator: prevStateNavigator, counter}: NavigationStackState) {
+    static getDerivedStateFromProps({stateNavigator}: NavigationStackProps, {keys: prevKeys, stateNavigator: prevStateNavigator}: NavigationStackState) {
         if (stateNavigator === prevStateNavigator)
             return null;
         var {state, crumbs, nextCrumb, history} = stateNavigator.stateContext;
         if (!state)
             return {keys: []};
         var prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
-        var currentKeys = crumbs.concat(nextCrumb).map((_, i) => `${counter}-${i}`);
+        var currentKeys = crumbs.concat(nextCrumb).map((_, i) => '' + i);
         var newKeys = currentKeys.slice(prevKeys.length);
         var keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
         if (prevKeys.length === keys.length && prevState !== state)
-            keys[keys.length - 1] = `${counter}-${keys.length - 1}`;
-        return {keys, stateNavigator, rest: history, counter: (counter + 1) % 1000};
+            keys[keys.length - 1] += '+';
+        return {keys, stateNavigator, rest: history};
     }
     onWillNavigateBack({nativeEvent}) {
         var {stateNavigator} = this.props;

@@ -115,7 +115,7 @@
 - (void)checkPeekability:(NSInteger)crumb
 {
     NVSceneView *scene;
-    if (crumb > 1 && self.keys.count > crumb - 1) {
+    if (crumb > 1) {
         scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb - 1]];
     }
     _navigationController.interactivePopGestureRecognizer.enabled = scene ? scene.subviews.count > 0 : YES;
