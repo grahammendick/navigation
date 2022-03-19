@@ -115,7 +115,7 @@
 - (void)checkPeekability:(NSInteger)crumb
 {
     NVSceneView *scene;
-    if (crumb > 1 && self.keys.count > crumb - 1) {
+    if (crumb > 1) {
         scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb - 1]];
     }
     _navigationController.interactivePopGestureRecognizer.enabled = scene ? scene.subviews.count > 0 : YES;
@@ -134,7 +134,8 @@
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    NSInteger crumb = [((NVSceneView *) viewController.view).sceneKey intValue];
+    NSString *sceneKey = ((NVSceneView *) viewController.view).sceneKey;
+    NSInteger crumb = [[[sceneKey componentsSeparatedByString:@"-"] objectAtIndex:1] intValue];
     if (crumb < [self.keys count] - 1) {
         self.onWillNavigateBack(@{ @"crumb": @(crumb) });
     }
