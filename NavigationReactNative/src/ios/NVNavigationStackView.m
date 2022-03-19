@@ -115,7 +115,7 @@
 - (void)checkPeekability:(NSInteger)crumb
 {
     NVSceneView *scene;
-    if (crumb > 1) {
+    if (crumb > 1 && self.keys.count > crumb - 1) {
         scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb - 1]];
     }
     _navigationController.interactivePopGestureRecognizer.enabled = scene ? scene.subviews.count > 0 : YES;
@@ -170,9 +170,11 @@
 
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
 {
+    NVSceneView *scene;
     NSInteger crumb = [[navigationBar items] indexOfObject:item];
-    NVSceneView *scene = ((NVSceneView *) [self.viewControllers objectAtIndex:crumb - 1].view);
-    return scene.subviews.count > 0;
+    if (self.viewControllers.count > crumb - 1)
+        scene = ((NVSceneView *) [self.viewControllers objectAtIndex:crumb - 1].view);
+    return scene ? scene.subviews.count > 0 : YES;
 }
 
 @end
