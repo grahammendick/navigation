@@ -29,8 +29,8 @@ const Stack = ({ children, ...props }) => {
   useLayoutEffect(() => {
     /**
      * If the current stack contains any deleted scenes then navigates
-     * to the first scene in the new stack. Prevents future navigation
-     * to deleted scenes
+     * to the first scene in the new stack. Adds a handler that prevents
+     * attempted navigation to scenes in the old stack
      */
     const { state, url } = stateNavigator.stateContext;
     stateNavigator.configure(states);
