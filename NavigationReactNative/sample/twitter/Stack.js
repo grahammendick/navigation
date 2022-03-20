@@ -8,9 +8,7 @@ const Stack = ({ children, ...props }) => {
   const stateNavigator = stateNavigatorRef.current;
   const [states, setStates] = useState([]);
   useEffect(() => {
-    const validateNavigation = ({ __deleted }, _data, _url, _history, { state }) => (
-      !__deleted && stateNavigator.states[state.key] === state
-    );
+    const validateNavigation = ({ __deleted }) => !__deleted;
     setStates(oldStates => {
       const { newStates, newStatesLookup } = React.Children.toArray(children)
         .reduce(({ newStates, newStatesLookup }, { props: { name, ...rest }}) => {
