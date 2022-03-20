@@ -136,8 +136,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var freezable = rest && !!React.Suspense;
         var {crumbs} = stateNavigator.stateContext;
         var stateContext = navigationEvent?.stateNavigator?.stateContext;
-        var {state, data} = stateContext || crumbs[crumb] || {};
-        return (
+        var {state, data} = stateContext || crumbs[crumb];
+        return !!state && (
             <Freeze enabled={freezable && crumb < crumbs.length && navigationEvent
                 && (!stateContext['peek'] || stateContext['peek'] !== this.props.navigationEvent)}>
                 <NVScene
