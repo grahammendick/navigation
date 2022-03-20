@@ -134,8 +134,7 @@
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    NSString *sceneKey = ((NVSceneView *) viewController.view).sceneKey;
-    NSInteger crumb = [[[sceneKey componentsSeparatedByString:@"-"] objectAtIndex:1] intValue];
+    NSInteger crumb = [((NVSceneView *) viewController.view).crumb intValue];
     if (crumb < [self.keys count] - 1) {
         self.onWillNavigateBack(@{ @"crumb": @(crumb) });
     }
