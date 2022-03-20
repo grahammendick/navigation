@@ -36,8 +36,8 @@ const Stack = ({ children, ...props }) => {
     stateNavigator.configure(states);
     let changed = !state;
     if (!changed) {
-      const { state, crumbs } = stateNavigator.parseLink(url);
-      changed = state.__deleted || crumbs.filter(({ state }) => state.__deleted).length;
+      const { state: { __deleted }, crumbs } = stateNavigator.parseLink(url);
+      changed = __deleted || crumbs.some(({ state: { __deleted } }) => __deleted);
     }
     if (changed && states.length)
       stateNavigator.navigate(states[0].key);
