@@ -17,7 +17,7 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         onNavigationPress={() => {
           stateNavigator.navigateBack(1)
         }} />
-      <Tweets tweets={replies} renderHeader={() => (
+      <Tweets tweets={replies} renderHeader={(
         <View>
           <View style={styles.heading}>
             <TouchableHighlight underlayColor="white" onPress={() => {

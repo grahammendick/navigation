@@ -8,7 +8,7 @@ export default ({renderHeader, tweets, onTimeline}) => (
     keyExtractor={item => '' + item.id}
     contentInsetAdjustmentBehavior="automatic"
     nestedScrollEnabled={true}
-    ListHeaderComponent={renderHeader && renderHeader()}
+    ListHeaderComponent={renderHeader}
     style={styles.view}
     renderItem={({item}) => (
       <TweetItem {...item} onTimeline={onTimeline} />

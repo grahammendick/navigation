@@ -29,7 +29,7 @@ export default ({timeline: {id, name, username, logo, bio,
       </NavigationBar>
       <Tweets
         tweets={tweets}
-        renderHeader={() => (
+        renderHeader={(
           <>
             <View>
               <Animated.Image
