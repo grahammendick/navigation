@@ -37,7 +37,8 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         var keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
         if (prevKeys.length === keys.length && prevState !== state)
             keys[keys.length - 1] = `${counter}-${keys.length - 1}`;
-        return {keys, stateNavigator, rest: history, counter: (counter + 1) % 1000};
+        const refresh = prevKeys.length === keys.length && prevState === state;
+        return {keys, stateNavigator, rest: history || refresh, counter: (counter + 1) % 1000};
     }
     onWillNavigateBack({nativeEvent}) {
         var {stateNavigator} = this.props;
