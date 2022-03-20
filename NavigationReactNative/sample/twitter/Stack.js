@@ -8,6 +8,10 @@ const Stack = ({ children, ...props }) => {
   const stateNavigator = stateNavigatorRef.current;
   const [states, setStates] = useState([]);
   useEffect(() => {
+    /**
+     * Builds the new states from the children. Keeps the old states
+     * but marks them as deleted (they're needed to parse old urls)
+     */
     setStates(oldStates => {
       const { newStates, newStatesLookup } = React.Children.toArray(children)
         .reduce(({ newStates, newStatesLookup }, { props: { name, ...rest }}) => {
@@ -23,6 +27,11 @@ const Stack = ({ children, ...props }) => {
     });
   }, [ children ]);
   useLayoutEffect(() => {
+    /**
+     * If the current stack contains any deleted scenes then navigates
+     * to the first scene in the new stack. Prevents future navigation
+     * to deleted scenes
+     */
     const { state, url } = stateNavigator.stateContext;
     stateNavigator.configure(states);
     let changed = !state;
