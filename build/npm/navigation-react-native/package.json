@@ -2,7 +2,7 @@
   "name": "navigation-react-native",
   "version": "8.8.2",
   "description": "React Native plugin for the Navigation router",
-  "main": "navigation.react.native.js",
+  "main": "./src/NavigationReactNative.js",
   "types": "navigation.react.native.d.ts",
   "repository": {
     "type": "git",
@@ -19,6 +19,15 @@
     "navigation-react": "*",
     "react": "*",
     "react-native": "*"
+  },
+  "codegenConfig": {
+    "libraries": [
+      {
+        "name": "navigation-react-native",
+        "type": "components",
+        "jsSrcsDir": "./src/spec"
+      }
+    ]
   },
   "author": "Graham Mendick",
   "license": "Apache-2.0",

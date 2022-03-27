@@ -8,6 +8,7 @@ var rename = require('gulp-rename');
 var rollup = require('rollup');
 var sucrase = require('@rollup/plugin-sucrase');
 var terser = require('gulp-terser');
+var ts = require('gulp-typescript');
 var typescript = require('@rollup/plugin-typescript');
 
 events.EventEmitter.defaultMaxListeners = 0;
@@ -20,10 +21,6 @@ var items = [
     Object.assign({ globals: { navigation: 'Navigation',
             'navigation-react': 'NavigationReact', react: 'React' } },
         require('./build/npm/navigation-react-mobile/package.json')),
-    Object.assign({ globals: { navigation: 'Navigation', react: 'React',
-            'navigation-react': 'NavigationReact', 'react-native': 'ReactNative' },
-            format: 'es' },
-        require('./build/npm/navigation-react-native/package.json')),
     Object.assign({ globals: { navigation: 'Navigation', react: 'React',
             'navigation-react': 'NavigationReact', 'react-native': 'ReactNative',
             'navigation-react-mobile': 'NavigationReactMobile' } },
@@ -64,6 +61,15 @@ var packageNative = () => {
     return src(nativeFolders, {base: './NavigationReactNative/src'})
         .pipe(dest('./build/npm/navigation-react-native'));
 };
+function packageNativeSrc(file) {
+    return src('./NavigationReactNative/src/**/*.{ts,tsx}')
+        .pipe(ts({
+            target: "es6",
+            allowSyntheticDefaultImports: true,
+            jsx: "react"
+        }))
+        .pipe(dest('./build/npm/navigation-react-native/src'));
+}
 var nameFunc = (func, name) => {
     func.displayName = name;
     return func;
@@ -126,5 +132,5 @@ var packageDeps = parallel(
     itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigationReactMobile')
 );
 exports.build = parallel(...itemTasks.buildTasks);
-exports.package = parallel(packageNative, ...itemTasks.packageTasks);
+exports.package = parallel(packageNative, packageNativeSrc);
 exports.test = series(packageDeps, parallel(...testTasks));

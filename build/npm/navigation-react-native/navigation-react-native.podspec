@@ -1,3 +1,8 @@
+# folly_version must match the version used in React Native
+# See folly_version in react-native/React/FBReactNativeSpec/FBReactNativeSpec.podspec
+folly_version = '2021.06.28.00-v2'
+folly_compiler_flags = '-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32'
+
 Pod::Spec.new do |spec|
   spec.name         = "navigation-react-native"
   spec.version      = "8.8.2"
@@ -8,5 +13,15 @@ Pod::Spec.new do |spec|
   spec.author       = "Graham Mendick"
   spec.source       = { :git => "git://github.com/grahammendick/navigation.git", :tag => "v8.8.2-NavigationReactNative" }
   spec.source_files = "ios/**/*.{h,m}"
+  spec.compiler_flags  = folly_compiler_flags
+  spec.pod_target_xcconfig    = {
+    "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost\""
+  }
   spec.dependency "React-Core"
+  spec.dependency "React-RCTFabric"
+  spec.dependency "React-Codegen"
+  spec.dependency "RCT-Folly", folly_version
+  spec.dependency "RCTRequired"
+  spec.dependency "RCTTypeSafety"
+  spec.dependency "ReactCommon/turbomodule/core"
 end
