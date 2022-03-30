@@ -12,7 +12,7 @@ Pod::Spec.new do |spec|
   spec.platform     = :ios, "9.0"
   spec.author       = "Graham Mendick"
   spec.source       = { :git => "git://github.com/grahammendick/navigation.git", :tag => "v8.8.2-NavigationReactNative" }
-  spec.source_files = "ios/**/*.{h,m}"
+  spec.source_files = "ios/**/*.{h,m,mm}"
   spec.compiler_flags  = folly_compiler_flags
   spec.pod_target_xcconfig    = {
     "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost\""
