@@ -153,10 +153,10 @@ class StateNavigator {
             this.stateContext.oldState.dispose();
         state.navigated(this.stateContext.data, asyncData);
         for (var id in this.onNavigateCache.handlers) {
-            if (url === this.stateContext.url)
+            if (stateContext === this.stateContext)
                 this.onNavigateCache.handlers[id](oldState, state, data, asyncData, stateContext);
         }
-        if (url === this.stateContext.url) {
+        if (stateContext === this.stateContext) {
             if (historyAction !== 'none')
                 this.historyManager.addHistory(url, historyAction === 'replace', this.stateContext);
             if (this.stateContext.title && (typeof document !== 'undefined'))

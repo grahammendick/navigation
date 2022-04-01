@@ -109,8 +109,8 @@ var tests = [
 ];
 function testTask(name, input, file) {
     var globals = [
-        'mocha', 'assert', 'react', 'react-dom', 'react-dom/test-utils', 'jsdom',
-        'tslib', 'navigation', 'navigation-react',  'navigation-react-mobile'
+        'mocha', 'assert', 'react', 'react-dom', 'react-dom/client', 'react-dom/test-utils',
+        'jsdom', 'tslib', 'navigation', 'navigation-react',  'navigation-react-mobile'
     ];
     return rollupTask(name, input, file, globals, 'cjs')
         .then(() => 

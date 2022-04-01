@@ -54,7 +54,7 @@ class LinkUtility {
                 && key !== 'includeCurrentData' && key !== 'currentDataKeys' && key !== 'hash'
                 && key !== 'activeStyle' && key !== 'activeCssClass' && key !== 'disableActive'
                 && key !== 'distance' && key !== 'historyAction' && key !== 'navigating'
-                && key !== 'navigate' && key !== 'withContext' && key !== 'defer')
+                && key !== 'navigate' && key !== 'withContext' && key !== 'startTransition')
                 htmlProps[key] = props[key];
         }
         return htmlProps;
@@ -63,10 +63,13 @@ class LinkUtility {
     static getOnClick(stateNavigator: AsyncStateNavigator, props: LinkProps, link: string) {
         return e => {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
-                var { navigating, historyAction, defer } = props;
+                var { navigating, historyAction, startTransition } = props;
                 if (!navigating || navigating(e, link)) {
                     e.preventDefault();
-                    stateNavigator.navigateLink(link, historyAction, false, undefined, undefined, defer);
+                    startTransition = startTransition || ((transition) => transition())
+                    startTransition(() => {
+                        stateNavigator.navigateLink(link, historyAction, false, undefined, undefined);
+                    })
                 }
             }
         };
