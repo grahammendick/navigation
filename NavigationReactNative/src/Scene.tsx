@@ -86,8 +86,6 @@ class Scene extends React.Component<SceneProps, SceneState> {
         peekNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
         peekNavigator.onNavigate = stateNavigator.onNavigate;
         peekNavigator.offNavigate = stateNavigator.offNavigate;
-        peekNavigator.onAfterNavigate = stateNavigator.onAfterNavigate;
-        peekNavigator.offAfterNavigate = stateNavigator.offAfterNavigate;
         peekNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
         var {oldState, state, data, asyncData} = peekNavigator.stateContext;
         this.setState({navigationEvent: {oldState, state, data, asyncData, stateNavigator: peekNavigator, nextState: undefined, nextData: undefined}});
