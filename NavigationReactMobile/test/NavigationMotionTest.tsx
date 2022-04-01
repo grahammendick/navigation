@@ -1101,6 +1101,8 @@ describe('NavigationMotion', function () {
             });
             act(() => {
                 stateNavigator.navigate('sceneB');
+            });
+            act(() => {
                 update(true);
             });
             try {
@@ -1144,6 +1146,8 @@ describe('NavigationMotion', function () {
             });
             act(() => {
                 stateNavigator.navigate('sceneB');
+            });
+            act(() => {
                 update(true);
             });
             try {

@@ -2944,43 +2944,6 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('Outside React Navigation', function () {
-        it('should flush sync', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' }
-            ]);
-            var {s0, s1} = stateNavigator.states;
-            var Scene0 = () => <div>0</div>;
-            var Scene1 = () => <div>1</div>;
-            s0.renderScene = () => <Scene0 />;
-            s1.renderScene = () => <Scene1 />;
-            stateNavigator.navigate('s0');
-            var container = document.createElement('div');
-            var root = createRoot(container)
-            act(() => {
-                root.render(
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationContext.Consumer>
-                            {({state, data}) => state.renderScene(data)}
-                        </NavigationContext.Consumer>
-                    </NavigationHandler>
-                );
-            });
-            var error = console.error;
-            console.error = () => {};
-            try {
-                stateNavigator.navigate('s1', {x: 'a'});
-            } finally {
-                console.error = error;
-            }
-            var div = container.querySelector<HTMLDivElement>('div');
-            assert.equal(div.innerHTML, '1');
-            assert.equal(stateNavigator.stateContext.state, s1);
-            assert.equal(stateNavigator.stateContext.data.x, 'a');
-        })
-    });
-
     describe('Start Transition Navigation Link', function () {
         it('should delay update', function(done: MochaDone){
             var stateNavigator = new StateNavigator([

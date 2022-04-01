@@ -15,8 +15,6 @@ class AsyncStateNavigator extends StateNavigator {
         this.offBeforeNavigate = stateNavigator.offBeforeNavigate.bind(stateNavigator);
         this.onNavigate = stateNavigator.onNavigate.bind(stateNavigator);
         this.offNavigate = stateNavigator.offNavigate.bind(stateNavigator);
-        this.onAfterNavigate = stateNavigator.onAfterNavigate.bind(stateNavigator);
-        this.offAfterNavigate = stateNavigator.offAfterNavigate.bind(stateNavigator);
     }
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false,

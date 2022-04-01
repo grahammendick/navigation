@@ -3287,30 +3287,6 @@ describe('Navigation', function () {
         });
     });
 
-    describe('On After Navigate', function () {
-        it('should call onAfterNavigate listener', function() {
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-                { key: 's2', route: 'r2' }
-            ]);
-            var stateContexts = [];
-            stateNavigator.navigate('s0');
-            var afterNavigateHandler = (stateContext) => {
-                stateContexts.push(stateContext);
-            };
-            stateNavigator.onAfterNavigate(afterNavigateHandler);
-            var link = stateNavigator.getNavigationLink('s1');
-            stateNavigator.navigateLink(link);
-            stateNavigator.navigate('s2');
-            stateNavigator.offAfterNavigate(afterNavigateHandler);
-            assert.equal(stateContexts[0].state, stateNavigator.states['s1']);
-            assert.equal(stateContexts[1].state, stateNavigator.states['s2']);
-            assert.equal(stateContexts.length, 2);
-            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
-        });
-    });
-
     describe('Duplicate On Before Navigate', function () {
         it('should throw error', function() {
             var stateNavigator = new StateNavigator([
@@ -3343,21 +3319,6 @@ describe('Navigation', function () {
             };
             stateNavigator.onNavigate(navigatedHandler);
             assert.throws(() => stateNavigator.onNavigate(navigatedHandler));
-        });
-    });
-
-    describe('Duplicate On After Navigate', function () {
-        it('should throw error', function() {
-            var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
-            ]);
-            var stateContexts = [];
-            stateNavigator.navigate('s');
-            var afterNavigateHandler = (stateContext) => {
-                stateContexts.push(stateContext);
-            };
-            stateNavigator.onAfterNavigate(afterNavigateHandler);
-            assert.throws(() => stateNavigator.onAfterNavigate(afterNavigateHandler));
         });
     });
 
@@ -3420,32 +3381,6 @@ describe('Navigation', function () {
             assert.equal(states[1], stateNavigator.states['s2']);
             assert.equal(oldStates.length, 2);
             assert.equal(states.length, 2);
-            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
-        });
-    });
-
-    describe('Duplicate On Off After Navigate', function () {
-        it('should call onAfterNavigate listener', function() {
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-                { key: 's2', route: 'r2' }
-            ]);
-            var stateContexts = [];
-            stateNavigator.navigate('s0');
-            var afterNavigateHandler = (stateContext) => {
-                stateContexts.push(stateContext);
-            };
-            stateNavigator.onAfterNavigate(afterNavigateHandler);
-            stateNavigator.offAfterNavigate(afterNavigateHandler);
-            stateNavigator.onAfterNavigate(afterNavigateHandler);
-            var link = stateNavigator.getNavigationLink('s1');
-            stateNavigator.navigateLink(link);
-            stateNavigator.navigate('s2');
-            stateNavigator.offAfterNavigate(afterNavigateHandler);
-            assert.equal(stateContexts[0].state, stateNavigator.states['s1']);
-            assert.equal(stateContexts[1].state, stateNavigator.states['s2']);
-            assert.equal(stateContexts.length, 2);
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
         });
     });
@@ -3526,37 +3461,6 @@ describe('Navigation', function () {
             assert.equal(states[3], stateNavigator.states['s2']);
             assert.equal(oldStates.length, 4);
             assert.equal(states.length, 4);
-            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
-        });
-    });
-
-    describe('Copy On After Navigate', function () {
-        it('should call both onAfterNavigate listeners', function() {
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-                { key: 's2', route: 'r2' }
-            ]);
-            var stateContexts = [];
-            stateNavigator.navigate('s0');
-            var afterNavigateHandler1 = (stateContext) => {
-                stateContexts.push(stateContext);
-            };
-            var afterNavigateHandler2 = (stateContext) => {
-                stateContexts.push(stateContext);
-            };
-            stateNavigator.onAfterNavigate(afterNavigateHandler1);
-            stateNavigator.onAfterNavigate(afterNavigateHandler2);
-            var link = stateNavigator.getNavigationLink('s1');
-            stateNavigator.navigateLink(link);
-            stateNavigator.navigate('s2');
-            stateNavigator.offNavigate(afterNavigateHandler1);
-            stateNavigator.offNavigate(afterNavigateHandler2);
-            assert.equal(stateContexts[0].state, stateNavigator.states['s1']);
-            assert.equal(stateContexts[1].state, stateNavigator.states['s1']);
-            assert.equal(stateContexts[2].state, stateNavigator.states['s2']);
-            assert.equal(stateContexts[3].state, stateNavigator.states['s2']);
-            assert.equal(stateContexts.length, 4);
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
         });
     });
@@ -3649,39 +3553,6 @@ describe('Navigation', function () {
         });
     });
 
-    describe('Multiple On After Navigate', function () {
-        it('should call multiple onAfterNavigate listeners', function() {
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-                { key: 's2', route: 'r2' }
-            ]);
-            var stateContexts1 = [];
-            var stateContexts2 = [];
-            stateNavigator.navigate('s0');
-            var afterNavigateHandler1 = (stateContext) => {
-                stateContexts1.push(stateContext);
-            };
-            var afterNavigateHandler2 = (stateContext) => {
-                stateContexts2.push(stateContext);
-            };
-            stateNavigator.onAfterNavigate(afterNavigateHandler1);
-            stateNavigator.onAfterNavigate(afterNavigateHandler2);
-            var link = stateNavigator.getNavigationLink('s1');
-            stateNavigator.navigateLink(link);
-            stateNavigator.navigate('s2');
-            stateNavigator.offAfterNavigate(afterNavigateHandler1);
-            stateNavigator.offAfterNavigate(afterNavigateHandler2);
-            assert.equal(stateContexts1[0].state, stateNavigator.states['s1']);
-            assert.equal(stateContexts2[0].state, stateNavigator.states['s1']);
-            assert.equal(stateContexts1[1].state, stateNavigator.states['s2']);
-            assert.equal(stateContexts2[1].state, stateNavigator.states['s2']);
-            assert.equal(stateContexts1.length, 2);
-            assert.equal(stateContexts2.length, 2);
-            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
-        });
-    });
-
     describe('Off Before Navigate', function () {
         it('should stop calling onBeforeNavigate listener', function() {
             var stateNavigator = new StateNavigator([
@@ -3735,30 +3606,6 @@ describe('Navigation', function () {
             assert.equal(states[0], stateNavigator.states['s1']);
             assert.equal(oldStates.length, 1);
             assert.equal(states.length, 1);
-            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
-        });
-    });
-
-    describe('Off After Navigate', function () {
-        it('should stop calling onAfterNavigate listener', function() {
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-                { key: 's2', route: 'r2' }
-            ]);
-            var stateContexts = [];
-            stateNavigator.navigate('s0');
-            var afterNavigateHandler = (stateContext) => {
-                stateContexts.push(stateContext);
-            };
-            stateNavigator.onAfterNavigate(afterNavigateHandler);
-            var link = stateNavigator.getNavigationLink('s1');
-            stateNavigator.navigateLink(link);
-            stateNavigator.offAfterNavigate(afterNavigateHandler);
-            stateNavigator.offAfterNavigate(afterNavigateHandler);
-            stateNavigator.navigate('s2');
-            assert.equal(stateContexts[0].state, stateNavigator.states['s1']);
-            assert.equal(stateContexts.length, 1);
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
         });
     });
@@ -3843,38 +3690,6 @@ describe('Navigation', function () {
             assert.equal(states1.length, 1);
             assert.equal(oldStates2.length, 2);
             assert.equal(states2.length, 2);
-            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
-        });
-    });
-
-    describe('Multiple Off After Navigate', function () {
-        it('should individually stop calling onAfterNavigate listeners', function() {
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-                { key: 's2', route: 'r2' }
-            ]);
-            var stateContexts1 = [];
-            var stateContexts2 = [];
-            stateNavigator.navigate('s0');
-            var afterNavigateHandler1 = (stateContext) => {
-                stateContexts1.push(stateContext);
-            };
-            var afterNavigateHandler2 = (stateContext) => {
-                stateContexts2.push(stateContext);
-            };
-            stateNavigator.onAfterNavigate(afterNavigateHandler1);
-            stateNavigator.onAfterNavigate(afterNavigateHandler2);
-            var link = stateNavigator.getNavigationLink('s1');
-            stateNavigator.navigateLink(link);
-            stateNavigator.offAfterNavigate(afterNavigateHandler1);
-            stateNavigator.navigate('s2');
-            stateNavigator.offAfterNavigate(afterNavigateHandler2);
-            assert.equal(stateContexts1[0].state, stateNavigator.states['s1']);
-            assert.equal(stateContexts2[0].state, stateNavigator.states['s1']);
-            assert.equal(stateContexts2[1].state, stateNavigator.states['s2']);
-            assert.equal(stateContexts1.length, 1);
-            assert.equal(stateContexts2.length, 2);
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
         });
     });
@@ -4035,38 +3850,6 @@ describe('Navigation', function () {
             stateNavigator.onNavigate(navigatedHandler);
             stateNavigator.navigate('s2');
             stateNavigator.offNavigate(navigatedHandler);
-            assert.equal(hits, 1);
-            assert.equal(navigatedState, stateNavigator.stateContext.state);
-            assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s2']);
-            assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s2']);
-            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s3']);
-        });
-    });
-
-    describe('Navigate Navigate After Navigate', function () {
-        it('should call onAfterNavigate listener once', function() {
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true },
-                { key: 's2', route: 'r2' },
-                { key: 's3', route: 'r3', trackCrumbTrail: true }
-            ]);
-            stateNavigator.navigate('s0');
-            stateNavigator.navigate('s1');
-            var navigatedState;
-            var hits = 0;
-            var navigatedHandler = (_, state) => {
-                if (state.key === 's2') stateNavigator.navigate('s3');
-            };
-            var afterNavigateHandler = (stateContext) => {
-                navigatedState = stateContext.state;
-                hits++;
-            };
-            stateNavigator.onNavigate(navigatedHandler);
-            stateNavigator.onAfterNavigate(afterNavigateHandler);
-            stateNavigator.navigate('s2');
-            stateNavigator.offNavigate(navigatedHandler);
-            stateNavigator.offAfterNavigate(afterNavigateHandler);
             assert.equal(hits, 1);
             assert.equal(navigatedState, stateNavigator.stateContext.state);
             assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s2']);
@@ -4243,27 +4026,6 @@ describe('Navigation', function () {
             assert.strictEqual(navigatedState, stateNavigator.states['s1']);
             assert.strictEqual(navigatedData.s, 'Hello');
             assert.strictEqual(navigatedAsyncData, 'World');
-        });
-    });
-
-    describe('History And Ater Navigate', function () {
-        it('should add history before onAfterNavigate', function() {
-            var historyManager = new HashHistoryManager();
-            var savedUrl = ''
-            var historyCalled = false
-            historyManager.addHistory = (url: string) => {
-                savedUrl = url
-            }
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' }
-            ], historyManager);
-            var link = stateNavigator.getNavigationLink('s0');
-            stateNavigator.onAfterNavigate(() => {
-                historyCalled = !!savedUrl
-            });
-            stateNavigator.navigateLink(link, undefined, true);
-            assert.strictEqual(historyCalled, true);
         });
     });
 

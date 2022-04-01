@@ -2,7 +2,6 @@ import AsyncStateNavigator from './AsyncStateNavigator';
 import NavigationContext from './NavigationContext';
 import { StateNavigator, State } from 'navigation';
 import * as React from 'react';
-import * as ReactDOM from 'react-dom'
 type NavigationHandlerState = { context: { oldState: State, state: State, data: any, asyncData: any, nextState: State, nextData: any, stateNavigator: AsyncStateNavigator } };
 
 class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, NavigationHandlerState> {
@@ -12,28 +11,25 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         var { oldState, state, data, asyncData } = stateNavigator.stateContext;
         var asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
         this.state = { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: asyncNavigator } };
-        this.onAfterNavigate = this.onAfterNavigate.bind(this);
+        this.onNavigate = this.onNavigate.bind(this);
     }
 
     componentDidMount() {
-        this.props.stateNavigator.onAfterNavigate(this.onAfterNavigate);
+        this.props.stateNavigator.onNavigate(this.onNavigate);
     }
 
     componentWillUnmount() {
-        this.props.stateNavigator.offAfterNavigate(this.onAfterNavigate);
+        this.props.stateNavigator.offNavigate(this.onNavigate);
     }
 
-    onAfterNavigate() {
+    onNavigate() {
         var { stateNavigator } = this.props;
         if (this.state.context.stateNavigator.stateContext !== stateNavigator.stateContext) {
-            const flushSync = (ReactDOM as any).flushSync || ((setState: () => void) => setState());
-            flushSync(() => {
-                this.setState(() => {
-                    var { oldState, state, data, asyncData } = stateNavigator.stateContext;
-                    var asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
-                    return { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: asyncNavigator } };
-                });
-            })
+            this.setState(() => {
+                var { oldState, state, data, asyncData } = stateNavigator.stateContext;
+                var asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
+                return { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: asyncNavigator } };
+            });
         }
     }
 

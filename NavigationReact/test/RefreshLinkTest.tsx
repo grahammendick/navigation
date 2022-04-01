@@ -2857,39 +2857,6 @@ describe('RefreshLinkTest', function () {
         })
     });
 
-    describe('Outside React Refresh', function () {
-        it('should flush sync', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
-            ]);
-            var {s} = stateNavigator.states;
-            var Scene = ({ x }) => <div>{x ? 1 : 0}</div>;
-            s.renderScene = ({ x }) => <Scene x={x} />;
-            stateNavigator.navigate('s');
-            var container = document.createElement('div');
-            var root = createRoot(container)
-            act(() => {
-                root.render(
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationContext.Consumer>
-                            {({state, data}) => state.renderScene(data)}
-                        </NavigationContext.Consumer>
-                    </NavigationHandler>
-                );
-            });
-            var error = console.error;
-            console.error = () => {};
-            try {
-                stateNavigator.navigate('s', {x: 'a'});
-            } finally {
-                console.error = error;
-            }
-            var div = container.querySelector<HTMLDivElement>('div');
-            assert.equal(div.innerHTML, '1');
-            assert.equal(stateNavigator.stateContext.data.x, 'a');
-        })
-    });
-
     describe('Start Transition Refresh Link', function () {
         it('should delay update', function(done: MochaDone){
             var stateNavigator = new StateNavigator([
