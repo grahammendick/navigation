@@ -5,8 +5,8 @@ import { FluentNavigator } from 'navigation';
 interface LinkProps extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
     historyAction?: 'add' | 'replace' | 'none';
     navigating?: (e: MouseEvent<HTMLAnchorElement>, link: string) => boolean;
-    defer?: boolean;
     stateNavigator?: AsyncStateNavigator;
+    startTransition?: (transition: () => void) => void;
 }
 
 interface RefreshLinkProps extends LinkProps {

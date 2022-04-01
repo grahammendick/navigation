@@ -1,13 +1,14 @@
-import * as assert from 'assert';
-import * as mocha from 'mocha';
+import assert from 'assert';
+import mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationLink, NavigationHandler, NavigationContext } from 'navigation-react';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Simulate } from 'react-dom/test-utils';
+import React, { useContext, useState, useEffect } from 'react';
+import { createRoot } from 'react-dom/client';
+import { act, Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
 declare var global: any;
+global.IS_REACT_ACT_ENVIRONMENT = true;
 var { window } = new JSDOM('<!doctype html><html><body></body></html>');
 window.addEventListener = () => {};
 global.window = window;
@@ -20,14 +21,16 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink stateKey="s">
-                        <span>link text</span>
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s">
+                            <span>link text</span>
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r');
             assert.equal(link.innerHTML, '<span>link text</span>');
@@ -37,12 +40,14 @@ describe('NavigationLinkTest', function () {
     describe('Without State Navigator Navigation Link', function () {
         it('should render', function(){
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationLink stateKey="s">
-                    link text
-                </NavigationLink>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationLink stateKey="s">
+                        link text
+                    </NavigationLink>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
             assert.equal(link.innerHTML, 'link text');
@@ -55,15 +60,17 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="x">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="x">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
             assert.equal(link.innerHTML, 'link text');
@@ -76,26 +83,28 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a'}}
-                        includeCurrentData={true}
-                        currentDataKeys="y"
-                        hash='f'
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}
-                        activeCssClass="active"
-                        disableActive={true}
-                        historyAction='replace'
-                        navigating={() => false}
-                        aria-label="z"
-                        target="_blank">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a'}}
+                            includeCurrentData={true}
+                            currentDataKeys="y"
+                            hash='f'
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}
+                            activeCssClass="active"
+                            disableActive={true}
+                            historyAction='replace'
+                            navigating={() => false}
+                            aria-label="z"
+                            target="_blank">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a#f');
             assert.equal(link.innerHTML, 'link text');
@@ -111,16 +120,18 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a');
             assert.equal(link.innerHTML, 'link text');
@@ -134,17 +145,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a'}}
-                        includeCurrentData={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a'}}
+                            includeCurrentData={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?y=b&z=c&x=a');
             assert.equal(link.innerHTML, 'link text');
@@ -158,17 +171,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{y: 'a'}}
-                        includeCurrentData={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{y: 'a'}}
+                            includeCurrentData={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?y=a&z=c');
             assert.equal(link.innerHTML, 'link text');
@@ -182,17 +197,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a'}}
-                        currentDataKeys="y">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a'}}
+                            currentDataKeys="y">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?y=b&x=a');
             assert.equal(link.innerHTML, 'link text');
@@ -206,17 +223,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a'}}
-                        currentDataKeys={['y']}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a'}}
+                            currentDataKeys={['y']}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?y=b&x=a');
             assert.equal(link.innerHTML, 'link text');
@@ -230,17 +249,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a'}}
-                        currentDataKeys="y,z">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a'}}
+                            currentDataKeys="y,z">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?y=b&z=c&x=a');
             assert.equal(link.innerHTML, 'link text');
@@ -254,17 +275,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a'}}
-                        currentDataKeys={['y','z']}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a'}}
+                            currentDataKeys={['y','z']}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?y=b&z=c&x=a');
             assert.equal(link.innerHTML, 'link text');
@@ -278,17 +301,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{y: 'a'}}
-                        currentDataKeys="y,z">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{y: 'a'}}
+                            currentDataKeys="y,z">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?y=a&z=c');
             assert.equal(link.innerHTML, 'link text');
@@ -302,17 +327,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{y: 'a'}}
-                        currentDataKeys={['y','z']}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{y: 'a'}}
+                            currentDataKeys={['y','z']}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?y=a&z=c');
             assert.equal(link.innerHTML, 'link text');
@@ -325,16 +352,18 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        hash='f'>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            hash='f'>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r#f');
             assert.equal(link.innerHTML, 'link text');
@@ -347,16 +376,18 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        hash={null}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            hash={null}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r');
             assert.equal(link.innerHTML, 'link text');
@@ -369,16 +400,18 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        hash=''>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            hash=''>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r');
             assert.equal(link.innerHTML, 'link text');
@@ -392,17 +425,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a', z: 'c'}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a', z: 'c'}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a&z=c');
             assert.equal(link.style.color, 'green');
@@ -418,17 +453,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'b'}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'b'}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=b');
             assert.equal(link.style.color, '');
@@ -444,17 +481,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a', z: 'c'}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a', z: 'c'}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a&z=c');
             assert.equal(link.className, 'active');
@@ -469,17 +508,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'b'}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'b'}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=b');
             assert.equal(link.className, '');
@@ -494,17 +535,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a', z: 'c'}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a', z: 'c'}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
             assert.equal(link.innerHTML, 'link text');
@@ -518,17 +561,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'b'}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'b'}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=b');
             assert.equal(link.innerHTML, 'link text');
@@ -542,23 +587,25 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a'}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a'}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var navigated = false;
             stateNavigator.onNavigate(() => {
                 navigated = true;
             })
             var link = container.querySelector<HTMLAnchorElement>('a');
-            Simulate.click(link);
+            act(() => Simulate.click(link));
             assert.equal(navigated, false);
         })
     });
@@ -570,17 +617,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a', y: null}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a', y: null}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a');
             assert.equal(link.style.color, 'green');
@@ -596,17 +645,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a', y: undefined}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a', y: undefined}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a');
             assert.equal(link.style.color, 'green');
@@ -622,17 +673,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a', y: ''}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a', y: ''}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a');
             assert.equal(link.style.color, '');
@@ -648,17 +701,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a', y: null}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a', y: null}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a');
             assert.equal(link.className, 'active');
@@ -673,17 +728,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a', y: undefined}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a', y: undefined}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a');
             assert.equal(link.className, 'active');
@@ -698,17 +755,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a', y: ''}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a', y: ''}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a');
             assert.equal(link.className, '');
@@ -723,17 +782,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a', y: null}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a', y: null}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
             assert.equal(link.innerHTML, 'link text');
@@ -747,17 +808,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a', y: undefined}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a', y: undefined}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
             assert.equal(link.innerHTML, 'link text');
@@ -771,17 +834,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a', y: ''}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a', y: ''}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a');
             assert.equal(link.innerHTML, 'link text');
@@ -795,17 +860,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 1}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 1}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=1');
             assert.equal(link.style.color, 'green');
@@ -821,17 +888,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 2}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 2}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2');
             assert.equal(link.style.color, '');
@@ -847,17 +916,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: true}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: true}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=true');
             assert.equal(link.style.color, 'green');
@@ -873,17 +944,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: false}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: false}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=false');
             assert.equal(link.style.color, '');
@@ -899,17 +972,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: new Date(2011, 1, 3)}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: new Date(2011, 1, 3)}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2011-02-03');
             assert.equal(link.style.color, 'green');
@@ -925,17 +1000,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: new Date(2010, 1, 3)}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: new Date(2010, 1, 3)}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2010-02-03');
             assert.equal(link.style.color, '');
@@ -951,17 +1028,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 1}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 1}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=1');
             assert.equal(link.className, 'active');
@@ -976,17 +1055,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 2}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 2}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2');
             assert.equal(link.className, '');
@@ -1001,17 +1082,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: true}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: true}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=true');
             assert.equal(link.className, 'active');
@@ -1026,17 +1109,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: false}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: false}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=false');
             assert.equal(link.className, '');
@@ -1051,17 +1136,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: new Date(2011, 1, 3)}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: new Date(2011, 1, 3)}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2011-02-03');
             assert.equal(link.className, 'active');
@@ -1076,17 +1163,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: new Date(2010, 1, 3)}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: new Date(2010, 1, 3)}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2010-02-03');
             assert.equal(link.className, '');
@@ -1101,17 +1190,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 1}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 1}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
             assert.equal(link.innerHTML, 'link text');
@@ -1125,17 +1216,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 2}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 2}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2');
             assert.equal(link.innerHTML, 'link text');
@@ -1149,17 +1242,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: true}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: true}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
             assert.equal(link.innerHTML, 'link text');
@@ -1173,17 +1268,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: false}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: false}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=false');
             assert.equal(link.innerHTML, 'link text');
@@ -1197,17 +1294,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: new Date(2011, 1, 3)}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: new Date(2011, 1, 3)}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
             assert.equal(link.innerHTML, 'link text');
@@ -1221,17 +1320,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: new Date(2010, 1, 3)}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: new Date(2010, 1, 3)}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2010-02-03');
             assert.equal(link.innerHTML, 'link text');
@@ -1245,17 +1346,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: '1', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 1}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 1}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=1');
             assert.equal(link.style.color, '');
@@ -1271,17 +1374,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: '1', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 1}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 1}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=1');
             assert.equal(link.className, '');
@@ -1296,17 +1401,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: '1', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 1}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 1}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=1');
             assert.equal(link.innerHTML, 'link text');
@@ -1320,17 +1427,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: ['a', 'b']}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: ['a', 'b']}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a&x=b');
             assert.equal(link.style.color, 'green');
@@ -1346,17 +1455,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: ['a', 'd']}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: ['a', 'd']}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a&x=d');
             assert.equal(link.style.color, '');
@@ -1372,17 +1483,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [1, 2]}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [1, 2]}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=1&x=2');
             assert.equal(link.style.color, 'green');
@@ -1398,17 +1511,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [1, 3]}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [1, 3]}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=1&x=3');
             assert.equal(link.style.color, '');
@@ -1424,17 +1539,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [true, false]}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [true, false]}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=true&x=false');
             assert.equal(link.style.color, 'green');
@@ -1450,17 +1567,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [true, true]}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [true, true]}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=true&x=true');
             assert.equal(link.style.color, '');
@@ -1476,17 +1595,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2011-02-03&x=2012-03-04');
             assert.equal(link.style.color, 'green');
@@ -1502,17 +1623,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2011-02-03&x=2010-03-04');
             assert.equal(link.style.color, '');
@@ -1528,17 +1651,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: ['a', 'b']}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: ['a', 'b']}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a&x=b');
             assert.equal(link.className, 'active');
@@ -1553,17 +1678,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: ['a', 'd']}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: ['a', 'd']}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a&x=d');
             assert.equal(link.className, '');
@@ -1578,17 +1705,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [1, 2]}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [1, 2]}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=1&x=2');
             assert.equal(link.className, 'active');
@@ -1603,17 +1732,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [1, 3]}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [1, 3]}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=1&x=3');
             assert.equal(link.className, '');
@@ -1628,17 +1759,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [true, false]}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [true, false]}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=true&x=false');
             assert.equal(link.className, 'active');
@@ -1653,17 +1786,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [true, true]}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [true, true]}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=true&x=true');
             assert.equal(link.className, '');
@@ -1678,17 +1813,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2011-02-03&x=2012-03-04');
             assert.equal(link.className, 'active');
@@ -1703,17 +1840,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2011-02-03&x=2010-03-04');
             assert.equal(link.className, '');
@@ -1728,17 +1867,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: ['a', 'b']}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: ['a', 'b']}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
             assert.equal(link.innerHTML, 'link text');
@@ -1752,17 +1893,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: ['a', 'd']}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: ['a', 'd']}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a&x=d');
             assert.equal(link.innerHTML, 'link text');
@@ -1776,17 +1919,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [1, 2]}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [1, 2]}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
             assert.equal(link.innerHTML, 'link text');
@@ -1800,17 +1945,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [1, 3]}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [1, 3]}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=1&x=3');
             assert.equal(link.innerHTML, 'link text');
@@ -1824,17 +1971,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [true, false]}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [true, false]}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
             assert.equal(link.innerHTML, 'link text');
@@ -1848,17 +1997,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [true, true]}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [true, true]}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=true&x=true');
             assert.equal(link.innerHTML, 'link text');
@@ -1873,17 +2024,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
             assert.equal(link.innerHTML, 'link text');
@@ -1897,17 +2050,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=2011-02-03&x=2010-03-04');
             assert.equal(link.innerHTML, 'link text');
@@ -1921,17 +2076,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: ['a', 'b', 'c']}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: ['a', 'b', 'c']}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a&x=b&x=c');
             assert.equal(link.style.color, '');
@@ -1947,17 +2104,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: ['a', 'b', 'c']}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: ['a', 'b', 'c']}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a&x=b&x=c');
             assert.equal(link.className, '');
@@ -1972,17 +2131,19 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: ['a', 'b', 'c']}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: ['a', 'b', 'c']}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a&x=b&x=c');
             assert.equal(link.innerHTML, 'link text');
@@ -1996,18 +2157,20 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a'}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}
-                        style={{color: 'red', fontSize: '14px'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a'}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}
+                            style={{color: 'red', fontSize: '14px'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a');
             assert.equal(link.style.color, 'green');
@@ -2024,18 +2187,20 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'c'}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}
-                        style={{color: 'red', fontSize: '14px'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'c'}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}
+                            style={{color: 'red', fontSize: '14px'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=c');
             assert.equal(link.style.color, 'red');
@@ -2052,18 +2217,20 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a'}}
-                        activeCssClass="active"
-                        className="link">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a'}}
+                            activeCssClass="active"
+                            className="link">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=a');
             assert.equal(link.className, 'link active');
@@ -2078,18 +2245,20 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'c'}}
-                        activeCssClass="active"
-                        className="link">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'c'}}
+                            activeCssClass="active"
+                            className="link">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r?x=c');
             assert.equal(link.className, 'link');
@@ -2103,16 +2272,18 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink stateKey="s">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
-            Simulate.click(link);
+            act(() => Simulate.click(link));
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
         })
     });
@@ -2123,16 +2294,18 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink stateKey="s">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
-            Simulate.click(link, { ctrlKey: true });
+            act(() => Simulate.click(link, { ctrlKey: true }));
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -2143,16 +2316,18 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink stateKey="s">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
-            Simulate.click(link, { shiftKey: true });
+            act(() => Simulate.click(link, { shiftKey: true }));
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -2163,16 +2338,18 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink stateKey="s">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
-            Simulate.click(link, { metaKey: true });
+            act(() => Simulate.click(link, { metaKey: true }));
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -2183,16 +2360,18 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink stateKey="s">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
-            Simulate.click(link, { altKey: true });
+            act(() => Simulate.click(link, { altKey: true }));
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -2203,16 +2382,18 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink stateKey="s">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
-            Simulate.click(link, { button: 1 });
+            act(() => Simulate.click(link, { button: 1 }));
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -2223,18 +2404,20 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigating={() => true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigating={() => true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
-            Simulate.click(link);
+            act(() => Simulate.click(link));
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
         })
     });
@@ -2245,18 +2428,20 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigating={() => false}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigating={() => false}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
-            Simulate.click(link);
+            act(() => Simulate.click(link));
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -2268,22 +2453,24 @@ describe('NavigationLinkTest', function () {
             ]);
             var navigatingEvt, navigatingLink;
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigating={(e, link) => {
-                            navigatingEvt = e;
-                            navigatingLink = link;
-                            return true;
-                        }}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigating={(e, link) => {
+                                navigatingEvt = e;
+                                navigatingLink = link;
+                                return true;
+                            }}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
-            Simulate.click(link, { clientX: 224 });
+            act(() => Simulate.click(link, { clientX: 224 }));
             assert.strictEqual(navigatingEvt.clientX, 224);
             assert.equal(navigatingLink, '/r');
         })
@@ -2295,18 +2482,20 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink stateKey="s">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             var addHistory;
             stateNavigator.historyManager.addHistory = (url, replace) => { addHistory = !replace };
-            Simulate.click(link);
+            act(() => Simulate.click(link));
             assert.strictEqual(addHistory, true);
         })
     });
@@ -2317,20 +2506,22 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        historyAction="replace">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            historyAction="replace">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             var replaceHistory;
             stateNavigator.historyManager.addHistory = (url, replace) => { replaceHistory = replace };
-            Simulate.click(link);
+            act(() => Simulate.click(link));
             assert.strictEqual(replaceHistory, true);
         })
     });
@@ -2341,20 +2532,22 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        historyAction="none">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            historyAction="none">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             var noneHistory = true;
             stateNavigator.historyManager.addHistory = () => { noneHistory = false };
-            Simulate.click(link);
+            act(() => Simulate.click(link));
             assert.strictEqual(noneHistory, true);
         })
     });
@@ -2367,20 +2560,22 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s0"
-                        navigationData={{x: 'a'}}
-                        includeCurrentData={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s0"
+                            navigationData={{x: 'a'}}
+                            includeCurrentData={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r0?x=a');
-            stateNavigator.navigate('s1', {y: 'b'});
+            act(() => stateNavigator.navigate('s1', {y: 'b'}));
             assert.equal(link.hash, '#/r0?y=b&x=a');
         })
     });
@@ -2393,20 +2588,22 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s0"
-                        navigationData={{x: 'a'}}
-                        includeCurrentData={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s0"
+                            navigationData={{x: 'a'}}
+                            includeCurrentData={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r0?x=a');
-            stateNavigator.navigate('s1', {y: 'b'});
+            act(() => stateNavigator.navigate('s1', {y: 'b'}));
             assert.equal(link.hash, '#/r0?y=b&x=a');
         })
     });
@@ -2419,21 +2616,23 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s0"
-                        navigationData={{x: 'a'}}
-                        activeStyle={{color: 'green', fontWeight: 'bold'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s0"
+                            navigationData={{x: 'a'}}
+                            activeStyle={{color: 'green', fontWeight: 'bold'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.style.color, 'green');
             assert.equal(link.style.fontWeight, 'bold');
-            stateNavigator.navigate('s1');
+            act(() => stateNavigator.navigate('s1'));
             assert.equal(link.style.color, '');
             assert.equal(link.style.fontWeight, '');
         })
@@ -2447,20 +2646,22 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s0"
-                        navigationData={{x: 'a'}}
-                        activeCssClass="active">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s0"
+                            navigationData={{x: 'a'}}
+                            activeCssClass="active">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.className, 'active');
-            stateNavigator.navigate('s1');
+            act(() => stateNavigator.navigate('s1'));
             assert.equal(link.className, '');
         })
     });
@@ -2473,20 +2674,22 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s0"
-                        navigationData={{x: 'a'}}
-                        disableActive={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s0"
+                            navigationData={{x: 'a'}}
+                            disableActive={true}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
-            stateNavigator.navigate('s1');
+            act(() => stateNavigator.navigate('s1'));
             assert.equal(link.hash, '#/r0?x=a');
         })
     });
@@ -2498,19 +2701,21 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.historyManager.getHref = () => '#/hello/world';
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{x: 'a'}}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s"
+                            navigationData={{x: 'a'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/hello/world');
-            Simulate.click(link);
+            act(() => Simulate.click(link));
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
             assert.equal(stateNavigator.stateContext.data.x, 'a');
         })
@@ -2523,26 +2728,28 @@ describe('NavigationLinkTest', function () {
                 { key: 's1', route: 'r1' }
             ]);
             var {s0, s1} = stateNavigator.states;
-            s0.renderView = () => (
+            s0.renderScene = () => (
                 <NavigationLink
                     stateKey="s1"
                     navigationData={{hello: 'world'}}>
                     link text
                 </NavigationLink>
             );
-            s1.renderView = ({hello}) => <h1>{hello}</h1>
+            s1.renderScene = ({hello}) => <h1>{hello}</h1>
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationContext.Consumer>
-                        {({state, data}) => state.renderView(data)}
-                    </NavigationContext.Consumer>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderScene(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
-            Simulate.click(link);
+            act(() => Simulate.click(link));
             var header = container.querySelector<HTMLHeadingElement>('h1');
             assert.equal(header.innerHTML, 'world');
         })
@@ -2555,23 +2762,25 @@ describe('NavigationLinkTest', function () {
                 { key: 's1', route: 'r1' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink stateKey="s0">
-                        link text
-                    </NavigationLink>
-                    <NavigationLink stateKey="s1">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s0">
+                            link text
+                        </NavigationLink>
+                        <NavigationLink stateKey="s1">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
             var firstLink = container.querySelectorAll<HTMLAnchorElement>('a')[0];
-            Simulate.click(firstLink);
+            act(() => Simulate.click(firstLink));
             assert.equal(stateNavigator.stateContext.state.key, 's0');
             stateNavigator.onBeforeNavigate(() => false);
             var secondLink = container.querySelectorAll<HTMLAnchorElement>('a')[1];
-            Simulate.click(secondLink);
+            act(() => Simulate.click(secondLink));
             assert.equal(stateNavigator.stateContext.state.key, 's0');
         })
     });
@@ -2592,16 +2801,18 @@ describe('NavigationLinkTest', function () {
             }
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationContext.Consumer>
-                        {({ stateNavigator }) => <Blocker stateNavigator={stateNavigator} />}
-                    </NavigationContext.Consumer>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({ stateNavigator }) => <Blocker stateNavigator={stateNavigator} />}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>
+                );
+            });
             assert.equal(stateNavigator.stateContext.state.key, 's0');
-            stateNavigator.navigate('s1');
+            act(() => stateNavigator.navigate('s1'));
             assert.equal(stateNavigator.stateContext.state.key, 's0');
         })
     });
@@ -2612,18 +2823,20 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationContext.Consumer>
-                        {({stateNavigator}) => (
-                            <div onClick={() => stateNavigator.navigate('s', null, undefined, false)} />
-                        )}
-                    </NavigationContext.Consumer>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({stateNavigator}) => (
+                                <div onClick={() => stateNavigator.navigate('s', null, undefined)} />
+                            )}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>
+                );
+            });
             var div = container.querySelector<HTMLDivElement>('div');
-            Simulate.click(div);
+            act(() => Simulate.click(div));
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
         })
     });
@@ -2652,21 +2865,23 @@ describe('NavigationLinkTest', function () {
             }
             stateNavigator.navigate('s0', {x: 'a'});
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <FirstContext>
-                        <NavigationLink
-                            stateKey="s2"
-                            navigationData={{z: 'c'}}>
-                            link text
-                        </NavigationLink>
-                    </FirstContext>
-                </NavigationHandler>,
-                container
-            );
-            stateNavigator.navigate('s1', {y: 'b'});
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <FirstContext>
+                            <NavigationLink
+                                stateKey="s2"
+                                navigationData={{z: 'c'}}>
+                                link text
+                            </NavigationLink>
+                        </FirstContext>
+                    </NavigationHandler>
+                );
+            });
+            act(() => stateNavigator.navigate('s1', {y: 'b'}));
             var link = container.querySelector<HTMLAnchorElement>('a');
-            Simulate.click(link);
+            act(() => Simulate.click(link));
             assert.equal(stateNavigator.stateContext.url, '/r2?z=c&crumb=%2Fr0%3Fx%3Da');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
             assert.equal(stateNavigator.stateContext.data.z, 'c');
@@ -2683,208 +2898,113 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    /*describe('Click Deferred Navigation Link', function () {
-        it('should navigate async', function(done){
+    describe('Batch Navigation', function () {
+        it('should update once', function(){
             var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
             ]);
+            var {s0, s1, s2} = stateNavigator.states;
+            var Scene0 = () => {
+                var { stateNavigator } = useContext(NavigationContext);
+                return (
+                    <button onClick={() => {
+                        stateNavigator.navigate('s1', {x: 'a'});
+                        stateNavigator.navigate('s2', {x: 'b'});
+                    }} />
+                );
+            }
+            var Scene = () => {
+                var { data } = useContext(NavigationContext);
+                return <div>{data.x}</div>
+            }
+            s0.renderScene = () => <Scene0 />;
+            s1.renderScene = () => <Scene />;
+            s2.renderScene = () => <Scene />;
+            stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        defer={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
-            var link = container.querySelector<HTMLAnchorElement>('a');
-            Simulate.click(link);
-            assert.equal(stateNavigator.stateContext.state, null);
-            stateNavigator.onNavigate(() => {
-                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
-                done();                                
-            })
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderScene(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>
+                );
+            });
+            var button = container.querySelector<HTMLButtonElement>('button');
+            act(() => Simulate.click(button));
+            var div = container.querySelector<HTMLDivElement>('div');
+            assert.equal(div.innerHTML, 'b');
+            assert.equal(stateNavigator.stateContext.oldState, s0);
+            assert.equal(stateNavigator.stateContext.data.x, 'b');
+            assert.equal(stateNavigator.stateContext.state, s2);
         })
     });
 
-    describe('Next State and Data Deferred Navigation Link', function () {
-        it('should update', function(done){
+    describe('Start Transition Navigation Link', function () {
+        it('should delay update', function(done: MochaDone){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
             var {s0, s1} = stateNavigator.states;
-            s0.renderView = (_, nextState, {hello}) => (
-                <div>
-                    <h1>{hello || 'empty'} {(nextState && nextState.key) || 'first'}</h1>
+            var yVal = undefined;
+            var stateContextVal;
+            var Scene = () => {
+                var [ y, setY ] = useState(null);
+                useEffect(() => {
+                    if (y) {
+                        yVal = y;
+                        stateContextVal = stateNavigator.stateContext;
+                    }
+                })
+                return (
                     <NavigationLink
-                        stateKey="s1"
-                        navigationData={{hello: 'world'}}
-                        defer={true}>
-                        link text
-                    </NavigationLink>
-                </div>
-            );
-            s1.renderView = ({hello}, nextState) => <h1>{hello} {(nextState && nextState.key) || 'second'}</h1>
+                        stateKey='s1'
+                        navigationData={{x: 1}}
+                        startTransition={(React as any).startTransition}
+                        navigating={() => {
+                            setY('a')
+                            return true;
+                        }}
+                    />
+                );
+            }
+            s0.renderScene = () => <Scene />;
+            s1.renderScene = () => <div>b</div>;
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationContext.Consumer>
-                        {({state, data, nextState, nextData}) => state.renderView(data, nextState, nextData)}
-                    </NavigationContext.Consumer>
-                </NavigationHandler>,
-                container
-            );
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderScene(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>
+                );
+            });
             var link = container.querySelector<HTMLAnchorElement>('a');
-            var header = container.querySelector<HTMLHeadingElement>('h1');
-            assert.equal(header.innerHTML, 'empty first');
-            Simulate.click(link);
-            header = container.querySelector<HTMLHeadingElement>('h1');
-            assert.equal(header.innerHTML, 'world s1');
+            var error = console.error;
+            console.error = () => {};
+            try {
+                Simulate.click(link);
+            } finally {
+                console.error = error;
+            }
             stateNavigator.onNavigate(() => {
-                header = container.querySelector<HTMLHeadingElement>('h1');
-                assert.equal(header.innerHTML, 'world second');
-                done();                                
+                var div = container.querySelector<HTMLDivElement>('div');
+                assert.equal(yVal, 'a');
+                assert.equal(div.innerHTML, 'b');
+                assert.equal(stateContextVal.state, s0)
+                assert.equal(stateContextVal.data.x, undefined)
+                assert.equal(stateNavigator.stateContext.state, s1);
+                assert.equal(stateNavigator.stateContext.data.x, 1);
+                done()
             })
         })
     });
-
-    describe('Include Current Data Deferred Navigation Link', function () {
-        it('should update async', function(done){
-            var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
-            ]);
-            stateNavigator.navigate('s', {x: 'a'});
-            var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{y: 'b'}}
-                        defer={true}>
-                        link text
-                    </NavigationLink>
-                    <NavigationLink
-                        stateKey="s"
-                        navigationData={{z: 'c'}}
-                        includeCurrentData={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
-            var firstLink = container.querySelectorAll<HTMLAnchorElement>('a')[0];
-            var secondLink = container.querySelectorAll<HTMLAnchorElement>('a')[1];
-            assert.equal(secondLink.hash, '#/r?x=a&z=c');
-            Simulate.click(firstLink);
-            assert.equal(secondLink.hash, '#/r?x=a&z=c');
-            stateNavigator.onNavigate(() => {
-                assert.equal(secondLink.hash, '#/r?y=b&z=c');
-                done();
-            })
-        })
-    });
-
-    describe('Click Deferred Navigate', function () {
-        it('should navigate async', function(done){
-            var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
-            ]);
-            var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationContext.Consumer>
-                        {({stateNavigator}) => (
-                            <div onClick={() => stateNavigator.navigate('s', null, 'add', true)} />
-                        )}
-                    </NavigationContext.Consumer>
-                </NavigationHandler>,
-                container
-            );
-            var link = container.querySelector<HTMLAnchorElement>('div');
-            Simulate.click(link);
-            assert.equal(stateNavigator.stateContext.state, null);
-            stateNavigator.onNavigate(() => {
-                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
-                done();
-            })
-        })
-    });
-
-    describe('Multiple Deferred Navigation Link', function () {
-        it('should update async', function(done){
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' }
-            ]);
-            var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s0"
-                        defer={true}>
-                        link text
-                    </NavigationLink>
-                    <NavigationLink
-                        stateKey="s1"
-                        defer={true}>
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>,
-                container
-            );
-            var firstLink = container.querySelectorAll<HTMLAnchorElement>('a')[0];
-            var secondLink = container.querySelectorAll<HTMLAnchorElement>('a')[1];
-            Simulate.click(firstLink);
-            Simulate.click(secondLink);
-            stateNavigator.onNavigate(() => {
-                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
-                done();
-            })
-        })
-    });
-
-    describe('Next State and Data Navigate', function () {
-        it('should update', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' }
-            ]);
-            var {s0, s1} = stateNavigator.states;
-            s0.renderView = (_, nextState, {hello}) => (
-                <div>
-                    <h1>{hello || 'empty'} {(nextState && nextState.key) || 'first'}</h1>
-                    <NavigationLink
-                        stateKey="s1"
-                        navigationData={{hello: 'world'}}
-                        defer={true}>
-                        link text
-                    </NavigationLink>
-                </div>
-            );
-            s1.renderView = () => null;
-            stateNavigator.navigate('s0');
-            var container = document.createElement('div');
-            ReactDOM.render(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationContext.Consumer>
-                        {({state, data, nextState, nextData}) => state.renderView(data, nextState, nextData)}
-                    </NavigationContext.Consumer>
-                </NavigationHandler>,
-                container
-            );
-            var link = container.querySelector<HTMLAnchorElement>('a');
-            var header = container.querySelector<HTMLHeadingElement>('h1');
-            assert.equal(header.innerHTML, 'empty first');
-            Simulate.click(link);
-            header = container.querySelector<HTMLHeadingElement>('h1');
-            assert.equal(header.innerHTML, 'world s1');
-            stateNavigator.navigate('s0', {x: 'a'});
-            header = container.querySelector<HTMLHeadingElement>('h1');
-            assert.equal(header.innerHTML, 'empty first');
-        })
-    });*/
 });
