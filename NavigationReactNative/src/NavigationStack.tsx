@@ -4,7 +4,7 @@ import { Crumb, State } from 'navigation';
 import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
 import PopSync from './PopSync';
 import Scene from './Scene';
-import NVNavigationStack from './NVNavigationStackNativeComponent';
+import NVNavigationStack from './NavigationStackNativeComponent';
 type NavigationStackProps = {stateNavigator: AsyncStateNavigator, underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, renderScene: (state: State, data: any) => ReactNode};
 type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], rest: boolean, counter: number};
 
