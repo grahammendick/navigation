@@ -1,3 +1,4 @@
+#ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTViewComponentView.h>
 
 #import <react/renderer/components/navigation-react-native/ComponentDescriptors.h>
@@ -42,3 +43,4 @@ Class<RCTComponentViewProtocol> NVNavigationStackCls(void)
 {
   return NVNavigationStackComponentView.class;
 }
+#endif

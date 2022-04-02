@@ -13,15 +13,19 @@ Pod::Spec.new do |spec|
   spec.author       = "Graham Mendick"
   spec.source       = { :git => "git://github.com/grahammendick/navigation.git", :tag => "v8.8.2-NavigationReactNative" }
   spec.source_files = "ios/**/*.{h,m,mm}"
-  spec.compiler_flags  = folly_compiler_flags
-  spec.pod_target_xcconfig    = {
-    "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost\""
-  }
   spec.dependency "React-Core"
-  spec.dependency "React-RCTFabric"
-  spec.dependency "React-Codegen"
-  spec.dependency "RCT-Folly", folly_version
-  spec.dependency "RCTRequired"
-  spec.dependency "RCTTypeSafety"
-  spec.dependency "ReactCommon/turbomodule/core"
+  if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
+    spec.compiler_flags = folly_compiler_flags + " -DRCT_NEW_ARCH_ENABLED=1"
+    spec.pod_target_xcconfig    = {
+        "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost\"",
+        "OTHER_CPLUSPLUSFLAGS" => "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
+        "CLANG_CXX_LANGUAGE_STANDARD" => "c++17"
+    }
+    spec.dependency "React-RCTFabric"
+    spec.dependency "React-Codegen"
+    spec.dependency "RCT-Folly", folly_version
+    spec.dependency "RCTRequired"
+    spec.dependency "RCTTypeSafety"
+    spec.dependency "ReactCommon/turbomodule/core"
+  end
 end
