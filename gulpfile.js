@@ -61,6 +61,10 @@ var packageNative = () => {
     return src(nativeFolders, {base: './NavigationReactNative/src'})
         .pipe(dest('./build/npm/navigation-react-native'));
 };
+var packageNativeComponent = () => {
+    return src('./NavigationReactNative/src/**/*NativeComponent.js')
+        .pipe(dest('./build/npm/navigation-react-native/src'));
+};
 function packageNativeSrc(file) {
     return src('./NavigationReactNative/src/**/*.{ts,tsx}')
         .pipe(ts({
@@ -132,5 +136,5 @@ var packageDeps = parallel(
     itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigationReactMobile')
 );
 exports.build = parallel(...itemTasks.buildTasks);
-exports.package = parallel(packageNative, packageNativeSrc);
+exports.package = parallel(packageNativeSrc, packageNative, packageNativeComponent);
 exports.test = series(packageDeps, parallel(...testTasks));

@@ -25,7 +25,7 @@
       {
         "name": "navigation-react-native",
         "type": "components",
-        "jsSrcsDir": "./src/spec"
+        "jsSrcsDir": "./src"
       }
     ]
   },
