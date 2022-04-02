@@ -129,9 +129,9 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
     }
 };
 
-const NVNavigationStack = global.nativeFabricUIManager ?
-    require('./NavigationStackNativeComponent').default :
-    requireNativeComponent('NVNavigationStack')
+const NVNavigationStack = global.nativeFabricUIManager
+    ? require('./NavigationStackNativeComponent').default
+    : requireNativeComponent('NVNavigationStack');
 
 const styles = StyleSheet.create({
     stack: {
