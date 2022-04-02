@@ -1,5 +1,3 @@
-#ifdef RN_FABRIC_ENABLED
-
 #import "NVNavigationStackViewComponentView.h"
 
 #import <React/RCTConversions.h>
@@ -14,7 +12,7 @@
 
 using namespace facebook::react;
 
-@interface NVNavigationStackViewComponentView () <NVNavigationStackViewProtocol>
+@interface NVNavigationStackViewComponentView () <RCTNVNavigationStackViewViewProtocol>
 @end
 
 @implementation NVNavigationStackViewComponentView
@@ -37,5 +35,3 @@ Class<RCTComponentViewProtocol> NVNavigationStackViewCls(void)
 {
   return NVNavigationStackViewComponentView.class;
 }
-
-#endif // RN_FABRIC_ENABLED
