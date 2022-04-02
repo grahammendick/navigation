@@ -5,6 +5,7 @@
   "devDependencies": {
     "@rollup/plugin-sucrase": "^3.0.2",
     "@rollup/plugin-typescript": "^4.1.2",
+    "@types/node": "^17.0.23",
     "gulp": "^4.0.2",
     "gulp-cli": "^2.3.0",
     "gulp-insert": "^0.5.0",

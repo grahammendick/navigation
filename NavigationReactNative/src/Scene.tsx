@@ -8,7 +8,7 @@ type SceneProps = { crumb: number, sceneKey: string, rest: boolean, renderScene:
 type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
-    private timer: number;
+    private timer: any;
     constructor(props) {
         super(props);
         this.state = {navigationEvent: null};
