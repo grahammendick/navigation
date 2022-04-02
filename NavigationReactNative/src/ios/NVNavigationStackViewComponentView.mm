@@ -1,6 +1,4 @@
-#import "NVNavigationStackViewComponentView.h"
-
-#import <React/RCTConversions.h>
+#import <React/RCTViewComponentView.h>
 
 #import <react/renderer/components/navigation-react-native/ComponentDescriptors.h>
 #import <react/renderer/components/navigation-react-native/EventEmitters.h>
@@ -11,6 +9,15 @@
 #import "NVNavigationStackView.h"
 
 using namespace facebook::react;
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface NVNavigationStackViewComponentView : RCTViewComponentView
+
+@end
+
+NS_ASSUME_NONNULL_END
+
 
 @interface NVNavigationStackViewComponentView () <RCTNVNavigationStackViewViewProtocol>
 @end
