@@ -10,5 +10,5 @@ type NativeProps = $ReadOnly<{|
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(
-   'NVNavigationStackView',
+   'NVNavigationStack',
 ): HostComponent<NativeProps>);

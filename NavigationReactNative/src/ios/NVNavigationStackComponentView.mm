@@ -6,7 +6,7 @@
 #import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
 
 #import "RCTFabricComponentsPlugins.h"
-#import "NVNavigationStackView.h"
+#import "NVNavigationStack.h"
 
 using namespace facebook::react;
 
