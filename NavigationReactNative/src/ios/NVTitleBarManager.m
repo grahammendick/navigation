@@ -1,5 +1,9 @@
-#import "NVTitleBarManager.h"
 #import "NVTitleBarView.h"
+#import <React/RCTViewManager.h>
+
+@interface NVTitleBarManager : RCTViewManager
+
+@end
 
 @implementation NVTitleBarManager
 

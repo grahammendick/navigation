@@ -1,5 +1,8 @@
-#import "NVNavigationBarManager.h"
 #import "NVNavigationBarView.h"
+#import <React/RCTViewManager.h>
+
+@interface NVNavigationBarManager : RCTViewManager
+@end
 
 @implementation NVNavigationBarManager
 

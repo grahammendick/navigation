@@ -1,5 +1,8 @@
-#import "NVSegmentedTabManager.h"
 #import "NVSegmentedTabView.h"
+#import <React/RCTViewManager.h>
+
+@interface NVSegmentedTabManager : RCTViewManager
+@end
 
 @implementation NVSegmentedTabManager
 

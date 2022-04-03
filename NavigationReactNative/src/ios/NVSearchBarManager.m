@@ -1,7 +1,10 @@
-#import "NVSearchBarManager.h"
 #import "NVSearchBarView.h"
 
 #import <UIKit/UIKit.h>
+#import <React/RCTViewManager.h>
+
+@interface NVSearchBarManager : RCTViewManager
+@end
 
 @implementation NVSearchBarManager
 

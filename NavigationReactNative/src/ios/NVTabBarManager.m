@@ -1,5 +1,8 @@
-#import "NVTabBarManager.h"
 #import "NVTabBarView.h"
+#import <React/RCTViewManager.h>
+
+@interface NVTabBarManager : RCTViewManager
+@end
 
 @implementation NVTabBarManager
 

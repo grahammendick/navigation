@@ -1,11 +1,14 @@
-#import "NVTabBarItemManager.h"
 #import "NVTabBarItemView.h"
 
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
 #import <React/RCTImageSource.h>
+#import <React/RCTViewManager.h>
 
- @implementation RCTConvert (UITabBarSystemItem)
+@interface NVTabBarItemManager : RCTViewManager
+@end
+
+@implementation RCTConvert (UITabBarSystemItem)
 
  RCT_ENUM_CONVERTER(UITabBarSystemItem, (@{
     @"more": @(UITabBarSystemItemMore),
