@@ -332,7 +332,7 @@ export interface SearchBarProps {
 }
 
 /**
- * Renders a serach bar in the UI navigation bar
+ * Renders a search bar in the UI navigation bar
  */
 export class SearchBar extends Component<SearchBarProps> { }
 
