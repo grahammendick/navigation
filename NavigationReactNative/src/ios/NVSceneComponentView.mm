@@ -24,11 +24,33 @@ using namespace facebook::react;
     return self;
 }
 
+- (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
+{
+    const auto &oldViewProps = *std::static_pointer_cast<NVSceneProps const>(_props);
+    const auto &newViewProps = *std::static_pointer_cast<NVSceneProps const>(props);
+
+    if (oldViewProps.sceneKey != newViewProps.sceneKey) {
+        _sceneKey = [[NSString alloc] initWithUTF8String: newViewProps.sceneKey.c_str()];
+    }
+
+    [super updateProps:props oldProps:oldProps];
+}
+
 #pragma mark - RCTComponentViewProtocol
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
   return concreteComponentDescriptorProvider<NVSceneComponentDescriptor>();
+}
+
+- (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
+{
+    [self insertSubview:childComponentView atIndex:index];
+}
+
+- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
+{
+    [childComponentView removeFromSuperview];
 }
 
 @end

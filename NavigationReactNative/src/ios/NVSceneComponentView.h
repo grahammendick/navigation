@@ -6,7 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NVSceneComponentView : RCTViewComponentView
 
-@property (nonatomic, copy) NSString *sceneKey;
+@property (nonatomic) NSString *sceneKey;
 
 @end
 

@@ -6,7 +6,7 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
-  // add other props here
+  sceneKey: string
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(
