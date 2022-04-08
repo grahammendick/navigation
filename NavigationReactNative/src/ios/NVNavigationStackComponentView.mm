@@ -36,6 +36,23 @@ using namespace facebook::react;
     return self;
 }
 
+- (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
+{
+    const auto &oldViewProps = *std::static_pointer_cast<NVNavigationStackProps const>(_props);
+    const auto &newViewProps = *std::static_pointer_cast<NVNavigationStackProps const>(props);
+
+    if (oldViewProps.keys != newViewProps.keys) {
+        NSMutableArray *keysArr = [[NSMutableArray alloc] init];
+        for (auto i = 0; i < newViewProps.keys.size(); i++) {
+            NSString *key = [[NSString alloc] initWithUTF8String: newViewProps.keys[i].c_str()];
+            [keysArr addObject:key];
+        }
+        self.keys = [keysArr copy];
+    }
+
+    [super updateProps:props oldProps:oldProps];
+}
+
 
 #pragma mark - RCTComponentViewProtocol
 

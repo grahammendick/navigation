@@ -8,6 +8,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UINavigationController *navigationController;
 
+@property (nonatomic, copy) NSArray *keys;
+
 @end
 
 NS_ASSUME_NONNULL_END
