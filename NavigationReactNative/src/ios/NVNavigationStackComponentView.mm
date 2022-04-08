@@ -1,5 +1,5 @@
 #ifdef RCT_NEW_ARCH_ENABLED
-#import <React/RCTViewComponentView.h>
+#import "NVNavigationStackComponentView.h"
 
 #import <react/renderer/components/navigation-react-native/ComponentDescriptors.h>
 #import <react/renderer/components/navigation-react-native/EventEmitters.h>
@@ -7,23 +7,13 @@
 #import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
 
 #import "RCTFabricComponentsPlugins.h"
-#import "NVNavigationStackView.h"
 
 using namespace facebook::react;
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface NVNavigationStackViewManager : RCTViewComponentView
-
+@interface NVNavigationStackComponentView () <RCTNVNavigationStackViewProtocol>
 @end
 
-NS_ASSUME_NONNULL_END
-
-
-@interface NVNavigationStackViewManager () <RCTNVNavigationStackViewProtocol>
-@end
-
-@implementation NVNavigationStackViewManager
+@implementation NVNavigationStackComponentView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -41,6 +31,6 @@ NS_ASSUME_NONNULL_END
 
 Class<RCTComponentViewProtocol> NVNavigationStackCls(void)
 {
-  return NVNavigationStackViewManager.class;
+  return NVNavigationStackComponentView.class;
 }
 #endif
