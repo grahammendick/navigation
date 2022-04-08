@@ -13,17 +13,17 @@ using namespace facebook::react;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NVNavigationStackComponentView : RCTViewComponentView
+@interface NVNavigationStackViewManager : RCTViewComponentView
 
 @end
 
 NS_ASSUME_NONNULL_END
 
 
-@interface NVNavigationStackComponentView () <RCTNVNavigationStackViewProtocol>
+@interface NVNavigationStackViewManager () <RCTNVNavigationStackViewProtocol>
 @end
 
-@implementation NVNavigationStackComponentView
+@implementation NVNavigationStackViewManager
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -41,6 +41,6 @@ NS_ASSUME_NONNULL_END
 
 Class<RCTComponentViewProtocol> NVNavigationStackCls(void)
 {
-  return NVNavigationStackComponentView.class;
+  return NVNavigationStackViewManager.class;
 }
 #endif
