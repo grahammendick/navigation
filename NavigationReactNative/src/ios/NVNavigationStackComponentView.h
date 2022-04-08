@@ -4,7 +4,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NVNavigationStackComponentView : RCTViewComponentView
+@interface NVNavigationStackComponentView : RCTViewComponentView <UINavigationControllerDelegate>
+
+@property (nonatomic, strong) UINavigationController *navigationController;
 
 @end
 

@@ -17,7 +17,11 @@ using namespace facebook::react;
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-  return self;
+    if (self = [super initWithFrame:frame]) {
+        static const auto defaultProps = std::make_shared<const NVSceneProps>();
+        _props = defaultProps;
+    }
+    return self;
 }
 
 #pragma mark - RCTComponentViewProtocol
