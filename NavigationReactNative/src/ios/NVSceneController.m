@@ -6,11 +6,11 @@
 
 @implementation NVSceneController
 {
-    NVSceneView *_view;
+    UIView *_view;
     CGRect _lastViewFrame;
 }
 
-- (id)initWithScene:(NVSceneView *)view
+- (id)initWithScene:(UIView *)view
 {
     if (self = [super init]) {
         _view = view;
@@ -133,12 +133,13 @@
 
 - (BOOL)hidesBottomBarWhenPushed
 {
-    return [self.navigationController.visibleViewController isEqual:self] && _view.hidesTabBar;
+    //return [self.navigationController.visibleViewController isEqual:self] && _view.hidesTabBar;
+    return NO;
 }
 
 - (void)dealloc
 {
-    [_view didPop];
+    //[_view didPop];
 }
 
 @end

@@ -2,6 +2,7 @@
 #import "NVNavigationStackComponentView.h"
 #import "NVSceneComponentView.h"
 #import "NVNavigationStackView.h"
+#import "NVSceneController.h"
 
 #import <react/renderer/components/navigation-react-native/ComponentDescriptors.h>
 #import <react/renderer/components/navigation-react-native/EventEmitters.h>
@@ -49,8 +50,47 @@ using namespace facebook::react;
         }
         self.keys = [keysArr copy];
     }
-
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self update];
+    });
     [super updateProps:props oldProps:oldProps];
+}
+
+- (void)update
+{
+    NSInteger crumb = [self.keys count] - 1;
+    NSInteger currentCrumb = [_navigationController.viewControllers count] - 1;
+    if (crumb < currentCrumb) {
+        [_navigationController popToViewController:_navigationController.viewControllers[crumb] animated:true];
+    }
+    BOOL animate = YES;
+    if (crumb > currentCrumb) {
+        NSMutableArray *controllers = [[NSMutableArray alloc] init];
+        for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
+            NSInteger nextCrumb = currentCrumb + i + 1;
+            NVSceneComponentView *scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:nextCrumb]];
+            if (!![scene superview])
+                return;
+            NVSceneController *controller = [[NVSceneController alloc] initWithScene:scene];
+            [controllers addObject:controller];
+        }
+        
+        if (crumb - currentCrumb == 1) {
+            [_navigationController pushViewController:controllers[0] animated:animate];
+        } else {
+            NSArray *allControllers = [_navigationController.viewControllers arrayByAddingObjectsFromArray:controllers];
+            [_navigationController setViewControllers:allControllers animated:animate];
+        }
+    }
+    if (crumb == currentCrumb) {
+        NVSceneComponentView *scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
+        if (!![scene superview])
+            return;
+        NVSceneController *controller = [[NVSceneController alloc] initWithScene:scene];
+        NSMutableArray *controllers = [NSMutableArray arrayWithArray:_navigationController.viewControllers];
+        [controllers replaceObjectAtIndex:crumb withObject:controller];
+        [_navigationController setViewControllers:controllers animated:animate];
+    }
 }
 
 
