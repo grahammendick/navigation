@@ -43,16 +43,6 @@ using namespace facebook::react;
   return concreteComponentDescriptorProvider<NVSceneComponentDescriptor>();
 }
 
-- (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
-{
-    [self insertSubview:childComponentView atIndex:index];
-}
-
-- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
-{
-    [childComponentView removeFromSuperview];
-}
-
 @end
 
 Class<RCTComponentViewProtocol> NVSceneCls(void)
