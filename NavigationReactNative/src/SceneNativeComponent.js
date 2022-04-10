@@ -6,7 +6,9 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
-  sceneKey: string
+  sceneKey: string,
+  crumb: Int32,
+  onPopped: DirectEventHandler<null>
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(

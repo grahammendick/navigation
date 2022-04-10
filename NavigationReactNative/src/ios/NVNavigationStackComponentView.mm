@@ -2,6 +2,7 @@
 #import "NVNavigationStackComponentView.h"
 #import "NVSceneComponentView.h"
 #import "NVNavigationStackView.h"
+#import "NVSceneComponentView.h"
 #import "NVSceneController.h"
 
 #import <react/renderer/components/navigation-react-native/ComponentDescriptors.h>
@@ -20,6 +21,7 @@ using namespace facebook::react;
 @implementation NVNavigationStackComponentView
 {
     NSMutableDictionary *_scenes;
+    NSInteger _nativeEventCount;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -91,6 +93,33 @@ using namespace facebook::react;
         [controllers replaceObjectAtIndex:crumb withObject:controller];
         [_navigationController setViewControllers:controllers animated:animate];
     }
+}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    NSInteger crumb = ((NVSceneComponentView *) viewController.view).crumb;
+    if (crumb < [self.keys count] - 1) {
+        std::static_pointer_cast<NVNavigationStackEventEmitter const>(_eventEmitter)
+            ->onWillNavigateBack(NVNavigationStackEventEmitter::OnWillNavigateBack{
+                .crumb = static_cast<int>(crumb)
+            });
+    }
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
+    // [self checkPeekability:crumb];
+    if (crumb < [self.keys count] - 1) {
+        _nativeEventCount++;
+    }
+    NSInteger eventCount = crumb < [self.keys count] - 1 ? _nativeEventCount: 0;
+    std::static_pointer_cast<NVNavigationStackEventEmitter const>(_eventEmitter)
+        ->onRest(NVNavigationStackEventEmitter::OnRest{
+            .crumb = static_cast<int>(crumb),
+            .eventCount = static_cast<int>(eventCount)
+        });
+
 }
 
 

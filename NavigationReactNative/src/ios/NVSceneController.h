@@ -10,3 +10,9 @@
 - (id)initWithScene:(UIView *)view;
 
 @end
+
+@protocol NVScene
+
+- (void)didPop;
+
+@end

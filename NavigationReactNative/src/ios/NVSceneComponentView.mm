@@ -28,12 +28,19 @@ using namespace facebook::react;
 {
     const auto &oldViewProps = *std::static_pointer_cast<NVSceneProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<NVSceneProps const>(props);
-
     if (oldViewProps.sceneKey != newViewProps.sceneKey) {
         _sceneKey = [[NSString alloc] initWithUTF8String: newViewProps.sceneKey.c_str()];
     }
-
+    if (oldViewProps.crumb != newViewProps.crumb) {
+        _crumb = newViewProps.crumb;
+    }
     [super updateProps:props oldProps:oldProps];
+}
+
+- (void)didPop
+{
+    std::static_pointer_cast<NVSceneEventEmitter const>(_eventEmitter)
+        ->onPopped(NVSceneEventEmitter::OnPopped{});
 }
 
 #pragma mark - RCTComponentViewProtocol

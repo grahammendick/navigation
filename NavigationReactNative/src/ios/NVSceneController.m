@@ -6,11 +6,11 @@
 
 @implementation NVSceneController
 {
-    UIView *_view;
+    UIView<NVScene> *_view;
     CGRect _lastViewFrame;
 }
 
-- (id)initWithScene:(UIView *)view
+- (id)initWithScene:(UIView<NVScene> *)view
 {
     if (self = [super init]) {
         _view = view;
@@ -139,7 +139,7 @@
 
 - (void)dealloc
 {
-    //[_view didPop];
+    [_view didPop];
 }
 
 @end
