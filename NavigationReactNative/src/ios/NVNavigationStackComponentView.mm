@@ -104,6 +104,7 @@ using namespace facebook::react;
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    if (![viewController.view isKindOfClass:NVSceneComponentView.class]) return;
     NSInteger crumb = ((NVSceneComponentView *) viewController.view).crumb;
     if (crumb < [self.keys count] - 1) {
         std::static_pointer_cast<NVNavigationStackEventEmitter const>(_eventEmitter)
@@ -129,6 +130,12 @@ using namespace facebook::react;
 
 }
 
+- (void)prepareForRecycle
+{
+    [super prepareForRecycle];
+    _nativeEventCount = 0;
+    [_navigationController setViewControllers:@[[UIViewController new]]];
+}
 
 #pragma mark - RCTComponentViewProtocol
 
@@ -145,6 +152,7 @@ using namespace facebook::react;
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
     [_scenes removeObjectForKey:((NVSceneComponentView *) childComponentView).sceneKey];
+    [childComponentView removeFromSuperview];
 }
 
 @end

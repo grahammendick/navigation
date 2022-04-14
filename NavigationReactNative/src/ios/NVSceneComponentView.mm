@@ -39,8 +39,10 @@ using namespace facebook::react;
 
 - (void)didPop
 {
-    std::static_pointer_cast<NVSceneEventEmitter const>(_eventEmitter)
-        ->onPopped(NVSceneEventEmitter::OnPopped{});
+    if (_eventEmitter != nullptr) {
+        std::static_pointer_cast<NVSceneEventEmitter const>(_eventEmitter)
+            ->onPopped(NVSceneEventEmitter::OnPopped{});
+    }
 }
 
 #pragma mark - RCTComponentViewProtocol
