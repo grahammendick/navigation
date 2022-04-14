@@ -92,7 +92,8 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
             var enterAnim = unmountStyle(true, state, data, crumbs);
             var exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs, state, data);
         }
-        return {enterAnim, exitAnim, sharedElement, oldSharedElement};
+        var enterAnimOff = enterAnim === '';
+        return {enterAnim, exitAnim, enterAnimOff, sharedElement, oldSharedElement};
     }
     render() {
         var {keys, rest, mostRecentEventCount} = this.state;

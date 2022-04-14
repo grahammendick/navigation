@@ -9,6 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UINavigationController *navigationController;
 
 @property (nonatomic, copy) NSArray *keys;
+@property (nonatomic, assign) BOOL enterAnimOff;
+@property (nonatomic, assign) NSInteger mostRecentEventCount;
 
 @end
 

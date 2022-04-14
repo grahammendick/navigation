@@ -22,7 +22,6 @@ using namespace facebook::react;
 {
     NSMutableDictionary *_scenes;
     NSInteger _nativeEventCount;
-    NSInteger _mostRecentEventCount;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -53,6 +52,8 @@ using namespace facebook::react;
         }
         self.keys = [keysArr copy];
     }
+    if (oldViewProps.enterAnimOff != newViewProps.enterAnimOff)
+        _enterAnimOff = newViewProps.enterAnimOff;
     if (oldViewProps.mostRecentEventCount != newViewProps.mostRecentEventCount)
         _mostRecentEventCount = newViewProps.mostRecentEventCount;
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -71,7 +72,7 @@ using namespace facebook::react;
     if (crumb < currentCrumb) {
         [_navigationController popToViewController:_navigationController.viewControllers[crumb] animated:true];
     }
-    BOOL animate = YES;
+    BOOL animate = !self.enterAnimOff;
     if (crumb > currentCrumb) {
         NSMutableArray *controllers = [[NSMutableArray alloc] init];
         for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
