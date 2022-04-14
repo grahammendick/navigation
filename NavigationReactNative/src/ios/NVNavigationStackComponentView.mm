@@ -22,6 +22,7 @@ using namespace facebook::react;
 {
     NSMutableDictionary *_scenes;
     NSInteger _nativeEventCount;
+    NSInteger _mostRecentEventCount;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -52,14 +53,19 @@ using namespace facebook::react;
         }
         self.keys = [keysArr copy];
     }
+    if (oldViewProps.mostRecentEventCount != newViewProps.mostRecentEventCount)
+        _mostRecentEventCount = newViewProps.mostRecentEventCount;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self update];
+        [self navigate];
     });
     [super updateProps:props oldProps:oldProps];
 }
 
-- (void)update
+- (void)navigate
 {
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if (eventLag != 0 || _scenes.count == 0)
+        return;
     NSInteger crumb = [self.keys count] - 1;
     NSInteger currentCrumb = [_navigationController.viewControllers count] - 1;
     if (crumb < currentCrumb) {

@@ -5,14 +5,14 @@ import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
 import PopSync from './PopSync';
 import Scene from './Scene';
 type NavigationStackProps = {stateNavigator: AsyncStateNavigator, underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, renderScene: (state: State, data: any) => ReactNode};
-type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], rest: boolean, counter: number};
+type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], rest: boolean, counter: number, mostRecentEventCount: number};
 
 class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
     private ref: React.RefObject<View>;
     private resumeNavigation: () => void;
     constructor(props) {
         super(props);
-        this.state = {stateNavigator: null, keys: [], rest: true, counter: 0};
+        this.state = {stateNavigator: null, keys: [], rest: true, counter: 0, mostRecentEventCount: 0};
         this.ref = React.createRef<View>();
         this.onWillNavigateBack = this.onWillNavigateBack.bind(this);
         this.onNavigateToTop = this.onNavigateToTop.bind(this);
@@ -62,7 +62,7 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         var {crumbs} = stateNavigator.stateContext;
         var mostRecentEventCount = nativeEvent.eventCount;
         if (mostRecentEventCount) {
-            this.ref.current.setNativeProps({mostRecentEventCount});
+            this.setState({mostRecentEventCount})
             if (this.resumeNavigation)
                 this.resumeNavigation();
         } else if (crumbs.length === nativeEvent.crumb) {
@@ -95,13 +95,14 @@ class NavigationStack extends React.Component<NavigationStackProps, NavigationSt
         return {enterAnim, exitAnim, sharedElement, oldSharedElement};
     }
     render() {
-        var {keys, rest} = this.state;
+        var {keys, rest, mostRecentEventCount} = this.state;
         var {stateNavigator, underlayColor, unmountStyle, crumbStyle, hidesTabBar, title, renderScene} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         return (
             <NVNavigationStack
                 ref={this.ref}
                 keys={keys}
+                mostRecentEventCount={mostRecentEventCount}
                 style={[styles.stack, {backgroundColor: underlayColor}]}
                 {...this.getAnimation()}
                 onWillNavigateBack={this.onWillNavigateBack}

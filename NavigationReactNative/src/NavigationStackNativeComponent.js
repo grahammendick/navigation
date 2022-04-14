@@ -7,6 +7,7 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
   keys: $ReadOnlyArray<string>,
+  mostRecentEventCount: Int32,
   onWillNavigateBack: DirectEventHandler<$ReadOnly<{|
     crumb: Int32
   |}>>,
