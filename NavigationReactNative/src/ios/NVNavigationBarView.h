@@ -27,6 +27,6 @@
 
 -(void)updateStyle;
 
-#define NAVIGATION_BAR ((int) 28)
+#define NAVIGATION_BAR ((int) 2828282828)
 
 @end

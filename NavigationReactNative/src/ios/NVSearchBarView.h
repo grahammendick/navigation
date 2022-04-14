@@ -11,7 +11,7 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onChangeText;
 @property (nonatomic, copy) RCTDirectEventBlock onChangeScopeButton;
 
-#define SEARCH_BAR ((int) 58)
+#define SEARCH_BAR ((int) 5858585858)
 
 -(id)initWithBridge: (RCTBridge *)bridge;
 

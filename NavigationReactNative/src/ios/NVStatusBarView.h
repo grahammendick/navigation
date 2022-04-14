@@ -7,6 +7,6 @@
 
 -(void)updateStyle;
 
-#define STATUS_BAR ((int) 78)
+#define STATUS_BAR ((int) 78787878)
 
 @end
