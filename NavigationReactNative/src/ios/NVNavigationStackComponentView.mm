@@ -12,6 +12,8 @@
 
 #import "RCTFabricComponentsPlugins.h"
 #import <React/RCTI18nUtil.h>
+#import <React/UIView+React.h>
+
 
 using namespace facebook::react;
 
@@ -99,6 +101,18 @@ using namespace facebook::react;
         NSMutableArray *controllers = [NSMutableArray arrayWithArray:_navigationController.viewControllers];
         [controllers replaceObjectAtIndex:crumb withObject:controller];
         [_navigationController setViewControllers:controllers animated:animate];
+    }
+}
+
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    UIView *parentView = (UIView *)self.superview;
+    while (!self.navigationController.parentViewController && parentView) {
+        if (parentView.reactViewController) {
+            [parentView.reactViewController addChildViewController:self.navigationController];
+        }
+        parentView = parentView.superview;
     }
 }
 
