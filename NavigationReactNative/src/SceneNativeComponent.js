@@ -8,6 +8,7 @@ type NativeProps = $ReadOnly<{|
   ...ViewProps,
   sceneKey: string,
   crumb: Int32,
+  hidesTabBar: boolean,
   onPopped: DirectEventHandler<null>
 |}>;
 

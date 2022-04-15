@@ -133,7 +133,7 @@
 
 - (BOOL)hidesBottomBarWhenPushed
 {
-    //return [self.navigationController.visibleViewController isEqual:self] && _view.hidesTabBar;
+    return [self.navigationController.visibleViewController isEqual:self] && _view.hidesTabBar;
     return NO;
 }
 

@@ -13,6 +13,7 @@
 
 @protocol NVScene
 
+@property (nonatomic, assign) BOOL hidesTabBar;
 - (void)didPop;
 
 @end
