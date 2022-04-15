@@ -117,6 +117,12 @@ using namespace facebook::react;
     }
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    _navigationController.view.frame = self.bounds;
+}
+
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if (![viewController.view isKindOfClass:NVSceneComponentView.class]) return;
