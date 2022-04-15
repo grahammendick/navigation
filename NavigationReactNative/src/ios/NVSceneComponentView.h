@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *sceneKey;
 @property (nonatomic, assign) NSInteger crumb;
+@property (nonatomic, copy) NSString *title;
 @property (nonatomic, assign) BOOL hidesTabBar;
 
 @end

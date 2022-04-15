@@ -83,6 +83,7 @@ using namespace facebook::react;
             if (!![scene superview])
                 return;
             NVSceneController *controller = [[NVSceneController alloc] initWithScene:scene];
+            controller.navigationItem.title = scene.title;
             [controllers addObject:controller];
         }
         

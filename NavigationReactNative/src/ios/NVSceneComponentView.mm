@@ -32,6 +32,8 @@ using namespace facebook::react;
         _sceneKey = [[NSString alloc] initWithUTF8String: newViewProps.sceneKey.c_str()];
     if (oldViewProps.crumb != newViewProps.crumb)
         _crumb = newViewProps.crumb;
+    if (oldViewProps.title != newViewProps.title)
+        _title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
     if (oldViewProps.hidesTabBar != newViewProps.hidesTabBar)
         _hidesTabBar = newViewProps.hidesTabBar;
     [super updateProps:props oldProps:oldProps];
