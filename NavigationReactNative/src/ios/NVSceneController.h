@@ -20,6 +20,7 @@
 
 @protocol NVNavigationBar
 
+@property (nonatomic, assign) BOOL isHidden;
 @property (nonatomic, copy) NSString* title;
 
 @end

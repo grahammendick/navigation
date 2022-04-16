@@ -45,7 +45,7 @@
     NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
     UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
-    BOOL hidden = navigationBar.hidden;
+    BOOL hidden = navigationBar.isHidden;
     if (@available(iOS 13.0, *)) {
     } else {
         if (@available(iOS 11.0, *)) {
