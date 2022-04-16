@@ -7,6 +7,7 @@
 #import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
 
 #import "RCTFabricComponentsPlugins.h"
+#import <React/UIView+React.h>
 
 using namespace facebook::react;
 
@@ -28,6 +29,8 @@ using namespace facebook::react;
 {
     const auto &oldViewProps = *std::static_pointer_cast<NVNavigationBarProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<NVNavigationBarProps const>(props);
+    if (oldViewProps.title != newViewProps.title)
+        _title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
     [super updateProps:props oldProps:oldProps];
 }
 

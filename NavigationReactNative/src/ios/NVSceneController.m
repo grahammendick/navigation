@@ -44,7 +44,7 @@
     [super viewWillAppear:animated];
     NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
-    NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
+    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
     BOOL hidden = navigationBar.hidden;
     if (@available(iOS 13.0, *)) {
     } else {
@@ -57,14 +57,14 @@
         [self.navigationItem setTitle:navigationBar.title];
     }
     previousController.navigationItem.backBarButtonItem = nil;
-    if (navigationBar.backTitle != nil) {
+    /*if (navigationBar.backTitle != nil) {
         previousController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:navigationBar.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
     }
     [navigationBar updateStyle];
     if (@available(iOS 11.0, *)) {
         self.navigationController.navigationBar.prefersLargeTitles = true;
         [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
-    }
+    }*/
     NVSearchBarView *searchBar = (NVSearchBarView *) [navigationBar viewWithTag:SEARCH_BAR];
     self.definesPresentationContext = true;
     if (!!searchBar && !navigationBar.hidden)
@@ -78,6 +78,19 @@
     self.statusBarStyle = statusBar.tintStyle;
     self.statusBarHidden = statusBar.hidden;
     [statusBar updateStyle];
+}
+
+-(UIView<NVNavigationBar> *) findNavigationBar:(UIView *)parent
+{
+    for(NSInteger i = 0; i < parent.subviews.count; i++) {
+        UIView* subview = parent.subviews[0];
+        if ([subview conformsToProtocol:@protocol(NVNavigationBar)])
+            return (UIView<NVNavigationBar> *) subview;
+        subview = [self findNavigationBar:parent.subviews[0]];
+        if ([subview conformsToProtocol:@protocol(NVNavigationBar)])
+            return (UIView<NVNavigationBar> *) subview;
+    }
+    return nil;
 }
 
 - (void)viewWillLayoutSubviews

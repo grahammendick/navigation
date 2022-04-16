@@ -17,3 +17,9 @@
 - (void)didPop;
 
 @end
+
+@protocol NVNavigationBar
+
+@property (nonatomic, copy) NSString* title;
+
+@end
