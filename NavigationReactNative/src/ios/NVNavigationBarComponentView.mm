@@ -29,10 +29,16 @@ using namespace facebook::react;
 {
     const auto &oldViewProps = *std::static_pointer_cast<NVNavigationBarProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<NVNavigationBarProps const>(props);
-    if (oldViewProps.hidden != newViewProps.hidden)
+    if (oldViewProps.hidden != newViewProps.hidden) {
         _isHidden = _hidden = newViewProps.hidden;
-    if (oldViewProps.title != newViewProps.title)
+        if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
+            [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];
+        }
+    }
+    if (oldViewProps.title != newViewProps.title) {
         _title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
+        [self.reactViewController.navigationItem setTitle:self.title];
+    }
     [super updateProps:props oldProps:oldProps];
 }
 
