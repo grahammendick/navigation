@@ -21,6 +21,9 @@
 @protocol NVNavigationBar
 
 @property (nonatomic, assign) BOOL isHidden;
+@property (nonatomic, assign) BOOL largeTitle;
 @property (nonatomic, copy) NSString* title;
+@property (nonatomic, copy) NSString *backTitle;
+- (void)updateStyle;
 
 @end
