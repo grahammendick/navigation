@@ -43,17 +43,14 @@ using namespace facebook::react;
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    const auto &oldViewProps = *std::static_pointer_cast<NVNavigationStackProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<NVNavigationStackProps const>(props);
 
-    if (oldViewProps.keys != newViewProps.keys) {
-        NSMutableArray *keysArr = [[NSMutableArray alloc] init];
-        for (auto i = 0; i < newViewProps.keys.size(); i++) {
-            NSString *key = [[NSString alloc] initWithUTF8String: newViewProps.keys[i].c_str()];
-            [keysArr addObject:key];
-        }
-        self.keys = [keysArr copy];
+    NSMutableArray *keysArr = [[NSMutableArray alloc] init];
+    for (auto i = 0; i < newViewProps.keys.size(); i++) {
+        NSString *key = [[NSString alloc] initWithUTF8String: newViewProps.keys[i].c_str()];
+        [keysArr addObject:key];
     }
+    self.keys = [keysArr copy];
     _enterAnimOff = newViewProps.enterAnimOff;
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
     dispatch_async(dispatch_get_main_queue(), ^{

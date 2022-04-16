@@ -29,17 +29,15 @@ using namespace facebook::react;
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    const auto &oldViewProps = *std::static_pointer_cast<NVNavigationBarProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<NVNavigationBarProps const>(props);
-    if (oldViewProps.hidden != newViewProps.hidden) {
-        _isHidden = _hidden = newViewProps.hidden;
-        if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
+    _isHidden = _hidden = newViewProps.hidden;
+    if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
+        if ([self.reactViewController.navigationController isNavigationBarHidden] != self.hidden)
             [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];
-        }
     }
     _largeTitle = newViewProps.largeTitle;
     _title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
-    if (oldViewProps.title != newViewProps.title)
+    if (self.reactViewController.navigationItem.title != self.title)
         [self.reactViewController.navigationItem setTitle:self.title];
     _titleFontFamily = [[NSString alloc] initWithUTF8String: newViewProps.titleFontFamily.c_str()];
     _titleFontFamily = _titleFontFamily.length ? _titleFontFamily : nil;
