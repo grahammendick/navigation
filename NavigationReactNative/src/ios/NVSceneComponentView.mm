@@ -26,16 +26,11 @@ using namespace facebook::react;
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    const auto &oldViewProps = *std::static_pointer_cast<NVSceneProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<NVSceneProps const>(props);
-    if (oldViewProps.sceneKey != newViewProps.sceneKey)
-        _sceneKey = [[NSString alloc] initWithUTF8String: newViewProps.sceneKey.c_str()];
-    if (oldViewProps.crumb != newViewProps.crumb)
-        _crumb = newViewProps.crumb;
-    if (oldViewProps.title != newViewProps.title)
-        _title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
-    if (oldViewProps.hidesTabBar != newViewProps.hidesTabBar)
-        _hidesTabBar = newViewProps.hidesTabBar;
+    _sceneKey = [[NSString alloc] initWithUTF8String: newViewProps.sceneKey.c_str()];
+    _crumb = newViewProps.crumb;
+    _title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
+    _hidesTabBar = newViewProps.hidesTabBar;
     [super updateProps:props oldProps:oldProps];
 }
 

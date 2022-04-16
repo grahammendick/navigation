@@ -37,22 +37,24 @@ using namespace facebook::react;
             [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];
         }
     }
-    if (oldViewProps.largeTitle != newViewProps.largeTitle)
-        _largeTitle = newViewProps.largeTitle;
-    if (oldViewProps.title != newViewProps.title) {
-        _title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
+    _largeTitle = newViewProps.largeTitle;
+    _title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
+    if (oldViewProps.title != newViewProps.title)
         [self.reactViewController.navigationItem setTitle:self.title];
-    }
-    if (oldViewProps.barTintColor != newViewProps.barTintColor)
-        _barTintColor = RCTUIColorFromSharedColor(newViewProps.barTintColor);
-    if (oldViewProps.largeBarTintColor != newViewProps.largeBarTintColor)
-        _largeBarTintColor = RCTUIColorFromSharedColor(newViewProps.largeBarTintColor);
-    if (oldViewProps.titleColor != newViewProps.titleColor)
-        _titleColor = RCTUIColorFromSharedColor(newViewProps.titleColor);
+    _titleFontFamily = [[NSString alloc] initWithUTF8String: newViewProps.titleFontFamily.c_str()];
+    _titleFontFamily = _titleFontFamily.length ? _titleFontFamily : nil;
+    _titleFontWeight = [[NSString alloc] initWithUTF8String: newViewProps.titleFontWeight.c_str()];
+    _titleFontWeight = _titleFontWeight.length ? _titleFontWeight : nil;
+    _titleFontStyle = [[NSString alloc] initWithUTF8String: newViewProps.titleFontStyle.c_str()];
+    _titleFontStyle = _titleFontStyle.length ? _titleFontStyle : nil;
+    _titleFontSize = @(newViewProps.titleFontSize);
+    _titleFontSize = [_titleFontSize intValue] >= 0 ? _titleFontSize : nil;
+    _barTintColor = RCTUIColorFromSharedColor(newViewProps.barTintColor);
+    _largeBarTintColor = RCTUIColorFromSharedColor(newViewProps.largeBarTintColor);
+    _titleColor = RCTUIColorFromSharedColor(newViewProps.titleColor);
     [self updateStyle];
     [super updateProps:props oldProps:oldProps];
 }
-
 
 - (void)updateStyle {
     UINavigationBar *navigationBar;

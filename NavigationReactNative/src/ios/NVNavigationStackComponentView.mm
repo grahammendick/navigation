@@ -54,10 +54,8 @@ using namespace facebook::react;
         }
         self.keys = [keysArr copy];
     }
-    if (oldViewProps.enterAnimOff != newViewProps.enterAnimOff)
-        _enterAnimOff = newViewProps.enterAnimOff;
-    if (oldViewProps.mostRecentEventCount != newViewProps.mostRecentEventCount)
-        _mostRecentEventCount = newViewProps.mostRecentEventCount;
+    _enterAnimOff = newViewProps.enterAnimOff;
+    _mostRecentEventCount = newViewProps.mostRecentEventCount;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self navigate];
     });
