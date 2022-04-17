@@ -27,10 +27,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
+    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
     NVSearchBarView *searchBar = (NVSearchBarView *) [navigationBar viewWithTag:SEARCH_BAR];
     self.definesPresentationContext = true;
-    if (!!searchBar && !navigationBar.hidden)
+    if (!!searchBar && !navigationBar.isHidden)
     {
         if (@available(iOS 11.0, *)) {
             [self.navigationItem setSearchController:searchBar.searchController];
@@ -85,10 +85,10 @@
     [super viewWillLayoutSubviews];
     NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
-    NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
+    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
     if (@available(iOS 11.0, *)) {
         if (previousController.navigationItem.searchController.active) {
-            [self.navigationController setNavigationBarHidden:navigationBar.hidden];
+            [self.navigationController setNavigationBarHidden:navigationBar.isHidden];
         }
     }
 }

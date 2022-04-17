@@ -46,7 +46,7 @@ class NavigationBar extends React.Component<any, any> {
                 <NVNavigationBar
                     hidden={hidden}
                     backTitle={backTitle}
-                    backTitleOff={backTitle === ''}
+                    backTitleOff={backTitle === undefined}
                     style={{height: !!collapsingBar ? style.height : null}}                    
                     {...otherProps}
                     {...scrollEdgeProps}

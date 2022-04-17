@@ -47,9 +47,37 @@ using namespace facebook::react;
     _titleFontStyle = _titleFontStyle.length ? _titleFontStyle : nil;
     _titleFontSize = @(newViewProps.titleFontSize);
     _titleFontSize = [_titleFontSize intValue] >= 0 ? _titleFontSize : nil;
+    _largeTitleFontFamily = [[NSString alloc] initWithUTF8String: newViewProps.largeTitleFontFamily.c_str()];
+    _largeTitleFontFamily = _largeTitleFontFamily.length ? _largeTitleFontFamily : nil;
+    _largeTitleFontWeight = [[NSString alloc] initWithUTF8String: newViewProps.largeTitleFontWeight.c_str()];
+    _largeTitleFontWeight = _largeTitleFontWeight.length ? _largeTitleFontWeight : nil;
+    _largeTitleFontStyle = [[NSString alloc] initWithUTF8String: newViewProps.largeTitleFontStyle.c_str()];
+    _largeTitleFontStyle = _largeTitleFontStyle.length ? _largeTitleFontStyle : nil;
+    _largeTitleFontSize = @(newViewProps.largeTitleFontSize);
+    _largeTitleFontSize = [_largeTitleFontSize intValue] >= 0 ? _largeTitleFontSize : nil;
+    _backFontFamily = [[NSString alloc] initWithUTF8String: newViewProps.backFontFamily.c_str()];
+    _backFontFamily = _backFontFamily.length ? _backFontFamily : nil;
+    _backFontWeight = [[NSString alloc] initWithUTF8String: newViewProps.backFontWeight.c_str()];
+    _backFontWeight = _backFontWeight.length ? _backFontWeight : nil;
+    _backFontStyle = [[NSString alloc] initWithUTF8String: newViewProps.backFontStyle.c_str()];
+    _backFontStyle = _backFontStyle.length ? _backFontStyle : nil;
+    _backFontSize = @(newViewProps.backFontSize);
+    _backFontSize = [_backFontSize intValue] >= 0 ? _backFontSize : nil;
     _barTintColor = RCTUIColorFromSharedColor(newViewProps.barTintColor);
     _largeBarTintColor = RCTUIColorFromSharedColor(newViewProps.largeBarTintColor);
+    _tintColor = RCTUIColorFromSharedColor(newViewProps.tintColor);
     _titleColor = RCTUIColorFromSharedColor(newViewProps.titleColor);
+    _largeTitleColor = RCTUIColorFromSharedColor(newViewProps.largeTitleColor);
+    _backTitle = [[NSString alloc] initWithUTF8String: newViewProps.backTitle.c_str()];
+    _backTitle = !newViewProps.backTitleOff ? _backTitle : nil;
+    UINavigationItem *previousNavigationItem = [self previousNavigationItem];
+    if (previousNavigationItem.backBarButtonItem.title != _backTitle) {
+        previousNavigationItem.backBarButtonItem = nil;
+        if (self.backTitle != nil) {
+            previousNavigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
+        }
+    }
+    _backTestID = [[NSString alloc] initWithUTF8String: newViewProps.backTestID.c_str()];
     [self updateStyle];
     [super updateProps:props oldProps:oldProps];
 }
@@ -82,7 +110,7 @@ using namespace facebook::react;
         [previousNavigationItem.backBarButtonItem setTitleTextAttributes:backAttributes forState:UIControlStateNormal];
         [previousNavigationItem.backBarButtonItem setTitleTextAttributes:backAttributes forState:UIControlStateSelected];
     }
-    for (UIView *view in [navigationBar subviews]) {
+    /*for (UIView *view in [navigationBar subviews]) {
         if ([view isKindOfClass:NSClassFromString(@"_UINavigationBarContentView")]) {
             for (UIView *child in [view subviews]) {
                 if ([child isKindOfClass:NSClassFromString(@"_UIButtonBarButton")]) {
@@ -90,7 +118,7 @@ using namespace facebook::react;
                 }
             }
         }
-    }
+    }*/
 }
 
 - (UINavigationBarAppearance *) appearance: (UIColor *) color
@@ -112,8 +140,8 @@ API_AVAILABLE(ios(13.0)){
     [appearance.doneButtonAppearance.normal setTitleTextAttributes:attributes];
     [appearance setTitleTextAttributes:[self titleAttributes]];
     [appearance setLargeTitleTextAttributes:[self largeTitleAttributes]];
-    appearance.backButtonAppearance = [UIBarButtonItemAppearance new];
-    appearance.backButtonAppearance.normal.titleTextAttributes = [self backAttributes];
+    //appearance.backButtonAppearance = [UIBarButtonItemAppearance new];
+    //appearance.backButtonAppearance.normal.titleTextAttributes = [self backAttributes];
     return appearance;
 }
 
