@@ -69,7 +69,7 @@ using namespace facebook::react;
     _titleColor = RCTUIColorFromSharedColor(newViewProps.titleColor);
     _largeTitleColor = RCTUIColorFromSharedColor(newViewProps.largeTitleColor);
     _backTitle = [[NSString alloc] initWithUTF8String: newViewProps.backTitle.c_str()];
-    _backTitle = !newViewProps.backTitleOff ? _backTitle : nil;
+    _backTitle = newViewProps.backTitleOn ? _backTitle : nil;
     UINavigationItem *previousNavigationItem = [self previousNavigationItem];
     if (previousNavigationItem.backBarButtonItem.title != _backTitle) {
         previousNavigationItem.backBarButtonItem = nil;

@@ -27,7 +27,7 @@ type NativeProps = $ReadOnly<{|
   titleColor: ColorValue,
   largeTitleColor: ColorValue,
   backTitle: string,
-  backTitleOff: boolean,
+  backTitleOn: boolean,
   backTestID: string,
 |}>;
 
