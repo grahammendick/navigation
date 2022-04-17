@@ -31,7 +31,7 @@ class NavigationBar extends React.Component<any, any> {
         }
     }
     render() {
-        var {bottomBar, hidden, logo, navigationImage, overflowImage, children, style = {height: undefined}, ...otherProps} = this.props;
+        var {bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, children, style = {height: undefined}, ...otherProps} = this.props;
         var scrollEdgeProps = this.getScrollEdgeProps()
         var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
         var statusBar = childrenArray.find(({type}) => type === StatusBar);
@@ -45,6 +45,8 @@ class NavigationBar extends React.Component<any, any> {
             <>
                 <NVNavigationBar
                     hidden={hidden}
+                    backTitle={backTitle}
+                    backTitleOff={backTitle === ''}
                     style={{height: !!collapsingBar ? style.height : null}}                    
                     {...otherProps}
                     {...scrollEdgeProps}
