@@ -55,6 +55,9 @@ using namespace facebook::react;
         [self.button setTitleTextAttributes:attributes forState:UIControlStateNormal];
         [self.button setTitleTextAttributes:attributes forState:UIControlStateSelected];
     }
+    NSString *testID = [[NSString alloc] initWithUTF8String: newViewProps.testID.c_str()];
+    if (self.button.accessibilityIdentifier != testID)
+        self.button.accessibilityIdentifier = testID;
     [super updateProps:props oldProps:oldProps];
 }
 
