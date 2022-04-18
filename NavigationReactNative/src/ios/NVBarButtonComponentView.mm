@@ -60,14 +60,16 @@ using namespace facebook::react;
         self.button.accessibilityIdentifier = testID;
     NSString *systemItemVal = [[NSString alloc] initWithUTF8String: newViewProps.systemItem.c_str()];
     if (systemItemVal.length) {
-        UIBarButtonSystemItem systemItem = [self systemItem:systemItemVal];
-        self.button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem target:self action:@selector(buttonPressed)];
-        self.button.accessibilityIdentifier = testID;
+        NSInteger systemItem = [self systemItem:systemItemVal];
+        if (systemItem >= 0) {
+            self.button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItem) systemItem target:self action:@selector(buttonPressed)];
+            self.button.accessibilityIdentifier = testID;
+        }
     }
     [super updateProps:props oldProps:oldProps];
 }
 
--(UIBarButtonSystemItem)systemItem:(NSString*)val
+-(NSInteger)systemItem:(NSString*)val
 {
     if ([val isEqualToString:@"done"]) return UIBarButtonSystemItemDone;
     if ([val isEqualToString:@"cancel"]) return UIBarButtonSystemItemCancel;
@@ -91,7 +93,8 @@ using namespace facebook::react;
     if ([val isEqualToString:@"rewind"]) return UIBarButtonSystemItemRewind;
     if ([val isEqualToString:@"fast-forward"]) return UIBarButtonSystemItemFastForward;
     if ([val isEqualToString:@"undo"]) return UIBarButtonSystemItemUndo;
-    return UIBarButtonSystemItemRedo;
+    if ([val isEqualToString:@"redo"]) return UIBarButtonSystemItemRedo;
+    return -1;
 }
 
 -(void)buttonPressed
