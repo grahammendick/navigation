@@ -110,7 +110,7 @@ using namespace facebook::react;
         [previousNavigationItem.backBarButtonItem setTitleTextAttributes:backAttributes forState:UIControlStateNormal];
         [previousNavigationItem.backBarButtonItem setTitleTextAttributes:backAttributes forState:UIControlStateSelected];
     }
-    /*for (UIView *view in [navigationBar subviews]) {
+    for (UIView *view in [navigationBar subviews]) {
         if ([view isKindOfClass:NSClassFromString(@"_UINavigationBarContentView")]) {
             for (UIView *child in [view subviews]) {
                 if ([child isKindOfClass:NSClassFromString(@"_UIButtonBarButton")]) {
@@ -118,7 +118,7 @@ using namespace facebook::react;
                 }
             }
         }
-    }*/
+    }
 }
 
 - (UINavigationBarAppearance *) appearance: (UIColor *) color
@@ -140,8 +140,8 @@ API_AVAILABLE(ios(13.0)){
     [appearance.doneButtonAppearance.normal setTitleTextAttributes:attributes];
     [appearance setTitleTextAttributes:[self titleAttributes]];
     [appearance setLargeTitleTextAttributes:[self largeTitleAttributes]];
-    //appearance.backButtonAppearance = [UIBarButtonItemAppearance new];
-    //appearance.backButtonAppearance.normal.titleTextAttributes = [self backAttributes];
+    appearance.backButtonAppearance = [UIBarButtonItemAppearance new];
+    appearance.backButtonAppearance.normal.titleTextAttributes = [self backAttributes];
     return appearance;
 }
 
