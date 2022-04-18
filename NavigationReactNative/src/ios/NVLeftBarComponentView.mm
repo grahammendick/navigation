@@ -27,10 +27,19 @@ using namespace facebook::react;
     return self;
 }
 
+- (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
+{
+    const auto &newViewProps = *std::static_pointer_cast<NVLeftBarProps const>(props);
+    _supplementBack = newViewProps.supplementBack;
+    [self.reactViewController.navigationItem setLeftItemsSupplementBackButton:_supplementBack];
+    [super updateProps:props oldProps:oldProps];
+}
+
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
     [self setBarButtons:self.buttons];
+    [self.reactViewController.navigationItem setLeftItemsSupplementBackButton:_supplementBack];
 }
 
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview
@@ -43,7 +52,7 @@ using namespace facebook::react;
 
 -(void)setBarButtons:(NSMutableArray *)buttons
 {
-    [self.reactViewController.navigationItem setRightBarButtonItems:buttons];
+    [self.reactViewController.navigationItem setLeftBarButtonItems:buttons];
 }
 
 #pragma mark - RCTComponentViewProtocol

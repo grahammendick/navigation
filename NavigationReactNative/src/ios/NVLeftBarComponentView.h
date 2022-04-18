@@ -7,6 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NVLeftBarComponentView : RCTViewComponentView
 
 @property NSMutableArray *buttons;
+@property (nonatomic, assign) BOOL supplementBack;
 
 @end
 
