@@ -60,6 +60,13 @@ using namespace facebook::react;
 
 -(void)buttonPressed
 {
+    UIView *buttonView = ((UIView *) [self.button valueForKey:@"view"]);
+    UIView *barView = buttonView.superview;
+    UIView *labelView = buttonView.subviews.count > 0 ? buttonView.subviews[0] : buttonView;
+    CGRect labelFrameInBar = [buttonView convertRect:labelView.frame toView:barView];
+    self.frame = [barView convertRect:labelFrameInBar toView:nil];
+    std::static_pointer_cast<NVBarButtonEventEmitter const>(_eventEmitter)
+        ->onPress(NVBarButtonEventEmitter::OnPress{});
 }
 
 #pragma mark - RCTComponentViewProtocol

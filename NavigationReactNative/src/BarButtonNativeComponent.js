@@ -14,6 +14,7 @@ type NativeProps = $ReadOnly<{|
   testID: string,
   image: ImageSource,
   systemItem: string,
+  onPress: DirectEventHandler<$ReadOnly<{}>>
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(
