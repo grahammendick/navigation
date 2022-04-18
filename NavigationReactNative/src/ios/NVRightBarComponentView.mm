@@ -27,12 +27,6 @@ using namespace facebook::react;
     return self;
 }
 
-- (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
-{
-    const auto &newViewProps = *std::static_pointer_cast<NVRightBarProps const>(props);
-    [super updateProps:props oldProps:oldProps];
-}
-
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
