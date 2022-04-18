@@ -24,7 +24,6 @@ using namespace facebook::react;
         self.button.style = UIBarButtonItemStylePlain;
         self.button.target = self;
         self.button.action = @selector(buttonPressed);
-        self.button.title = @"Test";
     }
     return self;
 }
@@ -32,6 +31,9 @@ using namespace facebook::react;
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
     const auto &newViewProps = *std::static_pointer_cast<NVBarButtonProps const>(props);
+    NSString *title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
+    if (self.button.title != title)
+        self.button.title = title;
     [super updateProps:props oldProps:oldProps];
 }
 
