@@ -116,6 +116,17 @@ using namespace facebook::react;
 
 #pragma mark - RCTComponentViewProtocol
 
+- (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
+{
+    [self.button setCustomView:childComponentView];
+}
+
+- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
+{
+    if (self.button.customView == childComponentView)
+        [self.button setCustomView:nil];
+}
+
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
   return concreteComponentDescriptorProvider<NVBarButtonComponentDescriptor>();
