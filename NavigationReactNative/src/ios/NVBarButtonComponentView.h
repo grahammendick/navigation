@@ -7,6 +7,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NVBarButtonComponentView : RCTViewComponentView
 
 @property UIBarButtonItem *button;
+@property (nonatomic, copy) NSString *fontFamily;
+@property (nonatomic, copy) NSString *fontWeight;
+@property (nonatomic, copy) NSString *fontStyle;
+@property (nonatomic, copy) NSNumber *fontSize;
 
 @end
 
