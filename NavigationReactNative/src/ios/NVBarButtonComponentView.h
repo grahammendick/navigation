@@ -6,6 +6,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NVBarButtonComponentView : RCTViewComponentView
 
+@property UIBarButtonItem *button;
+
 @end
 
 NS_ASSUME_NONNULL_END

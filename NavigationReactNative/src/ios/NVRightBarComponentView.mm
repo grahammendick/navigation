@@ -7,6 +7,8 @@
 #import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
 
 #import "RCTFabricComponentsPlugins.h"
+#import <React/UIView+React.h>
+#import "NVBarButtonComponentView.h"
 
 using namespace facebook::react;
 
@@ -20,6 +22,7 @@ using namespace facebook::react;
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const NVRightBarProps>();
         _props = defaultProps;
+        self.buttons = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -30,7 +33,38 @@ using namespace facebook::react;
     [super updateProps:props oldProps:oldProps];
 }
 
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    [self setBarButtons:self.buttons];
+}
+
+- (void)willMoveToSuperview:(nullable UIView *)newSuperview
+{
+    [super willMoveToSuperview:newSuperview];
+    if (!newSuperview) {
+        [self setBarButtons:nil];
+    }
+}
+
+-(void)setBarButtons:(NSMutableArray *)buttons
+{
+    [self.reactViewController.navigationItem setRightBarButtonItems:buttons];
+}
+
 #pragma mark - RCTComponentViewProtocol
+
+- (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
+{
+    [self.buttons insertObject:((NVBarButtonComponentView *) childComponentView).button atIndex:index];
+    [self setBarButtons:self.buttons];
+}
+
+- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
+{
+    [self.buttons removeObject:((NVBarButtonComponentView *) childComponentView).button];
+    [self setBarButtons:self.buttons];
+}
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {

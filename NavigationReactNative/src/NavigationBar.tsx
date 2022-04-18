@@ -88,7 +88,7 @@ var Container: any = ({collapse, children, ...props}) => (
     !collapse ? children : <CollapsingBar {...props}>{children}</CollapsingBar>
 )
 
-var  NVNavigationBar = global.nativeFabricUIManager
+var NVNavigationBar = global.nativeFabricUIManager
     ? require('./NavigationBarNativeComponent').default
     : requireNativeComponent('NVNavigationBar');
 var NVToolbar = requireNativeComponent<any>('NVToolbar', null);

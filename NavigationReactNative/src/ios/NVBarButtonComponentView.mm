@@ -20,6 +20,11 @@ using namespace facebook::react;
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const NVBarButtonProps>();
         _props = defaultProps;
+        self.button = [[UIBarButtonItem alloc] init];
+        self.button.style = UIBarButtonItemStylePlain;
+        self.button.target = self;
+        self.button.action = @selector(buttonPressed);
+        self.button.title = @"Test";
     }
     return self;
 }
@@ -28,6 +33,10 @@ using namespace facebook::react;
 {
     const auto &newViewProps = *std::static_pointer_cast<NVBarButtonProps const>(props);
     [super updateProps:props oldProps:oldProps];
+}
+
+-(void)buttonPressed
+{
 }
 
 #pragma mark - RCTComponentViewProtocol
