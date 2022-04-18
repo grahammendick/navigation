@@ -31,7 +31,6 @@ using namespace facebook::react;
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    const auto &oldViewProps = *std::static_pointer_cast<NVBarButtonProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<NVBarButtonProps const>(props);
     NSString *title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
     _fontFamily = [[NSString alloc] initWithUTF8String: newViewProps.fontFamily.c_str()];
@@ -44,17 +43,15 @@ using namespace facebook::react;
     _fontSize = [_fontSize intValue] >= 0 ? _fontSize : nil;
     if (self.button.title != title)
         self.button.title = title;
-    if (oldViewProps.fontFamily != newViewProps.fontFamily || oldViewProps.fontWeight != newViewProps.fontWeight || oldViewProps.fontStyle != newViewProps.fontStyle || oldViewProps.fontSize != newViewProps.fontSize) {
-        UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
-        NSNumber *size = !self.fontSize ? @(UIFont.labelFontSize) : self.fontSize;
-        UIFont *font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
-        NSMutableDictionary *attributes = [NSMutableDictionary new];
-        if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
-            attributes[NSFontAttributeName] = font;
-        }
-        [self.button setTitleTextAttributes:attributes forState:UIControlStateNormal];
-        [self.button setTitleTextAttributes:attributes forState:UIControlStateSelected];
+    UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
+    NSNumber *size = !self.fontSize ? @(UIFont.labelFontSize) : self.fontSize;
+    UIFont *font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
+        attributes[NSFontAttributeName] = font;
     }
+    [self.button setTitleTextAttributes:attributes forState:UIControlStateNormal];
+    [self.button setTitleTextAttributes:attributes forState:UIControlStateSelected];
     NSString *testID = [[NSString alloc] initWithUTF8String: newViewProps.testID.c_str()];
     if (self.button.accessibilityIdentifier != testID)
         self.button.accessibilityIdentifier = testID;
