@@ -8,9 +8,9 @@ const Stack = ({ children, ...props }) => {
   const { scenes, firstScene } = useMemo(() => {
     const childrenArray = React.Children.toArray(children);
     return childrenArray
-      .reduce(({ scenes, firstScene }, { props: { name, element } }) => {
-        scenes[name] = element;
-        firstScene = firstScene || element;
+      .reduce(({ scenes, firstScene }, { props: { name, view } }) => {
+        scenes[name] = view;
+        firstScene = firstScene || view;
         return { scenes, firstScene };
       }, { scenes: {}, firstScene: null });
   }, [children]);
