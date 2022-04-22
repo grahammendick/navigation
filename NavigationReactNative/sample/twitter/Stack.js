@@ -8,17 +8,15 @@ const Stack = ({ children, ...props }) => {
   const { scenes, firstScene } = useMemo(() => {
     const childrenArray = React.Children.toArray(children);
     return childrenArray
-      .reduce(({ scenes, firstScene }, { props: { name, renderScene } }) => {
-        scenes[name] = renderScene;
-        firstScene = firstScene || renderScene;
+      .reduce(({ scenes, firstScene }, { props: { name, component } }) => {
+        scenes[name] = component;
+        firstScene = firstScene || component;
         return { scenes, firstScene };
       }, { scenes: {}, firstScene: null });
   }, [children]);
   return (
       <NavigationStack
-        renderScene={(state, data) => (
-          (scenes[state.key] || firstScene)(data)
-        )}
+        renderScene={(state, data) => scenes[state.key] || firstScene}
         {...props} />
   )
 }

@@ -3,10 +3,12 @@ import {StyleSheet, Text, Platform, View, Animated} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {NavigationBar, CoordinatorLayout, CollapsingBar} from 'navigation-react-native';
 import Tweets from './Tweets';
+import {getTimeline} from './data';
 
-export default ({timeline: {id, name, username, logo, bio, 
-  colors, followers, following, tweets}}) => {
-  const {stateNavigator} = useContext(NavigationContext);
+export default () => {
+  const {stateNavigator, data} = useContext(NavigationContext);
+  const {id, name, username, logo, bio,
+    colors, followers, following, tweets} = getTimeline(data.id);
   const [offset] = useState(new Animated.Value(0));
   const scale = offset.interpolate({
     inputRange:  [-64, 0],

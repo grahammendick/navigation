@@ -7,8 +7,8 @@ import Home from './Home';
 import Notifications from './Notifications';
 import Tweet from './Tweet';
 import Timeline from './Timeline';
-import {getHome, getNotifications, getTweet, getTimeline} from './data';
 import Stack from './Stack';
+import {getNotifications} from './data';
 
 const useStateNavigator = start => {
   const {stateNavigator} = useContext(NavigationContext);
@@ -19,7 +19,7 @@ const useStateNavigator = start => {
   }, [])
 };
 
-export default ({tweets, notifications}) => {
+export default () => {
   const [notified, setNotified] = useState(false);
   const homeNavigator = useStateNavigator('home');
   const notificationsNavigator = useStateNavigator('notifications');
@@ -31,27 +31,27 @@ export default ({tweets, notifications}) => {
           {Platform.OS === 'ios'
             ? (<NavigationHandler stateNavigator={homeNavigator}>
                 <Stack>
-                  <Stack.Scene name="home" renderScene={() => <Home tweets={getHome()} />} />
-                  <Stack.Scene name="tweet" renderScene={({id}) => <Tweet tweet={getTweet(id)}  />} />
-                  <Stack.Scene name="timeline" renderScene={({id}) => <Timeline timeline={getTimeline(id)}  />} />
+                  <Stack.Scene name="home" component={<Home />} />
+                  <Stack.Scene name="tweet" component={<Tweet />} />
+                  <Stack.Scene name="timeline" component={<Timeline />} />
                 </Stack>
               </NavigationHandler>)
-            : <Home tweets={tweets} />}
+            : <Home />}
         </TabBarItem>
         <TabBarItem
           title="Notifications"
           image={require('./notifications.png')}
-          badge={!notified ? notifications.length : null} 
+          badge={!notified ? getNotifications().length : null} 
           onPress={() => {setNotified(true)}}>
           {Platform.OS === 'ios'
             ? (<NavigationHandler stateNavigator={notificationsNavigator}>
                 <Stack>
-                  <Stack.Scene name="notifications" renderScene={() => <Notifications notifications={getNotifications()} />} />
-                  <Stack.Scene name="tweet" renderScene={({id}) => <Tweet tweet={getTweet(id)}  />} />
-                  <Stack.Scene name="timeline" renderScene={({id}) => <Timeline timeline={getTimeline(id)}  />} />
+                  <Stack.Scene name="notifications" component={<Notifications />} />
+                  <Stack.Scene name="tweet" component={<Tweet />} />
+                  <Stack.Scene name="timeline" component={<Timeline />} />
                 </Stack>
               </NavigationHandler>)
-            : <Notifications notifications={notifications} />}
+            : <Notifications />}
         </TabBarItem>
       </TabBar>
     </>
