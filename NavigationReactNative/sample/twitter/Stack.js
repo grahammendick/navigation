@@ -1,4 +1,4 @@
-import React, {useContext, useMemo, useEffect, useRef} from 'react';
+import React, {useContext, useMemo, useState, useEffect} from 'react';
 import { StateNavigator } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import { NavigationStack } from 'navigation-react-native';
@@ -11,8 +11,9 @@ const Stack = ({ children, ...props }) => {
         { scenes: {...scenes, [name]: view}, firstScene: firstScene || name }
       ), { scenes: {}, firstScene: null })
   ), [children]);
-  const allScenes = useRef(scenes);
+  const [allScenes, setAllScenes] = useState(scenes);
   useEffect(() => {
+    setAllScenes((prevScenes) => ({...prevScenes, ...scenes}));
     allScenes.current = {...allScenes.current, ...scenes};
     const { crumbs, nextCrumb } = stateNavigator.stateContext;
     const invalid = [...crumbs, nextCrumb].find(({ state }) => !scenes[state.key])
@@ -27,7 +28,7 @@ const Stack = ({ children, ...props }) => {
     return () => stateNavigator.offBeforeNavigate(validate);
   }, [stateNavigator, scenes]);
   return (
-      <NavigationStack renderScene={({key}) => allScenes.current[key]} {...props} />
+      <NavigationStack renderScene={({key}) => allScenes[key]} {...props} />
   )
 }
 
