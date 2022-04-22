@@ -13,7 +13,7 @@ const Stack = ({ children, ...props }) => {
   ), [children]);
   const [allScenes, setAllScenes] = useState(scenes);
   useEffect(() => {
-    setAllScenes((prevScenes) => ({...prevScenes, ...scenes}));
+    setAllScenes(prevScenes => ({...prevScenes, ...scenes}));
     allScenes.current = {...allScenes.current, ...scenes};
     const {crumbs, nextCrumb} = stateNavigator.stateContext;
     const invalid = [...crumbs, nextCrumb].find(({state}) => !scenes[state.key])
