@@ -7,7 +7,7 @@ const Stack = ({ children, ...props }) => {
   const { stateNavigator, state } = useContext(NavigationContext);
   const { scenes, firstScene } = useMemo(() => (
     React.Children.toArray(children)
-      .reduce(({scenes, firstScene}, {props: {name, view} }) => (
+      .reduce(({scenes, firstScene}, {props: {name, view}}) => (
         {scenes: {...scenes, [name]: view}, firstScene: firstScene || name}
       ), {scenes: {}, firstScene: null})
   ), [children]);
