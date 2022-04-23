@@ -1,5 +1,5 @@
 import React, { ReactNode, useRef, useState, useContext } from 'react';
-import { requireNativeComponent, StyleSheet, View } from 'react-native';
+import { requireNativeComponent, StyleSheet } from 'react-native';
 import { Crumb, State } from 'navigation';
 import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
 import PopSync from './PopSync';
