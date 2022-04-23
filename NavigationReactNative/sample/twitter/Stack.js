@@ -5,11 +5,9 @@ import { NavigationStack } from 'navigation-react-native';
 
 const Stack = ({children, ...props}) => {
   const {stateNavigator, state} = useContext(NavigationContext);
-  const {scenes, firstScene} = useMemo(() => (
+  const scenes = useMemo(() => (
     React.Children.toArray(children)
-      .reduce(({scenes, firstScene}, scene) => (
-        {scenes: {...scenes, [scene.props.stateKey]: scene}, firstScene: firstScene || scene}
-      ), {scenes: {}, firstScene: null})
+      .reduce((scenes, scene) => ({...scenes, [scene.props.stateKey]: scene}), {})
   ), [children]);
   const [allScenes, setAllScenes] = useState(scenes);
   useEffect(() => {
@@ -18,10 +16,11 @@ const Stack = ({children, ...props}) => {
     const {crumbs, nextCrumb} = stateNavigator.stateContext;
     const invalid = [...crumbs, nextCrumb].find(({state}) => !scenes[state.key])
     if (invalid) {
-      const url = stateNavigator.fluent().navigate(firstScene.props.stateKey).url;
+      const firstStateKey = React.Children.toArray(children)[0].props.stateKey;
+      const url = stateNavigator.fluent().navigate(firstStateKey).url;
       stateNavigator.navigateLink(url);
     }
-  }, [stateNavigator, scenes, firstScene]);
+  }, [children, stateNavigator, scenes]);
   useEffect(() => {
     const validate = ({key}) => !!scenes[key];
     stateNavigator.onBeforeNavigate(validate);
