@@ -131,6 +131,8 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
     );
 }
 
+NavigationStack.Scene = ({children}) => children;
+
 var NVNavigationStack = requireNativeComponent<any>('NVNavigationStack', null);
 
 const styles = StyleSheet.create({

@@ -2,12 +2,11 @@ import React, {useState, useMemo, useContext} from 'react';
 import {Platform} from 'react-native';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler, NavigationContext} from 'navigation-react';
-import {NavigationStack, TabBar, TabBarItem, NavigationBar} from 'navigation-react-native';
+import {NavigationStack, Scene, TabBar, TabBarItem, NavigationBar} from 'navigation-react-native';
 import Home from './Home';
 import Notifications from './Notifications';
 import Tweet from './Tweet';
 import Timeline from './Timeline';
-import Stack from './Stack';
 import {getNotifications} from './data';
 
 const useStateNavigator = start => {
@@ -31,9 +30,9 @@ export default () => {
           {Platform.OS === 'ios'
             ? (<NavigationHandler stateNavigator={homeNavigator}>
                 <NavigationStack>
-                  <Stack.Scene stateKey="home"><Home /></Stack.Scene>
-                  <Stack.Scene stateKey="tweet"><Tweet /></Stack.Scene>
-                  <Stack.Scene stateKey="timeline"><Timeline /></Stack.Scene>
+                  <Scene stateKey="home"><Home /></Scene>
+                  <Scene stateKey="tweet"><Tweet /></Scene>
+                  <Scene stateKey="timeline"><Timeline /></Scene>
                 </NavigationStack>
               </NavigationHandler>)
             : <Home />}
@@ -46,9 +45,9 @@ export default () => {
           {Platform.OS === 'ios'
             ? (<NavigationHandler stateNavigator={notificationsNavigator}>
                 <NavigationStack>
-                  <Stack.Scene stateKey="notifications"><Notifications /></Stack.Scene>
-                  <Stack.Scene stateKey="tweet"><Tweet /></Stack.Scene>
-                  <Stack.Scene stateKey="timeline"><Timeline /></Stack.Scene>
+                  <Scene stateKey="notifications"><Notifications /></Scene>
+                  <Scene stateKey="tweet"><Tweet /></Scene>
+                  <Scene stateKey="timeline"><Timeline /></Scene>
                 </NavigationStack>
               </NavigationHandler>)
             : <Notifications />}
