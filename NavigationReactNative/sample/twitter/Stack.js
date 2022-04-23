@@ -8,7 +8,7 @@ const Stack = ({children, ...props}) => {
   const {scenes, firstScene} = useMemo(() => (
     React.Children.toArray(children)
       .reduce(({scenes, firstScene}, scene) => (
-        {scenes: {...scenes, [scene.props.name]: scene}, firstScene: firstScene || scene}
+        {scenes: {...scenes, [scene.props.stateKey]: scene}, firstScene: firstScene || scene}
       ), {scenes: {}, firstScene: null})
   ), [children]);
   const [allScenes, setAllScenes] = useState(scenes);

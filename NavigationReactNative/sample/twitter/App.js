@@ -23,11 +23,11 @@ const App = () => (
       crumbStyle={from => from ? 'scale_in' : 'scale_out'}
       unmountStyle={from => from ? 'slide_in' : 'slide_out'}
     >
-      <Stack.Scene name="tabs"><Tabs /></Stack.Scene>
-      <Stack.Scene name="home"><Home /></Stack.Scene>
-      <Stack.Scene name="notifications"><Notifications /></Stack.Scene>
-      <Stack.Scene name="tweet"><Tweet /></Stack.Scene>
-      <Stack.Scene name="timeline"><Timeline /></Stack.Scene>
+      <Stack.Scene stateKey="tabs"><Tabs /></Stack.Scene>
+      <Stack.Scene stateKey="home"><Home /></Stack.Scene>
+      <Stack.Scene stateKey="notifications"><Notifications /></Stack.Scene>
+      <Stack.Scene stateKey="tweet"><Tweet /></Stack.Scene>
+      <Stack.Scene stateKey="timeline"><Timeline /></Stack.Scene>
     </Stack>
   </NavigationHandler>
 );
