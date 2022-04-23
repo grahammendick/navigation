@@ -31,7 +31,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
         const validate = ({key}) => !!scenes[key];
         if (children) stateNavigator.onBeforeNavigate(validate);
         return () => stateNavigator.offBeforeNavigate(validate);
-    }, [stateNavigator, scenes]);
+    }, [children, stateNavigator, scenes]);
     const onWillNavigateBack = ({nativeEvent}) => {
         var distance = stateNavigator.stateContext.crumbs.length - nativeEvent.crumb;
         resumeNavigationRef.current = null;
