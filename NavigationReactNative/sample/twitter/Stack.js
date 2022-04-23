@@ -18,7 +18,7 @@ const Stack = ({children, ...props}) => {
     const {crumbs, nextCrumb} = stateNavigator.stateContext;
     const invalid = [...crumbs, nextCrumb].find(({state}) => !scenes[state.key])
     if (invalid) {
-      const url = stateNavigator.fluent().navigate(firstScene).url;
+      const url = stateNavigator.fluent().navigate(firstScene.props.stateKey).url;
       stateNavigator.navigateLink(url);
     }
   }, [stateNavigator, scenes, firstScene]);
