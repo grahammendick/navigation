@@ -7,8 +7,8 @@ import Scene from './Scene';
 type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, renderScene: (state: State, data: any) => ReactNode};
 type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], rest: boolean, counter: number};
 
-const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null,
-    unmountStyle = () => null, hidesTabBar = () => false, sharedElement: getSharedElement = () => null, renderScene}: NavigationStackProps) => {
+const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null, unmountStyle = () => null,
+    hidesTabBar = () => false, sharedElement: getSharedElement = () => null, renderScene}: NavigationStackProps) => {
     const resumeNavigationRef = useRef(null);
     const ref = useRef(null);
     const {stateNavigator} = useContext(NavigationContext);
