@@ -12,7 +12,6 @@ const Stack = ({children, ...props}) => {
   const [allScenes, setAllScenes] = useState(scenes);
   useEffect(() => {
     setAllScenes(prevScenes => ({...prevScenes, ...scenes}));
-    allScenes.current = {...allScenes.current, ...scenes};
     const {crumbs, nextCrumb} = stateNavigator.stateContext;
     const invalid = [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]);
     if (invalid) {
