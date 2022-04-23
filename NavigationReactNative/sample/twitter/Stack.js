@@ -28,7 +28,7 @@ const Stack = ({children, ...props}) => {
     return () => stateNavigator.offBeforeNavigate(validate);
   }, [stateNavigator, scenes]);
   return (
-      <NavigationStack renderScene={({key}) => allScenes[key]} {...props} />
+      <NavigationStack {...props} renderScene={({key}) => allScenes[key]} />
   )
 }
 
