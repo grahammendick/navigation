@@ -15,9 +15,8 @@ const Stack = ({children, ...props}) => {
     const {crumbs, nextCrumb} = stateNavigator.stateContext;
     const invalid = [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]);
     if (invalid) {
-      const firstStateKey = React.Children.toArray(children)[0].props.stateKey;
-      const url = stateNavigator.fluent().navigate(firstStateKey).url;
-      stateNavigator.navigateLink(url);
+      const {stateKey} = React.Children.toArray(children)[0].props;
+      stateNavigator.navigateLink(stateNavigator.fluent().navigate(stateKey).url);
     }
   }, [children, stateNavigator, scenes]);
   useEffect(() => {
