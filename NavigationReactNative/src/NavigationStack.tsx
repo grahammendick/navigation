@@ -1,18 +1,37 @@
-import React, { ReactNode, useRef, useState, useContext } from 'react';
+import React, { ReactNode, useRef, useState, useContext, useMemo, useEffect } from 'react';
 import { requireNativeComponent, StyleSheet } from 'react-native';
 import { Crumb, State } from 'navigation';
 import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
 import PopSync from './PopSync';
 import Scene from './Scene';
-type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, renderScene: (state: State, data: any) => ReactNode};
+type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, renderScene: (state: State, data: any) => ReactNode, children: any};
 type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], rest: boolean, counter: number};
 
 const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null, unmountStyle = () => null,
-    hidesTabBar = () => false, sharedElement: getSharedElement = () => null, renderScene}: NavigationStackProps) => {
+    hidesTabBar = () => false, sharedElement: getSharedElement = () => null, renderScene, children}: NavigationStackProps) => {
     const resumeNavigationRef = useRef(null);
     const ref = useRef(null);
     const {stateNavigator} = useContext(NavigationContext);
     const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0});
+    const scenes = useMemo(() => (
+        (React.Children.toArray(children) as any)
+            .reduce((scenes, scene) => ({...scenes, [scene.props.stateKey]: scene}), {})
+    ), [children]);
+    const [allScenes, setAllScenes] = useState(scenes);
+    useEffect(() => {
+        setAllScenes(prevScenes => ({...prevScenes, ...scenes}));
+        const {crumbs, nextCrumb} = stateNavigator.stateContext;
+        const invalid = [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]);
+        if (invalid && children) {
+            const {stateKey} = (React.Children.toArray(children) as any)[0].props;
+            stateNavigator.navigateLink(stateNavigator.fluent().navigate(stateKey).url);
+        }
+    }, [children, stateNavigator, scenes]);
+    useEffect(() => {
+        const validate = ({key}) => !!scenes[key];
+        if (children) stateNavigator.onBeforeNavigate(validate);
+        return () => stateNavigator.offBeforeNavigate(validate);
+    }, [stateNavigator, scenes]);
     const onWillNavigateBack = ({nativeEvent}) => {
         var distance = stateNavigator.stateContext.crumbs.length - nativeEvent.crumb;
         resumeNavigationRef.current = null;
@@ -104,7 +123,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
                         hidesTabBar={hidesTabBar}
                         title={title}
                         popped={popNative}
-                        renderScene={renderScene} />
+                        renderScene={children ? ({key}) => allScenes[key] : renderScene} />
                 ))}
             </PopSync>
         </NVNavigationStack>

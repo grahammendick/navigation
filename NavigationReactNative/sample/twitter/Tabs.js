@@ -30,11 +30,11 @@ export default () => {
         <TabBarItem title="Home" image={require('./home.png')}>
           {Platform.OS === 'ios'
             ? (<NavigationHandler stateNavigator={homeNavigator}>
-                <Stack>
+                <NavigationStack>
                   <Stack.Scene stateKey="home"><Home /></Stack.Scene>
                   <Stack.Scene stateKey="tweet"><Tweet /></Stack.Scene>
                   <Stack.Scene stateKey="timeline"><Timeline /></Stack.Scene>
-                </Stack>
+                </NavigationStack>
               </NavigationHandler>)
             : <Home />}
         </TabBarItem>
@@ -45,11 +45,11 @@ export default () => {
           onPress={() => {setNotified(true)}}>
           {Platform.OS === 'ios'
             ? (<NavigationHandler stateNavigator={notificationsNavigator}>
-                <Stack>
+                <NavigationStack>
                   <Stack.Scene stateKey="notifications"><Notifications /></Stack.Scene>
                   <Stack.Scene stateKey="tweet"><Tweet /></Stack.Scene>
                   <Stack.Scene stateKey="timeline"><Timeline /></Stack.Scene>
-                </Stack>
+                </NavigationStack>
               </NavigationHandler>)
             : <Notifications />}
         </TabBarItem>
