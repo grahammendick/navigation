@@ -31,9 +31,9 @@ export default () => {
           {Platform.OS === 'ios'
             ? (<NavigationHandler stateNavigator={homeNavigator}>
                 <Stack>
-                  <Stack.Scene name="home" view={<Home />} />
-                  <Stack.Scene name="tweet" view={<Tweet />} />
-                  <Stack.Scene name="timeline" view={<Timeline />} />
+                  <Stack.Scene name="home"><Home /></Stack.Scene>
+                  <Stack.Scene name="tweet"><Tweet /></Stack.Scene>
+                  <Stack.Scene name="timeline"><Timeline /></Stack.Scene>
                 </Stack>
               </NavigationHandler>)
             : <Home />}
@@ -46,9 +46,9 @@ export default () => {
           {Platform.OS === 'ios'
             ? (<NavigationHandler stateNavigator={notificationsNavigator}>
                 <Stack>
-                  <Stack.Scene name="notifications" view={<Notifications />} />
-                  <Stack.Scene name="tweet" view={<Tweet />} />
-                  <Stack.Scene name="timeline" view={<Timeline />} />
+                  <Stack.Scene name="notifications"><Notifications /></Stack.Scene>
+                  <Stack.Scene name="tweet"><Tweet /></Stack.Scene>
+                  <Stack.Scene name="timeline"><Timeline /></Stack.Scene>
                 </Stack>
               </NavigationHandler>)
             : <Notifications />}

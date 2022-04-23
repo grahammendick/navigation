@@ -7,8 +7,8 @@ const Stack = ({children, ...props}) => {
   const {stateNavigator, state} = useContext(NavigationContext);
   const {scenes, firstScene} = useMemo(() => (
     React.Children.toArray(children)
-      .reduce(({scenes, firstScene}, {props: {name, view}}) => (
-        {scenes: {...scenes, [name]: view}, firstScene: firstScene || name}
+      .reduce(({scenes, firstScene}, scene) => (
+        {scenes: {...scenes, [scene.props.name]: scene}, firstScene: firstScene || scene}
       ), {scenes: {}, firstScene: null})
   ), [children]);
   const [allScenes, setAllScenes] = useState(scenes);
@@ -32,6 +32,6 @@ const Stack = ({children, ...props}) => {
   )
 }
 
-Stack.Scene = () => null;
+Stack.Scene = ({children}) => children;
 
 export default Stack;
