@@ -14,7 +14,7 @@ const Stack = ({children, ...props}) => {
     setAllScenes(prevScenes => ({...prevScenes, ...scenes}));
     allScenes.current = {...allScenes.current, ...scenes};
     const {crumbs, nextCrumb} = stateNavigator.stateContext;
-    const invalid = [...crumbs, nextCrumb].find(({state}) => !scenes[state.key])
+    const invalid = [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]);
     if (invalid) {
       const firstStateKey = React.Children.toArray(children)[0].props.stateKey;
       const url = stateNavigator.fluent().navigate(firstStateKey).url;
