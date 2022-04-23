@@ -12,7 +12,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
     const resumeNavigationRef = useRef(null);
     const ref = useRef(null);
     const {stateNavigator} = useContext(NavigationContext);
-    const [navigationState, setNavigationState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0});
+    const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0});
     const onWillNavigateBack = ({nativeEvent}) => {
         var distance = stateNavigator.stateContext.crumbs.length - nativeEvent.crumb;
         resumeNavigationRef.current = null;
@@ -36,7 +36,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
             if (resumeNavigationRef.current)
                 resumeNavigationRef.current();
         } else if (crumbs.length === nativeEvent.crumb) {
-            setNavigationState(prevNavigationState => ({...prevNavigationState, rest: true}));
+            setStackState(prevStackState => ({...prevStackState, rest: true}));
         }
     }
     const getAnimation = () => {
@@ -63,13 +63,13 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
         }
         return {enterAnim, exitAnim, sharedElement, oldSharedElement};
     }
-    var {stateNavigator: prevStateNavigator, keys, rest} = navigationState;
+    var {stateNavigator: prevStateNavigator, keys, rest} = stackState;
     if (prevStateNavigator !== stateNavigator) {
-        setNavigationState((prevNavigationState) => {
-            const {keys: prevKeys, stateNavigator: prevStateNavigator, counter} = prevNavigationState;
+        setStackState((prevStackState) => {
+            const {keys: prevKeys, stateNavigator: prevStateNavigator, counter} = prevStackState;
             var {state, crumbs, nextCrumb, history} = stateNavigator.stateContext;
             if (!state)
-                return {...prevNavigationState, keys: []};
+                return {...prevStackState, keys: []};
             var prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
             var currentKeys = crumbs.concat(nextCrumb).map((_, i) => `${counter}-${i}`);
             var newKeys = currentKeys.slice(prevKeys.length);
