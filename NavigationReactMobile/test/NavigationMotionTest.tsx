@@ -118,9 +118,6 @@ describe('NavigationMotion', function () {
         });
         describe('Dynamic', () => {
             it('should render _ -> B', function(){
-                var {sceneA, sceneB} = stateNavigator.states;
-                sceneA.renderScene = () => <SceneA />;
-                sceneB.renderScene = () => <SceneB />;
                 act(() => {
                     root.render(
                         <NavigationHandler stateNavigator={stateNavigator}>
