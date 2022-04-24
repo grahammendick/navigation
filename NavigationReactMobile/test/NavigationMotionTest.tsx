@@ -346,27 +346,52 @@ describe('NavigationMotion', function () {
     });
 
     describe('A to A', function () {
-        it('should render A', function(){
-            var stateNavigator = new StateNavigator([
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
                 { key: 'sceneA' }
             ]);
             stateNavigator.navigate('sceneA');
-            var {sceneA} = stateNavigator.states;
-            var SceneA = () => <div id="sceneA" />;
-            sceneA.renderScene = () => <SceneA />;
-            var container = document.createElement('div');
-            const root = createRoot(container)
-            act(() => {
-                root.render(
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationMotion>
-                            {(_style, scene, key) =>  (
-                                <div className="scene" id={key} key={key}>{scene}</div>
-                            )}
-                        </NavigationMotion>
-                    </NavigationHandler>
-                );
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+        describe('Static', () => {
+            it('should render A', function(){
+                var {sceneA} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationMotion>
+                                {(_style, scene, key) =>  (
+                                    <div className="scene" id={key} key={key}>{scene}</div>
+                                )}
+                            </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                test();
             });
+        });
+        describe('Dynamic', () => {
+            it('should render A', function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationMotion
+                                renderMotion={(_style, scene, key) =>  (
+                                    <div className="scene" id={key} key={key}>{scene}</div>
+                                )}>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                            </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+        const test = () => {
             act(() => stateNavigator.navigate('sceneA'));
             try {
                 var scenes = container.querySelectorAll(".scene");                
@@ -376,7 +401,7 @@ describe('NavigationMotion', function () {
             } finally {
                 act(() => root.unmount());
             }
-        })
+        };
     });
 
     describe('A to B', function () {
