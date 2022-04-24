@@ -1,4 +1,4 @@
-import React, {useRef, useState, useContext} from 'react';
+import React, {useRef, useState, useContext, useMemo, useEffect} from 'react';
 import { State, Crumb, StateNavigator } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import Motion from './Motion';
@@ -12,10 +12,27 @@ type SceneContext = {key: string, state: State, data: any, url: string, crumbs: 
 type MotionStyle = {style: any, data: SceneContext, key: string, rest: boolean, progress: number, start: any, end: any };
 
 const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 300,
-    sharedElementMotion, renderScene, children}: NavigationMotionProps) => {
+    sharedElementMotion, renderScene, renderMotion, children}: NavigationMotionProps) => {
     const sharedElementRegistry = useRef(new SharedElementRegistry());
     const {stateNavigator} = useContext(NavigationContext);
     const [motionState, setMotionState] = useState<NavigationMotionState>({stateNavigator: null, keys: []});
+    const scenes = useMemo(() => (
+        (React.Children.toArray(children) as any)
+            .reduce((scenes, scene) => ({...scenes, [scene.props.stateKey]: scene}), {})
+    ), [children]);
+    let { current: allScenes } = useRef(scenes);
+    useEffect(() => {
+        allScenes = {...allScenes, ...scenes};
+        const {crumbs, nextCrumb} = stateNavigator.stateContext;
+        const invalid = [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]);
+        if (invalid && typeof children === 'object') {
+            const {stateKey} = (React.Children.toArray(children) as any)[0].props;
+            stateNavigator.navigateLink(stateNavigator.fluent().navigate(stateKey).url);
+        }
+        const validate = ({key}) => !!scenes[key];
+        if (typeof children === 'object') stateNavigator.onBeforeNavigate(validate);
+        return () => stateNavigator.offBeforeNavigate(validate);
+    }, [children, stateNavigator, scenes]);
     const getSharedElements = () => {
         const {crumbs, oldUrl} = stateNavigator.stateContext;
         if (oldUrl !== null) {
@@ -73,6 +90,8 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
         })
     }
     const {stateContext: {crumbs, oldState}, stateContext} = stateNavigator;
+    renderScene = typeof children === 'object' ? ({key}) => allScenes[key] : renderScene;
+    renderMotion = renderMotion || children;
     return (stateContext.state &&
         <SharedElementContext.Provider value={sharedElementRegistry.current}>
             <Motion<SceneContext>
@@ -91,7 +110,7 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
                             const scene = <Scene crumb={crumb} rest={rest} renderScene={renderScene} />;
                             return (
                                 <Freeze key={key} enabled={rest && crumb < getScenes().length - 1}>
-                                    {children(style, scene, key, crumbs.length === crumb, state, data)}
+                                    {renderMotion(style, scene, key, crumbs.length === crumb, state, data)}
                                 </Freeze>
                             );
                         }).concat(
@@ -108,5 +127,7 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
         </SharedElementContext.Provider>
     )
 }
+
+NavigationMotion.Scene = ({children}) => children;
 
 export default NavigationMotion;

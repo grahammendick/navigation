@@ -6,5 +6,5 @@ import useNavigating from './useNavigating';
 import useNavigated from './useNavigated';
 import useUnloading from './useUnloading';
 import useUnloaded from './useUnloaded';
-
-export { MobileHistoryManager, NavigationMotion, SharedElement, SharedElementMotion, useNavigating, useNavigated, useUnloading, useUnloaded };
+const Scene = NavigationMotion.Scene;
+export { MobileHistoryManager, Scene, NavigationMotion, SharedElement, SharedElementMotion, useNavigating, useNavigated, useUnloading, useUnloaded };
