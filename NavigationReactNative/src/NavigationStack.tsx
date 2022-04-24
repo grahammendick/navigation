@@ -17,17 +17,15 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
         (React.Children.toArray(children) as any)
             .reduce((scenes, scene) => ({...scenes, [scene.props.stateKey]: scene}), {})
     ), [children]);
-    const [allScenes, setAllScenes] = useState(scenes);
+    let { current: allScenes } = useRef(scenes);
     useEffect(() => {
-        setAllScenes(prevScenes => ({...prevScenes, ...scenes}));
+        allScenes = {...allScenes, ...scenes};
         const {crumbs, nextCrumb} = stateNavigator.stateContext;
         const invalid = [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]);
         if (invalid && children) {
             const {stateKey} = (React.Children.toArray(children) as any)[0].props;
             stateNavigator.navigateLink(stateNavigator.fluent().navigate(stateKey).url);
         }
-    }, [children, stateNavigator, scenes]);
-    useEffect(() => {
         const validate = ({key}) => !!scenes[key];
         if (children) stateNavigator.onBeforeNavigate(validate);
         return () => stateNavigator.offBeforeNavigate(validate);
