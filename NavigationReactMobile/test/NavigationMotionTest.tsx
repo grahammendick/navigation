@@ -73,7 +73,7 @@ describe('NavigationMotion', function () {
 
         const test = () => {
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -136,7 +136,7 @@ describe('NavigationMotion', function () {
         });
         const test = () => {
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
                 assert.equal(scenes[0].id, "0");
                 assert.equal(container.querySelector("#sceneA"), null);
@@ -190,7 +190,7 @@ describe('NavigationMotion', function () {
                                     <div className="scene" id={key} key={key}>{scene}</div>
                                 )}>
                                 <Scene stateKey="sceneA"><SceneA /></Scene>
-                                <Scene stateKey="sceneB"><SceneB /></Scene>                                
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
                             </NavigationMotion>
                         </NavigationHandler>
                     );
@@ -201,7 +201,7 @@ describe('NavigationMotion', function () {
         const test = () => {
             act(() => stateNavigator.navigate('sceneB'));
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -256,7 +256,7 @@ describe('NavigationMotion', function () {
                                     <div className="scene" id={key} key={key}>{scene}</div>
                                 )}>
                                 <Scene stateKey="sceneA"><SceneA /></Scene>
-                                <Scene stateKey="sceneB"><SceneB /></Scene>                                
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
                             </NavigationMotion>
                         </NavigationHandler>
                     );
@@ -267,7 +267,7 @@ describe('NavigationMotion', function () {
         const test = async () => {
             await act(async () => stateNavigator.navigateBack(1));
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -320,7 +320,7 @@ describe('NavigationMotion', function () {
                                     <div className="scene" id={key} key={key}>{scene}</div>
                                 )}>
                                 <Scene stateKey="sceneA"><SceneA /></Scene>
-                                <Scene stateKey="sceneB"><SceneB /></Scene>                                
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
                             </NavigationMotion>
                         </NavigationHandler>
                     );
@@ -334,7 +334,7 @@ describe('NavigationMotion', function () {
                 stateNavigator.navigateBack(1);
             });
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -394,7 +394,7 @@ describe('NavigationMotion', function () {
         const test = () => {
             act(() => stateNavigator.navigate('sceneA'));
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -446,7 +446,7 @@ describe('NavigationMotion', function () {
                                     <div className="scene" id={key} key={key}>{scene}</div>
                                 )}>
                                 <Scene stateKey="sceneA"><SceneA /></Scene>
-                                <Scene stateKey="sceneB"><SceneB /></Scene>                                
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
                             </NavigationMotion>
                         </NavigationHandler>
                     );
@@ -457,7 +457,7 @@ describe('NavigationMotion', function () {
         const test = () => {
             act(() => stateNavigator.navigate('sceneB'));
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
                 assert.equal(scenes[0].id, "0+");
                 assert.notEqual(scenes[0].querySelector("#sceneB"), null);
@@ -512,9 +512,9 @@ describe('NavigationMotion', function () {
                                 renderMotion={(_style, scene, key) =>  (
                                     <div className="scene" id={key} key={key}>{scene}</div>
                                 )}>
-                                <Scene stateKey="sceneA"><SceneA /></Scene>                                
-                                <Scene stateKey="sceneB"><SceneB /></Scene>                                
-                                <Scene stateKey="sceneC"><SceneC /></Scene>                                
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
                             </NavigationMotion>
                         </NavigationHandler>
                     );
@@ -526,7 +526,7 @@ describe('NavigationMotion', function () {
             act(() => stateNavigator.navigate('sceneB'));
             act(() => stateNavigator.navigate('sceneC'));
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
                 assert.equal(scenes[0].id, "0++");
                 assert.notEqual(scenes[0].querySelector("#sceneC"), null);
@@ -583,9 +583,9 @@ describe('NavigationMotion', function () {
                                 renderMotion={(_style, scene, key) =>  (
                                     <div className="scene" id={key} key={key}>{scene}</div>
                                 )}>
-                                <Scene stateKey="sceneA"><SceneA /></Scene>                                
-                                <Scene stateKey="sceneB"><SceneB /></Scene>                                
-                                <Scene stateKey="sceneC"><SceneC /></Scene>                                
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
                             </NavigationMotion>
                         </NavigationHandler>
                     );
@@ -601,7 +601,7 @@ describe('NavigationMotion', function () {
                 stateNavigator.navigateLink(url);
             });
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
                 assert.equal(scenes[0].id, "0");
                 assert.equal(scenes[1].id, "1");
@@ -659,9 +659,9 @@ describe('NavigationMotion', function () {
                                 renderMotion={(_style, scene, key) =>  (
                                     <div className="scene" id={key} key={key}>{scene}</div>
                                 )}>
-                                <Scene stateKey="sceneA"><SceneA /></Scene>                                
-                                <Scene stateKey="sceneB"><SceneB /></Scene>                                
-                                <Scene stateKey="sceneC"><SceneC /></Scene>                                
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
                             </NavigationMotion>
                         </NavigationHandler>
                     );
@@ -678,7 +678,7 @@ describe('NavigationMotion', function () {
                 stateNavigator.navigateBack(1)
             });
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneC"), null);
@@ -734,9 +734,9 @@ describe('NavigationMotion', function () {
                                 renderMotion={(_style, scene, key) =>  (
                                     <div className="scene" id={key} key={key}>{scene}</div>
                                 )}>
-                                <Scene stateKey="sceneA"><SceneA /></Scene>                                
-                                <Scene stateKey="sceneB"><SceneB /></Scene>                                
-                                <Scene stateKey="sceneC"><SceneC /></Scene>                                
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
                             </NavigationMotion>
                         </NavigationHandler>
                     );
@@ -753,7 +753,7 @@ describe('NavigationMotion', function () {
                 stateNavigator.navigateLink(url);
             });
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -810,9 +810,9 @@ describe('NavigationMotion', function () {
                                 renderMotion={(_style, scene, key) =>  (
                                     <div className="scene" id={key} key={key}>{scene}</div>
                                 )}>
-                                <Scene stateKey="sceneA"><SceneA /></Scene>                                
-                                <Scene stateKey="sceneB"><SceneB /></Scene>                                
-                                <Scene stateKey="sceneC"><SceneC /></Scene>                                
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
                             </NavigationMotion>
                         </NavigationHandler>
                     );
@@ -830,7 +830,7 @@ describe('NavigationMotion', function () {
             });
             await act(async () => stateNavigator.navigateBack(1));
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneC"), null);
@@ -889,10 +889,10 @@ describe('NavigationMotion', function () {
                                 renderMotion={(_style, scene, key) =>  (
                                     <div className="scene" id={key} key={key}>{scene}</div>
                                 )}>
-                                <Scene stateKey="sceneA"><SceneA /></Scene>                                
-                                <Scene stateKey="sceneB"><SceneB /></Scene>                                
-                                <Scene stateKey="sceneC"><SceneC /></Scene>                                
-                                <Scene stateKey="sceneD"><SceneD /></Scene>                                
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
+                                <Scene stateKey="sceneD"><SceneD /></Scene>
                             </NavigationMotion>
                         </NavigationHandler>
                     );
@@ -909,7 +909,7 @@ describe('NavigationMotion', function () {
                 stateNavigator.navigateLink(url);
             });
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -938,7 +938,7 @@ describe('NavigationMotion', function () {
             container = document.createElement('div');
             root = createRoot(container)
         });
-        describe('Static', () => {            
+        describe('Static', () => {
             it('should render A -> _ -> C', function(){
                 var {sceneA, sceneB, sceneC} = stateNavigator.states;
                 sceneA.renderScene = () => <SceneA />;
@@ -958,7 +958,7 @@ describe('NavigationMotion', function () {
                 test();
             });
         });
-        describe('Dynamic', () => {            
+        describe('Dynamic', () => {
             it('should render A -> _ -> C', function(){
                 act(() => {
                     root.render(
@@ -967,9 +967,9 @@ describe('NavigationMotion', function () {
                                 renderMotion={(_style, scene, key) =>  (
                                     <div className="scene" id={key} key={key}>{scene}</div>
                                 )}>
-                                <Scene stateKey="sceneA"><SceneA /></Scene>                                
-                                <Scene stateKey="sceneB"><SceneB /></Scene>                                
-                                <Scene stateKey="sceneC"><SceneC /></Scene>                                
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
                             </NavigationMotion>
                         </NavigationHandler>
                     );
@@ -985,7 +985,7 @@ describe('NavigationMotion', function () {
                 stateNavigator.navigateLink(url);
             });
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 3);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -1043,9 +1043,9 @@ describe('NavigationMotion', function () {
                                 renderMotion={(_style, scene, key) =>  (
                                     <div className="scene" id={key} key={key}>{scene}</div>
                                 )}>
-                                <Scene stateKey="sceneA"><SceneA /></Scene>                                
-                                <Scene stateKey="sceneB"><SceneB /></Scene>                                
-                                <Scene stateKey="sceneC"><SceneC /></Scene>                                
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
                             </NavigationMotion>
                         </NavigationHandler>
                     );
@@ -1062,7 +1062,7 @@ describe('NavigationMotion', function () {
                 stateNavigator.navigateBack(1);
             });
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -1092,7 +1092,7 @@ describe('NavigationMotion', function () {
             container = document.createElement('div');
             root = createRoot(container)
         });
-        describe('Static', () => {            
+        describe('Static', () => {
             it('should render A -> _ -> C', async function(){
                 var {sceneA, sceneB, sceneC, sceneD} = stateNavigator.states;
                 sceneA.renderScene = () => <SceneA />;
@@ -1113,7 +1113,7 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
-        describe('Dynamic', () => {            
+        describe('Dynamic', () => {
             it('should render A -> _ -> C', async function(){
                 act(() => {
                     root.render(
@@ -1122,10 +1122,10 @@ describe('NavigationMotion', function () {
                                 renderMotion={(_style, scene, key) =>  (
                                     <div className="scene" id={key} key={key}>{scene}</div>
                                 )}>
-                                <Scene stateKey="sceneA"><SceneA /></Scene>                                
-                                <Scene stateKey="sceneB"><SceneB /></Scene>                                
-                                <Scene stateKey="sceneC"><SceneC /></Scene>                                
-                                <Scene stateKey="sceneD"><SceneD /></Scene>                                
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
+                                <Scene stateKey="sceneD"><SceneD /></Scene>
                             </NavigationMotion>
                         </NavigationHandler>
                     );
@@ -1133,7 +1133,7 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
-        const test = async () => {            
+        const test = async () => {
             await act(async () => {
                 var url = stateNavigator.fluent(true)
                     .navigate('sceneB')
@@ -1146,7 +1146,7 @@ describe('NavigationMotion', function () {
                 stateNavigator.navigateLink(url);
             });
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 3);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -1205,7 +1205,7 @@ describe('NavigationMotion', function () {
                 stateNavigator.navigateBack(1);
             });
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -1255,7 +1255,7 @@ describe('NavigationMotion', function () {
                 stateNavigator.navigateBack(2);
             });
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -1299,7 +1299,7 @@ describe('NavigationMotion', function () {
             });
             await act(async () => stateNavigator.navigateBack(2));
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -1347,7 +1347,7 @@ describe('NavigationMotion', function () {
                 stateNavigator.navigateLink(url);
             });
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneB"), null);
@@ -1383,7 +1383,7 @@ describe('NavigationMotion', function () {
             });
             act(() => stateNavigator.navigate('sceneA'));
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -1428,7 +1428,7 @@ describe('NavigationMotion', function () {
                 stateNavigator.navigateLink(url);
             });
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -1484,7 +1484,7 @@ describe('NavigationMotion', function () {
                 stateNavigator.navigateLink(url);
             });
             try {
-                var scenes = container.querySelectorAll(".scene");                
+                var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
                 assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
@@ -1534,7 +1534,7 @@ describe('NavigationMotion', function () {
                 update(true);
             });
             try {
-                var scene = container.querySelector<HTMLDivElement>("#sceneB");                
+                var scene = container.querySelector<HTMLDivElement>("#sceneB");
                 assert.strictEqual(scene.dataset.updated, 'true');
             } finally {
                 act(() => root.unmount());
@@ -1579,7 +1579,7 @@ describe('NavigationMotion', function () {
                 update(true);
             });
             try {
-                var scene = container.querySelector<HTMLDivElement>("#sceneA");                
+                var scene = container.querySelector<HTMLDivElement>("#sceneA");
                 assert.strictEqual(scene.dataset.updated, 'false');
             } finally {
                 act(() => root.unmount());
@@ -1623,7 +1623,7 @@ describe('NavigationMotion', function () {
                 stateNavigator.navigateBack(1);
             });
             try {
-                var scene = container.querySelector<HTMLDivElement>("#sceneA");                
+                var scene = container.querySelector<HTMLDivElement>("#sceneA");
                 assert.strictEqual(scene.dataset.updated, 'true');
             } finally {
                 act(() => root.unmount());
