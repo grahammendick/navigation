@@ -1,6 +1,10 @@
 import React from 'react';
-import {NavigationMotion} from 'navigation-react-mobile';
+import {NavigationMotion, Scene} from 'navigation-react-mobile';
 import PhotoZoom from './PhotoZoom';
+import Home from './Home';
+import Tweet from './Tweet';
+import Timeline from './Timeline';
+import Photo from './Photo';
 
 export default () => (
   <NavigationMotion
@@ -16,8 +20,8 @@ export default () => (
     sharedElementMotion={({sharedElements, ...props}) => {
       sharedElements = sharedElements.filter(share => share.oldElement.data.enable || share.mountedElement.data.enable);
       return <PhotoZoom {...props} sharedElements={sharedElements} />;
-    }}>
-    {({translate, scale, opacity}, scene, key) => (
+    }}
+    renderMotion={({translate, scale, opacity}, scene, key) => (
       <div key={key}
         className="scene"
         style={{
@@ -26,6 +30,10 @@ export default () => (
         }}>
         {scene}
       </div>
-    )}
+    )}>
+    <Scene stateKey="home"><Home /></Scene>
+    <Scene stateKey="tweet"><Tweet /></Scene>
+    <Scene stateKey="timeline"><Timeline /></Scene>
+    <Scene stateKey="photo"><Photo /></Scene>
   </NavigationMotion>
 );

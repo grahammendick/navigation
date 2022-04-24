@@ -1,11 +1,6 @@
 import React from 'react';
 import {StateNavigator} from 'navigation';
 import {MobileHistoryManager} from 'navigation-react-mobile';
-import Home from './Home';
-import Tweet from './Tweet';
-import Timeline from './Timeline';
-import Photo from './Photo';
-import {getHome, getTweet, getTimeline} from './data';
 
 export default () => {
   const buildStartUrl = url => {
@@ -23,11 +18,5 @@ export default () => {
     {key: 'photo', trackCrumbTrail: true, title: 'Photo'}
   ], new MobileHistoryManager(buildStartUrl));
 
-  const {home, tweet, timeline, photo} = stateNavigator.states;
-  home.renderScene = () => <Home tweets={getHome()} />;
-  tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)} />;
-  timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)} />;
-  photo.renderScene = ({id}) => <Photo photo={getTweet(id).photo} />;
-  
   return stateNavigator;
 }
