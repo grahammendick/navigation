@@ -1530,30 +1530,56 @@ describe('NavigationMotion', function () {
     });
 
     describe('A to A -> A to A -> B', function () {
-        it('should render A -> B+', async function(){
-            var stateNavigator = new StateNavigator([
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
                 { key: 'sceneA', trackCrumbTrail: true },
                 { key: 'sceneB', trackCrumbTrail: true },
             ]);
             stateNavigator.navigate('sceneA');
-            var {sceneA, sceneB} = stateNavigator.states;
-            var SceneA = () => <div id="sceneA" />;
-            var SceneB = () => <div id="sceneB" />;
-            sceneA.renderScene = () => <SceneA />;
-            sceneB.renderScene = () => <SceneB />;
-            var container = document.createElement('div');
-            const root = createRoot(container)
-            act(() => {
-                root.render(
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationMotion>
-                            {(_style, scene, key) =>  (
-                                <div className="scene" id={key} key={key}>{scene}</div>
-                            )}
-                        </NavigationMotion>
-                    </NavigationHandler>
-                );
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+        describe('Static', () => {
+            it('should render A -> B+', async function(){
+                var {sceneA, sceneB} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationMotion>
+                                {(_style, scene, key) =>  (
+                                    <div className="scene" id={key} key={key}>{scene}</div>
+                                )}
+                            </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                await test();
             });
+        });
+        describe('Dynamic', () => {
+            it('should render A -> B+', async function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationMotion
+                                renderMotion={(_style, scene, key) =>  (
+                                    <div className="scene" id={key} key={key}>{scene}</div>
+                                )}>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                            </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        const test = async () => {
             act(() => stateNavigator.navigate('sceneA'));
             await act(async () => {
                 var url = stateNavigator.fluent(true)
@@ -1571,7 +1597,7 @@ describe('NavigationMotion', function () {
             } finally {
                 act(() => root.unmount());
             }
-        })
+        };
     });
 
     describe('A to A -> A to A -> B to A -> B -> C to A -> B to A -> C', function () {
