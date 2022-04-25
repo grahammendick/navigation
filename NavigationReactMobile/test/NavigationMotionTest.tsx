@@ -1685,35 +1685,61 @@ describe('NavigationMotion', function () {
     });
 
     describe('Set state', function () {
-        it('should render', function(){
-            var stateNavigator = new StateNavigator([
+        var stateNavigator, root, container: HTMLDivElement, update;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => {
+            var [updated, setUpdated] = useState(false)
+            update = setUpdated;
+            return <div id='sceneB' data-updated={updated} />;
+        };
+        beforeEach(() => {
+            update = null;
+            stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
             ]);
             stateNavigator.navigate('sceneA');
-            var {sceneA, sceneB} = stateNavigator.states;
-            var update;
-            var SceneA = () => <div id="sceneA" />;
-            var SceneB = () => {
-                var [updated, setUpdated] = useState(false)
-                update = setUpdated;
-                return <div id='sceneB' data-updated={updated} />;
-            };
-            sceneA.renderScene = () => <SceneA />;
-            sceneB.renderScene = () => <SceneB />;
-            var container = document.createElement('div');
-            var root = createRoot(container)
-            act(() => {
-                root.render(
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationMotion>
-                            {(_style, scene, key) =>  (
-                                <div className="scene" id={key} key={key}>{scene}</div>
-                            )}
-                        </NavigationMotion>
-                    </NavigationHandler>
-                );
-            });
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+        describe('Static', () => {
+            it('should render', function(){
+                var {sceneA, sceneB} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationMotion>
+                                {(_style, scene, key) =>  (
+                                    <div className="scene" id={key} key={key}>{scene}</div>
+                                )}
+                            </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            })
+        });
+        describe('Dynamic', () => {
+            it('should render', function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationMotion
+                                renderMotion={(_style, scene, key) =>  (
+                                    <div className="scene" id={key} key={key}>{scene}</div>
+                                )}>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                            </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            })
+        });
+        const test = () => {
             act(() => {
                 stateNavigator.navigate('sceneB');
             });
@@ -1726,7 +1752,7 @@ describe('NavigationMotion', function () {
             } finally {
                 act(() => root.unmount());
             }
-        })
+        };
     });
 
     describe('Crumb set state', function () {
