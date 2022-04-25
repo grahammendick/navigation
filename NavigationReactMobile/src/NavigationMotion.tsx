@@ -12,7 +12,7 @@ type SceneContext = {key: string, state: State, data: any, url: string, crumbs: 
 type MotionStyle = {style: any, data: SceneContext, key: string, rest: boolean, progress: number, start: any, end: any };
 
 const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 300,
-    sharedElementMotion, renderScene, renderMotion, children}: NavigationMotionProps) => {
+    sharedElementMotion, renderScene, children, renderMotion = children}: NavigationMotionProps) => {
     const sharedElementRegistry = useRef(new SharedElementRegistry());
     const {stateNavigator} = useContext(NavigationContext);
     const [motionState, setMotionState] = useState<NavigationMotionState>({stateNavigator: null, keys: []});
@@ -91,7 +91,6 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
     }
     const {stateContext: {crumbs, oldState}, stateContext} = stateNavigator;
     renderScene = typeof children === 'object' ? ({key}) => allScenes[key] : renderScene;
-    renderMotion = renderMotion || children;
     return (stateContext.state &&
         <SharedElementContext.Provider value={sharedElementRegistry.current}>
             <Motion<SceneContext>
