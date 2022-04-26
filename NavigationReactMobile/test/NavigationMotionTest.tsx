@@ -1827,37 +1827,65 @@ describe('NavigationMotion', function () {
     });
 
     describe('Crumb set state navigate back', function () {
-        it('should render', async function(){
-            var stateNavigator = new StateNavigator([
+        var stateNavigator, root, container: HTMLDivElement, update;
+        var SceneA = () => {
+            var [updated, setUpdated] = useState(false)
+            update = setUpdated;
+            return <div id='sceneA' data-updated={updated} />;
+        };
+        var SceneB = () => <div id="sceneB" />;
+        beforeEach(() => {
+            update = null;
+            stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
             ]);
             stateNavigator.navigate('sceneA');
-            var {sceneA, sceneB} = stateNavigator.states;
-            var update;
-            var SceneA = () => {
-                var [updated, setUpdated] = useState(false)
-                update = setUpdated;
-                return <div id='sceneA' data-updated={updated} />;
-            };
-            var SceneB = () => <div id="sceneB" />;
-            sceneA.renderScene = () => <SceneA />;
-            sceneB.renderScene = () => <SceneB />;
-            var container = document.createElement('div');
-            var root = createRoot(container)
-            act(() => {
-                root.render(
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationMotion>
-                            {(_style, scene, key) =>  (
-                                <div id={key} key={key}>{scene}</div>
-                            )}
-                        </NavigationMotion>
-                    </NavigationHandler>
-                );
-            });
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+        describe('Static', () => {
+            it('should render', async function(){
+                var {sceneA, sceneB} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationMotion>
+                                {(_style, scene, key) =>  (
+                                    <div id={key} key={key}>{scene}</div>
+                                )}
+                            </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            })
+        });
+        describe('Dynamic', () => {
+            it('should render', async function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationMotion
+                                renderMotion={(_style, scene, key) =>  (
+                                    <div id={key} key={key}>{scene}</div>
+                                )}>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                            </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            })
+        });
+        const test = async () => {
             await act(async () => {
                 stateNavigator.navigate('sceneB');
+            });
+            await act(async () => {
                 update(true);
                 stateNavigator.navigateBack(1);
             });
@@ -1867,7 +1895,7 @@ describe('NavigationMotion', function () {
             } finally {
                 act(() => root.unmount());
             }
-        })
+        };
     });
 
     describe('Re-render NavigationStack', function () {
