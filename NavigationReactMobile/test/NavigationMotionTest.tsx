@@ -1898,7 +1898,7 @@ describe('NavigationMotion', function () {
         };
     });
 
-    describe('Re-render NavigationStack', function () {
+    describe('Re-render NavigationStack Static', function () {
         it('should only re-render current scene', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
@@ -1920,6 +1920,49 @@ describe('NavigationMotion', function () {
                             {(_style, scene, key) =>  (
                                 <div id={key} key={key}>{scene}</div>
                             )}
+                        </NavigationMotion>
+                    </NavigationHandler>
+                );
+            }
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => root.render(<App />));
+            await act(async () => {
+                stateNavigator.navigate('sceneB');
+                update(true);
+            });
+            try {
+                var scene = container.querySelector<HTMLDivElement>("#sceneA");
+                assert.strictEqual(scene.dataset.updated, 'false');
+                scene = container.querySelector<HTMLDivElement>("#sceneB");
+                assert.strictEqual(scene.dataset.updated, 'true');
+            } finally {
+                act(() => root.unmount());
+            }
+        })
+    });
+
+    describe('Re-render NavigationStack Dynamic', function () {
+        it('should only re-render current scene', async function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var SceneA = ({updated}) => <div id='sceneA' data-updated={updated} />;
+            var SceneB = ({updated}) => <div id='sceneB' data-updated={updated} />;
+            var update;
+            var App = () => {
+                var [updated, setUpdated] = useState(false);
+                update = setUpdated;
+                return (
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion
+                            renderMotion={(_style, scene, key) =>  (
+                                <div id={key} key={key}>{scene}</div>
+                            )}>
+                            <Scene stateKey="sceneA"><SceneA updated={updated} /></Scene>
+                            <Scene stateKey="sceneB"><SceneB updated={updated} /></Scene>
                         </NavigationMotion>
                     </NavigationHandler>
                 );
