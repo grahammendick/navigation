@@ -2016,12 +2016,8 @@ describe('NavigationMotion', function () {
             var container = document.createElement('div');
             var root = createRoot(container)
             act(() => root.render(<App />));
-            act(() => {
-                stateNavigator.navigate('sceneB');
-            })
-            await act(async () => {
-                update(true);
-            });
+            act(() => stateNavigator.navigate('sceneB'));
+            await act(async () => update(true));
             try {
                 assert.notEqual(container.querySelector("#sceneA"), null);
                 assert.notEqual(container.querySelector("#sceneB"), null);
@@ -2063,15 +2059,9 @@ describe('NavigationMotion', function () {
             var container = document.createElement('div');
             var root = createRoot(container)
             act(() => root.render(<App />));
-            act(() => {
-                stateNavigator.navigate('sceneB');
-            })
-            act(() => {
-                stateNavigator.navigate('sceneC');
-            })
-            await act(async () => {
-                update(true);
-            });
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => stateNavigator.navigate('sceneC'));
+            await act(async () => update(true));
             try {
                 assert.notEqual(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
@@ -2116,15 +2106,9 @@ describe('NavigationMotion', function () {
             var container = document.createElement('div');
             var root = createRoot(container)
             act(() => root.render(<App />));
-            act(() => {
-                stateNavigator.navigate('sceneB');
-            })
-            act(() => {
-                stateNavigator.navigate('sceneC');
-            })
-            await act(async () => {
-                update(true);
-            });
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => stateNavigator.navigate('sceneC'));
+            await act(async () => update(true));
             try {
                 assert.notEqual(container.querySelector("#sceneA"), null);
                 assert.notEqual(container.querySelector("#sceneB"), null);
