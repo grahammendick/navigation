@@ -1,4 +1,4 @@
-import React, {useRef, useState, useContext, useMemo, useEffect} from 'react';
+import React, {useRef, useState, useContext, useEffect, ReactElement} from 'react';
 import { State, Crumb, StateNavigator } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import Motion from './Motion';
@@ -16,17 +16,26 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
     const sharedElementRegistry = useRef(new SharedElementRegistry());
     const {stateNavigator} = useContext(NavigationContext);
     const [motionState, setMotionState] = useState<NavigationMotionState>({stateNavigator: null, keys: []});
-    const scenes = useMemo(() => (
-        (React.Children.toArray(children) as any)
-            .reduce((scenes, scene) => ({...scenes, [scene.props.stateKey]: scene}), {})
-    ), [children]);
+    const scenes = {};
+    let firstScene;
+    const findScenes = (children, nested = false) => {
+        for(const scene of React.Children.toArray(children) as ReactElement<any>[]) {
+            const {stateKey, children} = scene.props;
+            if (scene.type === NavigationMotion.Scene) {
+                firstScene = firstScene || scene;
+                scenes[stateKey] = scene;
+            }
+            else if (nested) findScenes(children)
+        }
+    }
+    findScenes(children, true);
     let { current: allScenes } = useRef(scenes);
     useEffect(() => {
         allScenes = {...allScenes, ...scenes};
         const {crumbs, nextCrumb} = stateNavigator.stateContext;
         const invalid = [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]);
         if (invalid && typeof children === 'object') {
-            const {stateKey} = (React.Children.toArray(children) as any)[0].props;
+            const {stateKey} = firstScene.props;
             stateNavigator.navigateLink(stateNavigator.fluent().navigate(stateKey).url);
         }
         const validate = ({key}) => !!scenes[key];
