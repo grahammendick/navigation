@@ -22,6 +22,60 @@ window.requestAnimationFrame = callback => {
 window.cancelAnimationFrame = () => {};
 
 describe('NavigationMotion', function () {
+    describe('Blank state context', function () {
+        var stateNavigator, root, container;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+
+        describe('Static', () => {
+            it('should render', function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationMotion>
+                                {(_style, scene, key) =>  (
+                                    <div className="scene" id={key} key={key}>{scene}</div>
+                                )}
+                            </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+
+        describe('Dynamic', () => {
+            it('should render', function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationMotion
+                                renderMotion={(_style, scene, key) =>  (
+                                    <div className="scene" id={key} key={key}>{scene}</div>
+                                )}>
+                            </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+
+        const test = () => {
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 0);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
     describe('A', function () {
         var stateNavigator, root, container;
         var SceneA = () => <div id="sceneA" />;
