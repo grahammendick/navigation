@@ -25,10 +25,10 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
                 firstScene = firstScene || scene;
                 scenes[stateKey] = scene;
             }
-            else if (nested) findScenes(children)
+            else if (!nested) findScenes(children, true)
         }
     }
-    findScenes(children, true);
+    findScenes(children);
     let { current: allScenes } = useRef(scenes);
     useEffect(() => {
         allScenes = {...allScenes, ...scenes};
