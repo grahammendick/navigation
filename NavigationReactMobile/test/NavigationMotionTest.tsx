@@ -2653,7 +2653,6 @@ describe('NavigationMotion', function () {
         })
     });
 
-
     describe('Navigation motion without children static', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
