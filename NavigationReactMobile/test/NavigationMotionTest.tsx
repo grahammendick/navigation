@@ -2652,4 +2652,37 @@ describe('NavigationMotion', function () {
             }
         })
     });
+
+
+    describe('Navigation motion without children static', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var SceneA = () => <div id="sceneA" />;
+            var {sceneA} = stateNavigator.states;
+            sceneA.renderScene = () => <SceneA />;
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion
+                            renderMotion={(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )} />
+                    </NavigationHandler>
+                );
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.equal(scenes[0].id, "0");
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        });
+    });
 });

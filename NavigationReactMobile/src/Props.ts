@@ -54,7 +54,7 @@ interface NavigationMotionProps {
     renderScene: (state: State, data: any) => ReactNode,
     stateNavigator?: StateNavigator;
     renderMotion?: (style: any, scene: ReactElement<any>, key: string, active: boolean, state: State, data: any) => ReactElement<any>;
-    children: (style: any, scene: ReactElement<any>, key: string, active: boolean, state: State, data: any) => ReactElement<any>;
+    children?: any;
 }
 
 interface SceneProps {
