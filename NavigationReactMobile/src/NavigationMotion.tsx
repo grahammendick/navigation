@@ -12,17 +12,17 @@ type SceneContext = {key: string, state: State, data: any, url: string, crumbs: 
 type MotionStyle = {style: any, data: SceneContext, key: string, rest: boolean, progress: number, start: any, end: any };
 
 const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 300,
-    sharedElementMotion, renderScene, children, renderMotion = children}: NavigationMotionProps) => {
+    sharedElementMotion, renderScene, children, stackInvalidatedLink, renderMotion = children}: NavigationMotionProps) => {
     const sharedElementRegistry = useRef(new SharedElementRegistry());
     const {stateNavigator} = useContext(NavigationContext);
     const [motionState, setMotionState] = useState<NavigationMotionState>({stateNavigator: null, keys: []});
     const scenes = {};
-    let firstScene;
+    let firstLink;
     const findScenes = (children, nested = false) => {
         for(const scene of React.Children.toArray(children) as ReactElement<any>[]) {
             const {stateKey, children} = scene.props;
             if (scene.type === NavigationMotion.Scene) {
-                firstScene = firstScene || scene;
+                firstLink = firstLink || stateNavigator.fluent().navigate(stateKey).url;
                 scenes[stateKey] = scene;
             }
             else if (!nested) findScenes(children, true)
@@ -33,11 +33,14 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
     useEffect(() => {
         allScenes = {...allScenes, ...scenes};
         const {crumbs, nextCrumb} = stateNavigator.stateContext;
-        const blankOrInvalid  = !stateContext.state || [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]);
-        if (firstScene && blankOrInvalid)
-            stateNavigator.navigateLink(stateNavigator.fluent().navigate(firstScene.props.stateKey).url);
         const validate = ({key}) => !!scenes[key];
-        if (typeof children === 'object') stateNavigator.onBeforeNavigate(validate);
+        if (firstLink) {
+            stateNavigator.onBeforeNavigate(validate);
+            let resetLink = !stateContext.state ? firstLink : undefined;
+            if (!resetLink && [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]))
+                resetLink = stackInvalidatedLink != null ? stackInvalidatedLink : firstLink;
+            if (resetLink != null) stateNavigator.navigateLink(resetLink);
+        }
         return () => stateNavigator.offBeforeNavigate(validate);
     }, [children, stateNavigator, scenes]);
     const getSharedElements = () => {

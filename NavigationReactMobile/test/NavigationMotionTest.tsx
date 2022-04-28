@@ -2457,4 +2457,96 @@ describe('NavigationMotion', function () {
             }
         })
     });
+
+    describe('Unregister current scene with invalidated link to C', function () {
+        it('should navigate to C', async function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var SceneA = () => <div id='sceneA' />;
+            var SceneB = () => <div id='sceneB' />;
+            var SceneC = () => <div id='sceneC' />;
+            var update;
+            var App = () => {
+                var [updated, setUpdated] = useState(false);
+                update = setUpdated;
+                return (
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion
+                            renderMotion={(_style, scene, key) =>  (
+                                <div id={key} key={key}>{scene}</div>
+                            )}
+                            stackInvalidatedLink="/sceneC">
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                {!updated && <Scene stateKey="sceneB"><SceneB /></Scene>}
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
+                        </NavigationMotion>
+                    </NavigationHandler>
+                );
+            };
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => root.render(<App />));
+            act(() => stateNavigator.navigate('sceneB'));
+            await act(async () => update(true));
+            try {
+                assert.equal(container.querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+                assert.notEqual(container.querySelector("#sceneC"), null);
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states.sceneC)
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0)
+            } finally {
+                act(() => root.unmount());
+            }
+        })
+    });
+
+    describe('Unregister crumb scene with invalidated link to C', function () {
+        it('should navigate to C', async function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var SceneA = () => <div id='sceneA' />;
+            var SceneB = () => <div id='sceneB' />;
+            var SceneC = () => <div id='sceneC' />;
+            var update;
+            var App = () => {
+                var [updated, setUpdated] = useState(false);
+                update = setUpdated;
+                return (
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion
+                            renderMotion={(_style, scene, key) =>  (
+                                <div id={key} key={key}>{scene}</div>
+                            )}
+                            stackInvalidatedLink="/sceneC">
+                                {!updated && <Scene stateKey="sceneA"><SceneA /></Scene>}
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
+                        </NavigationMotion>
+                    </NavigationHandler>
+                );
+            };
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => root.render(<App />));
+            act(() => stateNavigator.navigate('sceneB'));
+            await act(async () => update(true));
+            try {
+                assert.equal(container.querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+                assert.notEqual(container.querySelector("#sceneC"), null);
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states.sceneC)
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0)
+            } finally {
+                act(() => root.unmount());
+            }
+        })
+    });
 });

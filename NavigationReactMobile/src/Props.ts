@@ -1,5 +1,4 @@
-import { StateNavigator, State } from 'navigation';
-import { NavigationEvent } from 'navigation-react';
+import { StateNavigator, State, FluentNavigator } from 'navigation';
 import SharedElementMotion from './SharedElementMotion';
 import SharedElementRegistry from './SharedElementRegistry';
 import { ReactElement, ReactNode } from 'react';
@@ -50,6 +49,7 @@ interface NavigationMotionProps {
     mountedStyle?: any;
     crumbStyle?: any;
     duration?: number;
+    stackInvalidatedLink?: string;
     sharedElementMotion?: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
     renderScene: (state: State, data: any) => ReactNode,
     stateNavigator?: StateNavigator;
