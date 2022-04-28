@@ -2186,13 +2186,12 @@ describe('NavigationMotion', function () {
                             renderMotion={(_style, scene, key) =>  (
                                 <div id={key} key={key}>{scene}</div>
                             )}>
-                            {!updated && (
+                            {!updated ? (
                                 <>
                                     <Scene stateKey="sceneA"><SceneA /></Scene>
                                     <Scene stateKey="sceneB"><SceneB /></Scene>
                                 </>
-                            )}
-                            {updated && (
+                            ) : (
                                 <>
                                     <Scene stateKey="sceneC"><SceneC /></Scene>
                                     <Scene stateKey="sceneD"><SceneD /></Scene>
