@@ -33,8 +33,8 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
     useEffect(() => {
         allScenes = {...allScenes, ...scenes};
         const {crumbs, nextCrumb} = stateNavigator.stateContext;
-        const invalid = [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]);
-        if (invalid && firstScene) {
+        const blankOrInvalid  = !stateContext.state || [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]);
+        if (firstScene && blankOrInvalid) {
             const {stateKey} = firstScene.props;
             stateNavigator.navigateLink(stateNavigator.fluent().navigate(stateKey).url);
         }

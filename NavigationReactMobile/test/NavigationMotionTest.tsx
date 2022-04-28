@@ -2215,4 +2215,34 @@ describe('NavigationMotion', function () {
             }
         })
     });
+
+    describe('Blank state context dynamic', function () {
+        it('should start stack with first scene', async function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            var SceneA = () => <div id='sceneA' />;
+            var SceneB = () => <div id='sceneB' />;
+            var App = () => (
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationMotion
+                        renderMotion={(_style, scene, key) =>  (
+                            <div id={key} key={key}>{scene}</div>
+                        )}>
+                            <Scene stateKey="sceneA"><SceneA /></Scene>
+                            <Scene stateKey="sceneB"><SceneB /></Scene>
+                    </NavigationMotion>
+                </NavigationHandler>
+            );
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => root.render(<App />));
+            try {
+                assert.notEqual(container.querySelector("#sceneA"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        })
+    });
 });
