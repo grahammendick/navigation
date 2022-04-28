@@ -34,10 +34,8 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
         allScenes = {...allScenes, ...scenes};
         const {crumbs, nextCrumb} = stateNavigator.stateContext;
         const blankOrInvalid  = !stateContext.state || [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]);
-        if (firstScene && blankOrInvalid) {
-            const {stateKey} = firstScene.props;
-            stateNavigator.navigateLink(stateNavigator.fluent().navigate(stateKey).url);
-        }
+        if (firstScene && blankOrInvalid)
+            stateNavigator.navigateLink(stateNavigator.fluent().navigate(firstScene.props.stateKey).url);
         const validate = ({key}) => !!scenes[key];
         if (typeof children === 'object') stateNavigator.onBeforeNavigate(validate);
         return () => stateNavigator.offBeforeNavigate(validate);
