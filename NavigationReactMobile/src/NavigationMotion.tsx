@@ -34,7 +34,7 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
         allScenes = {...allScenes, ...scenes};
         const {crumbs, nextCrumb} = stateNavigator.stateContext;
         const invalid = [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]);
-        if (invalid && typeof children === 'object') {
+        if (invalid && firstScene) {
             const {stateKey} = firstScene.props;
             stateNavigator.navigateLink(stateNavigator.fluent().navigate(stateKey).url);
         }
