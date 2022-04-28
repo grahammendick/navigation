@@ -2596,7 +2596,7 @@ describe('NavigationMotion', function () {
         })
     });
 
-    describe.only('Unregister stack with fluent invalidated', function () {
+    describe('Unregister stack with fluent invalidated', function () {
         it('should navigate', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
