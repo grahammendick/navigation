@@ -11,8 +11,8 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, sharedElem
         sharedElementMotion={sharedElementTransition}
         duration={duration}
         renderScene={renderScene}
-        renderMotion={typeof children === 'function' ? children : (renderTransition || renderMotion)}>
-        {typeof children === 'function' ? null : children}
+        renderMotion={typeof children !== 'function' ? renderTransition || renderMotion : undefined}>
+        {children || renderMotion}
     </NavigationMotion>
 )
 
