@@ -154,5 +154,37 @@ describe('SceneViewTest', function () {
             assert.equal(container.innerHTML, '<div>scene 0</div>');
         })
     });
+
+    describe('Scene View Medley Active and Inactive', function () {
+        it('should render and not render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' },
+            ]);
+            stateNavigator.navigate('s1');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView stateKey="s2">
+                            <div>scene 0</div>
+                        </SceneView>
+                        <SceneView stateKey="s1">
+                            <div>scene 1</div>
+                        </SceneView>
+                        <SceneView stateKey={["s0", "s1"]}>
+                            <div>scene 0,1</div>
+                        </SceneView>
+                        <SceneView stateKey={["s0", "s2"]}>
+                            <div>scene 0,2</div>
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            assert.equal(container.innerHTML, '<div>scene 1</div><div>scene 0,1</div>');
+        })
+    });
 });
 
