@@ -42,7 +42,7 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
             if (resetLink != null) stateNavigator.navigateLink(resetLink);
         }
         return () => stateNavigator.offBeforeNavigate(validate);
-    }, [children, stateNavigator, scenes]);
+    }, [children, stateNavigator, scenes, stackInvalidatedLink]);
     const getSharedElements = () => {
         const {crumbs, oldUrl} = stateNavigator.stateContext;
         if (oldUrl !== null) {
