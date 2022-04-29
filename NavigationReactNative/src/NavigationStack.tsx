@@ -1,35 +1,45 @@
-import React, { ReactNode, useRef, useState, useContext, useMemo, useEffect } from 'react';
+import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect } from 'react';
 import { requireNativeComponent, StyleSheet } from 'react-native';
 import { Crumb, State } from 'navigation';
 import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
 import PopSync from './PopSync';
 import Scene from './Scene';
-type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, renderScene: (state: State, data: any) => ReactNode, children: any};
+type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
 type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], rest: boolean, counter: number};
 
 const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null, unmountStyle = () => null,
-    hidesTabBar = () => false, sharedElement: getSharedElement = () => null, renderScene, children}: NavigationStackProps) => {
+    hidesTabBar = () => false, sharedElement: getSharedElement = () => null, stackInvalidatedLink, renderScene, children}: NavigationStackProps) => {
     const resumeNavigationRef = useRef(null);
     const ref = useRef(null);
     const {stateNavigator} = useContext(NavigationContext);
     const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0});
-    const scenes = useMemo(() => (
-        (React.Children.toArray(children) as any)
-            .reduce((scenes, scene) => ({...scenes, [scene.props.stateKey]: scene}), {})
-    ), [children]);
+    const scenes = {};
+    let firstLink;
+    const findScenes = (children, nested = false) => {
+        for(const scene of React.Children.toArray(children) as ReactElement<any>[]) {
+            const {stateKey, children} = scene.props;
+            if (scene.type === NavigationStack.Scene) {
+                firstLink = firstLink || stateNavigator.fluent().navigate(stateKey).url;
+                scenes[stateKey] = scene;
+            }
+            else if (!nested) findScenes(children, true)
+        }
+    }
+    findScenes(children);
     let { current: allScenes } = useRef(scenes);
     useEffect(() => {
         allScenes = {...allScenes, ...scenes};
-        const {crumbs, nextCrumb} = stateNavigator.stateContext;
-        const invalid = [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]);
-        if (invalid && children) {
-            const {stateKey} = (React.Children.toArray(children) as any)[0].props;
-            stateNavigator.navigateLink(stateNavigator.fluent().navigate(stateKey).url);
-        }
+        const {state, crumbs, nextCrumb} = stateNavigator.stateContext;
         const validate = ({key}) => !!scenes[key];
-        if (children) stateNavigator.onBeforeNavigate(validate);
+        if (firstLink) {
+            stateNavigator.onBeforeNavigate(validate);
+            let resetLink = !state ? firstLink : undefined;
+            if (!resetLink && [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]))
+                resetLink = stackInvalidatedLink != null ? stackInvalidatedLink : firstLink;
+            if (resetLink != null) stateNavigator.navigateLink(resetLink);
+        }
         return () => stateNavigator.offBeforeNavigate(validate);
-    }, [children, stateNavigator, scenes]);
+    }, [children, stateNavigator, scenes, stackInvalidatedLink]);
     const onWillNavigateBack = ({nativeEvent}) => {
         const distance = stateNavigator.stateContext.crumbs.length - nativeEvent.crumb;
         resumeNavigationRef.current = null;
@@ -122,7 +132,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
                         hidesTabBar={hidesTabBar}
                         title={title}
                         popped={popNative}
-                        renderScene={children ? ({key}) => allScenes[key] : renderScene} />
+                        renderScene={firstLink ? ({key}) => allScenes[key] : renderScene} />
                 ))}
             </PopSync>
         </NVNavigationStack>
