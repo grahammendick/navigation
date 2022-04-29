@@ -32,11 +32,11 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
     let { current: allScenes } = useRef(scenes);
     useEffect(() => {
         allScenes = {...allScenes, ...scenes};
-        const {crumbs, nextCrumb} = stateNavigator.stateContext;
+        const {state, crumbs, nextCrumb} = stateNavigator.stateContext;
         const validate = ({key}) => !!scenes[key];
         if (firstLink) {
             stateNavigator.onBeforeNavigate(validate);
-            let resetLink = !stateContext.state ? firstLink : undefined;
+            let resetLink = !state ? firstLink : undefined;
             if (!resetLink && [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]))
                 resetLink = stackInvalidatedLink != null ? stackInvalidatedLink : firstLink;
             if (resetLink != null) stateNavigator.navigateLink(resetLink);
