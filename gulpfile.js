@@ -95,6 +95,7 @@ var tests = [
     { name: 'NavigationBackLink', to: 'navigationBackLink.test.js', folder: 'React', ext: 'tsx' },
     { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' },
     { name: 'FluentLink', to: 'fluentLink.test.js', folder: 'React', ext: 'tsx' },
+    { name: 'SceneView', to: 'sceneView.test.js', folder: 'React', ext: 'tsx' },
     { name: 'NavigatingHook', to: 'navigatingHook.test.js', folder: 'ReactMobile', ext: 'tsx' },
     { name: 'NavigatedHook', to: 'navigatedHook.test.js', folder: 'ReactMobile', ext: 'tsx' },
     { name: 'UnloadingHook', to: 'unloadingHook.test.js', folder: 'ReactMobile', ext: 'tsx' },
