@@ -18,8 +18,8 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
     const [motionState, setMotionState] = useState<NavigationMotionState>({stateNavigator: null, keys: []});
     const scenes = {};
     let firstLink;
-    const findScenes = (components = children, nested = false) => {
-        for(const scene of React.Children.toArray(components) as ReactElement<any>[]) {
+    const findScenes = (elements = children, nested = false) => {
+        for(const scene of React.Children.toArray(elements) as ReactElement<any>[]) {
             const {stateKey, children} = scene.props;
             if (scene.type === NavigationMotion.Scene) {
                 firstLink = firstLink || stateNavigator.fluent().navigate(stateKey).url;
