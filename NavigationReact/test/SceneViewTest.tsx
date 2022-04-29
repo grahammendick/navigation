@@ -35,5 +35,52 @@ describe('SceneViewTest', function () {
             assert.equal(container.innerHTML, '<div>scene</div>');
         })
     });
+
+    describe('Scene View Inactive', function () {
+        it('should not render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView stateKey="s1">
+                            <div>scene</div>
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            assert.equal(container.innerHTML, '');
+        })
+    });
+
+    describe('Scene View Active and Inactive', function () {
+        it('should render and not render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView stateKey="s0">
+                            <div>scene 0</div>
+                        </SceneView>
+                        <SceneView stateKey="s1">
+                            <div>scene 1</div>
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            assert.equal(container.innerHTML, '<div>scene 0</div>');
+        })
+    });
 });
 
