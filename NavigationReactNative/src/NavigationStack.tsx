@@ -15,8 +15,8 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
     const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0});
     const scenes = {};
     let firstLink;
-    const findScenes = (children, nested = false) => {
-        for(const scene of React.Children.toArray(children) as ReactElement<any>[]) {
+    const findScenes = (components = children, nested = false) => {
+        for(const scene of React.Children.toArray(components) as ReactElement<any>[]) {
             const {stateKey, children} = scene.props;
             if (scene.type === NavigationStack.Scene) {
                 firstLink = firstLink || stateNavigator.fluent().navigate(stateKey).url;
@@ -25,7 +25,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
             else if (!nested) findScenes(children, true)
         }
     }
-    findScenes(children);
+    findScenes();
     let { current: allScenes } = useRef(scenes);
     useEffect(() => {
         allScenes = {...allScenes, ...scenes};

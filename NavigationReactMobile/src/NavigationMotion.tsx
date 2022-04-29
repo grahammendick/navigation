@@ -18,8 +18,8 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
     const [motionState, setMotionState] = useState<NavigationMotionState>({stateNavigator: null, keys: []});
     const scenes = {};
     let firstLink;
-    const findScenes = (children, nested = false) => {
-        for(const scene of React.Children.toArray(children) as ReactElement<any>[]) {
+    const findScenes = (components = children, nested = false) => {
+        for(const scene of React.Children.toArray(components) as ReactElement<any>[]) {
             const {stateKey, children} = scene.props;
             if (scene.type === NavigationMotion.Scene) {
                 firstLink = firstLink || stateNavigator.fluent().navigate(stateKey).url;
@@ -28,7 +28,7 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
             else if (!nested) findScenes(children, true)
         }
     }
-    findScenes(children);
+    findScenes();
     let { current: allScenes } = useRef(scenes);
     useEffect(() => {
         allScenes = {...allScenes, ...scenes};
