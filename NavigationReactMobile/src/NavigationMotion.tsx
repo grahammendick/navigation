@@ -100,7 +100,7 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
         })
     }
     const {stateContext: {crumbs, oldState}, stateContext} = stateNavigator;
-    renderScene = typeof children === 'object' ? ({key}) => allScenes[key] : renderScene;
+    renderScene = firstLink ? ({key}) => allScenes[key] : renderScene;
     return (stateContext.state &&
         <SharedElementContext.Provider value={sharedElementRegistry.current}>
             <Motion<SceneContext>
