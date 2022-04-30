@@ -5,6 +5,7 @@ import { NavigationHandler } from 'navigation-react';
 import { NavigationMotion, Scene } from 'navigation-react-mobile';
 import React, {useState} from 'react';
 import { createRoot } from 'react-dom/client';
+import ReactDOMServer from 'react-dom/server';
 import { act } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
@@ -2743,5 +2744,58 @@ describe('NavigationMotion', function () {
                 act(() => root.unmount());
             }
         });
+    });
+
+    describe('Server A', function () {
+        var stateNavigator, html;
+        var SceneA = () => <div id="sceneA" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+        });
+
+        describe('Static', () => {
+            it('should render A', function(){
+                var {sceneA} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                html = ReactDOMServer.renderToString(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>
+                );
+                test();
+            });
+        });
+
+        describe('Dynamic', () => {
+            it('should render A', function(){
+                html = ReactDOMServer.renderToString(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion
+                            renderMotion={(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}>
+                            <Scene stateKey="sceneA"><SceneA /></Scene>
+                        </NavigationMotion>
+                    </NavigationHandler>
+                );
+                test();
+            });
+        });
+
+        const test = () => {
+            var container = document.createElement('div');
+            container.innerHTML = html;
+            var scenes = container.querySelectorAll(".scene");
+            assert.equal(scenes.length, 1);
+            assert.equal(scenes[0].id, "0");
+            assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+    };
     });
 });
