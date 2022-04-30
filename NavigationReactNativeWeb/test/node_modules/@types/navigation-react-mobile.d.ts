@@ -102,17 +102,31 @@ export interface NavigationMotionProps {
      */
     duration?: number;
     /**
+     * The link to navigate to when Scenes in the stack are unregistered
+     */
+    stackInvalidatedLink?: string;
+    /**
      * The Shared Element Motion component
      */
     sharedElementMotion?: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
     /**
-     * Renders the scene for the State and data
+     * Renders the Scene for the State and data
      */
     renderScene?: (state: State, data: any) => ReactNode;
     /**
      * Renders the Scene with the interpoated styles
      */
-    children: (style: any, scene: ReactElement<any>, key: string, active: boolean, state: State, data: any) => ReactElement<any>;
+    renderMotion?: (style: any, scene: ReactElement<any>, key: string, active: boolean, state: State, data: any) => ReactElement<any>;
+}
+
+/**
+ * Defines the Scene Props contract
+ */
+ export interface SceneProps<NavigationInfo extends { [index: string]: any } = any> {
+    /**
+     * The key of the State that activates the View
+     */
+    stateKey: (keyof NavigationInfo & string) | (keyof NavigationInfo & string)[];
 }
 
 /**
@@ -129,6 +143,11 @@ export class SharedElementMotion extends Component<SharedElementNavigationMotion
  * Animates Scenes when navigating
  */
 export class NavigationMotion extends Component<NavigationMotionProps> { }
+
+/**
+ * Configures the Scene for a State
+ */
+ export class Scene<NavigationInfo extends { [index: string]: any } = any> extends Component<SceneProps<NavigationInfo>> {}
 
 /**
  * Manages history with the HTML5 history api. Produces friendly Urls in Mobile
