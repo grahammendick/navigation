@@ -2,8 +2,9 @@ import React, {useContext} from 'react';
 import {Platform, StyleSheet, Text, Image, FlatList, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {NavigationBar, CoordinatorLayout} from 'navigation-react-native';
+import {getFollows} from './data';
 
-export default ({follows}) => {
+export default () => {
   const {stateNavigator} = useContext(NavigationContext);
   return (
     <CoordinatorLayout>
@@ -12,7 +13,7 @@ export default ({follows}) => {
         isActive={({tab}) => tab === 1}
         barTintColor="#fff" />
       <FlatList
-        data={follows}
+        data={getFollows()}
         keyExtractor={item => '' + item.id}
         contentInsetAdjustmentBehavior="automatic"
         style={styles.view}

@@ -2,8 +2,13 @@ import React, {useState} from 'react';
 import {Platform, View} from 'react-native';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
-import {NavigationStack, TabBar, TabBarItem} from 'navigation-react-native';
+import {NavigationStack, Scene, TabBar, TabBarItem} from 'navigation-react-native';
 import createStateNavigator from './createStateNavigator';
+import Home from './Home';
+import Notifications from './Notifications';
+import Tabs from './Tabs';
+import Tweet from './Tweet';
+import Timeline from './Timeline';
 import {getFollows} from './data';
 
 var stateNavigator = createStateNavigator();
@@ -20,8 +25,8 @@ const Stack = ({navigator}) => (
       unmountStyle={from => from ? 'slide_in' : 'slide_out'}
       unmountedStyle={{translate: 100, scale: 1, opacity: 1}}
       mountedStyle={{translate: 0, scale: 1, opacity: 1}}
-      crumbedStyle={{translate: 5, scale: 0.9, opacity: 0}}>
-      {({translate, scale, opacity}, scene, key) => (
+      crumbedStyle={{translate: 5, scale: 0.9, opacity: 0}}
+      renderTransition={({translate, scale, opacity}, scene, key) => (
         <View key={key}
           style={{
             transform: `translate(${translate}%) scale(${scale}, ${scale})`,
@@ -33,7 +38,12 @@ const Stack = ({navigator}) => (
           }}>
           {scene}
         </View>
-      )}
+      )}>
+      {Platform.OS !== 'ios' && <Scene stateKey="home"><Tabs /></Scene>}
+      {Platform.OS === 'ios' && <Scene stateKey="home"><Home /></Scene>}
+      <Scene stateKey="notifications"><Notifications /></Scene>
+      <Scene stateKey="tweet"><Tweet /></Scene>
+      <Scene stateKey="timeline"><Timeline /></Scene>
     </NavigationStack>
   </NavigationHandler>
 );

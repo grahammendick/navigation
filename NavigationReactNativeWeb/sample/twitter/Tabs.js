@@ -4,8 +4,9 @@ import {NavigationContext} from 'navigation-react';
 import {TabBar, TabBarItem, useNavigated} from 'navigation-react-native';
 import Home from './Home';
 import Notifications from './Notifications';
+import {getHome, getFollows} from './data';
 
-export default ({tweets, follows}) => {
+export default () => {
   const {stateNavigator, data} = useContext(NavigationContext);
   const tabs = {home: 0, notifications: 1};
   const [tab, setTab] = useState(tabs[data.tab]);
@@ -37,13 +38,13 @@ export default ({tweets, follows}) => {
         title="Home"
         image={require('./home.png')}
         href={getHref(stateNavigator.getRefreshLink({tab: 'home'}))}>
-        <Home tweets={tweets} follows={follows} />
+        <Home tweets={getHome()} />
       </TabBarItem>
       <TabBarItem
         title="Notifications"
         image={require('./notifications.png')}
         href={getHref(stateNavigator.getRefreshLink({tab: 'notifications'}))}>
-        <Notifications follows={follows} />
+        <Notifications follows={getFollows()} />
       </TabBarItem>
     </TabBar>
   );
