@@ -186,5 +186,46 @@ describe('SceneViewTest', function () {
             assert.equal(container.innerHTML, '<div>scene 1</div><div>scene 0,1</div>');
         })
     });
+
+    describe('Scene View Blank Context', function () {
+        it('should not render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's' }
+            ]);
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView stateKey="s">
+                            <div>scene</div>
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            assert.equal(container.innerHTML, '');
+        })
+    });
+
+    describe('Scene View Array Blank Context', function () {
+        it('should not render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0' },
+                { key: 's1' },
+            ]);
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView stateKey={['s0', 's1']}>
+                            <div>scene</div>
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            assert.equal(container.innerHTML, '');
+        })
+    });
 });
 
