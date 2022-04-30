@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import { View, Text, ScrollView, TouchableHighlight } from 'react-native';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationEvent, NavigationHandler } from 'navigation-react';
-import { NavigationStack, NavigationBar, CoordinatorLayout, RightBar, BarButton, SearchBar, SharedElement } from 'navigation-react-native';
+import { NavigationStack, Scene, NavigationBar, CoordinatorLayout, RightBar, BarButton, SearchBar, SharedElement } from 'navigation-react-native';
 
 type AppNavigation = {
     people: null,
@@ -81,15 +81,12 @@ var Person = () => {
     );
 }
 
-const { people, person } = stateNavigator.states;
-people.renderScene = () => <People />;
-person.renderScene = () => <Person />;
-
-stateNavigator.navigate('people');
-
 const App = () => (
     <NavigationHandler stateNavigator={stateNavigator}>
-      <NavigationStack sharedElement={(_, { name }) => name} />
+        <NavigationStack sharedElement={(_, { name }) => name}>
+            <Scene stateKey="people"><People /></Scene>
+            <Scene stateKey="person"><Person /></Scene>
+        </NavigationStack>
     </NavigationHandler>
   );
   
