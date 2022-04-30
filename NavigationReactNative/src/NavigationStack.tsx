@@ -1,11 +1,11 @@
 import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect } from 'react';
 import { requireNativeComponent, StyleSheet } from 'react-native';
-import { Crumb, State } from 'navigation';
-import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
+import { StateNavigator, Crumb, State } from 'navigation';
+import { NavigationContext } from 'navigation-react';
 import PopSync from './PopSync';
 import Scene from './Scene';
 type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
-type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], rest: boolean, counter: number};
+type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, counter: number};
 
 const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null, unmountStyle = () => null,
     hidesTabBar = () => false, sharedElement: getSharedElement = () => null, stackInvalidatedLink, renderScene, children}: NavigationStackProps) => {
