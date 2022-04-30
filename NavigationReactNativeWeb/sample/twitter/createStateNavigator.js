@@ -18,7 +18,6 @@ export default () => {
   }));
 
   if (Platform.OS === 'web') stateNavigator.start();
-  else stateNavigator.navigate('home');
   
   return stateNavigator;
 }

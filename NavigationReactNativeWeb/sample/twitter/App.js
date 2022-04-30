@@ -16,7 +16,6 @@ var stateNavigator = createStateNavigator();
 const notificationsNavigator = new StateNavigator(stateNavigator);
 notificationsNavigator.historyManager.disabled = true;
 notificationsNavigator.historyManager.stop();
-notificationsNavigator.navigate('notifications');
 
 const App = () => {
   const [notified, setNotified] = useState(false);
