@@ -124,9 +124,9 @@ export interface NavigationMotionProps {
  */
  export interface SceneProps<NavigationInfo extends { [index: string]: any } = any> {
     /**
-     * The key of the State that activates the View
+     * The key of the corresponding State
      */
-    stateKey: (keyof NavigationInfo & string) | (keyof NavigationInfo & string)[];
+    stateKey: keyof NavigationInfo & string;
 }
 
 /**
