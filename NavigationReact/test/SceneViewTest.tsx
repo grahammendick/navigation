@@ -18,7 +18,7 @@ describe('SceneViewTest', function () {
     describe('Scene View Active', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
+                { key: 's' }
             ]);
             stateNavigator.navigate('s');
             var container = document.createElement('div');
@@ -39,8 +39,8 @@ describe('SceneViewTest', function () {
     describe('Scene View Inactive', function () {
         it('should not render', function(){
             var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
+                { key: 's0'},
+                { key: 's1'},
             ]);
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
@@ -61,8 +61,8 @@ describe('SceneViewTest', function () {
     describe('Scene View Active and Inactive', function () {
         it('should render and not render', function(){
             var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
+                { key: 's0'},
+                { key: 's1'},
             ]);
             stateNavigator.navigate('s0');
             var container = document.createElement('div');
@@ -86,9 +86,9 @@ describe('SceneViewTest', function () {
     describe('Scene View Array Active', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-                { key: 's2', route: 'r2' },
+                { key: 's0'},
+                { key: 's1'},
+                { key: 's2'},
             ]);
             stateNavigator.navigate('s1');
             var container = document.createElement('div');
@@ -109,9 +109,9 @@ describe('SceneViewTest', function () {
     describe('Scene View Array Inactive', function () {
         it('should not render', function(){
             var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-                { key: 's2', route: 'r2' },
+                { key: 's0'},
+                { key: 's1'},
+                { key: 's2'},
             ]);
             stateNavigator.navigate('s1');
             var container = document.createElement('div');
@@ -132,9 +132,9 @@ describe('SceneViewTest', function () {
     describe('Scene View Array Active and Inactive', function () {
         it('should render and not render', function(){
             var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-                { key: 's2', route: 'r2' },
+                { key: 's0'},
+                { key: 's1'},
+                { key: 's2'},
             ]);
             stateNavigator.navigate('s1');
             var container = document.createElement('div');
@@ -158,9 +158,9 @@ describe('SceneViewTest', function () {
     describe('Scene View Medley Active and Inactive', function () {
         it('should render and not render', function(){
             var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-                { key: 's2', route: 'r2' },
+                { key: 's0'},
+                { key: 's1'},
+                { key: 's2'},
             ]);
             stateNavigator.navigate('s1');
             var container = document.createElement('div');
