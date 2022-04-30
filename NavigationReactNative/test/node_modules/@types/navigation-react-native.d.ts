@@ -45,7 +45,6 @@ export interface NavigationStackProps {
  */
 export class NavigationStack extends Component<NavigationStackProps> { }
 
-
 /**
  * Defines the Scene Props contract
  */
@@ -60,7 +59,6 @@ export class NavigationStack extends Component<NavigationStackProps> { }
  * Configures the Scene for a State
  */
 export class Scene<NavigationInfo extends { [index: string]: any } = any> extends Component<SceneProps<NavigationInfo>> {}
-
 
 /**
  * Defines the Navigation Bar Props contract
