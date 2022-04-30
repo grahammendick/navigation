@@ -15,7 +15,6 @@ const stateNavigator = new StateNavigator([
   {key: 'tweet', trackCrumbTrail: true},
   {key: 'timeline', trackCrumbTrail: true}
 ]);
-stateNavigator.navigate('tabs');
 
 const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>

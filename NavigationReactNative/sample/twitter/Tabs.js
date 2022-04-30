@@ -9,19 +9,15 @@ import Tweet from './Tweet';
 import Timeline from './Timeline';
 import {getNotifications} from './data';
 
-const useStateNavigator = start => {
+const useStateNavigator = () => {
   const {stateNavigator} = useContext(NavigationContext);
-  return useMemo(() => {
-    const navigator = new StateNavigator(stateNavigator);
-    navigator.navigate(start);
-    return navigator;
-  }, [])
+  return useMemo(() => new StateNavigator(stateNavigator), [])
 };
 
 export default () => {
   const [notified, setNotified] = useState(false);
-  const homeNavigator = useStateNavigator('home');
-  const notificationsNavigator = useStateNavigator('notifications');
+  const homeNavigator = useStateNavigator();
+  const notificationsNavigator = useStateNavigator();
   return (
     <>
       <NavigationBar hidden={true} />

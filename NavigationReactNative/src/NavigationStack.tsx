@@ -97,7 +97,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
             const {keys: prevKeys, stateNavigator: prevStateNavigator, counter} = prevStackState;
             const {state, crumbs, nextCrumb, history} = stateNavigator.stateContext;
             if (!state)
-                return {...prevStackState, keys: []};
+                return {...prevStackState, stateNavigator, keys: []};
             const prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
             const currentKeys = crumbs.concat(nextCrumb).map((_, i) => `${counter}-${i}`);
             const newKeys = currentKeys.slice(prevKeys.length);
