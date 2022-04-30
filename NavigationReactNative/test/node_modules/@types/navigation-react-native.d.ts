@@ -15,6 +15,10 @@ export interface NavigationStackProps {
      */
     underlayColor?: string;
     /**
+     * The link to navigate to when Scenes in the stack are unregistered
+     */
+    stackInvalidatedLink?: string;
+     /**
      * A Scene's title
      */
     title?: (state: State, data: any) => string;
