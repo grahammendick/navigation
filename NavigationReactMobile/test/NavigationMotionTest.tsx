@@ -76,6 +76,66 @@ describe('NavigationMotion', function () {
         };
     });
 
+    describe('Blank state context then A', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+
+        describe('Static', () => {
+            it('should render', function(){
+                var {sceneA} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationMotion>
+                                {(_style, scene, key) =>  (
+                                    <div className="scene" id={key} key={key}>{scene}</div>
+                                )}
+                            </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+
+        describe('Dynamic', () => {
+            it('should render', function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationMotion
+                                renderMotion={(_style, scene, key) =>  (
+                                    <div className="scene" id={key} key={key}>{scene}</div>
+                                )}>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                            </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+        const test = () => {
+            act(() => stateNavigator.navigate('sceneA'));
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.equal(scenes[0].id, "0");
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
     describe('A', function () {
         var stateNavigator, root, container;
         var SceneA = () => <div id="sceneA" />;

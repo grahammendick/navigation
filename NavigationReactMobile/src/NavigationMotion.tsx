@@ -88,8 +88,10 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
     }
     const {keys: prevKeys, stateNavigator: prevStateNavigator} = motionState;
     if (prevStateNavigator !== stateNavigator) {
-        setMotionState(() => {
+        setMotionState((prevStackState) => {
             const {state, crumbs, nextCrumb} = stateNavigator.stateContext;
+            if (!state)
+                return {...prevStackState, stateNavigator, keys: []};
             const prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
             const currentKeys = crumbs.concat(nextCrumb).map((_, i) => '' + i);
             const newKeys = currentKeys.slice(prevKeys.length);
