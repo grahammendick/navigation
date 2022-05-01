@@ -60,7 +60,6 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
         const mostRecentEventCount = nativeEvent.eventCount;
         if (mostRecentEventCount) {
             setStackState((prevStackState) => ({...prevStackState, mostRecentEventCount}));
-            ref.current.setNativeProps({mostRecentEventCount});
             if (resumeNavigationRef.current)
                 resumeNavigationRef.current();
         } else if (crumbs.length === nativeEvent.crumb) {
