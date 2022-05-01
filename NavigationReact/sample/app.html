@@ -19,7 +19,7 @@
     <script type="text/jsx">
         const {useContext} = React
         const {StateNavigator} = Navigation;
-        const {NavigationContext, NavigationHandler, NavigationLink, RefreshLink, NavigationBackLink} = NavigationReact;
+        const {NavigationContext, NavigationHandler, NavigationLink, RefreshLink, NavigationBackLink, SceneView} = NavigationReact;
 
         const List = () => {
             const {data} = useContext(NavigationContext);
@@ -111,21 +111,13 @@
             { key: 'person', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, trackCrumbTrail: true, title: 'Person Details' }
         ]);
 
-        const {people, person} = stateNavigator.states;
-        people.renderScene = () => <List />;
-        person.renderScene = () => <Details />;
-
         stateNavigator.start();
 
-        const App = () => {
-          const {state, data} = useContext(NavigationContext);
-          return state.renderScene(data)
-        };
-        
         ReactDOM.render(
-          <NavigationHandler stateNavigator={stateNavigator}>
-            <App />
-          </NavigationHandler>,
+            <NavigationHandler stateNavigator={stateNavigator}>
+                <SceneView stateKey="people"><List /></SceneView>
+                <SceneView stateKey="person"><Details /></SceneView>
+            </NavigationHandler>,
           document.getElementById('root')
         );
 </script>

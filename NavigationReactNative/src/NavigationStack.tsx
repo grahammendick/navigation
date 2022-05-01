@@ -1,139 +1,152 @@
-import React, { ReactNode } from 'react';
-import { requireNativeComponent, StyleSheet, View } from 'react-native';
-import { Crumb, State } from 'navigation';
-import { NavigationContext, AsyncStateNavigator } from 'navigation-react';
+import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect } from 'react';
+import { requireNativeComponent, StyleSheet } from 'react-native';
+import { StateNavigator, Crumb, State } from 'navigation';
+import { NavigationContext } from 'navigation-react';
 import PopSync from './PopSync';
 import Scene from './Scene';
-type NavigationStackProps = {stateNavigator: AsyncStateNavigator, underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, renderScene: (state: State, data: any) => ReactNode};
-type NavigationStackState = {stateNavigator: AsyncStateNavigator, keys: string[], rest: boolean, counter: number, mostRecentEventCount: number};
+type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
+type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, counter: number, mostRecentEventCount: number};
 
-class NavigationStack extends React.Component<NavigationStackProps, NavigationStackState> {
-    private ref: React.RefObject<View>;
-    private resumeNavigation: () => void;
-    constructor(props) {
-        super(props);
-        this.state = {stateNavigator: null, keys: [], rest: true, counter: 0, mostRecentEventCount: 0};
-        this.ref = React.createRef<View>();
-        this.onWillNavigateBack = this.onWillNavigateBack.bind(this);
-        this.onNavigateToTop = this.onNavigateToTop.bind(this);
-        this.onRest = this.onRest.bind(this);
+const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null, unmountStyle = () => null,
+    hidesTabBar = () => false, sharedElement: getSharedElement = () => null, stackInvalidatedLink, renderScene, children}: NavigationStackProps) => {
+    const resumeNavigationRef = useRef(null);
+    const ref = useRef(null);
+    const {stateNavigator} = useContext(NavigationContext);
+    const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0, mostRecentEventCount: 0};
+    const scenes = {};
+    let firstLink;
+    const findScenes = (elements = children, nested = false) => {
+        for(const scene of React.Children.toArray(elements) as ReactElement<any>[]) {
+            const {stateKey, children} = scene.props;
+            if (scene.type === NavigationStack.Scene) {
+                firstLink = firstLink || stateNavigator.fluent().navigate(stateKey).url;
+                scenes[stateKey] = scene;
+            }
+            else if (!nested) findScenes(children, true)
+        }
     }
-    static defaultProps = {
-        underlayColor: '#000',
-        unmountStyle: () => null,
-        crumbStyle: () => null,
-        hidesTabBar: () => false,
-        sharedElement: () => null,
-    }
-    static getDerivedStateFromProps({stateNavigator}: NavigationStackProps, {keys: prevKeys, stateNavigator: prevStateNavigator, counter}: NavigationStackState) {
-        if (stateNavigator === prevStateNavigator)
-            return null;
-        var {state, crumbs, nextCrumb, history} = stateNavigator.stateContext;
-        if (!state)
-            return {keys: []};
-        var prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
-        var currentKeys = crumbs.concat(nextCrumb).map((_, i) => `${counter}-${i}`);
-        var newKeys = currentKeys.slice(prevKeys.length);
-        var keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
-        if (prevKeys.length === keys.length && prevState !== state)
-            keys[keys.length - 1] = `${counter}-${keys.length - 1}`;
-        const refresh = prevKeys.length === keys.length && prevState === state;
-        return {keys, stateNavigator, rest: history || refresh, counter: (counter + 1) % 1000};
-    }
-    onWillNavigateBack({nativeEvent}) {
-        var {stateNavigator} = this.props;
-        var distance = stateNavigator.stateContext.crumbs.length - nativeEvent.crumb;
-        this.resumeNavigation = null;
+    findScenes();
+    let { current: allScenes } = useRef(scenes);
+    useEffect(() => {
+        allScenes = {...allScenes, ...scenes};
+        const {state, crumbs, nextCrumb} = stateNavigator.stateContext;
+        const validate = ({key}) => !!scenes[key];
+        if (firstLink) {
+            stateNavigator.onBeforeNavigate(validate);
+            let resetLink = !state ? firstLink : undefined;
+            if (!resetLink && [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]))
+                resetLink = stackInvalidatedLink != null ? stackInvalidatedLink : firstLink;
+            if (resetLink != null) stateNavigator.navigateLink(resetLink);
+        }
+        return () => stateNavigator.offBeforeNavigate(validate);
+    }, [children, stateNavigator, scenes, stackInvalidatedLink]);
+    const onWillNavigateBack = ({nativeEvent}) => {
+        const distance = stateNavigator.stateContext.crumbs.length - nativeEvent.crumb;
+        resumeNavigationRef.current = null;
         if (stateNavigator.canNavigateBack(distance)) {
-            var url = stateNavigator.getNavigationBackLink(distance);
+            const url = stateNavigator.getNavigationBackLink(distance);
             stateNavigator.navigateLink(url, undefined, true, (_stateContext, resumeNavigation) => {
-                this.resumeNavigation = resumeNavigation;
+                resumeNavigationRef.current = resumeNavigation;
             });
         }
     }
-    onNavigateToTop() {
-        var {stateNavigator} = this.props;
-        var {crumbs} = stateNavigator.stateContext;
+    const onNavigateToTop = () => {
+        const {crumbs} = stateNavigator.stateContext;
         if (crumbs.length > 0)
             stateNavigator.navigateBack(crumbs.length);
     }
-    onRest({nativeEvent}) {
-        var {stateNavigator} = this.props;
-        var {crumbs} = stateNavigator.stateContext;
-        var mostRecentEventCount = nativeEvent.eventCount;
+    const onRest = ({nativeEvent}) => {
+        const {crumbs} = stateNavigator.stateContext;
+        const mostRecentEventCount = nativeEvent.eventCount;
         if (mostRecentEventCount) {
-            this.setState({mostRecentEventCount})
-            if (this.resumeNavigation)
-                this.resumeNavigation();
+            setStackState((prevStackState) => ({...prevStackState, mostRecentEventCount}));
+            ref.current.setNativeProps({mostRecentEventCount});
+            if (resumeNavigationRef.current)
+                resumeNavigationRef.current();
         } else if (crumbs.length === nativeEvent.crumb) {
-            this.setState({rest: true});
+            setStackState(prevStackState => ({...prevStackState, rest: true}));
         }
     }
-    getAnimation() {
-        var {stateNavigator, unmountStyle, crumbStyle, sharedElement: getSharedElement} = this.props;
-        var {state, data, oldState, oldData, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
+    const getAnimation = () => {
+        let {state, data, oldState, oldData, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
         if (!oldState)
             return null;
-        var {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
+        const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
+        let enterAnim, exitAnim, sharedElement, oldSharedElement;
         if (oldCrumbs.length < crumbs.length) {
-            var {state: nextState, data: nextData} = crumbs.concat(nextCrumb)[oldCrumbs.length + 1];
-            var enterAnim = unmountStyle(true, state, data, crumbs);
-            var exitAnim = crumbStyle(false, oldState, oldData, oldCrumbs, nextState, nextData);
-            var sharedElement = getSharedElement(state, data, crumbs);
+            const {state: nextState, data: nextData} = crumbs.concat(nextCrumb)[oldCrumbs.length + 1];
+            enterAnim = unmountStyle(true, state, data, crumbs);
+            exitAnim = crumbStyle(false, oldState, oldData, oldCrumbs, nextState, nextData);
+            sharedElement = getSharedElement(state, data, crumbs);
         }
         if (crumbs.length < oldCrumbs.length) {
-            var nextCrumb = new Crumb(oldData, oldState, null, null, false);
-            var {state: nextState, data: nextData} = oldCrumbs.concat(nextCrumb)[crumbs.length + 1];
-            var enterAnim = crumbStyle(true, state, data, crumbs, nextState, nextData);
-            var exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs);
-            var oldSharedElement = getSharedElement(oldState, oldData, oldCrumbs);
+            nextCrumb = new Crumb(oldData, oldState, null, null, false);
+            const {state: nextState, data: nextData} = oldCrumbs.concat(nextCrumb)[crumbs.length + 1];
+            enterAnim = crumbStyle(true, state, data, crumbs, nextState, nextData);
+            exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs);
+            oldSharedElement = getSharedElement(oldState, oldData, oldCrumbs);
         }
         if (crumbs.length === oldCrumbs.length) {
-            var enterAnim = unmountStyle(true, state, data, crumbs);
-            var exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs, state, data);
+            enterAnim = unmountStyle(true, state, data, crumbs);
+            exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs, state, data);
         }
         var enterAnimOff = enterAnim === '';
         return {enterAnim, exitAnim, enterAnimOff, sharedElement, oldSharedElement};
     }
-    render() {
-        var {keys, rest, mostRecentEventCount} = this.state;
-        var {stateNavigator, underlayColor, unmountStyle, crumbStyle, hidesTabBar, title, renderScene} = this.props;
-        var {crumbs, nextCrumb} = stateNavigator.stateContext;
-        return (
-            <NVNavigationStack
-                ref={this.ref}
-                keys={keys}
-                mostRecentEventCount={mostRecentEventCount}
-                style={[styles.stack, {backgroundColor: underlayColor}]}
-                {...this.getAnimation()}
-                onWillNavigateBack={this.onWillNavigateBack}
-                onNavigateToTop={this.onNavigateToTop}
-                onRest={this.onRest}>
-                <PopSync<{crumb: number}>
-                    data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
-                    getKey={({crumb}) => keys[crumb]}>
-                    {(scenes, popNative) => scenes.map(({key, data: {crumb}}) => (
-                        <Scene
-                            key={key}
-                            crumb={crumb}
-                            sceneKey={key}
-                            rest={rest}
-                            unmountStyle={unmountStyle}
-                            crumbStyle={crumbStyle}
-                            hidesTabBar={hidesTabBar}
-                            title={title}
-                            popped={popNative}
-                            renderScene={renderScene} />
-                    ))}
-                </PopSync>
-            </NVNavigationStack>
-        );
+    const {stateNavigator: prevStateNavigator, keys, rest, mostRecentEventCount} = stackState;
+    if (prevStateNavigator !== stateNavigator) {
+        setStackState((prevStackState) => {
+            const {keys: prevKeys, stateNavigator: prevStateNavigator, counter} = prevStackState;
+            const {state, crumbs, nextCrumb, history} = stateNavigator.stateContext;
+            if (!state)
+                return {...prevStackState, stateNavigator, keys: []};
+            const prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
+            const currentKeys = crumbs.concat(nextCrumb).map((_, i) => `${counter}-${i}`);
+            const newKeys = currentKeys.slice(prevKeys.length);
+            const keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
+            if (prevKeys.length === keys.length && prevState !== state)
+                keys[keys.length - 1] = `${counter}-${keys.length - 1}`;
+            const refresh = prevKeys.length === keys.length && prevState === state;
+            return {keys, stateNavigator, rest: history || refresh, counter: (counter + 1) % 1000, mostRecentEventCount};
+        });
     }
-};
+    const {crumbs, nextCrumb} = stateNavigator.stateContext;
+    return (
+        <NVNavigationStack
+            ref={ref}
+            keys={keys}
+            mostRecentEventCount={mostRecentEventCount}
+            style={[styles.stack, {backgroundColor: underlayColor}]}
+            {...getAnimation()}
+            onWillNavigateBack={onWillNavigateBack}
+            onNavigateToTop={onNavigateToTop}
+            onRest={onRest}>
+            <PopSync<{crumb: number}>
+                data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
+                getKey={({crumb}) => keys[crumb]}>
+                {(scenes, popNative) => scenes.map(({key, data: {crumb}}) => (
+                    <Scene
+                        key={key}
+                        crumb={crumb}
+                        sceneKey={key}
+                        rest={rest}
+                        unmountStyle={unmountStyle}
+                        crumbStyle={crumbStyle}
+                        hidesTabBar={hidesTabBar}
+                        title={title}
+                        popped={popNative}
+                        renderScene={firstLink ? ({key}) => allScenes[key] : renderScene} />
+                ))}
+            </PopSync>
+        </NVNavigationStack>
+    );
+}
 
-var NVNavigationStack = global.nativeFabricUIManager
+const NVNavigationStack = global.nativeFabricUIManager
     ? require('./NavigationStackNativeComponent').default
     : requireNativeComponent('NVNavigationStack');
+
+NavigationStack.Scene = ({children}) => children;
 
 const styles = StyleSheet.create({
     stack: {
@@ -141,8 +154,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default props => (
-    <NavigationContext.Consumer>
-        {({stateNavigator}) => <NavigationStack stateNavigator={stateNavigator} {...props} />}
-    </NavigationContext.Consumer>
-);
+export default NavigationStack;

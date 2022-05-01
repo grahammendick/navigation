@@ -88,7 +88,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         peekNavigator.offNavigate = stateNavigator.offNavigate;
         peekNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
         var {oldState, state, data, asyncData} = peekNavigator.stateContext;
-        this.setState({navigationEvent: {oldState, state, data, asyncData, stateNavigator: peekNavigator, nextState: undefined, nextData: undefined}});
+        this.setState({navigationEvent: {oldState, state, data, asyncData, stateNavigator: peekNavigator}});
     }
     static createStateContext(crumbs: Crumb[], nextCrumb: Crumb, crumb: number, navigationEvent: NavigationEvent) {
         var stateContext = new StateContext();

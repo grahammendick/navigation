@@ -1,7 +1,7 @@
 // tsc --jsx react --target es3 --lib ES2015,DOM --esModuleInterop --noImplicitAny true --strict true navigation-react-mobile-tests.tsx
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationEvent, NavigationLink } from 'navigation-react';
-import { NavigationMotion, MobileHistoryManager, SharedElement, SharedElementMotion } from 'navigation-react-mobile';
+import { NavigationMotion, Scene, MobileHistoryManager, SharedElement, SharedElementMotion } from 'navigation-react-mobile';
 import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 
@@ -44,10 +44,6 @@ const Person = () => {
     );
 }
 
-const { people, person } = stateNavigator.states;
-people.renderScene = () => <People />;
-person.renderScene = () => <Person />;
-
 stateNavigator.start();
 
 const Zoom = (props: any) => (
@@ -73,8 +69,8 @@ ReactDOM.render(
         unmountedStyle={{opacity: 1, translate: 100}}
         mountedStyle={{opacity: 1, translate: 0}}
         crumbStyle={{opacity: 0, translate: 0}}
-        sharedElementMotion={props => <Zoom {...props} />}>
-        {({ opacity, translate }, scene, key) => (
+        sharedElementMotion={props => <Zoom {...props} />}
+        renderMotion={({ opacity, translate }, scene, key) => (
             <div
                 key={key}
                 style={{
@@ -83,7 +79,9 @@ ReactDOM.render(
                 }}>
                 {scene}
             </div>
-        )}
+        )}>
+        <Scene stateKey="people"><People /></Scene>
+        <Scene stateKey="person"><Person /></Scene>
     </NavigationMotion>,
     document.getElementById('root')
 );

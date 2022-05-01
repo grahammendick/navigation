@@ -142,3 +142,18 @@ export interface FluentLinkProps<NavigationInfo extends { [index: string]: any }
  * Hyperlink Component that fluently navigates to a State
  */
 export class FluentLink<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string> extends Component<FluentLinkProps<NavigationInfo, Key>> { }
+
+/**
+ * Defines the Scene View Props contract
+ */
+export interface SceneViewProps<NavigationInfo extends { [index: string]: any } = any> {
+    /**
+     * The key of the State that activates the View
+     */
+    stateKey: (keyof NavigationInfo & string) | (keyof NavigationInfo & string)[];
+}
+
+/**
+ * View that shows when the State is active
+ */
+export class SceneView<NavigationInfo extends { [index: string]: any } = any> extends Component<SceneViewProps<NavigationInfo>> {}

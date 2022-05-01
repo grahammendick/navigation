@@ -39,7 +39,7 @@ declare module 'navigation-react-native' {
         /**
          * Renders the Scene with the interpoated styles
          */
-        children?: (style: any, scene: ReactElement<any>, key: string, active: boolean, state: State, data: any) => ReactElement<any>;
+        renderTransition?: (style: any, scene: ReactElement<any>, key: string, active: boolean, state: State, data: any) => ReactElement<any>;
     }
 
     interface TabBarItemProps {

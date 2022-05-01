@@ -3,9 +3,11 @@ import {StyleSheet, SafeAreaView, Text, Image, FlatList, View, TouchableHighligh
 import {NavigationContext} from 'navigation-react';
 import {CoordinatorLayout, NavigationBar, TabBar, TabBarItem} from 'navigation-react-native';
 import TweetItem from './TweetItem';
+import {getNotifications} from './data';
 
-export default ({notifications}) => {
+export default () => {
   const {stateNavigator} = useContext(NavigationContext);
+  const notifications = getNotifications();
   return (
     <SafeAreaView style={{flex: 1}}>
       <CoordinatorLayout>
