@@ -12,7 +12,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
     const resumeNavigationRef = useRef(null);
     const ref = useRef(null);
     const {stateNavigator} = useContext(NavigationContext);
-    const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0, mostRecentEventCount: 0};
+    const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0, mostRecentEventCount: 0});
     const scenes = {};
     let firstLink;
     const findScenes = (elements = children, nested = false) => {
