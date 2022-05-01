@@ -1,6 +1,7 @@
 ﻿'use strict'
 var cleanup = require('rollup-plugin-cleanup');
 var { src, dest, series, parallel } = require('gulp');
+var del = require('del');
 var events = require('events');
 var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
@@ -58,11 +59,19 @@ function buildTask(name, input, file, globals, details) {
                 .pipe(dest('.'))
         ));
 }
+var cleanNative = () => {
+    return del([
+        './build/npm/navigation-react-native/android',
+        './build/npm/navigation-react-native/ios',
+        './build/npm/navigation-react-native/**/*NativeComponent.js'
+    ]);
+};
 var packageNative = () => {
-    var nativeFolders = ['android', 'ios']
-        .map(folder => `./NavigationReactNative/src/${folder}/**/*`);
-    nativeFolders.push('./NavigationReactNative/src/**/*NativeComponent.js')
-    return src(nativeFolders, {base: './NavigationReactNative/src'})
+    return src([
+        './NavigationReactNative/src/android/**/*',
+        './NavigationReactNative/src/ios/**/*',
+        './NavigationReactNative/src/**/*NativeComponent.js'
+    ], {base: './NavigationReactNative/src'})
         .pipe(dest('./build/npm/navigation-react-native'));
 };
 var nameFunc = (func, name) => {
@@ -129,5 +138,5 @@ var packageDeps = parallel(
     itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigationReactMobile')
 );
 exports.build = parallel(...itemTasks.buildTasks);
-exports.package = parallel(packageNative, ...itemTasks.packageTasks);
+exports.package = series(cleanNative, parallel(packageNative, ...itemTasks.packageTasks));
 exports.test = series(packageDeps, parallel(...testTasks));
