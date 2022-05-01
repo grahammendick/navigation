@@ -1,13 +1,13 @@
 import React from 'react';
 import {NavigationBar, CoordinatorLayout} from 'navigation-react-native';
 import Tweets from './Tweets';
+import {getHome} from './data';
 
-export default ({tweets}) => (
+export default () => (
   <CoordinatorLayout>
     <NavigationBar
       title="Home"
-      isActive={({tab}) => tab === 0}
       barTintColor="#fff" />
-    <Tweets tweets={tweets} />
+    <Tweets tweets={getHome()} />
   </CoordinatorLayout>
 );

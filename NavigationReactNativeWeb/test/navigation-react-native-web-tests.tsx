@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { View, Text, ScrollView, TouchableHighlight } from 'react-native';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationEvent, NavigationHandler } from 'navigation-react';
-import { NavigationStack, NavigationBar, CoordinatorLayout, RightBar, BarButton, SharedElement } from 'navigation-react-native';
+import { NavigationStack, Scene, NavigationBar, CoordinatorLayout, RightBar, BarButton, SharedElement } from 'navigation-react-native';
 import types from 'navigation-react-native-web';
 
 type AppNavigation = {
@@ -66,10 +66,6 @@ var Person = () => {
     );
 }
 
-const { people, person } = stateNavigator.states;
-people.renderScene = () => <People />;
-person.renderScene = () => <Person />;
-
 stateNavigator.start();
 
 const AppShared = (props: any) => (
@@ -80,7 +76,10 @@ const AppShared = (props: any) => (
 
 const App = () => (
     <NavigationHandler stateNavigator={stateNavigator}>
-      <NavigationStack sharedElementTransition={props => <AppShared {...props} />} />
+        <NavigationStack sharedElementTransition={props => <AppShared {...props} />}>
+            <Scene stateKey="people"><People /></Scene>
+            <Scene stateKey="people"><Person /></Scene>
+        </NavigationStack>
     </NavigationHandler>
   );
   

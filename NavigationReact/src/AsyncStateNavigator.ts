@@ -27,7 +27,7 @@ class AsyncStateNavigator extends StateNavigator {
                 var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext);
                 var { oldState, state, data, url, asyncData } = asyncNavigator.stateContext;
                 this.navigationHandler.setState(() => (
-                    { context: { oldState, state, data, asyncData, nextState: null, nextData: {}, stateNavigator: asyncNavigator } }
+                    { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } }
                 ), () => {
                     if (stateContext === this.navigationHandler.state.context.stateNavigator.stateContext)
                         resumeNavigation();

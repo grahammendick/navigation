@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "target": "es3",
-        "jsx": "react"
+        "jsx": "react",
+        "esModuleInterop": true
     }
 }

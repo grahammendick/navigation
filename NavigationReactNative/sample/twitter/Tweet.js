@@ -3,10 +3,12 @@ import {StyleSheet, Text, Image, Platform, ScrollView, View, TouchableHighlight}
 import {NavigationContext} from 'navigation-react';
 import {NavigationBar} from 'navigation-react-native';
 import Tweets from './Tweets';
+import {getTweet} from './data';
 
-export default ({tweet: {account: {id: accountId, name, username, logo}, 
-  text, time, retweets, likes, replies}}) => {
-  const {stateNavigator} = useContext(NavigationContext);
+export default () => {
+  const {stateNavigator, data} = useContext(NavigationContext);
+  const {account: {id: accountId, name, username, logo}, 
+    text, time, retweets, likes, replies} = getTweet(data.id);
   return (
     <>
       <NavigationBar

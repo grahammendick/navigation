@@ -2,23 +2,22 @@ import React, {useState, useMemo, useContext} from 'react';
 import {Platform} from 'react-native';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler, NavigationContext} from 'navigation-react';
-import {NavigationStack, TabBar, TabBarItem, NavigationBar} from 'navigation-react-native';
+import {NavigationStack, Scene, TabBar, TabBarItem, NavigationBar} from 'navigation-react-native';
 import Home from './Home';
 import Notifications from './Notifications';
+import Tweet from './Tweet';
+import Timeline from './Timeline';
+import {getNotifications} from './data';
 
-const useStateNavigator = start => {
+const useStateNavigator = () => {
   const {stateNavigator} = useContext(NavigationContext);
-  return useMemo(() => {
-    const navigator = new StateNavigator(stateNavigator);
-    navigator.navigate(start);
-    return navigator;
-  }, [])
+  return useMemo(() => new StateNavigator(stateNavigator), [])
 };
 
-export default ({tweets, notifications}) => {
+export default () => {
   const [notified, setNotified] = useState(false);
-  const homeNavigator = useStateNavigator('home');
-  const notificationsNavigator = useStateNavigator('notifications');
+  const homeNavigator = useStateNavigator();
+  const notificationsNavigator = useStateNavigator();
   return (
     <>
       <NavigationBar hidden={true} />
@@ -26,20 +25,28 @@ export default ({tweets, notifications}) => {
         <TabBarItem title="Home" image={require('./home.png')}>
           {Platform.OS === 'ios'
             ? (<NavigationHandler stateNavigator={homeNavigator}>
-                <NavigationStack />
+                <NavigationStack>
+                  <Scene stateKey="home"><Home /></Scene>
+                  <Scene stateKey="tweet"><Tweet /></Scene>
+                  <Scene stateKey="timeline"><Timeline /></Scene>
+                </NavigationStack>
               </NavigationHandler>)
-            : <Home tweets={tweets} />}
+            : <Home />}
         </TabBarItem>
         <TabBarItem
           title="Notifications"
           image={require('./notifications.png')}
-          badge={!notified ? notifications.length : null} 
+          badge={!notified ? getNotifications().length : null} 
           onPress={() => {setNotified(true)}}>
           {Platform.OS === 'ios'
             ? (<NavigationHandler stateNavigator={notificationsNavigator}>
-                <NavigationStack />
+                <NavigationStack>
+                  <Scene stateKey="notifications"><Notifications /></Scene>
+                  <Scene stateKey="tweet"><Tweet /></Scene>
+                  <Scene stateKey="timeline"><Timeline /></Scene>
+                </NavigationStack>
               </NavigationHandler>)
-            : <Notifications notifications={notifications} />}
+            : <Notifications />}
         </TabBarItem>
       </TabBar>
     </>

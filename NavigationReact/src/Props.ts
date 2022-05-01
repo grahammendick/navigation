@@ -32,4 +32,9 @@ interface FluentLinkProps extends LinkProps {
     navigate: (fluentNavigator: FluentNavigator) => FluentNavigator;
 }
 
-export { LinkProps, RefreshLinkProps, NavigationLinkProps, NavigationBackLinkProps, FluentLinkProps }
+interface SceneViewProps {
+    stateKey: string | string[];
+    children: any;
+}
+
+export { LinkProps, RefreshLinkProps, NavigationLinkProps, NavigationBackLinkProps, FluentLinkProps, SceneViewProps }
