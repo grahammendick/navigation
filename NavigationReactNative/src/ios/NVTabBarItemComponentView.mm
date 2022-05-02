@@ -62,6 +62,10 @@ using namespace facebook::react;
     self.navigationController.tabBarItem = self.tab;
 }
 
+- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
+{
+}
+
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
   return concreteComponentDescriptorProvider<NVTabBarItemComponentDescriptor>();
