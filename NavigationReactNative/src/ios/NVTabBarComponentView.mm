@@ -44,10 +44,27 @@ using namespace facebook::react;
     const auto &newViewProps = *std::static_pointer_cast<NVTabBarProps const>(props);
     UIColor *selectedTintColor = RCTUIColorFromSharedColor(newViewProps.selectedTintColor);
     UIColor *unselectedTintColor = RCTUIColorFromSharedColor(newViewProps.unselectedTintColor);
+    UIColor *barTintColor = RCTUIColorFromSharedColor(newViewProps.barTintColor);
     if ([_tabBarController.tabBar tintColor] != selectedTintColor)
         [_tabBarController.tabBar setTintColor: selectedTintColor];
     if ([_tabBarController.tabBar unselectedItemTintColor] != unselectedTintColor)
         [_tabBarController.tabBar setUnselectedItemTintColor: unselectedTintColor];
+    if (@available(iOS 15.0, *)) {
+        UITabBarAppearance *appearance = nil;
+        if (barTintColor) {
+            appearance = [UITabBarAppearance new];
+            [appearance configureWithDefaultBackground];
+            if (CGColorGetAlpha(barTintColor.CGColor) == 0)
+                [appearance configureWithTransparentBackground];
+            if (CGColorGetAlpha(barTintColor.CGColor) == 1)
+                [appearance configureWithOpaqueBackground];
+            [appearance setBackgroundColor:barTintColor];
+        }
+        _tabBarController.tabBar.standardAppearance = appearance;
+        _tabBarController.tabBar.scrollEdgeAppearance = appearance;
+    } else {
+        [_tabBarController.tabBar setBarTintColor:barTintColor];
+    }
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     BOOL tabChanged = eventLag == 0 && _selectedTab != newViewProps.selectedTab;
