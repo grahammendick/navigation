@@ -44,7 +44,6 @@ using namespace facebook::react;
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
     const auto &newViewProps = *std::static_pointer_cast<NVNavigationStackProps const>(props);
-
     NSMutableArray *keysArr = [[NSMutableArray alloc] init];
     for (auto i = 0; i < newViewProps.keys.size(); i++) {
         NSString *key = [[NSString alloc] initWithUTF8String: newViewProps.keys[i].c_str()];
