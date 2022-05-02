@@ -150,6 +150,7 @@ using namespace facebook::react;
 {
     [super prepareForRecycle];
     _nativeEventCount = 0;
+    _scenes = [[NSMutableDictionary alloc] init];
     [_navigationController setViewControllers:@[]];
 }
 
