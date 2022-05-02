@@ -41,6 +41,7 @@ using namespace facebook::react;
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
     const auto &newViewProps = *std::static_pointer_cast<NVTabBarProps const>(props);
+    _mostRecentEventCount = newViewProps.mostRecentEventCount;
     [super updateProps:props oldProps:oldProps];
 }
 

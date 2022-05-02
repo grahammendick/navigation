@@ -6,6 +6,7 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
+  mostRecentEventCount: Int32,
   onTabSelected: DirectEventHandler<$ReadOnly<{|
     tab: Int32,
     eventCount: Int32,

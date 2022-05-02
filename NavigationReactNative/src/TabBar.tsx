@@ -7,7 +7,7 @@ class TabBar extends React.Component<any, any> {
     private swiping = false;
     constructor(props) {
         super(props);
-        this.state = {selectedTab: props.tab || props.defaultTab};
+        this.state = {selectedTab: props.tab || props.defaultTab, mostRecentEventCount: 0};
         this.ref = React.createRef<View>();
         this.onTabSelected = this.onTabSelected.bind(this);
         this.onTabSwipeStateChanged = this.onTabSwipeStateChanged.bind(this);
@@ -26,7 +26,7 @@ class TabBar extends React.Component<any, any> {
     }
     onTabSelected({nativeEvent}) {
         var {eventCount: mostRecentEventCount, tab} = nativeEvent;
-        this.ref.current.setNativeProps({mostRecentEventCount});
+        this.setState({mostRecentEventCount});
         this.changeTab(tab);
     }
     onTabSwipeStateChanged({nativeEvent}) {
@@ -88,6 +88,7 @@ class TabBar extends React.Component<any, any> {
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}
                     scrollsToTop={scrollsToTop}
+                    mostRecentEventCount={this.state.mostRecentEventCount}
                     style={styles.tabBar}>
                         <BackButton onPress={() => this.changeTab(0)} />
                         {tabBarItems
