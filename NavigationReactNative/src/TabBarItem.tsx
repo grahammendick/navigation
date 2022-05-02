@@ -38,7 +38,7 @@ class TabBarItem extends React.Component<any> {
     }
 };
 
-var NVTabBarItem = requireNativeComponent<any>('NVTabBarItem', null);
+var NVTabBarItem = global.nativeFabricUIManager ? require('./TabBarItemNativeComponent').default : requireNativeComponent('NVTabBarItem');
 
 const styles = StyleSheet.create({
     tabBarItem: {

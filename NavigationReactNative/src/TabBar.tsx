@@ -107,7 +107,7 @@ var NVTabLayout = requireNativeComponent<any>('NVTabLayout', null);
 var NVTabLayoutRTL = requireNativeComponent<any>('NVTabLayoutRTL', null);
 var NVTabNavigation = requireNativeComponent<any>('NVTabNavigation', null);
 var NVSegmentedTab = requireNativeComponent<any>('NVSegmentedTab', null);
-var NVTabBar = requireNativeComponent<any>('NVTabBar', null);
+var NVTabBar = global.nativeFabricUIManager ? require('./TabBarNativeComponent').default : requireNativeComponent('NVTabBar');
 var NVTabBarPager = requireNativeComponent<any>('NVTabBarPager', null);
 var NVTabBarPagerRTL = requireNativeComponent<any>('NVTabBarPagerRTL', null);
 

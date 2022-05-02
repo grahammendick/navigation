@@ -18,6 +18,8 @@
 		704B594622A2AC77008C05C6 /* NVSceneManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 704B594522A2AC77008C05C6 /* NVSceneManager.m */; };
 		70587C86229A8688009457B7 /* NVSearchBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70587C85229A8688009457B7 /* NVSearchBarView.m */; };
 		70587C89229A86B8009457B7 /* NVSearchBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70587C88229A86B8009457B7 /* NVSearchBarManager.m */; };
+		705D1E90281FD33B00886320 /* NVTabBarComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 705D1E8F281FD33B00886320 /* NVTabBarComponentView.mm */; };
+		705D1E92281FD35600886320 /* NVTabBarItemComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 705D1E91281FD35600886320 /* NVTabBarItemComponentView.mm */; };
 		706A6B7227F3A6490062030A /* NVNavigationStackComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 706A6B7027F3A6490062030A /* NVNavigationStackComponentView.mm */; };
 		706A9A91280ABB3B009EAF06 /* NVNavigationBarComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 706A9A90280ABB3B009EAF06 /* NVNavigationBarComponentView.mm */; };
 		706F41022562BF7D000E213E /* NVStatusBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 706F41012562BF7D000E213E /* NVStatusBarView.m */; };
@@ -76,6 +78,10 @@
 		70587C84229A867A009457B7 /* NVSearchBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSearchBarView.h; sourceTree = "<group>"; };
 		70587C85229A8688009457B7 /* NVSearchBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSearchBarView.m; sourceTree = "<group>"; };
 		70587C88229A86B8009457B7 /* NVSearchBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSearchBarManager.m; sourceTree = "<group>"; };
+		705D1E8F281FD33B00886320 /* NVTabBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVTabBarComponentView.mm; sourceTree = "<group>"; };
+		705D1E91281FD35600886320 /* NVTabBarItemComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVTabBarItemComponentView.mm; sourceTree = "<group>"; };
+		705D1E93281FD36F00886320 /* NVTabBarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarComponentView.h; sourceTree = "<group>"; };
+		705D1E94281FD37900886320 /* NVTabBarItemComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarItemComponentView.h; sourceTree = "<group>"; };
 		706A6B7027F3A6490062030A /* NVNavigationStackComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVNavigationStackComponentView.mm; sourceTree = "<group>"; };
 		706A9A90280ABB3B009EAF06 /* NVNavigationBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVNavigationBarComponentView.mm; sourceTree = "<group>"; };
 		706A9A92280ABB4B009EAF06 /* NVNavigationBarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVNavigationBarComponentView.h; sourceTree = "<group>"; };
@@ -131,6 +137,10 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				705D1E94281FD37900886320 /* NVTabBarItemComponentView.h */,
+				705D1E93281FD36F00886320 /* NVTabBarComponentView.h */,
+				705D1E91281FD35600886320 /* NVTabBarItemComponentView.mm */,
+				705D1E8F281FD33B00886320 /* NVTabBarComponentView.mm */,
 				7032DA72280DC48300A3AD1B /* NVLeftBarComponentView.h */,
 				7032DA70280DC47A00A3AD1B /* NVLeftBarComponentView.mm */,
 				7032DA6F280D4A0800A3AD1B /* NVBarButtonComponentView.h */,
@@ -256,6 +266,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				705D1E90281FD33B00886320 /* NVTabBarComponentView.mm in Sources */,
 				709F32CF22A7FF9C00A0358A /* NVTabBarView.m in Sources */,
 				709F32D922A7FFFA00A0358A /* NVTabBarItemManager.m in Sources */,
 				7032DA6E280D49FB00A3AD1B /* NVBarButtonComponentView.mm in Sources */,
@@ -291,6 +302,7 @@
 				704B594222A2AC56008C05C6 /* NVSceneView.m in Sources */,
 				7032DA71280DC47A00A3AD1B /* NVLeftBarComponentView.mm in Sources */,
 				EE17B6E0231E86B800C62B81 /* NVTitleBarManager.m in Sources */,
+				705D1E92281FD35600886320 /* NVTabBarItemComponentView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
