@@ -42,6 +42,18 @@ using namespace facebook::react;
 {
     const auto &newViewProps = *std::static_pointer_cast<NVTabBarProps const>(props);
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    BOOL tabChanged = eventLag == 0 && _selectedTab != newViewProps.selectedTab;
+    if (tabChanged)
+        _selectedTab = newViewProps.selectedTab;
+    if (_tabBarController.selectedIndex != _selectedTab) {
+        if (tabChanged) {
+            _tabBarController.selectedIndex = _selectedTab;
+        } else {
+            _selectedTab = _tabBarController.selectedIndex;
+        }
+        [self selectTab];
+    }
     [super updateProps:props oldProps:oldProps];
 }
 
@@ -113,13 +125,23 @@ using namespace facebook::react;
 {
     _nativeEventCount++;
     NVTabBarItemComponentView *tabBarItem = (NVTabBarItemComponentView *)self.reactSubviews[_selectedTab];
-    std::static_pointer_cast<NVTabBarEventEmitter const>(_eventEmitter)
-        ->onTabSelected(NVTabBarEventEmitter::OnTabSelected{
-            .tab = static_cast<int>(_selectedTab),
-            .eventCount = static_cast<int>(_nativeEventCount)
-        });
-    [tabBarItem onPress];
+    if (_eventEmitter != nullptr) {
+        std::static_pointer_cast<NVTabBarEventEmitter const>(_eventEmitter)
+            ->onTabSelected(NVTabBarEventEmitter::OnTabSelected{
+                .tab = static_cast<int>(_selectedTab),
+                .eventCount = static_cast<int>(_nativeEventCount)
+            });
+        [tabBarItem onPress];
+    }
 }
+
+
+- (void)prepareForRecycle
+{
+    [super prepareForRecycle];
+    _nativeEventCount = 0;
+}
+
 
 #pragma mark - RCTComponentViewProtocol
 
