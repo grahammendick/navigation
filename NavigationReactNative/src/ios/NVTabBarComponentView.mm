@@ -147,7 +147,7 @@ using namespace facebook::react;
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
-    [super insertReactSubview:childComponentView atIndex:index];
+    [self insertReactSubview:childComponentView atIndex:index];
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers insertObject:[(NVTabBarItemComponentView *) childComponentView navigationController] atIndex:index];
     [_tabBarController setViewControllers:controllers];
@@ -155,7 +155,7 @@ using namespace facebook::react;
 
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
-    [super removeReactSubview:childComponentView];
+    [self removeReactSubview:childComponentView];
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers removeObjectAtIndex:index];
     [_tabBarController setViewControllers:controllers];
