@@ -9,6 +9,7 @@
 
 #import "RCTFabricComponentsPlugins.h"
 #import <React/UIView+React.h>
+#import <React/RCTConversions.h>
 #import <React/RCTI18nUtil.h>
 #import <React/RCTScrollView.h>
 
@@ -41,6 +42,12 @@ using namespace facebook::react;
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
     const auto &newViewProps = *std::static_pointer_cast<NVTabBarProps const>(props);
+    UIColor *selectedTintColor = RCTUIColorFromSharedColor(newViewProps.selectedTintColor);
+    UIColor *unselectedTintColor = RCTUIColorFromSharedColor(newViewProps.unselectedTintColor);
+    if ([_tabBarController.tabBar tintColor] != selectedTintColor)
+        [_tabBarController.tabBar setTintColor: selectedTintColor];
+    if ([_tabBarController.tabBar unselectedItemTintColor] != unselectedTintColor)
+        [_tabBarController.tabBar setUnselectedItemTintColor: unselectedTintColor];
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     BOOL tabChanged = eventLag == 0 && _selectedTab != newViewProps.selectedTab;
