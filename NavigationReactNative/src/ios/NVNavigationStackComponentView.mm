@@ -150,7 +150,7 @@ using namespace facebook::react;
 {
     [super prepareForRecycle];
     _nativeEventCount = 0;
-    [_navigationController setViewControllers:@[[UIViewController new]]];
+    [_navigationController setViewControllers:@[]];
 }
 
 #pragma mark - RCTComponentViewProtocol
