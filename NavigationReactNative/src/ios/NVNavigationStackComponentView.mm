@@ -120,7 +120,6 @@ using namespace facebook::react;
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    if (![viewController.view isKindOfClass:NVSceneComponentView.class]) return;
     NSInteger crumb = ((NVSceneComponentView *) viewController.view).crumb;
     if (crumb < [self.keys count] - 1) {
         std::static_pointer_cast<NVNavigationStackEventEmitter const>(_eventEmitter)
