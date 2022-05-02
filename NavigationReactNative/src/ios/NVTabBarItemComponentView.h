@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSNumber *fontSize;
 @property (nonatomic, strong) UINavigationController *navigationController;
 
+-(void)onPress;
+
 @end
 
 NS_ASSUME_NONNULL_END

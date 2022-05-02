@@ -112,13 +112,12 @@ using namespace facebook::react;
 {
     _nativeEventCount++;
     NVTabBarItemComponentView *tabBarItem = (NVTabBarItemComponentView *)self.reactSubviews[_selectedTab];
-    /*self.onTabSelected(@{
-        @"tab": @(_selectedTab),
-        @"eventCount": @(_nativeEventCount),
-    });
-    if (!!tabBarItem.onPress) {
-        tabBarItem.onPress(nil);
-    }*/
+    std::static_pointer_cast<NVTabBarEventEmitter const>(_eventEmitter)
+        ->onTabSelected(NVTabBarEventEmitter::OnTabSelected{
+            .tab = static_cast<int>(_selectedTab),
+            .eventCount = static_cast<int>(_nativeEventCount)
+        });
+    [tabBarItem onPress];
 }
 
 #pragma mark - RCTComponentViewProtocol

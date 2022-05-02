@@ -6,6 +6,10 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
+  onTabSelected: DirectEventHandler<$ReadOnly<{|
+    tab: Int32,
+    eventCount: Int32,
+  |}>>
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(

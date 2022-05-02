@@ -53,6 +53,12 @@ using namespace facebook::react;
     [super updateProps:props oldProps:oldProps];
 }
 
+- (void)onPress
+{
+    std::static_pointer_cast<NVTabBarItemEventEmitter const>(_eventEmitter)
+        ->onPress(NVTabBarItemEventEmitter::OnPress{});
+}
+
 #pragma mark - RCTComponentViewProtocol
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
