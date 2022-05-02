@@ -154,7 +154,7 @@ using namespace facebook::react;
 
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
-    [self.reactSubviews indexOfObject:childComponentView];
+    [super removeReactSubview:childComponentView];
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers removeObjectAtIndex:index];
     [_tabBarController setViewControllers:controllers];
