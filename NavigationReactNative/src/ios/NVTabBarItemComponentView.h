@@ -6,7 +6,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NVTabBarItemComponentView : RCTViewComponentView
 
-@property NSMutableArray *buttons;
+@property UITabBarItem *tab;
+@property (nonatomic, copy) NSString *fontFamily;
+@property (nonatomic, copy) NSString *fontWeight;
+@property (nonatomic, copy) NSString *fontStyle;
+@property (nonatomic, copy) NSNumber *fontSize;
+@property (nonatomic, strong) UINavigationController *navigationController;
 
 @end
 
