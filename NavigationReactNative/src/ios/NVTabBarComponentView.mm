@@ -163,6 +163,7 @@ using namespace facebook::react;
 {
     [super prepareForRecycle];
     _nativeEventCount = 0;
+    _firstSceneReselected = NO;
     [_tabBarController setViewControllers:@[]];
 }
 
