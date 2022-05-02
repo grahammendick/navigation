@@ -111,7 +111,7 @@ using namespace facebook::react;
 -(void) selectTab
 {
     _nativeEventCount++;
-    NVTabBarItemComponentView *tabBarItem = (NVTabBarItemComponentView *)self.subviews[_selectedTab];
+    NVTabBarItemComponentView *tabBarItem = (NVTabBarItemComponentView *)self.reactSubviews[_selectedTab];
     /*self.onTabSelected(@{
         @"tab": @(_selectedTab),
         @"eventCount": @(_nativeEventCount),
@@ -125,6 +125,7 @@ using namespace facebook::react;
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
+    [super insertReactSubview:childComponentView atIndex:index];
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers insertObject:[(NVTabBarItemComponentView *) childComponentView navigationController] atIndex:index];
     [_tabBarController setViewControllers:controllers];
@@ -132,6 +133,7 @@ using namespace facebook::react;
 
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
+    [self.reactSubviews indexOfObject:childComponentView];
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers removeObjectAtIndex:index];
     [_tabBarController setViewControllers:controllers];
