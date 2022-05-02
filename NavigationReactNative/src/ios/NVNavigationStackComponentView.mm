@@ -44,7 +44,6 @@ using namespace facebook::react;
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
     const auto &newViewProps = *std::static_pointer_cast<NVNavigationStackProps const>(props);
-
     NSMutableArray *keysArr = [[NSMutableArray alloc] init];
     for (auto i = 0; i < newViewProps.keys.size(); i++) {
         NSString *key = [[NSString alloc] initWithUTF8String: newViewProps.keys[i].c_str()];
@@ -53,6 +52,9 @@ using namespace facebook::react;
     self.keys = [keysArr copy];
     _enterAnimOff = newViewProps.enterAnimOff;
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
+    if (_navigationController.viewControllers.count == 1 &&
+        [_navigationController.viewControllers[0] isKindOfClass:NVSceneComponentView.class])
+        [_navigationController setViewControllers:@[]];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self navigate];
     });
@@ -120,6 +122,7 @@ using namespace facebook::react;
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    if (![viewController.view isKindOfClass:NVSceneComponentView.class]) return;
     NSInteger crumb = ((NVSceneComponentView *) viewController.view).crumb;
     if (crumb < [self.keys count] - 1) {
         std::static_pointer_cast<NVNavigationStackEventEmitter const>(_eventEmitter)
@@ -150,7 +153,7 @@ using namespace facebook::react;
     [super prepareForRecycle];
     _nativeEventCount = 0;
     _scenes = [[NSMutableDictionary alloc] init];
-    [_navigationController setViewControllers:@[]];
+    [_navigationController setViewControllers:@[[UIViewController new]]];
 }
 
 #pragma mark - RCTComponentViewProtocol
