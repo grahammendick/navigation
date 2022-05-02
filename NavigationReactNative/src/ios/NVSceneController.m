@@ -153,6 +153,7 @@
 - (void)dealloc
 {
     [_view didPop];
+    self.view = nil;
 }
 
 @end
