@@ -141,9 +141,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
     );
 }
 
-const NVNavigationStack = global.nativeFabricUIManager
-    ? require('./NavigationStackNativeComponent').default
-    : requireNativeComponent('NVNavigationStack');
+const NVNavigationStack = global.nativeFabricUIManager ? require('./NavigationStackNativeComponent').default : requireNativeComponent('NVNavigationStack');
 
 NavigationStack.Scene = ({children}) => children;
 

@@ -163,9 +163,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     }
 }
 
-var NVScene = global.nativeFabricUIManager
-    ? require('./SceneNativeComponent').default
-    : requireNativeComponent('NVScene');
+var NVScene = global.nativeFabricUIManager ? require('./SceneNativeComponent').default : requireNativeComponent('NVScene');
 
 const styles = StyleSheet.create({
     scene: {

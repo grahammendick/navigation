@@ -6,8 +6,6 @@ const LeftBar = ({supplementBack = false, children}) => (
         <NVLeftBar supplementBack={supplementBack}>{children}</NVLeftBar> : children
 );
 
-const NVLeftBar = global.nativeFabricUIManager
-    ? require('./LeftBarNativeComponent').default
-    : requireNativeComponent('NVLeftBar');
+const NVLeftBar = global.nativeFabricUIManager ? require('./LeftBarNativeComponent').default : requireNativeComponent('NVLeftBar');
 
 export default LeftBar;

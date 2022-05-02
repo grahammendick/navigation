@@ -22,8 +22,6 @@ const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search, 
     )
 })
 
-const NVBarButton = global.nativeFabricUIManager
-    ? require('./BarButtonNativeComponent').default
-    : requireNativeComponent('NVBarButton');
+const NVBarButton = global.nativeFabricUIManager ? require('./BarButtonNativeComponent').default : requireNativeComponent('NVBarButton');
 
 export default BarButton;

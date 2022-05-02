@@ -6,8 +6,6 @@ const RightBar = ({children}) => (
         <NVRightBar>{React.Children.toArray(children).reverse()}</NVRightBar> : children
 );
 
-const NVRightBar = global.nativeFabricUIManager
-    ? require('./RightBarNativeComponent').default
-    : requireNativeComponent('NVRightBar');
+const NVRightBar = global.nativeFabricUIManager ? require('./RightBarNativeComponent').default : requireNativeComponent('NVRightBar');
 
 export default RightBar;
