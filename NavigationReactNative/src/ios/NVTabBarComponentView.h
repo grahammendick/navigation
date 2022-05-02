@@ -4,9 +4,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NVTabBarComponentView : RCTViewComponentView
+@interface NVTabBarComponentView : RCTViewComponentView <UITabBarControllerDelegate>
 
-@property NSMutableArray *buttons;
+@property (nonatomic, assign) BOOL scrollsToTop;
 
 @end
 
