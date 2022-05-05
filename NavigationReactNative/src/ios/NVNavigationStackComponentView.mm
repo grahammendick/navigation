@@ -14,7 +14,6 @@
 #import <React/RCTI18nUtil.h>
 #import <React/UIView+React.h>
 
-
 using namespace facebook::react;
 
 @interface NVNavigationStackComponentView () <RCTNVNavigationStackViewProtocol>
@@ -31,18 +30,25 @@ using namespace facebook::react;
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const NVNavigationStackProps>();
         _props = defaultProps;
-        _navigationController = [[NVStackController alloc] init];
-        _navigationController.view.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
-        _navigationController.navigationBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
-        [self addSubview:_navigationController.view];
-        _navigationController.delegate = self;
         _scenes = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
 
+- (void)ensureNavigationController
+{
+    if (!_navigationController) {
+        _navigationController = [[NVStackController alloc] init];
+        _navigationController.view.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
+        _navigationController.navigationBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
+        [self addSubview:_navigationController.view];
+        _navigationController.delegate = self;
+    }
+}
+
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
+    [self ensureNavigationController];
     const auto &newViewProps = *std::static_pointer_cast<NVNavigationStackProps const>(props);
     NSMutableArray *keysArr = [[NSMutableArray alloc] init];
     for (auto i = 0; i < newViewProps.keys.size(); i++) {
@@ -149,7 +155,10 @@ using namespace facebook::react;
     [super prepareForRecycle];
     _nativeEventCount = 0;
     _scenes = [[NSMutableDictionary alloc] init];
-    [_navigationController setViewControllers:@[]];
+    [_navigationController willMoveToParentViewController:nil];
+    [_navigationController.view removeFromSuperview];
+    [_navigationController removeFromParentViewController];
+    _navigationController = nil;
 }
 
 #pragma mark - RCTComponentViewProtocol

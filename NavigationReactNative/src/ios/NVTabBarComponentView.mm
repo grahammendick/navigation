@@ -31,16 +31,23 @@ using namespace facebook::react;
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const NVTabBarProps>();
         _props = defaultProps;
+    }
+    return self;
+}
+
+- (void)ensureTabBarController
+{
+    if (!_tabBarController) {
         _tabBarController = [[UITabBarController alloc] init];
         _tabBarController.tabBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         [self addSubview:_tabBarController.view];
         _tabBarController.delegate = self;
     }
-    return self;
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
+    [self ensureTabBarController];
     const auto &newViewProps = *std::static_pointer_cast<NVTabBarProps const>(props);
     UIColor *selectedTintColor = RCTUIColorFromSharedColor(newViewProps.selectedTintColor);
     UIColor *unselectedTintColor = RCTUIColorFromSharedColor(newViewProps.unselectedTintColor);
@@ -164,7 +171,8 @@ using namespace facebook::react;
     [super prepareForRecycle];
     _nativeEventCount = 0;
     _firstSceneReselected = NO;
-    [_tabBarController setViewControllers:@[]];
+    [_tabBarController.view removeFromSuperview];
+    _tabBarController = nil;
 }
 
 
@@ -172,6 +180,7 @@ using namespace facebook::react;
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
+    [self ensureTabBarController];
     [self insertReactSubview:childComponentView atIndex:index];
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers insertObject:[(NVTabBarItemComponentView *) childComponentView navigationController] atIndex:index];
@@ -182,8 +191,11 @@ using namespace facebook::react;
 {
     [self removeReactSubview:childComponentView];
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
-    [controllers removeObjectAtIndex:index];
-    [_tabBarController setViewControllers:controllers];
+    if ([controllers count] > 0) {
+        [controllers removeObjectAtIndex:index];
+        [_tabBarController setViewControllers:controllers];
+    }
+    [childComponentView removeFromSuperview];
 
 }
 
