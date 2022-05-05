@@ -23,6 +23,7 @@ using namespace facebook::react;
 {
     NSMutableDictionary *_scenes;
     NSInteger _nativeEventCount;
+    UINavigationController *_oldNavigationController;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -38,6 +39,7 @@ using namespace facebook::react;
 - (void)ensureNavigationController
 {
     if (!_navigationController) {
+        [_oldNavigationController removeFromParentViewController];
         _navigationController = [[NVStackController alloc] init];
         _navigationController.view.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         _navigationController.navigationBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
@@ -157,7 +159,7 @@ using namespace facebook::react;
     _scenes = [[NSMutableDictionary alloc] init];
     [_navigationController willMoveToParentViewController:nil];
     [_navigationController.view removeFromSuperview];
-    [_navigationController removeFromParentViewController];
+    _oldNavigationController = _navigationController;
     _navigationController = nil;
 }
 
