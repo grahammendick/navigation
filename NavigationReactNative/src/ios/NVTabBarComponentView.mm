@@ -21,6 +21,7 @@ using namespace facebook::react;
 @implementation NVTabBarComponentView
 {
     UITabBarController *_tabBarController;
+    UITabBarController *_oldTabBarController;
     NSInteger _selectedTab;
     NSInteger _nativeEventCount;
     bool _firstSceneReselected;
@@ -38,6 +39,9 @@ using namespace facebook::react;
 - (void)ensureTabBarController
 {
     if (!_tabBarController) {
+        [_oldTabBarController willMoveToParentViewController:nil];
+        [_oldTabBarController.view removeFromSuperview];
+        [_oldTabBarController removeFromParentViewController];
         _tabBarController = [[UITabBarController alloc] init];
         _tabBarController.tabBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         [self addSubview:_tabBarController.view];
@@ -171,7 +175,7 @@ using namespace facebook::react;
     [super prepareForRecycle];
     _nativeEventCount = 0;
     _firstSceneReselected = NO;
-    [_tabBarController.view removeFromSuperview];
+    _oldTabBarController = _tabBarController;
     _tabBarController = nil;
 }
 
@@ -191,10 +195,8 @@ using namespace facebook::react;
 {
     [self removeReactSubview:childComponentView];
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
-    if ([controllers count] > 0) {
-        [controllers removeObjectAtIndex:index];
-        [_tabBarController setViewControllers:controllers];
-    }
+    [controllers removeObjectAtIndex:index];
+    [_tabBarController setViewControllers:controllers];
     [childComponentView removeFromSuperview];
 
 }

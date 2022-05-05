@@ -39,6 +39,8 @@ using namespace facebook::react;
 - (void)ensureNavigationController
 {
     if (!_navigationController) {
+        [_oldNavigationController willMoveToParentViewController:nil];
+        [_oldNavigationController.view removeFromSuperview];
         [_oldNavigationController removeFromParentViewController];
         _navigationController = [[NVStackController alloc] init];
         _navigationController.view.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
@@ -157,8 +159,6 @@ using namespace facebook::react;
     [super prepareForRecycle];
     _nativeEventCount = 0;
     _scenes = [[NSMutableDictionary alloc] init];
-    [_navigationController willMoveToParentViewController:nil];
-    [_navigationController.view removeFromSuperview];
     _oldNavigationController = _navigationController;
     _navigationController = nil;
 }
