@@ -17,9 +17,6 @@ using namespace facebook::react;
 @end
 
 @implementation NVTabBarItemComponentView
-{
-    NSString *_oldSystemItemVal;
-}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -27,16 +24,16 @@ using namespace facebook::react;
         static const auto defaultProps = std::make_shared<const NVTabBarItemProps>();
         _props = defaultProps;
         self.tab = [[UITabBarItem alloc] init];
-        _oldSystemItemVal = @"";
     }
     return self;
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
+    const auto &oldViewProps = *std::static_pointer_cast<NVTabBarItemProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<NVTabBarItemProps const>(props);
-    NSString *systemItemVal = [[NSString alloc] initWithUTF8String: newViewProps.systemItem.c_str()];
-    if (![_oldSystemItemVal isEqualToString:systemItemVal]) {
+    if (oldViewProps.systemItem != newViewProps.systemItem) {
+        NSString *systemItemVal = [[NSString alloc] initWithUTF8String: newViewProps.systemItem.c_str()];
         if (systemItemVal.length) {
             NSInteger systemItem = [self systemItem:systemItemVal];
             if (systemItem != -1) {
@@ -47,7 +44,6 @@ using namespace facebook::react;
            self.tab = [[UITabBarItem alloc] init];
         }
         self.navigationController.tabBarItem = self.tab;
-        _oldSystemItemVal = systemItemVal;
     }
     NSString *title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
     _fontFamily = [[NSString alloc] initWithUTF8String: newViewProps.fontFamily.c_str()];
