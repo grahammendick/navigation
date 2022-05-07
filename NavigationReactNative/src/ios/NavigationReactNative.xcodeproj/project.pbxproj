@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		70153012229D1F4800903FA7 /* NVSearchResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70153011229D1F4800903FA7 /* NVSearchResultsController.m */; };
+		7025916328269AA200A9DD13 /* NVSegmentedTabComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7025916228269AA200A9DD13 /* NVSegmentedTabComponentView.mm */; };
+		7025916628269ACE00A9DD13 /* NVTabBarPagerComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7025916528269ACE00A9DD13 /* NVTabBarPagerComponentView.mm */; };
 		70295FE82800768A0051A576 /* NVSceneComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 70295FE72800768A0051A576 /* NVSceneComponentView.mm */; };
 		7032DA6B280D49DB00A3AD1B /* NVRightBarComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7032DA6A280D49DB00A3AD1B /* NVRightBarComponentView.mm */; };
 		7032DA6E280D49FB00A3AD1B /* NVBarButtonComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7032DA6D280D49FB00A3AD1B /* NVBarButtonComponentView.mm */; };
@@ -62,6 +64,10 @@
 		70153011229D1F4800903FA7 /* NVSearchResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSearchResultsController.m; sourceTree = "<group>"; };
 		70153013229D1F5500903FA7 /* NVSearchResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSearchResultsController.h; sourceTree = "<group>"; };
 		7020F6BE20ECD07A00E7A74E /* libNavigationReactNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNavigationReactNative.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		7025916228269AA200A9DD13 /* NVSegmentedTabComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVSegmentedTabComponentView.mm; sourceTree = "<group>"; };
+		7025916428269AB400A9DD13 /* NVSegmentedTabComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSegmentedTabComponentView.h; sourceTree = "<group>"; };
+		7025916528269ACE00A9DD13 /* NVTabBarPagerComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVTabBarPagerComponentView.mm; sourceTree = "<group>"; };
+		7025916728269ADF00A9DD13 /* NVTabBarPagerComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarPagerComponentView.h; sourceTree = "<group>"; };
 		70295FE72800768A0051A576 /* NVSceneComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVSceneComponentView.mm; sourceTree = "<group>"; };
 		7032DA6A280D49DB00A3AD1B /* NVRightBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVRightBarComponentView.mm; sourceTree = "<group>"; };
 		7032DA6C280D49E500A3AD1B /* NVRightBarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVRightBarComponentView.h; sourceTree = "<group>"; };
@@ -137,6 +143,10 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				7025916728269ADF00A9DD13 /* NVTabBarPagerComponentView.h */,
+				7025916528269ACE00A9DD13 /* NVTabBarPagerComponentView.mm */,
+				7025916228269AA200A9DD13 /* NVSegmentedTabComponentView.mm */,
+				7025916428269AB400A9DD13 /* NVSegmentedTabComponentView.h */,
 				705D1E94281FD37900886320 /* NVTabBarItemComponentView.h */,
 				705D1E93281FD36F00886320 /* NVTabBarComponentView.h */,
 				705D1E91281FD35600886320 /* NVTabBarItemComponentView.mm */,
@@ -279,9 +289,11 @@
 				704B593C22A2AC14008C05C6 /* NVNavigationStackView.m in Sources */,
 				EE17B6DD231E85C000C62B81 /* NVTitleBarView.m in Sources */,
 				70587C89229A86B8009457B7 /* NVSearchBarManager.m in Sources */,
+				7025916328269AA200A9DD13 /* NVSegmentedTabComponentView.mm in Sources */,
 				709F32D322A7FFBF00A0358A /* NVTabBarManager.m in Sources */,
 				707F41B024A74F4600A06BF2 /* NVTabBarPagerView.m in Sources */,
 				709F32D522A7FFD600A0358A /* NVTabBarItemView.m in Sources */,
+				7025916628269ACE00A9DD13 /* NVTabBarPagerComponentView.mm in Sources */,
 				70E99F2D24461152004B520A /* NVSegmentedTabManager.m in Sources */,
 				70BB329A212B2C5100DE0D13 /* NVLeftBarManager.m in Sources */,
 				706A9A91280ABB3B009EAF06 /* NVNavigationBarComponentView.mm in Sources */,

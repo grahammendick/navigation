@@ -66,6 +66,8 @@ class TabBar extends React.Component<any, any> {
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
                 tabs={tabBarItems.map(({props: {title, testID}}: any) => ({title, testID}))}
+                titles={tabBarItems.map(({props: {title}}: any) => title)}
+                testIDs={tabBarItems.map(({props: {testID}}: any) => testID)}
                 fontFamily={fontFamily} fontWeight={fontWeight}
                 fontStyle={fontStyle} fontSize={fontSize}
                 scrollable={scrollable}
