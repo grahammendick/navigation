@@ -75,7 +75,7 @@ using namespace facebook::react;
     [self.tab setTitleTextAttributes:attributes forState:UIControlStateNormal];
     NSString *badge = [[NSString alloc] initWithUTF8String: newViewProps.badge.c_str()];
     if (self.tab.badgeValue != badge)
-        self.tab.badgeValue = [badge length] > 0 ? badge : nil;
+        self.tab.badgeValue = !!badge.length ? badge : nil;
     UIColor *badgeColor = RCTUIColorFromSharedColor(newViewProps.badgeColor);
     if (self.tab.badgeColor != badgeColor)
         self.tab.badgeColor = UIColor.greenColor;
