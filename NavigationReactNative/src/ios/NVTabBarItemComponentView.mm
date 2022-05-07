@@ -17,6 +17,9 @@ using namespace facebook::react;
 @end
 
 @implementation NVTabBarItemComponentView
+{
+    NSString *_oldSystemItemVal;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -24,6 +27,7 @@ using namespace facebook::react;
         static const auto defaultProps = std::make_shared<const NVTabBarItemProps>();
         _props = defaultProps;
         self.tab = [[UITabBarItem alloc] init];
+        _oldSystemItemVal = @"";
     }
     return self;
 }
@@ -31,6 +35,21 @@ using namespace facebook::react;
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
     const auto &newViewProps = *std::static_pointer_cast<NVTabBarItemProps const>(props);
+
+    NSString *systemItemVal = [[NSString alloc] initWithUTF8String: newViewProps.systemItem.c_str()];
+    if (![_oldSystemItemVal isEqualToString:systemItemVal]) {
+        if (systemItemVal.length) {
+            NSInteger systemItem = [self systemItem:systemItemVal];
+            if (systemItem != -1) {
+                self.tab = [[UITabBarItem alloc] initWithTabBarSystemItem:(UITabBarSystemItem) systemItem tag:0];
+            }
+        }
+        else {
+           self.tab = [[UITabBarItem alloc] init];
+        }
+        self.navigationController.tabBarItem = self.tab;
+        _oldSystemItemVal = systemItemVal;
+    }
     NSString *title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
     _fontFamily = [[NSString alloc] initWithUTF8String: newViewProps.fontFamily.c_str()];
     _fontFamily = _fontFamily.length ? _fontFamily : nil;
@@ -63,10 +82,34 @@ using namespace facebook::react;
     [super updateProps:props oldProps:oldProps];
 }
 
+
+-(NSInteger)systemItem:(NSString*)val
+{
+    if ([val isEqualToString:@"more"]) return UITabBarSystemItemMore;
+    if ([val isEqualToString:@"favorites"]) return UITabBarSystemItemFavorites;
+    if ([val isEqualToString:@"featured"]) return UITabBarSystemItemFeatured;
+    if ([val isEqualToString:@"top-rated"]) return UITabBarSystemItemTopRated;
+    if ([val isEqualToString:@"recents"]) return UITabBarSystemItemRecents;
+    if ([val isEqualToString:@"contacts"]) return UITabBarSystemItemContacts;
+    if ([val isEqualToString:@"history"]) return UITabBarSystemItemHistory;
+    if ([val isEqualToString:@"bookmarks"]) return UITabBarSystemItemBookmarks;
+    if ([val isEqualToString:@"search"]) return UITabBarSystemItemSearch;
+    if ([val isEqualToString:@"downloads"]) return UITabBarSystemItemDownloads;
+    if ([val isEqualToString:@"most-recent"]) return UITabBarSystemItemMostRecent;
+    if ([val isEqualToString:@"most-viewed"]) return UITabBarSystemItemMostViewed;
+    return -1;
+}
+
 - (void)onPress
 {
     std::static_pointer_cast<NVTabBarItemEventEmitter const>(_eventEmitter)
         ->onPress(NVTabBarItemEventEmitter::OnPress{});
+}
+
+- (void)prepareForRecycle
+{
+    [super prepareForRecycle];
+    _oldSystemItemVal = @"";
 }
 
 #pragma mark - RCTComponentViewProtocol
