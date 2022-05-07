@@ -16,6 +16,9 @@ using namespace facebook::react;
 @end
 
 @implementation NVSegmentedTabComponentView
+{
+    NSArray<NSString *> *_testIDs;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -43,7 +46,22 @@ using namespace facebook::react;
         }
         _segmentedControl.selectedSegmentIndex = selectedIndex;
     }
+    NSMutableArray<NSString *> *testIDArr = [[NSMutableArray alloc] init];
+    for (auto i = 0; i < newViewProps.testIDs.size(); i++) {
+        NSString *key = [[NSString alloc] initWithUTF8String: newViewProps.testIDs[i].c_str()];
+        [testIDArr addObject:key];
+    }
+    _testIDs = [testIDArr copy];
     [super updateProps:props oldProps:oldProps];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    for (int i = 0; i < _segmentedControl.numberOfSegments; i++) {
+        UIView *segment = _segmentedControl.subviews[_segmentedControl.subviews.count - i - 1];
+        segment.subviews[0].accessibilityIdentifier = _testIDs[i];
+    }
 }
 
 - (NVTabBarPagerComponentView *)getTabBarPager
