@@ -78,14 +78,15 @@ using namespace facebook::react;
 {
     if (index != _selectedIndex) {
         _nativeEventCount++;
-        /*self.onTabSelected(@{
-            @"tab": @(index),
-            @"eventCount": @(_nativeEventCount),
-        });*/
-        NVTabBarItemComponentView *tabBarItem = ((NVTabBarItemComponentView *) _tabs[index].view);
-        /*if (!!tabBarItem.onPress) {
-            tabBarItem.onPress(nil);
-        }*/
+        if (_eventEmitter != nullptr) {
+            std::static_pointer_cast<NVTabBarPagerEventEmitter const>(_eventEmitter)
+                ->onTabSelected(NVTabBarPagerEventEmitter::OnTabSelected{
+                    .tab = static_cast<int>(index),
+                    .eventCount = static_cast<int>(_nativeEventCount)
+                });
+            NVTabBarItemComponentView *tabBarItem = ((NVTabBarItemComponentView *) _tabs[index].view);
+            [tabBarItem onPress];
+        }
     }
     //[self getSegmentedTab].selectedSegmentIndex = index;
     [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
