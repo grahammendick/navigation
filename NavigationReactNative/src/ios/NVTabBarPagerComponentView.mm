@@ -113,7 +113,8 @@ using namespace facebook::react;
 
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
-    [super unmountChildComponentView:childComponentView index:index];
+    [childComponentView removeFromSuperview];
+    [_tabs objectAtIndex:index].view = nil;
     [_tabs removeObjectAtIndex:index];
 }
 
