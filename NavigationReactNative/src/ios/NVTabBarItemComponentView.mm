@@ -8,6 +8,7 @@
 #import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
 
 #import "RCTFabricComponentsPlugins.h"
+#import <React/RCTConversions.h>
 #import <React/RCTFont.h>
 
 using namespace facebook::react;
@@ -41,6 +42,9 @@ using namespace facebook::react;
     _fontSize = [_fontSize intValue] >= 0 ? _fontSize : nil;
     if (self.tab.title != title)
         self.tab.title = title;
+    NSString *testID = [[NSString alloc] initWithUTF8String: newViewProps.testID.c_str()];
+    if (self.tab.accessibilityIdentifier != testID)
+        self.tab.accessibilityIdentifier = testID;
     UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
     NSNumber *size = !self.fontSize ? @10 : self.fontSize;
     NSString *weight = !self.fontWeight ? @"500" : self.fontWeight;
@@ -50,6 +54,12 @@ using namespace facebook::react;
         attributes[NSFontAttributeName] = font;
     }
     [self.tab setTitleTextAttributes:attributes forState:UIControlStateNormal];
+    NSString *badge = [[NSString alloc] initWithUTF8String: newViewProps.badge.c_str()];
+    if (self.tab.badgeValue != badge)
+        self.tab.badgeValue = [badge length] > 0 ? badge : nil;
+    UIColor *badgeColor = RCTUIColorFromSharedColor(newViewProps.badgeColor);
+    if (self.tab.badgeColor != badgeColor)
+        self.tab.badgeColor = UIColor.greenColor;
     [super updateProps:props oldProps:oldProps];
 }
 

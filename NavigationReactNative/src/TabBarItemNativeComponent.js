@@ -12,6 +12,8 @@ type NativeProps = $ReadOnly<{|
   fontStyle: string,
   fontSize?: WithDefault<Float, -1>,
   testID: string,
+  badge: string,
+  badgeColor: ColorValue,
   image: ImageSource,
   systemItem: string,
   onPress: DirectEventHandler<null>
