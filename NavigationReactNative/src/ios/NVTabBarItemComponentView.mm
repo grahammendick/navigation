@@ -81,7 +81,6 @@ using namespace facebook::react;
     [super updateProps:props oldProps:oldProps];
 }
 
-
 -(NSInteger)systemItem:(NSString*)val
 {
     if ([val isEqualToString:@"more"]) return UITabBarSystemItemMore;
