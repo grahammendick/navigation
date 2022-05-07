@@ -112,6 +112,7 @@ using namespace facebook::react;
     _nativeEventCount = 0;
     _selectedTabView = nil;
     _selectedIndex = 0;
+    _selectedTab = 0;
 }
 
 #pragma mark - RCTComponentViewProtocol
