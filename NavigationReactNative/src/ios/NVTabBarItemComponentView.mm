@@ -104,12 +104,6 @@ using namespace facebook::react;
         ->onPress(NVTabBarItemEventEmitter::OnPress{});
 }
 
-- (void)prepareForRecycle
-{
-    [super prepareForRecycle];
-    _oldSystemItemVal = @"";
-}
-
 #pragma mark - RCTComponentViewProtocol
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
