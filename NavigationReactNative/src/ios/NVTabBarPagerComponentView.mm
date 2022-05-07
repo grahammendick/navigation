@@ -1,5 +1,7 @@
 #ifdef RCT_NEW_ARCH_ENABLED
 #import "NVTabBarPagerComponentView.h"
+#import "NVSegmentedTabComponentView.h"
+#import "NVTabBarItemComponentView.h"
 
 #import <react/renderer/components/navigation-react-native/ComponentDescriptors.h>
 #import <react/renderer/components/navigation-react-native/EventEmitters.h>
@@ -14,6 +16,14 @@ using namespace facebook::react;
 @end
 
 @implementation NVTabBarPagerComponentView
+{
+    UIPageViewController *_pageViewController;
+    UIPageViewController *_oldPageViewController;
+    UIViewController *_selectedTabView;
+    NSMutableArray<UIViewController *> *_tabs;
+    NSInteger _nativeEventCount;
+    NSInteger _selectedIndex;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -24,7 +34,88 @@ using namespace facebook::react;
     return self;
 }
 
+- (void)ensurePageViewController
+{
+    if (!_pageViewController) {
+        [_oldPageViewController willMoveToParentViewController:nil];
+        [_oldPageViewController.view removeFromSuperview];
+        [_oldPageViewController removeFromParentViewController];
+        _pageViewController = [[UIPageViewController alloc] init];
+        [self addSubview:_pageViewController.view];
+        _tabs = [[NSMutableArray alloc] init];
+    }
+}
+
+- (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
+{
+    [self ensurePageViewController];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateTab];
+    });
+    [super updateProps:props oldProps:oldProps];
+}
+
+- (void)updateTab
+{
+    if (!!_selectedTabView) {
+        NSInteger reselectedTab = [_tabs indexOfObject:_selectedTabView];
+        _selectedTab = reselectedTab != NSNotFound ? reselectedTab : MIN(_selectedTab, _tabs.count - 1);
+    }
+    [self setCurrentTab:_selectedTab];
+}
+
+- (NVSegmentedTabComponentView *)getSegmentedTab
+{
+    for(NSInteger i = 0; i < [self.superview subviews].count; i++) {
+        UIView *view = [self.superview subviews][i];
+        if ([view isKindOfClass:[NVSegmentedTabComponentView class]])
+            return (NVSegmentedTabComponentView *) view;
+    }
+    return nil;
+}
+
+- (void)setCurrentTab:(NSInteger)index
+{
+    if (index != _selectedIndex) {
+        _nativeEventCount++;
+        /*self.onTabSelected(@{
+            @"tab": @(index),
+            @"eventCount": @(_nativeEventCount),
+        });*/
+        NVTabBarItemComponentView *tabBarItem = ((NVTabBarItemComponentView *) _tabs[index].view);
+        /*if (!!tabBarItem.onPress) {
+            tabBarItem.onPress(nil);
+        }*/
+    }
+    //[self getSegmentedTab].selectedSegmentIndex = index;
+    [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    _selectedTab = _selectedIndex = index;
+    _selectedTabView = _tabs[index];
+}
+
+- (void)prepareForRecycle
+{
+    [super prepareForRecycle];
+    _oldPageViewController = _pageViewController;
+    _pageViewController = nil;
+}
+
 #pragma mark - RCTComponentViewProtocol
+
+-(void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
+{
+    [self ensurePageViewController];
+    UIViewController *viewController = [[UIViewController alloc] init];
+    viewController.view = childComponentView;
+    [_tabs insertObject:viewController atIndex:index];
+
+}
+
+- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
+{
+    [super unmountChildComponentView:childComponentView index:index];
+    [_tabs removeObjectAtIndex:index];
+}
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {

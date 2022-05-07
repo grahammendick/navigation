@@ -109,9 +109,9 @@ class TabBar extends React.Component<any, any> {
 var NVTabLayout = requireNativeComponent<any>('NVTabLayout', null);
 var NVTabLayoutRTL = requireNativeComponent<any>('NVTabLayoutRTL', null);
 var NVTabNavigation = requireNativeComponent<any>('NVTabNavigation', null);
-var NVSegmentedTab = requireNativeComponent<any>('NVSegmentedTab', null);
+var NVSegmentedTab = global.nativeFabricUIManager ? require('./SegmentedTabNativeComponent').default : requireNativeComponent('NVSegmentedTab');
 var NVTabBar = global.nativeFabricUIManager ? require('./TabBarNativeComponent').default : requireNativeComponent('NVTabBar');
-var NVTabBarPager = requireNativeComponent<any>('NVTabBarPager', null);
+var NVTabBarPager = global.nativeFabricUIManager ? require('./TabBarPagerNativeComponent').default : requireNativeComponent('NVTabBarPager');
 var NVTabBarPagerRTL = requireNativeComponent<any>('NVTabBarPagerRTL', null);
 
 const styles = StyleSheet.create({

@@ -6,6 +6,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NVTabBarPagerComponentView : RCTViewComponentView
 
+@property (nonatomic, assign) NSInteger selectedTab;
+
 @end
 
 NS_ASSUME_NONNULL_END

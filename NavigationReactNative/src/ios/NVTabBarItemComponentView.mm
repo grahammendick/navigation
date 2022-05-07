@@ -104,6 +104,7 @@ using namespace facebook::react;
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
+    [super mountChildComponentView:childComponentView index:index];
     if ([childComponentView class] == [NVNavigationStackComponentView class])
         self.navigationController = [(NVNavigationStackComponentView *) childComponentView navigationController];
     self.navigationController.tabBarItem = self.tab;
@@ -111,6 +112,7 @@ using namespace facebook::react;
 
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
+    [super unmountChildComponentView:childComponentView index:index];
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
