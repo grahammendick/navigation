@@ -49,6 +49,16 @@ using namespace facebook::react;
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
     [self ensurePageViewController];
+    const auto &newViewProps = *std::static_pointer_cast<NVTabBarPagerProps const>(props);
+    _mostRecentEventCount = newViewProps.mostRecentEventCount;
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    NSInteger selectedTab = newViewProps.selectedTab;
+    if (eventLag == 0 && _selectedTab != selectedTab) {
+        _selectedTab = selectedTab;
+        if (_tabs.count > selectedTab) {
+            [self setCurrentTab:selectedTab];
+        }
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
         [self updateTab];
     });
