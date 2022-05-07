@@ -64,6 +64,14 @@ using namespace facebook::react;
     }
 }
 
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    NVTabBarPagerComponentView *tabBarPager = [self getTabBarPager];
+    if (!!tabBarPager)
+        _segmentedControl.selectedSegmentIndex = tabBarPager.selectedTab;
+}
+
 - (NVTabBarPagerComponentView *)getTabBarPager
 {
     for(NSInteger i = 0; i < [self.superview subviews].count; i++) {
