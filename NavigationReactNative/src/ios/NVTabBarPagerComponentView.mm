@@ -98,7 +98,7 @@ using namespace facebook::react;
             [tabBarItem onPress];
         }
     }
-    //[self getSegmentedTab].selectedSegmentIndex = index;
+    [self getSegmentedTab].segmentedControl.selectedSegmentIndex = index;
     [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     _selectedTab = _selectedIndex = index;
     _selectedTabView = _tabs[index];
