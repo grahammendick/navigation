@@ -110,6 +110,8 @@ using namespace facebook::react;
     _oldPageViewController = _pageViewController;
     _pageViewController = nil;
     _nativeEventCount = 0;
+    _selectedTabView = nil;
+    _selectedIndex = 0;
 }
 
 #pragma mark - RCTComponentViewProtocol
