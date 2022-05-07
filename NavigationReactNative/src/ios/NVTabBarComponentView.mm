@@ -174,6 +174,7 @@ using namespace facebook::react;
 {
     [super prepareForRecycle];
     _nativeEventCount = 0;
+    _selectedTab = 0;
     _firstSceneReselected = NO;
     _oldTabBarController = _tabBarController;
     _tabBarController = nil;
