@@ -109,6 +109,7 @@ using namespace facebook::react;
     [super prepareForRecycle];
     _oldPageViewController = _pageViewController;
     _pageViewController = nil;
+    _nativeEventCount = 0;
 }
 
 #pragma mark - RCTComponentViewProtocol
