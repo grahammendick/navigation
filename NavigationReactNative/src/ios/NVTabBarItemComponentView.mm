@@ -35,7 +35,6 @@ using namespace facebook::react;
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
     const auto &newViewProps = *std::static_pointer_cast<NVTabBarItemProps const>(props);
-
     NSString *systemItemVal = [[NSString alloc] initWithUTF8String: newViewProps.systemItem.c_str()];
     if (![_oldSystemItemVal isEqualToString:systemItemVal]) {
         if (systemItemVal.length) {
