@@ -23,13 +23,20 @@ using namespace facebook::react;
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const NVTabBarItemProps>();
         _props = defaultProps;
-        self.tab = [[UITabBarItem alloc] init];
     }
     return self;
 }
 
+- (void)ensureTabBarItem
+{
+    if (!_tab) {
+        self.tab = [[UITabBarItem alloc] init];
+    }
+}
+
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
+    [self ensureTabBarItem];
     const auto &oldViewProps = *std::static_pointer_cast<NVTabBarItemProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<NVTabBarItemProps const>(props);
     if (oldViewProps.systemItem != newViewProps.systemItem) {
@@ -100,10 +107,19 @@ using namespace facebook::react;
         ->onPress(NVTabBarItemEventEmitter::OnPress{});
 }
 
+- (void)prepareForRecycle
+{
+    [super prepareForRecycle];
+    _navigationController.tabBarItem = nil;
+    _navigationController = nil;
+    _tab = nil;
+}
+
 #pragma mark - RCTComponentViewProtocol
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
+    [self ensureTabBarItem];
     [super mountChildComponentView:childComponentView index:index];
     if ([childComponentView class] == [NVNavigationStackComponentView class])
         self.navigationController = [(NVNavigationStackComponentView *) childComponentView navigationController];
