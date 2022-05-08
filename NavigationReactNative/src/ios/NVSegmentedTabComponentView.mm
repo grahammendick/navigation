@@ -8,7 +8,9 @@
 #import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
 
 #import "RCTFabricComponentsPlugins.h"
+#import <React/RCTConversions.h>
 #import <React/RCTI18nUtil.h>
+#import <React/RCTFont.h>
 
 using namespace facebook::react;
 
@@ -45,6 +47,41 @@ using namespace facebook::react;
             [_segmentedControl insertSegmentWithTitle:title atIndex:_segmentedControl.numberOfSegments animated:NO];
         }
         _segmentedControl.selectedSegmentIndex = selectedIndex;
+    }
+    _fontFamily = [[NSString alloc] initWithUTF8String: newViewProps.fontFamily.c_str()];
+    _fontFamily = _fontFamily.length ? _fontFamily : nil;
+    _fontWeight = [[NSString alloc] initWithUTF8String: newViewProps.fontWeight.c_str()];
+    _fontWeight = _fontWeight.length ? _fontWeight : nil;
+    _fontStyle = [[NSString alloc] initWithUTF8String: newViewProps.fontStyle.c_str()];
+    _fontStyle = _fontStyle.length ? _fontStyle : nil;
+    _fontSize = @(newViewProps.fontSize);
+    _fontSize = [_fontSize intValue] >= 0 ? _fontSize : nil;
+    UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
+    NSNumber *size = !self.fontSize ? @13 : self.fontSize;
+    UIFont *font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
+        attributes[NSFontAttributeName] = font;
+    }
+    if (@available(iOS 13.0, *)) {
+        _unselectedTintColor = RCTUIColorFromSharedColor(newViewProps.unselectedTintColor);
+        if (_unselectedTintColor != nil) {
+            attributes[NSForegroundColorAttributeName] = _unselectedTintColor;
+        }
+    }
+    [_segmentedControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
+    UIColor *backgroundColor = RCTUIColorFromSharedColor(newViewProps.backgroundColor);
+    [_segmentedControl setTintColor:backgroundColor];
+    if (@available(iOS 13.0, *)) {
+        [_segmentedControl setBackgroundColor:backgroundColor];
+    }
+    if (@available(iOS 13.0, *)) {
+        NSMutableDictionary *attributes = [NSMutableDictionary new];
+        UIColor *selectedTintColor = RCTUIColorFromSharedColor(newViewProps.selectedTintColor);
+        if (selectedTintColor != nil) {
+            attributes[NSForegroundColorAttributeName] = selectedTintColor;
+        }
+        [_segmentedControl setTitleTextAttributes:attributes forState:UIControlStateSelected];
     }
     NSMutableArray<NSString *> *testIDArr = [[NSMutableArray alloc] init];
     for (auto i = 0; i < newViewProps.testIDs.size(); i++) {
