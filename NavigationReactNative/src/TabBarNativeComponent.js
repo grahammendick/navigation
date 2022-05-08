@@ -10,6 +10,7 @@ type NativeProps = $ReadOnly<{|
   barTintColor: ColorValue,
   selectedTintColor: ColorValue,
   unselectedTintColor: ColorValue,
+  scrollsToTop: boolean,
   mostRecentEventCount: Int32,
   onTabSelected: DirectEventHandler<$ReadOnly<{|
     tab: Int32,

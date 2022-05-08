@@ -9,6 +9,7 @@
 #import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
 
 #import "RCTFabricComponentsPlugins.h"
+#import <React/RCTScrollViewComponentView.h>
 
 using namespace facebook::react;
 
@@ -59,6 +60,7 @@ using namespace facebook::react;
             [self setCurrentTab:selectedTab];
         }
     }
+    _scrollsToTop = newViewProps.scrollsToTop;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self updateTab];
     });
@@ -102,6 +104,15 @@ using namespace facebook::react;
     [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     _selectedTab = _selectedIndex = index;
     _selectedTabView = _tabs[index];
+}
+
+- (void)scrollToTop
+{
+    UIView *tabBarItem = _tabs[_selectedTab].view.subviews[0];
+    if ([tabBarItem isKindOfClass:[RCTScrollViewComponentView class]] && _scrollsToTop) {
+        UIScrollView *scrollView = ((RCTScrollViewComponentView *) tabBarItem).scrollView;
+        [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+    }
 }
 
 - (void)prepareForRecycle

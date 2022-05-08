@@ -7,9 +7,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NVTabBarPagerComponentView : RCTViewComponentView
 
 @property (nonatomic, assign) NSInteger selectedTab;
+@property (nonatomic, assign) BOOL scrollsToTop;
 @property (nonatomic, assign) NSInteger mostRecentEventCount;
 
 -(void)setCurrentTab:(NSInteger) index;
+-(void)scrollToTop;
 
 @end
 

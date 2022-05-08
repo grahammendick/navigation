@@ -1,6 +1,7 @@
 #ifdef RCT_NEW_ARCH_ENABLED
 #import "NVTabBarComponentView.h"
 #import "NVTabBarItemComponentView.h"
+#import "NVTabBarPagerComponentView.h"
 
 #import <react/renderer/components/navigation-react-native/ComponentDescriptors.h>
 #import <react/renderer/components/navigation-react-native/EventEmitters.h>
@@ -11,7 +12,7 @@
 #import <React/UIView+React.h>
 #import <React/RCTConversions.h>
 #import <React/RCTI18nUtil.h>
-#import <React/RCTScrollView.h>
+#import <React/RCTScrollViewComponentView.h>
 
 using namespace facebook::react;
 
@@ -89,6 +90,7 @@ using namespace facebook::react;
         }
         [self selectTab];
     }
+    _scrollsToTop = newViewProps.scrollsToTop;
     [super updateProps:props oldProps:oldProps];
 }
 
@@ -127,13 +129,13 @@ using namespace facebook::react;
         UIViewController *sceneController = ((UINavigationController *) viewController).viewControllers[0];
         UIScrollView *scrollView;
         for (UIView *subview in sceneController.view.subviews) {
-            if ([subview isKindOfClass:[RCTScrollView class]]){
-                scrollView = ((RCTScrollView *) subview).scrollView;
+            if ([subview isKindOfClass:[RCTScrollViewComponentView class]]){
+                scrollView = ((RCTScrollViewComponentView *) subview).scrollView;
             }
             for (UIView *subsubview in subview.subviews) {
-                /*if ([subsubview isKindOfClass:[NVTabBarPagerView class]]){
-                    [((NVTabBarPagerView *) subsubview) scrollToTop];
-                }*/
+                if ([subsubview isKindOfClass:[NVTabBarPagerComponentView class]]){
+                    [((NVTabBarPagerComponentView *) subsubview) scrollToTop];
+                }
             }
         }
         CGFloat topLayoutOffset = sceneController.topLayoutGuide.length;

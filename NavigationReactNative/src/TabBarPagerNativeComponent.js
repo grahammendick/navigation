@@ -8,6 +8,7 @@ type NativeProps = $ReadOnly<{|
   ...ViewProps,
   tabCount: Int32,
   selectedTab: Int32,
+  scrollsToTop: boolean,
   mostRecentEventCount: Int32,
   onTabSelected: DirectEventHandler<$ReadOnly<{|
     tab: Int32,
