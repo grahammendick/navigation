@@ -86,12 +86,11 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
         }
         return {rest: !moving, mountRest: !mountMoving, mountDuration, mountProgress};
     }
-    const {keys: prevKeys, stateNavigator: prevStateNavigator} = motionState;
-    if (prevStateNavigator !== stateNavigator) {
+    const {stateNavigator: prevStateNavigator} = motionState;
+    if (prevStateNavigator !== stateNavigator && stateNavigator.stateContext.state) {
         setMotionState((prevStackState) => {
+            const {keys: prevKeys, stateNavigator: prevStateNavigator} = prevStackState;
             const {state, crumbs, nextCrumb} = stateNavigator.stateContext;
-            if (!state)
-                return {...prevStackState, stateNavigator, keys: []};
             const prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
             const currentKeys = crumbs.concat(nextCrumb).map((_, i) => '' + i);
             const newKeys = currentKeys.slice(prevKeys.length);
