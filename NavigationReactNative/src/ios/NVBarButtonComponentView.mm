@@ -7,7 +7,10 @@
 #import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
 
 #import "RCTFabricComponentsPlugins.h"
+#import "RCTImagePrimitivesConversions.h"
+#import <React/RCTBridge+Private.h>
 #import <React/RCTFont.h>
+#import <React/RCTImageLoaderProtocol.h>
 
 using namespace facebook::react;
 
@@ -31,6 +34,7 @@ using namespace facebook::react;
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
+    const auto &oldViewProps = *std::static_pointer_cast<NVTabBarItemProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<NVBarButtonProps const>(props);
     NSString *title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
     _fontFamily = [[NSString alloc] initWithUTF8String: newViewProps.fontFamily.c_str()];
@@ -61,6 +65,18 @@ using namespace facebook::react;
         if (systemItem >= 0) {
             self.button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItem) systemItem target:self action:@selector(buttonPressed)];
             self.button.accessibilityIdentifier = testID;
+        }
+    }
+    if (oldViewProps.image != newViewProps.image) {
+        NSString *uri = [[NSString alloc] initWithUTF8String:newViewProps.image.uri.c_str()];
+        if (!![uri length]) {
+            [[[RCTBridge currentBridge] moduleForName:@"ImageLoader"] loadImageWithURLRequest:NSURLRequestFromImageSource(newViewProps.image) size:CGSizeMake(newViewProps.image.size.width, newViewProps.image.size.height) scale:newViewProps.image.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self -> _button.image = image;
+                });
+            }];
+        } else {
+            _button.image = nil;
         }
     }
     [super updateProps:props oldProps:oldProps];
