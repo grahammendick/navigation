@@ -54,7 +54,8 @@ using namespace facebook::react;
             }
         }
         else {
-           self.tab = [[UITabBarItem alloc] init];
+            self.tab = [[UITabBarItem alloc] init];
+            self.tab.image = _image;
         }
         self.navigationController.tabBarItem = self.tab;
     }
@@ -133,6 +134,7 @@ using namespace facebook::react;
     _navigationController.tabBarItem = nil;
     _navigationController = nil;
     _tab = nil;
+    _image = nil;
 }
 
 #pragma mark - RCTComponentViewProtocol
