@@ -8,8 +8,11 @@
 #import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
 
 #import "RCTFabricComponentsPlugins.h"
+#import "RCTImagePrimitivesConversions.h"
+#import <React/RCTBridge+Private.h>
 #import <React/RCTConversions.h>
 #import <React/RCTFont.h>
+#import <React/RCTImageLoaderProtocol.h>
 
 using namespace facebook::react;
 
@@ -17,6 +20,9 @@ using namespace facebook::react;
 @end
 
 @implementation NVTabBarItemComponentView
+{
+    UIImage *_image;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -81,6 +87,20 @@ using namespace facebook::react;
     UIColor *badgeColor = RCTUIColorFromSharedColor(newViewProps.badgeColor);
     if (self.tab.badgeColor != badgeColor)
         self.tab.badgeColor = UIColor.greenColor;
+    if (oldViewProps.image != newViewProps.image) {
+        NSString *uri = [[NSString alloc] initWithUTF8String:newViewProps.image.uri.c_str()];
+        if (!![uri length]) {
+            [[[RCTBridge currentBridge] moduleForName:@"ImageLoader"] loadImageWithURLRequest:NSURLRequestFromImageSource(newViewProps.image) size:CGSizeMake(newViewProps.image.size.width, newViewProps.image.size.height) scale:newViewProps.image.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self -> _image = image;
+                    self -> _tab.image = image;
+                });
+            }];
+        } else {
+            _image = nil;
+            _tab.image = nil;
+        }
+    }
     [super updateProps:props oldProps:oldProps];
 }
 
