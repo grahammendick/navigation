@@ -55,7 +55,7 @@ class SearchBar extends React.Component<any, any> {
     }
 }
 
-var NVSearchBar = requireNativeComponent<any>('NVSearchBar', null);
+var NVSearchBar = global.nativeFabricUIManager ? require('./SearchBarNativeComponent').default : requireNativeComponent('NVSearchBar');
 
 var styles = StyleSheet.create({
     searchBar: {
