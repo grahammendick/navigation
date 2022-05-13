@@ -169,17 +169,3 @@
 
 
 @end
-
-@implementation NVSearchController
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return self.presentingViewController.preferredStatusBarStyle;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return self.presentingViewController.prefersStatusBarHidden;
-}
-
-@end

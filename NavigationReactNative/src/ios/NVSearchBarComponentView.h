@@ -4,7 +4,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NVSearchBarComponentView : RCTViewComponentView
+@interface NVSearchBarComponentView : RCTViewComponentView <UISearchResultsUpdating, UISearchBarDelegate>
 
 @property NSMutableArray *buttons;
 
