@@ -30,7 +30,7 @@ using namespace facebook::react;
     return self;
 }
 
-- (void)ensureSearchResultsController
+- (void)ensureSearchController
 {
     if (!_searchController) {
         NVSearchResultsController *viewController = [[NVSearchResultsController alloc] init];
@@ -43,7 +43,7 @@ using namespace facebook::react;
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    [self ensureSearchResultsController];
+    [self ensureSearchController];
     const auto &newViewProps = *std::static_pointer_cast<NVSearchBarProps const>(props);
     [super updateProps:props oldProps:oldProps];
 }
@@ -81,7 +81,7 @@ using namespace facebook::react;
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
-    [self ensureSearchResultsController];
+    [self ensureSearchController];
     self.searchController.searchResultsController.view = childComponentView;
     _reactSubview = childComponentView;
     [_reactSubview addObserver:self forKeyPath:@"hidden" options:0 context:nil];
