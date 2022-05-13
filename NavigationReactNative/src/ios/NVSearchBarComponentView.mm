@@ -76,6 +76,13 @@ using namespace facebook::react;
     }
 }
 
+- (void)prepareForRecycle
+{
+    [super prepareForRecycle];
+    _searchController = nil;
+    _reactSubview = nil;
+}
+
 
 #pragma mark - RCTComponentViewProtocol
 
@@ -90,7 +97,7 @@ using namespace facebook::react;
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
     [_reactSubview removeObserver:self forKeyPath:@"hidden"];
-    [childComponentView removeFromSuperview];
+    self.searchController.searchResultsController.view = nil;
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
