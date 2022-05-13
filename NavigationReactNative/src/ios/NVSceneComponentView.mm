@@ -7,7 +7,6 @@
 #import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
 
 #import "RCTFabricComponentsPlugins.h"
-#import <React/UIView+React.h>
 
 using namespace facebook::react;
 
@@ -41,12 +40,6 @@ using namespace facebook::react;
         std::static_pointer_cast<NVSceneEventEmitter const>(_eventEmitter)
             ->onPopped(NVSceneEventEmitter::OnPopped{});
     }
-}
-
-- (void)prepareForRecycle
-{
-    [super prepareForRecycle];
-    self.reactViewController.view = nil;
 }
 
 #pragma mark - RCTComponentViewProtocol

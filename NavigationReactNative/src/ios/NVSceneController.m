@@ -3,6 +3,7 @@
 #import "NVNavigationBarView.h"
 #import "NVSearchBarView.h"
 #import "NVStatusBarView.h"
+#import <React/UIView+React.h>
 
 @implementation NVSceneController
 {
@@ -21,6 +22,7 @@
 - (void)loadView
 {
     [super loadView];
+    _view.reactViewController.view = nil;
     self.view = _view;
 }
 
