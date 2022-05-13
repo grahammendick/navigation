@@ -90,6 +90,7 @@ using namespace facebook::react;
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
     [_reactSubview removeObserver:self forKeyPath:@"hidden"];
+    [childComponentView removeFromSuperview];
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
