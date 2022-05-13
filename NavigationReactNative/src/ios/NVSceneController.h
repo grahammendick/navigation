@@ -27,3 +27,10 @@
 - (void)updateStyle;
 
 @end
+
+@protocol NVSearchBar
+
+@property UISearchController *searchController;
+@property (nonatomic, assign) BOOL hideWhenScrolling;
+
+@end

@@ -17,7 +17,6 @@ using namespace facebook::react;
 
 @implementation NVSearchBarComponentView
 {
-    NVSearchController *_searchController;
     NSInteger _nativeEventCount;
 }
 
@@ -34,10 +33,10 @@ using namespace facebook::react;
 {
     if (!_searchController) {
         NVSearchResultsController *viewController = [[NVSearchResultsController alloc] init];
-        _searchController = [[NVSearchController alloc] initWithSearchResultsController:viewController];
-        _searchController.searchBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
-        _searchController.searchResultsUpdater = self;
-        _searchController.searchBar.delegate = self;
+        self.searchController = [[NVSearchController alloc] initWithSearchResultsController:viewController];
+        self.searchController.searchBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
+        self.searchController.searchResultsUpdater = self;
+        self.searchController.searchBar.delegate = self;
     }
 }
 
@@ -69,6 +68,17 @@ using namespace facebook::react;
 }
 
 #pragma mark - RCTComponentViewProtocol
+
+- (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
+{
+    self.searchController.searchResultsController.view = childComponentView;
+    [childComponentView addObserver:self forKeyPath:@"hidden" options:0 context:nil];
+}
+
+- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
+{
+    [childComponentView removeObserver:self forKeyPath:@"hidden"];
+}
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {

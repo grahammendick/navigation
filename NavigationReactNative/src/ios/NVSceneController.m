@@ -28,7 +28,7 @@
 {
     [super viewDidLoad];
     UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
-    NVSearchBarView *searchBar = (NVSearchBarView *) [navigationBar viewWithTag:SEARCH_BAR];
+    UIView<NVSearchBar> *searchBar = [self findSearchBar:navigationBar];
     self.definesPresentationContext = true;
     if (!!searchBar && !navigationBar.isHidden)
     {
@@ -65,7 +65,7 @@
         self.navigationController.navigationBar.prefersLargeTitles = true;
         [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
     }
-    NVSearchBarView *searchBar = (NVSearchBarView *) [navigationBar viewWithTag:SEARCH_BAR];
+    UIView<NVSearchBar> *searchBar = [self findSearchBar:navigationBar];
     self.definesPresentationContext = true;
     if (!!searchBar && !navigationBar.hidden)
     {
@@ -104,12 +104,22 @@
 
 -(UIView<NVNavigationBar> *) findNavigationBar:(UIView *)parent
 {
+    return (UIView<NVNavigationBar> *) [self findChild:parent of:@protocol(NVNavigationBar)];
+}
+
+-(UIView<NVSearchBar> *) findSearchBar:(UIView *)parent
+{
+    return (UIView<NVSearchBar> *) [self findChild:parent of:@protocol(NVSearchBar)];
+}
+
+-(UIView *) findChild:(UIView *)parent of:(Protocol*) proto
+{
     for(NSInteger i = 0; i < parent.subviews.count; i++) {
         UIView* subview = parent.subviews[0];
-        if ([subview conformsToProtocol:@protocol(NVNavigationBar)])
+        if ([subview conformsToProtocol:proto])
             return (UIView<NVNavigationBar> *) subview;
         subview = [self findNavigationBar:parent.subviews[0]];
-        if ([subview conformsToProtocol:@protocol(NVNavigationBar)])
+        if ([subview conformsToProtocol:proto])
             return (UIView<NVNavigationBar> *) subview;
     }
     return nil;
