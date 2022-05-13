@@ -17,6 +17,7 @@ using namespace facebook::react;
 
 @implementation NVSearchBarComponentView
 {
+    UISearchController *_oldSearchController;
     UIView *_reactSubview;
     NSInteger _nativeEventCount;
 }
@@ -33,6 +34,9 @@ using namespace facebook::react;
 - (void)ensureSearchController
 {
     if (!_searchController) {
+        [_oldSearchController willMoveToParentViewController:nil];
+        [_oldSearchController.view removeFromSuperview];
+        [_oldSearchController removeFromParentViewController];
         NVSearchResultsController *viewController = [[NVSearchResultsController alloc] init];
         self.searchController = [[NVSearchController alloc] initWithSearchResultsController:viewController];
         self.searchController.searchBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
@@ -79,6 +83,7 @@ using namespace facebook::react;
 - (void)prepareForRecycle
 {
     [super prepareForRecycle];
+    _oldSearchController = _searchController;
     _searchController = nil;
     _reactSubview = nil;
 }
