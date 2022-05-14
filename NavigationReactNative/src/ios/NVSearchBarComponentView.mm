@@ -8,6 +8,7 @@
 #import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
 
 #import "RCTFabricComponentsPlugins.h"
+#import <React/RCTConversions.h>
 #import <React/RCTI18nUtil.h>
 #import <React/UIView+React.h>
 
@@ -65,6 +66,11 @@ using namespace facebook::react;
     NSString *placeholder = [[NSString alloc] initWithUTF8String: newViewProps.placeholder.c_str()];
     if (self.searchController.searchBar.placeholder != placeholder)
         [self.searchController.searchBar setPlaceholder:placeholder];
+    [self.searchController setObscuresBackgroundDuringPresentation:newViewProps.obscureBackground];
+    [self.searchController setHidesNavigationBarDuringPresentation:newViewProps.hideNavigationBar];
+    if (@available(iOS 13.0, *)) {
+        [self.searchController.searchBar.searchTextField setBackgroundColor:RCTUIColorFromSharedColor(newViewProps.barTintColor)];
+    }
     [super updateProps:props oldProps:oldProps];
 }
 
