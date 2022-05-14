@@ -58,12 +58,11 @@ using namespace facebook::react;
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
     _nativeEventCount++;
-    /*if (!!self.onChangeText) {
-        self.onChangeText(@{
-            @"text": searchController.searchBar.text,
-            @"eventCount": @(_nativeEventCount),
+    std::static_pointer_cast<NVSearchBarEventEmitter const>(_eventEmitter)
+        ->onChangeText(NVSearchBarEventEmitter::OnChangeText{
+            .text = std::string([_searchController.searchBar.text UTF8String]),
+            .eventCount = static_cast<int>(_nativeEventCount),
         });
-    }*/
 }
 
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
