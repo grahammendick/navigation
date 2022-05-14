@@ -58,7 +58,7 @@
 - (void)setText:(NSString *)text
 {
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    if (eventLag == 0 && [self.searchController.searchBar text] != text) {
+    if (eventLag == 0 && ![self.searchController.searchBar.text isEqualToString:text]) {
         [self.searchController.searchBar setText:text];
     }
 }

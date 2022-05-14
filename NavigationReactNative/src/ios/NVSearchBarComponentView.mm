@@ -57,15 +57,25 @@ using namespace facebook::react;
     NSString *text = [[NSString alloc] initWithUTF8String: newViewProps.text.c_str()];
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    if (eventLag == 0 && [self.searchController.searchBar text] != text) {
+    if (eventLag == 0 && ![self.searchController.searchBar.text isEqualToString:text]) {
         [self.searchController.searchBar setText:text];
     }
+    NSString *autoCapitalize = [[NSString alloc] initWithUTF8String: newViewProps.autoCapitalize.c_str()];
+    [self.searchController.searchBar setAutocapitalizationType:[self autoCapitalizationType:autoCapitalize]];
     NSString *placeholder = [[NSString alloc] initWithUTF8String: newViewProps.placeholder.c_str()];
     if (self.searchController.searchBar.placeholder != placeholder)
         [self.searchController.searchBar setPlaceholder:placeholder];
     [super updateProps:props oldProps:oldProps];
 }
 
+-(UITextAutocapitalizationType)autoCapitalizationType:(NSString*)val
+{
+    if ([val isEqualToString:@"none"]) return UITextAutocapitalizationTypeNone;
+    if ([val isEqualToString:@"words"]) return UITextAutocapitalizationTypeWords;
+    if ([val isEqualToString:@"sentences"]) return UITextAutocapitalizationTypeSentences;
+    if ([val isEqualToString:@"allCharacters"]) return UITextAutocapitalizationTypeAllCharacters;
+    return UITextAutocapitalizationTypeSentences;
+}
 
 - (void)didMoveToWindow
 {
