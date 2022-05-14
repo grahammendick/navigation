@@ -54,6 +54,12 @@ using namespace facebook::react;
 {
     [self ensureSearchController];
     const auto &newViewProps = *std::static_pointer_cast<NVSearchBarProps const>(props);
+    NSString *text = [[NSString alloc] initWithUTF8String: newViewProps.text.c_str()];
+    _mostRecentEventCount = newViewProps.mostRecentEventCount;
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if (eventLag == 0 && [self.searchController.searchBar text] != text) {
+        [self.searchController.searchBar setText:text];
+    }
     [super updateProps:props oldProps:oldProps];
 }
 
@@ -79,11 +85,13 @@ using namespace facebook::react;
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
     _nativeEventCount++;
-    std::static_pointer_cast<NVSearchBarEventEmitter const>(_eventEmitter)
-        ->onChangeText(NVSearchBarEventEmitter::OnChangeText{
-            .text = std::string([_searchController.searchBar.text UTF8String]),
-            .eventCount = static_cast<int>(_nativeEventCount),
-        });
+    if (_eventEmitter != nullptr) {
+        std::static_pointer_cast<NVSearchBarEventEmitter const>(_eventEmitter)
+            ->onChangeText(NVSearchBarEventEmitter::OnChangeText{
+                .text = std::string([_searchController.searchBar.text UTF8String]),
+                .eventCount = static_cast<int>(_nativeEventCount),
+            });
+    }
 }
 
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
@@ -107,6 +115,7 @@ using namespace facebook::react;
 - (void)prepareForRecycle
 {
     [super prepareForRecycle];
+    _nativeEventCount = 0;
     _oldSearchController = _searchController;
     _searchController = nil;
     _reactSubview = nil;

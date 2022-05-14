@@ -9,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property UISearchController *searchController;
 @property (nonatomic, assign) BOOL hideWhenScrolling;
+@property (nonatomic, assign) NSInteger mostRecentEventCount;
 
 @end
 
