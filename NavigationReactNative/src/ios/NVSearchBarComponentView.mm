@@ -60,6 +60,9 @@ using namespace facebook::react;
     if (eventLag == 0 && [self.searchController.searchBar text] != text) {
         [self.searchController.searchBar setText:text];
     }
+    NSString *placeholder = [[NSString alloc] initWithUTF8String: newViewProps.placeholder.c_str()];
+    if (self.searchController.searchBar.placeholder != placeholder)
+        [self.searchController.searchBar setPlaceholder:placeholder];
     [super updateProps:props oldProps:oldProps];
 }
 

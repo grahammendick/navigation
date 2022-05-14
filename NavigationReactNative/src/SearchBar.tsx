@@ -12,6 +12,7 @@ class SearchBar extends React.Component<any, any> {
         this.onChangeBounds = this.onChangeBounds.bind(this);
     }
     static defaultProps = {
+        placeholder: 'Search',
         obscureBackground: true,
         hideNavigationBar: true,
         hideWhenScrolling: false,
