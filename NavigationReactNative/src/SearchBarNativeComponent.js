@@ -24,6 +24,10 @@ type NativeProps = $ReadOnly<{|
     scopeButton: Int32,
     eventCount: Int32,
   |}>>,
+  onChangeBounds: DirectEventHandler<$ReadOnly<{|
+    width: Float,
+    height: Float,
+  |}>>,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(

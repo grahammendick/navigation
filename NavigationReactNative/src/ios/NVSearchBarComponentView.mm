@@ -42,6 +42,10 @@ using namespace facebook::react;
         self.searchController.searchBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         self.searchController.searchResultsUpdater = self;
         self.searchController.searchBar.delegate = self;
+        id __weak weakSelf = self;
+        viewController.boundsDidChangeBlock = ^(CGRect newBounds) {
+            [weakSelf notifyForBoundsChange:newBounds];
+        };
     }
 }
 
@@ -88,6 +92,16 @@ using namespace facebook::react;
     _reactSubview = nil;
 }
 
+- (void)notifyForBoundsChange:(CGRect)newBounds
+{
+    if (_reactSubview) {
+        std::static_pointer_cast<NVSearchBarEventEmitter const>(_eventEmitter)
+            ->onChangeBounds(NVSearchBarEventEmitter::OnChangeBounds{
+                .width = static_cast<float>(newBounds.size.width),
+                .height = static_cast<float>(newBounds.size.height),
+            });
+    }
+}
 
 #pragma mark - RCTComponentViewProtocol
 
