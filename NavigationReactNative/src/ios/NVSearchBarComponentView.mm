@@ -9,6 +9,7 @@
 
 #import "RCTFabricComponentsPlugins.h"
 #import <React/RCTI18nUtil.h>
+#import <React/UIView+React.h>
 
 using namespace facebook::react;
 
@@ -54,6 +55,26 @@ using namespace facebook::react;
     [self ensureSearchController];
     const auto &newViewProps = *std::static_pointer_cast<NVSearchBarProps const>(props);
     [super updateProps:props oldProps:oldProps];
+}
+
+
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    if (@available(iOS 11.0, *)) {
+        [self.reactViewController.navigationItem setSearchController:_searchController];
+    }
+}
+
+- (void)willMoveToSuperview:(nullable UIView *)newSuperview
+{
+    [super willMoveToSuperview:newSuperview];
+    if (!newSuperview) {
+        if (@available(iOS 11.0, *)) {
+            [self.reactViewController.navigationItem setSearchController:nil];
+            [self.searchController.searchResultsController dismissViewControllerAnimated:NO completion:nil];
+        }
+    }
 }
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
