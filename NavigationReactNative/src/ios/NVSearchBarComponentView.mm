@@ -71,6 +71,8 @@ using namespace facebook::react;
     if (@available(iOS 13.0, *)) {
         [self.searchController.searchBar.searchTextField setBackgroundColor:RCTUIColorFromSharedColor(newViewProps.barTintColor)];
     }
+    _hideWhenScrolling = newViewProps.hideWhenScrolling;
+    [self.reactViewController.navigationItem setHidesSearchBarWhenScrolling:_hideWhenScrolling];
     [super updateProps:props oldProps:oldProps];
 }
 
