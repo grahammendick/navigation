@@ -32,12 +32,9 @@
     UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
     UIView<NVSearchBar> *searchBar = [self findSearchBar:navigationBar];
     self.definesPresentationContext = true;
-    if (!!searchBar && !navigationBar.isHidden)
-    {
-        if (@available(iOS 11.0, *)) {
-            [self.navigationItem setSearchController:searchBar.searchController];
-            [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
-        }
+    if (!!searchBar && !navigationBar.isHidden) {
+        [self.navigationItem setSearchController:searchBar.searchController];
+        [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
     }
 }
 
@@ -50,9 +47,7 @@
     BOOL hidden = navigationBar.isHidden;
     if (@available(iOS 13.0, *)) {
     } else {
-        if (@available(iOS 11.0, *)) {
-            hidden = hidden || previousController.navigationItem.searchController.active;
-        }
+        hidden = hidden || previousController.navigationItem.searchController.active;
     }
     [self.navigationController setNavigationBarHidden:hidden];
     if (navigationBar.title.length != 0) {
@@ -63,18 +58,13 @@
         previousController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:navigationBar.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
     }
     [navigationBar updateStyle];
-    if (@available(iOS 11.0, *)) {
-        self.navigationController.navigationBar.prefersLargeTitles = true;
-        [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
-    }
+    self.navigationController.navigationBar.prefersLargeTitles = true;
+    [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
     UIView<NVSearchBar> *searchBar = [self findSearchBar:navigationBar];
     self.definesPresentationContext = true;
-    if (!!searchBar && !navigationBar.hidden)
-    {
-        if (@available(iOS 11.0, *)) {
-            [self.navigationItem setSearchController:searchBar.searchController];
-            [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
-        }
+    if (!!searchBar && !navigationBar.hidden) {
+        [self.navigationItem setSearchController:searchBar.searchController];
+        [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
     }
     NVStatusBarView *statusBar = [navigationBar viewWithTag:STATUS_BAR];
     self.statusBarStyle = statusBar.tintStyle;
@@ -88,10 +78,8 @@
     NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
     UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
-    if (@available(iOS 11.0, *)) {
-        if (previousController.navigationItem.searchController.active) {
-            [self.navigationController setNavigationBarHidden:navigationBar.isHidden];
-        }
+    if (previousController.navigationItem.searchController.active) {
+        [self.navigationController setNavigationBarHidden:navigationBar.isHidden];
     }
 }
 

@@ -88,19 +88,15 @@ using namespace facebook::react;
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    if (@available(iOS 11.0, *)) {
-        [self.reactViewController.navigationItem setSearchController:_searchController];
-    }
+    [self.reactViewController.navigationItem setSearchController:_searchController];
 }
 
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview
 {
     [super willMoveToSuperview:newSuperview];
     if (!newSuperview) {
-        if (@available(iOS 11.0, *)) {
-            [self.reactViewController.navigationItem setSearchController:nil];
-            [self.searchController.searchResultsController dismissViewControllerAnimated:NO completion:nil];
-        }
+        [self.reactViewController.navigationItem setSearchController:nil];
+        [self.searchController.searchResultsController dismissViewControllerAnimated:NO completion:nil];
     }
 }
 
