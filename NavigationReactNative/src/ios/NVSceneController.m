@@ -117,12 +117,12 @@
 -(UIView *) findChild:(UIView *)parent of:(Protocol*) proto
 {
     for(NSInteger i = 0; i < parent.subviews.count; i++) {
-        UIView* subview = parent.subviews[0];
+        UIView* subview = parent.subviews[i];
         if ([subview conformsToProtocol:proto])
-            return (UIView<NVNavigationBar> *) subview;
-        subview = [self findNavigationBar:parent.subviews[0]];
+            return subview;
+        subview = [self findChild:parent.subviews[i] of:proto];
         if ([subview conformsToProtocol:proto])
-            return (UIView<NVNavigationBar> *) subview;
+            return subview;
     }
     return nil;
 }
