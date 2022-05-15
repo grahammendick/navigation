@@ -73,6 +73,12 @@ using namespace facebook::react;
     }
     _hideWhenScrolling = newViewProps.hideWhenScrolling;
     [self.reactViewController.navigationItem setHidesSearchBarWhenScrolling:_hideWhenScrolling];
+    NSMutableArray *scopeButtons = [[NSMutableArray alloc] init];
+    for (auto i = 0; i < newViewProps.scopeButtons.size(); i++) {
+        NSString *scopeButton = [[NSString alloc] initWithUTF8String: newViewProps.scopeButtons[i].c_str()];
+        [scopeButtons addObject:scopeButton];
+    }
+    self.searchController.searchBar.scopeButtonTitles = scopeButtons;
     [super updateProps:props oldProps:oldProps];
 }
 
