@@ -135,7 +135,6 @@ using namespace facebook::react;
     }
 }
 
-
 - (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
 {
     if (self.searchController.searchBar.text.length == 0 && !_reactSubview.isHidden) {
