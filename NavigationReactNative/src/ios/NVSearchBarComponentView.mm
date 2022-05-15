@@ -163,6 +163,11 @@ using namespace facebook::react;
     }
 }
 
+- (void)dealloc
+{
+    [_reactSubview removeObserver:self forKeyPath:@"hidden"];
+}
+
 #pragma mark - RCTComponentViewProtocol
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
