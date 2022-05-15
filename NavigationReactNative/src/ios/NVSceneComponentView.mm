@@ -15,6 +15,9 @@ using namespace facebook::react;
 @end
 
 @implementation NVSceneComponentView
+{
+    BOOL _notifiedPeekable;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -32,6 +35,9 @@ using namespace facebook::react;
     _crumb = newViewProps.crumb;
     _title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
     _hidesTabBar = newViewProps.hidesTabBar;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self didUpdate];
+    });
     [super updateProps:props oldProps:oldProps];
 }
 
@@ -43,10 +49,21 @@ using namespace facebook::react;
     }
 }
 
+- (void)didUpdate
+{
+    if (!_notifiedPeekable && self.subviews.count > 0) {
+        _notifiedPeekable = YES;
+        if (self.peekableDidChangeBlock) {
+            self.peekableDidChangeBlock();
+        }
+    }
+}
+
 - (void)prepareForRecycle
 {
     [super prepareForRecycle];
     self.reactViewController.view = nil;
+    _notifiedPeekable = NO;
 }
 
 #pragma mark - RCTComponentViewProtocol

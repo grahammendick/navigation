@@ -4,6 +4,7 @@
 #import "NVNavigationStackView.h"
 #import "NVSceneComponentView.h"
 #import "NVSceneController.h"
+#import "NVSceneComponentView.h"
 
 #import <react/renderer/components/navigation-react-native/ComponentDescriptors.h>
 #import <react/renderer/components/navigation-react-native/EventEmitters.h>
@@ -87,6 +88,10 @@ using namespace facebook::react;
             if (!![scene superview])
                 return;
             NVSceneController *controller = [[NVSceneController alloc] initWithScene:scene];
+            id __weak weakSelf = self;
+            scene.peekableDidChangeBlock = ^{
+                [weakSelf checkPeekability:[self.keys count] - 1];
+            };
             controller.navigationItem.title = scene.title;
             [controllers addObject:controller];
         }
@@ -120,6 +125,15 @@ using namespace facebook::react;
         parentView = parentView.superview;
     }
 }
+- (void)checkPeekability:(NSInteger)crumb
+{
+    NVSceneComponentView *scene;
+    if (crumb > 1 && self.keys.count > crumb - 1) {
+        scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb - 1]];
+    }
+    _navigationController.interactivePopGestureRecognizer.enabled = scene ? scene.subviews.count > 0 : YES;
+}
+
 
 - (void)layoutSubviews
 {
@@ -141,7 +155,7 @@ using namespace facebook::react;
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
-    // [self checkPeekability:crumb];
+    [self checkPeekability:crumb];
     if (crumb < [self.keys count] - 1) {
         _nativeEventCount++;
     }
