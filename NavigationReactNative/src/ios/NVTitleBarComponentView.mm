@@ -43,7 +43,11 @@ using namespace facebook::react;
 - (void)layoutSubviews {
     [super layoutSubviews];
     if (!CGRectEqualToRect(_lastViewFrame, self.frame)) {
-        //[_bridge.uiManager setSize:self.frame.size forView:self];
+        std::static_pointer_cast<NVTitleBarEventEmitter const>(_eventEmitter)
+            ->onChangeBounds(NVTitleBarEventEmitter::OnChangeBounds{
+                .width = static_cast<float>(self.frame.size.width),
+                .height = static_cast<float>(self.frame.size.height),
+            });
         _lastViewFrame = self.frame;
     }
 }
@@ -51,6 +55,7 @@ using namespace facebook::react;
 - (void)prepareForRecycle
 {
     [super prepareForRecycle];
+    _lastViewFrame = CGRectMake(0, 0, 0, 0);
     self.reactViewController.navigationItem.titleView = nil;
 }
 
