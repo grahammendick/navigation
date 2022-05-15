@@ -82,7 +82,8 @@ using namespace facebook::react;
     [super updateProps:props oldProps:oldProps];
 }
 
-- (void)updateStyle {
+- (void)updateStyle
+{
     UINavigationBar *navigationBar;
     if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
         navigationBar = self.reactViewController.navigationController.navigationBar;
@@ -197,6 +198,16 @@ API_AVAILABLE(ios(13.0)){
 }
 
 #pragma mark - RCTComponentViewProtocol
+
+- (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
+{
+    [self addSubview:childComponentView];
+}
+
+- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
+{
+    [childComponentView removeFromSuperview];
+}
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
