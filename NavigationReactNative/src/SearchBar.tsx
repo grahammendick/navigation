@@ -28,7 +28,7 @@ class SearchBar extends React.Component<any, any> {
     onChangeScopeButton({nativeEvent}) {
         var {onChangeScopeButton, scopeButtons} = this.props as any;
         var {eventCount: mostRecentButtonEventCount, scopeButton} = nativeEvent;
-        this.ref.current.setNativeProps({mostRecentButtonEventCount});
+        this.setState({mostRecentButtonEventCount});
         if (onChangeScopeButton)
             onChangeScopeButton(scopeButtons[scopeButton])
     }
@@ -37,7 +37,7 @@ class SearchBar extends React.Component<any, any> {
         this.setState({width, height});
     }
     render() {
-        var {show, width, height, mostRecentEventCount} = this.state;
+        var {show, width, height, mostRecentEventCount, mostRecentButtonEventCount} = this.state;
         var {autoCapitalize, children, bottomBar, scopeButton, scopeButtons, ...props} = this.props;
         var constants = (UIManager as any).getViewManagerConfig('NVSearchBar').Constants;
         autoCapitalize = Platform.OS === 'android' ? constants.AutoCapitalize[autoCapitalize] : autoCapitalize;
@@ -51,6 +51,7 @@ class SearchBar extends React.Component<any, any> {
                 scopeButton={scopeButton ? scopeButtons?.indexOf(scopeButton) : 0}
                 scopeButtons={scopeButtons}
                 mostRecentEventCount={mostRecentEventCount}
+                mostRecentButtonEventCount={mostRecentButtonEventCount}
                 onChangeText={this.onChangeText}
                 onChangeScopeButton={this.onChangeScopeButton}
                 onChangeBounds={this.onChangeBounds}

@@ -22,6 +22,7 @@ using namespace facebook::react;
     UISearchController *_oldSearchController;
     UIView *_reactSubview;
     NSInteger _nativeEventCount;
+    NSInteger _nativeButtonEventCount;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -78,6 +79,12 @@ using namespace facebook::react;
         NSString *scopeButton = [[NSString alloc] initWithUTF8String: newViewProps.scopeButtons[i].c_str()];
         [scopeButtons addObject:scopeButton];
     }
+    _mostRecentButtonEventCount = newViewProps.mostRecentButtonEventCount;
+    NSInteger eventButtonLag = _nativeButtonEventCount - _mostRecentButtonEventCount;
+    NSInteger scopeButton = newViewProps.scopeButton;
+    if (eventButtonLag == 0 && self.searchController.searchBar.selectedScopeButtonIndex != scopeButton) {
+        self.searchController.searchBar.selectedScopeButtonIndex = scopeButton;
+    }
     self.searchController.searchBar.scopeButtonTitles = scopeButtons;
     [super updateProps:props oldProps:oldProps];
 }
@@ -119,12 +126,13 @@ using namespace facebook::react;
 
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
 {
-    /*if (!!self.onChangeScopeButton) {
-        self.onChangeScopeButton(@{
-            @"scopeButton": @(selectedScope),
-            @"eventCount": @(_nativeButtonEventCount),
-        });
-    }*/
+    if (_eventEmitter != nullptr) {
+        std::static_pointer_cast<NVSearchBarEventEmitter const>(_eventEmitter)
+            ->onChangeScopeButton(NVSearchBarEventEmitter::OnChangeScopeButton{
+                .scopeButton = static_cast<int>(selectedScope),
+                .eventCount = static_cast<int>(_nativeButtonEventCount),
+            });
+    }
 }
 
 
@@ -139,6 +147,7 @@ using namespace facebook::react;
 {
     [super prepareForRecycle];
     _nativeEventCount = 0;
+    _nativeButtonEventCount = 0;
     _oldSearchController = _searchController;
     _searchController = nil;
     _reactSubview = nil;
