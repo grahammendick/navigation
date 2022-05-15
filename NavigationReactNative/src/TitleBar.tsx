@@ -5,7 +5,7 @@ const TitleBar = ({style, ...props}) => (
   <NVTitleBar {...props} style={Platform.OS === 'ios' ? [styles.titleBar, style] : style}/>
 )
 
-const NVTitleBar = requireNativeComponent<any>('NVTitleBar', null)
+const NVTitleBar = global.nativeFabricUIManager ? require('./TitleBarNativeComponent').default : requireNativeComponent('NVTitleBar');
 
 const styles = StyleSheet.create({
   titleBar: {
