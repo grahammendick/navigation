@@ -1,8 +1,9 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
 #import <React/RCTComponent.h>
+#import "NVSceneController.h"
 
-@interface NVSearchBarView : UIView <UISearchResultsUpdating, UISearchBarDelegate>
+@interface NVSearchBarView : UIView <UISearchResultsUpdating, UISearchBarDelegate, NVSearchBar>
 
 @property UISearchController *searchController;
 @property (nonatomic, assign) BOOL hideWhenScrolling;
@@ -11,8 +12,6 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onChangeText;
 @property (nonatomic, copy) RCTDirectEventBlock onChangeScopeButton;
 @property (nonatomic, copy) RCTDirectEventBlock onChangeBounds;
-
-#define SEARCH_BAR ((int) 5858585858)
 
 -(id)initWithBridge: (RCTBridge *)bridge;
 

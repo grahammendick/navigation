@@ -19,7 +19,6 @@
 {
     if (self = [super initWithFrame:CGRectZero]) {
         _bridge = bridge;
-        self.tag = SEARCH_BAR;
         NVSearchResultsController *viewController = [[NVSearchResultsController alloc] init];
         self.searchController = [[NVSearchController alloc] initWithSearchResultsController:viewController];
         self.searchController.searchBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;

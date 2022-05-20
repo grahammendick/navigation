@@ -1,5 +1,4 @@
 #import <UIKit/UIKit.h>
-#import "NVStatusBarView.h"
 
 @interface NVSceneController : UIViewController
 

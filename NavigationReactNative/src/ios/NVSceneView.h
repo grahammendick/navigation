@@ -1,7 +1,8 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
+#import "NVSceneController.h"
 
-@interface NVSceneView : UIView
+@interface NVSceneView : UIView <NVScene>
 
 @property (nonatomic, copy) void (^peekableDidChangeBlock)(void);
 @property (nonatomic, copy) NSString *sceneKey;

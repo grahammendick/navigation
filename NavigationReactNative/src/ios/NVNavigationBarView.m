@@ -8,7 +8,6 @@
 - (id)init
 {
     if (self = [super init]) {
-        self.tag = NAVIGATION_BAR;
     }
     return self;
 }
@@ -16,6 +15,7 @@
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     [super didSetProps:changedProps];
+    _isHidden = _hidden;
     if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
         [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];
     }
