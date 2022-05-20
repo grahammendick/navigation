@@ -10,6 +10,7 @@
 @property (nonatomic, assign) NSInteger mostRecentButtonEventCount;
 @property (nonatomic, copy) RCTBubblingEventBlock onChangeText;
 @property (nonatomic, copy) RCTDirectEventBlock onChangeScopeButton;
+@property (nonatomic, copy) RCTDirectEventBlock onChangeBounds;
 
 #define SEARCH_BAR ((int) 5858585858)
 

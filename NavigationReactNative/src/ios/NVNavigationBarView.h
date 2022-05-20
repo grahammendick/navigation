@@ -23,6 +23,7 @@
 @property (nonatomic, copy) UIColor *titleColor;
 @property (nonatomic, copy) UIColor *largeTitleColor;
 @property (nonatomic, copy) NSString *backTitle;
+@property (nonatomic, assign) BOOL backTitleOn;
 @property (nonatomic, copy) NSString *backTestID;
 
 -(void)updateStyle;
