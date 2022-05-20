@@ -34,3 +34,11 @@
 @property (nonatomic, assign) BOOL hideWhenScrolling;
 
 @end
+
+@protocol NVStatusBar
+
+@property (nonatomic, assign) UIStatusBarStyle tintStyle;
+@property (nonatomic, assign) BOOL hidden;
+- (void)updateStyle;
+
+@end

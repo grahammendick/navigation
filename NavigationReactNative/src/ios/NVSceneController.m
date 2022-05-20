@@ -66,7 +66,7 @@
         [self.navigationItem setSearchController:searchBar.searchController];
         [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
     }
-    NVStatusBarView *statusBar = [navigationBar viewWithTag:STATUS_BAR];
+    UIView<NVStatusBar> *statusBar = [self findStatusBar:navigationBar];
     self.statusBarStyle = statusBar.tintStyle;
     self.statusBarHidden = statusBar.hidden;
     [statusBar updateStyle];
@@ -87,7 +87,7 @@
 {
     [super viewDidAppear:animated];
     UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
-    NVStatusBarView *statusBar = [navigationBar viewWithTag:STATUS_BAR];
+    UIView<NVStatusBar> *statusBar = [self findStatusBar:navigationBar];
     [navigationBar updateStyle];
     [statusBar updateStyle];
 }
@@ -100,6 +100,11 @@
 -(UIView<NVSearchBar> *) findSearchBar:(UIView *)parent
 {
     return (UIView<NVSearchBar> *) [self findChild:parent of:@protocol(NVSearchBar)];
+}
+
+-(UIView<NVStatusBar> *) findStatusBar:(UIView *)parent
+{
+    return (UIView<NVStatusBar> *) [self findChild:parent of:@protocol(NVStatusBar)];
 }
 
 -(UIView *) findChild:(UIView *)parent of:(Protocol*) proto
