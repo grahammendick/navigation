@@ -6,51 +6,6 @@
 	objectVersion = 50;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		70153012229D1F4800903FA7 /* NVSearchResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70153011229D1F4800903FA7 /* NVSearchResultsController.m */; };
-		7021392B282C50BF001E4ECC /* NVSearchBarComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7021392A282C50BF001E4ECC /* NVSearchBarComponentView.mm */; };
-		7025916328269AA200A9DD13 /* NVSegmentedTabComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7025916228269AA200A9DD13 /* NVSegmentedTabComponentView.mm */; };
-		7025916628269ACE00A9DD13 /* NVTabBarPagerComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7025916528269ACE00A9DD13 /* NVTabBarPagerComponentView.mm */; };
-		70295FE82800768A0051A576 /* NVSceneComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 70295FE72800768A0051A576 /* NVSceneComponentView.mm */; };
-		702FBDB72830F920002054B5 /* NVTitleBarComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 702FBDB62830F920002054B5 /* NVTitleBarComponentView.mm */; };
-		702FBDBA28317EF9002054B5 /* NVStatusBarComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 702FBDB928317EF9002054B5 /* NVStatusBarComponentView.mm */; };
-		7032DA6B280D49DB00A3AD1B /* NVRightBarComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7032DA6A280D49DB00A3AD1B /* NVRightBarComponentView.mm */; };
-		7032DA6E280D49FB00A3AD1B /* NVBarButtonComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7032DA6D280D49FB00A3AD1B /* NVBarButtonComponentView.mm */; };
-		7032DA71280DC47A00A3AD1B /* NVLeftBarComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7032DA70280DC47A00A3AD1B /* NVLeftBarComponentView.mm */; };
-		704B593C22A2AC14008C05C6 /* NVNavigationStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 704B593B22A2AC14008C05C6 /* NVNavigationStackView.m */; };
-		704B594022A2AC3A008C05C6 /* NVNavigationStackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 704B593F22A2AC3A008C05C6 /* NVNavigationStackManager.m */; };
-		704B594222A2AC56008C05C6 /* NVSceneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 704B594122A2AC56008C05C6 /* NVSceneView.m */; };
-		704B594622A2AC77008C05C6 /* NVSceneManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 704B594522A2AC77008C05C6 /* NVSceneManager.m */; };
-		70587C86229A8688009457B7 /* NVSearchBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70587C85229A8688009457B7 /* NVSearchBarView.m */; };
-		70587C89229A86B8009457B7 /* NVSearchBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70587C88229A86B8009457B7 /* NVSearchBarManager.m */; };
-		705D1E90281FD33B00886320 /* NVTabBarComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 705D1E8F281FD33B00886320 /* NVTabBarComponentView.mm */; };
-		705D1E92281FD35600886320 /* NVTabBarItemComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 705D1E91281FD35600886320 /* NVTabBarItemComponentView.mm */; };
-		706A6B7227F3A6490062030A /* NVNavigationStackComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 706A6B7027F3A6490062030A /* NVNavigationStackComponentView.mm */; };
-		706A9A91280ABB3B009EAF06 /* NVNavigationBarComponentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 706A9A90280ABB3B009EAF06 /* NVNavigationBarComponentView.mm */; };
-		706F41022562BF7D000E213E /* NVStatusBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 706F41012562BF7D000E213E /* NVStatusBarView.m */; };
-		706F41062562BFAC000E213E /* NVStatusBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 706F41052562BFAC000E213E /* NVStatusBarManager.m */; };
-		707F41B024A74F4600A06BF2 /* NVTabBarPagerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 707F41AF24A74F4600A06BF2 /* NVTabBarPagerView.m */; };
-		707F41B324A74F6700A06BF2 /* NVTabBarPagerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 707F41B224A74F6700A06BF2 /* NVTabBarPagerManager.m */; };
-		70922F8422C0D143009CECB0 /* NVNavigationBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70922F8322C0D143009CECB0 /* NVNavigationBarView.m */; };
-		70922F8622C0D153009CECB0 /* NVNavigationBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70922F8522C0D153009CECB0 /* NVNavigationBarManager.m */; };
-		709F32CF22A7FF9C00A0358A /* NVTabBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F32CE22A7FF9C00A0358A /* NVTabBarView.m */; };
-		709F32D322A7FFBF00A0358A /* NVTabBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F32D222A7FFBF00A0358A /* NVTabBarManager.m */; };
-		709F32D522A7FFD600A0358A /* NVTabBarItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F32D422A7FFD600A0358A /* NVTabBarItemView.m */; };
-		709F32D922A7FFFA00A0358A /* NVTabBarItemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F32D822A7FFFA00A0358A /* NVTabBarItemManager.m */; };
-		709F331222A8657700A0358A /* NVSceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F331122A8657700A0358A /* NVSceneController.m */; };
-		70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3290212B2BC700DE0D13 /* NVRightBarView.m */; };
-		70BB3294212B2C0A00DE0D13 /* NVRightBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3293212B2C0A00DE0D13 /* NVRightBarManager.m */; };
-		70BB3298212B2C4000DE0D13 /* NVLeftBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3297212B2C4000DE0D13 /* NVLeftBarView.m */; };
-		70BB329A212B2C5100DE0D13 /* NVLeftBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3299212B2C5100DE0D13 /* NVLeftBarManager.m */; };
-		70BB329E212B2C9000DE0D13 /* NVBarButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB329D212B2C9000DE0D13 /* NVBarButtonManager.m */; };
-		70BB32A0212B2CA000DE0D13 /* NVBarButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB329F212B2CA000DE0D13 /* NVBarButtonView.m */; };
-		70BB32A4212B2D4100DE0D13 /* NVBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB32A3212B2D4100DE0D13 /* NVBarView.m */; };
-		70E99F2A24461103004B520A /* NVSegmentedTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E99F2924461103004B520A /* NVSegmentedTabView.m */; };
-		70E99F2D24461152004B520A /* NVSegmentedTabManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E99F2C24461152004B520A /* NVSegmentedTabManager.m */; };
-		EE17B6DD231E85C000C62B81 /* NVTitleBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = EE17B6DC231E85C000C62B81 /* NVTitleBarView.m */; };
-		EE17B6E0231E86B800C62B81 /* NVTitleBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EE17B6DF231E86B800C62B81 /* NVTitleBarManager.m */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		7020F6BC20ECD07A00E7A74E /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -291,48 +246,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				705D1E90281FD33B00886320 /* NVTabBarComponentView.mm in Sources */,
-				709F32CF22A7FF9C00A0358A /* NVTabBarView.m in Sources */,
-				7021392B282C50BF001E4ECC /* NVSearchBarComponentView.mm in Sources */,
-				709F32D922A7FFFA00A0358A /* NVTabBarItemManager.m in Sources */,
-				7032DA6E280D49FB00A3AD1B /* NVBarButtonComponentView.mm in Sources */,
-				706F41062562BFAC000E213E /* NVStatusBarManager.m in Sources */,
-				70BB329E212B2C9000DE0D13 /* NVBarButtonManager.m in Sources */,
-				70BB3294212B2C0A00DE0D13 /* NVRightBarManager.m in Sources */,
-				70153012229D1F4800903FA7 /* NVSearchResultsController.m in Sources */,
-				70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */,
-				70922F8422C0D143009CECB0 /* NVNavigationBarView.m in Sources */,
-				704B593C22A2AC14008C05C6 /* NVNavigationStackView.m in Sources */,
-				EE17B6DD231E85C000C62B81 /* NVTitleBarView.m in Sources */,
-				70587C89229A86B8009457B7 /* NVSearchBarManager.m in Sources */,
-				7025916328269AA200A9DD13 /* NVSegmentedTabComponentView.mm in Sources */,
-				709F32D322A7FFBF00A0358A /* NVTabBarManager.m in Sources */,
-				707F41B024A74F4600A06BF2 /* NVTabBarPagerView.m in Sources */,
-				709F32D522A7FFD600A0358A /* NVTabBarItemView.m in Sources */,
-				7025916628269ACE00A9DD13 /* NVTabBarPagerComponentView.mm in Sources */,
-				70E99F2D24461152004B520A /* NVSegmentedTabManager.m in Sources */,
-				702FBDBA28317EF9002054B5 /* NVStatusBarComponentView.mm in Sources */,
-				70BB329A212B2C5100DE0D13 /* NVLeftBarManager.m in Sources */,
-				706A9A91280ABB3B009EAF06 /* NVNavigationBarComponentView.mm in Sources */,
-				70BB32A0212B2CA000DE0D13 /* NVBarButtonView.m in Sources */,
-				70922F8622C0D153009CECB0 /* NVNavigationBarManager.m in Sources */,
-				707F41B324A74F6700A06BF2 /* NVTabBarPagerManager.m in Sources */,
-				70E99F2A24461103004B520A /* NVSegmentedTabView.m in Sources */,
-				702FBDB72830F920002054B5 /* NVTitleBarComponentView.mm in Sources */,
-				70BB32A4212B2D4100DE0D13 /* NVBarView.m in Sources */,
-				70587C86229A8688009457B7 /* NVSearchBarView.m in Sources */,
-				704B594622A2AC77008C05C6 /* NVSceneManager.m in Sources */,
-				709F331222A8657700A0358A /* NVSceneController.m in Sources */,
-				7032DA6B280D49DB00A3AD1B /* NVRightBarComponentView.mm in Sources */,
-				706A6B7227F3A6490062030A /* NVNavigationStackComponentView.mm in Sources */,
-				70295FE82800768A0051A576 /* NVSceneComponentView.mm in Sources */,
-				704B594022A2AC3A008C05C6 /* NVNavigationStackManager.m in Sources */,
-				706F41022562BF7D000E213E /* NVStatusBarView.m in Sources */,
-				70BB3298212B2C4000DE0D13 /* NVLeftBarView.m in Sources */,
-				704B594222A2AC56008C05C6 /* NVSceneView.m in Sources */,
-				7032DA71280DC47A00A3AD1B /* NVLeftBarComponentView.mm in Sources */,
-				EE17B6E0231E86B800C62B81 /* NVTitleBarManager.m in Sources */,
-				705D1E92281FD35600886320 /* NVTabBarItemComponentView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
