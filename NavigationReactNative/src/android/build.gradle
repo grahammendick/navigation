@@ -37,7 +37,7 @@ android {
     sourceSets {
         main {
             if (isNewArchitectureEnabled()) {
-                java.includes += [                    
+                java.includes += [
                     '**/ActionBarView.java',
                     '**/ActionView.java',
                     '**/BarButtonView.java',
@@ -50,11 +50,12 @@ android {
                     '**/IconResolver.java',
                     '**/LinkActivity.java',
                     '**/NavigationBarView.java',
-                    '**/NavigationPackage.java',
-                    '**/NavigationStackViewManager.java',
+                    '**/newarch/NavigationPackage.java',
                     '**/NavigationStackView.java',
+                    '**/NavigationStackViewManager.java',
                     '**/SceneFragment.java',
                     '**/SceneView.java',
+                    '**/SceneViewManager.java',
                     '**/SearchBarView.java',
                     '**/SharedElementMotion.java',
                     '**/SharedElementView.java',
@@ -70,6 +71,9 @@ android {
                     '**/TabView.java',
                     '**/TitleBarView.java',
                     '**/ToolbarView.java',
+                ]
+                java.excludes = [
+                    '**/reactnative/NavigationPackage.java'
                 ]
             } else {
                 java.includes = [                    
@@ -94,7 +98,7 @@ android {
                     '**/LinkActivity.java',
                     '**/NavigationBarManager.java',
                     '**/NavigationBarView.java',
-                    '**/NavigationPackage.java',
+                    '**/reactnative/NavigationPackage.java',
                     '**/NavigationStackManager.java',
                     '**/NavigationStackView.java',
                     '**/SceneFragment.java',
@@ -127,6 +131,9 @@ android {
                     '**/TitleBarView.java',
                     '**/ToolbarManager.java',
                     '**/ToolbarView.java',
+                ]
+                java.excludes = [
+                    '**/newarch/NavigationPackage.java'
                 ]
             }
         }
