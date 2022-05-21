@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -21,16 +22,16 @@ import javax.annotation.Nonnull;
 
 @ReactModule(name = "NVNavigationStack")
 public class NavigationStackViewManager extends ViewGroupManager<NavigationStackView> implements NVNavigationStackManagerInterface<NavigationStackView> {
-    private final ViewManagerDelegate<NavigationStackView> mDelegate;
+    private final ViewManagerDelegate<NavigationStackView> delegate;
 
     public NavigationStackViewManager(ReactApplicationContext context) {
-        mDelegate = new NVNavigationStackManagerDelegate<>(this);
+        delegate = new NVNavigationStackManagerDelegate<>(this);
     }
 
     @Nullable
     @Override
     protected ViewManagerDelegate<NavigationStackView> getDelegate() {
-        return mDelegate;
+        return delegate;
     }
 
     @Nonnull
@@ -118,11 +119,11 @@ public class NavigationStackViewManager extends ViewGroupManager<NavigationStack
         super.onDropViewInstance(view);
     }
 
-    /*@Override
+    @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
                 .put("onNavigateToTop", MapBuilder.of("registrationName", "onNavigateToTop"))
                 .put("onRest", MapBuilder.of("registrationName", "onRest"))
                 .build();
-    }*/
+    }
 }
