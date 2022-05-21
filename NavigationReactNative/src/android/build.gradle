@@ -37,7 +37,39 @@ android {
     sourceSets {
         main {
             if (isNewArchitectureEnabled()) {
-                java.includes = [                    
+                java.includes += [                    
+                    '**/ActionBarView.java',
+                    '**/ActionView.java',
+                    '**/BarButtonView.java',
+                    '**/BottomAppBarView.java',
+                    '**/BottomSheetView.java',
+                    '**/CollapsingBarView.java',
+                    '**/CoordinatorLayoutView.java',
+                    '**/ExtendedFloatingActionButtonView.java',
+                    '**/FloatingActionButtonView.java',
+                    '**/IconResolver.java',
+                    '**/LinkActivity.java',
+                    '**/NavigationBarView.java',
+                    '**/NavigationPackage.java',
+                    '**/NavigationStackViewManager.java',
+                    '**/NavigationStackView.java',
+                    '**/SceneFragment.java',
+                    '**/SceneView.java',
+                    '**/SearchBarView.java',
+                    '**/SharedElementMotion.java',
+                    '**/SharedElementView.java',
+                    '**/StatusBarView.java',
+                    '**/TabBarItemView.java',
+                    '**/TabBarPagerRTLAdapter.java',
+                    '**/TabBarPagerView.java',
+                    '**/TabBarView.java',
+                    '**/TabFragment.java',
+                    '**/TabLayoutRTLView.java',
+                    '**/TabLayoutView.java',
+                    '**/TabNavigationView.java',
+                    '**/TabView.java',
+                    '**/TitleBarView.java',
+                    '**/ToolbarView.java',
                 ]
             } else {
                 java.includes = [                    
@@ -117,7 +149,7 @@ dependencies {
 
 if (isNewArchitectureEnabled()) {
     react {
-        jsRootDir = file("../src/")
+        jsRootDir = file("../")
         libraryName = "navigation-react-native"
         codegenJavaPackageName = "com.navigation.reactnative"
     }
