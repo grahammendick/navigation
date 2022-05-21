@@ -73,7 +73,7 @@ public class SceneViewManager extends ViewGroupManager<SceneView> implements NVS
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-                .put("onPopped", MapBuilder.of("registrationName", "onPopped"))
-                .build();
+            .put("topOnPopped", MapBuilder.of("registrationName", "onPopped"))
+            .build();
     }
 }
