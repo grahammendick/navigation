@@ -52,14 +52,10 @@ public class StatusBarViewManager extends ViewGroupManager<StatusBarView> implem
     }
 
     @Override
+    @ReactProp(name = "barTintColor", customType = "Color")
     public void setBarTintColor(StatusBarView view, @Nullable Integer barTintColor) {
         view.barTintColor = barTintColor != null ? barTintColor : view.defaultStatusBarColor;
     }
-
-    /* @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
-    public void setBarTintColor(StatusBarView view, int barTintColor) {
-        view.barTintColor = barTintColor != Integer.MAX_VALUE ? barTintColor : view.defaultStatusBarColor;
-    } */
 
     @Override
     protected void onAfterUpdateTransaction(@NonNull StatusBarView view) {
