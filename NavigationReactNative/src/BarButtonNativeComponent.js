@@ -14,6 +14,10 @@ type NativeProps = $ReadOnly<{|
   testID: string,
   image: ImageSource,
   systemItem: string,
+  search: boolean,
+  showActionView: boolean,
+  showAsAction: Int32,
+  actionBar: boolean,
   onPress: DirectEventHandler<null>
 |}>;
 

@@ -1,6 +1,5 @@
 package com.navigation.reactnative;
 
-import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -81,7 +80,25 @@ public class BarButtonViewManager extends ViewGroupManager<BarButtonView> implem
     public void setSystemItem(BarButtonView view, @Nullable String value) {
     }
 
+    @Override
     @ReactProp(name = "showAsAction")
+    public void setShowAsAction(BarButtonView view, int showAsAction) {
+        view.setShowAsAction(showAsAction);
+    }
+
+    @Override
+    @ReactProp(name = "actionBar")
+    public void setActionBar(BarButtonView view, boolean actionBar) {
+        view.setActionBar(actionBar);
+    }
+
+    @Override
+    @ReactProp(name = "search")
+    public void setSearch(BarButtonView view, boolean search) {
+        view.setSearch(search);
+    }
+
+    /* @ReactProp(name = "showAsAction")
     public void setShowAsAction(BarButtonView view, Integer showAsAction) {
         view.setShowAsAction(showAsAction != null ? showAsAction : MenuItem.SHOW_AS_ACTION_NEVER);
     }
@@ -94,7 +111,7 @@ public class BarButtonViewManager extends ViewGroupManager<BarButtonView> implem
     @ReactProp(name = "search")
     public void setSearch(BarButtonView view, Boolean search) {
         view.setSearch(search != null ? search : false);
-    }
+    } */
 
     @ReactProp(name = "width")
     public void setWidth(BarButtonView view, double width) {
