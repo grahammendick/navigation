@@ -50,11 +50,6 @@ public class ToolbarViewManager extends ViewGroupManager<ToolbarView> implements
     }
 
     @Override
-    public void setLargeTitle(ToolbarView view, boolean value) {
-
-    }
-
-    @Override
     @ReactProp(name = "title")
     public void setTitle(ToolbarView view, String title) {
         view.setPlainTitle(title);
