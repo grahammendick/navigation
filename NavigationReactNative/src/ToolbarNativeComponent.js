@@ -15,6 +15,11 @@ type NativeProps = $ReadOnly<{|
   tintColor: ColorValue,
   titleColor: ColorValue,
   navigationImage: ImageSource,
+  navigationTestID: string,
+  navigationAccessibilityLabel: string,
+  logo: ImageSource,
+  overflowImage: ImageSource,
+  overflowTestID: string,
   onNavigationPress: DirectEventHandler<null>,
 |}>;
 

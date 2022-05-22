@@ -91,7 +91,7 @@ public class ToolbarViewManager extends ViewGroupManager<ToolbarView> implements
     @Override
     @ReactProp(name = "tintColor", customType = "Color")
     public void setTintColor(ToolbarView view, @Nullable Integer tintColor) {
-        view.setTintColor(tintColor != null ? tintColor : null);
+        view.setTintColor(tintColor);
     }
 
     @Override
@@ -111,14 +111,16 @@ public class ToolbarViewManager extends ViewGroupManager<ToolbarView> implements
         view.setLogoSource(logo);
     }
 
-    @ReactProp(name = "navigationAccessibilityLabel")
-    public void setNavigationContentDescription(ToolbarView view, String navigationContentDescription) {
-        view.setNavigationContentDescription(navigationContentDescription);
+    @Override
+    @ReactProp(name = "overflowImage")
+    public void setOverflowImage(ToolbarView view, @Nullable ReadableMap overflowImage) {
+        view.setOverflowIconSource(overflowImage);
     }
 
-    @ReactProp(name = "overflowImage")
-    public void setOverflowIcon(ToolbarView view, ReadableMap overflowIcon) {
-        view.setOverflowIconSource(overflowIcon);
+    @Override
+    @ReactProp(name = "navigationAccessibilityLabel")
+    public void setNavigationAccessibilityLabel(ToolbarView view, @Nullable String navigationAccessibilityLabel) {
+        view.setNavigationContentDescription(navigationAccessibilityLabel);
     }
 
     @ReactProp(name = "height")
