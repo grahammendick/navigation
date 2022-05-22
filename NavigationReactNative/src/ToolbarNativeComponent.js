@@ -6,6 +6,14 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
+  title: string,
+  titleFontFamily: string,
+  titleFontWeight: string,
+  titleFontStyle: string,
+  titleFontSize?: WithDefault<Float, -1>,
+  barTintColor: ColorValue,
+  tintColor: ColorValue,
+  titleColor: ColorValue,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(
