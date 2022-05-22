@@ -100,15 +100,21 @@ public class ToolbarViewManager extends ViewGroupManager<ToolbarView> implements
         view.setTitleTextColor(titleColor != null ? titleColor : view.defaultTitleTextColor);
     }
 
+    @Override
+    @ReactProp(name = "navigationImage")
+    public void setNavigationImage(ToolbarView view, @Nullable ReadableMap navigationImage) {
+        view.setNavIconSource(navigationImage);
+    }
+
     @ReactProp(name = "logo")
     public void setLogo(ToolbarView view, ReadableMap logo) {
         view.setLogoSource(logo);
     }
 
-    @ReactProp(name = "navigationImage")
+    /* @ReactProp(name = "navigationImage")
     public void setNavIcon(ToolbarView view, ReadableMap navIcon) {
         view.setNavIconSource(navIcon);
-    }
+    } */
 
     @ReactProp(name = "navigationAccessibilityLabel")
     public void setNavigationContentDescription(ToolbarView view, String navigationContentDescription) {
@@ -190,7 +196,7 @@ public class ToolbarViewManager extends ViewGroupManager<ToolbarView> implements
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("onNavigationPress", MapBuilder.of("registrationName", "onNavigationPress"))
+            .put("topOnNavigationPress", MapBuilder.of("registrationName", "onNavigationPress"))
             .build();
     }
 }

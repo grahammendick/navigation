@@ -14,6 +14,8 @@ type NativeProps = $ReadOnly<{|
   barTintColor: ColorValue,
   tintColor: ColorValue,
   titleColor: ColorValue,
+  navigationImage: ImageSource,
+  onNavigationPress: DirectEventHandler<null>,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(
