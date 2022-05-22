@@ -36,7 +36,6 @@ public class ToolbarViewManager extends ViewGroupManager<ToolbarView> implements
         return delegate;
     }
 
-
     @Nonnull
     @Override
     public String getName() {
