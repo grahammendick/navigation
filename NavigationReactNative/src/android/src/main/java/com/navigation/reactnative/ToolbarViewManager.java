@@ -111,11 +111,6 @@ public class ToolbarViewManager extends ViewGroupManager<ToolbarView> implements
         view.setLogoSource(logo);
     }
 
-    /* @ReactProp(name = "navigationImage")
-    public void setNavIcon(ToolbarView view, ReadableMap navIcon) {
-        view.setNavIconSource(navIcon);
-    } */
-
     @ReactProp(name = "navigationAccessibilityLabel")
     public void setNavigationContentDescription(ToolbarView view, String navigationContentDescription) {
         view.setNavigationContentDescription(navigationContentDescription);
