@@ -100,11 +100,6 @@ public class ToolbarViewManager extends ViewGroupManager<ToolbarView> implements
         view.setTitleTextColor(titleColor != null ? titleColor : view.defaultTitleTextColor);
     }
 
-    /* @ReactProp(name = "titleFontSize")
-    public void setTitleFontSize(ToolbarView view, Integer titleFontSize) {
-        view.setTitleFontSize(titleFontSize);
-    } */
-
     @ReactProp(name = "logo")
     public void setLogo(ToolbarView view, ReadableMap logo) {
         view.setLogoSource(logo);
@@ -124,24 +119,6 @@ public class ToolbarViewManager extends ViewGroupManager<ToolbarView> implements
     public void setOverflowIcon(ToolbarView view, ReadableMap overflowIcon) {
         view.setOverflowIconSource(overflowIcon);
     }
-
-    /* @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
-    public void setBarTintColor(ToolbarView view, int barTintColor) {
-        if (barTintColor != Integer.MAX_VALUE)
-            view.setBackgroundColor(barTintColor);
-        else
-            view.setBackground(null);
-    } */
-
-    /* @ReactProp(name = "tintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
-    public void setTintColor(ToolbarView view, int tintColor) {
-        view.setTintColor(tintColor != Integer.MAX_VALUE ? tintColor : null);
-    } */
-
-    /* @ReactProp(name = "titleColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
-    public void setTitleColor(ToolbarView view, int textColor) {
-        view.setTitleTextColor(textColor != Integer.MAX_VALUE ? textColor : view.defaultTitleTextColor);
-    } */
 
     @ReactProp(name = "height")
     public void setHeight(ToolbarView view, double height) {
