@@ -89,6 +89,6 @@ var Container: any = ({collapse, children, ...props}) => (
 )
 
 var NVNavigationBar = global.nativeFabricUIManager ? require('./NavigationBarNativeComponent').default : requireNativeComponent('NVNavigationBar');
-var NVToolbar = requireNativeComponent<any>('NVToolbar', null);
+var NVToolbar = global.nativeFabricUIManager ? require('./ToolbarNativeComponent').default : requireNativeComponent('NVToolbar');
 
 export default Animated.createAnimatedComponent(NavigationBar);
