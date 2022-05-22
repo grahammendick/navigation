@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -24,7 +23,7 @@ import javax.annotation.Nonnull;
 public class NavigationStackViewManager extends ViewGroupManager<NavigationStackView> implements NVNavigationStackManagerInterface<NavigationStackView> {
     private final ViewManagerDelegate<NavigationStackView> delegate;
 
-    public NavigationStackViewManager(ReactApplicationContext context) {
+    public NavigationStackViewManager() {
         delegate = new NVNavigationStackManagerDelegate<>(this);
     }
 

@@ -14,8 +14,11 @@ public class NavigationPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList(
-            new NavigationStackViewManager(reactContext),
-            new SceneViewManager(reactContext)
+            new NavigationBarViewManager(),
+            new NavigationStackViewManager(),
+            new SceneViewManager(),
+            new StatusBarViewManager(),
+            new ToolbarViewManager()
         );
     }
 

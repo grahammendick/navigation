@@ -2,7 +2,6 @@ package com.navigation.reactnative;
 
 import androidx.annotation.Nullable;
 
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -20,7 +19,7 @@ import javax.annotation.Nonnull;
 public class SceneViewManager extends ViewGroupManager<SceneView> implements NVSceneManagerInterface<SceneView> {
     private final ViewManagerDelegate<SceneView> delegate;
 
-    public SceneViewManager(ReactApplicationContext context) {
+    public SceneViewManager() {
         delegate = new NVSceneManagerDelegate<>(this);
     }
 
