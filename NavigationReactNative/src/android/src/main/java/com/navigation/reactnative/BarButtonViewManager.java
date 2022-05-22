@@ -98,21 +98,6 @@ public class BarButtonViewManager extends ViewGroupManager<BarButtonView> implem
         view.setSearch(search);
     }
 
-    /* @ReactProp(name = "showAsAction")
-    public void setShowAsAction(BarButtonView view, Integer showAsAction) {
-        view.setShowAsAction(showAsAction != null ? showAsAction : MenuItem.SHOW_AS_ACTION_NEVER);
-    }
-
-    @ReactProp(name = "actionBar")
-    public void setActionBar(BarButtonView view, Boolean actionBar) {
-        view.setActionBar(actionBar != null ? actionBar : false);
-    }
-
-    @ReactProp(name = "search")
-    public void setSearch(BarButtonView view, Boolean search) {
-        view.setSearch(search != null ? search : false);
-    } */
-
     @ReactProp(name = "width")
     public void setWidth(BarButtonView view, double width) {
         view.setLayoutParams(new ActionMenuView.LayoutParams(
