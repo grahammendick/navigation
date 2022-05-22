@@ -124,7 +124,7 @@ public class BarButtonViewManager extends ViewGroupManager<BarButtonView> implem
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("onPress", MapBuilder.of("registrationName", "onPress"))
+            .put("topOnPress", MapBuilder.of("registrationName", "onPress"))
             .build();
     }
 }
