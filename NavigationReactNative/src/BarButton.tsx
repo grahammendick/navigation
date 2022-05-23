@@ -12,7 +12,7 @@ const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search =
             testID={testID}
             search={search}
             showActionView={!!children}
-            showAsAction={Platform.OS === 'android' ? constants.ShowAsAction[show] || 'never' : null}
+            showAsAction={Platform.OS === 'android' ? constants.ShowAsAction[show || 'never'] : null}
             actionBar={actionBar}
             image={Image.resolveAssetSource(image)}
             systemItem={systemItem || ''}
