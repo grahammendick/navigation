@@ -38,8 +38,8 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
     }
 
     @ReactProp(name = "autoCapitalize")
-    public void setAutoCapitalize(SearchBarView view, int autoCapitalize) {
-        view.searchView.setInputType(autoCapitalize);
+    public void setAutoCapitalize(SearchBarView view, String autoCapitalize) {
+        view.searchView.setInputType(Integer.parseInt(autoCapitalize));
     }
 
     @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)

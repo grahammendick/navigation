@@ -54,7 +54,9 @@ public class SearchBarViewManager extends ViewGroupManager<SearchBarView> implem
     }
 
     @Override
-    public void setAutoCapitalize(SearchBarView view, @Nullable String value) {
+    @ReactProp(name = "autoCapitalize")
+    public void setAutoCapitalize(SearchBarView view, String autoCapitalize) {
+        view.searchView.setInputType(Integer.parseInt(autoCapitalize));
     }
 
     @ReactProp(name = "placeholder")
@@ -82,11 +84,6 @@ public class SearchBarViewManager extends ViewGroupManager<SearchBarView> implem
 
     @Override
     public void setScopeButtons(SearchBarView view, @Nullable ReadableArray value) {
-    }
-
-    @ReactProp(name = "autoCapitalize")
-    public void setAutoCapitalize(SearchBarView view, int autoCapitalize) {
-        view.searchView.setInputType(autoCapitalize);
     }
 
     @Override

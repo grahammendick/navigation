@@ -47,7 +47,7 @@ class SearchBar extends React.Component<any, any> {
                 {...props}
                 ref={this.ref}
                 bottomBar={bottomBar}
-                autoCapitalize={autoCapitalize}
+                autoCapitalize={'' + autoCapitalize}
                 scopeButton={scopeButton ? scopeButtons?.indexOf(scopeButton) : 0}
                 scopeButtons={scopeButtons}
                 mostRecentEventCount={mostRecentEventCount}
