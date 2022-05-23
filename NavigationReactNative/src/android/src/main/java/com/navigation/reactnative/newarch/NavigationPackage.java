@@ -21,6 +21,7 @@ public class NavigationPackage implements ReactPackage {
             new SceneViewManager(),
             new SharedElementViewManager(),
             new StatusBarViewManager(),
+            new TitleBarViewManager(),
             new ToolbarViewManager()
         );
     }
