@@ -8,8 +8,6 @@ import com.facebook.react.uimanager.ViewManagerDelegate;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.viewmanagers.NVSharedElementManagerDelegate;
 import com.facebook.react.viewmanagers.NVSharedElementManagerInterface;
-import com.facebook.react.viewmanagers.NVStatusBarManagerDelegate;
-import com.facebook.react.viewmanagers.NVStatusBarManagerInterface;
 import com.google.android.material.transition.MaterialContainerTransform;
 
 import javax.annotation.Nonnull;

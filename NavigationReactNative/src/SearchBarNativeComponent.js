@@ -29,6 +29,8 @@ type NativeProps = $ReadOnly<{|
     width: Float,
     height: Float,
   |}>>,
+  onExpand: DirectEventHandler<null>,
+  onCollapse: DirectEventHandler<null>,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(

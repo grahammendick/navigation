@@ -14,8 +14,6 @@ import com.facebook.react.uimanager.ViewManagerDelegate;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.viewmanagers.NVSearchBarManagerDelegate;
 import com.facebook.react.viewmanagers.NVSearchBarManagerInterface;
-import com.facebook.react.viewmanagers.NVStatusBarManagerDelegate;
-import com.facebook.react.viewmanagers.NVStatusBarManagerInterface;
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.Map;
@@ -116,9 +114,9 @@ public class SearchBarViewManager extends ViewGroupManager<SearchBarView> implem
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("onChangeText", MapBuilder.of("registrationName", "onChangeText"))
-            .put("onExpand", MapBuilder.of("registrationName", "onExpand"))
-            .put("onCollapse", MapBuilder.of("registrationName", "onCollapse"))
+            .put("topOnChangeText", MapBuilder.of("registrationName", "onChangeText"))
+            .put("topOnExpand", MapBuilder.of("registrationName", "onExpand"))
+            .put("topOnCollapse", MapBuilder.of("registrationName", "onCollapse"))
             .build();
     }
 
