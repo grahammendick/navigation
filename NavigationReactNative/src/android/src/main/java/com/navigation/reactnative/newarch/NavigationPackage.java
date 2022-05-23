@@ -17,6 +17,7 @@ public class NavigationPackage implements ReactPackage {
             new BarButtonViewManager(),
             new NavigationBarViewManager(),
             new NavigationStackViewManager(),
+            new SearchBarViewManager(),
             new SceneViewManager(),
             new StatusBarViewManager(),
             new ToolbarViewManager()
