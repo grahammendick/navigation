@@ -9,13 +9,27 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.ViewManagerDelegate;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.facebook.react.viewmanagers.NVTabBarItemManagerDelegate;
+import com.facebook.react.viewmanagers.NVTabBarItemManagerInterface;
 
 import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-public class TabBarItemManager extends ViewGroupManager<TabBarItemView> {
+public class TabBarItemViewManager extends ViewGroupManager<TabBarItemView> implements NVTabBarItemManagerInterface<TabBarItemView> {
+    private final ViewManagerDelegate<TabBarItemView> delegate;
+
+    public TabBarItemViewManager() {
+        delegate = new NVTabBarItemManagerDelegate<>(this);
+    }
+
+    @Nullable
+    @Override
+    protected ViewManagerDelegate<TabBarItemView> getDelegate() {
+        return delegate;
+    }
 
     @Nonnull
     @Override
@@ -43,29 +57,51 @@ public class TabBarItemManager extends ViewGroupManager<TabBarItemView> {
         view.setFontStyle(fontStyle);
     }
 
+    @Override
     @ReactProp(name = "fontSize")
+    public void setFontSize(TabBarItemView view, float fontSize) {
+        view.setFontSize((int) fontSize);
+    }
+
+    /* @ReactProp(name = "fontSize")
     public void setFontSize(TabBarItemView view, Integer fontSize) {
         view.setFontSize(fontSize);
-    }
+    } */
 
     @ReactProp(name = "image")
     public void setImage(TabBarItemView view, @Nullable ReadableMap icon) {
         view.setIconSource(icon);
     }
 
-    @ReactProp(name = "badge")
-    public void setBadge(TabBarItemView view, @Nullable String badge) {
-        view.setBadge(badge != null ? Integer.parseInt(badge) : null);
+    @Override
+    public void setSystemItem(TabBarItemView view, @Nullable String value) {
+    }
+
+    /* @ReactProp(name = "badge")
+    public void setBadge(TabBarItemView view, @Nullable Integer badge) {
+        view.setBadge(badge);
     }
 
     @ReactProp(name = "badgeColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
     public void setBadgeColor(TabBarItemView view, int badgeColor) {
         view.setBadgeColor(badgeColor != Integer.MAX_VALUE ? badgeColor : null);
-    }
+    } */
 
     @ReactProp(name = "testID")
     public void setTestID(TabBarItemView view, String testID) {
         view.setTestID(testID);
+    }
+
+    @Override
+    @ReactProp(name = "badge")
+    public void setBadge(TabBarItemView view, @Nullable String badge) {
+        view.setBadge(badge != null ? Integer.parseInt(badge) : null);
+    }
+
+    @Override
+    @ReactProp(name = "badgeColor", customType = "Color")
+    public void setBadgeColor(TabBarItemView view, @Nullable Integer badgeColor) {
+        view.setBadgeColor(badgeColor);
     }
 
     @Override

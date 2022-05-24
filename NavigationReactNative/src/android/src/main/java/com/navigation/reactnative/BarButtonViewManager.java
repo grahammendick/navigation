@@ -68,7 +68,7 @@ public class BarButtonViewManager extends ViewGroupManager<BarButtonView> implem
     @Override
     @ReactProp(name = "fontSize")
     public void setFontSize(BarButtonView view, float fontSize) {
-        view.setFontSize(Math.round(fontSize));
+        view.setFontSize((int) fontSize);
     }
 
     @ReactProp(name = "image")

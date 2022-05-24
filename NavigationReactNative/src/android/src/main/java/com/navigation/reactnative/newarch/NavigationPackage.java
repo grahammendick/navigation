@@ -15,12 +15,18 @@ public class NavigationPackage implements ReactPackage {
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList(
             new BarButtonViewManager(),
+            new CoordinatorLayoutViewManager(),
             new NavigationBarViewManager(),
             new NavigationStackViewManager(),
             new SearchBarViewManager(),
             new SceneViewManager(),
             new SharedElementViewManager(),
             new StatusBarViewManager(),
+            new TabBarViewManager(),
+            new TabBarItemViewManager(),
+            new TabBarPagerViewManager(),
+            new TabLayoutViewManager(),
+            new TabNavigationViewManager(),
             new TitleBarViewManager(),
             new ToolbarViewManager()
         );

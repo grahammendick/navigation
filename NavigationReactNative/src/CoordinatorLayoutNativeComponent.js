@@ -6,13 +6,9 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
-  selectedTintColor: ColorValue,
-  unselectedTintColor: ColorValue,
-  bottomTabs: boolean,
-  itemHorizontalTranslation: boolean,
-  labelVisibilityMode: Int32,
+  overlap: Int32,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(
-   'NVTabNavigation',
+   'NVCoordinatorLayout',
 ): HostComponent<NativeProps>);
