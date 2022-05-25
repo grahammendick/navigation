@@ -248,7 +248,6 @@ public class TabBarPagerView extends ViewPager {
             ReactContext reactContext = (ReactContext) getContext();
             EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
             eventDispatcher.dispatchEvent(new TabBarPagerView.TabSelectedEvent(getId(), position, nativeEventCount));
-
             if (getAdapter() != null)
                 getAdapter().tabFragments.get(position).tabBarItem.pressed();
         }
