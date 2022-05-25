@@ -104,8 +104,8 @@ public class TabBarItemViewManager extends ViewGroupManager<TabBarItemView> impl
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-                .put("onPress", MapBuilder.of("registrationName", "onPress"))
-                .build();
+            .put("topOnPress", MapBuilder.of("registrationName", "onPress"))
+            .build();
     }
 
     @Override
