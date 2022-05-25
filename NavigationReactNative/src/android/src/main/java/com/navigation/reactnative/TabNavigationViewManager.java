@@ -61,8 +61,8 @@ public class TabNavigationViewManager extends ViewGroupManager<TabNavigationView
     public void setSelectedTintColor(TabNavigationView view, @Nullable Integer selectedTintColor) {
         view.selectedTintColor = selectedTintColor != null ? selectedTintColor : view.defaultTextColor;
         view.setItemTextColor(new ColorStateList(
-                new int[][]{ new int[]{-android.R.attr.state_checked}, new int[]{android.R.attr.state_checked }},
-                new int[]{ view.unselectedTintColor, view.selectedTintColor }
+            new int[][]{ new int[]{-android.R.attr.state_checked}, new int[]{android.R.attr.state_checked }},
+            new int[]{ view.unselectedTintColor, view.selectedTintColor }
         ));
         view.setItemIconTintList(view.getItemTextColor());
     }
@@ -72,8 +72,8 @@ public class TabNavigationViewManager extends ViewGroupManager<TabNavigationView
     public void setUnselectedTintColor(TabNavigationView view, @Nullable Integer unselectedTintColor) {
         view.unselectedTintColor = unselectedTintColor != null ? unselectedTintColor : view.defaultTextColor;
         view.setItemTextColor(new ColorStateList(
-                new int[][]{ new int[]{-android.R.attr.state_checked}, new int[]{android.R.attr.state_checked }},
-                new int[]{ view.unselectedTintColor, view.selectedTintColor }
+            new int[][]{ new int[]{-android.R.attr.state_checked}, new int[]{android.R.attr.state_checked }},
+            new int[]{ view.unselectedTintColor, view.selectedTintColor }
         ));
         view.setItemIconTintList(view.getItemTextColor());
     }
