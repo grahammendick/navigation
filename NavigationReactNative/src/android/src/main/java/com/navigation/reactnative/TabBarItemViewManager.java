@@ -63,11 +63,6 @@ public class TabBarItemViewManager extends ViewGroupManager<TabBarItemView> impl
         view.setFontSize((int) fontSize);
     }
 
-    /* @ReactProp(name = "fontSize")
-    public void setFontSize(TabBarItemView view, Integer fontSize) {
-        view.setFontSize(fontSize);
-    } */
-
     @ReactProp(name = "image")
     public void setImage(TabBarItemView view, @Nullable ReadableMap icon) {
         view.setIconSource(icon);
@@ -76,16 +71,6 @@ public class TabBarItemViewManager extends ViewGroupManager<TabBarItemView> impl
     @Override
     public void setSystemItem(TabBarItemView view, @Nullable String value) {
     }
-
-    /* @ReactProp(name = "badge")
-    public void setBadge(TabBarItemView view, @Nullable Integer badge) {
-        view.setBadge(badge);
-    }
-
-    @ReactProp(name = "badgeColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
-    public void setBadgeColor(TabBarItemView view, int badgeColor) {
-        view.setBadgeColor(badgeColor != Integer.MAX_VALUE ? badgeColor : null);
-    } */
 
     @ReactProp(name = "testID")
     public void setTestID(TabBarItemView view, String testID) {

@@ -78,26 +78,6 @@ public class TabNavigationViewManager extends ViewGroupManager<TabNavigationView
         view.setItemIconTintList(view.getItemTextColor());
     }
 
-    /* @ReactProp(name = "selectedTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
-    public void setSelectedTintColor(TabNavigationView view, int selectedTintColor) {
-        view.selectedTintColor = selectedTintColor != Integer.MAX_VALUE ? selectedTintColor : view.defaultTextColor;
-        view.setItemTextColor(new ColorStateList(
-            new int[][]{ new int[]{-android.R.attr.state_checked}, new int[]{android.R.attr.state_checked }},
-            new int[]{ view.unselectedTintColor, view.selectedTintColor }
-        ));
-        view.setItemIconTintList(view.getItemTextColor());
-    }
-
-    @ReactProp(name = "unselectedTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
-    public void setUnselectedTintColor(TabNavigationView view, int unselectedTintColor) {
-        view.unselectedTintColor = unselectedTintColor != Integer.MAX_VALUE ? unselectedTintColor : view.defaultTextColor;
-        view.setItemTextColor(new ColorStateList(
-            new int[][]{ new int[]{-android.R.attr.state_checked}, new int[]{android.R.attr.state_checked }},
-            new int[]{ view.unselectedTintColor, view.selectedTintColor }
-        ));
-        view.setItemIconTintList(view.getItemTextColor());
-    } */
-
     @Override
     public Map<String, Object> getExportedViewConstants() {
         return MapBuilder.<String, Object>of(
