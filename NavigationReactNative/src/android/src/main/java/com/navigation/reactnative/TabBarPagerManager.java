@@ -74,8 +74,8 @@ public class TabBarPagerManager extends ViewGroupManager<TabBarPagerView> {
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("onTabSelected", MapBuilder.of("registrationName", "onTabSelected"))
-            .put("onTabSwipeStateChanged", MapBuilder.of("registrationName", "onTabSwipeStateChanged"))
+            .put("topOnTabSelected", MapBuilder.of("registrationName", "onTabSelected"))
+            .put("topOnTabSwipeStateChanged", MapBuilder.of("registrationName", "onTabSwipeStateChanged"))
             .build();
     }
 

@@ -128,8 +128,8 @@ public class SearchBarView extends ReactViewGroup {
     }
 
     static class ChangeTextEvent extends Event<ChangeTextEvent> {
-        private String text;
-        private int eventCount;
+        private final String text;
+        private final int eventCount;
 
         public ChangeTextEvent(int viewId, String text, int eventCount) {
             super(viewId);

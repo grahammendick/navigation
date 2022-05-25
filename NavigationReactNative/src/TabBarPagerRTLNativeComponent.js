@@ -13,7 +13,10 @@ type NativeProps = $ReadOnly<{|
   onTabSelected: DirectEventHandler<$ReadOnly<{|
     tab: Int32,
     eventCount: Int32,
-  |}>>
+  |}>>,
+  onTabSwipeStateChanged: DirectEventHandler<$ReadOnly<{|
+    swiping: boolean,
+  |}>>,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(
