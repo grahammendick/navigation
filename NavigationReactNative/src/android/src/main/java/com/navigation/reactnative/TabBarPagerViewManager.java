@@ -42,10 +42,6 @@ public class TabBarPagerViewManager extends ViewGroupManager<TabBarPagerView> im
         return new TabBarPagerView(reactContext);
     }
 
-    @Override
-    public void setTabCount(TabBarPagerView view, int value) {
-    }
-
     @ReactProp(name = "selectedTab")
     public void setSelectedTab(TabBarPagerView view, int selectedTab) {
         int eventLag = view.nativeEventCount - view.mostRecentEventCount;
@@ -61,8 +57,9 @@ public class TabBarPagerViewManager extends ViewGroupManager<TabBarPagerView> im
         view.mostRecentEventCount = mostRecentEventCount;
     }
 
+    @Override
     @ReactProp(name = "tabCount")
-    public void setImages(TabBarPagerView view, int tabCount) {
+    public void setTabCount(TabBarPagerView view, int tabCount) {
     }
 
     @ReactProp(name = "scrollsToTop")
