@@ -322,4 +322,5 @@ public class TabBarPagerView extends ViewPager {
             event.putBoolean("swiping", this.swiping);
             rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
-    }}
+    }
+}
