@@ -47,7 +47,8 @@ class NavigationBar extends React.Component<any, any> {
                     hidden={hidden}
                     backTitle={backTitle}
                     backTitleOn={backTitle !== undefined}
-                    style={{height: !!collapsingBar ? style.height : null}}                    
+                    barHeight={!!collapsingBar ? style.height : 0}
+                    style={{height: !!collapsingBar ? style.height : null}}
                     {...otherProps}
                     {...scrollEdgeProps}
                     barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : scrollEdgeProps.largeBarTintColor}>
@@ -66,6 +67,7 @@ class NavigationBar extends React.Component<any, any> {
                                 {...otherProps}
                                 {...scrollEdgeProps}
                                 barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : null}
+                                barHeight={56}
                                 style={{height: 56}}>
                                 {[
                                     childrenArray.find(({type}) => type === TitleBar),

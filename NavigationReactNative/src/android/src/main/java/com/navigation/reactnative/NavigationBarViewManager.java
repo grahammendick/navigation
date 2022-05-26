@@ -47,9 +47,10 @@ public class NavigationBarViewManager extends ViewGroupManager<NavigationBarView
         return new NavigationBarView(reactContext);
     }
 
-    @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
-    public void setBarTintColor(NavigationBarView view, int barTintColor) {
-        if (barTintColor != Integer.MAX_VALUE) {
+    @Override
+    @ReactProp(name = "barTintColor", customType = "Color")
+    public void setBarTintColor(NavigationBarView view, @Nullable Integer barTintColor) {
+        if (barTintColor != null) {
             view.setBackground(new ColorDrawable(barTintColor));
             if (Color.alpha(barTintColor) < 255)
                 view.setOutlineProvider(null);
@@ -66,8 +67,8 @@ public class NavigationBarViewManager extends ViewGroupManager<NavigationBarView
         view.setExpanded(!hide, true);
     }
 
-    @ReactProp(name = "height")
-    public void setHeight(NavigationBarView view, double height) {
+    @ReactProp(name = "barHeight")
+    public void setBarHeight(NavigationBarView view, double height) {
         view.getLayoutParams().height = height != 0 ? (int) PixelUtil.toPixelFromDIP(height) : AppBarLayout.LayoutParams.WRAP_CONTENT;
         if (view.getParent() instanceof CoordinatorLayoutView) {
             CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) view.getParent();
@@ -133,10 +134,6 @@ public class NavigationBarViewManager extends ViewGroupManager<NavigationBarView
 
     @Override
     public void setBackFontSize(NavigationBarView view, float value) {
-    }
-
-    @Override
-    public void setBarTintColor(NavigationBarView view, @Nullable Integer value) {
     }
 
     @Override

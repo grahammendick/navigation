@@ -10,6 +10,6 @@ var CollapsingBar: any = ({largeTitle = false, barTintColor, titleColor, largeTi
         {...props} />
 )
 
-var NVCollapsingBar = requireNativeComponent<any>('NVCollapsingBar', null);
+var NVCollapsingBar = global.nativeFabricUIManager ? require('./CollapsingBarNativeComponent').default : requireNativeComponent('NVCollapsingBar');
 
 export default Platform.OS === "android" ? CollapsingBar : () => null;

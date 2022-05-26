@@ -29,6 +29,7 @@ type NativeProps = $ReadOnly<{|
   backTitle: string,
   backTitleOn: boolean,
   backTestID: string,
+  barHeight: Double,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(

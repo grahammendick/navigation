@@ -122,8 +122,8 @@ public class ToolbarViewManager extends ViewGroupManager<ToolbarView> implements
         view.setNavigationContentDescription(navigationAccessibilityLabel);
     }
 
-    @ReactProp(name = "height")
-    public void setHeight(ToolbarView view, double height) {
+    @ReactProp(name = "barHeight")
+    public void setBarHeight(ToolbarView view, double height) {
         view.getLayoutParams().height = (int) PixelUtil.toPixelFromDIP(height);
     }
 
