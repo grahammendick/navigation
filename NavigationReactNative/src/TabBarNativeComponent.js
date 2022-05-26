@@ -6,6 +6,7 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
+  tabCount: Int32,
   selectedTab: Int32,
   barTintColor: ColorValue,
   selectedTintColor: ColorValue,
