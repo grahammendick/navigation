@@ -17,6 +17,7 @@ type NativeProps = $ReadOnly<{|
   search: boolean,
   showActionView: boolean,
   showAsAction: Int32,
+  buttonWidth: Double,
   actionBar: boolean,
   onPress: DirectEventHandler<null>
 |}>;

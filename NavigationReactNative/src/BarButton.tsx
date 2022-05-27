@@ -16,6 +16,7 @@ const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search =
             actionBar={actionBar}
             image={Image.resolveAssetSource(image)}
             systemItem={systemItem || ''}
+            buttonWidth={actionBar ? 0 : size}
             style={{position: 'absolute', width: actionBar ? undefined : size}}
             children={children}
             {...props} />

@@ -167,17 +167,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
         super.onSizeChanged(w, h, oldw, oldh);
         if (getChildCount() == 0 || !actionBar)
             return;
-        final int viewTag = getChildAt(0).getId();
-        final ReactContext reactContext = (ReactContext) getContext();
-        reactContext.runOnNativeModulesQueueThread(
-            new GuardedRunnable(reactContext) {
-                @Override
-                public void runGuarded() {
-                    UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
-                    if (uiManager != null)
-                        uiManager.updateNodeSize(viewTag, w, h);
-                }
-            });
+        ((ActionBarView) getChildAt(0)).changeBounds(w, h);
     }
 
     @Override

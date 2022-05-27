@@ -98,8 +98,8 @@ public class BarButtonViewManager extends ViewGroupManager<BarButtonView> implem
         view.setSearch(search);
     }
 
-    @ReactProp(name = "width")
-    public void setWidth(BarButtonView view, double width) {
+    @ReactProp(name = "buttonWidth")
+    public void setButtonWidth(BarButtonView view, double width) {
         view.setLayoutParams(new ActionMenuView.LayoutParams(
             width > 0 ? (int) PixelUtil.toPixelFromDIP(width) : ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         );
