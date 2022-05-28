@@ -5,7 +5,7 @@ class SearchBar extends React.Component<any, any> {
     private ref: React.RefObject<View>;
     constructor(props) {
         super(props);
-        this.state = {show: false};
+        this.state = {show: false, mostRecentEventCount: 0};
         this.ref = React.createRef<View>();
         this.onChangeText = this.onChangeText.bind(this);
         this.onChangeScopeButton = this.onChangeScopeButton.bind(this);
