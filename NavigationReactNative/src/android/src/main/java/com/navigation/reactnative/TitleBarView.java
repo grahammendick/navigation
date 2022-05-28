@@ -13,6 +13,9 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 public class TitleBarView extends ViewGroup {
+    private boolean layoutRequested = false;
+    private int resizeLoopCount = 0;
+
     public TitleBarView(Context context) {
         super(context);
     }
@@ -24,10 +27,37 @@ public class TitleBarView extends ViewGroup {
     @Override
     protected void onSizeChanged(final int w, final int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        ReactContext reactContext = (ReactContext) getContext();
-        EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-        eventDispatcher.dispatchEvent(new TitleBarView.ChangeBoundsEvent(getId(), w, h));
+        if (Math.abs(w - oldw) > 5 || Math.abs(h - oldh) > 5)
+            resizeLoopCount = 0;
+        if (Math.abs(w - oldw) <= 5 && Math.abs(h - oldh) <= 5)
+            resizeLoopCount++;
+        if (resizeLoopCount <= 3) {
+            ReactContext reactContext = (ReactContext) getContext();
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(new TitleBarView.ChangeBoundsEvent(getId(), w, h));
+        }
+        requestLayout();
     }
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        if (!layoutRequested) {
+            layoutRequested = true;
+            post(measureAndLayout);
+        }
+    }
+
+    private final Runnable measureAndLayout = new Runnable() {
+        @Override
+        public void run() {
+            layoutRequested = false;
+            measure(
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+            layout(getLeft(), getTop(), getRight(), getBottom());
+        }
+    };
 
     static class ChangeBoundsEvent extends Event<TitleBarView.ChangeBoundsEvent> {
         private final int width;

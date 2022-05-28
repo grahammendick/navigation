@@ -38,9 +38,9 @@ public class ActionBarView extends ViewGroup {
 
     void changeBounds(int width, int height, int oldw, int oldh) {
         super.onSizeChanged(width, height, oldw, oldh);
-        if (Math.abs(width - oldw) > 3 || Math.abs(height - oldh) > 3)
+        if (Math.abs(width - oldw) > 5 || Math.abs(height - oldh) > 5)
             resizeLoopCount = 0;
-        if (Math.abs(width - oldw) <= 3 && Math.abs(height - oldh) <= 3)
+        if (Math.abs(width - oldw) <= 5 && Math.abs(height - oldh) <= 5)
             resizeLoopCount++;
         if (resizeLoopCount <= 3) {
             ReactContext reactContext = (ReactContext) getContext();
