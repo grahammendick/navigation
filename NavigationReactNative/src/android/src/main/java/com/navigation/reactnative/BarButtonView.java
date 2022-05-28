@@ -167,7 +167,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
         super.onSizeChanged(w, h, oldw, oldh);
         if (getChildCount() == 0 || !actionBar)
             return;
-        ((ActionBarView) getChildAt(0)).changeBounds(w, h);
+        ((ActionBarView) getChildAt(0)).changeBounds(w, h, oldw, oldh);
     }
 
     @Override

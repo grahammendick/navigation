@@ -14,6 +14,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 public class ActionBarView extends ViewGroup {
     private boolean layoutRequested = false;
+    private int resizeLoopCount = 0;
 
     public ActionBarView(Context context) {
         super(context);
@@ -35,10 +36,17 @@ public class ActionBarView extends ViewGroup {
         eventDispatcher.dispatchEvent(new ActionBarView.CollapsedEvent(getId()));
     }
 
-    void changeBounds(int width, int height) {
-        ReactContext reactContext = (ReactContext) getContext();
-        EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-        eventDispatcher.dispatchEvent(new ActionBarView.ChangeBoundsEvent(getId(), width, height));
+    void changeBounds(int width, int height, int oldw, int oldh) {
+        super.onSizeChanged(width, height, oldw, oldh);
+        if (Math.abs(width - oldw) > 3 || Math.abs(height - oldh) > 3)
+            resizeLoopCount = 0;
+        if (Math.abs(width - oldw) <= 3 && Math.abs(height - oldh) <= 3)
+            resizeLoopCount++;
+        if (resizeLoopCount <= 3) {
+            ReactContext reactContext = (ReactContext) getContext();
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(new ActionBarView.ChangeBoundsEvent(getId(), width, height));
+        }
         requestLayout();
     }
 
