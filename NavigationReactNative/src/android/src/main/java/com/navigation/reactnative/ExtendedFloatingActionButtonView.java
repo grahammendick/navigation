@@ -67,8 +67,10 @@ public class ExtendedFloatingActionButtonView extends ExtendedFloatingActionButt
         if (this.anchor != null && getParent() instanceof CoordinatorLayoutView) {
             CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) getParent();
             for(int i = 0; i < coordinatorLayoutView.getChildCount(); i++) {
-                if (coordinatorLayoutView.getChildAt(i) instanceof NavigationBarView) {
-                    this.params.setAnchorId(coordinatorLayoutView.getChildAt(i).getId());
+                View child = coordinatorLayoutView.getChildAt(i);
+                if ((this.anchor.equals("navigationBar") && child instanceof NavigationBarView)
+                    || (this.anchor.equals("bottomSheet") && child instanceof BottomSheetView)) {
+                    this.params.setAnchorId(child.getId());
                     coordinatorLayoutView.requestLayout();
                 }
             }
