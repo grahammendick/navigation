@@ -5,10 +5,38 @@ class FloatingActionButton extends React.Component<any, any> {
     render() {
         var { text, image, style, ...props } = this.props;
         const NativeFAB = !text ? NVFloatingActionButton : NVExtendedFloatingActionButton;
+        const {
+            color: fabColor,
+            backgroundColor: fabBackgroundColor,
+            margin: fabMargin,
+            marginTop: fabMarginTop,
+            marginRight: fabMarginRight,
+            marginBottom: fabMarginBottom,
+            marginLeft: fabMarginLeft,
+            marginStart: fabMarginStart,
+            marginEnd: fabMarginEnd,
+            fontFamily: fabFontFamily,
+            fontWeight: fabFontWeight,
+            fontStyle: fabFontStyle,
+            fontSize: fabFontSize,
+        } = style;
         return (
             <NativeFAB
                 text={text}
                 image={Image.resolveAssetSource(image)}
+                fabColor={fabColor}
+                fabBackgroundColor={fabBackgroundColor}
+                fabMargin={fabMargin}
+                fabMarginTop={fabMarginTop}
+                fabMarginRight={fabMarginRight}
+                fabMarginBottom={fabMarginBottom}
+                fabMarginLeft={fabMarginLeft}
+                fabMarginStart={fabMarginStart}
+                fabMarginEnd={fabMarginEnd}
+                fabFontFamily={fabFontFamily}
+                fabFontWeight={fabFontWeight}
+                fabFontStyle={fabFontStyle}
+                fabFontSize={fabFontSize}
                 style={[ styles.floatingActionButton, style ]}
                 {...props}
             />

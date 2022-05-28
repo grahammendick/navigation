@@ -55,14 +55,14 @@ public class ExtendedFloatingActionButtonViewManager extends SimpleViewManager<E
         view.setActionText(text);
     }
 
-    @ReactProp(name = "backgroundColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
-    public void setBackgroundColor(ExtendedFloatingActionButtonView view, int backgroundColor) {
-        view.setBackgroundTintList(ColorStateList.valueOf(backgroundColor != Integer.MAX_VALUE ? backgroundColor : view.defaultBackgroundColor));
+    @ReactProp(name = "backgroundColor", customType = "Color")
+    public void setFabBackgroundColor(ExtendedFloatingActionButtonView view, @Nullable Integer backgroundColor) {
+        view.setBackgroundTintList(ColorStateList.valueOf(backgroundColor != null ? backgroundColor : view.defaultBackgroundColor));
     }
 
-    @ReactProp(name = "color", customType = "Color", defaultInt = Integer.MAX_VALUE)
-    public void setColor(ExtendedFloatingActionButtonView view, int color) {
-        ColorStateList colorList = ColorStateList.valueOf(color != Integer.MAX_VALUE ? color : view.defaultColor);
+    @ReactProp(name = "color", customType = "Color")
+    public void setFabColor(ExtendedFloatingActionButtonView view, @Nullable Integer color) {
+        ColorStateList colorList = ColorStateList.valueOf(color != null ? color : view.defaultColor);
         view.setIconTint(colorList);
         view.setTextColor(colorList);
     }
@@ -105,65 +105,65 @@ public class ExtendedFloatingActionButtonViewManager extends SimpleViewManager<E
     }
 
     @ReactProp(name = "marginTop")
-    public void setMarginTop(ExtendedFloatingActionButtonView view, int marginTop) {
+    public void setFabMarginTop(ExtendedFloatingActionButtonView view, int marginTop) {
         view.marginTop = (int) PixelUtil.toPixelFromDIP(marginTop);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "marginRight")
-    public void setMarginRight(ExtendedFloatingActionButtonView view, int marginRight) {
+    public void setFabMarginRight(ExtendedFloatingActionButtonView view, int marginRight) {
         view.marginRight = (int) PixelUtil.toPixelFromDIP(marginRight);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "marginBottom")
-    public void setMarginBottom(ExtendedFloatingActionButtonView view, int marginBottom) {
+    public void setFabMarginBottom(ExtendedFloatingActionButtonView view, int marginBottom) {
         view.marginBottom = (int) PixelUtil.toPixelFromDIP(marginBottom);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "marginStart")
-    public void setMarginStart(ExtendedFloatingActionButtonView view, int marginStart) {
+    public void setFabMarginStart(ExtendedFloatingActionButtonView view, int marginStart) {
         view.marginStart = (int) PixelUtil.toPixelFromDIP(marginStart);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "marginEnd")
-    public void setMarginEnd(ExtendedFloatingActionButtonView view, int marginEnd) {
+    public void setFabMarginEnd(ExtendedFloatingActionButtonView view, int marginEnd) {
         view.marginEnd = (int) PixelUtil.toPixelFromDIP(marginEnd);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "marginLeft")
-    public void setMarginLeft(ExtendedFloatingActionButtonView view, int marginLeft) {
+    public void setFabMarginLeft(ExtendedFloatingActionButtonView view, int marginLeft) {
         view.marginLeft = (int) PixelUtil.toPixelFromDIP(marginLeft);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "margin")
-    public void setMargin(ExtendedFloatingActionButtonView view, int margin) {
+    public void setFabMargin(ExtendedFloatingActionButtonView view, int margin) {
         view.margin = (int) PixelUtil.toPixelFromDIP(margin);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
     @ReactProp(name = "fontFamily")
-    public void setFontFamily(ExtendedFloatingActionButtonView view, String fontFamily) {
+    public void setFabFontFamily(ExtendedFloatingActionButtonView view, String fontFamily) {
         view.setFontFamily(fontFamily);
     }
 
     @ReactProp(name = "fontWeight")
-    public void setFontWeight(ExtendedFloatingActionButtonView view, String fontWeight) {
+    public void setFabFontWeight(ExtendedFloatingActionButtonView view, String fontWeight) {
         view.setFontWeight(fontWeight);
     }
 
     @ReactProp(name = "fontStyle")
-    public void setFontStyle(ExtendedFloatingActionButtonView view, String fontStyle) {
+    public void setFabFontStyle(ExtendedFloatingActionButtonView view, String fontStyle) {
         view.setFontStyle(fontStyle);
     }
 
     @ReactProp(name = "fontSize")
-    public void setFontSize(ExtendedFloatingActionButtonView view, Integer fontSize) {
-        view.setFontSize(fontSize);
+    public void setFabFontSize(ExtendedFloatingActionButtonView view, float fontSize) {
+        view.setFontSize(fontSize != -1 ? (int) fontSize : null);
     }
 
     @ReactProp(name = "contentDescription")

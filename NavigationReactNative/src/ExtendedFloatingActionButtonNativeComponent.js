@@ -12,15 +12,19 @@ type NativeProps = $ReadOnly<{|
   anchorGravity: string,
   contentDescription: string,
   testID: string,
-  /* fabColor: ColorValue,
+  fabColor: ColorValue,
   fabBackgroundColor: ColorValue,
-  fabMarginTop: Int32,
-  fabMarginRight: Int32,
-  fabMarginBottom: Int32,
-  fabMarginLeft: Int32,
-  fabMarginStart: Int32,
-  fabMarginEnd: Int32,
-  fabElevation: Int32, */
+  fabMarginTop?: WithDefault<Int32, 0>,
+  fabMarginRight?: WithDefault<Int32, 0>,
+  fabMarginBottom?: WithDefault<Int32, 0>,
+  fabMarginLeft?: WithDefault<Int32, 0>,
+  fabMarginStart?: WithDefault<Int32, 0>,
+  fabMarginEnd?: WithDefault<Int32, 0>,
+  fabMargin?: WithDefault<Int32, 0>,
+  fabFontFamily: string,
+  fabFontWeight: string,
+  fabFontStyle: string,
+  fabFontSize?: WithDefault<Float, -1>,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(

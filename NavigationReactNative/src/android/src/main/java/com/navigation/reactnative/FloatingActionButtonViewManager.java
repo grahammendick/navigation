@@ -51,14 +51,14 @@ public class FloatingActionButtonViewManager extends SimpleViewManager<FloatingA
         view.setIconSource(icon);
     }
 
-    @ReactProp(name = "backgroundColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
-    public void setBackgroundColor(FloatingActionButtonView view, int backgroundColor) {
-        view.setBackgroundTintList(ColorStateList.valueOf(backgroundColor != Integer.MAX_VALUE ? backgroundColor : view.defaultBackgroundColor));
+    @ReactProp(name = "fabBackgroundColor", customType = "Color")
+    public void setFabBackgroundColor(FloatingActionButtonView view, @Nullable Integer backgroundColor) {
+        view.setBackgroundTintList(ColorStateList.valueOf(backgroundColor != null ? backgroundColor : view.defaultBackgroundColor));
     }
 
-    @ReactProp(name = "color", customType = "Color", defaultInt = Integer.MAX_VALUE)
-    public void setColor(FloatingActionButtonView view, int color) {
-        view.setImageTintList(color != Integer.MAX_VALUE ? ColorStateList.valueOf(color) : null);
+    @ReactProp(name = "fabColor", customType = "Color")
+    public void setFabColor(FloatingActionButtonView view, @Nullable Integer color) {
+        view.setImageTintList(color != null ? ColorStateList.valueOf(color) : null);
     }
 
     @ReactProp(name = "anchor", defaultInt = View.NO_ID)
@@ -98,50 +98,50 @@ public class FloatingActionButtonViewManager extends SimpleViewManager<FloatingA
         return Gravity.NO_GRAVITY;
     }
 
-    @ReactProp(name = "marginTop")
-    public void setMarginTop(FloatingActionButtonView view, int marginTop) {
+    @ReactProp(name = "fabMarginTop")
+    public void setFabMarginTop(FloatingActionButtonView view, int marginTop) {
         view.marginTop = (int) PixelUtil.toPixelFromDIP(marginTop);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
-    @ReactProp(name = "marginRight")
-    public void setMarginRight(FloatingActionButtonView view, int marginRight) {
+    @ReactProp(name = "fabMarginRight")
+    public void setFabMarginRight(FloatingActionButtonView view, int marginRight) {
         view.marginRight = (int) PixelUtil.toPixelFromDIP(marginRight);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
-    @ReactProp(name = "marginBottom")
-    public void setMarginBottom(FloatingActionButtonView view, int marginBottom) {
+    @ReactProp(name = "fabMarginBottom")
+    public void setFabMarginBottom(FloatingActionButtonView view, int marginBottom) {
         view.marginBottom = (int) PixelUtil.toPixelFromDIP(marginBottom);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
-    @ReactProp(name = "marginStart")
-    public void setMarginStart(FloatingActionButtonView view, int marginStart) {
+    @ReactProp(name = "fabMarginStart")
+    public void setFabMarginStart(FloatingActionButtonView view, int marginStart) {
         view.marginStart = (int) PixelUtil.toPixelFromDIP(marginStart);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
-    @ReactProp(name = "marginEnd")
-    public void setMarginEnd(FloatingActionButtonView view, int marginEnd) {
+    @ReactProp(name = "fabMarginEnd")
+    public void setFabMarginEnd(FloatingActionButtonView view, int marginEnd) {
         view.marginEnd = (int) PixelUtil.toPixelFromDIP(marginEnd);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
-    @ReactProp(name = "marginLeft")
-    public void setMarginLeft(FloatingActionButtonView view, int marginLeft) {
+    @ReactProp(name = "fabMarginLeft")
+    public void setFabMarginLeft(FloatingActionButtonView view, int marginLeft) {
         view.marginLeft = (int) PixelUtil.toPixelFromDIP(marginLeft);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
-    @ReactProp(name = "margin")
-    public void setMargin(FloatingActionButtonView view, int margin) {
+    @ReactProp(name = "fabMargin")
+    public void setFabMargin(FloatingActionButtonView view, int margin) {
         view.margin = (int) PixelUtil.toPixelFromDIP(margin);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
-    @ReactProp(name = "elevation")
-    public void setElevation(FloatingActionButtonView view, int elevation) {
+    @ReactProp(name = "fabElevation")
+    public void setFabElevation(FloatingActionButtonView view, int elevation) {
         view.setCompatElevation(PixelUtil.toPixelFromDIP(elevation));
     }
 
