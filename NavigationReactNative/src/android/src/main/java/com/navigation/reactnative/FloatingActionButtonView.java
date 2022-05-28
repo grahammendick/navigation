@@ -12,6 +12,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.events.Event;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -38,12 +41,29 @@ public class FloatingActionButtonView extends FloatingActionButton {
             @Override
             public void onClick(View view) {
                 ReactContext reactContext = (ReactContext) getContext();
-                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onPress", null);
+                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                eventDispatcher.dispatchEvent(new FloatingActionButtonView.PressEvent(getId()));
             }
         });
     }
 
     void setIconSource(@Nullable ReadableMap source) {
         IconResolver.setIconSource(source, iconResolverListener, getContext());
+    }
+
+    static class PressEvent extends Event<FloatingActionButtonView.PressEvent> {
+        public PressEvent(int viewId) {
+            super(viewId);
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnPress";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
+        }
     }
 }

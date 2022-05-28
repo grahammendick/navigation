@@ -16,6 +16,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.events.Event;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -52,7 +55,8 @@ public class ExtendedFloatingActionButtonView extends ExtendedFloatingActionButt
             @Override
             public void onClick(View view) {
                 ReactContext reactContext = (ReactContext) getContext();
-                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onPress", null);
+                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                eventDispatcher.dispatchEvent(new ExtendedFloatingActionButtonView.PressEvent(getId()));
             }
         });
     }
@@ -113,6 +117,22 @@ public class ExtendedFloatingActionButtonView extends ExtendedFloatingActionButt
                 MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
             layout(getLeft(), getTop(), getRight(), getBottom());
+        }
+    }
+
+    static class PressEvent extends Event<ExtendedFloatingActionButtonView.PressEvent> {
+        public PressEvent(int viewId) {
+            super(viewId);
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnPress";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
         }
     }
 }
