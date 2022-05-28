@@ -55,12 +55,12 @@ public class ExtendedFloatingActionButtonViewManager extends SimpleViewManager<E
         view.setActionText(text);
     }
 
-    @ReactProp(name = "backgroundColor", customType = "Color")
+    @ReactProp(name = "fabBackgroundColor", customType = "Color")
     public void setFabBackgroundColor(ExtendedFloatingActionButtonView view, @Nullable Integer backgroundColor) {
         view.setBackgroundTintList(ColorStateList.valueOf(backgroundColor != null ? backgroundColor : view.defaultBackgroundColor));
     }
 
-    @ReactProp(name = "color", customType = "Color")
+    @ReactProp(name = "fabColor", customType = "Color")
     public void setFabColor(ExtendedFloatingActionButtonView view, @Nullable Integer color) {
         ColorStateList colorList = ColorStateList.valueOf(color != null ? color : view.defaultColor);
         view.setIconTint(colorList);
@@ -104,64 +104,64 @@ public class ExtendedFloatingActionButtonViewManager extends SimpleViewManager<E
         return Gravity.NO_GRAVITY;
     }
 
-    @ReactProp(name = "marginTop")
+    @ReactProp(name = "fabMarginTop")
     public void setFabMarginTop(ExtendedFloatingActionButtonView view, int marginTop) {
         view.marginTop = (int) PixelUtil.toPixelFromDIP(marginTop);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
-    @ReactProp(name = "marginRight")
+    @ReactProp(name = "fabMarginRight")
     public void setFabMarginRight(ExtendedFloatingActionButtonView view, int marginRight) {
         view.marginRight = (int) PixelUtil.toPixelFromDIP(marginRight);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
-    @ReactProp(name = "marginBottom")
+    @ReactProp(name = "fabMarginBottom")
     public void setFabMarginBottom(ExtendedFloatingActionButtonView view, int marginBottom) {
         view.marginBottom = (int) PixelUtil.toPixelFromDIP(marginBottom);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
-    @ReactProp(name = "marginStart")
+    @ReactProp(name = "fabMarginStart")
     public void setFabMarginStart(ExtendedFloatingActionButtonView view, int marginStart) {
         view.marginStart = (int) PixelUtil.toPixelFromDIP(marginStart);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
-    @ReactProp(name = "marginEnd")
+    @ReactProp(name = "fabMarginEnd")
     public void setFabMarginEnd(ExtendedFloatingActionButtonView view, int marginEnd) {
         view.marginEnd = (int) PixelUtil.toPixelFromDIP(marginEnd);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
-    @ReactProp(name = "marginLeft")
+    @ReactProp(name = "fabMarginLeft")
     public void setFabMarginLeft(ExtendedFloatingActionButtonView view, int marginLeft) {
         view.marginLeft = (int) PixelUtil.toPixelFromDIP(marginLeft);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
-    @ReactProp(name = "margin")
+    @ReactProp(name = "fabMargin")
     public void setFabMargin(ExtendedFloatingActionButtonView view, int margin) {
         view.margin = (int) PixelUtil.toPixelFromDIP(margin);
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
-    @ReactProp(name = "fontFamily")
+    @ReactProp(name = "fabFontFamily")
     public void setFabFontFamily(ExtendedFloatingActionButtonView view, String fontFamily) {
         view.setFontFamily(fontFamily);
     }
 
-    @ReactProp(name = "fontWeight")
+    @ReactProp(name = "fabFontWeight")
     public void setFabFontWeight(ExtendedFloatingActionButtonView view, String fontWeight) {
         view.setFontWeight(fontWeight);
     }
 
-    @ReactProp(name = "fontStyle")
+    @ReactProp(name = "fabFontStyle")
     public void setFabFontStyle(ExtendedFloatingActionButtonView view, String fontStyle) {
         view.setFontStyle(fontStyle);
     }
 
-    @ReactProp(name = "fontSize")
+    @ReactProp(name = "fabFontSize")
     public void setFabFontSize(ExtendedFloatingActionButtonView view, float fontSize) {
         view.setFontSize(fontSize != -1 ? (int) fontSize : null);
     }
