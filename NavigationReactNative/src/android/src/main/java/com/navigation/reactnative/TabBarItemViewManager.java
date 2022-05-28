@@ -60,7 +60,7 @@ public class TabBarItemViewManager extends ViewGroupManager<TabBarItemView> impl
     @Override
     @ReactProp(name = "fontSize")
     public void setFontSize(TabBarItemView view, float fontSize) {
-        view.setFontSize((int) fontSize);
+        view.setFontSize(fontSize != -1 ? (int) fontSize : null);
     }
 
     @ReactProp(name = "image")
