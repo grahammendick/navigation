@@ -9,6 +9,7 @@ type NativeProps = $ReadOnly<{|
   image: ImageSource,
   text: string,
   gravity: string,
+  anchor: string,
   anchorGravity: string,
   contentDescription: string,
   testID: string,

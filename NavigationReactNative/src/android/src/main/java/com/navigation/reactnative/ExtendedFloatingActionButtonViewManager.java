@@ -67,9 +67,14 @@ public class ExtendedFloatingActionButtonViewManager extends SimpleViewManager<E
         view.setTextColor(colorList);
     }
 
-    @ReactProp(name = "anchor", defaultInt = View.NO_ID)
-    public void setAnchor(ExtendedFloatingActionButtonView view, int anchor) {
-        view.params.setAnchorId(anchor);
+    @ReactProp(name = "anchor")
+    public void setAnchor(ExtendedFloatingActionButtonView view, @Nullable String anchor) {
+        if ("navigationBar".equals(anchor)) {
+            view.setAnchor(anchor);
+        } else {
+            view.params.setAnchorId(View.NO_ID);
+            view.setAnchor(null);
+        }
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 

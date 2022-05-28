@@ -3,7 +3,7 @@ import { Image, Platform, requireNativeComponent, Animated, StyleSheet } from "r
 
 class FloatingActionButton extends React.Component<any, any> {
     render() {
-        var { text, image, style, ...props } = this.props;
+        var { text, image, anchor, style, ...props } = this.props;
         const NativeFAB = !text ? NVFloatingActionButton : NVExtendedFloatingActionButton;
         const {
             color: fabColor,
@@ -19,11 +19,13 @@ class FloatingActionButton extends React.Component<any, any> {
             fontWeight: fabFontWeight,
             fontStyle: fabFontStyle,
             fontSize: fabFontSize,
+            elevation: fabElevation,
         } = style;
         return (
             <NativeFAB
                 text={text}
                 image={Image.resolveAssetSource(image)}
+                anchor={!!anchor ? '' + anchor : undefined}
                 fabColor={fabColor}
                 fabBackgroundColor={fabBackgroundColor}
                 fabMargin={fabMargin}
@@ -37,6 +39,7 @@ class FloatingActionButton extends React.Component<any, any> {
                 fabFontWeight={fabFontWeight}
                 fabFontStyle={fabFontStyle}
                 fabFontSize={fabFontSize}
+                fabElevation={fabElevation}
                 style={[ styles.floatingActionButton, style ]}
                 {...props}
             />

@@ -35,6 +35,7 @@ public class ExtendedFloatingActionButtonView extends ExtendedFloatingActionButt
     private Integer fontSize;
     private boolean textChanged = false;
     private final IconResolver.IconResolverListener iconResolverListener;
+    private String anchor;
 
     public ExtendedFloatingActionButtonView(@NonNull Context context) {
         super(context);
@@ -59,6 +60,19 @@ public class ExtendedFloatingActionButtonView extends ExtendedFloatingActionButt
                 eventDispatcher.dispatchEvent(new ExtendedFloatingActionButtonView.PressEvent(getId()));
             }
         });
+    }
+
+    void setAnchor(String anchor) {
+        this.anchor = anchor;
+        if (this.anchor != null && getParent() instanceof CoordinatorLayoutView) {
+            CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) getParent();
+            for(int i = 0; i < coordinatorLayoutView.getChildCount(); i++) {
+                if (coordinatorLayoutView.getChildAt(i) instanceof NavigationBarView) {
+                    this.params.setAnchorId(coordinatorLayoutView.getChildAt(i).getId());
+                    coordinatorLayoutView.requestLayout();
+                }
+            }
+        }
     }
 
     void setIconSource(@Nullable ReadableMap source) {
@@ -107,6 +121,12 @@ public class ExtendedFloatingActionButtonView extends ExtendedFloatingActionButt
             setText(textSpannable);
             textChanged = false;
         }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        this.setAnchor(this.anchor);
     }
 
     @Override

@@ -23,6 +23,7 @@ public class FloatingActionButtonView extends FloatingActionButton {
     final CoordinatorLayout.LayoutParams params;
     int marginTop, marginRight, marginBottom, marginLeft, marginStart, marginEnd, margin;
     private final IconResolver.IconResolverListener iconResolverListener;
+    private String anchor;
 
     public FloatingActionButtonView(@NonNull Context context) {
         super(context);
@@ -47,8 +48,27 @@ public class FloatingActionButtonView extends FloatingActionButton {
         });
     }
 
+    void setAnchor(String anchor) {
+        this.anchor = anchor;
+        if (this.anchor != null && getParent() instanceof CoordinatorLayoutView) {
+            CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) getParent();
+            for(int i = 0; i < coordinatorLayoutView.getChildCount(); i++) {
+                if (coordinatorLayoutView.getChildAt(i) instanceof NavigationBarView) {
+                    this.params.setAnchorId(coordinatorLayoutView.getChildAt(i).getId());
+                    coordinatorLayoutView.requestLayout();
+                }
+            }
+        }
+    }
+
     void setIconSource(@Nullable ReadableMap source) {
         IconResolver.setIconSource(source, iconResolverListener, getContext());
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        this.setAnchor(this.anchor);
     }
 
     static class PressEvent extends Event<FloatingActionButtonView.PressEvent> {
