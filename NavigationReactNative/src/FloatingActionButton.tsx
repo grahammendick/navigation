@@ -16,8 +16,8 @@ class FloatingActionButton extends React.Component<any, any> {
     }
 }
 
-const NVFloatingActionButton = requireNativeComponent<any>("NVFloatingActionButton", null);
-const NVExtendedFloatingActionButton = requireNativeComponent<any>("NVExtendedFloatingActionButton", null);
+const NVFloatingActionButton = global.nativeFabricUIManager ? require('./FloatingActionButtonNativeComponent').default : requireNativeComponent('NVFloatingActionButton');
+const NVExtendedFloatingActionButton = global.nativeFabricUIManager ? require('./ExtendedFloatingActionButtonNativeComponent').default : requireNativeComponent('NVExtendedFloatingActionButton');
 
 const styles = StyleSheet.create({
     floatingActionButton: {

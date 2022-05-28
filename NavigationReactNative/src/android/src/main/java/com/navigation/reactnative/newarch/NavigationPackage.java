@@ -18,6 +18,8 @@ public class NavigationPackage implements ReactPackage {
             new BarButtonViewManager(),
             new CollapsingBarViewManager(),
             new CoordinatorLayoutViewManager(),
+            new ExtendedFloatingActionButtonViewManager(),
+            new FloatingActionButtonViewManager(),
             new NavigationBarViewManager(),
             new NavigationStackViewManager(),
             new SearchBarViewManager(),
