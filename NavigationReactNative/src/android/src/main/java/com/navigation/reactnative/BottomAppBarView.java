@@ -24,6 +24,9 @@ import androidx.core.view.ViewCompat;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.modules.i18nmanager.I18nUtil;
+import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.events.Event;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
@@ -83,7 +86,8 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
             @Override
             public void onClick(View view) {
                 ReactContext reactContext = (ReactContext) getContext();
-                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onNavigationPress", null);
+                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                eventDispatcher.dispatchEvent(new BottomAppBarView.NavigationPressEvent(getId()));
             }
         });
         setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -258,4 +262,20 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
+
+    static class NavigationPressEvent extends Event<BottomAppBarView.NavigationPressEvent> {
+        public NavigationPressEvent(int viewId) {
+            super(viewId);
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnNavigationPress";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
+        }
+    }
 }
