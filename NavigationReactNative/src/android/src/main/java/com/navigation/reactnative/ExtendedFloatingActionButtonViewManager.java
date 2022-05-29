@@ -69,7 +69,7 @@ public class ExtendedFloatingActionButtonViewManager extends SimpleViewManager<E
 
     @ReactProp(name = "anchor")
     public void setAnchor(ExtendedFloatingActionButtonView view, @Nullable String anchor) {
-        if ("navigationBar".equals(anchor) || "bottomSheet".equals(anchor)) {
+        if ("navigationBar".equals(anchor) || "bottomNavigationBar".equals(anchor) || "bottomSheet".equals(anchor)) {
             view.setAnchor(anchor);
         } else {
             view.params.setAnchorId(View.NO_ID);
