@@ -12,6 +12,7 @@ const BottomAppBar = ({ navigationImage, overflowImage, children, style, ...prop
             <NVBottomAppBar
                 navigationImage={Image.resolveAssetSource(navigationImage)}
                 overflowImage={Image.resolveAssetSource(overflowImage)}
+                barHeight={56}
                 style={styles.toolbar}
                 {...props}>
                 {childrenArray.filter(({type}) => type !== SearchBar)}
@@ -21,7 +22,7 @@ const BottomAppBar = ({ navigationImage, overflowImage, children, style, ...prop
     );
 }
 
-var NVBottomAppBar = requireNativeComponent<any>('NVBottomAppBar', null);
+var NVBottomAppBar = global.nativeFabricUIManager ? require('./BottomAppBarNativeComponent').default : requireNativeComponent('NVBottomAppBar');
 
 const styles = StyleSheet.create({
     toolbar: {

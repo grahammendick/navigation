@@ -16,6 +16,7 @@ public class NavigationPackage implements ReactPackage {
         return Arrays.<ViewManager>asList(
             new ActionBarViewManager(),
             new BarButtonViewManager(),
+            new BottomAppBarViewManager(),
             new BottomSheetViewManager(),
             new CollapsingBarViewManager(),
             new CoordinatorLayoutViewManager(),

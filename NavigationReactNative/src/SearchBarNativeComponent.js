@@ -15,6 +15,7 @@ type NativeProps = $ReadOnly<{|
   mostRecentEventCount: Int32,
   mostRecentButtonEventCount: Int32,
   barTintColor: ColorValue,
+  bottomBar: boolean,
   scopeButton: Int32,
   scopeButtons: $ReadOnlyArray<string>,
   onChangeText: DirectEventHandler<$ReadOnly<{|
