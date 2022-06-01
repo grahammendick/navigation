@@ -95,8 +95,8 @@ using namespace facebook::react;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    for (int i = 0; i < _segmentedControl.numberOfSegments; i++) {
-        UIView *segment = _segmentedControl.subviews[_segmentedControl.subviews.count - i - 1];
+    for (int i = 0; i < self.accessibilityElements.count; i++) {
+        UIView *segment = ((UIView *) self.accessibilityElements[i]);
         segment.subviews[0].accessibilityIdentifier = _testIDs[i];
     }
 }
