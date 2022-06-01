@@ -84,11 +84,14 @@ using namespace facebook::react;
         _selectedTab = newViewProps.selectedTab;
     if (_tabBarController.selectedIndex != _selectedTab) {
         if (tabChanged) {
-            _tabBarController.selectedIndex = _selectedTab;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self->_tabBarController.selectedIndex = self->_selectedTab;
+                [self selectTab];
+            });
         } else {
             _selectedTab = _tabBarController.selectedIndex;
+            [self selectTab];
         }
-        [self selectTab];
     }
     _scrollsToTop = newViewProps.scrollsToTop;
     [super updateProps:props oldProps:oldProps];
