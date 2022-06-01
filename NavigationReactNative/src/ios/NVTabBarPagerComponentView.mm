@@ -56,9 +56,9 @@ using namespace facebook::react;
     NSInteger selectedTab = newViewProps.selectedTab;
     if (eventLag == 0 && _selectedTab != selectedTab) {
         _selectedTab = selectedTab;
-        if (_tabs.count > selectedTab) {
+        dispatch_async(dispatch_get_main_queue(), ^{
             [self setCurrentTab:selectedTab];
-        }
+        });
     }
     _scrollsToTop = newViewProps.scrollsToTop;
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -88,6 +88,7 @@ using namespace facebook::react;
 
 - (void)setCurrentTab:(NSInteger)index
 {
+    if (_tabs.count <= index) return;
     if (index != _selectedIndex) {
         _nativeEventCount++;
         if (_eventEmitter != nullptr) {
