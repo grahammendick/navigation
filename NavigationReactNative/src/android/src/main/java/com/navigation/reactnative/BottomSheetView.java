@@ -9,6 +9,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.events.Event;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -40,12 +43,10 @@ public class BottomSheetView extends ReactViewGroup {
             @Override
             public void onStateChanged(@NonNull View view, int i) {
                 nativeEventCount++;
-                WritableMap event = Arguments.createMap();
                 detent = i;
-                event.putInt("detent", i);
-                event.putInt("eventCount", nativeEventCount);
                 ReactContext reactContext = (ReactContext) getContext();
-                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onDetentChanged", event);
+                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                eventDispatcher.dispatchEvent(new BottomSheetView.DetentChangedEvent(getId(), detent, nativeEventCount));
             }
 
             @Override
@@ -53,5 +54,29 @@ public class BottomSheetView extends ReactViewGroup {
             }
         };
         bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback);
+    }
+
+    static class DetentChangedEvent extends Event<BottomSheetView.DetentChangedEvent> {
+        private final int detent;
+        private final int eventCount;
+
+        public DetentChangedEvent(int viewId, int detent, int eventCount) {
+            super(viewId);
+            this.detent = detent;
+            this.eventCount = eventCount;
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnDetentChanged";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            WritableMap event = Arguments.createMap();
+            event.putInt("detent", this.detent);
+            event.putInt("eventCount", this.eventCount);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
+        }
     }
 }

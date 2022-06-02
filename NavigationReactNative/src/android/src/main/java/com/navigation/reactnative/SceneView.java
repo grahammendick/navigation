@@ -4,6 +4,9 @@ import android.content.Context;
 import android.view.View;
 
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.events.Event;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
 
@@ -45,6 +48,23 @@ public class SceneView extends ReactViewGroup {
 
     protected void popped() {
         ReactContext reactContext = (ReactContext) getContext();
-        reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onPopped", null);
+        EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+        eventDispatcher.dispatchEvent(new PoppedEvent(getId()));
+    }
+
+    static class PoppedEvent extends Event<PoppedEvent> {
+        public PoppedEvent(int viewId) {
+            super(viewId);
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnPopped";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
+        }
     }
 }

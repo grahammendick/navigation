@@ -31,7 +31,7 @@ class NavigationBar extends React.Component<any, any> {
         }
     }
     render() {
-        var {bottomBar, hidden, logo, navigationImage, overflowImage, children, style = {height: undefined}, ...otherProps} = this.props;
+        var {bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, children, style = {height: undefined}, ...otherProps} = this.props;
         var scrollEdgeProps = this.getScrollEdgeProps()
         var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
         var statusBar = childrenArray.find(({type}) => type === StatusBar);
@@ -45,7 +45,10 @@ class NavigationBar extends React.Component<any, any> {
             <>
                 <NVNavigationBar
                     hidden={hidden}
-                    style={{height: !!collapsingBar ? style.height : null}}                    
+                    backTitle={backTitle}
+                    backTitleOn={backTitle !== undefined}
+                    barHeight={!!collapsingBar ? style.height : 0}
+                    style={{height: !!collapsingBar ? style.height : null}}
                     {...otherProps}
                     {...scrollEdgeProps}
                     barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : scrollEdgeProps.largeBarTintColor}>
@@ -64,6 +67,7 @@ class NavigationBar extends React.Component<any, any> {
                                 {...otherProps}
                                 {...scrollEdgeProps}
                                 barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : null}
+                                barHeight={56}
                                 style={{height: 56}}>
                                 {[
                                     childrenArray.find(({type}) => type === TitleBar),
@@ -86,7 +90,7 @@ var Container: any = ({collapse, children, ...props}) => (
     !collapse ? children : <CollapsingBar {...props}>{children}</CollapsingBar>
 )
 
-var NVNavigationBar = requireNativeComponent<any>('NVNavigationBar', null);
-var NVToolbar = requireNativeComponent<any>('NVToolbar', null);
+var NVNavigationBar = global.nativeFabricUIManager ? require('./NavigationBarNativeComponent').default : requireNativeComponent('NVNavigationBar');
+var NVToolbar = global.nativeFabricUIManager ? require('./ToolbarNativeComponent').default : requireNativeComponent('NVToolbar');
 
 export default Animated.createAnimatedComponent(NavigationBar);

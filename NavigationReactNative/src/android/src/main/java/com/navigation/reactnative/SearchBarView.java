@@ -13,6 +13,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.events.Event;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.google.android.material.appbar.AppBarLayout;
@@ -40,11 +43,9 @@ public class SearchBarView extends ReactViewGroup {
             @Override
             public boolean onQueryTextChange(String newText) {
                 nativeEventCount++;
-                WritableMap event = Arguments.createMap();
-                event.putString("text", newText);
-                event.putInt("eventCount", nativeEventCount);
                 ReactContext reactContext = (ReactContext) getContext();
-                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onChangeText", event);
+                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                eventDispatcher.dispatchEvent(new ChangeTextEvent(getId(), newText, nativeEventCount));
                 return false;
             }
         });
@@ -90,7 +91,7 @@ public class SearchBarView extends ReactViewGroup {
                 NavigationBarView navigationBarView = (NavigationBarView) view.getChildAt(i);
                 for (int j = 0; j < navigationBarView.getChildCount(); j++) {
                     if (navigationBarView.getChildAt(j) instanceof ActionView)
-                        actionView = (ActionView) navigationBarView.getChildAt(i);
+                        actionView = (ActionView) navigationBarView.getChildAt(j);
                 }
             }
             if (bottomBar && view.getChildAt(i) instanceof ActionView)
@@ -107,14 +108,16 @@ public class SearchBarView extends ReactViewGroup {
                 public void onSearchExpand() {
                     setZ(58);
                     ReactContext reactContext = (ReactContext) getContext();
-                    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onExpand", null);
+                    EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                    eventDispatcher.dispatchEvent(new ExpandEvent(getId()));
                 }
 
                 @Override
                 public void onSearchCollapse() {
                     setZ(-58);
                     ReactContext reactContext = (ReactContext) getContext();
-                    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onCollapse", null);
+                    EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                    eventDispatcher.dispatchEvent(new CollapseEvent(getId()));
                 }
             });
         }
@@ -122,5 +125,61 @@ public class SearchBarView extends ReactViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    }
+
+    static class ChangeTextEvent extends Event<ChangeTextEvent> {
+        private final String text;
+        private final int eventCount;
+
+        public ChangeTextEvent(int viewId, String text, int eventCount) {
+            super(viewId);
+            this.text = text;
+            this.eventCount = eventCount;
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnChangeText";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            WritableMap event = Arguments.createMap();
+            event.putString("text", this.text);
+            event.putInt("eventCount", this.eventCount);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
+        }
+    }
+
+    static class ExpandEvent extends Event<SearchBarView.ExpandEvent> {
+        public ExpandEvent(int viewId) {
+            super(viewId);
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnExpand";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
+        }
+    }
+
+    static class CollapseEvent extends Event<SearchBarView.CollapseEvent> {
+        public CollapseEvent(int viewId) {
+            super(viewId);
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnCollapse";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
+        }
     }
 }

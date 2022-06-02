@@ -1,5 +1,8 @@
-#import "NVLeftBarManager.h"
 #import "NVLeftBarView.h"
+#import <React/RCTViewManager.h>
+
+@interface NVLeftBarManager : RCTViewManager
+@end
 
 @implementation NVLeftBarManager
 

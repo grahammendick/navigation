@@ -5,14 +5,14 @@ import { NavigationContext } from 'navigation-react';
 import PopSync from './PopSync';
 import Scene from './Scene';
 type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
-type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, counter: number};
+type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, counter: number, mostRecentEventCount: number};
 
 const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null, unmountStyle = () => null,
     hidesTabBar = () => false, sharedElement: getSharedElement = () => null, stackInvalidatedLink, renderScene, children}: NavigationStackProps) => {
     const resumeNavigationRef = useRef(null);
     const ref = useRef(null);
     const {stateNavigator} = useContext(NavigationContext);
-    const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0});
+    const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0, mostRecentEventCount: 0});
     const scenes = {};
     let firstLink;
     const findScenes = (elements = children, nested = false) => {
@@ -59,7 +59,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
         const {crumbs} = stateNavigator.stateContext;
         const mostRecentEventCount = nativeEvent.eventCount;
         if (mostRecentEventCount) {
-            ref.current.setNativeProps({mostRecentEventCount});
+            setStackState((prevStackState) => ({...prevStackState, mostRecentEventCount}));
             if (resumeNavigationRef.current)
                 resumeNavigationRef.current();
         } else if (crumbs.length === nativeEvent.crumb) {
@@ -89,9 +89,10 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
             enterAnim = unmountStyle(true, state, data, crumbs);
             exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs, state, data);
         }
-        return {enterAnim, exitAnim, sharedElement, oldSharedElement};
+        var enterAnimOff = enterAnim === '';
+        return {enterAnim, exitAnim, enterAnimOff, sharedElement, oldSharedElement};
     }
-    const {stateNavigator: prevStateNavigator, keys, rest} = stackState;
+    const {stateNavigator: prevStateNavigator, keys, rest, mostRecentEventCount} = stackState;
     if (prevStateNavigator !== stateNavigator && stateNavigator.stateContext.state) {
         setStackState((prevStackState) => {
             const {keys: prevKeys, stateNavigator: prevStateNavigator, counter} = prevStackState;
@@ -103,7 +104,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
             if (prevKeys.length === keys.length && prevState !== state)
                 keys[keys.length - 1] = `${counter}-${keys.length - 1}`;
             const refresh = prevKeys.length === keys.length && prevState === state;
-            return {keys, stateNavigator, rest: history || refresh, counter: (counter + 1) % 1000};
+            return {keys, stateNavigator, rest: history || refresh, counter: (counter + 1) % 1000, mostRecentEventCount};
         });
     }
     const {crumbs, nextCrumb} = stateNavigator.stateContext;
@@ -111,6 +112,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
         <NVNavigationStack
             ref={ref}
             keys={keys}
+            mostRecentEventCount={mostRecentEventCount}
             style={[styles.stack, {backgroundColor: underlayColor}]}
             {...getAnimation()}
             onWillNavigateBack={onWillNavigateBack}
@@ -134,13 +136,12 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
                 ))}
             </PopSync>
         </NVNavigationStack>
-
     );
 }
 
-NavigationStack.Scene = ({children}) => children;
+const NVNavigationStack = global.nativeFabricUIManager ? require('./NavigationStackNativeComponent').default : requireNativeComponent('NVNavigationStack');
 
-const NVNavigationStack = requireNativeComponent<any>('NVNavigationStack', null);
+NavigationStack.Scene = ({children}) => children;
 
 const styles = StyleSheet.create({
     stack: {

@@ -1,7 +1,11 @@
-#import "NVStatusBarManager.h"
 #import "NVStatusBarView.h"
 
 #import <UIKit/UIKit.h>
+#import <React/RCTViewManager.h>
+
+@interface NVStatusBarManager : RCTViewManager
+
+@end
 
 @implementation NVStatusBarManager
 

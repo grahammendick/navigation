@@ -25,6 +25,9 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.events.Event;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.google.android.material.appbar.AppBarLayout;
@@ -85,7 +88,8 @@ public class ToolbarView extends Toolbar implements ActionView {
             @Override
             public void onClick(View view) {
                 ReactContext reactContext = (ReactContext) getContext();
-                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onNavigationPress", null);
+                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                eventDispatcher.dispatchEvent(new ToolbarView.NavigationPressEvent(getId()));
             }
         });
         setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -328,4 +332,20 @@ public class ToolbarView extends Toolbar implements ActionView {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
+
+    static class NavigationPressEvent extends Event<ToolbarView.NavigationPressEvent> {
+        public NavigationPressEvent(int viewId) {
+            super(viewId);
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnNavigationPress";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
+        }
+    }
 }

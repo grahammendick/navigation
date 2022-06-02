@@ -1,11 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react'
 import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
 
-const ActionBar = props => (
-    Platform.OS == 'android' ? <NVActionBar {...props} style={styles.actionView} /> : null
-)
+const ActionBar = props => {
+    const [bounds, setBounds] = useState({});
+    return Platform.OS == 'android' ? (
+        <NVActionBar
+            {...props}
+            onChangeBounds={({nativeEvent: {width, height}}) => {setBounds({width, height})}}
+            style={[styles.actionView, bounds]} />
+     ) : null;
+};
 
-const NVActionBar = requireNativeComponent<any>('NVActionBar', null)
+const NVActionBar = global.nativeFabricUIManager ? require('./ActionBarNativeComponent').default : requireNativeComponent('NVActionBar');
 
 const styles = StyleSheet.create({
     actionView: {

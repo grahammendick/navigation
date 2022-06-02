@@ -17,7 +17,10 @@ import androidx.appcompat.view.CollapsibleActionView;
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.events.Event;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.text.ReactTypefaceUtils;
 
@@ -151,7 +154,8 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
 
     protected void press() {
         ReactContext reactContext = (ReactContext) getContext();
-        reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onPress", null);
+        EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+        eventDispatcher.dispatchEvent(new BarButtonView.PressEvent(getId()));
     }
 
     @Override
@@ -163,17 +167,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
         super.onSizeChanged(w, h, oldw, oldh);
         if (getChildCount() == 0 || !actionBar)
             return;
-        final int viewTag = getChildAt(0).getId();
-        final ReactContext reactContext = (ReactContext) getContext();
-        reactContext.runOnNativeModulesQueueThread(
-            new GuardedRunnable(reactContext) {
-                @Override
-                public void runGuarded() {
-                    UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
-                    if (uiManager != null)
-                        uiManager.updateNodeSize(viewTag, w, h);
-                }
-            });
+        ((ActionBarView) getChildAt(0)).changeBounds(w, h, oldw, oldh);
     }
 
     @Override
@@ -192,5 +186,21 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
         if (getChildAt(0) instanceof ActionBarView)
             ((ActionBarView) getChildAt(0)).collapsed();
 
+    }
+
+    static class PressEvent extends Event<BarButtonView.PressEvent> {
+        public PressEvent(int viewId) {
+            super(viewId);
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnPress";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
+        }
     }
 }

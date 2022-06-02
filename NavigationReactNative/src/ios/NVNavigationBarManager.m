@@ -1,5 +1,8 @@
-#import "NVNavigationBarManager.h"
 #import "NVNavigationBarView.h"
+#import <React/RCTViewManager.h>
+
+@interface NVNavigationBarManager : RCTViewManager
+@end
 
 @implementation NVNavigationBarManager
 
@@ -31,6 +34,7 @@ RCT_EXPORT_VIEW_PROPERTY(tintColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(titleColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(largeTitleColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(backTitle, NSString)
+RCT_EXPORT_VIEW_PROPERTY(backTitleOn, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(backTestID, NSString)
 
 

@@ -22,6 +22,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.events.Event;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import java.util.ArrayList;
@@ -242,21 +245,18 @@ public class TabBarPagerView extends ViewPager {
             if (!dataSetChanged)
                 nativeEventCount++;
             selectedTab = position;
-            WritableMap event = Arguments.createMap();
-            event.putInt("tab", position);
-            event.putInt("eventCount", nativeEventCount);
             ReactContext reactContext = (ReactContext) getContext();
-            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onTabSelected", event);
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(new TabBarPagerView.TabSelectedEvent(getId(), position, nativeEventCount));
             if (getAdapter() != null)
                 getAdapter().tabFragments.get(position).tabBarItem.pressed();
         }
 
         @Override
         public void onPageScrollStateChanged(int state) {
-            WritableMap event = Arguments.createMap();
-            event.putBoolean("swiping", state == ViewPager.SCROLL_STATE_DRAGGING);
             ReactContext reactContext = (ReactContext) getContext();
-            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(),"onTabSwipeStateChanged", event);
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(new TabBarPagerView.TabSwipeStateChangedEvent(getId(), state == ViewPager.SCROLL_STATE_DRAGGING));
         }
     }
 
@@ -276,6 +276,51 @@ public class TabBarPagerView extends ViewPager {
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             return tabBarPager != null ? tabBarPager : new View(getContext());
+        }
+    }
+
+    static class TabSelectedEvent extends Event<TabBarPagerView.TabSelectedEvent> {
+        private final int tab;
+        private final int eventCount;
+
+        public TabSelectedEvent(int viewId, int tab, int eventCount) {
+            super(viewId);
+            this.tab = tab;
+            this.eventCount = eventCount;
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnTabSelected";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            WritableMap event = Arguments.createMap();
+            event.putInt("tab", this.tab);
+            event.putInt("eventCount", this.eventCount);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
+        }
+    }
+
+    static class TabSwipeStateChangedEvent extends Event<TabBarPagerView.TabSwipeStateChangedEvent> {
+        private final boolean swiping;
+
+        public TabSwipeStateChangedEvent(int viewId, boolean swiping) {
+            super(viewId);
+            this.swiping = swiping;
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnTabSwipeStateChanged";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            WritableMap event = Arguments.createMap();
+            event.putBoolean("swiping", this.swiping);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }
 }

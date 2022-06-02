@@ -19,7 +19,6 @@
 {
     if (self = [super initWithFrame:CGRectZero]) {
         _bridge = bridge;
-        self.tag = SEARCH_BAR;
         NVSearchResultsController *viewController = [[NVSearchResultsController alloc] init];
         self.searchController = [[NVSearchController alloc] initWithSearchResultsController:viewController];
         self.searchController.searchBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
@@ -58,7 +57,7 @@
 - (void)setText:(NSString *)text
 {
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    if (eventLag == 0 && [self.searchController.searchBar text] != text) {
+    if (eventLag == 0 && ![self.searchController.searchBar.text isEqualToString:text]) {
         [self.searchController.searchBar setText:text];
     }
 }
@@ -167,19 +166,5 @@
     [_reactSubview removeObserver:self forKeyPath:@"hidden"];
 }
 
-
-@end
-
-@implementation NVSearchController
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return self.presentingViewController.preferredStatusBarStyle;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return self.presentingViewController.prefersStatusBarHidden;
-}
 
 @end

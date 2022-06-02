@@ -20,7 +20,7 @@ class TabBarItem extends React.Component<any> {
         return (
             <NVTabBarItem
                 {...props}
-                badge={badge != null ? (Platform.OS === 'ios' ? '' + badge : +badge) : undefined}
+                badge={badge != null ? '' + badge : undefined}
                 image={Image.resolveAssetSource(image)}
                 systemItem={systemItem || ''}
                 style={styles.tabBarItem}
@@ -38,7 +38,7 @@ class TabBarItem extends React.Component<any> {
     }
 };
 
-var NVTabBarItem = requireNativeComponent<any>('NVTabBarItem', null);
+var NVTabBarItem = global.nativeFabricUIManager ? require('./TabBarItemNativeComponent').default : requireNativeComponent('NVTabBarItem');
 
 const styles = StyleSheet.create({
     tabBarItem: {

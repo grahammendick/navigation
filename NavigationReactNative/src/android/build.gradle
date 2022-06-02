@@ -9,8 +9,14 @@ buildscript {
     }
 }
 
+def isNewArchitectureEnabled() {
+    return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
+}
 
 apply plugin: 'com.android.library'
+if (isNewArchitectureEnabled()) {
+    apply plugin: 'com.facebook.react'
+}
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
@@ -23,8 +29,24 @@ android {
     defaultConfig {
         minSdkVersion safeExtGet("minSdkVersion", 16)
         targetSdkVersion safeExtGet("targetSdkVersion", 28)
+        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
         versionCode 1
         versionName "1.0"
+    }
+
+    sourceSets {
+        main {
+            if (isNewArchitectureEnabled()) {
+                java.excludes = [
+                    '**/reactnative/NavigationPackage.java'
+                ]
+            } else {
+               java.excludes = [
+                   '**/*ViewManager.java',
+                   '**/newarch/NavigationPackage.java'
+                ]
+            }
+        }
     }
 
     lintOptions {
@@ -41,4 +63,11 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 }
-  
+
+if (isNewArchitectureEnabled()) {
+    react {
+        jsRootDir = file("../")
+        libraryName = "navigation-react-native"
+        codegenJavaPackageName = "com.navigation.reactnative"
+    }
+}

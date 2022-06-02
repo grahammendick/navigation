@@ -6,38 +6,6 @@
 	objectVersion = 50;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		70153012229D1F4800903FA7 /* NVSearchResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70153011229D1F4800903FA7 /* NVSearchResultsController.m */; };
-		704B593C22A2AC14008C05C6 /* NVNavigationStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 704B593B22A2AC14008C05C6 /* NVNavigationStackView.m */; };
-		704B594022A2AC3A008C05C6 /* NVNavigationStackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 704B593F22A2AC3A008C05C6 /* NVNavigationStackManager.m */; };
-		704B594222A2AC56008C05C6 /* NVSceneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 704B594122A2AC56008C05C6 /* NVSceneView.m */; };
-		704B594622A2AC77008C05C6 /* NVSceneManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 704B594522A2AC77008C05C6 /* NVSceneManager.m */; };
-		70587C86229A8688009457B7 /* NVSearchBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70587C85229A8688009457B7 /* NVSearchBarView.m */; };
-		70587C89229A86B8009457B7 /* NVSearchBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70587C88229A86B8009457B7 /* NVSearchBarManager.m */; };
-		706F41022562BF7D000E213E /* NVStatusBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 706F41012562BF7D000E213E /* NVStatusBarView.m */; };
-		706F41062562BFAC000E213E /* NVStatusBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 706F41052562BFAC000E213E /* NVStatusBarManager.m */; };
-		707F41B024A74F4600A06BF2 /* NVTabBarPagerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 707F41AF24A74F4600A06BF2 /* NVTabBarPagerView.m */; };
-		707F41B324A74F6700A06BF2 /* NVTabBarPagerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 707F41B224A74F6700A06BF2 /* NVTabBarPagerManager.m */; };
-		70922F8422C0D143009CECB0 /* NVNavigationBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70922F8322C0D143009CECB0 /* NVNavigationBarView.m */; };
-		70922F8622C0D153009CECB0 /* NVNavigationBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70922F8522C0D153009CECB0 /* NVNavigationBarManager.m */; };
-		709F32CF22A7FF9C00A0358A /* NVTabBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F32CE22A7FF9C00A0358A /* NVTabBarView.m */; };
-		709F32D322A7FFBF00A0358A /* NVTabBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F32D222A7FFBF00A0358A /* NVTabBarManager.m */; };
-		709F32D522A7FFD600A0358A /* NVTabBarItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F32D422A7FFD600A0358A /* NVTabBarItemView.m */; };
-		709F32D922A7FFFA00A0358A /* NVTabBarItemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F32D822A7FFFA00A0358A /* NVTabBarItemManager.m */; };
-		709F331222A8657700A0358A /* NVSceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F331122A8657700A0358A /* NVSceneController.m */; };
-		70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3290212B2BC700DE0D13 /* NVRightBarView.m */; };
-		70BB3294212B2C0A00DE0D13 /* NVRightBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3293212B2C0A00DE0D13 /* NVRightBarManager.m */; };
-		70BB3298212B2C4000DE0D13 /* NVLeftBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3297212B2C4000DE0D13 /* NVLeftBarView.m */; };
-		70BB329A212B2C5100DE0D13 /* NVLeftBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB3299212B2C5100DE0D13 /* NVLeftBarManager.m */; };
-		70BB329E212B2C9000DE0D13 /* NVBarButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB329D212B2C9000DE0D13 /* NVBarButtonManager.m */; };
-		70BB32A0212B2CA000DE0D13 /* NVBarButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB329F212B2CA000DE0D13 /* NVBarButtonView.m */; };
-		70BB32A4212B2D4100DE0D13 /* NVBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BB32A3212B2D4100DE0D13 /* NVBarView.m */; };
-		70E99F2A24461103004B520A /* NVSegmentedTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E99F2924461103004B520A /* NVSegmentedTabView.m */; };
-		70E99F2D24461152004B520A /* NVSegmentedTabManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E99F2C24461152004B520A /* NVSegmentedTabManager.m */; };
-		EE17B6DD231E85C000C62B81 /* NVTitleBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = EE17B6DC231E85C000C62B81 /* NVTitleBarView.m */; };
-		EE17B6E0231E86B800C62B81 /* NVTitleBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EE17B6DF231E86B800C62B81 /* NVTitleBarManager.m */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		7020F6BC20ECD07A00E7A74E /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -54,61 +22,100 @@
 		70153011229D1F4800903FA7 /* NVSearchResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSearchResultsController.m; sourceTree = "<group>"; };
 		70153013229D1F5500903FA7 /* NVSearchResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSearchResultsController.h; sourceTree = "<group>"; };
 		7020F6BE20ECD07A00E7A74E /* libNavigationReactNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNavigationReactNative.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		7021392A282C50BF001E4ECC /* NVSearchBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVSearchBarComponentView.mm; sourceTree = "<group>"; };
+		7021392C282C50CC001E4ECC /* NVSearchBarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSearchBarComponentView.h; sourceTree = "<group>"; };
+		7025916228269AA200A9DD13 /* NVSegmentedTabComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVSegmentedTabComponentView.mm; sourceTree = "<group>"; };
+		7025916428269AB400A9DD13 /* NVSegmentedTabComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSegmentedTabComponentView.h; sourceTree = "<group>"; };
+		7025916528269ACE00A9DD13 /* NVTabBarPagerComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVTabBarPagerComponentView.mm; sourceTree = "<group>"; };
+		7025916728269ADF00A9DD13 /* NVTabBarPagerComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarPagerComponentView.h; sourceTree = "<group>"; };
+		70295FE72800768A0051A576 /* NVSceneComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVSceneComponentView.mm; sourceTree = "<group>"; };
+		702FBDB62830F920002054B5 /* NVTitleBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVTitleBarComponentView.mm; sourceTree = "<group>"; };
+		702FBDB82830F92D002054B5 /* NVTitleBarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTitleBarComponentView.h; sourceTree = "<group>"; };
+		702FBDB928317EF9002054B5 /* NVStatusBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVStatusBarComponentView.mm; sourceTree = "<group>"; };
+		702FBDBB28317F02002054B5 /* NVStatusBarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVStatusBarComponentView.h; sourceTree = "<group>"; };
+		7032DA6A280D49DB00A3AD1B /* NVRightBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVRightBarComponentView.mm; sourceTree = "<group>"; };
+		7032DA6C280D49E500A3AD1B /* NVRightBarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVRightBarComponentView.h; sourceTree = "<group>"; };
+		7032DA6D280D49FB00A3AD1B /* NVBarButtonComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVBarButtonComponentView.mm; sourceTree = "<group>"; };
+		7032DA6F280D4A0800A3AD1B /* NVBarButtonComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVBarButtonComponentView.h; sourceTree = "<group>"; };
+		7032DA70280DC47A00A3AD1B /* NVLeftBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVLeftBarComponentView.mm; sourceTree = "<group>"; };
+		7032DA72280DC48300A3AD1B /* NVLeftBarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVLeftBarComponentView.h; sourceTree = "<group>"; };
 		704B593B22A2AC14008C05C6 /* NVNavigationStackView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVNavigationStackView.m; sourceTree = "<group>"; };
 		704B593D22A2AC20008C05C6 /* NVNavigationStackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVNavigationStackView.h; sourceTree = "<group>"; };
-		704B593E22A2AC30008C05C6 /* NVNavigationStackManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVNavigationStackManager.h; sourceTree = "<group>"; };
 		704B593F22A2AC3A008C05C6 /* NVNavigationStackManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVNavigationStackManager.m; sourceTree = "<group>"; };
 		704B594122A2AC56008C05C6 /* NVSceneView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSceneView.m; sourceTree = "<group>"; };
 		704B594322A2AC61008C05C6 /* NVSceneView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSceneView.h; sourceTree = "<group>"; };
-		704B594422A2AC6D008C05C6 /* NVSceneManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSceneManager.h; sourceTree = "<group>"; };
 		704B594522A2AC77008C05C6 /* NVSceneManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSceneManager.m; sourceTree = "<group>"; };
 		70587C84229A867A009457B7 /* NVSearchBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSearchBarView.h; sourceTree = "<group>"; };
 		70587C85229A8688009457B7 /* NVSearchBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSearchBarView.m; sourceTree = "<group>"; };
-		70587C87229A86AA009457B7 /* NVSearchBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSearchBarManager.h; sourceTree = "<group>"; };
 		70587C88229A86B8009457B7 /* NVSearchBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSearchBarManager.m; sourceTree = "<group>"; };
+		705D1E8F281FD33B00886320 /* NVTabBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVTabBarComponentView.mm; sourceTree = "<group>"; };
+		705D1E91281FD35600886320 /* NVTabBarItemComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVTabBarItemComponentView.mm; sourceTree = "<group>"; };
+		705D1E93281FD36F00886320 /* NVTabBarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarComponentView.h; sourceTree = "<group>"; };
+		705D1E94281FD37900886320 /* NVTabBarItemComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarItemComponentView.h; sourceTree = "<group>"; };
+		706A6B7027F3A6490062030A /* NVNavigationStackComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVNavigationStackComponentView.mm; sourceTree = "<group>"; };
+		706A9A90280ABB3B009EAF06 /* NVNavigationBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVNavigationBarComponentView.mm; sourceTree = "<group>"; };
+		706A9A92280ABB4B009EAF06 /* NVNavigationBarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVNavigationBarComponentView.h; sourceTree = "<group>"; };
 		706F41012562BF7D000E213E /* NVStatusBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVStatusBarView.m; sourceTree = "<group>"; };
 		706F41042562BF95000E213E /* NVStatusBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVStatusBarView.h; sourceTree = "<group>"; };
 		706F41052562BFAC000E213E /* NVStatusBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVStatusBarManager.m; sourceTree = "<group>"; };
-		706F41092562BFB9000E213E /* NVStatusBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVStatusBarManager.h; sourceTree = "<group>"; };
 		707F41AF24A74F4600A06BF2 /* NVTabBarPagerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTabBarPagerView.m; sourceTree = "<group>"; };
 		707F41B124A74F5600A06BF2 /* NVTabBarPagerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarPagerView.h; sourceTree = "<group>"; };
 		707F41B224A74F6700A06BF2 /* NVTabBarPagerManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTabBarPagerManager.m; sourceTree = "<group>"; };
-		707F41B424A74F7200A06BF2 /* NVTabBarPagerManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarPagerManager.h; sourceTree = "<group>"; };
 		70922F8222C0D138009CECB0 /* NVNavigationBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVNavigationBarView.h; sourceTree = "<group>"; };
 		70922F8322C0D143009CECB0 /* NVNavigationBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVNavigationBarView.m; sourceTree = "<group>"; };
 		70922F8522C0D153009CECB0 /* NVNavigationBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVNavigationBarManager.m; sourceTree = "<group>"; };
-		70922F8722C0D15C009CECB0 /* NVNavigationBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVNavigationBarManager.h; sourceTree = "<group>"; };
 		709F32CE22A7FF9C00A0358A /* NVTabBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTabBarView.m; sourceTree = "<group>"; };
 		709F32D022A7FFA700A0358A /* NVTabBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarView.h; sourceTree = "<group>"; };
-		709F32D122A7FFB600A0358A /* NVTabBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarManager.h; sourceTree = "<group>"; };
 		709F32D222A7FFBF00A0358A /* NVTabBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTabBarManager.m; sourceTree = "<group>"; };
 		709F32D422A7FFD600A0358A /* NVTabBarItemView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTabBarItemView.m; sourceTree = "<group>"; };
 		709F32D622A7FFE100A0358A /* NVTabBarItemView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarItemView.h; sourceTree = "<group>"; };
-		709F32D722A7FFF000A0358A /* NVTabBarItemManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarItemManager.h; sourceTree = "<group>"; };
 		709F32D822A7FFFA00A0358A /* NVTabBarItemManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTabBarItemManager.m; sourceTree = "<group>"; };
 		709F331122A8657700A0358A /* NVSceneController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSceneController.m; sourceTree = "<group>"; };
 		709F331322A8658500A0358A /* NVSceneController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSceneController.h; sourceTree = "<group>"; };
 		70BB3290212B2BC700DE0D13 /* NVRightBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVRightBarView.m; sourceTree = "<group>"; };
 		70BB3292212B2BEB00DE0D13 /* NVRightBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVRightBarView.h; sourceTree = "<group>"; };
 		70BB3293212B2C0A00DE0D13 /* NVRightBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVRightBarManager.m; sourceTree = "<group>"; };
-		70BB3295212B2C1400DE0D13 /* NVRightBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVRightBarManager.h; sourceTree = "<group>"; };
 		70BB3296212B2C3500DE0D13 /* NVLeftBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVLeftBarView.h; sourceTree = "<group>"; };
 		70BB3297212B2C4000DE0D13 /* NVLeftBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVLeftBarView.m; sourceTree = "<group>"; };
 		70BB3299212B2C5100DE0D13 /* NVLeftBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVLeftBarManager.m; sourceTree = "<group>"; };
-		70BB329B212B2C5900DE0D13 /* NVLeftBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVLeftBarManager.h; sourceTree = "<group>"; };
-		70BB329C212B2C7B00DE0D13 /* NVBarButtonManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVBarButtonManager.h; sourceTree = "<group>"; };
 		70BB329D212B2C9000DE0D13 /* NVBarButtonManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVBarButtonManager.m; sourceTree = "<group>"; };
 		70BB329F212B2CA000DE0D13 /* NVBarButtonView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVBarButtonView.m; sourceTree = "<group>"; };
 		70BB32A1212B2CA900DE0D13 /* NVBarButtonView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVBarButtonView.h; sourceTree = "<group>"; };
 		70BB32A2212B2D3700DE0D13 /* NVBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVBarView.h; sourceTree = "<group>"; };
 		70BB32A3212B2D4100DE0D13 /* NVBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVBarView.m; sourceTree = "<group>"; };
+		70DC9BDC2843AA930047EEF4 /* NVActionBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVActionBarComponentView.mm; sourceTree = "<group>"; };
+		70DC9BDD2843AAA00047EEF4 /* NVActionBarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVActionBarComponentView.h; sourceTree = "<group>"; };
+		70DC9BDE2843AB800047EEF4 /* NVCollapsingBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVCollapsingBarComponentView.mm; sourceTree = "<group>"; };
+		70DC9BDF2843AB8B0047EEF4 /* NVCollapsingBarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVCollapsingBarComponentView.h; sourceTree = "<group>"; };
+		70DC9BE02843ABD30047EEF4 /* NVFloatingActionButtonComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVFloatingActionButtonComponentView.mm; sourceTree = "<group>"; };
+		70DC9BE12843ABE00047EEF4 /* NVFloatingActionButtonComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVFloatingActionButtonComponentView.h; sourceTree = "<group>"; };
+		70DC9BE22843AC2C0047EEF4 /* NVExtendedFloatingActionButtonComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVExtendedFloatingActionButtonComponentView.mm; sourceTree = "<group>"; };
+		70DC9BE32843AC3B0047EEF4 /* NVExtendedFloatingActionButtonComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVExtendedFloatingActionButtonComponentView.h; sourceTree = "<group>"; };
+		70DC9BE42843AC940047EEF4 /* NVTabBarPagerRTLComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVTabBarPagerRTLComponentView.mm; sourceTree = "<group>"; };
+		70DC9BE52843AC9E0047EEF4 /* NVTabBarPagerRTLComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarPagerRTLComponentView.h; sourceTree = "<group>"; };
+		70DC9BE62843ACCF0047EEF4 /* NVTabLayoutComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVTabLayoutComponentView.mm; sourceTree = "<group>"; };
+		70DC9BE72843ACDC0047EEF4 /* NVTabLayoutComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabLayoutComponentView.h; sourceTree = "<group>"; };
+		70DC9BE82843AD100047EEF4 /* NVToolbarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVToolbarComponentView.mm; sourceTree = "<group>"; };
+		70DC9BE92843AD1A0047EEF4 /* NVToolbarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVToolbarComponentView.h; sourceTree = "<group>"; };
+		70DC9BEA2843AD520047EEF4 /* NVCoordinatorLayoutComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVCoordinatorLayoutComponentView.mm; sourceTree = "<group>"; };
+		70DC9BEB2843AD5C0047EEF4 /* NVCoordinatorLayoutComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVCoordinatorLayoutComponentView.h; sourceTree = "<group>"; };
+		70DC9BEC2843ADA30047EEF4 /* NVSharedElementComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVSharedElementComponentView.mm; sourceTree = "<group>"; };
+		70DC9BED2843ADAF0047EEF4 /* NVSharedElementComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSharedElementComponentView.h; sourceTree = "<group>"; };
+		70DC9BEE2843ADE80047EEF4 /* NVTabLayoutRTLComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVTabLayoutRTLComponentView.mm; sourceTree = "<group>"; };
+		70DC9BEF2843ADF30047EEF4 /* NVTabLayoutRTLComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabLayoutRTLComponentView.h; sourceTree = "<group>"; };
+		70DC9BF02843AE200047EEF4 /* NVBottomSheetComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVBottomSheetComponentView.mm; sourceTree = "<group>"; };
+		70DC9BF12843AE2B0047EEF4 /* NVBottomSheetComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVBottomSheetComponentView.h; sourceTree = "<group>"; };
+		70DC9BF22843AE560047EEF4 /* NVBottomAppBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVBottomAppBarComponentView.mm; sourceTree = "<group>"; };
+		70DC9BF32843AE6E0047EEF4 /* NVBottomAppBarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVBottomAppBarComponentView.h; sourceTree = "<group>"; };
+		70DC9BF42843AEA80047EEF4 /* NVTabNavigationComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVTabNavigationComponentView.mm; sourceTree = "<group>"; };
+		70DC9BF52843AEB20047EEF4 /* NVTabNavigationComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabNavigationComponentView.h; sourceTree = "<group>"; };
 		70E99F28244610EB004B520A /* NVSegmentedTabView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSegmentedTabView.h; sourceTree = "<group>"; };
 		70E99F2924461103004B520A /* NVSegmentedTabView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSegmentedTabView.m; sourceTree = "<group>"; };
-		70E99F2B24461144004B520A /* NVSegmentedTabManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSegmentedTabManager.h; sourceTree = "<group>"; };
 		70E99F2C24461152004B520A /* NVSegmentedTabManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSegmentedTabManager.m; sourceTree = "<group>"; };
+		70F11C852800BD5600033C5F /* NVSceneComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSceneComponentView.h; sourceTree = "<group>"; };
+		70F11C862800BD6900033C5F /* NVNavigationStackComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVNavigationStackComponentView.h; sourceTree = "<group>"; };
 		EE17B6DB231E85C000C62B81 /* NVTitleBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTitleBarView.h; sourceTree = "<group>"; };
 		EE17B6DC231E85C000C62B81 /* NVTitleBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTitleBarView.m; sourceTree = "<group>"; };
-		EE17B6DE231E86B800C62B81 /* NVTitleBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTitleBarManager.h; sourceTree = "<group>"; };
 		EE17B6DF231E86B800C62B81 /* NVTitleBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTitleBarManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -126,47 +133,89 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
-				707F41B424A74F7200A06BF2 /* NVTabBarPagerManager.h */,
+				70DC9BF22843AE560047EEF4 /* NVBottomAppBarComponentView.mm */,
+				70DC9BF32843AE6E0047EEF4 /* NVBottomAppBarComponentView.h */,
+				70DC9BF42843AEA80047EEF4 /* NVTabNavigationComponentView.mm */,
+				70DC9BF52843AEB20047EEF4 /* NVTabNavigationComponentView.h */,
+				70DC9BF12843AE2B0047EEF4 /* NVBottomSheetComponentView.h */,
+				70DC9BF02843AE200047EEF4 /* NVBottomSheetComponentView.mm */,
+				70DC9BEF2843ADF30047EEF4 /* NVTabLayoutRTLComponentView.h */,
+				70DC9BEE2843ADE80047EEF4 /* NVTabLayoutRTLComponentView.mm */,
+				70DC9BED2843ADAF0047EEF4 /* NVSharedElementComponentView.h */,
+				70DC9BEC2843ADA30047EEF4 /* NVSharedElementComponentView.mm */,
+				70DC9BEB2843AD5C0047EEF4 /* NVCoordinatorLayoutComponentView.h */,
+				70DC9BEA2843AD520047EEF4 /* NVCoordinatorLayoutComponentView.mm */,
+				70DC9BE92843AD1A0047EEF4 /* NVToolbarComponentView.h */,
+				70DC9BE82843AD100047EEF4 /* NVToolbarComponentView.mm */,
+				70DC9BE72843ACDC0047EEF4 /* NVTabLayoutComponentView.h */,
+				70DC9BE62843ACCF0047EEF4 /* NVTabLayoutComponentView.mm */,
+				70DC9BE52843AC9E0047EEF4 /* NVTabBarPagerRTLComponentView.h */,
+				70DC9BE42843AC940047EEF4 /* NVTabBarPagerRTLComponentView.mm */,
+				70DC9BE32843AC3B0047EEF4 /* NVExtendedFloatingActionButtonComponentView.h */,
+				70DC9BE22843AC2C0047EEF4 /* NVExtendedFloatingActionButtonComponentView.mm */,
+				70DC9BE12843ABE00047EEF4 /* NVFloatingActionButtonComponentView.h */,
+				70DC9BE02843ABD30047EEF4 /* NVFloatingActionButtonComponentView.mm */,
+				70DC9BDF2843AB8B0047EEF4 /* NVCollapsingBarComponentView.h */,
+				70DC9BDE2843AB800047EEF4 /* NVCollapsingBarComponentView.mm */,
+				70DC9BDD2843AAA00047EEF4 /* NVActionBarComponentView.h */,
+				70DC9BDC2843AA930047EEF4 /* NVActionBarComponentView.mm */,
+				702FBDBB28317F02002054B5 /* NVStatusBarComponentView.h */,
+				702FBDB928317EF9002054B5 /* NVStatusBarComponentView.mm */,
+				702FBDB82830F92D002054B5 /* NVTitleBarComponentView.h */,
+				702FBDB62830F920002054B5 /* NVTitleBarComponentView.mm */,
+				7021392C282C50CC001E4ECC /* NVSearchBarComponentView.h */,
+				7021392A282C50BF001E4ECC /* NVSearchBarComponentView.mm */,
+				7025916728269ADF00A9DD13 /* NVTabBarPagerComponentView.h */,
+				7025916528269ACE00A9DD13 /* NVTabBarPagerComponentView.mm */,
+				7025916228269AA200A9DD13 /* NVSegmentedTabComponentView.mm */,
+				7025916428269AB400A9DD13 /* NVSegmentedTabComponentView.h */,
+				705D1E94281FD37900886320 /* NVTabBarItemComponentView.h */,
+				705D1E93281FD36F00886320 /* NVTabBarComponentView.h */,
+				705D1E91281FD35600886320 /* NVTabBarItemComponentView.mm */,
+				705D1E8F281FD33B00886320 /* NVTabBarComponentView.mm */,
+				7032DA72280DC48300A3AD1B /* NVLeftBarComponentView.h */,
+				7032DA70280DC47A00A3AD1B /* NVLeftBarComponentView.mm */,
+				7032DA6F280D4A0800A3AD1B /* NVBarButtonComponentView.h */,
+				7032DA6D280D49FB00A3AD1B /* NVBarButtonComponentView.mm */,
+				7032DA6C280D49E500A3AD1B /* NVRightBarComponentView.h */,
+				7032DA6A280D49DB00A3AD1B /* NVRightBarComponentView.mm */,
+				706A9A92280ABB4B009EAF06 /* NVNavigationBarComponentView.h */,
+				706A9A90280ABB3B009EAF06 /* NVNavigationBarComponentView.mm */,
+				70F11C862800BD6900033C5F /* NVNavigationStackComponentView.h */,
+				70F11C852800BD5600033C5F /* NVSceneComponentView.h */,
+				70295FE72800768A0051A576 /* NVSceneComponentView.mm */,
+				706A6B7027F3A6490062030A /* NVNavigationStackComponentView.mm */,
 				707F41B224A74F6700A06BF2 /* NVTabBarPagerManager.m */,
 				707F41B124A74F5600A06BF2 /* NVTabBarPagerView.h */,
 				707F41AF24A74F4600A06BF2 /* NVTabBarPagerView.m */,
 				70E99F2C24461152004B520A /* NVSegmentedTabManager.m */,
-				70E99F2B24461144004B520A /* NVSegmentedTabManager.h */,
 				70E99F2924461103004B520A /* NVSegmentedTabView.m */,
 				70E99F28244610EB004B520A /* NVSegmentedTabView.h */,
-				70922F8722C0D15C009CECB0 /* NVNavigationBarManager.h */,
 				70922F8522C0D153009CECB0 /* NVNavigationBarManager.m */,
 				70922F8322C0D143009CECB0 /* NVNavigationBarView.m */,
 				70922F8222C0D138009CECB0 /* NVNavigationBarView.h */,
 				70153013229D1F5500903FA7 /* NVSearchResultsController.h */,
 				70153011229D1F4800903FA7 /* NVSearchResultsController.m */,
 				70587C88229A86B8009457B7 /* NVSearchBarManager.m */,
-				70587C87229A86AA009457B7 /* NVSearchBarManager.h */,
 				706F41042562BF95000E213E /* NVStatusBarView.h */,
 				706F41052562BFAC000E213E /* NVStatusBarManager.m */,
 				70587C85229A8688009457B7 /* NVSearchBarView.m */,
-				706F41092562BFB9000E213E /* NVStatusBarManager.h */,
 				706F41012562BF7D000E213E /* NVStatusBarView.m */,
 				70587C84229A867A009457B7 /* NVSearchBarView.h */,
 				709F331322A8658500A0358A /* NVSceneController.h */,
 				709F331122A8657700A0358A /* NVSceneController.m */,
 				709F32D822A7FFFA00A0358A /* NVTabBarItemManager.m */,
-				709F32D722A7FFF000A0358A /* NVTabBarItemManager.h */,
 				709F32D622A7FFE100A0358A /* NVTabBarItemView.h */,
 				709F32D422A7FFD600A0358A /* NVTabBarItemView.m */,
 				709F32D222A7FFBF00A0358A /* NVTabBarManager.m */,
-				709F32D122A7FFB600A0358A /* NVTabBarManager.h */,
 				709F32D022A7FFA700A0358A /* NVTabBarView.h */,
 				709F32CE22A7FF9C00A0358A /* NVTabBarView.m */,
 				704B594522A2AC77008C05C6 /* NVSceneManager.m */,
-				704B594422A2AC6D008C05C6 /* NVSceneManager.h */,
 				704B594322A2AC61008C05C6 /* NVSceneView.h */,
 				704B594122A2AC56008C05C6 /* NVSceneView.m */,
 				704B593F22A2AC3A008C05C6 /* NVNavigationStackManager.m */,
-				704B593E22A2AC30008C05C6 /* NVNavigationStackManager.h */,
 				704B593D22A2AC20008C05C6 /* NVNavigationStackView.h */,
 				704B593B22A2AC14008C05C6 /* NVNavigationStackView.m */,
-				EE17B6DE231E86B800C62B81 /* NVTitleBarManager.h */,
 				EE17B6DF231E86B800C62B81 /* NVTitleBarManager.m */,
 				EE17B6DB231E85C000C62B81 /* NVTitleBarView.h */,
 				EE17B6DC231E85C000C62B81 /* NVTitleBarView.m */,
@@ -175,12 +224,9 @@
 				70BB32A1212B2CA900DE0D13 /* NVBarButtonView.h */,
 				70BB329F212B2CA000DE0D13 /* NVBarButtonView.m */,
 				70BB329D212B2C9000DE0D13 /* NVBarButtonManager.m */,
-				70BB329C212B2C7B00DE0D13 /* NVBarButtonManager.h */,
-				70BB329B212B2C5900DE0D13 /* NVLeftBarManager.h */,
 				70BB3299212B2C5100DE0D13 /* NVLeftBarManager.m */,
 				70BB3297212B2C4000DE0D13 /* NVLeftBarView.m */,
 				70BB3296212B2C3500DE0D13 /* NVLeftBarView.h */,
-				70BB3295212B2C1400DE0D13 /* NVRightBarManager.h */,
 				70BB3293212B2C0A00DE0D13 /* NVRightBarManager.m */,
 				70BB3292212B2BEB00DE0D13 /* NVRightBarView.h */,
 				70BB3290212B2BC700DE0D13 /* NVRightBarView.m */,
@@ -252,35 +298,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				709F32CF22A7FF9C00A0358A /* NVTabBarView.m in Sources */,
-				709F32D922A7FFFA00A0358A /* NVTabBarItemManager.m in Sources */,
-				706F41062562BFAC000E213E /* NVStatusBarManager.m in Sources */,
-				70BB329E212B2C9000DE0D13 /* NVBarButtonManager.m in Sources */,
-				70BB3294212B2C0A00DE0D13 /* NVRightBarManager.m in Sources */,
-				70153012229D1F4800903FA7 /* NVSearchResultsController.m in Sources */,
-				70BB3291212B2BC700DE0D13 /* NVRightBarView.m in Sources */,
-				70922F8422C0D143009CECB0 /* NVNavigationBarView.m in Sources */,
-				704B593C22A2AC14008C05C6 /* NVNavigationStackView.m in Sources */,
-				EE17B6DD231E85C000C62B81 /* NVTitleBarView.m in Sources */,
-				70587C89229A86B8009457B7 /* NVSearchBarManager.m in Sources */,
-				709F32D322A7FFBF00A0358A /* NVTabBarManager.m in Sources */,
-				707F41B024A74F4600A06BF2 /* NVTabBarPagerView.m in Sources */,
-				709F32D522A7FFD600A0358A /* NVTabBarItemView.m in Sources */,
-				70E99F2D24461152004B520A /* NVSegmentedTabManager.m in Sources */,
-				70BB329A212B2C5100DE0D13 /* NVLeftBarManager.m in Sources */,
-				70BB32A0212B2CA000DE0D13 /* NVBarButtonView.m in Sources */,
-				70922F8622C0D153009CECB0 /* NVNavigationBarManager.m in Sources */,
-				707F41B324A74F6700A06BF2 /* NVTabBarPagerManager.m in Sources */,
-				70E99F2A24461103004B520A /* NVSegmentedTabView.m in Sources */,
-				70BB32A4212B2D4100DE0D13 /* NVBarView.m in Sources */,
-				70587C86229A8688009457B7 /* NVSearchBarView.m in Sources */,
-				704B594622A2AC77008C05C6 /* NVSceneManager.m in Sources */,
-				709F331222A8657700A0358A /* NVSceneController.m in Sources */,
-				704B594022A2AC3A008C05C6 /* NVNavigationStackManager.m in Sources */,
-				706F41022562BF7D000E213E /* NVStatusBarView.m in Sources */,
-				70BB3298212B2C4000DE0D13 /* NVLeftBarView.m in Sources */,
-				704B594222A2AC56008C05C6 /* NVSceneView.m in Sources */,
-				EE17B6E0231E86B800C62B81 /* NVTitleBarManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

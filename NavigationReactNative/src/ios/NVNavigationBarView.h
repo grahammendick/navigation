@@ -1,8 +1,10 @@
 #import <UIKit/UIKit.h>
+#import "NVSceneController.h"
 
-@interface NVNavigationBarView : UIView
+@interface NVNavigationBarView : UIView <NVNavigationBar>
 
 @property (nonatomic, assign) BOOL hidden;
+@property (nonatomic, assign) BOOL isHidden;
 @property (nonatomic, assign) BOOL largeTitle;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *titleFontFamily;
@@ -23,10 +25,9 @@
 @property (nonatomic, copy) UIColor *titleColor;
 @property (nonatomic, copy) UIColor *largeTitleColor;
 @property (nonatomic, copy) NSString *backTitle;
+@property (nonatomic, assign) BOOL backTitleOn;
 @property (nonatomic, copy) NSString *backTestID;
 
 -(void)updateStyle;
-
-#define NAVIGATION_BAR ((int) 28)
 
 @end

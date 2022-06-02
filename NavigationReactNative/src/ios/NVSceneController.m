@@ -3,14 +3,15 @@
 #import "NVNavigationBarView.h"
 #import "NVSearchBarView.h"
 #import "NVStatusBarView.h"
+#import <React/UIView+React.h>
 
 @implementation NVSceneController
 {
-    NVSceneView *_view;
+    UIView<NVScene> *_view;
     CGRect _lastViewFrame;
 }
 
-- (id)initWithScene:(NVSceneView *)view
+- (id)initWithScene:(UIView<NVScene> *)view
 {
     if (self = [super init]) {
         _view = view;
@@ -21,21 +22,19 @@
 - (void)loadView
 {
     [super loadView];
+    _view.reactViewController.view = nil;
     self.view = _view;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
-    NVSearchBarView *searchBar = (NVSearchBarView *) [navigationBar viewWithTag:SEARCH_BAR];
+    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
+    UIView<NVSearchBar> *searchBar = [self findSearchBar:navigationBar];
     self.definesPresentationContext = true;
-    if (!!searchBar && !navigationBar.hidden)
-    {
-        if (@available(iOS 11.0, *)) {
-            [self.navigationItem setSearchController:searchBar.searchController];
-            [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
-        }
+    if (!!searchBar && !navigationBar.isHidden) {
+        [self.navigationItem setSearchController:searchBar.searchController];
+        [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
     }
 }
 
@@ -44,13 +43,11 @@
     [super viewWillAppear:animated];
     NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
-    NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
-    BOOL hidden = navigationBar.hidden;
+    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
+    BOOL hidden = navigationBar.isHidden;
     if (@available(iOS 13.0, *)) {
     } else {
-        if (@available(iOS 11.0, *)) {
-            hidden = hidden || previousController.navigationItem.searchController.active;
-        }
+        hidden = hidden || previousController.navigationItem.searchController.active;
     }
     [self.navigationController setNavigationBarHidden:hidden];
     if (navigationBar.title.length != 0) {
@@ -61,20 +58,15 @@
         previousController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:navigationBar.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
     }
     [navigationBar updateStyle];
-    if (@available(iOS 11.0, *)) {
-        self.navigationController.navigationBar.prefersLargeTitles = true;
-        [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
-    }
-    NVSearchBarView *searchBar = (NVSearchBarView *) [navigationBar viewWithTag:SEARCH_BAR];
+    self.navigationController.navigationBar.prefersLargeTitles = true;
+    [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
+    UIView<NVSearchBar> *searchBar = [self findSearchBar:navigationBar];
     self.definesPresentationContext = true;
-    if (!!searchBar && !navigationBar.hidden)
-    {
-        if (@available(iOS 11.0, *)) {
-            [self.navigationItem setSearchController:searchBar.searchController];
-            [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
-        }
+    if (!!searchBar && !navigationBar.hidden) {
+        [self.navigationItem setSearchController:searchBar.searchController];
+        [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
     }
-    NVStatusBarView *statusBar = [navigationBar viewWithTag:STATUS_BAR];
+    UIView<NVStatusBar> *statusBar = [self findStatusBar:navigationBar];
     self.statusBarStyle = statusBar.tintStyle;
     self.statusBarHidden = statusBar.hidden;
     [statusBar updateStyle];
@@ -85,21 +77,47 @@
     [super viewWillLayoutSubviews];
     NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
-    NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
-    if (@available(iOS 11.0, *)) {
-        if (previousController.navigationItem.searchController.active) {
-            [self.navigationController setNavigationBarHidden:navigationBar.hidden];
-        }
+    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
+    if (previousController.navigationItem.searchController.active) {
+        [self.navigationController setNavigationBarHidden:navigationBar.isHidden];
     }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    NVNavigationBarView *navigationBar = (NVNavigationBarView *) [self.view viewWithTag:NAVIGATION_BAR];
-    NVStatusBarView *statusBar = [navigationBar viewWithTag:STATUS_BAR];
+    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
+    UIView<NVStatusBar> *statusBar = [self findStatusBar:navigationBar];
     [navigationBar updateStyle];
     [statusBar updateStyle];
+}
+
+-(UIView<NVNavigationBar> *) findNavigationBar:(UIView *)parent
+{
+    return (UIView<NVNavigationBar> *) [self findChild:parent of:@protocol(NVNavigationBar)];
+}
+
+-(UIView<NVSearchBar> *) findSearchBar:(UIView *)parent
+{
+    return (UIView<NVSearchBar> *) [self findChild:parent of:@protocol(NVSearchBar)];
+}
+
+-(UIView<NVStatusBar> *) findStatusBar:(UIView *)parent
+{
+    return (UIView<NVStatusBar> *) [self findChild:parent of:@protocol(NVStatusBar)];
+}
+
+-(UIView *) findChild:(UIView *)parent of:(Protocol*) proto
+{
+    for(NSInteger i = 0; i < parent.subviews.count; i++) {
+        UIView* subview = parent.subviews[i];
+        if ([subview conformsToProtocol:proto])
+            return subview;
+        subview = [self findChild:parent.subviews[i] of:proto];
+        if ([subview conformsToProtocol:proto])
+            return subview;
+    }
+    return nil;
 }
 
 - (void)viewDidLayoutSubviews
@@ -134,6 +152,7 @@
 - (BOOL)hidesBottomBarWhenPushed
 {
     return [self.navigationController.visibleViewController isEqual:self] && _view.hidesTabBar;
+    return NO;
 }
 
 - (void)dealloc

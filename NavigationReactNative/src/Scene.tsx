@@ -8,7 +8,7 @@ type SceneProps = { crumb: number, sceneKey: string, rest: boolean, renderScene:
 type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
-    private timer: number;
+    private timer: any;
     constructor(props) {
         super(props);
         this.state = {navigationEvent: null};
@@ -163,7 +163,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     }
 }
 
-var NVScene = requireNativeComponent<any>('NVScene', null);
+var NVScene = global.nativeFabricUIManager ? require('./SceneNativeComponent').default : requireNativeComponent('NVScene');
 
 const styles = StyleSheet.create({
     scene: {

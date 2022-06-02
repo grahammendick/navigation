@@ -2,6 +2,7 @@ build/dist
 build/npm/**/navigation*.js
 build/npm/**/android
 build/npm/**/ios
+build/npm/**/*NativeComponent.js
 npm-debug.log
 node_modules
 !Navigation*/src/node_modules

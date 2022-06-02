@@ -5,6 +5,7 @@ import android.view.Gravity;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
@@ -51,9 +52,14 @@ public class ExtendedFloatingActionButtonManager extends SimpleViewManager<Exten
         view.setTextColor(colorList);
     }
 
-    @ReactProp(name = "anchor", defaultInt = View.NO_ID)
-    public void setAnchor(ExtendedFloatingActionButtonView view, int anchor) {
-        view.params.setAnchorId(anchor);
+    @ReactProp(name = "anchor")
+    public void setAnchor(ExtendedFloatingActionButtonView view, @Nullable String anchor) {
+        if ("navigationBar".equals(anchor) || "bottomNavigationBar".equals(anchor) || "bottomSheet".equals(anchor)) {
+            view.setAnchor(anchor);
+        } else {
+            view.params.setAnchorId(anchor != null ? Integer.parseInt(anchor) : View.NO_ID);
+            view.setAnchor(null);
+        }
         if (view.getParent() != null) view.getParent().requestLayout();
     }
 
@@ -176,7 +182,7 @@ public class ExtendedFloatingActionButtonManager extends SimpleViewManager<Exten
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("onPress", MapBuilder.of("registrationName", "onPress"))
+            .put("topOnPress", MapBuilder.of("registrationName", "onPress"))
             .build();
     }
 }

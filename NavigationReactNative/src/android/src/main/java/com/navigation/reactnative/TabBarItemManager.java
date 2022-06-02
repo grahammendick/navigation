@@ -54,8 +54,8 @@ public class TabBarItemManager extends ViewGroupManager<TabBarItemView> {
     }
 
     @ReactProp(name = "badge")
-    public void setBadge(TabBarItemView view, @Nullable Integer badge) {
-        view.setBadge(badge);
+    public void setBadge(TabBarItemView view, @Nullable String badge) {
+        view.setBadge(badge != null ? Integer.parseInt(badge) : null);
     }
 
     @ReactProp(name = "badgeColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
@@ -83,8 +83,8 @@ public class TabBarItemManager extends ViewGroupManager<TabBarItemView> {
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-                .put("onPress", MapBuilder.of("registrationName", "onPress"))
-                .build();
+            .put("topOnPress", MapBuilder.of("registrationName", "onPress"))
+            .build();
     }
 
     @Override

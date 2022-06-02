@@ -1,5 +1,8 @@
-#import "NVSceneManager.h"
 #import "NVSceneView.h"
+#import <React/RCTViewManager.h>
+
+@interface NVSceneManager : RCTViewManager
+@end
 
 @implementation NVSceneManager
 

@@ -6,7 +6,7 @@ class BottomSheet extends React.Component<any, any> {
     private dragging = false;
     constructor(props) {
         super(props);
-        this.state = {selectedDetent: props.detent || props.defaultDetent};
+        this.state = {selectedDetent: props.detent || props.defaultDetent, mostRecentEventCount: 0};
         this.ref = React.createRef<View>();
         this.onDetentChanged = this.onDetentChanged.bind(this);
     }
@@ -21,7 +21,7 @@ class BottomSheet extends React.Component<any, any> {
     }
     onDetentChanged({nativeEvent}) {
         var {eventCount: mostRecentEventCount, detent: nativeDetent} = nativeEvent;
-        this.ref.current.setNativeProps({mostRecentEventCount});
+        this.setState({mostRecentEventCount});
         var detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants.Detent
         var detent = Object.keys(detents).find(name => detents[name] === nativeDetent)
         this.dragging = !detent
@@ -51,6 +51,8 @@ class BottomSheet extends React.Component<any, any> {
                 hideable={hideable}
                 skipCollapsed={skipCollapsed}
                 draggable={draggable}
+                sheetHeight={expandedHeight != null ? expandedHeight : 0}
+                mostRecentEventCount={this.state.mostRecentEventCount}
                 onMoveShouldSetResponderCapture={() => this.dragging}
                 onDetentChanged={this.onDetentChanged}
                 style={[
@@ -66,7 +68,7 @@ class BottomSheet extends React.Component<any, any> {
     }
 } 
 
-var NVBottomSheet = requireNativeComponent<any>('NVBottomSheet', null);
+var NVBottomSheet = global.nativeFabricUIManager ? require('./BottomSheetNativeComponent').default : requireNativeComponent('NVBottomSheet');
 
 const styles = StyleSheet.create({
     bottomSheet: {

@@ -629,7 +629,7 @@ export interface FloatingActionButtonProps {
     /**
      * The view the floating action button is anchored to
      */
-    anchor?: number | null;
+    anchor?: number | null | 'navigationBar' | 'bottomNavigationBar' | 'bottomSheet';
     /**
      * The layout position of the floating action button
      */

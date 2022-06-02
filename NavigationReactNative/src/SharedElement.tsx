@@ -7,6 +7,6 @@ var SharedElement = ({ style, children, ...props }) => (
         : <View style={style}>{children}</View>
 );
 
-var NVSharedElement = requireNativeComponent<any>('NVSharedElement', null);
+var NVSharedElement = global.nativeFabricUIManager ? require('./SharedElementNativeComponent').default : requireNativeComponent('NVSharedElement');
 
 export default SharedElement;

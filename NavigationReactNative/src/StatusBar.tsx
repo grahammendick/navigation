@@ -10,6 +10,6 @@ const StatusBar = ({tintStyle, hidden, barTintColor}: StatusBarProps) => (
         barTintColor={barTintColor} />
 );
 
-const NVStatusBar = requireNativeComponent<any>("NVStatusBar", null);
+const NVStatusBar = global.nativeFabricUIManager ? require('./StatusBarNativeComponent').default : requireNativeComponent('NVStatusBar');
 
 export default StatusBar;

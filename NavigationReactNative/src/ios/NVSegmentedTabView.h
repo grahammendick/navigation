@@ -5,6 +5,8 @@
 
 @interface NVSegmentedTabView : UISegmentedControl
 
+@property (nonatomic, copy) NSArray *titles;
+@property (nonatomic, copy) NSArray *testIDs;
 @property (nonatomic, copy) NSString *fontFamily;
 @property (nonatomic, copy) NSString *fontWeight;
 @property (nonatomic, copy) NSString *fontStyle;

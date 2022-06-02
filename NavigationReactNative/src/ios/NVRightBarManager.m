@@ -1,5 +1,8 @@
-#import "NVRightBarManager.h"
 #import "NVRightBarView.h"
+#import <React/RCTViewManager.h>
+
+@interface NVRightBarManager : RCTViewManager
+@end
 
 @implementation NVRightBarManager
 

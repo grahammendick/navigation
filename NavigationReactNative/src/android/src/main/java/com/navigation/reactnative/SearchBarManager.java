@@ -38,8 +38,8 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
     }
 
     @ReactProp(name = "autoCapitalize")
-    public void setAutoCapitalize(SearchBarView view, int autoCapitalize) {
-        view.searchView.setInputType(autoCapitalize);
+    public void setAutoCapitalize(SearchBarView view, String autoCapitalize) {
+        view.searchView.setInputType(Integer.parseInt(autoCapitalize));
     }
 
     @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
@@ -70,9 +70,9 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("onChangeText", MapBuilder.of("registrationName", "onChangeText"))
-            .put("onExpand", MapBuilder.of("registrationName", "onExpand"))
-            .put("onCollapse", MapBuilder.of("registrationName", "onCollapse"))
+            .put("topOnChangeText", MapBuilder.of("registrationName", "onChangeText"))
+            .put("topOnExpand", MapBuilder.of("registrationName", "onExpand"))
+            .put("topOnCollapse", MapBuilder.of("registrationName", "onCollapse"))
             .build();
     }
 

@@ -7,7 +7,7 @@ class TabBar extends React.Component<any, any> {
     private swiping = false;
     constructor(props) {
         super(props);
-        this.state = {selectedTab: props.tab || props.defaultTab};
+        this.state = {selectedTab: props.tab || props.defaultTab, mostRecentEventCount: 0};
         this.ref = React.createRef<View>();
         this.onTabSelected = this.onTabSelected.bind(this);
         this.onTabSwipeStateChanged = this.onTabSwipeStateChanged.bind(this);
@@ -26,7 +26,7 @@ class TabBar extends React.Component<any, any> {
     }
     onTabSelected({nativeEvent}) {
         var {eventCount: mostRecentEventCount, tab} = nativeEvent;
-        this.ref.current.setNativeProps({mostRecentEventCount});
+        this.setState({mostRecentEventCount});
         this.changeTab(tab);
     }
     onTabSwipeStateChanged({nativeEvent}) {
@@ -66,6 +66,8 @@ class TabBar extends React.Component<any, any> {
                 unselectedTintColor={unselectedTintColor}
                 selectedIndicatorAtTop={bottomTabs}
                 tabs={tabBarItems.map(({props: {title, testID}}: any) => ({title, testID}))}
+                titles={tabBarItems.map(({props: {title = ''}}: any) => title)}
+                testIDs={tabBarItems.map(({props: {testID = ''}}: any) => testID)}
                 fontFamily={fontFamily} fontWeight={fontWeight}
                 fontStyle={fontStyle} fontSize={fontSize}
                 scrollable={scrollable}
@@ -88,6 +90,7 @@ class TabBar extends React.Component<any, any> {
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}
                     scrollsToTop={scrollsToTop}
+                    mostRecentEventCount={this.state.mostRecentEventCount}
                     style={styles.tabBar}>
                         <BackButton onPress={() => this.changeTab(0)} />
                         {tabBarItems
@@ -103,13 +106,13 @@ class TabBar extends React.Component<any, any> {
     }
 }
 
-var NVTabLayout = requireNativeComponent<any>('NVTabLayout', null);
-var NVTabLayoutRTL = requireNativeComponent<any>('NVTabLayoutRTL', null);
-var NVTabNavigation = requireNativeComponent<any>('NVTabNavigation', null);
-var NVSegmentedTab = requireNativeComponent<any>('NVSegmentedTab', null);
-var NVTabBar = requireNativeComponent<any>('NVTabBar', null);
-var NVTabBarPager = requireNativeComponent<any>('NVTabBarPager', null);
-var NVTabBarPagerRTL = requireNativeComponent<any>('NVTabBarPagerRTL', null);
+var NVTabLayout = global.nativeFabricUIManager ? require('./TabLayoutNativeComponent').default : requireNativeComponent('NVTabLayout');
+var NVTabLayoutRTL = global.nativeFabricUIManager ? require('./TabLayoutRTLNativeComponent').default : requireNativeComponent('NVTabLayoutRTL');
+var NVTabNavigation = global.nativeFabricUIManager ? require('./TabNavigationNativeComponent').default : requireNativeComponent('NVTabNavigation');
+var NVSegmentedTab = global.nativeFabricUIManager ? require('./SegmentedTabNativeComponent').default : requireNativeComponent('NVSegmentedTab');
+var NVTabBar = global.nativeFabricUIManager ? require('./TabBarNativeComponent').default : requireNativeComponent('NVTabBar');
+var NVTabBarPager = global.nativeFabricUIManager ? require('./TabBarPagerNativeComponent').default : requireNativeComponent('NVTabBarPager');
+var NVTabBarPagerRTL = global.nativeFabricUIManager ? require('./TabBarPagerRTLNativeComponent').default : requireNativeComponent('NVTabBarPagerRTL');
 
 const styles = StyleSheet.create({
     tabBar: {
