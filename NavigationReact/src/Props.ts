@@ -1,6 +1,6 @@
 import AsyncStateNavigator from './AsyncStateNavigator';
 import { AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent } from 'react';
-import { FluentNavigator } from 'navigation';
+import { FluentNavigator, StateContext } from 'navigation';
 
 interface LinkProps extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
     historyAction?: 'add' | 'replace' | 'none';
@@ -33,7 +33,7 @@ interface FluentLinkProps extends LinkProps {
 }
 
 interface SceneViewProps {
-    active: string | string[];
+    active: string | string[] | ((stateContext: StateContext) => boolean);
     children: any;
 }
 
