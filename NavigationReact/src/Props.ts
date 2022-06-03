@@ -33,7 +33,7 @@ interface FluentLinkProps extends LinkProps {
 }
 
 interface SceneViewProps {
-    stateKey: string | string[];
+    active: string | string[];
     children: any;
 }
 

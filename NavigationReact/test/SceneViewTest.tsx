@@ -26,7 +26,7 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey="s">
+                        <SceneView active="s">
                             <div>scene</div>
                         </SceneView>
                     </NavigationHandler>
@@ -48,7 +48,7 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey="s1">
+                        <SceneView active="s1">
                             <div>scene</div>
                         </SceneView>
                     </NavigationHandler>
@@ -70,10 +70,10 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey="s0">
+                        <SceneView active="s0">
                             <div>scene 0</div>
                         </SceneView>
-                        <SceneView stateKey="s1">
+                        <SceneView active="s1">
                             <div>scene 1</div>
                         </SceneView>
                     </NavigationHandler>
@@ -96,7 +96,7 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey={["s0", "s1"]}>
+                        <SceneView active={["s0", "s1"]}>
                             <div>scene</div>
                         </SceneView>
                     </NavigationHandler>
@@ -119,7 +119,7 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey={["s0", "s2"]}>
+                        <SceneView active={["s0", "s2"]}>
                             <div>scene</div>
                         </SceneView>
                     </NavigationHandler>
@@ -142,10 +142,10 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey={["s0", "s1"]}>
+                        <SceneView active={["s0", "s1"]}>
                             <div>scene 0</div>
                         </SceneView>
-                        <SceneView stateKey={["s0", "s2"]}>
+                        <SceneView active={["s0", "s2"]}>
                             <div>scene 1</div>
                         </SceneView>
                     </NavigationHandler>
@@ -168,16 +168,16 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey="s2">
+                        <SceneView active="s2">
                             <div>scene 0</div>
                         </SceneView>
-                        <SceneView stateKey="s1">
+                        <SceneView active="s1">
                             <div>scene 1</div>
                         </SceneView>
-                        <SceneView stateKey={["s0", "s1"]}>
+                        <SceneView active={["s0", "s1"]}>
                             <div>scene 0,1</div>
                         </SceneView>
-                        <SceneView stateKey={["s0", "s2"]}>
+                        <SceneView active={["s0", "s2"]}>
                             <div>scene 0,2</div>
                         </SceneView>
                     </NavigationHandler>
@@ -197,7 +197,7 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey="s">
+                        <SceneView active="s">
                             <div>scene</div>
                         </SceneView>
                     </NavigationHandler>
@@ -218,7 +218,7 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey={['s0', 's1']}>
+                        <SceneView active={['s0', 's1']}>
                             <div>scene</div>
                         </SceneView>
                     </NavigationHandler>
