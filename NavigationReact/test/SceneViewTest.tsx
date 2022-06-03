@@ -227,6 +227,7 @@ describe('SceneViewTest', function () {
             assert.equal(container.innerHTML, '');
         })
     });
+
     describe('Scene View Function Active', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
@@ -292,6 +293,48 @@ describe('SceneViewTest', function () {
                 );
             });
             assert.equal(container.innerHTML, '<div>scene 0</div>');
+        })
+    });
+
+    describe('Scene View Data Active', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a'});
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView active={({data}) => data.x == 'a'}>
+                            <div>scene</div>
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            assert.equal(container.innerHTML, '<div>scene</div>');
+        })
+    });
+
+    describe('Scene View Data Inactive', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's' }
+            ]);
+            stateNavigator.navigate('s', {x: 'b'});
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView active={({data}) => data.x == 'a'}>
+                            <div>scene</div>
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            assert.equal(container.innerHTML, '');
         })
     });
 });
