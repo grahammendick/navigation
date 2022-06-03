@@ -55,8 +55,8 @@ stateNavigator.start();
 
 ReactDOM.render(
     <NavigationHandler stateNavigator={stateNavigator}>
-        <SceneView stateKey="people"><People /></SceneView>
-        <SceneView stateKey="person"><Person /></SceneView>
+        <SceneView active="people"><People /></SceneView>
+        <SceneView active="person"><Person /></SceneView>
     </NavigationHandler>,
     document.getElementById('root')
 );
