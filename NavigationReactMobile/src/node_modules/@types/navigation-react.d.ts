@@ -1,4 +1,4 @@
-import { State, StateNavigator, FluentNavigator } from 'navigation';
+import { State, StateNavigator, FluentNavigator, StateContext } from 'navigation';
 import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent } from 'react';
 
 /**
@@ -148,9 +148,9 @@ export class FluentLink<NavigationInfo extends { [index: string]: any } = any, K
  */
 export interface SceneViewProps<NavigationInfo extends { [index: string]: any } = any> {
     /**
-     * The key of the State that activates the View
+     * A function or the State key(s) that activate the View
      */
-    stateKey: (keyof NavigationInfo & string) | (keyof NavigationInfo & string)[];
+    active: (keyof NavigationInfo & string) | (keyof NavigationInfo & string)[] | ((stateContext: StateContext) => boolean);
 }
 
 /**

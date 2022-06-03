@@ -26,7 +26,7 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey="s">
+                        <SceneView active="s">
                             <div>scene</div>
                         </SceneView>
                     </NavigationHandler>
@@ -48,7 +48,7 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey="s1">
+                        <SceneView active="s1">
                             <div>scene</div>
                         </SceneView>
                     </NavigationHandler>
@@ -70,10 +70,10 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey="s0">
+                        <SceneView active="s0">
                             <div>scene 0</div>
                         </SceneView>
-                        <SceneView stateKey="s1">
+                        <SceneView active="s1">
                             <div>scene 1</div>
                         </SceneView>
                     </NavigationHandler>
@@ -96,7 +96,7 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey={["s0", "s1"]}>
+                        <SceneView active={["s0", "s1"]}>
                             <div>scene</div>
                         </SceneView>
                     </NavigationHandler>
@@ -119,7 +119,7 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey={["s0", "s2"]}>
+                        <SceneView active={["s0", "s2"]}>
                             <div>scene</div>
                         </SceneView>
                     </NavigationHandler>
@@ -142,10 +142,10 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey={["s0", "s1"]}>
+                        <SceneView active={["s0", "s1"]}>
                             <div>scene 0</div>
                         </SceneView>
-                        <SceneView stateKey={["s0", "s2"]}>
+                        <SceneView active={["s0", "s2"]}>
                             <div>scene 1</div>
                         </SceneView>
                     </NavigationHandler>
@@ -168,16 +168,16 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey="s2">
+                        <SceneView active="s2">
                             <div>scene 0</div>
                         </SceneView>
-                        <SceneView stateKey="s1">
+                        <SceneView active="s1">
                             <div>scene 1</div>
                         </SceneView>
-                        <SceneView stateKey={["s0", "s1"]}>
+                        <SceneView active={["s0", "s1"]}>
                             <div>scene 0,1</div>
                         </SceneView>
-                        <SceneView stateKey={["s0", "s2"]}>
+                        <SceneView active={["s0", "s2"]}>
                             <div>scene 0,2</div>
                         </SceneView>
                     </NavigationHandler>
@@ -197,7 +197,7 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey="s">
+                        <SceneView active="s">
                             <div>scene</div>
                         </SceneView>
                     </NavigationHandler>
@@ -218,7 +218,117 @@ describe('SceneViewTest', function () {
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView stateKey={['s0', 's1']}>
+                        <SceneView active={['s0', 's1']}>
+                            <div>scene</div>
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            assert.equal(container.innerHTML, '');
+        })
+    });
+
+    describe('Scene View Function Active', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's' }
+            ]);
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView active={({state}) => state.key == 's'}>
+                            <div>scene</div>
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            assert.equal(container.innerHTML, '<div>scene</div>');
+        })
+    });
+
+    describe('Scene View Function Inactive', function () {
+        it('should not render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0'},
+                { key: 's1'},
+            ]);
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView active={({state}) => state.key == 's1'}>
+                            <div>scene</div>
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            assert.equal(container.innerHTML, '');
+        })
+    });
+
+    describe('Scene View Function Active and Inactive', function () {
+        it('should render and not render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0'},
+                { key: 's1'},
+            ]);
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView active={({state}) => state.key == 's0'}>
+                            <div>scene 0</div>
+                        </SceneView>
+                        <SceneView active={({state}) => state.key == 's1'}>
+                            <div>scene 1</div>
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            assert.equal(container.innerHTML, '<div>scene 0</div>');
+        })
+    });
+
+    describe('Scene View Data Active', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a'});
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView active={({data}) => data.x == 'a'}>
+                            <div>scene</div>
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            assert.equal(container.innerHTML, '<div>scene</div>');
+        })
+    });
+
+    describe('Scene View Data Inactive', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's' }
+            ]);
+            stateNavigator.navigate('s', {x: 'b'});
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView active={({data}) => data.x == 'a'}>
                             <div>scene</div>
                         </SceneView>
                     </NavigationHandler>
