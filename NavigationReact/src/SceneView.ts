@@ -5,7 +5,7 @@ import { SceneViewProps } from './Props';
 const SceneView = ({active, children}: SceneViewProps) => {
     const {state, stateNavigator} = useContext(NavigationContext);
 
-    const show = state && (
+    const show = active != null && state && (
         typeof active === 'string'
         ? state.key === active
         : (
