@@ -4694,14 +4694,14 @@
   "version" "1.4.0"
 
 "navigation-react-native@^8.0.0":
-  "integrity" "sha512-ZMXvQJgFfBuQwcMkMYifUkiQZRRRq2Yg1udEN3i5eQgrIKwX1wr75gNZ0XCwYD6IZQ1EjDQtI2Qe80e68WQgig=="
-  "resolved" "https://registry.npmjs.org/navigation-react-native/-/navigation-react-native-8.1.1.tgz"
-  "version" "8.1.1"
+  "integrity" "sha512-1K9U4KQPePFYI2KkyiBlLZBEQdKbiDE0JBAzCLhqdTxg52qjeqTeTvtq/V/DOiiLt60C2ZLWf5dHUo53Fk5FKA=="
+  "resolved" "https://registry.npmjs.org/navigation-react-native/-/navigation-react-native-8.9.0.tgz"
+  "version" "8.9.0"
 
 "navigation-react@*", "navigation-react@^4.3.0":
-  "integrity" "sha512-A2sqS4T8hgpvPQUcqhP3OAtUzVL/8RlWEprQPjX4UrGHXpsMJr+VnluZtxY32Y8HMnKezu5kBl8zVxivideO0g=="
-  "resolved" "https://registry.npmjs.org/navigation-react/-/navigation-react-4.3.0.tgz"
-  "version" "4.3.0"
+  "integrity" "sha512-EF7UmOqcR9GpjgPV7PjUOXhj55sNfvOAGnPXUO9nGTS7rtXHvUj93u83pGUgN7oZWBelFS/UX91okWps2CUPgw=="
+  "resolved" "https://registry.npmjs.org/navigation-react/-/navigation-react-4.5.0.tgz"
+  "version" "4.5.0"
 
 "navigation@*", "navigation@^5.5.0":
   "integrity" "sha512-FlhpzwFBrWEqXx7kT9YJZ/b50r3XWQwGWnmTt22SGFNwwxDuGUYAHMMdqU0U21G62VNmG0h91FiydB22wsJAEA=="
