@@ -80,27 +80,35 @@ const App = () => (
 export default App;</code></pre>
               <h2>The New Architecture (Fabric)</h2>
               <p>
-                <code>cd ios && RCT_NEW_ARCH_ENABLED=1 pod install && cd ..</code>
-                <code>newArchEnabled=true</code>
+                  The Navigation router supports the new React Native architecture. 
+                  Enable it on Android by setting <code>newArchEnabled=true</code> in the <code>android/gradle.properties</code> file. Enable it on iOS by running <code>cd ios && RCT_NEW_ARCH_ENABLED=1 pod install && cd ..</code>
               </p>
               <h3>Autolinking on Android</h3>
+              <p>
+                  Currently React Native doesn't autolink 3rd party libraries on Android. The following steps go through how to manually link the <code>navigation-react-native</code> package.
+              </p>
+              <p>Update the <code>android/app/build.gradle</code> file (note the additional trailing comma on the preceding line).</p>
               <pre><code class="language-xxx">    "REACT_ANDROID_BUILD_DIR=$rootDir/../node_modules/react-native/ReactAndroid/build"<span class="diff">,</span>
     <span class="diff">"NODE_MODULES_DIR=$rootDir/../node_modules"</span>
 cFlags "-Wall", "-Werror", "-fexceptions", "-frtti", "-DWITH_INSPECTOR=1"
 </code></pre>
+              <p>Add a line to the <code>android/app/src/main/jni/Android.mk</code> file.</p>
               <pre><code class="language-xxx"># include $(GENERATED_SRC_DIR)/codegen/jni/Android.mk
 <span class="diff">include $(NODE_MODULES_DIR)/navigation-react-native/android/build/generated/source/codegen/jni/Android.mk</span>
 include $(CLEAR_VARS)
 </code></pre>
+              <p>Add another line to <code>android/app/src/main/jni/Android.mk</code>.</p>
               <pre><code class="language-xxx">libreact_codegen_rncore \
 <span class="diff">libreact_codegen_navigation-react-native \</span>
 libreact_debug \
 </code></pre>
+              <p>Add a line to the <code>android/app/src/main/jni/MainComponentsRegistry.cpp</code> file.</p>
               <pre><code class="language-xxx">#include &lt;react/renderer/componentregistry/ComponentDescriptorProviderRegistry.h>
 <span class="diff">#include &lt;react/renderer/components/navigation-react-native/ComponentDescriptors.h></span>
 #include &lt;react/renderer/components/rncore/ComponentDescriptors.h>
 </code></pre>
-              <pre><code class="language-xxx">// providerRegistry->add(concreteComponentDescriptorProvider<
+              <p>And these other lines to <code>android/app/src/main/jni/MainComponentsRegistry.cpp</code>. One for each component.</p>
+              <pre><code class="language-xxx">// providerRegistry->add(concreteComponentDescriptorProvider&lt;
 //        AocViewerComponentDescriptor>());
 <span class="diff">providerRegistry->add(concreteComponentDescriptorProvider&lt;NVActionBarComponentDescriptor>());
 providerRegistry->add(concreteComponentDescriptorProvider&lt;NVBarButtonComponentDescriptor>());
