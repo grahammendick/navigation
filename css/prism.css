@@ -107,3 +107,7 @@ pre[class*="language-"] {
 .token.entity {
 	cursor: help;
 }
+.diff {
+	background-color: rgb(218, 251, 225);
+	color: rgb(17, 99, 41);	
+}
