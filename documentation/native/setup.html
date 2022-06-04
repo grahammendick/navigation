@@ -79,10 +79,11 @@ const App = () => (
 
 export default App;</code></pre>
               <h2>The New Architecture (Fabric)</h2>
-              <pre><code class="language-js">cd ios && RCT_NEW_ARCH_ENABLED=1 pod install && cd ..</code></pre>
-              <pre><code class="language-xxx"># to write custom TurboModules/Fabric components OR use libraries that
-# are providing them.
-newArchEnabled=<span class="diff">true</span></code></pre>
+              <p>
+                <code>cd ios && RCT_NEW_ARCH_ENABLED=1 pod install && cd ..</code>
+                <code>newArchEnabled=true</code>
+              </p>
+              <h3>Autolinking on Android</h3>
               <pre><code class="language-xxx">    "REACT_ANDROID_BUILD_DIR=$rootDir/../node_modules/react-native/ReactAndroid/build"<span class="diff">,</span>
     <span class="diff">"NODE_MODULES_DIR=$rootDir/../node_modules"</span>
 cFlags "-Wall", "-Werror", "-fexceptions", "-frtti", "-DWITH_INSPECTOR=1"
