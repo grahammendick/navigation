@@ -87,7 +87,7 @@ export default App;</code></pre>
               <p>
                   Currently React Native Fabric doesn't autolink 3rd party libraries on Android. The following steps go through how to manually link the <code>navigation-react-native</code> package. These steps are only needed on the new architecture.
               </p>
-              <p>Update the <code>android/app/build.gradle</code> file (note the additional trailing comma on the first line).</p>
+              <p>Update the <code>android/app/build.gradle</code> file (note the trailing comma on the first line).</p>
               <pre><code class="language-xxx">    "REACT_ANDROID_BUILD_DIR=$rootDir/../node_modules/react-native/ReactAndroid/build"<span class="diff">,</span>
     <span class="diff">"NODE_MODULES_DIR=$rootDir/../node_modules"</span>
 cFlags "-Wall", "-Werror", "-fexceptions", "-frtti", "-DWITH_INSPECTOR=1"
