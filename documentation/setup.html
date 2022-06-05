@@ -54,24 +54,18 @@
             <p>
                 Replace the code in <code>index.js</code> (or equivalent) with the following:
             </p>
-            <pre><code class="language-jsx">import React, {useContext} from 'react';
+            <pre><code class="language-jsx">import React from 'react';
 import ReactDOM from 'react-dom';
 import {StateNavigator} from 'navigation';
-import {NavigationHandler, NavigationContext} from 'navigation-react';
+import {NavigationHandler} from 'navigation-react';
 
 const stateNavigator = new StateNavigator([
 ]);
 
 stateNavigator.start();
 
-const App = () => {
-  const {state, data} = useContext(NavigationContext);
-  return state.renderScene(data);
-};
-
 ReactDOM.render(
   &lt;NavigationHandler stateNavigator={stateNavigator}>
-    &lt;App />
   &lt;/NavigationHandler>,
   document.getElementById('root')
 );</code></pre>
