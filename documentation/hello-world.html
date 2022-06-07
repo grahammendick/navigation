@@ -58,8 +58,7 @@
   {key: 'world'}
 ]);</code></pre>
             <p>
-                We define the scene for the 'hello' <code>State</code> in a function attached to its <code>renderScene</code> property. Inside the function 
-                we'll return the <code>Hello</code> component. It renders a Hyperlink that navigates to the 'world' scene. We'll let the <code>NavigationLink</code> component handle the rendering. It has a <code>stateKey prop</code> that holds the key of the destination State. 
+                We'll create the scene for the 'hello' <code>State</code>. It renders a Hyperlink that navigates to the 'world' scene. We'll let the <code>NavigationLink</code> component handle the rendering. It has a <code>stateKey prop</code> that holds the key of the destination State. The 'world' scene renders the text 'World' inside a div. In the next section we'll size this text based on a number passed from the 'hello' scene.
             </p>
             <pre><code class="language-jsx">import {NavigationLink} from 'navigation-react';
 
@@ -69,15 +68,16 @@ const Hello = () => (
   &lt;/NavigationLink>
 );
 
-const {hello} = stateNavigator.states;
-hello.renderScene = () => &lt;Hello /></code></pre>
+const World = () => &lt;div>World&lt;/div>;</code></pre>
             <p>
-                We'll also add a <code>renderScene</code> function to the 'world' <code>State</code> so we can render the div after the Hyperlink is clicked.
+                We'll wrap each scene inside a <code>SceneView</code> component and assign the associated <code>stateKey</code> to the <code>active prop</code>. The scene is only rendered when that <code>State</code> becomes active. The 'home' scene is activated when the site first loads because we gave it the empty route.
             </p>
-            <pre><code class="language-jsx">const World = () => &lt;div>World&lt;/div>;
+            <pre><code class="language-jsx">import {SceneView} from 'navigation-react';
 
-const {hello} = stateNavigator.states;
-world.renderScene = () => &lt;World /></code></pre>
+&lt;NavigationHandler stateNavigator={stateNavigator}>
+  &lt;SceneView active="hello">&lt;Hello />&lt;/SceneView>
+  &lt;SceneView active="world">&lt;World />&lt;/SceneView>
+&lt;/NavigationHandler></code></pre>
             <h2>Data First</h2>
             <p>
                 We'll change the Hyperlink to pass across a number that will become the font-size of the div. With other routers, we'd have to decide now whether to pass it as a route or query string parameter. With the Navigation router, we can leave this decision to the end. The <code>NavigationLink</code> component has a <code>navigationData prop</code> that holds the data to pass to the destination <code>State</code>. We'll pass the number 20 as the <code>size</code> to the 'world' <code>State</code>.
