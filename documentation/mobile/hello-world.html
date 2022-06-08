@@ -91,8 +91,8 @@ const World = () => &lt;div>World&lt;/div>;</code></pre>
             <pre><code class="language-jsx">&lt;NavigationMotion
   unmountedStyle={{translate: 100}}
   mountedStyle={{translate: 0}}
-  crumbStyle={{translate: -10}}>
-  {(style, scene, key) => (
+  crumbStyle={{translate: -10}}
+  renderMotion={(style, scene, key) => (
     &lt;div
       key={key}
       style={{
@@ -101,8 +101,7 @@ const World = () => &lt;div>World&lt;/div>;</code></pre>
       }}>
       {scene}
     &lt;/div>
-  )}
-&lt;/NavigationMotion></code></pre>
+  )}></code></pre>
             <h2>Breadcrumbs</h2>
             <p>
                 You'll remember that the Navigation router drops a breadcrumb when we click the 'hello' Hyperlink. We can use this crumb to build a Hyperlink that returns us to the 'hello' scene. We'll replace the div in the 'world' scene with a <code>NavigationBackLink</code> component that navigates back a distance of 1 breadcrumb along the trail. When we click this Hyperlink, the <code>NavigationMotion</code> component plays the animations in reverse as the 'home' scene mounts and the 'world' scene unmounts.
