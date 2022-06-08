@@ -86,7 +86,7 @@ const World = () => &lt;div>World&lt;/div>;</code></pre>
                 We'll use the <code>NavigationMotion</code> component to animate the scenes as they come and go. Each scene can exist in one of three stages - unmounted, mounted or crumb. At the start, the 'home' scene is mounted and the 'world' scene is unmounted. When we click the 'home' Hyperlink the 'home' scene becomes a crumb (in the breadcrumb trail) and the 'world' scene is mounted.
             </p>
             <p>
-                We'll assign each of these stages a different translation style <code>prop</code>. The <code>NavigationMotion</code> component provides a child callback function that lets us animate between these styles as a scene moves from one stage to another. We'll use the callback's parameters to style the scene with the interpolated translation value. A value of 100% for the <code>unmountedStyle</code>, for example, means the 'world' scene will slide in from the right.
+                We'll assign each of these stages a different translation style <code>prop</code>. The <code>NavigationMotion</code> component provides a <code>renderMotion</code> callback prop that lets us animate between these styles as a scene moves from one stage to another. We'll use the callback's parameters to style the scene with the interpolated translation value. A value of 100% for the <code>unmountedStyle</code>, for example, means the 'world' scene will slide in from the right.
             </p>
             <pre><code class="language-jsx">&lt;NavigationMotion
   unmountedStyle={{translate: 100}}
