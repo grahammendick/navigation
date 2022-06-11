@@ -76,13 +76,7 @@ const Contacts = () => (
             <pre><code class="language-jsx">const contactsNavigator = new StateNavigator([
   {key: 'contacts'},
   {key: 'contact', trackCrumbTrail: true}
-]);
-
-const {contacts, contact} = contactsNavigator.states;
-contacts.renderScene = () => &lt;Contacts />;
-contact.renderScene = () => &lt;Contact />;
-
-contactsNavigator.navigate('contacts');</code></pre>
+]);</code></pre>
             <p>
               We create a scene that returns a <code>TabBar</code> component. We give each tab its own <code>NavigationStack</code> and <code>StateNavigator</code>. For example, we give the 'contacts' tab the <code>contactsNavigator</code> we just created. To make them look like top level tabs, we assign each one an image as well as a title. We hide the navigation bar otherwise, on iOS, it would block the navigation bar of the scenes inside the tabs.
             </p>
@@ -92,28 +86,34 @@ contactsNavigator.navigate('contacts');</code></pre>
     &lt;TabBar primary={true}>
       &lt;TabBarItem title="Inbox" image={require('./home.png')}>
         &lt;NavigationHandler stateNavigator={inboxNavigator}>
-          &lt;NavigationStack />
+          &lt;NavigationStack>
+            &lt;Scene stateKey="inbox">&lt;Inbox />&lt;/Scene>
+            &lt;Scene stateKey="mail">&lt;Mail />&lt;/Scene>
+            &lt;Scene stateKey="compose">&lt;Compose />&lt;/Scene>
+          &lt;/NavigationStack>
         &lt;/NavigationHandler>
       &lt;/TabBarItem>
       &lt;TabBarItem title="Contacts" image={require('./contacts.png')}>
         &lt;NavigationHandler stateNavigator={contactsNavigator}>
-          &lt;NavigationStack />
+          &lt;NavigationStack>
+            &lt;Scene stateKey="contacts">&lt;Contacts />&lt;/Scene>
+            &lt;Scene stateKey="contact">&lt;Contact />&lt;/Scene>
+          &lt;/NavigationStack>
         &lt;/NavigationHandler>
       &lt;/TabBarItem>
     &lt;/TabBar>
   &lt;/>
 );</code></pre>
             <p>
-                We replace the <code>States</code> in the top-level <code>StateNavigator</code> with a single one for the 'tabs' scene. Remember that the 'inbox', 'mail' and 'compose' <code>States</code> now live inside <code>StateNavigator</code> of the 'inbox' tab. We navigate to the 'tabs' <code>State</code> so that the tabs display when the app starts.
+                We replace the <code>States</code> in the top-level <code>StateNavigator</code> with a single one for the 'tabs' scene. Remember that the 'inbox', 'mail' and 'compose' <code>States</code> now live inside the <code>StateNavigator</code> of the 'inbox' tab. There's only one scene in the top-level <code>NavigationStack</code> and it renders the <code>Tabs</code> component.
             </p>
             <pre><code class="language-jsx">const stateNavigator = new StateNavigator([
   {key: 'tabs'}
 ]);
 
-const {tabs} = stateNavigator.states;
-tabs.renderScene = () => &lt;Tabs />;
-
-stateNavigator.navigate('tabs');</code></pre>
+&lt;NavigationStack>
+  &lt;Scene stateKey="tabs">&lt;Tabs />&lt;/Scene>
+&lt;/NavigationStack></code></pre>
             <div class="Note">
                 <h2>Note</h2>
                 We could assign the number of unread emails to the <code>badge</code> prop of the 'inbox' <code>TabBarItem</code>. But the badge won't display on Android unless we change to a <code>MaterialComponents</code> theme in the styles.xml, for example, <code>Theme.MaterialComponents.Light.NoActionBar.Bridge</code>
