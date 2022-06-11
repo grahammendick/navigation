@@ -104,12 +104,12 @@ const World = () => {
             <pre><code class="language-jsx">const World = () => {
   const {data, stateNavigator} = useContext(NavigationContext);
   return (
-    &lt;TouchableHighlight        
+    &lt;Button
+      title="World"
+      style={{fontSize: data.size}}
       onPress={() => {
         stateNavigator.navigateBack(1);
-      }}>
-      &lt;Text style={{fontSize: data.size}}>World&lt;/Text>
-    &lt;/TouchableHighlight>
+      }} />
   );
 };</code></pre>
         </div>
