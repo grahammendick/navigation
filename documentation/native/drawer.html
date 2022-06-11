@@ -87,14 +87,12 @@
             <p>
                 When one scene replaces another, the Navigation router animates the transition. We can use the <a href="custom-animation.html">custom animation API</a> to disable the animation so that the 'sent' scene immediately appears in place of the inbox. When the user taps the 'sent' button in the drawer, the Navigation router calls our <code>unmountStyle</code> prop passing in the target <code>State</code>. We return an empty string that tells the Navigation router to disable the animation.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationHandler stateNavigator={stateNavigator}>
-  &lt;NavigationStack unmountStyle={(from, state) => state === sent ? '' : null}>
-    &lt;Scene stateKey="inbox">&lt;Inbox />&lt;/Scene>
-    &lt;Scene stateKey="mail">&lt;Mail />&lt;/Scene>
-    &lt;Scene stateKey="compose">&lt;Compose />&lt;/Scene>
-    &lt;Scene stateKey="sent">&lt;Sent />&lt;/Scene>
-  &lt;/NavigationStack>  
-&lt;/NavigationHandler></code></pre>
+            <pre><code class="language-jsx">&lt;NavigationStack unmountStyle={(from, state) => state === sent ? '' : null}>
+  &lt;Scene stateKey="inbox">&lt;Inbox />&lt;/Scene>
+  &lt;Scene stateKey="mail">&lt;Mail />&lt;/Scene>
+  &lt;Scene stateKey="compose">&lt;Compose />&lt;/Scene>
+  &lt;Scene stateKey="sent">&lt;Sent />&lt;/Scene>
+&lt;/NavigationStack></code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
