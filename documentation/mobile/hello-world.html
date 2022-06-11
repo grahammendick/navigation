@@ -70,7 +70,7 @@ const Hello = () => (
 
 const World = () => &lt;div>World&lt;/div>;</code></pre>
             <p>
-                We'll wrap each scene inside a <code>Scene</code> component and assign the matching <code>State</code> to the <code>stateKey prop</code>. Each scene is rendered when the associated <code>State</code> becomes active. The 'home' scene is activated when the app first loads because we gave it the empty route. When we visit the 'world' scene the 'hello' scene doesn't unmount. It stays in the stack like in a native app.
+                We'll wrap each scene inside a <code>Scene</code> component and assign the matching <code>State</code> to the <code>stateKey prop</code>. The <code>NavigationMotion</code> component renders each scene when the associated <code>State</code> becomes active. When we visit the 'world' scene the 'hello' scene doesn't unmount. It stays in the stack like in a native app.
             </p>
             <pre><code class="language-jsx">import {Scene} from 'navigation-react-mobile';
 
