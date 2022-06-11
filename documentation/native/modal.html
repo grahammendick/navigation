@@ -63,24 +63,21 @@
 &lt;/Modal> </code></pre>
             <h2>Navigating in a Modal</h2>
             <p>
-                A modal can have its own stack of scenes independent of the main stack. Inside the <code>Modal</code>, you render a <code>NavigationStack</code> with its own <code>StateNavigator</code>. We need two scenes in the modal in our email example. The first collects the new contact's name and number and the second collects their address. We create a <code>StateNavigator</code> with a <code>State</code> for each scene. We navigate to the 'contact' <code>State</code> so it’s displayed when the modal opens.
+                A modal can have its own stack of scenes independent of the main stack. Inside the <code>Modal</code>, you render a <code>NavigationStack</code> with its own <code>StateNavigator</code>. We need two scenes in the modal in our email example. The first collects the new contact's name and number and the second collects their address. We create a <code>StateNavigator</code> with a <code>State</code> for each scene.
             </p>
             <pre><code class="language-jsx">const contactNavigator = new StateNavigator([
   {key: 'contact'},
   {key: 'address', trackCrumbTrail: true}
-]);
-
-const {contact, address} = contactNavigator.states;
-contact.renderScene = () => &lt;Contact />;
-address.renderScene = () => &lt;Address />;
-
-contactNavigator.navigate('contact');</code></pre>
+]);</code></pre>
             <p>
                 Then we render the <code>NavigationStack</code> inside the <code>Modal</code> and assign it the <code>StateNavigator</code> we just created.
             </p>
             <pre><code class="language-jsx">&lt;Modal>
   &lt;NavigationHandler stateNavigator={contactNavigator}>
-    &lt;NavigationStack />
+    &lt;NavigationStack>
+      &lt;Scene stateKey="contact">&lt;Contact />&lt;/Scene>
+      &lt;Scene stateKey="address">&lt;Address />&lt;/Scene>
+    &lt;/NavigationStack>
   &lt;/NavigationHandler>
 &lt;/Modal> </code></pre>
             <h2>Handling the Android Back Button</h2>
@@ -97,7 +94,10 @@ contactNavigator.navigate('contact');</code></pre>
           this.setState({modalVisible: false});
       }}>
       &lt;NavigationHandler stateNavigator={contactNavigator}>
-        &lt;NavigationStack />
+        &lt;NavigationStack>
+          &lt;Scene stateKey="contact">&lt;Contact />&lt;/Scene>
+          &lt;Scene stateKey="address">&lt;Address />&lt;/Scene>
+        &lt;/NavigationStack>
       &lt;/NavigationHandler>
     &lt;/Modal>        
   )}
