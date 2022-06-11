@@ -83,24 +83,22 @@
 const Inbox = () => {
   const {stateNavigator} = useContext(NavigationContext);
   return (
-    &lt;TouchableHighlight
+    &lt;Button
+      title="Compose Mail"
       onPress={() => {
         stateNavigator.navigate('compose');
-      }}>
-      &lt;Text>Compose Mail&lt;/Text>
-    &lt;/TouchableHighlight>
+      }} />
   );
 };</code></pre>
             <h2>Passing Data</h2>
             <p>
                 You pass data between scenes via the second parameter of the <code>navigate</code> function. You can pass any data of type string, number, boolean and date; or any array of these types. When a user opens an email in our example app, we pass along the selected id to the 'mail' scene.
             </p>
-            <pre><code class="language-jsx">&lt;TouchableHighlight
+            <pre><code class="language-jsx">&lt;Button
+  title="Open Mail"
   onPress={() => {
     stateNavigator.navigate('mail', {id: 12});
-  }}>
-  &lt;Text>Open Mail&lt;/Text>
-&lt;/TouchableHighlight></code></pre>
+  }} /></code></pre>
             <p>
                 In the 'mail' scene we get the selected id from the <code>NavigationContext</code>.
             </p>
