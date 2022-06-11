@@ -65,14 +65,14 @@
             <pre><code class="language-jsx">&lt;NavigationMotion
   unmountedStyle={{opacity: 0}}
   mountedStyle={{opacity: 1}}
-  crumbStyle={{opacity: 0}}>
-  {(style, scene, key) => (
+  crumbStyle={{opacity: 0}}
+  renderMotion={(style, scene, key) => (
     &lt;div
       key={key}
       style={{...sceneStyle, opacity: style.opacity}}>
       {scene}
     &lt;/div>
-  )}
+  )}>
 &lt;/NavigationMotion></code></pre>
             <h2 id="navigating-back">Navigating Back</h2>
             <p>
