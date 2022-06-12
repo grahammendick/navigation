@@ -55,29 +55,27 @@
             <p>
                 React Native Web adds an <code>href</code> prop to all <code>Touchables</code> and <code>Buttons</code>. Populating this prop turns them into Hyperlinks (they render anchor tags). Instead of hard-coding the href, the Navigation router will generate Urls for you. Pass the target <code>State</code> and navigation data into the <code>getNavigationLink</code> function on the <code>stateNavigator</code>. In our example email app, we turn the open email button into a Hyperlink.
             </p>
-            <pre><code class="language-jsx">&lt;TouchableHighlight
+            <pre><code class="language-jsx">&lt;Button
+  title="Open Mail"
   href={stateNavigator.historyManager.getHref(
     stateNavigator.getNavigationLink('mail', {id: 12})
   )}
   onPress={(e) => {
     e.preventDefault();
     stateNavigator.navigate('mail', {id: 12});
-  }}>
-  &lt;Text>Open Mail&lt;/Text>
-&lt;/TouchableHighlight></code></pre>
+  }} /></code></pre>
             <p>
                 The Navigation router also generates Urls that navigate back through the stack. Pass the <code>distance</code> you want to travel back into the <code>getNavigationBackLink</code> function on the <code>stateNavigator</code>. In our email example, we turn the 'Back to Inbox' button into an anchor tag.
             </p>
-            <pre><code class="language-jsx">&lt;TouchableHighlight
+            <pre><code class="language-jsx">&lt;Button
+  title="Back to Inbox"
   href={stateNavigator.historyManager.getHref(
     stateNavigator.getNavigationBackLink(1)
   )}
   onPress={(e) => {
     e.preventDefault();
     stateNavigator.navigateBack(1);
-  }}>
-  &lt;Text>Back to Inbox&lt;/Text>
-&lt;/TouchableHighlight></code></pre>
+  }} /></code></pre>
             <h2>Refreshing Scenes</h2>
             <p>
                 You've seen how to create Hyperlinks from <code>Pressables</code> that navigate forward and back through the stack. But you also need to create Hyperlinks out of <code>Pressables</code> that change data without changing the scene. In our example email app, there's a button on the 'mail' scene that expands the email so the user can view the full conversation. We must turn this into a Hyperlink so that the user can bookmark the expanded email thread.
@@ -85,16 +83,15 @@
             <p>
                 When the user presses the 'Expand Thread' button, we store an <code>expand</code> indicator in navigation data instead of in <code>useState</code>. We pass the new navigation data to the <code>refresh</code> function on the <code>stateNavigator</code>. The Navigation router updates the navigation data without leaving the 'mail' scene. There's a corresponding <code>getRefreshLink</code> function for generating the matching URL. We don't need any platform checks because refresh navigation works on native as well as the web.
             </p>
-            <pre><code class="language-jsx">&lt;TouchableHighlight
+            <pre><code class="language-jsx">&lt;Button
+  title="Expand Thread"
   href={stateNavigator.historyManager.getHref(
     stateNavigator.getRefreshLink({id: 12, expand: true})
   )}
   onPress={(e) => {
     e.preventDefault();
     stateNavigator.refresh({id: 12, expand: true});
-  }}>
-  &lt;Text>Expand Thread&lt;/Text>
-&lt;/TouchableHighlight></code></pre>
+  }} /></code></pre>
             <h3>Nesting Routes</h3>
             <p>
                 By default, the Navigation router stores the <code>expand</code> indicator in the query string. The URL that expands the full email thread is '/open/12?expand=true'. But, remember that <a href="browser-history.html#configuring-routes">we can change these URLs</a> to be whatever we want without changing any code. To change it to 'open/12/thread/true', we configure a route of 'open/{id}+/thread/{expand}'. The '+' separator ensures the Navigation route still matches 'open/12' so that the Hyperlink from the inbox that opens the mail still works. 

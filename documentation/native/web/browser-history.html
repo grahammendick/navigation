@@ -92,9 +92,7 @@ stateNavigator.historyManager.stop();</code></pre>
             <p>
                 A user visiting a bookmarked email will find that they're taken to their inbox instead of the email. That's because we've hard-coded the startup navigation. That works for native but on the web we need to use the incoming Url to decide where to go. The <code>start</code> function on the <code>stateNavigator</code> does this for us.
             </p>
-            <pre><code class="language-jsx">if (Platform.OS !== 'web') {
-  stateNavigator.navigate('inbox');
-} else {
+            <pre><code class="language-jsx">if (Platform.OS === 'web') {
   stateNavigator.start();
 }</code></pre>                  
             </p>

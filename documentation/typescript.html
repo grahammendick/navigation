@@ -55,7 +55,7 @@
   mail: {id: number, expand?: boolean},
 }</code></pre>
             <p>
-                When we create the <code>StateNavigator</code> we pass our <code>EmailNavigation</code> type as the generic parameter. Then TypeScript will validate our keys are spelt correctly in our configuration and when we destructure the <code>States</code> to render the scenes.
+                When we create the <code>StateNavigator</code> we pass our <code>EmailNavigation</code> type as the generic parameter. Then TypeScript will validate our keys are spelt correctly in our configuration and when we render the scenes.
             </p>
             <pre><code class="language-jsx">const stateNavigator = new StateNavigator&lt;EmailNavigation>([
   {key: 'inbox', route: ''},
@@ -63,7 +63,7 @@
 ]);
 
 // Error because inbox is mistyped
-onst {inbx, mail} = stateNavigator.states;</code></pre>
+&lt;SceneView&lt;EmailNavigation> active="inbx">&lt;Inbox />&lt;/SceneView></code></pre>
             <h2>Navigating and Passing Data</h2>
             <p>
                 You can use this same type when you navigate to make sure that the navigation is valid. TypeScript checks the target scene exists and that the navigation data matches up with what that scene expects. The <code>NavigationLink</code> component accepts the type and the target scene as generic parameters. When we navigate to the mail scene, for example, TypeScript will tell us if we accidentally pass the id as a string instead of a number.

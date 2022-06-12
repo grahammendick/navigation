@@ -63,46 +63,42 @@
   {key: 'mail', trackCrumbTrail: true},
   {key: 'compose', trackCrumbTrail: true}
 ]);</code></pre>
-            <h2>Defining Scenes</h2>
+            <h2>Creating Scenes</h2>
             <p>
-                Each <code>State</code> needs a matching scene which the Navigation router displays when that <code>State</code> is active. You define the scene in a function assigned to the <code>renderScene</code> property of the <code>State</code>. We can define the scenes in our email application using <code>Inbox</code>, <code>Mail</code> and <code>Compose</code> components.
+                Each <code>State</code> needs a matching scene which the <code>NavigationStack</code> displays when that <code>State</code> is active. You wrap each one in a <code>Scene</code> component and pass the key of the <code>State</code> to the <code>stateKey prop</code>. We can create the scenes in our email application using <code>Inbox</code>, <code>Mail</code> and <code>Compose</code> components.
             </p>
-            <pre><code class="language-jsx">const {inbox, mail, compose} = stateNavigator.states;
+                        <pre><code class="language-jsx">import {Scene} from 'navigation-react-native';
 
-inbox.renderScene = () => &lt;Inbox />;
-mail.renderScene = () => &lt;Mail />;
-compose.renderScene = () => &lt;Compose />;</code></pre>
+&lt;NavigationStack>
+  &lt;Scene stateKey="inbox">&lt;Inbox />&lt;/Scene>
+  &lt;Scene stateKey="mail">&lt;Mail />&lt;/Scene>
+  &lt;Scene stateKey="compose">&lt;Compose />&lt;/Scene>
+&lt;/NavigationStack></code></pre>
             <h2>Pushing</h2>
             <p>
-                <code>States</code> become active by navigating to them. You navigate to a <code>State</code> by passing the <code>State key</code> to the <code>navigate</code> function of the <code>StateNavigator</code>. When our email application starts up, we navigate to the 'inbox' <code>State</code> so that the Navigation router displays the 'inbox' scene first.
-            </p>
-            <pre><code class="language-js">stateNavigator.navigate('inbox');</code></pre>
-            <p>
-                You can access the <code>StateNavigator</code> inside any component using the React Context API. In our email example, we can add a button to the 'inbox' scene that navigates to the 'compose' <code>State</code>. Pressing the button pushes the 'compose' scene onto the stack. The user can return to their inbox using the Android back button or by pressing/swiping back on iOS.
+                <code>States</code> become active by navigating to them. You navigate to a <code>State</code> by passing the <code>State key</code> to the <code>navigate</code> function of the <code>StateNavigator</code>. You can access the <code>StateNavigator</code> inside any component using the React Context API. In our email example, we can add a button to the 'inbox' scene that navigates to the 'compose' <code>State</code>. Pressing the button pushes the 'compose' scene onto the stack. The user can return to their inbox using the Android back button or by pressing/swiping back on iOS.
             </p>
             <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
 
 const Inbox = () => {
   const {stateNavigator} = useContext(NavigationContext);
   return (
-    &lt;TouchableHighlight
+    &lt;Button
+      title="Compose Mail"
       onPress={() => {
         stateNavigator.navigate('compose');
-      }}>
-      &lt;Text>Compose Mail&lt;/Text>
-    &lt;/TouchableHighlight>
+      }} />
   );
 };</code></pre>
             <h2>Passing Data</h2>
             <p>
                 You pass data between scenes via the second parameter of the <code>navigate</code> function. You can pass any data of type string, number, boolean and date; or any array of these types. When a user opens an email in our example app, we pass along the selected id to the 'mail' scene.
             </p>
-            <pre><code class="language-jsx">&lt;TouchableHighlight
+            <pre><code class="language-jsx">&lt;Button
+  title="Open Mail"
   onPress={() => {
     stateNavigator.navigate('mail', {id: 12});
-  }}>
-  &lt;Text>Open Mail&lt;/Text>
-&lt;/TouchableHighlight></code></pre>
+  }} /></code></pre>
             <p>
                 In the 'mail' scene we get the selected id from the <code>NavigationContext</code>.
             </p>

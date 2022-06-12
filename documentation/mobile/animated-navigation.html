@@ -65,15 +65,14 @@
             <pre><code class="language-jsx">&lt;NavigationMotion
   unmountedStyle={{opacity: 0}}
   mountedStyle={{opacity: 1}}
-  crumbStyle={{opacity: 0}}>
-  {(style, scene, key) => (
+  crumbStyle={{opacity: 0}}
+  renderMotion={(style, scene, key) => (
     &lt;div
       key={key}
       style={{...sceneStyle, opacity: style.opacity}}>
       {scene}
     &lt;/div>
-  )}
-&lt;/NavigationMotion></code></pre>
+  )}></code></pre>
             <h2 id="navigating-back">Navigating Back</h2>
             <p>
                 You can navigate back to a visited scene using the <code>NavigationBackLink</code>. The <code>distance</code> prop indicates how many scenes to go back. In our email example, we add a <code>NavigationBackLink</code> to the 'mail' scene. A <code>distance</code> of 1 allows the user to return to their inbox. When they tap the Hyperlink, the 'mail' scene fades out as it's unmounted and the 'inbox' scene fades back in as it's mounted.
