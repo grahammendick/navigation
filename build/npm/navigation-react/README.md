@@ -8,6 +8,8 @@ const stateNavigator = new StateNavigator([
   { key: 'world' }
 ]);
 
+stateNavigator.start();
+
 const Hello = () => (
   <NavigationLink
     stateKey="world"
@@ -23,22 +25,10 @@ const World = () => {
   );
 };
 
-const { hello, world } = stateNavigator.states;
-
-hello.renderScene = () => <Hello />;
-world.renderScene = () => <World />;
-
-stateNavigator.start();
-
-const App = () => {
-  const { state, data } = useContext(NavigationContext);
-  return state.renderScene(data);
-};
-
-ReactDOM.render(
+const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
-    <App />
-  </NavigationHandler>,
-  document.getElementById('root')
+    <SceneView active="hello"><Hello /></SceneView>
+    <SceneView active="world"><World /></SceneView>
+  </NavigationHandler>  
 );
 ```
