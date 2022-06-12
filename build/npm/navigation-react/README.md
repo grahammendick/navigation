@@ -1,7 +1,7 @@
 # Hello World
 ```jsx
 import { StateNavigator } from 'navigation';
-import { NavigationHandler, NavigationLink, NavigationContext } from 'navigation-react';
+import { NavigationHandler, NavigationLink, NavigationContext, SceneView } from 'navigation-react';
 
 const stateNavigator = new StateNavigator([
   { key: 'hello', route: '' },
