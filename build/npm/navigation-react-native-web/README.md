@@ -3,26 +3,27 @@
 ```jsx
 import { StateNavigator } from 'navigation';
 import { NavigationHandler, NavigationContext } from 'navigation-react';
-import { NavigationStack } from 'navigation-react-native';
+import { NavigationStack, Scene } from 'navigation-react-native';
 
 const stateNavigator = new StateNavigator([
   { key: 'hello', route: '' },
   { key: 'world', trackCrumbTrail: true },
 ]);
 
+if (Platform.OS === 'web') stateNavigator.start();
+
 const Hello = () => {
   const { stateNavigator } = useContext(NavigationContext);
   return (
-    <TouchableHighlight
+    <Button
+      title="Hello"
       href={stateNavigator.historyManager.getHref(
         stateNavigator.navigate('world', { size: 20 })
       )}
       onPress={(e) => {
         e.preventDefault();
         stateNavigator.navigate('world', { size: 20 });
-      }}>
-      <Text>Hello</Text>
-    </TouchableHighlight>
+      }} />
   );
 };
 
@@ -31,20 +32,13 @@ const World = () => {
   return <Text style={{ fontSize: data.size }}>World</Text>;
 };
 
-const { hello, world } = stateNavigator.states;
-
-hello.renderScene = () => <Hello />;
-world.renderScene = () => <World />;
-
-if (Platform.OS === 'web') stateNavigator.start();
-else stateNavigator.navigate('hello');
-
 
 const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
-    <NavigationStack />
+    <NavigationStack>
+      <Scene stateKey="hello"><Hello /></Scene>
+      <Scene stateKey="world"><World /></Scene>
+    </NavigationStack>
   </NavigationHandler>
 );
-
-export default App;
 ```
