@@ -24,7 +24,6 @@ You create one `State` for each scene (page) in your app. You don't need to defi
 ```
 For each `State`, you create a `SceneView` component that renders the UI. All the other routers for React force you to think in terms of routes. But this is hard becasue routes can be nested, for example, a master/details page. Scenes, on the other hand, are always flat. The Navigation router still supports nested routes because a Scene can have more than one route.
 
-
 ### Navigate to a Scene
 ```jsx
 import { NavigationLink } from 'navigation-react';
