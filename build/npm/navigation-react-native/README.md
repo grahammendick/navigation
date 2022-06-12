@@ -3,7 +3,7 @@
 ```jsx
 import { StateNavigator } from 'navigation';
 import { NavigationHandler, NavigationContext } from 'navigation-react';
-import { NavigationStack } from 'navigation-react-native';
+import { NavigationStack,. Scene } from 'navigation-react-native';
 
 const stateNavigator = new StateNavigator([
   { key: 'hello' },
@@ -13,12 +13,11 @@ const stateNavigator = new StateNavigator([
 const Hello = () => {
   const { stateNavigator } = useContext(NavigationContext);
   return (
-    <TouchableHighlight
+    <Button
+      title="Hello"
       onPress={() => {
         stateNavigator.navigate('world', { size: 20 });
-      }}>
-      <Text>Hello</Text>
-    </TouchableHighlight>
+      }} />
   );
 };
 
@@ -27,18 +26,12 @@ const World = () => {
   return <Text style={{ fontSize: data.size }}>World</Text>;
 };
 
-const { hello, world } = stateNavigator.states;
-
-hello.renderScene = () => <Hello />;
-world.renderScene = () => <World />;
-
-stateNavigator.navigate('hello');
-
 const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
-    <NavigationStack />
+    <NavigationStack>
+      <Scene stateKey="hello"><Hello /></Scene>
+      <Scene stateKey="world"><World /></Scene>
+    </NavigationStack>
   </NavigationHandler>
 );
-
-export default App;
 ```

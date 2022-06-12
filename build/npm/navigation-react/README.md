@@ -1,12 +1,14 @@
 # Hello World
 ```jsx
 import { StateNavigator } from 'navigation';
-import { NavigationHandler, NavigationLink, NavigationContext } from 'navigation-react';
+import { NavigationHandler, NavigationLink, NavigationContext, SceneView } from 'navigation-react';
 
 const stateNavigator = new StateNavigator([
   { key: 'hello', route: '' },
   { key: 'world' }
 ]);
+
+stateNavigator.start();
 
 const Hello = () => (
   <NavigationLink
@@ -23,22 +25,10 @@ const World = () => {
   );
 };
 
-const { hello, world } = stateNavigator.states;
-
-hello.renderScene = () => <Hello />;
-world.renderScene = () => <World />;
-
-stateNavigator.start();
-
-const App = () => {
-  const { state, data } = useContext(NavigationContext);
-  return state.renderScene(data);
-};
-
-ReactDOM.render(
+const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
-    <App />
-  </NavigationHandler>,
-  document.getElementById('root')
+    <SceneView active="hello"><Hello /></SceneView>
+    <SceneView active="world"><World /></SceneView>
+  </NavigationHandler>  
 );
 ```

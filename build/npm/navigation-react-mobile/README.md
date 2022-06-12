@@ -3,12 +3,14 @@
 ```jsx
 import { StateNavigator } from 'navigation';
 import { NavigationHandler, NavigationLink, NavigationBackLink } from 'navigation-react';
-import { NavigationMotion } from 'navigation-react-mobile';
+import { NavigationMotion, Scene } from 'navigation-react-mobile';
 
 const stateNavigator = new Navigation.StateNavigator([
   { key: 'hello', route: '' },
   { key: 'world', trackCrumbTrail: true }
 ]);
+
+stateNavigator.start();
 
 const Hello = () => (
   <NavigationLink stateKey="world">
@@ -22,28 +24,22 @@ const World = () => (
   </NavigationBackLink>
 );
 
-const { hello, world } = stateNavigator.states;
-
-hello.renderScene = () => <Hello />;
-world.renderScene = () => <World />;
-
-stateNavigator.start();
-
-ReactDOM.render(
+const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
     <NavigationMotion
       unmountedStyle={{ translate: 100 }}
       mountedStyle={{ translate: 0 }}
-      crumbStyle={{ translate: -10 }}>
-      {(style, scene, key) => (
+      crumbStyle={{ translate: -10 }}
+      renderMotion={(style, scene, key) => (
         <div
           key={key}
           style={{ transform: `translate(${style.translate}%)` }}>
           {scene}
         </div>
-      )}
+      )}>
+      <Scene stateKey="hello"><Hello /></Scene>
+      <Scene stateKey="world"><World /></Scene>
     </NavigationMotion>
-  </NavigationHandler>,
-  document.getElementById('root')
+  </NavigationHandler>
 );
 ```

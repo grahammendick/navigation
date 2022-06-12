@@ -17,13 +17,12 @@ You create one `State` for each scene (page) in your app. You don't need to defi
 
 ### Create Your Scenes
 ```jsx
-const { hello, world } = stateNavigator.states;
-
-hello.renderScene = () => <Hello />;
-world.renderScene = () => <World />;
+<NavigationHandler stateNavigator={stateNavigator}>
+  <SceneView active="hello"><Hello /></SceneView>
+  <SceneView active="world"><World /></SceneView>
+</NavigationHandler>  
 ```
-For each scene, you create a component that renders its UI. You map these scene components to their corresponding `States`. All the other routers for React force you to think in terms of routes. But this is confusing because routes and scenes aren't the same thing. One scene can have more than one route, for example, a master/details page.
-
+For each `State`, you create a `SceneView` component that renders the UI. All the other routers for React force you to think in terms of routes. But this is hard becasue routes can be nested, for example, a master/details page. Scenes, on the other hand, are always flat. The Navigation router still supports nested routes because a Scene can have more than one route.
 
 ### Navigate to a Scene
 ```jsx
@@ -68,12 +67,14 @@ You create one `State` for each scene (screen) in your app. You can think of the
 
 ### Create Your Scenes
 ```jsx
-const { hello, world } = stateNavigator.states;
-
-hello.renderScene = () => <Hello />;
-world.renderScene = () => <World />;
+<NavigationHandler stateNavigator={stateNavigator}>
+  <NavigationStack>
+    <Scene stateKey="hello"><Hello /></Scene>
+    <Scene stateKey="world"><World /></Scene>
+  </NavigationStack>
+</NavigationHandler>
 ```
-For each scene, you create a component that renders its UI. You map these scene components to their corresponding States. The Navigation router provides React components to help you build your scenes. All of these components render to the same native primitives as other native apps. For example, the `TabBar` component renders to a `BottomNavigationView` on Android and a `UITabBarController` on iOS.
+For each `State`, you create a `Scene` component that renders the UI. The Navigation router provides React components to help you build your scenes. All of these components render to the same native primitives as other native apps. For example, the `TabBar` component renders to a `BottomNavigationView` on Android and a `UITabBarController` on iOS.
 
 ### Navigate to a Scene
 ```jsx
