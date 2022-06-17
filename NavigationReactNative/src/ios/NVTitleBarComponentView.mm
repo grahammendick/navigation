@@ -49,14 +49,6 @@ using namespace facebook::react;
         auto newState = facebook::react::NVTitleBarState{RCTSizeFromCGSize(self.bounds.size)};
         _state->updateState(std::move(newState));
     }
-    if (!CGRectEqualToRect(_lastViewFrame, self.frame)) {
-        std::static_pointer_cast<NVTitleBarEventEmitter const>(_eventEmitter)
-            ->onChangeBounds(NVTitleBarEventEmitter::OnChangeBounds{
-                .width = static_cast<float>(self.frame.size.width),
-                .height = static_cast<float>(self.frame.size.height),
-            });
-        _lastViewFrame = self.frame;
-    }
 }
 
 - (void)prepareForRecycle
