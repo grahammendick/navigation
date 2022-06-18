@@ -3,18 +3,25 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.view.ViewGroup;
 
+import androidx.annotation.UiThread;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
+import com.facebook.react.uimanager.FabricViewStateManager;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
-public class TitleBarView extends ViewGroup {
+public class TitleBarView extends ViewGroup implements FabricViewStateManager.HasFabricViewStateManager {
     private boolean layoutRequested = false;
     private int resizeLoopCount = 0;
+    private int left = 0;
+    private final FabricViewStateManager mFabricViewStateManager = new FabricViewStateManager();
 
     public TitleBarView(Context context) {
         super(context);
@@ -22,21 +29,46 @@ public class TitleBarView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        if (l > 0) left = l;
     }
 
     @Override
     protected void onSizeChanged(final int w, final int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if (Math.abs(w - oldw) > 5 || Math.abs(h - oldh) > 5)
-            resizeLoopCount = 0;
-        if (Math.abs(w - oldw) <= 5 && Math.abs(h - oldh) <= 5)
-            resizeLoopCount++;
-        if (resizeLoopCount <= 3) {
-            ReactContext reactContext = (ReactContext) getContext();
-            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-            eventDispatcher.dispatchEvent(new TitleBarView.ChangeBoundsEvent(getId(), w, h));
+        updateState(w, h);
+    }
+
+    @UiThread
+    public void updateState(final int width, final int height) {
+        final float realWidth = PixelUtil.toDIPFromPixel(width);
+        final float realHeight = PixelUtil.toDIPFromPixel(height);
+
+        ReadableMap currentState = getFabricViewStateManager().getStateData();
+        if (currentState != null) {
+            float delta = (float) 0.9;
+            float stateScreenHeight =
+                    currentState.hasKey("frameHeight")
+                            ? (float) currentState.getDouble("frameHeight")
+                            : 0;
+            float stateScreenWidth =
+                    currentState.hasKey("frameWidth") ? (float) currentState.getDouble("frameWidth") : 0;
+
+            if (Math.abs(stateScreenWidth - realWidth) < delta
+                    && Math.abs(stateScreenHeight - realHeight) < delta) {
+                return;
+            }
         }
-        requestLayout();
+
+        mFabricViewStateManager.setState(
+            new FabricViewStateManager.StateUpdateCallback() {
+                @Override
+                public WritableMap getStateUpdate() {
+                    WritableMap map = new WritableNativeMap();
+                    map.putDouble("frameWidth", realWidth);
+                    map.putDouble("frameHeight", realHeight);
+                    return map;
+                }
+            });
     }
 
     @Override
@@ -55,31 +87,12 @@ public class TitleBarView extends ViewGroup {
             measure(
                 MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
+            layout(left, getTop(), getRight(), getBottom());
         }
     };
 
-    static class ChangeBoundsEvent extends Event<TitleBarView.ChangeBoundsEvent> {
-        private final int width;
-        private final int height;
-
-        public ChangeBoundsEvent(int viewId, int width, int height) {
-            super(viewId);
-            this.width = width;
-            this.height = height;
-        }
-
-        @Override
-        public String getEventName() {
-            return "topOnChangeBounds";
-        }
-
-        @Override
-        public void dispatch(RCTEventEmitter rctEventEmitter) {
-            WritableMap event = Arguments.createMap();
-            event.putInt("width", (int) PixelUtil.toDIPFromPixel(this.width));
-            event.putInt("height", (int) PixelUtil.toDIPFromPixel(this.height));
-            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
-        }
+    @Override
+    public FabricViewStateManager getFabricViewStateManager() {
+        return mFabricViewStateManager;
     }
 }

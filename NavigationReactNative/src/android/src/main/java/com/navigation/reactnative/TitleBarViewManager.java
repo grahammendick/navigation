@@ -3,6 +3,8 @@ package com.navigation.reactnative;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.ReactStylesDiffMap;
+import com.facebook.react.uimanager.StateWrapper;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.ViewManagerDelegate;
@@ -43,5 +45,12 @@ public class TitleBarViewManager extends ViewGroupManager<TitleBarView> implemen
         return MapBuilder.<String, Object>builder()
             .put("topOnChangeBounds", MapBuilder.of("registrationName", "onChangeBounds"))
             .build();
+    }
+
+    @Override
+    public Object updateState(
+            TitleBarView view, ReactStylesDiffMap props, StateWrapper stateWrapper) {
+        view.getFabricViewStateManager().setStateWrapper(stateWrapper);
+        return null;
     }
 }
