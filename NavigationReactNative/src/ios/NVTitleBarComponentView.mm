@@ -19,7 +19,7 @@ using namespace facebook::react;
 @implementation NVTitleBarComponentView
 {
     CGRect _lastViewFrame;
-    facebook::react::NVTitleBarShadowNode::ConcreteState::Shared _state;
+    NVTitleBarShadowNode::ConcreteState::Shared _state;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -46,7 +46,7 @@ using namespace facebook::react;
 - (void)layoutSubviews {
     [super layoutSubviews];
     if (_state != nullptr) {
-        auto newState = facebook::react::NVTitleBarState{RCTSizeFromCGSize(self.bounds.size)};
+        auto newState = NVTitleBarState{RCTSizeFromCGSize(self.bounds.size)};
         _state->updateState(std::move(newState));
     }
 }
@@ -54,6 +54,7 @@ using namespace facebook::react;
 - (void)prepareForRecycle
 {
     [super prepareForRecycle];
+    _state.reset();
     _lastViewFrame = CGRectMake(0, 0, 0, 0);
     self.reactViewController.navigationItem.titleView = nil;
 }
@@ -63,7 +64,7 @@ using namespace facebook::react;
 - (void)updateState:(facebook::react::State::Shared const &)state
            oldState:(facebook::react::State::Shared const &)oldState
 {
-  _state = std::static_pointer_cast<const facebook::react::NVTitleBarShadowNode::ConcreteState>(state);
+  _state = std::static_pointer_cast<const NVTitleBarShadowNode::ConcreteState>(state);
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
