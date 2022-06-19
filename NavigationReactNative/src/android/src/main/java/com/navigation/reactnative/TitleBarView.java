@@ -13,7 +13,6 @@ import com.facebook.react.uimanager.PixelUtil;
 
 public class TitleBarView extends ViewGroup implements FabricViewStateManager.HasFabricViewStateManager {
     private boolean layoutRequested = false;
-    private int resizeLoopCount = 0;
     private int left = 0;
     private final FabricViewStateManager fabricViewStateManager = new FabricViewStateManager();
 
