@@ -5,23 +5,17 @@ import android.view.ViewGroup;
 
 import androidx.annotation.UiThread;
 
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.uimanager.FabricViewStateManager;
 import com.facebook.react.uimanager.PixelUtil;
-import com.facebook.react.uimanager.UIManagerHelper;
-import com.facebook.react.uimanager.events.Event;
-import com.facebook.react.uimanager.events.EventDispatcher;
-import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 public class TitleBarView extends ViewGroup implements FabricViewStateManager.HasFabricViewStateManager {
     private boolean layoutRequested = false;
     private int resizeLoopCount = 0;
     private int left = 0;
-    private final FabricViewStateManager mFabricViewStateManager = new FabricViewStateManager();
+    private final FabricViewStateManager fabricViewStateManager = new FabricViewStateManager();
 
     public TitleBarView(Context context) {
         super(context);
@@ -42,7 +36,6 @@ public class TitleBarView extends ViewGroup implements FabricViewStateManager.Ha
     public void updateState(final int width, final int height) {
         final float realWidth = PixelUtil.toDIPFromPixel(width);
         final float realHeight = PixelUtil.toDIPFromPixel(height);
-
         ReadableMap currentState = getFabricViewStateManager().getStateData();
         if (currentState != null) {
             float delta = (float) 0.9;
@@ -58,8 +51,7 @@ public class TitleBarView extends ViewGroup implements FabricViewStateManager.Ha
                 return;
             }
         }
-
-        mFabricViewStateManager.setState(
+        fabricViewStateManager.setState(
             new FabricViewStateManager.StateUpdateCallback() {
                 @Override
                 public WritableMap getStateUpdate() {
@@ -93,6 +85,6 @@ public class TitleBarView extends ViewGroup implements FabricViewStateManager.Ha
 
     @Override
     public FabricViewStateManager getFabricViewStateManager() {
-        return mFabricViewStateManager;
+        return fabricViewStateManager;
     }
 }
