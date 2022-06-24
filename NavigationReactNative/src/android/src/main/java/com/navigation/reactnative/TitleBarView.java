@@ -13,7 +13,6 @@ import com.facebook.react.uimanager.PixelUtil;
 
 public class TitleBarView extends ViewGroup implements FabricViewStateManager.HasFabricViewStateManager {
     private boolean layoutRequested = false;
-    private int left = 0;
     private final FabricViewStateManager fabricViewStateManager = new FabricViewStateManager();
 
     public TitleBarView(Context context) {
@@ -22,7 +21,6 @@ public class TitleBarView extends ViewGroup implements FabricViewStateManager.Ha
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        if (l > 0) left = l;
     }
 
     @Override
@@ -78,7 +76,7 @@ public class TitleBarView extends ViewGroup implements FabricViewStateManager.Ha
             measure(
                 MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(left, getTop(), getRight(), getBottom());
+            layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
 
