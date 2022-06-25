@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.UiThread;
 
+import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
@@ -12,6 +13,7 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.uimanager.FabricViewStateManager;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
@@ -42,7 +44,22 @@ public class ActionBarView extends ViewGroup implements FabricViewStateManager.H
 
     void changeBounds(int width, int height, int oldw, int oldh) {
         super.onSizeChanged(width, height, oldw, oldh);
-        updateState(width, height);
+        if (fabricViewStateManager.hasStateWrapper()) {
+            updateState(width, height);
+        } else {
+            final int viewTag = getId();
+            final ReactContext reactContext = (ReactContext) getContext();
+            reactContext.runOnNativeModulesQueueThread(
+                new GuardedRunnable(reactContext) {
+                    @Override
+                    public void runGuarded() {
+                        UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
+                        if (uiManager != null)
+                            uiManager.updateNodeSize(viewTag, width, height);
+                    }
+                });
+            
+        }
     }
 
     @UiThread
