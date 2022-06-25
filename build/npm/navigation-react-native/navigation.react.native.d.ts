@@ -42,6 +42,10 @@ export interface NavigationStackProps {
      * Renders the scene for the State and data
      */
     renderScene?: (state: State, data: any) => ReactNode;
+    /**
+     * The scenes
+     */
+    children?: any;
 }
 
 /**
@@ -57,6 +61,10 @@ export class NavigationStack extends Component<NavigationStackProps> { }
      * The key of the corresponding State
      */
     stateKey: keyof NavigationInfo & string;
+    /**
+     * The Scene content
+     */
+    children: ReactNode;
 }
 
 /**
@@ -195,6 +203,10 @@ export interface NavigationBarProps {
      * Handles offset change events
      */
     onOffsetChanged?: (e: NativeSyntheticEvent<{offset: number}>) => void;
+    /**
+     * The navigation bar content
+     */
+    children?: ReactNode;
 }
 
 /**
@@ -210,6 +222,10 @@ export interface LeftBarProps {
      * Indicates whether bar buttons display in addition to the back button
      */
     supplementBack?: boolean;
+    /**
+     * The buttons
+     */
+    children: ReactNode;
 }
 
 /**
@@ -218,9 +234,19 @@ export interface LeftBarProps {
 export class LeftBar extends Component<LeftBarProps> { }
 
 /**
+ * Defines the Right Bar Props contract
+ */
+export interface RightBarProps {
+    /**
+     * The buttons
+     */
+    children: ReactNode;
+}
+
+/**
  * Renders buttons in the right UI bar
  */
-export class RightBar extends Component { }
+export class RightBar extends Component<RightBarProps> { }
 
 /**
  * Defines the Title Bar Props contract
@@ -230,6 +256,10 @@ export interface TitleBarProps {
      * The style
      */
     style?: StyleProp<ViewStyle>;
+    /**
+     * The title view
+     */
+    children: ReactNode;
 }
 
 /**
@@ -289,6 +319,10 @@ export interface BarButtonProps {
      * The custom view size
      */
     size?: number;
+    /**
+     * The button view
+     */
+    children?: ReactNode;
      /**
      * Handles button press events
      */
@@ -341,6 +375,10 @@ export interface SearchBarProps {
      */
     scopeButtons?: string[];
     /**
+     * The search results
+     */
+    children: ReactNode;
+    /**
      * Handles text change events
      */
     onChangeText?: (text: string) => void;
@@ -363,6 +401,10 @@ export interface CoordinatorLayoutProps {
      * The distance the scrolled content overlaps the navigation bar
      */
     overlap?: number;   
+    /**
+     * The layout content
+     */
+    children: ReactNode;
 }
 
 /**
@@ -379,6 +421,10 @@ export class CollapsingBar extends Component {}
  * Defines the Action Bar Props contract
  */
 export interface ActionBarProps {
+    /**
+     * The action view
+     */
+    children: ReactNode;
     /**
      * Handles action bar expanded events
      */
@@ -437,6 +483,10 @@ export interface SharedElementProps {
      * The style
      */
     style?: StyleProp<ViewStyle>;
+    /**
+     * The shared content
+     */
+    children: ReactNode;
 }
 
 /**
@@ -497,6 +547,10 @@ export interface TabBarItemProps {
      */
     testID?: string;
     /**
+     * The tab content
+     */
+    children: ReactNode;
+    /**
      * Handles button press events
      */
     onPress?: () => void;
@@ -511,7 +565,6 @@ export class TabBarItem extends Component<TabBarItemProps> {}
  * Defines the Tab Bar Props contract
  */
 export interface TabBarProps {
-    children: React.ReactElement<TabBarItem> | React.ReactElement<TabBarItem>[];
     /**
      * The background color of the tab bar
      */
@@ -552,6 +605,10 @@ export interface TabBarProps {
      * The selected tab index
      */
     tab?: number;
+    /**
+     * The tabs
+     */
+    children: React.ReactElement<TabBarItem> | React.ReactElement<TabBarItem>[];
     /**
      * Handles tab change events
      */
@@ -603,6 +660,10 @@ export interface BottomSheetProps {
      * The resting state of the bottom sheet
      */
     detent?: 'hidden' | 'collapsed' | 'halfExpanded' | 'expanded';
+    /**
+     * The bottom sheet content
+     */
+    children: ReactNode;
     /**
      * Handles the bottom sheet resting state change events
      */
