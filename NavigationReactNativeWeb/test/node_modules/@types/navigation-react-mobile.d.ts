@@ -106,6 +106,10 @@ export interface NavigationMotionProps {
      */
     stackInvalidatedLink?: string;
     /**
+     * The Scenes or a callback that renders the Scenes
+     */
+    children?: ReactNode;
+    /**
      * The Shared Element Motion component
      */
     sharedElementMotion?: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
@@ -127,6 +131,10 @@ export interface NavigationMotionProps {
      * The key of the corresponding State
      */
     stateKey: keyof NavigationInfo & string;
+    /**
+     * The Scene content
+     */
+    children: ReactNode;
 }
 
 /**
