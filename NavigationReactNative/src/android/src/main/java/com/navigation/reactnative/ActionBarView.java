@@ -42,7 +42,7 @@ public class ActionBarView extends ViewGroup implements FabricViewStateManager.H
         eventDispatcher.dispatchEvent(new ActionBarView.CollapsedEvent(getId()));
     }
 
-    void changeBounds(int width, int height, int oldw, int oldh) {
+    void changeBounds(final int width, final int height, int oldw, int oldh) {
         super.onSizeChanged(width, height, oldw, oldh);
         if (fabricViewStateManager.hasStateWrapper()) {
             updateState(width, height);
