@@ -5,11 +5,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.UiThread;
 
+import com.facebook.react.bridge.GuardedRunnable;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.uimanager.FabricViewStateManager;
 import com.facebook.react.uimanager.PixelUtil;
+import com.facebook.react.uimanager.UIManagerModule;
 
 public class TitleBarView extends ViewGroup implements FabricViewStateManager.HasFabricViewStateManager {
     private boolean layoutRequested = false;
@@ -26,7 +29,21 @@ public class TitleBarView extends ViewGroup implements FabricViewStateManager.Ha
     @Override
     protected void onSizeChanged(final int w, final int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        updateState(w, h);
+        if (fabricViewStateManager.hasStateWrapper()) {
+            updateState(w, h);
+        } else {
+            final int viewTag = getId();
+            final ReactContext reactContext = (ReactContext) getContext();
+            reactContext.runOnNativeModulesQueueThread(
+                new GuardedRunnable(reactContext) {
+                    @Override
+                    public void runGuarded() {
+                        UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
+                        if (uiManager != null)
+                            uiManager.updateNodeSize(viewTag, w, h);
+                    }
+                });
+        }
     }
 
     @UiThread
