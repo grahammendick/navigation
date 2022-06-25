@@ -2771,7 +2771,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's0', route: 'r0', trackCrumbTrail: true },
                 { key: 's1', route: 'r1' },
             ]);
-            class FirstContext extends React.Component {
+            class FirstContext extends React.Component<any> {
                 static contextType = NavigationContext;                
                 private mountContext: any;
                 constructor(props, context) {

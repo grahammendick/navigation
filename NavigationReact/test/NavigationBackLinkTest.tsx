@@ -620,7 +620,7 @@ describe('NavigationBackLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
             ]);
-            class FirstContext extends React.Component {
+            class FirstContext extends React.Component<any> {
                 static contextType = NavigationContext;                
                 private mountContext: any;
                 constructor(props, context) {

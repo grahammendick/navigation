@@ -1,5 +1,5 @@
 import { State, StateNavigator, FluentNavigator, StateContext } from 'navigation';
-import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent } from 'react';
+import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode } from 'react';
 
 /**
  * Navigation event data
@@ -33,9 +33,23 @@ export interface NavigationEvent<NavigationInfo extends { [index: string]: any }
 export var NavigationContext: Context<NavigationEvent<any, any>> & Context<NavigationEvent<any, string>>;
 
 /**
+ * Defines the Navigation Handler Props contract
+ */
+export interface NavigationHandlerProps {
+    /**
+     * The state navigator that triggers navigation events
+     */
+    stateNavigator: StateNavigator;
+    /**
+     * The rendered content
+     */
+    children: ReactNode;
+}
+
+/**
  * Provides the navigation event data
  */
-export class NavigationHandler extends Component<{ stateNavigator: StateNavigator }> { }
+export class NavigationHandler extends Component<NavigationHandlerProps> { }
 
 /**
  * Defines the Link Props contract
@@ -151,6 +165,10 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
      * A function or the State key(s) that activate the View
      */
     active: (keyof NavigationInfo & string) | (keyof NavigationInfo & string)[] | ((stateContext: StateContext) => boolean);
+    /**
+     * The view
+     */
+    children: ReactNode;
 }
 
 /**
