@@ -45,7 +45,7 @@ export interface NavigationStackProps {
     /**
      * The scenes
      */
-    children?: ReactNode;
+    children?: any;
 }
 
 /**
