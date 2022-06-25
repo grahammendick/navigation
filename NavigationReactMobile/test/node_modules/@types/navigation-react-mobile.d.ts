@@ -108,7 +108,7 @@ export interface NavigationMotionProps {
     /**
      * The Scenes or a callback that renders the Scenes
      */
-    children?: ReactNode;
+    children?: any;
     /**
      * The Shared Element Motion component
      */
