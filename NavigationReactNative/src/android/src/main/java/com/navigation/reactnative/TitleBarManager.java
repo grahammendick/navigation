@@ -20,11 +20,4 @@ public class TitleBarManager extends ViewGroupManager<TitleBarView> {
     protected TitleBarView createViewInstance(@Nonnull ThemedReactContext reactContext) {
         return new TitleBarView(reactContext);
     }
-
-    @Override
-    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
-        return MapBuilder.<String, Object>builder()
-            .put("topOnChangeBounds", MapBuilder.of("registrationName", "onChangeBounds"))
-            .build();
-    }
 }

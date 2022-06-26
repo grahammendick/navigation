@@ -1,16 +1,12 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { requireNativeComponent, StyleSheet, Platform } from 'react-native';
 
-const TitleBar = ({style, ...props}) => {
-  const [bounds, setBounds] = useState({});
-  return (
-    <NVTitleBar
-      {...props}
-      onChangeBounds={({nativeEvent: {width, height}}) => {setBounds({width, height})}}
-      style={[Platform.OS === 'ios' && styles.titleBar, style, bounds]}
-    />
-  )
-};
+const TitleBar = ({style, ...props}) => (
+  <NVTitleBar
+    {...props}
+    style={[Platform.OS === 'ios' && styles.titleBar, style]}
+  />
+);
 
 const NVTitleBar = global.nativeFabricUIManager ? require('./TitleBarNativeComponent').default : requireNativeComponent('NVTitleBar');
 

@@ -41,13 +41,6 @@ public class TitleBarViewManager extends ViewGroupManager<TitleBarView> implemen
     }
 
     @Override
-    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
-        return MapBuilder.<String, Object>builder()
-            .put("topOnChangeBounds", MapBuilder.of("registrationName", "onChangeBounds"))
-            .build();
-    }
-
-    @Override
     public Object updateState(
             TitleBarView view, ReactStylesDiffMap props, StateWrapper stateWrapper) {
         view.getFabricViewStateManager().setStateWrapper(stateWrapper);
