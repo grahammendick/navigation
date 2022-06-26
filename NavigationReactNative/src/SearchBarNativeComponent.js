@@ -26,10 +26,6 @@ type NativeProps = $ReadOnly<{|
     scopeButton: Int32,
     eventCount: Int32,
   |}>>,
-  onChangeBounds: DirectEventHandler<$ReadOnly<{|
-    width: Float,
-    height: Float,
-  |}>>,
   onExpand: DirectEventHandler<null>,
   onCollapse: DirectEventHandler<null>,
 |}>;

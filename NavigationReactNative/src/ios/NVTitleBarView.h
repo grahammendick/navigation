@@ -4,8 +4,6 @@
 
 @interface NVTitleBarView : UIView
 
-@property (nonatomic, copy) RCTDirectEventBlock onChangeBounds;
-
 -(id)initWithBridge: (RCTBridge *)bridge;
 
 @end

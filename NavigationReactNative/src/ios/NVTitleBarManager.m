@@ -13,6 +13,4 @@ RCT_EXPORT_MODULE()
     return [[NVTitleBarView alloc] initWithBridge:self.bridge];
 }
 
-RCT_EXPORT_VIEW_PROPERTY(onChangeBounds, RCTDirectEventBlock)
-
 @end
