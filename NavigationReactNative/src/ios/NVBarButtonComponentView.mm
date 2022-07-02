@@ -130,11 +130,8 @@ using namespace facebook::react;
 {
   auto _state = std::static_pointer_cast<NVBarButtonShadowNode::ConcreteState const>(state);
   auto _oldState = std::static_pointer_cast<NVBarButtonShadowNode::ConcreteState const>(oldState);
-
   auto data = _state->getData();
-
   bool havePreviousData = _oldState != nullptr;
-
   auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
     if (request) {
       return &request->getObserverCoordinator();
@@ -142,7 +139,6 @@ using namespace facebook::react;
       return nullptr;
     }
   };
-
   if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
     self.imageCoordinator = getCoordinator(&data.getImageRequest());
   }
