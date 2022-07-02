@@ -74,6 +74,10 @@ using namespace facebook::react;
             self.button.accessibilityIdentifier = testID;
         }
     }
+    NSString *uri = [[NSString alloc] initWithUTF8String:newViewProps.image.uri.c_str()];
+    if (![uri length]) {
+        _button.image = nil;
+    }
     [super updateProps:props oldProps:oldProps];
 }
 
