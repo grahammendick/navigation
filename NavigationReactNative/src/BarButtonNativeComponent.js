@@ -24,4 +24,5 @@ type NativeProps = $ReadOnly<{|
 
 export default (codegenNativeComponent<NativeProps>(
    'NVBarButton',
+   {interfaceOnly: true}
 ): HostComponent<NativeProps>);
