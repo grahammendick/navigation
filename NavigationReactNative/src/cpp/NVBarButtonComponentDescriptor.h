@@ -19,12 +19,12 @@ class NVBarButtonComponentDescriptor final
   void adopt(ShadowNode::Unshared const &shadowNode) const override {
     ConcreteComponentDescriptor::adopt(shadowNode);
 
-    auto NVBarButtonShadowNode =
+    auto barButtonShadowNode =
         std::static_pointer_cast<NVBarButtonShadowNode>(shadowNode);
 
     // `SliderShadowNode` uses `ImageManager` to initiate image loading and
     // communicate the loading state and results to mounting layer.
-    NVBarButtonShadowNode->setImageManager(imageManager_);
+    barButtonShadowNode->setImageManager(imageManager_);
   }
 
  private:
