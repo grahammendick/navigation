@@ -1,6 +1,9 @@
 #pragma once
 
+#include "NVBarButtonState.h"
 #include <react/renderer/components/view/ConcreteViewShadowNode.h>
+#include <react/renderer/components/navigation-react-native/EventEmitters.h>
+#include <react/renderer/components/navigation-react-native/Props.h>
 #include <react/renderer/imagemanager/ImageManager.h>
 
 namespace facebook {
