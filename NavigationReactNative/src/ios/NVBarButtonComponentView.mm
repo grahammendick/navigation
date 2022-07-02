@@ -9,8 +9,6 @@
 #import <navigation-react-native/NVBarButtonComponentDescriptor.h>
 
 #import "RCTFabricComponentsPlugins.h"
-#import "RCTImagePrimitivesConversions.h"
-#import <React/RCTBridge+Private.h>
 #import <React/RCTFont.h>
 #import <React/RCTImageLoaderProtocol.h>
 #import <React/RCTImageResponseDelegate.h>
