@@ -10,7 +10,6 @@
 
 #import "RCTFabricComponentsPlugins.h"
 #import <React/RCTFont.h>
-#import <React/RCTImageLoaderProtocol.h>
 #import <React/RCTImageResponseDelegate.h>
 #import <React/RCTImageResponseObserverProxy.h>
 
