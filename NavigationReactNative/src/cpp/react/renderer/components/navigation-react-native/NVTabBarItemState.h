@@ -12,9 +12,6 @@
 namespace facebook {
 namespace react {
 
-/*
- * State for <Slider> component.
- */
 class NVTabBarItemState final {
  public:
   NVTabBarItemState(
@@ -32,9 +29,6 @@ class NVTabBarItemState final {
 #ifdef ANDROID
   NVTabBarItemState(NVTabBarItemState const &previousState, folly::dynamic data){};
 
-  /*
-   * Empty implementation for Android because it doesn't use this class.
-   */
   folly::dynamic getDynamic() const {
     return {};
   };

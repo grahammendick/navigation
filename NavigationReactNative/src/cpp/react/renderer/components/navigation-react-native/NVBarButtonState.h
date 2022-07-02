@@ -12,9 +12,6 @@
 namespace facebook {
 namespace react {
 
-/*
- * State for <Slider> component.
- */
 class NVBarButtonState final {
  public:
   NVBarButtonState(
@@ -32,9 +29,6 @@ class NVBarButtonState final {
 #ifdef ANDROID
   NVBarButtonState(NVBarButtonState const &previousState, folly::dynamic data){};
 
-  /*
-   * Empty implementation for Android because it doesn't use this class.
-   */
   folly::dynamic getDynamic() const {
     return {};
   };

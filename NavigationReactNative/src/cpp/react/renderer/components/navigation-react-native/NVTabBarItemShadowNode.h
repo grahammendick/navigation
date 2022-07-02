@@ -11,9 +11,6 @@ namespace react {
 
 extern const char NVTabBarItemComponentName[];
 
-/*
- * `ShadowNode` for <NVTabBarItem> component.
- */
 class NVTabBarItemShadowNode final: public ConcreteViewShadowNode<
   NVTabBarItemComponentName,
   NVTabBarItemProps,
@@ -24,7 +21,6 @@ class NVTabBarItemShadowNode final: public ConcreteViewShadowNode<
 public:
   using ConcreteViewShadowNode::ConcreteViewShadowNode;
 
-  // Associates a shared `ImageManager` with the node.
   void setImageManager(const SharedImageManager &imageManager);
 
   static NVTabBarItemState initialStateData(

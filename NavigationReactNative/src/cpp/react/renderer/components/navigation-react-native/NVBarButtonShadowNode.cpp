@@ -24,12 +24,8 @@ void NVBarButtonShadowNode::updateStateIfNeeded() {
     return;
   }
 
-  // Now we are about to mutate the Shadow Node.
   ensureUnsealed();
 
-  // It is not possible to copy or move image requests from SliderLocalData,
-  // so instead we recreate any image requests (that may already be in-flight?)
-  // TODO: check if multiple requests are cached or if it's a net loss
   auto state = NVBarButtonState{
       newImageSource,
       imageManager_->requestImage(newImageSource, getSurfaceId()),

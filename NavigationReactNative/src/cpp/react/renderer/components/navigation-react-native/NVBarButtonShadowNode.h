@@ -11,9 +11,6 @@ namespace react {
 
 extern const char NVBarButtonComponentName[];
 
-/*
- * `ShadowNode` for <NVBarButton> component.
- */
 class NVBarButtonShadowNode final: public ConcreteViewShadowNode<
   NVBarButtonComponentName,
   NVBarButtonProps,
@@ -24,7 +21,6 @@ class NVBarButtonShadowNode final: public ConcreteViewShadowNode<
 public:
   using ConcreteViewShadowNode::ConcreteViewShadowNode;
 
-  // Associates a shared `ImageManager` with the node.
   void setImageManager(const SharedImageManager &imageManager);
 
   static NVBarButtonState initialStateData(

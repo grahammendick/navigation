@@ -6,9 +6,6 @@
 namespace facebook {
 namespace react {
 
-/*
- * Descriptor for <Slider> component.
- */
 class NVBarButtonComponentDescriptor final
     : public ConcreteComponentDescriptor<NVBarButtonShadowNode> {
  public:
@@ -22,8 +19,6 @@ class NVBarButtonComponentDescriptor final
     auto barButtonShadowNode =
         std::static_pointer_cast<NVBarButtonShadowNode>(shadowNode);
 
-    // `SliderShadowNode` uses `ImageManager` to initiate image loading and
-    // communicate the loading state and results to mounting layer.
     barButtonShadowNode->setImageManager(imageManager_);
   }
 
