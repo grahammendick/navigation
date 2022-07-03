@@ -6,6 +6,7 @@
 #import <react/renderer/components/navigation-react-native/EventEmitters.h>
 #import <react/renderer/components/navigation-react-native/Props.h>
 #import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
+#import <navigation-react-native/NVSearchBarComponentDescriptor.h>
 
 #import "RCTFabricComponentsPlugins.h"
 #import <React/RCTConversions.h>
@@ -23,6 +24,7 @@ using namespace facebook::react;
     UIView *_reactSubview;
     NSInteger _nativeEventCount;
     NSInteger _nativeButtonEventCount;
+    NVSearchBarShadowNode::ConcreteState::Shared _state;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -145,6 +147,7 @@ using namespace facebook::react;
 - (void)prepareForRecycle
 {
     [super prepareForRecycle];
+    _state.reset();
     _nativeEventCount = 0;
     _nativeButtonEventCount = 0;
     _oldSearchController = _searchController;
@@ -154,12 +157,9 @@ using namespace facebook::react;
 
 - (void)notifyForBoundsChange:(CGRect)newBounds
 {
-    if (_reactSubview) {
-        std::static_pointer_cast<NVSearchBarEventEmitter const>(_eventEmitter)
-            ->onChangeBounds(NVSearchBarEventEmitter::OnChangeBounds{
-                .width = static_cast<float>(newBounds.size.width),
-                .height = static_cast<float>(newBounds.size.height),
-            });
+    if (_state != nullptr) {
+        auto newState = NVSearchBarState{RCTSizeFromCGSize(self.bounds.size)};
+        _state->updateState(std::move(newState));
     }
 }
 
@@ -182,6 +182,12 @@ using namespace facebook::react;
 {
     [_reactSubview removeObserver:self forKeyPath:@"hidden"];
     self.searchController.searchResultsController.view = nil;
+}
+
+- (void)updateState:(facebook::react::State::Shared const &)state
+           oldState:(facebook::react::State::Shared const &)oldState
+{
+    _state = std::static_pointer_cast<const NVSearchBarShadowNode::ConcreteState>(state);
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider

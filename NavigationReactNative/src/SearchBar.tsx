@@ -9,7 +9,6 @@ class SearchBar extends React.Component<any, any> {
         this.ref = React.createRef<View>();
         this.onChangeText = this.onChangeText.bind(this);
         this.onChangeScopeButton = this.onChangeScopeButton.bind(this);
-        this.onChangeBounds = this.onChangeBounds.bind(this);
     }
     static defaultProps = {
         obscureBackground: true,
@@ -32,12 +31,8 @@ class SearchBar extends React.Component<any, any> {
         if (onChangeScopeButton)
             onChangeScopeButton(scopeButtons[scopeButton])
     }
-    onChangeBounds({nativeEvent}) {
-        var {width, height} = nativeEvent;
-        this.setState({width, height});
-    }
     render() {
-        var {show, width, height, mostRecentEventCount, mostRecentButtonEventCount} = this.state;
+        var {show, mostRecentEventCount, mostRecentButtonEventCount} = this.state;
         var {autoCapitalize, children, bottomBar, scopeButton, scopeButtons, ...props} = this.props;
         var constants = (UIManager as any).getViewManagerConfig('NVSearchBar').Constants;
         autoCapitalize = Platform.OS === 'android' ? constants.AutoCapitalize[autoCapitalize] : autoCapitalize;
@@ -54,10 +49,9 @@ class SearchBar extends React.Component<any, any> {
                 mostRecentButtonEventCount={mostRecentButtonEventCount}
                 onChangeText={this.onChangeText}
                 onChangeScopeButton={this.onChangeScopeButton}
-                onChangeBounds={this.onChangeBounds}
                 onExpand={() => this.setState({show: true})}
                 onCollapse={() => this.setState({show: false})}
-                style={[styles.searchBar, showStyle, {width, height}]}>
+                style={[styles.searchBar, showStyle]}>
                 {Platform.OS === 'ios' || this.state.show ? children : null}
             </NVSearchBar>
         );
