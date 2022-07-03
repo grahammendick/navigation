@@ -63,6 +63,7 @@ var cleanNative = () => {
     return del([
         './build/npm/navigation-react-native/android',
         './build/npm/navigation-react-native/ios',
+        './build/npm/navigation-react-native/cpp',
         './build/npm/navigation-react-native/**/*NativeComponent.js'
     ]);
 };
@@ -70,6 +71,7 @@ var packageNative = () => {
     return src([
         './NavigationReactNative/src/android/**/*',
         './NavigationReactNative/src/ios/**/*',
+        './NavigationReactNative/src/cpp/**/*',
         './NavigationReactNative/src/**/*NativeComponent.js'
     ], {base: './NavigationReactNative/src'})
         .pipe(dest('./build/npm/navigation-react-native'));

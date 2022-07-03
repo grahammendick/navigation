@@ -12,7 +12,7 @@ Pod::Spec.new do |spec|
   spec.platform     = :ios, "9.0"
   spec.author       = "Graham Mendick"
   spec.source       = { :git => "git://github.com/grahammendick/navigation.git", :tag => "v8.9.1-NavigationReactNative" }
-  spec.source_files = "ios/**/*.{h,m,mm}"
+  spec.source_files = "ios/**/*.{h,m,mm}", "cpp/**/*.{h,cpp}"
   spec.dependency "React-Core"
   if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
     spec.compiler_flags = folly_compiler_flags + " -DRCT_NEW_ARCH_ENABLED=1"
