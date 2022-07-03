@@ -187,7 +187,7 @@ using namespace facebook::react;
 - (void)updateState:(facebook::react::State::Shared const &)state
            oldState:(facebook::react::State::Shared const &)oldState
 {
-  _state = std::static_pointer_cast<const NVSearchBarShadowNode::ConcreteState>(state);
+    _state = std::static_pointer_cast<const NVSearchBarShadowNode::ConcreteState>(state);
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
