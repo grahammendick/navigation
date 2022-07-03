@@ -6,22 +6,25 @@
 #import <react/renderer/components/navigation-react-native/EventEmitters.h>
 #import <react/renderer/components/navigation-react-native/Props.h>
 #import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
+#import <react/renderer/imagemanager/ImageResponseObserverCoordinator.h>
+#import <navigation-react-native/NVTabBarItemComponentDescriptor.h>
 
 #import "RCTFabricComponentsPlugins.h"
-#import "RCTImagePrimitivesConversions.h"
-#import <React/RCTBridge+Private.h>
 #import <React/RCTConversions.h>
 #import <React/RCTFont.h>
-#import <React/RCTImageLoaderProtocol.h>
+#import <React/RCTImageResponseDelegate.h>
+#import <React/RCTImageResponseObserverProxy.h>
 
 using namespace facebook::react;
 
-@interface NVTabBarItemComponentView () <RCTNVTabBarItemViewProtocol>
+@interface NVTabBarItemComponentView () <RCTNVTabBarItemViewProtocol, RCTImageResponseDelegate>
 @end
 
 @implementation NVTabBarItemComponentView
 {
     UIImage *_image;
+    ImageResponseObserverCoordinator const *_imageCoordinator;
+    RCTImageResponseObserverProxy _imageResponseObserverProxy;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -29,6 +32,7 @@ using namespace facebook::react;
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const NVTabBarItemProps>();
         _props = defaultProps;
+        _imageResponseObserverProxy = RCTImageResponseObserverProxy(self);
     }
     return self;
 }
@@ -88,19 +92,10 @@ using namespace facebook::react;
     UIColor *badgeColor = RCTUIColorFromSharedColor(newViewProps.badgeColor);
     if (self.tab.badgeColor != badgeColor)
         self.tab.badgeColor = UIColor.greenColor;
-    if (oldViewProps.image != newViewProps.image) {
-        NSString *uri = [[NSString alloc] initWithUTF8String:newViewProps.image.uri.c_str()];
-        if (!![uri length]) {
-            [[[RCTBridge currentBridge] moduleForName:@"ImageLoader"] loadImageWithURLRequest:NSURLRequestFromImageSource(newViewProps.image) size:CGSizeMake(newViewProps.image.size.width, newViewProps.image.size.height) scale:newViewProps.image.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self -> _image = image;
-                    self -> _tab.image = image;
-                });
-            }];
-        } else {
-            _image = nil;
-            _tab.image = nil;
-        }
+    NSString *uri = [[NSString alloc] initWithUTF8String:newViewProps.image.uri.c_str()];
+    if (![uri length]) {
+        _image = nil;
+        _tab.image = nil;
     }
     [super updateProps:props oldProps:oldProps];
 }
@@ -133,8 +128,59 @@ using namespace facebook::react;
     [super prepareForRecycle];
     _navigationController.tabBarItem = nil;
     _navigationController = nil;
+    self.imageCoordinator = nullptr;
     _tab = nil;
     _image = nil;
+}
+
+- (void)updateState:(const facebook::react::State::Shared &)state oldState:(const facebook::react::State::Shared &)oldState
+{
+  auto _state = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(state);
+  auto _oldState = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(oldState);
+  auto data = _state->getData();
+  bool havePreviousData = _oldState != nullptr;
+  auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
+    if (request) {
+      return &request->getObserverCoordinator();
+    } else {
+      return nullptr;
+    }
+  };
+  if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
+    self.imageCoordinator = getCoordinator(&data.getImageRequest());
+  }
+}
+
+- (void)setImageCoordinator:(const ImageResponseObserverCoordinator *)coordinator
+{
+  if (_imageCoordinator) {
+    _imageCoordinator->removeObserver(_imageResponseObserverProxy);
+  }
+  _imageCoordinator = coordinator;
+  if (_imageCoordinator) {
+    _imageCoordinator->addObserver(_imageResponseObserverProxy);
+  }
+}
+
+#pragma mark - RCTImageResponseDelegate
+
+- (void)didReceiveImage:(UIImage *)image metadata:(id)metadata fromObserver:(void const *)observer
+{
+  if (observer == &_imageResponseObserverProxy) {
+      if ([image isEqual:_tab.image]) {
+        return;
+      }
+      _image = image;
+      _tab.image = image;
+  }
+}
+
+- (void)didReceiveProgress:(float)progress fromObserver:(void const *)observer
+{
+}
+
+- (void)didReceiveFailureFromObserver:(void const *)observer
+{
 }
 
 #pragma mark - RCTComponentViewProtocol
