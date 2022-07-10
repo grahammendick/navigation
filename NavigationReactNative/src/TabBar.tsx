@@ -90,6 +90,8 @@ class TabBar extends React.Component<any, any> {
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}
                     scrollsToTop={scrollsToTop}
+                    fontFamily={fontFamily} fontWeight={fontWeight}
+                    fontStyle={fontStyle} fontSize={fontSize}
                     mostRecentEventCount={this.state.mostRecentEventCount}
                     style={styles.tabBar}>
                         <BackButton onPress={() => this.changeTab(0)} />
