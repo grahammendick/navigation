@@ -89,9 +89,7 @@ using namespace facebook::react;
     NSString *badge = [[NSString alloc] initWithUTF8String: newViewProps.badge.c_str()];
     if (self.tab.badgeValue != badge)
         self.tab.badgeValue = !!badge.length ? badge : nil;
-    UIColor *badgeColor = RCTUIColorFromSharedColor(newViewProps.badgeColor);
-    if (self.tab.badgeColor != badgeColor)
-        self.tab.badgeColor = UIColor.greenColor;
+    self.tab.badgeColor = RCTUIColorFromSharedColor(newViewProps.badgeColor);
     NSString *uri = [[NSString alloc] initWithUTF8String:newViewProps.image.uri.c_str()];
     if (![uri length]) {
         _image = nil;

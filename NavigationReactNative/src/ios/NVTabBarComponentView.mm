@@ -11,6 +11,7 @@
 #import "RCTFabricComponentsPlugins.h"
 #import <React/UIView+React.h>
 #import <React/RCTConversions.h>
+#import <React/RCTFont.h>
 #import <React/RCTI18nUtil.h>
 #import <React/RCTScrollViewComponentView.h>
 
@@ -61,19 +62,43 @@ using namespace facebook::react;
         [_tabBarController.tabBar setTintColor: selectedTintColor];
     if ([_tabBarController.tabBar unselectedItemTintColor] != unselectedTintColor)
         [_tabBarController.tabBar setUnselectedItemTintColor: unselectedTintColor];
-    if (@available(iOS 15.0, *)) {
-        UITabBarAppearance *appearance = nil;
+    if (@available(iOS 13.0, *)) {
+        UITabBarAppearance *appearance = [UITabBarAppearance new];
+        [appearance configureWithDefaultBackground];
         if (barTintColor) {
-            appearance = [UITabBarAppearance new];
-            [appearance configureWithDefaultBackground];
             if (CGColorGetAlpha(barTintColor.CGColor) == 0)
                 [appearance configureWithTransparentBackground];
             if (CGColorGetAlpha(barTintColor.CGColor) == 1)
                 [appearance configureWithOpaqueBackground];
             [appearance setBackgroundColor:barTintColor];
         }
+        _fontFamily = [[NSString alloc] initWithUTF8String: newViewProps.fontFamily.c_str()];
+        _fontFamily = _fontFamily.length ? _fontFamily : nil;
+        _fontWeight = [[NSString alloc] initWithUTF8String: newViewProps.fontWeight.c_str()];
+        _fontWeight = _fontWeight.length ? _fontWeight : nil;
+        _fontStyle = [[NSString alloc] initWithUTF8String: newViewProps.fontStyle.c_str()];
+        _fontStyle = _fontStyle.length ? _fontStyle : nil;
+        _fontSize = @(newViewProps.fontSize);
+        _fontSize = [_fontSize intValue] >= 0 ? _fontSize : nil;
+        UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
+        NSNumber *size = !self.fontSize ? @10 : self.fontSize;
+        NSString *weight = !self.fontWeight ? @"500" : self.fontWeight;
+        UIFont *font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:weight style:self.fontStyle variant:nil scaleMultiplier:1];
+        NSMutableDictionary *attributes = [NSMutableDictionary new];
+        if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
+            attributes[NSFontAttributeName] = font;
+        }
+        UITabBarItemAppearance *itemAppearance = [UITabBarItemAppearance new];
+        UIColor *badgeColor = RCTUIColorFromSharedColor(newViewProps.badgeColor);
+        [itemAppearance.normal setBadgeBackgroundColor:badgeColor];
+        [itemAppearance.selected setBadgeBackgroundColor:badgeColor];
+        [itemAppearance.normal setTitleTextAttributes:attributes];
+        [itemAppearance.selected setTitleTextAttributes:attributes];
+        appearance.stackedLayoutAppearance = itemAppearance;
+        appearance.compactInlineLayoutAppearance = itemAppearance;
         _tabBarController.tabBar.standardAppearance = appearance;
-        _tabBarController.tabBar.scrollEdgeAppearance = appearance;
+        if (@available(iOS 15.0, *))
+            _tabBarController.tabBar.scrollEdgeAppearance = appearance;
     } else {
         [_tabBarController.tabBar setBarTintColor:barTintColor];
     }
