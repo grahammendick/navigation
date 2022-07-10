@@ -96,9 +96,12 @@
             attributes[NSFontAttributeName] = font;
         }
         UITabBarItemAppearance *itemAppearance = [UITabBarItemAppearance new];
-        [itemAppearance.selected setTitleTextAttributes:attributes];
+        [itemAppearance.normal setBadgeBackgroundColor:_badgeColor];
+        [itemAppearance.selected setBadgeBackgroundColor:_badgeColor];
         [itemAppearance.normal setTitleTextAttributes:attributes];
+        [itemAppearance.selected setTitleTextAttributes:attributes];
         appearance.stackedLayoutAppearance = itemAppearance;
+        appearance.compactInlineLayoutAppearance = itemAppearance;
         _tabBarController.tabBar.standardAppearance = appearance;
         if (@available(iOS 15.0, *))
             _tabBarController.tabBar.scrollEdgeAppearance = appearance;
