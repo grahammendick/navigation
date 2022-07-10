@@ -48,7 +48,7 @@ class TabBar extends React.Component<any, any> {
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
-        var {fontFamily, fontWeight, fontStyle, fontSize} = (tabBarItems[0] as any)?.props || {};
+        var {fontFamily, fontWeight, fontStyle, fontSize, badgeColor} = (tabBarItems[0] as any)?.props || {};
         var tabViewHeight = !primary ? (titleOnly ? 48 : 72) : 56
         tabViewHeight = Platform.OS === 'android' ? tabViewHeight : 28;
         var TabBarPager = (Platform.OS === 'ios' || !I18nManager.isRTL) ? NVTabBarPager : NVTabBarPagerRTL;
@@ -89,7 +89,10 @@ class TabBar extends React.Component<any, any> {
                     barTintColor={barTintColor}
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}
+                    badgeColor={badgeColor}
                     scrollsToTop={scrollsToTop}
+                    fontFamily={fontFamily} fontWeight={fontWeight}
+                    fontStyle={fontStyle} fontSize={fontSize}
                     mostRecentEventCount={this.state.mostRecentEventCount}
                     style={styles.tabBar}>
                         <BackButton onPress={() => this.changeTab(0)} />

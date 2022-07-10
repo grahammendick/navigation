@@ -11,7 +11,13 @@ type NativeProps = $ReadOnly<{|
   barTintColor: ColorValue,
   selectedTintColor: ColorValue,
   unselectedTintColor: ColorValue,
+  badgeColor: ColorValue,
   scrollsToTop: boolean,
+  fontFamily: string,
+  fontWeight: string,
+  fontStyle: string,
+  fontSize?: WithDefault<Float, -1>,
+  testID: string,
   mostRecentEventCount: Int32,
   onTabSelected: DirectEventHandler<$ReadOnly<{|
     tab: Int32,
