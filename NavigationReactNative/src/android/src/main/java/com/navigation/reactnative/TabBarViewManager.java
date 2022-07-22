@@ -62,6 +62,11 @@ public class TabBarViewManager extends ViewGroupManager<TabBarView> implements N
     public void setUnselectedTintColor(TabBarView view, @Nullable Integer value) {
     }
 
+    @Override
+    public void setBadgeColor(TabBarView view, @Nullable Integer value) {
+
+    }
+
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(TabBarView view, int mostRecentEventCount) {
         view.mostRecentEventCount = mostRecentEventCount;
@@ -74,6 +79,26 @@ public class TabBarViewManager extends ViewGroupManager<TabBarView> implements N
     @ReactProp(name = "scrollsToTop")
     public void setScrollsToTop(TabBarView view, boolean scrollsToTop) {
         view.scrollsToTop = scrollsToTop;
+    }
+
+    @Override
+    public void setFontFamily(TabBarView view, @Nullable String value) {
+
+    }
+
+    @Override
+    public void setFontWeight(TabBarView view, @Nullable String value) {
+
+    }
+
+    @Override
+    public void setFontStyle(TabBarView view, @Nullable String value) {
+
+    }
+
+    @Override
+    public void setFontSize(TabBarView view, float value) {
+
     }
 
     @Override

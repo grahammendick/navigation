@@ -17,7 +17,6 @@ type NativeProps = $ReadOnly<{|
   fontWeight: string,
   fontStyle: string,
   fontSize?: WithDefault<Float, -1>,
-  testID: string,
   mostRecentEventCount: Int32,
   onTabSelected: DirectEventHandler<$ReadOnly<{|
     tab: Int32,
