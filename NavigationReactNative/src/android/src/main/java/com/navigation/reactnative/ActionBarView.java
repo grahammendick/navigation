@@ -3,18 +3,24 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.view.ViewGroup;
 
-import com.facebook.react.bridge.Arguments;
+import androidx.annotation.UiThread;
+
+import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
+import com.facebook.react.uimanager.FabricViewStateManager;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
-public class ActionBarView extends ViewGroup {
+public class ActionBarView extends ViewGroup implements FabricViewStateManager.HasFabricViewStateManager {
     private boolean layoutRequested = false;
-    private int resizeLoopCount = 0;
+    private final FabricViewStateManager fabricViewStateManager = new FabricViewStateManager();
 
     public ActionBarView(Context context) {
         super(context);
@@ -36,18 +42,55 @@ public class ActionBarView extends ViewGroup {
         eventDispatcher.dispatchEvent(new ActionBarView.CollapsedEvent(getId()));
     }
 
-    void changeBounds(int width, int height, int oldw, int oldh) {
+    void changeBounds(final int width, final int height, int oldw, int oldh) {
         super.onSizeChanged(width, height, oldw, oldh);
-        if (Math.abs(width - oldw) > 5 || Math.abs(height - oldh) > 5)
-            resizeLoopCount = 0;
-        if (Math.abs(width - oldw) <= 5 && Math.abs(height - oldh) <= 5)
-            resizeLoopCount++;
-        if (resizeLoopCount <= 3) {
-            ReactContext reactContext = (ReactContext) getContext();
-            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-            eventDispatcher.dispatchEvent(new ActionBarView.ChangeBoundsEvent(getId(), width, height));
+        if (fabricViewStateManager.hasStateWrapper()) {
+            updateState(width, height);
+        } else {
+            final int viewTag = getId();
+            final ReactContext reactContext = (ReactContext) getContext();
+            reactContext.runOnNativeModulesQueueThread(
+                new GuardedRunnable(reactContext) {
+                    @Override
+                    public void runGuarded() {
+                        UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
+                        if (uiManager != null)
+                            uiManager.updateNodeSize(viewTag, width, height);
+                    }
+                });
+            
         }
-        requestLayout();
+    }
+
+    @UiThread
+    public void updateState(final int width, final int height) {
+        final float realWidth = PixelUtil.toDIPFromPixel(width);
+        final float realHeight = PixelUtil.toDIPFromPixel(height);
+        ReadableMap currentState = getFabricViewStateManager().getStateData();
+        if (currentState != null) {
+            float delta = (float) 0.9;
+            float stateScreenHeight =
+                    currentState.hasKey("frameHeight")
+                            ? (float) currentState.getDouble("frameHeight")
+                            : 0;
+            float stateScreenWidth =
+                    currentState.hasKey("frameWidth") ? (float) currentState.getDouble("frameWidth") : 0;
+
+            if (Math.abs(stateScreenWidth - realWidth) < delta
+                    && Math.abs(stateScreenHeight - realHeight) < delta) {
+                return;
+            }
+        }
+        fabricViewStateManager.setState(
+            new FabricViewStateManager.StateUpdateCallback() {
+                @Override
+                public WritableMap getStateUpdate() {
+                    WritableMap map = new WritableNativeMap();
+                    map.putDouble("frameWidth", realWidth);
+                    map.putDouble("frameHeight", realHeight);
+                    return map;
+                }
+            });
     }
 
     @Override
@@ -69,6 +112,11 @@ public class ActionBarView extends ViewGroup {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
+
+    @Override
+    public FabricViewStateManager getFabricViewStateManager() {
+        return fabricViewStateManager;
+    }
 
     static class ExpandedEvent extends Event<ActionBarView.ExpandedEvent> {
         public ExpandedEvent(int viewId) {
@@ -99,30 +147,6 @@ public class ActionBarView extends ViewGroup {
         @Override
         public void dispatch(RCTEventEmitter rctEventEmitter) {
             rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
-        }
-    }
-
-    static class ChangeBoundsEvent extends Event<ActionBarView.ChangeBoundsEvent> {
-        private final int width;
-        private final int height;
-
-        public ChangeBoundsEvent(int viewId, int width, int height) {
-            super(viewId);
-            this.width = width;
-            this.height = height;
-        }
-
-        @Override
-        public String getEventName() {
-            return "topOnChangeBounds";
-        }
-
-        @Override
-        public void dispatch(RCTEventEmitter rctEventEmitter) {
-            WritableMap event = Arguments.createMap();
-            event.putInt("width", (int) PixelUtil.toDIPFromPixel(this.width));
-            event.putInt("height", (int) PixelUtil.toDIPFromPixel(this.height));
-            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }
 }

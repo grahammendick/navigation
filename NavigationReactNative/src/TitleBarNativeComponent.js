@@ -6,12 +6,9 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
-  onChangeBounds: DirectEventHandler<$ReadOnly<{|
-    width: Float,
-    height: Float,
-  |}>>,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(
    'NVTitleBar',
+   {interfaceOnly: true}
 ): HostComponent<NativeProps>);

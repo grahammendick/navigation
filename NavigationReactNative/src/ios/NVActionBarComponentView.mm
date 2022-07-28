@@ -5,6 +5,7 @@
 #import <react/renderer/components/navigation-react-native/EventEmitters.h>
 #import <react/renderer/components/navigation-react-native/Props.h>
 #import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
+#import <navigation-react-native/NVActionBarComponentDescriptor.h>
 
 #import "RCTFabricComponentsPlugins.h"
 

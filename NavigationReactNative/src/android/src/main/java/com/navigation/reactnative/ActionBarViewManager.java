@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.ReactStylesDiffMap;
+import com.facebook.react.uimanager.StateWrapper;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.ViewManagerDelegate;
@@ -42,7 +44,13 @@ public class ActionBarViewManager extends ViewGroupManager<ActionBarView> implem
         return MapBuilder.<String, Object>builder()
             .put("topOnExpanded", MapBuilder.of("registrationName", "onExpanded"))
             .put("topOnCollapsed", MapBuilder.of("registrationName", "onCollapsed"))
-            .put("topOnChangeBounds", MapBuilder.of("registrationName", "onChangeBounds"))
             .build();
+    }
+
+    @Override
+    public Object updateState(
+            ActionBarView view, ReactStylesDiffMap props, StateWrapper stateWrapper) {
+        view.getFabricViewStateManager().setStateWrapper(stateWrapper);
+        return null;
     }
 }

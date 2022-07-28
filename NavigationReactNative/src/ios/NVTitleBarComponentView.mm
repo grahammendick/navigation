@@ -5,8 +5,10 @@
 #import <react/renderer/components/navigation-react-native/EventEmitters.h>
 #import <react/renderer/components/navigation-react-native/Props.h>
 #import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
+#import <navigation-react-native/NVTitleBarComponentDescriptor.h>
 
 #import "RCTFabricComponentsPlugins.h"
+#import <React/RCTConversions.h>
 #import <React/UIView+React.h>
 
 using namespace facebook::react;
@@ -17,6 +19,7 @@ using namespace facebook::react;
 @implementation NVTitleBarComponentView
 {
     CGRect _lastViewFrame;
+    NVTitleBarShadowNode::ConcreteState::Shared _state;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -42,24 +45,27 @@ using namespace facebook::react;
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    if (!CGRectEqualToRect(_lastViewFrame, self.frame)) {
-        std::static_pointer_cast<NVTitleBarEventEmitter const>(_eventEmitter)
-            ->onChangeBounds(NVTitleBarEventEmitter::OnChangeBounds{
-                .width = static_cast<float>(self.frame.size.width),
-                .height = static_cast<float>(self.frame.size.height),
-            });
-        _lastViewFrame = self.frame;
+    if (_state != nullptr) {
+        auto newState = NVTitleBarState{RCTSizeFromCGSize(self.bounds.size)};
+        _state->updateState(std::move(newState));
     }
 }
 
 - (void)prepareForRecycle
 {
     [super prepareForRecycle];
+    _state.reset();
     _lastViewFrame = CGRectMake(0, 0, 0, 0);
     self.reactViewController.navigationItem.titleView = nil;
 }
 
 #pragma mark - RCTComponentViewProtocol
+
+- (void)updateState:(facebook::react::State::Shared const &)state
+           oldState:(facebook::react::State::Shared const &)oldState
+{
+  _state = std::static_pointer_cast<const NVTitleBarShadowNode::ConcreteState>(state);
+}
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {

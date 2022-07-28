@@ -6,14 +6,11 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
-  onChangeBounds: DirectEventHandler<$ReadOnly<{|
-    width: Float,
-    height: Float,
-  |}>>,
   onExpanded: DirectEventHandler<null>,
   onCollapsed: DirectEventHandler<null>,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(
    'NVActionBar',
+   {interfaceOnly: true}
 ): HostComponent<NativeProps>);
