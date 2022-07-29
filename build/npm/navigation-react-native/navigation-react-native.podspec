@@ -1,6 +1,3 @@
-# folly_version must match the version used in React Native
-# See folly_version in react-native/React/FBReactNativeSpec/FBReactNativeSpec.podspec
-folly_version = '2021.06.28.00-v2'
 folly_compiler_flags = '-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32'
 
 Pod::Spec.new do |spec|
@@ -24,7 +21,7 @@ Pod::Spec.new do |spec|
     }
     spec.dependency "React-RCTFabric"
     spec.dependency "React-Codegen"
-    spec.dependency "RCT-Folly", folly_version
+    spec.dependency "RCT-Folly"
     spec.dependency "RCTRequired"
     spec.dependency "RCTTypeSafety"
     spec.dependency "ReactCommon/turbomodule/core"
