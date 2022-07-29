@@ -48,7 +48,8 @@ class TabBar extends React.Component<any, any> {
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
-        var {fontFamily, fontWeight, fontStyle, fontSize, badgeColor} = (tabBarItems[0] as any)?.props || {};
+        var {fontFamily, fontWeight, fontStyle, fontSize, badgeColor} = (tabBarItems as any)?.reduce((acc, {props}) => ({ ...acc, ...props }), {});
+        (tabBarItems[0] as any)?.props || {};
         var tabViewHeight = !primary ? (titleOnly ? 48 : 72) : 56
         tabViewHeight = Platform.OS === 'android' ? tabViewHeight : 28;
         var TabBarPager = (Platform.OS === 'ios' || !I18nManager.isRTL) ? NVTabBarPager : NVTabBarPagerRTL;
