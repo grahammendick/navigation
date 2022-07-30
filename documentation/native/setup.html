@@ -115,12 +115,14 @@ libreact_render_mapbuffer \
 libreact_render_imagemanager \</span>
 libreact_debug \
 </code></pre>
-              <p>Add 4 lines to the <code>android/app/src/main/jni/MainComponentsRegistry.cpp</code> file.</p>
+              <p>Add 6 lines to the <code>android/app/src/main/jni/MainComponentsRegistry.cpp</code> file.</p>
               <pre><code class="language-xxx">#include &lt;react/renderer/componentregistry/ComponentDescriptorProviderRegistry.h>
 <span class="diff">#include &lt;react/renderer/components/navigation-react-native/ComponentDescriptors.h>
+#include &lt;react/renderer/components/navigation-react-native/NVActionBarComponentDescriptor.h>
 #include &lt;react/renderer/components/navigation-react-native/NVBarButtonComponentDescriptor.h>
 #include &lt;react/renderer/components/navigation-react-native/NVSearchBarComponentDescriptor.h>
-#include &lt;react/renderer/components/navigation-react-native/NVTabBarItemComponentDescriptor.h></span>
+#include &lt;react/renderer/components/navigation-react-native/NVTabBarItemComponentDescriptor.h>
+#include &lt;react/renderer/components/navigation-react-native/NVTitleBarComponentDescriptor.h></react></span>
 #include &lt;react/renderer/components/rncore/ComponentDescriptors.h>
 </code></pre>
               <p>And add 23 lines to <code>android/app/src/main/jni/MainComponentsRegistry.cpp</code>. One for each component.</p>
