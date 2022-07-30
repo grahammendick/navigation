@@ -1,5 +1,5 @@
 import { Component, Context, ReactNode } from 'react';
-import { BackHandler, ImageRequireSource, ImageURISource, NativeSyntheticEvent, StyleProp, ViewStyle, TransformsStyle } from 'react-native';
+import { BackHandler, ImageRequireSource, ImageURISource, NativeSyntheticEvent, StyleProp, ViewStyle, TransformsStyle, ColorValue } from 'react-native';
 import { Crumb, State, StateContext } from 'navigation';
 
 declare global {
@@ -13,7 +13,7 @@ export interface NavigationStackProps {
     /**
      * The color of the background behind the Scenes
      */
-    underlayColor?: string;
+    underlayColor?: ColorValue;
     /**
      * The link to navigate to when Scenes in the stack are unregistered
      */
@@ -91,15 +91,15 @@ export interface NavigationBarProps {
     /**
      * The background color of the navigation bar
      */
-    barTintColor?: string | ((standard: boolean) => string);
+    barTintColor?: ColorValue | ((standard: boolean) => ColorValue);
     /**
      * The color of foreground elements on the navigation bar
      */
-    tintColor?: string | ((standard: boolean) => string);
+    tintColor?: ColorValue | ((standard: boolean) => ColorValue);
     /**
      * The color of the title view
      */
-    titleColor?: string | ((standard: boolean) => string);
+    titleColor?: ColorValue | ((standard: boolean) => ColorValue);
     /**
      * The title for the back button
      */
@@ -365,7 +365,7 @@ export interface SearchBarProps {
     /**
      * The search field background color
      */
-    barTintColor?: string;
+    barTintColor?: ColorValue;
     /**
      * The selected scope button
      */
@@ -455,7 +455,7 @@ export interface StatusBarProps {
     /**
      * The background color of the status bar
      */
-    barTintColor?: string;
+    barTintColor?: ColorValue;
 }
 
 /**
@@ -514,7 +514,7 @@ export interface TabBarItemProps {
     /**
      * The tab badge background color
      */
-    badgeColor?: string;
+    badgeColor?: ColorValue;
     /**
      * The tab image
      */
@@ -568,15 +568,15 @@ export interface TabBarProps {
     /**
      * The background color of the tab bar
      */
-    barTintColor?: string;
+    barTintColor?: ColorValue;
     /**
      * The color of the content within the tab bar
      */
-    selectedTintColor?: string;
+    selectedTintColor?: ColorValue;
     /**
      * The color of unselected content wihtin the tab bar
      */
-    unselectedTintColor?: string;
+    unselectedTintColor?: ColorValue;
     /**
      * Indicates whether the tabs should be at the bottom
      */
@@ -729,8 +729,8 @@ export interface FloatingActionButtonProps {
  * Defines the Floating Action Button Style Prop contract
  */
 export interface FloatingActionButtonStyle extends TransformsStyle {
-    backgroundColor?: string;
-    color?: string;
+    backgroundColor?: ColorValue;
+    color?: ColorValue;
     margin?: number;
     marginBottom?: number;
     marginEnd?: number;
