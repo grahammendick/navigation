@@ -6,8 +6,8 @@ import {NavigationStack} from 'navigation-react-native';
 export default () => {
   const stateNavigator = new StateNavigator([
     {key: 'tabs', route: '{tab?}', defaults: {tab: 'home'}},
-    {key: 'home', route: 'x/y'},
-    {key: 'notifications', route: 'xx/y'},
+    {key: 'home'},
+    {key: 'notifications'},
     {key: 'tweet', route: 'tweet/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}},
     {key: 'timeline', route: 'timeline/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}}
   ], NavigationStack.HistoryManager && new NavigationStack.HistoryManager(url => {
