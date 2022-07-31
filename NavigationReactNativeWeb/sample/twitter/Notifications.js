@@ -10,7 +10,6 @@ export default () => {
     <CoordinatorLayout>
       <NavigationBar
         title="Notifications"
-        isActive={({tab}) => tab === 1}
         barTintColor="#fff" />
       <FlatList
         data={getFollows()}
