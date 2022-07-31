@@ -84,7 +84,8 @@ Linking.addEventListener('url', ({url}) => openLink(url));</code></pre>
             </p>
             <pre><code class="language-jsx">&lt;activity
   android:name="com.navigation.reactnative.LinkActivity"
-  android:launchMode="singleTask">
+  android:launchMode="singleTask"
+  android:exported="true">
     &lt;intent-filter>
     &lt;action android:name="android.intent.action.VIEW" />
     &lt;category android:name="android.intent.category.DEFAULT" />
