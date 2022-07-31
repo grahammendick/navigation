@@ -5318,6 +5318,18 @@
   "resolved" "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   "version" "1.4.0"
 
+"navigation-react-mobile@*":
+  "integrity" "sha512-NsZj9AWesm9lpppUHy+QT5dgukFrLLvfTvrCmgr4VtD0J0P6IPl5gdUdwhcKE8CQu5TveljzFJizhGhdb+vU1A=="
+  "resolved" "https://registry.npmjs.org/navigation-react-mobile/-/navigation-react-mobile-3.8.1.tgz"
+  "version" "3.8.1"
+
+"navigation-react-native-web@^1.1.0":
+  "integrity" "sha512-f49yx/b8pMyOiY5jwuqe1pCSwaNSdNuATHf1St1/NLojQndxksi0LV2IcOleXg9Xmf6SPKWzhuNkw8HWVXH4pw=="
+  "resolved" "https://registry.npmjs.org/navigation-react-native-web/-/navigation-react-native-web-1.1.0.tgz"
+  "version" "1.1.0"
+  dependencies:
+    "navigation-react-mobile" "*"
+
 "navigation-react-native@^8.9.3":
   "integrity" "sha512-nBoBypDmFv9bMst+Ro+0/mhFYunJ460f1la45gGYoCH6rMEBVQnrYfXVshPMXs7+eP5okp5hTmfMF1EN7v6gWw=="
   "resolved" "https://registry.npmjs.org/navigation-react-native/-/navigation-react-native-8.9.3.tgz"
