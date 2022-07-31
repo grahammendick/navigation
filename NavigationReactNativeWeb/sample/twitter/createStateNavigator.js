@@ -12,7 +12,7 @@ export default () => {
     {key: 'timeline', route: 'timeline/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}}
   ], NavigationStack.HistoryManager && new NavigationStack.HistoryManager(url => {
     const {state, data} = stateNavigator.parseLink(url);
-    let fluent = stateNavigator.fluent().navigate('home');
+    let fluent = stateNavigator.fluent().navigate('tabs');
     if (state.key === 'home' && data.tab === 'notifications')
       stateNavigator.historyManager.addHistory(fluent.url, true);
     return fluent.navigate(state.key, data).url;
