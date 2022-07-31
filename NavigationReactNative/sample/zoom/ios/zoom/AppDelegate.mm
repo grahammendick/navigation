@@ -3,6 +3,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <React/RCTLinkingManager.h>
 
 #import <React/RCTAppSetupUtils.h>
 
@@ -89,6 +90,12 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  options:(NSDictionary *)options
+{
+  return [RCTLinkingManager application:application openURL:url options:options];
 }
 
 #if RCT_NEW_ARCH_ENABLED
