@@ -1,5 +1,6 @@
 package com.navigation.reactnative;
 
+import android.os.Build;
 import android.text.InputType;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -39,7 +40,10 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
 
     @ReactProp(name = "autoCapitalize")
     public void setAutoCapitalize(SearchBarView view, String autoCapitalize) {
-        view.searchView.setInputType(Integer.parseInt(autoCapitalize));
+        int inputType = Integer.parseInt(autoCapitalize);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+            inputType = InputType.TYPE_CLASS_TEXT | inputType;
+        view.searchView.setInputType(inputType);
     }
 
     @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
