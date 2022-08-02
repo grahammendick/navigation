@@ -29,7 +29,6 @@ public class SearchBarView extends ReactViewGroup {
     public SearchBarView(Context context) {
         super(context);
         searchView = new SearchView(context);
-        setZ(-58);
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         AppBarLayout.ScrollingViewBehavior behavior = new AppBarLayout.ScrollingViewBehavior();
         params.setBehavior(behavior);
@@ -79,11 +78,7 @@ public class SearchBarView extends ReactViewGroup {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (searchView.requestFocusFromTouch()) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (inputMethodManager != null)
-                inputMethodManager.showSoftInput(searchView.findFocus(), 0);
-        }
+        post(focusAndKeyboard);
         ActionView actionView = null;
         ViewGroup view = (ViewGroup) getParent();
         for(int i = 0; i < view.getChildCount() && actionView == null; i++) {
@@ -106,7 +101,6 @@ public class SearchBarView extends ReactViewGroup {
 
                 @Override
                 public void onSearchExpand() {
-                    setZ(58);
                     ReactContext reactContext = (ReactContext) getContext();
                     EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
                     eventDispatcher.dispatchEvent(new ExpandEvent(getId()));
@@ -114,7 +108,6 @@ public class SearchBarView extends ReactViewGroup {
 
                 @Override
                 public void onSearchCollapse() {
-                    setZ(-58);
                     ReactContext reactContext = (ReactContext) getContext();
                     EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
                     eventDispatcher.dispatchEvent(new CollapseEvent(getId()));
@@ -122,6 +115,17 @@ public class SearchBarView extends ReactViewGroup {
             });
         }
     }
+
+    private final Runnable focusAndKeyboard = new Runnable() {
+        @Override
+        public void run() {
+            if (searchView.requestFocus()) {
+                InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (inputMethodManager != null)
+                    inputMethodManager.showSoftInput(searchView.findFocus(), 0);
+            }
+        }
+    };
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
