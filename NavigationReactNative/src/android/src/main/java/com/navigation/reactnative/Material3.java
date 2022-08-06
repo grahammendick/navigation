@@ -23,7 +23,7 @@ public class Material3 extends ReactContextBaseJavaModule {
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
         try {
-            MaterialColors.getColor(getReactApplicationContext(), R.attr.colorTertiary, "");
+            MaterialColors.getColor(getCurrentActivity(), R.attr.colorTertiary, "");
             constants.put("on", true);
         } catch(IllegalArgumentException ex) {
             constants.put("on", false);
