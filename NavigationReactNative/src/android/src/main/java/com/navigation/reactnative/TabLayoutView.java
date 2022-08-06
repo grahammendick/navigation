@@ -26,6 +26,7 @@ public class TabLayoutView extends TabLayout implements TabView {
 
     public TabLayoutView(Context context) {
         super(context);
+        setVisibility(View.INVISIBLE);
         ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_LTR);
         AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.WRAP_CONTENT);
         params.setScrollFlags(0);
@@ -69,6 +70,7 @@ public class TabLayoutView extends TabLayout implements TabView {
     @Override
     public void setupWithViewPager(@Nullable final ViewPager viewPager) {
         super.setupWithViewPager(viewPager);
+        setVisibility(View.VISIBLE);
         if (tabSelectedListener != null)
             removeOnTabSelectedListener(tabSelectedListener);
         tabSelectedListener = new OnTabSelectedListener() {
