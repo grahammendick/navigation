@@ -42,6 +42,8 @@ public class NavigationPackage implements ReactPackage {
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        return new ArrayList<>();
+        List<NativeModule> modules = new ArrayList<>();
+        modules.add(new Material3(reactContext));
+        return modules;
     }
 }
