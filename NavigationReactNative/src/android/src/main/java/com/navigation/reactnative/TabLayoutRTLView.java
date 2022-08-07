@@ -70,12 +70,7 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
         final ViewPager2 tabBarPager = getTabBar();
         if (tabBarPager != null && tabBarPager.getAdapter() != null) {
             new TabLayoutMediator(this, tabBarPager,
-                new TabLayoutMediator.TabConfigurationStrategy() {
-                    @Override
-                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                        tab.setText(((TabBarPagerRTLAdapter) tabBarPager.getAdapter()).getTabAt(position).styledTitle);
-                    }
-                }
+                (tab, position) -> tab.setText(((TabBarPagerRTLAdapter) tabBarPager.getAdapter()).getTabAt(position).styledTitle)
             ).attach();
             TabBarPagerRTLManager.getAdapter(tabBarPager).populateTabs(this);
         }
@@ -119,15 +114,12 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
         }
     }
 
-    private final Runnable measureAndLayout = new Runnable() {
-        @Override
-        public void run() {
-            layoutRequested = false;
-            measure(
-                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-        }
+    private final Runnable measureAndLayout = () -> {
+        layoutRequested = false;
+        measure(
+            MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+        layout(getLeft(), getTop(), getRight(), getBottom());
     };
 
     @Override
