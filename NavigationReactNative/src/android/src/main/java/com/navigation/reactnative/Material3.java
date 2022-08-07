@@ -23,9 +23,10 @@ public class Material3 extends ReactContextBaseJavaModule {
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
-        ContextThemeWrapper themeWrapper = new ContextThemeWrapper(getReactApplicationContext(), getReactApplicationContext().getApplicationInfo().theme);
+        int theme = getReactApplicationContext().getApplicationInfo().theme;
+        ContextThemeWrapper context = new ContextThemeWrapper(getReactApplicationContext(), theme);
         try {
-            MaterialColors.getColor(themeWrapper, R.attr.colorTertiary, "");
+            MaterialColors.getColor(context, R.attr.colorTertiary, "");
             constants.put("on", true);
         } catch(IllegalArgumentException ex) {
             constants.put("on", false);
