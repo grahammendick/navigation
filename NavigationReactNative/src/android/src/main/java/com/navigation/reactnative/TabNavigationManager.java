@@ -66,7 +66,7 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
 
     @Override
     public Map<String, Object> getExportedViewConstants() {
-        return MapBuilder.<String, Object>of(
+        return MapBuilder.of(
             "LabelVisibility",
             MapBuilder.of(
                 "auto", LABEL_VISIBILITY_AUTO,
