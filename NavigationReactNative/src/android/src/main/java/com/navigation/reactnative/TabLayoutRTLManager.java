@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import android.content.res.ColorStateList;
+
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -28,6 +30,11 @@ public class TabLayoutRTLManager extends ViewGroupManager<TabLayoutRTLView> {
         view.unselectedTintColor = unselectedTintColor != Integer.MAX_VALUE ? unselectedTintColor : view.defaultTextColor;
         view.setTabTextColors(view.unselectedTintColor, view.selectedTintColor);
         view.setTabIconTint(view.getTabTextColors());
+    }
+
+    @ReactProp(name = "rippleColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setRippleColor(TabLayoutRTLView view, int rippleColor) {
+        view.setTabRippleColor(ColorStateList.valueOf(rippleColor != Integer.MAX_VALUE ? rippleColor : view.defaultRippleColor));
     }
 
     @ReactProp(name = "selectedIndicatorAtTop")
