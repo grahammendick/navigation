@@ -20,6 +20,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     int selectedTintColor;
     int unselectedTintColor;
     int defaultActiveIndicatorColor;
+    int defaultRippleColor;
     private boolean layoutRequested = false;
     private boolean autoSelected = false;
 
@@ -30,6 +31,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         TabLayoutView tabLayout = new TabLayoutView(context);
         selectedTintColor = unselectedTintColor = defaultTextColor = tabLayout.defaultTextColor;
         defaultActiveIndicatorColor = getItemActiveIndicatorColor() != null ? getItemActiveIndicatorColor().getDefaultColor() : Color.WHITE;
+        defaultRippleColor = getItemRippleColor() != null ? getItemRippleColor().getColorForState(new int[]{ android.R.attr.state_pressed }, Color.WHITE) : Color.WHITE;
         setOnItemSelectedListener(menuItem -> {
             TabBarView tabBar = getTabBar();
             if (!autoSelected && tabBar != null && tabBar.selectedTab == menuItem.getOrder())
