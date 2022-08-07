@@ -44,7 +44,7 @@ class TabBar extends React.Component<any, any> {
         return false;
     }
     render() {
-        var {children, labelVisibilityMode, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, scrollsToTop} = this.props;
+        var {children, labelVisibilityMode, barTintColor, selectedTintColor, unselectedTintColor, activeIndicatorColor, bottomTabs, scrollable, primary, scrollsToTop} = this.props;
         const { Material3 } = NativeModules;
         const { on: material3 } = Material3.getConstants();
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
@@ -67,6 +67,7 @@ class TabBar extends React.Component<any, any> {
                 itemHorizontalTranslation={labelVisibilityMode !== 'selected'}
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
+                activeIndicatorColor={activeIndicatorColor}
                 selectedIndicatorAtTop={bottomTabs}
                 tabs={tabBarItems.map(({props: {title, testID}}: any) => ({title, testID}))}
                 titles={tabBarItems.map(({props: {title = ''}}: any) => title)}

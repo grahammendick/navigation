@@ -59,6 +59,11 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
         view.setItemIconTintList(view.getItemTextColor());
     }
 
+    @ReactProp(name = "activeIndicatorColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setActiveIndicatorColor(TabNavigationView view, int activeIndicatorColor) {
+        view.setItemActiveIndicatorColor(ColorStateList.valueOf(activeIndicatorColor != Integer.MAX_VALUE ? activeIndicatorColor : view.defaultActiveIndicatorColor));
+    }
+
     @Override
     public Map<String, Object> getExportedViewConstants() {
         return MapBuilder.<String, Object>of(
