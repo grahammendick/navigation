@@ -19,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class FloatingActionButtonView extends FloatingActionButton {
     final int defaultBackgroundColor;
+    final int defaultRippleColor;
     final CoordinatorLayout.LayoutParams params;
     int marginTop, marginRight, marginBottom, marginLeft, marginStart, marginEnd, margin;
     private final IconResolver.IconResolverListener iconResolverListener;
@@ -28,6 +29,7 @@ public class FloatingActionButtonView extends FloatingActionButton {
         super(context);
         setSize(SIZE_NORMAL);
         defaultBackgroundColor = getBackgroundTintList() != null ? getBackgroundTintList().getColorForState(new int[]{ android.R.attr.state_enabled }, Color.BLACK) : Color.BLACK;
+        defaultRippleColor = getRippleColorStateList() != null ? getRippleColorStateList().getColorForState(new int[]{ android.R.attr.state_pressed }, Color.WHITE) : Color.WHITE;
         params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setBehavior(getBehavior());
         setLayoutParams(params);
