@@ -1,5 +1,6 @@
 package com.navigation.reactnative;
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -22,8 +23,9 @@ public class Material3 extends ReactContextBaseJavaModule {
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
+        ContextThemeWrapper themeWrapper = new ContextThemeWrapper(getReactApplicationContext(), getReactApplicationContext().getApplicationInfo().theme);
         try {
-            MaterialColors.getColor(getCurrentActivity(), R.attr.colorTertiary, "");
+            MaterialColors.getColor(themeWrapper, R.attr.colorTertiary, "");
             constants.put("on", true);
         } catch(IllegalArgumentException ex) {
             constants.put("on", false);
