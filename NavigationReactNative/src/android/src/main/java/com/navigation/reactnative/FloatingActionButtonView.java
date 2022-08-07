@@ -2,7 +2,6 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,19 +31,10 @@ public class FloatingActionButtonView extends FloatingActionButton {
         params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setBehavior(getBehavior());
         setLayoutParams(params);
-        iconResolverListener = new IconResolver.IconResolverListener() {
-            @Override
-            public void setDrawable(Drawable d) {
-                setImageDrawable(d);
-            }
-        };
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ReactContext reactContext = (ReactContext) getContext();
-                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                eventDispatcher.dispatchEvent(new FloatingActionButtonView.PressEvent(getId()));
-            }
+        iconResolverListener = this::setImageDrawable;
+        setOnClickListener(view -> {
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag((ReactContext) context, getId());
+            eventDispatcher.dispatchEvent(new PressEvent(getId()));
         });
     }
 
