@@ -1,11 +1,11 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -25,6 +25,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 public class ExtendedFloatingActionButtonView extends ExtendedFloatingActionButton {
     final int defaultBackgroundColor;
     final int defaultColor;
+    final int defaultRippleColor;
     final CoordinatorLayout.LayoutParams params;
     int marginTop, marginRight, marginBottom, marginLeft, marginStart, marginEnd, margin;
     private String text;
@@ -38,9 +39,8 @@ public class ExtendedFloatingActionButtonView extends ExtendedFloatingActionButt
 
     public ExtendedFloatingActionButtonView(@NonNull Context context) {
         super(context);
-        TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.colorSecondary, typedValue, true);
-        defaultBackgroundColor = typedValue.data;
+        defaultBackgroundColor = getBackgroundTintList() != null ? getBackgroundTintList().getColorForState(new int[]{ android.R.attr.state_enabled }, Color.BLACK) : Color.BLACK;
+        defaultRippleColor = getRippleColor() != null ? getRippleColor().getColorForState(new int[]{ android.R.attr.state_pressed }, Color.WHITE) : Color.WHITE;
         defaultColor = getCurrentTextColor();
         params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setBehavior(getBehavior());
