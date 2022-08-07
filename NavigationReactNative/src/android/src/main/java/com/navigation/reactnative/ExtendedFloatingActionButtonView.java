@@ -1,7 +1,6 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
@@ -46,19 +45,10 @@ public class ExtendedFloatingActionButtonView extends ExtendedFloatingActionButt
         params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setBehavior(getBehavior());
         setLayoutParams(params);
-        iconResolverListener = new IconResolver.IconResolverListener() {
-            @Override
-            public void setDrawable(Drawable d) {
-                setIcon(d);
-            }
-        };
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ReactContext reactContext = (ReactContext) getContext();
-                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                eventDispatcher.dispatchEvent(new ExtendedFloatingActionButtonView.PressEvent(getId()));
-            }
+        iconResolverListener = this::setIcon;
+        setOnClickListener(view -> {
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag((ReactContext) context, getId());
+            eventDispatcher.dispatchEvent(new PressEvent(getId()));
         });
     }
 
