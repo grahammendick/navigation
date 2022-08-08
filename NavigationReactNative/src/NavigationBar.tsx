@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { requireNativeComponent, Image, Platform, Animated } from 'react-native';
+import { requireNativeComponent, Image, Platform, Animated, NativeModules } from 'react-native';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
 import SearchBar from './SearchBar';
@@ -32,6 +32,8 @@ class NavigationBar extends React.Component<any, any> {
     }
     render() {
         var {bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, children, style = {height: undefined}, ...otherProps} = this.props;
+        const { Material3 } = NativeModules;
+        const { on: material3 } = Material3.getConstants();
         var scrollEdgeProps = this.getScrollEdgeProps()
         var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
         var statusBar = childrenArray.find(({type}) => type === StatusBar);
@@ -67,8 +69,8 @@ class NavigationBar extends React.Component<any, any> {
                                 {...otherProps}
                                 {...scrollEdgeProps}
                                 barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : null}
-                                barHeight={56}
-                                style={{height: 56}}>
+                                barHeight={!material3 ? 56 : 64}
+                                style={{height: !material3 ? 56 : 64}}>
                                 {[
                                     childrenArray.find(({type}) => type === TitleBar),
                                     childrenArray.find(({type}) => type === LeftBar),
