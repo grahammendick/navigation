@@ -56,6 +56,11 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         view.setTitleFontSize(titleFontSize);
     }
 
+    @ReactProp(name = "titleCentered")
+    public void setTitleCentered(ToolbarView view, boolean titleCentered) {
+        view.setTitleCentered(titleCentered);
+    }
+
     @ReactProp(name = "logo")
     public void setLogo(ToolbarView view, ReadableMap logo) {
         view.setLogoSource(logo);

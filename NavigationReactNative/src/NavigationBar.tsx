@@ -31,7 +31,7 @@ class NavigationBar extends React.Component<any, any> {
         }
     }
     render() {
-        var {bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, children, style = {height: undefined}, ...otherProps} = this.props;
+        var {bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, titleCentered, children, style = {height: undefined}, ...otherProps} = this.props;
         const { Material3 } = NativeModules;
         const { on: material3 } = Material3.getConstants();
         var scrollEdgeProps = this.getScrollEdgeProps()
@@ -69,6 +69,7 @@ class NavigationBar extends React.Component<any, any> {
                                 {...otherProps}
                                 {...scrollEdgeProps}
                                 barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : null}
+                                titleCentered={!!titleCentered}
                                 barHeight={!material3 ? 56 : 64}
                                 style={{height: !material3 ? 56 : 64}}>
                                 {[
