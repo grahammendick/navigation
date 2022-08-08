@@ -46,7 +46,7 @@ class TabBar extends React.Component<any, any> {
     render() {
         var {children, labelVisibilityMode, barTintColor, selectedTintColor, unselectedTintColor, activeIndicatorColor, rippleColor, bottomTabs, scrollable, primary, scrollsToTop} = this.props;
         const { Material3 } = NativeModules;
-        const { on: material3 } = Material3.getConstants();
+        const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);

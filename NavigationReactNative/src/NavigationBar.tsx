@@ -33,7 +33,7 @@ class NavigationBar extends React.Component<any, any> {
     render() {
         var {bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, titleCentered, children, style = {height: undefined}, ...otherProps} = this.props;
         const { Material3 } = NativeModules;
-        const { on: material3 } = Material3.getConstants();
+        const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
         var scrollEdgeProps = this.getScrollEdgeProps()
         var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
         var statusBar = childrenArray.find(({type}) => type === StatusBar);
