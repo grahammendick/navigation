@@ -21,6 +21,7 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
     final int defaultTitleTextColor;
     final Typeface defaultCollapsedTitleTypeface;
     final Typeface defaultExpandedTitleTypeface;
+    final int defaultTitleCollapseMode;
     private boolean layoutRequested = false;
 
     public CollapsingBarView(Context context) {
@@ -32,6 +33,7 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
         defaultTitleTextColor = new ToolbarView(context).defaultTitleTextColor;
         defaultCollapsedTitleTypeface = getCollapsedTitleTypeface();
         defaultExpandedTitleTypeface = getExpandedTitleTypeface();
+        defaultTitleCollapseMode = getTitleCollapseMode();
     }
 
     void setTitleFontFamily(String titleFontFamily) {
