@@ -4,14 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.google.android.material.color.MaterialColors;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Material3 extends ReactContextBaseJavaModule {
-    Material3(ReactApplicationContext context) {
+public class Material3Module extends NativeMaterial3ModuleSpec {
+    Material3Module(ReactApplicationContext context) {
         super(context);
     }
 

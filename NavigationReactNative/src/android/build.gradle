@@ -42,6 +42,7 @@ android {
                 ]
             } else {
                java.excludes = [
+                   '**/*Module.java',
                    '**/*ViewManager.java',
                    '**/newarch/NavigationPackage.java'
                 ]
