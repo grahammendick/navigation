@@ -21,7 +21,7 @@ public class Material3Module extends NativeMaterial3ModuleSpec {
     }
 
     @Override
-    public Map<String, Object> getConstants() {
+    public Map<String, Object> getTypedExportedConstants() {
         final Map<String, Object> constants = new HashMap<>();
         int theme = getReactApplicationContext().getApplicationInfo().theme;
         ContextThemeWrapper context = new ContextThemeWrapper(getReactApplicationContext(), theme);

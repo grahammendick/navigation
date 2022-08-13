@@ -32,7 +32,8 @@ class NavigationBar extends React.Component<any, any> {
     }
     render() {
         var {bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, titleCentered, children, style = {height: undefined}, ...otherProps} = this.props;
-        const { Material3 } = NativeModules;
+        const isTurboModuleEnabled = global.__turboModuleProxy != null;
+        const Material3 = isTurboModuleEnabled ? require("./NativeMaterial3Module").default : NativeModules.Material3;
         const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
         var scrollEdgeProps = this.getScrollEdgeProps()
         var childrenArray = (React.Children.toArray(children) as ReactElement<any>[]);
