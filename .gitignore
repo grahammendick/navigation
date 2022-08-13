@@ -3,6 +3,7 @@ build/npm/**/navigation*.js
 build/npm/**/android
 build/npm/**/ios
 build/npm/**/cpp
+build/npm/**/Native*Module.js
 build/npm/**/*NativeComponent.js
 npm-debug.log
 node_modules
