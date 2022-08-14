@@ -15,6 +15,7 @@ type NativeProps = $ReadOnly<{|
   testID: string,
   fabColor: ColorValue,
   fabBackgroundColor: ColorValue,
+  rippleColor: ColorValue,
   fabMarginTop?: WithDefault<Int32, 0>,
   fabMarginRight?: WithDefault<Int32, 0>,
   fabMarginBottom?: WithDefault<Int32, 0>,
