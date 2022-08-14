@@ -66,7 +66,6 @@ public class NavigationPackage extends TurboReactPackage implements ReactPackage
     public ReactModuleInfoProvider getReactModuleInfoProvider() {
         return () -> {
             final Map<String, ReactModuleInfo> moduleInfos = new HashMap<>();
-            boolean isTurboModule = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
             moduleInfos.put(
                 "Material3",
                 new ReactModuleInfo(
@@ -76,7 +75,7 @@ public class NavigationPackage extends TurboReactPackage implements ReactPackage
                     false,
                     true,
                     false,
-                    isTurboModule
+                    true
             ));
             return moduleInfos;
         };
