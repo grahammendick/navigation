@@ -14,6 +14,7 @@ type NativeProps = $ReadOnly<{|
   largeTitleFontWeight: string,
   largeTitleFontStyle: string,
   titleEnabled: boolean,
+  titleCollapseMode: string,
   contentScrimColor: ColorValue,
   collapsedTitleColor: ColorValue,
   expandedTitleColor: ColorValue,
