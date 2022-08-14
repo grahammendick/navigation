@@ -78,6 +78,16 @@ public class TabNavigationViewManager extends ViewGroupManager<TabNavigationView
         view.setItemIconTintList(view.getItemTextColor());
     }
 
+    @ReactProp(name = "activeIndicatorColor", customType = "Color")
+    public void setActiveIndicatorColor(TabNavigationView view, @Nullable Integer activeIndicatorColor) {
+        view.setItemActiveIndicatorColor(ColorStateList.valueOf(activeIndicatorColor != null ? activeIndicatorColor : view.defaultActiveIndicatorColor));
+    }
+
+    @ReactProp(name = "rippleColor", customType = "Color")
+    public void setRippleColor(TabNavigationView view, @Nullable Integer rippleColor) {
+        view.setItemRippleColor(ColorStateList.valueOf(rippleColor != null ? rippleColor : view.defaultRippleColor));
+    }
+
     @Override
     public Map<String, Object> getExportedViewConstants() {
         return MapBuilder.<String, Object>of(
