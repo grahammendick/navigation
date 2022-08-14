@@ -95,6 +95,7 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
             public void onViewAttachedToWindow(View v) {
                 TabLayoutRTLView tabLayout = getTabLayout(v);
                 if (tabLayout != null) {
+                    tabLayout.setVisibility(View.VISIBLE);
                     new TabLayoutMediator(tabLayout, tabBarPager,
                         new TabLayoutMediator.TabConfigurationStrategy() {
                             @Override

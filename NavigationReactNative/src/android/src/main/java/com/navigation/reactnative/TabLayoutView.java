@@ -56,7 +56,6 @@ public class TabLayoutView extends TabLayout implements TabView {
         this.setVisibility(this.getTabCount() > 0 ? View.VISIBLE : View.INVISIBLE);
         TabBarPagerView tabBar = getTabBar();
         if (bottomTabs && tabBar != null) {
-            setVisibility(View.VISIBLE);
             setupWithViewPager(tabBar);
             tabBar.populateTabs();
         }
@@ -74,6 +73,7 @@ public class TabLayoutView extends TabLayout implements TabView {
     @Override
     public void setupWithViewPager(@Nullable final ViewPager viewPager) {
         super.setupWithViewPager(viewPager);
+        setVisibility(View.VISIBLE);
         if (tabSelectedListener != null)
             removeOnTabSelectedListener(tabSelectedListener);
         tabSelectedListener = new OnTabSelectedListener() {
