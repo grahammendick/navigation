@@ -1,3 +1,4 @@
+#ifdef RCT_NEW_ARCH_ENABLED
 #import "NVMaterial3Module.h"
 #import "navigation-react-native.h"
 
@@ -12,3 +13,5 @@ RCT_EXPORT_MODULE(Material3)
 }
 
 @end
+
+#endif
