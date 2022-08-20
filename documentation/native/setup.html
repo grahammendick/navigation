@@ -52,7 +52,7 @@
           <div id="article">
             <h1>Setup</h1>
              <p>
-                The Navigation router for React Native uses the underlying native APIs to provide faithful navigation on Android and iOS. Because it contains native code, you have to create your application using <code>react-native init</code> or <a href="https://docs.expo.dev/development/introduction/">a custom development build of Expo</a>.
+                The Navigation router is a 100% native navigation library for React Native. It provides the same out-of-the-box experience that you'd get if you were building a native app without React Native. For example, the <code>TabBar</code> component renders to the <code>UITabBarController</code> from UIKit or the <code>BottomNavigationView</code> from Android's Material Design library. Because the Navigation router contains native code, you have to create your application using <code>react-native init</code> or <a href="https://docs.expo.dev/development/introduction/">a custom development build of Expo</a>.
             </p>
             <p>
                 Install the three navigation packages from npm.
@@ -79,6 +79,11 @@ const App = () => (
 );
 
 export default App;</code></pre>
+            <p>
+                If you want to use Android's <a href="https://m3.material.io/">Material Design 3</a> then configure a <code>Material3</code> theme in styles.xml. For example,
+            </p>
+            <pre><code class="language-jsx">&lt;style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar"></code></pre>
+
               <p>
                   That's all the setup you need in the current React Native architecture. The next section goes through the setup for the new architecture (Fabric).
               </p>
