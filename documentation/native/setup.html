@@ -158,6 +158,17 @@ providerRegistry->add(concreteComponentDescriptorProvider&lt;NVTitleBarComponent
 providerRegistry->add(concreteComponentDescriptorProvider&lt;NVToolbarComponentDescriptor>());</span>
 return providerRegistry;
 </code></pre>
+              <p>Add a line to the <code>android/app/src/main/jni/MainApplicationModuleProvider.cpp</code> file.</p>
+              <pre><code class="language-xxx">#include &lt;rncore.h>
+<span class="diff">#include &lt;navigation-react-native.h></span></code></pre>
+              <p>And add 4 lines to the <code>android/app/src/main/jni/MainApplicationModuleProvider.cpp</code> file.</p>
+              <pre><code class="language-xxx"><span class="diff">auto module = navigation_react_native_ModuleProvider(moduleName, params);
+if (module != nullptr) {
+    return module;
+}</span>
+
+return rncore_ModuleProvider(moduleName, params);
+</code></pre>
           </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
