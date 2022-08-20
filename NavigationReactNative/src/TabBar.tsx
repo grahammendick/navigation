@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent, Platform, StyleSheet, View, I18nManager , UIManager} from 'react-native';
+import { requireNativeComponent, Platform, StyleSheet, View, I18nManager , UIManager, NativeModules } from 'react-native';
 import BackButton from './BackButton';
 
 class TabBar extends React.Component<any, any> {
@@ -44,13 +44,15 @@ class TabBar extends React.Component<any, any> {
         return false;
     }
     render() {
-        var {children, labelVisibilityMode, barTintColor, selectedTintColor, unselectedTintColor, bottomTabs, scrollable, primary, scrollsToTop} = this.props;
+        var {children, labelVisibilityMode, barTintColor, selectedTintColor, unselectedTintColor, activeIndicatorColor, rippleColor, bottomTabs, scrollable, primary, scrollsToTop} = this.props;
+        const Material3 = global.__turboModuleProxy != null ? require("./NativeMaterial3Module").default : NativeModules.Material3;
+        const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
         var tabBarItems = React.Children.toArray(children).filter(child => !!child);
         var titleOnly = !tabBarItems.find(({props}: any) => props.title && props.image);
         var {fontFamily, fontWeight, fontStyle, fontSize, badgeColor} = (tabBarItems as any)?.reduce((acc, {props}) => ({ ...acc, ...props }), {});
         (tabBarItems[0] as any)?.props || {};
-        var tabViewHeight = !primary ? (titleOnly ? 48 : 72) : 56
+        var tabViewHeight = !primary ? (titleOnly ? 48 : 72) : (!material3 ? 56 : 80);
         tabViewHeight = Platform.OS === 'android' ? tabViewHeight : 28;
         var TabBarPager = (Platform.OS === 'ios' || !I18nManager.isRTL) ? NVTabBarPager : NVTabBarPagerRTL;
         var TabBar = primary ? NVTabBar : TabBarPager;
@@ -65,6 +67,8 @@ class TabBar extends React.Component<any, any> {
                 itemHorizontalTranslation={labelVisibilityMode !== 'selected'}
                 selectedTintColor={selectedTintColor}
                 unselectedTintColor={unselectedTintColor}
+                activeIndicatorColor={activeIndicatorColor}
+                rippleColor={rippleColor}
                 selectedIndicatorAtTop={bottomTabs}
                 tabs={tabBarItems.map(({props: {title, testID}}: any) => ({title, testID}))}
                 titles={tabBarItems.map(({props: {title = ''}}: any) => title)}

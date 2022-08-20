@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
@@ -20,6 +21,7 @@ public class TabLayoutView extends TabLayout implements TabView {
     int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
+    int defaultRippleColor;
     private boolean layoutRequested = false;
     private boolean measured = false;
     private OnTabSelectedListener tabSelectedListener;
@@ -33,6 +35,7 @@ public class TabLayoutView extends TabLayout implements TabView {
         if (getTabTextColors() != null)
             selectedTintColor = unselectedTintColor = defaultTextColor = getTabTextColors().getDefaultColor();
         setSelectedTabIndicatorColor(defaultTextColor);
+        defaultRippleColor = getTabRippleColor() != null ? getTabRippleColor().getColorForState(new int[]{ android.R.attr.state_pressed }, Color.WHITE) : Color.WHITE;
     }
 
     public void setScrollable(boolean scrollable) {
@@ -50,6 +53,7 @@ public class TabLayoutView extends TabLayout implements TabView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        this.setVisibility(this.getTabCount() > 0 ? View.VISIBLE : View.INVISIBLE);
         TabBarPagerView tabBar = getTabBar();
         if (bottomTabs && tabBar != null) {
             setupWithViewPager(tabBar);
@@ -69,6 +73,7 @@ public class TabLayoutView extends TabLayout implements TabView {
     @Override
     public void setupWithViewPager(@Nullable final ViewPager viewPager) {
         super.setupWithViewPager(viewPager);
+        setVisibility(View.VISIBLE);
         if (tabSelectedListener != null)
             removeOnTabSelectedListener(tabSelectedListener);
         tabSelectedListener = new OnTabSelectedListener() {
@@ -120,15 +125,12 @@ public class TabLayoutView extends TabLayout implements TabView {
         }
     }
 
-    private final Runnable measureAndLayout = new Runnable() {
-        @Override
-        public void run() {
-            layoutRequested = false;
-            measure(
-                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-        }
+    private final Runnable measureAndLayout = () -> {
+        layoutRequested = false;
+        measure(
+            MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+        layout(getLeft(), getTop(), getRight(), getBottom());
     };
 
     @Override

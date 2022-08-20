@@ -1,12 +1,12 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -20,6 +20,7 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
     int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
+    int defaultRippleColor;
     private boolean layoutRequested = false;
 
     public TabLayoutRTLView(Context context) {
@@ -31,6 +32,7 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
         if (getTabTextColors() != null)
             selectedTintColor = unselectedTintColor = defaultTextColor = getTabTextColors().getDefaultColor();
         setSelectedTabIndicatorColor(defaultTextColor);
+        defaultRippleColor = getTabRippleColor() != null ? getTabRippleColor().getColorForState(new int[]{ android.R.attr.state_pressed }, Color.WHITE) : Color.WHITE;
         addOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
             public void onTabSelected(Tab tab) {
@@ -64,15 +66,12 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        this.setVisibility(this.getTabCount() > 0 ? View.VISIBLE : View.INVISIBLE);
         final ViewPager2 tabBarPager = getTabBar();
         if (tabBarPager != null && tabBarPager.getAdapter() != null) {
+            this.setVisibility(View.VISIBLE);
             new TabLayoutMediator(this, tabBarPager,
-                new TabLayoutMediator.TabConfigurationStrategy() {
-                    @Override
-                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                        tab.setText(((TabBarPagerRTLAdapter) tabBarPager.getAdapter()).getTabAt(position).styledTitle);
-                    }
-                }
+                (tab, position) -> tab.setText(((TabBarPagerRTLAdapter) tabBarPager.getAdapter()).getTabAt(position).styledTitle)
             ).attach();
             TabBarPagerRTLManager.getAdapter(tabBarPager).populateTabs(this);
         }
@@ -116,15 +115,12 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
         }
     }
 
-    private final Runnable measureAndLayout = new Runnable() {
-        @Override
-        public void run() {
-            layoutRequested = false;
-            measure(
-                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-        }
+    private final Runnable measureAndLayout = () -> {
+        layoutRequested = false;
+        measure(
+            MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+        layout(getLeft(), getTop(), getRight(), getBottom());
     };
 
     @Override

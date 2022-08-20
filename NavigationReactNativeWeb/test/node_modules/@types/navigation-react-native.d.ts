@@ -101,6 +101,10 @@ export interface NavigationBarProps {
      */
     titleColor?: ColorValue | ((standard: boolean) => ColorValue);
     /**
+     * Indicates whether to center the title within the navigation bar
+     */
+    titleCentered?: boolean;
+    /**
      * The title for the back button
      */
     backTitle?: string;
@@ -413,9 +417,23 @@ export interface CoordinatorLayoutProps {
 export class CoordinatorLayout extends Component<CoordinatorLayoutProps> {}
 
 /**
+ * Defines the Collapsing Bar Props contract
+ */
+export interface CollapsingBarProps {
+    /**
+     * Indicates the effect used to collapse and expand the title
+     */
+    titleCollapseMode?: 'fade' | 'scale';
+    /**
+     * The collapsing bar content
+     */
+    children?: ReactNode;
+}
+
+/**
  * Renders collapsing content inside the navigation bar
  */
-export class CollapsingBar extends Component {}
+export class CollapsingBar extends Component<CollapsingBarProps> {}
 
 /**
  * Defines the Action Bar Props contract
@@ -570,13 +588,21 @@ export interface TabBarProps {
      */
     barTintColor?: ColorValue;
     /**
-     * The color of the content within the tab bar
+     * The color of the selected content within the tab bar
      */
     selectedTintColor?: ColorValue;
     /**
-     * The color of unselected content wihtin the tab bar
+     * The color of unselected content within the tab bar
      */
     unselectedTintColor?: ColorValue;
+    /**
+     * The color of the active indicator within the tab bar
+     */
+    activeIndicatorColor?: ColorValue;
+    /**
+     * The ripple color of the tab bar
+     */
+    rippleColor?: ColorValue;
     /**
      * Indicates whether the tabs should be at the bottom
      */
@@ -600,7 +626,7 @@ export interface TabBarProps {
     /**
      * Indicates how labels should be displayed in the tab bar
      */
-    labelVisibilityMode?: "auto" | "labeled" | "unlabeled" | "selected";
+    labelVisibilityMode?: 'auto' | 'labeled' | 'unlabeled' | 'selected';
     /**
      * The selected tab index
      */
@@ -711,6 +737,10 @@ export interface FloatingActionButtonProps {
      * The accessible description of the floating action button
      */
     contentDescription?: string;
+    /**
+     * The ripple color of the floating action button
+     */
+    rippleColor?: ColorValue;
     /**
      * The id of the floating action button in end-to-end tests
      */

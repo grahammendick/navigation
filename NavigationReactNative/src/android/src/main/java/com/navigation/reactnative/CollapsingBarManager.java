@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import javax.annotation.Nonnull;
 
@@ -63,6 +64,12 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
     @ReactProp(name = "titleEnabled")
     public void setTitleEnabled(CollapsingBarView view, boolean titleEnabled) {
         view.setTitleEnabled(titleEnabled);
+    }
+
+    @ReactProp(name = "titleCollapseMode")
+    public void setTitleCollapseMode(CollapsingBarView view, String titleCollapseMode) {
+        int mode = "fade".equals(titleCollapseMode) ? CollapsingToolbarLayout.TITLE_COLLAPSE_MODE_FADE : CollapsingToolbarLayout.TITLE_COLLAPSE_MODE_SCALE;
+        view.setTitleCollapseMode(titleCollapseMode != null ? mode : view.defaultTitleCollapseMode);
     }
 
     @ReactProp(name = "contentScrimColor", customType = "Color", defaultInt = Integer.MAX_VALUE)

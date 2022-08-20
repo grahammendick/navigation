@@ -45,6 +45,11 @@ public class ExtendedFloatingActionButtonManager extends SimpleViewManager<Exten
         view.setBackgroundTintList(ColorStateList.valueOf(backgroundColor != Integer.MAX_VALUE ? backgroundColor : view.defaultBackgroundColor));
     }
 
+    @ReactProp(name = "rippleColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setRippleColor(ExtendedFloatingActionButtonView view, int rippleColor) {
+        view.setRippleColor(ColorStateList.valueOf(rippleColor != Integer.MAX_VALUE ? rippleColor : view.defaultRippleColor));
+    }
+
     @ReactProp(name = "color", customType = "Color", defaultInt = Integer.MAX_VALUE)
     public void setColor(ExtendedFloatingActionButtonView view, int color) {
         ColorStateList colorList = ColorStateList.valueOf(color != Integer.MAX_VALUE ? color : view.defaultColor);

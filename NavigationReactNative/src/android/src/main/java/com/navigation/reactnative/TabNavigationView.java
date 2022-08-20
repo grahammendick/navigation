@@ -1,13 +1,12 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 
 import com.facebook.react.modules.i18nmanager.I18nUtil;
@@ -20,6 +19,8 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     final int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
+    int defaultActiveIndicatorColor;
+    int defaultRippleColor;
     private boolean layoutRequested = false;
     private boolean autoSelected = false;
 
@@ -29,16 +30,15 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         setBackground(null);
         TabLayoutView tabLayout = new TabLayoutView(context);
         selectedTintColor = unselectedTintColor = defaultTextColor = tabLayout.defaultTextColor;
-        setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                TabBarView tabBar = getTabBar();
-                if (!autoSelected && tabBar != null && tabBar.selectedTab == menuItem.getOrder())
-                    tabBar.scrollToTop();
-                if (tabBar != null && tabBar.selectedTab != menuItem.getOrder())
-                    tabBar.setCurrentTab(menuItem.getOrder());
-                return true;
-            }
+        defaultActiveIndicatorColor = getItemActiveIndicatorColor() != null ? getItemActiveIndicatorColor().getDefaultColor() : Color.WHITE;
+        defaultRippleColor = getItemRippleColor() != null ? getItemRippleColor().getColorForState(new int[]{ android.R.attr.state_pressed }, Color.WHITE) : Color.WHITE;
+        setOnItemSelectedListener(menuItem -> {
+            TabBarView tabBar = getTabBar();
+            if (!autoSelected && tabBar != null && tabBar.selectedTab == menuItem.getOrder())
+                tabBar.scrollToTop();
+            if (tabBar != null && tabBar.selectedTab != menuItem.getOrder())
+                tabBar.setCurrentTab(menuItem.getOrder());
+            return true;
         });
     }
 
@@ -90,15 +90,12 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         }
     }
 
-    private final Runnable measureAndLayout = new Runnable() {
-        @Override
-        public void run() {
-            layoutRequested = false;
-            measure(
-                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-        }
+    private final Runnable measureAndLayout = () -> {
+        layoutRequested = false;
+        measure(
+            MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+        layout(getLeft(), getTop(), getRight(), getBottom());
     };
 
     @Override

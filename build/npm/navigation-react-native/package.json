@@ -24,7 +24,7 @@
     "libraries": [
       {
         "name": "navigation-react-native",
-        "type": "components",
+        "type": "all",
         "jsSrcsDir": "."
       }
     ]

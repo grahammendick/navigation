@@ -14,7 +14,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.facebook.react.bridge.Arguments;
@@ -79,7 +78,7 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
                     tabBarPagerAdapter.nativeEventCount++;
                 tabBarPagerAdapter.selectedTab = position;
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, tabBarPager.getId());
-                eventDispatcher.dispatchEvent(new TabBarPagerView.TabSelectedEvent(tabBarPager.getId(), position, tabBarPagerAdapter.nativeEventCount));
+                eventDispatcher.dispatchEvent(new TabBarPagerRTLViewManager.TabSelectedEvent(tabBarPager.getId(), position, tabBarPagerAdapter.nativeEventCount));
                 tabBarPagerAdapter.getTabAt(position).pressed();
             }
 
@@ -87,7 +86,7 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, tabBarPager.getId());
-                eventDispatcher.dispatchEvent(new TabBarPagerView.TabSwipeStateChangedEvent(tabBarPager.getId(), state == ViewPager2.SCROLL_STATE_DRAGGING));
+                eventDispatcher.dispatchEvent(new TabBarPagerRTLViewManager.TabSwipeStateChangedEvent(tabBarPager.getId(), state == ViewPager2.SCROLL_STATE_DRAGGING));
             }
         });
         tabBarPager.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
@@ -95,6 +94,7 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
             public void onViewAttachedToWindow(View v) {
                 TabLayoutRTLView tabLayout = getTabLayout(v);
                 if (tabLayout != null) {
+                    tabLayout.setVisibility(View.VISIBLE);
                     new TabLayoutMediator(tabLayout, tabBarPager,
                         new TabLayoutMediator.TabConfigurationStrategy() {
                             @Override
@@ -139,14 +139,11 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
     }
 
     private void setCurrentItem(final ViewPager2 view, int selectedTab) {
-        view.post(new Runnable() {
-            @Override
-            public void run() {
-                view.measure(
-                    View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY),
-                    View.MeasureSpec.makeMeasureSpec(view.getHeight(), View.MeasureSpec.EXACTLY));
-                view.layout(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
-            }
+        view.post(() -> {
+            view.measure(
+                View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(view.getHeight(), View.MeasureSpec.EXACTLY));
+            view.layout(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
         });
         view.setCurrentItem(selectedTab, false);
     }

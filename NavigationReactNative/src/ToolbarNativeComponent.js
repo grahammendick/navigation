@@ -11,6 +11,7 @@ type NativeProps = $ReadOnly<{|
   titleFontWeight: string,
   titleFontStyle: string,
   titleFontSize?: WithDefault<Float, -1>,
+  titleCentered: boolean,
   barTintColor: ColorValue,
   tintColor: ColorValue,
   titleColor: ColorValue,

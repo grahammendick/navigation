@@ -78,6 +78,11 @@ public class ToolbarViewManager extends ViewGroupManager<ToolbarView> implements
         view.setTitleFontSize(Math.round(titleFontSize));
     }
 
+    @ReactProp(name = "titleCentered")
+    public void setTitleCentered(ToolbarView view, boolean titleCentered) {
+        view.setTitleCentered(titleCentered);
+    }
+
     @Override
     @ReactProp(name = "barTintColor", customType = "Color")
     public void setBarTintColor(ToolbarView view, @Nullable Integer barTintColor) {

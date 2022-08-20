@@ -11,6 +11,8 @@ type NativeProps = $ReadOnly<{|
   bottomTabs: boolean,
   itemHorizontalTranslation: boolean,
   labelVisibilityMode: Int32,
+  activeIndicatorColor: ColorValue,
+  rippleColor: ColorValue,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(

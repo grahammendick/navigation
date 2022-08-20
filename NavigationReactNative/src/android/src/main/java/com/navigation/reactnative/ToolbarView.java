@@ -21,7 +21,6 @@ import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.Toolbar;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
@@ -31,11 +30,12 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ToolbarView extends Toolbar implements ActionView {
+public class ToolbarView extends MaterialToolbar implements ActionView {
     private MenuItem searchMenuItem;
     private String title;
     private String titleFontFamily;
@@ -62,50 +62,35 @@ public class ToolbarView extends Toolbar implements ActionView {
         setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.MATCH_PARENT));
         defaultTitleTextColor = getDefaultTitleTextColor();
         defaultOverflowIcon = getOverflowIcon();
-        logoResolverListener = new IconResolver.IconResolverListener() {
-            @Override
-            public void setDrawable(Drawable d) {
-                setLogo(d);
-                setTintColor(getLogo());
-            }
+        logoResolverListener = d -> {
+            setLogo(d);
+            setTintColor(getLogo());
         };
-        navIconResolverListener = new IconResolver.IconResolverListener() {
-            @Override
-            public void setDrawable(Drawable d) {
-                setNavigationIcon(d);
-                setTintColor(getNavigationIcon());
-                setTestID();
-            }
+        navIconResolverListener = d -> {
+            setNavigationIcon(d);
+            setTintColor(getNavigationIcon());
+            setTestID();
         };
-        overflowIconResolverListener = new IconResolver.IconResolverListener() {
-            @Override
-            public void setDrawable(Drawable d) {
-                setOverflowIcon(d);
-                setTintColor(getOverflowIcon());
-            }
+        overflowIconResolverListener = d -> {
+            setOverflowIcon(d);
+            setTintColor(getOverflowIcon());
         };
-        setNavigationOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ReactContext reactContext = (ReactContext) getContext();
-                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                eventDispatcher.dispatchEvent(new ToolbarView.NavigationPressEvent(getId()));
-            }
+        setNavigationOnClickListener(view -> {
+            ReactContext reactContext = (ReactContext) getContext();
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(new NavigationPressEvent(getId()));
         });
-        setOnMenuItemClickListener(new OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                for (int i = 0; i < children.size(); i++) {
-                    if (children.get(i) instanceof BarButtonView) {
-                        BarButtonView barButtonView = (BarButtonView) children.get(i);
-                        if (barButtonView.getMenuItem() != item)
-                            barButtonView.getMenuItem().collapseActionView();
-                        else
-                            barButtonView.press();
-                    }
+        setOnMenuItemClickListener(item -> {
+            for (int i = 0; i < children.size(); i++) {
+                if (children.get(i) instanceof BarButtonView) {
+                    BarButtonView barButtonView = (BarButtonView) children.get(i);
+                    if (barButtonView.getMenuItem() != item)
+                        barButtonView.getMenuItem().collapseActionView();
+                    else
+                        barButtonView.press();
                 }
-                return true;
             }
+            return true;
         });
     }
 
@@ -322,15 +307,12 @@ public class ToolbarView extends Toolbar implements ActionView {
         }
     }
 
-    private final Runnable measureAndLayout = new Runnable() {
-        @Override
-        public void run() {
-            layoutRequested = false;
-            measure(
-                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-        }
+    private final Runnable measureAndLayout = () -> {
+        layoutRequested = false;
+        measure(
+            MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+        layout(getLeft(), getTop(), getRight(), getBottom());
     };
 
     static class NavigationPressEvent extends Event<ToolbarView.NavigationPressEvent> {

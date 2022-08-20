@@ -6,6 +6,12 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
+  selectedTintColor: ColorValue,
+  unselectedTintColor: ColorValue,
+  rippleColor: ColorValue,
+  bottomTabs: boolean,
+  selectedIndicatorAtTop: boolean,
+  scrollable: boolean,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(

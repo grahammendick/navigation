@@ -24,7 +24,6 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Map;
@@ -80,13 +79,9 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
             public void onViewAttachedToWindow(View v) {
                 TabLayoutRTLView tabLayout = getTabLayout(v);
                 if (tabLayout != null) {
+                    tabLayout.setVisibility(View.VISIBLE);
                     new TabLayoutMediator(tabLayout, tabBarPager,
-                        new TabLayoutMediator.TabConfigurationStrategy() {
-                            @Override
-                            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                                tab.setText(tabBarPagerAdapter.getTabAt(position).styledTitle);
-                            }
-                        }
+                        (tab, position) -> tab.setText(tabBarPagerAdapter.getTabAt(position).styledTitle)
                     ).attach();
                     tabBarPagerAdapter.populateTabs(tabLayout);
                 }
@@ -124,14 +119,11 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
     }
 
     private void setCurrentItem(final ViewPager2 view, int selectedTab) {
-        view.post(new Runnable() {
-            @Override
-            public void run() {
-                view.measure(
-                    View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY),
-                    View.MeasureSpec.makeMeasureSpec(view.getHeight(), View.MeasureSpec.EXACTLY));
-                view.layout(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
-            }
+        view.post(() -> {
+            view.measure(
+                View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(view.getHeight(), View.MeasureSpec.EXACTLY));
+            view.layout(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
         });
         view.setCurrentItem(selectedTab, false);
     }
