@@ -626,7 +626,7 @@ export interface TabBarProps {
     /**
      * Indicates how labels should be displayed in the tab bar
      */
-    labelVisibilityMode?: "auto" | "labeled" | "unlabeled" | "selected";
+    labelVisibilityMode?: 'auto' | 'labeled' | 'unlabeled' | 'selected';
     /**
      * The selected tab index
      */
