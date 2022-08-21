@@ -68,17 +68,17 @@
                 If you anchor the <code>FloatingActionButton</code> to another component then they will move in tandem. When the user opens an email in our example application, we anchor the floating compose button to the contact details <a href="bottom-sheet.html"><code>BottomSheet</code></a>. This prevents the sheet from obscuring the compose button. When the user expands the sheet to see the contact information then the compose button moves up, too.
             </p>
             <pre><code class="language-jsx">&lt;CoordinatorLayout>
-  &lt;FloatingActionButton anchor="bottomSheet" />
   &lt;BottomSheet />
+  &lt;FloatingActionButton anchor="bottomSheet" />
 &lt;/CoordinatorLayout></code></pre>
             <h2>Cradling a Floating Action Button</h2>
             <p>
                 When a <code>FloatingActionButton</code> is anchored to a bottom <code>NavigationBar</code>, then the navigation bar changes its shape. It creates a cradle for the floating action button to nestle into. You create a bottom <code>NavigationBar</code> by setting the <code>bottomBar</code> prop to true. Any scrollable content that sits above a bottom navigation bar has to be padded to make room. Unless you make the bottom navigation bar scroll out of the way by setting its <code>hideOnScroll</code> prop to true.
             </p>
             <pre><code class="language-jsx">&lt;CoordinatorLayout>
-  &lt;FloatingActionButton anchor="bottomNavigationBar" />
   &lt;ScrollView nestedScrollEnabled={true} contentContainerStyle={{paddingBottom: 56}} />
   &lt;NavigationBar bottomBar={true} />
+  &lt;FloatingActionButton anchor="bottomNavigationBar" />
 &lt;/CoordinatorLayout></code></pre>
             <h2>Extending a Floating Action Button</h2>
             <p>
