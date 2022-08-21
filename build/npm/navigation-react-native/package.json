@@ -1,6 +1,6 @@
 {
   "name": "navigation-react-native",
-  "version": "8.9.3",
+  "version": "8.10.0",
   "description": "React Native plugin for the Navigation router",
   "main": "navigation.react.native.js",
   "types": "navigation.react.native.d.ts",
