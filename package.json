@@ -41,5 +41,8 @@
   "bugs": {
     "url": "https://github.com/grahammendick/navigation/issues"
   },
-  "homepage": "https://github.com/grahammendick/navigation"
+  "homepage": "https://github.com/grahammendick/navigation",
+  "dependencies": {
+    "navigation-react-native": "^8.10.0"
+  }
 }
