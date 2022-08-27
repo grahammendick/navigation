@@ -1,8 +1,8 @@
 #pragma once
 
 #include "NVSearchBarState.h"
-#include <react/renderer/components/navigation-react-native/EventEmitters.h>
-#include <react/renderer/components/navigation-react-native/Props.h>
+#include <react/renderer/components/navigationreactnative/EventEmitters.h>
+#include <react/renderer/components/navigationreactnative/Props.h>
 #include <react/renderer/components/view/ConcreteViewShadowNode.h>
 
 namespace facebook {

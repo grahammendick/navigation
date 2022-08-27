@@ -23,7 +23,7 @@
   "codegenConfig": {
     "libraries": [
       {
-        "name": "navigation-react-native",
+        "name": "navigationreactnative",
         "type": "all",
         "jsSrcsDir": "."
       }
