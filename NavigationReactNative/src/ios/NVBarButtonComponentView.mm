@@ -6,7 +6,7 @@
 #import <react/renderer/components/navigationreactnative/Props.h>
 #import <react/renderer/components/navigationreactnative/RCTComponentViewHelpers.h>
 #import <react/renderer/imagemanager/ImageResponseObserverCoordinator.h>
-#import <navigationreactnative/NVBarButtonComponentDescriptor.h>
+#import <NVBarButtonComponentDescriptor.h>
 
 #import "RCTFabricComponentsPlugins.h"
 #import <React/RCTFont.h>

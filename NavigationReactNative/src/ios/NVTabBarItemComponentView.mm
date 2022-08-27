@@ -7,7 +7,7 @@
 #import <react/renderer/components/navigationreactnative/Props.h>
 #import <react/renderer/components/navigationreactnative/RCTComponentViewHelpers.h>
 #import <react/renderer/imagemanager/ImageResponseObserverCoordinator.h>
-#import <navigationreactnative/NVTabBarItemComponentDescriptor.h>
+#import <NVTabBarItemComponentDescriptor.h>
 
 #import "RCTFabricComponentsPlugins.h"
 #import <React/RCTConversions.h>
