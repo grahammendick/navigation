@@ -26,9 +26,10 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
         }
     }
     findScenes();
-    let { current: allScenes } = useRef(scenes);
+    const prevScenes = useRef({});
+    const allScenes = {...prevScenes.current, ...scenes};
     useEffect(() => {
-        allScenes = {...allScenes, ...scenes};
+        prevScenes.current = allScenes;
         const {state, crumbs, nextCrumb} = stateNavigator.stateContext;
         const validate = ({key}) => !!scenes[key];
         if (firstLink) {
@@ -39,7 +40,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
             if (resetLink != null) stateNavigator.navigateLink(resetLink);
         }
         return () => stateNavigator.offBeforeNavigate(validate);
-    }, [children, stateNavigator, scenes, stackInvalidatedLink]);
+    }, [children, stateNavigator, scenes, allScenes, stackInvalidatedLink]);
     const onWillNavigateBack = ({nativeEvent}) => {
         const distance = stateNavigator.stateContext.crumbs.length - nativeEvent.crumb;
         resumeNavigationRef.current = null;
