@@ -11,7 +11,7 @@ LOCAL_MODULE := react_codegen_navigationreactnative
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)
 
-LOCAL_SRC_FILES := $(wildcard $(LOCAL_PATH)/../android/build/generated/source/codegen/*.cpp) $(wildcard $(LOCAL_PATH)/../android/build/generated/source/codegen/react/renderer/components/navigationreactnative/*.cpp) $(wildcard $(LOCAL_PATH)/react/renderer/components/navigationreactnative/*.cpp)
+LOCAL_SRC_FILES := $(wildcard $(LOCAL_PATH)/*.cpp) $(wildcard $(LOCAL_PATH)/react/renderer/components/navigationreactnative/*.cpp)
 LOCAL_SRC_FILES := $(subst $(LOCAL_PATH)/,,$(LOCAL_SRC_FILES))
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) $(LOCAL_PATH)/react/renderer/components/navigationreactnative
