@@ -26,8 +26,8 @@ target_link_libraries(
   react_debug
   react_nativemodule_core
   react_render_core
-  libreact_render_mapbuffer
-  libreact_render_imagemanager
+  react_render_mapbuffer
+  react_render_imagemanager
   react_render_debug
   react_render_graphics
   rrc_view
