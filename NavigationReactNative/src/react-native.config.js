@@ -27,8 +27,7 @@ module.exports = {
           'NVTitleBarComponentDescriptor',
           'NVToolbarComponentDescriptor',
         ],
-        cmakeListsPath: "../cpp/CMakeLists.txt",
-        libraryName: "navigationreactnative"
+        androidMkPath: "../cpp/Android.mk"
       },
     },
   },
