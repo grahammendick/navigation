@@ -21,13 +21,12 @@
     "react-native": "*"
   },
   "codegenConfig": {
-    "libraries": [
-      {
-        "name": "navigationreactnative",
-        "type": "all",
-        "jsSrcsDir": "."
+      "name": "navigationreactnative",
+      "type": "all",
+      "jsSrcsDir": ".",
+      "android": {
+        "javaPackageName": "com.navigation.reactnative"
       }
-    ]
   },
   "author": "Graham Mendick",
   "license": "Apache-2.0",

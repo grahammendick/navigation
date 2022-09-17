@@ -13,7 +13,7 @@
 namespace facebook {
 namespace react {
 
-class NVActionBarState final {
+class JSI_EXPORT NVActionBarState final {
  public:
   using Shared = std::shared_ptr<const NVActionBarState>;
 

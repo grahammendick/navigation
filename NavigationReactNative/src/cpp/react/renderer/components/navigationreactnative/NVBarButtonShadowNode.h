@@ -2,16 +2,16 @@
 
 #include "NVBarButtonState.h"
 #include <react/renderer/components/view/ConcreteViewShadowNode.h>
-#include <react/renderer/components/navigationreactnative/EventEmitters.h>
-#include <react/renderer/components/navigationreactnative/Props.h>
+#include "EventEmitters.h"
+#include "Props.h"
 #include <react/renderer/imagemanager/ImageManager.h>
 
 namespace facebook {
 namespace react {
 
-extern const char NVBarButtonComponentName[];
+JSI_EXPORT extern const char NVBarButtonComponentName[];
 
-class NVBarButtonShadowNode final: public ConcreteViewShadowNode<
+class JSI_EXPORT NVBarButtonShadowNode final: public ConcreteViewShadowNode<
   NVBarButtonComponentName,
   NVBarButtonProps,
   NVBarButtonEventEmitter,

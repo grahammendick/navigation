@@ -10,13 +10,13 @@
 
 #pragma once
 
-#include <react/renderer/components/navigationreactnative/ShadowNodes.h>
+#include "ShadowNodes.h"
 #include <react/renderer/core/ConcreteComponentDescriptor.h>
-#include <NVActionBarShadowNode.h>
-#include <NVBarButtonShadowNode.h>
-#include <NVSearchBarShadowNode.h>
-#include <NVTabBarItemShadowNode.h>
-#include <NVTitleBarShadowNode.h>
+#include "NVActionBarShadowNode.h"
+#include "NVBarButtonShadowNode.h"
+#include "NVSearchBarShadowNode.h"
+#include "NVTabBarItemShadowNode.h"
+#include "NVTitleBarShadowNode.h"
 
 namespace facebook {
 namespace react {

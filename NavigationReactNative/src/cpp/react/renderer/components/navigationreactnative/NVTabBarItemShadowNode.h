@@ -2,16 +2,16 @@
 
 #include "NVTabBarItemState.h"
 #include <react/renderer/components/view/ConcreteViewShadowNode.h>
-#include <react/renderer/components/navigationreactnative/EventEmitters.h>
-#include <react/renderer/components/navigationreactnative/Props.h>
+#include "EventEmitters.h"
+#include "Props.h"
 #include <react/renderer/imagemanager/ImageManager.h>
 
 namespace facebook {
 namespace react {
 
-extern const char NVTabBarItemComponentName[];
+JSI_EXPORT extern const char NVTabBarItemComponentName[];
 
-class NVTabBarItemShadowNode final: public ConcreteViewShadowNode<
+class JSI_EXPORT NVTabBarItemShadowNode final: public ConcreteViewShadowNode<
   NVTabBarItemComponentName,
   NVTabBarItemProps,
   NVTabBarItemEventEmitter,

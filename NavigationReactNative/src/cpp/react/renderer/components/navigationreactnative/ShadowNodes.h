@@ -10,8 +10,8 @@
 
 #pragma once
 
-#include <react/renderer/components/navigationreactnative/EventEmitters.h>
-#include <react/renderer/components/navigationreactnative/Props.h>
+#include "EventEmitters.h"
+#include "Props.h"
 #include <react/renderer/components/view/ConcreteViewShadowNode.h>
 #include <jsi/jsi.h>
 
