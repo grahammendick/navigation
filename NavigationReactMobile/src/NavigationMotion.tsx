@@ -29,9 +29,10 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
         }
     }
     findScenes();
-    let { current: allScenes } = useRef(scenes);
+    const prevScenes = useRef({});
+    const allScenes = {...prevScenes.current, ...scenes};
     useEffect(() => {
-        allScenes = {...allScenes, ...scenes};
+        prevScenes.current = allScenes;
         const {state, crumbs, nextCrumb} = stateNavigator.stateContext;
         const validate = ({key}) => !!scenes[key];
         if (firstLink) {
@@ -42,7 +43,7 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
             if (resetLink != null) stateNavigator.navigateLink(resetLink);
         }
         return () => stateNavigator.offBeforeNavigate(validate);
-    }, [children, stateNavigator, scenes, stackInvalidatedLink]);
+    }, [children, stateNavigator, scenes, allScenes, stackInvalidatedLink]);
     const getSharedElements = () => {
         const {crumbs, oldUrl} = stateNavigator.stateContext;
         if (oldUrl !== null) {
