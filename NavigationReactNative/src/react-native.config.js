@@ -27,7 +27,7 @@ module.exports = {
           'NVTitleBarComponentDescriptor',
           'NVToolbarComponentDescriptor',
         ],
-        androidMkPath: "../cpp/Android.mk"
+        cmakeListsPath: "../cpp/CMakeLists.txt"
       },
     },
   },

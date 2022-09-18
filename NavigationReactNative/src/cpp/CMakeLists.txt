@@ -8,8 +8,8 @@ set(CMAKE_VERBOSE_MAKEFILE on)
 
 file(
   GLOB react_codegen_SRCS CONFIGURE_DEPENDS
+  *.cpp
   react/renderer/components/navigationreactnative/*.cpp
-  ../android/build/generated/source/codegen/jni/*.cpp
   ../android/build/generated/source/codegen/jni/react/renderer/components/navigationreactnative/*.cpp
 )
 
@@ -22,6 +22,7 @@ add_library(
 target_include_directories(
   react_codegen_navigationreactnative
   PUBLIC
+  .
   react/renderer/components/navigationreactnative
   ../android/build/generated/source/codegen/jni
   ../android/build/generated/source/codegen/jni/react/renderer/components/navigationreactnative
