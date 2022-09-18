@@ -17,7 +17,6 @@ add_library(
 target_include_directories(
   react_codegen_navigationreactnative
   PUBLIC
-  .
   react/renderer/components/navigationreactnative
   ../android/build/generated/source/codegen/jni
   ../android/build/generated/source/codegen/jni/react/renderer/components/navigationreactnative
