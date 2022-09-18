@@ -12,7 +12,7 @@ Pod::Spec.new do |spec|
   spec.source_files = "ios/**/*.{h,m,mm}"
   spec.dependency "React-Core"
   if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
-    spec.source_files = "ios/**/*.{h,m,mm}", "cpp/**/*.{h,cpp}"
+    spec.source_files = "ios/**/*.{h,m,mm}", "cpp/react/**/*.{h,cpp}"
     spec.compiler_flags = folly_compiler_flags + " -DRCT_NEW_ARCH_ENABLED=1"
     spec.pod_target_xcconfig    = {
         "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost\"",

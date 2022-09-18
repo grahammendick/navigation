@@ -13,16 +13,16 @@
 namespace facebook {
 namespace react {
 
-class NVTitleBarState final {
+class JSI_EXPORT NVActionBarState final {
  public:
-  using Shared = std::shared_ptr<const NVTitleBarState>;
+  using Shared = std::shared_ptr<const NVActionBarState>;
 
-  NVTitleBarState(){};
-  NVTitleBarState(Size frameSize_) : frameSize(frameSize_){};
+  NVActionBarState(){};
+  NVActionBarState(Size frameSize_) : frameSize(frameSize_){};
 
 #ifdef ANDROID
-  NVTitleBarState(
-      NVTitleBarState const &previousState,
+  NVActionBarState(
+      NVActionBarState const &previousState,
       folly::dynamic data)
       : frameSize(Size{
             (Float)data["frameWidth"].getDouble(),

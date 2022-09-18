@@ -65,10 +65,3 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 }
 
-if (isNewArchitectureEnabled()) {
-    react {
-        jsRootDir = file("../")
-        libraryName = "navigation-react-native"
-        codegenJavaPackageName = "com.navigation.reactnative"
-    }
-}

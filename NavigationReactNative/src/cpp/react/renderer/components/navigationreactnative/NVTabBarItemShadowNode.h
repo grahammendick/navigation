@@ -1,21 +1,21 @@
 #pragma once
 
-#include "NVBarButtonState.h"
+#include "NVTabBarItemState.h"
 #include <react/renderer/components/view/ConcreteViewShadowNode.h>
-#include <react/renderer/components/navigation-react-native/EventEmitters.h>
-#include <react/renderer/components/navigation-react-native/Props.h>
+#include <react/renderer/components/navigationreactnative/EventEmitters.h>
+#include <react/renderer/components/navigationreactnative/Props.h>
 #include <react/renderer/imagemanager/ImageManager.h>
 
 namespace facebook {
 namespace react {
 
-extern const char NVBarButtonComponentName[];
+JSI_EXPORT extern const char NVTabBarItemComponentName[];
 
-class NVBarButtonShadowNode final: public ConcreteViewShadowNode<
-  NVBarButtonComponentName,
-  NVBarButtonProps,
-  NVBarButtonEventEmitter,
-  NVBarButtonState
+class JSI_EXPORT NVTabBarItemShadowNode final: public ConcreteViewShadowNode<
+  NVTabBarItemComponentName,
+  NVTabBarItemProps,
+  NVTabBarItemEventEmitter,
+  NVTabBarItemState
 > {
 
 public:
@@ -23,7 +23,7 @@ public:
 
   void setImageManager(const SharedImageManager &imageManager);
 
-  static NVBarButtonState initialStateData(
+  static NVTabBarItemState initialStateData(
                                            ShadowNodeFragment const &fragment,
                                            ShadowNodeFamilyFragment const &familyFragment,
                                            ComponentDescriptor const &componentDescriptor) {

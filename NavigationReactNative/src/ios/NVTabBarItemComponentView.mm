@@ -2,12 +2,12 @@
 #import "NVTabBarItemComponentView.h"
 #import "NVNavigationStackComponentView.h"
 
-#import <react/renderer/components/navigation-react-native/ComponentDescriptors.h>
-#import <react/renderer/components/navigation-react-native/EventEmitters.h>
-#import <react/renderer/components/navigation-react-native/Props.h>
-#import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
+#import <react/renderer/components/navigationreactnative/ComponentDescriptors.h>
+#import <react/renderer/components/navigationreactnative/EventEmitters.h>
+#import <react/renderer/components/navigationreactnative/Props.h>
+#import <react/renderer/components/navigationreactnative/RCTComponentViewHelpers.h>
 #import <react/renderer/imagemanager/ImageResponseObserverCoordinator.h>
-#import <navigation-react-native/NVTabBarItemComponentDescriptor.h>
+#import <NVTabBarItemComponentDescriptor.h>
 
 #import "RCTFabricComponentsPlugins.h"
 #import <React/RCTConversions.h>

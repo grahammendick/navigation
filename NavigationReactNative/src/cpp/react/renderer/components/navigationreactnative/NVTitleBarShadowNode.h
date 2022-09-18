@@ -1,16 +1,16 @@
 #pragma once
 
 #include "NVTitleBarState.h"
-#include <react/renderer/components/navigation-react-native/EventEmitters.h>
-#include <react/renderer/components/navigation-react-native/Props.h>
+#include <react/renderer/components/navigationreactnative/EventEmitters.h>
+#include <react/renderer/components/navigationreactnative/Props.h>
 #include <react/renderer/components/view/ConcreteViewShadowNode.h>
 
 namespace facebook {
 namespace react {
 
-extern const char NVTitleBarComponentName[];
+JSI_EXPORT extern const char NVTitleBarComponentName[];
 
-class NVTitleBarShadowNode final : public ConcreteViewShadowNode<
+class JSI_EXPORT NVTitleBarShadowNode final : public ConcreteViewShadowNode<
                                           NVTitleBarComponentName,
                                           NVTitleBarProps,
                                           NVTitleBarEventEmitter,

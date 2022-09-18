@@ -2,11 +2,11 @@
 #import "NVSearchBarComponentView.h"
 #import "NVSearchResultsController.h"
 
-#import <react/renderer/components/navigation-react-native/ComponentDescriptors.h>
-#import <react/renderer/components/navigation-react-native/EventEmitters.h>
-#import <react/renderer/components/navigation-react-native/Props.h>
-#import <react/renderer/components/navigation-react-native/RCTComponentViewHelpers.h>
-#import <navigation-react-native/NVSearchBarComponentDescriptor.h>
+#import <react/renderer/components/navigationreactnative/ComponentDescriptors.h>
+#import <react/renderer/components/navigationreactnative/EventEmitters.h>
+#import <react/renderer/components/navigationreactnative/Props.h>
+#import <react/renderer/components/navigationreactnative/RCTComponentViewHelpers.h>
+#import <NVSearchBarComponentDescriptor.h>
 
 #import "RCTFabricComponentsPlugins.h"
 #import <React/RCTConversions.h>

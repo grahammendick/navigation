@@ -1,6 +1,6 @@
 #ifdef RCT_NEW_ARCH_ENABLED
 #import "NVMaterial3Module.h"
-#import "navigation-react-native.h"
+#import "navigationreactnative.h"
 
 @implementation NVMaterial3Module
 
