@@ -1,8 +1,8 @@
 #pragma once
 
 #include "NVTitleBarState.h"
-#include "EventEmitters.h"
-#include "Props.h"
+#include <react/renderer/components/navigationreactnative/EventEmitters.h>
+#include <react/renderer/components/navigationreactnative/Props.h>
 #include <react/renderer/components/view/ConcreteViewShadowNode.h>
 
 namespace facebook {
