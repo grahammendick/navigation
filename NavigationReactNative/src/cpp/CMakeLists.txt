@@ -6,7 +6,7 @@
 cmake_minimum_required(VERSION 3.13)
 set(CMAKE_VERBOSE_MAKEFILE on)
 
-file(GLOB react_codegen_SRCS CONFIGURE_DEPENDS *.cpp react/renderer/components/navigationreactnative/*.cpp ../android/build/generated/source/codegen/jni/react/renderer/components/navigationreactnative/*.cpp)
+file(GLOB react_codegen_SRCS CONFIGURE_DEPENDS react/renderer/components/navigationreactnative/*.cpp ../android/build/generated/source/codegen/jni/*.cpp ../android/build/generated/source/codegen/jni/react/renderer/components/navigationreactnative/*.cpp)
 
 add_library(
   react_codegen_navigationreactnative
