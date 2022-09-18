@@ -167,6 +167,7 @@ var NVScene = global.nativeFabricUIManager ? require('./SceneNativeComponent').d
 
 const styles = StyleSheet.create({
     scene: {
+        backgroundColor: '#fff',
         position: 'absolute',
         top: 0, right: 0,
         bottom: 0, left: 0,
