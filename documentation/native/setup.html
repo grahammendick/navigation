@@ -83,93 +83,12 @@ export default App;</code></pre>
                 If you want to use <a href="https://m3.material.io/">Material Design 3</a> on Android then configure a <code>Material3</code> theme in styles.xml. For example,
             </p>
             <pre><code class="language-jsx">&lt;style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar"></code></pre>
-
-              <p>
-                  That's all the setup you need in the current React Native architecture. The next section goes through the setup for the new architecture (Fabric).
-              </p>
-              <h2>The New Architecture (Fabric)</h2>
-              <p>
-                  The Navigation router supports the new React Native architecture. 
-                  Enable it on Android by setting <code>newArchEnabled=true</code> in the <code>android/gradle.properties</code> file. Enable it on iOS by running <code>cd ios && RCT_NEW_ARCH_ENABLED=1 pod install && cd ..</code>
-              </p>
-              <h3>Autolinking on Android</h3>
-              <p>
-                  Currently React Native Fabric doesn't autolink 3rd party libraries on Android. The following steps go through how to manually link the <code>navigation-react-native</code> package. These steps are only needed on the new architecture.
-              </p>
-              <p>Update 2 lines in <code>android/app/build.gradle</code> file (note the trailing comma on the first line).</p>
-              <pre><code class="language-xxx">    "REACT_ANDROID_BUILD_DIR=$rootDir/../node_modules/react-native/ReactAndroid/build"<span class="diff">,</span>
-    <span class="diff">"NODE_MODULES_DIR=$rootDir/../node_modules"</span>
-cFlags "-Wall", "-Werror", "-fexceptions", "-frtti", "-DWITH_INSPECTOR=1"
-</code></pre>
-              <p>Add a line to the <code>android/app/src/main/jni/Android.mk</code> file.</p>
-              <pre><code class="language-xxx"># include $(GENERATED_SRC_DIR)/codegen/jni/Android.mk
-<span class="diff">include $(NODE_MODULES_DIR)/navigation-react-native/android/build/generated/source/codegen/jni/Android.mk</span>
-include $(CLEAR_VARS)
-</code></pre>
-              <p>And update 2 lines in <code>android/app/src/main/jni/Android.mk</code>.</p>
-              <pre><code class="language-xxx">LOCAL_C_INCLUDES := $(LOCAL_PATH)<span class="diff"> $(NODE_MODULES_DIR)/navigation-react-native/cpp</span>
-LOCAL_SRC_FILES := $(wildcard $(LOCAL_PATH)/*.cpp)<span class="diff"> $(wildcard $(NODE_MODULES_DIR)/navigation-react-native/cpp/react/renderer/components/navigation-react-native/*.cpp)</span>
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
-
-</code></pre>
-
-              <p>And add 3 lines to <code>android/app/src/main/jni/Android.mk</code>.</p>
-              <pre><code class="language-xxx">libreact_codegen_rncore \
-<span class="diff">libreact_codegen_navigation-react-native \
-libreact_render_mapbuffer \
-libreact_render_imagemanager \</span>
-libreact_debug \
-</code></pre>
-              <p>Add 6 lines to the <code>android/app/src/main/jni/MainComponentsRegistry.cpp</code> file.</p>
-              <pre><code class="language-xxx">#include &lt;react/renderer/componentregistry/ComponentDescriptorProviderRegistry.h>
-<span class="diff">#include &lt;react/renderer/components/navigation-react-native/ComponentDescriptors.h>
-#include &lt;react/renderer/components/navigation-react-native/NVActionBarComponentDescriptor.h>
-#include &lt;react/renderer/components/navigation-react-native/NVBarButtonComponentDescriptor.h>
-#include &lt;react/renderer/components/navigation-react-native/NVSearchBarComponentDescriptor.h>
-#include &lt;react/renderer/components/navigation-react-native/NVTabBarItemComponentDescriptor.h>
-#include &lt;react/renderer/components/navigation-react-native/NVTitleBarComponentDescriptor.h></react></span>
-#include &lt;react/renderer/components/rncore/ComponentDescriptors.h>
-</code></pre>
-              <p>And add 23 lines to <code>android/app/src/main/jni/MainComponentsRegistry.cpp</code>. One for each component.</p>
-              <pre><code class="language-xxx">// providerRegistry->add(concreteComponentDescriptorProvider&lt;
-//        AocViewerComponentDescriptor>());
-<span class="diff">providerRegistry->add(concreteComponentDescriptorProvider&lt;NVActionBarComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVBarButtonComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVBottomAppBarComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVBottomSheetComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVCollapsingBarComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVCoordinatorLayoutComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVExtendedFloatingActionButtonComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVFloatingActionButtonComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVNavigationBarComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVNavigationStackComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVSceneComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVSearchBarComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVSharedElementComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVStatusBarComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVTabBarItemComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVTabBarComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVTabBarPagerComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVTabBarPagerRTLComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVTabLayoutComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVTabLayoutRTLComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVTabNavigationComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVTitleBarComponentDescriptor>());
-providerRegistry->add(concreteComponentDescriptorProvider&lt;NVToolbarComponentDescriptor>());</span>
-return providerRegistry;
-</code></pre>
-              <p>Add a line to the <code>android/app/src/main/jni/MainApplicationModuleProvider.cpp</code> file.</p>
-              <pre><code class="language-xxx">#include &lt;rncore.h>
-<span class="diff">#include &lt;navigation-react-native.h></span></code></pre>
-              <p>And add 4 lines to the <code>android/app/src/main/jni/MainApplicationModuleProvider.cpp</code> file.</p>
-              <pre><code class="language-xxx"><span class="diff">auto module = navigation_react_native_ModuleProvider(moduleName, params);
-if (module != nullptr) {
-    return module;
-}</span>
-
-return rncore_ModuleProvider(moduleName, params);
-</code></pre>
-          </div>
+            <h2>The New Architecture (Fabric)</h2>
+            <p>
+                The setup on the new React Native architecture is identical except you have to enable the new architecture when you run <code>pod install</code>.
+            </p>
+            <pre><code class="language-js">cd ios && RCT_NEW_ARCH_ENABLED=1 pod install && cd ..</code></pre>
+        </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
