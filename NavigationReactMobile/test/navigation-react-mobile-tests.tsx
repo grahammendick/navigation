@@ -1,4 +1,4 @@
-// tsc --jsx react --target es3 --lib ES2015,DOM --esModuleInterop --noImplicitAny true --strict true navigation-react-mobile-tests.tsx
+// npx tsc --jsx react --target es3 --lib ES2015,DOM --esModuleInterop --baseUrl ../../types --noImplicitAny true --strict true navigation-react-mobile-tests.tsx
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationEvent, NavigationLink } from 'navigation-react';
 import { NavigationMotion, Scene, MobileHistoryManager, SharedElement, SharedElementMotion } from 'navigation-react-mobile';

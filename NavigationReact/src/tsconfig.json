@@ -2,6 +2,7 @@
     "compilerOptions": {
         "target": "es3",
         "jsx": "react",
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "baseUrl": "../../types"
     }
 }

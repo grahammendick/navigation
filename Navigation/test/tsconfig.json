@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es3"
+        "target": "es3",
+        "baseUrl": "../../types"
     }
 }

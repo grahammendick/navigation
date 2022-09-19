@@ -3,6 +3,8 @@
         "target": "es6",
         "jsx": "react",
         "lib": ["ES2015"],
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "baseUrl": "../../types"
+
     }
 }
