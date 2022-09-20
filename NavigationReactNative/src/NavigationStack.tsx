@@ -68,24 +68,16 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
         }
     }
     unmountStyle = (from: boolean, state: State, ...rest: any) => (
-        allScenes?.[state.key]?.unmountStyle ?
-            allScenes?.[state.key]?.unmountStyle(from, rest) :
-            unmountStyle(from, state, rest)
+        allScenes?.[state.key]?.unmountStyle ? allScenes?.[state.key]?.unmountStyle(from, ...rest) : unmountStyle(from, state, ...rest)
     );
     crumbStyle = (from: boolean, state: State, ...rest: any) => (
-        allScenes?.[state.key]?.crumbStyle ?
-            allScenes?.[state.key]?.crumbStyle(from, ...rest) :
-            crumbStyle(from, state, rest)
+        allScenes?.[state.key]?.crumbStyle ? allScenes?.[state.key]?.crumbStyle(from, ...rest) : crumbStyle(from, state, ...rest)
     );
     hidesTabBar = (state: State, ...rest: any) => (
-        allScenes?.[state.key]?.hidesTabBar ?
-            allScenes?.[state.key]?.hidesTabBar(...rest) :
-            unmountStyle(state, ...rest)
+        allScenes?.[state.key]?.hidesTabBar ? allScenes?.[state.key]?.hidesTabBar(...rest) : unmountStyle(state, ...rest)
     );
     getSharedElement = (state: State, ...rest: any) => (
-        allScenes?.[state.key]?.getSharedElement ?
-            allScenes?.[state.key]?.getSharedElement(...rest) :
-            getSharedElement(state, ...rest)
+        allScenes?.[state.key]?.getSharedElement ? allScenes?.[state.key]?.getSharedElement(...rest) : getSharedElement(state, ...rest)
     );
     const getAnimation = () => {
         let {state, data, oldState, oldData, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
