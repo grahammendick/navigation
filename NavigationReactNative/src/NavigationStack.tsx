@@ -68,10 +68,11 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle: crumbStyleS
         }
     }
     const sceneProps = ({key}: State) => firstLink ? allScenes[key].props : null;
+    const returnOrCall = (item, ...args) => typeof item !== 'function' ? item : item(...args);
     const unmountStyle = (from, state, ...rest) => sceneProps(state)?.unmountStyle ? sceneProps(state)?.unmountStyle(from, ...rest) : unmountStyleStack(from, state, ...rest);
     const crumbStyle = (from, state, ...rest) => sceneProps(state)?.crumbStyle ? sceneProps(state)?.crumbStyle(from, ...rest) : crumbStyleStack(from, state, ...rest);
-    const hidesTabBar = (state, ...rest) => sceneProps(state)?.hidesTabBar ? sceneProps(state)?.hidesTabBar(...rest) : hidesTabBarStack(state, ...rest);
-    const getSharedElement = (state, ...rest) => sceneProps(state)?.getSharedElement ? sceneProps(state)?.getSharedElement(...rest) : getSharedElementStack(state, ...rest);
+    const hidesTabBar = (state, ...rest) => sceneProps(state)?.hidesTabBar ? returnOrCall(sceneProps(state)?.hidesTabBar, ...rest) : hidesTabBarStack(state, ...rest);
+    const getSharedElement = (state, ...rest) => sceneProps(state)?.getSharedElement ? returnOrCall(sceneProps(state)?.getSharedElement, ...rest) : getSharedElementStack(state, ...rest);
     const getAnimation = () => {
         let {state, data, oldState, oldData, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
         if (!oldState)
