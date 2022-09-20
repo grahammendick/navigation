@@ -70,7 +70,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle = () => null
     const sceneProps = ({key}: State) => firstLink ? allScenes[key].props : null;
     unmountStyle = (from, state, ...rest) => sceneProps(state)?.unmountStyle ? sceneProps(state)?.unmountStyle(from, ...rest) : unmountStyle(from, state, ...rest);
     crumbStyle = (from, state, ...rest) => sceneProps(state)?.crumbStyle ? sceneProps(state)?.crumbStyle(from, ...rest) : crumbStyle(from, state, ...rest);
-    hidesTabBar = (state, ...rest) => sceneProps(state)?.hidesTabBar ? sceneProps(state)?.hidesTabBar(...rest) : unmountStyle(state, ...rest);
+    hidesTabBar = (state, ...rest) => sceneProps(state)?.hidesTabBar ? sceneProps(state)?.hidesTabBar(...rest) : hidesTabBar(state, ...rest);
     getSharedElement = (state, ...rest) => sceneProps(state)?.getSharedElement ? sceneProps(state)?.getSharedElement(...rest) : getSharedElement(state, ...rest);
     const getAnimation = () => {
         let {state, data, oldState, oldData, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
