@@ -7,7 +7,7 @@ const cloneScenes = (children, nested = false) => (
   React.Children.map(children, scene => (
     (scene.type === Scene || nested)
       ? React.cloneElement(scene, { crumbStyle: scene.props.crumbedStyle })
-      : React.cloneElement(scene, null, cloneScenes(scene.props.children, true) as any)
+      : React.cloneElement(scene, null, cloneScenes(scene.props.children, true))
   ))
 );
 
