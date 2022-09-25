@@ -35,15 +35,19 @@ export interface NavigationStackProps {
      */
     hidesTabBar?: (state: State, data: any, crumbs: Crumb[]) => boolean;
     /**
-     * A scene's shared element
+     * A Scene's shared element
      */
     sharedElement?: (state: State, data: any, crumbs: Crumb[]) => string;
     /**
-     * Renders the scene for the State and data
+     * The color of a Scene's background
+     */
+    backgroundColor?: (state: State, data: any, crumbs: Crumb[]) => ColorValue;
+    /**
+     * Renders the Scene for the State and data
      */
     renderScene?: (state: State, data: any) => ReactNode;
     /**
-     * The scenes
+     * The Scenes
      */
     children?: any;
 }
@@ -62,6 +66,26 @@ export class NavigationStack extends Component<NavigationStackProps> { }
      */
     stateKey: keyof NavigationInfo & string;
     /**
+     * A Scene's to and from crumb trail style
+     */
+     crumbStyle?: (from: boolean, data: any, crumbs: Crumb[], nextState?: State, nextData?: any) => string;
+     /**
+      * A Scene's to and from unmount style
+      */
+     unmountStyle?: (from: boolean, data: any, crumbs: Crumb[]) => string;
+     /**
+      * Indicates whether a Scene should display the tab bar
+      */
+     hidesTabBar?: boolean | ((data: any, crumbs: Crumb[]) => boolean);
+     /**
+      * A Scene's shared element
+      */
+     sharedElement?: string | ((data: any, crumbs: Crumb[]) => string);
+     /**
+      * The color of a Scene's background
+      */
+     backgroundColor?: ColorValue | ((data: any, crumbs: Crumb[]) => ColorValue);
+     /**
      * The Scene content
      */
     children: ReactNode;
@@ -486,7 +510,7 @@ export class StatusBar extends Component<StatusBarProps> {}
  */
 export interface SharedElementProps {
     /**
-     * The name shared across scenes by the two views
+     * The name shared across Scenes by the two views
      */
     name: string;
     /**
