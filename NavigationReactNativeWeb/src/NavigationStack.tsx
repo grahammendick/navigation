@@ -3,14 +3,6 @@ import { View } from 'react-native';
 import { NavigationMotion, Scene, SharedElementMotion } from 'navigation-react-mobile';
 import { MobileHistoryManager } from 'navigation-react-mobile';
 
-const cloneScenes = (children, nested = false) => (
-  React.Children.map(children, scene => (
-    (scene.type === Scene || nested)
-      ? React.cloneElement(scene, { crumbStyle: scene.props.crumbedStyle })
-      : React.cloneElement(scene, null, cloneScenes(scene.props.children, true))
-  ))
-);
-
 const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, sharedElementTransition, duration, renderScene, renderTransition, children}) => (
     <NavigationMotion
         unmountedStyle={unmountedStyle || {translate: 100}}
@@ -35,6 +27,14 @@ const renderMotion = ({translate}, scene, key) => (
     }}>
     {scene}
   </View>
+);
+
+const cloneScenes = (children, nested = false) => (
+  React.Children.map(children, scene => (
+    (scene.type === Scene || nested)
+      ? React.cloneElement(scene, { crumbStyle: scene.props.crumbedStyle })
+      : React.cloneElement(scene, null, cloneScenes(scene.props.children, true))
+  ))
 );
 
 NavigationStack.Scene = Scene;
