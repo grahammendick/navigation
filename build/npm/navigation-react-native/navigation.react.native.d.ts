@@ -19,27 +19,27 @@ export interface NavigationStackProps {
      */
     stackInvalidatedLink?: string;
      /**
-     * A Scene's title
+     * The Scene's title
      */
     title?: (state: State, data: any) => string;
     /**
-     * A Scene's to and from crumb trail style
+     * The Scene's to and from crumb trail style
      */
     crumbStyle?: (from: boolean, state: State, data: any, crumbs: Crumb[], nextState?: State, nextData?: any) => string;
     /**
-     * A Scene's to and from unmount style
+     * The Scene's to and from unmount style
      */
     unmountStyle?: (from: boolean, state: State, data: any, crumbs: Crumb[]) => string;
     /**
-     * Indicates whether a Scene should display the tab bar
+     * Indicates whether the Scene should display the tab bar
      */
     hidesTabBar?: (state: State, data: any, crumbs: Crumb[]) => boolean;
     /**
-     * A Scene's shared element
+     * The Scene's shared element
      */
     sharedElement?: (state: State, data: any, crumbs: Crumb[]) => string;
     /**
-     * The color of a Scene's background
+     * The color of the Scene's background
      */
     backgroundColor?: (state: State, data: any, crumbs: Crumb[]) => ColorValue;
     /**
