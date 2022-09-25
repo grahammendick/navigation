@@ -11,7 +11,7 @@ type NavigationMotionState = {stateNavigator: StateNavigator, keys: string[]};
 type SceneContext = {key: string, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, mount: boolean, fromUnmounted: boolean};
 type MotionStyle = {style: any, data: SceneContext, key: string, rest: boolean, progress: number, start: any, end: any };
 
-const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 300,
+const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mountedStyleStack, crumbStyle: crumbStyleStack, duration = 300,
     sharedElementMotion, renderScene, children, stackInvalidatedLink, renderMotion = children}: NavigationMotionProps) => {
     const sharedElementRegistry = useRef(new SharedElementRegistry());
     const {stateNavigator} = useContext(NavigationContext);
@@ -69,10 +69,15 @@ const NavigationMotion = ({unmountedStyle, mountedStyle, crumbStyle, duration = 
             return {key: keys[index], state, data, url, crumbs: preCrumbs, nextState, nextData, mount, fromUnmounted };
         });
     }
+    const sceneProps = ({key}: State) => firstLink ? allScenes[key].props : null;
+    const returnOrCall = (item, ...args) => typeof item !== 'function' ? item : item(...args);
+    const unmountedStyle = (state, ...rest) => sceneProps(state)?.unmountedStyle ? returnOrCall(sceneProps(state)?.unmountedStyle, ...rest) : returnOrCall(unmountedStyleStack, state, ...rest);
+    const mountedStyle = (state, ...rest) => sceneProps(state)?.mountedStyle ? returnOrCall(sceneProps(state)?.mountedStyle, ...rest) : returnOrCall(mountedStyleStack, state, ...rest);
+    const crumbStyle = (state, ...rest) => sceneProps(state)?.crumbStyle ? returnOrCall(sceneProps(state)?.crumbStyle, ...rest) : returnOrCall(crumbStyleStack, state, ...rest);
     const getStyle = (mounted: boolean, {state, data, crumbs, nextState, nextData, mount, fromUnmounted}: SceneContext) => {
         const styleProp = !mounted ? unmountedStyle : (mount ? mountedStyle : crumbStyle);
         fromUnmounted = (mounted && mount) ? fromUnmounted : undefined;
-        const style = typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData, fromUnmounted) : styleProp;
+        const style = styleProp(state, data, crumbs, nextState, nextData, fromUnmounted);
         return {...style, __marker: !mounted ? 1 : (mount ? 0 : -1)};
     }
     const getMotion = (styles: MotionStyle[]) => {
