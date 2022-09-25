@@ -12,9 +12,13 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, sharedElem
         duration={duration}
         renderScene={renderScene}
         renderMotion={typeof children !== 'function' ? renderTransition || renderMotion : undefined}>
-        {children || renderMotion}
+        {typeof children !== 'function' ? (
+          React.Children.map(children, child => (
+            React.cloneElement(child, { crumbStyle: child.props.crumbedStyle })
+          ))
+        ) : (children || renderMotion)}
     </NavigationMotion>
-)
+);
 
 const renderMotion = ({translate}, scene, key) => (
   <View key={key}
