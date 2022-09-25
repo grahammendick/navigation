@@ -42,6 +42,24 @@ declare module 'navigation-react-native' {
         renderTransition?: (style: any, scene: ReactElement<any>, key: string, active: boolean, state: State, data: any) => ReactElement<any>;
     }
 
+    /**
+     * Defines the Scene Props contract
+     */
+    export interface SceneProps<NavigationInfo extends { [index: string]: any } = any> {
+        /**
+         * The Scene's unmounted style
+         */
+        unmountedStyle?: any;
+        /**
+         * The Scene's mounted style
+         */
+        mountedStyle?: any;
+        /**
+         * The Scene's crumb trail style
+         */
+        crumbedStyle?: any;
+    }
+
     interface TabBarItemProps {
         /**
          * The tab hyperlink
