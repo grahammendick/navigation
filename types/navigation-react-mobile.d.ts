@@ -134,15 +134,15 @@ export interface NavigationMotionProps {
     /**
      * The Scene's unmounted style
      */
-     unmountedStyle?: any;
-     /**
-      * The Scene's mounted style
-      */
-     mountedStyle?: any;
-     /**
-      * The Scene's crumb trail style
-      */
-     crumbStyle?: any;
+    unmountedStyle?: any;
+    /**
+     * The Scene's mounted style
+     */
+    mountedStyle?: any;
+    /**
+     * The Scene's crumb trail style
+     */
+    crumbStyle?: any;
      /**
      * The Scene content
      */

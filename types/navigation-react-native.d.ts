@@ -68,23 +68,23 @@ export class NavigationStack extends Component<NavigationStackProps> { }
     /**
      * A Scene's to and from crumb trail style
      */
-     crumbStyle?: (from: boolean, data: any, crumbs: Crumb[], nextState?: State, nextData?: any) => string;
-     /**
-      * A Scene's to and from unmount style
-      */
-     unmountStyle?: (from: boolean, data: any, crumbs: Crumb[]) => string;
-     /**
-      * Indicates whether a Scene should display the tab bar
-      */
-     hidesTabBar?: boolean | ((data: any, crumbs: Crumb[]) => boolean);
-     /**
-      * A Scene's shared element
-      */
-     sharedElement?: string | ((data: any, crumbs: Crumb[]) => string);
-     /**
-      * The color of a Scene's background
-      */
-     backgroundColor?: ColorValue | ((data: any, crumbs: Crumb[]) => ColorValue);
+    crumbStyle?: (from: boolean, data: any, crumbs: Crumb[], nextState?: State, nextData?: any) => string;
+    /**
+     * A Scene's to and from unmount style
+     */
+    unmountStyle?: (from: boolean, data: any, crumbs: Crumb[]) => string;
+    /**
+     * Indicates whether a Scene should display the tab bar
+     */
+    hidesTabBar?: boolean | ((data: any, crumbs: Crumb[]) => boolean);
+    /**
+     * A Scene's shared element
+     */
+    sharedElement?: string | ((data: any, crumbs: Crumb[]) => string);
+    /**
+     * The color of a Scene's background
+     */
+    backgroundColor?: ColorValue | ((data: any, crumbs: Crumb[]) => ColorValue);
      /**
      * The Scene content
      */
