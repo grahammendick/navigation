@@ -28,6 +28,9 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.events.Event;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import java.util.ArrayList;
@@ -229,7 +232,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     void scrollToTop() {
         if (keys.size() > 1) {
             ReactContext reactContext = (ReactContext) getContext();
-            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onNavigateToTop", null);
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(new NavigationStackView.NavigateToTopEvent(getId()));
         }
         if (keys.size() == 1) {
             SceneView scene = scenes.get(keys.getString(0));
@@ -259,10 +263,9 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     }
 
     void onRest(int crumb) {
-        WritableMap event = Arguments.createMap();
-        event.putInt("crumb", crumb);
         ReactContext reactContext = (ReactContext) getContext();
-        reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onRest", event);
+        EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+        eventDispatcher.dispatchEvent(new NavigationStackView.RestEvent(getId(), crumb));
     }
 
     @Override
@@ -298,6 +301,43 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             return stack != null ? stack : new View(getContext());
+        }
+    }
+
+    static class NavigateToTopEvent extends Event<NavigationStackView.NavigateToTopEvent> {
+        public NavigateToTopEvent(int viewId) {
+            super(viewId);
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnNavigateToTop";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
+        }
+    }
+
+    static class RestEvent extends Event<NavigationStackView.RestEvent> {
+        private final int crumb;
+
+        public RestEvent(int viewId, int crumb) {
+            super(viewId);
+            this.crumb = crumb;
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnRest";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            WritableMap event = Arguments.createMap();
+            event.putInt("crumb", this.crumb);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }
 }

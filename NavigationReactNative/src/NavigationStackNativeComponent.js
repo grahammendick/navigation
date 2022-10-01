@@ -13,6 +13,7 @@ type NativeProps = $ReadOnly<{|
   sharedElement: string,
   oldSharedElement: string,
   mostRecentEventCount: Int32,
+  onNavigateToTop: DirectEventHandler<null>,
   onWillNavigateBack: DirectEventHandler<$ReadOnly<{|
     crumb: Int32
   |}>>,

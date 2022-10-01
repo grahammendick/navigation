@@ -12,8 +12,9 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.i18nmanager.I18nUtil;
 import com.facebook.react.uimanager.PixelUtil;
-import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
 
@@ -27,13 +28,10 @@ public class NavigationBarView extends AppBarLayout {
         setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.WRAP_CONTENT));
         defaultOutlineProvider = getOutlineProvider();
         defaultBackground = getBackground();
-        addOnOffsetChangedListener(new OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
-                OffsetChangedEvent event = OffsetChangedEvent.obtain(getId(), offset);
-                ReactContext reactContext = (ReactContext) getContext();
-                reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher().dispatchEvent(event);
-            }
+        addOnOffsetChangedListener((appBarLayout, offset) -> {
+            ReactContext reactContext = (ReactContext) getContext();
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(OffsetChangedEvent.obtain(getId(), offset));
         });
     }
 
@@ -70,7 +68,7 @@ public class NavigationBarView extends AppBarLayout {
 
         @Override
         public String getEventName() {
-            return "onOffsetChanged";
+            return "topOnOffsetChanged";
         }
 
         @Override

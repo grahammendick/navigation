@@ -30,6 +30,9 @@ type NativeProps = $ReadOnly<{|
   backTitleOn: boolean,
   backTestID: string,
   barHeight: Double,
+  onOffsetChanged: DirectEventHandler<$ReadOnly<{|
+    offset: Double
+  |}>>,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(
