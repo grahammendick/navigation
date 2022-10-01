@@ -232,7 +232,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     void scrollToTop() {
         if (keys.size() > 1) {
             ReactContext reactContext = (ReactContext) getContext();
-            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onNavigateToTop", null);
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(new NavigationStackView.NavigateToTopEvent(getId()));
         }
         if (keys.size() == 1) {
             SceneView scene = scenes.get(keys.getString(0));
@@ -300,6 +301,22 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             return stack != null ? stack : new View(getContext());
+        }
+    }
+
+    static class NavigateToTopEvent extends Event<NavigationStackView.NavigateToTopEvent> {
+        public NavigateToTopEvent(int viewId) {
+            super(viewId);
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnNavigateToTop";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
         }
     }
 
