@@ -49,6 +49,13 @@
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     [super didSetProps:changedProps];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self navigate];
+    });
+}
+
+- (void)navigate
+{
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     if (eventLag != 0 || _scenes.count == 0)
         return;
@@ -73,15 +80,27 @@
             scene.peekableDidChangeBlock = ^{
                 [weakSelf checkPeekability:[self.keys count] - 1];
             };
+            UIView<NVNavigationBar> *navigationBar = [controller findNavigationBar:scene];
             controller.navigationItem.title = scene.title;
             [controllers addObject:controller];
-        }
-        
-        if (crumb - currentCrumb == 1) {
-            [_navigationController pushViewController:controllers[0] animated:animate];
-        } else {
-            NSArray *allControllers = [_navigationController.viewControllers arrayByAddingObjectsFromArray:controllers];
-            [_navigationController setViewControllers:allControllers animated:animate];
+            void (^completeNavigation)(void) = ^{
+                if (crumb - currentCrumb == 1) {
+                    [self->_navigationController pushViewController:controllers[0] animated:animate];
+                } else {
+                    NSArray *allControllers = [self->_navigationController.viewControllers arrayByAddingObjectsFromArray:controllers];
+                    [self->_navigationController setViewControllers:allControllers animated:animate];
+                }
+                navigationBar.backImageDidLoadBlock = nil;
+            };
+            if (!navigationBar.backImageOn) {
+                completeNavigation();
+            } else {
+                navigationBar.backImageDidLoadBlock = completeNavigation;
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                    if (navigationBar.backImageDidLoadBlock)
+                        completeNavigation();
+                });
+            }
         }
     }
     if (crumb == currentCrumb) {
