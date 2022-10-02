@@ -1,6 +1,7 @@
 #import "NVNavigationStackView.h"
 #import "NVSceneView.h"
 #import "NVSceneController.h"
+#import "NVNavigationBarView.h"
 
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
@@ -80,27 +81,27 @@
             scene.peekableDidChangeBlock = ^{
                 [weakSelf checkPeekability:[self.keys count] - 1];
             };
-            UIView<NVNavigationBar> *navigationBar = [controller findNavigationBar:scene];
             controller.navigationItem.title = scene.title;
             [controllers addObject:controller];
-            void (^completeNavigation)(void) = ^{
-                if (crumb - currentCrumb == 1) {
-                    [self->_navigationController pushViewController:controllers[0] animated:animate];
-                } else {
-                    NSArray *allControllers = [self->_navigationController.viewControllers arrayByAddingObjectsFromArray:controllers];
-                    [self->_navigationController setViewControllers:allControllers animated:animate];
-                }
-                navigationBar.backImageDidLoadBlock = nil;
-            };
-            if (!navigationBar.backImageOn) {
-                completeNavigation();
+        }
+        UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:((UIViewController *) [controllers lastObject]).view];
+        void (^completeNavigation)(void) = ^{
+            if (crumb - currentCrumb == 1) {
+                [self->_navigationController pushViewController:controllers[0] animated:animate];
             } else {
-                navigationBar.backImageDidLoadBlock = completeNavigation;
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                    if (navigationBar.backImageDidLoadBlock)
-                        completeNavigation();
-                });
+                NSArray *allControllers = [self->_navigationController.viewControllers arrayByAddingObjectsFromArray:controllers];
+                [self->_navigationController setViewControllers:allControllers animated:animate];
             }
+            navigationBar.backImageDidLoadBlock = nil;
+        };
+        if (!navigationBar.backImageOn) {
+            completeNavigation();
+        } else {
+            navigationBar.backImageDidLoadBlock = completeNavigation;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                if (navigationBar.backImageDidLoadBlock)
+                    completeNavigation();
+            });
         }
     }
     if (crumb == currentCrumb) {
@@ -112,6 +113,19 @@
         [controllers replaceObjectAtIndex:crumb withObject:controller];
         [_navigationController setViewControllers:controllers animated:animate];
     }
+}
+
+-(NVNavigationBarView *) findNavigationBar:(UIView *)parent
+{
+    for(NSInteger i = 0; i < parent.subviews.count; i++) {
+        UIView* subview = parent.subviews[i];
+        if ([subview isKindOfClass:[NVNavigationBarView class]])
+            return (NVNavigationBarView *) subview;
+        subview = [self findNavigationBar:parent.subviews[i]];
+        if ([subview isKindOfClass:[NVNavigationBarView class]])
+            return (NVNavigationBarView *) subview;
+    }
+    return nil;
 }
 
 - (void)didMoveToWindow

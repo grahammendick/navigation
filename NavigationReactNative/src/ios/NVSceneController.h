@@ -1,5 +1,15 @@
 #import <UIKit/UIKit.h>
 
+@interface NVSceneController : UIViewController
+
+@property (nonatomic, copy) void (^boundsDidChangeBlock)(NVSceneController *controller);
+@property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
+@property (nonatomic, assign) BOOL statusBarHidden;
+
+- (id)initWithScene:(UIView *)view;
+
+@end
+
 @protocol NVNavigationBar
 
 @property (nonatomic, assign) BOOL isHidden;
@@ -10,17 +20,6 @@
 @property (nonatomic, copy) void (^backImageDidLoadBlock)(void);
 
 - (void)updateStyle;
-
-@end
-
-@interface NVSceneController : UIViewController
-
-@property (nonatomic, copy) void (^boundsDidChangeBlock)(NVSceneController *controller);
-@property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
-@property (nonatomic, assign) BOOL statusBarHidden;
-
-- (id)initWithScene:(UIView *)view;
-- (UIView<NVNavigationBar> *) findNavigationBar:(UIView *)parent;
 
 @end
 
