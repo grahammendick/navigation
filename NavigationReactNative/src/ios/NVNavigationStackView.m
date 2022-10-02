@@ -85,7 +85,7 @@
             [controllers addObject:controller];
         }
         NVNavigationBarView *navigationBar = [self findNavigationBar:((UIViewController *) [controllers lastObject]).view];
-        void (^completeNavigation)(void) = ^{
+        void (^startTransition)(void) = ^{
             if (crumb - currentCrumb == 1) {
                 [self->_navigationController pushViewController:controllers[0] animated:animate];
             } else {
@@ -95,12 +95,12 @@
             navigationBar.backImageDidLoadBlock = nil;
         };
         if (!navigationBar.backImageOn) {
-            completeNavigation();
+            startTransition();
         } else {
-            navigationBar.backImageDidLoadBlock = completeNavigation;
+            navigationBar.backImageDidLoadBlock = startTransition;
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                 if (navigationBar.backImageDidLoadBlock)
-                    completeNavigation();
+                    startTransition();
             });
         }
     }
