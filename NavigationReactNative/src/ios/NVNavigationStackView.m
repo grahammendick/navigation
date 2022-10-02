@@ -86,13 +86,13 @@
         }
         NVNavigationBarView *navigationBar = [self findNavigationBar:((UIViewController *) [controllers lastObject]).view];
         void (^completeNavigation)(void) = ^{
+            navigationBar.backImageDidLoadBlock = nil;
             if (crumb - currentCrumb == 1) {
                 [self->_navigationController pushViewController:controllers[0] animated:animate];
             } else {
                 NSArray *allControllers = [self->_navigationController.viewControllers arrayByAddingObjectsFromArray:controllers];
                 [self->_navigationController setViewControllers:allControllers animated:animate];
             }
-            navigationBar.backImageDidLoadBlock = nil;
         };
         if (!navigationBar.backImageOn) {
             completeNavigation();
