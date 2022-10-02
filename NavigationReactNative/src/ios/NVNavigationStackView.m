@@ -84,7 +84,7 @@
             controller.navigationItem.title = scene.title;
             [controllers addObject:controller];
         }
-        UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:((UIViewController *) [controllers lastObject]).view];
+        NVNavigationBarView *navigationBar = [self findNavigationBar:((UIViewController *) [controllers lastObject]).view];
         void (^completeNavigation)(void) = ^{
             if (crumb - currentCrumb == 1) {
                 [self->_navigationController pushViewController:controllers[0] animated:animate];

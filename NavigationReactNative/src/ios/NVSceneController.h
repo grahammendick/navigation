@@ -10,23 +10,21 @@
 
 @end
 
+@protocol NVScene
+
+@property (nonatomic, assign) BOOL hidesTabBar;
+- (void)didPop;
+
+@end
+
 @protocol NVNavigationBar
 
 @property (nonatomic, assign) BOOL isHidden;
 @property (nonatomic, assign) BOOL largeTitle;
 @property (nonatomic, copy) NSString* title;
 @property (nonatomic, copy) NSString *backTitle;
-@property (nonatomic, assign) BOOL backImageOn;
-@property (nonatomic, copy) void (^backImageDidLoadBlock)(void);
 
 - (void)updateStyle;
-
-@end
-
-@protocol NVScene
-
-@property (nonatomic, assign) BOOL hidesTabBar;
-- (void)didPop;
 
 @end
 
