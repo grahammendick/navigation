@@ -33,12 +33,13 @@
                     self.backImageDidLoadBlock();
                 }
                 self ->_backImage = image;
+                [self updateStyle];
             });
         }];
     } else {
         _backImage = nil;
+        [self updateStyle];
     }
-    [self updateStyle];
 }
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
