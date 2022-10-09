@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) UIColor *largeTitleColor;
 @property (nonatomic, copy) NSString *backTitle;
 @property (nonatomic, copy) NSString *backTestID;
-@property (nonatomic, copy) void (^backImageDidLoadBlock)(void);
+@property (nonatomic, copy)  void (^ _Nullable backImageDidLoadBlock)(void);
 
 @end
 
