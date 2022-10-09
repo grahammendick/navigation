@@ -34,7 +34,7 @@ void NVNavigationBarShadowNode::updateStateIfNeeded() {
 }
 
 ImageSource NVNavigationBarShadowNode::getImageSource() const {
-  return getConcreteProps().image;
+  return getConcreteProps().backImage;
 }
 
 #pragma mark - LayoutableShadowNode
