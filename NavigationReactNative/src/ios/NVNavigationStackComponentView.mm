@@ -5,6 +5,7 @@
 #import "NVSceneComponentView.h"
 #import "NVSceneController.h"
 #import "NVSceneComponentView.h"
+#import "NVNavigationBarComponentView.h"
 
 #import <react/renderer/components/navigationreactnative/ComponentDescriptors.h>
 #import <react/renderer/components/navigationreactnative/EventEmitters.h>
@@ -95,12 +96,24 @@ using namespace facebook::react;
             controller.navigationItem.title = scene.title;
             [controllers addObject:controller];
         }
-        
-        if (crumb - currentCrumb == 1) {
-            [_navigationController pushViewController:controllers[0] animated:animate];
+        NVNavigationBarComponentView *navigationBar = [self findNavigationBar:((UIViewController *) [controllers lastObject]).view];
+        void (^completeNavigation)(void) = ^{
+            navigationBar.backImageDidLoadBlock = nil;
+            if (crumb - currentCrumb == 1) {
+                [self->_navigationController pushViewController:controllers[0] animated:animate];
+            } else {
+                NSArray *allControllers = [self->_navigationController.viewControllers arrayByAddingObjectsFromArray:controllers];
+                [self->_navigationController setViewControllers:allControllers animated:animate];
+            }
+        };
+        if (!navigationBar.backImageOn) {
+            completeNavigation();
         } else {
-            NSArray *allControllers = [_navigationController.viewControllers arrayByAddingObjectsFromArray:controllers];
-            [_navigationController setViewControllers:allControllers animated:animate];
+            navigationBar.backImageDidLoadBlock = completeNavigation;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                if (navigationBar.backImageDidLoadBlock)
+                    completeNavigation();
+            });
         }
     }
     if (crumb == currentCrumb) {
@@ -112,6 +125,19 @@ using namespace facebook::react;
         [controllers replaceObjectAtIndex:crumb withObject:controller];
         [_navigationController setViewControllers:controllers animated:animate];
     }
+}
+
+-(NVNavigationBarComponentView *) findNavigationBar:(UIView *)parent
+{
+    for(NSInteger i = 0; i < parent.subviews.count; i++) {
+        UIView* subview = parent.subviews[i];
+        if ([subview isKindOfClass:[NVNavigationBarComponentView class]])
+            return (NVNavigationBarComponentView *) subview;
+        subview = [self findNavigationBar:parent.subviews[i]];
+        if ([subview isKindOfClass:[NVNavigationBarComponentView class]])
+            return (NVNavigationBarComponentView *) subview;
+    }
+    return nil;
 }
 
 - (void)didMoveToWindow
