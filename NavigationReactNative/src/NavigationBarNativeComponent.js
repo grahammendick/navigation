@@ -28,6 +28,7 @@ type NativeProps = $ReadOnly<{|
   largeTitleColor: ColorValue,
   backTitle: string,
   backTitleOn: boolean,
+  backImage: ImageSource,
   backTestID: string,
   barHeight: Double,
   onOffsetChanged: DirectEventHandler<$ReadOnly<{|
@@ -37,4 +38,5 @@ type NativeProps = $ReadOnly<{|
 
 export default (codegenNativeComponent<NativeProps>(
    'NVNavigationBar',
+   {interfaceOnly: true}
 ): HostComponent<NativeProps>);
