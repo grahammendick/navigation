@@ -133,6 +133,10 @@ export interface NavigationBarProps {
      */
     backTitle?: string;
     /**
+     * The back button image
+     */
+    backImage?: ImageRequireSource | ImageURISource;
+    /**
      * The logo
      */
     logo?: ImageRequireSource | ImageURISource;
