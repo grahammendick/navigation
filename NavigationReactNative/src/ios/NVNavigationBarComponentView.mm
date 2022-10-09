@@ -255,10 +255,11 @@ API_AVAILABLE(ios(13.0)){
       if ([image isEqual:_backImage]) {
         return;
       }
-      _backImage = image;
       if (self.backImageDidLoadBlock) {
           self.backImageDidLoadBlock();
       }
+      _backImage = image;
+      [self updateStyle];
   }
 }
 
