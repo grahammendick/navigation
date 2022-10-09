@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *backTitle;
 @property (nonatomic, copy) NSString *backTestID;
 @property (nonatomic, assign) BOOL backImageOn;
-@property (nonatomic, copy)  void (^ _Nullable backImageDidLoadBlock)(void);
+@property (nonatomic, copy) void (^ _Nullable backImageDidLoadBlock)(void);
 
 @end
 
