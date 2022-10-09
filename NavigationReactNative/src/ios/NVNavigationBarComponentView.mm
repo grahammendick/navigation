@@ -17,7 +17,7 @@
 
 using namespace facebook::react;
 
-@interface NVNavigationBarComponentView () <RCTNVNavigationBarViewProtocol>
+@interface NVNavigationBarComponentView () <RCTNVNavigationBarViewProtocol, RCTImageResponseDelegate>
 @end
 
 @implementation NVNavigationBarComponentView {
@@ -31,6 +31,7 @@ using namespace facebook::react;
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const NVNavigationBarProps>();
         _props = defaultProps;
+        _imageResponseObserverProxy = RCTImageResponseObserverProxy(self);
     }
     return self;
 }
@@ -156,6 +157,7 @@ API_AVAILABLE(ios(13.0)){
     [appearance setLargeTitleTextAttributes:[self largeTitleAttributes]];
     appearance.backButtonAppearance = [UIBarButtonItemAppearance new];
     appearance.backButtonAppearance.normal.titleTextAttributes = [self backAttributes];
+    [appearance setBackIndicatorImage:_backImage transitionMaskImage:_backImage];
     return appearance;
 }
 
@@ -254,6 +256,9 @@ API_AVAILABLE(ios(13.0)){
         return;
       }
       _backImage = image;
+      if (self.backImageDidLoadBlock) {
+          self.backImageDidLoadBlock();
+      }
   }
 }
 
