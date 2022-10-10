@@ -217,7 +217,6 @@ API_AVAILABLE(ios(13.0)){
     [super prepareForRecycle];
     self.imageCoordinator = nullptr;
     _backImage = nil;
-    self.backImageDidLoadBlock = nil;
 }
 
 - (void)updateState:(const facebook::react::State::Shared &)state oldState:(const facebook::react::State::Shared &)oldState
@@ -259,6 +258,7 @@ API_AVAILABLE(ios(13.0)){
       }
       if (self.backImageDidLoadBlock) {
           self.backImageDidLoadBlock();
+          self.backImageDidLoadBlock = nil;
       }
       _backImageLoading = NO;
       _backImage = image;
