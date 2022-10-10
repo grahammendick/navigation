@@ -84,7 +84,10 @@
             controller.navigationItem.title = scene.title;
             [controllers addObject:controller];
         }
+        __block BOOL completed = NO;
         [self completeNavigation:^{
+            if (completed) return;
+            completed = YES;
             if (crumb - currentCrumb == 1) {
                 [self->_navigationController pushViewController:controllers[0] animated:animate];
             } else {
@@ -100,7 +103,10 @@
         NVSceneController *controller = [[NVSceneController alloc] initWithScene:scene];
         NSMutableArray *controllers = [NSMutableArray arrayWithArray:_navigationController.viewControllers];
         [controllers replaceObjectAtIndex:crumb withObject:controller];
+        __block BOOL completed = NO;
         [self completeNavigation:^{
+            if (completed) return;
+            completed = YES;
             [self->_navigationController setViewControllers:controllers animated:animate];
         } waitOn:scene];
     }
@@ -108,18 +114,12 @@
 
 -(void) completeNavigation:(void (^)(void)) completeNavigation waitOn:(UIView *)scene
 {
-    __weak typeof(NVNavigationBarView) *navigationBar = [self findNavigationBar:scene];
-    if (!navigationBar.backImageOn) {
+    NVNavigationBarView *navigationBar = [self findNavigationBar:scene];
+    if (!navigationBar.backImageLoading) {
         completeNavigation();
     } else {
-        navigationBar.backImageDidLoadBlock = ^{
-            navigationBar.backImageDidLoadBlock = nil;
-            completeNavigation();
-        };
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            if (navigationBar.backImageDidLoadBlock)
-                completeNavigation();
-        });
+        navigationBar.backImageDidLoadBlock = completeNavigation;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .1 * NSEC_PER_SEC), dispatch_get_main_queue(), completeNavigation);
     }
 }
 

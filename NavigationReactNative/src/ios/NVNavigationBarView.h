@@ -28,7 +28,7 @@
 @property (nonatomic, copy) NSString *backTitle;
 @property (nonatomic, assign) BOOL backTitleOn;
 @property (nonatomic, copy) NSString *backTestID;
-@property (nonatomic, assign) BOOL backImageOn;
+@property (nonatomic, assign) BOOL backImageLoading;
 @property (nonatomic, copy) void (^backImageDidLoadBlock)(void);
 
 -(id)initWithBridge: (RCTBridge *)bridge;

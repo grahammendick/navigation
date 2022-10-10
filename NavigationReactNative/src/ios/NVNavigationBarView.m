@@ -25,13 +25,15 @@
 
 - (void)setBackImage:(RCTImageSource *)source
 {
-    _backImageOn = !!source;
+    _backImageLoading = !!source;
     if (!!source) {
         [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request size:source.size scale:source.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (self.backImageDidLoadBlock) {
                     self.backImageDidLoadBlock();
+                    self.backImageDidLoadBlock = nil;
                 }
+                self ->_backImageLoading = NO;
                 self ->_backImage = image;
                 [self updateStyle];
             });
