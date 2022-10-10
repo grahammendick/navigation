@@ -111,7 +111,20 @@
         NVSceneController *controller = [[NVSceneController alloc] initWithScene:scene];
         NSMutableArray *controllers = [NSMutableArray arrayWithArray:_navigationController.viewControllers];
         [controllers replaceObjectAtIndex:crumb withObject:controller];
-        [_navigationController setViewControllers:controllers animated:animate];
+        NVNavigationBarView *navigationBar = [self findNavigationBar:scene];
+        void (^completeNavigation)(void) = ^{
+            navigationBar.backImageDidLoadBlock = nil;
+            [self->_navigationController setViewControllers:controllers animated:animate];
+        };
+        if (!navigationBar.backImageOn) {
+            completeNavigation();
+        } else {
+            navigationBar.backImageDidLoadBlock = completeNavigation;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                if (navigationBar.backImageDidLoadBlock)
+                    completeNavigation();
+            });
+        }
     }
 }
 
