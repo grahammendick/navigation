@@ -88,7 +88,7 @@ using namespace facebook::react;
     }
     _backTestID = [[NSString alloc] initWithUTF8String: newViewProps.backTestID.c_str()];
     NSString *uri = [[NSString alloc] initWithUTF8String:newViewProps.backImage.uri.c_str()];
-    _backImageOn = !![uri length];
+    _backImageLoading = !![uri length];
     if (![uri length]) {
         _backImage = nil;
     }
@@ -216,6 +216,8 @@ API_AVAILABLE(ios(13.0)){
 {
     [super prepareForRecycle];
     self.imageCoordinator = nullptr;
+    _backImage = nil;
+    self.backImageDidLoadBlock = nil;
 }
 
 - (void)updateState:(const facebook::react::State::Shared &)state oldState:(const facebook::react::State::Shared &)oldState
@@ -258,6 +260,7 @@ API_AVAILABLE(ios(13.0)){
       if (self.backImageDidLoadBlock) {
           self.backImageDidLoadBlock();
       }
+      _backImageLoading = NO;
       _backImage = image;
       [self updateStyle];
   }

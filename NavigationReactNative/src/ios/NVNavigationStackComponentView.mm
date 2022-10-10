@@ -96,7 +96,10 @@ using namespace facebook::react;
             controller.navigationItem.title = scene.title;
             [controllers addObject:controller];
         }
+        __block BOOL completed = NO;
         [self completeNavigation:^{
+            if (completed) return;
+            completed = YES;
             if (crumb - currentCrumb == 1) {
                 [self->_navigationController pushViewController:controllers[0] animated:animate];
             } else {
@@ -118,18 +121,12 @@ using namespace facebook::react;
 
 -(void) completeNavigation:(void (^)(void)) completeNavigation waitOn:(UIView *)scene
 {
-    __weak NVNavigationBarComponentView *navigationBar = [self findNavigationBar:scene];
-    if (!navigationBar.backImageOn) {
+    NVNavigationBarComponentView *navigationBar = [self findNavigationBar:scene];
+    if (!navigationBar.backImageLoading) {
         completeNavigation();
     } else {
-        navigationBar.backImageDidLoadBlock = ^{
-            navigationBar.backImageDidLoadBlock = nil;
-            completeNavigation();
-        };
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            if (navigationBar.backImageDidLoadBlock)
-                completeNavigation();
-        });
+        navigationBar.backImageDidLoadBlock = completeNavigation;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .1 * NSEC_PER_SEC), dispatch_get_main_queue(), completeNavigation);
     }
 }
 
