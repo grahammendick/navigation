@@ -115,7 +115,12 @@ using namespace facebook::react;
         NVSceneController *controller = [[NVSceneController alloc] initWithScene:scene];
         NSMutableArray *controllers = [NSMutableArray arrayWithArray:_navigationController.viewControllers];
         [controllers replaceObjectAtIndex:crumb withObject:controller];
-        [_navigationController setViewControllers:controllers animated:animate];
+        __block BOOL completed = NO;
+        [self completeNavigation:^{
+            if (completed) return;
+            completed = YES;
+            [self->_navigationController setViewControllers:controllers animated:animate];
+        } waitOn:scene];
     }
 }
 
