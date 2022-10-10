@@ -216,6 +216,7 @@ API_AVAILABLE(ios(13.0)){
 {
     [super prepareForRecycle];
     self.imageCoordinator = nullptr;
+    _backImageLoading = NO;
     _backImage = nil;
 }
 
