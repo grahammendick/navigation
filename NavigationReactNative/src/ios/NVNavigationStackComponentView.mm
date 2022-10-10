@@ -96,25 +96,14 @@ using namespace facebook::react;
             controller.navigationItem.title = scene.title;
             [controllers addObject:controller];
         }
-        NVNavigationBarComponentView *navigationBar = [self findNavigationBar:((UIViewController *) [controllers lastObject]).view];
-        void (^completeNavigation)(void) = ^{
-            navigationBar.backImageDidLoadBlock = nil;
+        [self completeNavigation:^{
             if (crumb - currentCrumb == 1) {
                 [self->_navigationController pushViewController:controllers[0] animated:animate];
             } else {
                 NSArray *allControllers = [self->_navigationController.viewControllers arrayByAddingObjectsFromArray:controllers];
                 [self->_navigationController setViewControllers:allControllers animated:animate];
             }
-        };
-        if (!navigationBar.backImageOn) {
-            completeNavigation();
-        } else {
-            navigationBar.backImageDidLoadBlock = completeNavigation;
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                if (navigationBar.backImageDidLoadBlock)
-                    completeNavigation();
-            });
-        }
+        } waitOn:((UIViewController *) [controllers lastObject]).view];
     }
     if (crumb == currentCrumb) {
         NVSceneComponentView *scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
@@ -124,6 +113,23 @@ using namespace facebook::react;
         NSMutableArray *controllers = [NSMutableArray arrayWithArray:_navigationController.viewControllers];
         [controllers replaceObjectAtIndex:crumb withObject:controller];
         [_navigationController setViewControllers:controllers animated:animate];
+    }
+}
+
+-(void) completeNavigation:(void (^)(void)) completeNavigation waitOn:(UIView *)scene
+{
+    __weak NVNavigationBarComponentView *navigationBar = [self findNavigationBar:scene];
+    if (!navigationBar.backImageOn) {
+        completeNavigation();
+    } else {
+        navigationBar.backImageDidLoadBlock = ^{
+            navigationBar.backImageDidLoadBlock = nil;
+            completeNavigation();
+        };
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            if (navigationBar.backImageDidLoadBlock)
+                completeNavigation();
+        });
     }
 }
 
