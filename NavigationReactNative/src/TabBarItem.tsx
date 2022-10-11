@@ -1,11 +1,15 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { requireNativeComponent, Image, Platform, StyleSheet } from 'react-native';
 import BackButton from './BackButton';
+import TabBarItemContext from './TabBarItemContext';
 import BackHandlerContext from './BackHandlerContext';
 import createBackHandler from './createBackHandler';
 
 const TabBarItem = ({selected, onPress, children, image, systemItem, badge, index, ...props}) => {
+    const [loaded, setLoaded] = useState(selected);
     const backHandler = useRef(createBackHandler());
+    const onLoad = useRef({ onLoad: () => setLoaded(true)});
+    if (!loaded && selected) setLoaded(true);
     image = typeof image === 'string' ? (Platform.OS === 'ios' ? null : {uri: image}) : image;
     return (
         <NVTabBarItem
@@ -21,9 +25,11 @@ const TabBarItem = ({selected, onPress, children, image, systemItem, badge, inde
                     onPress(event);
             }}>
             <BackButton onPress={() => selected && backHandler.current.handleBack()} />
-            <BackHandlerContext.Provider value={backHandler.current}>
-                {children}
-            </BackHandlerContext.Provider>
+            <TabBarItemContext.Provider value={onLoad.current}>
+                <BackHandlerContext.Provider value={backHandler.current}>
+                    {children}
+                </BackHandlerContext.Provider>
+            </TabBarItemContext.Provider>
         </NVTabBarItem>
     );
 }
