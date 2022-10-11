@@ -1,15 +1,47 @@
 #import "NVNavigationBarView.h"
 
+#import <React/RCTBridge.h>
 #import <React/RCTFont.h>
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnullability-completeness"
+#import <React/RCTImageLoaderProtocol.h>
+#pragma clang diagnostic pop
+#import <React/RCTImageSource.h>
 #import <React/UIView+React.h>
 
 @implementation NVNavigationBarView
+{
+    __weak RCTBridge *_bridge;
+    UIImage *_backImage;
+}
 
-- (id)init
+- (id)initWithBridge:(RCTBridge *)bridge
 {
     if (self = [super init]) {
+        _bridge = bridge;
     }
     return self;
+}
+
+- (void)setBackImage:(RCTImageSource *)source
+{
+    _backImageLoading = !!source;
+    if (!!source) {
+        [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request size:source.size scale:source.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (self.backImageDidLoadBlock) {
+                    self.backImageDidLoadBlock();
+                    self.backImageDidLoadBlock = nil;
+                }
+                self ->_backImageLoading = NO;
+                self ->_backImage = image;
+                [self updateStyle];
+            });
+        }];
+    } else {
+        _backImage = nil;
+        [self updateStyle];
+    }
 }
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
@@ -92,6 +124,7 @@ API_AVAILABLE(ios(13.0)){
     [appearance setLargeTitleTextAttributes:[self largeTitleAttributes]];
     appearance.backButtonAppearance = [UIBarButtonItemAppearance new];
     appearance.backButtonAppearance.normal.titleTextAttributes = [self backAttributes];
+    [appearance setBackIndicatorImage:_backImage transitionMaskImage:_backImage];
     return appearance;
 }
 

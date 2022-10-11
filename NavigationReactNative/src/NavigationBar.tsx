@@ -31,7 +31,7 @@ class NavigationBar extends React.Component<any, any> {
         }
     }
     render() {
-        var {bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, titleCentered, children, style = {height: undefined}, ...otherProps} = this.props;
+        var {bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, backImage, titleCentered, children, style = {height: undefined}, ...otherProps} = this.props;
         const Material3 = global.__turboModuleProxy != null ? require("./NativeMaterial3Module").default : NativeModules.Material3;
         const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
         var scrollEdgeProps = this.getScrollEdgeProps()
@@ -49,6 +49,7 @@ class NavigationBar extends React.Component<any, any> {
                     hidden={hidden}
                     backTitle={backTitle}
                     backTitleOn={backTitle !== undefined}
+                    backImage={Image.resolveAssetSource(backImage)}
                     barHeight={!!collapsingBar ? style.height : 0}
                     style={{height: !!collapsingBar ? style.height : null}}
                     {...otherProps}

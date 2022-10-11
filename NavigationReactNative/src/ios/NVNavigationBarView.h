@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import <React/RCTBridge.h>
 #import "NVSceneController.h"
 
 @interface NVNavigationBarView : UIView <NVNavigationBar>
@@ -27,7 +28,10 @@
 @property (nonatomic, copy) NSString *backTitle;
 @property (nonatomic, assign) BOOL backTitleOn;
 @property (nonatomic, copy) NSString *backTestID;
+@property (nonatomic, assign) BOOL backImageLoading;
+@property (nonatomic, copy) void (^backImageDidLoadBlock)(void);
 
+-(id)initWithBridge: (RCTBridge *)bridge;
 -(void)updateStyle;
 
 @end

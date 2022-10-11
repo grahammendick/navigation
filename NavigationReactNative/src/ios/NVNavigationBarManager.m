@@ -10,7 +10,7 @@ RCT_EXPORT_MODULE()
 
 - (UIView *)view
 {
-    return [[NVNavigationBarView alloc] init];
+    return [[NVNavigationBarView alloc] initWithBridge:self.bridge];
 }
 
 RCT_EXPORT_VIEW_PROPERTY(hidden, BOOL)
@@ -35,6 +35,7 @@ RCT_EXPORT_VIEW_PROPERTY(titleColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(largeTitleColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(backTitle, NSString)
 RCT_EXPORT_VIEW_PROPERTY(backTitleOn, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(backImage, RCTImageSource)
 RCT_EXPORT_VIEW_PROPERTY(backTestID, NSString)
 
 

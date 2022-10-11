@@ -44,6 +44,7 @@
     NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
     UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
+    navigationBar.backImageDidLoadBlock = nil;
     BOOL hidden = navigationBar.isHidden;
     if (@available(iOS 13.0, *)) {
     } else {

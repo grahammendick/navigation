@@ -6,6 +6,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.PixelUtil;
@@ -158,6 +159,10 @@ public class NavigationBarViewManager extends ViewGroupManager<NavigationBarView
 
     @Override
     public void setBackTitleOn(NavigationBarView view, boolean value) {
+    }
+
+    @Override
+    public void setBackImage(NavigationBarView view, @Nullable ReadableMap value) {
     }
 
     @Override
