@@ -13,7 +13,7 @@ const TabBarItem = ({selected, onPress, children, image, systemItem, badge, inde
     if (!loaded && selected) setLoaded(true);
     image = typeof image === 'string' ? (Platform.OS === 'ios' ? null : {uri: image}) : image;
     return (
-        <Freeze enabled={loaded && !selected && freezable}>
+        <Freeze enabled={loaded && freezable}>
             <NVTabBarItem
                 ref={(ref: any) => {
                     if (!!React.Suspense && ref?.viewConfig?.validAttributes?.style) {
