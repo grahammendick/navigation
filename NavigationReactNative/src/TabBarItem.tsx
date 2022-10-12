@@ -6,14 +6,14 @@ import BackHandlerContext from './BackHandlerContext';
 import createBackHandler from './createBackHandler';
 import Freeze from './Freeze';
 
-const TabBarItem = ({selected, onPress, children, image, systemItem, badge, index, ...props}) => {
+const TabBarItem = ({selected, onPress, children, image, systemItem, badge, index, freezable, ...props}) => {
     const [loaded, setLoaded] = useState(selected);
     const backHandler = useRef(createBackHandler());
     const onLoad = useRef({ onLoad: () => setLoaded(true)});
     if (!loaded && selected) setLoaded(true);
     image = typeof image === 'string' ? (Platform.OS === 'ios' ? null : {uri: image}) : image;
     return (
-        <Freeze enabled={loaded && !selected}>
+        <Freeze enabled={loaded && !selected && freezable}>
             <NVTabBarItem
                 ref={(ref: any) => {
                     if (!!React.Suspense && ref?.viewConfig?.validAttributes?.style) {
