@@ -13,35 +13,37 @@ const TabBarItem = ({selected, onPress, children, image, systemItem, badge, inde
     if (!loaded && selected) setLoaded(true);
     image = typeof image === 'string' ? (Platform.OS === 'ios' ? null : {uri: image}) : image;
     return (
-        <Freeze enabled={loaded && freezable}>
-            <NVTabBarItem
-                ref={(ref: any) => {
-                    if (!!React.Suspense && ref?.viewConfig?.validAttributes?.style) {
-                        ref.viewConfig.validAttributes.style = {
-                            ...ref.viewConfig.validAttributes.style,
-                            display: false
-                        };
-                    }
-                }}
-                {...props}
-                selected={selected}
-                badge={badge != null ? '' + badge : undefined}
-                image={Image.resolveAssetSource(image)}
-                systemItem={systemItem || ''}
-                style={styles.tabBarItem}
-                onPress={event => {
-                    event.stopPropagation();
-                    if (onPress)
-                        onPress(event);
-                }}>
-                <BackButton onPress={() => selected && backHandler.current.handleBack()} />
-                <TabBarItemContext.Provider value={onLoad.current}>
-                    <BackHandlerContext.Provider value={backHandler.current}>
-                        {children}
-                    </BackHandlerContext.Provider>
-                </TabBarItemContext.Provider>
-            </NVTabBarItem>
-        </Freeze>
+        <>
+            <BackButton onPress={() => selected && backHandler.current.handleBack()} />
+            <Freeze enabled={loaded && freezable}>
+                <NVTabBarItem
+                    ref={(ref: any) => {
+                        if (!!React.Suspense && ref?.viewConfig?.validAttributes?.style) {
+                            ref.viewConfig.validAttributes.style = {
+                                ...ref.viewConfig.validAttributes.style,
+                                display: false
+                            };
+                        }
+                    }}
+                    {...props}
+                    selected={selected}
+                    badge={badge != null ? '' + badge : undefined}
+                    image={Image.resolveAssetSource(image)}
+                    systemItem={systemItem || ''}
+                    style={styles.tabBarItem}
+                    onPress={event => {
+                        event.stopPropagation();
+                        if (onPress)
+                            onPress(event);
+                    }}>
+                    <TabBarItemContext.Provider value={onLoad.current}>
+                        <BackHandlerContext.Provider value={backHandler.current}>
+                            {children}
+                        </BackHandlerContext.Provider>
+                    </TabBarItemContext.Provider>
+                </NVTabBarItem>
+            </Freeze>
+        </>
     );
 }
 
