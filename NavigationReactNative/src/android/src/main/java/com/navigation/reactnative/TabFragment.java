@@ -28,5 +28,9 @@ public class TabFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return view != null ? view : new View(getContext());
     }
+
+    boolean viewChanged() {
+        return view != tabBarItem.content.get(0);
+    }
 }
 
