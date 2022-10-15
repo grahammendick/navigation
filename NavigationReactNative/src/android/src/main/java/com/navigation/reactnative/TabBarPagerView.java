@@ -215,6 +215,9 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
         @NonNull
         @Override
         public Fragment getItem(int position) {
+            if (tabFragments.get(position).view != tabFragments.get(position).tabBarItem.content.get(0)) {
+                tabFragments.set(position, new TabFragment(tabFragments.get(position).tabBarItem));
+            }
             return tabFragments.get(position);
         }
 
@@ -231,9 +234,6 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
                 if (tabFragment == object
                     && tabFragment.view == tabFragment.tabBarItem.content.get(0))
                     return POSITION_UNCHANGED;
-                if (tabFragment.view != tabFragment.tabBarItem.content.get(0)) {
-                    tabFragments.set(i, new TabFragment(tabFragments.get(i).tabBarItem));
-                }
             }
             return POSITION_NONE;
         }
