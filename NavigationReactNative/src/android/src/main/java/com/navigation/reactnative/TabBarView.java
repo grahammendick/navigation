@@ -151,10 +151,8 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     @Override
     public void onChange(TabBarItemView tabBarItemView) {
         TabFragment tabFragment = (TabFragment) fragmentManager.findFragmentById(getId());
-        if (tabFragment != null && tabFragment.tabBarItem == tabBarItemView
-            && tabFragment.view != tabBarItemView.content.get(0)) {
+        if (tabFragment != null && tabFragment.tabBarItem == tabBarItemView && tabFragment.viewChanged())
             setCurrentTab(selectedTab);
-        }
     }
 
     public static class TabBarFragment extends Fragment {
