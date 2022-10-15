@@ -65,13 +65,15 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
 
     void addTab(TabBarItemView tab, int index) {
         tabBarItems.add(index, tab);
+        tab.changeListener = tabBarItemView -> notifyItemChanged(index);
         dataSetChanged = true;
         notifyItemInserted(index);
         dataSetChanged = false;
     }
 
     void removeTab(int index) {
-        tabBarItems.remove(index);
+        TabBarItemView tab = tabBarItems.remove(index);
+        tab.changeListener = null;
         dataSetChanged = true;
         notifyItemRemoved(index);
         dataSetChanged = false;
@@ -90,6 +92,6 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
 
     @Override
     public long getItemId(int position) {
-        return tabBarItems.get(position).hashCode();
+        return tabBarItems.get(position).content.get(0).hashCode();
     }
 }
