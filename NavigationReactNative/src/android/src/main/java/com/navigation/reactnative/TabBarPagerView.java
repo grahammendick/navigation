@@ -76,6 +76,7 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
             layout(getLeft(), getTop(), getRight(), getBottom());
             measured = true;
         }
+        getAdapter().notifyDataSetChanged();
     }
 
     void populateTabs() {
