@@ -65,7 +65,7 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
 
     void addTab(TabBarItemView tab, int index) {
         tabBarItems.add(index, tab);
-        tab.changeListener = tabBarItemView -> notifyItemChanged(index);
+        tab.changeListener = tabBarItemView -> notifyItemChanged(tabBarItems.indexOf(tab));
         dataSetChanged = true;
         notifyItemInserted(index);
         dataSetChanged = false;
