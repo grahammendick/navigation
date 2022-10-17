@@ -30,7 +30,7 @@ public class TabFragment extends Fragment {
     }
 
     boolean viewChanged() {
-        return view != tabBarItem.content.get(0);
+        return tabBarItem.content.size() > 0 && view != tabBarItem.content.get(0);
     }
 }
 
