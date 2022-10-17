@@ -121,6 +121,9 @@ public class TabBarItemViewManager extends ViewGroupManager<TabBarItemView> impl
     @Override
     public void addView(TabBarItemView parent, View child, int index) {
         parent.content.add(index, child);
+        if (parent.changeListener != null) {
+            parent.changeListener.onChange(parent);
+        }
     }
 
     @Override

@@ -39,6 +39,7 @@ public class TabBarItemView extends ViewGroup {
     private String testID;
     final List<View> content = new ArrayList<>();
     private final IconResolver.IconResolverListener tabIconResolverListener;
+    ChangeListener changeListener;
 
     public TabBarItemView(Context context) {
         super(context);
@@ -156,6 +157,10 @@ public class TabBarItemView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    }
+
+    interface ChangeListener {
+        void onChange(TabBarItemView tabBarItemView);
     }
 
     static class PressEvent extends Event<TabBarItemView.PressEvent> {

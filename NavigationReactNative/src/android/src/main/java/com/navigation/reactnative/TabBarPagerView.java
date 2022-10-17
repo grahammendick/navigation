@@ -30,7 +30,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabBarPagerView extends ViewPager {
+public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeListener {
     private final Fragment fragment;
     int selectedTab = 0;
     boolean scrollsToTop;
@@ -75,6 +75,7 @@ public class TabBarPagerView extends ViewPager {
                 MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
             layout(getLeft(), getTop(), getRight(), getBottom());
             measured = true;
+            getAdapter().notifyDataSetChanged();
         }
     }
 
@@ -181,6 +182,11 @@ public class TabBarPagerView extends ViewPager {
         }
     }
 
+    @Override
+    public void onChange(TabBarItemView tabBarItemView) {
+        getAdapter().notifyDataSetChanged();
+    }
+
     private class Adapter extends FragmentPagerAdapter {
         private final List<TabFragment> tabFragments = new ArrayList<>();
 
@@ -222,8 +228,11 @@ public class TabBarPagerView extends ViewPager {
         @Override
         public int getItemPosition(@NonNull Object object) {
             for(int i = 0; i < tabFragments.size(); i++) {
-                if (tabFragments.get(i) == object)
-                    return i;
+                TabFragment tabFragment = tabFragments.get(i);
+                if (tabFragment == object && !tabFragment.viewChanged())
+                    return POSITION_UNCHANGED;
+                if (tabFragment.viewChanged())
+                    tabFragments.set(i, new TabFragment(tabFragments.get(i).tabBarItem));
             }
             return POSITION_NONE;
         }

@@ -63,11 +63,13 @@ public class TabBarPagerManager extends ViewGroupManager<TabBarPagerView> {
 
     @Override
     public void addView(TabBarPagerView parent, View child, int index) {
+        ((TabBarItemView) child).changeListener = parent;
         parent.addTab((TabBarItemView) child, index);
     }
 
     @Override
     public void removeViewAt(TabBarPagerView parent, int index) {
+        parent.getTabAt(index).changeListener = null;
         parent.removeTab(index);
     }
 

@@ -104,6 +104,9 @@
     if ([subview class] == [NVNavigationStackView class])
         self.navigationController = [(NVNavigationStackView *) subview navigationController];
     self.navigationController.tabBarItem = self.tab;
+    if (self.stackDidChangeBlock) {
+        self.stackDidChangeBlock(self);
+    }
 }
 
 @end

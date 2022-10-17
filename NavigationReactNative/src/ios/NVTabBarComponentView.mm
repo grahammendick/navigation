@@ -220,16 +220,21 @@ using namespace facebook::react;
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers insertObject:[(NVTabBarItemComponentView *) childComponentView navigationController] atIndex:index];
     [_tabBarController setViewControllers:controllers];
+    ((NVTabBarItemComponentView *) childComponentView).stackDidChangeBlock = ^(NVTabBarItemComponentView *tabBarItemView){
+        NSMutableArray *controllers = [NSMutableArray arrayWithArray:[self->_tabBarController viewControllers]];
+        [controllers insertObject:[tabBarItemView navigationController] atIndex: [self.reactSubviews indexOfObject:tabBarItemView]];
+        [self->_tabBarController setViewControllers:controllers];
+    };
 }
 
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
     [self removeReactSubview:childComponentView];
+    ((NVTabBarItemComponentView *) childComponentView).stackDidChangeBlock = nil;
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers removeObjectAtIndex:index];
     [_tabBarController setViewControllers:controllers];
     [childComponentView removeFromSuperview];
-
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
