@@ -113,12 +113,14 @@ public class TabBarViewManager extends ViewGroupManager<TabBarView> implements N
 
     @Override
     public void addView(TabBarView parent, View child, int index) {
+        ((TabBarItemView) child).changeListener = parent;
         parent.tabFragments.add(index, new TabFragment((TabBarItemView) child));
         parent.tabsChanged = true;
     }
 
     @Override
     public void removeViewAt(TabBarView parent, int index) {
+        parent.tabFragments.get(index).tabBarItem.changeListener = null;
         parent.tabFragments.remove(index);
         parent.tabsChanged = true;
     }
