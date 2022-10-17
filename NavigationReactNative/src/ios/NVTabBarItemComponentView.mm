@@ -127,6 +127,7 @@ using namespace facebook::react;
     _navigationController.tabBarItem = nil;
     _navigationController = nil;
     self.imageCoordinator = nullptr;
+    self.stackDidChangeBlock = nil;
     _tab = nil;
     _image = nil;
 }
@@ -190,6 +191,9 @@ using namespace facebook::react;
     if ([childComponentView class] == [NVNavigationStackComponentView class])
         self.navigationController = [(NVNavigationStackComponentView *) childComponentView navigationController];
     self.navigationController.tabBarItem = self.tab;
+    if (self.stackDidChangeBlock) {
+        self.stackDidChangeBlock(self);
+    }
 }
 
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index

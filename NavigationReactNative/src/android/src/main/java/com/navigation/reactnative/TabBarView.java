@@ -26,7 +26,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabBarView extends ViewGroup {
+public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListener {
     final List<TabFragment> tabFragments = new ArrayList<>();
     private FragmentManager fragmentManager;
     private TabFragment selectedTabFragment;
@@ -96,7 +96,7 @@ public class TabBarView extends ViewGroup {
             nativeEventCount++;
             ReactContext reactContext = (ReactContext) getContext();
             EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-            eventDispatcher.dispatchEvent(new TabBarPagerView.TabSelectedEvent(getId(), index, nativeEventCount));
+            eventDispatcher.dispatchEvent(new TabBarView.TabSelectedEvent(getId(), index, nativeEventCount));
             tabFragments.get(index).tabBarItem.pressed();
         }
         selectedTab = selectedIndex = index;
@@ -105,6 +105,8 @@ public class TabBarView extends ViewGroup {
         if (tabNavigation != null)
             tabNavigation.tabSelected(index);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+        if (tabFragments.get(index).viewChanged())
+            tabFragments.set(index, new TabFragment(tabFragments.get(index).tabBarItem));
         transaction.replace(getId(), tabFragments.get(index));
         transaction.commitNowAllowingStateLoss();
     }
@@ -144,6 +146,13 @@ public class TabBarView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    }
+
+    @Override
+    public void onChange(TabBarItemView tabBarItemView) {
+        TabFragment tabFragment = (TabFragment) fragmentManager.findFragmentById(getId());
+        if (tabFragment != null && tabFragment.tabBarItem == tabBarItemView && tabFragment.viewChanged())
+            setCurrentTab(selectedTab);
     }
 
     public static class TabBarFragment extends Fragment {

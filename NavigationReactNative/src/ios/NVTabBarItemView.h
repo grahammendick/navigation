@@ -11,6 +11,7 @@
 @property (nonatomic, copy) NSNumber *fontSize;
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, copy) RCTBubblingEventBlock onPress;
+@property (nonatomic, copy) void (^stackDidChangeBlock)(NVTabBarItemView *tabBarItemView);
 
 -(id)initWithBridge: (RCTBridge *)bridge;
 

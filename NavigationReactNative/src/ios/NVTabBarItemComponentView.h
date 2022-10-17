@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *fontStyle;
 @property (nonatomic, copy) NSNumber *fontSize;
 @property (nonatomic, strong) UINavigationController *navigationController;
+@property (nonatomic, copy) void (^ _Nullable stackDidChangeBlock)(NVTabBarItemComponentView *tabBarItemView);
 
 -(void)onPress;
 

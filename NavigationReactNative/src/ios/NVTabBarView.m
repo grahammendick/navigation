@@ -53,11 +53,17 @@
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers insertObject:[(NVTabBarItemView *) subview navigationController] atIndex:atIndex];
     [_tabBarController setViewControllers:controllers];
+    ((NVTabBarItemView *) subview).stackDidChangeBlock = ^(NVTabBarItemView *tabBarItemView){
+        NSMutableArray *controllers = [NSMutableArray arrayWithArray:[self->_tabBarController viewControllers]];
+        [controllers replaceObjectAtIndex:[self.reactSubviews indexOfObject:tabBarItemView] withObject:[tabBarItemView navigationController]];
+        [self->_tabBarController setViewControllers:controllers];
+    };
 }
 
 - (void)removeReactSubview:(UIView *)subview
 {
     NSInteger tab = [self.reactSubviews indexOfObject:subview];
+    ((NVTabBarItemView *) subview).stackDidChangeBlock = nil;
     [super removeReactSubview:subview];
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers removeObjectAtIndex:tab];
