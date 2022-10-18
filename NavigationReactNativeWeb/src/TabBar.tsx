@@ -66,10 +66,8 @@ class TabBar extends React.Component<any, any> {
         return (
             <>
                 {!bottomTabs && tabLayout}
-                {tabBarItems.map((child, i) => (
-                    <View key={i} style={{display: i === this.state.selectedTab ? 'flex' : 'none', flex: 1}}>
-                        {child}
-                    </View>
+                {tabBarItems.map((child: any, i) => (
+                    React.cloneElement(child, {...child.props, selected: i === this.state.selectedTab})
                 ))}
                 {bottomTabs && tabLayout}
             </>
