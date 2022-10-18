@@ -81,6 +81,13 @@ declare module 'navigation-react-native' {
         href?: string;
     }
 
+    interface TabBarItemProps {
+        /**
+         * Indicates whether to delay loading until the tab is active
+         */
+        lazy?: boolean;
+    }
+
     interface SharedElementProps {
         /**
          * The Shared Element data

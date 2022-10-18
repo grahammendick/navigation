@@ -608,6 +608,11 @@ export interface TabBarItemProps {
 export class TabBarItem extends Component<TabBarItemProps> {}
 
 /**
+ * The context for freezing unvisited tabs
+ */
+ export var TabBarItemContext: Context<{ onLoad: () => void; }>;
+
+/**
  * Defines the Tab Bar Props contract
  */
 export interface TabBarProps {
