@@ -1,42 +1,51 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { requireNativeComponent, Image, Platform, StyleSheet } from 'react-native';
 import BackButton from './BackButton';
+import TabBarItemContext from './TabBarItemContext';
 import BackHandlerContext from './BackHandlerContext';
 import createBackHandler from './createBackHandler';
+import Freeze from './Freeze';
 
-class TabBarItem extends React.Component<any> {
-    private backHandler: any;
-    constructor(props) {
-        super(props);
-        this.handleBack = this.handleBack.bind(this);
-        this.backHandler = createBackHandler();
-    }
-    handleBack() {
-        return this.props.selected && this.backHandler.handleBack();
-    }
-    render() {
-        var {onPress, children, image, systemItem, badge, index, ...props} = this.props;
-        image = typeof image === 'string' ? (Platform.OS === 'ios' ? null : {uri: image}) : image;
-        return (
-            <NVTabBarItem
-                {...props}
-                badge={badge != null ? '' + badge : undefined}
-                image={Image.resolveAssetSource(image)}
-                systemItem={systemItem || ''}
-                style={styles.tabBarItem}
-                onPress={event => {
-                    event.stopPropagation();
-                    if (onPress)
-                        onPress(event);
-                }}>
-                <BackButton onPress={this.handleBack} />
-                <BackHandlerContext.Provider value={this.backHandler}>
-                    {children}
-                </BackHandlerContext.Provider>
-            </NVTabBarItem>
-        );
-    }
-};
+const TabBarItem = ({selected, onPress, children, image, systemItem, badge, index, freezable, ...props}) => {
+    const [loaded, setLoaded] = useState(selected);
+    const backHandler = useRef(createBackHandler());
+    const onLoad = useRef({ onLoad: () => setLoaded(true)});
+    if (!loaded && selected) setLoaded(true);
+    image = typeof image === 'string' ? (Platform.OS === 'ios' ? null : {uri: image}) : image;
+    return (
+        <>
+            <BackButton onPress={() => selected && backHandler.current.handleBack()} />
+            <Freeze enabled={loaded && freezable}>
+                <NVTabBarItem
+                    ref={(ref: any) => {
+                        if (!!React.Suspense && ref?.viewConfig?.validAttributes?.style) {
+                            ref.viewConfig.validAttributes.style = {
+                                ...ref.viewConfig.validAttributes.style,
+                                display: false
+                            };
+                        }
+                    }}
+                    {...props}
+                    selected={selected}
+                    badge={badge != null ? '' + badge : undefined}
+                    image={Image.resolveAssetSource(image)}
+                    systemItem={systemItem || ''}
+                    style={styles.tabBarItem}
+                    onPress={event => {
+                        event.stopPropagation();
+                        if (onPress)
+                            onPress(event);
+                    }}>
+                    <TabBarItemContext.Provider value={onLoad.current}>
+                        <BackHandlerContext.Provider value={backHandler.current}>
+                            {children}
+                        </BackHandlerContext.Provider>
+                    </TabBarItemContext.Provider>
+                </NVTabBarItem>
+            </Freeze>
+        </>
+    );
+}
 
 var NVTabBarItem = global.nativeFabricUIManager ? require('./TabBarItemNativeComponent').default : requireNativeComponent('NVTabBarItem');
 

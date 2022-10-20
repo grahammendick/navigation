@@ -105,7 +105,8 @@ class TabBar extends React.Component<any, any> {
                             .filter(child => !!child)
                             .map((child: any, index) => {
                                 var selected = index === this.state.selectedTab;
-                                return React.cloneElement(child, {...child.props, index, selected})
+                                var freezable = Math.abs(index - this.state.selectedTab) > (Platform.OS === 'android' && !primary ? 1 : 0);
+                                return React.cloneElement(child, {...child.props, index, selected, freezable})
                             })}
                 </TabBar>}
                 {bottomTabs && tabLayout}

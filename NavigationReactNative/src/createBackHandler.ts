@@ -16,7 +16,7 @@ var createBackHandler = () => {
         }
         return false;
     }
-    return {addEventListener, removeEventListener, handleBack};
+    return {addEventListener, removeEventListener, handleBack, exitApp: () => {}};
 }
 
 export default createBackHandler;
