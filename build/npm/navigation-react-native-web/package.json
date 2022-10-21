@@ -1,6 +1,6 @@
 {
   "name": "navigation-react-native-web",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "React Native Web plugin for the Navigation router",
   "main": "navigation.react.native.web.js",
   "types": "navigation.react.native.web.d.ts",
