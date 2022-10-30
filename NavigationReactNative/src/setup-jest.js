@@ -17,8 +17,13 @@ jest.mock('navigation-react-native', () => {
         TabBar: ({onChangeTab, bottomTabs, primary = true, ...props}) => {
             bottomTabs = bottomTabs != null ? bottomTabs : primary;
             const tabBarItems = React.Children.toArray(props.children).filter(child => !!child);
-            const tabLayout = tabBarItems.map(({props: {title, testID}}, index) => (
-                <ReactNative.Text accessibilityRole="tab" key={index} testID={testID} onPress={() => onChangeTab(index)} >
+            const tabLayout = tabBarItems.map(({props: {title, testID, onPress}}, index) => (
+                <ReactNative.Text
+                    accessibilityRole="tab" key={index} testID={testID}
+                    onPress={() => {
+                        onPress();
+                        onChangeTab(index)
+                    }} >
                     {title}
                 </ReactNative.Text>
             ));
