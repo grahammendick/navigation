@@ -3,7 +3,6 @@ jest.mock('navigation-react-native', () => {
     const ReactNative = require('react-native');
     const NavigationReactNative = jest.requireActual('navigation-react-native');
     return  {
-        TabBarItem: NavigationReactNative.TabBarItem,
         NavigationStack: NavigationReactNative.NavigationStack,
         Scene: NavigationReactNative.Scene,
         NavigationBar: ({ title, children, ...props }) => (
@@ -37,6 +36,7 @@ jest.mock('navigation-react-native', () => {
                 </>
             );            
         },
+        TabBarItem: NavigationReactNative.TabBarItem,
         CoordinatorLayout: ({children}) => children,
     };
 });
