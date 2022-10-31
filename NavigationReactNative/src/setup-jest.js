@@ -36,7 +36,7 @@ jest.mock('navigation-react-native', () => {
                 </>
             );            
         },
-        TabBarItem: NavigationReactNative.TabBarItem,
+        TabBarItem: props => <ReactNative.View accessibilityRole="tabpanel" {...props} />,
         CoordinatorLayout: ({children}) => children,
     };
 });
