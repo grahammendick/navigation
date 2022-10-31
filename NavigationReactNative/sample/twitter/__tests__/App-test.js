@@ -19,7 +19,7 @@ it('renders correctly', () => {
 it('renders App correctly', () => {
   const { getAllByText, getByText, getAllByRole, getByRole } = render(<App />);
   const tab = getByRole('tab', {name: 'Notifications'});
-  const panel = getAllByRole('tabpanel');
+  const panel = getAllByRole('tabpanel', {name: 'All'});
   let title = getByRole('header', {name: 'Home'});
   fireEvent.press(getAllByText('Dan Abramov')[0]);
   title = getByRole('header', {name: 'Tweet'});
