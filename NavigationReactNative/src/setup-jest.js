@@ -5,6 +5,7 @@ jest.mock('navigation-react-native', () => {
 
     const TabBar = ({tab, defaultTab = 0, onChangeTab, bottomTabs, primary = true, ...props}) => {
         const [selectedTab, setSelectedTab] = React.useState(tab || defaultTab);
+        if (tab != null && tab !== selectedTab) setSelectedTab(tab);
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
         const tabBarItems = React.Children.toArray(props.children).filter(child => !!child);
         const tabLayout = tabBarItems.map(({props: {title, testID, onPress}}, index) => (
