@@ -51,10 +51,13 @@ jest.mock('navigation-react-native', () => {
             });
         }
         const {crumbs, nextCrumb} = stateNavigator.stateContext;
-        return crumbs.concat(nextCrumb || []).map(({ state, data }, index) => {
+        return crumbs.concat(nextCrumb || []).map(({ state, data }, index, {length}) => {
             renderScene = firstLink ? ({key}) => allScenes[key] : renderScene;
             return (
-                <ReactNative.View accessibilityRole="window" key={state.key}>
+                <ReactNative.View
+                    key={state.key}
+                    accessibilityRole="window"
+                    accessibilityState={{selected: index === length - 1}}>
                     {renderScene(state, data)}
                 </ReactNative.View>
             );
