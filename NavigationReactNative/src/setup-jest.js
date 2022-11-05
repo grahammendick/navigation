@@ -13,17 +13,24 @@ jest.mock('navigation-react-native', () => {
         ),
         LeftBar: ({children}) => children,
         RightBar: ({children}) => children,
-        TabBar: ({onChangeTab, bottomTabs, primary = true, ...props}) => {
+        TabBar: ({tab, defaultTab = 0, onChangeTab, bottomTabs, primary = true, ...props}) => {
+            const [selectedTab, setSelectedTab] = React.useState(tab || defaultTab);
             bottomTabs = bottomTabs != null ? bottomTabs : primary;
             const tabBarItems = React.Children.toArray(props.children).filter(child => !!child);
             const tabLayout = tabBarItems.map(({props: {title, testID, onPress}}, index) => (
                 <ReactNative.Pressable
                     key={index}
                     testID={testID}
+                    accessibilityState={{selected: index === selectedTab}}
                     accessibilityRole="tab"
                     onPress={() => {
                         onPress();
-                        onChangeTab(index)
+                        if (selectedTab !== index) {
+                            if (tab == null)
+                                setSelectedTab(index);
+                            if (!!onChangeTab)
+                                onChangeTab(index);
+                        }
                     }} >
                     <ReactNative.Text>{title}</ReactNative.Text>
                 </ReactNative.Pressable>
@@ -31,12 +38,22 @@ jest.mock('navigation-react-native', () => {
             return (
                 <>
                     {!bottomTabs && tabLayout}
-                    <ReactNative.View accessibilityRole="tablist" {...props} />
+                    <ReactNative.View accessibilityRole="tablist">
+                        {tabBarItems.map((child, index) => {
+                            const selected = index === selectedTab;
+                            return React.cloneElement(child, {...child.props, selected})
+                    })}
+                    </ReactNative.View>
                     {bottomTabs && tabLayout}
                 </>
             );            
         },
-        TabBarItem: props => <ReactNative.View accessibilityRole="tabpanel" {...props} />,
+        TabBarItem: ({ selected, ...props }) => (
+            <ReactNative.View
+                accessibilityRole="tabpanel"
+                accessibilityState={{selected}}
+                {...props} />
+        ),
         CoordinatorLayout: ({children}) => children,
     };
 });
