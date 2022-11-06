@@ -64,6 +64,25 @@ jest.mock('navigation-react-native', () => {
         });
     }
 
+    const NavigationBar = ({ title, children, ...props }) => (
+        <ReactNative.View accessibilityRole="toolbar" {...props}>
+            {title != null && (
+                <ReactNative.Text accessibilityRole="header">{title}</ReactNative.Text>
+            )}
+            {children}
+        </ReactNative.View>
+    );
+
+    const LeftBar = (props) => <ReactNative.View accessibilityRole="menubar" {...props} />;
+
+    const RightBar = (props) => <ReactNative.View accessibilityRole="menubar" {...props} />;
+
+    const BarButton = (props) => (
+        <ReactNative.View accessibilityRole="menuitem">
+            <ReactNative.Button {...props} />
+        </ReactNative.View>
+    );
+
     const TabBar = ({tab, defaultTab = 0, onChangeTab, bottomTabs, primary = true, ...props}) => {
         const [selectedTab, setSelectedTab] = React.useState(tab || defaultTab);
         if (tab != null && tab !== selectedTab) setSelectedTab(tab);
@@ -111,14 +130,10 @@ jest.mock('navigation-react-native', () => {
     return  {
         NavigationStack,
         Scene: NavigationReactNative.Scene,
-        NavigationBar: ({ title, children, ...props }) => (
-            <ReactNative.View accessibilityRole="toolbar" {...props}>
-                <ReactNative.Text accessibilityRole="header">{title}</ReactNative.Text>
-                {children}
-            </ReactNative.View>
-        ),
-        LeftBar: ({children}) => children,
-        RightBar: ({children}) => children,
+        NavigationBar,
+        LeftBar,
+        RightBar,
+        BarButton,
         TabBar,
         TabBarItem,
         CoordinatorLayout: ({children}) => children,
