@@ -64,10 +64,15 @@ jest.mock('navigation-react-native', () => {
         });
     }
 
-    const NavigationBar = ({ title, children, ...props }) => {
+    const NavigationBar = ({ navigationImage, title, onNavigationPress, children, ...props }) => {
         const Left = React.Children.toArray(children).find(({type}) => type === NavigationReactNative.LeftBar);
         return (
             <ReactNative.View accessibilityRole="toolbar" {...props}>
+                {!!navigationImage && (
+                    <ReactNative.Pressable accessibilityRole="button" onPress={onNavigationPress}>
+                        <ReactNative.Image source={navigationImage} />
+                    </ReactNative.Pressable> 
+                )}
                 {!!title && (
                     <ReactNative.Text accessibilityRole="header">{title}</ReactNative.Text>
                 )}
