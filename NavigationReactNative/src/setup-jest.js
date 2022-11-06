@@ -69,7 +69,7 @@ jest.mock('navigation-react-native', () => {
         return (
             <ReactNative.View accessibilityRole="toolbar" {...props}>
                 {!!navigationImage && (
-                    <ReactNative.Pressable accessibilityRole="button" onPress={onNavigationPress}>
+                    <ReactNative.Pressable accessibilityRole="imagebutton" onPress={onNavigationPress}>
                         <ReactNative.Image source={navigationImage} />
                     </ReactNative.Pressable> 
                 )}
