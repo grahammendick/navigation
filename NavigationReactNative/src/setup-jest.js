@@ -66,7 +66,7 @@ jest.mock('navigation-react-native', () => {
 
     const NavigationBar = ({ title, children, ...props }) => (
         <ReactNative.View accessibilityRole="toolbar" {...props}>
-            {title != null && (
+            {!!title && (
                 <ReactNative.Text accessibilityRole="header">{title}</ReactNative.Text>
             )}
             {children}
@@ -77,10 +77,13 @@ jest.mock('navigation-react-native', () => {
 
     const RightBar = (props) => <ReactNative.View accessibilityRole="menubar" {...props} />;
 
-    const BarButton = (props) => (
-        <ReactNative.View accessibilityRole="menuitem">
-            <ReactNative.Button {...props} />
-        </ReactNative.View>
+    const BarButton = ({title, image, ...props}) => (
+        <ReactNative.Pressable accessibilityRole="menuitem" {...props}>
+            <>
+                {!!title && <ReactNative.Text>{title}</ReactNative.Text>}
+                {!!image && <ReactNative.Image source={image} />}
+            </>
+        </ReactNative.Pressable>
     );
 
     const TabBar = ({tab, defaultTab = 0, onChangeTab, bottomTabs, primary = true, ...props}) => {
