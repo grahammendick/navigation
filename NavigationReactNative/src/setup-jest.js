@@ -64,16 +64,32 @@ jest.mock('navigation-react-native', () => {
         });
     }
 
-    const NavigationBar = ({ title, children, ...props }) => (
-        <ReactNative.View accessibilityRole="toolbar" {...props}>
-            {!!title && (
-                <ReactNative.Text accessibilityRole="header">{title}</ReactNative.Text>
-            )}
-            {children}
-        </ReactNative.View>
-    );
+    const NavigationBar = ({ title, children, ...props }) => {
+        const Left = React.Children.toArray(children).find(({type}) => type === NavigationReactNative.LeftBar);
+        return (
+            <ReactNative.View accessibilityRole="toolbar" {...props}>
+                {!!title && (
+                    <ReactNative.Text accessibilityRole="header">{title}</ReactNative.Text>
+                )}
+                {!Left ? <LeftBar /> : null}
+                {children}
+            </ReactNative.View>
+        );
+    };
 
-    const LeftBar = (props) => <ReactNative.View accessibilityRole="menubar" {...props} />;
+    const LeftBar = ({children, ...props}) => {
+        const {stateNavigator} = React.useContext(NavigationReact.NavigationContext);
+        return (
+            <ReactNative.View accessibilityRole="menubar" {...props}>
+                {stateNavigator.canNavigateBack(1) && (
+                    <ReactNative.Pressable accessibilityRole="menuitem">
+                        <ReactNative.Text>Back</ReactNative.Text>
+                    </ReactNative.Pressable>
+                )}
+                {children}
+            </ReactNative.View>
+        );
+    };
 
     const RightBar = (props) => <ReactNative.View accessibilityRole="menubar" {...props} />;
 
