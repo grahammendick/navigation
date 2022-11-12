@@ -85,7 +85,7 @@ jest.mock('navigation-react-native', () => {
 
     const LeftBar = ({children, ...props}) => {
         const {stateNavigator} = React.useContext(NavigationReact.NavigationContext);
-        return (
+        return (children || stateNavigator.canNavigateBack(1)) && (
             <ReactNative.View accessibilityRole="menubar" {...props}>
                 {stateNavigator.canNavigateBack(1) && (
                     <ReactNative.Pressable accessibilityRole="menuitem">
