@@ -161,6 +161,16 @@ jest.mock('navigation-react-native', () => {
 
     const TitleBar = (props) => <ReactNative.View accessibilityRole="header" {...props} />;
 
+    const SearchBar = ({ text, placeholder, onChangeText, children }) => (
+        <ReactNative.View accessibilityRole="search">
+            <ReactNative.TextInput
+                placeholder={placeholder}
+                accessibilityRole="searchBox"
+                onChangeText={onChangeText} />
+            {!!text && children}
+        </ReactNative.View>
+    );
+
     const TabBar = ({tab, defaultTab = 0, onChangeTab, bottomTabs, primary = true, ...props}) => {
         const [selectedTab, setSelectedTab] = React.useState(tab || defaultTab);
         if (tab != null && tab !== selectedTab) setSelectedTab(tab);
@@ -218,6 +228,7 @@ jest.mock('navigation-react-native', () => {
         LeftBar,
         RightBar,
         BarButton,
+        SearchBar,
         TitleBar,
         TabBar,
         TabBarItem,
