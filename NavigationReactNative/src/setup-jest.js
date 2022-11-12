@@ -116,14 +116,47 @@ jest.mock('navigation-react-native', () => {
 
     const RightBar = (props) => <ReactNative.View accessibilityRole="menubar" {...props} />;
 
-    const BarButton = ({title, image, children, ...props}) => (
-        <ReactNative.Pressable accessibilityRole="menuitem" {...props}>
-            <>
-                {!!title && <ReactNative.Text>{title}</ReactNative.Text>}
-                {!!image && <ReactNative.Image source={image} />}
-                {children}
-            </>
-        </ReactNative.Pressable>
+    const BarButton = ({title, image, onPress, children, ...props}) => {
+        const [expanded, setExpanded] = React.useState(false);
+        const actionBar = !!((React.Children.toArray(children))[0]?.type === ActionBar);
+        let subview = children;
+        if (actionBar) {
+            const bar = React.Children.toArray(children)[0];
+            subview = React.cloneElement(bar, {...bar.props, collapse: () => setExpanded(false)});
+        }
+        return (
+            <ReactNative.Pressable
+                accessibilityRole="menuitem"
+                {...props}
+                onPress={() => {
+                    if (!actionBar) onPress();
+                    else {
+                        const {props} = React.Children.toArray(children)[0];
+                        props.onExpanded?.();
+                        setExpanded(true);
+                    }
+                }}>
+                <>
+                    {!!title && <ReactNative.Text>{title}</ReactNative.Text>}
+                    {!!image && <ReactNative.Image source={image} />}
+                    {!actionBar || expanded ? subview : null}
+                </>
+            </ReactNative.Pressable>
+        );
+    };
+
+    const ActionBar =  ({collapse, onCollapsed, children}) => (
+        <>
+            <ReactNative.Pressable
+                accessibilityRole="button"
+                onPress={() => {
+                    collapse();
+                    onCollapsed?.();
+                }}>
+                <ReactNative.Text>Collapse</ReactNative.Text>
+            </ReactNative.Pressable>
+            {children}
+        </>
     );
 
     const TitleBar = (props) => <ReactNative.View accessibilityRole="header" {...props} />;
@@ -191,5 +224,6 @@ jest.mock('navigation-react-native', () => {
         SharedElement,
         CoordinatorLayout,
         CollapsingBar,
+        ActionBar,
     };
 });
