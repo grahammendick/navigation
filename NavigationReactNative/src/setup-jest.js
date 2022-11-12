@@ -178,8 +178,8 @@ jest.mock('navigation-react-native', () => {
     const CollapsingBar = ({children}) => children;
 
     return  {
+        ...NavigationReactNative,
         NavigationStack,
-        Scene: NavigationReactNative.Scene,
         NavigationBar,
         LeftBar,
         RightBar,
@@ -187,15 +187,8 @@ jest.mock('navigation-react-native', () => {
         TitleBar,
         TabBar,
         TabBarItem,
-        TabBarItemContext: NavigationReactNative.TabBarItemContext,
         SharedElement,
-        BackHandlerContext: NavigationReactNative.BackHandlerContext,
         CoordinatorLayout,
         CollapsingBar,
-        StatusBar: NavigationReactNative.StatusBar,
-        useNavigating: NavigationReactNative.useNavigating,
-        useNavigated: NavigationReactNative.useNavigated,
-        useUnloading: NavigationReactNative.useUnloading,
-        useUnloaded: NavigationReactNative.useUnloaded,
     };
 });
