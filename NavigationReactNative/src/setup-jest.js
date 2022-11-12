@@ -184,5 +184,9 @@ jest.mock('navigation-react-native', () => {
         TabBar,
         TabBarItem,
         CoordinatorLayout,
+        useNavigating: NavigationReactNative.useNavigating,
+        useNavigated: NavigationReactNative.useNavigated,
+        useUnloading: NavigationReactNative.useUnloading,
+        useUnloaded: NavigationReactNative.useUnloaded,
     };
 });
