@@ -175,6 +175,8 @@ jest.mock('navigation-react-native', () => {
 
     const CoordinatorLayout = ({children}) => children;
 
+    const CollapsingBar = ({children}) => children;
+
     return  {
         NavigationStack,
         Scene: NavigationReactNative.Scene,
@@ -189,6 +191,7 @@ jest.mock('navigation-react-native', () => {
         SharedElement,
         BackHandlerContext: NavigationReactNative.BackHandlerContext,
         CoordinatorLayout,
+        CollapsingBar,
         StatusBar: NavigationReactNative.StatusBar,
         useNavigating: NavigationReactNative.useNavigating,
         useNavigated: NavigationReactNative.useNavigated,
