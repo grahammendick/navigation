@@ -163,10 +163,7 @@ jest.mock('navigation-react-native', () => {
 
     const SearchBar = ({ text, placeholder, onChangeText, children }) => (
         <ReactNative.View accessibilityRole="search">
-            <ReactNative.TextInput
-                placeholder={placeholder}
-                accessibilityRole="searchBox"
-                onChangeText={onChangeText} />
+            <ReactNative.TextInput placeholder={placeholder} onChangeText={onChangeText} />
             {!!text && children}
         </ReactNative.View>
     );
