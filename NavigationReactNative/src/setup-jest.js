@@ -171,6 +171,8 @@ jest.mock('navigation-react-native', () => {
             {...props} />
     );
 
+    const SharedElement = ({children}) => children;
+
     const CoordinatorLayout = ({children}) => children;
 
     return  {
@@ -184,6 +186,7 @@ jest.mock('navigation-react-native', () => {
         TabBar,
         TabBarItem,
         TabBarItemContext: NavigationReactNative.TabBarItemContext,
+        SharedElement,
         CoordinatorLayout,
         useNavigating: NavigationReactNative.useNavigating,
         useNavigated: NavigationReactNative.useNavigated,
