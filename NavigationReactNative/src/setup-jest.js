@@ -103,7 +103,9 @@ jest.mock('navigation-react-native', () => {
         return (children || stateNavigator.canNavigateBack(1)) && (
             <ReactNative.View accessibilityRole="menubar" {...props}>
                 {stateNavigator.canNavigateBack(1) && (
-                    <ReactNative.Pressable accessibilityRole="menuitem">
+                    <ReactNative.Pressable
+                        accessibilityRole="menuitem"
+                        onPress={() => stateNavigator.navigateBack(1)}>
                         <ReactNative.Text>Back</ReactNative.Text>
                     </ReactNative.Pressable>
                 )}
@@ -144,7 +146,7 @@ jest.mock('navigation-react-native', () => {
                         if (!!onChangeTab)
                             onChangeTab(index);
                     }
-                }} >
+                }}>
                 <ReactNative.Text>{title}</ReactNative.Text>
             </ReactNative.Pressable>
         ));
