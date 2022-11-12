@@ -7,7 +7,7 @@ jest.mock('navigation-react-native', () => {
     const Scene = ({ crumb, renderScene = (state, data) => state.renderScene(data) }) => {
         const navEvent = React.useContext(NavigationReact.NavigationContext);
         const [navigationEvent, setNavigationEvent] = React.useState(null);
-        if (navEvent.stateNavigator.stateContext.crumbs.length === crumb && !navigationEvent) {
+        if (navEvent.stateNavigator.stateContext.crumbs.length === crumb && navigationEvent !== navEvent) {
             setNavigationEvent(navEvent);
         }
         const {crumbs} = navEvent.stateNavigator.stateContext;
