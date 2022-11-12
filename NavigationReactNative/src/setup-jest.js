@@ -189,6 +189,7 @@ jest.mock('navigation-react-native', () => {
         SharedElement,
         BackHandlerContext: NavigationReactNative.BackHandlerContext,
         CoordinatorLayout,
+        StatusBar: NavigationReactNative.StatusBar,
         useNavigating: NavigationReactNative.useNavigating,
         useNavigated: NavigationReactNative.useNavigated,
         useUnloading: NavigationReactNative.useUnloading,
