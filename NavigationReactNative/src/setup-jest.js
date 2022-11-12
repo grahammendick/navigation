@@ -218,6 +218,13 @@ jest.mock('navigation-react-native', () => {
 
     const CollapsingBar = ({children}) => children;
 
+    const FloatingActionButton = ({text, image, onPress}) => (
+        <ReactNative.Pressable accessibilityRole={text ? 'button' : 'imagebutton'} onPress={onPress}>
+            {!!text && <ReactNative.Text>{text}</ReactNative.Text>}
+            {!!image && <ReactNative.Image source={image} />}
+        </ReactNative.Pressable> 
+    );
+
     return  {
         ...NavigationReactNative,
         NavigationStack,
@@ -233,5 +240,6 @@ jest.mock('navigation-react-native', () => {
         CoordinatorLayout,
         CollapsingBar,
         ActionBar,
+        FloatingActionButton,
     };
 });
