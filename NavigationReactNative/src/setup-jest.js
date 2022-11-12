@@ -17,7 +17,7 @@ jest.mock('navigation-react-native', () => {
                 {navigationEvent && renderScene(state, data)}
             </NavigationReact.NavigationContext.Provider>
         );
-    }
+    };
 
     const NavigationStack = ({ stackInvalidatedLink, renderScene, children }) => {
         const {stateNavigator} = React.useContext(NavigationReact.NavigationContext);
@@ -77,7 +77,7 @@ jest.mock('navigation-react-native', () => {
                 </ReactNative.View>
             );
         });
-    }
+    };
 
     const NavigationBar = ({ hidden, navigationImage, title, onNavigationPress, children, ...props }) => {
         if (hidden) return null;
@@ -171,6 +171,8 @@ jest.mock('navigation-react-native', () => {
             {...props} />
     );
 
+    const CoordinatorLayout = ({children}) => children;
+
     return  {
         NavigationStack,
         Scene: NavigationReactNative.Scene,
@@ -181,6 +183,6 @@ jest.mock('navigation-react-native', () => {
         TitleBar,
         TabBar,
         TabBarItem,
-        CoordinatorLayout: ({children}) => children,
+        CoordinatorLayout,
     };
 });
