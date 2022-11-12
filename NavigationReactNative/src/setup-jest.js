@@ -82,9 +82,6 @@ jest.mock('navigation-react-native', () => {
     const NavigationBar = ({ hidden, navigationImage, title, onNavigationPress, children, ...props }) => {
         if (hidden) return null;
         const Left = React.Children.toArray(children).find(({type}) => type === NavigationReactNative.LeftBar);
-        const {stateNavigator} = React.useContext(NavigationReact.NavigationContext);
-        if (stateNavigator.canNavigateBack(1))
-            console.log(title, 'ppp')
         return (
             <ReactNative.View accessibilityRole="toolbar" {...props}>
                 {!!navigationImage && (
