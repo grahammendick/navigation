@@ -6,9 +6,10 @@ jest.mock('navigation-react-native', () => {
 
     const Scene = ({ crumb, renderScene = (state, data) => state.renderScene(data) }) => {
         const navEvent = React.useContext(NavigationReact.NavigationContext);
-        const [navigationEvent, setNavigationEvent] = React.useState(() => (
-            navEvent.stateNavigator.stateContext.crumbs.length !== crumb ? null : navEvent            
-        ));
+        const [navigationEvent, setNavigationEvent] = React.useState(null);
+        if (navEvent.stateNavigator.stateContext.crumbs.length === crumb && !navigationEvent) {
+            setNavigationEvent(navEvent);
+        }
         const {crumbs} = navEvent.stateNavigator.stateContext;
         const stateContext = navigationEvent?.stateNavigator?.stateContext;
         const {state, data} = stateContext || crumbs[crumb] || {};
@@ -202,7 +203,7 @@ jest.mock('navigation-react-native', () => {
                 </ReactNative.View>
                 {bottomTabs && tabLayout}
             </>
-        );            
+        );
     };
 
     const TabBarItem = ({ selected, ...props }) => (
