@@ -116,11 +116,12 @@ jest.mock('navigation-react-native', () => {
 
     const RightBar = (props) => <ReactNative.View accessibilityRole="menubar" {...props} />;
 
-    const BarButton = ({title, image, ...props}) => (
+    const BarButton = ({title, image, children, ...props}) => (
         <ReactNative.Pressable accessibilityRole="menuitem" {...props}>
             <>
                 {!!title && <ReactNative.Text>{title}</ReactNative.Text>}
                 {!!image && <ReactNative.Image source={image} />}
+                {children}
             </>
         </ReactNative.Pressable>
     );
