@@ -4,6 +4,21 @@ jest.mock('navigation-react-native', () => {
     const NavigationReact = require('navigation-react');
     const NavigationReactNative = jest.requireActual('navigation-react-native');
 
+    const Scene = ({ crumb, renderScene = (state, data) => state.renderScene(data) }) => {
+        const navEvent = React.useContext(NavigationReact.NavigationContext);
+        const [navigationEvent, setNavigationEvent] = React.useState(() => (
+            navEvent.stateNavigator.stateContext.crumbs.length !== crumb ? null : navEvent            
+        ));
+        const {crumbs} = navEvent.stateNavigator.stateContext;
+        const stateContext = navigationEvent?.stateNavigator?.stateContext;
+        const {state, data} = stateContext || crumbs[crumb] || {};
+        return !!state && (
+            <NavigationReact.NavigationContext.Provider value={navigationEvent}>
+                {navigationEvent && renderScene(state, data)}
+            </NavigationReact.NavigationContext.Provider>
+        );
+    }
+
     const NavigationStack = ({ stackInvalidatedLink, renderScene, children }) => {
         const {stateNavigator} = React.useContext(NavigationReact.NavigationContext);
         const [stackState, setStackState] = React.useState({stateNavigator: null, keys: []});
@@ -58,7 +73,7 @@ jest.mock('navigation-react-native', () => {
                     key={state.key}
                     accessibilityRole="window"
                     accessibilityState={{selected: index === length - 1}}>
-                    {renderScene(state, data)}
+                    <Scene crumb={index} renderScene={renderScene} />
                 </ReactNative.View>
             );
         });
@@ -67,6 +82,9 @@ jest.mock('navigation-react-native', () => {
     const NavigationBar = ({ hidden, navigationImage, title, onNavigationPress, children, ...props }) => {
         if (hidden) return null;
         const Left = React.Children.toArray(children).find(({type}) => type === NavigationReactNative.LeftBar);
+        const {stateNavigator} = React.useContext(NavigationReact.NavigationContext);
+        if (stateNavigator.canNavigateBack(1))
+            console.log(title, 'ppp')
         return (
             <ReactNative.View accessibilityRole="toolbar" {...props}>
                 {!!navigationImage && (
