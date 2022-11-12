@@ -79,13 +79,14 @@ jest.mock('navigation-react-native', () => {
         });
     };
 
-    const NavigationBar = ({ hidden, navigationImage, title, onNavigationPress, children, ...props }) => {
+    const NavigationBar = ({ hidden, navigationImage, navigationTestID, title, onNavigationPress, children, ...props }) => {
         if (hidden) return null;
         const Left = React.Children.toArray(children).find(({type}) => type === LeftBar);
         return (
             <ReactNative.View accessibilityRole="toolbar" {...props}>
                 {!!navigationImage && (
-                    <ReactNative.Pressable accessibilityRole="imagebutton" onPress={onNavigationPress}>
+                    <ReactNative.Pressable accessibilityRole="imagebutton"
+                        testID={navigationTestID} onPress={onNavigationPress}>
                         <ReactNative.Image source={navigationImage} />
                     </ReactNative.Pressable> 
                 )}
@@ -116,7 +117,7 @@ jest.mock('navigation-react-native', () => {
 
     const RightBar = (props) => <ReactNative.View accessibilityRole="menubar" {...props} />;
 
-    const BarButton = ({title, image, onPress, children, ...props}) => {
+    const BarButton = ({title, image, testID, onPress, children, ...props}) => {
         const [expanded, setExpanded] = React.useState(false);
         const actionBar = !!((React.Children.toArray(children))[0]?.type === ActionBar);
         let subview = children;
@@ -127,6 +128,7 @@ jest.mock('navigation-react-native', () => {
         return (
             <ReactNative.Pressable
                 accessibilityRole="menuitem"
+                testID={testID}
                 {...props}
                 onPress={() => {
                     if (!actionBar) onPress();
@@ -220,8 +222,10 @@ jest.mock('navigation-react-native', () => {
 
     const BottomSheet = ({children}) => children;
 
-    const FloatingActionButton = ({text, image, onPress}) => (
-        <ReactNative.Pressable accessibilityRole={text ? 'button' : 'imagebutton'} onPress={onPress}>
+    const FloatingActionButton = ({text, image, testID, onPress}) => (
+        <ReactNative.Pressable
+            accessibilityRole={text ? 'button' : 'imagebutton'}
+            testID={testID} onPress={onPress}>
             {!!text && <ReactNative.Text>{text}</ReactNative.Text>}
             {!!image && <ReactNative.Image source={image} />}
         </ReactNative.Pressable> 
