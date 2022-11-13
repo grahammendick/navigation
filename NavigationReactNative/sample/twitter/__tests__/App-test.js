@@ -33,6 +33,22 @@ describe('Home', () => {
     expect(header).toBeTruthy(); 
   });
 
+  it('should navigate back to Home', () => {
+    const { getAllByRole, getByRole } = render(<App />);
+    const tabsScene = getAllByRole('window', {selected: true})[0];
+    const homeTab = within(tabsScene).getByRole('tabpanel', {name: 'Home'});
+    const tweetButton = within(homeTab).getAllByRole('button', {name: 'Dan Abramov'})[0];
+    fireEvent.press(tweetButton);
+    const tweetScene = within(homeTab).getByRole('window', {selected: true});
+    const tweetHeader = within(tweetScene).getByRole('header', {name: 'Tweet'});
+    const backButton = within(tweetScene).getByRole('menuitem');
+    fireEvent.press(backButton);
+    const homeScene = within(homeTab).getByRole('window', {selected: true});
+    const homeHeader = within(homeScene).getByRole('header', {name: 'Home'});
+    expect(tweetHeader).toBeTruthy(); 
+    expect(homeHeader).toBeTruthy(); 
+  });
+
   it('should navigate to Timeline', () => {
     const { getAllByRole, getByRole } = render(<App />);
     const tabsScene = getAllByRole('window', {selected: true})[0];
