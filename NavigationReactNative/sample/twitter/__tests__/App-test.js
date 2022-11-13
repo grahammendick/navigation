@@ -63,7 +63,7 @@ describe('Home', () => {
 });
 
 describe('Notifications', () => {
-  it('should have title Notification', () => {
+  it('should have title Notifications', () => {
     const { getAllByRole } = render(<App />);
     const tabsScene = getAllByRole('window', {selected: true})[0];
     const notificationsTab = within(tabsScene).getByRole('tabpanel', {name: 'Notifications'});
