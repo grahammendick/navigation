@@ -1,7 +1,7 @@
 import 'react-native';
 import React from 'react';
 import App from '../App';
-import { render, screen, fireEvent, within } from '@testing-library/react-native';
+import { render, fireEvent, within } from '@testing-library/react-native';
 
 describe('Twitter', () => {
   it('should display Home and Notifications tabs with Home selected', () => {
