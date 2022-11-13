@@ -15,7 +15,7 @@ describe('Twitter', () => {
 
 describe('Home', () => {
   it('should have title Home', () => {
-    const { getAllByRole, getByRole } = render(<App />);
+    const { getAllByRole } = render(<App />);
     const tabsScene = getAllByRole('window', {selected: true})[0];
     const homeTab = within(tabsScene).getByRole('tabpanel', {name: 'Home'});
     const header = within(homeTab).getByRole('header', {name: 'Home'});
@@ -23,7 +23,7 @@ describe('Home', () => {
   });
 
   it('should navigate to Tweet', () => {
-    const { getAllByRole, getByRole } = render(<App />);
+    const { getAllByRole } = render(<App />);
     const tabsScene = getAllByRole('window', {selected: true})[0];
     const homeTab = within(tabsScene).getByRole('tabpanel', {name: 'Home'});
     const tweetButton = within(homeTab).getAllByRole('button', {name: 'Dan Abramov'})[0];
@@ -34,7 +34,7 @@ describe('Home', () => {
   });
 
   it('should navigate back to Home', () => {
-    const { getAllByRole, getByRole } = render(<App />);
+    const { getAllByRole } = render(<App />);
     const tabsScene = getAllByRole('window', {selected: true})[0];
     const homeTab = within(tabsScene).getByRole('tabpanel', {name: 'Home'});
     const tweetButton = within(homeTab).getAllByRole('button', {name: 'Dan Abramov'})[0];
@@ -50,7 +50,7 @@ describe('Home', () => {
   });
 
   it('should navigate to Timeline', () => {
-    const { getAllByRole, getByRole } = render(<App />);
+    const { getAllByRole } = render(<App />);
     const tabsScene = getAllByRole('window', {selected: true})[0];
     const homeTab = within(tabsScene).getByRole('tabpanel', {name: 'Home'});
     const tweetButton = within(homeTab).getAllByRole('button', {name: 'Dan Abramov'})[0];
