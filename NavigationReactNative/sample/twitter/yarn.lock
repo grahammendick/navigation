@@ -4907,10 +4907,10 @@
   "resolved" "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   "version" "1.4.0"
 
-"navigation-react-native@^8.13.0":
-  "integrity" "sha512-kcbQmMTF0OcCJnqjT1eD1eip65Zu2NBANGxJQKUGpoeuitng+HOHklSuRoIis7viFowff3oqsqomAlUr/VMFoA=="
-  "resolved" "https://registry.npmjs.org/navigation-react-native/-/navigation-react-native-8.13.0.tgz"
-  "version" "8.13.0"
+"navigation-react-native@^8.14.0":
+  "integrity" "sha512-LeGGALb6ZCv1GgJOLrE1nqjrV5mfvT29TWunL26j1jcBqIDeCUQvAkiq0240i972GTQW/xHXcXRkR3ZZ4yNXyg=="
+  "resolved" "https://registry.npmjs.org/navigation-react-native/-/navigation-react-native-8.14.0.tgz"
+  "version" "8.14.0"
 
 "navigation-react@*", "navigation-react@^4.5.1":
   "integrity" "sha512-s8FUkLATlr2JcXiyOR9DUQlIAZNyqX3oW0m2u6VCLxmSNSUHUCqueSsULtRTS2FoBAYqN81tZzLMsSw0sBQeDg=="
