@@ -66,7 +66,8 @@ var cleanNative = () => {
         './build/npm/navigation-react-native/cpp',
         './build/npm/navigation-react-native/**/Native*Module.js',
         './build/npm/navigation-react-native/**/*NativeComponent.js',
-        './build/npm/navigation-react-native/react-native.config.js'
+        './build/npm/navigation-react-native/react-native.config.js',
+        './build/npm/navigation-react-native/setup-jest.js'
     ]);
 };
 var packageNative = () => {
@@ -76,7 +77,8 @@ var packageNative = () => {
         './NavigationReactNative/src/cpp/**/*',
         './NavigationReactNative/src/**/Native*Module.js',
         './NavigationReactNative/src/**/*NativeComponent.js',
-        './NavigationReactNative/src/react-native.config.js'
+        './NavigationReactNative/src/react-native.config.js',
+        './NavigationReactNative/src/setup-jest.js'
     ], {base: './NavigationReactNative/src'})
         .pipe(dest('./build/npm/navigation-react-native'));
 };

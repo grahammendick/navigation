@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {StyleSheet, SafeAreaView, Text, Image, FlatList, View, TouchableHighlight} from 'react-native';
+import {StyleSheet, SafeAreaView, Text, Image, FlatList, View, TouchableHighlight, Platform} from 'react-native';
 import {NavigationContext} from 'navigation-react';
 import {CoordinatorLayout, NavigationBar, TabBar, TabBarItem} from 'navigation-react-native';
 import TweetItem from './TweetItem';

@@ -6,6 +6,7 @@ build/npm/**/cpp
 build/npm/**/Native*Module.js
 build/npm/**/*NativeComponent.js
 build/npm/**/react-native.config.js
+build/npm/**/setup-jest.js
 npm-debug.log
 node_modules
 !Navigation*/src/node_modules

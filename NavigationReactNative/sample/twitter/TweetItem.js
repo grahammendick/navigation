@@ -7,12 +7,14 @@ export default ({id, account: {id: accountId, name, logo}, text, onTimeline}) =>
   return (
     <TouchableHighlight
       underlayColor="white"
+      accessibilityRole="button"
       onPress={() => {
         stateNavigator.navigate('tweet', {id});
       }}>
       <View style={styles.tweet}>
         <TouchableHighlight
           underlayColor="white"
+          accessibilityRole="button"
           onPress={() => {
             if (!onTimeline || onTimeline(accountId))
               stateNavigator.navigate('timeline', {id: accountId});
