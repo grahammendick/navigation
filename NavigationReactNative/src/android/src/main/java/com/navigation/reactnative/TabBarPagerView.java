@@ -116,6 +116,8 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
                     ((ScrollView) viewGroup.getChildAt(i)).smoothScrollTo(0,0);
                 if (viewGroup.getChildAt(i) instanceof TabBarPagerView)
                     ((TabBarPagerView) viewGroup.getChildAt(i)).scrollToTop();
+                if (viewGroup.getChildAt(i) instanceof BottomAppBarView)
+                    ((BottomAppBarView) viewGroup.getChildAt(i)).performShow();
             }
         }
         if (tabBarItem instanceof ScrollView)
