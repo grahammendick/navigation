@@ -70,6 +70,8 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
                 ((TabBarPagerView) getChildAt(i)).scrollToTop();
             if (getChildAt(i) instanceof ViewPager2)
                 TabBarPagerRTLManager.getAdapter((ViewPager2) getChildAt(i)).scrollToTop();
+            if (getChildAt(i) instanceof BottomAppBarView)
+                ((BottomAppBarView) getChildAt(i)).performShow();
         }
     }
 
