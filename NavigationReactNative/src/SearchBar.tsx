@@ -33,12 +33,13 @@ class SearchBar extends React.Component<any, any> {
     }
     render() {
         var {show, mostRecentEventCount, mostRecentButtonEventCount} = this.state;
-        var {autoCapitalize, children, bottomBar, scopeButton, scopeButtons, ...props} = this.props;
+        var {autoCapitalize, children, bottomBar, scopeButton, scopeButtons, toolbar, ...props} = this.props;
         var constants = (UIManager as any).getViewManagerConfig('NVSearchBar').Constants;
         autoCapitalize = Platform.OS === 'android' ? constants.AutoCapitalize[autoCapitalize] : autoCapitalize;
         var showStyle = Platform.OS === 'android' && {top: !bottomBar ? 56 : 0, bottom: !bottomBar ? 0: 56, height: show ? 'auto' : 0}
+        var SearchBar = Platform.OS === 'ios' || !toolbar ? NVSearchBar : NVSearchResults;
         return (
-            <NVSearchBar
+            <SearchBar
                 {...props}
                 ref={this.ref}
                 bottomBar={bottomBar}
@@ -53,12 +54,13 @@ class SearchBar extends React.Component<any, any> {
                 onCollapse={() => this.setState({show: false})}
                 style={[styles.searchBar, showStyle]}>
                 {Platform.OS === 'ios' || this.state.show ? children : null}
-            </NVSearchBar>
+            </SearchBar>
         );
     }
 }
 
 var NVSearchBar = global.nativeFabricUIManager ? require('./SearchBarNativeComponent').default : requireNativeComponent('NVSearchBar');
+var NVSearchResults = global.nativeFabricUIManager ? require('./SearchBarNativeComponent').default : requireNativeComponent('NVSearchResults');
 
 var styles = StyleSheet.create({
     searchBar: {
