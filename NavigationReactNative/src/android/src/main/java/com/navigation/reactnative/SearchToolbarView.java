@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableMap;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.search.SearchBar;
 
 public class SearchToolbarView extends SearchBar {
@@ -12,6 +13,9 @@ public class SearchToolbarView extends SearchBar {
 
     public SearchToolbarView(Context context) {
         super(context);
+        AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.WRAP_CONTENT);
+        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+        setLayoutParams(params);
         navIconResolverListener = d -> {
             setNavigationIcon(d);
         };
