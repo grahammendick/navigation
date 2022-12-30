@@ -17,6 +17,12 @@ public class SearchToolbarView extends SearchBar {
         };
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        getParent().requestLayout();
+    }
+
     void setNavIconSource(@Nullable ReadableMap source) {
         IconResolver.setIconSource(source, navIconResolverListener, getContext());
     }
