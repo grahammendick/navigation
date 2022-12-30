@@ -42,7 +42,10 @@ class NavigationBar extends React.Component<any, any> {
             return statusBar;
         if (bottomBar)
             return <BottomAppBar {...this.props} />
-        var collapsingBar = Platform.OS === 'android' && childrenArray.find(({type}) => type === CollapsingBar);
+        var collapsingBar = Platform.OS === 'android' && !searchToolbar && childrenArray.find(({type}) => type === CollapsingBar);
+        var searchBar = childrenArray.find(({type}) => type === SearchBar);
+        var searchToolbar = !!searchBar?.props.toolbar;
+        var Toolbar = !searchToolbar ? NVToolbar : NVSearchToolbar;
         return (
             <>
                 <NVNavigationBar
@@ -62,7 +65,7 @@ class NavigationBar extends React.Component<any, any> {
                             {...scrollEdgeProps}
                             {...(collapsingBar && collapsingBar.props)}>
                             {collapsingBar && collapsingBar.props.children}
-                            <NVToolbar
+                            <Toolbar
                                 logo={Image.resolveAssetSource(logo)}
                                 navigationImage={Image.resolveAssetSource(navigationImage)}
                                 overflowImage={Image.resolveAssetSource(overflowImage)}
@@ -71,15 +74,15 @@ class NavigationBar extends React.Component<any, any> {
                                 {...scrollEdgeProps}
                                 barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : null}
                                 titleCentered={!!titleCentered}
-                                barHeight={!material3 ? 56 : 64}
-                                style={{height: !material3 ? 56 : 64}}>
+                                barHeight={!material3 || searchToolbar ? 56 : 64}
+                                style={{height: !material3 || searchToolbar ? 56 : 64}}>
                                 {[
-                                    childrenArray.find(({type}) => type === TitleBar),
+                                    !searchToolbar && childrenArray.find(({type}) => type === TitleBar),
                                     childrenArray.find(({type}) => type === LeftBar),
                                     childrenArray.find(({type}) => type === RightBar)
                                 ]}
-                            </NVToolbar>
-                            {childrenArray.find(({type}) => type === TabBar)}
+                            </Toolbar>
+                            {!searchToolbar && childrenArray.find(({type}) => type === TabBar)}
                         </Container>}
                     {Platform.OS === 'ios' && statusBar}
                 </NVNavigationBar>
@@ -96,5 +99,6 @@ var Container: any = ({collapse, children, ...props}) => (
 
 var NVNavigationBar = global.nativeFabricUIManager ? require('./NavigationBarNativeComponent').default : requireNativeComponent('NVNavigationBar');
 var NVToolbar = global.nativeFabricUIManager ? require('./ToolbarNativeComponent').default : requireNativeComponent('NVToolbar');
+var NVSearchToolbar = global.nativeFabricUIManager ? require('./ToolbarNativeComponent').default : requireNativeComponent('NVSearchToolbar');
 
 export default Animated.createAnimatedComponent(NavigationBar);

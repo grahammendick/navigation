@@ -1,5 +1,6 @@
 package com.navigation.reactnative;
 
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -14,11 +15,16 @@ public class SearchToolbarManager extends ViewGroupManager<SearchToolbarView> {
     }
 
     @ReactProp(name = "placeholder")
-    public void setPlaceholder(SearchBarView view, String placeholder) {
+    public void setPlaceholder(SearchToolbarView view, String placeholder) {
+    }
+
+    @ReactProp(name = "navigationImage")
+    public void setNavIcon(SearchToolbarView view, ReadableMap navIcon) {
+        view.setNavIconSource(navIcon);
     }
 
     @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
-    public void setBarTintColor(SearchBarView view, int barTintColor) {
+    public void setBarTintColor(SearchToolbarView view, int barTintColor) {
     }
 
     @Override
