@@ -49,6 +49,7 @@ class NavigationBar extends React.Component<any, any> {
         var searchBarTintColor = searchBar?.props.barTintColor;
         searchBarTintColor = typeof searchBarTintColor === 'function' ? searchBarTintColor(true) : searchBarTintColor;
         var toolbarTintColor = searchToolbar ? searchBarTintColor : scrollEdgeProps.barTintColor;
+        var placeholder = searchBar?.props.placeholder;
         return (
             <>
                 <NVNavigationBar
@@ -76,6 +77,7 @@ class NavigationBar extends React.Component<any, any> {
                                 {...otherProps}
                                 {...scrollEdgeProps}
                                 barTintColor={!collapsingBar ? toolbarTintColor : null}
+                                placeholder={typeof placeholder === 'function' ? placeholder(true) : placeholder}
                                 titleCentered={!!titleCentered}
                                 barHeight={!material3 || searchToolbar ? 56 : 64}
                                 style={{height: !material3 || searchToolbar ? 56 : 64}}>

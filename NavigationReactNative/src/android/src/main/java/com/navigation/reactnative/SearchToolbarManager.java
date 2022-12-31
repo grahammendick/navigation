@@ -21,6 +21,7 @@ public class SearchToolbarManager extends ViewGroupManager<SearchToolbarView> {
 
     @ReactProp(name = "placeholder")
     public void setPlaceholder(SearchToolbarView view, String placeholder) {
+        view.setHint(placeholder);
     }
 
     @ReactProp(name = "navigationImage")
