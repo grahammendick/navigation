@@ -27,6 +27,8 @@ public class SearchToolbarView extends SearchBar {
     final Drawable defaultBackground;
     private Integer tintColor;
     private Integer defaultMenuTintColor;
+    private String navigationTestID;
+    private String overflowTestID;
     final ArrayList<View> children = new ArrayList<>();
 
     public SearchToolbarView(Context context) {
@@ -38,7 +40,7 @@ public class SearchToolbarView extends SearchBar {
         navIconResolverListener = d -> {
             setNavigationIcon(d);
             setTintColor(getNavigationIcon());
-            // setTestID();
+            setTestID();
         };
     }
 
@@ -79,8 +81,18 @@ public class SearchToolbarView extends SearchBar {
             }
         }
         setMenuTintColor(testIDs);
-        // setTestID();
+        setTestID();
         requestLayout();
+    }
+
+    void setNavigationTestID(String navigationTestID) {
+        this.navigationTestID = navigationTestID;
+        setTestID();
+    }
+
+    void setOverflowTestID(String overflowTestID) {
+        this.overflowTestID = overflowTestID;
+        setTestID();
     }
 
     private void setMenuTintColor(HashMap<MenuItem, String> testIDs)  {
@@ -104,6 +116,24 @@ public class SearchToolbarView extends SearchBar {
         for (int i = 0; i < children.size(); i++) {
             if (children.get(i) instanceof BarButtonView) {
                 ((BarButtonView) children.get(i)).setTintColor(tintColor);
+            }
+        }
+    }
+
+    private void setTestID() {
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            if (child instanceof AppCompatImageButton) {
+                child.setTag(navigationTestID);
+            }
+            if (child instanceof ActionMenuView) {
+                ActionMenuView menu = (ActionMenuView) child;
+                for (int j = 0; j < menu.getChildCount(); j++) {
+                    if (menu.getChildAt(j) instanceof AppCompatImageView) {
+                        AppCompatImageView overflowButton = (AppCompatImageView) menu.getChildAt(j);
+                        overflowButton.setTag(overflowTestID);
+                    }
+                }
             }
         }
     }

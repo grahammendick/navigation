@@ -51,6 +51,16 @@ public class SearchToolbarManager extends ViewGroupManager<SearchToolbarView> {
         view.setTintColor(tintColor != Integer.MAX_VALUE ? tintColor : null);
     }
 
+    @ReactProp(name = "navigationTestID")
+    public void setNavigationTestID(SearchToolbarView view, String navigationTestID) {
+        view.setNavigationTestID(navigationTestID);
+    }
+
+    @ReactProp(name = "overflowTestID")
+    public void setOverflowTestID(SearchToolbarView view, String overflowTestID) {
+        view.setOverflowTestID(overflowTestID);
+    }
+
     @Override
     public void addView(SearchToolbarView parent, View child, int index) {
         parent.children.add(index, child);
