@@ -30,6 +30,11 @@ public class SearchToolbarManager extends ViewGroupManager<SearchToolbarView> {
         view.setNavIconSource(navIcon);
     }
 
+    @ReactProp(name = "overflowImage")
+    public void setOverflowIcon(SearchToolbarView view, ReadableMap overflowIcon) {
+        view.setOverflowIconSource(overflowIcon);
+    }
+
     @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
     public void setBarTintColor(SearchToolbarView view, int barTintColor) {
         if (barTintColor != Integer.MAX_VALUE) {
@@ -63,7 +68,7 @@ public class SearchToolbarManager extends ViewGroupManager<SearchToolbarView> {
 
     @Override
     public void addView(SearchToolbarView parent, View child, int index) {
-        parent.children.add(index, child);
+        parent.children.add(index, (BarButtonView) child);
         parent.setMenuItems();
     }
 

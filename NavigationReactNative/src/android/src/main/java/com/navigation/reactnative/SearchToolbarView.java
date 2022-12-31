@@ -23,13 +23,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SearchToolbarView extends SearchBar {
-    private final IconResolver.IconResolverListener navIconResolverListener;
     final Drawable defaultBackground;
     private Integer tintColor;
     private Integer defaultMenuTintColor;
+    final Drawable defaultOverflowIcon;
     private String navigationTestID;
     private String overflowTestID;
-    final ArrayList<View> children = new ArrayList<>();
+    private final IconResolver.IconResolverListener navIconResolverListener;
+    private final IconResolver.IconResolverListener overflowIconResolverListener;
+    final ArrayList<BarButtonView> children = new ArrayList<>();
 
     public SearchToolbarView(Context context) {
         super(context);
@@ -37,11 +39,23 @@ public class SearchToolbarView extends SearchBar {
         params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
         setLayoutParams(params);
         defaultBackground = getBackground();
+        defaultOverflowIcon = getOverflowIcon();
         navIconResolverListener = d -> {
             setNavigationIcon(d);
             setTintColor(getNavigationIcon());
             setTestID();
         };
+        overflowIconResolverListener = d -> {
+            setOverflowIcon(d);
+            setTintColor(getOverflowIcon());
+        };
+        setOnMenuItemClickListener(item -> {
+            for (int i = 0; i < children.size(); i++) {
+                if (children.get(i).getMenuItem() == item)
+                    children.get(i).press();
+            }
+            return true;
+        });
     }
 
     @Override
@@ -54,9 +68,17 @@ public class SearchToolbarView extends SearchBar {
         IconResolver.setIconSource(source, navIconResolverListener, getContext());
     }
 
+    void setOverflowIconSource(@Nullable ReadableMap source) {
+        if (source != null)
+            IconResolver.setIconSource(source, overflowIconResolverListener, getContext());
+        else
+            setOverflowIcon(defaultOverflowIcon);
+    }
+
     void setTintColor(Integer tintColor) {
         this.tintColor = tintColor;
         setTintColor(getNavigationIcon());
+        setTintColor(getOverflowIcon());
         setMenuTintColor(null);
     }
 
@@ -73,12 +95,10 @@ public class SearchToolbarView extends SearchBar {
         getMenu().clear();
         HashMap<MenuItem, String> testIDs = new HashMap<>();
         for (int i = 0; i < children.size(); i++) {
-            if (children.get(i) instanceof BarButtonView) {
-                BarButtonView barButton = (BarButtonView) children.get(i);
-                MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, "");
-                barButton.setMenuItem(menuItem);
-                testIDs.put(menuItem, barButton.testID);
-            }
+            BarButtonView barButton = children.get(i);
+            MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, "");
+            barButton.setMenuItem(menuItem);
+            testIDs.put(menuItem, barButton.testID);
         }
         setMenuTintColor(testIDs);
         setTestID();
@@ -114,9 +134,7 @@ public class SearchToolbarView extends SearchBar {
             }
         }
         for (int i = 0; i < children.size(); i++) {
-            if (children.get(i) instanceof BarButtonView) {
-                ((BarButtonView) children.get(i)).setTintColor(tintColor);
-            }
+            children.get(i).setTintColor(tintColor);
         }
     }
 
