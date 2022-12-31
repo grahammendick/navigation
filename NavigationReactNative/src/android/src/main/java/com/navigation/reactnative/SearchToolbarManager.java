@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
+import android.view.View;
 
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -43,6 +44,33 @@ public class SearchToolbarManager extends ViewGroupManager<SearchToolbarView> {
         }
         else
           view.setBackground(view.defaultBackground);
+    }
+
+    @ReactProp(name = "tintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setTintColor(SearchToolbarView view, int tintColor) {
+        view.setTintColor(tintColor != Integer.MAX_VALUE ? tintColor : null);
+    }
+
+    @Override
+    public void addView(SearchToolbarView parent, View child, int index) {
+        parent.children.add(index, child);
+        parent.setMenuItems();
+    }
+
+    @Override
+    public void removeViewAt(SearchToolbarView parent, int index) {
+        parent.children.remove(index);
+        parent.setMenuItems();
+    }
+
+    @Override
+    public int getChildCount(SearchToolbarView parent) {
+        return parent.children.size();
+    }
+
+    @Override
+    public View getChildAt(SearchToolbarView parent, int index) {
+        return parent.children.get(index);
     }
 
     @Override
