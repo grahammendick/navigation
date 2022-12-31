@@ -36,7 +36,7 @@ class SearchBar extends React.Component<any, any> {
         var {autoCapitalize, children, bottomBar, scopeButton, scopeButtons, toolbar, ...props} = this.props;
         var constants = (UIManager as any).getViewManagerConfig('NVSearchBar').Constants;
         autoCapitalize = Platform.OS === 'android' ? constants.AutoCapitalize[autoCapitalize] : autoCapitalize;
-        var showStyle = Platform.OS === 'android' && {top: !bottomBar ? 56 : 0, bottom: !bottomBar ? 0: 56, height: show ? 'auto' : 0}
+        var showStyle = Platform.OS === 'android' && {top: !bottomBar ? 56 : 0, bottom: !bottomBar ? 0: 56, height: show ? 'auto' : 0, zIndex: show ? 58 : -58}
         var SearchBar = Platform.OS === 'ios' || !toolbar ? NVSearchBar : NVSearchResults;
         return (
             <SearchBar
@@ -53,7 +53,7 @@ class SearchBar extends React.Component<any, any> {
                 onExpand={() => this.setState({show: true})}
                 onCollapse={() => this.setState({show: false})}
                 style={[styles.searchBar, showStyle]}>
-                {Platform.OS === 'ios' || this.state.show ? children : null}
+                {children}
             </SearchBar>
         );
     }
@@ -66,8 +66,7 @@ var styles = StyleSheet.create({
     searchBar: {
         position: 'absolute',
         ...Platform.select({
-            android: {
-                zIndex: 58,
+            android: {                
                 right: 0, left: 0,
             },
         })
