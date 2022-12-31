@@ -30,6 +30,11 @@ public class SearchToolbarManager extends ViewGroupManager<SearchToolbarView> {
         view.setNavIconSource(navIcon);
     }
 
+    @ReactProp(name = "navigationAccessibilityLabel")
+    public void setNavigationContentDescription(SearchToolbarView view, String navigationContentDescription) {
+        view.setNavigationContentDescription(navigationContentDescription);
+    }
+
     @ReactProp(name = "overflowImage")
     public void setOverflowIcon(SearchToolbarView view, ReadableMap overflowIcon) {
         view.setOverflowIconSource(overflowIcon);
