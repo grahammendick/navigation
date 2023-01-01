@@ -20,7 +20,7 @@ const SearchBar = ({obscureBackground = true, hideNavigationBar= true, hideWhenS
     }
     var constants = (UIManager as any).getViewManagerConfig('NVSearchBar').Constants;
     autoCapitalize = Platform.OS === 'android' ? constants.AutoCapitalize[autoCapitalize] : autoCapitalize;
-    var showStyle = Platform.OS === 'android' && {top: !bottomBar && !toolbar ? 56 : 0, bottom: !bottomBar ? 0: 56, height: show ? 'auto' : 0, zIndex: show ? 58 : -58}
+    var showStyle = Platform.OS === 'android' && {top: !bottomBar && !toolbar ? 56 : 0, bottom: !bottomBar ? 0: 56, zIndex: show ? 58 : -58}
     var SearchBar = Platform.OS === 'ios' || !toolbar ? NVSearchBar : NVSearchResults;
     return (
         <SearchBar

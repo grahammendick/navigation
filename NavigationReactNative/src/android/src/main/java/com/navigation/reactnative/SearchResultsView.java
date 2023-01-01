@@ -18,6 +18,7 @@ import com.google.android.material.search.SearchView;
 public class SearchResultsView extends SearchView {
     int nativeEventCount;
     int mostRecentEventCount;
+    private boolean layoutRequested = false;
 
     public SearchResultsView(Context context) {
         super(context);
@@ -69,6 +70,23 @@ public class SearchResultsView extends SearchView {
             }
         }
     }
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        if (!layoutRequested) {
+            layoutRequested = true;
+            post(measureAndLayout);
+        }
+    }
+
+    private final Runnable measureAndLayout = () -> {
+        layoutRequested = false;
+        measure(
+            MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+        layout(getLeft(), getTop(), getRight(), getBottom());
+    };
 
     static class ChangeTextEvent extends Event<SearchBarView.ChangeTextEvent> {
         private final String text;
