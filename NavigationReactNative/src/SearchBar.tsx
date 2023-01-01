@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { requireNativeComponent, Platform, StyleSheet, UIManager } from 'react-native';
+import { requireNativeComponent, Platform, StyleSheet, UIManager, NativeModules } from 'react-native';
 
 const SearchBar = ({obscureBackground = true, hideNavigationBar= true, hideWhenScrolling = false, autoCapitalize = 'sentences', onChangeText,
     placeholder = Platform.OS === 'ios' ? 'Search' : undefined, children, bottomBar, scopeButton, scopeButtons, onChangeScopeButton, toolbar, ...props}) => {
@@ -18,10 +18,14 @@ const SearchBar = ({obscureBackground = true, hideNavigationBar= true, hideWhenS
         if (onChangeScopeButton)
             onChangeScopeButton(scopeButtons[scopeButton])
     }
-    var constants = (UIManager as any).getViewManagerConfig('NVSearchBar').Constants;
+    const Material3 = global.__turboModuleProxy != null ? require("./NativeMaterial3Module").default : NativeModules.Material3;
+    const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
+    const constants = (UIManager as any).getViewManagerConfig('NVSearchBar').Constants;
     autoCapitalize = Platform.OS === 'android' ? constants.AutoCapitalize[autoCapitalize] : autoCapitalize;
-    var showStyle = Platform.OS === 'android' && {top: !bottomBar && !toolbar ? 56 : 0, bottom: !bottomBar ? 0: 56, zIndex: show ? 58 : -58}
-    var SearchBar = Platform.OS === 'ios' || !toolbar ? NVSearchBar : NVSearchResults;
+    const top = !bottomBar && !toolbar ? (!material3 ? 56 : 64) : 0;
+    const bottom= !bottomBar ? 0: (!material3 ? 56 : 88);
+    const showStyle = Platform.OS === 'android' && {top, bottom, zIndex: show ? 58 : -58};
+    const SearchBar = Platform.OS === 'ios' || !toolbar ? NVSearchBar : NVSearchResults;
     return (
         <SearchBar
             {...props}
