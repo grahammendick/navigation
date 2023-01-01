@@ -2,6 +2,8 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.ViewGroup;
 
 import com.facebook.react.bridge.Arguments;
@@ -14,6 +16,8 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.search.SearchView;
 
 public class SearchResultsView extends SearchView {
+    int nativeEventCount;
+    int mostRecentEventCount;
 
     public SearchResultsView(Context context) {
         super(context);
@@ -29,6 +33,30 @@ public class SearchResultsView extends SearchView {
                 eventDispatcher.dispatchEvent(new SearchResultsView.CollapseEvent(getId()));
             }
         });
+        getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                nativeEventCount++;
+                ReactContext reactContext = (ReactContext) ((ContextWrapper) getContext()).getBaseContext();
+                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                eventDispatcher.dispatchEvent(new SearchResultsView.ChangeTextEvent(getId(), charSequence.toString(), nativeEventCount));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+    }
+
+    void setText(String text) {
+        int eventLag = nativeEventCount - mostRecentEventCount;
+        if (eventLag == 0 && !getEditText().getText().equals(text)) {
+            getEditText().setText(text);
+        }
     }
 
     @Override
