@@ -80,7 +80,7 @@ class NavigationBar extends React.Component<any, any> {
                                 placeholder={typeof placeholder === 'function' ? placeholder(true) : placeholder}
                                 titleCentered={!!titleCentered}
                                 barHeight={!material3 || searchToolbar ? 56 : 64}
-                                style={{height: !material3 || searchToolbar ? 56 : 64}}>
+                                style={{height: !material3 || searchToolbar ? 56 : 64, margin: searchToolbar ? 16 : undefined}}>
                                 {[
                                     !searchToolbar && childrenArray.find(({type}) => type === TitleBar),
                                     childrenArray.find(({type}) => type === LeftBar),
