@@ -28,7 +28,7 @@ public class SearchResultsView extends SearchView {
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
                 eventDispatcher.dispatchEvent(new SearchResultsView.ExpandEvent(getId()));
             }
-            if (newState == TransitionState.HIDING) {
+            if (newState == TransitionState.HIDDEN) {
                 ReactContext reactContext = (ReactContext) ((ContextWrapper) getContext()).getBaseContext();
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
                 eventDispatcher.dispatchEvent(new SearchResultsView.CollapseEvent(getId()));
