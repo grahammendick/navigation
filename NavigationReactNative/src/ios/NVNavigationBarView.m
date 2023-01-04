@@ -124,7 +124,8 @@ API_AVAILABLE(ios(13.0)){
     [appearance setLargeTitleTextAttributes:[self largeTitleAttributes]];
     appearance.backButtonAppearance = [UIBarButtonItemAppearance new];
     appearance.backButtonAppearance.normal.titleTextAttributes = [self backAttributes];
-    [appearance setBackIndicatorImage:_backImage transitionMaskImage:_backImage];
+    UIImage* backIndicatorImage = [_backImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    [appearance setBackIndicatorImage:backIndicatorImage transitionMaskImage:backIndicatorImage];
     return appearance;
 }
 
