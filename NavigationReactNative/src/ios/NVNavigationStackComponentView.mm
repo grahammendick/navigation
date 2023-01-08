@@ -26,6 +26,7 @@ using namespace facebook::react;
     NSMutableDictionary *_scenes;
     NSInteger _nativeEventCount;
     UINavigationController *_oldNavigationController;
+    BOOL _navigated;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -64,9 +65,14 @@ using namespace facebook::react;
     self.keys = [keysArr copy];
     _enterAnimOff = newViewProps.enterAnimOff;
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
-    dispatch_async(dispatch_get_main_queue(), ^{
+    if (!_navigated) {
         [self navigate];
-    });
+        _navigated = YES;
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self navigate];
+        });
+    }
     [super updateProps:props oldProps:oldProps];
 }
 
@@ -209,6 +215,7 @@ using namespace facebook::react;
     _scenes = [[NSMutableDictionary alloc] init];
     _oldNavigationController = _navigationController;
     _navigationController = nil;
+    _navigated = NO;
 }
 
 #pragma mark - RCTComponentViewProtocol
