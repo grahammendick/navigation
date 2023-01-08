@@ -17,6 +17,7 @@ using namespace facebook::react;
 @implementation NVSceneComponentView
 {
     BOOL _notifiedPeekable;
+    UIViewController *_oldViewController;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -28,8 +29,17 @@ using namespace facebook::react;
     return self;
 }
 
+
+- (void)ensureViewController
+{
+    [_oldViewController willMoveToParentViewController:nil];
+    [_oldViewController.view removeFromSuperview];
+    [_oldViewController removeFromParentViewController];
+}
+
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
+    [self ensureViewController];
     const auto &newViewProps = *std::static_pointer_cast<NVSceneProps const>(props);
     _sceneKey = [[NSString alloc] initWithUTF8String: newViewProps.sceneKey.c_str()];
     _crumb = newViewProps.crumb;
@@ -62,7 +72,7 @@ using namespace facebook::react;
 - (void)prepareForRecycle
 {
     [super prepareForRecycle];
-    self.reactViewController.view = nil;
+    _oldViewController = self.reactViewController;
     _notifiedPeekable = NO;
 }
 
