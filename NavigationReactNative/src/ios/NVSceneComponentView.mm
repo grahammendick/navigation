@@ -32,10 +32,13 @@ using namespace facebook::react;
 
 - (void)ensureViewController
 {
-    [_oldViewController willMoveToParentViewController:nil];
-    [_oldViewController.view removeFromSuperview];
-    [_oldViewController removeFromParentViewController];
-    _oldViewController.view = nil;
+    if (!!_oldViewController) {
+        [_oldViewController willMoveToParentViewController:nil];
+        [_oldViewController.view removeFromSuperview];
+        [_oldViewController removeFromParentViewController];
+        _oldViewController.view = nil;
+        _oldViewController = nil;
+    }
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
