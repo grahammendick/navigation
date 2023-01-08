@@ -15,6 +15,7 @@
     __weak RCTBridge *_bridge;
     NSMutableDictionary *_scenes;
     NSInteger _nativeEventCount;
+    BOOL _navigated;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -50,9 +51,14 @@
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     [super didSetProps:changedProps];
-    dispatch_async(dispatch_get_main_queue(), ^{
+    if (!_navigated) {
         [self navigate];
-    });
+        _navigated = YES;
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self navigate];
+        });
+    }
 }
 
 - (void)navigate
