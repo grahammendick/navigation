@@ -31,7 +31,7 @@ class NavigationBar extends React.Component<any, any> {
         }
     }
     render() {
-        var {bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, backImage, titleCentered, children, style = {height: undefined}, ...otherProps} = this.props;
+        var {bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, backImage, titleCentered, children, onNavigationPress, style = {height: undefined}, ...otherProps} = this.props;
         const Material3 = global.__turboModuleProxy != null ? require("./NativeMaterial3Module").default : NativeModules.Material3;
         const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
         var scrollEdgeProps = this.getScrollEdgeProps()
@@ -80,6 +80,8 @@ class NavigationBar extends React.Component<any, any> {
                                 placeholder={typeof placeholder === 'function' ? placeholder(true) : placeholder}
                                 titleCentered={!!titleCentered}
                                 barHeight={!material3 || searchToolbar ? 56 : 64}
+                                navigationDecorative={!onNavigationPress}
+                                onNavigationPress={onNavigationPress}
                                 style={{height: !material3 || searchToolbar ? 56 : 64, margin: searchToolbar ? 16 : undefined}}>
                                 {[
                                     !searchToolbar && childrenArray.find(({type}) => type === TitleBar),

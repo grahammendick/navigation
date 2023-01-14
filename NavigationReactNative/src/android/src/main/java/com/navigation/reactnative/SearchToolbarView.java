@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.view.Menu;
@@ -14,7 +15,12 @@ import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.events.Event;
+import com.facebook.react.uimanager.events.EventDispatcher;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.search.SearchBar;
 
@@ -104,6 +110,14 @@ public class SearchToolbarView extends SearchBar {
         requestLayout();
     }
 
+    void addNavigationListener() {
+        setNavigationOnClickListener(view -> {
+            ReactContext reactContext = (ReactContext) ((ContextWrapper) getContext()).getBaseContext();
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(new SearchToolbarView.NavigationPressEvent(getId()));
+        });
+    }
+
     void setNavigationTestID(String navigationTestID) {
         this.navigationTestID = navigationTestID;
         setTestID();
@@ -152,6 +166,22 @@ public class SearchToolbarView extends SearchBar {
                     }
                 }
             }
+        }
+    }
+
+    static class NavigationPressEvent extends Event<SearchToolbarView.NavigationPressEvent> {
+        public NavigationPressEvent(int viewId) {
+            super(viewId);
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnNavigationPress";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
         }
     }
 }

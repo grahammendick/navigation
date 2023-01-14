@@ -6,10 +6,13 @@ import android.graphics.drawable.RippleDrawable;
 import android.view.View;
 
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.google.android.material.shape.MaterialShapeDrawable;
+
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -61,6 +64,14 @@ public class SearchToolbarManager extends ViewGroupManager<SearchToolbarView> {
         view.setTintColor(tintColor != Integer.MAX_VALUE ? tintColor : null);
     }
 
+    @ReactProp(name = "navigationDecorative")
+    public void setNavigationDecorative(SearchToolbarView view, boolean navigationDecorative) {
+        if (!navigationDecorative)
+            view.addNavigationListener();
+        else
+            view.setNavigationOnClickListener(null);
+    }
+
     @ReactProp(name = "navigationTestID")
     public void setNavigationTestID(SearchToolbarView view, String navigationTestID) {
         view.setNavigationTestID(navigationTestID);
@@ -102,5 +113,12 @@ public class SearchToolbarManager extends ViewGroupManager<SearchToolbarView> {
     @Override
     protected SearchToolbarView createViewInstance(@Nonnull ThemedReactContext reactContext) {
         return new SearchToolbarView(reactContext);
+    }
+
+    @Override
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+            .put("topOnNavigationPress", MapBuilder.of("registrationName", "onNavigationPress"))
+            .build();
     }
 }
