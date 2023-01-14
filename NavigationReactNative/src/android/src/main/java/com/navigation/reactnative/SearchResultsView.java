@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ViewGroup;
@@ -18,10 +19,12 @@ import com.google.android.material.search.SearchView;
 public class SearchResultsView extends SearchView {
     int nativeEventCount;
     int mostRecentEventCount;
+    Drawable defaultBackground;
     private boolean layoutRequested = false;
 
     public SearchResultsView(Context context) {
         super(context);
+        defaultBackground = getToolbar().getBackground();
         addTransitionListener((searchView, previousState, newState) -> {
             if (newState == TransitionState.SHOWING) {
                 ReactContext reactContext = (ReactContext) ((ContextWrapper) getContext()).getBaseContext();

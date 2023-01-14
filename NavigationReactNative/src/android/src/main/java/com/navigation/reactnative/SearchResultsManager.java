@@ -21,6 +21,19 @@ public class SearchResultsManager extends ViewGroupManager<SearchResultsView> {
         view.setText(text);
     }
 
+    @ReactProp(name = "placeholder")
+    public void setPlaceholder(SearchResultsView view, String placeholder) {
+        view.setHint(placeholder);
+    }
+
+    @ReactProp(name = "barTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setBarTintColor(SearchResultsView view, int barTintColor) {
+        if (barTintColor != Integer.MAX_VALUE)
+            view.getToolbar().setBackgroundColor(barTintColor);
+        else
+            view.getToolbar().setBackground(view.defaultBackground);
+    }
+
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(SearchResultsView view, int mostRecentEventCount) {
         view.mostRecentEventCount = mostRecentEventCount;
