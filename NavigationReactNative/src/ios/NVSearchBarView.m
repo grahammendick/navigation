@@ -161,8 +161,33 @@
     }
 }
 
+-(BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    _nativeActiveEventCount++;
+    if (!!self.onChangeActive) {
+        self.onChangeActive(@{
+            @"active": @YES,
+            @"eventCount": @(_nativeActiveEventCount),
+        });
+    }
+    return YES;
+}
+
+-(BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
+    _nativeActiveEventCount++;
+    if (!!self.onChangeActive) {
+        self.onChangeActive(@{
+            @"active": @NO,
+            @"eventCount": @(_nativeActiveEventCount),
+        });
+    }
+    return YES;
+}
+
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
 {
+    _nativeButtonEventCount++;
     if (!!self.onChangeScopeButton) {
         self.onChangeScopeButton(@{
             @"scopeButton": @(selectedScope),
