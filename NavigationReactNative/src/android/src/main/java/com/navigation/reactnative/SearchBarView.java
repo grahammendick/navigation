@@ -71,7 +71,7 @@ public class SearchBarView extends ReactViewGroup {
 
     void setActive(boolean active) {
         int eventLag = nativeActiveEventCount - mostRecentActiveEventCount;
-        if (eventLag == 0 && menuItem != null)
+        if (eventLag == 0 && menuItem != null && menuItem.isActionViewExpanded() != active)
             if (active)
                 menuItem.expandActionView();
             else
