@@ -3,27 +3,26 @@ import { requireNativeComponent, Platform, StyleSheet, UIManager, NativeModules 
 
 const SearchBar = ({obscureBackground = true, hideNavigationBar= true, hideWhenScrolling = false, autoCapitalize = 'sentences',
     barTintColor, onChangeText, placeholder = Platform.OS === 'ios' ? 'Search' : undefined as any, children, bottomBar,
-    active: activeVal, onChangeActive: onChangeActiveVal, scopeButton, scopeButtons, onChangeScopeButton, toolbar, ...props}) => {
+    active, onChangeActive, scopeButton, scopeButtons, onChangeScopeButton, toolbar, ...props}) => {
     const [show, setShow] = useState(false);
-    const [active, setActive] = useState(false);
     const [mostRecentEventCount, setMostRecentEventCount] = useState(0);
     const [mostRecentButtonEventCount, setMostRecentButtonEventCount] = useState(0);
-    const [mostRecentActiveCount, setMostRecentActiveCount] = useState(0);
+    const [mostRecentActiveEventCount, setMostRecentActiveEventCount] = useState(0);
     const changeText = ({nativeEvent}) => {
         const {eventCount: mostRecentEventCount, text} = nativeEvent;
         setMostRecentEventCount(mostRecentEventCount);
         if (onChangeText)
             onChangeText(text)
     }
-    if (activeVal != null && active !== activeVal) setActive(activeVal);
-    const onChangeActive = ({nativeEvent}) => {
+    if (active != null && show !== active) setShow(active);
+    const onChangeShow = ({nativeEvent}) => {
         const {eventCount: mostRecentActiveCount, active: newActive} = nativeEvent;
-        setMostRecentActiveCount(mostRecentActiveCount);
-        if (active !== newActive) {
-            if (activeVal == null)
-                setActive(newActive);
-            if (!!onChangeActiveVal)
-                onChangeActiveVal(newActive);
+        setMostRecentActiveEventCount(mostRecentActiveCount);
+        if (show !== newActive) {
+            if (active == null)
+                setShow(newActive);
+            if (!!onChangeActive)
+                onChangeActive(newActive);
         }
     }
     const changeScopeButton = ({nativeEvent}) => {
@@ -52,17 +51,15 @@ const SearchBar = ({obscureBackground = true, hideNavigationBar= true, hideWhenS
             hideNavigationBar={hideNavigationBar}
             hideWhenScrolling={hideWhenScrolling}
             autoCapitalize={'' + autoCapitalize}
-            active={active}
+            active={show}
             scopeButton={scopeButton ? scopeButtons?.indexOf(scopeButton) : 0}
             scopeButtons={scopeButtons}
             mostRecentEventCount={mostRecentEventCount}
-            mostRecentActiveCount={mostRecentActiveCount}
+            mostRecentActiveEventCount={mostRecentActiveEventCount}
             mostRecentButtonEventCount={mostRecentButtonEventCount}
             onChangeText={changeText}
-            onChangeActive={onChangeActive}
+            onChangeActive={onChangeShow}
             onChangeScopeButton={changeScopeButton}
-            onExpand={() => setShow(true)}
-            onCollapse={() => setShow(false)}
             style={[styles.searchBar, showStyle]}>
             {children}
         </SearchBar>

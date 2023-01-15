@@ -115,7 +115,7 @@ public class SearchResultsView extends SearchView {
         }
     }
 
-    static class ExpandEvent extends Event<SearchBarView.ExpandEvent> {
+    static class ExpandEvent extends Event<SearchResultsView.ExpandEvent> {
         public ExpandEvent(int viewId) {
             super(viewId);
         }
@@ -131,7 +131,7 @@ public class SearchResultsView extends SearchView {
         }
     }
 
-    static class CollapseEvent extends Event<SearchBarView.CollapseEvent> {
+    static class CollapseEvent extends Event<SearchResultsView.CollapseEvent> {
         public CollapseEvent(int viewId) {
             super(viewId);
         }
