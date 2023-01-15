@@ -21,6 +21,11 @@ public class SearchResultsManager extends ViewGroupManager<SearchResultsView> {
         view.setText(text);
     }
 
+    @ReactProp(name = "active")
+    public void setActive(SearchResultsView view, boolean active) {
+        view.setActive(active);
+    }
+
     @ReactProp(name = "placeholder")
     public void setPlaceholder(SearchResultsView view, String placeholder) {
         view.setHint(placeholder);
@@ -39,6 +44,11 @@ public class SearchResultsManager extends ViewGroupManager<SearchResultsView> {
         view.mostRecentEventCount = mostRecentEventCount;
     }
 
+    @ReactProp(name = "mostRecentActiveEventCount")
+    public void setMostRecentActiveEventCount(SearchResultsView view, int mostRecentActiveEventCount) {
+        view.mostRecentActiveEventCount = mostRecentActiveEventCount;
+    }
+
     @Override
     public boolean needsCustomLayoutForChildren() {
         return true;
@@ -54,8 +64,7 @@ public class SearchResultsManager extends ViewGroupManager<SearchResultsView> {
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
             .put("topOnChangeText", MapBuilder.of("registrationName", "onChangeText"))
-            .put("topOnExpand", MapBuilder.of("registrationName", "onExpand"))
-            .put("topOnCollapse", MapBuilder.of("registrationName", "onCollapse"))
+            .put("topOnChangeActive", MapBuilder.of("registrationName", "onChangeActive"))
             .build();
     }
 }

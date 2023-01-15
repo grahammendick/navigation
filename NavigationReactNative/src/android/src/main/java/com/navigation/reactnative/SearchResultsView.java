@@ -17,10 +17,12 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.search.SearchView;
 
 public class SearchResultsView extends SearchView {
-    int nativeEventCount;
-    int mostRecentEventCount;
     Drawable defaultBackground;
     private boolean layoutRequested = false;
+    int nativeEventCount;
+    int mostRecentEventCount;
+    int nativeActiveEventCount;
+    int mostRecentActiveEventCount;
 
     public SearchResultsView(Context context) {
         super(context);
@@ -29,12 +31,12 @@ public class SearchResultsView extends SearchView {
             if (newState == TransitionState.SHOWING) {
                 ReactContext reactContext = (ReactContext) ((ContextWrapper) getContext()).getBaseContext();
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                eventDispatcher.dispatchEvent(new SearchResultsView.ExpandEvent(getId()));
+                eventDispatcher.dispatchEvent(new SearchResultsView.ChangeActiveEvent(getId(), true, nativeActiveEventCount));
             }
             if (newState == TransitionState.HIDDEN) {
                 ReactContext reactContext = (ReactContext) ((ContextWrapper) getContext()).getBaseContext();
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                eventDispatcher.dispatchEvent(new SearchResultsView.CollapseEvent(getId()));
+                eventDispatcher.dispatchEvent(new SearchResultsView.ChangeActiveEvent(getId(), false, nativeActiveEventCount));
             }
         });
         getEditText().addTextChangedListener(new TextWatcher() {
@@ -61,6 +63,13 @@ public class SearchResultsView extends SearchView {
         if (eventLag == 0 && !getEditText().getText().equals(text)) {
             getEditText().setText(text);
         }
+    }
+
+    void setActive(boolean active) {
+        int eventLag = nativeActiveEventCount - mostRecentActiveEventCount;
+        if (eventLag == 0)
+            if (active) show();
+            else hide();
     }
 
     @Override
@@ -115,35 +124,26 @@ public class SearchResultsView extends SearchView {
         }
     }
 
-    static class ExpandEvent extends Event<SearchResultsView.ExpandEvent> {
-        public ExpandEvent(int viewId) {
+    static class ChangeActiveEvent extends Event<SearchResultsView.ChangeActiveEvent> {
+        private final boolean active;
+        private final int eventCount;
+        public ChangeActiveEvent(int viewId, boolean active, int eventCount) {
             super(viewId);
+            this.active = active;
+            this.eventCount = eventCount;
         }
 
         @Override
         public String getEventName() {
-            return "topOnExpand";
+            return "topOnChangeActive";
         }
 
         @Override
         public void dispatch(RCTEventEmitter rctEventEmitter) {
-            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
-        }
-    }
-
-    static class CollapseEvent extends Event<SearchResultsView.CollapseEvent> {
-        public CollapseEvent(int viewId) {
-            super(viewId);
-        }
-
-        @Override
-        public String getEventName() {
-            return "topOnCollapse";
-        }
-
-        @Override
-        public void dispatch(RCTEventEmitter rctEventEmitter) {
-            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
+            WritableMap event = Arguments.createMap();
+            event.putBoolean("active", this.active);
+            event.putInt("eventCount", this.eventCount);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }
 }
