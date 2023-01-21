@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
@@ -67,7 +68,7 @@ public class SearchResultsView extends SearchView {
 
     void setActive(boolean active) {
         int eventLag = nativeActiveEventCount - mostRecentActiveEventCount;
-        if (eventLag == 0)
+        if (eventLag == 0 && isShowing() != active)
             if (active) show();
             else hide();
     }
@@ -75,6 +76,7 @@ public class SearchResultsView extends SearchView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        if (isShowing()) post(focusAndKeyboard);
         ViewGroup view = (ViewGroup) getParent();
         for(int i = 0; i < view.getChildCount(); i++) {
             if (view.getChildAt(i) instanceof NavigationBarView) {
@@ -98,6 +100,17 @@ public class SearchResultsView extends SearchView {
             MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
             MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
         layout(getLeft(), getTop(), getRight(), getBottom());
+    };
+
+    private final Runnable focusAndKeyboard = new Runnable() {
+        @Override
+        public void run() {
+            if (getEditText().requestFocus()) {
+                InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (inputMethodManager != null)
+                    inputMethodManager.showSoftInput(getEditText().findFocus(), 0);
+            }
+        }
     };
 
     static class ChangeTextEvent extends Event<SearchBarView.ChangeTextEvent> {
