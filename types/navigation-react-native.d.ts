@@ -371,6 +371,14 @@ export class BarButton extends Component<BarButtonProps> { }
  */
 export interface SearchBarProps {
     /**
+     * Indicates whether the search bar takes over the toolbar
+     */
+    toolbar?: boolean;
+    /**
+     * Indicates whether the search is active
+     */
+    active?: boolean;
+    /**
      * Indicates whether to to obscure the underlying content
      */
     obscureBackground?: boolean;
@@ -389,7 +397,7 @@ export interface SearchBarProps {
     /**
      * Text displayed when search field is empty
      */
-    placeholder?: string;
+    placeholder?: string | ((toolbar: boolean) => string);
     /**
      * The search field text
      */
@@ -397,7 +405,7 @@ export interface SearchBarProps {
     /**
      * The search field background color
      */
-    barTintColor?: ColorValue;
+    barTintColor?: ColorValue | ((toolbar: boolean) => ColorValue);
     /**
      * The selected scope button
      */
@@ -414,6 +422,10 @@ export interface SearchBarProps {
      * Handles text change events
      */
     onChangeText?: (text: string) => void;
+    /**
+     * Handles active change events
+     */
+    onChangeActive?: (active: boolean) => void;
     /**
      * Handles scope button change events
      */
