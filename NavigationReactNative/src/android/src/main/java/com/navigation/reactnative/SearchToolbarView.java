@@ -2,8 +2,10 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.RippleDrawable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +25,7 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.search.SearchBar;
+import com.google.android.material.shape.MaterialShapeDrawable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,6 +96,17 @@ public class SearchToolbarView extends SearchBar {
                 icon.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
             else
                 icon.clearColorFilter();
+        }
+    }
+
+    void setBarTintColor(int barTintColor) {
+        Drawable drawable = defaultBackground;
+        if (defaultBackground instanceof RippleDrawable)
+            drawable = ((RippleDrawable) defaultBackground).getDrawable(0);
+        if (drawable instanceof MaterialShapeDrawable) {
+            drawable = drawable.getConstantState().newDrawable();
+            ((MaterialShapeDrawable) drawable).setFillColor(ColorStateList.valueOf(barTintColor));
+            setBackground(drawable);
         }
     }
 
