@@ -8,9 +8,12 @@ import android.text.TextWatcher;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.core.view.ViewCompat;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.i18nmanager.I18nUtil;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
@@ -27,6 +30,7 @@ public class SearchResultsView extends SearchView {
 
     public SearchResultsView(Context context) {
         super(context);
+        ViewCompat.setLayoutDirection(this, !I18nUtil.getInstance().isRTL(context) ? ViewCompat.LAYOUT_DIRECTION_LTR : ViewCompat.LAYOUT_DIRECTION_RTL);
         defaultBackground = getToolbar().getBackground();
         addTransitionListener((searchView, previousState, newState) -> {
             if (newState == TransitionState.SHOWING) {
