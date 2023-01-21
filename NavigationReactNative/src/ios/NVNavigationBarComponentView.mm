@@ -42,7 +42,7 @@ using namespace facebook::react;
     _isHidden = _hidden = newViewProps.hidden;
     if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
         if ([self.reactViewController.navigationController isNavigationBarHidden] != self.hidden)
-            [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];
+            [self.reactViewController.navigationController.navigationBar.hidden = self.hidden];
     }
     _largeTitle = newViewProps.largeTitle;
     _title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];

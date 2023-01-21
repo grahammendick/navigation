@@ -49,7 +49,7 @@
     [super didSetProps:changedProps];
     _isHidden = _hidden;
     if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
-        [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];
+        [self.reactViewController.navigationController.navigationBar.hidden = self.hidden];
     }
     if ([changedProps containsObject:@"title"]) {
         [self.reactViewController.navigationItem setTitle:self.title];

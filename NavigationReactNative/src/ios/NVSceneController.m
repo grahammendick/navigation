@@ -50,7 +50,7 @@
     } else {
         hidden = hidden || previousController.navigationItem.searchController.active;
     }
-    [self.navigationController setNavigationBarHidden:hidden];
+    [self.navigationController.hidden = hidden];
     if (navigationBar.title.length != 0) {
         [self.navigationItem setTitle:navigationBar.title];
     }
@@ -80,7 +80,7 @@
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
     UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
     if (previousController.navigationItem.searchController.active) {
-        [self.navigationController setNavigationBarHidden:navigationBar.isHidden];
+        [self.navigationController.hidden = navigationBar.isHidden];
     }
 }
 
