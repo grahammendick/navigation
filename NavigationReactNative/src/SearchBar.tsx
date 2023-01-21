@@ -44,6 +44,7 @@ const SearchBar = ({obscureBackground = true, hideNavigationBar= true, hideWhenS
     return (
         <SearchBar
             {...props}
+            active={show}
             placeholder={placeholder}
             bottomBar={bottomBar}
             barTintColor={barTintColor}
@@ -51,7 +52,6 @@ const SearchBar = ({obscureBackground = true, hideNavigationBar= true, hideWhenS
             hideNavigationBar={hideNavigationBar}
             hideWhenScrolling={hideWhenScrolling}
             autoCapitalize={'' + autoCapitalize}
-            active={show}
             scopeButton={scopeButton ? scopeButtons?.indexOf(scopeButton) : 0}
             scopeButtons={scopeButtons}
             mostRecentEventCount={mostRecentEventCount}
