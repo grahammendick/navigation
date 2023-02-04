@@ -126,6 +126,8 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
                     ((TabBarPagerView) viewGroup.getChildAt(i)).scrollToTop();
                 if (viewGroup.getChildAt(i) instanceof ViewPager2)
                     TabBarPagerRTLManager.getAdapter((ViewPager2) viewGroup.getChildAt(i)).scrollToTop();
+                if (viewGroup.getChildAt(i) instanceof BottomAppBarView)
+                    ((BottomAppBarView) viewGroup.getChildAt(i)).performShow();
             }
         }
         if (tabBarItem instanceof ScrollView)
