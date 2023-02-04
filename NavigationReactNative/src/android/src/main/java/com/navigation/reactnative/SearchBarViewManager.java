@@ -67,9 +67,21 @@ public class SearchBarViewManager extends ViewGroupManager<SearchBarView> implem
         view.setQuery(text);
     }
 
+    @Override
+    @ReactProp(name = "active")
+    public void setActive(SearchBarView view, boolean active) {
+        view.setActive(active);
+    }
+
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(SearchBarView view, int mostRecentEventCount) {
         view.mostRecentEventCount = mostRecentEventCount;
+    }
+
+    @Override
+    @ReactProp(name = "mostRecentActiveEventCount")
+    public void setMostRecentActiveEventCount(SearchBarView view, int mostRecentActiveEventCount) {
+        view.mostRecentActiveEventCount = mostRecentActiveEventCount;
     }
 
     @Override
@@ -115,8 +127,7 @@ public class SearchBarViewManager extends ViewGroupManager<SearchBarView> implem
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
             .put("topOnChangeText", MapBuilder.of("registrationName", "onChangeText"))
-            .put("topOnExpand", MapBuilder.of("registrationName", "onExpand"))
-            .put("topOnCollapse", MapBuilder.of("registrationName", "onCollapse"))
+            .put("topOnChangeActive", MapBuilder.of("registrationName", "onChangeActive"))
             .build();
     }
 
