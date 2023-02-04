@@ -65,7 +65,7 @@ public class SearchResultsView extends SearchView {
 
     void setText(String text) {
         int eventLag = nativeEventCount - mostRecentEventCount;
-        if (eventLag == 0 && !getEditText().getText().equals(text)) {
+        if (eventLag == 0 && !getEditText().getText().toString().equals(text)) {
             getEditText().setText(text);
         }
     }
