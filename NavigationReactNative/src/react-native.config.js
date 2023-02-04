@@ -24,6 +24,8 @@ module.exports = {
           'NVNavigationStackComponentDescriptor',
           'NVSceneComponentDescriptor',
           'NVSearchBarComponentDescriptor',
+          'NVSearchResultsComponentDescriptor',
+          'NVSearchToolbarComponentDescriptor',
           'NVSharedElementComponentDescriptor',
           'NVStatusBarComponentDescriptor',
           'NVTabBarItemComponentDescriptor',

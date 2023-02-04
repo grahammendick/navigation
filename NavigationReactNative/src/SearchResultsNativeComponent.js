@@ -24,5 +24,4 @@ type NativeProps = $ReadOnly<{|
 
 export default (codegenNativeComponent<NativeProps>(
    'NVSearchResults',
-   {interfaceOnly: true}
 ): HostComponent<NativeProps>);
