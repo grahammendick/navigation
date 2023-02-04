@@ -67,7 +67,7 @@ const SearchBar = ({obscureBackground = true, hideNavigationBar= true, hideWhenS
 };
 
 var NVSearchBar = global.nativeFabricUIManager ? require('./SearchBarNativeComponent').default : requireNativeComponent('NVSearchBar');
-var NVSearchResults = global.nativeFabricUIManager ? require('./SearchBarNativeComponent').default : requireNativeComponent('NVSearchResults');
+var NVSearchResults = global.nativeFabricUIManager ? require('./SearchResultsNativeComponent').default : requireNativeComponent('NVSearchResults');
 
 var styles = StyleSheet.create({
     searchBar: {
