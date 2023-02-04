@@ -62,16 +62,19 @@ public class SearchToolbarViewManager extends ViewGroupManager<SearchToolbarView
     }
 
     @Override
+    @ReactProp(name = "navigationImage")
     public void setNavigationImage(SearchToolbarView view, @Nullable ReadableMap navIcon) {
         view.setNavIconSource(navIcon);
     }
 
     @Override
+    @ReactProp(name = "navigationTestID")
     public void setNavigationTestID(SearchToolbarView view, @Nullable String navigationTestID) {
         view.setNavigationTestID(navigationTestID);
     }
 
     @Override
+    @ReactProp(name = "navigationDecorative")
     public void setNavigationDecorative(SearchToolbarView view, boolean navigationDecorative) {
         if (!navigationDecorative)
             view.addNavigationListener();
@@ -80,16 +83,19 @@ public class SearchToolbarViewManager extends ViewGroupManager<SearchToolbarView
     }
 
     @Override
+    @ReactProp(name = "navigationAccessibilityLabel")
     public void setNavigationAccessibilityLabel(SearchToolbarView view, @Nullable String navigationContentDescription) {
         view.setNavigationContentDescription(navigationContentDescription);
     }
 
     @Override
+    @ReactProp(name = "overflowImage")
     public void setOverflowImage(SearchToolbarView view, @Nullable ReadableMap overflowIcon) {
         view.setOverflowIconSource(overflowIcon);
     }
 
     @Override
+    @ReactProp(name = "overflowTestID")
     public void setOverflowTestID(SearchToolbarView view, @Nullable String overflowTestID) {
         view.setOverflowTestID(overflowTestID);
     }
