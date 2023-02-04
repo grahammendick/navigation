@@ -107,6 +107,12 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
         });
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        requestLayout();
+    }
+
     void setNavIconSource(@Nullable ReadableMap source) {
         IconResolver.setIconSource(source, navIconResolverListener, getContext());
     }

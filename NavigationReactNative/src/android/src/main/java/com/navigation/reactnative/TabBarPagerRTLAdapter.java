@@ -47,6 +47,8 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
                     ((ScrollView) viewGroup.getChildAt(i)).smoothScrollTo(0,0);
                 if (viewGroup.getChildAt(i) instanceof ViewPager2)
                     TabBarPagerRTLManager.getAdapter((ViewPager2) viewGroup.getChildAt(i)).scrollToTop();
+                if (viewGroup.getChildAt(i) instanceof BottomAppBarView)
+                    ((BottomAppBarView) viewGroup.getChildAt(i)).performShow();
             }
         }
         if (tabBarItem instanceof ScrollView)
