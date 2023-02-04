@@ -66,6 +66,10 @@
 		70922F8222C0D138009CECB0 /* NVNavigationBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVNavigationBarView.h; sourceTree = "<group>"; };
 		70922F8322C0D143009CECB0 /* NVNavigationBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVNavigationBarView.m; sourceTree = "<group>"; };
 		70922F8522C0D153009CECB0 /* NVNavigationBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVNavigationBarManager.m; sourceTree = "<group>"; };
+		709C5C21298EAD3D00DF5B14 /* NVSearchResultsComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVSearchResultsComponentView.mm; sourceTree = "<group>"; };
+		709C5C22298EAD4900DF5B14 /* NVSearchResultsComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSearchResultsComponentView.h; sourceTree = "<group>"; };
+		709C5C23298EAE0A00DF5B14 /* NVSearchToolbarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVSearchToolbarComponentView.mm; sourceTree = "<group>"; };
+		709C5C24298EAE1700DF5B14 /* NVSearchToolbarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSearchToolbarComponentView.h; sourceTree = "<group>"; };
 		709F32CE22A7FF9C00A0358A /* NVTabBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTabBarView.m; sourceTree = "<group>"; };
 		709F32D022A7FFA700A0358A /* NVTabBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarView.h; sourceTree = "<group>"; };
 		709F32D222A7FFBF00A0358A /* NVTabBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTabBarManager.m; sourceTree = "<group>"; };
@@ -135,6 +139,10 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				709C5C22298EAD4900DF5B14 /* NVSearchResultsComponentView.h */,
+				709C5C23298EAE0A00DF5B14 /* NVSearchToolbarComponentView.mm */,
+				709C5C24298EAE1700DF5B14 /* NVSearchToolbarComponentView.h */,
+				709C5C21298EAD3D00DF5B14 /* NVSearchResultsComponentView.mm */,
 				707E82C828B00EA4006D9ED0 /* NVMaterial3Module.mm */,
 				707E82C928B00EA4006D9ED0 /* NVMaterial3Module.h */,
 				70DC9BF22843AE560047EEF4 /* NVBottomAppBarComponentView.mm */,
