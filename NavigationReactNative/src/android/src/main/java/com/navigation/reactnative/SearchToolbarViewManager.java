@@ -1,0 +1,117 @@
+package com.navigation.reactnative;
+
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.ViewManagerDelegate;
+import com.facebook.react.viewmanagers.NVSearchToolbarManagerDelegate;
+import com.facebook.react.viewmanagers.NVSearchToolbarManagerInterface;
+
+public class SearchToolbarViewManager extends ViewGroupManager<SearchToolbarView> implements NVSearchToolbarManagerInterface<SearchToolbarView> {
+    private final ViewManagerDelegate<SearchToolbarView> delegate;
+
+    public SearchToolbarViewManager() {
+        delegate = new NVSearchToolbarManagerDelegate<>(this);
+    }
+
+    @Nullable
+    @Override
+    protected ViewManagerDelegate<SearchToolbarView> getDelegate() {
+        return delegate;
+    }
+
+    @NonNull
+    @Override
+    public String getName() {
+        return "NVSearchToolbar";
+    }
+
+    @NonNull
+    @Override
+    protected SearchToolbarView createViewInstance(@NonNull ThemedReactContext themedReactContext) {
+        return new SearchToolbarView(themedReactContext);
+    }
+
+    @Override
+    public void setPlaceholder(SearchToolbarView view, @Nullable String placeholder) {
+        view.setHint(placeholder);
+    }
+
+    @Override
+    public void setBarTintColor(SearchToolbarView view, @Nullable Integer barTintColor) {
+        if (barTintColor != null)
+            view.setBarTintColor(barTintColor);
+        else
+            view.setBackground(view.defaultBackground);
+    }
+
+    @Override
+    public void setTintColor(SearchToolbarView view, @Nullable Integer tintColor) {
+        view.setTintColor(tintColor);
+    }
+
+    @Override
+    public void setNavigationImage(SearchToolbarView view, @Nullable ReadableMap navIcon) {
+        view.setNavIconSource(navIcon);
+    }
+
+    @Override
+    public void setNavigationTestID(SearchToolbarView view, @Nullable String navigationTestID) {
+        view.setNavigationTestID(navigationTestID);
+    }
+
+    @Override
+    public void setNavigationDecorative(SearchToolbarView view, boolean navigationDecorative) {
+        if (!navigationDecorative)
+            view.addNavigationListener();
+        else
+            view.setNavigationOnClickListener(null);
+    }
+
+    @Override
+    public void setNavigationAccessibilityLabel(SearchToolbarView view, @Nullable String navigationContentDescription) {
+        view.setNavigationContentDescription(navigationContentDescription);
+    }
+
+    @Override
+    public void setOverflowImage(SearchToolbarView view, @Nullable ReadableMap overflowIcon) {
+        view.setOverflowIconSource(overflowIcon);
+    }
+
+    @Override
+    public void setOverflowTestID(SearchToolbarView view, @Nullable String overflowTestID) {
+        view.setOverflowTestID(overflowTestID);
+    }
+
+    @Override
+    public void addView(SearchToolbarView parent, View child, int index) {
+        parent.children.add(index, (BarButtonView) child);
+        parent.setMenuItems();
+    }
+
+    @Override
+    public void removeViewAt(SearchToolbarView parent, int index) {
+        parent.children.remove(index);
+        parent.setMenuItems();
+    }
+
+    @Override
+    public int getChildCount(SearchToolbarView parent) {
+        return parent.children.size();
+    }
+
+    @Override
+    public View getChildAt(SearchToolbarView parent, int index) {
+        return parent.children.get(index);
+    }
+
+    @Override
+    public boolean needsCustomLayoutForChildren() {
+        return true;
+    }
+}
