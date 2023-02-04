@@ -14,6 +14,7 @@ type NativeProps = $ReadOnly<{|
   text: string,
   active: boolean,
   mostRecentEventCount: Int32,
+  mostRecentActiveEventCount: Int32,
   mostRecentButtonEventCount: Int32,
   barTintColor: ColorValue,
   bottomBar: boolean,
