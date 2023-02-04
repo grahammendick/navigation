@@ -10,6 +10,7 @@ import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.ViewManagerDelegate;
+import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.viewmanagers.NVSearchToolbarManagerDelegate;
 import com.facebook.react.viewmanagers.NVSearchToolbarManagerInterface;
 
@@ -40,11 +41,13 @@ public class SearchToolbarViewManager extends ViewGroupManager<SearchToolbarView
     }
 
     @Override
+    @ReactProp(name = "placeholder")
     public void setPlaceholder(SearchToolbarView view, @Nullable String placeholder) {
         view.setHint(placeholder);
     }
 
     @Override
+    @ReactProp(name = "barTintColor", customType = "Color")
     public void setBarTintColor(SearchToolbarView view, @Nullable Integer barTintColor) {
         if (barTintColor != null)
             view.setBarTintColor(barTintColor);
@@ -53,6 +56,7 @@ public class SearchToolbarViewManager extends ViewGroupManager<SearchToolbarView
     }
 
     @Override
+    @ReactProp(name = "tintColor", customType = "Color")
     public void setTintColor(SearchToolbarView view, @Nullable Integer tintColor) {
         view.setTintColor(tintColor);
     }
