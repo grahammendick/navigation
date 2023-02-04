@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.ViewManagerDelegate;
@@ -12,6 +13,7 @@ import com.facebook.react.viewmanagers.NVSearchResultsManagerInterface;
 
 import java.util.Map;
 
+@ReactModule(name = "NVSearchResults")
 public class SearchResultsViewManager extends ViewGroupManager<SearchResultsView> implements NVSearchResultsManagerInterface<SearchResultsView> {
     private final ViewManagerDelegate<SearchResultsView> delegate;
 

@@ -6,12 +6,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.ViewManagerDelegate;
 import com.facebook.react.viewmanagers.NVSearchToolbarManagerDelegate;
 import com.facebook.react.viewmanagers.NVSearchToolbarManagerInterface;
 
+@ReactModule(name = "NVSearchToolbar")
 public class SearchToolbarViewManager extends ViewGroupManager<SearchToolbarView> implements NVSearchToolbarManagerInterface<SearchToolbarView> {
     private final ViewManagerDelegate<SearchToolbarView> delegate;
 
