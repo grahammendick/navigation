@@ -12,6 +12,7 @@ type NativeProps = $ReadOnly<{|
   autoCapitalize: string,
   placeholder: string,
   text: string,
+  active: boolean,
   mostRecentEventCount: Int32,
   mostRecentButtonEventCount: Int32,
   barTintColor: ColorValue,
@@ -26,8 +27,10 @@ type NativeProps = $ReadOnly<{|
     scopeButton: Int32,
     eventCount: Int32,
   |}>>,
-  onExpand: DirectEventHandler<null>,
-  onCollapse: DirectEventHandler<null>,
+  onChangeActive: DirectEventHandler<$ReadOnly<{|
+    active: boolean,
+    eventCount: Int32,
+  |}>>,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(
