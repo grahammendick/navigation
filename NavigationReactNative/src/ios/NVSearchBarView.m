@@ -12,6 +12,7 @@
     __weak RCTBridge *_bridge;
     UIView *_reactSubview;
     NSInteger _nativeEventCount;
+    NSInteger _nativeActiveEventCount;
     NSInteger _nativeButtonEventCount;
 }
 
@@ -59,6 +60,15 @@
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     if (eventLag == 0 && ![self.searchController.searchBar.text isEqualToString:text]) {
         [self.searchController.searchBar setText:text];
+    }
+}
+
+- (void)setActive:(BOOL)active
+{
+    NSInteger eventLag = _nativeActiveEventCount - _mostRecentActiveEventCount;
+    if (eventLag == 0 && self.searchController.active != active) {
+        [self.searchController setActive:active];
+        if (active) [self.searchController.searchBar becomeFirstResponder];
     }
 }
 
@@ -151,8 +161,33 @@
     }
 }
 
+-(BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    _nativeActiveEventCount++;
+    if (!!self.onChangeActive) {
+        self.onChangeActive(@{
+            @"active": @YES,
+            @"eventCount": @(_nativeActiveEventCount),
+        });
+    }
+    return YES;
+}
+
+-(BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
+    _nativeActiveEventCount++;
+    if (!!self.onChangeActive) {
+        self.onChangeActive(@{
+            @"active": @NO,
+            @"eventCount": @(_nativeActiveEventCount),
+        });
+    }
+    return YES;
+}
+
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
 {
+    _nativeButtonEventCount++;
     if (!!self.onChangeScopeButton) {
         self.onChangeScopeButton(@{
             @"scopeButton": @(selectedScope),

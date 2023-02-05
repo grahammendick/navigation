@@ -22,9 +22,12 @@ import com.google.android.material.appbar.AppBarLayout;
 
 public class SearchBarView extends ReactViewGroup {
     final SearchView searchView;
+    private MenuItem menuItem;
     boolean bottomBar = false;
     int nativeEventCount;
     int mostRecentEventCount;
+    int nativeActiveEventCount;
+    int mostRecentActiveEventCount;
 
     public SearchBarView(Context context) {
         super(context);
@@ -66,6 +69,15 @@ public class SearchBarView extends ReactViewGroup {
             searchView.setQuery(query, true);
     }
 
+    void setActive(boolean active) {
+        int eventLag = nativeActiveEventCount - mostRecentActiveEventCount;
+        if (eventLag == 0 && menuItem != null && menuItem.isActionViewExpanded() != active)
+            if (active)
+                menuItem.expandActionView();
+            else
+                menuItem.collapseActionView();
+    }
+
     void setBarTintColor(Integer barTintColor) {
         SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         if (barTintColor != null) {
@@ -96,21 +108,24 @@ public class SearchBarView extends ReactViewGroup {
             actionView.setOnSearchListener(new ActionView.OnSearchListener() {
                 @Override
                 public void onSearchAdd(MenuItem searchMenuItem) {
+                    menuItem = searchMenuItem;
                     searchMenuItem.setActionView(searchView);
                 }
 
                 @Override
                 public void onSearchExpand() {
+                    nativeActiveEventCount++;
                     ReactContext reactContext = (ReactContext) getContext();
                     EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                    eventDispatcher.dispatchEvent(new ExpandEvent(getId()));
+                    eventDispatcher.dispatchEvent(new ChangeActiveEvent(getId(), true, nativeActiveEventCount));
                 }
 
                 @Override
                 public void onSearchCollapse() {
+                    nativeActiveEventCount++;
                     ReactContext reactContext = (ReactContext) getContext();
                     EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                    eventDispatcher.dispatchEvent(new CollapseEvent(getId()));
+                    eventDispatcher.dispatchEvent(new ChangeActiveEvent(getId(), false, nativeActiveEventCount));
                 }
             });
         }
@@ -155,35 +170,26 @@ public class SearchBarView extends ReactViewGroup {
         }
     }
 
-    static class ExpandEvent extends Event<SearchBarView.ExpandEvent> {
-        public ExpandEvent(int viewId) {
+    static class ChangeActiveEvent extends Event<SearchBarView.ChangeActiveEvent> {
+        private final boolean active;
+        private final int eventCount;
+        public ChangeActiveEvent(int viewId, boolean active, int eventCount) {
             super(viewId);
+            this.active = active;
+            this.eventCount = eventCount;
         }
 
         @Override
         public String getEventName() {
-            return "topOnExpand";
+            return "topOnChangeActive";
         }
 
         @Override
         public void dispatch(RCTEventEmitter rctEventEmitter) {
-            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
-        }
-    }
-
-    static class CollapseEvent extends Event<SearchBarView.CollapseEvent> {
-        public CollapseEvent(int viewId) {
-            super(viewId);
-        }
-
-        @Override
-        public String getEventName() {
-            return "topOnCollapse";
-        }
-
-        @Override
-        public void dispatch(RCTEventEmitter rctEventEmitter) {
-            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
+            WritableMap event = Arguments.createMap();
+            event.putBoolean("active", this.active);
+            event.putInt("eventCount", this.eventCount);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }
 }

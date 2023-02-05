@@ -23,6 +23,7 @@ using namespace facebook::react;
     UISearchController *_oldSearchController;
     UIView *_reactSubview;
     NSInteger _nativeEventCount;
+    NSInteger _nativeActiveEventCount;
     NSInteger _nativeButtonEventCount;
     NVSearchBarShadowNode::ConcreteState::Shared _state;
 }
@@ -63,6 +64,13 @@ using namespace facebook::react;
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     if (eventLag == 0 && ![self.searchController.searchBar.text isEqualToString:text]) {
         [self.searchController.searchBar setText:text];
+    }
+    BOOL active = newViewProps.active;
+    _mostRecentActiveEventCount = newViewProps.mostRecentActiveEventCount;
+    NSInteger eventActiveLag = _nativeActiveEventCount - _mostRecentActiveEventCount;
+    if (eventActiveLag == 0 && self.searchController.active != active) {
+        [self.searchController setActive:active];
+        if (active) [self.searchController.searchBar becomeFirstResponder];
     }
     NSString *autoCapitalize = [[NSString alloc] initWithUTF8String: newViewProps.autoCapitalize.c_str()];
     [self.searchController.searchBar setAutocapitalizationType:[self autoCapitalizationType:autoCapitalize]];
@@ -126,8 +134,34 @@ using namespace facebook::react;
     }
 }
 
+-(BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    _nativeActiveEventCount++;
+    if (_eventEmitter != nullptr) {
+        std::static_pointer_cast<NVSearchBarEventEmitter const>(_eventEmitter)
+            ->onChangeActive(NVSearchBarEventEmitter::OnChangeActive{
+                .active = true,
+                .eventCount = static_cast<int>(_nativeActiveEventCount),
+            });
+    }
+    return YES;
+}
+
+-(BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
+    _nativeActiveEventCount++;
+    if (_eventEmitter != nullptr) {
+        std::static_pointer_cast<NVSearchBarEventEmitter const>(_eventEmitter)
+            ->onChangeActive(NVSearchBarEventEmitter::OnChangeActive{
+                .active = false,
+                .eventCount = static_cast<int>(_nativeActiveEventCount),
+            });
+    }
+    return YES;
+}
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
 {
+    _nativeButtonEventCount++;
     if (_eventEmitter != nullptr) {
         std::static_pointer_cast<NVSearchBarEventEmitter const>(_eventEmitter)
             ->onChangeScopeButton(NVSearchBarEventEmitter::OnChangeScopeButton{
@@ -149,6 +183,7 @@ using namespace facebook::react;
     [super prepareForRecycle];
     _state.reset();
     _nativeEventCount = 0;
+    _nativeActiveEventCount = 0;
     _nativeButtonEventCount = 0;
     _oldSearchController = _searchController;
     _searchController = nil;

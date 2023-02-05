@@ -6,26 +6,14 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
-  obscureBackground: boolean,
-  hideNavigationBar: boolean,
-  hideWhenScrolling: boolean,
-  autoCapitalize: string,
   placeholder: string,
   text: string,
   active: boolean,
   mostRecentEventCount: Int32,
   mostRecentActiveEventCount: Int32,
-  mostRecentButtonEventCount: Int32,
   barTintColor: ColorValue,
-  bottomBar: boolean,
-  scopeButton: Int32,
-  scopeButtons: $ReadOnlyArray<string>,
   onChangeText: DirectEventHandler<$ReadOnly<{|
     text: string,
-    eventCount: Int32,
-  |}>>,
-  onChangeScopeButton?: DirectEventHandler<$ReadOnly<{|
-    scopeButton: Int32,
     eventCount: Int32,
   |}>>,
   onChangeActive: DirectEventHandler<$ReadOnly<{|
@@ -35,6 +23,5 @@ type NativeProps = $ReadOnly<{|
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(
-   'NVSearchBar',
-   {interfaceOnly: true}
+   'NVSearchResults',
 ): HostComponent<NativeProps>);

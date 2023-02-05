@@ -21,6 +21,7 @@ import com.google.android.material.appbar.AppBarLayout;
 public class NavigationBarView extends AppBarLayout {
     final ViewOutlineProvider defaultOutlineProvider;
     final Drawable defaultBackground;
+    private boolean layoutRequested = false;
 
     public NavigationBarView(Context context) {
         super(context);
@@ -34,6 +35,23 @@ public class NavigationBarView extends AppBarLayout {
             eventDispatcher.dispatchEvent(OffsetChangedEvent.obtain(getId(), offset));
         });
     }
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        if (!layoutRequested) {
+            layoutRequested = true;
+            post(measureAndLayout);
+        }
+    }
+
+    private final Runnable measureAndLayout = () -> {
+        layoutRequested = false;
+        measure(
+            MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+        layout(getLeft(), getTop(), getRight(), getBottom());
+    };
 
     static class OffsetChangedEvent extends Event<OffsetChangedEvent> {
         private int offset;
