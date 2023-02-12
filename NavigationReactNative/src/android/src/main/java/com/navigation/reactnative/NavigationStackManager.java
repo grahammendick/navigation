@@ -60,7 +60,7 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
             scene.setElevation(getChildAt(parent, index - 1).getElevation() + 1);
         parent.sceneKeys.add(index, scene.sceneKey);
         parent.scenes.put(scene.sceneKey, scene);
-        if (parent.startNavigation && parent.keys.size() == parent.scenes.size())
+        if (parent.startNavigation != null && parent.startNavigation && parent.keys.size() == parent.scenes.size())
             parent.onAfterUpdateTransaction();
     }
 
