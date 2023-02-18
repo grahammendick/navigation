@@ -18,7 +18,7 @@ export default () => {
     <CoordinatorLayout overlap={110}>
       <NavigationBar
         title={name}
-        onOffsetChanged={Animated.event([{nativeEvent:{offset}}], {useNativeDriver: true})}
+        onOffsetChanged={Animated.event([{nativeEvent:{offset}}], {useNativeDriver: false})}
         navigationImage={require('./arrow.png')}
         barTintColor={Platform.OS === 'android' ? standard => standard ? colors[0] : colors[1] : 'rgb(247,247,247)'}
         tintColor={Platform.OS === 'android' ? "#fff" : null}
