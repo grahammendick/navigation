@@ -55,7 +55,7 @@ const Grid = ({colors}) => {
           text={text}
           autoCapitalize="none"
           obscureBackground={false}
-          barTintColor="#dcdcdc"
+          barTintColor={Platform.OS === 'android' ? '#dcdcdc' : null}
           placeholder={(toolbar) => toolbar ? 'Search' : ''}
           onChangeText={text => setText(text)}>
           <SearchResults colors={colors} text={text} />
