@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {Platform, StyleSheet, ScrollView, View, TouchableHighlight, Text} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {SharedElement, NavigationBar, SearchBar, RightBar, BarButton} from 'navigation-react-native';
+import {SharedElement, NavigationBar, SearchBar} from 'navigation-react-native';
 
 const Container = (props) => (
   Platform.OS === 'ios' ? <ScrollView {...props}/> : <View {...props} />
@@ -48,17 +48,18 @@ const Grid = ({colors}) => {
       <NavigationBar
         largeTitle={true}
         title="Colors"
+        navigationImage={require('./search.png')}
         barTintColor={Platform.OS === 'android' ? '#fff' : null}>
         <SearchBar
+          toolbar
           text={text}
           autoCapitalize="none"
           obscureBackground={false}
+          barTintColor={Platform.OS === 'android' ? '#dcdcdc' : null}
+          placeholder={(toolbar) => toolbar ? 'Search' : ''}
           onChangeText={text => setText(text)}>
           <SearchResults colors={colors} text={text} />
         </SearchBar>
-        <RightBar>
-          <BarButton title="search" show="always" search={true} />
-        </RightBar>
       </NavigationBar>
       <ScrollView
         style={styles.scene}
