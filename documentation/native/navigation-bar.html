@@ -93,7 +93,7 @@
 </code></pre>
             <h2>Adding a Search Bar</h2>
             <p>
-                The <code>SearchBar</code> component displays a search bar in the navigation bar. It calls the <code>onChangeText</code> prop whenever the search text changes. Any search results you render into the component's children are displayed in a new native screen that sits over the top of the current one. On Android, you need to set a <code>navigationImage</code> and a <code>Material3</code> theme in styles.xml, for example, <code>Theme.Material3.Light.NoActionBar</code>. We allow the user to search their inbox in our example application by adding a <code>SearchBar</code> component to the 'mail' scene.
+                The <code>SearchBar</code> component displays a search bar in the navigation bar. It calls the <code>onChangeText</code> prop whenever the search text changes. Any search results you render into the component's children are displayed in a new native screen that sits over the top of the current one. On Android, you need to set a <code>Material3</code> theme in styles.xml, for example, <code>Theme.Material3.Light.NoActionBar</code>. Android also expects a <code>navigationImage</code> prop on the <code>NavigationBar</code> component. We allow the user to search their inbox in our example application by adding a <code>SearchBar</code> component to the 'mail' scene.
             </p>
             <div class="Note">
                 <h2>Note</h2>
