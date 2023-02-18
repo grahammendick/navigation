@@ -93,7 +93,7 @@
 </code></pre>
             <h2>Adding a Search Bar</h2>
             <p>
-                The <code>SearchBar</code> component displays a search bar in the navigation bar. It calls the <code>onChangeText</code> prop whenever the search text changes. Any search results you render into the component's children are displayed in a new native screen that sits over the top of the current one. On Android, you trigger the search via a <code>BarButton</code> with the <code>search</code> prop set to 'true'. We allow the user to search their inbox in our example application by adding a <code>SearchBar</code> component to the 'mail' scene.
+                The <code>SearchBar</code> component displays a search bar in the navigation bar. It calls the <code>onChangeText</code> prop whenever the search text changes. Any search results you render into the component's children are displayed in a new native screen that sits over the top of the current one. On Android, you need to set a <code>Material3</code> theme in styles.xml, for example, <code>Theme.Material3.Light.NoActionBar</code>. We allow the user to search their inbox in our example application by adding a <code>SearchBar</code> component to the 'mail' scene.
             </p>
             <div class="Note">
                 <h2>Note</h2>
@@ -103,20 +103,29 @@
 
 &lt;NavigationBar title="Inbox">
   &lt;SearchBar
+    toolbar={true}
     text={text}
     obscureBackground={false}
-    onChangeText={text => this.setState({text})}>
+    onChangeText={setText}>
     &lt;ScrollView>
       {mails
         .filter(({message}) => message.indexOf(text) !== -1)
-        .map(({title}) => &lt;Text>{title}&lt;/Text>)}
+        .map(({id}) => (
+          &lt;Button onPress={() => {
+            stateNavigator.navigate('mail', {id})
+          }} />
+        ))}
     &lt;/ScrollView>
   &lt;/SearchBar>
-  &lt;RightBar>
-    &lt;BarButton title="search" search={true} />
-  &lt;/RightBar>
 &lt;/NavigationBar>
 </code></pre>
+            <p>
+                If you don't want to navigate to a new scene when the user selects a search result, use the <code>active</code> and <code>onChangeActive</code> props of the <code>SearchBar</code> to close the search instead.
+            </p>
+            <p>
+                You can still have a search bar on Android even if you're not using a <code>Material3</code> theme. The difference is that the search bar starts collapsed. Remove the <code>toolbar</code> prop from the <code>SearchBar</code> and add a <code>BarButton</code> with the <code>search</code> prop set to 'true'. Pressing the button expands the search bar. 
+            </p>
+            <pre><code class="language-jsx">&lt;BarButton title="search" search={true} /></code></pre>
             <h2>Updating the Status Bar</h2>
             <p>
                 To update the status bar, render a <code>StatusBar</code> component in the navigation bar. The  <code>barTintColor</code> prop controls the background color on Android. On iOS, it inherits the background color of the navigation bar. We add a <code>StatusBar</code> to the 'inbox' scene to change the status bar text and icon color to white.
