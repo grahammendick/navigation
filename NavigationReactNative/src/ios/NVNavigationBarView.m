@@ -77,7 +77,7 @@
     UIView *ancestor = self;
     while(ancestor) {
         if (ancestor == navigationBarScene.scene)
-            navigationBarScene.navigatioBar = self;
+            navigationBarScene.navigationBar = self;
         ancestor = ancestor.superview;
     }
 }

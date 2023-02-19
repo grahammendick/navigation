@@ -97,7 +97,7 @@
 {
     NVNavigationBarScene *navigationBarScene = [[NVNavigationBarScene alloc] initWithScene:self.view];
     [[NSNotificationCenter defaultCenter] postNotificationName:[@"findNavigationBar" stringByAppendingString: [_view.crumb stringValue]] object:navigationBarScene];
-    return navigationBarScene.navigatioBar;
+    return navigationBarScene.navigationBar;
 }
 
 -(UIView<NVSearchBar> *) findSearchBar:(UIView *)parent

@@ -47,7 +47,7 @@
 @interface NVNavigationBarScene : NSObject
 
 @property UIView *scene;
-@property UIView<NVNavigationBar> *navigatioBar;
+@property UIView<NVNavigationBar> *navigationBar;
 
 - (id)initWithScene:(UIView *)scene;
 
