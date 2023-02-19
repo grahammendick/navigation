@@ -100,7 +100,7 @@
                 NSArray *allControllers = [self->_navigationController.viewControllers arrayByAddingObjectsFromArray:controllers];
                 [self->_navigationController setViewControllers:allControllers animated:animate];
             }
-        } waitOn:((UIViewController *) [controllers lastObject]).view];
+        } waitOn:[_scenes objectForKey:[self.keys objectAtIndex:crumb]]];
     }
     if (crumb == currentCrumb) {
         NVSceneView *scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
