@@ -42,3 +42,13 @@
 - (void)updateStyle;
 
 @end
+
+@interface NVNavigationBarScene : NSObject
+
+@property UIView *scene;
+@property UIView<NVNavigationBar> *navigatioBar;
+
+- (id)initWithScene:(UIView *)scene;
+
+@end
+

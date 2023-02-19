@@ -1,5 +1,7 @@
 #import "NVNavigationBarView.h"
 
+#import "NVSceneController.h"
+
 #import <React/RCTBridge.h>
 #import <React/RCTFont.h>
 #pragma clang diagnostic push
@@ -19,8 +21,20 @@
 {
     if (self = [super init]) {
         _bridge = bridge;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFindNavigationBar:) name:@"findNavigationBar" object:nil];
     }
     return self;
+}
+
+- (void) onFindNavigationBar:(NSNotification *) notification
+{
+    NVNavigationBarScene *navigationBarScene = (NVNavigationBarScene *) notification.object;
+    UIView *ancestor = self;
+    while(ancestor) {
+        if (ancestor == navigationBarScene.scene)
+            navigationBarScene.navigatioBar = self;
+        ancestor = ancestor.superview;
+    }
 }
 
 - (void)setBackImage:(RCTImageSource *)source

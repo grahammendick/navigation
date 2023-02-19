@@ -95,7 +95,9 @@
 
 -(UIView<NVNavigationBar> *) findNavigationBar:(UIView *)parent
 {
-    return (UIView<NVNavigationBar> *) [self findChild:parent of:@protocol(NVNavigationBar)];
+    NVNavigationBarScene *navigationBarScene = [[NVNavigationBarScene alloc] initWithScene:parent];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"findNavigationBar" object:navigationBarScene];
+    return navigationBarScene.navigatioBar;
 }
 
 -(UIView<NVSearchBar> *) findSearchBar:(UIView *)parent
@@ -159,6 +161,18 @@
 - (void)dealloc
 {
     [_view didPop];
+}
+
+@end
+
+@implementation NVNavigationBarScene
+
+- (id)initWithScene:(UIView *)scene
+{
+    if (self = [super init]) {
+        _scene = scene;
+    }
+    return self;
 }
 
 @end
