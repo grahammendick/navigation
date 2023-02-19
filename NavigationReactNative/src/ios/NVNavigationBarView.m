@@ -26,17 +26,6 @@
     return self;
 }
 
-- (void) onFindNavigationBar:(NSNotification *) notification
-{
-    NVNavigationBarScene *navigationBarScene = (NVNavigationBarScene *) notification.object;
-    UIView *ancestor = self;
-    while(ancestor) {
-        if (ancestor == navigationBarScene.scene)
-            navigationBarScene.navigatioBar = self;
-        ancestor = ancestor.superview;
-    }
-}
-
 - (void)setBackImage:(RCTImageSource *)source
 {
     _backImageLoading = !!source;
@@ -80,6 +69,17 @@
         }
     }
     [self updateStyle];
+}
+
+- (void) onFindNavigationBar:(NSNotification *) notification
+{
+    NVNavigationBarScene *navigationBarScene = (NVNavigationBarScene *) notification.object;
+    UIView *ancestor = self;
+    while(ancestor) {
+        if (ancestor == navigationBarScene.scene)
+            navigationBarScene.navigatioBar = self;
+        ancestor = ancestor.superview;
+    }
 }
 
 - (void)updateStyle {
