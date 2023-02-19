@@ -13,6 +13,7 @@
 @protocol NVScene
 
 @property (nonatomic, assign) BOOL hidesTabBar;
+@property (nonatomic, copy) NSNumber *crumb;
 - (void)didPop;
 
 @end

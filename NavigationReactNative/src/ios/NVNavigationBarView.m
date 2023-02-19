@@ -15,13 +15,13 @@
 {
     __weak RCTBridge *_bridge;
     UIImage *_backImage;
+    BOOL listeningToFind;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
 {
     if (self = [super init]) {
         _bridge = bridge;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFindNavigationBar:) name:@"findNavigationBar" object:nil];
     }
     return self;
 }
@@ -61,6 +61,10 @@
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     [super didSetProps:changedProps];
+    if (!listeningToFind) {
+        listeningToFind = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFindNavigationBar:) name:[@"findNavigationBar" stringByAppendingString: [_crumb stringValue]] object:nil];
+    }
     _isHidden = _hidden;
     if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
         [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];

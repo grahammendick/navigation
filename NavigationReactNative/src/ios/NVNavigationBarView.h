@@ -4,6 +4,7 @@
 
 @interface NVNavigationBarView : UIView <NVNavigationBar>
 
+@property (nonatomic, copy) NSNumber *crumb;
 @property (nonatomic, assign) BOOL hidden;
 @property (nonatomic, assign) BOOL isHidden;
 @property (nonatomic, assign) BOOL largeTitle;

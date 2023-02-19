@@ -29,7 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
+    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar];
     UIView<NVSearchBar> *searchBar = [self findSearchBar:navigationBar];
     self.definesPresentationContext = true;
     if (!!searchBar && !navigationBar.isHidden) {
@@ -43,7 +43,7 @@
     [super viewWillAppear:animated];
     NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
-    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
+    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar];
     navigationBar.backImageDidLoadBlock = nil;
     BOOL hidden = navigationBar.isHidden;
     if (@available(iOS 13.0, *)) {
@@ -78,7 +78,7 @@
     [super viewWillLayoutSubviews];
     NSInteger crumb = [self.navigationController.viewControllers indexOfObject:self];
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
-    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
+    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar];
     if (previousController.navigationItem.searchController.active) {
         [self.navigationController setNavigationBarHidden:navigationBar.isHidden];
     }
@@ -87,16 +87,16 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:self.view];
+    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar];
     UIView<NVStatusBar> *statusBar = [self findStatusBar:navigationBar];
     [navigationBar updateStyle];
     [statusBar updateStyle];
 }
 
--(UIView<NVNavigationBar> *) findNavigationBar:(UIView *)parent
+-(UIView<NVNavigationBar> *) findNavigationBar
 {
-    NVNavigationBarScene *navigationBarScene = [[NVNavigationBarScene alloc] initWithScene:parent];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"findNavigationBar" object:navigationBarScene];
+    NVNavigationBarScene *navigationBarScene = [[NVNavigationBarScene alloc] initWithScene:self.view];
+    [[NSNotificationCenter defaultCenter] postNotificationName:[@"findNavigationBar" stringByAppendingString: [_view.crumb stringValue]] object:navigationBarScene];
     return navigationBarScene.navigatioBar;
 }
 
