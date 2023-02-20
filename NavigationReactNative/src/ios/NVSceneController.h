@@ -44,7 +44,7 @@
 
 @end
 
-@interface NVNavigationBarScene : NSObject
+@interface NVFindNavigationBarNotification : NSObject
 
 @property UIView *scene;
 @property UIView<NVNavigationBar> *navigationBar;

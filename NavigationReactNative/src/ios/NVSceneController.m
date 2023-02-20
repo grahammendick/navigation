@@ -95,9 +95,9 @@
 
 -(UIView<NVNavigationBar> *) findNavigationBar
 {
-    NVNavigationBarScene *navigationBarScene = [[NVNavigationBarScene alloc] initWithScene:self.view];
-    [[NSNotificationCenter defaultCenter] postNotificationName:[@"findNavigationBar" stringByAppendingString: [_view.crumb stringValue]] object:navigationBarScene];
-    return navigationBarScene.navigationBar;
+    NVFindNavigationBarNotification *findNavigationBarNotification = [[NVFindNavigationBarNotification alloc] initWithScene:self.view];
+    [[NSNotificationCenter defaultCenter] postNotificationName:[@"findNavigationBar" stringByAppendingString: [_view.crumb stringValue]] object:findNavigationBarNotification];
+    return findNavigationBarNotification.navigationBar;
 }
 
 -(UIView<NVSearchBar> *) findSearchBar:(UIView *)parent
@@ -165,7 +165,7 @@
 
 @end
 
-@implementation NVNavigationBarScene
+@implementation NVFindNavigationBarNotification
 
 - (id)initWithScene:(UIView *)scene
 {

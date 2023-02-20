@@ -52,7 +52,7 @@
     [super didSetProps:changedProps];
     if (!addedListener) {
         addedListener = YES;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFindNavigationBar:) name:[@"findNavigationBar" stringByAppendingString: [_crumb stringValue]] object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveFind:) name:[@"findNavigationBar" stringByAppendingString: [_crumb stringValue]] object:nil];
     }
     _isHidden = _hidden;
     if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
@@ -71,13 +71,13 @@
     [self updateStyle];
 }
 
-- (void) onFindNavigationBar:(NSNotification *) notification
+- (void) receiveFind:(NSNotification *) notification
 {
-    NVNavigationBarScene *navigationBarScene = (NVNavigationBarScene *) notification.object;
+    NVFindNavigationBarNotification *findNavigationBarNotification = (NVFindNavigationBarNotification *) notification.object;
     UIView *ancestor = self;
     while(ancestor) {
-        if (ancestor == navigationBarScene.scene)
-            navigationBarScene.navigationBar = self;
+        if (ancestor == findNavigationBarNotification.scene)
+            findNavigationBarNotification.navigationBar = self;
         ancestor = ancestor.superview;
     }
 }
