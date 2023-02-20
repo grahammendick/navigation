@@ -15,7 +15,7 @@
 {
     __weak RCTBridge *_bridge;
     UIImage *_backImage;
-    BOOL listeningToFind;
+    BOOL addedListener;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -50,8 +50,8 @@
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     [super didSetProps:changedProps];
-    if (!listeningToFind) {
-        listeningToFind = YES;
+    if (!addedListener) {
+        addedListener = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFindNavigationBar:) name:[@"findNavigationBar" stringByAppendingString: [_crumb stringValue]] object:nil];
     }
     _isHidden = _hidden;
@@ -195,6 +195,11 @@ API_AVAILABLE(ios(13.0)){
         attributes[NSFontAttributeName] = font;
     }
     return attributes;
+}
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end
