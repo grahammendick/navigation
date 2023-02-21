@@ -100,7 +100,7 @@
                 NSArray *allControllers = [self->_navigationController.viewControllers arrayByAddingObjectsFromArray:controllers];
                 [self->_navigationController setViewControllers:allControllers animated:animate];
             }
-        } waitOn:[_scenes objectForKey:[self.keys objectAtIndex:crumb]] crumb:crumb];
+        } waitOn:[controllers lastObject]];
     }
     if (crumb == currentCrumb) {
         NVSceneView *scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
@@ -114,26 +114,19 @@
             if (completed) return;
             completed = YES;
             [self->_navigationController setViewControllers:controllers animated:animate];
-        } waitOn:scene crumb:crumb];
+        } waitOn:controller];
     }
 }
 
--(void) completeNavigation:(void (^)(void)) completeNavigation waitOn:(NVSceneView *)scene crumb:(NSInteger) crumb
+-(void) completeNavigation:(void (^)(void)) completeNavigation waitOn:(NVSceneController *)sceneController
 {
-    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:scene crumb:crumb];
+    UIView<NVNavigationBar> *navigationBar = [sceneController findNavigationBar];
     if (!navigationBar.backImageLoading) {
         completeNavigation();
     } else {
         navigationBar.backImageDidLoadBlock = completeNavigation;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .1 * NSEC_PER_SEC), dispatch_get_main_queue(), completeNavigation);
     }
-}
-
--(UIView<NVNavigationBar> *) findNavigationBar:(NVSceneView *)scene crumb:(NSInteger) crumb
-{
-    NVFindNavigationBarNotification *findNavigationBarNotification = [[NVFindNavigationBarNotification alloc] initWithScene:scene];
-    [[NSNotificationCenter defaultCenter] postNotificationName:[@"findNavigationBar" stringByAppendingString: [@(crumb) stringValue]] object:findNavigationBarNotification];
-    return findNavigationBarNotification.navigationBar;
 }
 
 - (void)didMoveToWindow
