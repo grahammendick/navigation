@@ -99,7 +99,7 @@
 
 -(UIView<NVNavigationBar> *) findNavigationBar
 {
-    NVFindNavigationBarNotification *findNavigationBarNotification = [[NVFindNavigationBarNotification alloc] initWithScene:self.view];
+    NVFindNavigationBarNotification *findNavigationBarNotification = [[NVFindNavigationBarNotification alloc] initWithScene:_view];
     [[NSNotificationCenter defaultCenter] postNotificationName:[@"findNavigationBar" stringByAppendingString: [_view.crumb stringValue]] object:findNavigationBarNotification];
     return findNavigationBarNotification.navigationBar;
 }
