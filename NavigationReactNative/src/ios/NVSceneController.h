@@ -24,6 +24,7 @@
 @property (nonatomic, assign) BOOL largeTitle;
 @property (nonatomic, copy) NSString* title;
 @property (nonatomic, copy) NSString *backTitle;
+@property (nonatomic, assign) BOOL backImageLoading;
 @property (nonatomic, copy) void (^backImageDidLoadBlock)(void);
 - (void)updateStyle;
 

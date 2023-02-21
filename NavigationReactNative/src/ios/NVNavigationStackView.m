@@ -100,7 +100,7 @@
                 NSArray *allControllers = [self->_navigationController.viewControllers arrayByAddingObjectsFromArray:controllers];
                 [self->_navigationController setViewControllers:allControllers animated:animate];
             }
-        } waitOn:[_scenes objectForKey:[self.keys objectAtIndex:crumb]]];
+        } waitOn:[_scenes objectForKey:[self.keys objectAtIndex:crumb]] crumb:crumb];
     }
     if (crumb == currentCrumb) {
         NVSceneView *scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
@@ -114,13 +114,13 @@
             if (completed) return;
             completed = YES;
             [self->_navigationController setViewControllers:controllers animated:animate];
-        } waitOn:scene];
+        } waitOn:scene crumb:crumb];
     }
 }
 
--(void) completeNavigation:(void (^)(void)) completeNavigation waitOn:(UIView *)scene
+-(void) completeNavigation:(void (^)(void)) completeNavigation waitOn:(NVSceneView *)scene crumb:(NSInteger) crumb
 {
-    NVNavigationBarView *navigationBar = [self findNavigationBar:scene];
+    UIView<NVNavigationBar> *navigationBar = [self findNavigationBar:scene crumb:crumb];
     if (!navigationBar.backImageLoading) {
         completeNavigation();
     } else {
@@ -129,17 +129,11 @@
     }
 }
 
--(NVNavigationBarView *) findNavigationBar:(UIView *)parent
+-(UIView<NVNavigationBar> *) findNavigationBar:(NVSceneView *)scene crumb:(NSInteger) crumb
 {
-    for(NSInteger i = 0; i < parent.subviews.count; i++) {
-        UIView* subview = parent.subviews[i];
-        if ([subview isKindOfClass:[NVNavigationBarView class]])
-            return (NVNavigationBarView *) subview;
-        subview = [self findNavigationBar:parent.subviews[i]];
-        if ([subview isKindOfClass:[NVNavigationBarView class]])
-            return (NVNavigationBarView *) subview;
-    }
-    return nil;
+    NVFindNavigationBarNotification *findNavigationBarNotification = [[NVFindNavigationBarNotification alloc] initWithScene:scene];
+    [[NSNotificationCenter defaultCenter] postNotificationName:[@"findNavigationBar" stringByAppendingString: [@(crumb) stringValue]] object:findNavigationBarNotification];
+    return findNavigationBarNotification.navigationBar;
 }
 
 - (void)didMoveToWindow
