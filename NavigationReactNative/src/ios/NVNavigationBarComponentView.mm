@@ -24,6 +24,7 @@ using namespace facebook::react;
     ImageResponseObserverCoordinator const *_imageCoordinator;
     RCTImageResponseObserverProxy _imageResponseObserverProxy;
     UIImage *_backImage;
+    BOOL addedListener;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -40,6 +41,10 @@ using namespace facebook::react;
 {
     const auto &newViewProps = *std::static_pointer_cast<NVNavigationBarProps const>(props);
     _crumb = [NSNumber numberWithInt:newViewProps.crumb];
+    if (!addedListener) {
+        addedListener = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveFind:) name:[@"findNavigationBar" stringByAppendingString: [_crumb stringValue]] object:nil];
+    }
     _isHidden = _hidden = newViewProps.hidden;
     if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
         if ([self.reactViewController.navigationController isNavigationBarHidden] != self.hidden)
@@ -95,6 +100,17 @@ using namespace facebook::react;
     }
     [self updateStyle];
     [super updateProps:props oldProps:oldProps];
+}
+
+- (void) receiveFind:(NSNotification *) notification
+{
+    NVFindNavigationBarNotification *findNavigationBarNotification = (NVFindNavigationBarNotification *) notification.object;
+    UIView *ancestor = self;
+    while(ancestor) {
+        if (ancestor == findNavigationBarNotification.scene)
+            findNavigationBarNotification.navigationBar = self;
+        ancestor = ancestor.superview;
+    }
 }
 
 - (void)updateStyle
@@ -219,6 +235,8 @@ API_AVAILABLE(ios(13.0)){
     self.imageCoordinator = nullptr;
     _backImageLoading = NO;
     _backImage = nil;
+    addedListener = NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)updateState:(const facebook::react::State::Shared &)state oldState:(const facebook::react::State::Shared &)oldState
