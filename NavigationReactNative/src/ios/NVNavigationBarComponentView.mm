@@ -39,6 +39,7 @@ using namespace facebook::react;
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
     const auto &newViewProps = *std::static_pointer_cast<NVNavigationBarProps const>(props);
+    _crumb = [NSNumber numberWithInt:newViewProps.crumb];
     _isHidden = _hidden = newViewProps.hidden;
     if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
         if ([self.reactViewController.navigationController isNavigationBarHidden] != self.hidden)
