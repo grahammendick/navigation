@@ -46,7 +46,7 @@ using namespace facebook::react;
     [self ensureViewController];
     const auto &newViewProps = *std::static_pointer_cast<NVSceneProps const>(props);
     _sceneKey = [[NSString alloc] initWithUTF8String: newViewProps.sceneKey.c_str()];
-    _crumb = newViewProps.crumb;
+    _crumb = [NSNumber numberWithInt:newViewProps.crumb];
     _title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
     _hidesTabBar = newViewProps.hidesTabBar;
     dispatch_async(dispatch_get_main_queue(), ^{
