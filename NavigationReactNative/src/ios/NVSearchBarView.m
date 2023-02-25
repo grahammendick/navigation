@@ -185,6 +185,15 @@
     return YES;
 }
 
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    if (!!self.onQuery) {
+        self.onQuery(@{
+            @"text": searchBar.text,
+        });
+    }
+}
+
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
 {
     _nativeButtonEventCount++;
