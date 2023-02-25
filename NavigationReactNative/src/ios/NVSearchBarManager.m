@@ -30,6 +30,7 @@ RCT_EXPORT_VIEW_PROPERTY(scopeButton, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(mostRecentButtonEventCount, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(onChangeText, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onChangeActive, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onQuery, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onChangeScopeButton, RCTDirectEventBlock)
 
 @end

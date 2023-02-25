@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { requireNativeComponent, Image, Platform, StyleSheet } from 'react-native';
 import BackButton from './BackButton';
 import TabBarItemContext from './TabBarItemContext';
@@ -8,14 +8,16 @@ import Freeze from './Freeze';
 
 const TabBarItem = ({selected, onPress, children, image, systemItem, badge, index, freezable, ...props}) => {
     const [loaded, setLoaded] = useState(selected);
+    const [freeze, setFreeze] = useState(false);
     const backHandler = useRef(createBackHandler());
     const onLoad = useRef({ onLoad: () => setLoaded(true)});
+    useEffect(() => setFreeze(freezable), [freezable]);
     if (!loaded && selected) setLoaded(true);
     image = typeof image === 'string' ? (Platform.OS === 'ios' ? null : {uri: image}) : image;
     return (
         <>
             <BackButton onPress={() => selected && backHandler.current.handleBack()} />
-            <Freeze enabled={loaded && freezable}>
+            <Freeze enabled={loaded && freeze}>
                 <NVTabBarItem
                     ref={(ref: any) => {
                         if (!!React.Suspense && ref?.viewConfig?.validAttributes?.style) {

@@ -423,6 +423,10 @@ export interface SearchBarProps {
      */
     onChangeText?: (text: string) => void;
     /**
+     * Handles search press events
+     */
+    onQuery?: (text: string) => void;
+    /**
      * Handles active change events
      */
     onChangeActive?: (active: boolean) => void;

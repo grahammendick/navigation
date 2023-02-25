@@ -61,6 +61,12 @@ public class SearchResultsView extends SearchView {
             public void afterTextChanged(Editable editable) {
             }
         });
+        getEditText().setOnEditorActionListener((textView, i, keyEvent) -> {
+            ReactContext reactContext = (ReactContext) ((ContextWrapper) getContext()).getBaseContext();
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(new SearchResultsView.QueryEvent(getId(), getText().toString()));
+            return false;
+        });
     }
 
     void setText(String text) {
@@ -160,6 +166,27 @@ public class SearchResultsView extends SearchView {
             WritableMap event = Arguments.createMap();
             event.putBoolean("active", this.active);
             event.putInt("eventCount", this.eventCount);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
+        }
+    }
+
+    static class QueryEvent extends Event<SearchBarView.ChangeTextEvent> {
+        private final String text;
+
+        public QueryEvent(int viewId, String text) {
+            super(viewId);
+            this.text = text;
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnQuery";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            WritableMap event = Arguments.createMap();
+            event.putString("text", this.text);
             rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }
