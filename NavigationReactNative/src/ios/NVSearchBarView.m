@@ -63,15 +63,6 @@
     }
 }
 
-- (void)setActive:(BOOL)active
-{
-    NSInteger eventLag = _nativeActiveEventCount - _mostRecentActiveEventCount;
-    if (eventLag == 0 && self.searchController.active != active) {
-        [self.searchController setActive:active];
-        if (active) [self.searchController.searchBar becomeFirstResponder];
-    }
-}
-
 - (void)setBarTintColor:(UIColor *)barTintColor
 {
     if (@available(iOS 13.0, *)) {
@@ -96,6 +87,11 @@
 {
     if (@available(iOS 11.0, *)) {
         [self.reactViewController.navigationItem setHidesSearchBarWhenScrolling:self.hideWhenScrolling];
+    }
+    NSInteger eventLag = _nativeActiveEventCount - _mostRecentActiveEventCount;
+    if (eventLag == 0 && self.searchController.active != _active) {
+        [self.searchController setActive:_active];
+        if (_active) [self.searchController.searchBar becomeFirstResponder];
     }
 }
 
@@ -173,7 +169,7 @@
     return YES;
 }
 
--(BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     _nativeActiveEventCount++;
     if (!!self.onChangeActive) {
@@ -182,7 +178,6 @@
             @"eventCount": @(_nativeActiveEventCount),
         });
     }
-    return YES;
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar

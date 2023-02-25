@@ -6,6 +6,7 @@
 @interface NVSearchBarView : UIView <UISearchResultsUpdating, UISearchBarDelegate, NVSearchBar>
 
 @property UISearchController *searchController;
+@property (nonatomic, assign) BOOL active;
 @property (nonatomic, assign) BOOL hideWhenScrolling;
 @property (nonatomic, assign) NSInteger mostRecentEventCount;
 @property (nonatomic, assign) NSInteger mostRecentActiveEventCount;
