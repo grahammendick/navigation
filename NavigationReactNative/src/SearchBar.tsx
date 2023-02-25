@@ -3,7 +3,7 @@ import { requireNativeComponent, Platform, StyleSheet, UIManager, NativeModules 
 
 const SearchBar = ({obscureBackground = true, hideNavigationBar= true, hideWhenScrolling = false, autoCapitalize = 'sentences',
     barTintColor, onChangeText, placeholder = Platform.OS === 'ios' ? 'Search' : undefined as any, children, bottomBar,
-    active, onChangeActive, scopeButton, scopeButtons, onChangeScopeButton, toolbar, ...props}) => {
+    active, onChangeActive, onQuery, scopeButton, scopeButtons, onChangeScopeButton, toolbar, ...props}) => {
     const [show, setShow] = useState(false);
     const [mostRecentEventCount, setMostRecentEventCount] = useState(0);
     const [mostRecentButtonEventCount, setMostRecentButtonEventCount] = useState(0);
@@ -59,6 +59,7 @@ const SearchBar = ({obscureBackground = true, hideNavigationBar= true, hideWhenS
             mostRecentButtonEventCount={mostRecentButtonEventCount}
             onChangeText={changeText}
             onChangeActive={onChangeShow}
+            onQuery={({nativeEvent}) => onQuery && onQuery(nativeEvent.text)}
             onChangeScopeButton={changeScopeButton}
             style={[styles.searchBar, showStyle]}>
             {children}
