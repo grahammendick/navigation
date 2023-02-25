@@ -147,6 +147,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             int popExit = getAnimationResourceId(currentActivity, scene.exitAnim, android.R.attr.activityCloseExitAnimation);
             FragmentManager fragmentManager = fragment.getChildFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setReorderingAllowed(true);
             fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
             fragmentTransaction.replace(getId(), new SceneFragment(scene, null), key);
             fragmentTransaction.addToBackStack(String.valueOf(crumb));
