@@ -128,6 +128,7 @@ public class SearchBarViewManager extends ViewGroupManager<SearchBarView> implem
         return MapBuilder.<String, Object>builder()
             .put("topOnChangeText", MapBuilder.of("registrationName", "onChangeText"))
             .put("topOnChangeActive", MapBuilder.of("registrationName", "onChangeActive"))
+            .put("topOnQuery", MapBuilder.of("registrationName", "onQuery"))
             .build();
     }
 

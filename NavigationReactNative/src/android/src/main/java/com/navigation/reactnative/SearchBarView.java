@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,9 @@ public class SearchBarView extends ReactViewGroup {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                ReactContext reactContext = (ReactContext) getContext();
+                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                eventDispatcher.dispatchEvent(new QueryEvent(getId(), searchView.getQuery().toString()));
                 return false;
             }
 
@@ -189,6 +193,27 @@ public class SearchBarView extends ReactViewGroup {
             WritableMap event = Arguments.createMap();
             event.putBoolean("active", this.active);
             event.putInt("eventCount", this.eventCount);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
+        }
+    }
+
+    static class QueryEvent extends Event<SearchBarView.ChangeTextEvent> {
+        private final String text;
+
+        public QueryEvent(int viewId, String text) {
+            super(viewId);
+            this.text = text;
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnQuery";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            WritableMap event = Arguments.createMap();
+            event.putString("text", this.text);
             rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }

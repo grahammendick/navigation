@@ -147,7 +147,7 @@ using namespace facebook::react;
     return YES;
 }
 
--(BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     _nativeActiveEventCount++;
     if (_eventEmitter != nullptr) {
@@ -157,8 +157,18 @@ using namespace facebook::react;
                 .eventCount = static_cast<int>(_nativeActiveEventCount),
             });
     }
-    return YES;
 }
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    if (_eventEmitter != nullptr) {
+        std::static_pointer_cast<NVSearchBarEventEmitter const>(_eventEmitter)
+            ->onQuery(NVSearchBarEventEmitter::OnQuery{
+                .text = std::string([searchBar.text UTF8String]),
+            });
+    }
+}
+
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
 {
     _nativeButtonEventCount++;
