@@ -6,12 +6,17 @@ import BackHandlerContext from './BackHandlerContext';
 import createBackHandler from './createBackHandler';
 import Freeze from './Freeze';
 
-const TabBarItem = ({selected, onPress, children, image, systemItem, badge, index, freezable, ...props}) => {
+const TabBarItem = ({selected, onPress, children, title, image, systemItem, badge, index, freezable, ...props}) => {
     const [loaded, setLoaded] = useState(selected);
     const [freeze, setFreeze] = useState(false);
     const backHandler = useRef(createBackHandler());
     const onLoad = useRef({ onLoad: () => setLoaded(true)});
-    useEffect(() => setFreeze(freezable), [freezable]);
+    useEffect(() => {
+        if(freeze !== freezable) setFreeze(freezable);
+    }, [freeze, freezable]);
+    useEffect(() => {
+        setFreeze(false);
+    }, [image, systemItem, badge, title]);
     if (!loaded && selected) setLoaded(true);
     image = typeof image === 'string' ? (Platform.OS === 'ios' ? null : {uri: image}) : image;
     return (
@@ -29,6 +34,7 @@ const TabBarItem = ({selected, onPress, children, image, systemItem, badge, inde
                     }}
                     {...props}
                     selected={selected}
+                    title={title}
                     badge={badge != null ? '' + badge : undefined}
                     image={Image.resolveAssetSource(image)}
                     systemItem={systemItem || ''}
