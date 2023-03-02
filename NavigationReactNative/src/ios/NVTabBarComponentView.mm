@@ -58,10 +58,6 @@ using namespace facebook::react;
     UIColor *selectedTintColor = RCTUIColorFromSharedColor(newViewProps.selectedTintColor);
     UIColor *unselectedTintColor = RCTUIColorFromSharedColor(newViewProps.unselectedTintColor);
     UIColor *barTintColor = RCTUIColorFromSharedColor(newViewProps.barTintColor);
-    if ([_tabBarController.tabBar tintColor] != selectedTintColor)
-        [_tabBarController.tabBar setTintColor: selectedTintColor];
-    if ([_tabBarController.tabBar unselectedItemTintColor] != unselectedTintColor)
-        [_tabBarController.tabBar setUnselectedItemTintColor: unselectedTintColor];
     if (@available(iOS 13.0, *)) {
         UITabBarAppearance *appearance = [UITabBarAppearance new];
         [appearance configureWithDefaultBackground];
@@ -84,23 +80,31 @@ using namespace facebook::react;
         NSNumber *size = !self.fontSize ? @10 : self.fontSize;
         NSString *weight = !self.fontWeight ? @"500" : self.fontWeight;
         UIFont *font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:weight style:self.fontStyle variant:nil scaleMultiplier:1];
-        NSMutableDictionary *attributes = [NSMutableDictionary new];
-        if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
-            attributes[NSFontAttributeName] = font;
+        NSMutableDictionary *unselectedAttributes = [NSMutableDictionary new];
+        NSMutableDictionary *selectedAttributes = [NSMutableDictionary new];
+        unselectedAttributes[NSForegroundColorAttributeName] = unselectedTintColor;
+        selectedAttributes[NSForegroundColorAttributeName] = selectedTintColor;        if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
+            unselectedAttributes[NSFontAttributeName] = font;
+            selectedAttributes[NSFontAttributeName] = font;
         }
         UITabBarItemAppearance *itemAppearance = [UITabBarItemAppearance new];
         UIColor *badgeColor = RCTUIColorFromSharedColor(newViewProps.badgeColor);
         [itemAppearance.normal setBadgeBackgroundColor:badgeColor];
         [itemAppearance.selected setBadgeBackgroundColor:badgeColor];
-        [itemAppearance.normal setTitleTextAttributes:attributes];
-        [itemAppearance.selected setTitleTextAttributes:attributes];
+        [itemAppearance.normal setTitleTextAttributes:unselectedAttributes];
+        [itemAppearance.selected setTitleTextAttributes:selectedAttributes];
+        [itemAppearance.normal setIconColor:unselectedTintColor];
+        [itemAppearance.selected setIconColor:selectedTintColor];
         appearance.stackedLayoutAppearance = itemAppearance;
         appearance.compactInlineLayoutAppearance = itemAppearance;
         _tabBarController.tabBar.standardAppearance = appearance;
+        [_tabBarController.tabBar setNeedsLayout];
         if (@available(iOS 15.0, *))
             _tabBarController.tabBar.scrollEdgeAppearance = appearance;
     } else {
         [_tabBarController.tabBar setBarTintColor:barTintColor];
+        [_tabBarController.tabBar setTintColor: selectedTintColor];
+        [_tabBarController.tabBar setUnselectedItemTintColor: unselectedTintColor];
     }
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
