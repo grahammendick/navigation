@@ -5,6 +5,8 @@
 
 @property (nonatomic, assign) NSInteger tabCount;
 @property (nonatomic, copy) UIColor *barTintColor;
+@property (nonatomic, copy) UIColor *selectedTintColor;
+@property (nonatomic, copy) UIColor *unselectedTintColor;
 @property (nonatomic, copy) UIColor *badgeColor;
 @property (nonatomic, assign) BOOL scrollsToTop;
 @property (nonatomic, copy) NSString *fontFamily;
