@@ -35,18 +35,6 @@
     }
 }
 
-- (void)setSelectedTintColor:(UIColor *)selectedTintColor
-{
-    [_tabBarController.tabBar setTintColor: selectedTintColor];
-}
-
-- (void)setUnselectedTintColor:(UIColor *)unselectedTintColor
-{
-    if (@available(iOS 10.0, *)) {
-        [_tabBarController.tabBar setUnselectedItemTintColor: unselectedTintColor];
-    }
-}
-
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
@@ -97,22 +85,31 @@
         NSNumber *size = !self.fontSize ? @10 : self.fontSize;
         NSString *weight = !self.fontWeight ? @"500" : self.fontWeight;
         UIFont *font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:weight style:self.fontStyle variant:nil scaleMultiplier:1];
-        NSMutableDictionary *attributes = [NSMutableDictionary new];
+        NSMutableDictionary *unselectedAttributes = [NSMutableDictionary new];
+        NSMutableDictionary *selectedAttributes = [NSMutableDictionary new];
+        unselectedAttributes[NSForegroundColorAttributeName] = _unselectedTintColor;
+        selectedAttributes[NSForegroundColorAttributeName] = _selectedTintColor;
         if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
-            attributes[NSFontAttributeName] = font;
+            unselectedAttributes[NSFontAttributeName] = font;
+            selectedAttributes[NSFontAttributeName] = font;
         }
         UITabBarItemAppearance *itemAppearance = [UITabBarItemAppearance new];
         [itemAppearance.normal setBadgeBackgroundColor:_badgeColor];
         [itemAppearance.selected setBadgeBackgroundColor:_badgeColor];
-        [itemAppearance.normal setTitleTextAttributes:attributes];
-        [itemAppearance.selected setTitleTextAttributes:attributes];
+        [itemAppearance.normal setTitleTextAttributes:unselectedAttributes];
+        [itemAppearance.selected setTitleTextAttributes:selectedAttributes];
+        [itemAppearance.normal setIconColor:_unselectedTintColor];
+        [itemAppearance.selected setIconColor:_selectedTintColor];
         appearance.stackedLayoutAppearance = itemAppearance;
         appearance.compactInlineLayoutAppearance = itemAppearance;
         _tabBarController.tabBar.standardAppearance = appearance;
+        [_tabBarController.tabBar setNeedsLayout];
         if (@available(iOS 15.0, *))
             _tabBarController.tabBar.scrollEdgeAppearance = appearance;
     } else {
         [_tabBarController.tabBar setBarTintColor:_barTintColor];
+        [_tabBarController.tabBar setUnselectedItemTintColor: _unselectedTintColor];
+        [_tabBarController.tabBar setTintColor: _selectedTintColor];
     }
 }
 
