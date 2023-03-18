@@ -56,7 +56,7 @@ class NavigationBar extends React.Component<any, any> {
             <>
                 <NVNavigationBar
                     crumb={crumb}
-                    hidden={hidden}
+                    isHidden={hidden}
                     backTitle={backTitle}
                     backTitleOn={backTitle !== undefined}
                     backImage={Image.resolveAssetSource(backImage)}

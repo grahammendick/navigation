@@ -58,7 +58,7 @@
         [self.navigationItem setTitle:navigationBar.title];
     }
     previousController.navigationItem.backBarButtonItem = nil;
-    if (navigationBar.backTitle != nil) {
+    if (navigationBar.backTitle != nil && !navigationBar.isHidden) {
         previousController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:navigationBar.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
     }
     [navigationBar updateStyle];
@@ -66,7 +66,7 @@
     [self.navigationItem setLargeTitleDisplayMode:navigationBar.largeTitle ? UINavigationItemLargeTitleDisplayModeAlways : UINavigationItemLargeTitleDisplayModeNever];
     UIView<NVSearchBar> *searchBar = [self findSearchBar:navigationBar];
     self.definesPresentationContext = true;
-    if (!!searchBar && !navigationBar.hidden) {
+    if (!!searchBar && !navigationBar.isHidden) {
         [self.navigationItem setSearchController:searchBar.searchController];
         [self.navigationItem setHidesSearchBarWhenScrolling:searchBar.hideWhenScrolling];
     }
