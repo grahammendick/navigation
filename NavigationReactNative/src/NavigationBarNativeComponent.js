@@ -6,7 +6,8 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
-  hidden: boolean,
+  crumb: Int32,
+  isHidden: boolean,
   largeTitle: boolean,
   title: string,
   titleFontFamily: string,

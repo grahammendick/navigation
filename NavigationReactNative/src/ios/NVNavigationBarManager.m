@@ -13,7 +13,8 @@ RCT_EXPORT_MODULE()
     return [[NVNavigationBarView alloc] initWithBridge:self.bridge];
 }
 
-RCT_EXPORT_VIEW_PROPERTY(hidden, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(crumb, NSNumber)
+RCT_EXPORT_VIEW_PROPERTY(isHidden, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(largeTitle, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(title, NSString)
 RCT_EXPORT_VIEW_PROPERTY(titleFontFamily, NSString)

@@ -24,6 +24,7 @@ using namespace facebook::react;
     ImageResponseObserverCoordinator const *_imageCoordinator;
     RCTImageResponseObserverProxy _imageResponseObserverProxy;
     UIImage *_backImage;
+    BOOL addedListener;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -39,10 +40,17 @@ using namespace facebook::react;
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
     const auto &newViewProps = *std::static_pointer_cast<NVNavigationBarProps const>(props);
-    _isHidden = _hidden = newViewProps.hidden;
+    _crumb = [NSNumber numberWithInt:newViewProps.crumb];
+    if (!addedListener) {
+        addedListener = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveFind:) name:[@"findNavigationBar" stringByAppendingString: [_crumb stringValue]] object:nil];
+    }
+    _backTitle = [[NSString alloc] initWithUTF8String: newViewProps.backTitle.c_str()];
+    _backTitle = newViewProps.backTitleOn ? _backTitle : nil;
+    _isHidden = newViewProps.isHidden;
     if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
-        if ([self.reactViewController.navigationController isNavigationBarHidden] != self.hidden)
-            [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];
+        [self.reactViewController.navigationController setNavigationBarHidden:self.isHidden && !self.backTitle.length];
+        [self.reactViewController.navigationController.navigationBar setHidden:self.isHidden && self.backTitle.length];
     }
     _largeTitle = newViewProps.largeTitle;
     _title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
@@ -77,12 +85,10 @@ using namespace facebook::react;
     _tintColor = RCTUIColorFromSharedColor(newViewProps.tintColor);
     _titleColor = RCTUIColorFromSharedColor(newViewProps.titleColor);
     _largeTitleColor = RCTUIColorFromSharedColor(newViewProps.largeTitleColor);
-    _backTitle = [[NSString alloc] initWithUTF8String: newViewProps.backTitle.c_str()];
-    _backTitle = newViewProps.backTitleOn ? _backTitle : nil;
     UINavigationItem *previousNavigationItem = [self previousNavigationItem];
     if (previousNavigationItem.backBarButtonItem.title != _backTitle) {
         previousNavigationItem.backBarButtonItem = nil;
-        if (self.backTitle != nil) {
+        if (self.backTitle != nil && !self.isHidden) {
             previousNavigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
         }
     }
@@ -94,6 +100,17 @@ using namespace facebook::react;
     }
     [self updateStyle];
     [super updateProps:props oldProps:oldProps];
+}
+
+- (void) receiveFind:(NSNotification *) notification
+{
+    NVFindNavigationBarNotification *findNavigationBarNotification = (NVFindNavigationBarNotification *) notification.object;
+    UIView *ancestor = self;
+    while(ancestor) {
+        if (ancestor == findNavigationBarNotification.scene)
+            findNavigationBarNotification.navigationBar = self;
+        ancestor = ancestor.superview;
+    }
 }
 
 - (void)updateStyle
@@ -218,6 +235,8 @@ API_AVAILABLE(ios(13.0)){
     self.imageCoordinator = nullptr;
     _backImageLoading = NO;
     _backImage = nil;
+    addedListener = NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)updateState:(const facebook::react::State::Shared &)state oldState:(const facebook::react::State::Shared &)oldState

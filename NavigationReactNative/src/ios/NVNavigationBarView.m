@@ -1,5 +1,7 @@
 #import "NVNavigationBarView.h"
 
+#import "NVSceneController.h"
+
 #import <React/RCTBridge.h>
 #import <React/RCTFont.h>
 #pragma clang diagnostic push
@@ -13,6 +15,7 @@
 {
     __weak RCTBridge *_bridge;
     UIImage *_backImage;
+    BOOL addedListener;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -47,9 +50,13 @@
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     [super didSetProps:changedProps];
-    _isHidden = _hidden;
+    if (!addedListener) {
+        addedListener = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveFind:) name:[@"findNavigationBar" stringByAppendingString: [_crumb stringValue]] object:nil];
+    }
     if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
-        [self.reactViewController.navigationController setNavigationBarHidden:self.hidden];
+        [self.reactViewController.navigationController setNavigationBarHidden:self.isHidden && !self.backTitle.length];
+        [self.reactViewController.navigationController.navigationBar setHidden:self.isHidden && self.backTitle.length];
     }
     if ([changedProps containsObject:@"title"]) {
         [self.reactViewController.navigationItem setTitle:self.title];
@@ -57,11 +64,22 @@
     if ([changedProps containsObject:@"backTitle"]) {
         UINavigationItem *previousNavigationItem = [self previousNavigationItem];
         previousNavigationItem.backBarButtonItem = nil;
-        if (self.backTitle != nil) {
+        if (self.backTitle != nil && !self.isHidden) {
             previousNavigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
         }
     }
     [self updateStyle];
+}
+
+- (void) receiveFind:(NSNotification *) notification
+{
+    NVFindNavigationBarNotification *findNavigationBarNotification = (NVFindNavigationBarNotification *) notification.object;
+    UIView *ancestor = self;
+    while(ancestor) {
+        if (ancestor == findNavigationBarNotification.scene)
+            findNavigationBarNotification.navigationBar = self;
+        ancestor = ancestor.superview;
+    }
 }
 
 - (void)updateStyle {
@@ -177,6 +195,11 @@ API_AVAILABLE(ios(13.0)){
         attributes[NSFontAttributeName] = font;
     }
     return attributes;
+}
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { requireNativeComponent, Image, Platform, Animated, NativeModules } from 'react-native';
+import { NavigationContext } from 'navigation-react';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
 import SearchBar from './SearchBar';
@@ -31,7 +32,7 @@ class NavigationBar extends React.Component<any, any> {
         }
     }
     render() {
-        var {bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, backImage, titleCentered, children, onNavigationPress, style = {height: undefined}, ...otherProps} = this.props;
+        var {navigationEvent, bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, backImage, titleCentered, children, onNavigationPress, style = {height: undefined}, ...otherProps} = this.props;
         const Material3 = global.__turboModuleProxy != null ? require("./NativeMaterial3Module").default : NativeModules.Material3;
         const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
         var scrollEdgeProps = this.getScrollEdgeProps()
@@ -50,10 +51,12 @@ class NavigationBar extends React.Component<any, any> {
         searchBarTintColor = typeof searchBarTintColor === 'function' ? searchBarTintColor(true) : searchBarTintColor;
         var toolbarTintColor = searchToolbar ? searchBarTintColor : scrollEdgeProps.barTintColor;
         var placeholder = searchBar?.props.placeholder;
+        var crumb = navigationEvent.stateNavigator.stateContext.crumbs.length;
         return (
             <>
                 <NVNavigationBar
-                    hidden={hidden}
+                    crumb={crumb}
+                    isHidden={hidden}
                     backTitle={backTitle}
                     backTitleOn={backTitle !== undefined}
                     backImage={Image.resolveAssetSource(backImage)}
@@ -108,4 +111,11 @@ var NVNavigationBar = global.nativeFabricUIManager ? require('./NavigationBarNat
 var NVToolbar = global.nativeFabricUIManager ? require('./ToolbarNativeComponent').default : requireNativeComponent('NVToolbar');
 var NVSearchToolbar = global.nativeFabricUIManager ? require('./SearchToolbarNativeComponent').default : requireNativeComponent('NVSearchToolbar');
 
-export default Animated.createAnimatedComponent(NavigationBar);
+
+const AnimatedNavigationBar =  Animated.createAnimatedComponent(NavigationBar);
+
+export default props => (
+    <NavigationContext.Consumer>
+        {(navigationEvent) => <AnimatedNavigationBar navigationEvent={navigationEvent} {...props} />}
+    </NavigationContext.Consumer>
+);

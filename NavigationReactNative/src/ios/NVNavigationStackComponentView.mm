@@ -112,7 +112,7 @@ using namespace facebook::react;
                 NSArray *allControllers = [self->_navigationController.viewControllers arrayByAddingObjectsFromArray:controllers];
                 [self->_navigationController setViewControllers:allControllers animated:animate];
             }
-        } waitOn:((UIViewController *) [controllers lastObject]).view];
+        } waitOn:[controllers lastObject]];
     }
     if (crumb == currentCrumb) {
         NVSceneComponentView *scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
@@ -126,32 +126,19 @@ using namespace facebook::react;
             if (completed) return;
             completed = YES;
             [self->_navigationController setViewControllers:controllers animated:animate];
-        } waitOn:scene];
+        } waitOn:controller];
     }
 }
 
--(void) completeNavigation:(void (^)(void)) completeNavigation waitOn:(UIView *)scene
+-(void) completeNavigation:(void (^)(void)) completeNavigation waitOn:(NVSceneController *)sceneController
 {
-    NVNavigationBarComponentView *navigationBar = [self findNavigationBar:scene];
+    UIView<NVNavigationBar> *navigationBar = [sceneController findNavigationBar];
     if (!navigationBar.backImageLoading) {
         completeNavigation();
     } else {
         navigationBar.backImageDidLoadBlock = completeNavigation;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .1 * NSEC_PER_SEC), dispatch_get_main_queue(), completeNavigation);
     }
-}
-
--(NVNavigationBarComponentView *) findNavigationBar:(UIView *)parent
-{
-    for(NSInteger i = 0; i < parent.subviews.count; i++) {
-        UIView* subview = parent.subviews[i];
-        if ([subview isKindOfClass:[NVNavigationBarComponentView class]])
-            return (NVNavigationBarComponentView *) subview;
-        subview = [self findNavigationBar:parent.subviews[i]];
-        if ([subview isKindOfClass:[NVNavigationBarComponentView class]])
-            return (NVNavigationBarComponentView *) subview;
-    }
-    return nil;
 }
 
 - (void)didMoveToWindow
@@ -183,7 +170,7 @@ using namespace facebook::react;
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    NSInteger crumb = ((NVSceneComponentView *) viewController.view).crumb;
+    NSInteger crumb = [((NVSceneComponentView *) viewController.view).crumb intValue];
     if (crumb < [self.keys count] - 1) {
         std::static_pointer_cast<NVNavigationStackEventEmitter const>(_eventEmitter)
             ->onWillNavigateBack(NVNavigationStackEventEmitter::OnWillNavigateBack{

@@ -1,5 +1,17 @@
 #import <UIKit/UIKit.h>
 
+@protocol NVNavigationBar
+
+@property (nonatomic, assign) BOOL isHidden;
+@property (nonatomic, assign) BOOL largeTitle;
+@property (nonatomic, copy) NSString* title;
+@property (nonatomic, copy) NSString *backTitle;
+@property (nonatomic, assign) BOOL backImageLoading;
+@property (nonatomic, copy) void (^backImageDidLoadBlock)(void);
+- (void)updateStyle;
+
+@end
+
 @interface NVSceneController : UIViewController
 
 @property (nonatomic, copy) void (^boundsDidChangeBlock)(NVSceneController *controller);
@@ -7,24 +19,15 @@
 @property (nonatomic, assign) BOOL statusBarHidden;
 
 - (id)initWithScene:(UIView *)view;
+- (UIView<NVNavigationBar> *) findNavigationBar;
 
 @end
 
 @protocol NVScene
 
 @property (nonatomic, assign) BOOL hidesTabBar;
+@property (nonatomic, copy) NSNumber *crumb;
 - (void)didPop;
-
-@end
-
-@protocol NVNavigationBar
-
-@property (nonatomic, assign) BOOL isHidden;
-@property (nonatomic, assign) BOOL largeTitle;
-@property (nonatomic, copy) NSString* title;
-@property (nonatomic, copy) NSString *backTitle;
-@property (nonatomic, copy) void (^backImageDidLoadBlock)(void);
-- (void)updateStyle;
 
 @end
 
@@ -42,3 +45,13 @@
 - (void)updateStyle;
 
 @end
+
+@interface NVFindNavigationBarNotification : NSObject
+
+@property UIView *scene;
+@property UIView<NVNavigationBar> *navigationBar;
+
+- (id)initWithScene:(UIView *)scene;
+
+@end
+

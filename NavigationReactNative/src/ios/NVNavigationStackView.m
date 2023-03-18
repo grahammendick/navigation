@@ -100,7 +100,7 @@
                 NSArray *allControllers = [self->_navigationController.viewControllers arrayByAddingObjectsFromArray:controllers];
                 [self->_navigationController setViewControllers:allControllers animated:animate];
             }
-        } waitOn:((UIViewController *) [controllers lastObject]).view];
+        } waitOn:[controllers lastObject]];
     }
     if (crumb == currentCrumb) {
         NVSceneView *scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
@@ -114,32 +114,19 @@
             if (completed) return;
             completed = YES;
             [self->_navigationController setViewControllers:controllers animated:animate];
-        } waitOn:scene];
+        } waitOn:controller];
     }
 }
 
--(void) completeNavigation:(void (^)(void)) completeNavigation waitOn:(UIView *)scene
+-(void) completeNavigation:(void (^)(void)) completeNavigation waitOn:(NVSceneController *)sceneController
 {
-    NVNavigationBarView *navigationBar = [self findNavigationBar:scene];
+    UIView<NVNavigationBar> *navigationBar = [sceneController findNavigationBar];
     if (!navigationBar.backImageLoading) {
         completeNavigation();
     } else {
         navigationBar.backImageDidLoadBlock = completeNavigation;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .1 * NSEC_PER_SEC), dispatch_get_main_queue(), completeNavigation);
     }
-}
-
--(NVNavigationBarView *) findNavigationBar:(UIView *)parent
-{
-    for(NSInteger i = 0; i < parent.subviews.count; i++) {
-        UIView* subview = parent.subviews[i];
-        if ([subview isKindOfClass:[NVNavigationBarView class]])
-            return (NVNavigationBarView *) subview;
-        subview = [self findNavigationBar:parent.subviews[i]];
-        if ([subview isKindOfClass:[NVNavigationBarView class]])
-            return (NVNavigationBarView *) subview;
-    }
-    return nil;
 }
 
 - (void)didMoveToWindow
