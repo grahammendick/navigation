@@ -45,8 +45,8 @@
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
     UIView<NVNavigationBar> *navigationBar = [self findNavigationBar];
     navigationBar.backImageDidLoadBlock = nil;
-    BOOL hidden = navigationBar.isHidden;
-    BOOL barHidden = !navigationBar;
+    BOOL hidden = navigationBar.isHidden && !navigationBar.backTitle.length;
+    BOOL barHidden = navigationBar.isHidden && navigationBar.backTitle.length;
     if (@available(iOS 13.0, *)) {
     } else {
         hidden = hidden || previousController.navigationItem.searchController.active;
@@ -83,8 +83,8 @@
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
     UIView<NVNavigationBar> *navigationBar = [self findNavigationBar];
     if (previousController.navigationItem.searchController.active) {
-        [self.navigationController setNavigationBarHidden:navigationBar.isHidden];
-        [self.navigationController.navigationBar setHidden:!navigationBar];
+        [self.navigationController setNavigationBarHidden:navigationBar.isHidden && !navigationBar.backTitle.length];
+        [self.navigationController.navigationBar setHidden:navigationBar.isHidden && navigationBar.backTitle.length];
     }
 }
 
