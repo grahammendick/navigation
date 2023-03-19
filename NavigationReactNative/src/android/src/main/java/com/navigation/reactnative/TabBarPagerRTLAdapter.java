@@ -15,6 +15,7 @@ import java.util.List;
 public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     private final List<TabBarItemView> tabBarItems = new ArrayList<>();
     final Fragment fragment;
+    int pendingSelectedTab = 0;
     int selectedTab = 0;
     boolean scrollsToTop;
     int nativeEventCount;
