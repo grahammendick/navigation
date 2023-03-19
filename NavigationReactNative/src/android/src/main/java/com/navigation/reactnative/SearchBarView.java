@@ -1,7 +1,6 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ public class SearchBarView extends ReactViewGroup {
     private MenuItem menuItem;
     boolean bottomBar = false;
     String pendingText;
+    boolean pendingActive;
     int nativeEventCount;
     int mostRecentEventCount;
     int nativeActiveEventCount;
@@ -73,12 +73,7 @@ public class SearchBarView extends ReactViewGroup {
     }
 
     void setActive(boolean active) {
-        int eventLag = nativeActiveEventCount - mostRecentActiveEventCount;
-        if (eventLag == 0 && menuItem != null && menuItem.isActionViewExpanded() != active)
-            if (active)
-                menuItem.expandActionView();
-            else
-                menuItem.collapseActionView();
+        pendingActive = active;
     }
 
     void setBarTintColor(Integer barTintColor) {
@@ -113,6 +108,8 @@ public class SearchBarView extends ReactViewGroup {
                 public void onSearchAdd(MenuItem searchMenuItem) {
                     menuItem = searchMenuItem;
                     searchMenuItem.setActionView(searchView);
+                    if (pendingActive)
+                        menuItem.expandActionView();
                 }
 
                 @Override
@@ -138,6 +135,12 @@ public class SearchBarView extends ReactViewGroup {
         int eventLag = nativeEventCount - mostRecentEventCount;
         if (eventLag == 0 && pendingText != null && !searchView.getQuery().toString().equals(pendingText))
             searchView.setQuery(pendingText, true);
+        int activeEventLag = nativeActiveEventCount - mostRecentActiveEventCount;
+        if (activeEventLag == 0 && menuItem != null && menuItem.isActionViewExpanded() != pendingActive)
+            if (pendingActive)
+                menuItem.expandActionView();
+            else
+                menuItem.collapseActionView();
     }
 
     private final Runnable focusAndKeyboard = new Runnable() {
