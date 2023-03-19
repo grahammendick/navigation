@@ -136,7 +136,7 @@ public class SearchBarView extends ReactViewGroup {
 
     void onAfterUpdateTransaction() {
         int eventLag = nativeEventCount - mostRecentEventCount;
-        if (eventLag == 0 && !searchView.getQuery().toString().equals(pendingText))
+        if (eventLag == 0 && pendingText != null && !searchView.getQuery().toString().equals(pendingText))
             searchView.setQuery(pendingText, true);
     }
 
