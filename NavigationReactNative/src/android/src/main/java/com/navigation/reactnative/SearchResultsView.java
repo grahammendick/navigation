@@ -23,8 +23,8 @@ import com.google.android.material.search.SearchView;
 public class SearchResultsView extends SearchView {
     Drawable defaultBackground;
     private boolean layoutRequested = false;
-
     private String pendingText;
+    private boolean pendingActive;
     int nativeEventCount;
     int mostRecentEventCount;
     int nativeActiveEventCount;
@@ -36,11 +36,13 @@ public class SearchResultsView extends SearchView {
         defaultBackground = getToolbar().getBackground();
         addTransitionListener((searchView, previousState, newState) -> {
             if (newState == TransitionState.SHOWING) {
+                nativeActiveEventCount++;
                 ReactContext reactContext = (ReactContext) ((ContextWrapper) getContext()).getBaseContext();
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
                 eventDispatcher.dispatchEvent(new SearchResultsView.ChangeActiveEvent(getId(), true, nativeActiveEventCount));
             }
             if (newState == TransitionState.HIDDEN) {
+                nativeActiveEventCount++;
                 ReactContext reactContext = (ReactContext) ((ContextWrapper) getContext()).getBaseContext();
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
                 eventDispatcher.dispatchEvent(new SearchResultsView.ChangeActiveEvent(getId(), false, nativeActiveEventCount));
@@ -76,10 +78,7 @@ public class SearchResultsView extends SearchView {
     }
 
     void setActive(boolean active) {
-        int eventLag = nativeActiveEventCount - mostRecentActiveEventCount;
-        if (eventLag == 0 && isShowing() != active)
-            if (active) show();
-            else hide();
+        pendingActive = active;
     }
 
     @Override
@@ -99,6 +98,10 @@ public class SearchResultsView extends SearchView {
         if (eventLag == 0 && !getEditText().getText().toString().equals(pendingText)) {
             getEditText().setText(pendingText);
         }
+        int activeEventLag = nativeActiveEventCount - mostRecentActiveEventCount;
+        if (activeEventLag == 0 && isShowing() != pendingActive)
+            if (pendingActive) show();
+            else hide();
     }
 
     @Override
