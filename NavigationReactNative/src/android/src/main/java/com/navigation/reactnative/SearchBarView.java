@@ -25,6 +25,7 @@ public class SearchBarView extends ReactViewGroup {
     final SearchView searchView;
     private MenuItem menuItem;
     boolean bottomBar = false;
+    String pendingText;
     int nativeEventCount;
     int mostRecentEventCount;
     int nativeActiveEventCount;
@@ -68,9 +69,7 @@ public class SearchBarView extends ReactViewGroup {
     }
 
     void setQuery(String query) {
-        int eventLag = nativeEventCount - mostRecentEventCount;
-        if (eventLag == 0 && !searchView.getQuery().toString().equals(query))
-            searchView.setQuery(query, true);
+        pendingText = query;
     }
 
     void setActive(boolean active) {
@@ -133,6 +132,12 @@ public class SearchBarView extends ReactViewGroup {
                 }
             });
         }
+    }
+
+    void onAfterUpdateTransaction() {
+        int eventLag = nativeEventCount - mostRecentEventCount;
+        if (eventLag == 0 && !searchView.getQuery().toString().equals(pendingText))
+            searchView.setQuery(pendingText, true);
     }
 
     private final Runnable focusAndKeyboard = new Runnable() {
