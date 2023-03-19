@@ -23,6 +23,8 @@ import com.google.android.material.search.SearchView;
 public class SearchResultsView extends SearchView {
     Drawable defaultBackground;
     private boolean layoutRequested = false;
+
+    private String pendingText;
     int nativeEventCount;
     int mostRecentEventCount;
     int nativeActiveEventCount;
@@ -70,10 +72,7 @@ public class SearchResultsView extends SearchView {
     }
 
     void setText(String text) {
-        int eventLag = nativeEventCount - mostRecentEventCount;
-        if (eventLag == 0 && !getEditText().getText().toString().equals(text)) {
-            getEditText().setText(text);
-        }
+        pendingText = text;
     }
 
     void setActive(boolean active) {
@@ -92,6 +91,13 @@ public class SearchResultsView extends SearchView {
             if (view.getChildAt(i) instanceof NavigationBarView) {
                 setupWithSearchBar((SearchToolbarView) ((NavigationBarView) view.getChildAt(i)).getChildAt(0));
             }
+        }
+    }
+
+    void onAfterUpdateTransaction() {
+        int eventLag = nativeEventCount - mostRecentEventCount;
+        if (eventLag == 0 && !getEditText().getText().toString().equals(pendingText)) {
+            getEditText().setText(pendingText);
         }
     }
 
