@@ -95,7 +95,7 @@ public class SearchResultsView extends SearchView {
 
     void onAfterUpdateTransaction() {
         int eventLag = nativeEventCount - mostRecentEventCount;
-        if (eventLag == 0 && !getEditText().getText().toString().equals(pendingText)) {
+        if (eventLag == 0 && pendingText != null && !getEditText().getText().toString().equals(pendingText)) {
             getEditText().setText(pendingText);
         }
         int activeEventLag = nativeActiveEventCount - mostRecentActiveEventCount;
