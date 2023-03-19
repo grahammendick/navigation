@@ -29,10 +29,7 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
 
     @ReactProp(name = "detent")
     public void setDetent(BottomSheetView view, int detent) {
-        int eventLag = view.nativeEventCount - view.mostRecentEventCount;
-        if (eventLag == 0) {
-            view.detent = detent;
-        }
+        view.pendingDetent = detent;
     }
 
     @ReactProp(name = "mostRecentEventCount")
@@ -88,8 +85,7 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
     @Override
     protected void onAfterUpdateTransaction(@NonNull BottomSheetView view) {
         super.onAfterUpdateTransaction(view);
-        if (view.bottomSheetBehavior.getState() != view.detent)
-            view.bottomSheetBehavior.setState(view.detent);
+        view.onAfterUpdateTransaction();
     }
 
     @Nullable
