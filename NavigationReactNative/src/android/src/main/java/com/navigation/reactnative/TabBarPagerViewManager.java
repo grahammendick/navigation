@@ -44,12 +44,7 @@ public class TabBarPagerViewManager extends ViewGroupManager<TabBarPagerView> im
 
     @ReactProp(name = "selectedTab")
     public void setSelectedTab(TabBarPagerView view, int selectedTab) {
-        int eventLag = view.nativeEventCount - view.mostRecentEventCount;
-        if (eventLag == 0 && view.getCurrentItem() != selectedTab) {
-            view.selectedTab = selectedTab;
-            if (view.getTabsCount() > selectedTab)
-                view.setCurrentItem(selectedTab, false);
-        }
+        view.pendingSelectedTab = selectedTab;
     }
 
     @ReactProp(name = "mostRecentEventCount")
@@ -100,7 +95,7 @@ public class TabBarPagerViewManager extends ViewGroupManager<TabBarPagerView> im
     @Override
     protected void onAfterUpdateTransaction(@Nonnull TabBarPagerView view) {
         super.onAfterUpdateTransaction(view);
-        view.populateTabs();
+        view.onAfterUpdateTransaction();
     }
 
     @Override
