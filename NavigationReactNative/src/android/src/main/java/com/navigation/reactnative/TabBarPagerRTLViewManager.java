@@ -130,12 +130,7 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
 
     @ReactProp(name = "selectedTab")
     public void setSelectedTab(ViewPager2 view, int selectedTab) {
-        int eventLag = getAdapter(view).nativeEventCount - getAdapter(view).mostRecentEventCount;
-        if (eventLag == 0 && view.getCurrentItem() != selectedTab) {
-            getAdapter(view).selectedTab = selectedTab;
-            if (getAdapter(view).getTabsCount() > selectedTab)
-                setCurrentItem(view, selectedTab);
-        }
+        getAdapter(view).pendingSelectedTab = selectedTab;
     }
 
     private void setCurrentItem(final ViewPager2 view, int selectedTab) {
@@ -194,6 +189,12 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
     @Override
     protected void onAfterUpdateTransaction(@Nonnull ViewPager2 view) {
         super.onAfterUpdateTransaction(view);
+        int eventLag = getAdapter(view).nativeEventCount - getAdapter(view).mostRecentEventCount;
+        if (eventLag == 0 && view.getCurrentItem() != getAdapter(view).pendingSelectedTab) {
+            getAdapter(view).selectedTab = getAdapter(view).pendingSelectedTab;
+            if (getAdapter(view).getTabsCount() > getAdapter(view).selectedTab)
+                setCurrentItem(view, getAdapter(view).selectedTab);
+        }
         getAdapter(view).populateTabs(getTabLayout(view));
     }
 
