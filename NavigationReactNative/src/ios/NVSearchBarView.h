@@ -8,6 +8,7 @@
 @property UISearchController *searchController;
 @property (nonatomic, copy) NSString *text;
 @property (nonatomic, assign) BOOL active;
+@property (nonatomic, assign) NSInteger scopeButton;
 @property (nonatomic, assign) BOOL hideWhenScrolling;
 @property (nonatomic, assign) NSInteger mostRecentEventCount;
 @property (nonatomic, assign) NSInteger mostRecentActiveEventCount;

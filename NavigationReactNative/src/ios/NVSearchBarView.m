@@ -67,14 +67,6 @@
     self.searchController.searchBar.scopeButtonTitles = scopeButtons;
 }
 
-- (void)setScopeButton:(NSInteger)scopeButton
-{
-    NSInteger eventLag = _nativeButtonEventCount - _mostRecentButtonEventCount;
-    if (eventLag == 0 && self.searchController.searchBar.selectedScopeButtonIndex != scopeButton) {
-        self.searchController.searchBar.selectedScopeButtonIndex = scopeButton;
-    }
-}
-
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     if (@available(iOS 11.0, *)) {
@@ -88,6 +80,10 @@
     if (activeEventLag == 0 && self.searchController.active != _active) {
         [self.searchController setActive:_active];
         if (_active) [self.searchController.searchBar becomeFirstResponder];
+    }
+    NSInteger buttonEventLag = _nativeButtonEventCount - _mostRecentButtonEventCount;
+    if (buttonEventLag == 0 && self.searchController.searchBar.selectedScopeButtonIndex != _scopeButton) {
+        self.searchController.searchBar.selectedScopeButtonIndex = _scopeButton;
     }
 }
 
