@@ -108,8 +108,6 @@ public class SearchBarView extends ReactViewGroup {
                 public void onSearchAdd(MenuItem searchMenuItem) {
                     menuItem = searchMenuItem;
                     searchMenuItem.setActionView(searchView);
-                    if (pendingActive)
-                        menuItem.expandActionView();
                 }
 
                 @Override
