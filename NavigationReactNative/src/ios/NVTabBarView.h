@@ -4,6 +4,7 @@
 @interface NVTabBarView : UIView <UITabBarControllerDelegate>
 
 @property (nonatomic, assign) NSInteger tabCount;
+@property (nonatomic, assign) NSInteger selectedTab;
 @property (nonatomic, copy) UIColor *barTintColor;
 @property (nonatomic, copy) UIColor *selectedTintColor;
 @property (nonatomic, copy) UIColor *unselectedTintColor;
