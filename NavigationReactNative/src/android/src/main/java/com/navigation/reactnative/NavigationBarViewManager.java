@@ -78,7 +78,12 @@ public class NavigationBarViewManager extends ViewGroupManager<NavigationBarView
     }
 
     @Override
-    public void setHidden(NavigationBarView view, boolean value) {
+    public void setCrumb(NavigationBarView view, int value) {
+    }
+
+    @Override
+    public void setIsHidden(NavigationBarView view, boolean value) {
+
     }
 
     @Override

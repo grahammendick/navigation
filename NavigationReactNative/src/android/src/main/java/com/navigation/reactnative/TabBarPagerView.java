@@ -32,6 +32,7 @@ import java.util.List;
 
 public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeListener {
     private final Fragment fragment;
+    int pendingSelectedTab = 0;
     int selectedTab = 0;
     boolean scrollsToTop;
     private boolean layoutRequested = false;
@@ -78,6 +79,16 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
             measured = true;
             getAdapter().notifyDataSetChanged();
         }
+    }
+
+    void onAfterUpdateTransaction() {
+        int eventLag = nativeEventCount - mostRecentEventCount;
+        if (eventLag == 0 && getCurrentItem() != pendingSelectedTab) {
+            selectedTab = pendingSelectedTab;
+            if (getTabsCount() > selectedTab)
+                setCurrentItem(selectedTab, false);
+        }
+        populateTabs();
     }
 
     void populateTabs() {

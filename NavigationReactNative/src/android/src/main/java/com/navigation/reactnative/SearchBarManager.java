@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.os.Build;
 import android.text.InputType;
 
+import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.facebook.react.common.MapBuilder;
@@ -73,6 +74,12 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
             params.bottomMargin = (int) PixelUtil.toPixelFromDIP(56);
             params.setBehavior(null);
         }
+    }
+
+    @Override
+    protected void onAfterUpdateTransaction(@NonNull SearchBarView view) {
+        super.onAfterUpdateTransaction(view);
+        view.onAfterUpdateTransaction();
     }
 
     @Nonnull

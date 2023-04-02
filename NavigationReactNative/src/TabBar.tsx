@@ -26,8 +26,8 @@ class TabBar extends React.Component<any, any> {
     }
     onTabSelected({nativeEvent}) {
         var {eventCount: mostRecentEventCount, tab} = nativeEvent;
-        this.setState({mostRecentEventCount});
         this.changeTab(tab);
+        this.setState({mostRecentEventCount});
     }
     onTabSwipeStateChanged({nativeEvent}) {
         this.swiping = nativeEvent.swiping;

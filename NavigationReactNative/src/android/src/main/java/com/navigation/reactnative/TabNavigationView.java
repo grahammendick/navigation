@@ -43,15 +43,11 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     }
 
     void setTitles() {
-        int selectedIndex = getSelectedItemId();
         getMenu().clear();
         TabBarView tabBar = getTabBar();
         for (int i = 0; tabBar != null && i < tabBar.tabFragments.size(); i++) {
             getMenu().add(Menu.NONE, i, i, getTabBar().tabFragments.get(i).tabBarItem.styledTitle);
         }
-        autoSelected = true;
-        setSelectedItemId(selectedIndex);
-        autoSelected = false;
     }
 
     @Override

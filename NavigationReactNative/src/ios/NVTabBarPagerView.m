@@ -25,17 +25,6 @@
     return self;
 }
 
-- (void)setSelectedTab:(NSInteger)selectedTab
-{
-    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    if (eventLag == 0 && _selectedTab != selectedTab) {
-        _selectedTab = selectedTab;
-        if (_tabs.count > selectedTab) {
-            [self setCurrentTab:selectedTab];
-        }
-    }
-}
-
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
@@ -61,6 +50,14 @@
         _selectedTab = reselectedTab != NSNotFound ? reselectedTab : MIN(_selectedTab, _tabs.count - 1);
     }
     [self setCurrentTab:_selectedTab];
+}
+
+- (void)didSetProps:(NSArray<NSString *> *)changedProps
+{
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if (eventLag == 0 && _tabs.count > _selectedTab) {
+        [self setCurrentTab:_selectedTab];
+    }
 }
 
 - (void)didMoveToWindow

@@ -20,6 +20,7 @@ public class BottomSheetView extends ReactViewGroup {
     BottomSheetBehavior<BottomSheetView> bottomSheetBehavior;
     BottomSheetBehavior.BottomSheetCallback bottomSheetCallback;
     float defaultHalfExpandedRatio;
+    int pendingDetent;
     int detent;
     int nativeEventCount;
     int mostRecentEventCount;
@@ -54,6 +55,15 @@ public class BottomSheetView extends ReactViewGroup {
             }
         };
         bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback);
+    }
+
+    void onAfterUpdateTransaction() {
+        int eventLag = nativeEventCount - mostRecentEventCount;
+        if (eventLag == 0) {
+            detent = pendingDetent;
+        }
+        if (bottomSheetBehavior.getState() != detent)
+            bottomSheetBehavior.setState(detent);
     }
 
     static class DetentChangedEvent extends Event<BottomSheetView.DetentChangedEvent> {

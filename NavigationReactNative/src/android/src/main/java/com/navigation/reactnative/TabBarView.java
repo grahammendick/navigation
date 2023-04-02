@@ -32,6 +32,7 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     private TabFragment selectedTabFragment;
     private Fragment fragment;
     boolean tabsChanged = false;
+    int pendingSelectedTab = 0;
     int selectedTab = 0;
     boolean scrollsToTop;
     int nativeEventCount;
@@ -81,6 +82,12 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     }
 
     void onAfterUpdateTransaction() {
+        int eventLag = nativeEventCount - mostRecentEventCount;
+        if (eventLag == 0 && pendingSelectedTab != selectedTab) {
+            selectedTab = pendingSelectedTab;
+            if (tabFragments.size() > selectedTab)
+                setCurrentTab(selectedTab);
+        }
         if (tabFragments.size() == 0)
             return;
         populateTabs();
