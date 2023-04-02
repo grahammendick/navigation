@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import android.graphics.Color;
+
 import com.google.android.material.transition.MaterialContainerTransform;
 
 class SharedElementMotion {
@@ -18,6 +20,7 @@ class SharedElementMotion {
             MaterialContainerTransform transition = sharedElementView.transition;
             transition.setTransitionDirection(enterScene == scene ? MaterialContainerTransform.TRANSITION_DIRECTION_ENTER : MaterialContainerTransform.TRANSITION_DIRECTION_RETURN);
             transition.addTarget(sharedElementView.getTransitionName());
+            transition.setScrimColor(Color.TRANSPARENT);
             enterScene.setSharedElementEnterTransition(transition);
             enterScene.setSharedElementReturnTransition(transition);
             scene.startPostponedEnterTransition();
