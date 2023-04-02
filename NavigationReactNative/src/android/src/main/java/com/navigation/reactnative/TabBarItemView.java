@@ -1,5 +1,6 @@
 package com.navigation.reactnative;
 
+import android.os.Build;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
@@ -18,6 +19,8 @@ import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.text.ReactTypefaceUtils;
+import com.facebook.react.views.text.ReactFontManager;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,8 +136,12 @@ public class TabBarItemView extends ViewGroup {
             SpannableString titleSpannable = null;
             if (title != null) {
                 titleSpannable = new SpannableString(title);
-                if (fontFamily != null)
-                    titleSpannable.setSpan(new TypefaceSpan(fontFamily), 0, title.length(), 0);
+                if (fontFamily != null){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                        titleSpannable.setSpan(new TypefaceSpan(ReactFontManager.getInstance().getTypeface(fontFamily, 0, getContext().getAssets())), 0, title.length(), 0);
+                    else
+                        titleSpannable.setSpan(new TypefaceSpan(fontFamily), 0, title.length(), 0);
+                }
                 if (fontWeight != null)
                     titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontWeight(fontWeight)), 0, title.length(), 0);
                 if (fontStyle != null)
