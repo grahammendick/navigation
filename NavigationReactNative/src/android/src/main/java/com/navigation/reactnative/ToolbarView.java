@@ -1,5 +1,6 @@
 package com.navigation.reactnative;
 
+import android.os.Build;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -31,6 +32,8 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.facebook.react.views.text.ReactFontManager;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -263,8 +266,12 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
             SpannableString titleSpannable = null;
             if (title != null) {
                 titleSpannable = new SpannableString(title);
-                if (titleFontFamily != null)
-                    titleSpannable.setSpan(new TypefaceSpan(titleFontFamily), 0, title.length(), 0);
+                if (titleFontFamily != null){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                        titleSpannable.setSpan(new TypefaceSpan(ReactFontManager.getInstance().getTypeface(titleFontFamily, 0, getContext().getAssets())), 0, title.length(), 0);
+                    else
+                        titleSpannable.setSpan(new TypefaceSpan(titleFontFamily), 0, title.length(), 0);
+                }
                 if (titleFontWeight != null)
                     titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontWeight(titleFontWeight)), 0, title.length(), 0);
                 if (titleFontStyle != null)
