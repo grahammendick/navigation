@@ -80,6 +80,12 @@ public class SearchResultsViewManager extends ViewGroupManager<SearchResultsView
     }
 
     @Override
+    protected void onAfterUpdateTransaction(@NonNull SearchResultsView view) {
+        super.onAfterUpdateTransaction(view);
+        view.onAfterUpdateTransaction();
+    }
+
+    @Override
     public boolean needsCustomLayoutForChildren() {
         return true;
     }

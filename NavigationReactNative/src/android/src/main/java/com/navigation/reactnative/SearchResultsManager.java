@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -47,6 +49,12 @@ public class SearchResultsManager extends ViewGroupManager<SearchResultsView> {
     @ReactProp(name = "mostRecentActiveEventCount")
     public void setMostRecentActiveEventCount(SearchResultsView view, int mostRecentActiveEventCount) {
         view.mostRecentActiveEventCount = mostRecentActiveEventCount;
+    }
+
+    @Override
+    protected void onAfterUpdateTransaction(@NonNull SearchResultsView view) {
+        super.onAfterUpdateTransaction(view);
+        view.onAfterUpdateTransaction();
     }
 
     @Override

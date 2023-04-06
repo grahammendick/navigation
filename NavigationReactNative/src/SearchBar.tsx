@@ -10,26 +10,26 @@ const SearchBar = ({obscureBackground = true, hideNavigationBar= true, hideWhenS
     const [mostRecentActiveEventCount, setMostRecentActiveEventCount] = useState(0);
     const changeText = ({nativeEvent}) => {
         const {eventCount: mostRecentEventCount, text} = nativeEvent;
-        setMostRecentEventCount(mostRecentEventCount);
         if (onChangeText)
-            onChangeText(text)
+            onChangeText(text);
+        setMostRecentEventCount(mostRecentEventCount);
     }
     if (active != null && show !== active) setShow(active);
     const onChangeShow = ({nativeEvent}) => {
         const {eventCount: mostRecentActiveCount, active: newActive} = nativeEvent;
-        setMostRecentActiveEventCount(mostRecentActiveCount);
         if (show !== newActive) {
             if (active == null)
                 setShow(newActive);
             if (!!onChangeActive)
                 onChangeActive(newActive);
         }
+        setMostRecentActiveEventCount(mostRecentActiveCount);
     }
     const changeScopeButton = ({nativeEvent}) => {
         var {eventCount: mostRecentButtonEventCount, scopeButton} = nativeEvent;
-        setMostRecentButtonEventCount(mostRecentButtonEventCount);
         if (onChangeScopeButton)
             onChangeScopeButton(scopeButtons[scopeButton])
+        setMostRecentButtonEventCount(mostRecentButtonEventCount);
     }
     const Material3 = global.__turboModuleProxy != null ? require("./NativeMaterial3Module").default : NativeModules.Material3;
     const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };

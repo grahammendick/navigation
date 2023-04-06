@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.text.InputType;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -115,6 +116,12 @@ public class SearchBarViewManager extends ViewGroupManager<SearchBarView> implem
             params.bottomMargin = (int) PixelUtil.toPixelFromDIP(56);
             params.setBehavior(null);
         }
+    }
+
+    @Override
+    protected void onAfterUpdateTransaction(@NonNull SearchBarView view) {
+        super.onAfterUpdateTransaction(view);
+        view.onAfterUpdateTransaction();
     }
 
     @Nonnull

@@ -55,14 +55,6 @@
     [self.searchController.searchBar setPlaceholder:placeholder];
 }
 
-- (void)setText:(NSString *)text
-{
-    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    if (eventLag == 0 && ![self.searchController.searchBar.text isEqualToString:text]) {
-        [self.searchController.searchBar setText:text];
-    }
-}
-
 - (void)setBarTintColor:(UIColor *)barTintColor
 {
     if (@available(iOS 13.0, *)) {
@@ -75,23 +67,23 @@
     self.searchController.searchBar.scopeButtonTitles = scopeButtons;
 }
 
-- (void)setScopeButton:(NSInteger)scopeButton
-{
-    NSInteger eventLag = _nativeButtonEventCount - _mostRecentButtonEventCount;
-    if (eventLag == 0 && self.searchController.searchBar.selectedScopeButtonIndex != scopeButton) {
-        self.searchController.searchBar.selectedScopeButtonIndex = scopeButton;
-    }
-}
-
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     if (@available(iOS 11.0, *)) {
         [self.reactViewController.navigationItem setHidesSearchBarWhenScrolling:self.hideWhenScrolling];
     }
-    NSInteger eventLag = _nativeActiveEventCount - _mostRecentActiveEventCount;
-    if (eventLag == 0 && self.searchController.active != _active) {
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if (eventLag == 0 && ![self.searchController.searchBar.text isEqualToString:_text]) {
+        [self.searchController.searchBar setText:_text];
+    }
+    NSInteger activeEventLag = _nativeActiveEventCount - _mostRecentActiveEventCount;
+    if (activeEventLag == 0 && self.searchController.active != _active) {
         [self.searchController setActive:_active];
         if (_active) [self.searchController.searchBar becomeFirstResponder];
+    }
+    NSInteger buttonEventLag = _nativeButtonEventCount - _mostRecentButtonEventCount;
+    if (buttonEventLag == 0 && self.searchController.searchBar.selectedScopeButtonIndex != _scopeButton) {
+        self.searchController.searchBar.selectedScopeButtonIndex = _scopeButton;
     }
 }
 
