@@ -4,7 +4,7 @@ import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
 import Freeze from './Freeze';
-type SceneProps = { crumb: number, sceneKey: string, rest: boolean, renderScene: (state: State, data: any) => ReactNode, crumbStyle: any, unmountStyle: any, hidesTabBar: any, backgroundColor: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
+type SceneProps = { crumb: number, sceneKey: string, rest: boolean, renderScene: (state: State, data: any) => ReactNode, crumbStyle: any, unmountStyle: any, hidesTabBar: any, backgroundColor: any, orientation: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
 type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
@@ -114,7 +114,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return stateContext;
     }
     getAnimation() {
-        var {crumb, navigationEvent: {stateNavigator}, unmountStyle, crumbStyle, hidesTabBar, backgroundColor} = this.props;
+        var {crumb, navigationEvent: {stateNavigator}, unmountStyle, crumbStyle, hidesTabBar, backgroundColor, orientation} = this.props;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         var {state, data} = crumbs[crumb] || nextCrumb;
         var currentCrumbs = crumbs.slice(0, crumb);
@@ -127,6 +127,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var exitAnim = unmountStyle(false, state, data, currentCrumbs);
         var hidesTabBar = hidesTabBar(state, data, currentCrumbs);
         var backgroundColor = backgroundColor(state, data, currentCrumbs) || '#fff';
+        var orientation = orientation(state, data, currentCrumbs);
         return {enterAnim, exitAnim, hidesTabBar, backgroundColor};
     }
     render() {
