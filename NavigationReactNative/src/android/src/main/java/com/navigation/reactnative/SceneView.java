@@ -1,6 +1,8 @@
 package com.navigation.reactnative;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.view.View;
 
 import com.facebook.react.bridge.ReactContext;
@@ -17,6 +19,7 @@ public class SceneView extends ReactViewGroup {
     protected String sceneKey;
     protected String enterAnim;
     protected String exitAnim;
+    private int orientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
     public final HashSet<SharedElementView> sharedElements = new HashSet<>();
     public SharedElementMotion sharedElementMotion;
 
@@ -24,13 +27,28 @@ public class SceneView extends ReactViewGroup {
         super(context);
     }
 
+    protected void setOrientation(int orientation) {
+        if (orientation != this.orientation) {
+            this.orientation = orientation;
+            requestOrientation();
+        }
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        requestOrientation();
         View child = getChildAt(0);
         if (child != null && child.getClass().getSimpleName().contains("DrawerLayout")) {
             child.requestLayout();
             post(measureAndLayoutDrawer);
+        }
+    }
+
+    private void requestOrientation() {
+        if (getVisibility() == VISIBLE) {
+            Activity activity = ((ReactContext) getContext()).getCurrentActivity();
+            activity.setRequestedOrientation(this.orientation);
         }
     }
 

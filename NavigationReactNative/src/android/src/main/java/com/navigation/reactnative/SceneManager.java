@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import android.content.pm.ActivityInfo;
+
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -35,6 +37,11 @@ public class SceneManager extends ViewGroupManager<SceneView> {
     @ReactProp(name = "exitAnim")
     public void setExitAnim(SceneView view, String exitAnim) {
         view.exitAnim = exitAnim;
+    }
+
+    @ReactProp(name = "orientation")
+    public void setOrientation(SceneView view, String orientation) {
+        view.setOrientation(orientation != null ? ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
     @Nonnull
