@@ -688,6 +688,10 @@ export interface TabBarProps {
      * Handles tab change events
      */
     onChangeTab?: (tab: number) => void;
+    /**
+     * Handles Android back button press events
+     */
+    onPressBack?: () => boolean;
 }
 
 /**
