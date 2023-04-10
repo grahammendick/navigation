@@ -114,7 +114,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return stateContext;
     }
     getAnimation() {
-        var {crumb, navigationEvent: {stateNavigator}, unmountStyle, crumbStyle, hidesTabBar, backgroundColor, orientation} = this.props;
+        var {crumb, navigationEvent, unmountStyle, crumbStyle, hidesTabBar, backgroundColor, orientation} = this.props;
+        var {stateNavigator} = this.state.navigationEvent || navigationEvent;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         var {state, data} = crumbs[crumb] || nextCrumb;
         var currentCrumbs = crumbs.slice(0, crumb);
