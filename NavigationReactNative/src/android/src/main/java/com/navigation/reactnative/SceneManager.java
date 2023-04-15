@@ -1,7 +1,5 @@
 package com.navigation.reactnative;
 
-import android.content.pm.ActivityInfo;
-
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
