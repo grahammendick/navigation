@@ -39,9 +39,9 @@ public class SceneManager extends ViewGroupManager<SceneView> {
         view.exitAnim = exitAnim;
     }
 
-    @ReactProp(name = "orientation")
-    public void setOrientation(SceneView view, String orientation) {
-        view.setOrientation(orientation != null ? ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+    @ReactProp(name = "landscape")
+    public void setLandscape(SceneView view, boolean landscape) {
+        view.setLandscape(landscape);
     }
 
     @Nonnull

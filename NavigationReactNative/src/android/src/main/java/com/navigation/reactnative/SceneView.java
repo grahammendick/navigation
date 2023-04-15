@@ -19,7 +19,7 @@ public class SceneView extends ReactViewGroup {
     protected String sceneKey;
     protected String enterAnim;
     protected String exitAnim;
-    private int orientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+    private boolean landscape;
     public final HashSet<SharedElementView> sharedElements = new HashSet<>();
     public SharedElementMotion sharedElementMotion;
 
@@ -27,17 +27,17 @@ public class SceneView extends ReactViewGroup {
         super(context);
     }
 
-    protected void setOrientation(int orientation) {
-        if (orientation != this.orientation) {
-            this.orientation = orientation;
-            requestOrientation();
+    protected void setLandscape(boolean landscape) {
+        if (landscape != this.landscape) {
+            this.landscape = landscape;
+            setOrientation();
         }
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        requestOrientation();
+        setOrientation();
         View child = getChildAt(0);
         if (child != null && child.getClass().getSimpleName().contains("DrawerLayout")) {
             child.requestLayout();
@@ -45,10 +45,10 @@ public class SceneView extends ReactViewGroup {
         }
     }
 
-    private void requestOrientation() {
+    private void setOrientation() {
         if (getVisibility() == VISIBLE) {
             Activity activity = ((ReactContext) getContext()).getCurrentActivity();
-            activity.setRequestedOrientation(this.orientation);
+            activity.setRequestedOrientation(this.landscape ? ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
     }
 
