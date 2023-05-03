@@ -103,10 +103,7 @@ class StateNavigator {
     getNavigationBackLink(distance: number): string {
         if (!this.canNavigateBack(distance))
             throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + this.stateContext.crumbs.length + ')');
-        var {url, state, data} = this.stateContext.crumbs[this.stateContext.crumbs.length - distance];
-        var url = this.stateContext.crumbs[this.stateContext.crumbs.length - distance].url;
-        this.rewrite(url, state, data);
-        return url;
+        return this.stateContext.crumbs[this.stateContext.crumbs.length - distance].url;
     }
 
     refresh(navigationData?: any, historyAction?: 'add' | 'replace' | 'none') {
@@ -156,7 +153,14 @@ class StateNavigator {
     
     private resumeNavigation(stateContext: StateContext, historyAction: 'add' | 'replace' | 'none') {
         this.stateContext = stateContext;
-        var { oldState, state, data, asyncData, url } = stateContext;
+        var { oldState, state, data, asyncData, url, crumbs } = stateContext;
+        for(var key in this.rewriteCache)
+            delete this.rewriteCache[key];
+        for(var i = 0; i < crumbs.length; i++) {
+            var crumb = crumbs[i];
+            this.rewrite(crumb.url, crumb.state, crumb.data);
+        }
+        this.rewrite(url, state, data);
         if (this.stateContext.oldState && this.stateContext.oldState !== state)
             this.stateContext.oldState.dispose();
         state.navigated(this.stateContext.data, asyncData);
