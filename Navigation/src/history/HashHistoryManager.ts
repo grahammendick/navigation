@@ -3,13 +3,15 @@
 class HashHistoryManager implements HistoryManager {
     private navigateHistory: () => void = null;
     private replaceQueryIdentifier: boolean = false;
+    private rewrite: (url: string) => string | undefined;
     disabled: boolean = (typeof window === 'undefined') || !('onhashchange' in window);
     
     constructor(replaceQueryIdentifier: boolean = false) {
         this.replaceQueryIdentifier = replaceQueryIdentifier;
     }
 
-    init(navigateHistory) {
+    init(navigateHistory, rewrite) {
+        this.rewrite = rewrite;
         if (!this.disabled && !this.navigateHistory) {
             this.navigateHistory = () => navigateHistory();
             if (window.addEventListener)
@@ -36,7 +38,7 @@ class HashHistoryManager implements HistoryManager {
     getHref(url: string): string {
         if (url == null)
             throw new Error('The Url is invalid');
-        return '#' + this.encode(url);
+        return '#' + this.encode(this.rewrite?.(url) || url);
     }
 
     getUrl(hrefElement: HTMLAnchorElement | Location) {

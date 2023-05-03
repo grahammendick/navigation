@@ -2,7 +2,7 @@
 
 interface HistoryManager {
     disabled: boolean;
-    init(navigateHistory: (url?: string) => void): void;
+    init(navigateHistory: (url?: string) => void, rewrite: (url: string) => string | undefined): void;
     addHistory(url: string, replace: boolean, stateContext: StateContext): void;
     getCurrentUrl(): string;
     getHref(url: string): string;
