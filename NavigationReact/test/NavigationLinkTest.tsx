@@ -2722,6 +2722,461 @@ describe('NavigationLinkTest', function () {
         });
     });
 
+    describe('Rewrite Navigation Link Data', function () {
+        it('should change href', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r/{x}' },
+            ]);
+            const {s} = stateNavigator.states;
+            s.rewrite = ({x}) => (
+                x === 'y' ? {
+                    stateKey: 's',
+                    navigationData: {
+                        x: 'z'
+                    }
+                } : null
+            );
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s" navigationData={{x: 'y'}}>
+                            link text
+                        </NavigationLink>
+                        <NavigationLink stateKey="s" navigationData={{x: 'w'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var links = container.querySelectorAll<HTMLAnchorElement>('a');
+            assert.equal(links[0].hash, '#/r/z');
+            assert.equal(links[1].hash, '#/r/w');
+            act(() => Simulate.click(links[0]));
+            assert.equal(stateNavigator.stateContext.data.x, 'y');
+        });
+    });
+
+    describe('Rewrite Navigation Link Hash', function () {
+        it('should change href', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' },
+            ]);
+            const {s} = stateNavigator.states;
+            s.rewrite = () => ({
+                    stateKey: 's',
+                    hash: 'g'
+                });
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s" hash="f">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r#g');
+            act(() => Simulate.click(link));
+            assert.equal(stateNavigator.stateContext.hash, 'f');
+        });
+    });
+
+    describe('Rewrite Navigation Link State, Data and Hash', function () {
+        it('should change href', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1/{a}', defaultTypes: { a: 'number' } },
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewrite = () => ({
+                stateKey: 's1',
+                navigationData: {
+                    a: 1,
+                    x: 'y',
+                },
+                hash: 'f'
+            });
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s0">
+                            <span>link text</span>
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r1/1?x=y#f');
+            act(() => Simulate.click(link));
+            assert.equal(stateNavigator.stateContext.state, s0);
+            assert.strictEqual(stateNavigator.stateContext.data.a, undefined);
+            assert.strictEqual(stateNavigator.stateContext.data.x, undefined);
+            assert.strictEqual(stateNavigator.stateContext.data.hash, undefined);
+        });
+    });
+
+    describe('Rewrite Navigation Link Current Data', function () {
+        it('should change href', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r/{a}/{x?}' },
+            ]);
+            const {s} = stateNavigator.states;
+            s.rewrite = ({a}) => ({
+                stateKey: 's',
+                navigationData: {
+                    a,
+                    x: 'z'
+                }
+            });
+            stateNavigator.navigate('s', {a: 'b'})
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s" navigationData={{x: 'y'}} includeCurrentData>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r/b/z');
+            act(() => Simulate.click(link));
+            assert.equal(stateNavigator.stateContext.data.x, 'y');
+            assert.equal(stateNavigator.stateContext.data.a, 'b');
+        });
+    });
+
+    describe('Rewrite Navigation Link Current Data Keys', function () {
+        it('should change href', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r/{a}/{x?}' },
+            ]);
+            const {s} = stateNavigator.states;
+            s.rewrite = ({a}) => ({
+                stateKey: 's',
+                navigationData: {
+                    a,
+                    x: 'z'
+                }
+            });
+            stateNavigator.navigate('s', {a: 'b'})
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s" navigationData={{x: 'y'}} currentDataKeys="a">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r/b/z');
+            act(() => Simulate.click(link));
+            assert.equal(stateNavigator.stateContext.data.x, 'y');
+            assert.equal(stateNavigator.stateContext.data.a, 'b');
+        });
+    });
+
+    describe('Rewrite Navigation Link Defaults', function () {
+        it('should change href', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0', defaults: { x: 1 } },
+                { key: 's1', route: 'r1' },
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewrite = ({x}) => (
+                x === 1 ? { stateKey: 's1' } : null
+            );
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s0">
+                            link text
+                        </NavigationLink>
+                        <NavigationLink stateKey="s0" navigationData={{ x: 2 }}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var links = container.querySelectorAll<HTMLAnchorElement>('a');
+            assert.equal(links[0].hash, '#/r1');
+            assert.equal(links[1].hash, '#/r0?x=2');
+            act(() => Simulate.click(links[0]));
+            assert.equal(stateNavigator.stateContext.state, s0);
+            assert.equal(stateNavigator.stateContext.data.x, 1);
+        });
+    });
+
+    describe('Rewrite Active Navigation Link', function () {
+        it('should change href', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r/{x}' },
+            ]);
+            const {s} = stateNavigator.states;
+            s.rewrite = () => ({
+                stateKey: 's',
+                navigationData: {
+                    x: 'z'
+                }
+            });
+            stateNavigator.navigate('s', {x: 'y'})
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s" navigationData={{x: 'y'}} disableActive>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '');
+            act(() => Simulate.click(link));
+            assert.equal(stateNavigator.stateContext.data.x, 'y');
+        });
+    });
+
+    describe('Rewrite Crumb Trail Navigation Link', function () {
+        it('should change href', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+            ]);
+            const {s0, s1} = stateNavigator.states;
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            s1.rewrite = () => ({
+                stateKey: 's1',
+                navigationData: null
+            });
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s1">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r1');
+            act(() => Simulate.click(link));
+            assert.equal(stateNavigator.stateContext.state, s1);
+            assert.equal(stateNavigator.stateContext.crumbs[0].state, s0);
+            assert.equal(stateNavigator.stateContext.crumbs[1].state, s1);
+        });
+    });
+
+    describe('Rewrite Click Navigation Link', function () {
+        it('should change href', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewrite = () => ({
+                stateKey: 's1',
+            });
+            var navigatingLink;
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s0"
+                            navigating={(_, link) => {
+                                navigatingLink = link;
+                                return true;
+                            }}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r1');
+            act(() => Simulate.click(link));
+            assert.equal(navigatingLink, '/r0');
+        });
+    });
+
+    describe('Intercept Route Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'list', route: 'list' },
+                { key: 'details', route: 'details/{id}', defaultTypes: {id: 'number'} }
+            ]);
+            var {list, details} = stateNavigator.states;
+            var List = ({ id }) => (
+                <>
+                    <NavigationLink
+                        stateKey='list'
+                        navigationData={{id: 1}}>
+                        Item 1
+                    </NavigationLink>
+                    {id && <dialog>Modal {id}</dialog>}
+                </>
+            );
+            list.renderScene = ({ id }) => <List id={id} />;
+            details.renderScene = ({ id }) => <div>Details {id}</div>;
+            list.rewrite = ({ id }) => (
+                id ? {
+                    stateKey: 'details',
+                    navigationData: { id },
+                } : null);
+            stateNavigator.navigate('list');
+            var container = document.createElement('div');
+            var root = createRoot(container);
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderScene(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            var dialog = container.querySelector<HTMLDialogElement>('dialog');
+            assert.equal(link.hash, '#/details/1');
+            assert.equal(dialog, null);
+            act(() => Simulate.click(link));
+            var dialog = container.querySelector<HTMLDialogElement>('dialog');
+            var div = container.querySelector<HTMLDivElement>('div');
+            assert.equal(dialog.innerHTML, 'Modal 1');
+            assert.equal(div, null);
+        })
+    });
+
+    describe('Parallel Routes Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'doubleTabs', route: ['tabs-one/{tabOneId?}', 'tabs-two/{tabTwoId}'], defaults: {tabOneId: 1, tabTwoSelected: false}, defaultTypes: {tabTwoId: 'number'} },
+            ]);
+            var {doubleTabs} = stateNavigator.states;
+            doubleTabs.rewrite = ({ tabOneId, tabTwoId, tabTwoSelected }) => (
+                tabTwoSelected ? {
+                    stateKey: 'doubleTabs',
+                    navigationData: { tabTwoId }
+                } : {
+                    stateKey: 'doubleTabs',
+                    navigationData: { tabOneId }
+                });
+            doubleTabs.renderScene = ({tabOneId, tabTwoId}) => (
+                <>
+                    <div>
+                        <NavigationLink
+                            stateKey='doubleTabs'
+                            navigationData={{tabOneId: 1, tabTwoSelected: false}}
+                            includeCurrentData>
+                            Tab One One {`${tabOneId === 1 ? 'Active' : 'Inactive'}`}
+                        </NavigationLink>
+                        <NavigationLink
+                            stateKey='doubleTabs'
+                            navigationData={{tabOneId: 2, tabTwoSelected: false}}
+                            includeCurrentData>
+                            Tab One Two {`${tabOneId === 2 ? 'Active' : 'Inactive'}`}
+                        </NavigationLink>
+                    </div>
+                    <div>
+                        <NavigationLink
+                            stateKey='doubleTabs'
+                            navigationData={{tabTwoId: 1, tabTwoSelected: true}}
+                            includeCurrentData>
+                            Tab Two One {`${tabTwoId === 1 ? 'Active' : 'Inactive'}`}
+                        </NavigationLink>
+                        <NavigationLink
+                            stateKey='doubleTabs'
+                            navigationData={{tabTwoId: 2, tabTwoSelected: true}}
+                            includeCurrentData>
+                            Tab Two Two {`${tabTwoId === 2 ? 'Active' : 'Inactive'}`}
+                        </NavigationLink>
+                    </div>
+                </>
+            )
+            stateNavigator.navigate('doubleTabs');
+            var container = document.createElement('div');
+            var root = createRoot(container);
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderScene(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>
+                );
+            });
+            var links = container.querySelectorAll<HTMLAnchorElement>('a');
+            assert.equal(links[0].hash, '#/tabs-one');
+            assert.equal(links[0].innerHTML, 'Tab One One Active');
+            assert.equal(links[1].hash, '#/tabs-one/2');
+            assert.equal(links[1].innerHTML, 'Tab One Two Inactive');
+            assert.equal(links[2].hash, '#/tabs-two/1');
+            assert.equal(links[2].innerHTML, 'Tab Two One Inactive');
+            assert.equal(links[3].hash, '#/tabs-two/2');
+            assert.equal(links[3].innerHTML, 'Tab Two Two Inactive');
+            act(() => Simulate.click(links[1]));
+            links = container.querySelectorAll<HTMLAnchorElement>('a');
+            assert.equal(links[0].hash, '#/tabs-one');
+            assert.equal(links[0].innerHTML, 'Tab One One Inactive');
+            assert.equal(links[1].hash, '#/tabs-one/2');
+            assert.equal(links[1].innerHTML, 'Tab One Two Active');
+            assert.equal(links[2].hash, '#/tabs-two/1');
+            assert.equal(links[2].innerHTML, 'Tab Two One Inactive');
+            assert.equal(links[3].hash, '#/tabs-two/2');
+            assert.equal(links[3].innerHTML, 'Tab Two Two Inactive');
+            act(() => Simulate.click(links[2]));
+            links = container.querySelectorAll<HTMLAnchorElement>('a');
+            assert.equal(links[0].hash, '#/tabs-one');
+            assert.equal(links[0].innerHTML, 'Tab One One Inactive');
+            assert.equal(links[1].hash, '#/tabs-one/2');
+            assert.equal(links[1].innerHTML, 'Tab One Two Active');
+            assert.equal(links[2].hash, '#/tabs-two/1');
+            assert.equal(links[2].innerHTML, 'Tab Two One Active');
+            assert.equal(links[3].hash, '#/tabs-two/2');
+            assert.equal(links[3].innerHTML, 'Tab Two Two Inactive');
+            act(() => Simulate.click(links[3]));
+            links = container.querySelectorAll<HTMLAnchorElement>('a');
+            assert.equal(links[0].hash, '#/tabs-one');
+            assert.equal(links[0].innerHTML, 'Tab One One Inactive');
+            assert.equal(links[1].hash, '#/tabs-one/2');
+            assert.equal(links[1].innerHTML, 'Tab One Two Active');
+            assert.equal(links[2].hash, '#/tabs-two/1');
+            assert.equal(links[2].innerHTML, 'Tab Two One Inactive');
+            assert.equal(links[3].hash, '#/tabs-two/2');
+            assert.equal(links[3].innerHTML, 'Tab Two Two Active');
+            act(() => Simulate.click(links[0]));
+            links = container.querySelectorAll<HTMLAnchorElement>('a');
+            assert.equal(links[0].hash, '#/tabs-one');
+            assert.equal(links[0].innerHTML, 'Tab One One Active');
+            assert.equal(links[1].hash, '#/tabs-one/2');
+            assert.equal(links[1].innerHTML, 'Tab One Two Inactive');
+            assert.equal(links[2].hash, '#/tabs-two/1');
+            assert.equal(links[2].innerHTML, 'Tab Two One Inactive');
+            assert.equal(links[3].hash, '#/tabs-two/2');
+            assert.equal(links[3].innerHTML, 'Tab Two Two Active');
+        });
+    });
+
     describe('Click Custom Href Navigation Link', function () {
         it('should navigate', function(){
             var stateNavigator = new StateNavigator([
