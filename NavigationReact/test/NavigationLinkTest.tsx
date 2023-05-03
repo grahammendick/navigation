@@ -2694,6 +2694,34 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Rewrite Navigation Link State', function () {
+        it('should change href', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewrite = () => ({
+                stateKey: 's1',
+            });
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s0">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r1');
+            act(() => Simulate.click(link));
+            assert.equal(stateNavigator.stateContext.state, s0);
+        });
+    });
+
     describe('Click Custom Href Navigation Link', function () {
         it('should navigate', function(){
             var stateNavigator = new StateNavigator([

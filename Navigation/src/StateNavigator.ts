@@ -187,7 +187,7 @@ class StateNavigator {
             var rewrittenNavigation = state.rewrite?.(dataWithDefaults);
             if (rewrittenNavigation) {
                 var {stateKey, navigationData, hash} = rewrittenNavigation;
-                var rewrittenUrl = this.fluent().navigate(stateKey, navigationData, hash);
+                var rewrittenUrl = this.fluent().navigate(stateKey, navigationData, hash).url;
                 if (rewrittenUrl) {
                     this.rewriteCache[url] = rewrittenUrl;
                 }
