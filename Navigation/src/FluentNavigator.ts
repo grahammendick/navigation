@@ -5,8 +5,8 @@ import StateHandler from './StateHandler';
 
 interface FluentNavigator {
     url: string,
-    navigate(stateKey: string, navigationData?: any): FluentNavigator;
-    navigateBack(distance: number): FluentNavigator;
+    navigate(stateKey: string, navigationData?: any, hash?: string): FluentNavigator;
+    navigateBack(distance: number, hash?: string): FluentNavigator;
     refresh(navigationData?: any): FluentNavigator;
 }
 
