@@ -54,6 +54,29 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Missing Route Param Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r/{x}' }
+            ]);
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
     describe('Invalid Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
