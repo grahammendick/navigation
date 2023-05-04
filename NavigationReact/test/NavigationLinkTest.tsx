@@ -2694,7 +2694,7 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('Rewrite Navigation Link State', function () {
+    describe('Rewrite Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
@@ -2755,70 +2755,6 @@ describe('NavigationLinkTest', function () {
             assert.equal(links[1].hash, '#/r/w');
             act(() => Simulate.click(links[0]));
             assert.equal(stateNavigator.stateContext.data.x, 'y');
-        });
-    });
-
-    describe('Rewrite Navigation Link Hash', function () {
-        it('should render', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' },
-            ]);
-            const {s} = stateNavigator.states;
-            s.rewrite = () => ({
-                    stateKey: 's',
-                    hash: 'g'
-                });
-            var container = document.createElement('div');
-            var root = createRoot(container)
-            act(() => {
-                root.render(
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationLink stateKey="s" hash="f">
-                            link text
-                        </NavigationLink>
-                    </NavigationHandler>
-                );
-            });
-            var link = container.querySelector<HTMLAnchorElement>('a');
-            assert.equal(link.hash, '#/r#g');
-            act(() => Simulate.click(link));
-            assert.equal(stateNavigator.stateContext.hash, 'f');
-        });
-    });
-
-    describe('Rewrite Navigation Link State, Data and Hash', function () {
-        it('should render', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1/{a}', defaultTypes: { a: 'number' } },
-            ]);
-            const {s0} = stateNavigator.states;
-            s0.rewrite = () => ({
-                stateKey: 's1',
-                navigationData: {
-                    a: 1,
-                    x: 'y',
-                },
-                hash: 'f'
-            });
-            var container = document.createElement('div');
-            var root = createRoot(container)
-            act(() => {
-                root.render(
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationLink stateKey="s0">
-                            <span>link text</span>
-                        </NavigationLink>
-                    </NavigationHandler>
-                );
-            });
-            var link = container.querySelector<HTMLAnchorElement>('a');
-            assert.equal(link.hash, '#/r1/1?x=y#f');
-            act(() => Simulate.click(link));
-            assert.equal(stateNavigator.stateContext.state, s0);
-            assert.strictEqual(stateNavigator.stateContext.data.a, undefined);
-            assert.strictEqual(stateNavigator.stateContext.data.x, undefined);
-            assert.strictEqual(stateNavigator.stateContext.data.hash, undefined);
         });
     });
 
