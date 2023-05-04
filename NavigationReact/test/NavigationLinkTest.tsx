@@ -3070,7 +3070,7 @@ describe('NavigationLinkTest', function () {
         });
     });
 
-    describe('Rewrite Navigation Link Invalid', function () {
+    describe('Rewrite Navigation Link Missing Route Param', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
@@ -3093,6 +3093,31 @@ describe('NavigationLinkTest', function () {
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '#/r0');
+        });
+    });
+
+    describe('Rewrite Navigation Link Invalid', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r0' },
+            ]);
+            const {s} = stateNavigator.states;
+            s.rewrite = () => ({
+                stateKey: 'x',
+            });
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '');
         });
     });
 
