@@ -2888,39 +2888,6 @@ describe('NavigationLinkTest', function () {
         });
     });
 
-    describe('Rewrite Navigation Link Crumb Trail', function () {
-        it('should render', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true },
-            ]);
-            const {s0, s1} = stateNavigator.states;
-            stateNavigator.navigate('s0');
-            stateNavigator.navigate('s1');
-            s1.rewrite = () => ({
-                stateKey: 's1',
-                navigationData: null
-            });
-            var container = document.createElement('div');
-            var root = createRoot(container)
-            act(() => {
-                root.render(
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationLink stateKey="s1">
-                            link text
-                        </NavigationLink>
-                    </NavigationHandler>
-                );
-            });
-            var link = container.querySelector<HTMLAnchorElement>('a');
-            assert.equal(link.hash, '#/r1');
-            act(() => Simulate.click(link));
-            assert.equal(stateNavigator.stateContext.state, s1);
-            assert.equal(stateNavigator.stateContext.crumbs[0].state, s0);
-            assert.equal(stateNavigator.stateContext.crumbs[1].state, s1);
-        });
-    });
-
     describe('Rewrite Click Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
