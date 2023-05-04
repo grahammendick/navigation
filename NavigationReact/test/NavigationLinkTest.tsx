@@ -2695,7 +2695,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Rewrite Navigation Link State', function () {
-        it('should change href', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
@@ -2723,7 +2723,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Rewrite Navigation Link Data', function () {
-        it('should change href', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r/{x}' },
             ]);
@@ -2759,7 +2759,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Rewrite Navigation Link Hash', function () {
-        it('should change href', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' },
             ]);
@@ -2787,7 +2787,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Rewrite Navigation Link State, Data and Hash', function () {
-        it('should change href', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1/{a}', defaultTypes: { a: 'number' } },
@@ -2823,7 +2823,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Rewrite Navigation Link Current Data', function () {
-        it('should change href', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r/{a}/{x?}' },
             ]);
@@ -2856,7 +2856,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Rewrite Navigation Link Current Data Keys', function () {
-        it('should change href', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r/{a}/{x?}' },
             ]);
@@ -2889,7 +2889,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Rewrite Navigation Link Defaults', function () {
-        it('should change href', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0', defaults: { x: 1 } },
                 { key: 's1', route: 'r1' },
@@ -2922,7 +2922,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Rewrite Active Navigation Link', function () {
-        it('should change href', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r/{x}' },
             ]);
@@ -2953,7 +2953,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Rewrite Navigation Link Crumb Trail', function () {
-        it('should change href', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
@@ -2986,7 +2986,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Rewrite Click Navigation Link', function () {
-        it('should change href', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
@@ -3178,7 +3178,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Rewrite Navigation Link Navigate Outside', function () {
-        it('should change href', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
@@ -3201,7 +3201,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Rewrite Navigation Link Invalid', function () {
-        it('should change href', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1/{x}' },
