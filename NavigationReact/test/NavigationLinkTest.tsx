@@ -2952,7 +2952,7 @@ describe('NavigationLinkTest', function () {
         });
     });
 
-    describe('Rewrite Crumb Trail Navigation Link', function () {
+    describe('Rewrite Navigation Link Crumb Trail', function () {
         it('should change href', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
@@ -3177,7 +3177,7 @@ describe('NavigationLinkTest', function () {
         });
     });
 
-    describe('Rewrite Navigate Outside Navigation Link', function () {
+    describe('Rewrite Navigation Link Navigate Outside', function () {
         it('should change href', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
@@ -3197,6 +3197,32 @@ describe('NavigationLinkTest', function () {
             var url = stateNavigator.getNavigationLink('s0');
             var href = stateNavigator.historyManager.getHref(url);
             assert.equal(href, '#/r1');
+        });
+    });
+
+    describe('Rewrite Navigation Link Invalid', function () {
+        it('should change href', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1/{x}' },
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewrite = () => ({
+                stateKey: 's1',
+            });
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s0">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '');
         });
     });
 
