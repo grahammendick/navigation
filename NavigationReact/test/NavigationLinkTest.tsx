@@ -3092,7 +3092,7 @@ describe('NavigationLinkTest', function () {
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
-            assert.equal(link.hash, '');
+            assert.equal(link.hash, '#/r0');
         });
     });
 
