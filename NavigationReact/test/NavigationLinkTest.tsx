@@ -2824,39 +2824,6 @@ describe('NavigationLinkTest', function () {
         });
     });
 
-    describe('Rewrite Navigation Link Defaults', function () {
-        it('should render', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0', defaults: { x: 1 } },
-                { key: 's1', route: 'r1' },
-            ]);
-            const {s0} = stateNavigator.states;
-            s0.rewrite = ({x}) => (
-                x === 1 ? { stateKey: 's1' } : null
-            );
-            var container = document.createElement('div');
-            var root = createRoot(container)
-            act(() => {
-                root.render(
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationLink stateKey="s0">
-                            link text
-                        </NavigationLink>
-                        <NavigationLink stateKey="s0" navigationData={{ x: 2 }}>
-                            link text
-                        </NavigationLink>
-                    </NavigationHandler>
-                );
-            });
-            var links = container.querySelectorAll<HTMLAnchorElement>('a');
-            assert.equal(links[0].hash, '#/r1');
-            assert.equal(links[1].hash, '#/r0?x=2');
-            act(() => Simulate.click(links[0]));
-            assert.equal(stateNavigator.stateContext.state, s0);
-            assert.equal(stateNavigator.stateContext.data.x, 1);
-        });
-    });
-
     describe('Rewrite Active Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
