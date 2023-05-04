@@ -43,9 +43,9 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
             var url = stateHandler.getLink(state, navigationData, hash, crumbs, nextCrumb);
             if (url == null)
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
+            rewrite(url, state, navigationData);
             var data = { ...state.defaults, ...navigationData };
             var crumbs = getCrumbTrail(state, data, crumbs, nextCrumb);
-            rewrite(url, state, navigationData);
             return navigateLink(state, data, hash, crumbs, url);
         },
         navigateBack: function(distance: number): FluentNavigator {
@@ -63,9 +63,9 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
             var url = stateHandler.getLink(state, navigationData, hash, crumbs);
             if (url == null)
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
+            rewrite(url, state, navigationData);
             var data = { ...state.defaults, ...navigationData };
             var crumbs = getCrumbTrail(state, data, crumbs);
-            rewrite(url, state, navigationData);
             return navigateLink(state, data, hash, crumbs, url);
         }
     }
