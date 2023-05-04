@@ -160,7 +160,7 @@ export interface HistoryManager {
      * Registers browser history event listeners
      * @param navigateHistory The history navigation event handler
      */
-    init(navigateHistory: (url?: string) => void): void;
+    init(navigateHistory: (url?: string) => void, rewrite: (url: string) => string | undefined): void;
     /**
      * Adds browser history
      * @param url The current url
@@ -256,7 +256,7 @@ export class HTML5HistoryManager implements HistoryManager {
      * Registers a listener for the popstate event
      * @param navigateHistory The history navigation event handler
      */
-    init(navigateHistory: () => void): void;
+    init(navigateHistory: () => void, rewrite: (url: string) => string | undefined): void;
     /**
      * Sets the browser Url to the url using pushState
      * @param url The current url

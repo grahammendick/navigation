@@ -4,7 +4,8 @@ class MobileHistoryManager extends HTML5HistoryManager {
     private navigateHistory: (e: PopStateEvent) => void = null;
     private backCrumb: number = null;
     private hash = false;
-    private buildCurrentUrl: (url: string) => string; 
+    private buildCurrentUrl: (url: string) => string;
+    private rewrite: (url: string) => string | undefined;
 
     constructor(buildCurrentUrl: (url: string) => string, applicationPath?: string) {
         super(applicationPath || '');
@@ -12,7 +13,8 @@ class MobileHistoryManager extends HTML5HistoryManager {
         this.hash = applicationPath === undefined;
     }
 
-    init(navigateHistory: (url?: string) => void) {
+    init(navigateHistory: (url?: string) => void, rewrite: (url: string) => string | undefined) {
+        if (!this.rewrite) this.rewrite = rewrite;
         if (!this.disabled && !this.navigateHistory) {
             this.navigateHistory = e => {
                 var link = e.state?.navigationLink;
@@ -74,6 +76,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
             var hash = hashIndex >= 0 ? url.substring(hashIndex) : '';
             url = `${path}${crumblessQuery && '?'}${crumblessQuery}${hash}`;
         }
+        url = this.rewrite?.(url) || url;
         return !this.hash ? super.getHref(url) : '#' + url;
     }
 
