@@ -10,7 +10,7 @@ interface FluentNavigator {
     refresh(navigationData?: any): FluentNavigator;
 }
 
-function createFluentNavigator(states: { [index: string]: State }, stateHandler: StateHandler, stateContext = new StateContext()): FluentNavigator {
+function createFluentNavigator(states: { [index: string]: State }, stateHandler: StateHandler, stateContext = new StateContext(), rewrite: (url: string, state: State, data: any) => void): FluentNavigator {
     function getCrumbTrail(state: State, navigationData: any, crumbs: Crumb[], nextCrumb?: Crumb): Crumb[] {
         if (!state.trackCrumbTrail)
             return [];
@@ -28,7 +28,7 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
         fluentContext.data = data;
         fluentContext.hash = hash;
         fluentContext.nextCrumb = new Crumb(data, state, url, stateHandler.getLink(state, data, hash), false, hash);
-        return createFluentNavigator(states, stateHandler, fluentContext);
+        return createFluentNavigator(states, stateHandler, fluentContext, rewrite);
     }
 
     return {
@@ -45,6 +45,7 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
             var data = { ...state.defaults, ...navigationData };
             var crumbs = getCrumbTrail(state, data, crumbs, nextCrumb);
+            rewrite(url, state, navigationData);
             return navigateLink(state, data, hash, crumbs, url);
         },
         navigateBack: function(distance: number): FluentNavigator {
@@ -64,6 +65,7 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
             var data = { ...state.defaults, ...navigationData };
             var crumbs = getCrumbTrail(state, data, crumbs);
+            rewrite(url, state, navigationData);
             return navigateLink(state, data, hash, crumbs, url);
         }
     }

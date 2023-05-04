@@ -204,7 +204,7 @@ class StateNavigator {
 
     fluent(withContext = false): FluentNavigator {
         var stateContext = !withContext ? undefined : this.stateContext;
-        return createFluentNavigator(this.states, this.stateHandler, stateContext);
+        return createFluentNavigator(this.states, this.stateHandler, stateContext, this.rewrite.bind(this));
     }
 
     start(url?: string) {
