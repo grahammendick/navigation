@@ -3177,6 +3177,29 @@ describe('NavigationLinkTest', function () {
         });
     });
 
+    describe('Rewrite Navigate Outside Navigation Link', function () {
+        it('should change href', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewrite = () => ({stateKey: 's1'});
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <div />
+                    </NavigationHandler>
+                );
+            });
+            var url = stateNavigator.getNavigationLink('s0');
+            var href = stateNavigator.historyManager.getHref(url);
+            assert.equal(href, '#/r1');
+        });
+    });
+
     describe('Click Custom Href Navigation Link', function () {
         it('should navigate', function(){
             var stateNavigator = new StateNavigator([

@@ -11,7 +11,7 @@ class HTML5HistoryManager implements HistoryManager {
     }
 
     init(navigateHistory: (url?: string) => void, rewrite: (url: string) => string | undefined) {
-        this.rewrite = rewrite;
+        if (!this.rewrite) this.rewrite = rewrite;
         if (!this.disabled && !this.navigateHistory) {
             this.navigateHistory = e => navigateHistory((e.state && e.state.navigationLink) || undefined);
             window.addEventListener('popstate', this.navigateHistory);

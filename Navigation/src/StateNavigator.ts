@@ -43,6 +43,7 @@ class StateNavigator {
         } else {
             this.stateHandler = stateInfos.stateHandler;
             this.states = stateInfos.states;
+            this.rewriteCache = stateInfos.rewriteCache;
         }
     }
 

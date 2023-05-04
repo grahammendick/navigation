@@ -11,7 +11,7 @@ class HashHistoryManager implements HistoryManager {
     }
 
     init(navigateHistory, rewrite) {
-        this.rewrite = rewrite;
+        if (!this.rewrite) this.rewrite = rewrite;
         if (!this.disabled && !this.navigateHistory) {
             this.navigateHistory = () => navigateHistory();
             if (window.addEventListener)
