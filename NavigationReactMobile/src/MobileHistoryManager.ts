@@ -59,6 +59,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
     }
 
     getHref(url: string): string {
+        url = this.rewrite?.(url) || url;
         var hashIndex = url.indexOf('#');
         var pathAndQuery = hashIndex < 0 ? url : url.substring(0, hashIndex);
         var queryIndex = pathAndQuery.indexOf('?');
@@ -76,7 +77,6 @@ class MobileHistoryManager extends HTML5HistoryManager {
             var hash = hashIndex >= 0 ? url.substring(hashIndex) : '';
             url = `${path}${crumblessQuery && '?'}${crumblessQuery}${hash}`;
         }
-        url = this.rewrite?.(url) || url;
         return !this.hash ? super.getHref(url) : '#' + url;
     }
 
