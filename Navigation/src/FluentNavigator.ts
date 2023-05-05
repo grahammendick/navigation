@@ -10,7 +10,7 @@ interface FluentNavigator {
     refresh(navigationData?: any): FluentNavigator;
 }
 
-function createFluentNavigator(states: { [index: string]: State }, stateHandler: StateHandler, stateContext = new StateContext(), rewrite: (url: string, state: State, data: any) => void): FluentNavigator {
+function createFluentNavigator(states: { [index: string]: State }, stateHandler: StateHandler, stateContext = new StateContext(), rewrite: (url: string, state: State, navigationData: any, crumbs: Crumb[], nextCrumb?: Crumb) => void): FluentNavigator {
     function getCrumbTrail(state: State, navigationData: any, crumbs: Crumb[], nextCrumb?: Crumb): Crumb[] {
         if (!state.trackCrumbTrail)
             return [];
@@ -43,7 +43,7 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
             var url = stateHandler.getLink(state, navigationData, hash, crumbs, nextCrumb);
             if (url == null)
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-            rewrite(url, state, navigationData);
+            rewrite(url, state, navigationData, crumbs, nextCrumb);
             var data = { ...state.defaults, ...navigationData };
             var crumbs = getCrumbTrail(state, data, crumbs, nextCrumb);
             return navigateLink(state, data, hash, crumbs, url);
@@ -63,7 +63,7 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
             var url = stateHandler.getLink(state, navigationData, hash, crumbs);
             if (url == null)
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-            rewrite(url, state, navigationData);
+            rewrite(url, state, navigationData, crumbs);
             var data = { ...state.defaults, ...navigationData };
             var crumbs = getCrumbTrail(state, data, crumbs);
             return navigateLink(state, data, hash, crumbs, url);
