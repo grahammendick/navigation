@@ -179,14 +179,14 @@ class StateNavigator {
 
     private rewrite(url: string, state: State, navigationData: any, crumbs: Crumb[], nextCrumb?: Crumb) {
         if (url && !this.rewriteCache[url]) {
-            if (crumbs) {
-                crumbs = crumbs.slice();
-                if (nextCrumb)
-                    crumbs.push(nextCrumb);
-            }
-            var rewrittenNavigation = state.rewrite?.({ ...state.defaults, ...navigationData }, crumbs);
+            var rewrittenNavigation = state.rewrite?.({ ...state.defaults, ...navigationData });
             if (rewrittenNavigation) {
-                var {stateKey, navigationData, hash, crumbs} = rewrittenNavigation;
+                if (crumbs) {
+                    crumbs = crumbs.slice();
+                    if (nextCrumb)
+                        crumbs.push(nextCrumb);
+                }
+                var {stateKey, navigationData, hash} = rewrittenNavigation;
                 var rewrittenUrl = this.stateHandler.getLink(this.states[stateKey], navigationData, hash, crumbs);
                 if (rewrittenUrl) {
                     this.rewriteCache[url] = rewrittenUrl;

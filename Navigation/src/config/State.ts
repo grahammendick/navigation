@@ -44,7 +44,7 @@ class State implements StateInfo {
         return crumbs;
     }
 
-    rewrite(data: any, crumbs: Crumb[]): { stateKey: string, navigationData?: any, hash?: string, crumbs?: Crumb[] } {
+    rewrite(data: any): { stateKey: string, navigationData?: any, hash?: string } {
         return null;
     }
 }
