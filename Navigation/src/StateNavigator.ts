@@ -177,7 +177,7 @@ class StateNavigator {
         }
     }
 
-    private rewrite(url: string, state: State, navigationData: any, crumbs: Crumb[], nextCrumb?: Crumb) {
+    private rewrite(url: string, state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb) {
         if (url && !this.rewriteCache[url]) {
             var rewrittenNavigation = state.rewrite?.({ ...state.defaults, ...navigationData });
             if (rewrittenNavigation) {
