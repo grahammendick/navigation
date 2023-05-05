@@ -3122,7 +3122,7 @@ describe('NavigationLinkTest', function () {
     describe('Rewrite Navigation Link Invalid', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r0' },
+                { key: 's', route: 'r' },
             ]);
             const {s} = stateNavigator.states;
             s.rewrite = () => ({
@@ -3140,7 +3140,7 @@ describe('NavigationLinkTest', function () {
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
-            assert.equal(link.hash, '');
+            assert.equal(link.hash, '#/r');
         });
     });
 
