@@ -43,5 +43,9 @@ class State implements StateInfo {
     truncateCrumbTrail(state: State, data: any, crumbs: Crumb[]): Crumb[] {
         return crumbs;
     }
+
+    rewrite(data: any, crumbs: Crumb[]): { stateKey: string, navigationData?: any, hash?: string, crumbs?: Crumb[] } {
+        return null;
+    }
 }
 export default State;
