@@ -187,9 +187,12 @@ class StateNavigator {
                         crumbs.push(nextCrumb);
                 }
                 var {stateKey, navigationData, hash} = rewrittenNavigation;
-                var rewrittenUrl = this.stateHandler.getLink(this.states[stateKey], navigationData, hash, crumbs);
-                if (rewrittenUrl) {
-                    this.rewriteCache[url] = rewrittenUrl;
+                state = this.states[stateKey];
+                if (state) {
+                    var rewrittenUrl = this.stateHandler.getLink(state, navigationData, hash, crumbs);
+                    if (rewrittenUrl) {
+                        this.rewriteCache[url] = rewrittenUrl;
+                    }
                 }
             }
         }
