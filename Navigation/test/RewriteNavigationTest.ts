@@ -932,7 +932,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's1', route: 'r1', trackCrumbTrail: true },
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
                 ]);
-                const {s1, s0} = stateNavigator.states;
+                const {s0} = stateNavigator.states;
                 s0.rewrite = () => ({
                     stateKey: 's1'
                 });
