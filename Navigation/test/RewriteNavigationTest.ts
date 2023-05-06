@@ -25,9 +25,7 @@ describe('Rewrite Navigation', function () {
 
         describe('Navigate Link', function() {
             test(() => {
-                var link = stateNavigator.getNavigationLink('s0');
-                stateNavigator.navigateLink(link);
-                return stateNavigator.stateContext.url
+                return stateNavigator.getNavigationLink('s0');
             });
         });
 
@@ -68,9 +66,7 @@ describe('Rewrite Navigation', function () {
 
         describe('Navigate Link', function() {
             test(() => {
-                var link = stateNavigator.getNavigationLink('s');
-                stateNavigator.navigateLink(link);
-                return stateNavigator.stateContext.url
+                return stateNavigator.getNavigationLink('s');
             });
         });
 
@@ -111,9 +107,7 @@ describe('Rewrite Navigation', function () {
 
         describe('Navigate Link', function() {
             test(() => {
-                var link = stateNavigator.getNavigationLink('s');
-                stateNavigator.navigateLink(link);
-                return stateNavigator.stateContext.url
+                return stateNavigator.getNavigationLink('s');
             });
         });
 
@@ -154,9 +148,7 @@ describe('Rewrite Navigation', function () {
 
         describe('Navigate Link', function() {
             test(() => {
-                var link = stateNavigator.getNavigationLink('s');
-                stateNavigator.navigateLink(link);
-                return stateNavigator.stateContext.url
+                return stateNavigator.getNavigationLink('s');
             });
         });
 
@@ -196,9 +188,7 @@ describe('Rewrite Navigation', function () {
 
         describe('Navigate Link', function() {
             test(() => {
-                var link = stateNavigator.getNavigationLink('s');
-                stateNavigator.navigateLink(link);
-                return stateNavigator.stateContext.url
+                return stateNavigator.getNavigationLink('s');
             });
         });
 
@@ -243,9 +233,7 @@ describe('Rewrite Navigation', function () {
             test(() => {
                 var link = stateNavigator.getNavigationLink('s0');
                 stateNavigator.navigateLink(link);
-                link = stateNavigator.getNavigationLink('s1');
-                stateNavigator.navigateLink(link);
-                return stateNavigator.stateContext.url
+                return stateNavigator.getNavigationLink('s1');
             });
         });
 
@@ -292,9 +280,7 @@ describe('Rewrite Navigation', function () {
             test(() => {
                 var link = stateNavigator.getNavigationLink('s0');
                 stateNavigator.navigateLink(link);
-                link = stateNavigator.getNavigationLink('s1');
-                stateNavigator.navigateLink(link);
-                return stateNavigator.stateContext.url
+                return stateNavigator.getNavigationLink('s1');
             });
         });
 
@@ -340,9 +326,7 @@ describe('Rewrite Navigation', function () {
             test(() => {
                 var link = stateNavigator.getNavigationLink('s0');
                 stateNavigator.navigateLink(link);
-                link = stateNavigator.getNavigationLink('s1');
-                stateNavigator.navigateLink(link);
-                return stateNavigator.stateContext.url
+                return stateNavigator.getNavigationLink('s1');
             });
         });
 
@@ -388,9 +372,7 @@ describe('Rewrite Navigation', function () {
             test(() => {
                 var link = stateNavigator.getNavigationLink('s0');
                 stateNavigator.navigateLink(link);
-                link = stateNavigator.getNavigationLink('s1');
-                stateNavigator.navigateLink(link);
-                return stateNavigator.stateContext.url
+                return stateNavigator.getNavigationLink('s1');
             });
         });
 
