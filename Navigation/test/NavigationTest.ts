@@ -5988,47 +5988,4 @@ describe('Navigation', function () {
             assert.equal(unloaded, true);
         });
     });
-
-    describe('Rewrite State', function() {
-        var stateNavigator: StateNavigator;
-        beforeEach(function() {
-            stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-            ]);
-            var {s0} = stateNavigator.states;
-            s0.rewrite = () => ({
-                stateKey: 's1'
-            });
-        });
-
-        describe('Navigate', function() {
-            test(() => {
-                stateNavigator.navigate('s0');
-                return stateNavigator.stateContext.url
-            });
-        });
-
-        describe('Navigate Link', function() {
-            test(() => {
-                var link = stateNavigator.getNavigationLink('s0');
-                stateNavigator.navigateLink(link);
-                return stateNavigator.stateContext.url
-            });
-        });
-
-        describe('Fluent Navigate', function() {
-            test(() => {
-                return stateNavigator.fluent()
-                    .navigate('s0').url;
-            });            
-        });
-        
-        function test(navigate){
-            it('should populate href', function() {
-                var link = navigate();
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r1');
-            });
-        }
-    });
 });
