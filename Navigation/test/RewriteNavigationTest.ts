@@ -328,7 +328,7 @@ describe('Rewrite Navigation', () => {
         });
 
         describe('Fluent Navigate', () => {
-            test(stateNavigator => stateNavigator.fluent(true) .refresh().url);
+            test(stateNavigator => stateNavigator.fluent(true).refresh().url);
         });
     });
 
@@ -397,7 +397,7 @@ describe('Rewrite Navigation', () => {
         });
 
         describe('Fluent Navigate', () => {
-            test(stateNavigator => stateNavigator.fluent(true) .refresh().url);
+            test(stateNavigator => stateNavigator.fluent(true).refresh().url);
         });
     });
 
@@ -432,7 +432,7 @@ describe('Rewrite Navigation', () => {
         });
 
         describe('Fluent Navigate', () => {
-            test(stateNavigator => stateNavigator.fluent(true) .refresh().url);
+            test(stateNavigator => stateNavigator.fluent(true).refresh().url);
         });
     });
 
@@ -467,7 +467,7 @@ describe('Rewrite Navigation', () => {
         });
 
         describe('Fluent Navigate', () => {
-            test(stateNavigator => stateNavigator.fluent(true) .navigateBack(1).url);
+            test(stateNavigator => stateNavigator.fluent(true).navigateBack(1).url);
         });
     });
 
@@ -503,7 +503,7 @@ describe('Rewrite Navigation', () => {
         });
 
         describe('Fluent Navigate', () => {
-            test(stateNavigator => stateNavigator.fluent(true) .navigateBack(1).url);
+            test(stateNavigator => stateNavigator.fluent(true).navigateBack(1).url);
         });
     });
 
@@ -540,7 +540,7 @@ describe('Rewrite Navigation', () => {
         });
 
         describe('Fluent Navigate', () => {
-            test(stateNavigator => stateNavigator.fluent(true) .navigateBack(1).url);
+            test(stateNavigator => stateNavigator.fluent(true).navigateBack(1).url);
         });
     });
 
@@ -577,7 +577,7 @@ describe('Rewrite Navigation', () => {
         });
 
         describe('Fluent Navigate', () => {
-            test(stateNavigator => stateNavigator.fluent(true) .navigateBack(1).url);
+            test(stateNavigator => stateNavigator.fluent(true).navigateBack(1).url);
         });
     });
 });
