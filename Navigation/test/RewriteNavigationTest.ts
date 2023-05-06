@@ -35,6 +35,66 @@ describe('Rewrite Navigation', () => {
         });
     });
 
+    describe('Rewrite Null', () => {
+        const test = navigate => {
+            it('should populate href', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's0', route: 'r0' },
+                    { key: 's1', route: 'r1' },
+                ]);
+                const {s0} = stateNavigator.states;
+                s0.rewrite = () => null;
+                const link = navigate(stateNavigator);
+                assert.equal(stateNavigator.historyManager.getHref(link), '#/r0');
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s0');
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s0'));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent().navigate('s0').url);            
+        });
+    });
+
+    describe('Rewrite Undefined', () => {
+        const test = navigate => {
+            it('should populate href', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's0', route: 'r0' },
+                    { key: 's1', route: 'r1' },
+                ]);
+                const {s0} = stateNavigator.states;
+                s0.rewrite = () => undefined;
+                const link = navigate(stateNavigator);
+                assert.equal(stateNavigator.historyManager.getHref(link), '#/r0');
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s0');
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s0'));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent().navigate('s0').url);            
+        });
+    });
+
     describe('Rewrite Hash', () => {
         const test = navigate => {
             it('should populate href', () => {
