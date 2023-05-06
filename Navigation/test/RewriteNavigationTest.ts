@@ -778,4 +778,112 @@ describe('Rewrite Navigation', () => {
             test(stateNavigator => stateNavigator.fluent(true).navigateBack(1).url);
         });
     });
+
+    describe('Transition Rewrite Transition With Trail', () => {
+        const test = navigate => {
+            it('should populate href', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's0', route: 'r0' },
+                    { key: 's1', route: 'r1', trackCrumbTrail: true },
+                ]);
+                const {s0} = stateNavigator.states;
+                s0.rewrite = () => ({
+                    stateKey: 's1'
+                });
+                stateNavigator.navigate('s0');
+                const link = navigate(stateNavigator);
+                assert.equal(stateNavigator.historyManager.getHref(link), '#/r1?crumb=%2Fr1');
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s1');
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s1'));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent(true).navigate('s1').url);
+        });
+    });
+
+    describe('Transition Rewrite Transition With Trail Rewrite With Trail', () => {
+        const test = navigate => {
+            it('should populate href', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's0', route: 'r0' },
+                    { key: 's1', route: 'r1', trackCrumbTrail: true },
+                    { key: 's2', route: 'r2', trackCrumbTrail: true },
+                ]);
+                const {s0, s1} = stateNavigator.states;
+                s0.rewrite = () => ({
+                    stateKey: 's1'
+                });
+                s1.rewrite = () => ({
+                    stateKey: 's2'
+                });
+                stateNavigator.navigate('s0');
+                const link = navigate(stateNavigator);
+                assert.equal(stateNavigator.historyManager.getHref(link), '#/r2?crumb=%2Fr1');
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s1');
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s1'));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent(true).navigate('s1').url);
+        });
+    });
+
+    describe('Transition Rewrite Transition With Trail Rewrite Transition With Trail', () => {
+        const test = navigate => {
+            it('should populate href', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's0', route: 'r0' },
+                    { key: 's1', route: 'r1', trackCrumbTrail: true },
+                    { key: 's2', route: 'r2', trackCrumbTrail: true },
+                ]);
+                const {s1, s0} = stateNavigator.states;
+                s0.rewrite = () => ({
+                    stateKey: 's1'
+                });
+                s1.rewrite = () => ({
+                    stateKey: 's2'
+                });
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1');
+                const link = navigate(stateNavigator);
+                assert.equal(stateNavigator.historyManager.getHref(link), '#/r2?crumb=%2Fr1&crumb=%2Fr2');
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s2');
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s2'));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent(true).navigate('s2').url);
+        });
+    });
 });
