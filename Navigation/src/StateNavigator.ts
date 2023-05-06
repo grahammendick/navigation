@@ -161,7 +161,7 @@ class StateNavigator {
             var crumb = crumbs[i];
             this.rewrite(crumb.url, crumb.state, crumb.data, crumbs.slice(0, i));
         }
-        this.rewrite(url, state, data, crumbs, nextCrumb);
+        this.rewrite(url, state, data, crumbs);
         if (this.stateContext.oldState && this.stateContext.oldState !== state)
             this.stateContext.oldState.dispose();
         state.navigated(this.stateContext.data, asyncData);
