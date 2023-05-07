@@ -146,7 +146,7 @@ export class State<Key extends string = string, Data extends object = any> imple
      */
     truncateCrumbTrail(state: State<Key, Data>, data: Data, crumbs: Crumb[]): Crumb[];
 
-    rewrite(data: any): { stateKey: string, navigationData?: any, hash?: string };
+    rewriteNavigation(data: any): { stateKey: string, navigationData?: any, hash?: string };
 }
 
 /**

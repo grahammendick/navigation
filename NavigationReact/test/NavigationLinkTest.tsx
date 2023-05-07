@@ -2724,7 +2724,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's1', route: 'r1' },
             ]);
             const {s0} = stateNavigator.states;
-            s0.rewrite = () => ({
+            s0.rewriteNavigation = () => ({
                 stateKey: 's1',
             });
             var container = document.createElement('div');
@@ -2751,7 +2751,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r/{x}' },
             ]);
             const {s} = stateNavigator.states;
-            s.rewrite = ({x}) => (
+            s.rewriteNavigation = ({x}) => (
                 x === 'y' ? {
                     stateKey: 's',
                     navigationData: {
@@ -2787,7 +2787,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r/{a}/{x?}' },
             ]);
             const {s} = stateNavigator.states;
-            s.rewrite = ({a}) => ({
+            s.rewriteNavigation = ({a}) => ({
                 stateKey: 's',
                 navigationData: {
                     a,
@@ -2820,7 +2820,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r/{a}/{x?}' },
             ]);
             const {s} = stateNavigator.states;
-            s.rewrite = ({a}) => ({
+            s.rewriteNavigation = ({a}) => ({
                 stateKey: 's',
                 navigationData: {
                     a,
@@ -2853,7 +2853,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r/{x}' },
             ]);
             const {s} = stateNavigator.states;
-            s.rewrite = () => ({
+            s.rewriteNavigation = () => ({
                 stateKey: 's',
                 navigationData: {
                     x: 'z'
@@ -2885,7 +2885,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's1', route: 'r1' },
             ]);
             const {s0} = stateNavigator.states;
-            s0.rewrite = () => ({
+            s0.rewriteNavigation = () => ({
                 stateKey: 's1',
             });
             var navigatingLink;
@@ -2931,7 +2931,7 @@ describe('NavigationLinkTest', function () {
             );
             list.renderScene = ({ id }) => <List id={id} />;
             details.renderScene = ({ id }) => <div>Details {id}</div>;
-            list.rewrite = ({ id }) => (
+            list.rewriteNavigation = ({ id }) => (
                 id ? {
                     stateKey: 'details',
                     navigationData: { id },
@@ -2966,7 +2966,7 @@ describe('NavigationLinkTest', function () {
                 { key: 'doubleTabs', route: ['tabs-one/{tabOneId?}', 'tabs-two/{tabTwoId}'], defaults: {tabOneId: 1, tabTwoSelected: false}, defaultTypes: {tabTwoId: 'number'} },
             ]);
             var {doubleTabs} = stateNavigator.states;
-            doubleTabs.rewrite = ({ tabOneId, tabTwoId, tabTwoSelected }) => (
+            doubleTabs.rewriteNavigation = ({ tabOneId, tabTwoId, tabTwoSelected }) => (
                 tabTwoSelected ? {
                     stateKey: 'doubleTabs',
                     navigationData: { tabTwoId }
@@ -3077,7 +3077,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's1', route: 'r1' },
             ]);
             const {s0} = stateNavigator.states;
-            s0.rewrite = () => ({stateKey: 's1'});
+            s0.rewriteNavigation = () => ({stateKey: 's1'});
             var container = document.createElement('div');
             var root = createRoot(container)
             act(() => {
@@ -3100,7 +3100,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's1', route: 'r1/{x}' },
             ]);
             const {s0} = stateNavigator.states;
-            s0.rewrite = () => ({
+            s0.rewriteNavigation = () => ({
                 stateKey: 's1',
             });
             var container = document.createElement('div');
@@ -3125,7 +3125,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' },
             ]);
             const {s} = stateNavigator.states;
-            s.rewrite = () => ({
+            s.rewriteNavigation = () => ({
                 stateKey: 'x',
             });
             var container = document.createElement('div');

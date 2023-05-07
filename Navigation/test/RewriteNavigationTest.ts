@@ -10,7 +10,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's1', route: 'r1' },
                 ]);
                 const {s0} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
                 const link = navigate(stateNavigator);
@@ -42,7 +42,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's1', route: 'r1' },
                 ]);
                 const {s0} = stateNavigator.states;
-                s0.rewrite = () => null;
+                s0.rewriteNavigation = () => null;
                 const link = navigate(stateNavigator);
                 assert.equal(stateNavigator.historyManager.getHref(link), '#/r0');
             });
@@ -72,7 +72,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's1', route: 'r1' },
                 ]);
                 const {s0} = stateNavigator.states;
-                s0.rewrite = () => undefined;
+                s0.rewriteNavigation = () => undefined;
                 const link = navigate(stateNavigator);
                 assert.equal(stateNavigator.historyManager.getHref(link), '#/r0');
             });
@@ -101,7 +101,7 @@ describe('Rewrite Navigation', () => {
                 { key: 's1', route: 'r1' },
             ]);
             const {s0} = stateNavigator.states;
-            s0.rewrite = () => ({
+            s0.rewriteNavigation = () => ({
                 stateKey: 's1'
             });
             stateNavigator.navigate('s0');
@@ -118,7 +118,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's', route: 'r' }
                 ]);
                 const {s} = stateNavigator.states;
-                s.rewrite = () => ({
+                s.rewriteNavigation = () => ({
                     stateKey: 's',
                     hash: 'f'
                 });
@@ -150,7 +150,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's', route: 'r' }
                 ]);
                 const {s} = stateNavigator.states;
-                s.rewrite = () => ({
+                s.rewriteNavigation = () => ({
                     stateKey: 's',
                     hash: null
                 });
@@ -182,7 +182,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's', route: 'r' }
                 ]);
                 const {s} = stateNavigator.states;
-                s.rewrite = () => ({
+                s.rewriteNavigation = () => ({
                     stateKey: 's',
                     hash: '*="/()\'-_+~@:?><.;[],{}!£$%^#&'
                 });
@@ -214,7 +214,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's', route: 'r' }
                 ]);
                 const {s} = stateNavigator.states;
-                s.rewrite = () => ({
+                s.rewriteNavigation = () => ({
                     stateKey: 's0'
                 });
                 const link = navigate(stateNavigator);
@@ -247,7 +247,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2' },
                 ]);
                 const {s1} = stateNavigator.states;
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
                 stateNavigator.navigate('s0');
@@ -280,7 +280,7 @@ describe('Rewrite Navigation', () => {
                 { key: 's2', route: 'r2' },
             ]);
             const {s1} = stateNavigator.states;
-            s1.rewrite = () => ({
+            s1.rewriteNavigation = () => ({
                 stateKey: 's2'
             });
             stateNavigator.navigate('s0');
@@ -300,7 +300,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2' },
                 ]);
                 const {s1} = stateNavigator.states;
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2',
                     hash: 'f'
                 });
@@ -335,7 +335,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2' },
                 ]);
                 const {s1} = stateNavigator.states;
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
                 stateNavigator.navigate('s0');
@@ -368,7 +368,7 @@ describe('Rewrite Navigation', () => {
                 { key: 's2', route: 'r2' },
             ]);
             const {s0, s1} = stateNavigator.states;
-            s1.rewrite = () => ({
+            s1.rewriteNavigation = () => ({
                 stateKey: 's2'
             });
             stateNavigator.navigate('s0');
@@ -389,7 +389,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
                 ]);
                 const {s1} = stateNavigator.states;
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
                 stateNavigator.navigate('s0');
@@ -422,7 +422,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's1', route: 'r1' },
                 ]);
                 const {s0} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
                 stateNavigator.navigate('s0');
@@ -454,7 +454,7 @@ describe('Rewrite Navigation', () => {
                 { key: 's1', route: 'r1' },
             ]);
             const {s0} = stateNavigator.states;
-            s0.rewrite = () => ({
+            s0.rewriteNavigation = () => ({
                 stateKey: 's1'
             });
             stateNavigator.navigate('s0');
@@ -473,7 +473,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's1', route: 'r1' },
                 ]);
                 const {s0} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1',
                     hash: 'f'
                 });
@@ -508,7 +508,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2' },
                 ]);
                 const {s1} = stateNavigator.states;
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
                 stateNavigator.navigate('s0');
@@ -542,7 +542,7 @@ describe('Rewrite Navigation', () => {
                 { key: 's2', route: 'r2' },
             ]);
             const {s0, s1} = stateNavigator.states;
-            s1.rewrite = () => ({
+            s1.rewriteNavigation = () => ({
                 stateKey: 's2'
             });
             stateNavigator.navigate('s0');
@@ -564,7 +564,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
                 ]);
                 const {s1} = stateNavigator.states;
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
                 stateNavigator.navigate('s0');
@@ -599,7 +599,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2' },
                 ]);
                 const {s0} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
                 stateNavigator.navigate('s0');
@@ -633,7 +633,7 @@ describe('Rewrite Navigation', () => {
                 { key: 's2', route: 'r2' },
             ]);
             const {s0} = stateNavigator.states;
-            s0.rewrite = () => ({
+            s0.rewriteNavigation = () => ({
                 stateKey: 's2'
             });
             stateNavigator.navigate('s0');
@@ -654,7 +654,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2' },
                 ]);
                 const {s0} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's2',
                     hash: 'f'
                 });
@@ -691,7 +691,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's3', route: 'r3' },
                 ]);
                 const {s1} = stateNavigator.states;
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's3'
                 });
                 stateNavigator.navigate('s0');
@@ -727,7 +727,7 @@ describe('Rewrite Navigation', () => {
                 { key: 's3', route: 'r3' },
             ]);
             const {s0, s1} = stateNavigator.states;
-            s1.rewrite = () => ({
+            s1.rewriteNavigation = () => ({
                 stateKey: 's3'
             });
             stateNavigator.navigate('s0');
@@ -751,7 +751,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's3', route: 'r3', trackCrumbTrail: true },
                 ]);
                 const {s1} = stateNavigator.states;
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's3'
                 });
                 stateNavigator.navigate('s0');
@@ -786,7 +786,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's1', route: 'r1', trackCrumbTrail: true },
                 ]);
                 const {s0} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
                 stateNavigator.navigate('s0');
@@ -820,10 +820,10 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
                 ]);
                 const {s0, s1} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
                 stateNavigator.navigate('s0');
@@ -857,10 +857,10 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
                 ]);
                 const {s1, s0} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
                 stateNavigator.navigate('s0');
@@ -895,7 +895,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
                 ]);
                 const {s0} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
                 stateNavigator.navigate('s0');
@@ -930,7 +930,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
                 ]);
                 const {s1} = stateNavigator.states;
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
                 stateNavigator.navigate('s0');
@@ -966,13 +966,13 @@ describe('Rewrite Navigation', () => {
                     { key: 's3', route: 'r3', trackCrumbTrail: true },
                 ]);
                 const {s1, s0, s2} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
-                s2.rewrite = () => ({
+                s2.rewriteNavigation = () => ({
                     stateKey: 's3'
                 });
                 stateNavigator.navigate('s0');
@@ -1008,15 +1008,15 @@ describe('Rewrite Navigation', () => {
                     { key: 's3', route: 'r3', trackCrumbTrail: true },
                 ]);
                 const {s1, s0, s2} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1',
                     hash: 'f0'
                 });
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2',
                     hash: 'f1'
                 });
-                s2.rewrite = () => ({
+                s2.rewriteNavigation = () => ({
                     stateKey: 's3',
                     hash: 'f2'
                 });
@@ -1052,14 +1052,14 @@ describe('Rewrite Navigation', () => {
                 { key: 's3', route: 'r3', trackCrumbTrail: true },
             ]);
             const {s1, s0, s2} = stateNavigator.states;
-            s0.rewrite = () => ({
+            s0.rewriteNavigation = () => ({
                 stateKey: 's1'
             });
-            s1.rewrite = () => ({
+            s1.rewriteNavigation = () => ({
                 stateKey: 's2',
                 hash: 'f'
             });
-            s2.rewrite = () => ({
+            s2.rewriteNavigation = () => ({
                 stateKey: 's3'
             });
             stateNavigator.navigate('s0');
@@ -1082,7 +1082,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's1', route: 'r1', trackCrumbTrail: true },
                 ]);
                 const {s0} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
                 stateNavigator.navigate('s0');
@@ -1117,10 +1117,10 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
                 ]);
                 const {s0, s1} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
                 stateNavigator.navigate('s0');
@@ -1155,10 +1155,10 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
                 ]);
                 const {s1, s0} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
                 stateNavigator.navigate('s0');
@@ -1194,7 +1194,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
                 ]);
                 const {s0} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
                 stateNavigator.navigate('s0');
@@ -1230,7 +1230,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
                 ]);
                 const {s1} = stateNavigator.states;
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
                 stateNavigator.navigate('s0');
@@ -1267,13 +1267,13 @@ describe('Rewrite Navigation', () => {
                     { key: 's3', route: 'r3', trackCrumbTrail: true },
                 ]);
                 const {s1, s0, s2} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
-                s2.rewrite = () => ({
+                s2.rewriteNavigation = () => ({
                     stateKey: 's3'
                 });
                 stateNavigator.navigate('s0');
@@ -1310,15 +1310,15 @@ describe('Rewrite Navigation', () => {
                     { key: 's3', route: 'r3', trackCrumbTrail: true },
                 ]);
                 const {s1, s0, s2} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1',
                     hash: 'f0'
                 });
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2',
                     hash: 'f1'
                 });
-                s2.rewrite = () => ({
+                s2.rewriteNavigation = () => ({
                     stateKey: 's3',
                     hash: 'f2'
                 });
@@ -1355,14 +1355,14 @@ describe('Rewrite Navigation', () => {
                 { key: 's3', route: 'r3', trackCrumbTrail: true },
             ]);
             const {s1, s0, s2} = stateNavigator.states;
-            s0.rewrite = () => ({
+            s0.rewriteNavigation = () => ({
                 stateKey: 's1'
             });
-            s1.rewrite = () => ({
+            s1.rewriteNavigation = () => ({
                 stateKey: 's2',
                 hash: 'f'
             });
-            s2.rewrite = () => ({
+            s2.rewriteNavigation = () => ({
                 stateKey: 's3'
             });
             stateNavigator.navigate('s0');
@@ -1386,7 +1386,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's1', route: 'r1', trackCrumbTrail: true },
                 ]);
                 const {s0} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
                 stateNavigator.navigate('s0');
@@ -1422,10 +1422,10 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
                 ]);
                 const {s0, s1} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
                 stateNavigator.navigate('s0');
@@ -1461,10 +1461,10 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
                 ]);
                 const {s1, s0} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
                 stateNavigator.navigate('s0');
@@ -1501,7 +1501,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
                 ]);
                 const {s0} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
                 stateNavigator.navigate('s0');
@@ -1538,7 +1538,7 @@ describe('Rewrite Navigation', () => {
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
                 ]);
                 const {s1} = stateNavigator.states;
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
                 stateNavigator.navigate('s0');
@@ -1576,13 +1576,13 @@ describe('Rewrite Navigation', () => {
                     { key: 's3', route: 'r3', trackCrumbTrail: true },
                 ]);
                 const {s1, s0, s2} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1'
                 });
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2'
                 });
-                s2.rewrite = () => ({
+                s2.rewriteNavigation = () => ({
                     stateKey: 's3'
                 });
                 stateNavigator.navigate('s0');
@@ -1620,15 +1620,15 @@ describe('Rewrite Navigation', () => {
                     { key: 's3', route: 'r3', trackCrumbTrail: true },
                 ]);
                 const {s1, s0, s2} = stateNavigator.states;
-                s0.rewrite = () => ({
+                s0.rewriteNavigation = () => ({
                     stateKey: 's1',
                     hash: 'f0'
                 });
-                s1.rewrite = () => ({
+                s1.rewriteNavigation = () => ({
                     stateKey: 's2',
                     hash: 'f1'
                 });
-                s2.rewrite = () => ({
+                s2.rewriteNavigation = () => ({
                     stateKey: 's3',
                     hash: 'f2'
                 });
@@ -1666,14 +1666,14 @@ describe('Rewrite Navigation', () => {
                 { key: 's3', route: 'r3', trackCrumbTrail: true },
             ]);
             const {s1, s0, s2} = stateNavigator.states;
-            s0.rewrite = () => ({
+            s0.rewriteNavigation = () => ({
                 stateKey: 's1'
             });
-            s1.rewrite = () => ({
+            s1.rewriteNavigation = () => ({
                 stateKey: 's2',
                 hash: 'f'
             });
-            s2.rewrite = () => ({
+            s2.rewriteNavigation = () => ({
                 stateKey: 's3'
             });
             stateNavigator.navigate('s0');

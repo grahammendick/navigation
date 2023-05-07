@@ -5,7 +5,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
     private backCrumb: number = null;
     private hash = false;
     private buildCurrentUrl: (url: string) => string;
-    private rewrite: (url: string) => string | undefined;
+    private rewriteUrl: (url: string) => string | undefined;
 
     constructor(buildCurrentUrl: (url: string) => string, applicationPath?: string) {
         super(applicationPath || '');
@@ -13,8 +13,8 @@ class MobileHistoryManager extends HTML5HistoryManager {
         this.hash = applicationPath === undefined;
     }
 
-    init(navigateHistory: (url?: string) => void, rewrite: (url: string) => string | undefined) {
-        if (!this.rewrite) this.rewrite = rewrite;
+    init(navigateHistory: (url?: string) => void, rewriteUrl: (url: string) => string | undefined) {
+        if (!this.rewriteUrl) this.rewriteUrl = rewriteUrl;
         if (!this.disabled && !this.navigateHistory) {
             this.navigateHistory = e => {
                 var link = e.state?.navigationLink;
@@ -59,7 +59,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
     }
 
     getHref(url: string): string {
-        url = this.rewrite?.(url) || url;
+        url = this.rewriteUrl?.(url) || url;
         var hashIndex = url.indexOf('#');
         var pathAndQuery = hashIndex < 0 ? url : url.substring(0, hashIndex);
         var queryIndex = pathAndQuery.indexOf('?');
