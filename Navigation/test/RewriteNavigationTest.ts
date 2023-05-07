@@ -1658,7 +1658,7 @@ describe('Rewrite Navigation', () => {
     });
 
     describe('Navigate Transition Rewrite Transition With Trail Rewrite Hash Transition Back With Trail Rewrite With Trail', () => {
-        it('should populate href', () => {
+        it('should populate context', () => {
             const stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
