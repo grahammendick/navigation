@@ -1044,6 +1044,37 @@ describe('Rewrite Navigation', () => {
         });
     });
 
+    describe('Navigate Transition Rewrite Transition With Trail Rewrite Hash Transition With Trail Rewrite With Trail', () => {
+        it('should populate context', () => {
+            const stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+                { key: 's3', route: 'r3', trackCrumbTrail: true },
+            ]);
+            const {s1, s0, s2} = stateNavigator.states;
+            s0.rewrite = () => ({
+                stateKey: 's1'
+            });
+            s1.rewrite = () => ({
+                stateKey: 's2',
+                hash: 'f'
+            });
+            s2.rewrite = () => ({
+                stateKey: 's3'
+            });
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            stateNavigator.navigate('s2');
+            assert.equal(stateNavigator.stateContext.state, s2);
+            assert.equal(stateNavigator.stateContext.crumbs.length, 2);
+            assert.equal(stateNavigator.stateContext.crumbs[0].state, s0);
+            assert.equal(stateNavigator.stateContext.crumbs[0].hash, null);
+            assert.equal(stateNavigator.stateContext.crumbs[1].state, s1);
+            assert.equal(stateNavigator.stateContext.crumbs[1].hash, null);
+        });
+    });
+
     describe('Transition Rewrite Refresh With Trail', () => {
         const test = navigate => {
             it('should populate href', () => {
@@ -1313,6 +1344,38 @@ describe('Rewrite Navigation', () => {
 
         describe('Fluent Navigate', () => {
             test(stateNavigator => stateNavigator.fluent(true).refresh().url);
+        });
+    });
+
+    describe('Navigate Transition Rewrite Transition With Trail Rewrite Hash Refresh With Trail Rewrite With Trail', () => {
+        it('should populate context', () => {
+            const stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+                { key: 's3', route: 'r3', trackCrumbTrail: true },
+            ]);
+            const {s1, s0, s2} = stateNavigator.states;
+            s0.rewrite = () => ({
+                stateKey: 's1'
+            });
+            s1.rewrite = () => ({
+                stateKey: 's2',
+                hash: 'f'
+            });
+            s2.rewrite = () => ({
+                stateKey: 's3'
+            });
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            stateNavigator.navigate('s2');
+            stateNavigator.refresh();
+            assert.equal(stateNavigator.stateContext.state, s2);
+            assert.equal(stateNavigator.stateContext.crumbs.length, 2);
+            assert.equal(stateNavigator.stateContext.crumbs[0].state, s0);
+            assert.equal(stateNavigator.stateContext.crumbs[0].hash, null);
+            assert.equal(stateNavigator.stateContext.crumbs[1].state, s1);
+            assert.equal(stateNavigator.stateContext.crumbs[1].hash, null);
         });
     });
 
@@ -1592,6 +1655,39 @@ describe('Rewrite Navigation', () => {
 
         describe('Fluent Navigate', () => {
             test(stateNavigator => stateNavigator.fluent(true).navigateBack(1).url);
+        });
+    });
+
+    describe('Navigate Transition Rewrite Transition With Trail Rewrite Hash Transition Back With Trail Rewrite With Trail', () => {
+        it('should populate href', () => {
+            const stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+                { key: 's3', route: 'r3', trackCrumbTrail: true },
+            ]);
+            const {s1, s0, s2} = stateNavigator.states;
+            s0.rewrite = () => ({
+                stateKey: 's1'
+            });
+            s1.rewrite = () => ({
+                stateKey: 's2',
+                hash: 'f'
+            });
+            s2.rewrite = () => ({
+                stateKey: 's3'
+            });
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            stateNavigator.navigate('s2');
+            stateNavigator.navigate('s2');
+            stateNavigator.navigateBack(1);
+            assert.equal(stateNavigator.stateContext.state, s2);
+            assert.equal(stateNavigator.stateContext.crumbs.length, 2);
+            assert.equal(stateNavigator.stateContext.crumbs[0].state, s0);
+            assert.equal(stateNavigator.stateContext.crumbs[0].hash, null);
+            assert.equal(stateNavigator.stateContext.crumbs[1].state, s1);
+            assert.equal(stateNavigator.stateContext.crumbs[1].hash, null);
         });
     });
 });
