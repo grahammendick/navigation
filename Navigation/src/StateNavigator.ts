@@ -34,7 +34,7 @@ class StateNavigator {
         this.historyManager = historyManager ? historyManager : new HashHistoryManager();
         this.historyManager.init((url = this.historyManager.getCurrentUrl()) => {
             this.navigateLink(url, undefined, true);
-        }, (url) => this.rewriteCache[url]);
+        }, (url) => this.rewriteCache[url]?.url);
         if (this.isStateInfos(stateInfos)) {
             var states = this.stateHandler.buildStates(stateInfos);
             this.states = {};
@@ -177,10 +177,10 @@ class StateNavigator {
         }
     }
 
-    private rewrite(url: string, state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb): string {
+    private rewrite(url: string, state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb): { url: string, state: State, data: any, hash: string} {
         if (url && !this.rewriteCache[url]) {
-            var rewrittenNavigation = state.rewriteNavigation?.({ ...state.defaults, ...navigationData });
-            var rewritten = !!rewrittenNavigation;
+            var rewrittenNavigation = null;
+            var rewritten = false;
             var rewrittenCrumbs: Crumb[] = [];
             if (crumbs) {
                 crumbs = crumbs.slice();
@@ -188,21 +188,29 @@ class StateNavigator {
                     crumbs.push(nextCrumb);
                 for(var i = 0; i < crumbs.length; i++) {
                     var crumb = crumbs[i];
-                    var crumblessUrl = this.rewrite(crumb.crumblessUrl, crumb.state, crumb.data) || crumb.crumblessUrl;
-                    rewrittenCrumbs.push(new Crumb(crumb.data, crumb.state, crumb.url, crumblessUrl, crumb.last, crumb.hash));
-                    rewritten = rewritten || crumblessUrl !== crumb.crumblessUrl;
+                    rewrittenNavigation = this.rewrite(crumb.crumblessUrl, crumb.state, crumb.data);
+                    if (rewrittenNavigation) {
+                        crumb = new Crumb(rewrittenNavigation.data, rewrittenNavigation.state, crumb.url, rewrittenNavigation.url, crumb.last, rewrittenNavigation.hash);
+                        rewritten = true;
+                    }
+                    rewrittenCrumbs.push(crumb);
                 }
             }
+            rewrittenNavigation = state.rewriteNavigation?.({ ...state.defaults, ...navigationData });
+            rewritten = rewritten || rewrittenNavigation;
             if (rewritten) {
                 if (rewrittenNavigation) {
                     var {stateKey, navigationData, hash} = rewrittenNavigation;
-                    state = this.states[stateKey];
+                    state = this.states[stateKey] || state;
                 }
-                if (state) {
-                    var rewrittenUrl = this.stateHandler.getLink(state, navigationData, hash, rewrittenCrumbs);
-                    if (rewrittenUrl) {
-                        this.rewriteCache[url] = rewrittenUrl;
-                    }
+                var rewrittenUrl = this.stateHandler.getLink(state, navigationData, hash, rewrittenCrumbs);
+                if (rewrittenUrl !== url) {
+                    this.rewriteCache[url] = {
+                        url: rewrittenUrl,
+                        state,
+                        data: navigationData,
+                        hash,
+                    };
                 }
             }
         }
