@@ -54,6 +54,7 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
                 throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + stateContext.crumbs.length + ')');
             var {state, data, url} = crumbs[crumbs.length - distance];
             var crumbs = crumbs.slice(0, crumbs.length - distance);
+            rewrite(url, state, data, crumbs);
             return navigateLink(state, data, null, crumbs, url);
         },
         refresh: function(navigationData?: any, hash?: string): FluentNavigator {
