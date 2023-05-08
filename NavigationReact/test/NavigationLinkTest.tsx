@@ -2912,7 +2912,7 @@ describe('NavigationLinkTest', function () {
         });
     });
 
-    describe('Intercept Navigation Link', function () {
+    describe('Modal/Details Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 'list', route: 'list' },
