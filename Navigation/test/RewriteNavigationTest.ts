@@ -111,6 +111,108 @@ describe('Rewrite Navigation', () => {
         });
     });
 
+    describe('Rewrite Data', () => {
+        const test = navigate => {
+            it('should populate href', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's', route: 'r' }
+                ]);
+                const {s} = stateNavigator.states;
+                s.rewriteNavigation = () => ({
+                    stateKey: 's',
+                    navigationData: {
+                        a: 'b'
+                    }
+                });
+                const link = navigate(stateNavigator);
+                assert.equal(stateNavigator.historyManager.getHref(link), '#/r?a=b');
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s');
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s'));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent().navigate('s').url);
+        });
+    });
+
+    describe('Rewrite Data Route', () => {
+        const test = navigate => {
+            it('should populate href', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's', route: 'r/{a?}' }
+                ]);
+                const {s} = stateNavigator.states;
+                s.rewriteNavigation = () => ({
+                    stateKey: 's',
+                    navigationData: {
+                        a: 'b'
+                    }
+                });
+                const link = navigate(stateNavigator);
+                assert.equal(stateNavigator.historyManager.getHref(link), '#/r/b');
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s');
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s'));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent().navigate('s').url);
+        });
+    });
+
+    describe('Rewrite Invalid Data', () => {
+        const test = navigate => {
+            it('should populate href', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's', route: 'r/{a}' }
+                ]);
+                const {s} = stateNavigator.states;
+                s.rewriteNavigation = () => ({
+                    stateKey: 's',
+                    navigationData: {
+                        c: 'd'
+                    }
+                });
+                const link = navigate(stateNavigator);
+                assert.equal(stateNavigator.historyManager.getHref(link), '#/r/b');
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s', {a: 'b'});
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s', {a: 'b'}));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent().navigate('s', {a: 'b'}).url);
+        });
+    });
+
     describe('Rewrite Hash', () => {
         const test = navigate => {
             it('should populate href', () => {
