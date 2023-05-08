@@ -145,21 +145,21 @@ describe('Rewrite Navigation', () => {
         });
     });
 
-    describe('Rewrite Data Route', () => {
+    describe('Rewrite Data Defaults', () => {
         const test = navigate => {
             it('should populate href', () => {
                 const stateNavigator = new StateNavigator([
-                    { key: 's', route: 'r/{a?}' }
+                    { key: 's', route: 'r', defaults: {a: 'b'} }
                 ]);
                 const {s} = stateNavigator.states;
-                s.rewriteNavigation = () => ({
+                s.rewriteNavigation = ({a}) => (a === 'b' ? {
                     stateKey: 's',
                     navigationData: {
-                        a: 'b'
+                        a: 'c'
                     }
-                });
+                } : null);
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r/b');
+                assert.equal(stateNavigator.historyManager.getHref(link), '#/r?a=c');
             });
         }
 
@@ -176,6 +176,102 @@ describe('Rewrite Navigation', () => {
 
         describe('Fluent Navigate', () => {
             test(stateNavigator => stateNavigator.fluent().navigate('s').url);
+        });
+    });
+
+    describe('Rewrite Data Null', () => {
+        const test = navigate => {
+            it('should populate href', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's', route: 'r' }
+                ]);
+                const {s} = stateNavigator.states;
+                s.rewriteNavigation = () => ({
+                    stateKey: 's',
+                    navigationData: null
+                });
+                const link = navigate(stateNavigator);
+                assert.equal(stateNavigator.historyManager.getHref(link), '#/r');
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s', {a: 'b'});
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s', {a: 'b'}));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent().navigate('s', {a: 'b'}).url);
+        });
+    });
+
+    describe('Rewrite Data Undefined', () => {
+        const test = navigate => {
+            it('should populate href', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's', route: 'r' }
+                ]);
+                const {s} = stateNavigator.states;
+                s.rewriteNavigation = () => ({
+                    stateKey: 's',
+                    navigationData: undefined
+                });
+                const link = navigate(stateNavigator);
+                assert.equal(stateNavigator.historyManager.getHref(link), '#/r');
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s', {a: 'b'});
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s', {a: 'b'}));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent().navigate('s', {a: 'b'}).url);
+        });
+    });
+
+    describe('Rewrite Data Empty', () => {
+        const test = navigate => {
+            it('should populate href', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's', route: 'r' }
+                ]);
+                const {s} = stateNavigator.states;
+                s.rewriteNavigation = () => ({
+                    stateKey: 's',
+                    navigationData: {}
+                });
+                const link = navigate(stateNavigator);
+                assert.equal(stateNavigator.historyManager.getHref(link), '#/r');
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s', {a: 'b'});
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s', {a: 'b'}));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent().navigate('s', {a: 'b'}).url);
         });
     });
 
@@ -258,38 +354,6 @@ describe('Rewrite Navigation', () => {
                 });
                 const link = navigate(stateNavigator);
                 assert.equal(stateNavigator.historyManager.getHref(link), '#/r');
-            });
-        }
-
-        describe('Navigate', () => {
-            test(stateNavigator => {
-                stateNavigator.navigate('s');
-                return stateNavigator.stateContext.url
-            });
-        });
-
-        describe('Navigate Link', () => {
-            test(stateNavigator => stateNavigator.getNavigationLink('s'));
-        });
-
-        describe('Fluent Navigate', () => {
-            test(stateNavigator => stateNavigator.fluent().navigate('s').url);
-        });
-    });
-
-    describe('Rewrite Empty Reserved Url Character Hash', () => {
-        const test = navigate => {
-            it('should populate href', () => {
-                const stateNavigator = new StateNavigator([
-                    { key: 's', route: 'r' }
-                ]);
-                const {s} = stateNavigator.states;
-                s.rewriteNavigation = () => ({
-                    stateKey: 's',
-                    hash: '*="/()\'-_+~@:?><.;[],{}!£$%^#&'
-                });
-                const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r#*="/()\'-_+~@:?><.;[],{}!£$%^#&');
             });
         }
 
