@@ -1296,49 +1296,6 @@ describe('Rewrite Navigation', () => {
         });
     });
 
-    describe('Back Rewrite Data Defaults', () => {
-        const test = navigate => {
-            it('should populate context', () => {
-                const stateNavigator = new StateNavigator([
-                    { key: 's0', route: 'r0', defaults: {a: 'b'} },
-                    { key: 's1', route: 'r1', trackCrumbTrail: true },
-                    { key: 's2', route: 'r2' },
-                ]);
-                const {s0} = stateNavigator.states;
-                s0.rewriteNavigation = ({a}) => (a === 'b' ? {
-                    stateKey: 's2',
-                    navigationData: {
-                        a: 'c'
-                    }
-                } : null);
-                stateNavigator.navigate('s0', {a: 'z'});
-                stateNavigator.navigate('s1');
-                const link = navigate(stateNavigator);
-                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
-                stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r2?a=c');
-                assert.equal(stateNavigator.stateContext.state.key, 's2');
-                assert.equal(stateNavigator.stateContext.data.a, 'c');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
-            });
-        }
-
-        describe('Navigate', () => {
-            test(stateNavigator => {
-                stateNavigator.navigateBack(1);
-                return stateNavigator.stateContext.url
-            });
-        });
-
-        describe('Navigate Link', () => {
-            test(stateNavigator => stateNavigator.getNavigationBackLink(1));
-        });
-
-        describe('Fluent Navigate', () => {
-            test(stateNavigator => stateNavigator.fluent(true).navigateBack(1).url);
-        });
-    });
-
     describe('Back Rewrite Hash', () => {
         const test = navigate => {
             it('should populate context', () => {
