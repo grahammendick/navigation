@@ -179,7 +179,6 @@ class StateNavigator {
 
     private rewrite(url: string, state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb): { url: string, state: State, data: any, hash: string} {
         if (url && this.rewriteCache[url] === undefined) {
-            var rewrittenNavigation = null;
             var rewritten = false;
             var rewrittenCrumbs: Crumb[] = [];
             if (crumbs) {
@@ -188,16 +187,16 @@ class StateNavigator {
                     crumbs.push(nextCrumb);
                 for(var i = 0; i < crumbs.length; i++) {
                     var crumb = crumbs[i];
-                    rewrittenNavigation = this.rewrite(crumb.crumblessUrl, crumb.state, crumb.data);
-                    if (rewrittenNavigation) {
-                        crumb = new Crumb(rewrittenNavigation.data, rewrittenNavigation.state, crumb.url, rewrittenNavigation.url, crumb.last, rewrittenNavigation.hash);
+                    var rewrittenCrumb = this.rewrite(crumb.crumblessUrl, crumb.state, crumb.data);
+                    if (rewrittenCrumb) {
+                        crumb = new Crumb(rewrittenCrumb.data, rewrittenCrumb.state, crumb.url, rewrittenCrumb.url, crumb.last, rewrittenCrumb.hash);
                         rewritten = true;
                     }
                     rewrittenCrumbs.push(crumb);
                 }
             }
-            rewrittenNavigation = state.rewriteNavigation?.({ ...state.defaults, ...navigationData });
-            rewritten = rewritten || rewrittenNavigation;
+            var rewrittenNavigation = state.rewriteNavigation?.({ ...state.defaults, ...navigationData });
+            rewritten = rewritten || !!rewrittenNavigation;
             if (rewritten) {
                 if (rewrittenNavigation) {
                     var {stateKey, navigationData, hash} = rewrittenNavigation;
