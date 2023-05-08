@@ -1734,19 +1734,20 @@ describe('Rewrite Navigation', () => {
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1', trackCrumbTrail: true },
                     { key: 's2', route: 'r2', trackCrumbTrail: true },
+                    { key: 's3', route: 'r3', trackCrumbTrail: true },
                 ]);
-                const {s1, s2} = stateNavigator.states;
+                const {s1, s2, s3} = stateNavigator.states;
                 s1.rewriteNavigation = () => ({
-                    stateKey: 's2'
+                    stateKey: 's3'
                 });
                 s2.truncateCrumbTrail = (_state, _data, crumbs) => {
-                    if (crumbs[1]?.state === s2) return crumbs.slice(-1);
+                    if (crumbs[1]?.state === s3) return crumbs.slice(-1);
                     return crumbs;
                 };
                 stateNavigator.navigate('s0');
                 stateNavigator.navigate('s1');
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r2?crumb=%2Fr2');
+                assert.equal(stateNavigator.historyManager.getHref(link), '#/r2?crumb=%2Fr3');
             });
         }
 
