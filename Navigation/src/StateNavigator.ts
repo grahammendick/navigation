@@ -178,7 +178,7 @@ class StateNavigator {
     }
 
     private rewrite(url: string, state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb): { url: string, state: State, data: any, hash: string} {
-        if (url && !this.rewriteCache[url]) {
+        if (url && this.rewriteCache[url] === undefined) {
             var rewrittenNavigation = null;
             var rewritten = false;
             var rewrittenCrumbs: Crumb[] = [];
@@ -208,6 +208,7 @@ class StateNavigator {
                     this.rewriteCache[url] = { url: rewrittenUrl, state, data: navigationData, hash };
             }
         }
+        if (!this.rewriteCache[url]) this.rewriteCache[url] = null;
         return this.rewriteCache[url];
     }
 
