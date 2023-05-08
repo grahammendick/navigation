@@ -34,7 +34,7 @@ class StateNavigator {
         this.historyManager = historyManager ? historyManager : new HashHistoryManager();
         this.historyManager.init((url = this.historyManager.getCurrentUrl()) => {
             this.navigateLink(url, undefined, true);
-        }, (url) => this.rewriteCache[url]?.url);
+        }, (url) => this.rewriteCache[url]);
         if (this.isStateInfos(stateInfos)) {
             var states = this.stateHandler.buildStates(stateInfos);
             this.states = {};
@@ -177,38 +177,25 @@ class StateNavigator {
         }
     }
 
-    private rewrite(url: string, state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb): { url: string, state: State, data: any, hash: string} {
-        if (url && this.rewriteCache[url] === undefined) {
-            var rewritten = false;
-            var rewrittenCrumbs: Crumb[] = [];
-            if (crumbs) {
-                crumbs = crumbs.slice();
-                if (nextCrumb)
-                    crumbs.push(nextCrumb);
-                for(var i = 0; i < crumbs.length; i++) {
-                    var crumb = crumbs[i];
-                    var rewrittenCrumb = this.rewrite(crumb.crumblessUrl, crumb.state, crumb.data);
-                    if (rewrittenCrumb) {
-                        crumb = new Crumb(rewrittenCrumb.data, rewrittenCrumb.state, crumb.url, rewrittenCrumb.url, crumb.last, rewrittenCrumb.hash);
-                        rewritten = true;
-                    }
-                    rewrittenCrumbs.push(crumb);
-                }
-            }
+    private rewrite(url: string, state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb) {
+        if (url && !this.rewriteCache[url]) {
             var rewrittenNavigation = state.rewriteNavigation?.({ ...state.defaults, ...navigationData });
-            rewritten = rewritten || !!rewrittenNavigation;
-            if (rewritten) {
-                if (rewrittenNavigation) {
-                    var {stateKey, navigationData, hash} = rewrittenNavigation;
-                    state = this.states[stateKey] || state;
+            if (rewrittenNavigation) {
+                if (crumbs) {
+                    crumbs = crumbs.slice();
+                    if (nextCrumb)
+                        crumbs.push(nextCrumb);
                 }
-                var rewrittenUrl = this.stateHandler.getLink(state, navigationData, hash, rewrittenCrumbs);
-                if (rewrittenUrl !== url)
-                    this.rewriteCache[url] = { url: rewrittenUrl, state, data: navigationData, hash };
+                var {stateKey, navigationData, hash} = rewrittenNavigation;
+                state = this.states[stateKey];
+                if (state) {
+                    var rewrittenUrl = this.stateHandler.getLink(state, navigationData, hash, crumbs);
+                    if (rewrittenUrl) {
+                        this.rewriteCache[url] = rewrittenUrl;
+                    }
+                }
             }
         }
-        if (!this.rewriteCache[url]) this.rewriteCache[url] = null;
-        return this.rewriteCache[url];
     }
 
     parseLink(url: string): { state: State, data: any, hash: string, crumbs: Crumb[] } {
