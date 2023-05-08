@@ -4,7 +4,7 @@ import { StateNavigator } from 'navigation';
 describe('Rewrite Navigation', () => {
     describe('Rewrite State', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1' },
@@ -40,7 +40,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Rewrite Null', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1' },
@@ -74,7 +74,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Rewrite Undefined', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1' },
@@ -106,25 +106,31 @@ describe('Rewrite Navigation', () => {
         });
     });
 
-    describe('Rewrite Data', () => {
+    describe('Rewrite Individual Data', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's', route: 'r' }
                 ]);
                 const {s} = stateNavigator.states;
+                var individualNavigationData = {};
+                individualNavigationData['string'] = 'Hello';
+                individualNavigationData['boolean'] = true;
+                individualNavigationData['number'] = 0;
+                individualNavigationData['date'] = new Date(2010, 3, 7);
                 s.rewriteNavigation = () => ({
                     stateKey: 's',
-                    navigationData: {
-                        a: 'b'
-                    }
+                    navigationData: individualNavigationData
                 });
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r?a=b');
                 assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.equal(stateNavigator.stateContext.data.a, 'b');
+                assert.strictEqual(stateNavigator.stateContext.data['string'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.data['boolean'], true);
+                assert.strictEqual(stateNavigator.stateContext.data['number'], 0);
+                assert.strictEqual(+stateNavigator.stateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 4);
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
@@ -145,26 +151,137 @@ describe('Rewrite Navigation', () => {
         });
     });
 
-    describe('Rewrite Data Defaults', () => {
+    describe('Rewrite Individual Data Route', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
-                    { key: 's', route: 'r', defaults: {a: 'b'} }
+                    { key: 's', route: 'r/{string?}/{boolean?}/{number?}/{date?}' }
                 ]);
                 const {s} = stateNavigator.states;
-                s.rewriteNavigation = ({a}) => (a === 'b' ? {
+                var individualNavigationData = {};
+                individualNavigationData['string'] = 'Hello';
+                individualNavigationData['boolean'] = true;
+                individualNavigationData['number'] = 0;
+                individualNavigationData['date'] = new Date(2010, 3, 7);
+                s.rewriteNavigation = () => ({
                     stateKey: 's',
-                    navigationData: {
-                        a: 'c'
-                    }
-                } : null);
+                    navigationData: individualNavigationData
+                });
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r?a=c');
                 assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.equal(stateNavigator.stateContext.data.a, 'c');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                assert.strictEqual(stateNavigator.stateContext.data['string'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.data['boolean'], true);
+                assert.strictEqual(stateNavigator.stateContext.data['number'], 0);
+                assert.strictEqual(+stateNavigator.stateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 4);
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s');
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s'));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent().navigate('s').url);
+        });
+    });
+
+    describe('Rewrite Array Data', () => {
+        const test = navigate => {
+            it('should populate context', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's', route: 'r' }
+                ]);
+                const {s} = stateNavigator.states;
+                var arrayNavigationData = {};
+                arrayNavigationData['array_string'] = ['He-llo', 'World'];
+                arrayNavigationData['array_boolean'] = [true, false];
+                arrayNavigationData['array_number'] = [1, 2.5, -3];
+                arrayNavigationData['array_date'] = [new Date(2010, 3, 7), new Date(2011, 7, 3)];
+                s.rewriteNavigation = () => ({
+                    stateKey: 's',
+                    navigationData: arrayNavigationData
+                });
+                const link = navigate(stateNavigator);
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.state.key, 's');
+                assert.strictEqual(stateNavigator.stateContext.data['array_string'][0], 'He-llo');
+                assert.strictEqual(stateNavigator.stateContext.data['array_string'][1], 'World');
+                assert.strictEqual(stateNavigator.stateContext.data['array_string'].length, 2);
+                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'][0], true);
+                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'][1], false);
+                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'].length, 2);
+                assert.strictEqual(stateNavigator.stateContext.data['array_number'][0], 1);
+                assert.strictEqual(stateNavigator.stateContext.data['array_number'][1], 2.5);
+                assert.strictEqual(stateNavigator.stateContext.data['array_number'][2], -3);
+                assert.strictEqual(stateNavigator.stateContext.data['array_number'].length, 3);
+                assert.strictEqual(+stateNavigator.stateContext.data['array_date'][0], +new Date(2010, 3, 7));
+                assert.strictEqual(+stateNavigator.stateContext.data['array_date'][1], +new Date(2011, 7, 3));
+                assert.strictEqual(stateNavigator.stateContext.data['array_date'].length, 2);
+                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 4);
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s');
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s'));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent().navigate('s').url);
+        });
+    });
+
+    describe('Rewrite Array Data Route', () => {
+        const test = navigate => {
+            it('should populate context', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's', route: 'r0/{array_string?}/{array_boolean?}/{array_number?}/{array_date?}' }
+                ]);
+                const {s} = stateNavigator.states;
+                var arrayNavigationData = {};
+                arrayNavigationData['array_string'] = ['He-llo', 'World'];
+                arrayNavigationData['array_boolean'] = [true, false];
+                arrayNavigationData['array_number'] = [1, 2.5, -3];
+                arrayNavigationData['array_date'] = [new Date(2010, 3, 7), new Date(2011, 7, 3)];
+                s.rewriteNavigation = () => ({
+                    stateKey: 's',
+                    navigationData: arrayNavigationData
+                });
+                const link = navigate(stateNavigator);
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.state.key, 's');
+                assert.strictEqual(stateNavigator.stateContext.data['array_string'][0], 'He-llo');
+                assert.strictEqual(stateNavigator.stateContext.data['array_string'][1], 'World');
+                assert.strictEqual(stateNavigator.stateContext.data['array_string'].length, 2);
+                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'][0], true);
+                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'][1], false);
+                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'].length, 2);
+                assert.strictEqual(stateNavigator.stateContext.data['array_number'][0], 1);
+                assert.strictEqual(stateNavigator.stateContext.data['array_number'][1], 2.5);
+                assert.strictEqual(stateNavigator.stateContext.data['array_number'][2], -3);
+                assert.strictEqual(stateNavigator.stateContext.data['array_number'].length, 3);
+                assert.strictEqual(+stateNavigator.stateContext.data['array_date'][0], +new Date(2010, 3, 7));
+                assert.strictEqual(+stateNavigator.stateContext.data['array_date'][1], +new Date(2011, 7, 3));
+                assert.strictEqual(stateNavigator.stateContext.data['array_date'].length, 2);
+                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 4);
             });
         }
 
@@ -186,7 +303,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Rewrite Data Null', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's', route: 'r' }
                 ]);
@@ -220,9 +337,49 @@ describe('Rewrite Navigation', () => {
         });
     });
 
+    describe('Rewrite Array Data Splat', () => {
+        const test = navigate => {
+            it('should populate context', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's', route: 'r0/{*array_string?}' }
+                ]);
+                const {s} = stateNavigator.states;
+                var arrayNavigationData = {};
+                arrayNavigationData['array_string'] = ['He-llo', 'World'];
+                s.rewriteNavigation = () => ({
+                    stateKey: 's',
+                    navigationData: arrayNavigationData
+                });
+                const link = navigate(stateNavigator);
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.state.key, 's');
+                assert.strictEqual(stateNavigator.stateContext.data['array_string'][0], 'He-llo');
+                assert.strictEqual(stateNavigator.stateContext.data['array_string'][1], 'World');
+                assert.strictEqual(stateNavigator.stateContext.data['array_string'].length, 2);
+                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 1);
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s');
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s'));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent().navigate('s').url);
+        });
+    });
+
     describe('Rewrite Data Undefined', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's', route: 'r' }
                 ]);
@@ -258,7 +415,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Rewrite Data Empty', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's', route: 'r' }
                 ]);
@@ -294,7 +451,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Rewrite Invalid Data', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's', route: 'r/{a}' }
                 ]);
@@ -334,7 +491,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Rewrite Hash', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's', route: 'r' }
                 ]);
@@ -371,7 +528,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Rewrite Null Hash', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's', route: 'r' }
                 ]);
@@ -408,7 +565,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Rewrite Invalid State', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's', route: 'r' }
                 ]);
@@ -443,7 +600,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Transition Rewrite', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1' },
@@ -481,7 +638,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Transition Rewrite Hash', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1' },
@@ -521,7 +678,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Transition With Trail Rewrite', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1', trackCrumbTrail: true },
@@ -559,7 +716,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Transition With Trail Rewrite With Trail', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1', trackCrumbTrail: true },
@@ -598,7 +755,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Refresh Rewrite', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1' },
@@ -635,7 +792,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Refresh Rewrite Hash', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1' },
@@ -674,7 +831,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Refresh With Trail Rewrite', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1', trackCrumbTrail: true },
@@ -713,7 +870,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Refresh With Trail Rewrite With Trail', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1', trackCrumbTrail: true },
@@ -753,7 +910,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Back Rewrite', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1', trackCrumbTrail: true },
@@ -792,7 +949,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Back Rewrite Hash', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1', trackCrumbTrail: true },
@@ -833,7 +990,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Back With Trail Rewrite', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1', trackCrumbTrail: true },
@@ -874,7 +1031,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Back With Trail Rewrite With Trail', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1', trackCrumbTrail: true },
@@ -916,7 +1073,7 @@ describe('Rewrite Navigation', () => {
 
     describe('Rewrite Custom Trail', () => {
         const test = navigate => {
-            it('should populate href', () => {
+            it('should populate context', () => {
                 const stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1', trackCrumbTrail: true },
