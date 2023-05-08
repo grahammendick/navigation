@@ -14,7 +14,11 @@ describe('Rewrite Navigation', () => {
                     stateKey: 's1'
                 });
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r1');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r1');
+                assert.equal(stateNavigator.stateContext.state.key, 's1');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -44,7 +48,11 @@ describe('Rewrite Navigation', () => {
                 const {s0} = stateNavigator.states;
                 s0.rewriteNavigation = () => null;
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r0');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r0');
+                assert.equal(stateNavigator.stateContext.state.key, 's0');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -74,7 +82,11 @@ describe('Rewrite Navigation', () => {
                 const {s0} = stateNavigator.states;
                 s0.rewriteNavigation = () => undefined;
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r0');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r0');
+                assert.equal(stateNavigator.stateContext.state.key, 's0');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -94,23 +106,6 @@ describe('Rewrite Navigation', () => {
         });
     });
 
-    describe('Navigate Rewrite', () => {
-        it('should populate context', () => {
-            const stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-            ]);
-            const {s0} = stateNavigator.states;
-            s0.rewriteNavigation = () => ({
-                stateKey: 's1'
-            });
-            stateNavigator.navigate('s0');
-            assert.equal(stateNavigator.stateContext.state, s0);
-            assert.equal(stateNavigator.stateContext.url, '/r0');
-            assert.equal(stateNavigator.stateContext.crumbs.length, 0);
-        });
-    });
-
     describe('Rewrite Data', () => {
         const test = navigate => {
             it('should populate href', () => {
@@ -125,7 +120,12 @@ describe('Rewrite Navigation', () => {
                     }
                 });
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r?a=b');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r?a=b');
+                assert.equal(stateNavigator.stateContext.state.key, 's');
+                assert.equal(stateNavigator.stateContext.data.a, 'b');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -159,7 +159,12 @@ describe('Rewrite Navigation', () => {
                     }
                 } : null);
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r?a=c');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r?a=c');
+                assert.equal(stateNavigator.stateContext.state.key, 's');
+                assert.equal(stateNavigator.stateContext.data.a, 'c');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -191,7 +196,11 @@ describe('Rewrite Navigation', () => {
                     navigationData: null
                 });
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r');
+                assert.equal(stateNavigator.stateContext.state.key, 's');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -223,7 +232,11 @@ describe('Rewrite Navigation', () => {
                     navigationData: undefined
                 });
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r');
+                assert.equal(stateNavigator.stateContext.state.key, 's');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -255,7 +268,11 @@ describe('Rewrite Navigation', () => {
                     navigationData: {}
                 });
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r');
+                assert.equal(stateNavigator.stateContext.state.key, 's');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -289,7 +306,13 @@ describe('Rewrite Navigation', () => {
                     }
                 });
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r/b');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r/b');
+                assert.equal(stateNavigator.stateContext.state.key, 's');
+                assert.equal(stateNavigator.stateContext.data.a, 'b');
+                assert.equal(stateNavigator.stateContext.data.c, undefined);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -321,7 +344,12 @@ describe('Rewrite Navigation', () => {
                     hash: 'f'
                 });
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r#f');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r#f');
+                assert.equal(stateNavigator.stateContext.state.key, 's');
+                assert.equal(stateNavigator.stateContext.hash, 'f');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -353,7 +381,12 @@ describe('Rewrite Navigation', () => {
                     hash: null
                 });
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r');
+                assert.equal(stateNavigator.stateContext.state.key, 's');
+                assert.equal(stateNavigator.stateContext.hash, null);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -384,7 +417,11 @@ describe('Rewrite Navigation', () => {
                     stateKey: 's0'
                 });
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r');
+                assert.equal(stateNavigator.stateContext.state.key, 's');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -418,7 +455,11 @@ describe('Rewrite Navigation', () => {
                 });
                 stateNavigator.navigate('s0');
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r2');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r2');
+                assert.equal(stateNavigator.stateContext.state.key, 's2');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -438,25 +479,6 @@ describe('Rewrite Navigation', () => {
         });
     });
 
-    describe('Navigate Transition Rewrite', () => {
-        it('should populate context', () => {
-            const stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-                { key: 's2', route: 'r2' },
-            ]);
-            const {s1} = stateNavigator.states;
-            s1.rewriteNavigation = () => ({
-                stateKey: 's2'
-            });
-            stateNavigator.navigate('s0');
-            stateNavigator.navigate('s1');
-            assert.equal(stateNavigator.stateContext.state, s1);
-            assert.equal(stateNavigator.stateContext.url, '/r1');
-            assert.equal(stateNavigator.stateContext.crumbs.length, 0);
-        });
-    });
-
     describe('Transition Rewrite Hash', () => {
         const test = navigate => {
             it('should populate href', () => {
@@ -472,7 +494,12 @@ describe('Rewrite Navigation', () => {
                 });
                 stateNavigator.navigate('s0');
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r2#f');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r2#f');
+                assert.equal(stateNavigator.stateContext.state.key, 's2');
+                assert.equal(stateNavigator.stateContext.hash, 'f');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -506,7 +533,11 @@ describe('Rewrite Navigation', () => {
                 });
                 stateNavigator.navigate('s0');
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r2');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r2');
+                assert.equal(stateNavigator.stateContext.state.key, 's2');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -526,26 +557,6 @@ describe('Rewrite Navigation', () => {
         });
     });
 
-    describe('Navigate Transition With Trail Rewrite', () => {
-        it('should populate context', () => {
-            const stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true },
-                { key: 's2', route: 'r2' },
-            ]);
-            const {s0, s1} = stateNavigator.states;
-            s1.rewriteNavigation = () => ({
-                stateKey: 's2'
-            });
-            stateNavigator.navigate('s0');
-            stateNavigator.navigate('s1');
-            assert.equal(stateNavigator.stateContext.state, s1);
-            assert.equal(stateNavigator.stateContext.url, '/r1?crumb=%2Fr0');
-            assert.equal(stateNavigator.stateContext.crumbs.length, 1);
-            assert.equal(stateNavigator.stateContext.crumbs[0].state, s0);
-        });
-    });
-
     describe('Transition With Trail Rewrite With Trail', () => {
         const test = navigate => {
             it('should populate href', () => {
@@ -560,7 +571,12 @@ describe('Rewrite Navigation', () => {
                 });
                 stateNavigator.navigate('s0');
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r2?crumb=%2Fr0');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r2?crumb=%2Fr0');
+                assert.equal(stateNavigator.stateContext.state.key, 's2');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.crumbs[0].state.key, 's0');
             });
         }
 
@@ -593,7 +609,11 @@ describe('Rewrite Navigation', () => {
                 });
                 stateNavigator.navigate('s0');
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r1');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r1');
+                assert.equal(stateNavigator.stateContext.state.key, 's1');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -613,24 +633,6 @@ describe('Rewrite Navigation', () => {
         });
     });
 
-    describe('Navigate Refresh Rewrite', () => {
-        it('should populate context', () => {
-            const stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-            ]);
-            const {s0} = stateNavigator.states;
-            s0.rewriteNavigation = () => ({
-                stateKey: 's1'
-            });
-            stateNavigator.navigate('s0');
-            stateNavigator.refresh();
-            assert.equal(stateNavigator.stateContext.state, s0);
-            assert.equal(stateNavigator.stateContext.url, '/r0');
-            assert.equal(stateNavigator.stateContext.crumbs.length, 0);
-        });
-    });
-
     describe('Refresh Rewrite Hash', () => {
         const test = navigate => {
             it('should populate href', () => {
@@ -645,7 +647,12 @@ describe('Rewrite Navigation', () => {
                 });
                 stateNavigator.navigate('s0');
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r1#f');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r1#f');
+                assert.equal(stateNavigator.stateContext.state.key, 's1');
+                assert.equal(stateNavigator.stateContext.hash, 'f');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -680,7 +687,11 @@ describe('Rewrite Navigation', () => {
                 stateNavigator.navigate('s0');
                 stateNavigator.navigate('s1');
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r2');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r2');
+                assert.equal(stateNavigator.stateContext.state.key, 's2');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -700,27 +711,6 @@ describe('Rewrite Navigation', () => {
         });
     });
 
-    describe('Navigate Refresh With Trail Rewrite', () => {
-        it('should populate href', () => {
-            const stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true },
-                { key: 's2', route: 'r2' },
-            ]);
-            const {s0, s1} = stateNavigator.states;
-            s1.rewriteNavigation = () => ({
-                stateKey: 's2'
-            });
-            stateNavigator.navigate('s0');
-            stateNavigator.navigate('s1');
-            stateNavigator.refresh();
-            assert.equal(stateNavigator.stateContext.state, s1);
-            assert.equal(stateNavigator.stateContext.url, '/r1?crumb=%2Fr0');
-            assert.equal(stateNavigator.stateContext.crumbs.length, 1);
-            assert.equal(stateNavigator.stateContext.crumbs[0].state, s0);
-        });
-    });
-
     describe('Refresh With Trail Rewrite With Trail', () => {
         const test = navigate => {
             it('should populate href', () => {
@@ -736,7 +726,12 @@ describe('Rewrite Navigation', () => {
                 stateNavigator.navigate('s0');
                 stateNavigator.navigate('s1');
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r2?crumb=%2Fr0');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r2?crumb=%2Fr0');
+                assert.equal(stateNavigator.stateContext.state.key, 's2');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.crumbs[0].state.key, 's0');
             });
         }
 
@@ -771,7 +766,11 @@ describe('Rewrite Navigation', () => {
                 stateNavigator.navigate('s0');
                 stateNavigator.navigate('s1');
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r2');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r2');
+                assert.equal(stateNavigator.stateContext.state.key, 's2');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -791,26 +790,6 @@ describe('Rewrite Navigation', () => {
         });
     });
 
-    describe('Navigate Back Rewrite', () => {
-        it('should populate href', () => {
-            const stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true },
-                { key: 's2', route: 'r2' },
-            ]);
-            const {s0} = stateNavigator.states;
-            s0.rewriteNavigation = () => ({
-                stateKey: 's2'
-            });
-            stateNavigator.navigate('s0');
-            stateNavigator.navigate('s1');
-            stateNavigator.navigateBack(1);
-            assert.equal(stateNavigator.stateContext.state, s0);
-            assert.equal(stateNavigator.stateContext.url, '/r0');
-            assert.equal(stateNavigator.stateContext.crumbs.length, 0);
-        });
-    });
-
     describe('Back Rewrite Hash', () => {
         const test = navigate => {
             it('should populate href', () => {
@@ -827,7 +806,12 @@ describe('Rewrite Navigation', () => {
                 stateNavigator.navigate('s0');
                 stateNavigator.navigate('s1');
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r2#f');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r2#f');
+                assert.equal(stateNavigator.stateContext.state.key, 's2');
+                assert.equal(stateNavigator.stateContext.hash, 'f');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -864,7 +848,11 @@ describe('Rewrite Navigation', () => {
                 stateNavigator.navigate('s1');
                 stateNavigator.navigate('s2');
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r3');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r3');
+                assert.equal(stateNavigator.stateContext.state.key, 's3');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
 
@@ -881,29 +869,6 @@ describe('Rewrite Navigation', () => {
 
         describe('Fluent Navigate', () => {
             test(stateNavigator => stateNavigator.fluent(true).navigateBack(1).url);
-        });
-    });
-
-    describe('Navigate Back With Trail Rewrite', () => {
-        it('should populate context', () => {
-            const stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true },
-                { key: 's2', route: 'r2', trackCrumbTrail: true },
-                { key: 's3', route: 'r3' },
-            ]);
-            const {s0, s1} = stateNavigator.states;
-            s1.rewriteNavigation = () => ({
-                stateKey: 's3'
-            });
-            stateNavigator.navigate('s0');
-            stateNavigator.navigate('s1');
-            stateNavigator.navigate('s2');
-            stateNavigator.navigateBack(1);
-            assert.equal(stateNavigator.stateContext.state, s1);
-            assert.equal(stateNavigator.stateContext.url, '/r1?crumb=%2Fr0');
-            assert.equal(stateNavigator.stateContext.crumbs.length, 1);
-            assert.equal(stateNavigator.stateContext.crumbs[0].state, s0);
         });
     });
 
@@ -924,7 +889,12 @@ describe('Rewrite Navigation', () => {
                 stateNavigator.navigate('s1');
                 stateNavigator.navigate('s2');
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r3?crumb=%2Fr0');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r3?crumb=%2Fr0');
+                assert.equal(stateNavigator.stateContext.state.key, 's3');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.crumbs[0].state.key, 's0');
             });
         }
 
@@ -961,7 +931,12 @@ describe('Rewrite Navigation', () => {
                 stateNavigator.navigate('s0');
                 stateNavigator.navigate('s1');
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r3?crumb=%2Fr1');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                assert.equal(stateNavigator.stateContext.url, '/r3?crumb=%2Fr1');
+                assert.equal(stateNavigator.stateContext.state.key, 's3');
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.crumbs[0].state.key, 's1');
             });
         }
 
