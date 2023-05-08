@@ -643,6 +643,38 @@ describe('Rewrite Navigation', () => {
         });
     });
 
+    describe('Rewrite Reserved Url Character Hash', () => {
+        const test = navigate => {
+            it('should populate href', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's', route: 'r' }
+                ]);
+                const {s} = stateNavigator.states;
+                s.rewriteNavigation = () => ({
+                    stateKey: 's',
+                    hash: '*="/()\'-_+~@:?><.;[],{}!£$%^#&'
+                });
+                const link = navigate(stateNavigator);
+                assert.equal(stateNavigator.historyManager.getHref(link), '#/r#*="/()\'-_+~@:?><.;[],{}!£$%^#&');
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s');
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s'));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent().navigate('s').url);
+        });
+    });
+
     describe('Rewrite Invalid State', () => {
         const test = navigate => {
             it('should populate context', () => {
