@@ -204,14 +204,8 @@ class StateNavigator {
                     state = this.states[stateKey] || state;
                 }
                 var rewrittenUrl = this.stateHandler.getLink(state, navigationData, hash, rewrittenCrumbs);
-                if (rewrittenUrl !== url) {
-                    this.rewriteCache[url] = {
-                        url: rewrittenUrl,
-                        state,
-                        data: navigationData,
-                        hash,
-                    };
-                }
+                if (rewrittenUrl !== url)
+                    this.rewriteCache[url] = { url: rewrittenUrl, state, data: navigationData, hash };
             }
         }
         return this.rewriteCache[url];
