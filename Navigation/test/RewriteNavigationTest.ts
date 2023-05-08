@@ -1071,7 +1071,7 @@ describe('Rewrite Navigation', () => {
                         a: 'c'
                     }
                 } : null);
-                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s0', {a: 'z'});
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
@@ -1311,7 +1311,7 @@ describe('Rewrite Navigation', () => {
                         a: 'c'
                     }
                 } : null);
-                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s0', {a: 'z'});
                 stateNavigator.navigate('s1');
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
