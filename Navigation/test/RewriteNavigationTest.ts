@@ -16,9 +16,15 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r1');
-                assert.equal(stateNavigator.stateContext.state.key, 's1');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r1');
+                assert.equal(stateContextRewritten.state.key, 's1');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r0');
+                assert.equal(stateContext.state.key, 's0');
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -50,9 +56,15 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r0');
-                assert.equal(stateNavigator.stateContext.state.key, 's0');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r0');
+                assert.equal(stateContextRewritten.state.key, 's0');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r0');
+                assert.equal(stateContext.state.key, 's0');
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -84,9 +96,15 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r0');
-                assert.equal(stateNavigator.stateContext.state.key, 's0');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r0');
+                assert.equal(stateContextRewritten.state.key, 's0');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r0');
+                assert.equal(stateContext.state.key, 's0');
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -125,13 +143,19 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.strictEqual(stateNavigator.stateContext.data['string'], 'Hello');
-                assert.strictEqual(stateNavigator.stateContext.data['boolean'], true);
-                assert.strictEqual(stateNavigator.stateContext.data['number'], 0);
-                assert.strictEqual(+stateNavigator.stateContext.data['date'], +new Date(2010, 3, 7));
-                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 4);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.state.key, 's');
+                assert.strictEqual(stateContextRewritten.data['string'], 'Hello');
+                assert.strictEqual(stateContextRewritten.data['boolean'], true);
+                assert.strictEqual(stateContextRewritten.data['number'], 0);
+                assert.strictEqual(+stateContextRewritten.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(stateContextRewritten.data).length, 4);
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.state.key, 's');
+                assert.strictEqual(Object.keys(stateContext.data).length, 0);
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -170,12 +194,18 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.strictEqual(stateNavigator.stateContext.data['string'], 'Hello');
-                assert.strictEqual(stateNavigator.stateContext.data['boolean'], true);
-                assert.strictEqual(stateNavigator.stateContext.data['number'], 0);
-                assert.strictEqual(+stateNavigator.stateContext.data['date'], +new Date(2010, 3, 7));
-                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 4);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.state.key, 's');
+                assert.strictEqual(stateContextRewritten.data['string'], 'Hello');
+                assert.strictEqual(stateContextRewritten.data['boolean'], true);
+                assert.strictEqual(stateContextRewritten.data['number'], 0);
+                assert.strictEqual(+stateContextRewritten.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(stateContextRewritten.data).length, 4);
+                assert.equal(stateContext.state.key, 's');
+                assert.strictEqual(Object.keys(stateContext.data).length, 0);
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -214,21 +244,27 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.strictEqual(stateNavigator.stateContext.data['array_string'][0], 'He-llo');
-                assert.strictEqual(stateNavigator.stateContext.data['array_string'][1], 'World');
-                assert.strictEqual(stateNavigator.stateContext.data['array_string'].length, 2);
-                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'][0], true);
-                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'][1], false);
-                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'].length, 2);
-                assert.strictEqual(stateNavigator.stateContext.data['array_number'][0], 1);
-                assert.strictEqual(stateNavigator.stateContext.data['array_number'][1], 2.5);
-                assert.strictEqual(stateNavigator.stateContext.data['array_number'][2], -3);
-                assert.strictEqual(stateNavigator.stateContext.data['array_number'].length, 3);
-                assert.strictEqual(+stateNavigator.stateContext.data['array_date'][0], +new Date(2010, 3, 7));
-                assert.strictEqual(+stateNavigator.stateContext.data['array_date'][1], +new Date(2011, 7, 3));
-                assert.strictEqual(stateNavigator.stateContext.data['array_date'].length, 2);
-                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 4);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.state.key, 's');
+                assert.strictEqual(stateContextRewritten.data['array_string'][0], 'He-llo');
+                assert.strictEqual(stateContextRewritten.data['array_string'][1], 'World');
+                assert.strictEqual(stateContextRewritten.data['array_string'].length, 2);
+                assert.strictEqual(stateContextRewritten.data['array_boolean'][0], true);
+                assert.strictEqual(stateContextRewritten.data['array_boolean'][1], false);
+                assert.strictEqual(stateContextRewritten.data['array_boolean'].length, 2);
+                assert.strictEqual(stateContextRewritten.data['array_number'][0], 1);
+                assert.strictEqual(stateContextRewritten.data['array_number'][1], 2.5);
+                assert.strictEqual(stateContextRewritten.data['array_number'][2], -3);
+                assert.strictEqual(stateContextRewritten.data['array_number'].length, 3);
+                assert.strictEqual(+stateContextRewritten.data['array_date'][0], +new Date(2010, 3, 7));
+                assert.strictEqual(+stateContextRewritten.data['array_date'][1], +new Date(2011, 7, 3));
+                assert.strictEqual(stateContextRewritten.data['array_date'].length, 2);
+                assert.strictEqual(Object.keys(stateContextRewritten.data).length, 4);
+                assert.equal(stateContext.state.key, 's');
+                assert.strictEqual(Object.keys(stateContext.data).length, 0);
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -267,21 +303,27 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.strictEqual(stateNavigator.stateContext.data['array_string'][0], 'He-llo');
-                assert.strictEqual(stateNavigator.stateContext.data['array_string'][1], 'World');
-                assert.strictEqual(stateNavigator.stateContext.data['array_string'].length, 2);
-                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'][0], true);
-                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'][1], false);
-                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'].length, 2);
-                assert.strictEqual(stateNavigator.stateContext.data['array_number'][0], 1);
-                assert.strictEqual(stateNavigator.stateContext.data['array_number'][1], 2.5);
-                assert.strictEqual(stateNavigator.stateContext.data['array_number'][2], -3);
-                assert.strictEqual(stateNavigator.stateContext.data['array_number'].length, 3);
-                assert.strictEqual(+stateNavigator.stateContext.data['array_date'][0], +new Date(2010, 3, 7));
-                assert.strictEqual(+stateNavigator.stateContext.data['array_date'][1], +new Date(2011, 7, 3));
-                assert.strictEqual(stateNavigator.stateContext.data['array_date'].length, 2);
-                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 4);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.state.key, 's');
+                assert.strictEqual(stateContextRewritten.data['array_string'][0], 'He-llo');
+                assert.strictEqual(stateContextRewritten.data['array_string'][1], 'World');
+                assert.strictEqual(stateContextRewritten.data['array_string'].length, 2);
+                assert.strictEqual(stateContextRewritten.data['array_boolean'][0], true);
+                assert.strictEqual(stateContextRewritten.data['array_boolean'][1], false);
+                assert.strictEqual(stateContextRewritten.data['array_boolean'].length, 2);
+                assert.strictEqual(stateContextRewritten.data['array_number'][0], 1);
+                assert.strictEqual(stateContextRewritten.data['array_number'][1], 2.5);
+                assert.strictEqual(stateContextRewritten.data['array_number'][2], -3);
+                assert.strictEqual(stateContextRewritten.data['array_number'].length, 3);
+                assert.strictEqual(+stateContextRewritten.data['array_date'][0], +new Date(2010, 3, 7));
+                assert.strictEqual(+stateContextRewritten.data['array_date'][1], +new Date(2011, 7, 3));
+                assert.strictEqual(stateContextRewritten.data['array_date'].length, 2);
+                assert.strictEqual(Object.keys(stateContextRewritten.data).length, 4);
+                assert.equal(stateContext.state.key, 's');
+                assert.strictEqual(Object.keys(stateContext.data).length, 0);
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -315,7 +357,17 @@ describe('Rewrite Navigation', () => {
                     }
                 } : null);
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r?a=c');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r?a=c');
+                assert.equal(stateContextRewritten.state.key, 's');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r');
+                assert.equal(stateContext.state.key, 's');
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -349,9 +401,15 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r');
-                assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r');
+                assert.equal(stateContextRewritten.state.key, 's');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r?a=b');
+                assert.equal(stateContext.state.key, 's');
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -387,11 +445,16 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.strictEqual(stateNavigator.stateContext.data['array_string'][0], 'He-llo');
-                assert.strictEqual(stateNavigator.stateContext.data['array_string'][1], 'World');
-                assert.strictEqual(stateNavigator.stateContext.data['array_string'].length, 2);
-                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 1);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.state.key, 's');
+                assert.strictEqual(stateContextRewritten.data['array_string'][0], 'He-llo');
+                assert.strictEqual(stateContextRewritten.data['array_string'][1], 'World');
+                assert.strictEqual(stateContextRewritten.data['array_string'].length, 2);
+                assert.strictEqual(Object.keys(stateContextRewritten.data).length, 1);
+                assert.equal(stateContext.state.key, 's');
+                assert.strictEqual(Object.keys(stateContext.data).length, 0);
             });
         }
 
@@ -427,8 +490,13 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.strictEqual(stateNavigator.stateContext.data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.state.key, 's');
+                assert.strictEqual(stateContextRewritten.data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
+                assert.equal(stateContext.state.key, 's');
+                assert.strictEqual(stateContext.data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'], undefined);
             });
         }
 
@@ -467,11 +535,16 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.strictEqual(stateNavigator.stateContext.data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
-                assert.strictEqual(stateNavigator.stateContext.data['string'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
-                assert.strictEqual(stateNavigator.stateContext.data['_bool'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
-                assert.strictEqual(stateNavigator.stateContext.data['number'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.state.key, 's');
+                assert.strictEqual(stateContextRewritten.data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
+                assert.strictEqual(stateContextRewritten.data['string'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
+                assert.strictEqual(stateContextRewritten.data['_bool'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
+                assert.strictEqual(stateContextRewritten.data['number'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
+                assert.equal(stateContext.state.key, 's');
+                assert.strictEqual(Object.keys(stateContext.data).length, 0);
             });
         }
 
@@ -505,9 +578,15 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r');
-                assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r');
+                assert.equal(stateContextRewritten.state.key, 's');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r?a=b');
+                assert.equal(stateContext.state.key, 's');
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -541,9 +620,15 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r');
-                assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r');
+                assert.equal(stateContextRewritten.state.key, 's');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r?a=b');
+                assert.equal(stateContext.state.key, 's');
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -579,11 +664,19 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r/b');
-                assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.equal(stateNavigator.stateContext.data.a, 'b');
-                assert.equal(stateNavigator.stateContext.data.c, undefined);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r/b');
+                assert.equal(stateContextRewritten.state.key, 's');
+                assert.equal(stateContextRewritten.data.a, 'b');
+                assert.equal(stateContextRewritten.data.c, undefined);
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r/b');
+                assert.equal(stateContext.state.key, 's');
+                assert.equal(stateContext.data.a, 'b');
+                assert.equal(stateContext.data.c, undefined);
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -617,10 +710,17 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r#f');
-                assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.equal(stateNavigator.stateContext.hash, 'f');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r#f');
+                assert.equal(stateContextRewritten.state.key, 's');
+                assert.equal(stateContextRewritten.hash, 'f');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r');
+                assert.equal(stateContext.state.key, 's');
+                assert.equal(stateContext.hash, null);
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -654,10 +754,17 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r');
-                assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.equal(stateNavigator.stateContext.hash, null);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r');
+                assert.equal(stateContextRewritten.state.key, 's');
+                assert.equal(stateContextRewritten.hash, null);
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r');
+                assert.equal(stateContext.state.key, 's');
+                assert.equal(stateContext.hash, null);
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -689,7 +796,13 @@ describe('Rewrite Navigation', () => {
                     hash: '*="/()\'-_+~@:?><.;[],{}!£$%^#&'
                 });
                 const link = navigate(stateNavigator);
-                assert.equal(stateNavigator.historyManager.getHref(link), '#/r#*="/()\'-_+~@:?><.;[],{}!£$%^#&');
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r#*="/()\'-_+~@:?><.;[],{}!£$%^#&');
+                assert.equal(stateContext.url, '/r');
             });
         }
 
@@ -722,9 +835,15 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r');
-                assert.equal(stateNavigator.stateContext.state.key, 's');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r');
+                assert.equal(stateContextRewritten.state.key, 's');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r');
+                assert.equal(stateContext.state.key, 's');
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -760,9 +879,15 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r2');
-                assert.equal(stateNavigator.stateContext.state.key, 's2');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r2');
+                assert.equal(stateContextRewritten.state.key, 's2');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r1');
+                assert.equal(stateContext.state.key, 's1');
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -799,10 +924,17 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r2?a=b');
-                assert.equal(stateNavigator.stateContext.state.key, 's2');
-                assert.equal(stateNavigator.stateContext.data.a, 'b');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r2?a=b');
+                assert.equal(stateContextRewritten.state.key, 's2');
+                assert.equal(stateContextRewritten.data.a, 'b');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r1');
+                assert.equal(stateContext.state.key, 's1');
+                assert.equal(stateContext.data.a, undefined);
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -841,10 +973,17 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r2?a=c');
-                assert.equal(stateNavigator.stateContext.state.key, 's2');
-                assert.equal(stateNavigator.stateContext.data.a, 'c');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r2?a=c');
+                assert.equal(stateContextRewritten.state.key, 's2');
+                assert.equal(stateContextRewritten.data.a, 'c');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r1');
+                assert.equal(stateContext.state.key, 's1');
+                assert.equal(stateContext.data.a, 'b');
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -881,10 +1020,17 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r2#f');
-                assert.equal(stateNavigator.stateContext.state.key, 's2');
-                assert.equal(stateNavigator.stateContext.hash, 'f');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r2#f');
+                assert.equal(stateContextRewritten.state.key, 's2');
+                assert.equal(stateContextRewritten.hash, 'f');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r1');
+                assert.equal(stateContext.state.key, 's1');
+                assert.equal(stateContext.hash, undefined);
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -920,9 +1066,16 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r2');
-                assert.equal(stateNavigator.stateContext.state.key, 's2');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r2');
+                assert.equal(stateContextRewritten.state.key, 's2');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r1?crumb=%2Fr0');
+                assert.equal(stateContext.state.key, 's1');
+                assert.equal(stateContext.crumbs.length, 1);
+                assert.equal(stateContext.crumbs[0].state.key, 's0');
             });
         }
 
@@ -958,10 +1111,17 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r2?crumb=%2Fr0');
-                assert.equal(stateNavigator.stateContext.state.key, 's2');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
-                assert.equal(stateNavigator.stateContext.crumbs[0].state.key, 's0');
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r2?crumb=%2Fr0');
+                assert.equal(stateContextRewritten.state.key, 's2');
+                assert.equal(stateContextRewritten.crumbs.length, 1);
+                assert.equal(stateContextRewritten.crumbs[0].state.key, 's0');
+                assert.equal(stateContext.url, '/r1?crumb=%2Fr0');
+                assert.equal(stateContext.state.key, 's1');
+                assert.equal(stateContext.crumbs.length, 1);
+                assert.equal(stateContext.crumbs[0].state.key, 's0');
             });
         }
 
@@ -996,9 +1156,15 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r1');
-                assert.equal(stateNavigator.stateContext.state.key, 's1');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r1');
+                assert.equal(stateContextRewritten.state.key, 's1');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r0');
+                assert.equal(stateContext.state.key, 's0');
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -1034,10 +1200,17 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r1?a=b');
-                assert.equal(stateNavigator.stateContext.state.key, 's1');
-                assert.equal(stateNavigator.stateContext.data.a, 'b');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r1?a=b');
+                assert.equal(stateContextRewritten.state.key, 's1');
+                assert.equal(stateContextRewritten.data.a, 'b');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r0');
+                assert.equal(stateContext.state.key, 's0');
+                assert.equal(stateContext.data.a, undefined);
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -1075,10 +1248,17 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r1?a=c');
-                assert.equal(stateNavigator.stateContext.state.key, 's1');
-                assert.equal(stateNavigator.stateContext.data.a, 'c');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r1?a=c');
+                assert.equal(stateContextRewritten.state.key, 's1');
+                assert.equal(stateContextRewritten.data.a, 'c');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r0');
+                assert.equal(stateContext.state.key, 's0');
+                assert.equal(stateContext.data.a, 'b');
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -1114,10 +1294,17 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r1#f');
-                assert.equal(stateNavigator.stateContext.state.key, 's1');
-                assert.equal(stateNavigator.stateContext.hash, 'f');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r1#f');
+                assert.equal(stateContextRewritten.state.key, 's1');
+                assert.equal(stateContextRewritten.hash, 'f');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r0');
+                assert.equal(stateContext.state.key, 's0');
+                assert.equal(stateContext.hash, null);
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -1154,9 +1341,16 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r2');
-                assert.equal(stateNavigator.stateContext.state.key, 's2');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r2');
+                assert.equal(stateContextRewritten.state.key, 's2');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r1?crumb=%2Fr0');
+                assert.equal(stateContext.state.key, 's1');
+                assert.equal(stateContext.crumbs.length, 1);
+                assert.equal(stateContext.crumbs[0].state.key, 's0');
             });
         }
 
@@ -1193,10 +1387,17 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r2?crumb=%2Fr0');
-                assert.equal(stateNavigator.stateContext.state.key, 's2');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
-                assert.equal(stateNavigator.stateContext.crumbs[0].state.key, 's0');
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r2?crumb=%2Fr0');
+                assert.equal(stateContextRewritten.state.key, 's2');
+                assert.equal(stateContextRewritten.crumbs.length, 1);
+                assert.equal(stateContextRewritten.crumbs[0].state.key, 's0');
+                assert.equal(stateContext.url, '/r1?crumb=%2Fr0');
+                assert.equal(stateContext.state.key, 's1');
+                assert.equal(stateContext.crumbs.length, 1);
+                assert.equal(stateContext.crumbs[0].state.key, 's0');
             });
         }
 
@@ -1233,9 +1434,15 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r2');
-                assert.equal(stateNavigator.stateContext.state.key, 's2');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r2');
+                assert.equal(stateContextRewritten.state.key, 's2');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r0');
+                assert.equal(stateContext.state.key, 's0');
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -1273,10 +1480,17 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r2?a=b');
-                assert.equal(stateNavigator.stateContext.state.key, 's2');
-                assert.equal(stateNavigator.stateContext.data.a, 'b');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r2?a=b');
+                assert.equal(stateContextRewritten.state.key, 's2');
+                assert.equal(stateContextRewritten.data.a, 'b');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r0');
+                assert.equal(stateContext.state.key, 's0');
+                assert.equal(stateContext.data.a, undefined);
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -1314,10 +1528,17 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r2#f');
-                assert.equal(stateNavigator.stateContext.state.key, 's2');
-                assert.equal(stateNavigator.stateContext.hash, 'f');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r2#f');
+                assert.equal(stateContextRewritten.state.key, 's2');
+                assert.equal(stateContextRewritten.hash, 'f');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r0');
+                assert.equal(stateContext.state.key, 's0');
+                assert.equal(stateContext.hash, null);
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -1356,9 +1577,16 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r3');
-                assert.equal(stateNavigator.stateContext.state.key, 's3');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r3');
+                assert.equal(stateContextRewritten.state.key, 's3');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r1?crumb=%2Fr0');
+                assert.equal(stateContext.state.key, 's1');
+                assert.equal(stateContext.crumbs.length, 1);
+                assert.equal(stateContext.crumbs[0].state.key, 's0');
             });
         }
 
@@ -1397,10 +1625,17 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r3?crumb=%2Fr0');
-                assert.equal(stateNavigator.stateContext.state.key, 's3');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
-                assert.equal(stateNavigator.stateContext.crumbs[0].state.key, 's0');
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r3?crumb=%2Fr0');
+                assert.equal(stateContextRewritten.state.key, 's3');
+                assert.equal(stateContextRewritten.crumbs.length, 1);
+                assert.equal(stateContextRewritten.crumbs[0].state.key, 's0');
+                assert.equal(stateContext.url, '/r1?crumb=%2Fr0');
+                assert.equal(stateContext.state.key, 's1');
+                assert.equal(stateContext.crumbs.length, 1);
+                assert.equal(stateContext.crumbs[0].state.key, 's0');
             });
         }
 
@@ -1439,9 +1674,15 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r3');
-                assert.equal(stateNavigator.stateContext.state.key, 's3');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r3');
+                assert.equal(stateContextRewritten.state.key, 's3');
+                assert.equal(stateContextRewritten.crumbs.length, 0);
+                assert.equal(stateContext.url, '/r0');
+                assert.equal(stateContext.state.key, 's0');
+                assert.equal(stateContext.crumbs.length, 0);
             });
         }
 
@@ -1482,10 +1723,17 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r4?crumb=%2Fr0');
-                assert.equal(stateNavigator.stateContext.state.key, 's4');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
-                assert.equal(stateNavigator.stateContext.crumbs[0].state.key, 's0');
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r4?crumb=%2Fr0');
+                assert.equal(stateContextRewritten.state.key, 's4');
+                assert.equal(stateContextRewritten.crumbs.length, 1);
+                assert.equal(stateContextRewritten.crumbs[0].state.key, 's0');
+                assert.equal(stateContext.url, '/r1?crumb=%2Fr0');
+                assert.equal(stateContext.state.key, 's1');
+                assert.equal(stateContext.crumbs.length, 1);
+                assert.equal(stateContext.crumbs[0].state.key, 's0');
             });
         }
 
@@ -1524,10 +1772,18 @@ describe('Rewrite Navigation', () => {
                 const link = navigate(stateNavigator);
                 const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
                 stateNavigator.navigateLink(rewrittenLink);
-                assert.equal(stateNavigator.stateContext.url, '/r3?crumb=%2Fr1');
-                assert.equal(stateNavigator.stateContext.state.key, 's3');
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
-                assert.equal(stateNavigator.stateContext.crumbs[0].state.key, 's1');
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r3?crumb=%2Fr1');
+                assert.equal(stateContextRewritten.state.key, 's3');
+                assert.equal(stateContextRewritten.crumbs.length, 1);
+                assert.equal(stateContextRewritten.crumbs[0].state.key, 's1');
+                assert.equal(stateContext.url, '/r2?crumb=%2Fr0&crumb=%2Fr1');
+                assert.equal(stateContext.state.key, 's2');
+                assert.equal(stateContext.crumbs.length, 2);
+                assert.equal(stateContext.crumbs[0].state.key, 's0');
+                assert.equal(stateContext.crumbs[1].state.key, 's1');
             });
         }
 
