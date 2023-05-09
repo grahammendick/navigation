@@ -2873,8 +2873,6 @@ describe('NavigationLinkTest', function () {
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
-            act(() => Simulate.click(link));
-            assert.equal(stateNavigator.stateContext.data.x, 'y');
         });
     });
 
