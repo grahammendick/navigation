@@ -157,8 +157,7 @@ class StateNavigator {
     private resumeNavigation(stateContext: StateContext, historyAction: 'add' | 'replace' | 'none') {
         this.stateContext = stateContext;
         var { oldState, state, data, asyncData, url, crumbs } = stateContext;
-        for(var key in this.rewriteCache)
-            delete this.rewriteCache[key];
+        this.rewriteCache = {};
         this.rewrite(url, state, data, crumbs);
         if (this.stateContext.oldState && this.stateContext.oldState !== state)
             this.stateContext.oldState.dispose();
