@@ -14,7 +14,7 @@ class StateNavigator {
     private stateHandler = new StateHandler();
     private onBeforeNavigateCache = new EventHandlerCache<BeforeNavigateHandler>('beforeNavigateHandler');
     private onNavigateCache = new EventHandlerCache<NavigateHandler>('navigateHandler');
-    private rewriteCache = {}; 
+    private rewriteCache = { rewrites: {} };
     stateContext = new StateContext();
     historyManager: HistoryManager;
     states: { [index: string]: State } = {};
@@ -34,7 +34,7 @@ class StateNavigator {
         this.historyManager = historyManager ? historyManager : new HashHistoryManager();
         this.historyManager.init((url = this.historyManager.getCurrentUrl()) => {
             this.navigateLink(url, undefined, true);
-        }, (url) => this.rewriteCache[url]);
+        }, (url) => this.rewriteCache.rewrites[url]);
         if (this.isStateInfos(stateInfos)) {
             var states = this.stateHandler.buildStates(stateInfos);
             this.states = {};
@@ -157,8 +157,7 @@ class StateNavigator {
     private resumeNavigation(stateContext: StateContext, historyAction: 'add' | 'replace' | 'none') {
         this.stateContext = stateContext;
         var { oldState, state, data, asyncData, url, crumbs } = stateContext;
-        for(var key in this.rewriteCache)
-            delete this.rewriteCache[key];
+        this.rewriteCache.rewrites = {};
         this.rewrite(url, state, data, crumbs);
         if (this.stateContext.oldState && this.stateContext.oldState !== state)
             this.stateContext.oldState.dispose();
@@ -176,7 +175,7 @@ class StateNavigator {
     }
 
     private rewrite(url: string, state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb) {
-        if (url && !this.rewriteCache[url]) {
+        if (url && !this.rewriteCache.rewrites[url]) {
             var rewrittenNavigation = state.rewriteNavigation?.({ ...state.defaults, ...navigationData });
             if (rewrittenNavigation) {
                 if (crumbs) {
@@ -189,7 +188,7 @@ class StateNavigator {
                 if (state) {
                     var rewrittenUrl = this.stateHandler.getLink(state, navigationData, hash, crumbs);
                     if (rewrittenUrl) {
-                        this.rewriteCache[url] = rewrittenUrl;
+                        this.rewriteCache.rewrites[url] = rewrittenUrl;
                     }
                 }
             }
