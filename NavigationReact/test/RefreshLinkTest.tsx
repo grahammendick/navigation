@@ -55,6 +55,29 @@ describe('RefreshLinkTest', function () {
         })
     });
 
+    describe('Missing Route Param Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r/{x}' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a'});
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <RefreshLink>
+                            link text
+                        </RefreshLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
     describe('Invalid Refresh Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
@@ -2614,6 +2637,72 @@ describe('RefreshLinkTest', function () {
             act(() => stateNavigator.navigate('s1'));
             assert.equal(link.hash, '#/r1?x=a&crumb=%2Fr0%3Fx%3Da');
         })
+    });
+
+    describe('Rewrite Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewriteNavigation = () => ({
+                stateKey: 's1',
+            });
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <RefreshLink>
+                            link text
+                        </RefreshLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r1');
+            act(() => Simulate.click(link));
+            assert.equal(stateNavigator.stateContext.state, s0);
+        });
+    });
+
+    describe('Rewrite Refresh Link Data', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r/{x?}' }
+            ]);
+            const {s} = stateNavigator.states;
+            s.rewriteNavigation = ({x}) => (
+                x === 'y' ? {
+                    stateKey: 's',
+                    navigationData: {
+                        x: 'z'
+                    }
+                } : null
+            );
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <RefreshLink navigationData={{x: 'y'}}>
+                            link text
+                        </RefreshLink>
+                        <RefreshLink navigationData={{x: 'w'}}>
+                            link text
+                        </RefreshLink>
+                    </NavigationHandler>
+                );
+            });
+            var links = container.querySelectorAll<HTMLAnchorElement>('a');
+            assert.equal(links[0].hash, '#/r/z');
+            assert.equal(links[1].hash, '#/r/w');
+            act(() => Simulate.click(links[0]));
+            assert.equal(stateNavigator.stateContext.data.x, 'y');
+        });
     });
 
     describe('Click Custom Href Refresh Link', function () {
