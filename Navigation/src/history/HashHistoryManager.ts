@@ -1,5 +1,4 @@
-﻿import HistoryManager from './HistoryManager';
-import HTML5HistoryManager from './HTML5HistoryManager';
+﻿import HTML5HistoryManager from './HTML5HistoryManager';
 
 class HashHistoryManager extends HTML5HistoryManager {
     private replaceQueryIdentifier: boolean = false;
