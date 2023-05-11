@@ -61,6 +61,33 @@ describe('FluentLinkTest', function () {
         })
     });
 
+    describe('Missing Route Param Fluent Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1/{x}', trackCrumbTrail: true }
+            ]);
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <FluentLink navigate={fluentNavigator => (
+                            fluentNavigator
+                                .navigate('s0')
+                                .navigate('s1')
+                        )}>
+                            link text
+                        </FluentLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
     describe('Invalid Fluent Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
@@ -560,6 +587,244 @@ describe('FluentLinkTest', function () {
             act(() => stateNavigator.navigate('s0'));
             assert.equal(link.hash, '#/r1?crumb=%2Fr0');
         })
+    });
+
+    describe('Rewrite Fluent Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewriteNavigation = () => ({
+                stateKey: 's1',
+            });
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <FluentLink navigate={fluentNavigator => (
+                            fluentNavigator
+                                .navigate('s0')
+                        )}>
+                            link text
+                        </FluentLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r1');
+            act(() => Simulate.click(link));
+            assert.equal(stateNavigator.stateContext.state, s0);
+        });
+    });
+
+    describe('Rewrite Fluent Link Data', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r/{x}' },
+            ]);
+            const {s} = stateNavigator.states;
+            s.rewriteNavigation = ({x}) => (
+                x === 'y' ? {
+                    stateKey: 's',
+                    navigationData: {
+                        x: 'z'
+                    }
+                } : null
+            );
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <FluentLink navigate={fluentNavigator => (
+                            fluentNavigator
+                                .navigate('s', {x: 'y'})
+                        )}>
+                            link text
+                        </FluentLink>
+                        <FluentLink navigate={fluentNavigator => (
+                            fluentNavigator
+                                .navigate('s', {x: 'w'})
+                        )}>
+                            link text
+                        </FluentLink>
+                    </NavigationHandler>
+                );
+            });
+            var links = container.querySelectorAll<HTMLAnchorElement>('a');
+            assert.equal(links[0].hash, '#/r/z');
+            assert.equal(links[1].hash, '#/r/w');
+            act(() => Simulate.click(links[0]));
+            assert.equal(stateNavigator.stateContext.data.x, 'y');
+        });
+    });
+
+    describe('Rewrite Click Fluent Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewriteNavigation = () => ({
+                stateKey: 's1',
+            });
+            var navigatingLink;
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <FluentLink navigate={fluentNavigator => (
+                            fluentNavigator
+                                .navigate('s0')
+                            )}
+                            navigating={(_, link) => {
+                                navigatingLink = link;
+                                return true;
+                            }}>
+                            link text
+                        </FluentLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r1');
+            act(() => Simulate.click(link));
+            assert.equal(navigatingLink, '/r0');
+        });
+    });
+
+    describe('Modal/Details Fluent Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'list', route: 'list' },
+                { key: 'details', route: 'details/{id}', defaultTypes: {id: 'number'} }
+            ]);
+            var {list, details} = stateNavigator.states;
+            var List = ({ id }) => (
+                <>
+                    <FluentLink navigate={fluentNavigator => (
+                            fluentNavigator
+                                .navigate('list', {id: 1})
+                        )}>
+                        Item 1
+                    </FluentLink>
+                    {id && <dialog>Modal {id}</dialog>}
+                </>
+            );
+            list.renderScene = ({ id }) => <List id={id} />;
+            details.renderScene = ({ id }) => <div>Details {id}</div>;
+            list.rewriteNavigation = ({ id }) => (
+                id ? {
+                    stateKey: 'details',
+                    navigationData: { id },
+                } : null);
+            stateNavigator.navigate('list');
+            var container = document.createElement('div');
+            var root = createRoot(container);
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderScene(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            var dialog = container.querySelector<HTMLDialogElement>('dialog');
+            assert.equal(link.hash, '#/details/1');
+            assert.equal(dialog, null);
+            act(() => Simulate.click(link));
+            var dialog = container.querySelector<HTMLDialogElement>('dialog');
+            var div = container.querySelector<HTMLDivElement>('div');
+            assert.equal(dialog.innerHTML, 'Modal 1');
+            assert.equal(div, null);
+        })
+    });
+
+    describe('Rewrite Fluent Link Navigate Outside', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewriteNavigation = () => ({stateKey: 's1'});
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <div />
+                    </NavigationHandler>
+                );
+            });
+            var url = stateNavigator.fluent().navigate('s0').url;
+            var href = stateNavigator.historyManager.getHref(url);
+            assert.equal(href, '#/r1');
+        });
+    });
+
+    describe('Rewrite Fluent Link Missing Route Param', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1/{x}' },
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewriteNavigation = () => ({
+                stateKey: 's1',
+            });
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <FluentLink navigate={fluentNavigator => (
+                            fluentNavigator
+                                .navigate('s0')
+                        )}>
+                            link text
+                        </FluentLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r0');
+        });
+    });
+
+    describe('Rewrite Fluent Link Invalid', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' },
+            ]);
+            const {s} = stateNavigator.states;
+            s.rewriteNavigation = () => ({
+                stateKey: 'x',
+            });
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <FluentLink navigate={fluentNavigator => (
+                            fluentNavigator
+                                .navigate('s')
+                        )}>
+                            link text
+                        </FluentLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r');
+        });
     });
 
     describe('Click Custom Href Fluent Link', function () {
