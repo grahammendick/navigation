@@ -88,7 +88,7 @@ class StateNavigator {
             throw new Error(stateKey + ' is not a valid State');
         var { crumbs, nextCrumb } = this.stateContext;
         var url = this.stateHandler.getLink(this.states[stateKey], navigationData, hash, crumbs, nextCrumb);
-        this.rewrite(url, this.states[stateKey], navigationData);
+        this.rewrite(url, this.states[stateKey], navigationData, crumbs, nextCrumb);
         return url;
     }
 
@@ -105,7 +105,7 @@ class StateNavigator {
         if (!this.canNavigateBack(distance))
             throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + this.stateContext.crumbs.length + ')');
         var {url, state, data} = this.stateContext.crumbs[this.stateContext.crumbs.length - distance];
-        this.rewrite(url, state, data);
+        this.rewrite(url, state, data, this.stateContext.crumbs.slice(0, this.stateContext.crumbs.length - distance));
         return url;
     }
 
@@ -119,7 +119,7 @@ class StateNavigator {
     getRefreshLink(navigationData?: any, hash?: string): string {
         var { crumbs } = this.stateContext;
         var url = this.stateHandler.getLink(this.stateContext.state, navigationData, hash, crumbs);
-        this.rewrite(url, this.stateContext.state, navigationData);
+        this.rewrite(url, this.stateContext.state, navigationData, crumbs);
         return url;
     }
 
@@ -158,7 +158,7 @@ class StateNavigator {
         this.stateContext = stateContext;
         var { oldState, state, data, asyncData, url, crumbs } = stateContext;
         this.rewriteCache.rewrites = {};
-        this.rewrite(url, state, data);
+        this.rewrite(url, state, data, crumbs);
         if (this.stateContext.oldState && this.stateContext.oldState !== state)
             this.stateContext.oldState.dispose();
         state.navigated(this.stateContext.data, asyncData);
@@ -174,14 +174,19 @@ class StateNavigator {
         }
     }
 
-    private rewrite(url: string, state: State, navigationData: any) {
+    private rewrite(url: string, state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb) {
         if (url && !this.rewriteCache.rewrites[url]) {
             var rewrittenNavigation = state.rewriteNavigation?.({ ...state.defaults, ...navigationData });
             if (rewrittenNavigation) {
+                if (crumbs) {
+                    crumbs = crumbs.slice();
+                    if (nextCrumb)
+                        crumbs.push(nextCrumb);
+                }
                 var {stateKey, navigationData, hash} = rewrittenNavigation;
                 state = this.states[stateKey];
                 if (state) {
-                    var rewrittenUrl = this.stateHandler.getLink(state, navigationData, hash);
+                    var rewrittenUrl = this.stateHandler.getLink(state, navigationData, hash, crumbs);
                     if (rewrittenUrl) {
                         this.rewriteCache.rewrites[url] = rewrittenUrl;
                     }
