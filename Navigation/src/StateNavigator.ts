@@ -185,6 +185,7 @@ class StateNavigator {
                         crumbs.push(nextCrumb);
                     crumbs = state.truncateCrumbTrail(state, navigationData, crumbs);
                 }
+                crumbs = state.trackCrumbTrail ? crumbs : [];
                 var {stateKey, navigationData, hash} = rewrittenNavigation;
                 state = this.states[stateKey];
                 if (state) {
