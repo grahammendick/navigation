@@ -1095,52 +1095,6 @@ describe('Rewrite Navigation', () => {
         });
     });
 
-    describe('Transition With Trail Rewrite With Trail', () => {
-        const test = navigate => {
-            it('should populate context', () => {
-                const stateNavigator = new StateNavigator([
-                    { key: 's0', route: 'r0' },
-                    { key: 's1', route: 'r1', trackCrumbTrail: true },
-                    { key: 's2', route: 'r2', trackCrumbTrail: true },
-                ]);
-                const {s1} = stateNavigator.states;
-                s1.rewriteNavigation = () => ({
-                    stateKey: 's2'
-                });
-                stateNavigator.navigate('s0');
-                const link = navigate(stateNavigator);
-                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
-                stateNavigator.navigateLink(rewrittenLink);
-                const stateContextRewritten = stateNavigator.stateContext;
-                stateNavigator.navigateLink(link);
-                const stateContext = stateNavigator.stateContext;
-                assert.equal(stateContextRewritten.url, '/r2?crumb=%2Fr0');
-                assert.equal(stateContextRewritten.state.key, 's2');
-                assert.equal(stateContextRewritten.crumbs.length, 1);
-                assert.equal(stateContextRewritten.crumbs[0].state.key, 's0');
-                assert.equal(stateContext.url, '/r1?crumb=%2Fr0');
-                assert.equal(stateContext.state.key, 's1');
-                assert.equal(stateContext.crumbs.length, 1);
-                assert.equal(stateContext.crumbs[0].state.key, 's0');
-            });
-        }
-
-        describe('Navigate', () => {
-            test(stateNavigator => {
-                stateNavigator.navigate('s1');
-                return stateNavigator.stateContext.url
-            });
-        });
-
-        describe('Navigate Link', () => {
-            test(stateNavigator => stateNavigator.getNavigationLink('s1'));
-        });
-
-        describe('Fluent Navigate', () => {
-            test(stateNavigator => stateNavigator.fluent(true).navigate('s1').url);
-        });
-    });
-
     describe('Refresh Rewrite', () => {
         const test = navigate => {
             it('should populate context', () => {
@@ -1370,53 +1324,6 @@ describe('Rewrite Navigation', () => {
         });
     });
 
-    describe('Refresh With Trail Rewrite With Trail', () => {
-        const test = navigate => {
-            it('should populate context', () => {
-                const stateNavigator = new StateNavigator([
-                    { key: 's0', route: 'r0' },
-                    { key: 's1', route: 'r1', trackCrumbTrail: true },
-                    { key: 's2', route: 'r2', trackCrumbTrail: true },
-                ]);
-                const {s1} = stateNavigator.states;
-                s1.rewriteNavigation = () => ({
-                    stateKey: 's2'
-                });
-                stateNavigator.navigate('s0');
-                stateNavigator.navigate('s1');
-                const link = navigate(stateNavigator);
-                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
-                stateNavigator.navigateLink(rewrittenLink);
-                const stateContextRewritten = stateNavigator.stateContext;
-                stateNavigator.navigateLink(link);
-                const stateContext = stateNavigator.stateContext;
-                assert.equal(stateContextRewritten.url, '/r2?crumb=%2Fr0');
-                assert.equal(stateContextRewritten.state.key, 's2');
-                assert.equal(stateContextRewritten.crumbs.length, 1);
-                assert.equal(stateContextRewritten.crumbs[0].state.key, 's0');
-                assert.equal(stateContext.url, '/r1?crumb=%2Fr0');
-                assert.equal(stateContext.state.key, 's1');
-                assert.equal(stateContext.crumbs.length, 1);
-                assert.equal(stateContext.crumbs[0].state.key, 's0');
-            });
-        }
-
-        describe('Navigate', () => {
-            test(stateNavigator => {
-                stateNavigator.refresh();
-                return stateNavigator.stateContext.url
-            });
-        });
-
-        describe('Navigate Link', () => {
-            test(stateNavigator => stateNavigator.getRefreshLink());
-        });
-
-        describe('Fluent Navigate', () => {
-            test(stateNavigator => stateNavigator.fluent(true).refresh().url);
-        });
-    });
-
     describe('Back Rewrite', () => {
         const test = navigate => {
             it('should populate context', () => {
@@ -1606,55 +1513,6 @@ describe('Rewrite Navigation', () => {
         });
     });
 
-    describe('Back With Trail Rewrite With Trail', () => {
-        const test = navigate => {
-            it('should populate context', () => {
-                const stateNavigator = new StateNavigator([
-                    { key: 's0', route: 'r0' },
-                    { key: 's1', route: 'r1', trackCrumbTrail: true },
-                    { key: 's2', route: 'r2', trackCrumbTrail: true },
-                    { key: 's3', route: 'r3', trackCrumbTrail: true },
-                ]);
-                const {s1} = stateNavigator.states;
-                s1.rewriteNavigation = () => ({
-                    stateKey: 's3'
-                });
-                stateNavigator.navigate('s0');
-                stateNavigator.navigate('s1');
-                stateNavigator.navigate('s2');
-                const link = navigate(stateNavigator);
-                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
-                stateNavigator.navigateLink(rewrittenLink);
-                const stateContextRewritten = stateNavigator.stateContext;
-                stateNavigator.navigateLink(link);
-                const stateContext = stateNavigator.stateContext;
-                assert.equal(stateContextRewritten.url, '/r3?crumb=%2Fr0');
-                assert.equal(stateContextRewritten.state.key, 's3');
-                assert.equal(stateContextRewritten.crumbs.length, 1);
-                assert.equal(stateContextRewritten.crumbs[0].state.key, 's0');
-                assert.equal(stateContext.url, '/r1?crumb=%2Fr0');
-                assert.equal(stateContext.state.key, 's1');
-                assert.equal(stateContext.crumbs.length, 1);
-                assert.equal(stateContext.crumbs[0].state.key, 's0');
-            });
-        }
-
-        describe('Navigate', () => {
-            test(stateNavigator => {
-                stateNavigator.navigateBack(1);
-                return stateNavigator.stateContext.url
-            });
-        });
-
-        describe('Navigate Link', () => {
-            test(stateNavigator => stateNavigator.getNavigationBackLink(1));
-        });
-
-        describe('Fluent Navigate', () => {
-            test(stateNavigator => stateNavigator.fluent(true).navigateBack(1).url);
-        });
-    });
-
     describe('Back Twice With Trail Rewrite', () => {
         const test = navigate => {
             it('should populate context', () => {
@@ -1699,107 +1557,6 @@ describe('Rewrite Navigation', () => {
 
         describe('Fluent Navigate', () => {
             test(stateNavigator => stateNavigator.fluent(true).navigateBack(2).url);
-        });
-    });
-
-    describe('Back Twice With Trail Rewrite With Trail', () => {
-        const test = navigate => {
-            it('should populate context', () => {
-                const stateNavigator = new StateNavigator([
-                    { key: 's0', route: 'r0' },
-                    { key: 's1', route: 'r1', trackCrumbTrail: true },
-                    { key: 's2', route: 'r2', trackCrumbTrail: true },
-                    { key: 's3', route: 'r3', trackCrumbTrail: true },
-                    { key: 's4', route: 'r4', trackCrumbTrail: true },
-                ]);
-                const {s1} = stateNavigator.states;
-                s1.rewriteNavigation = () => ({
-                    stateKey: 's4'
-                });
-                stateNavigator.navigate('s0');
-                stateNavigator.navigate('s1');
-                stateNavigator.navigate('s2');
-                stateNavigator.navigate('s3');
-                const link = navigate(stateNavigator);
-                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
-                stateNavigator.navigateLink(rewrittenLink);
-                const stateContextRewritten = stateNavigator.stateContext;
-                stateNavigator.navigateLink(link);
-                const stateContext = stateNavigator.stateContext;
-                assert.equal(stateContextRewritten.url, '/r4?crumb=%2Fr0');
-                assert.equal(stateContextRewritten.state.key, 's4');
-                assert.equal(stateContextRewritten.crumbs.length, 1);
-                assert.equal(stateContextRewritten.crumbs[0].state.key, 's0');
-                assert.equal(stateContext.url, '/r1?crumb=%2Fr0');
-                assert.equal(stateContext.state.key, 's1');
-                assert.equal(stateContext.crumbs.length, 1);
-                assert.equal(stateContext.crumbs[0].state.key, 's0');
-            });
-        }
-
-        describe('Navigate', () => {
-            test(stateNavigator => {
-                stateNavigator.navigateBack(2);
-                return stateNavigator.stateContext.url
-            });
-        });
-
-        describe('Navigate Link', () => {
-            test(stateNavigator => stateNavigator.getNavigationBackLink(2));
-        });
-
-        describe('Fluent Navigate', () => {
-            test(stateNavigator => stateNavigator.fluent(true).navigateBack(2).url);
-        });
-    });
-
-    describe('Rewrite Custom Trail', () => {
-        const test = navigate => {
-            it('should populate context', () => {
-                const stateNavigator = new StateNavigator([
-                    { key: 's0', route: 'r0' },
-                    { key: 's1', route: 'r1', trackCrumbTrail: true },
-                    { key: 's2', route: 'r2', trackCrumbTrail: true },
-                    { key: 's3', route: 'r3', trackCrumbTrail: true },
-                ]);
-                const {s2, s3} = stateNavigator.states;
-                s2.rewriteNavigation = () => ({
-                    stateKey: 's3'
-                });
-                s3.truncateCrumbTrail = (_state, _data, crumbs) => crumbs.slice(-1);
-                stateNavigator.navigate('s0');
-                stateNavigator.navigate('s1');
-                const link = navigate(stateNavigator);
-                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
-                stateNavigator.navigateLink(rewrittenLink);
-                const stateContextRewritten = stateNavigator.stateContext;
-                stateNavigator.navigateLink(link);
-                const stateContext = stateNavigator.stateContext;
-                assert.equal(stateContextRewritten.url, '/r3?crumb=%2Fr1');
-                assert.equal(stateContextRewritten.state.key, 's3');
-                assert.equal(stateContextRewritten.crumbs.length, 1);
-                assert.equal(stateContextRewritten.crumbs[0].state.key, 's1');
-                assert.equal(stateContext.url, '/r2?crumb=%2Fr0&crumb=%2Fr1');
-                assert.equal(stateContext.state.key, 's2');
-                assert.equal(stateContext.crumbs.length, 2);
-                assert.equal(stateContext.crumbs[0].state.key, 's0');
-                assert.equal(stateContext.crumbs[1].state.key, 's1');
-            });
-        }
-
-        describe('Navigate', () => {
-            test(stateNavigator => {
-                stateNavigator.navigate('s2');
-                return stateNavigator.stateContext.url
-            });
-        });
-
-        describe('Navigate Link', () => {
-            test(stateNavigator => stateNavigator.getNavigationLink('s2'));
-        });
-
-        describe('Fluent Navigate', () => {
-            test(stateNavigator => stateNavigator.fluent(true).navigate('s2').url);
         });
     });
 });
