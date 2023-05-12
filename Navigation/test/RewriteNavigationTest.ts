@@ -1802,4 +1802,33 @@ describe('Rewrite Navigation', () => {
             test(stateNavigator => stateNavigator.fluent(true).navigate('s2').url);
         });
     });
+
+    describe('Rewrite State Twice With Different Crumbs', () => {
+        it('should match hrefs', () => {
+            const createStateNavigator = () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's0', route: 'r0' },
+                    { key: 's1', route: 'r1' },
+                    { key: 's2', route: 'r2', trackCrumbTrail: true },
+                ]);
+                const {s0} = stateNavigator.states;
+                s0.rewriteNavigation = () => ({
+                    stateKey: 's2'
+                });
+                return stateNavigator;
+            }
+            const stateNavigator1 = createStateNavigator();
+            stateNavigator1.navigate('s1');
+            const link1 = stateNavigator1.getNavigationLink('s0');
+            const rewrittenLink1 = stateNavigator1.historyManager.getHref(link1).substring(1);
+
+            const stateNavigator2 = createStateNavigator();
+            stateNavigator2.navigate('s0');
+            const link2 = stateNavigator2.getRefreshLink();
+            const rewrittenLink2 = stateNavigator2.historyManager.getHref(link2).substring(1);
+
+            assert.equal(link1, link2);
+            assert.equal(rewrittenLink1, rewrittenLink2);
+        });
+    });
 });
