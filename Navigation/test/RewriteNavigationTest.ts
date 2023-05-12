@@ -1753,6 +1753,55 @@ describe('Rewrite Navigation', () => {
         });
     });
 
+    describe('Custom Trail Rewrite', () => {
+        const test = navigate => {
+            it('should populate context', () => {
+                const stateNavigator = new StateNavigator([
+                    { key: 's0', route: 'r0' },
+                    { key: 's1', route: 'r1', trackCrumbTrail: true },
+                    { key: 's2', route: 'r2', trackCrumbTrail: true },
+                    { key: 's3', route: 'r3', trackCrumbTrail: true },
+                ]);
+                const {s2} = stateNavigator.states;
+                s2.rewriteNavigation = () => ({
+                    stateKey: 's3'
+                });
+                s2.truncateCrumbTrail = (_state, _data, crumbs) => crumbs.slice(-1);
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1');
+                const link = navigate(stateNavigator);
+                const rewrittenLink = stateNavigator.historyManager.getHref(link).substring(1);
+                stateNavigator.navigateLink(rewrittenLink);
+                const stateContextRewritten = stateNavigator.stateContext;
+                stateNavigator.navigateLink(link);
+                const stateContext = stateNavigator.stateContext;
+                assert.equal(stateContextRewritten.url, '/r3?crumb=%2Fr1');
+                assert.equal(stateContextRewritten.state.key, 's3');
+                assert.equal(stateContextRewritten.crumbs.length, 1);
+                assert.equal(stateContextRewritten.crumbs[0].state.key, 's1');
+                assert.equal(stateContext.url, '/r2?crumb=%2Fr1');
+                assert.equal(stateContext.state.key, 's2');
+                assert.equal(stateContext.crumbs.length, 1);
+                assert.equal(stateContext.crumbs[0].state.key, 's1');
+            });
+        }
+
+        describe('Navigate', () => {
+            test(stateNavigator => {
+                stateNavigator.navigate('s2');
+                return stateNavigator.stateContext.url
+            });
+        });
+
+        describe('Navigate Link', () => {
+            test(stateNavigator => stateNavigator.getNavigationLink('s2'));
+        });
+
+        describe('Fluent Navigate', () => {
+            test(stateNavigator => stateNavigator.fluent(true).navigate('s2').url);
+        });
+    });
+
     describe('Rewrite Custom Trail', () => {
         const test = navigate => {
             it('should populate context', () => {
