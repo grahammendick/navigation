@@ -1828,7 +1828,9 @@ describe('Rewrite Navigation', () => {
             const rewrittenLink2 = stateNavigator2.historyManager.getHref(link2).substring(1);
 
             assert.equal(link1, link2);
+            assert.equal(link1, '/r0');
             assert.equal(rewrittenLink1, rewrittenLink2);
+            assert.equal(rewrittenLink1, '/r2');
         });
     });
 });
