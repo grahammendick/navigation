@@ -210,7 +210,10 @@ class StateNavigator {
     }
 
     start(url?: string) {
-        if (url == null && !this.historyManager.disabled) window.history.replaceState({navigationLink: undefined}, null);
+        if (url == null && !this.historyManager.disabled && window.history.state?.navigationLink) {
+            delete window.history.state.navigationLink;
+            window.history.replaceState(window.history.state, null);
+        }
         this.navigateLink(url != null ? url : this.historyManager.getCurrentUrl());
     };
 }
