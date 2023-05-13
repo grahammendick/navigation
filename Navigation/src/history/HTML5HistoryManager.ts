@@ -1,5 +1,4 @@
-﻿import StateContext from '../StateContext';
-import HistoryManager from './HistoryManager';
+﻿import HistoryManager from './HistoryManager';
 
 class HTML5HistoryManager implements HistoryManager {
     private navigateHistory: (e: PopStateEvent) => void = null;
@@ -19,8 +18,8 @@ class HTML5HistoryManager implements HistoryManager {
         }
     }
 
-    addHistory(url: string, replace: boolean, stateContext?: StateContext) {
-        if (!this.disabled && ((stateContext?.oldState && window.history.state?.navigationLink) || this.getUrl(window.location)) !== url) {
+    addHistory(url: string, replace: boolean) {
+        if (!this.disabled && (window.history.state?.navigationLink || this.getUrl(window.location)) !== url) {
             if (!replace)            
                 window.history.pushState({navigationLink: url}, null, this.getHref(url));
             else

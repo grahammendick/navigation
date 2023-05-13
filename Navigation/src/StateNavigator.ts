@@ -210,6 +210,7 @@ class StateNavigator {
     }
 
     start(url?: string) {
+        if (url == null && !this.historyManager.disabled) window.history.replaceState({navigationLink: undefined}, null);
         this.navigateLink(url != null ? url : this.historyManager.getCurrentUrl());
     };
 }
