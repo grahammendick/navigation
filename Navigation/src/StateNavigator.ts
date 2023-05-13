@@ -209,8 +209,8 @@ class StateNavigator {
         return createFluentNavigator(this.states, this.stateHandler, stateContext, this.rewrite.bind(this));
     }
 
-    start(url?: string) {
-        if (url == null && !this.historyManager.disabled && window.history.state?.navigationLink) {
+    start(url?: string, serverRendered = false) {
+        if (url == null && serverRendered && !this.historyManager.disabled && window.history.state?.navigationLink) {
             delete window.history.state.navigationLink;
             window.history.replaceState(window.history.state, null);
         }

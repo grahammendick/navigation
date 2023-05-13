@@ -28,7 +28,7 @@ class HTML5HistoryManager implements HistoryManager {
     }
 
     getCurrentUrl(): string {
-        return this.getUrl(window.location);
+        return window.history.state?.navigationLink || this.getUrl(window.location);
     }
 
     getHref(url: string): string {
