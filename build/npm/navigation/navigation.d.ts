@@ -145,6 +145,13 @@ export class State<Key extends string = string, Data extends object = any> imple
      * @returns Truncated crumb trail
      */
     truncateCrumbTrail(state: State<Key, Data>, data: Data, crumbs: Crumb[]): Crumb[];
+
+    /**
+     * Rewrites the navigation for history
+     * @param data The navigation data
+     * @returns The rewritten navigation
+     */
+    rewriteNavigation(data: any): { stateKey: string, navigationData?: any, hash?: string } | null | undefined;
 }
 
 /**
@@ -159,8 +166,9 @@ export interface HistoryManager {
     /**
      * Registers browser history event listeners
      * @param navigateHistory The history navigation event handler
+     * @param rewriteUrl The function that rewrites a url for history
      */
-    init(navigateHistory: (url?: string) => void): void;
+    init(navigateHistory: (url?: string) => void, rewriteUrl: (url: string) => string | undefined): void;
     /**
      * Adds browser history
      * @param url The current url
@@ -192,47 +200,13 @@ export interface HistoryManager {
  * without the hashchange event or outside of a browser environment, then
  * history is disabled
  */
-export class HashHistoryManager implements HistoryManager {
-    /**
-     * Gets or sets a value indicating whether to disable browser history.
-     * Set to true if used in a browser without the hashchange event or
-     * outside of a browser environment
-     */
-    disabled: boolean;
+export class HashHistoryManager extends HTML5HistoryManager {
     /**
      * Initializes a new instance of the HashHistoryManager class
      * @param replaceQueryIdentifier a value indicating whether to use '#'
      * in place of '?'. Set to true for Internet explorer 6 and 7 support
      */
     constructor(replaceQueryIdentifier?: boolean);
-    /**
-     * Registers a listener for the hashchange event
-     * @param navigateHistory The history navigation event handler
-     */
-    init(navigateHistory: any): void;
-    /**
-     * Sets the browser Url's hash to the url
-     * @param url The current url
-     * @param replace A value indicating whether to replace the current
-     * browser history entry
-     */
-    addHistory(url: string, replace: boolean): void;
-    /**
-     * Gets the current location
-     */
-    getCurrentUrl(): string;
-    /**
-     * Gets an Href from the url
-     */
-    getHref(url: string): string;
-    /**
-     * Gets a Url from the anchor or location
-     */
-    getUrl(hrefElement: HTMLAnchorElement | Location): string;
-    /**
-     * Removes a listener for the hashchange event
-     */
-    stop(): void;
 }
 
 /**
@@ -255,8 +229,9 @@ export class HTML5HistoryManager implements HistoryManager {
     /**
      * Registers a listener for the popstate event
      * @param navigateHistory The history navigation event handler
+     * @param rewriteUrl The function that rewrites a url for history
      */
-    init(navigateHistory: () => void): void;
+    init(navigateHistory: (url?: string) => void, rewriteUrl: (url: string) => string | undefined): void;
     /**
      * Sets the browser Url to the url using pushState
      * @param url The current url

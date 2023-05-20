@@ -5,12 +5,12 @@ import StateHandler from './StateHandler';
 
 interface FluentNavigator {
     url: string,
-    navigate(stateKey: string, navigationData?: any): FluentNavigator;
-    navigateBack(distance: number): FluentNavigator;
+    navigate(stateKey: string, navigationData?: any, hash?: string): FluentNavigator;
+    navigateBack(distance: number, hash?: string): FluentNavigator;
     refresh(navigationData?: any): FluentNavigator;
 }
 
-function createFluentNavigator(states: { [index: string]: State }, stateHandler: StateHandler, stateContext = new StateContext()): FluentNavigator {
+function createFluentNavigator(states: { [index: string]: State }, stateHandler: StateHandler, stateContext = new StateContext(), rewrite: (url: string, state: State, navigationData: any, crumbs: Crumb[], nextCrumb?: Crumb) => void): FluentNavigator {
     function getCrumbTrail(state: State, navigationData: any, crumbs: Crumb[], nextCrumb?: Crumb): Crumb[] {
         if (!state.trackCrumbTrail)
             return [];
@@ -28,7 +28,7 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
         fluentContext.data = data;
         fluentContext.hash = hash;
         fluentContext.nextCrumb = new Crumb(data, state, url, stateHandler.getLink(state, data, hash), false, hash);
-        return createFluentNavigator(states, stateHandler, fluentContext);
+        return createFluentNavigator(states, stateHandler, fluentContext, rewrite);
     }
 
     return {
@@ -43,6 +43,7 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
             var url = stateHandler.getLink(state, navigationData, hash, crumbs, nextCrumb);
             if (url == null)
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
+            rewrite(url, state, navigationData, crumbs, nextCrumb);
             var data = { ...state.defaults, ...navigationData };
             var crumbs = getCrumbTrail(state, data, crumbs, nextCrumb);
             return navigateLink(state, data, hash, crumbs, url);
@@ -53,6 +54,7 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
                 throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + stateContext.crumbs.length + ')');
             var {state, data, url} = crumbs[crumbs.length - distance];
             var crumbs = crumbs.slice(0, crumbs.length - distance);
+            rewrite(url, state, data, crumbs);
             return navigateLink(state, data, null, crumbs, url);
         },
         refresh: function(navigationData?: any, hash?: string): FluentNavigator {
@@ -62,6 +64,7 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
             var url = stateHandler.getLink(state, navigationData, hash, crumbs);
             if (url == null)
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
+            rewrite(url, state, navigationData, crumbs);
             var data = { ...state.defaults, ...navigationData };
             var crumbs = getCrumbTrail(state, data, crumbs);
             return navigateLink(state, data, hash, crumbs, url);

@@ -109,6 +109,7 @@ var tests = [
     { name: 'Navigation', to: 'navigation.test.js' },
     { name: 'NavigationData', to: 'navigationData.test.js' },
     { name: 'FluentNavigation', to: 'fluentNavigation.test.js' },
+    { name: 'RewriteNavigation', to: 'rewriteNavigation.test.js' },
     { name: 'NavigationLink', to: 'navigationLink.test.js', folder: 'React', ext: 'tsx' },
     { name: 'NavigationBackLink', to: 'navigationBackLink.test.js', folder: 'React', ext: 'tsx' },
     { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' },

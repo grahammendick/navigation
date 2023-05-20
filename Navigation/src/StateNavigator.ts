@@ -14,6 +14,7 @@ class StateNavigator {
     private stateHandler = new StateHandler();
     private onBeforeNavigateCache = new EventHandlerCache<BeforeNavigateHandler>('beforeNavigateHandler');
     private onNavigateCache = new EventHandlerCache<NavigateHandler>('navigateHandler');
+    private rewriteCache = { rewrites: {} };
     stateContext = new StateContext();
     historyManager: HistoryManager;
     states: { [index: string]: State } = {};
@@ -33,7 +34,7 @@ class StateNavigator {
         this.historyManager = historyManager ? historyManager : new HashHistoryManager();
         this.historyManager.init((url = this.historyManager.getCurrentUrl()) => {
             this.navigateLink(url, undefined, true);
-        });
+        }, (url) => this.rewriteCache.rewrites[url]);
         if (this.isStateInfos(stateInfos)) {
             var states = this.stateHandler.buildStates(stateInfos);
             this.states = {};
@@ -42,6 +43,7 @@ class StateNavigator {
         } else {
             this.stateHandler = stateInfos.stateHandler;
             this.states = stateInfos.states;
+            this.rewriteCache = stateInfos.rewriteCache;
         }
     }
 
@@ -85,7 +87,9 @@ class StateNavigator {
         if (!this.states[stateKey])
             throw new Error(stateKey + ' is not a valid State');
         var { crumbs, nextCrumb } = this.stateContext;
-        return this.stateHandler.getLink(this.states[stateKey], navigationData, hash, crumbs, nextCrumb);
+        var url = this.stateHandler.getLink(this.states[stateKey], navigationData, hash, crumbs, nextCrumb);
+        this.rewrite(url, this.states[stateKey], navigationData, crumbs, nextCrumb);
+        return url;
     }
 
     canNavigateBack(distance: number) {
@@ -100,7 +104,9 @@ class StateNavigator {
     getNavigationBackLink(distance: number): string {
         if (!this.canNavigateBack(distance))
             throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + this.stateContext.crumbs.length + ')');
-        return this.stateContext.crumbs[this.stateContext.crumbs.length - distance].url;
+        var {url, state, data} = this.stateContext.crumbs[this.stateContext.crumbs.length - distance];
+        this.rewrite(url, state, data, this.stateContext.crumbs.slice(0, this.stateContext.crumbs.length - distance));
+        return url;
     }
 
     refresh(navigationData?: any, historyAction?: 'add' | 'replace' | 'none') {
@@ -112,7 +118,9 @@ class StateNavigator {
 
     getRefreshLink(navigationData?: any, hash?: string): string {
         var { crumbs } = this.stateContext;
-        return this.stateHandler.getLink(this.stateContext.state, navigationData, hash, crumbs);
+        var url = this.stateHandler.getLink(this.stateContext.state, navigationData, hash, crumbs);
+        this.rewrite(url, this.stateContext.state, navigationData, crumbs);
+        return url;
     }
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false,
@@ -148,7 +156,9 @@ class StateNavigator {
     
     private resumeNavigation(stateContext: StateContext, historyAction: 'add' | 'replace' | 'none') {
         this.stateContext = stateContext;
-        var { oldState, state, data, asyncData, url } = stateContext;
+        var { oldState, state, data, asyncData, url, crumbs } = stateContext;
+        this.rewriteCache.rewrites = {};
+        this.rewrite(url, state, data, crumbs);
         if (this.stateContext.oldState && this.stateContext.oldState !== state)
             this.stateContext.oldState.dispose();
         state.navigated(this.stateContext.data, asyncData);
@@ -164,6 +174,30 @@ class StateNavigator {
         }
     }
 
+    private rewrite(url: string, state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb) {
+        if (url && !this.rewriteCache.rewrites[url]) {
+            navigationData = { ...state.defaults, ...navigationData };
+            var rewrittenNavigation = state.rewriteNavigation?.(navigationData);
+            if (rewrittenNavigation) {
+                if (crumbs) {
+                    crumbs = crumbs.slice();
+                    if (nextCrumb)
+                        crumbs.push(nextCrumb);
+                    crumbs = state.truncateCrumbTrail(state, navigationData, crumbs);
+                }
+                crumbs = state.trackCrumbTrail ? crumbs : [];
+                var {stateKey, navigationData, hash} = rewrittenNavigation;
+                state = this.states[stateKey];
+                if (state) {
+                    var rewrittenUrl = this.stateHandler.getLink(state, navigationData, hash, crumbs);
+                    if (rewrittenUrl) {
+                        this.rewriteCache.rewrites[url] = rewrittenUrl;
+                    }
+                }
+            }
+        }
+    }
+
     parseLink(url: string): { state: State, data: any, hash: string, crumbs: Crumb[] } {
         var { state, data, hash } = this.stateHandler.parseLink(url);
         var { [state.crumbTrailKey]: crumbs, ...data } = data;
@@ -172,10 +206,14 @@ class StateNavigator {
 
     fluent(withContext = false): FluentNavigator {
         var stateContext = !withContext ? undefined : this.stateContext;
-        return createFluentNavigator(this.states, this.stateHandler, stateContext);
+        return createFluentNavigator(this.states, this.stateHandler, stateContext, this.rewrite.bind(this));
     }
 
-    start(url?: string) {
+    start(url?: string, serverRendered = false) {
+        if (url == null && serverRendered && !this.historyManager.disabled && window.history.state?.navigationLink) {
+            delete window.history.state.navigationLink;
+            window.history.replaceState(window.history.state, null);
+        }
         this.navigateLink(url != null ? url : this.historyManager.getCurrentUrl());
     };
 }

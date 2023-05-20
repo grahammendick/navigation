@@ -1,5 +1,4 @@
 ﻿import * as assert from 'assert';
-import * as mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 
 describe('StateConfigTest', function () {
