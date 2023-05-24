@@ -23,6 +23,7 @@ import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.UIManagerHelper;
@@ -334,7 +335,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
 
         @Override
         public void dispatch(RCTEventEmitter rctEventEmitter) {
-            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), Arguments.createMap());
         }
     }
 }

@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.CollapsibleActionView;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.UIManagerHelper;
@@ -204,7 +205,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
 
         @Override
         public void dispatch(RCTEventEmitter rctEventEmitter) {
-            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), Arguments.createMap());
         }
     }
 }
