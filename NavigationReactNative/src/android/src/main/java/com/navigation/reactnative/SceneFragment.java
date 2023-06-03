@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 
+import java.util.HashSet;
+
 public class SceneFragment extends Fragment {
     private SceneView scene;
 
@@ -19,11 +21,11 @@ public class SceneFragment extends Fragment {
         super();
     }
 
-    SceneFragment(SceneView scene, String sharedElement) {
+    SceneFragment(SceneView scene, HashSet<String> sharedElements) {
         super();
         this.scene = scene;
-        if (sharedElement != null )
-            scene.sharedElementMotion = new SharedElementMotion(this, this, sharedElement);
+        if (sharedElements != null )
+            scene.sharedElementMotion = new SharedElementMotion(this, this, sharedElements);
     }
 
     @Nullable

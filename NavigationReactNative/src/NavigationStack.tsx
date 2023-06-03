@@ -4,11 +4,12 @@ import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import PopSync from './PopSync';
 import Scene from './Scene';
-type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, backgroundColor: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
+type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, sharedElements: any, backgroundColor: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, counter: number, mostRecentEventCount: number};
 
 const NavigationStack = ({underlayColor = '#000', title, crumbStyle: crumbStyleStack = () => null, unmountStyle: unmountStyleStack = () => null,
-    hidesTabBar: hidesTabBarStack = () => false, sharedElement: getSharedElementStack = () => null, backgroundColor: backgroundColorStack = () => null,
+    hidesTabBar: hidesTabBarStack = () => false, sharedElement: getSharedElementStack = () => null, sharedElements: getSharedElementsStack = () => null,
+    backgroundColor: backgroundColorStack = () => null,
     stackInvalidatedLink, renderScene, children}: NavigationStackProps) => {
     const resumeNavigationRef = useRef(null);
     const ref = useRef(null);
@@ -74,32 +75,35 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle: crumbStyleS
     const crumbStyle = (from, state, ...rest) => sceneProps(state)?.crumbStyle ? sceneProps(state)?.crumbStyle(from, ...rest) : crumbStyleStack(from, state, ...rest);
     const hidesTabBar = (state, ...rest) => sceneProps(state)?.hidesTabBar ? returnOrCall(sceneProps(state)?.hidesTabBar, ...rest) : hidesTabBarStack(state, ...rest);
     const getSharedElement = (state, ...rest) => sceneProps(state)?.sharedElement ? returnOrCall(sceneProps(state)?.sharedElement, ...rest) : getSharedElementStack(state, ...rest);
+    const getSharedElements = (state, ...rest) => sceneProps(state)?.sharedElements ? returnOrCall(sceneProps(state)?.sharedElements, ...rest) : getSharedElementsStack(state, ...rest);
     const backgroundColor = (state, ...rest) => sceneProps(state)?.backgroundColor ? returnOrCall(sceneProps(state)?.backgroundColor, ...rest) : backgroundColorStack(state, ...rest);
     const getAnimation = () => {
         let {state, data, oldState, oldData, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
         if (!oldState)
             return null;
         const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
-        let enterAnim, exitAnim, sharedElement, oldSharedElement;
+        let enterAnim, exitAnim, sharedElements, oldSharedElements;
         if (oldCrumbs.length < crumbs.length) {
             const {state: nextState, data: nextData} = crumbs.concat(nextCrumb)[oldCrumbs.length + 1];
             enterAnim = unmountStyle(true, state, data, crumbs);
             exitAnim = crumbStyle(false, oldState, oldData, oldCrumbs, nextState, nextData);
-            sharedElement = getSharedElement(state, data, crumbs);
+            const sharedElement = getSharedElement(state, data, crumbs);
+            sharedElements = sharedElement ? [sharedElement] : getSharedElements(state, data, crumbs);
         }
         if (crumbs.length < oldCrumbs.length) {
             nextCrumb = new Crumb(oldData, oldState, null, null, false);
             const {state: nextState, data: nextData} = oldCrumbs.concat(nextCrumb)[crumbs.length + 1];
             enterAnim = crumbStyle(true, state, data, crumbs, nextState, nextData);
             exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs);
-            oldSharedElement = getSharedElement(oldState, oldData, oldCrumbs);
+            const oldSharedElement = getSharedElement(oldState, oldData, oldCrumbs);
+            oldSharedElements = oldSharedElement ? [oldSharedElement] : getSharedElements(oldState, oldData, oldCrumbs);
         }
         if (crumbs.length === oldCrumbs.length) {
             enterAnim = unmountStyle(true, state, data, crumbs);
             exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs, state, data);
         }
         var enterAnimOff = enterAnim === '';
-        return {enterAnim, exitAnim, enterAnimOff, sharedElement, oldSharedElement};
+        return {enterAnim, exitAnim, enterAnimOff, sharedElements, oldSharedElements};
     }
     const {stateNavigator: prevStateNavigator, keys, rest, mostRecentEventCount} = stackState;
     if (prevStateNavigator !== stateNavigator && stateNavigator.stateContext.state) {
