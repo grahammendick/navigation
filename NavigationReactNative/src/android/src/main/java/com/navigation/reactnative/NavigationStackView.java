@@ -130,7 +130,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 }
                 if (sharedElements != null) {
                     for(Pair sharedElement : sharedElements) {
-                        fragmentTransaction.addSharedElement((View) sharedElement.first, (String) sharedElement.second);
+                        fragmentTransaction.addSharedElement(((SharedElementView) sharedElement.first).getChildAt(0), (String) sharedElement.second);
                     }
                 }
                 fragmentTransaction.setCustomAnimations(oldCrumb != -1 ? enter : 0, exit, popEnter, popExit);
@@ -182,7 +182,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     HashMap<String, SharedElementView> getSharedElementMap(SceneView scene) {
         HashMap<String, SharedElementView> sharedElementMap = new HashMap<>();
         for(SharedElementView sharedElement : scene.sharedElements) {
-            sharedElementMap.put(sharedElement.getTransitionName(), sharedElement);
+            sharedElementMap.put(sharedElement.name, sharedElement);
         }
         return sharedElementMap;
     }
@@ -209,7 +209,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     for(int i = 0; i < oldSharedElementNames.size(); i++) {
                         String name = oldSharedElementNames.getString(i);
                         if (oldSharedElementsMap.containsKey(name)) {
-                            View oldSharedElement = oldSharedElementsMap.get(name);
+                            View oldSharedElement = oldSharedElementsMap.get(name).getChildAt(0);
                             elements.put(names.get(i), oldSharedElement);
                         }
                     }
@@ -232,7 +232,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                         if (oldSharedElementNames != null && oldSharedElementNames.size() > i)
                             mappedName = oldSharedElementNames.getString(i);
                         if (sharedElementsMap.containsKey(mappedName))
-                            elements.put(names.get(i), sharedElementsMap.get(mappedName));
+                            elements.put(names.get(i), sharedElementsMap.get(mappedName).getChildAt(0));
                     }
                 }
             });

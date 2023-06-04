@@ -1,22 +1,51 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.os.Build;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 
+import androidx.transition.ChangeBounds;
+import androidx.transition.ChangeClipBounds;
+import androidx.transition.ChangeImageTransform;
+import androidx.transition.ChangeTransform;
+import androidx.transition.Transition;
+import androidx.transition.TransitionSet;
+
 import com.google.android.material.transition.MaterialContainerTransform;
 
 public class SharedElementView extends ViewGroup {
-    final MaterialContainerTransform transition;
+    final Transition transition;
     final long defaultDuration;
     final int defaultFadeMode;
+    String name;
 
     public SharedElementView(Context context) {
         super(context);
-        transition = new MaterialContainerTransform(context, false);
+        TransitionSet transitionSet = new TransitionSet();
+        transitionSet.addTransition(new ChangeBounds());
+        transitionSet.addTransition(new ChangeTransform());
+        transitionSet.addTransition(new ChangeClipBounds());
+        transitionSet.addTransition(new ChangeImageTransform());
+        transition = transitionSet;
         defaultDuration = transition.getDuration();
-        defaultFadeMode = transition.getFadeMode();
+        defaultFadeMode = 0;
+    }
+
+    @Override
+    public void addView(View child, int index) {
+        super.addView(child, index);
+        if (index == 0) child.setTransitionName(this.name);
+    }
+
+    @Override
+    public void endViewTransition(View view) {
+        super.endViewTransition(view);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            view.setTransitionAlpha(1);
+        }
     }
 
     @Override
