@@ -23,9 +23,9 @@ public class SharedElementManager extends ViewGroupManager<SharedElementView> {
 
     @ReactProp(name = "name")
     public void setName(SharedElementView view, String name) {
-        view.name = name;
+        view.setTransitionName(name);
         if (view.getChildCount() > 0)
-            view.getChildAt(0).setTransitionName(name);
+            view.getChildAt(0).setTransitionName("element__" + name);
     }
 
     @ReactProp(name = "duration", defaultInt = -1)

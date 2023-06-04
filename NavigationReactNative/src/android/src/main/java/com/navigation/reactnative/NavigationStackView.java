@@ -130,7 +130,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 }
                 if (sharedElements != null) {
                     for(Pair sharedElement : sharedElements) {
-                        fragmentTransaction.addSharedElement(((SharedElementView) sharedElement.first).getChildAt(0), (String) sharedElement.second);
+                        fragmentTransaction.addSharedElement(((SharedElementView) sharedElement.first).getChildAt(0), "element__" + sharedElement.second);
                     }
                 }
                 fragmentTransaction.setCustomAnimations(oldCrumb != -1 ? enter : 0, exit, popEnter, popExit);
@@ -182,7 +182,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     HashMap<String, SharedElementView> getSharedElementMap(SceneView scene) {
         HashMap<String, SharedElementView> sharedElementMap = new HashMap<>();
         for(SharedElementView sharedElement : scene.sharedElements) {
-            sharedElementMap.put(sharedElement.name, sharedElement);
+            sharedElementMap.put(sharedElement.getTransitionName(), sharedElement);
         }
         return sharedElementMap;
     }

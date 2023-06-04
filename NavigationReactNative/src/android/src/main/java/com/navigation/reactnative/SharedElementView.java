@@ -20,7 +20,6 @@ public class SharedElementView extends ViewGroup {
     final Transition transition;
     final long defaultDuration;
     final int defaultFadeMode;
-    String name;
 
     public SharedElementView(Context context) {
         super(context);
@@ -37,7 +36,7 @@ public class SharedElementView extends ViewGroup {
     @Override
     public void addView(View child, int index) {
         super.addView(child, index);
-        if (index == 0) child.setTransitionName(this.name);
+        if (index == 0) child.setTransitionName("element__" + this.getTransitionName());
     }
 
     @Override
