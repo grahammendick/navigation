@@ -87,23 +87,23 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle: crumbStyleS
             const {state: nextState, data: nextData} = crumbs.concat(nextCrumb)[oldCrumbs.length + 1];
             enterAnim = unmountStyle(true, state, data, crumbs);
             exitAnim = crumbStyle(false, oldState, oldData, oldCrumbs, nextState, nextData);
-            const sharedElement = getSharedElement(state, data, crumbs);
-            sharedElements = sharedElement ? [sharedElement] : getSharedElements(state, data, crumbs);
+            sharedElements = getSharedElement(state, data, crumbs) || getSharedElements(state, data, crumbs);
         }
         if (crumbs.length < oldCrumbs.length) {
             nextCrumb = new Crumb(oldData, oldState, null, null, false);
             const {state: nextState, data: nextData} = oldCrumbs.concat(nextCrumb)[crumbs.length + 1];
             enterAnim = crumbStyle(true, state, data, crumbs, nextState, nextData);
             exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs);
-            const sharedElement = getSharedElement(oldState, oldData, oldCrumbs);
-            sharedElements = sharedElement ? [sharedElement] : getSharedElements(oldState, oldData, oldCrumbs);
+            sharedElements = getSharedElement(oldState, oldData, oldCrumbs) || getSharedElements(oldState, oldData, oldCrumbs);
         }
         if (crumbs.length === oldCrumbs.length) {
             enterAnim = unmountStyle(true, state, data, crumbs);
             exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs, state, data);
         }
-        var enterAnimOff = enterAnim === '';
-        return {enterAnim, exitAnim, enterAnimOff, sharedElements};
+        const containerTransform = typeof sharedElements === 'string';            
+        sharedElements = containerTransform && sharedElements ? [sharedElements] : sharedElements;
+        const enterAnimOff = enterAnim === '';
+        return {enterAnim, exitAnim, enterAnimOff, sharedElements, containerTransform};
     }
     const {stateNavigator: prevStateNavigator, keys, rest, mostRecentEventCount} = stackState;
     if (prevStateNavigator !== stateNavigator && stateNavigator.stateContext.state) {

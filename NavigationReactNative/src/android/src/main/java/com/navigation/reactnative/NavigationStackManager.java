@@ -42,6 +42,11 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
         view.sharedElementNames = sharedElements;
     }
 
+    @ReactProp(name = "containerTransform")
+    public void setContainerTransform(NavigationStackView view, boolean containerTransform) {
+        view.containerTransform = containerTransform;
+    }
+
     @Nonnull
     @Override
     protected NavigationStackView createViewInstance(@Nonnull ThemedReactContext reactContext) {
