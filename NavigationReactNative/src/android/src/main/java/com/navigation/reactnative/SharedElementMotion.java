@@ -23,11 +23,11 @@ class SharedElementMotion {
     void load(SharedElementView sharedElementView) {
         if (sharedElements.contains(sharedElementView.getTransitionName()) && !loadedSharedElements.contains(sharedElementView.getTransitionName())) {
             loadedSharedElements.add(sharedElementView.getTransitionName());
-            Transition transition = sharedElementView.transition;
-            // transition.setTransitionDirection(enterScene == scene ? MaterialContainerTransform.TRANSITION_DIRECTION_ENTER : MaterialContainerTransform.TRANSITION_DIRECTION_RETURN);
-            // transition.addTarget(sharedElementView.getTransitionName());
-            // transition.setScrimColor(Color.TRANSPARENT);
             if(sharedElements.size() == loadedSharedElements.size()) {
+                Transition transition = sharedElementView.getTransition();
+                // transition.setTransitionDirection(enterScene == scene ? MaterialContainerTransform.TRANSITION_DIRECTION_ENTER : MaterialContainerTransform.TRANSITION_DIRECTION_RETURN);
+                // transition.addTarget(sharedElementView.getTransitionName());
+                // transition.setScrimColor(Color.TRANSPARENT);
                 enterScene.setSharedElementEnterTransition(transition);
                 enterScene.setSharedElementReturnTransition(transition);
                 scene.startPostponedEnterTransition();

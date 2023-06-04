@@ -17,20 +17,11 @@ import androidx.transition.TransitionSet;
 import com.google.android.material.transition.MaterialContainerTransform;
 
 public class SharedElementView extends ViewGroup {
-    final Transition transition;
-    final long defaultDuration;
-    final int defaultFadeMode;
+    long duration = -1;
+    int fadeMode = MaterialContainerTransform.FADE_MODE_IN;
 
     public SharedElementView(Context context) {
         super(context);
-        TransitionSet transitionSet = new TransitionSet();
-        transitionSet.addTransition(new ChangeBounds());
-        transitionSet.addTransition(new ChangeTransform());
-        transitionSet.addTransition(new ChangeClipBounds());
-        transitionSet.addTransition(new ChangeImageTransform());
-        transition = transitionSet;
-        defaultDuration = transition.getDuration();
-        defaultFadeMode = 0;
     }
 
     @Override
@@ -62,6 +53,15 @@ public class SharedElementView extends ViewGroup {
                 return true;
             }
         });
+    }
+
+    Transition getTransition() {
+        TransitionSet transition = new TransitionSet();
+        transition.addTransition(new ChangeBounds());
+        transition.addTransition(new ChangeTransform());
+        transition.addTransition(new ChangeClipBounds());
+        transition.addTransition(new ChangeImageTransform());
+        return transition;
     }
 
     @Override
