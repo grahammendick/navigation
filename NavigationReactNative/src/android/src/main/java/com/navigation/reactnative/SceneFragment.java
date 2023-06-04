@@ -21,11 +21,11 @@ public class SceneFragment extends Fragment {
         super();
     }
 
-    SceneFragment(SceneView scene, HashSet<String> sharedElements) {
+    SceneFragment(SceneView scene, HashSet<String> sharedElements, boolean containerTransform) {
         super();
         this.scene = scene;
         if (sharedElements != null )
-            scene.sharedElementMotion = new SharedElementMotion(this, this, sharedElements);
+            scene.sharedElementMotion = new SharedElementMotion(this, this, sharedElements, containerTransform);
     }
 
     @Nullable

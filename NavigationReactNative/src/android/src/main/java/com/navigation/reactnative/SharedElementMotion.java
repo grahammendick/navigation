@@ -13,21 +13,21 @@ class SharedElementMotion {
     private final SceneFragment scene;
     private HashSet<String> sharedElements;
     private HashSet<String> loadedSharedElements = new HashSet<>();
+    private boolean containerTransform = false;
 
-    SharedElementMotion(SceneFragment enterScene, SceneFragment scene, HashSet<String> sharedElements) {
+    SharedElementMotion(SceneFragment enterScene, SceneFragment scene, HashSet<String> sharedElements, boolean containerTransform) {
         this.sharedElements = sharedElements;
         this.enterScene = enterScene;
         this.scene = scene;
+        this.containerTransform = containerTransform;
     }
 
     void load(SharedElementView sharedElementView) {
         if (sharedElements.contains(sharedElementView.getTransitionName()) && !loadedSharedElements.contains(sharedElementView.getTransitionName())) {
             loadedSharedElements.add(sharedElementView.getTransitionName());
             if(sharedElements.size() == loadedSharedElements.size()) {
-                Transition transition = sharedElementView.getTransition();
-                // transition.setTransitionDirection(enterScene == scene ? MaterialContainerTransform.TRANSITION_DIRECTION_ENTER : MaterialContainerTransform.TRANSITION_DIRECTION_RETURN);
+                Transition transition = sharedElementView.getTransition(containerTransform, enterScene == scene);
                 // transition.addTarget(sharedElementView.getTransitionName());
-                // transition.setScrimColor(Color.TRANSPARENT);
                 enterScene.setSharedElementEnterTransition(transition);
                 enterScene.setSharedElementReturnTransition(transition);
                 scene.startPostponedEnterTransition();

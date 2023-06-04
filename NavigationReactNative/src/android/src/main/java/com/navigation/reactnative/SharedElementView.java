@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,13 +56,22 @@ public class SharedElementView extends ViewGroup {
         });
     }
 
-    Transition getTransition() {
-        TransitionSet transition = new TransitionSet();
-        transition.addTransition(new ChangeBounds());
-        transition.addTransition(new ChangeTransform());
-        transition.addTransition(new ChangeClipBounds());
-        transition.addTransition(new ChangeImageTransform());
-        return transition;
+    Transition getTransition(boolean containerTransform, boolean enter) {
+        if (!containerTransform) {
+            TransitionSet transition = new TransitionSet();
+            transition.addTransition(new ChangeBounds());
+            transition.addTransition(new ChangeTransform());
+            transition.addTransition(new ChangeClipBounds());
+            transition.addTransition(new ChangeImageTransform());
+            return transition;
+        } else {
+            MaterialContainerTransform transition = new MaterialContainerTransform();
+            transition.setDuration(duration);
+            transition.setFadeMode(fadeMode);
+            transition.setTransitionDirection(enter ? MaterialContainerTransform.TRANSITION_DIRECTION_ENTER : MaterialContainerTransform.TRANSITION_DIRECTION_RETURN);
+            transition.setScrimColor(Color.TRANSPARENT);
+            return transition;
+        }
     }
 
     @Override

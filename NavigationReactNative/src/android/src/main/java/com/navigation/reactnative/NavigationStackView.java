@@ -103,7 +103,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             Pair[] sharedElements = fragment != null ? getOldSharedElements(currentCrumb, crumb, fragment) : null;
             SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(keys.getString(crumb));
             if (sharedElements != null && prevFragment != null && prevFragment.getScene() != null)
-                prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(sharedElementNames));
+                prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(sharedElementNames), containerTransform);
             fragmentManager.popBackStack(String.valueOf(crumb), 0);
         }
         if (crumb > currentCrumb) {
@@ -131,11 +131,11 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 if (sharedElements != null) {
                     for(Pair sharedElement : sharedElements) {
                         SharedElementView sharedEl = (SharedElementView) sharedElement.first;
-                        fragmentTransaction.addSharedElement(containerTransform ? sharedEl : sharedEl.getChildAt(0), "element__" + sharedElement.second);
+                        fragmentTransaction.addSharedElement(containerTransform ? sharedEl : sharedEl.getChildAt(0), (containerTransform ? "" : "element__") + sharedElement.second);
                     }
                 }
                 fragmentTransaction.setCustomAnimations(oldCrumb != -1 ? enter : 0, exit, popEnter, popExit);
-                SceneFragment fragment = new SceneFragment(scene, getSharedElementSet(sharedElementNames));
+                SceneFragment fragment = new SceneFragment(scene, getSharedElementSet(sharedElementNames), containerTransform);
                 fragmentTransaction.replace(getId(), fragment, key);
                 fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
                 fragmentTransaction.commit();
@@ -153,7 +153,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setReorderingAllowed(true);
             fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
-            fragmentTransaction.replace(getId(), new SceneFragment(scene, null), key);
+            fragmentTransaction.replace(getId(), new SceneFragment(scene, null, containerTransform), key);
             fragmentTransaction.addToBackStack(String.valueOf(crumb));
             fragmentTransaction.commit();
         }
