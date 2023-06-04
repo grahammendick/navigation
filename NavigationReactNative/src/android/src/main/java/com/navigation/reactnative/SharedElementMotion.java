@@ -27,7 +27,6 @@ class SharedElementMotion {
             loadedSharedElements.add(sharedElementView.getTransitionName());
             if(sharedElements.size() == loadedSharedElements.size()) {
                 Transition transition = sharedElementView.getTransition(containerTransform, enterScene == scene);
-                // transition.addTarget(sharedElementView.getTransitionName());
                 enterScene.setSharedElementEnterTransition(transition);
                 enterScene.setSharedElementReturnTransition(transition);
                 scene.startPostponedEnterTransition();

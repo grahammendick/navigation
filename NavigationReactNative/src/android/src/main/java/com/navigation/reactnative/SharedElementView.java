@@ -66,7 +66,7 @@ public class SharedElementView extends ViewGroup {
             return transition;
         } else {
             MaterialContainerTransform transition = new MaterialContainerTransform();
-            transition.setDuration(duration);
+            if (duration != -1) transition.setDuration(duration);
             transition.setFadeMode(fadeMode);
             transition.setTransitionDirection(enter ? MaterialContainerTransform.TRANSITION_DIRECTION_ENTER : MaterialContainerTransform.TRANSITION_DIRECTION_RETURN);
             transition.setScrimColor(Color.TRANSPARENT);
