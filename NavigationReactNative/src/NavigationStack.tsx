@@ -82,7 +82,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle: crumbStyleS
         if (!oldState)
             return null;
         const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
-        let enterAnim, exitAnim, sharedElements, oldSharedElements;
+        let enterAnim, exitAnim, sharedElements;
         if (oldCrumbs.length < crumbs.length) {
             const {state: nextState, data: nextData} = crumbs.concat(nextCrumb)[oldCrumbs.length + 1];
             enterAnim = unmountStyle(true, state, data, crumbs);
@@ -95,15 +95,15 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle: crumbStyleS
             const {state: nextState, data: nextData} = oldCrumbs.concat(nextCrumb)[crumbs.length + 1];
             enterAnim = crumbStyle(true, state, data, crumbs, nextState, nextData);
             exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs);
-            const oldSharedElement = getSharedElement(oldState, oldData, oldCrumbs);
-            oldSharedElements = oldSharedElement ? [oldSharedElement] : getSharedElements(oldState, oldData, oldCrumbs);
+            const sharedElement = getSharedElement(oldState, oldData, oldCrumbs);
+            sharedElements = sharedElement ? [sharedElement] : getSharedElements(oldState, oldData, oldCrumbs);
         }
         if (crumbs.length === oldCrumbs.length) {
             enterAnim = unmountStyle(true, state, data, crumbs);
             exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs, state, data);
         }
         var enterAnimOff = enterAnim === '';
-        return {enterAnim, exitAnim, enterAnimOff, sharedElements, oldSharedElements};
+        return {enterAnim, exitAnim, enterAnimOff, sharedElements};
     }
     const {stateNavigator: prevStateNavigator, keys, rest, mostRecentEventCount} = stackState;
     if (prevStateNavigator !== stateNavigator && stateNavigator.stateContext.state) {

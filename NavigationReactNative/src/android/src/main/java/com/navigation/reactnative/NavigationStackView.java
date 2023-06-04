@@ -51,7 +51,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected String enterAnim;
     protected String exitAnim;
     protected ReadableArray sharedElementNames;
-    protected ReadableArray oldSharedElementNames;
     protected Boolean startNavigation = null;
 
     public NavigationStackView(Context context) {
@@ -103,7 +102,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             Pair[] sharedElements = fragment != null ? getOldSharedElements(currentCrumb, crumb, fragment) : null;
             SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(keys.getString(crumb));
             if (sharedElements != null && prevFragment != null && prevFragment.getScene() != null)
-                prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(oldSharedElementNames));
+                prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(sharedElementNames));
             fragmentManager.popBackStack(String.valueOf(crumb), 0);
         }
         if (crumb > currentCrumb) {
@@ -201,13 +200,13 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
 
     private Pair[] getOldSharedElements(int currentCrumb, int crumb, SceneFragment sceneFragment) {
         final HashMap<String, SharedElementView> oldSharedElementsMap = getSharedElementMap(sceneFragment.getScene());
-        final Pair[] oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementsMap, oldSharedElementNames) : null;
+        final Pair[] oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementsMap, sharedElementNames) : null;
         if (oldSharedElements != null && oldSharedElements.length != 0) {
             sceneFragment.setEnterSharedElementCallback(new SharedElementCallback() {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> elements) {
-                    for(int i = 0; i < oldSharedElementNames.size(); i++) {
-                        String name = oldSharedElementNames.getString(i);
+                    for(int i = 0; i < sharedElementNames.size(); i++) {
+                        String name = sharedElementNames.getString(i);
                         if (oldSharedElementsMap.containsKey(name)) {
                             View oldSharedElement = oldSharedElementsMap.get(name).getChildAt(0);
                             elements.put(names.get(i), oldSharedElement);
@@ -229,8 +228,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 public void onMapSharedElements(List<String> names, Map<String, View> elements) {
                     for(int i = 0; i < names.size(); i++) {
                         String mappedName = names.get(i);
-                        if (oldSharedElementNames != null && oldSharedElementNames.size() > i)
-                            mappedName = oldSharedElementNames.getString(i);
+                        if (sharedElementNames != null && sharedElementNames.size() > i)
+                            mappedName = sharedElementNames.getString(i);
                         if (sharedElementsMap.containsKey(mappedName))
                             elements.put(names.get(i), sharedElementsMap.get(mappedName).getChildAt(0));
                     }
