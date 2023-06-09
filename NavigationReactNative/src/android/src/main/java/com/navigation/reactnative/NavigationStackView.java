@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.transition.Fade;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.facebook.react.bridge.Arguments;
@@ -127,6 +128,10 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(prevKey);
                     if (prevFragment != null)
                         sharedElements = getSharedElements(currentCrumb, crumb, prevFragment);
+                    if (sharedElements != null && sharedElements.length > 0) {
+                        prevFragment.setExitTransition(new Fade());
+                        startViewTransition(prevFragment.getScene());
+                    }
                 }
                 if (sharedElements != null) {
                     for(Pair sharedElement : sharedElements) {
@@ -136,6 +141,10 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 }
                 fragmentTransaction.setCustomAnimations(oldCrumb != -1 ? enter : 0, exit, popEnter, popExit);
                 SceneFragment fragment = new SceneFragment(scene, getSharedElementSet(sharedElementNames), containerTransform);
+                if (sharedElements != null && sharedElements.length > 0) {
+                    fragment.setEnterTransition(new Fade());
+                    startViewTransition(fragment.getScene());
+                }
                 fragmentTransaction.replace(getId(), fragment, key);
                 fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
                 fragmentTransaction.commit();

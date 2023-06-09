@@ -11,11 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
+import androidx.transition.Transition;
+import androidx.transition.TransitionListenerAdapter;
 
 import java.util.HashSet;
 
 public class SceneFragment extends Fragment {
     private SceneView scene;
+    private boolean destroyed = false;
 
     public SceneFragment() {
         super();
@@ -69,9 +72,35 @@ public class SceneFragment extends Fragment {
     }
 
     @Override
+    public void setEnterTransition(@Nullable Object transition) {
+        super.setEnterTransition(transition);
+        ((Transition) transition).addListener(new TransitionListenerAdapter() {
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                super.onTransitionEnd(transition);
+                ((ViewGroup) scene.getParent()).endViewTransition(scene);
+                if (destroyed) scene.popped();
+            }
+        });
+    }
+
+    @Override
+    public void setExitTransition(@Nullable Object transition) {
+        super.setExitTransition(transition);
+        ((Transition) transition).addListener(new TransitionListenerAdapter() {
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                super.onTransitionEnd(transition);
+                ((ViewGroup) scene.getParent()).endViewTransition(scene);
+            }
+        });
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        if (scene != null)
+        destroyed = true;
+        if (scene != null && getEnterTransition() == null)
             scene.popped();
     }
 
