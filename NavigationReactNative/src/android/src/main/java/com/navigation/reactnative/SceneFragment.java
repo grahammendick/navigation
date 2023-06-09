@@ -37,7 +37,7 @@ public class SceneFragment extends Fragment {
             if (scene.getParent() != null)
                 ((ViewGroup) scene.getParent()).endViewTransition(scene);
             if (scene.sharedElementMotion != null)
-                postponeEnterTransition(300, TimeUnit.MILLISECONDS);
+                postponeEnterTransition(500, TimeUnit.MILLISECONDS);
             return scene;
         }
         return new View(getContext());
