@@ -15,6 +15,7 @@ import androidx.transition.Transition;
 import androidx.transition.TransitionListenerAdapter;
 
 import java.util.HashSet;
+import java.util.concurrent.TimeUnit;
 
 public class SceneFragment extends Fragment {
     private SceneView scene;
@@ -38,7 +39,7 @@ public class SceneFragment extends Fragment {
             if (scene.getParent() != null)
                 ((ViewGroup) scene.getParent()).endViewTransition(scene);
             if (scene.sharedElementMotion != null)
-                postponeEnterTransition();
+                postponeEnterTransition(300, TimeUnit.MILLISECONDS);
             return scene;
         }
         return new View(getContext());
