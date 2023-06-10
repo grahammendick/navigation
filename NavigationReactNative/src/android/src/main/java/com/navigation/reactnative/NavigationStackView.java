@@ -138,9 +138,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                             @Override
                             public void onTransitionEnd(@NonNull Transition transition) {
                                 super.onTransitionEnd(transition);
-                                SceneView prevScene = prevFragment.getScene();
-                                if (prevScene.crumb == oldCrumb) onRest(prevScene.crumb);
-                                endViewTransition(prevScene);
+                                onRest(prevFragment.getScene().crumb);
+                                endViewTransition(prevFragment.getScene());
                             }
                         });
                     }
@@ -162,7 +161,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                         public void onTransitionEnd(@NonNull Transition transition) {
                             super.onTransitionEnd(transition);
                             endViewTransition(scene);
-                            if (scene.crumb == oldCrumb) onRest(scene.crumb);
+                            onRest(scene.crumb);
                             if (fragment.destroyed) scene.popped();
                         }
                     });
