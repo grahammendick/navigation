@@ -20,8 +20,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.transition.Fade;
-import androidx.transition.Transition;
-import androidx.transition.TransitionListenerAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.facebook.react.bridge.Arguments;
@@ -131,17 +129,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     if (prevFragment != null)
                         sharedElements = getSharedElements(currentCrumb, crumb, prevFragment);
                     if (sharedElements != null && sharedElements.length > 0) {
-                        Fade fade = new Fade();
-                        prevFragment.setExitTransition(fade);
+                        prevFragment.setExitTransition(new Fade());
                         startViewTransition(prevFragment.getScene());
-                        fade.addListener(new TransitionListenerAdapter() {
-                            @Override
-                            public void onTransitionEnd(@NonNull Transition transition) {
-                                super.onTransitionEnd(transition);
-                                onRest(prevFragment.getScene().crumb);
-                                endViewTransition(prevFragment.getScene());
-                            }
-                        });
                     }
                 }
                 if (sharedElements != null) {
@@ -153,18 +142,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 fragmentTransaction.setCustomAnimations(oldCrumb != -1 ? enter : 0, exit, popEnter, popExit);
                 SceneFragment fragment = new SceneFragment(scene, getSharedElementSet(sharedElementNames), containerTransform);
                 if (sharedElements != null && sharedElements.length > 0) {
-                    Fade fade = new Fade();
-                    fragment.setEnterTransition(fade);
+                    fragment.setEnterTransition(new Fade());
                     startViewTransition(fragment.getScene());
-                    fade.addListener(new TransitionListenerAdapter() {
-                        @Override
-                        public void onTransitionEnd(@NonNull Transition transition) {
-                            super.onTransitionEnd(transition);
-                            endViewTransition(scene);
-                            onRest(scene.crumb);
-                            if (fragment.destroyed) scene.popped();
-                        }
-                    });
                 }
                 fragmentTransaction.replace(getId(), fragment, key);
                 fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));

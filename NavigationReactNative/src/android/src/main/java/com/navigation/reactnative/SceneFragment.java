@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SceneFragment extends Fragment {
     private SceneView scene;
-    boolean destroyed = false;
+    private boolean destroyed = false;
 
     public SceneFragment() {
         super();
@@ -70,6 +70,31 @@ public class SceneFragment extends Fragment {
             ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
         }
         return super.onCreateAnimation(transit, enter, nextAnim);
+    }
+
+    @Override
+    public void setEnterTransition(@Nullable Object transition) {
+        super.setEnterTransition(transition);
+        ((Transition) transition).addListener(new TransitionListenerAdapter() {
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                super.onTransitionEnd(transition);
+                ((ViewGroup) scene.getParent()).endViewTransition(scene);
+                if (destroyed) scene.popped();
+            }
+        });
+    }
+
+    @Override
+    public void setExitTransition(@Nullable Object transition) {
+        super.setExitTransition(transition);
+        ((Transition) transition).addListener(new TransitionListenerAdapter() {
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                super.onTransitionEnd(transition);
+                ((ViewGroup) scene.getParent()).endViewTransition(scene);
+            }
+        });
     }
 
     @Override
