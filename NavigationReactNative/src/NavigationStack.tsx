@@ -100,7 +100,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle: crumbStyleS
             enterAnim = unmountStyle(true, state, data, crumbs);
             exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs, state, data);
         }
-        const containerTransform = typeof sharedElements === 'string';            
+        const containerTransform = typeof sharedElements === 'string';
         sharedElements = containerTransform && sharedElements ? [sharedElements] : sharedElements;
         const enterAnimOff = enterAnim === '';
         return {enterAnim, exitAnim, enterAnimOff, sharedElements, containerTransform};
