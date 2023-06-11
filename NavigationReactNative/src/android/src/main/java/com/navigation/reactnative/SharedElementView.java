@@ -30,6 +30,7 @@ public class SharedElementView extends ViewGroup {
         if (index == 0 && getChildAt(0) != null) getChildAt(0).setTransitionName(null);
         super.addView(child, index);
         if (index == 0) child.setTransitionName("element__" + this.getTransitionName());
+        else child.setTransitionName(null);
     }
 
     @Override
