@@ -40,19 +40,21 @@ public class SharedElementViewManager extends ViewGroupManager<SharedElementView
     @ReactProp(name = "name")
     public void setName(SharedElementView view, String name) {
         view.setTransitionName(name);
+        if (view.getChildCount() > 0)
+            view.getChildAt(0).setTransitionName("element__" + name);
     }
 
     @ReactProp(name = "duration")
     public void setDuration(SharedElementView view, int duration) {
-        view.transition.setDuration(duration != -1 ? duration : view.defaultDuration);
+        view.duration = duration;
     }
 
     @ReactProp(name = "fadeMode")
     public void setFadeMode(SharedElementView view, String fadeMode) {
-        if (fadeMode == null) view.transition.setFadeMode(view.defaultFadeMode);
-        if (("in").equals(fadeMode)) view.transition.setFadeMode(MaterialContainerTransform.FADE_MODE_IN);
-        if (("out").equals(fadeMode)) view.transition.setFadeMode(MaterialContainerTransform.FADE_MODE_OUT);
-        if (("cross").equals(fadeMode)) view.transition.setFadeMode(MaterialContainerTransform.FADE_MODE_CROSS);
-        if (("through").equals(fadeMode)) view.transition.setFadeMode(MaterialContainerTransform.FADE_MODE_THROUGH);
+        if (fadeMode == null) view.fadeMode = MaterialContainerTransform.FADE_MODE_IN;
+        if (("in").equals(fadeMode)) view.fadeMode = MaterialContainerTransform.FADE_MODE_IN;
+        if (("out").equals(fadeMode)) view.fadeMode = MaterialContainerTransform.FADE_MODE_OUT;
+        if (("cross").equals(fadeMode)) view.fadeMode = MaterialContainerTransform.FADE_MODE_CROSS;
+        if (("through").equals(fadeMode)) view.fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH;
     }
 }

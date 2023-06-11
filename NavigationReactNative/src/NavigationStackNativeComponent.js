@@ -10,8 +10,8 @@ type NativeProps = $ReadOnly<{|
   enterAnim: string,
   exitAnim: string,
   enterAnimOff: boolean,
-  sharedElement: string,
-  oldSharedElement: string,
+  sharedElements: $ReadOnlyArray<string>,
+  containerTransform: boolean,
   mostRecentEventCount: Int32,
   onNavigateToTop: DirectEventHandler<null>,
   onWillNavigateBack: DirectEventHandler<$ReadOnly<{|

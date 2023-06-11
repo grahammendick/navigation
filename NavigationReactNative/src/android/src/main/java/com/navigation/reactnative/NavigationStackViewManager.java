@@ -55,14 +55,14 @@ public class NavigationStackViewManager extends ViewGroupManager<NavigationStack
         view.exitAnim = exitAnim;
     }
 
-    @ReactProp(name = "sharedElement")
-    public void setSharedElement(NavigationStackView view, String sharedElement) {
-        view.sharedElementName = sharedElement;
+    @ReactProp(name = "sharedElements")
+    public void setSharedElements(NavigationStackView view, ReadableArray sharedElements) {
+        view.sharedElementNames = sharedElements;
     }
 
-    @ReactProp(name = "oldSharedElement")
-    public void setOldSharedElement(NavigationStackView view, String oldSharedElement) {
-        view.oldSharedElementName = oldSharedElement;
+    @ReactProp(name = "containerTransform")
+    public void setContainerTransform(NavigationStackView view, boolean containerTransform) {
+        view.containerTransform = containerTransform;
     }
 
     @ReactProp(name = "mostRecentEventCount")

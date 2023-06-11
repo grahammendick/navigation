@@ -35,6 +35,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -49,9 +50,9 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     private Activity mainActivity;
     protected String enterAnim;
     protected String exitAnim;
-    protected String sharedElementName;
-    protected String oldSharedElementName;
+    protected ReadableArray sharedElementNames;
     protected Boolean startNavigation = null;
+    protected boolean containerTransform = false;
 
     public NavigationStackView(Context context) {
         super(context);
@@ -99,10 +100,10 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         if (crumb < currentCrumb) {
             FragmentManager fragmentManager = fragment.getChildFragmentManager();
             SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKey);
-            Pair<SharedElementView, String> sharedElement = fragment != null ? getOldSharedElement(currentCrumb, crumb, fragment) : null;
+            Pair[] sharedElements = fragment != null ? getOldSharedElements(currentCrumb, crumb, fragment) : null;
             SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(keys.getString(crumb));
-            if (sharedElement != null && prevFragment != null && prevFragment.getScene() != null)
-                prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, oldSharedElementName);
+            if (sharedElements != null && prevFragment != null && prevFragment.getScene() != null)
+                prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(sharedElementNames), containerTransform);
             fragmentManager.popBackStack(String.valueOf(crumb), 0);
         }
         if (crumb > currentCrumb) {
@@ -120,18 +121,21 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 int popExit = getAnimationResourceId(currentActivity, scene.exitAnim, android.R.attr.activityCloseExitAnimation);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setReorderingAllowed(true);
-                Pair<SharedElementView, String> sharedElement = null;
+                Pair[] sharedElements = null;
                 if (nextCrumb > 0) {
                     String prevKey = keys.getString(nextCrumb - 1);
                     SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(prevKey);
                     if (prevFragment != null)
-                        sharedElement = getSharedElement(currentCrumb, crumb, prevFragment);
+                        sharedElements = getSharedElements(currentCrumb, crumb, prevFragment);
                 }
-                if (sharedElement != null) {
-                    fragmentTransaction.addSharedElement(sharedElement.first, sharedElement.second);
+                if (sharedElements != null) {
+                    for(Pair sharedElement : sharedElements) {
+                        SharedElementView sharedEl = (SharedElementView) sharedElement.first;
+                        fragmentTransaction.addSharedElement(containerTransform ? sharedEl : sharedEl.getChildAt(0), (containerTransform ? "" : "element__") + sharedElement.second);
+                    }
                 }
-                fragmentTransaction.setCustomAnimations(oldCrumb != -1 ? enter : 0, exit, popEnter, popExit);
-                SceneFragment fragment = new SceneFragment(scene, sharedElementName);
+                fragmentTransaction.setCustomAnimations(oldCrumb != -1 && sharedElements == null ? enter : 0, exit, sharedElements == null ? popEnter : 0, popExit);
+                SceneFragment fragment = new SceneFragment(scene, getSharedElementSet(sharedElementNames), containerTransform);
                 fragmentTransaction.replace(getId(), fragment, key);
                 fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
                 fragmentTransaction.commit();
@@ -149,7 +153,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setReorderingAllowed(true);
             fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
-            fragmentTransaction.replace(getId(), new SceneFragment(scene, null), key);
+            fragmentTransaction.replace(getId(), new SceneFragment(scene, null, containerTransform), key);
             fragmentTransaction.addToBackStack(String.valueOf(crumb));
             fragmentTransaction.commit();
         }
@@ -166,6 +170,16 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         return context.getResources().getIdentifier(animationName, "anim", packageName);
     }
 
+    HashSet<String> getSharedElementSet(ReadableArray sharedElementNames) {
+        if (sharedElementNames == null)
+            return null;
+        HashSet<String> sharedElementSet = new HashSet<>();
+        for(int i = 0; i < sharedElementNames.size(); i++) {
+            sharedElementSet.add(sharedElementNames.getString(i));
+        }
+        return sharedElementSet;
+    }
+
     HashMap<String, SharedElementView> getSharedElementMap(SceneView scene) {
         HashMap<String, SharedElementView> sharedElementMap = new HashMap<>();
         for(SharedElementView sharedElement : scene.sharedElements) {
@@ -174,45 +188,58 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         return sharedElementMap;
     }
 
-    Pair<SharedElementView, String> getSharedElement(HashMap<String, SharedElementView> sharedElementMap, String sharedElementName) {
-        if (sharedElementMap == null || sharedElementName == null)
+    Pair[] getSharedElements(HashMap<String, SharedElementView> sharedElementMap, ReadableArray sharedElementNames) {
+        if (sharedElementMap == null || sharedElementNames == null)
             return null;
-        if (sharedElementMap.containsKey(sharedElementName))
-            return Pair.create(sharedElementMap.get(sharedElementName), sharedElementName);
-        return null;
+        ArrayList<Pair> sharedElementPairs = new ArrayList<>();
+        for(int i = 0; i < sharedElementNames.size(); i++) {
+            String name = sharedElementNames.getString(i);
+            if (sharedElementMap.containsKey(name))
+                sharedElementPairs.add(Pair.create(sharedElementMap.get(name), name));
+        }
+        return sharedElementPairs.toArray(new Pair[0]);
     }
 
-    private Pair<SharedElementView, String> getOldSharedElement(int currentCrumb, int crumb, SceneFragment sceneFragment) {
+    private Pair[] getOldSharedElements(int currentCrumb, int crumb, SceneFragment sceneFragment) {
         final HashMap<String, SharedElementView> oldSharedElementsMap = getSharedElementMap(sceneFragment.getScene());
-        final Pair<SharedElementView, String> oldSharedElement = currentCrumb - crumb == 1 ? getSharedElement(oldSharedElementsMap, oldSharedElementName) : null;
-        if (oldSharedElement != null) {
+        final Pair[] oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementsMap, sharedElementNames) : null;
+        if (oldSharedElements != null && oldSharedElements.length != 0) {
             sceneFragment.setEnterSharedElementCallback(new SharedElementCallback() {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> elements) {
-                    if (oldSharedElementsMap.containsKey(oldSharedElementName)) {
-                        View oldSharedElement = oldSharedElementsMap.get(oldSharedElementName);
-                        elements.put(names.get(0), oldSharedElement);
+                    for(int i = 0; i < sharedElementNames.size(); i++) {
+                        String name = sharedElementNames.getString(i);
+                        if (oldSharedElementsMap.containsKey(name)) {
+                            SharedElementView oldSharedElement = oldSharedElementsMap.get(name);
+                            elements.put(names.get(i), containerTransform ? oldSharedElement : oldSharedElement.getChildAt(0));
+                        }
                     }
                 }
             });
-            return oldSharedElement;
+            return oldSharedElements;
         }
         return null;
     }
 
-    private Pair<SharedElementView, String> getSharedElement(int currentCrumb, int crumb, SceneFragment sceneFragment) {
+    private Pair[] getSharedElements(int currentCrumb, int crumb, SceneFragment sceneFragment) {
         final HashMap<String, SharedElementView> sharedElementsMap = getSharedElementMap(sceneFragment.getScene());
-        final Pair<SharedElementView, String> sharedElement = crumb - currentCrumb == 1 ? getSharedElement(sharedElementsMap, sharedElementName) : null;
-        if (sharedElement != null) {
+        final Pair[] sharedElements = crumb - currentCrumb == 1 ? getSharedElements(sharedElementsMap, sharedElementNames) : null;
+        if (sharedElements != null && sharedElements.length != 0) {
             sceneFragment.setExitSharedElementCallback(new SharedElementCallback() {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> elements) {
-                    String mappedName = oldSharedElementName != null ? oldSharedElementName : names.get(0);
-                    if (sharedElementsMap.containsKey(mappedName))
-                        elements.put(names.get(0), sharedElementsMap.get(mappedName));
+                    for(int i = 0; i < names.size(); i++) {
+                        String mappedName = names.get(i);
+                        if (sharedElementNames != null && sharedElementNames.size() > i)
+                            mappedName = sharedElementNames.getString(i);
+                        if (sharedElementsMap.containsKey(mappedName)) {
+                            SharedElementView sharedElement = sharedElementsMap.get(mappedName);
+                            elements.put(names.get(i), containerTransform ? sharedElement : sharedElement.getChildAt(0));
+                        }
+                    }
                 }
             });
-            return sharedElement;
+            return sharedElements;
         }
         return null;
     }

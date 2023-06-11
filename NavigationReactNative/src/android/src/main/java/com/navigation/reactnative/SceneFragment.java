@@ -12,6 +12,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 
+import java.util.HashSet;
+import java.util.concurrent.TimeUnit;
+
 public class SceneFragment extends Fragment {
     private SceneView scene;
 
@@ -19,11 +22,11 @@ public class SceneFragment extends Fragment {
         super();
     }
 
-    SceneFragment(SceneView scene, String sharedElement) {
+    SceneFragment(SceneView scene, HashSet<String> sharedElements, boolean containerTransform) {
         super();
         this.scene = scene;
-        if (sharedElement != null )
-            scene.sharedElementMotion = new SharedElementMotion(this, this, sharedElement);
+        if (sharedElements != null )
+            scene.sharedElementMotion = new SharedElementMotion(this, this, sharedElements, containerTransform);
     }
 
     @Nullable
@@ -33,7 +36,7 @@ public class SceneFragment extends Fragment {
             if (scene.getParent() != null)
                 ((ViewGroup) scene.getParent()).endViewTransition(scene);
             if (scene.sharedElementMotion != null)
-                postponeEnterTransition();
+                postponeEnterTransition(300, TimeUnit.MILLISECONDS);
             return scene;
         }
         return new View(getContext());
