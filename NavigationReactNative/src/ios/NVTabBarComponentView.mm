@@ -97,6 +97,7 @@ using namespace facebook::react;
         [itemAppearance.selected setIconColor:selectedTintColor];
         appearance.stackedLayoutAppearance = itemAppearance;
         appearance.compactInlineLayoutAppearance = itemAppearance;
+        appearance.inlineLayoutAppearance = itemAppearance;
         _tabBarController.tabBar.standardAppearance = appearance;
         [_tabBarController.tabBar setNeedsLayout];
         if (@available(iOS 15.0, *))

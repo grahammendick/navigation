@@ -54,6 +54,29 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Missing Route Param Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r/{x}' }
+            ]);
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '');
+            assert.equal(link.innerHTML, 'link text');
+        })
+    });
+
     describe('Invalid Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
@@ -2692,6 +2715,321 @@ describe('NavigationLinkTest', function () {
             act(() => stateNavigator.navigate('s1'));
             assert.equal(link.hash, '#/r0?x=a');
         })
+    });
+
+    describe('Rewrite Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewriteNavigation = () => ({
+                stateKey: 's1',
+            });
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s0">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r1');
+            act(() => Simulate.click(link));
+            assert.equal(stateNavigator.stateContext.state, s0);
+        });
+    });
+
+    describe('Rewrite Navigation Link Data', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r/{x}' },
+            ]);
+            const {s} = stateNavigator.states;
+            s.rewriteNavigation = ({x}) => (
+                x === 'y' ? {
+                    stateKey: 's',
+                    navigationData: {
+                        x: 'z'
+                    }
+                } : null
+            );
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s" navigationData={{x: 'y'}}>
+                            link text
+                        </NavigationLink>
+                        <NavigationLink stateKey="s" navigationData={{x: 'w'}}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var links = container.querySelectorAll<HTMLAnchorElement>('a');
+            assert.equal(links[0].hash, '#/r/z');
+            assert.equal(links[1].hash, '#/r/w');
+            act(() => Simulate.click(links[0]));
+            assert.equal(stateNavigator.stateContext.data.x, 'y');
+        });
+    });
+
+    describe('Rewrite Navigation Link Current Data', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r/{a}/{x?}' },
+            ]);
+            const {s} = stateNavigator.states;
+            s.rewriteNavigation = ({a}) => ({
+                stateKey: 's',
+                navigationData: {
+                    a,
+                    x: 'z'
+                }
+            });
+            stateNavigator.navigate('s', {a: 'b'})
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s" navigationData={{x: 'y'}} includeCurrentData>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r/b/z');
+            act(() => Simulate.click(link));
+            assert.equal(stateNavigator.stateContext.data.x, 'y');
+            assert.equal(stateNavigator.stateContext.data.a, 'b');
+        });
+    });
+
+    describe('Rewrite Navigation Link Current Data Keys', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r/{a}/{x?}' },
+            ]);
+            const {s} = stateNavigator.states;
+            s.rewriteNavigation = ({a}) => ({
+                stateKey: 's',
+                navigationData: {
+                    a,
+                    x: 'z'
+                }
+            });
+            stateNavigator.navigate('s', {a: 'b'})
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s" navigationData={{x: 'y'}} currentDataKeys="a">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r/b/z');
+            act(() => Simulate.click(link));
+            assert.equal(stateNavigator.stateContext.data.x, 'y');
+            assert.equal(stateNavigator.stateContext.data.a, 'b');
+        });
+    });
+
+    describe('Rewrite Active Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r/{x}' },
+            ]);
+            const {s} = stateNavigator.states;
+            s.rewriteNavigation = () => ({
+                stateKey: 's',
+                navigationData: {
+                    x: 'z'
+                }
+            });
+            stateNavigator.navigate('s', {x: 'y'})
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s" navigationData={{x: 'y'}} disableActive>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '');
+        });
+    });
+
+    describe('Rewrite Click Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewriteNavigation = () => ({
+                stateKey: 's1',
+            });
+            var navigatingLink;
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink
+                            stateKey="s0"
+                            navigating={(_, link) => {
+                                navigatingLink = link;
+                                return true;
+                            }}>
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r1');
+            act(() => Simulate.click(link));
+            assert.equal(navigatingLink, '/r0');
+        });
+    });
+
+    describe('Modal/Details Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'list', route: 'list' },
+                { key: 'details', route: 'details/{id}', defaultTypes: {id: 'number'} }
+            ]);
+            var {list, details} = stateNavigator.states;
+            var List = ({ id }) => (
+                <>
+                    <NavigationLink
+                        stateKey='list'
+                        navigationData={{id: 1}}>
+                        Item 1
+                    </NavigationLink>
+                    {id && <dialog>Modal {id}</dialog>}
+                </>
+            );
+            list.renderScene = ({ id }) => <List id={id} />;
+            details.renderScene = ({ id }) => <div>Details {id}</div>;
+            list.rewriteNavigation = ({ id }) => (
+                id ? {
+                    stateKey: 'details',
+                    navigationData: { id },
+                } : null);
+            stateNavigator.navigate('list');
+            var container = document.createElement('div');
+            var root = createRoot(container);
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderScene(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            var dialog = container.querySelector<HTMLDialogElement>('dialog');
+            assert.equal(link.hash, '#/details/1');
+            assert.equal(dialog, null);
+            act(() => Simulate.click(link));
+            var dialog = container.querySelector<HTMLDialogElement>('dialog');
+            var div = container.querySelector<HTMLDivElement>('div');
+            assert.equal(dialog.innerHTML, 'Modal 1');
+            assert.equal(div, null);
+        })
+    });
+
+    describe('Rewrite Navigation Link Navigate Outside', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewriteNavigation = () => ({stateKey: 's1'});
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <div />
+                    </NavigationHandler>
+                );
+            });
+            var url = stateNavigator.getNavigationLink('s0');
+            var href = stateNavigator.historyManager.getHref(url);
+            assert.equal(href, '#/r1');
+        });
+    });
+
+    describe('Rewrite Navigation Link Missing Route Param', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1/{x}' },
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewriteNavigation = () => ({
+                stateKey: 's1',
+            });
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s0">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r0');
+        });
+    });
+
+    describe('Rewrite Navigation Link Invalid', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' },
+            ]);
+            const {s} = stateNavigator.states;
+            s.rewriteNavigation = () => ({
+                stateKey: 'x',
+            });
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationLink stateKey="s">
+                            link text
+                        </NavigationLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r');
+        });
     });
 
     describe('Click Custom Href Navigation Link', function () {

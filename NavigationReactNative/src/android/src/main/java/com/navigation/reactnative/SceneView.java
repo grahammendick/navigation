@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.view.View;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
@@ -82,7 +83,7 @@ public class SceneView extends ReactViewGroup {
 
         @Override
         public void dispatch(RCTEventEmitter rctEventEmitter) {
-            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), null);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), Arguments.createMap());
         }
     }
 }

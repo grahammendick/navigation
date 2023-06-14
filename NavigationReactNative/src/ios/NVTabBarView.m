@@ -98,6 +98,7 @@
         [itemAppearance.selected setIconColor:_selectedTintColor];
         appearance.stackedLayoutAppearance = itemAppearance;
         appearance.compactInlineLayoutAppearance = itemAppearance;
+        appearance.inlineLayoutAppearance = itemAppearance;
         _tabBarController.tabBar.standardAppearance = appearance;
         [_tabBarController.tabBar setNeedsLayout];
         if (@available(iOS 15.0, *))

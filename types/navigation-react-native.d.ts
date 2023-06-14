@@ -39,6 +39,10 @@ export interface NavigationStackProps {
      */
     sharedElement?: (state: State, data: any, crumbs: Crumb[]) => string;
     /**
+     * The Scene's shared elements
+     */
+    sharedElements?: (state: State, data: any, crumbs: Crumb[]) => string | string[];
+    /**
      * The color of the Scene's background
      */
     backgroundColor?: (state: State, data: any, crumbs: Crumb[]) => ColorValue;
@@ -530,7 +534,7 @@ export class StatusBar extends Component<StatusBarProps> {}
  */
 export interface SharedElementProps {
     /**
-     * The name shared across Scenes by the two views
+     * The name shared across Scenes by the two elements
      */
     name: string;
     /**
@@ -538,7 +542,7 @@ export interface SharedElementProps {
      */
     duration?: number;
     /**
-     * The fade mode used to swap the content of the two views
+     * The fade mode used to swap the content of the two elements
      */
     fadeMode?: 'in' | 'out' | 'cross' | 'through';
     /**

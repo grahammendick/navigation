@@ -463,6 +463,237 @@ describe('NavigationBackLinkTest', function () {
         })
     });
 
+    describe('Rewrite Navigation Back Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewriteNavigation = () => ({
+                stateKey: 's1',
+            });
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationBackLink distance={1}>
+                            link text
+                        </NavigationBackLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r1');
+            act(() => Simulate.click(link));
+            assert.equal(stateNavigator.stateContext.state, s0);
+        });
+    });
+
+
+    describe('Rewrite Navigation Back Link Data', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0/{x}' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewriteNavigation = ({x}) => (
+                x === 'y' ? {
+                    stateKey: 's0',
+                    navigationData: {
+                        x: 'z'
+                    }
+                } : null
+            );
+            stateNavigator.navigate('s0', {x: 'y'});
+            stateNavigator.navigate('s1');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationBackLink distance={1}>
+                            link text
+                        </NavigationBackLink>
+                    </NavigationHandler>
+                );
+            });
+            var links = container.querySelectorAll<HTMLAnchorElement>('a');
+            assert.equal(links[0].hash, '#/r0/z');
+            act(() => Simulate.click(links[0]));
+            assert.equal(stateNavigator.stateContext.data.x, 'y');
+        });
+    });
+
+    describe('Rewrite Click Navigation Back Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewriteNavigation = () => ({
+                stateKey: 's1',
+            });
+            var navigatingLink;
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationBackLink
+                            distance={1}
+                            navigating={(_, link) => {
+                                navigatingLink = link;
+                                return true;
+                            }}>
+                            link text
+                        </NavigationBackLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r1');
+            act(() => Simulate.click(link));
+            assert.equal(navigatingLink, '/r0');
+        });
+    });
+
+    describe('Modal/Details Navigation Back Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'list', route: 'list', trackCrumbTrail: true },
+                { key: 'details', route: 'details/{id}', defaultTypes: {id: 'number'}, trackCrumbTrail: true }
+            ]);
+            var {list, details} = stateNavigator.states;
+            var List = ({ id }) => (
+                <>
+                    <NavigationBackLink
+                        distance={1}>
+                        Item 1
+                    </NavigationBackLink>
+                    {id && <dialog>Modal {id}</dialog>}
+                </>
+            );
+            list.renderScene = ({ id }) => <List id={id} />;
+            details.renderScene = ({ id }) => <div>Details {id}</div>;
+            list.rewriteNavigation = ({ id }) => (
+                id ? {
+                    stateKey: 'details',
+                    navigationData: { id },
+                } : null);
+            stateNavigator.navigate('list', {id: 1});
+            stateNavigator.navigate('list');
+            var container = document.createElement('div');
+            var root = createRoot(container);
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationContext.Consumer>
+                            {({state, data}) => state.renderScene(data)}
+                        </NavigationContext.Consumer>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            var dialog = container.querySelector<HTMLDialogElement>('dialog');
+            assert.equal(link.hash, '#/details/1');
+            assert.equal(dialog, null);
+            act(() => Simulate.click(link));
+            var dialog = container.querySelector<HTMLDialogElement>('dialog');
+            var div = container.querySelector<HTMLDivElement>('div');
+            assert.equal(dialog.innerHTML, 'Modal 1');
+            assert.equal(div, null);
+        })
+    });
+
+    describe('Rewrite Navigation Back Link Navigate Outside', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewriteNavigation = () => ({stateKey: 's1'});
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <div />
+                    </NavigationHandler>
+                );
+            });
+            var url = stateNavigator.getNavigationBackLink(1);
+            var href = stateNavigator.historyManager.getHref(url);
+            assert.equal(href, '#/r1');
+        });
+    });
+
+    describe('Rewrite Navigation Back Link Missing Route Param', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1/{x}', trackCrumbTrail: true }
+            ]);
+            const {s0} = stateNavigator.states;
+            s0.rewriteNavigation = () => ({
+                stateKey: 's1',
+            });
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1', {x: '1'});
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationBackLink distance={1}>
+                            link text
+                        </NavigationBackLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r0');
+        });
+    });
+
+    describe('Rewrite Navigation Back Link Invalid', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            const {s0} = stateNavigator.states;
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            s0.rewriteNavigation = () => ({
+                stateKey: 'x',
+            });
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationBackLink distance={1}>
+                            link text
+                        </NavigationBackLink>
+                    </NavigationHandler>
+                );
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r0');
+        });
+    });
+
     describe('Click Custom Href Navigation Back Link', function () {
         it('should navigate', function(){
             var stateNavigator = new StateNavigator([
