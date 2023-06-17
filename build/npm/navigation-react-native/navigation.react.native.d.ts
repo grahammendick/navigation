@@ -47,6 +47,10 @@ export interface NavigationStackProps {
      */
     backgroundColor?: (state: State, data: any, crumbs: Crumb[]) => ColorValue;
     /**
+     * The Scene's orientation
+     */
+    landscape?: (state: State, data: any, crumbs: Crumb[]) => boolean;
+    /**
      * Renders the Scene for the State and data
      */
     renderScene?: (state: State, data: any) => ReactNode;
@@ -86,9 +90,17 @@ export class NavigationStack extends Component<NavigationStackProps> { }
      */
     sharedElement?: string | ((data: any, crumbs: Crumb[]) => string);
     /**
+     * A Scene's shared elements
+     */
+    sharedElements?: string | string[] | ((data: any, crumbs: Crumb[]) => string | string[]);
+    /**
      * The color of a Scene's background
      */
     backgroundColor?: ColorValue | ((data: any, crumbs: Crumb[]) => ColorValue);
+    /**
+     * A Scene's orientation
+     */
+    landscape?: boolean | ((data: any, crumbs: Crumb[]) => boolean);
      /**
      * The Scene content
      */
