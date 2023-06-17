@@ -4,13 +4,12 @@ import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import PopSync from './PopSync';
 import Scene from './Scene';
-type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, sharedElements: any, backgroundColor: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
+type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, sharedElements: any, backgroundColor: any, landscape: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, counter: number, mostRecentEventCount: number};
 
 const NavigationStack = ({underlayColor = '#000', title, crumbStyle: crumbStyleStack = () => null, unmountStyle: unmountStyleStack = () => null,
     hidesTabBar: hidesTabBarStack = () => false, sharedElement: getSharedElementStack = () => null, sharedElements: getSharedElementsStack = () => null,
-    backgroundColor: backgroundColorStack = () => null,
-    stackInvalidatedLink, renderScene, children}: NavigationStackProps) => {
+    backgroundColor: backgroundColorStack = () => null, landscape: landscapeStack = () => null, stackInvalidatedLink, renderScene, children}: NavigationStackProps) => {
     const resumeNavigationRef = useRef(null);
     const ref = useRef(null);
     const {stateNavigator} = useContext(NavigationContext);
@@ -77,6 +76,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle: crumbStyleS
     const getSharedElement = (state, ...rest) => sceneProps(state)?.sharedElement ? returnOrCall(sceneProps(state)?.sharedElement, ...rest) : getSharedElementStack(state, ...rest);
     const getSharedElements = (state, ...rest) => sceneProps(state)?.sharedElements ? returnOrCall(sceneProps(state)?.sharedElements, ...rest) : getSharedElementsStack(state, ...rest);
     const backgroundColor = (state, ...rest) => sceneProps(state)?.backgroundColor ? returnOrCall(sceneProps(state)?.backgroundColor, ...rest) : backgroundColorStack(state, ...rest);
+    const landscape = (state, ...rest) => sceneProps(state)?.landscape ? returnOrCall(sceneProps(state)?.landscape, ...rest) : landscapeStack(state, ...rest);
     const getAnimation = () => {
         let {state, data, oldState, oldData, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
         if (!oldState)
@@ -144,6 +144,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle: crumbStyleS
                         crumbStyle={crumbStyle}
                         hidesTabBar={hidesTabBar}
                         backgroundColor={backgroundColor}
+                        landscape={landscape}
                         title={title}
                         popped={popNative}
                         renderScene={firstLink ? ({key}) => allScenes[key] : renderScene} />

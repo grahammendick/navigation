@@ -37,6 +37,11 @@ public class SceneManager extends ViewGroupManager<SceneView> {
         view.exitAnim = exitAnim;
     }
 
+    @ReactProp(name = "landscape")
+    public void setLandscape(SceneView view, boolean landscape) {
+        view.setLandscape(landscape);
+    }
+
     @Nonnull
     @Override
     protected SceneView createViewInstance(@Nonnull ThemedReactContext reactContext) {

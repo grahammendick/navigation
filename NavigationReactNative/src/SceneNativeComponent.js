@@ -12,6 +12,7 @@ type NativeProps = $ReadOnly<{|
   enterAnim: string,
   exitAnim: string,
   hidesTabBar: boolean,
+  landscape: boolean,
   onPopped: DirectEventHandler<null>
 |}>;
 

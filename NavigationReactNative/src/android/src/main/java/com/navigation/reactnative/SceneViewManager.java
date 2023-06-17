@@ -63,6 +63,11 @@ public class SceneViewManager extends ViewGroupManager<SceneView> implements NVS
         view.exitAnim = exitAnim;
     }
 
+    @ReactProp(name = "landscape")
+    public void setLandscape(SceneView view, boolean landscape) {
+        view.setLandscape(landscape);
+    }
+
     @Nonnull
     @Override
     protected SceneView createViewInstance(@Nonnull ThemedReactContext reactContext) {
