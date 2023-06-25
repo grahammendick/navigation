@@ -77,8 +77,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
     const getStyle = (mounted: boolean, {state, data, crumbs, nextState, nextData, mount, fromUnmounted}: SceneContext) => {
         const styleProp = !mounted ? unmountedStyle : (mount ? mountedStyle : crumbStyle);
         fromUnmounted = (mounted && mount) ? fromUnmounted : undefined;
-        const style = styleProp(state, data, crumbs, nextState, nextData, fromUnmounted);
-        return {...style, __marker: !mounted ? 1 : (mount ? 0 : -1)};
+        return {...styleProp(state, data, crumbs, nextState, nextData, fromUnmounted)};
     }
     const getMotion = (styles: MotionStyle[]) => {
         let moving = false, mountMoving = false, mountDuration: number, mountProgress: number;
@@ -121,7 +120,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
                 {styles => {
                     const {rest, mountRest, mountDuration, mountProgress} = getMotion(styles);
                     return (
-                        styles.map(({data: {key, state, data}, style: {__marker, duration, ...style}}) => {
+                        styles.map(({data: {key, state, data}, style: {duration, ...style}}) => {
                             const crumb = +key.replace(/\++$/, '');
                             const scene = <Scene crumb={crumb} rest={rest} renderScene={renderScene} />;
                             return (
