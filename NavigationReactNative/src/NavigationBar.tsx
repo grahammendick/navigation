@@ -81,6 +81,10 @@ class NavigationBar extends React.Component<any, any> {
                                 {...scrollEdgeProps}
                                 barTintColor={!collapsingBar ? toolbarTintColor : null}
                                 placeholder={typeof placeholder === 'function' ? placeholder(true) : placeholder}
+                                fontFamily={searchBar?.props.fontFamily}
+                                fontWeight={searchBar?.props.fontWeight}
+                                fontStyle={searchBar?.props.fontStyle}
+                                fontSize={searchBar?.props.fontSize}
                                 titleCentered={!!titleCentered}
                                 barHeight={!material3 || searchToolbar ? 56 : 64}
                                 navigationDecorative={!onNavigationPress}

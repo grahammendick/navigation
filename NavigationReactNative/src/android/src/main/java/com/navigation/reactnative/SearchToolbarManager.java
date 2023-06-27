@@ -2,6 +2,8 @@ package com.navigation.reactnative;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -21,7 +23,27 @@ public class SearchToolbarManager extends ViewGroupManager<SearchToolbarView> {
 
     @ReactProp(name = "placeholder")
     public void setPlaceholder(SearchToolbarView view, String placeholder) {
-        view.setHint(placeholder);
+        view.setPlaceholder(placeholder);
+    }
+
+    @ReactProp(name = "fontFamily")
+    public void setFontFamily(SearchToolbarView view, String fontFamily) {
+        view.setFontFamily(fontFamily);
+    }
+
+    @ReactProp(name = "fontWeight")
+    public void setFontWeight(SearchToolbarView view, String fontWeight) {
+        view.setFontWeight(fontWeight);
+    }
+
+    @ReactProp(name = "fontStyle")
+    public void setFontStyle(SearchToolbarView view, String fontStyle) {
+        view.setFontStyle(fontStyle);
+    }
+
+    @ReactProp(name = "fontSize")
+    public void setFontSize(SearchToolbarView view, Integer fontSize) {
+        view.setFontSize(fontSize);
     }
 
     @ReactProp(name = "navigationImage")
@@ -101,6 +123,12 @@ public class SearchToolbarManager extends ViewGroupManager<SearchToolbarView> {
     @Override
     protected SearchToolbarView createViewInstance(@Nonnull ThemedReactContext reactContext) {
         return new SearchToolbarView(reactContext);
+    }
+
+    @Override
+    protected void onAfterUpdateTransaction(@NonNull SearchToolbarView view) {
+        super.onAfterUpdateTransaction(view);
+        view.stylePlaceholder();
     }
 
     @Override
