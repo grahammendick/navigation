@@ -28,6 +28,26 @@ public class SearchResultsManager extends ViewGroupManager<SearchResultsView> {
         view.setActive(active);
     }
 
+    @ReactProp(name = "fontFamily")
+    public void setFontFamily(SearchResultsView view, String fontFamily) {
+        view.setFontFamily(fontFamily);
+    }
+
+    @ReactProp(name = "fontWeight")
+    public void setFontWeight(SearchResultsView view, String fontWeight) {
+        view.setFontWeight(fontWeight);
+    }
+
+    @ReactProp(name = "fontStyle")
+    public void setFontStyle(SearchResultsView view, String fontStyle) {
+        view.setFontStyle(fontStyle);
+    }
+
+    @ReactProp(name = "fontSize")
+    public void setFontSize(SearchResultsView view, Integer fontSize) {
+        view.setFontSize(fontSize);
+    }
+
     @ReactProp(name = "placeholder")
     public void setPlaceholder(SearchResultsView view, String placeholder) {
         view.setHint(placeholder);

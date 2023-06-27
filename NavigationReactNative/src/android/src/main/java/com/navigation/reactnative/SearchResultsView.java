@@ -2,9 +2,15 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.StyleSpan;
+import android.text.style.TypefaceSpan;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
@@ -14,10 +20,13 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.i18nmanager.I18nUtil;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.facebook.react.views.text.ReactFontManager;
+import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.google.android.material.search.SearchView;
 
 public class SearchResultsView extends SearchView {
@@ -25,6 +34,13 @@ public class SearchResultsView extends SearchView {
     private boolean layoutRequested = false;
     private String pendingText;
     private boolean pendingActive;
+    private String fontFamily;
+    private String fontWeight;
+    private String fontStyle;
+    private Integer fontSize;
+    private boolean textFontChanged = false;
+    private final Typeface defaultTypeface;
+    private final float defaultFontSize;
     int nativeEventCount;
     int mostRecentEventCount;
     int nativeActiveEventCount;
@@ -34,6 +50,8 @@ public class SearchResultsView extends SearchView {
         super(context);
         ViewCompat.setLayoutDirection(this, !I18nUtil.getInstance().isRTL(context) ? ViewCompat.LAYOUT_DIRECTION_LTR : ViewCompat.LAYOUT_DIRECTION_RTL);
         defaultBackground = getToolbar().getBackground();
+        defaultTypeface = getEditText().getTypeface();
+        defaultFontSize = PixelUtil.toDIPFromPixel(getEditText().getTextSize());
         addTransitionListener((searchView, previousState, newState) -> {
             if (newState == TransitionState.SHOWING) {
                 nativeActiveEventCount++;
@@ -81,6 +99,37 @@ public class SearchResultsView extends SearchView {
         pendingActive = active;
     }
 
+    void setFontFamily(String fontFamily) {
+        this.fontFamily = fontFamily;
+        textFontChanged = true;
+    }
+
+    void setFontWeight(String fontWeight) {
+        this.fontWeight = fontWeight;
+        textFontChanged = true;
+    }
+
+    void setFontStyle(String fontStyle) {
+        this.fontStyle = fontStyle;
+        textFontChanged = true;
+    }
+
+    void setFontSize(Integer fontSize) {
+        this.fontSize = fontSize;
+        textFontChanged = true;
+    }
+
+    void styleText() {
+        if (textFontChanged) {
+            if (fontFamily != null || fontWeight != null || fontStyle != null)
+                getEditText().setTypeface(ReactTypefaceUtils.applyStyles(defaultTypeface, ReactTypefaceUtils.parseFontStyle(fontStyle), ReactTypefaceUtils.parseFontWeight(fontWeight), fontFamily, getContext().getAssets()));
+            else
+                getEditText().setTypeface(defaultTypeface);
+            getEditText().setTextSize(fontSize != null ? fontSize : defaultFontSize);
+            textFontChanged = false;
+        }
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -98,6 +147,7 @@ public class SearchResultsView extends SearchView {
         if (eventLag == 0 && pendingText != null && !getEditText().getText().toString().equals(pendingText)) {
             getEditText().setText(pendingText);
         }
+        styleText();
         int activeEventLag = nativeActiveEventCount - mostRecentActiveEventCount;
         if (activeEventLag == 0 && isShowing() != pendingActive)
             if (pendingActive) show();
