@@ -4,13 +4,8 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.text.Editable;
-import android.text.SpannableString;
 import android.text.TextWatcher;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.StyleSpan;
-import android.text.style.TypefaceSpan;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
@@ -25,7 +20,6 @@ import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-import com.facebook.react.views.text.ReactFontManager;
 import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.google.android.material.search.SearchView;
 
