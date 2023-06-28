@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,12 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.google.android.material.appbar.AppBarLayout;
 
@@ -26,6 +29,13 @@ public class SearchBarView extends ReactViewGroup {
     boolean bottomBar = false;
     String pendingText;
     boolean pendingActive;
+    private String fontFamily;
+    private String fontWeight;
+    private String fontStyle;
+    private Integer fontSize;
+    private boolean textFontChanged = false;
+    private final Typeface defaultTypeface;
+    private final float defaultFontSize;
     int nativeEventCount;
     int mostRecentEventCount;
     int nativeActiveEventCount;
@@ -34,6 +44,9 @@ public class SearchBarView extends ReactViewGroup {
     public SearchBarView(Context context) {
         super(context);
         searchView = new SearchView(context);
+        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        defaultTypeface = searchAutoComplete.getTypeface();
+        defaultFontSize = PixelUtil.toDIPFromPixel(searchAutoComplete.getTextSize());
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         AppBarLayout.ScrollingViewBehavior behavior = new AppBarLayout.ScrollingViewBehavior();
         params.setBehavior(behavior);
@@ -85,6 +98,38 @@ public class SearchBarView extends ReactViewGroup {
         }
     }
 
+    void setFontFamily(String fontFamily) {
+        this.fontFamily = fontFamily;
+        textFontChanged = true;
+    }
+
+    void setFontWeight(String fontWeight) {
+        this.fontWeight = fontWeight;
+        textFontChanged = true;
+    }
+
+    void setFontStyle(String fontStyle) {
+        this.fontStyle = fontStyle;
+        textFontChanged = true;
+    }
+
+    void setFontSize(Integer fontSize) {
+        this.fontSize = fontSize;
+        textFontChanged = true;
+    }
+
+    void styleText() {
+        if (textFontChanged) {
+            SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+            if (fontFamily != null || fontWeight != null || fontStyle != null)
+                searchAutoComplete.setTypeface(ReactTypefaceUtils.applyStyles(defaultTypeface, ReactTypefaceUtils.parseFontStyle(fontStyle), ReactTypefaceUtils.parseFontWeight(fontWeight), fontFamily, getContext().getAssets()));
+            else
+                searchAutoComplete.setTypeface(defaultTypeface);
+            searchAutoComplete.setTextSize(fontSize != null ? fontSize : defaultFontSize);
+            textFontChanged = false;
+        }
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -133,6 +178,7 @@ public class SearchBarView extends ReactViewGroup {
         int eventLag = nativeEventCount - mostRecentEventCount;
         if (eventLag == 0 && pendingText != null && !searchView.getQuery().toString().equals(pendingText))
             searchView.setQuery(pendingText, true);
+        styleText();
         int activeEventLag = nativeActiveEventCount - mostRecentActiveEventCount;
         if (activeEventLag == 0 && menuItem != null && menuItem.isActionViewExpanded() != pendingActive)
             if (pendingActive)

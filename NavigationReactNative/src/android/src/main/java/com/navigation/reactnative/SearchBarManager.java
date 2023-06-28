@@ -34,6 +34,26 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
         view.setQuery(text);
     }
 
+    @ReactProp(name = "fontFamily")
+    public void setFontFamily(SearchBarView view, String fontFamily) {
+        view.setFontFamily(fontFamily);
+    }
+
+    @ReactProp(name = "fontWeight")
+    public void setFontWeight(SearchBarView view, String fontWeight) {
+        view.setFontWeight(fontWeight);
+    }
+
+    @ReactProp(name = "fontStyle")
+    public void setFontStyle(SearchBarView view, String fontStyle) {
+        view.setFontStyle(fontStyle);
+    }
+
+    @ReactProp(name = "fontSize")
+    public void setFontSize(SearchBarView view, Integer fontSize) {
+        view.setFontSize(fontSize);
+    }
+
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(SearchBarView view, int mostRecentEventCount) {
         view.mostRecentEventCount = mostRecentEventCount;
