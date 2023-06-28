@@ -15,6 +15,7 @@
     NSInteger _nativeEventCount;
     NSInteger _nativeActiveEventCount;
     NSInteger _nativeButtonEventCount;
+    UIFont *_font;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -74,9 +75,9 @@
         || [changedProps containsObject:@"fontStyle"] || [changedProps containsObject:@"fontSize"]) {
         UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
         NSNumber *size = !self.fontSize ? @(UIFont.labelFontSize) : self.fontSize;
-        UIFont *font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
+        _font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
         if (@available(iOS 13.0, *)) {
-            [self.searchController.searchBar.searchTextField setFont:font];
+            [self.searchController.searchBar.searchTextField setFont:_font];
         }
     }
     if (@available(iOS 11.0, *)) {
@@ -135,6 +136,9 @@
     [super didMoveToWindow];
     if (@available(iOS 11.0, *)) {
         [self.reactViewController.navigationItem setSearchController:_searchController];
+    }
+    if (@available(iOS 13.0, *)) {
+        [self.searchController.searchBar.searchTextField setFont:_font];
     }
 }
 
