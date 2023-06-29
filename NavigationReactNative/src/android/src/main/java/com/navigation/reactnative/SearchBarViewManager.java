@@ -68,6 +68,26 @@ public class SearchBarViewManager extends ViewGroupManager<SearchBarView> implem
         view.setQuery(text);
     }
 
+    @ReactProp(name = "fontFamily")
+    public void setFontFamily(SearchBarView view, String fontFamily) {
+        view.setFontFamily(fontFamily);
+    }
+
+    @ReactProp(name = "fontWeight")
+    public void setFontWeight(SearchBarView view, String fontWeight) {
+        view.setFontWeight(fontWeight);
+    }
+
+    @ReactProp(name = "fontStyle")
+    public void setFontStyle(SearchBarView view, String fontStyle) {
+        view.setFontStyle(fontStyle);
+    }
+
+    @ReactProp(name = "fontSize")
+    public void setFontSize(SearchBarView view, float fontSize) {
+        view.setFontSize(fontSize != -1 ? (int) fontSize : null);
+    }
+
     @Override
     @ReactProp(name = "active")
     public void setActive(SearchBarView view, boolean active) {
