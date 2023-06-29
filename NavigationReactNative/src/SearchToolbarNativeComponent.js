@@ -7,6 +7,10 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
   placeholder: string,
+  fontFamily: string,
+  fontWeight: string,
+  fontStyle: string,
+  fontSize?: WithDefault<Float, -1>,
   barTintColor: ColorValue,
   tintColor: ColorValue,
   navigationImage: ImageSource,

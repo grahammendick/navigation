@@ -46,6 +46,26 @@ public class SearchToolbarViewManager extends ViewGroupManager<SearchToolbarView
         view.setHint(placeholder);
     }
 
+    @ReactProp(name = "fontFamily")
+    public void setFontFamily(SearchToolbarView view, String fontFamily) {
+        view.setFontFamily(fontFamily);
+    }
+
+    @ReactProp(name = "fontWeight")
+    public void setFontWeight(SearchToolbarView view, String fontWeight) {
+        view.setFontWeight(fontWeight);
+    }
+
+    @ReactProp(name = "fontStyle")
+    public void setFontStyle(SearchToolbarView view, String fontStyle) {
+        view.setFontStyle(fontStyle);
+    }
+
+    @ReactProp(name = "fontSize")
+    public void setFontSize(SearchToolbarView view, float fontSize) {
+        view.setFontSize(fontSize != -1 ? (int) fontSize : null);
+    }
+
     @Override
     @ReactProp(name = "barTintColor", customType = "Color")
     public void setBarTintColor(SearchToolbarView view, @Nullable Integer barTintColor) {
@@ -120,6 +140,12 @@ public class SearchToolbarViewManager extends ViewGroupManager<SearchToolbarView
     @Override
     public View getChildAt(SearchToolbarView parent, int index) {
         return parent.children.get(index);
+    }
+
+    @Override
+    protected void onAfterUpdateTransaction(@NonNull SearchToolbarView view) {
+        super.onAfterUpdateTransaction(view);
+        view.stylePlaceholder();
     }
 
     @Override
