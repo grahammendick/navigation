@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.view.Menu;
@@ -20,10 +21,12 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.search.SearchBar;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -38,6 +41,13 @@ public class SearchToolbarView extends SearchBar {
     final Drawable defaultOverflowIcon;
     private String navigationTestID;
     private String overflowTestID;
+    private String fontFamily;
+    private String fontWeight;
+    private String fontStyle;
+    private Integer fontSize;
+    private boolean placeholderFontChanged = false;
+    private final Typeface defaultTypeface;
+    private final float defaultFontSize;
     private final IconResolver.IconResolverListener navIconResolverListener;
     private final IconResolver.IconResolverListener overflowIconResolverListener;
     final ArrayList<BarButtonView> children = new ArrayList<>();
@@ -48,6 +58,8 @@ public class SearchToolbarView extends SearchBar {
         params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
         setLayoutParams(params);
         defaultBackground = getBackground();
+        defaultTypeface = getTextView().getTypeface();
+        defaultFontSize = PixelUtil.toDIPFromPixel(getTextView().getTextSize());
         defaultOverflowIcon = getOverflowIcon();
         navIconResolverListener = d -> {
             setNavigationIcon(d);
@@ -65,6 +77,37 @@ public class SearchToolbarView extends SearchBar {
             }
             return true;
         });
+    }
+
+    void setFontFamily(String fontFamily) {
+        this.fontFamily = fontFamily;
+        placeholderFontChanged = true;
+    }
+
+    void setFontWeight(String fontWeight) {
+        this.fontWeight = fontWeight;
+        placeholderFontChanged = true;
+    }
+
+    void setFontStyle(String fontStyle) {
+        this.fontStyle = fontStyle;
+        placeholderFontChanged = true;
+    }
+
+    void setFontSize(Integer fontSize) {
+        this.fontSize = fontSize;
+        placeholderFontChanged = true;
+    }
+
+    void stylePlaceholder() {
+        if (placeholderFontChanged) {
+            if (fontFamily != null || fontWeight != null || fontStyle != null)
+                getTextView().setTypeface(ReactTypefaceUtils.applyStyles(defaultTypeface, ReactTypefaceUtils.parseFontStyle(fontStyle), ReactTypefaceUtils.parseFontWeight(fontWeight), fontFamily, getContext().getAssets()));
+            else
+                getTextView().setTypeface(defaultTypeface);
+            getTextView().setTextSize(fontSize != null ? fontSize : defaultFontSize);
+            placeholderFontChanged = false;
+        }
     }
 
     @Override

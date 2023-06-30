@@ -3,6 +3,7 @@
 
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
+#import <React/RCTFont.h>
 #import <React/RCTI18nUtil.h>
 #import <React/RCTUIManager.h>
 #import <React/UIView+React.h>
@@ -14,6 +15,7 @@
     NSInteger _nativeEventCount;
     NSInteger _nativeActiveEventCount;
     NSInteger _nativeButtonEventCount;
+    UIFont *_font;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -69,6 +71,15 @@
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
+    if ([changedProps containsObject:@"fontFamily"] || [changedProps containsObject:@"fontWeight"]
+        || [changedProps containsObject:@"fontStyle"] || [changedProps containsObject:@"fontSize"]) {
+        UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
+        NSNumber *size = !self.fontSize ? @(UIFont.labelFontSize) : self.fontSize;
+        _font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
+        if (@available(iOS 13.0, *)) {
+            [self.searchController.searchBar.searchTextField setFont:_font];
+        }
+    }
     if (@available(iOS 11.0, *)) {
         [self.reactViewController.navigationItem setHidesSearchBarWhenScrolling:self.hideWhenScrolling];
     }
@@ -125,6 +136,9 @@
     [super didMoveToWindow];
     if (@available(iOS 11.0, *)) {
         [self.reactViewController.navigationItem setSearchController:_searchController];
+    }
+    if (@available(iOS 13.0, *)) {
+        [self.searchController.searchBar.searchTextField setFont:_font];
     }
 }
 

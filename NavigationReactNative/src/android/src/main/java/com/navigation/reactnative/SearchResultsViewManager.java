@@ -52,6 +52,26 @@ public class SearchResultsViewManager extends ViewGroupManager<SearchResultsView
         view.setText(text);
     }
 
+    @ReactProp(name = "fontFamily")
+    public void setFontFamily(SearchResultsView view, String fontFamily) {
+        view.setFontFamily(fontFamily);
+    }
+
+    @ReactProp(name = "fontWeight")
+    public void setFontWeight(SearchResultsView view, String fontWeight) {
+        view.setFontWeight(fontWeight);
+    }
+
+    @ReactProp(name = "fontStyle")
+    public void setFontStyle(SearchResultsView view, String fontStyle) {
+        view.setFontStyle(fontStyle);
+    }
+
+    @ReactProp(name = "fontSize")
+    public void setFontSize(SearchResultsView view, float fontSize) {
+        view.setFontSize(fontSize != -1 ? (int) fontSize : null);
+    }
+
     @Override
     @ReactProp(name = "active")
     public void setActive(SearchResultsView view, boolean active) {

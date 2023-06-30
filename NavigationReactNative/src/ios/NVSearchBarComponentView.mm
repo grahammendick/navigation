@@ -10,6 +10,7 @@
 
 #import "RCTFabricComponentsPlugins.h"
 #import <React/RCTConversions.h>
+#import <React/RCTFont.h>
 #import <React/RCTI18nUtil.h>
 #import <React/UIView+React.h>
 
@@ -22,6 +23,7 @@ using namespace facebook::react;
 {
     UISearchController *_oldSearchController;
     UIView *_reactSubview;
+    UIFont *_font;
     NSInteger _nativeEventCount;
     NSInteger _nativeActiveEventCount;
     NSInteger _nativeButtonEventCount;
@@ -60,6 +62,20 @@ using namespace facebook::react;
     [self ensureSearchController];
     const auto &newViewProps = *std::static_pointer_cast<NVSearchBarProps const>(props);
     NSString *text = [[NSString alloc] initWithUTF8String: newViewProps.text.c_str()];
+    _fontFamily = [[NSString alloc] initWithUTF8String: newViewProps.fontFamily.c_str()];
+    _fontFamily = _fontFamily.length ? _fontFamily : nil;
+    _fontWeight = [[NSString alloc] initWithUTF8String: newViewProps.fontWeight.c_str()];
+    _fontWeight = _fontWeight.length ? _fontWeight : nil;
+    _fontStyle = [[NSString alloc] initWithUTF8String: newViewProps.fontStyle.c_str()];
+    _fontStyle = _fontStyle.length ? _fontStyle : nil;
+    _fontSize = @(newViewProps.fontSize);
+    _fontSize = [_fontSize intValue] >= 0 ? _fontSize : nil;
+    UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
+    NSNumber *size = !self.fontSize ? @(UIFont.labelFontSize) : self.fontSize;
+    _font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
+    if (@available(iOS 13.0, *)) {
+        [self.searchController.searchBar.searchTextField setFont:_font];
+    }
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     if (eventLag == 0 && ![self.searchController.searchBar.text isEqualToString:text]) {
@@ -112,6 +128,9 @@ using namespace facebook::react;
 {
     [super didMoveToWindow];
     [self.reactViewController.navigationItem setSearchController:_searchController];
+    if (@available(iOS 13.0, *)) {
+        [self.searchController.searchBar.searchTextField setFont:_font];
+    }
 }
 
 - (void)willMoveToSuperview:(nullable UIView *)newSuperview
