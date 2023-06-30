@@ -419,6 +419,23 @@ export interface SearchBarProps {
      */
     text?: string;
     /**
+     * The search field font family
+     */
+    fontFamily?: string;
+    /**
+     * The search field font weight
+     */
+    fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500'
+        | '600' | '700' | '800' | '900';
+    /**
+     * The search field font style
+     */
+    fontStyle?: 'normal' | 'italic';
+    /**
+     * The search field font size
+     */
+    fontSize?: number;
+    /**
      * The search field background color
      */
     barTintColor?: ColorValue | ((toolbar: boolean) => ColorValue);
