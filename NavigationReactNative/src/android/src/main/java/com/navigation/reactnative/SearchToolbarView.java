@@ -48,6 +48,7 @@ public class SearchToolbarView extends SearchBar {
     private boolean placeholderFontChanged = false;
     private final Typeface defaultTypeface;
     private final float defaultFontSize;
+    final Drawable defaultNavigationIcon;
     private final IconResolver.IconResolverListener navIconResolverListener;
     private final IconResolver.IconResolverListener overflowIconResolverListener;
     final ArrayList<BarButtonView> children = new ArrayList<>();
@@ -61,8 +62,12 @@ public class SearchToolbarView extends SearchBar {
         defaultTypeface = getTextView().getTypeface();
         defaultFontSize = PixelUtil.toDIPFromPixel(getTextView().getTextSize());
         defaultOverflowIcon = getOverflowIcon();
+        defaultNavigationIcon = getNavigationIcon();
         navIconResolverListener = d -> {
-            setNavigationIcon(d);
+            if (d != null)
+                setNavigationIcon(d);
+            else
+                setNavigationIcon(defaultNavigationIcon);
             setTintColor(getNavigationIcon());
             setTestID();
         };
