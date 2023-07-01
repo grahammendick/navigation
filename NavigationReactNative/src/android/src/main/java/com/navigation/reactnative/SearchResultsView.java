@@ -48,13 +48,6 @@ public class SearchResultsView extends SearchView {
         defaultFontSize = PixelUtil.toDIPFromPixel(getEditText().getTextSize());
         addTransitionListener((searchView, previousState, newState) -> {
             if (newState == TransitionState.SHOWING) {
-                ViewGroup view = (ViewGroup) getParent();
-                for(int i = 0; i < view.getChildCount(); i++) {
-                    if (view.getChildAt(i) instanceof NavigationBarView) {
-                        SearchToolbarView searchToolbarView = (SearchToolbarView) ((NavigationBarView) view.getChildAt(i)).getChildAt(0);
-                        setAnimatedNavigationIcon(searchToolbarView.getNavigationIcon() == searchToolbarView.defaultNavigationIcon);
-                    }
-                }
                 nativeActiveEventCount++;
                 ReactContext reactContext = (ReactContext) ((ContextWrapper) getContext()).getBaseContext();
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
@@ -138,7 +131,9 @@ public class SearchResultsView extends SearchView {
         ViewGroup view = (ViewGroup) getParent();
         for(int i = 0; i < view.getChildCount(); i++) {
             if (view.getChildAt(i) instanceof NavigationBarView) {
-                setupWithSearchBar((SearchToolbarView) ((NavigationBarView) view.getChildAt(i)).getChildAt(0));
+                SearchToolbarView searchToolbarView = (SearchToolbarView) ((NavigationBarView) view.getChildAt(i)).getChildAt(0);
+                setupWithSearchBar(searchToolbarView);
+                setAnimatedNavigationIcon(searchToolbarView.getNavigationIcon() == searchToolbarView.defaultNavigationIcon);
             }
         }
     }
