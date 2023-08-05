@@ -72,6 +72,46 @@ public class SceneFragment extends Fragment {
     }
 
     @Override
+    public void setEnterTransition(@Nullable Object transition) {
+        super.setEnterTransition(transition);
+        if (transition == null) return;
+        ((Transition) transition).addListener(new TransitionListenerAdapter(){
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                super.onTransitionEnd(transition);
+                if (scene.getParent() != null)
+                    ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+            }
+
+            @Override
+            public void onTransitionPause(@NonNull Transition transition) {
+                super.onTransitionPause(transition);
+                ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+            }
+        });
+    }
+
+    @Override
+    public void setReenterTransition(@Nullable Object transition) {
+        super.setReenterTransition(transition);
+        if (transition == null) return;
+        ((Transition) transition).addListener(new TransitionListenerAdapter(){
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                super.onTransitionEnd(transition);
+                if (scene.getParent() != null)
+                    ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+            }
+
+            @Override
+            public void onTransitionPause(@NonNull Transition transition) {
+                super.onTransitionPause(transition);
+                ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+            }
+        });
+    }
+
+    @Override
     public void setReturnTransition(@Nullable Object transition) {
         super.setReturnTransition(transition);
         if (transition == null) return;
