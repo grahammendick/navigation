@@ -26,6 +26,7 @@ public class SceneView extends ReactViewGroup {
 
     public SceneView(Context context) {
         super(context);
+        setTransitionGroup(true);
     }
 
     protected void setLandscape(boolean landscape) {
