@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
+import androidx.transition.Transition;
+import androidx.transition.TransitionListenerAdapter;
 
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
@@ -70,9 +72,23 @@ public class SceneFragment extends Fragment {
     }
 
     @Override
+    public void setReturnTransition(@Nullable Object transition) {
+        super.setReturnTransition(transition);
+        if (transition == null) return;
+         ((Transition) transition).addListener(new TransitionListenerAdapter(){
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                super.onTransitionEnd(transition);
+                if (scene != null)
+                  scene.popped();
+            }
+        });
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        if (scene != null)
+        if (getReturnTransition() == null && scene != null)
             scene.popped();
     }
 
