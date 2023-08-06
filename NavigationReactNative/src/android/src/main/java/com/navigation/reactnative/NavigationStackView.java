@@ -106,8 +106,15 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKey);
             Pair[] sharedElements = fragment != null ? getOldSharedElements(currentCrumb, crumb, fragment) : null;
             SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(keys.getString(crumb));
-            if (sharedElements != null && prevFragment != null && prevFragment.getScene() != null)
-                prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(sharedElementNames), containerTransform);
+            if (prevFragment != null && prevFragment.getScene() != null) {
+                ViewGroup parent = (ViewGroup) prevFragment.getScene().getParent();
+                if (parent != null) {
+                    parent.removeView(prevFragment.getScene());
+                    parent.endViewTransition(prevFragment.getScene());
+                }
+                if (sharedElements != null)
+                    prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(sharedElementNames), containerTransform);
+            }
             fragmentManager.popBackStack(String.valueOf(crumb), 0);
         }
         if (crumb > currentCrumb) {
