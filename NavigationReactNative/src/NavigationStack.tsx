@@ -102,8 +102,12 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle: crumbStyleS
         }
         const containerTransform = typeof sharedElements === 'string';
         sharedElements = containerTransform && sharedElements ? [sharedElements] : sharedElements;
+        const enterTrans = typeof enterAnim === 'string' ? null : enterAnim;
+        const exitTrans = typeof exitAnim === 'string' ? null : exitAnim;
+        enterAnim = !enterTrans ? enterAnim : null;
+        exitAnim = !exitTrans ? exitAnim : null;
         const enterAnimOff = enterAnim === '';
-        return {enterAnim, exitAnim, enterAnimOff, sharedElements, containerTransform};
+        return {enterAnim, exitAnim, enterAnimOff, enterTrans, exitTrans, sharedElements, containerTransform};
     }
     const {stateNavigator: prevStateNavigator, keys, rest, mostRecentEventCount} = stackState;
     if (prevStateNavigator !== stateNavigator && stateNavigator.stateContext.state) {

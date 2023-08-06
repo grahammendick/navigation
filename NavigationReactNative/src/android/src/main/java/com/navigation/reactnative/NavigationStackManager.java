@@ -5,10 +5,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.google.android.material.transition.MaterialSharedAxis;
 
 import java.util.Map;
 
@@ -35,6 +37,32 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     @ReactProp(name = "exitAnim")
     public void setExitAnim(NavigationStackView view, String exitAnim) {
         view.exitAnim = exitAnim;
+    }
+
+    @ReactProp(name = "enterTrans")
+    public void setEnterTrans(NavigationStackView view, ReadableMap enterTrans) {
+        if (enterTrans != null) {
+            switch (enterTrans.getString("type")) {
+                case "sharedAxis" :
+                    view.enterTrans = new MaterialSharedAxis(MaterialSharedAxis.Z, true);
+                    break;
+            }
+        } else {
+            view.enterTrans = null;
+        }
+    }
+
+    @ReactProp(name = "exitTrans")
+    public void setExitTrans(NavigationStackView view, ReadableMap exitTrans) {
+        if (exitTrans != null) {
+            switch (exitTrans.getString("type")) {
+                case "sharedAxis" :
+                    view.exitTrans = new MaterialSharedAxis(MaterialSharedAxis.Z, true);
+                    break;
+            }
+        } else {
+            view.exitTrans = null;
+        }
     }
 
     @ReactProp(name = "sharedElements")

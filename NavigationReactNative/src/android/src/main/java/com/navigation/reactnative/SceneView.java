@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.view.View;
 
+import androidx.transition.Transition;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.UIManagerHelper;
@@ -20,6 +22,8 @@ public class SceneView extends ReactViewGroup {
     protected String sceneKey;
     protected String enterAnim;
     protected String exitAnim;
+    protected Transition enterTrans;
+    protected Transition exitTrans;
     private boolean landscape;
     public final HashSet<SharedElementView> sharedElements = new HashSet<>();
     public SharedElementMotion sharedElementMotion;

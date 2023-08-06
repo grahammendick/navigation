@@ -129,7 +129,11 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var hidesTabBar = hidesTabBar(state, data, currentCrumbs);
         var backgroundColor = backgroundColor(state, data, currentCrumbs) || '#fff';
         var landscape = landscape(state, data, currentCrumbs);
-        return {enterAnim, exitAnim, hidesTabBar, backgroundColor, landscape};
+        const enterTrans = typeof enterAnim === 'string' ? null : enterAnim;
+        const exitTrans = typeof exitAnim === 'string' ? null : exitAnim;
+        enterAnim = !enterTrans ? enterAnim : null;
+        exitAnim = !exitTrans ? exitAnim : null;
+        return {enterAnim, exitAnim, enterTrans, exitTrans, hidesTabBar, backgroundColor, landscape};
     }
     render() {
         var {navigationEvent} = this.state;
