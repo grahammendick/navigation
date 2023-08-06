@@ -136,10 +136,11 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 if (nextCrumb > 0) {
                     String prevKey = keys.getString(nextCrumb - 1);
                     SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(prevKey);
-                    prevFragment.setExitTransition(exitTrans);
-                    prevFragment.setReenterTransition(scene.enterTrans);
-                    if (prevFragment != null)
+                    if (prevFragment != null) {
+                        prevFragment.setExitTransition(exitTrans);
+                        prevFragment.setReenterTransition(scene.enterTrans);
                         sharedElements = getSharedElements(currentCrumb, crumb, prevFragment);
+                    }
                 }
                 if (sharedElements != null) {
                     for(Pair sharedElement : sharedElements) {
