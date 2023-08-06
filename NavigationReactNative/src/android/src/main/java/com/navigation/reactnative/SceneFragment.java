@@ -19,20 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 public class SceneFragment extends Fragment {
     private SceneView scene;
-    private final TransitionListenerAdapter enterTransitionListener = new TransitionListenerAdapter(){
-        @Override
-        public void onTransitionEnd(@NonNull Transition transition) {
-            super.onTransitionEnd(transition);
-            if (scene.getParent() != null)
-                ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
-        }
-
-        @Override
-        public void onTransitionPause(@NonNull Transition transition) {
-            super.onTransitionPause(transition);
-            ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
-        }
-    };
 
     public SceneFragment() {
         super();
@@ -89,14 +75,28 @@ public class SceneFragment extends Fragment {
     public void setEnterTransition(@Nullable Object transition) {
         super.setEnterTransition(transition);
         if (transition == null) return;
-        ((Transition) transition).addListener(enterTransitionListener);
+        ((Transition) transition).addListener(new TransitionListenerAdapter(){
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                super.onTransitionEnd(transition);
+                if (scene.getParent() instanceof NavigationStackView)
+                    ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+            }
+        });
     }
 
     @Override
     public void setReenterTransition(@Nullable Object transition) {
         super.setReenterTransition(transition);
         if (transition == null) return;
-        ((Transition) transition).addListener(enterTransitionListener);
+        ((Transition) transition).addListener(new TransitionListenerAdapter(){
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                super.onTransitionEnd(transition);
+                if (scene.getParent() instanceof NavigationStackView)
+                    ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+            }
+        });
     }
 
     @Override
