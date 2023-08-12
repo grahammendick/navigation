@@ -147,7 +147,9 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                         fragmentTransaction.addSharedElement(containerTransform ? sharedEl : sharedEl.getChildAt(0), (containerTransform ? "" : "element__") + sharedElement.second);
                     }
                 }
-                fragmentTransaction.setCustomAnimations(oldCrumb != -1 && sharedElements == null ? enter : 0, exit, sharedElements == null ? popEnter : 0, popExit);
+                boolean nonAnimatedEnter = oldCrumb == -1 || ((sharedElements != null || exitTrans != null) && enterTrans == null);
+                boolean nonAnimatedPopEnter = (sharedElements != null || scene.exitTrans != null) && scene.enterTrans == null;
+                fragmentTransaction.setCustomAnimations(!nonAnimatedEnter ? enter : 0, exit, !nonAnimatedPopEnter ? popEnter : 0, popExit);
                 SceneFragment fragment = new SceneFragment(scene, getSharedElementSet(sharedElementNames), containerTransform);
                 fragment.setEnterTransition(enterTrans);
                 fragment.setReturnTransition(scene.exitTrans);
