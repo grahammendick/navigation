@@ -72,7 +72,7 @@ public class SharedElementView extends ViewGroup {
             transition.addTransition(new ChangeImageTransform());
             return transition;
         } else {
-            MaterialContainerTransform transition = new MaterialContainerTransform();
+            MaterialContainerTransform transition = new MaterialContainerTransform(getContext(), enter);
             if (duration != -1) transition.setDuration(duration);
             transition.setFadeMode(fadeMode);
             transition.setTransitionDirection(enter ? MaterialContainerTransform.TRANSITION_DIRECTION_ENTER : MaterialContainerTransform.TRANSITION_DIRECTION_RETURN);
