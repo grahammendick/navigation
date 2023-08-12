@@ -76,6 +76,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cru
     const getSharedElement = (state, ...rest) => sceneProps(state)?.sharedElement ? returnOrCall(sceneProps(state)?.sharedElement, ...rest) : getSharedElementStack(state, ...rest);
     const getSharedElements = (state, ...rest) => sceneProps(state)?.sharedElements ? returnOrCall(sceneProps(state)?.sharedElements, ...rest) : getSharedElementsStack(state, ...rest);
     const backgroundColor = (state, ...rest) => sceneProps(state)?.backgroundColor ? returnOrCall(sceneProps(state)?.backgroundColor, ...rest) : backgroundColorStack(state, ...rest);
+    const getUnderlayColor = (state, ...rest) => state && sceneProps(state)?.underlayColor ? returnOrCall(sceneProps(state)?.underlayColor, ...rest) : returnOrCall(underlayColorStack, state, ...rest);
     const landscape = (state, ...rest) => sceneProps(state)?.landscape ? returnOrCall(sceneProps(state)?.landscape, ...rest) : landscapeStack(state, ...rest);
     const getAnimation = () => {
         let {state, data, oldState, oldData, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
@@ -107,7 +108,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cru
         enterAnim = !enterTrans ? enterAnim : null;
         exitAnim = !exitTrans ? exitAnim : null;
         const enterAnimOff = enterAnim === '';
-        const underlayColor = state && sceneProps(state)?.underlayColor ? returnOrCall(sceneProps(state)?.underlayColor, data, crumbs) : returnOrCall(underlayColorStack, state, data, crumbs);
+        const underlayColor = getUnderlayColor(state, data, crumbs);
         return {enterAnim, exitAnim, enterAnimOff, enterTrans, exitTrans, sharedElements, containerTransform, backgroundColor: underlayColor};
     }
     const {stateNavigator: prevStateNavigator, keys, rest, mostRecentEventCount} = stackState;
