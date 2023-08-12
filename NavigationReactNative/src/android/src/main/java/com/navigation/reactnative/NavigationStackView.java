@@ -107,7 +107,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(keys.getString(crumb));
             if (prevFragment != null && prevFragment.getScene() != null) {
                 ViewGroup parent = (ViewGroup) prevFragment.getScene().getParent();
-                if (parent != null) {
+                if (parent != null && parent != this) {
                     parent.removeView(prevFragment.getScene());
                     parent.endViewTransition(prevFragment.getScene());
                 }
