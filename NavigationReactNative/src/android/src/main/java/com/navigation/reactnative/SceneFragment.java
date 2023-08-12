@@ -56,7 +56,8 @@ public class SceneFragment extends Fragment {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+                    if (scene.getParent() instanceof NavigationStackView)
+                        ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
                 }
 
                 @Override
