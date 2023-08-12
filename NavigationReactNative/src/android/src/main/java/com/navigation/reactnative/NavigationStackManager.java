@@ -16,6 +16,7 @@ import com.google.android.material.transition.MaterialFade;
 import com.google.android.material.transition.MaterialFadeThrough;
 import com.google.android.material.transition.MaterialSharedAxis;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -48,7 +49,11 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
         if (enterTrans != null) {
             switch (enterTrans.getString("type")) {
                 case "sharedAxis" :
-                    view.enterTrans = new MaterialSharedAxis(MaterialSharedAxis.Z, true);
+                    Map<String, Integer> axisMap = new HashMap();
+                    axisMap.put("x", MaterialSharedAxis.X);
+                    axisMap.put("y", MaterialSharedAxis.Y);
+                    Integer axis = axisMap.get(enterTrans.getString("axis"));
+                    view.enterTrans = new MaterialSharedAxis(axis != null ? axis : MaterialSharedAxis.Z, true);
                     break;
                 case "elevationScale" :
                     view.enterTrans = new MaterialElevationScale(true);
@@ -73,7 +78,11 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
         if (exitTrans != null) {
             switch (exitTrans.getString("type")) {
                 case "sharedAxis" :
-                    view.exitTrans = new MaterialSharedAxis(MaterialSharedAxis.Z, true);
+                    Map<String, Integer> axisMap = new HashMap();
+                    axisMap.put("x", MaterialSharedAxis.X);
+                    axisMap.put("y", MaterialSharedAxis.Y);
+                    Integer axis = axisMap.get(exitTrans.getString("axis"));
+                    view.exitTrans = new MaterialSharedAxis(axis != null ? axis : MaterialSharedAxis.Z, true);
                     break;
                 case "elevationScale" :
                     view.exitTrans = new MaterialElevationScale(false);
