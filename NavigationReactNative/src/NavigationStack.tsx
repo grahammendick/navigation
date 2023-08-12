@@ -7,7 +7,7 @@ import Scene from './Scene';
 type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, sharedElements: any, backgroundColor: any, landscape: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, counter: number, mostRecentEventCount: number};
 
-const NavigationStack = ({underlayColor = '#000', title, crumbStyle: crumbStyleStack = () => null, unmountStyle: unmountStyleStack = () => null,
+const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, crumbStyle: crumbStyleStack = () => null, unmountStyle: unmountStyleStack = () => null,
     hidesTabBar: hidesTabBarStack = () => false, sharedElement: getSharedElementStack = () => null, sharedElements: getSharedElementsStack = () => null,
     backgroundColor: backgroundColorStack = () => null, landscape: landscapeStack = () => null, stackInvalidatedLink, renderScene, children}: NavigationStackProps) => {
     const resumeNavigationRef = useRef(null);
@@ -107,7 +107,8 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle: crumbStyleS
         enterAnim = !enterTrans ? enterAnim : null;
         exitAnim = !exitTrans ? exitAnim : null;
         const enterAnimOff = enterAnim === '';
-        return {enterAnim, exitAnim, enterAnimOff, enterTrans, exitTrans, sharedElements, containerTransform};
+        const underlayColor = state && sceneProps(state)?.underlayColor ? returnOrCall(sceneProps(state)?.underlayColor, data, crumbs) : returnOrCall(underlayColorStack, state, data, crumbs);
+        return {enterAnim, exitAnim, enterAnimOff, enterTrans, exitTrans, sharedElements, containerTransform, backgroundColor: underlayColor};
     }
     const {stateNavigator: prevStateNavigator, keys, rest, mostRecentEventCount} = stackState;
     if (prevStateNavigator !== stateNavigator && stateNavigator.stateContext.state) {
@@ -130,7 +131,7 @@ const NavigationStack = ({underlayColor = '#000', title, crumbStyle: crumbStyleS
             ref={ref}
             keys={keys}
             mostRecentEventCount={mostRecentEventCount}
-            style={[styles.stack, {backgroundColor: underlayColor}]}
+            style={styles.stack}
             {...getAnimation()}
             onWillNavigateBack={onWillNavigateBack}
             onNavigateToTop={onNavigateToTop}
