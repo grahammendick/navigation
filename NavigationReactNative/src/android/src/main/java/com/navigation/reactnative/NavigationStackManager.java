@@ -10,6 +10,7 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.google.android.material.transition.MaterialElevationScale;
 import com.google.android.material.transition.MaterialSharedAxis;
 
 import java.util.Map;
@@ -46,6 +47,9 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
                 case "sharedAxis" :
                     view.enterTrans = new MaterialSharedAxis(MaterialSharedAxis.Z, true);
                     break;
+                case "elevationScale" :
+                    view.enterTrans = new MaterialElevationScale(true);
+                    break;
             }
         } else {
             view.enterTrans = null;
@@ -59,6 +63,8 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
                 case "sharedAxis" :
                     view.exitTrans = new MaterialSharedAxis(MaterialSharedAxis.Z, true);
                     break;
+                case "elevationScale" :
+                    view.exitTrans = new MaterialElevationScale(false);
             }
         } else {
             view.exitTrans = null;
