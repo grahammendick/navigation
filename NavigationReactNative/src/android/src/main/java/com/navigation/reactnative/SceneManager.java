@@ -5,7 +5,10 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.google.android.material.transition.Hold;
 import com.google.android.material.transition.MaterialElevationScale;
+import com.google.android.material.transition.MaterialFade;
+import com.google.android.material.transition.MaterialFadeThrough;
 import com.google.android.material.transition.MaterialSharedAxis;
 
 import java.util.Map;
@@ -49,6 +52,16 @@ public class SceneManager extends ViewGroupManager<SceneView> {
                     break;
                 case "elevationScale" :
                     view.enterTrans = new MaterialElevationScale(true);
+                    break;
+                case "fade" :
+                    view.enterTrans = new MaterialFade();
+                    break;
+                case "fadeThrough" :
+                    view.enterTrans = new MaterialFadeThrough();
+                    break;
+                case "hold" :
+                    view.enterTrans = new Hold();
+                    break;
             }
         } else {
             view.enterTrans = null;
@@ -64,6 +77,16 @@ public class SceneManager extends ViewGroupManager<SceneView> {
                     break;
                 case "elevationScale" :
                     view.exitTrans = new MaterialElevationScale(false);
+                    break;
+                case "fade" :
+                    view.exitTrans = new MaterialFade();
+                    break;
+                case "fadeThrough" :
+                    view.exitTrans = new MaterialFadeThrough();
+                    break;
+                case "hold" :
+                    view.exitTrans = new Hold();
+                    break;
             }
         } else {
             view.exitTrans = null;
