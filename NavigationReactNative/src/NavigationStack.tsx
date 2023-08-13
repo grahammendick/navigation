@@ -80,8 +80,9 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cru
     const landscape = (state, ...rest) => sceneProps(state)?.landscape ? returnOrCall(sceneProps(state)?.landscape, ...rest) : landscapeStack(state, ...rest);
     const getAnimation = () => {
         let {state, data, oldState, oldData, oldUrl, crumbs, nextCrumb} = stateNavigator.stateContext;
+        const underlayColor = getUnderlayColor(state, data, crumbs);
         if (!oldState)
-            return null;
+            return {backgroundColor: underlayColor};
         const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
         let enterAnim, exitAnim, sharedElements;
         if (oldCrumbs.length < crumbs.length) {
@@ -108,7 +109,6 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cru
         enterAnim = !enterTrans ? enterAnim : null;
         exitAnim = !exitTrans ? exitAnim : null;
         const enterAnimOff = enterAnim === '';
-        const underlayColor = getUnderlayColor(state, data, crumbs);
         return {enterAnim, exitAnim, enterAnimOff, enterTrans, exitTrans, sharedElements, containerTransform, backgroundColor: underlayColor};
     }
     const {stateNavigator: prevStateNavigator, keys, rest, mostRecentEventCount} = stackState;
