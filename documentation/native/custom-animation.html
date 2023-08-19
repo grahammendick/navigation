@@ -93,7 +93,7 @@
     crumbStyle={from => from ? 'fade_in' : 'fade_out'}></code></pre>
             <h2 id="material-transitions">Material Motion Transitions</h2>
             <p>
-                You can also use the built in <a href="https://m3.material.io/styles/motion/transitions/transition-patterns">Motion Transitions</a> provided by Android's Material library (not supported before React Native 0.73). In our email app, we use a shared axis transition to emphasise the relationship between the the inbox and the open mail. By configuring them at the <code>Scene</code> level we override the default animations we've configured for the <code>NavigationStack</code>. The other types of transition are 'elevationScale', 'fadeThrough', 'fade' and 'hold'.
+                You can also use the built-in <a href="https://m3.material.io/styles/motion/transitions/transition-patterns">Motion Transitions</a> provided by Android's Material library (not supported before React Native 0.73). In our email app, we use a shared axis transition to emphasise the relationship between the inbox and the open mail. By configuring them at the <code>Scene</code> level we override the default animations we've configured for the <code>NavigationStack</code>. The other types of transition are 'elevationScale', 'fadeThrough', 'fade' and 'hold'.
             </p>
             <pre><code class="language-jsx">&lt;Scene stateKey="inbox" crumbStyle={from => ({type: 'sharedAxis'})}>&lt;Inbox />&lt;/Scene>
 &lt;Scene stateKey="mail" unmountStyle={from => ({type: 'sharedAxis'})}>&lt;Mail />&lt;/Scene></code></pre>
