@@ -72,9 +72,9 @@
   &lt;Text>Please come along to find out more about...&lt;/Text>
 &lt;/SharedElement></code></pre>
             <p> 
-                When you navigate between two <code>States</code>, the Navigation router calls the function you assign to the <code>sharedElement</code> prop of the <code>NavigationStack</code> component. You return the shared name of the views that will participate in the transition. In our email example, we check the destination is the 'mail' <code>State</code> before returning the name we gave to the selected email.
+                When you navigate between two <code>States</code>, the Navigation router calls the function you assign to the <code>sharedElements</code> prop of the <code>NavigationStack</code> component. You return the shared name of the views that will participate in the transition. Return an array of names if sharing multiple elements. In our email example, we check the destination is the 'mail' <code>State</code> before returning the name we gave to the selected email.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationStack sharedElement={(state, data) => (
+            <pre><code class="language-jsx">&lt;NavigationStack sharedElements={(state, data) => (
     state.key === 'mail' ? 'email' + data.id : null
   )}></code></pre>
             <p>
