@@ -30,7 +30,7 @@ public:
     auto imageSource = ImageSource{ImageSource::Type::Invalid};
     return {
       imageSource,
-      {imageSource, nullptr}};
+      {imageSource, nullptr, {}}};
   }
 
 #pragma mark - LayoutableShadowNode
