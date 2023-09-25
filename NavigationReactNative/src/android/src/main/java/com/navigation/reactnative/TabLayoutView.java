@@ -53,27 +53,15 @@ public class TabLayoutView extends TabLayout implements TabView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (this.getNavigationBarTabLayout() != null)
-            this.setVisibility(View.INVISIBLE);
         TabBarPagerView tabBar = getTabBar();
         if (tabBar != null) {
-            setupWithViewPager(tabBar);
-            tabBar.populateTabs();
+            if (tabBar.getTabLayout() == this) {
+                setupWithViewPager(tabBar);
+                tabBar.populateTabs();
+            } else {
+                this.setVisibility(View.INVISIBLE);
+            }
         }
-    }
-    private TabLayoutView getNavigationBarTabLayout() {
-        ViewGroup parent = (ViewGroup) getParent();
-        if (parent instanceof CoordinatorLayout) {
-            parent = (ViewGroup) parent.getChildAt(0);
-            if (parent.getChildAt(0) instanceof CollapsingBarView)
-                parent = (ViewGroup) parent.getChildAt(0);
-        }
-        for(int i = 0; parent != null && i < parent.getChildCount(); i++) {
-            View child = parent.getChildAt(i);
-            if (child instanceof com.navigation.reactnative.TabView && child != this)
-                return (TabLayoutView) child;
-        }
-        return null;
     }
 
     private TabBarPagerView getTabBar() {

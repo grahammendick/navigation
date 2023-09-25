@@ -99,7 +99,7 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
         }
     }
 
-    private TabLayoutView getTabLayout() {
+    TabLayoutView getTabLayout() {
         ViewGroup parent = (ViewGroup) getParent();
         if (parent instanceof CoordinatorLayout) {
             parent = (ViewGroup) parent.getChildAt(0);
