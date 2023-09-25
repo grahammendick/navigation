@@ -9,7 +9,6 @@ type NativeProps = $ReadOnly<{|
   selectedTintColor: ColorValue,
   unselectedTintColor: ColorValue,
   rippleColor: ColorValue,
-  bottomTabs: boolean,
   selectedIndicatorAtTop: boolean,
   scrollable: boolean,
 |}>;

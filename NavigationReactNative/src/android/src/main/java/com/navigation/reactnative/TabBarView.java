@@ -31,7 +31,6 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     private FragmentManager fragmentManager;
     private TabFragment selectedTabFragment;
     private Fragment fragment;
-    boolean tabsChanged = false;
     int pendingSelectedTab = 0;
     int selectedTab = 0;
     boolean scrollsToTop;
@@ -62,12 +61,9 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
         TabNavigationView tabNavigation = getTabNavigation();
         if (tabNavigation == null)
             return;
-        if (tabsChanged) {
-            tabNavigation.setTitles();
-            for (int i = 0; i < tabFragments.size(); i++) {
-                tabFragments.get(i).tabBarItem.setTabView(tabNavigation, i);
-            }
-            tabsChanged = false;
+        tabNavigation.setTitles();
+        for (int i = 0; i < tabFragments.size(); i++) {
+            tabFragments.get(i).tabBarItem.setTabView(tabNavigation, i);
         }
     }
 

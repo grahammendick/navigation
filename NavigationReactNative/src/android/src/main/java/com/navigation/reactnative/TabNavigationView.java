@@ -15,7 +15,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TabNavigationView extends BottomNavigationView implements TabView {
-    boolean bottomTabs;
     final int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
@@ -43,10 +42,16 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     }
 
     void setTitles() {
-        getMenu().clear();
         TabBarView tabBar = getTabBar();
         for (int i = 0; tabBar != null && i < tabBar.tabFragments.size(); i++) {
-            getMenu().add(Menu.NONE, i, i, getTabBar().tabFragments.get(i).tabBarItem.styledTitle);
+            CharSequence title = getTabBar().tabFragments.get(i).tabBarItem.styledTitle;
+            if (getMenu().findItem(i) != null)
+                getMenu().findItem(i).setTitle(title);
+            else
+                getMenu().add(Menu.NONE, i, i, title);
+        }
+        for(int i = getMenu().size() - 1; i >= tabBar.tabFragments.size(); i--) {
+            getMenu().removeItem(i);
         }
     }
 
@@ -54,7 +59,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         TabBarView tabBar = getTabBar();
-        if (bottomTabs && tabBar != null) {
+        if (tabBar != null) {
             autoSelected = true;
             setSelectedItemId(tabBar.selectedTab);
             autoSelected = false;

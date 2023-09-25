@@ -8,7 +8,6 @@ type NativeProps = $ReadOnly<{|
   ...ViewProps,
   selectedTintColor: ColorValue,
   unselectedTintColor: ColorValue,
-  bottomTabs: boolean,
   itemHorizontalTranslation: boolean,
   labelVisibilityMode: Int32,
   activeIndicatorColor: ColorValue,

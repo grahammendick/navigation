@@ -35,6 +35,7 @@ public class TabBarPagerManager extends ViewGroupManager<TabBarPagerView> {
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(TabBarPagerView view, int mostRecentEventCount) {
         view.mostRecentEventCount = mostRecentEventCount;
+        view.nativeEventCount = Math.max(view.nativeEventCount, view.mostRecentEventCount);
     }
 
     @ReactProp(name = "tabCount")
