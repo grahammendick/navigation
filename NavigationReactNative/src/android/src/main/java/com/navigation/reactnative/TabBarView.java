@@ -53,7 +53,8 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        setCurrentTab(selectedTab);
+        if (tabFragments.size() > selectedTab)
+            setCurrentTab(selectedTab);
         populateTabs();
     }
 
