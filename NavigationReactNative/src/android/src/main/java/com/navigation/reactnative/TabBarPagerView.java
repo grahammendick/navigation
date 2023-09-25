@@ -77,7 +77,6 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
                 MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
             layout(getLeft(), getTop(), getRight(), getBottom());
             measured = true;
-            getAdapter().notifyDataSetChanged();
         }
     }
 
