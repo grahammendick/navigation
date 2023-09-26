@@ -65,6 +65,7 @@ public class TabBarViewManager extends ViewGroupManager<TabBarView> implements N
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(TabBarView view, int mostRecentEventCount) {
         view.mostRecentEventCount = mostRecentEventCount;
+        view.nativeEventCount = Math.max(view.nativeEventCount, view.mostRecentEventCount);
     }
 
     @ReactProp(name = "tabCount")
