@@ -6,6 +6,7 @@ import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -95,6 +96,6 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
 
     @Override
     public long getItemId(int position) {
-        return tabBarItems.get(position).content.get(0).hashCode();
+        return tabBarItems.get(position).content.size() > 0 ? tabBarItems.get(position).content.get(0).hashCode() : RecyclerView.NO_ID;
     }
 }
