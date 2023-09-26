@@ -40,7 +40,6 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
     int nativeEventCount;
     int mostRecentEventCount;
     private boolean dataSetChanged = false;
-    private boolean jsUpdate = false;
 
     public TabBarPagerView(Context context) {
         super(context);
@@ -75,7 +74,6 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
     }
 
     void onAfterUpdateTransaction() {
-        jsUpdate = true;
         int eventLag = nativeEventCount - mostRecentEventCount;
         if (eventLag == 0 && getCurrentItem() != pendingSelectedTab) {
             selectedTab = pendingSelectedTab;
@@ -83,7 +81,6 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
                 setCurrentItem(selectedTab, false);
         }
         populateTabs();
-        jsUpdate = false;
     }
 
     void populateTabs() {
@@ -260,14 +257,12 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
 
         @Override
         public void onPageSelected(int position) {
-            if (!dataSetChanged && !jsUpdate)
+            if (!dataSetChanged)
                 nativeEventCount++;
             selectedTab = position;
-            if (!jsUpdate) {
-                ReactContext reactContext = (ReactContext) getContext();
-                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                eventDispatcher.dispatchEvent(new TabBarPagerView.TabSelectedEvent(getId(), position, nativeEventCount));
-            }
+            ReactContext reactContext = (ReactContext) getContext();
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(new TabBarPagerView.TabSelectedEvent(getId(), position, nativeEventCount));
             if (getAdapter() != null)
                 getAdapter().tabFragments.get(position).tabBarItem.pressed();
         }
