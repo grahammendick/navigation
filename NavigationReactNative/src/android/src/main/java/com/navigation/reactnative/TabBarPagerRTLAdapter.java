@@ -64,7 +64,7 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     }
 
     TabBarItemView getTabAt(int index) {
-        return tabBarItems.get(index);
+        return tabBarItems.size() > index ? tabBarItems.get(index) : null;
     }
 
     void addTab(TabBarItemView tab, int index) {

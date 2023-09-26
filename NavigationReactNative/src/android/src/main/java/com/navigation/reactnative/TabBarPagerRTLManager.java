@@ -64,7 +64,8 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
                 event.putInt("tab", position);
                 event.putInt("eventCount", tabBarPagerAdapter.nativeEventCount);
                 reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(tabBarPager.getId(),"onTabSelected", event);
-                tabBarPagerAdapter.getTabAt(position).pressed();
+                if (tabBarPagerAdapter.getTabAt(position) != null)
+                    tabBarPagerAdapter.getTabAt(position).pressed();
             }
 
             @Override
