@@ -55,6 +55,7 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
         tabBarPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
+                if (position == -1) return;
                 super.onPageSelected(position);
                 if (!tabBarPagerAdapter.dataSetChanged)
                     tabBarPagerAdapter.nativeEventCount++;
