@@ -71,13 +71,6 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
         if (getTabLayout() != null)
             getTabLayout().setupWithViewPager(this);
         populateTabs();
-        if (!measured) {
-            measure(
-                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-            measured = true;
-        }
     }
 
     void onAfterUpdateTransaction() {
