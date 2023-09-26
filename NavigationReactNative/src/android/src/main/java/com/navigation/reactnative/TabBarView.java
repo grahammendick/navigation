@@ -37,6 +37,7 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     int nativeEventCount;
     int mostRecentEventCount;
     private int selectedIndex = 0;
+    private boolean jsUpdate = false;
 
     public TabBarView(Context context) {
         super(context);
@@ -79,28 +80,32 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     }
 
     void onAfterUpdateTransaction() {
+        jsUpdate = true;
         int eventLag = nativeEventCount - mostRecentEventCount;
         if (eventLag == 0 && pendingSelectedTab != selectedTab) {
             selectedTab = pendingSelectedTab;
             if (tabFragments.size() > selectedTab)
                 setCurrentTab(selectedTab);
         }
-        if (tabFragments.size() == 0)
-            return;
-        populateTabs();
-        if (selectedTabFragment != null) {
-            int reselectedTab = tabFragments.indexOf(selectedTabFragment);
-            selectedTab = reselectedTab != -1 ? reselectedTab : Math.min(selectedTab, tabFragments.size() - 1);
+        if (tabFragments.size() != 0) {
+            populateTabs();
+            if (selectedTabFragment != null) {
+                int reselectedTab = tabFragments.indexOf(selectedTabFragment);
+                selectedTab = reselectedTab != -1 ? reselectedTab : Math.min(selectedTab, tabFragments.size() - 1);
+            }
+            setCurrentTab(selectedTab);
         }
-        setCurrentTab(selectedTab);
+        jsUpdate = false;
     }
 
     void setCurrentTab(int index) {
         if (index != selectedIndex) {
-            nativeEventCount++;
-            ReactContext reactContext = (ReactContext) getContext();
-            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-            eventDispatcher.dispatchEvent(new TabBarView.TabSelectedEvent(getId(), index, nativeEventCount));
+            if (!jsUpdate) {
+                nativeEventCount++;
+                ReactContext reactContext = (ReactContext) getContext();
+                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                eventDispatcher.dispatchEvent(new TabBarView.TabSelectedEvent(getId(), index, nativeEventCount));
+            }
             tabFragments.get(index).tabBarItem.pressed();
         }
         selectedTab = selectedIndex = index;
