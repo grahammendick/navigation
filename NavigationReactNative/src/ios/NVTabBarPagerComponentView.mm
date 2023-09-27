@@ -52,6 +52,7 @@ using namespace facebook::react;
     [self ensurePageViewController];
     const auto &newViewProps = *std::static_pointer_cast<NVTabBarPagerProps const>(props);
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
+    _nativeEventCount = MAX(_nativeEventCount, _mostRecentEventCount);
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     NSInteger selectedTab = newViewProps.selectedTab;
     if (eventLag == 0 && _selectedTab != selectedTab) {

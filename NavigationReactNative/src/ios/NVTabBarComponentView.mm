@@ -108,6 +108,7 @@ using namespace facebook::react;
         [_tabBarController.tabBar setUnselectedItemTintColor: unselectedTintColor];
     }
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
+    _nativeEventCount = MAX(_nativeEventCount, _mostRecentEventCount);
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     BOOL tabChanged = eventLag == 0 && _selectedTab != newViewProps.selectedTab;
     if (tabChanged)
