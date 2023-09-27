@@ -54,6 +54,7 @@
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
+    _nativeEventCount = MAX(_nativeEventCount, _mostRecentEventCount);
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     if (eventLag == 0 && _tabs.count > _selectedTab) {
         [self setCurrentTab:_selectedTab];
