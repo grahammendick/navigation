@@ -73,13 +73,15 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
         tabBarPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
+                if (position == -1) return;
                 super.onPageSelected(position);
                 if (!tabBarPagerAdapter.dataSetChanged)
                     tabBarPagerAdapter.nativeEventCount++;
                 tabBarPagerAdapter.selectedTab = position;
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, tabBarPager.getId());
                 eventDispatcher.dispatchEvent(new TabBarPagerRTLViewManager.TabSelectedEvent(tabBarPager.getId(), position, tabBarPagerAdapter.nativeEventCount));
-                tabBarPagerAdapter.getTabAt(position).pressed();
+                if (tabBarPagerAdapter.getTabAt(position) != null)
+                    tabBarPagerAdapter.getTabAt(position).pressed();
             }
 
             @Override
