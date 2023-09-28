@@ -136,7 +136,6 @@ using namespace facebook::react;
     UIViewController *viewController = [[UIViewController alloc] init];
     viewController.view = childComponentView;
     [_tabs insertObject:viewController atIndex:index];
-
 }
 
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
