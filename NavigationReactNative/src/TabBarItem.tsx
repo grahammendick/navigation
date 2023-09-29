@@ -11,9 +11,7 @@ const TabBarItem = ({selected, onPress, children, title, image, systemItem, badg
     const [freeze, setFreeze] = useState(false);
     const backHandler = useRef(createBackHandler());
     const onLoad = useRef({ onLoad: () => setLoaded(true)});
-    useEffect(() => {
-        if(freeze !== freezable) setFreeze(freezable);
-    }, [freeze, freezable]);
+    if(freeze !== freezable) setFreeze(freezable);
     useEffect(() => {
         setFreeze(false);
     }, [image, systemItem, badge, title]);

@@ -5,6 +5,7 @@ import BackButton from './BackButton';
 class TabBar extends React.Component<any, any> {
     private ref: React.RefObject<View>;
     private swiping = false;
+    private tabCount = 0;
     constructor(props) {
         super(props);
         this.state = {selectedTab: props.tab || props.defaultTab, mostRecentEventCount: 0};
@@ -23,6 +24,12 @@ class TabBar extends React.Component<any, any> {
         if (tab != null && tab !== selectedTab)
             return {selectedTab: tab};
         return null;
+    }
+    componentDidMount(): void {
+        this.tabCount = React.Children.toArray(this.props.children).filter(child => !!child).length;
+    }
+    componentDidUpdate(): void {
+        this.tabCount = React.Children.toArray(this.props.children).filter(child => !!child).length;
     }
     onTabSelected({nativeEvent}) {
         var {eventCount: mostRecentEventCount, tab} = nativeEvent;
@@ -106,7 +113,8 @@ class TabBar extends React.Component<any, any> {
                             .filter(child => !!child)
                             .map((child: any, index) => {
                                 var selected = index === this.state.selectedTab;
-                                var freezable = Math.abs(index - this.state.selectedTab) > (Platform.OS === 'android' && !primary ? 1 : 0);
+                                var freezable = Math.abs(index - this.state.selectedTab) > (Platform.OS === 'android' && !primary ? 1 : 0)
+                                    && tabBarItems.length === this.tabCount;
                                 return React.cloneElement(child, {...child.props, index, selected, freezable})
                             })}
                 </TabBar>}
