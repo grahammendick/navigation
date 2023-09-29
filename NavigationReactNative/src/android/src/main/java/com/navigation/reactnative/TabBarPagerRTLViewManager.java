@@ -199,6 +199,8 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
                 setCurrentItem(view, getAdapter(view).selectedTab);
         }
         getAdapter(view).populateTabs(getTabLayout(view));
+        getAdapter(view).selectedTab = Math.min(getAdapter(view).selectedTab, getAdapter(view).getTabsCount() - 1);
+        setCurrentItem(view, getAdapter(view).selectedTab);
     }
 
     @Override
