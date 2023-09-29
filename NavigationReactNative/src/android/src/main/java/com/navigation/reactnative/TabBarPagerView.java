@@ -233,6 +233,7 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
 
         @Override
         public int getItemPosition(@NonNull Object object) {
+            if (dataSetChanged) return POSITION_NONE;
             for(int i = 0; i < tabFragments.size(); i++) {
                 TabFragment tabFragment = tabFragments.get(i);
                 if (tabFragment == object && !tabFragment.viewChanged())
