@@ -25,10 +25,14 @@ class TabBar extends React.Component<any, any> {
         return null;
     }
     componentDidMount(): void {
-        this.setState({tabCount: React.Children.toArray(this.props.children).filter(child => !!child).length});
+        const tabCount = React.Children.toArray(this.props.children).filter(child => !!child).length;
+        if (this.state.tabCount !== tabCount)
+        this.setState({tabCount});
     }
     componentDidUpdate(): void {
-        this.setState({tabCount: React.Children.toArray(this.props.children).filter(child => !!child).length});
+        const tabCount = React.Children.toArray(this.props.children).filter(child => !!child).length;
+        if (this.state.tabCount !== tabCount)
+        this.setState({tabCount});
     }
     onTabSelected({nativeEvent}) {
         var {eventCount: mostRecentEventCount, tab} = nativeEvent;
