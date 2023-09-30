@@ -226,6 +226,8 @@ using namespace facebook::react;
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers insertObject:[(NVTabBarItemComponentView *) childComponentView navigationController] atIndex:index];
     [_tabBarController setViewControllers:controllers];
+    if (_selectedTab == controllers.count - 1)
+        _tabBarController.selectedIndex = _selectedTab;
     ((NVTabBarItemComponentView *) childComponentView).stackDidChangeBlock = ^(NVTabBarItemComponentView *tabBarItemView){
         NSMutableArray *controllers = [NSMutableArray arrayWithArray:[self->_tabBarController viewControllers]];
         [controllers insertObject:[tabBarItemView navigationController] atIndex: [self.reactSubviews indexOfObject:tabBarItemView]];
