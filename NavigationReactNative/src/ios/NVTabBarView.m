@@ -33,6 +33,8 @@
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers insertObject:[(NVTabBarItemView *) subview navigationController] atIndex:atIndex];
     [_tabBarController setViewControllers:controllers];
+    if (_selectedTab == controllers.count - 1)
+        _tabBarController.selectedIndex = _selectedTab;
     ((NVTabBarItemView *) subview).stackDidChangeBlock = ^(NVTabBarItemView *tabBarItemView){
         NSMutableArray *controllers = [NSMutableArray arrayWithArray:[self->_tabBarController viewControllers]];
         [controllers replaceObjectAtIndex:[self.reactSubviews indexOfObject:tabBarItemView] withObject:[tabBarItemView navigationController]];
