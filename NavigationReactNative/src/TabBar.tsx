@@ -5,10 +5,9 @@ import BackButton from './BackButton';
 class TabBar extends React.Component<any, any> {
     private ref: React.RefObject<View>;
     private swiping = false;
-    private tabCount = 0;
     constructor(props) {
         super(props);
-        this.state = {selectedTab: props.tab || props.defaultTab, mostRecentEventCount: 0};
+        this.state = {selectedTab: props.tab || props.defaultTab, mostRecentEventCount: 0, tabCount: 0};
         this.ref = React.createRef<View>();
         this.onTabSelected = this.onTabSelected.bind(this);
         this.onTabSwipeStateChanged = this.onTabSwipeStateChanged.bind(this);
@@ -26,10 +25,10 @@ class TabBar extends React.Component<any, any> {
         return null;
     }
     componentDidMount(): void {
-        this.tabCount = React.Children.toArray(this.props.children).filter(child => !!child).length;
+        this.setState({tabCount: React.Children.toArray(this.props.children).filter(child => !!child).length});
     }
     componentDidUpdate(): void {
-        this.tabCount = React.Children.toArray(this.props.children).filter(child => !!child).length;
+        this.setState({tabCount: React.Children.toArray(this.props.children).filter(child => !!child).length});
     }
     onTabSelected({nativeEvent}) {
         var {eventCount: mostRecentEventCount, tab} = nativeEvent;
@@ -114,7 +113,7 @@ class TabBar extends React.Component<any, any> {
                             .map((child: any, index) => {
                                 var selected = index === this.state.selectedTab;
                                 var freezable = Math.abs(index - this.state.selectedTab) > (Platform.OS === 'android' && !primary ? 1 : 0)
-                                    && tabBarItems.length === this.tabCount;
+                                    && tabBarItems.length === this.state.tabCount;
                                 return React.cloneElement(child, {...child.props, index, selected, freezable})
                             })}
                 </TabBar>}
