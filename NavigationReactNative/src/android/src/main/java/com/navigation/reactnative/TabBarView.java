@@ -37,6 +37,7 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     int nativeEventCount;
     int mostRecentEventCount;
     private int selectedIndex = 0;
+    private boolean onAfterUpdateTransactionRequested = false;
 
     public TabBarView(Context context) {
         super(context);
@@ -79,6 +80,7 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     }
 
     void onAfterUpdateTransaction() {
+        onAfterUpdateTransactionRequested = false;
         int eventLag = nativeEventCount - mostRecentEventCount;
         if (eventLag == 0 && pendingSelectedTab != selectedTab) {
             selectedTab = pendingSelectedTab;
@@ -94,6 +96,16 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
         }
         setCurrentTab(selectedTab);
     }
+
+    void requestOnAfterUpdateTransaction() {
+        if (!onAfterUpdateTransactionRequested) {
+            onAfterUpdateTransactionRequested = true;
+            post(afterUpdateTransactionRequested);
+        }
+    }
+    private final Runnable afterUpdateTransactionRequested = () -> {
+        if (onAfterUpdateTransactionRequested) onAfterUpdateTransaction();
+    };
 
     void setCurrentTab(int index) {
         if (index != selectedIndex) {
