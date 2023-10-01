@@ -26,13 +26,11 @@ class TabBar extends React.Component<any, any> {
     }
     componentDidMount(): void {
         const tabCount = React.Children.toArray(this.props.children).filter(child => !!child).length;
-        if (this.state.tabCount !== tabCount)
-            this.setState({tabCount});
+        if (this.state.tabCount !== tabCount) this.setState({tabCount});
     }
     componentDidUpdate(): void {
         const tabCount = React.Children.toArray(this.props.children).filter(child => !!child).length;
-        if (this.state.tabCount !== tabCount)
-            this.setState({tabCount});
+        if (this.state.tabCount !== tabCount) this.setState({tabCount});
     }
     onTabSelected({nativeEvent}) {
         var {eventCount: mostRecentEventCount, tab} = nativeEvent;
@@ -117,7 +115,7 @@ class TabBar extends React.Component<any, any> {
                             .map((child: any, index) => {
                                 var selected = index === this.state.selectedTab;
                                 var freezable = Math.abs(index - this.state.selectedTab) > (Platform.OS === 'android' && !primary ? 1 : 0)
-                                    && tabBarItems.length === this.state.tabCount;
+                                    && (!this.state.tabCount || tabBarItems.length === this.state.tabCount);
                                 return React.cloneElement(child, {...child.props, index, selected, freezable})
                             })}
                 </TabBar>}
