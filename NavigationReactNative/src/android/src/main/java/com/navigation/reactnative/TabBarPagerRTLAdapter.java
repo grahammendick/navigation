@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -22,10 +23,58 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     int nativeEventCount;
     int mostRecentEventCount;
     boolean dataSetChanged = false;
+    private boolean onAfterUpdateTransactionRequested = false;
 
     public TabBarPagerRTLAdapter(@NonNull Fragment fragment) {
         super(fragment);
         this.fragment = fragment;
+    }
+
+    void onAfterUpdateTransaction(ViewPager2 view) {
+        onAfterUpdateTransactionRequested = false;
+        int eventLag = nativeEventCount - mostRecentEventCount;
+        if (eventLag == 0 && view.getCurrentItem() != pendingSelectedTab) {
+            selectedTab = pendingSelectedTab;
+            if (getTabsCount() > selectedTab)
+                setCurrentItem(view, selectedTab);
+        }
+        populateTabs(getTabLayout(view));
+        selectedTab = Math.min(selectedTab, getTabsCount() - 1);
+        setCurrentItem(view, selectedTab);
+    }
+
+    void setCurrentItem(ViewPager2 view, int selectedTab) {
+        view.post(() -> {
+            view.measure(
+                View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(view.getHeight(), View.MeasureSpec.EXACTLY));
+            view.layout(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
+        });
+        view.setCurrentItem(selectedTab, false);
+    }
+
+    void requestOnAfterUpdateTransaction(ViewPager2 view) {
+        if (!onAfterUpdateTransactionRequested) {
+            onAfterUpdateTransactionRequested = true;
+            view.post(() -> {
+                if (onAfterUpdateTransactionRequested) onAfterUpdateTransaction(view);
+            });
+        }
+    }
+
+    TabLayoutRTLView getTabLayout(View view) {
+        ViewGroup parent = (ViewGroup) view.getParent();
+        if (parent instanceof CoordinatorLayout) {
+            parent = (ViewGroup) parent.getChildAt(0);
+            if (parent.getChildAt(0) instanceof CollapsingBarView)
+                parent = (ViewGroup) parent.getChildAt(0);
+        }
+        for(int i = 0; parent != null && i < parent.getChildCount(); i++) {
+            View child = parent.getChildAt(i);
+            if (child instanceof TabView)
+                return (TabLayoutRTLView) child;
+        }
+        return null;
     }
 
     void populateTabs(TabLayoutRTLView tabView) {
