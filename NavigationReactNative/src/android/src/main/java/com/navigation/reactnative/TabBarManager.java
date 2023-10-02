@@ -59,6 +59,7 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
     public void addView(TabBarView parent, View child, int index) {
         ((TabBarItemView) child).changeListener = parent;
         parent.tabFragments.add(index, new TabFragment((TabBarItemView) child));
+        parent.requestOnAfterUpdateTransaction();
     }
 
     @Override
