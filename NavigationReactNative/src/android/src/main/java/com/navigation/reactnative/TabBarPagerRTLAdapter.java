@@ -39,8 +39,10 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
                 setCurrentItem(view, selectedTab);
         }
         populateTabs(getTabLayout(view));
-        selectedTab = Math.min(selectedTab, getTabsCount() - 1);
-        setCurrentItem(view, selectedTab);
+        if (getTabsCount() > 0) {
+            selectedTab = Math.min(selectedTab, getTabsCount() - 1);
+            setCurrentItem(view, selectedTab);
+        }
     }
 
     void setCurrentItem(ViewPager2 view, int selectedTab) {
