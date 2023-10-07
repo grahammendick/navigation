@@ -123,7 +123,9 @@ public class TabBarViewManager extends ViewGroupManager<TabBarView> implements N
     @Override
     protected void onAfterUpdateTransaction(@NonNull TabBarView view) {
         super.onAfterUpdateTransaction(view);
+        view.jsUpdate = true;
         view.onAfterUpdateTransaction();
+        view.jsUpdate = false;
     }
 
     @Override

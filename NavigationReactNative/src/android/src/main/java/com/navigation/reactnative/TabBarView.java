@@ -38,6 +38,7 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     int mostRecentEventCount;
     private int selectedIndex = 0;
     private boolean onAfterUpdateTransactionRequested = false;
+    boolean jsUpdate = false;
 
     public TabBarView(Context context) {
         super(context);
@@ -109,10 +110,12 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
 
     void setCurrentTab(int index) {
         if (index != selectedIndex) {
-            nativeEventCount++;
-            ReactContext reactContext = (ReactContext) getContext();
-            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-            eventDispatcher.dispatchEvent(new TabBarView.TabSelectedEvent(getId(), index, nativeEventCount));
+            if (!jsUpdate) {
+                nativeEventCount++;
+                ReactContext reactContext = (ReactContext) getContext();
+                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                eventDispatcher.dispatchEvent(new TabBarView.TabSelectedEvent(getId(), index, nativeEventCount));
+            }
             tabFragments.get(index).tabBarItem.pressed();
         }
         selectedTab = selectedIndex = index;

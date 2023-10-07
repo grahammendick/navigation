@@ -24,6 +24,7 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     int mostRecentEventCount;
     boolean dataSetChanged = false;
     private boolean onAfterUpdateTransactionRequested = false;
+    boolean jsUpdate = false;
 
     public TabBarPagerRTLAdapter(@NonNull Fragment fragment) {
         super(fragment);

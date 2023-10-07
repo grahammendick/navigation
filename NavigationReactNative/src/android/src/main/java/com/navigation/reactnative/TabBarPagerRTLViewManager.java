@@ -74,11 +74,13 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
             public void onPageSelected(int position) {
                 if (position == -1) return;
                 super.onPageSelected(position);
-                if (!tabBarPagerAdapter.dataSetChanged)
+                if (!tabBarPagerAdapter.dataSetChanged && !tabBarPagerAdapter.jsUpdate)
                     tabBarPagerAdapter.nativeEventCount++;
                 tabBarPagerAdapter.selectedTab = position;
-                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, tabBarPager.getId());
-                eventDispatcher.dispatchEvent(new TabBarPagerRTLViewManager.TabSelectedEvent(tabBarPager.getId(), position, tabBarPagerAdapter.nativeEventCount));
+                if (!tabBarPagerAdapter.jsUpdate) {
+                    EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, tabBarPager.getId());
+                    eventDispatcher.dispatchEvent(new TabBarPagerRTLViewManager.TabSelectedEvent(tabBarPager.getId(), position, tabBarPagerAdapter.nativeEventCount));
+                }
                 if (tabBarPagerAdapter.getTabAt(position) != null)
                     tabBarPagerAdapter.getTabAt(position).pressed();
             }
@@ -182,7 +184,9 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
     @Override
     protected void onAfterUpdateTransaction(@Nonnull ViewPager2 view) {
         super.onAfterUpdateTransaction(view);
+        getAdapter(view).jsUpdate = true;
         getAdapter(view).onAfterUpdateTransaction(view);
+        getAdapter(view).jsUpdate = false;
     }
 
     @Override
