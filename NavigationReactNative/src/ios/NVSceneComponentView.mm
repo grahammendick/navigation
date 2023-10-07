@@ -40,7 +40,6 @@ using namespace facebook::react;
     }
 }
 
-
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
     [self ensureViewController];
