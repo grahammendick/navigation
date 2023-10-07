@@ -16,7 +16,7 @@ const TabBarItem = ({selected, onPress, children, title, image, systemItem, badg
             if (global.nativeFabricUIManager && freezable) {
                 var timer = setTimeout(() => {
                     setFreeze(freezable);
-                }, 1000);
+                }, 100);
             } else {
                 setFreeze(freezable);
             }
