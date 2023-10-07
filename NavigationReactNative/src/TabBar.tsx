@@ -7,7 +7,7 @@ class TabBar extends React.Component<any, any> {
     private swiping = false;
     constructor(props) {
         super(props);
-        this.state = {selectedTab: props.tab || props.defaultTab, mostRecentEventCount: 0, tabCount: 0};
+        this.state = {selectedTab: props.tab || props.defaultTab, mostRecentEventCount: 0};
         this.ref = React.createRef<View>();
         this.onTabSelected = this.onTabSelected.bind(this);
         this.onTabSwipeStateChanged = this.onTabSwipeStateChanged.bind(this);
@@ -23,14 +23,6 @@ class TabBar extends React.Component<any, any> {
         if (tab != null && tab !== selectedTab)
             return {selectedTab: tab};
         return null;
-    }
-    componentDidMount(): void {
-        const tabCount = React.Children.toArray(this.props.children).filter(child => !!child).length;
-        if (this.state.tabCount !== tabCount) this.setState({tabCount});
-    }
-    componentDidUpdate(): void {
-        const tabCount = React.Children.toArray(this.props.children).filter(child => !!child).length;
-        if (this.state.tabCount !== tabCount) this.setState({tabCount});
     }
     onTabSelected({nativeEvent}) {
         var {eventCount: mostRecentEventCount, tab} = nativeEvent;
@@ -114,8 +106,7 @@ class TabBar extends React.Component<any, any> {
                             .filter(child => !!child)
                             .map((child: any, index) => {
                                 var selected = index === this.state.selectedTab;
-                                var freezable = Math.abs(index - this.state.selectedTab) > (Platform.OS === 'android' && !primary ? 1 : 0)
-                                    && (!this.state.tabCount || tabBarItems.length === this.state.tabCount);
+                                var freezable = Math.abs(index - this.state.selectedTab) > (Platform.OS === 'android' && !primary ? 1 : 0);
                                 return React.cloneElement(child, {...child.props, index, selected, freezable})
                             })}
                 </TabBar>}
