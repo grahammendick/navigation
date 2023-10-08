@@ -80,7 +80,9 @@ public class TabBarPagerManager extends ViewGroupManager<TabBarPagerView> {
     @Override
     protected void onAfterUpdateTransaction(@Nonnull TabBarPagerView view) {
         super.onAfterUpdateTransaction(view);
+        view.jsUpdate = true;
         view.onAfterUpdateTransaction();
+        view.jsUpdate = false;
     }
 
     @Override
