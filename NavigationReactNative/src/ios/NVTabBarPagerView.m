@@ -12,6 +12,7 @@
     NSMutableArray<UIViewController *> *_tabs;
     NSInteger _nativeEventCount;
     NSInteger _selectedIndex;
+    bool _jsUpdate;
 }
 
 - (id)init
@@ -57,7 +58,9 @@
     _nativeEventCount = MAX(_nativeEventCount, _mostRecentEventCount);
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     if (eventLag == 0 && _tabs.count > _selectedTab) {
+        _jsUpdate = true;
         [self setCurrentTab:_selectedTab];
+        _jsUpdate = false;
     }
 }
 
@@ -80,11 +83,13 @@
 - (void)setCurrentTab:(NSInteger)index
 {
     if (index != _selectedIndex) {
-        _nativeEventCount++;
-        self.onTabSelected(@{
-            @"tab": @(index),
-            @"eventCount": @(_nativeEventCount),
-        });
+        if (!_jsUpdate) {
+            _nativeEventCount++;
+            self.onTabSelected(@{
+                @"tab": @(index),
+                @"eventCount": @(_nativeEventCount),
+            });
+        }
         NVTabBarItemView *tabBarItem = ((NVTabBarItemView *) _tabs[index].view);
         if (!!tabBarItem.onPress) {
             tabBarItem.onPress(nil);
