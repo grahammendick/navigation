@@ -14,6 +14,7 @@
     NSInteger _selectedIndex;
     NSInteger _nativeEventCount;
     bool _firstSceneReselected;
+    bool _jsUpdate;
 }
 
 - (id)init
@@ -68,7 +69,9 @@
         } else {
             _selectedIndex = _tabBarController.selectedIndex;
         }
+        _jsUpdate = true;
         [self selectTab];
+        _jsUpdate = false;
     }
     if (@available(iOS 13.0, *)) {
         UITabBarAppearance *appearance = [UITabBarAppearance new];
@@ -181,12 +184,14 @@
 
 -(void) selectTab
 {
-    _nativeEventCount++;
+    if (!_jsUpdate) {
+        _nativeEventCount++;
+        self.onTabSelected(@{
+            @"tab": @(_selectedIndex),
+            @"eventCount": @(_nativeEventCount),
+        });
+    }
     NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[_selectedIndex];
-    self.onTabSelected(@{
-        @"tab": @(_selectedIndex),
-        @"eventCount": @(_nativeEventCount),
-    });
     if (!!tabBarItem.onPress) {
         tabBarItem.onPress(nil);
     }
