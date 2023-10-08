@@ -24,6 +24,7 @@ using namespace facebook::react;
     NSMutableArray<UIViewController *> *_tabs;
     NSInteger _nativeEventCount;
     NSInteger _selectedIndex;
+    bool _jsUpdate;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -58,7 +59,9 @@ using namespace facebook::react;
     if (eventLag == 0 && _selectedTab != selectedTab) {
         _selectedTab = selectedTab;
         dispatch_async(dispatch_get_main_queue(), ^{
+            self->_jsUpdate = true;
             [self setCurrentTab:selectedTab];
+            self->_jsUpdate = false;
         });
     }
     _scrollsToTop = newViewProps.scrollsToTop;
@@ -91,13 +94,16 @@ using namespace facebook::react;
 {
     if (_tabs.count <= index) return;
     if (index != _selectedIndex) {
-        _nativeEventCount++;
+        if (!_jsUpdate)
+            _nativeEventCount++;
         if (_eventEmitter != nullptr) {
-            std::static_pointer_cast<NVTabBarPagerEventEmitter const>(_eventEmitter)
-                ->onTabSelected(NVTabBarPagerEventEmitter::OnTabSelected{
-                    .tab = static_cast<int>(index),
-                    .eventCount = static_cast<int>(_nativeEventCount)
-                });
+            if (!_jsUpdate) {
+                std::static_pointer_cast<NVTabBarPagerEventEmitter const>(_eventEmitter)
+                    ->onTabSelected(NVTabBarPagerEventEmitter::OnTabSelected{
+                        .tab = static_cast<int>(index),
+                        .eventCount = static_cast<int>(_nativeEventCount)
+                    });
+            }
             NVTabBarItemComponentView *tabBarItem = ((NVTabBarItemComponentView *) _tabs[index].view);
             [tabBarItem onPress];
         }
