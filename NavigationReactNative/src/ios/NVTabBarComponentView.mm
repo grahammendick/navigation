@@ -27,6 +27,7 @@ using namespace facebook::react;
     NSInteger _selectedTab;
     NSInteger _nativeEventCount;
     bool _firstSceneReselected;
+    bool _jsUpdate;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -117,11 +118,15 @@ using namespace facebook::react;
         if (tabChanged) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self->_tabBarController.selectedIndex = self->_selectedTab;
+                self->_jsUpdate = true;
                 [self selectTab];
+                self->_jsUpdate = false;
             });
         } else {
             _selectedTab = _tabBarController.selectedIndex;
+            _jsUpdate = true;
             [self selectTab];
+            _jsUpdate = false;
         }
     }
     _scrollsToTop = newViewProps.scrollsToTop;
@@ -194,14 +199,17 @@ using namespace facebook::react;
 
 -(void) selectTab
 {
-    _nativeEventCount++;
+    if (!_jsUpdate)
+        _nativeEventCount++;
     NVTabBarItemComponentView *tabBarItem = (NVTabBarItemComponentView *)self.reactSubviews[_selectedTab];
     if (_eventEmitter != nullptr) {
-        std::static_pointer_cast<NVTabBarEventEmitter const>(_eventEmitter)
-            ->onTabSelected(NVTabBarEventEmitter::OnTabSelected{
-                .tab = static_cast<int>(_selectedTab),
-                .eventCount = static_cast<int>(_nativeEventCount)
-            });
+        if (!_jsUpdate) {
+            std::static_pointer_cast<NVTabBarEventEmitter const>(_eventEmitter)
+                ->onTabSelected(NVTabBarEventEmitter::OnTabSelected{
+                    .tab = static_cast<int>(_selectedTab),
+                    .eventCount = static_cast<int>(_nativeEventCount)
+                });
+        }
         [tabBarItem onPress];
     }
 }
