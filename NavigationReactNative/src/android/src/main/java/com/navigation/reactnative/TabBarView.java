@@ -31,13 +31,14 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     private FragmentManager fragmentManager;
     private TabFragment selectedTabFragment;
     private Fragment fragment;
-    boolean tabsChanged = false;
     int pendingSelectedTab = 0;
     int selectedTab = 0;
     boolean scrollsToTop;
     int nativeEventCount;
     int mostRecentEventCount;
     private int selectedIndex = 0;
+    private boolean onAfterUpdateTransactionRequested = false;
+    boolean jsUpdate = false;
 
     public TabBarView(Context context) {
         super(context);
@@ -54,7 +55,8 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        setCurrentTab(selectedTab);
+        if (tabFragments.size() > selectedTab)
+            setCurrentTab(selectedTab);
         populateTabs();
     }
 
@@ -62,12 +64,9 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
         TabNavigationView tabNavigation = getTabNavigation();
         if (tabNavigation == null)
             return;
-        if (tabsChanged) {
-            tabNavigation.setTitles();
-            for (int i = 0; i < tabFragments.size(); i++) {
-                tabFragments.get(i).tabBarItem.setTabView(tabNavigation, i);
-            }
-            tabsChanged = false;
+        tabNavigation.setTitles();
+        for (int i = 0; i < tabFragments.size(); i++) {
+            tabFragments.get(i).tabBarItem.setTabView(tabNavigation, i);
         }
     }
 
@@ -82,6 +81,7 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     }
 
     void onAfterUpdateTransaction() {
+        onAfterUpdateTransactionRequested = false;
         int eventLag = nativeEventCount - mostRecentEventCount;
         if (eventLag == 0 && pendingSelectedTab != selectedTab) {
             selectedTab = pendingSelectedTab;
@@ -98,12 +98,24 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
         setCurrentTab(selectedTab);
     }
 
+    void requestOnAfterUpdateTransaction() {
+        if (!onAfterUpdateTransactionRequested) {
+            onAfterUpdateTransactionRequested = true;
+            post(afterUpdateTransactionRequested);
+        }
+    }
+    private final Runnable afterUpdateTransactionRequested = () -> {
+        if (onAfterUpdateTransactionRequested) onAfterUpdateTransaction();
+    };
+
     void setCurrentTab(int index) {
         if (index != selectedIndex) {
-            nativeEventCount++;
-            ReactContext reactContext = (ReactContext) getContext();
-            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-            eventDispatcher.dispatchEvent(new TabBarView.TabSelectedEvent(getId(), index, nativeEventCount));
+            if (!jsUpdate) {
+                nativeEventCount++;
+                ReactContext reactContext = (ReactContext) getContext();
+                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                eventDispatcher.dispatchEvent(new TabBarView.TabSelectedEvent(getId(), index, nativeEventCount));
+            }
             tabFragments.get(index).tabBarItem.pressed();
         }
         selectedTab = selectedIndex = index;

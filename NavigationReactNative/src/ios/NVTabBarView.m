@@ -14,6 +14,7 @@
     NSInteger _selectedIndex;
     NSInteger _nativeEventCount;
     bool _firstSceneReselected;
+    bool _jsUpdate;
 }
 
 - (id)init
@@ -33,6 +34,8 @@
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers insertObject:[(NVTabBarItemView *) subview navigationController] atIndex:atIndex];
     [_tabBarController setViewControllers:controllers];
+    if (_selectedTab == controllers.count - 1)
+        _tabBarController.selectedIndex = _selectedTab;
     ((NVTabBarItemView *) subview).stackDidChangeBlock = ^(NVTabBarItemView *tabBarItemView){
         NSMutableArray *controllers = [NSMutableArray arrayWithArray:[self->_tabBarController viewControllers]];
         [controllers replaceObjectAtIndex:[self.reactSubviews indexOfObject:tabBarItemView] withObject:[tabBarItemView navigationController]];
@@ -52,6 +55,7 @@
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
+    _nativeEventCount = MAX(_nativeEventCount, _mostRecentEventCount);
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     if (eventLag == 0) {
         _selectedIndex = _selectedTab;
@@ -65,7 +69,9 @@
         } else {
             _selectedIndex = _tabBarController.selectedIndex;
         }
+        _jsUpdate = true;
         [self selectTab];
+        _jsUpdate = false;
     }
     if (@available(iOS 13.0, *)) {
         UITabBarAppearance *appearance = [UITabBarAppearance new];
@@ -178,12 +184,14 @@
 
 -(void) selectTab
 {
-    _nativeEventCount++;
+    if (!_jsUpdate) {
+        _nativeEventCount++;
+        self.onTabSelected(@{
+            @"tab": @(_selectedIndex),
+            @"eventCount": @(_nativeEventCount),
+        });
+    }
     NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[_selectedIndex];
-    self.onTabSelected(@{
-        @"tab": @(_selectedIndex),
-        @"eventCount": @(_nativeEventCount),
-    });
     if (!!tabBarItem.onPress) {
         tabBarItem.onPress(nil);
     }

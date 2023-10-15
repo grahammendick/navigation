@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -73,13 +72,17 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
         tabBarPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
+                if (position == -1) return;
                 super.onPageSelected(position);
-                if (!tabBarPagerAdapter.dataSetChanged)
+                if (!tabBarPagerAdapter.dataSetChanged && !tabBarPagerAdapter.jsUpdate)
                     tabBarPagerAdapter.nativeEventCount++;
                 tabBarPagerAdapter.selectedTab = position;
-                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, tabBarPager.getId());
-                eventDispatcher.dispatchEvent(new TabBarPagerRTLViewManager.TabSelectedEvent(tabBarPager.getId(), position, tabBarPagerAdapter.nativeEventCount));
-                tabBarPagerAdapter.getTabAt(position).pressed();
+                if (!tabBarPagerAdapter.jsUpdate) {
+                    EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, tabBarPager.getId());
+                    eventDispatcher.dispatchEvent(new TabBarPagerRTLViewManager.TabSelectedEvent(tabBarPager.getId(), position, tabBarPagerAdapter.nativeEventCount));
+                }
+                if (tabBarPagerAdapter.getTabAt(position) != null)
+                    tabBarPagerAdapter.getTabAt(position).pressed();
             }
 
             @Override
@@ -92,7 +95,7 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
         tabBarPager.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View v) {
-                TabLayoutRTLView tabLayout = getTabLayout(v);
+                TabLayoutRTLView tabLayout = tabBarPagerAdapter.getTabLayout(v);
                 if (tabLayout != null) {
                     tabLayout.setVisibility(View.VISIBLE);
                     new TabLayoutMediator(tabLayout, tabBarPager,
@@ -117,7 +120,7 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
                 super.onItemRangeInserted(positionStart, itemCount);
                 if (tabBarPager.getCurrentItem() != tabBarPagerAdapter.selectedTab
                         && tabBarPagerAdapter.getTabsCount() > tabBarPagerAdapter.selectedTab) {
-                    setCurrentItem(tabBarPager, tabBarPagerAdapter.selectedTab);
+                    tabBarPagerAdapter.setCurrentItem(tabBarPager, tabBarPagerAdapter.selectedTab);
                 }
             }
         });
@@ -133,19 +136,10 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
         getAdapter(view).pendingSelectedTab = selectedTab;
     }
 
-    private void setCurrentItem(final ViewPager2 view, int selectedTab) {
-        view.post(() -> {
-            view.measure(
-                View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(view.getHeight(), View.MeasureSpec.EXACTLY));
-            view.layout(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
-        });
-        view.setCurrentItem(selectedTab, false);
-    }
-
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(ViewPager2 view, int mostRecentEventCount) {
         getAdapter(view).mostRecentEventCount = mostRecentEventCount;
+        getAdapter(view).nativeEventCount = Math.max(getAdapter(view).nativeEventCount, getAdapter(view).mostRecentEventCount);
     }
 
     @Override
@@ -171,6 +165,7 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
     @Override
     public void addView(ViewPager2 parent, View child, int index) {
         getAdapter(parent).addTab((TabBarItemView) child, index);
+        getAdapter(parent).requestOnAfterUpdateTransaction(parent);
     }
 
     @Override
@@ -189,13 +184,9 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
     @Override
     protected void onAfterUpdateTransaction(@Nonnull ViewPager2 view) {
         super.onAfterUpdateTransaction(view);
-        int eventLag = getAdapter(view).nativeEventCount - getAdapter(view).mostRecentEventCount;
-        if (eventLag == 0 && view.getCurrentItem() != getAdapter(view).pendingSelectedTab) {
-            getAdapter(view).selectedTab = getAdapter(view).pendingSelectedTab;
-            if (getAdapter(view).getTabsCount() > getAdapter(view).selectedTab)
-                setCurrentItem(view, getAdapter(view).selectedTab);
-        }
-        getAdapter(view).populateTabs(getTabLayout(view));
+        getAdapter(view).jsUpdate = true;
+        getAdapter(view).onAfterUpdateTransaction(view);
+        getAdapter(view).jsUpdate = false;
     }
 
     @Override
@@ -209,21 +200,6 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
             fragmentTransaction.commitAllowingStateLoss();
         }
         super.onDropViewInstance(view);
-    }
-
-    private TabLayoutRTLView getTabLayout(View view) {
-        ViewGroup parent = (ViewGroup) view.getParent();
-        if (parent instanceof CoordinatorLayout) {
-            parent = (ViewGroup) parent.getChildAt(0);
-            if (parent.getChildAt(0) instanceof CollapsingBarView)
-                parent = (ViewGroup) parent.getChildAt(0);
-        }
-        for(int i = 0; parent != null && i < parent.getChildCount(); i++) {
-            View child = parent.getChildAt(i);
-            if (child instanceof TabView)
-                return (TabLayoutRTLView) child;
-        }
-        return null;
     }
 
     public static class TabBarPagerFragment extends Fragment {

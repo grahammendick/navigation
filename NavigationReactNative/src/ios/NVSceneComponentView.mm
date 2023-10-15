@@ -29,7 +29,6 @@ using namespace facebook::react;
     return self;
 }
 
-
 - (void)ensureViewController
 {
     if (!!_oldViewController) {

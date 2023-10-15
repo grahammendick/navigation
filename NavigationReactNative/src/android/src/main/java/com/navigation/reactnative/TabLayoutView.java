@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -17,7 +18,6 @@ import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
 
 public class TabLayoutView extends TabLayout implements TabView {
-    boolean bottomTabs;
     int defaultTextColor;
     int selectedTintColor;
     int unselectedTintColor;
@@ -53,11 +53,14 @@ public class TabLayoutView extends TabLayout implements TabView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        this.setVisibility(this.getTabCount() > 0 ? View.VISIBLE : View.INVISIBLE);
         TabBarPagerView tabBar = getTabBar();
-        if (bottomTabs && tabBar != null) {
-            setupWithViewPager(tabBar);
-            tabBar.populateTabs();
+        if (tabBar != null) {
+            if (tabBar.getTabLayout() == this) {
+                setupWithViewPager(tabBar);
+                tabBar.populateTabs();
+            } else {
+                this.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
@@ -73,7 +76,6 @@ public class TabLayoutView extends TabLayout implements TabView {
     @Override
     public void setupWithViewPager(@Nullable final ViewPager viewPager) {
         super.setupWithViewPager(viewPager);
-        setVisibility(View.VISIBLE);
         if (tabSelectedListener != null)
             removeOnTabSelectedListener(tabSelectedListener);
         tabSelectedListener = new OnTabSelectedListener() {

@@ -27,6 +27,7 @@ using namespace facebook::react;
     NSInteger _selectedTab;
     NSInteger _nativeEventCount;
     bool _firstSceneReselected;
+    bool _jsUpdate;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -108,6 +109,7 @@ using namespace facebook::react;
         [_tabBarController.tabBar setUnselectedItemTintColor: unselectedTintColor];
     }
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
+    _nativeEventCount = MAX(_nativeEventCount, _mostRecentEventCount);
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     BOOL tabChanged = eventLag == 0 && _selectedTab != newViewProps.selectedTab;
     if (tabChanged)
@@ -116,11 +118,15 @@ using namespace facebook::react;
         if (tabChanged) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self->_tabBarController.selectedIndex = self->_selectedTab;
+                self->_jsUpdate = true;
                 [self selectTab];
+                self->_jsUpdate = false;
             });
         } else {
             _selectedTab = _tabBarController.selectedIndex;
+            _jsUpdate = true;
             [self selectTab];
+            _jsUpdate = false;
         }
     }
     _scrollsToTop = newViewProps.scrollsToTop;
@@ -193,14 +199,17 @@ using namespace facebook::react;
 
 -(void) selectTab
 {
-    _nativeEventCount++;
+    if (!_jsUpdate)
+        _nativeEventCount++;
     NVTabBarItemComponentView *tabBarItem = (NVTabBarItemComponentView *)self.reactSubviews[_selectedTab];
     if (_eventEmitter != nullptr) {
-        std::static_pointer_cast<NVTabBarEventEmitter const>(_eventEmitter)
-            ->onTabSelected(NVTabBarEventEmitter::OnTabSelected{
-                .tab = static_cast<int>(_selectedTab),
-                .eventCount = static_cast<int>(_nativeEventCount)
-            });
+        if (!_jsUpdate) {
+            std::static_pointer_cast<NVTabBarEventEmitter const>(_eventEmitter)
+                ->onTabSelected(NVTabBarEventEmitter::OnTabSelected{
+                    .tab = static_cast<int>(_selectedTab),
+                    .eventCount = static_cast<int>(_nativeEventCount)
+                });
+        }
         [tabBarItem onPress];
     }
 }
@@ -225,6 +234,8 @@ using namespace facebook::react;
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers insertObject:[(NVTabBarItemComponentView *) childComponentView navigationController] atIndex:index];
     [_tabBarController setViewControllers:controllers];
+    if (_selectedTab == controllers.count - 1)
+        _tabBarController.selectedIndex = _selectedTab;
     ((NVTabBarItemComponentView *) childComponentView).stackDidChangeBlock = ^(NVTabBarItemComponentView *tabBarItemView){
         NSMutableArray *controllers = [NSMutableArray arrayWithArray:[self->_tabBarController viewControllers]];
         [controllers insertObject:[tabBarItemView navigationController] atIndex: [self.reactSubviews indexOfObject:tabBarItemView]];

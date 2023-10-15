@@ -12,7 +12,16 @@ const TabBarItem = ({selected, onPress, children, title, image, systemItem, badg
     const backHandler = useRef(createBackHandler());
     const onLoad = useRef({ onLoad: () => setLoaded(true)});
     useEffect(() => {
-        if(freeze !== freezable) setFreeze(freezable);
+        if(freeze !== freezable) {
+            if (global.nativeFabricUIManager && freezable) {
+                var timer = setTimeout(() => {
+                    setFreeze(freezable);
+                }, 100);
+            } else {
+                setFreeze(freezable);
+            }
+        }
+        return () => clearTimeout(timer);
     }, [freeze, freezable]);
     useEffect(() => {
         setFreeze(false);
