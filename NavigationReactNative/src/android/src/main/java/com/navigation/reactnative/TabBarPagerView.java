@@ -40,6 +40,7 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
     int nativeEventCount;
     int mostRecentEventCount;
     private boolean dataSetChanged = false;
+    boolean jsUpdate = false;
 
     public TabBarPagerView(Context context) {
         super(context);
@@ -71,14 +72,6 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
         if (getTabLayout() != null)
             getTabLayout().setupWithViewPager(this);
         populateTabs();
-        if (!measured) {
-            measure(
-                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-            measured = true;
-            getAdapter().notifyDataSetChanged();
-        }
     }
 
     void onAfterUpdateTransaction() {
@@ -100,7 +93,7 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
         }
     }
 
-    private TabLayoutView getTabLayout() {
+    TabLayoutView getTabLayout() {
         ViewGroup parent = (ViewGroup) getParent();
         if (parent instanceof CoordinatorLayout) {
             parent = (ViewGroup) parent.getChildAt(0);
@@ -241,6 +234,7 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
 
         @Override
         public int getItemPosition(@NonNull Object object) {
+            if (dataSetChanged) return POSITION_NONE;
             for(int i = 0; i < tabFragments.size(); i++) {
                 TabFragment tabFragment = tabFragments.get(i);
                 if (tabFragment == object && !tabFragment.viewChanged())
@@ -265,12 +259,14 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
 
         @Override
         public void onPageSelected(int position) {
-            if (!dataSetChanged)
+            if (!dataSetChanged && !jsUpdate)
                 nativeEventCount++;
             selectedTab = position;
-            ReactContext reactContext = (ReactContext) getContext();
-            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-            eventDispatcher.dispatchEvent(new TabBarPagerView.TabSelectedEvent(getId(), position, nativeEventCount));
+            if (!jsUpdate) {
+                ReactContext reactContext = (ReactContext) getContext();
+                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                eventDispatcher.dispatchEvent(new TabBarPagerView.TabSelectedEvent(getId(), position, nativeEventCount));
+            }
             if (getAdapter() != null)
                 getAdapter().tabFragments.get(position).tabBarItem.pressed();
         }

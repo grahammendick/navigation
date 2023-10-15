@@ -17,11 +17,6 @@ public class TabLayoutManager extends ViewGroupManager<TabLayoutView> {
         return "NVTabLayout";
     }
 
-    @ReactProp(name = "bottomTabs")
-    public void setBottomTabs(TabLayoutView view, boolean bottomTabs) {
-        view.bottomTabs = bottomTabs;
-    }
-
     @ReactProp(name = "selectedTintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
     public void setSelectedTintColor(TabLayoutView view, int selectedTintColor) {
         view.selectedTintColor = selectedTintColor != Integer.MAX_VALUE ? selectedTintColor : view.defaultTextColor;

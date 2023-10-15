@@ -50,6 +50,7 @@ public class TabBarPagerViewManager extends ViewGroupManager<TabBarPagerView> im
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(TabBarPagerView view, int mostRecentEventCount) {
         view.mostRecentEventCount = mostRecentEventCount;
+        view.nativeEventCount = Math.max(view.nativeEventCount, view.mostRecentEventCount);
     }
 
     @Override
@@ -95,7 +96,9 @@ public class TabBarPagerViewManager extends ViewGroupManager<TabBarPagerView> im
     @Override
     protected void onAfterUpdateTransaction(@Nonnull TabBarPagerView view) {
         super.onAfterUpdateTransaction(view);
+        view.jsUpdate = true;
         view.onAfterUpdateTransaction();
+        view.jsUpdate = false;
     }
 
     @Override

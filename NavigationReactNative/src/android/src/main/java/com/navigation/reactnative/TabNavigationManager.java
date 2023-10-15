@@ -24,11 +24,6 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
         return "NVTabNavigation";
     }
 
-    @ReactProp(name = "bottomTabs")
-    public void setBottomTabs(TabNavigationView view, boolean bottomTabs) {
-        view.bottomTabs = bottomTabs;
-    }
-
     @ReactProp(name = "labelVisibilityMode", defaultInt = LABEL_VISIBILITY_AUTO)
     public void setLabelVisibilityMode (TabNavigationView view, int labelVisibilityMode) {
         view.setLabelVisibilityMode(labelVisibilityMode);
