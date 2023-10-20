@@ -90,11 +90,7 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
             } else {
                 setCollapsedTitleTypeface(defaultCollapsedTitleTypeface);
             }
-            if (titleFontSize != null) {
-                setCollapsedTitleTextSize(PixelUtil.toPixelFromDIP(titleFontSize));
-            } else {
-                setCollapsedTitleTextSize(defaultCollapsedTitleFontSize);
-            }
+            setCollapsedTitleTextSize(titleFontSize != null ? PixelUtil.toPixelFromDIP(titleFontSize) : defaultCollapsedTitleFontSize);
         }
         if (largeTitleFontChanged) {
             if (largeTitleFontFamily != null || largeTitleFontWeight != null || largeTitleFontStyle != null) {
@@ -102,11 +98,7 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
             } else {
                 setExpandedTitleTypeface(defaultExpandedTitleTypeface);
             }
-            if (largeTitleFontSize != null) {
-                setExpandedTitleTextSize(PixelUtil.toPixelFromDIP(largeTitleFontSize));
-            } else {
-                setExpandedTitleTextSize(defaultExpandedTitleFontSize);
-            }
+            setExpandedTitleTextSize(largeTitleFontSize != null ? PixelUtil.toPixelFromDIP(largeTitleFontSize) : defaultExpandedTitleFontSize);
         }
     }
 
