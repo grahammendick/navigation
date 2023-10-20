@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -12,15 +13,19 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
     private String titleFontFamily;
     private String titleFontWeight;
     private String titleFontStyle;
+    private Integer titleFontSize;
     private String largeTitleFontFamily;
     private String largeTitleFontWeight;
     private String largeTitleFontStyle;
+    private Integer largeTitleFontSize;
     private boolean titleFontChanged = false;
     private boolean largeTitleFontChanged = false;
     final Drawable defaultContentScrim;
     final int defaultTitleTextColor;
     final Typeface defaultCollapsedTitleTypeface;
     final Typeface defaultExpandedTitleTypeface;
+    final float defaultCollapsedTitleFontSize;
+    final float defaultExpandedTitleFontSize;
     final int defaultTitleCollapseMode;
     private boolean layoutRequested = false;
 
@@ -33,6 +38,8 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
         defaultTitleTextColor = new ToolbarView(context).defaultTitleTextColor;
         defaultCollapsedTitleTypeface = getCollapsedTitleTypeface();
         defaultExpandedTitleTypeface = getExpandedTitleTypeface();
+        defaultCollapsedTitleFontSize = getCollapsedTitleTextSize();
+        defaultExpandedTitleFontSize = getExpandedTitleTextSize();
         defaultTitleCollapseMode = getTitleCollapseMode();
     }
 
@@ -51,6 +58,11 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
         titleFontChanged = true;
     }
 
+    void setTitleFontSize(Integer titleFontSize) {
+        this.titleFontSize = titleFontSize;
+        titleFontChanged = true;
+    }
+
     void setLargeTitleFontFamily(String largeTitleFontFamily) {
         this.largeTitleFontFamily = largeTitleFontFamily;
         largeTitleFontChanged = true;
@@ -66,6 +78,11 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
         largeTitleFontChanged = true;
     }
 
+    void setLargeTitleFontSize(Integer largeTitleFontSize) {
+        this.largeTitleFontSize = largeTitleFontSize;
+        largeTitleFontChanged = true;
+    }
+
     void styleTitle() {
         if (titleFontChanged) {
             if (titleFontFamily != null || titleFontWeight != null || titleFontStyle != null) {
@@ -73,12 +90,22 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
             } else {
                 setCollapsedTitleTypeface(defaultCollapsedTitleTypeface);
             }
+            if (titleFontSize != null) {
+                setCollapsedTitleTextSize(PixelUtil.toPixelFromDIP(titleFontSize));
+            } else {
+                setCollapsedTitleTextSize(defaultCollapsedTitleFontSize);
+            }
         }
         if (largeTitleFontChanged) {
             if (largeTitleFontFamily != null || largeTitleFontWeight != null || largeTitleFontStyle != null) {
                 setExpandedTitleTypeface(ReactTypefaceUtils.applyStyles(defaultExpandedTitleTypeface, ReactTypefaceUtils.parseFontStyle(largeTitleFontStyle), ReactTypefaceUtils.parseFontWeight(largeTitleFontWeight), largeTitleFontFamily, getContext().getAssets()));
             } else {
                 setExpandedTitleTypeface(defaultExpandedTitleTypeface);
+            }
+            if (largeTitleFontSize != null) {
+                setExpandedTitleTextSize(PixelUtil.toPixelFromDIP(largeTitleFontSize));
+            } else {
+                setExpandedTitleTextSize(defaultExpandedTitleFontSize);
             }
         }
     }
@@ -98,14 +125,11 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
         }
     }
 
-    private final Runnable measureAndLayout = new Runnable() {
-        @Override
-        public void run() {
-            layoutRequested = false;
-            measure(
-                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-        }
+    private final Runnable measureAndLayout = () -> {
+        layoutRequested = false;
+        measure(
+            MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+        layout(getLeft(), getTop(), getRight(), getBottom());
     };
 }
