@@ -46,6 +46,11 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
         view.setTitleFontStyle(titleFontStyle);
     }
 
+    @ReactProp(name = "titleFontSize")
+    public void setTitleFontSize(CollapsingBarView view, Integer titleFontSize) {
+        view.setTitleFontSize(titleFontSize);
+    }
+
     @ReactProp(name = "largeTitleFontFamily")
     public void setLargeTitleFontFamily(CollapsingBarView view, String largeTitleFontFamily) {
         view.setLargeTitleFontFamily(largeTitleFontFamily);
@@ -59,6 +64,11 @@ public class CollapsingBarManager extends ViewGroupManager<CollapsingBarView> {
     @ReactProp(name = "largeTitleFontStyle")
     public void setLargeTitleFontStyle(CollapsingBarView view, String largeTitleFontStyle) {
         view.setLargeTitleFontStyle(largeTitleFontStyle);
+    }
+
+    @ReactProp(name = "largeTitleFontSize")
+    public void setLargeTitleFontSize(CollapsingBarView view, Integer largeTitleFontSize) {
+        view.setLargeTitleFontSize(largeTitleFontSize);
     }
 
     @ReactProp(name = "titleEnabled")
