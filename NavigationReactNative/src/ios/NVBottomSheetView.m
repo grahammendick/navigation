@@ -3,24 +3,16 @@
 #import <UIKit/UIKit.h>
 #import "UIView+React.h"
 
-@interface NVBottomSheetController : UIViewController
-
-@end
-
-@implementation NVBottomSheetController
-
-@end
-
 @implementation NVBottomSheetView
 {
-    NVBottomSheetController *_bottomSheetController;
+    UIViewController *_bottomSheetController;
     int _oldHeight;
 }
 
 - (id)init
 {
     if (self = [super init]) {
-        _bottomSheetController = [[NVBottomSheetController alloc] init];
+        _bottomSheetController = [[UIViewController alloc] init];
         CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateView)];
         [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     }
