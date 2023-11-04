@@ -58,6 +58,9 @@
 		706F41012562BF7D000E213E /* NVStatusBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVStatusBarView.m; sourceTree = "<group>"; };
 		706F41042562BF95000E213E /* NVStatusBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVStatusBarView.h; sourceTree = "<group>"; };
 		706F41052562BFAC000E213E /* NVStatusBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVStatusBarManager.m; sourceTree = "<group>"; };
+		707C4BF62AF64BCD008FC72E /* NVBottomSheetView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVBottomSheetView.h; sourceTree = "<group>"; };
+		707C4BF72AF64BE6008FC72E /* NVBottomSheetView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVBottomSheetView.m; sourceTree = "<group>"; };
+		707C4BF82AF64BF6008FC72E /* NVBottomSheetManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVBottomSheetManager.m; sourceTree = "<group>"; };
 		707E82C828B00EA4006D9ED0 /* NVMaterial3Module.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVMaterial3Module.mm; sourceTree = "<group>"; };
 		707E82C928B00EA4006D9ED0 /* NVMaterial3Module.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVMaterial3Module.h; sourceTree = "<group>"; };
 		707F41AF24A74F4600A06BF2 /* NVTabBarPagerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTabBarPagerView.m; sourceTree = "<group>"; };
@@ -139,6 +142,9 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				707C4BF82AF64BF6008FC72E /* NVBottomSheetManager.m */,
+				707C4BF72AF64BE6008FC72E /* NVBottomSheetView.m */,
+				707C4BF62AF64BCD008FC72E /* NVBottomSheetView.h */,
 				709C5C22298EAD4900DF5B14 /* NVSearchResultsComponentView.h */,
 				709C5C23298EAE0A00DF5B14 /* NVSearchToolbarComponentView.mm */,
 				709C5C24298EAE1700DF5B14 /* NVSearchToolbarComponentView.h */,
