@@ -40,11 +40,12 @@ class BottomSheet extends React.Component<any, any> {
     }
     render() {
         var { expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable, children } = this.props
-        const detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants.Detent
+        var { selectedDetent } = this.state;
+        const constants = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants;
         return (
             <NVBottomSheet
                 ref={this.ref}
-                detent={detents[this.state.selectedDetent]}
+                detent={Platform.OS === 'android' ? constants.Detent[selectedDetent] : selectedDetent}
                 peekHeight={peekHeight}
                 expandedOffset={expandedOffset}
                 fitToContents={expandedOffset == null}
