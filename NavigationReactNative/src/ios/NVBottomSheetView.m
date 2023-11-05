@@ -29,8 +29,7 @@
 
 - (void)updateView {
     CGSize newSize = [[_bottomSheetController.view.layer.presentationLayer valueForKeyPath:@"frame.size"] CGSizeValue];
-    if (_oldSize.height != newSize.height) {
-        NSLog(@"animated value: %f\n", newSize.height);
+    if (!CGSizeEqualToSize(_oldSize, newSize)) {
         _oldSize = newSize;
         [_bridge.uiManager setSize:newSize forView:_reactSubview];
     }
