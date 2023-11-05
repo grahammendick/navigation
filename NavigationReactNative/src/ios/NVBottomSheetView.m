@@ -1,18 +1,26 @@
 #import "NVBottomSheetView.h"
 
 #import <UIKit/UIKit.h>
-#import "UIView+React.h"
+#import <React/RCTBridge.h>
+#import <React/RCTUIManager.h>
+#import <React/UIView+React.h>
 
 @implementation NVBottomSheetView
 {
+    __weak RCTBridge *_bridge;
     UIViewController *_bottomSheetController;
-    int _oldHeight;
+    UIView *_reactSubview;
+    CGSize _oldSize;
 }
 
-- (id)init
+- (id)initWithBridge:(RCTBridge *)bridge
 {
     if (self = [super init]) {
+        _bridge = bridge;
         _bottomSheetController = [[UIViewController alloc] init];
+        UIView *containerView = [UIView new];
+        containerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        _bottomSheetController.view = containerView;
         CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateView)];
         [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     }
@@ -20,22 +28,29 @@
 }
 
 - (void)updateView {
-    int newHeight = [[_bottomSheetController.view.layer.presentationLayer valueForKeyPath:@"frame.size.height"] intValue];
-    if (_oldHeight != newHeight) {
-        NSLog(@"animated value: %d\n", newHeight);
-        _oldHeight = newHeight;
+    CGSize newSize = [[_bottomSheetController.view.layer.presentationLayer valueForKeyPath:@"frame.size"] CGSizeValue];
+    if (_oldSize.height != newSize.height) {
+        NSLog(@"animated value: %f\n", newSize.height);
+        _oldSize = newSize;
+        [_bridge.uiManager setSize:newSize forView:_reactSubview];
     }
 }
 
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
-    _bottomSheetController.view = subview;
+    [_bottomSheetController.view insertSubview:subview atIndex:0];
+    _reactSubview = subview;
 }
 
 - (void)removeReactSubview:(UIView *)subview
 {
     [super removeReactSubview:subview];
+    _reactSubview = nil;
+}
+
+- (void)didUpdateReactSubviews
+{
 }
 
 - (void)didMoveToWindow

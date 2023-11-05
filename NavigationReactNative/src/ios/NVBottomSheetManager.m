@@ -12,7 +12,7 @@
 RCT_EXPORT_MODULE()
 
 - (UIView *)view {
-    return [[NVBottomSheetView alloc] init];
+    return [[NVBottomSheetView alloc] initWithBridge:self.bridge];
 }
 
 @end
