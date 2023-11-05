@@ -5,10 +5,33 @@
 #import <React/RCTUIManager.h>
 #import <React/UIView+React.h>
 
+
+@interface NVBottomSheetController : UIViewController
+
+@property (nonatomic, copy) void (^boundsDidChangeBlock)(CGRect newBounds);
+
+@end
+
+@implementation NVBottomSheetController
+{
+    CGRect _lastViewFrame;
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    if (self.boundsDidChangeBlock && !CGRectEqualToRect(_lastViewFrame, self.view.frame)) {
+        self.boundsDidChangeBlock(self.view.bounds);
+        _lastViewFrame = self.view.frame;
+    }
+}
+
+@end
+
 @implementation NVBottomSheetView
 {
     __weak RCTBridge *_bridge;
-    UIViewController *_bottomSheetController;
+    NVBottomSheetController *_bottomSheetController;
     UIView *_reactSubview;
     CGSize _oldSize;
 }
@@ -17,14 +40,25 @@
 {
     if (self = [super init]) {
         _bridge = bridge;
-        _bottomSheetController = [[UIViewController alloc] init];
+        _bottomSheetController = [[NVBottomSheetController alloc] init];
         UIView *containerView = [UIView new];
         containerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         _bottomSheetController.view = containerView;
         CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateView)];
         [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        __weak typeof(self) weakSelf = self;
+        _bottomSheetController.boundsDidChangeBlock = ^(CGRect newBounds) {
+            [weakSelf notifyForBoundsChange:newBounds];
+        };
     }
     return self;
+}
+
+- (void)notifyForBoundsChange:(CGRect)newBounds
+{
+    if (_reactSubview) {
+        [_bridge.uiManager setSize:newBounds.size forView:_reactSubview];
+    }
 }
 
 - (void)updateView {
