@@ -47,6 +47,7 @@ class BottomSheet extends React.Component<any, any> {
                 ref={this.ref}
                 detent={Platform.OS === 'android' ? detents[this.state.selectedDetent] : selectedDetent}
                 peekHeight={peekHeight}
+                expandedHeight={expandedHeight}
                 expandedOffset={expandedOffset}
                 fitToContents={expandedOffset == null}
                 halfExpandedRatio={halfExpandedRatio}
@@ -57,12 +58,7 @@ class BottomSheet extends React.Component<any, any> {
                 mostRecentEventCount={this.state.mostRecentEventCount}
                 onMoveShouldSetResponderCapture={() => this.dragging}
                 onDetentChanged={this.onDetentChanged}
-                style={[
-                    styles.bottomSheet,
-                    expandedHeight != null ? { height: expandedHeight } : null,
-                    expandedOffset != null ? { top: expandedOffset } : null,
-                    expandedHeight == null && expandedOffset == null ? { top: undefined } : null
-                ]}
+                style={styles.bottomSheet}
             >
                 {children}
             </NVBottomSheet>

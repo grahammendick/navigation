@@ -8,6 +8,8 @@ API_AVAILABLE(ios(15.0))
 
 @property (nonatomic, copy) NSString *detent;
 @property (nonatomic, assign) NSInteger peekHeight;
+@property (nonatomic, assign) NSInteger expandedHeight;
+@property (nonatomic, assign) NSInteger expandedOffset;
 @property (nonatomic, assign) NSInteger mostRecentEventCount;
 @property (nonatomic, copy) RCTDirectEventBlock onDetentChanged;
 

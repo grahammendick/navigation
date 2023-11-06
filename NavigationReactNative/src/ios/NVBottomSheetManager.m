@@ -21,6 +21,8 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_VIEW_PROPERTY(detent, NSString)
 RCT_EXPORT_VIEW_PROPERTY(peekHeight, NSInteger)
+RCT_EXPORT_VIEW_PROPERTY(expandedHeight, NSInteger)
+RCT_EXPORT_VIEW_PROPERTY(expandedOffset, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(mostRecentEventCount, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(onDetentChanged, RCTDirectEventBlock)
 
