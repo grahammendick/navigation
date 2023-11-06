@@ -34,7 +34,6 @@
     NVBottomSheetController *_bottomSheetController;
     UIView *_reactSubview;
     CGSize _oldSize;
-    bool _dragging;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -51,7 +50,6 @@
         _bottomSheetController.boundsDidChangeBlock = ^(CGRect newBounds) {
             [weakSelf notifyForBoundsChange:newBounds];
         };
-        _dragging = YES;
     }
     return self;
 }
@@ -59,16 +57,8 @@
 - (void)notifyForBoundsChange:(CGRect)newBounds
 {
     if (_reactSubview) {
-        CAAnimation *sizeAnimation = [_bottomSheetController.view.layer animationForKey:@"bounds.size"];
-        if (sizeAnimation != nil) {
-            CABasicAnimation *alongsideAnimation = [CABasicAnimation new];
-            alongsideAnimation.duration = sizeAnimation.duration;
-            alongsideAnimation.beginTime = sizeAnimation.beginTime;
-            alongsideAnimation.delegate = self;
-            [_bottomSheetController.view.layer addAnimation:alongsideAnimation forKey:@"alongside"];
-            _dragging = NO;
-        }
-        if (_dragging) {
+        CAAnimation *dropping = [_bottomSheetController.view.layer animationForKey:@"bounds.size"];
+        if (!dropping) {
             [_bridge.uiManager setSize:newBounds.size forView:_reactSubview];
         }
     }
@@ -76,17 +66,12 @@
 
 - (void)updateView {
     CGSize newSize = [[_bottomSheetController.view.layer.presentationLayer valueForKeyPath:@"frame.size"] CGSizeValue];
-    if (!_dragging && !CGSizeEqualToSize(_oldSize, newSize)) {
+    if (!CGSizeEqualToSize(_oldSize, newSize)) {
         _oldSize = newSize;
         [_bridge.uiManager setSize:newSize forView:_reactSubview];
     }
 }
 
-
-- (void)animationDidStop:(CAAnimation *)animation finished:(BOOL)finished
-{
-    _dragging = YES;
-}
 
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
