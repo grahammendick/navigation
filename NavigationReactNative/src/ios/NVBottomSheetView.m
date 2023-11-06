@@ -71,16 +71,21 @@
     }
     [sheet setDetents:@[_collapsedDetent, UISheetPresentationControllerDetent.largeDetent]];
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    UISheetPresentationControllerDetentIdentifier collapsedIdentifier = UISheetPresentationControllerDetentIdentifierMedium;
-    if (@available(iOS 16.0, *)) {
-        collapsedIdentifier = _collapsedDetent.identifier;
-    }
-    UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? collapsedIdentifier : UISheetPresentationControllerDetentIdentifierLarge;
+    UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : UISheetPresentationControllerDetentIdentifierLarge;
     if (eventLag == 0 && [sheet selectedDetentIdentifier] != newDetent) {
         [sheet animateChanges:^{
             sheet.selectedDetentIdentifier = newDetent;
         }];
     }
+}
+
+- (UISheetPresentationControllerDetentIdentifier) collapsedIdentifier
+{
+    UISheetPresentationControllerDetentIdentifier collapsedIdentifier = UISheetPresentationControllerDetentIdentifierMedium;
+    if (@available(iOS 16.0, *)) {
+        collapsedIdentifier = _collapsedDetent.identifier;
+    }
+    return collapsedIdentifier;
 }
 
 - (void)notifyForBoundsChange:(CGRect)newBounds
@@ -129,12 +134,8 @@
 {
     _nativeEventCount++;
     if (!!self.onDetentChanged) {
-        UISheetPresentationControllerDetentIdentifier collapsedIdentifier = UISheetPresentationControllerDetentIdentifierMedium;
-        if (@available(iOS 16.0, *)) {
-            collapsedIdentifier = _collapsedDetent.identifier;
-        }
         self.onDetentChanged(@{
-            @"detent": sheetPresentationController.selectedDetentIdentifier == collapsedIdentifier ? @"collapsed" : @"expanded",
+            @"detent": sheetPresentationController.selectedDetentIdentifier == [self collapsedIdentifier] ? @"collapsed" : @"expanded",
             @"eventCount": @(_nativeEventCount),
         });
     }
