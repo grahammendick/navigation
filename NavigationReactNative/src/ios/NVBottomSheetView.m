@@ -34,6 +34,7 @@
     NVBottomSheetController *_bottomSheetController;
     UIView *_reactSubview;
     CGSize _oldSize;
+    NSInteger _nativeEventCount;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -41,6 +42,9 @@
     if (self = [super init]) {
         _bridge = bridge;
         _bottomSheetController = [[NVBottomSheetController alloc] init];
+        if (@available(iOS 15.0, *)) {
+            _bottomSheetController.sheetPresentationController.delegate = self;
+        }
         UIView *containerView = [UIView new];
         containerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         _bottomSheetController.view = containerView;
@@ -52,6 +56,15 @@
         };
     }
     return self;
+}
+
+- (void)setDetent:(NSString *)detent
+{
+    if (@available(iOS 15.0, *)) {
+        [_bottomSheetController.sheetPresentationController animateChanges:^{
+            _bottomSheetController.sheetPresentationController.selectedDetentIdentifier = [detent isEqual: @"collapsed"] ? UISheetPresentationControllerDetentIdentifierMedium : UISheetPresentationControllerDetentIdentifierLarge;
+        }];
+    }
 }
 
 - (void)notifyForBoundsChange:(CGRect)newBounds
@@ -98,6 +111,18 @@
         [sheet setDetents:@[UISheetPresentationControllerDetent.mediumDetent, UISheetPresentationControllerDetent.largeDetent]];
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
     }
+}
+
+- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(UISheetPresentationController *)sheetPresentationController
+API_AVAILABLE(ios(15.0)){
+    _nativeEventCount++;
+    if (!!self.onDetentChanged) {
+        self.onDetentChanged(@{
+            @"detent": sheetPresentationController.selectedDetentIdentifier == UISheetPresentationControllerDetentIdentifierMedium ? @"collapsed" : @"expanded",
+            @"eventCount": @(_nativeEventCount),
+        });
+    }
+
 }
 
 @end

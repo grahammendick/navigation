@@ -15,4 +15,7 @@ RCT_EXPORT_MODULE()
     return [[NVBottomSheetView alloc] initWithBridge:self.bridge];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(detent, NSString)
+RCT_EXPORT_VIEW_PROPERTY(onDetentChanged, RCTDirectEventBlock)
+
 @end

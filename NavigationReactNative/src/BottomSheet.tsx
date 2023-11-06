@@ -21,8 +21,8 @@ class BottomSheet extends React.Component<any, any> {
     }
     onDetentChanged({nativeEvent}) {
         var {eventCount: mostRecentEventCount, detent: nativeDetent} = nativeEvent;
-        var detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants.Detent
-        var detent = Object.keys(detents).find(name => detents[name] === nativeDetent)
+        var detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants?.Detent;
+        var detent = Platform.OS === 'android'? Object.keys(detents).find(name => detents[name] === nativeDetent) : nativeDetent;
         this.dragging = !detent
         if (detent) {
             this.changeDetent(detent);
