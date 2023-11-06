@@ -69,14 +69,14 @@
             }];
         }
     }
-    [sheet setDetents:@[_collapsedDetent, UISheetPresentationControllerDetent.largeDetent]];
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : UISheetPresentationControllerDetentIdentifierLarge;
-    if (eventLag == 0 && [sheet selectedDetentIdentifier] != newDetent) {
-        [sheet animateChanges:^{
+    [sheet animateChanges:^{
+        [sheet setDetents:@[_collapsedDetent, UISheetPresentationControllerDetent.largeDetent]];
+        if (eventLag == 0 && [sheet selectedDetentIdentifier] != newDetent) {
             sheet.selectedDetentIdentifier = newDetent;
-        }];
-    }
+        }
+    }];
 }
 
 - (UISheetPresentationControllerDetentIdentifier) collapsedIdentifier
