@@ -58,12 +58,16 @@
     return self;
 }
 
-- (void)setDetent:(NSString *)detent
+- (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     if (@available(iOS 15.0, *)) {
-        [_bottomSheetController.sheetPresentationController animateChanges:^{
-            _bottomSheetController.sheetPresentationController.selectedDetentIdentifier = [detent isEqual: @"collapsed"] ? UISheetPresentationControllerDetentIdentifierMedium : UISheetPresentationControllerDetentIdentifierLarge;
-        }];
+        UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? UISheetPresentationControllerDetentIdentifierMedium : UISheetPresentationControllerDetentIdentifierLarge;
+        if (eventLag == 0 && [_bottomSheetController.sheetPresentationController selectedDetentIdentifier] != newDetent) {
+            [_bottomSheetController.sheetPresentationController animateChanges:^{
+                _bottomSheetController.sheetPresentationController.selectedDetentIdentifier = newDetent;
+            }];
+        }
     }
 }
 
@@ -122,7 +126,6 @@ API_AVAILABLE(ios(15.0)){
             @"eventCount": @(_nativeEventCount),
         });
     }
-
 }
 
 @end
