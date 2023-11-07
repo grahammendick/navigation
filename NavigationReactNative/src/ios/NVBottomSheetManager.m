@@ -24,6 +24,7 @@ RCT_EXPORT_VIEW_PROPERTY(peekHeight, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(expandedHeight, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(expandedOffset, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(halfExpandedRatio, double)
+RCT_EXPORT_VIEW_PROPERTY(hideable, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(mostRecentEventCount, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(onDetentChanged, RCTDirectEventBlock)
 

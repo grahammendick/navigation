@@ -46,6 +46,7 @@
         _bridge = bridge;
         _bottomSheetController = [[NVBottomSheetController alloc] init];
         _bottomSheetController.sheetPresentationController.delegate = self;
+        _bottomSheetController.presentationController.delegate = self;
         _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
         _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
         _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
@@ -175,6 +176,11 @@
             @"eventCount": @(_nativeEventCount),
         });
     }
+}
+
+- (BOOL)presentationControllerShouldDismiss:(UIPresentationController *)presentationController
+{
+    return _hideable;
 }
 
 @end
