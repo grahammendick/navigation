@@ -89,7 +89,7 @@
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
     [sheet animateChanges:^{
-        [sheet setDetents: _halfExpandedDetent == UISheetPresentationControllerDetent.largeDetent ? @[_collapsedDetent, _expandedDetent] : @[_collapsedDetent, _halfExpandedDetent, _expandedDetent]];
+        [sheet setDetents: [self halfExpandedIdentifier] == UISheetPresentationControllerDetentIdentifierLarge ? @[_collapsedDetent, _expandedDetent] : @[_collapsedDetent, _halfExpandedDetent, _expandedDetent]];
         if (eventLag == 0 && [sheet selectedDetentIdentifier] != newDetent) {
             sheet.selectedDetentIdentifier = newDetent;
         }
