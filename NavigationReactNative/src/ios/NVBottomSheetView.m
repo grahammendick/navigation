@@ -89,12 +89,19 @@
     }
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
-    [sheet animateChanges:^{
-        [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[_collapsedDetent, _expandedDetent] : @[_collapsedDetent, _halfExpandedDetent, _expandedDetent]];
-        if (eventLag == 0 && [sheet selectedDetentIdentifier] != newDetent) {
-            sheet.selectedDetentIdentifier = newDetent;
+    if (![_detent isEqual: @"hidden"]) {
+        if (![_bottomSheetController isBeingPresented] && self.window) {
+            [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
         }
-    }];
+        [sheet animateChanges:^{
+            [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[_collapsedDetent, _expandedDetent] : @[_collapsedDetent, _halfExpandedDetent, _expandedDetent]];
+            if (eventLag == 0 && [sheet selectedDetentIdentifier] != newDetent) {
+                sheet.selectedDetentIdentifier = newDetent;
+            }
+        }];
+    } else {
+        [_bottomSheetController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (UISheetPresentationControllerDetentIdentifier) collapsedIdentifier
@@ -163,7 +170,9 @@
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
+    if (![_detent isEqual: @"hidden"] &&![_bottomSheetController isBeingPresented]) {
+        [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
+    }
 }
 
 - (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(UISheetPresentationController *)sheetPresentationController
