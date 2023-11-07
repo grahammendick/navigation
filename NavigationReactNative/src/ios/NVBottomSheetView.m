@@ -98,6 +98,9 @@
             if (eventLag == 0 && [sheet selectedDetentIdentifier] != newDetent) {
                 sheet.selectedDetentIdentifier = newDetent;
             }
+            if (!_draggable) {
+                [sheet setDetents: @[[newDetent isEqual:[self collapsedIdentifier]] ? _collapsedDetent : ([newDetent isEqual:[self expandedIdentifier]] ? _expandedDetent : _halfExpandedDetent)]];
+            }
         }];
     } else {
         [_bottomSheetController dismissViewControllerAnimated:YES completion:nil];
