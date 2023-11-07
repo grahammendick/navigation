@@ -37,6 +37,7 @@
     NSInteger _nativeEventCount;
     UISheetPresentationControllerDetent *_collapsedDetent;
     UISheetPresentationControllerDetent *_expandedDetent;
+    UISheetPresentationControllerDetent *_halfExpandedDetent;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -47,6 +48,7 @@
         _bottomSheetController.sheetPresentationController.delegate = self;
         _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
         _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
+        _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
         UIView *containerView = [UIView new];
         containerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         _bottomSheetController.view = containerView;
@@ -65,6 +67,7 @@
     UISheetPresentationController *sheet = _bottomSheetController.sheetPresentationController;
     _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
     _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
+    _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
     if (@available(iOS 16.0, *)) {
         if (_peekHeight > 0) {
             _collapsedDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"collapsed" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> _Nonnull context) {
@@ -76,11 +79,17 @@
                 return self->_expandedHeight > 0 ? self->_expandedHeight : context.maximumDetentValue - self->_expandedOffset;
             }];
         }
+        
+        if (_halfExpandedRatio > 0) {
+            _halfExpandedDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"halfExpanded" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> _Nonnull context) {
+                return  self-> _halfExpandedRatio * context.maximumDetentValue;
+            }];
+        }
     }
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : [self expandedIdentifier];
+    UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
     [sheet animateChanges:^{
-        [sheet setDetents:@[_collapsedDetent, _expandedDetent]];
+        [sheet setDetents: _halfExpandedDetent == UISheetPresentationControllerDetent.largeDetent ? @[_collapsedDetent, _expandedDetent] : @[_collapsedDetent, _halfExpandedDetent, _expandedDetent]];
         if (eventLag == 0 && [sheet selectedDetentIdentifier] != newDetent) {
             sheet.selectedDetentIdentifier = newDetent;
         }
@@ -94,6 +103,15 @@
         collapsedIdentifier = _collapsedDetent.identifier;
     }
     return collapsedIdentifier;
+}
+
+- (UISheetPresentationControllerDetentIdentifier) halfExpandedIdentifier
+{
+    UISheetPresentationControllerDetentIdentifier halfExpandedIdentifier = UISheetPresentationControllerDetentIdentifierLarge;
+    if (@available(iOS 16.0, *)) {
+        halfExpandedIdentifier = _halfExpandedDetent.identifier;
+    }
+    return halfExpandedIdentifier;
 }
 
 - (UISheetPresentationControllerDetentIdentifier) expandedIdentifier
@@ -152,7 +170,7 @@
     _nativeEventCount++;
     if (!!self.onDetentChanged) {
         self.onDetentChanged(@{
-            @"detent": sheetPresentationController.selectedDetentIdentifier == [self collapsedIdentifier] ? @"collapsed" : @"expanded",
+            @"detent": sheetPresentationController.selectedDetentIdentifier == [self collapsedIdentifier] ? @"collapsed" : (sheetPresentationController.selectedDetentIdentifier == [self expandedIdentifier] ? @"expanded" : @"halfExpanded"),
             @"eventCount": @(_nativeEventCount),
         });
     }
