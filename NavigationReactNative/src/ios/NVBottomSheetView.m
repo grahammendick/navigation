@@ -90,7 +90,7 @@
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
     if (![_detent isEqual: @"hidden"]) {
-        if (![_bottomSheetController isBeingPresented] && self.window) {
+        if (!_reactSubview.window && self.window) {
             [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
         }
         [sheet animateChanges:^{
@@ -170,7 +170,7 @@
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    if (![_detent isEqual: @"hidden"] &&![_bottomSheetController isBeingPresented]) {
+    if (![_detent isEqual: @"hidden"] &&!_reactSubview.window) {
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
     }
 }
@@ -190,6 +190,17 @@
 - (BOOL)presentationControllerShouldDismiss:(UIPresentationController *)presentationController
 {
     return _hideable;
+}
+
+- (void)presentationControllerDidDismiss:(UIPresentationController *)presentationController
+{
+    _nativeEventCount++;
+    if (!!self.onDetentChanged) {
+        self.onDetentChanged(@{
+            @"detent": @"hidden",
+            @"eventCount": @(_nativeEventCount),
+        });
+    }
 }
 
 @end
