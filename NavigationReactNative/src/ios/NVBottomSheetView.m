@@ -95,11 +95,11 @@
         }
         [sheet animateChanges:^{
             [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[_collapsedDetent, _expandedDetent] : @[_collapsedDetent, _halfExpandedDetent, _expandedDetent]];
-            if (eventLag == 0 && [sheet selectedDetentIdentifier] != newDetent) {
-                sheet.selectedDetentIdentifier = newDetent;
-            }
             if (!_draggable) {
                 [sheet setDetents: @[[newDetent isEqual:[self collapsedIdentifier]] ? _collapsedDetent : ([newDetent isEqual:[self expandedIdentifier]] ? _expandedDetent : _halfExpandedDetent)]];
+            }
+            if (eventLag == 0 && [sheet selectedDetentIdentifier] != newDetent) {
+                sheet.selectedDetentIdentifier = newDetent;
             }
         }];
     } else {
