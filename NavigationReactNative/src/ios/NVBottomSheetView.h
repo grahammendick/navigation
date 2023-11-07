@@ -1,10 +1,10 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
 #import <React/RCTComponent.h>
-
+#import <React/RCTInvalidating.h>
 
 API_AVAILABLE(ios(15.0))
-@interface NVBottomSheetView : UIView <UISheetPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate>
+@interface NVBottomSheetView : UIView <UISheetPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate, RCTInvalidating>
 
 @property (nonatomic, copy) NSString *detent;
 @property (nonatomic, assign) NSInteger peekHeight;

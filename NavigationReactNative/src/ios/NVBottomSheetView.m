@@ -35,9 +35,11 @@
     UIView *_reactSubview;
     CGSize _oldSize;
     NSInteger _nativeEventCount;
+    CADisplayLink *_displayLink;
     UISheetPresentationControllerDetent *_collapsedDetent;
     UISheetPresentationControllerDetent *_expandedDetent;
     UISheetPresentationControllerDetent *_halfExpandedDetent;
+    BOOL _presented;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -53,8 +55,8 @@
         UIView *containerView = [UIView new];
         containerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         _bottomSheetController.view = containerView;
-        CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateView)];
-        [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateView)];
+        [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         __weak typeof(self) weakSelf = self;
         _bottomSheetController.boundsDidChangeBlock = ^(CGRect newBounds) {
             [weakSelf notifyForBoundsChange:newBounds];
@@ -90,7 +92,8 @@
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
     if (![_detent isEqual: @"hidden"]) {
-        if (!_reactSubview.window && self.window) {
+        if (self.window && !_presented) {
+            _presented = YES;
             [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
         }
         [sheet animateChanges:^{
@@ -152,7 +155,6 @@
     }
 }
 
-
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
@@ -170,10 +172,19 @@
 {
 }
 
+-(void)invalidate
+{
+    [_displayLink invalidate];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self->_bottomSheetController dismissViewControllerAnimated:YES completion:nil];
+    });
+}
+
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    if (![_detent isEqual: @"hidden"] &&!_reactSubview.window) {
+    if (![_detent isEqual: @"hidden"] && !_presented) {
+        _presented = YES;
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
     }
 }
