@@ -34,12 +34,12 @@
     NVBottomSheetController *_bottomSheetController;
     UIView *_reactSubview;
     CGSize _oldSize;
+    BOOL _presented;
     NSInteger _nativeEventCount;
     CADisplayLink *_displayLink;
     UISheetPresentationControllerDetent *_collapsedDetent;
     UISheetPresentationControllerDetent *_expandedDetent;
     UISheetPresentationControllerDetent *_halfExpandedDetent;
-    BOOL _presented;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
