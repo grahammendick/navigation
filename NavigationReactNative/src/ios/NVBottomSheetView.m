@@ -175,9 +175,6 @@
 -(void)invalidate
 {
     [_displayLink invalidate];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self->_bottomSheetController dismissViewControllerAnimated:YES completion:nil];
-    });
 }
 
 - (void)didMoveToWindow
