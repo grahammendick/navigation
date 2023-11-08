@@ -53,7 +53,7 @@
         UIView *containerView = [UIView new];
         containerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         _bottomSheetController.view = containerView;
-        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateView)];
+        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
         [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         __weak typeof(self) weakSelf = self;
         _bottomSheetController.boundsDidChangeBlock = ^(CGRect newBounds) {
@@ -156,7 +156,7 @@
     }
 }
 
-- (void)updateView {
+- (void)resizeView {
     CGSize newSize = [[_bottomSheetController.view.layer.presentationLayer valueForKeyPath:@"frame.size"] CGSizeValue];
     if (!CGSizeEqualToSize(_oldSize, newSize)) {
         _oldSize = newSize;
