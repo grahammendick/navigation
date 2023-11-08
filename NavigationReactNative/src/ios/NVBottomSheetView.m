@@ -59,6 +59,7 @@
         _bottomSheetController.boundsDidChangeBlock = ^(CGRect newBounds) {
             [weakSelf notifyForBoundsChange:newBounds];
         };
+        [[NSNotificationCenter defaultCenter] addObserver:weakSelf selector:@selector(destroy:) name:@"dismissBottomSheet" object:nil];
     }
     return self;
 }
@@ -176,9 +177,20 @@
 {
 }
 
+- (void) destroy:(NSNotification *) notification
+{
+    [self invalidate];
+    if (_presented) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self->_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
+        });
+    }
+}
+
 -(void)invalidate
 {
     [_displayLink invalidate];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didMoveToWindow
