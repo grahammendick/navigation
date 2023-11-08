@@ -753,10 +753,6 @@ export interface BottomSheetProps {
      */
     halfExpandedRatio?: number;
     /**
-     * Expanding above this resting state dims the view underneath the sheet
-     */
-    largestUndimmedDetent?: 'collapsed' | 'halfExpanded';
-    /**
      * Indicates whether the bottom sheet can hide when it is swiped down
      */
     hideable?: boolean;
