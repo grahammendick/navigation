@@ -13,6 +13,7 @@ API_AVAILABLE(ios(15.0))
 @property (nonatomic, assign) double halfExpandedRatio;
 @property (nonatomic, assign) BOOL hideable;
 @property (nonatomic, assign) BOOL draggable;
+@property (nonatomic, assign) BOOL skipCollapsed;
 @property (nonatomic, assign) NSInteger mostRecentEventCount;
 @property (nonatomic, copy) RCTDirectEventBlock onDetentChanged;
 
