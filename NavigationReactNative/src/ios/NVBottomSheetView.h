@@ -11,6 +11,7 @@ API_AVAILABLE(ios(15.0))
 @property (nonatomic, assign) NSInteger expandedHeight;
 @property (nonatomic, assign) NSInteger expandedOffset;
 @property (nonatomic, assign) double halfExpandedRatio;
+@property (nonatomic, copy) NSString *largestUndimmedDetent;
 @property (nonatomic, assign) BOOL hideable;
 @property (nonatomic, assign) BOOL draggable;
 @property (nonatomic, assign) BOOL skipCollapsed;

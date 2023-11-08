@@ -98,6 +98,10 @@
             [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
         }
         [sheet animateChanges:^{
+            [sheet setLargestUndimmedDetentIdentifier:nil];
+            if ([_largestUndimmedDetent length]) {
+                [sheet setLargestUndimmedDetentIdentifier:[_largestUndimmedDetent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_largestUndimmedDetent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier])];
+            }
             [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[_collapsedDetent, _expandedDetent] : @[_collapsedDetent, _halfExpandedDetent, _expandedDetent]];
             if (_skipCollapsed && ![_detent isEqual:@"collapsed"]) {
                 [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[ _expandedDetent] : @[_halfExpandedDetent, _expandedDetent]];
