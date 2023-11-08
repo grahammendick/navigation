@@ -47,8 +47,6 @@
     if (self = [super init]) {
         _bridge = bridge;
         _bottomSheetController = [[NVBottomSheetController alloc] init];
-        _bottomSheetController.sheetPresentationController.delegate = self;
-        _bottomSheetController.presentationController.delegate = self;
         _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
         _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
         _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
@@ -94,6 +92,8 @@
     if (![_detent isEqual: @"hidden"]) {
         if (self.window && !_presented) {
             _presented = YES;
+            _bottomSheetController.sheetPresentationController.delegate = self;
+            _bottomSheetController.presentationController.delegate = self;
             [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
         }
         [sheet animateChanges:^{
@@ -107,6 +107,7 @@
         }];
     } else {
         [_bottomSheetController dismissViewControllerAnimated:YES completion:nil];
+        _presented = NO;
     }
 }
 
@@ -182,6 +183,8 @@
     [super didMoveToWindow];
     if (![_detent isEqual: @"hidden"] && !_presented) {
         _presented = YES;
+        _bottomSheetController.sheetPresentationController.delegate = self;
+        _bottomSheetController.presentationController.delegate = self;
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
     }
 }
