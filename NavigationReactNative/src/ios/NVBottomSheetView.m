@@ -69,21 +69,21 @@
     _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
     _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
     _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
+    __weak typeof(self) weakSelf = self;
     if (@available(iOS 16.0, *)) {
         if (_peekHeight > 0) {
             _collapsedDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"collapsed" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> _Nonnull context) {
-                return self->_peekHeight;
+                return weakSelf.peekHeight;
             }];
         }
         if (_expandedHeight > 0 || _expandedOffset > 0) {
             _expandedDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"expanded" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> _Nonnull context) {
-                return self->_expandedHeight > 0 ? self->_expandedHeight : context.maximumDetentValue - self->_expandedOffset;
+                return weakSelf.expandedHeight > 0 ? weakSelf.expandedHeight : context.maximumDetentValue - weakSelf.expandedOffset;
             }];
         }
-        
         if (_halfExpandedRatio > 0) {
             _halfExpandedDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"halfExpanded" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> _Nonnull context) {
-                return  self-> _halfExpandedRatio * context.maximumDetentValue;
+                return weakSelf.halfExpandedRatio * context.maximumDetentValue;
             }];
         }
     }
