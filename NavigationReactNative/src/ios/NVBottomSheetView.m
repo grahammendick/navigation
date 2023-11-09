@@ -125,7 +125,7 @@
     if (_reactSubview) {
         CAAnimation *dropping = [_bottomSheetController.view.layer animationForKey:@"bounds.size"];
         if (!dropping) {
-            [_bridge.uiManager setSize:newBounds.size forView:_reactSubview];
+            [_bridge.uiManager setSize:newBounds.size forView:self];
         }
     }
 }
@@ -135,7 +135,7 @@
     CGSize newSize = [[_bottomSheetController.view.layer.presentationLayer valueForKeyPath:@"frame.size"] CGSizeValue];
     if (!CGSizeEqualToSize(_oldSize, newSize)) {
         _oldSize = newSize;
-        [_bridge.uiManager setSize:newSize forView:_reactSubview];
+        [_bridge.uiManager setSize:newSize forView:self];
     }
 }
 
