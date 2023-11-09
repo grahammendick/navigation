@@ -6,8 +6,10 @@
 #import <react/renderer/components/navigationreactnative/EventEmitters.h>
 #import <react/renderer/components/navigationreactnative/Props.h>
 #import <react/renderer/components/navigationreactnative/RCTComponentViewHelpers.h>
+#import <NVBottomSheetComponentDescriptor.h>
 
 #import "RCTFabricComponentsPlugins.h"
+#import <React/RCTConversions.h>
 #import <React/UIView+React.h>
 
 using namespace facebook::react;
@@ -27,6 +29,7 @@ using namespace facebook::react;
     UISheetPresentationControllerDetent *_collapsedDetent;
     UISheetPresentationControllerDetent *_expandedDetent;
     UISheetPresentationControllerDetent *_halfExpandedDetent;
+    NVBottomSheetShadowNode::ConcreteState::Shared _state;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -143,6 +146,10 @@ using namespace facebook::react;
 
 - (void)notifyForBoundsChange:(CGRect)newBounds
 {
+    if (_state != nullptr) {
+        auto newState = NVBottomSheetState{RCTSizeFromCGSize(newBounds.size)};
+        _state->updateState(std::move(newState));
+    }
 }
 
 - (void)resizeView
@@ -171,6 +178,12 @@ using namespace facebook::react;
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
     [childComponentView removeFromSuperview];
+}
+
+- (void)updateState:(facebook::react::State::Shared const &)state
+           oldState:(facebook::react::State::Shared const &)oldState
+{
+    _state = std::static_pointer_cast<const NVBottomSheetShadowNode::ConcreteState>(state);
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider

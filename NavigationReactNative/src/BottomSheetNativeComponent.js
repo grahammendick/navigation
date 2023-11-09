@@ -25,4 +25,5 @@ type NativeProps = $ReadOnly<{|
 
 export default (codegenNativeComponent<NativeProps>(
    'NVBottomSheet',
+   {interfaceOnly: true}
 ): HostComponent<NativeProps>);

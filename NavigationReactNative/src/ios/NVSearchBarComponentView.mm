@@ -222,7 +222,7 @@ using namespace facebook::react;
 - (void)notifyForBoundsChange:(CGRect)newBounds
 {
     if (_state != nullptr) {
-        auto newState = NVSearchBarState{RCTSizeFromCGSize(self.bounds.size)};
+        auto newState = NVSearchBarState{RCTSizeFromCGSize(newBounds.size)};
         _state->updateState(std::move(newState));
     }
 }

@@ -15,6 +15,7 @@
 #include <jsi/jsi.h>
 #include <react/renderer/components/navigationreactnative/NVActionBarComponentDescriptor.h>
 #include <react/renderer/components/navigationreactnative/NVBarButtonComponentDescriptor.h>
+#include <react/renderer/components/navigationreactnative/NVBottomSheetComponentDescriptor.h>
 #include <react/renderer/components/navigationreactnative/NVNavigationBarComponentDescriptor.h>
 #include <react/renderer/components/navigationreactnative/NVSearchBarComponentDescriptor.h>
 #include <react/renderer/components/navigationreactnative/NVTabBarItemComponentDescriptor.h>
