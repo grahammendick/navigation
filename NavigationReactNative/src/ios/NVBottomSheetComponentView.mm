@@ -153,6 +153,7 @@ using namespace facebook::react;
     _bottomSheetController = nil;
     _oldSize = CGSizeZero;
     _presented = NO;
+    [_displayLink invalidate];
 }
 
 - (void)notifyForBoundsChange:(CGRect)newBounds
