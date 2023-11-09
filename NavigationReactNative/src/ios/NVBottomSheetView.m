@@ -1,31 +1,10 @@
 #import "NVBottomSheetView.h"
+#import "NVBottomSheetController.h"
 
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 #import <React/UIView+React.h>
-
-@interface NVBottomSheetController : UIViewController
-
-@property (nonatomic, copy) void (^boundsDidChangeBlock)(CGRect newBounds);
-
-@end
-
-@implementation NVBottomSheetController
-{
-    CGRect _lastViewFrame;
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    if (self.boundsDidChangeBlock && !CGRectEqualToRect(_lastViewFrame, self.view.frame)) {
-        self.boundsDidChangeBlock(self.view.bounds);
-        _lastViewFrame = self.view.frame;
-    }
-}
-
-@end
 
 @implementation NVBottomSheetView
 {

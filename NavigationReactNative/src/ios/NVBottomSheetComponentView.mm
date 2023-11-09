@@ -1,5 +1,6 @@
 #ifdef RCT_NEW_ARCH_ENABLED
 #import "NVBottomSheetComponentView.h"
+#import "NVBottomSheetController.h"
 
 #import <react/renderer/components/navigationreactnative/ComponentDescriptors.h>
 #import <react/renderer/components/navigationreactnative/EventEmitters.h>
@@ -9,28 +10,6 @@
 #import "RCTFabricComponentsPlugins.h"
 
 using namespace facebook::react;
-
-@interface NVBottomSheetController : UIViewController
-
-@property (nonatomic, copy) void (^boundsDidChangeBlock)(CGRect newBounds);
-
-@end
-
-@implementation NVBottomSheetController
-{
-    CGRect _lastViewFrame;
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    if (self.boundsDidChangeBlock && !CGRectEqualToRect(_lastViewFrame, self.view.frame)) {
-        self.boundsDidChangeBlock(self.view.bounds);
-        _lastViewFrame = self.view.frame;
-    }
-}
-
-@end
 
 @interface NVBottomSheetComponentView () <RCTNVBottomSheetViewProtocol>
 @end
