@@ -144,6 +144,17 @@ using namespace facebook::react;
     return expandedIdentifier;
 }
 
+- (void)prepareForRecycle
+{
+    [super prepareForRecycle];
+    _state.reset();
+    _nativeEventCount = 0;
+    _oldBottomSheetController = _bottomSheetController;
+    _bottomSheetController = nil;
+    _oldSize = CGSizeZero;
+    _presented = NO;
+}
+
 - (void)notifyForBoundsChange:(CGRect)newBounds
 {
     if (_state != nullptr) {
