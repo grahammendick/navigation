@@ -167,7 +167,7 @@ using namespace facebook::react;
 - (void)resizeView
 {
     CGSize newSize = [[_bottomSheetController.view.layer.presentationLayer valueForKeyPath:@"frame.size"] CGSizeValue];
-    if (!CGSizeEqualToSize(_oldSize, newSize)) {
+    if (!CGSizeEqualToSize(_oldSize, newSize) && _state != nullptr) {
         _oldSize = newSize;
         auto newState = NVBottomSheetState{RCTSizeFromCGSize(newSize)};
         _state->updateState(std::move(newState));
