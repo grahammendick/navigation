@@ -21,7 +21,7 @@ using namespace facebook::react;
 {
     NVBottomSheetController *_bottomSheetController;
     NVBottomSheetController *_oldBottomSheetController;
-    UIView *_reactSubview;
+    CGSize _oldSize;
     BOOL _presented;
     NSInteger _nativeEventCount;
     NSString *_detent;
@@ -154,6 +154,12 @@ using namespace facebook::react;
 
 - (void)resizeView
 {
+    CGSize newSize = [[_bottomSheetController.view.layer.presentationLayer valueForKeyPath:@"frame.size"] CGSizeValue];
+    if (!CGSizeEqualToSize(_oldSize, newSize)) {
+        _oldSize = newSize;
+        auto newState = NVBottomSheetState{RCTSizeFromCGSize(newSize)};
+        _state->updateState(std::move(newState));
+    }
 }
 
 - (void)didMoveToWindow
