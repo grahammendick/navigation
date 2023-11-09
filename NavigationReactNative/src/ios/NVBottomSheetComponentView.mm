@@ -22,6 +22,7 @@ using namespace facebook::react;
     UIView *_reactSubview;
     BOOL _presented;
     NSInteger _nativeEventCount;
+    NSString *_detent;
     CADisplayLink *_displayLink;
     UISheetPresentationControllerDetent *_collapsedDetent;
     UISheetPresentationControllerDetent *_expandedDetent;
@@ -46,6 +47,7 @@ using namespace facebook::react;
         [_oldBottomSheetController willMoveToParentViewController:nil];
         [_oldBottomSheetController.view removeFromSuperview];
         [_oldBottomSheetController removeFromParentViewController];
+        _bottomSheetController = [[NVBottomSheetController alloc] init];
         _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
         [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         id __weak weakSelf = self;
@@ -84,9 +86,9 @@ using namespace facebook::react;
         }
     }
     NSInteger eventLag = _nativeEventCount - newViewProps.mostRecentEventCount;
-    NSString *detent = [[NSString alloc] initWithUTF8String: newViewProps.detent.c_str()];
-    UISheetPresentationControllerDetentIdentifier newDetent = [detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
-    if (![detent isEqual: @"hidden"]) {
+    _detent = [[NSString alloc] initWithUTF8String: newViewProps.detent.c_str()];
+    UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
+    if (![_detent isEqual: @"hidden"]) {
         if (self.window && !_presented) {
             _presented = YES;
             _bottomSheetController.sheetPresentationController.delegate = self;
@@ -95,7 +97,7 @@ using namespace facebook::react;
         }
         [sheet animateChanges:^{
             [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[_collapsedDetent, _expandedDetent] : @[_collapsedDetent, _halfExpandedDetent, _expandedDetent]];
-            if (newViewProps.skipCollapsed && ![detent isEqual:@"collapsed"]) {
+            if (newViewProps.skipCollapsed && ![_detent isEqual:@"collapsed"]) {
                 [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[ _expandedDetent] : @[_halfExpandedDetent, _expandedDetent]];
             }
             if (!newViewProps.draggable) {
@@ -147,7 +149,29 @@ using namespace facebook::react;
 {
 }
 
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    if (![_detent isEqual: @"hidden"] && !_presented) {
+        _presented = YES;
+        _bottomSheetController.sheetPresentationController.delegate = self;
+        _bottomSheetController.presentationController.delegate = self;
+        [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
+    }
+}
+
 #pragma mark - RCTComponentViewProtocol
+
+- (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
+{
+    [self ensureBottomSheetController];
+    [_bottomSheetController.view insertSubview:childComponentView atIndex:index];
+}
+
+- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
+{
+    [childComponentView removeFromSuperview];
+}
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
