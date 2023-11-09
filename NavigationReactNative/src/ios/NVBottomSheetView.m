@@ -5,7 +5,6 @@
 #import <React/RCTUIManager.h>
 #import <React/UIView+React.h>
 
-
 @interface NVBottomSheetController : UIViewController
 
 @property (nonatomic, copy) void (^boundsDidChangeBlock)(CGRect newBounds);
@@ -152,7 +151,8 @@
     }
 }
 
-- (void)resizeView {
+- (void)resizeView
+{
     CGSize newSize = [[_bottomSheetController.view.layer.presentationLayer valueForKeyPath:@"frame.size"] CGSizeValue];
     if (!CGSizeEqualToSize(_oldSize, newSize)) {
         _oldSize = newSize;

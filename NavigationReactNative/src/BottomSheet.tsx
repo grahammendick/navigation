@@ -45,7 +45,7 @@ class BottomSheet extends React.Component<any, any> {
         return (
             <NVBottomSheet
                 ref={this.ref}
-                detent={Platform.OS === 'android' ? detents[this.state.selectedDetent] : this.state.selectedDetent}
+                detent={Platform.OS === 'android' ? '' + detents[this.state.selectedDetent] : this.state.selectedDetent}
                 peekHeight={peekHeight}
                 expandedHeight={expandedHeight}
                 expandedOffset={expandedOffset}

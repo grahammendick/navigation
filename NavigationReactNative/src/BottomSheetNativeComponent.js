@@ -6,9 +6,10 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
-  detent: Int32,
+  detent: string,
   mostRecentEventCount: Int32,
   peekHeight: Int32,
+  expandedHeight: Int32,
   expandedOffset: Int32,
   fitToContents: boolean,
   halfExpandedRatio?: WithDefault<Float, -1>,
