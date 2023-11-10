@@ -28,8 +28,8 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
     }
 
     @ReactProp(name = "detent")
-    public void setDetent(BottomSheetView view, int detent) {
-        view.pendingDetent = detent;
+    public void setDetent(BottomSheetView view, String detent) {
+        view.pendingDetent = Integer.parseInt(detent);
     }
 
     @ReactProp(name = "mostRecentEventCount")
