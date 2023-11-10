@@ -217,7 +217,6 @@ using namespace facebook::react;
     }
 }
 
-
 #pragma mark - RCTComponentViewProtocol
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
