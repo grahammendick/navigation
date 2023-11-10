@@ -43,8 +43,8 @@ public class BottomSheetViewManager extends ViewGroupManager<BottomSheetView> im
     }
 
     @ReactProp(name = "detent")
-    public void setDetent(BottomSheetView view, int detent) {
-        view.pendingDetent = detent;
+    public void setDetent(BottomSheetView view, String detent) {
+        view.pendingDetent = Integer.parseInt(detent);
     }
 
     @ReactProp(name = "mostRecentEventCount")
@@ -55,6 +55,10 @@ public class BottomSheetViewManager extends ViewGroupManager<BottomSheetView> im
     @ReactProp(name = "peekHeight")
     public void setPeekHeight(BottomSheetView view, int peekHeight) {
         view.bottomSheetBehavior.setPeekHeight((int) PixelUtil.toPixelFromDIP(peekHeight), true);
+    }
+
+    @Override
+    public void setExpandedHeight(BottomSheetView view, int value) {
     }
 
     @ReactProp(name = "expandedOffset")
