@@ -18,7 +18,7 @@ type NativeProps = $ReadOnly<{|
   draggable: boolean,
   sheetHeight: Double,
   onDetentChanged: DirectEventHandler<$ReadOnly<{|
-    detent: Int32,
+    detent: string,
     eventCount: Int32,
   |}>>,
 |}>;

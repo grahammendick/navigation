@@ -25,6 +25,7 @@ using namespace facebook::react;
     BOOL _presented;
     NSInteger _nativeEventCount;
     NSString *_detent;
+    BOOL _hideable;
     CADisplayLink *_displayLink;
     UISheetPresentationControllerDetent *_collapsedDetent;
     UISheetPresentationControllerDetent *_expandedDetent;
@@ -88,6 +89,7 @@ using namespace facebook::react;
             }];
         }
     }
+    _hideable = newViewProps.hideable;
     NSInteger eventLag = _nativeEventCount - newViewProps.mostRecentEventCount;
     _detent = [[NSString alloc] initWithUTF8String: newViewProps.detent.c_str()];
     UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
@@ -184,6 +186,37 @@ using namespace facebook::react;
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
     }
 }
+
+- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(UISheetPresentationController *)sheetPresentationController
+{
+    _nativeEventCount++;
+    if (_eventEmitter != nullptr) {
+        UISheetPresentationControllerDetentIdentifier detentId = sheetPresentationController.selectedDetentIdentifier;
+        std::static_pointer_cast<NVBottomSheetEventEmitter const>(_eventEmitter)
+            ->onDetentChanged(NVBottomSheetEventEmitter::OnDetentChanged{
+                .detent = std::string([[[self collapsedIdentifier] isEqual:detentId] ? @"collapsed" : ([[self expandedIdentifier] isEqual:detentId] ? @"expanded" : @"halfExpanded") UTF8String]),
+                .eventCount = static_cast<int>(_nativeEventCount),
+            });
+    }
+}
+
+- (BOOL)presentationControllerShouldDismiss:(UIPresentationController *)presentationController
+{
+    return _hideable;
+}
+
+- (void)presentationControllerDidDismiss:(UIPresentationController *)presentationController
+{
+    _nativeEventCount++;
+    if (_eventEmitter != nullptr) {
+        std::static_pointer_cast<NVBottomSheetEventEmitter const>(_eventEmitter)
+            ->onDetentChanged(NVBottomSheetEventEmitter::OnDetentChanged{
+                .detent = std::string([@"hidden" UTF8String]),
+                .eventCount = static_cast<int>(_nativeEventCount),
+            });
+    }
+}
+
 
 #pragma mark - RCTComponentViewProtocol
 
