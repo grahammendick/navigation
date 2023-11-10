@@ -10,6 +10,7 @@
 
 #import "RCTFabricComponentsPlugins.h"
 #import <React/RCTConversions.h>
+#import <React/RCTSurfaceTouchHandler.h>
 #import <React/UIView+React.h>
 
 using namespace facebook::react;
@@ -27,6 +28,7 @@ using namespace facebook::react;
     NSString *_detent;
     BOOL _hideable;
     CADisplayLink *_displayLink;
+    RCTSurfaceTouchHandler *_touchHandler;
     UISheetPresentationControllerDetent *_collapsedDetent;
     UISheetPresentationControllerDetent *_expandedDetent;
     UISheetPresentationControllerDetent *_halfExpandedDetent;
@@ -38,6 +40,7 @@ using namespace facebook::react;
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const NVBarButtonProps>();
         _props = defaultProps;
+        _touchHandler = [RCTSurfaceTouchHandler new];
         _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
         _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
         _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
@@ -223,12 +226,14 @@ using namespace facebook::react;
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
     [self ensureBottomSheetController];
+    [_touchHandler attachToView:childComponentView];
     [_bottomSheetController.view insertSubview:childComponentView atIndex:index];
 }
 
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
     [childComponentView removeFromSuperview];
+    [_touchHandler detachFromView:childComponentView];
 }
 
 - (void)updateState:(facebook::react::State::Shared const &)state

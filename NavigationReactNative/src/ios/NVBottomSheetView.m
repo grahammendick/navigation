@@ -3,6 +3,7 @@
 
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
+#import <React/RCTTouchHandler.h>
 #import <React/RCTUIManager.h>
 #import <React/UIView+React.h>
 
@@ -15,6 +16,7 @@
     BOOL _presented;
     NSInteger _nativeEventCount;
     CADisplayLink *_displayLink;
+    RCTTouchHandler *_touchHandler;
     UISheetPresentationControllerDetent *_collapsedDetent;
     UISheetPresentationControllerDetent *_expandedDetent;
     UISheetPresentationControllerDetent *_halfExpandedDetent;
@@ -25,6 +27,7 @@
     if (self = [super init]) {
         _bridge = bridge;
         _bottomSheetController = [[NVBottomSheetController alloc] init];
+        _touchHandler = [[RCTTouchHandler alloc] initWithBridge:bridge];
         _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
         _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
         _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
@@ -139,6 +142,7 @@
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
+    [_touchHandler attachToView:subview];
     [_bottomSheetController.view insertSubview:subview atIndex:0];
     _reactSubview = subview;
 }
@@ -146,6 +150,7 @@
 - (void)removeReactSubview:(UIView *)subview
 {
     [super removeReactSubview:subview];
+    [_touchHandler detachFromView:subview];
     _reactSubview = nil;
 }
 
