@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Bottom Sheet (Android)</title>
+    <title>Bottom Sheet</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="../../css/prism.css">
     <link rel="stylesheet" href="../../css/navigation.css">
@@ -32,7 +32,7 @@
                 <a href="tab-bar.html">Tab Bar</a>
                 <a href="modal.html">Modal</a>
                 <a href="drawer.html">Drawer</a>
-                <a href="bottom-sheet.html" class="selected">Bottom Sheet (Android)</a>
+                <a href="bottom-sheet.html" class="selected">Bottom Sheet</a>
                 <a href="floating-action-button.html">Floating Action Button (Android)</a>
                 <a href="scene-navigation-lifecycle.html">Navigation Lifecycle</a>
                 <a href="custom-animation.html">Custom Animation (Android)</a>
@@ -50,9 +50,9 @@
             </div>
         </div>
         <div id="article">
-            <h1>Bottom Sheet (Android)</h1>
+            <h1>Bottom Sheet</h1>
             <p>
-                On Android, you use the <code>BottomSheet</code> component to avoid cluttering up the main content. The sheet starts off collapsed and the user expands it by dragging. The <code>BottomSheet</code> is 100% native so it must be a child of a <code>CoordinatorLayout</code>. In our example application, when the user opens an email we display the sender's information in a <code>BottomSheet</code>. The <code>peekHeight</code> determines how much of the sender the user sees to start with. We turn on nested scrolling so that expanding the sheet seamlessly scrolls the sender.
+                You use the <code>BottomSheet</code> component to avoid cluttering up the main content. The sheet starts off collapsed and the user expands it by dragging. The <code>BottomSheet</code> is 100% native so it must be a child of a <code>CoordinatorLayout</code> on Android. In our example application, when the user opens an email we display the sender's information in a <code>BottomSheet</code>. The <code>peekHeight</code> determines how much of the sender the user sees to start with. We turn on nested scrolling so that expanding the sheet seamlessly scrolls the sender.
             </p>
             <pre><code class="language-jsx">import {BottomSheet} from 'navigation-react-native';
 
@@ -61,6 +61,10 @@
     &lt;ScrollView nestedScrollEnabled={true} />
   &lt;/BottomSheet>
 &lt;/CoordinatorLayout></code></pre>
+            <div class="Note">
+                <h2>Note</h2>
+                On iOS, the animation isn't completely smooth. Removing the stutter when dragging the sheet quickly will have to wait until React Native introduces synchronous view resizing.
+            </div>
             <h2>Controlling the Bottom Sheet</h2>
             <p>
                 The resting states of a <code>BottomSheet</code> are called detents, for example, 'collapsed' or 'expanded'. By default the <code>BottomSheet</code> is uncontrolled, where only the user can change the detent (by dragging). But it can also be controlled so you can programmatically change the detent. In our email example, when the user presses the sender's icon button we expand the <code>BottomSheet</code> to reveal the sender's details.
