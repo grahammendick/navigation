@@ -1,100 +1,72 @@
-#ifdef RCT_NEW_ARCH_ENABLED
-#import "NVBottomSheetComponentView.h"
+#import "NVBottomSheetView.h"
 #import "NVBottomSheetController.h"
 
-#import <react/renderer/components/navigationreactnative/ComponentDescriptors.h>
-#import <react/renderer/components/navigationreactnative/EventEmitters.h>
-#import <react/renderer/components/navigationreactnative/Props.h>
-#import <react/renderer/components/navigationreactnative/RCTComponentViewHelpers.h>
-#import <NVBottomSheetComponentDescriptor.h>
-
-#import "RCTFabricComponentsPlugins.h"
-#import <React/RCTConversions.h>
-#import <React/RCTSurfaceTouchHandler.h>
+#import <UIKit/UIKit.h>
+#import <React/RCTBridge.h>
+#import <React/RCTTouchHandler.h>
+#import <React/RCTUIManager.h>
 #import <React/UIView+React.h>
 
-using namespace facebook::react;
-
-@interface NVBottomSheetComponentView () <RCTNVBottomSheetViewProtocol>
-@end
-
-@implementation NVBottomSheetComponentView
+@implementation NVBottomSheetView
 {
+    __weak RCTBridge *_bridge;
     NVBottomSheetController *_bottomSheetController;
-    NVBottomSheetController *_oldBottomSheetController;
+    UIView *_reactSubview;
     CGSize _oldSize;
     BOOL _presented;
     NSInteger _nativeEventCount;
-    NSString *_detent;
-    BOOL _hideable;
     CADisplayLink *_displayLink;
-    RCTSurfaceTouchHandler *_touchHandler;
+    RCTTouchHandler *_touchHandler;
     UISheetPresentationControllerDetent *_collapsedDetent;
     UISheetPresentationControllerDetent *_expandedDetent;
     UISheetPresentationControllerDetent *_halfExpandedDetent;
-    NVBottomSheetShadowNode::ConcreteState::Shared _state;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (id)initWithBridge:(RCTBridge *)bridge
 {
-    if (self = [super initWithFrame:frame]) {
-        static const auto defaultProps = std::make_shared<const NVBarButtonProps>();
-        _props = defaultProps;
-        _touchHandler = [RCTSurfaceTouchHandler new];
+    if (self = [super init]) {
+        _bridge = bridge;
+        _bottomSheetController = [[NVBottomSheetController alloc] init];
+        _touchHandler = [[RCTTouchHandler alloc] initWithBridge:bridge];
         _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
         _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
         _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
+        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
+        [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        __weak typeof(self) weakSelf = self;
+        _bottomSheetController.boundsDidChangeBlock = ^(CGRect newBounds) {
+            [weakSelf notifyForBoundsChange:newBounds];
+        };
+        [[NSNotificationCenter defaultCenter] addObserver:weakSelf selector:@selector(destroy:) name:@"dismissBottomSheet" object:nil];
     }
     return self;
 }
 
-- (void)ensureBottomSheetController
+- (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
-    if (!_bottomSheetController) {
-        [_oldBottomSheetController willMoveToParentViewController:nil];
-        [_oldBottomSheetController.view removeFromSuperview];
-        [_oldBottomSheetController removeFromParentViewController];
-        _bottomSheetController = [[NVBottomSheetController alloc] init];
-        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
-        [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        id __weak weakSelf = self;
-        _bottomSheetController.boundsDidChangeBlock = ^(CGRect newBounds) {
-            [weakSelf notifyForBoundsChange:newBounds];
-        };
-    }
-}
-- (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
-{
-    [self ensureBottomSheetController];
-    const auto &newViewProps = *std::static_pointer_cast<NVBottomSheetProps const>(props);
     UISheetPresentationController *sheet = _bottomSheetController.sheetPresentationController;
     _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
     _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
     _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
+    __weak typeof(self) weakSelf = self;
     if (@available(iOS 16.0, *)) {
-        int peekHeight = newViewProps.peekHeight;
-        if (peekHeight > 0) {
+        if (_peekHeight > 0) {
             _collapsedDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"collapsed" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> _Nonnull context) {
-                return peekHeight;
+                return weakSelf.peekHeight;
             }];
         }
-        int expandedHeight = newViewProps.expandedHeight;
-        int expandedOffset = newViewProps.expandedOffset;
-        if (expandedHeight > 0 || expandedOffset > 0) {
+        if (_expandedHeight > 0 || _expandedOffset > 0) {
             _expandedDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"expanded" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> _Nonnull context) {
-                return expandedHeight > 0 ? expandedHeight : context.maximumDetentValue - expandedOffset;
+                return weakSelf.expandedHeight > 0 ? weakSelf.expandedHeight : context.maximumDetentValue - weakSelf.expandedOffset;
             }];
         }
-        float halfExpandedRatio = [@(newViewProps.halfExpandedRatio) floatValue];
-        if (halfExpandedRatio > 0) {
+        if (_halfExpandedRatio > 0) {
             _halfExpandedDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"halfExpanded" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> _Nonnull context) {
-                return halfExpandedRatio * context.maximumDetentValue;
+                return weakSelf.halfExpandedRatio * context.maximumDetentValue;
             }];
         }
     }
-    _hideable = newViewProps.hideable;
-    NSInteger eventLag = _nativeEventCount - newViewProps.mostRecentEventCount;
-    _detent = [[NSString alloc] initWithUTF8String: newViewProps.detent.c_str()];
+    NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
     if (![_detent isEqual: @"hidden"]) {
         if (self.window && !_presented) {
@@ -105,10 +77,10 @@ using namespace facebook::react;
         }
         [sheet animateChanges:^{
             [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[_collapsedDetent, _expandedDetent] : @[_collapsedDetent, _halfExpandedDetent, _expandedDetent]];
-            if (newViewProps.skipCollapsed && ![_detent isEqual:@"collapsed"]) {
+            if (_skipCollapsed && ![_detent isEqual:@"collapsed"]) {
                 [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[ _expandedDetent] : @[_halfExpandedDetent, _expandedDetent]];
             }
-            if (!newViewProps.draggable) {
+            if (!_draggable) {
                 [sheet setDetents: @[[newDetent isEqual:[self collapsedIdentifier]] ? _collapsedDetent : ([newDetent isEqual:[self expandedIdentifier]] ? _expandedDetent : _halfExpandedDetent)]];
             }
             if (eventLag == 0 && [sheet selectedDetentIdentifier] != newDetent) {
@@ -119,7 +91,6 @@ using namespace facebook::react;
         [_bottomSheetController dismissViewControllerAnimated:YES completion:nil];
         _presented = NO;
     }
-    [super updateProps:props oldProps:oldProps];
 }
 
 - (UISheetPresentationControllerDetentIdentifier) collapsedIdentifier
@@ -149,35 +120,58 @@ using namespace facebook::react;
     return expandedIdentifier;
 }
 
-- (void)prepareForRecycle
-{
-    [super prepareForRecycle];
-    _state.reset();
-    _nativeEventCount = 0;
-    [_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
-    _oldBottomSheetController = _bottomSheetController;
-    _bottomSheetController = nil;
-    _oldSize = CGSizeZero;
-    _presented = NO;
-    [_displayLink invalidate];
-}
-
 - (void)notifyForBoundsChange:(CGRect)newBounds
 {
-    if (_state != nullptr) {
-        auto newState = NVBottomSheetState{RCTSizeFromCGSize(newBounds.size)};
-        _state->updateState(std::move(newState));
+    if (_reactSubview) {
+        CAAnimation *dropping = [_bottomSheetController.view.layer animationForKey:@"bounds.size"];
+        if (!dropping) {
+            [_bridge.uiManager setSize:newBounds.size forView:self];
+        }
     }
 }
 
 - (void)resizeView
 {
     CGSize newSize = [[_bottomSheetController.view.layer.presentationLayer valueForKeyPath:@"frame.size"] CGSizeValue];
-    if (!CGSizeEqualToSize(_oldSize, newSize) && _state != nullptr) {
+    if (!CGSizeEqualToSize(_oldSize, newSize)) {
         _oldSize = newSize;
-        auto newState = NVBottomSheetState{RCTSizeFromCGSize(newSize)};
-        _state->updateState(std::move(newState));
+        [_bridge.uiManager setSize:newSize forView:self];
     }
+}
+
+- (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
+{
+    [super insertReactSubview:subview atIndex:atIndex];
+    [_touchHandler attachToView:subview];
+    [_bottomSheetController.view insertSubview:subview atIndex:0];
+    _reactSubview = subview;
+}
+
+- (void)removeReactSubview:(UIView *)subview
+{
+    [super removeReactSubview:subview];
+    [_touchHandler detachFromView:subview];
+    _reactSubview = nil;
+}
+
+- (void)didUpdateReactSubviews
+{
+}
+
+- (void) destroy:(NSNotification *) notification
+{
+    [self invalidate];
+    if (_presented) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self->_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
+        });
+    }
+}
+
+-(void)invalidate
+{
+    [_displayLink invalidate];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didMoveToWindow
@@ -194,13 +188,12 @@ using namespace facebook::react;
 - (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(UISheetPresentationController *)sheetPresentationController
 {
     _nativeEventCount++;
-    if (_eventEmitter != nullptr) {
+    if (!!self.onDetentChanged) {
         UISheetPresentationControllerDetentIdentifier detentId = sheetPresentationController.selectedDetentIdentifier;
-        std::static_pointer_cast<NVBottomSheetEventEmitter const>(_eventEmitter)
-            ->onDetentChanged(NVBottomSheetEventEmitter::OnDetentChanged{
-                .detent = std::string([[[self collapsedIdentifier] isEqual:detentId] ? @"collapsed" : ([[self expandedIdentifier] isEqual:detentId] ? @"expanded" : @"halfExpanded") UTF8String]),
-                .eventCount = static_cast<int>(_nativeEventCount),
-            });
+        self.onDetentChanged(@{
+            @"detent": [[self collapsedIdentifier] isEqual:detentId] ? @"collapsed" : ([[self expandedIdentifier] isEqual:detentId] ? @"expanded" : @"halfExpanded"),
+            @"eventCount": @(_nativeEventCount),
+        });
     }
 }
 
@@ -212,50 +205,13 @@ using namespace facebook::react;
 - (void)presentationControllerDidDismiss:(UIPresentationController *)presentationController
 {
     _nativeEventCount++;
-    if (_eventEmitter != nullptr) {
-        std::static_pointer_cast<NVBottomSheetEventEmitter const>(_eventEmitter)
-            ->onDetentChanged(NVBottomSheetEventEmitter::OnDetentChanged{
-                .detent = std::string([@"hidden" UTF8String]),
-                .eventCount = static_cast<int>(_nativeEventCount),
-            });
+    if (!!self.onDetentChanged) {
+        self.onDetentChanged(@{
+            @"detent": @"hidden",
+            @"eventCount": @(_nativeEventCount),
+        });
     }
-}
-
-#pragma mark - RCTComponentViewProtocol
-
-- (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
-{
-    [self ensureBottomSheetController];
-    [_touchHandler attachToView:childComponentView];
-    [_bottomSheetController.view insertSubview:childComponentView atIndex:index];
-}
-
-- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
-{
-    [childComponentView removeFromSuperview];
-    [_touchHandler detachFromView:childComponentView];
-}
-
-- (void)updateState:(facebook::react::State::Shared const &)state
-           oldState:(facebook::react::State::Shared const &)oldState
-{
-    _state = std::static_pointer_cast<const NVBottomSheetShadowNode::ConcreteState>(state);
-}
-
-+ (ComponentDescriptorProvider)componentDescriptorProvider
-{
-  return concreteComponentDescriptorProvider<NVBottomSheetComponentDescriptor>();
 }
 
 @end
 
-Class<RCTComponentViewProtocol> NVBottomSheetCls(void)
-{
-    if (@available(iOS 15.0, *)) {
-        return NVBottomSheetComponentView.class;
-    } else {
-        return nil;
-    }
-}
-
-#endif

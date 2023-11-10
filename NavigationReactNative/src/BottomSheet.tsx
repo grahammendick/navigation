@@ -21,8 +21,8 @@ class BottomSheet extends React.Component<any, any> {
     }
     onDetentChanged({nativeEvent}) {
         var {eventCount: mostRecentEventCount, detent: nativeDetent} = nativeEvent;
-        var detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants.Detent
-        var detent = Object.keys(detents).find(name => detents[name] === nativeDetent)
+        var detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants?.Detent;
+        var detent = Platform.OS === 'android'? Object.keys(detents).find(name => detents[name] === nativeDetent) : nativeDetent;
         this.dragging = !detent
         if (detent) {
             this.changeDetent(detent);
@@ -39,14 +39,15 @@ class BottomSheet extends React.Component<any, any> {
         }
     }
     render() {
-        if (Platform.OS === 'ios') return null;
+        if (Platform.OS === 'ios' && +Platform.Version < 15) return null;
         var { expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable, children } = this.props
-        const detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants.Detent
+        const detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants?.Detent;
         return (
             <NVBottomSheet
                 ref={this.ref}
-                detent={detents[this.state.selectedDetent]}
+                detent={Platform.OS === 'android' ? '' + detents[this.state.selectedDetent] : this.state.selectedDetent}
                 peekHeight={peekHeight}
+                expandedHeight={expandedHeight}
                 expandedOffset={expandedOffset}
                 fitToContents={expandedOffset == null}
                 halfExpandedRatio={halfExpandedRatio}
@@ -61,7 +62,9 @@ class BottomSheet extends React.Component<any, any> {
                     styles.bottomSheet,
                     expandedHeight != null ? { height: expandedHeight } : null,
                     expandedOffset != null ? { top: expandedOffset } : null,
-                    expandedHeight == null && expandedOffset == null ? { top: 0 } : null
+                    expandedHeight == null && expandedOffset == null ? { top: 0 } : null,
+                    Platform.OS === 'ios' ? { height: undefined, top: undefined } : null, 
+                    { display: this.state.selectedDetent !== 'hidden' ? 'flex' : 'none' }, 
                 ]}
             >
                 {children}
