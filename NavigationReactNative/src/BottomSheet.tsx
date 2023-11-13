@@ -40,10 +40,11 @@ class BottomSheet extends React.Component<any, any> {
     }
     render() {
         if (Platform.OS === 'ios' && +Platform.Version < 15) return null;
-        var { expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable, children } = this.props
+        const { expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable, modal, children } = this.props
         const detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants?.Detent;
+        const BottomSheetView = Platform.OS === 'ios' || !modal ? NVBottomSheet : NVBottomSheetDialog;
         return (
-            <NVBottomSheet
+            <BottomSheetView
                 ref={this.ref}
                 detent={Platform.OS === 'android' ? '' + detents[this.state.selectedDetent] : this.state.selectedDetent}
                 peekHeight={peekHeight}
@@ -68,12 +69,13 @@ class BottomSheet extends React.Component<any, any> {
                 ]}
             >
                 {children}
-            </NVBottomSheet>
+            </BottomSheetView>
         )
     }
 } 
 
 var NVBottomSheet = global.nativeFabricUIManager ? require('./BottomSheetNativeComponent').default : requireNativeComponent('NVBottomSheet');
+var NVBottomSheetDialog = global.nativeFabricUIManager ? require('./BottomSheetNativeComponent').default : requireNativeComponent('NVBottomSheetDialog');
 
 const styles = StyleSheet.create({
     bottomSheet: {
