@@ -23,12 +23,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class BottomSheetDialogView extends ReactViewGroup {
     private final BottomSheetFragment bottomSheetFragment;
-    private final BottomSheetBehavior bottomSheetBehavior;
+    private final BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
     final SheetView sheetView;
     public BottomSheetDialogView(Context context) {
         super(context);
         bottomSheetFragment = new BottomSheetFragment();
-        bottomSheetBehavior = new BottomSheetBehavior();
+        bottomSheetBehavior = new BottomSheetBehavior<>();
         bottomSheetBehavior.setFitToContents(false);
         sheetView = new SheetView(context);
     }
@@ -52,12 +52,12 @@ public class BottomSheetDialogView extends ReactViewGroup {
 
     public static class BottomSheetFragment extends BottomSheetDialogFragment {
         private SheetView sheetView;
-        private BottomSheetBehavior bottomSheetBehavior;
+        private BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
 
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            BottomSheetBehavior behavior = ((BottomSheetDialog) getDialog()).getBehavior();
+            BottomSheetBehavior<FrameLayout> behavior = ((BottomSheetDialog) getDialog()).getBehavior();
             behavior.setFitToContents(false);
             behavior.setExpandedOffset(bottomSheetBehavior.getExpandedOffset());
             return sheetView != null ? sheetView : new View(getContext());
