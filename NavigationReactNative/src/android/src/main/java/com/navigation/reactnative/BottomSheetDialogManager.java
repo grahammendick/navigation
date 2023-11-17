@@ -27,7 +27,6 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
         int offset = (int) PixelUtil.toPixelFromDIP(expandedOffset);
         view.getBehavior().setExpandedOffset(offset);
         view.sheetView.setExpandedOffset(offset);
-        view.requestLayout();
     }
 
     @Override
