@@ -62,7 +62,6 @@ class BottomSheet extends React.Component<any, any> {
                 style={[
                     styles.bottomSheet,
                     expandedHeight != null ? { height: expandedHeight } : null,
-                    expandedOffset != null ? { top: expandedOffset } : null,
                     Platform.OS === 'ios' ? { height: undefined, top: undefined } : null, 
                     { display: this.state.selectedDetent !== 'hidden' ? 'flex' : 'none' }, 
                 ]}

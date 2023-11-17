@@ -22,16 +22,22 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class BottomSheetDialogView extends ReactViewGroup {
-    private BottomSheetFragment bottomSheetFragment;
-    SheetView sheetView;
+    private final BottomSheetFragment bottomSheetFragment;
+    private final BottomSheetBehavior bottomSheetBehavior;
+    final SheetView sheetView;
     public BottomSheetDialogView(Context context) {
         super(context);
         bottomSheetFragment = new BottomSheetFragment();
+        bottomSheetBehavior = new BottomSheetBehavior();
+        bottomSheetBehavior.setFitToContents(false);
         sheetView = new SheetView(context);
     }
 
     protected BottomSheetBehavior<FrameLayout> getBehavior() {
-        return ((BottomSheetDialog) bottomSheetFragment.getDialog()).getBehavior();
+        if (bottomSheetFragment.getDialog() != null)
+            return ((BottomSheetDialog) bottomSheetFragment.getDialog()).getBehavior();
+        else
+            return bottomSheetBehavior;
     }
 
     @Override
@@ -40,15 +46,20 @@ public class BottomSheetDialogView extends ReactViewGroup {
         Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
         FragmentManager fragmentManager = ((FragmentActivity) currentActivity).getSupportFragmentManager();
         bottomSheetFragment.sheetView = sheetView;
+        bottomSheetFragment.bottomSheetBehavior = bottomSheetBehavior;
         bottomSheetFragment.show(fragmentManager, "BottomSheetDialog");
     }
 
     public static class BottomSheetFragment extends BottomSheetDialogFragment {
         private SheetView sheetView;
+        private BottomSheetBehavior bottomSheetBehavior;
 
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            BottomSheetBehavior behavior = ((BottomSheetDialog) getDialog()).getBehavior();
+            behavior.setFitToContents(false);
+            behavior.setExpandedOffset(bottomSheetBehavior.getExpandedOffset());
             return sheetView != null ? sheetView : new View(getContext());
         }
     }
@@ -58,8 +69,14 @@ public class BottomSheetDialogView extends ReactViewGroup {
         private boolean hasAdjustedSize = false;
         private int viewWidth;
         private int viewHeight;
+        private int expandedOffset = 0;
         public SheetView(Context context) {
             super(context);
+        }
+
+        public void setExpandedOffset(int expandedOffset) {
+            this.expandedOffset = expandedOffset;
+            updateFirstChildView();
         }
 
         @Override
@@ -85,7 +102,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
                             if (uiManager == null) {
                                 return;
                             }
-                            uiManager.updateNodeSize(viewTag, viewWidth, viewHeight);
+                            uiManager.updateNodeSize(viewTag, viewWidth, viewHeight - expandedOffset);
                         }
                     });
             } else {
