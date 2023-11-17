@@ -26,8 +26,12 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
     public void setExpandedOffset(BottomSheetDialogView view, int expandedOffset) {
         int offset = (int) PixelUtil.toPixelFromDIP(expandedOffset);
         view.getBehavior().setExpandedOffset(offset);
-        view.getBehavior().setFitToContents(offset == 0);
         view.sheetView.setExpandedOffset(offset);
+    }
+
+    @ReactProp(name = "fitToContents")
+    public void setFitToContents(BottomSheetDialogView view, boolean fitToContents) {
+        view.getBehavior().setFitToContents(fitToContents);
     }
 
     @Override
