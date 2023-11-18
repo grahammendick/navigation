@@ -2,12 +2,10 @@ import React from 'react';
 import { requireNativeComponent, Platform, UIManager, View, StyleSheet } from 'react-native';
 
 class BottomSheet extends React.Component<any, any> {
-    private ref: React.RefObject<View>;
     private dragging = false;
     constructor(props) {
         super(props);
         this.state = {selectedDetent: props.detent || props.defaultDetent, mostRecentEventCount: 0, dismissed: (props.detent || props.defaultDetent) === 'hidden'};
-        this.ref = React.createRef<View>();
         this.onDetentChanged = this.onDetentChanged.bind(this);
     }
     static defaultProps = {
@@ -46,7 +44,6 @@ class BottomSheet extends React.Component<any, any> {
         if (this.state.dismissed) return null;
         return (
             <BottomSheetView
-                ref={this.ref}
                 detent={Platform.OS === 'android' ? '' + detents[this.state.selectedDetent] : this.state.selectedDetent}
                 peekHeight={peekHeight}
                 expandedHeight={expandedHeight}
