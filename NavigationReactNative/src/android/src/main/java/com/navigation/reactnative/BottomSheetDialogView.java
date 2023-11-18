@@ -60,8 +60,9 @@ public class BottomSheetDialogView extends ReactViewGroup {
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             BottomSheetBehavior<FrameLayout> behavior = ((BottomSheetDialog) Objects.requireNonNull(getDialog())).getBehavior();
-            behavior.setFitToContents(bottomSheetBehavior.getExpandedOffset() == 0);
+            behavior.setPeekHeight(bottomSheetBehavior.getPeekHeight());
             behavior.setExpandedOffset(bottomSheetBehavior.getExpandedOffset());
+            behavior.setFitToContents(bottomSheetBehavior.getExpandedOffset() == 0);
             return sheetView != null ? sheetView : new View(getContext());
         }
     }
