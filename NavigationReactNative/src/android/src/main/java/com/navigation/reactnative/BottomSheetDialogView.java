@@ -66,7 +66,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
             BottomSheetBehavior<FrameLayout> behavior = ((BottomSheetDialog) Objects.requireNonNull(getDialog())).getBehavior();
             behavior.setPeekHeight(bottomSheetBehavior.getPeekHeight());
             behavior.setExpandedOffset(bottomSheetBehavior.getExpandedOffset());
-            behavior.setFitToContents(bottomSheetBehavior.getExpandedOffset() == 0);
+            behavior.setFitToContents(bottomSheetBehavior.isFitToContents());
             behavior.setHalfExpandedRatio(bottomSheetBehavior.getHalfExpandedRatio());
             behavior.setHideable(bottomSheetBehavior.isHideable());
             behavior.setSkipCollapsed(bottomSheetBehavior.getSkipCollapsed());
