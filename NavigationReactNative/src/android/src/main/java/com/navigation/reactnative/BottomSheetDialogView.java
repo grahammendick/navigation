@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -19,6 +20,10 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.config.ReactFeatureFlags;
+import com.facebook.react.uimanager.JSPointerDispatcher;
+import com.facebook.react.uimanager.JSTouchDispatcher;
+import com.facebook.react.uimanager.RootView;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.UIManagerModule;
@@ -115,14 +120,21 @@ public class BottomSheetDialogView extends ReactViewGroup {
         }
     }
 
-    static class SheetView extends ReactViewGroup
+    static class SheetView extends ReactViewGroup implements RootView
     {
         private boolean hasAdjustedSize = false;
         private int viewWidth;
         private int viewHeight;
         private int expandedOffset = 0;
+        private final JSTouchDispatcher jsTouchDispatcher = new JSTouchDispatcher(this);
+        @Nullable private JSPointerDispatcher jsPointerDispatcher;
+        EventDispatcher eventDispatcher;
+
         public SheetView(Context context) {
             super(context);
+            if (ReactFeatureFlags.dispatchPointerEvents) {
+                jsPointerDispatcher = new JSPointerDispatcher(this);
+            }
         }
 
         public void setExpandedOffset(int expandedOffset) {
@@ -167,6 +179,71 @@ public class BottomSheetDialogView extends ReactViewGroup {
             if (hasAdjustedSize) {
                 updateFirstChildView();
             }
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(MotionEvent event) {
+            jsTouchDispatcher.handleTouchEvent(event, eventDispatcher);
+            if (jsPointerDispatcher != null) {
+                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher);
+            }
+            return super.onInterceptTouchEvent(event);
+        }
+
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
+            jsTouchDispatcher.handleTouchEvent(event, eventDispatcher);
+            if (jsPointerDispatcher != null) {
+                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher);
+            }
+            super.onTouchEvent(event);
+            return true;
+        }
+
+        @Override
+        public boolean onInterceptHoverEvent(MotionEvent event) {
+            if (jsPointerDispatcher != null) {
+                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher);
+            }
+            return super.onHoverEvent(event);
+        }
+
+        @Override
+        public boolean onHoverEvent(MotionEvent event) {
+            if (jsPointerDispatcher != null) {
+                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher);
+            }
+            return super.onHoverEvent(event);
+        }
+
+        @Override
+        public void onChildStartedNativeGesture(View childView, MotionEvent ev) {
+            jsTouchDispatcher.onChildStartedNativeGesture(ev, eventDispatcher);
+            if (jsPointerDispatcher != null) {
+                jsPointerDispatcher.onChildStartedNativeGesture(childView, ev, eventDispatcher);
+            }
+        }
+
+        @Override
+        public void onChildStartedNativeGesture(MotionEvent motionEvent) {
+            this.onChildStartedNativeGesture(null, motionEvent);
+        }
+
+        @Override
+        public void onChildEndedNativeGesture(View childView, MotionEvent ev) {
+            jsTouchDispatcher.onChildEndedNativeGesture(ev, eventDispatcher);
+            if (jsPointerDispatcher != null) {
+                jsPointerDispatcher.onChildEndedNativeGesture();
+            }
+        }
+
+        @Override
+        public void handleException(Throwable throwable) {
+            ((ThemedReactContext) getContext()).getReactApplicationContext().handleException(new RuntimeException(throwable));
+        }
+
+        @Override
+        public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
         }
     }
 

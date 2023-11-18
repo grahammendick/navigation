@@ -8,8 +8,10 @@ import androidx.annotation.Nullable;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.facebook.react.uimanager.events.EventDispatcher;
 
 import java.util.Map;
 
@@ -108,6 +110,14 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
 
     @Override
     public View getChildAt(BottomSheetDialogView parent, int index) {
-        return parent.getChildAt(index);
+        return parent.sheetView.getChildAt(index);
+    }
+
+    @Override
+    protected void addEventEmitters(@NonNull ThemedReactContext reactContext, @NonNull BottomSheetDialogView view) {
+        super.addEventEmitters(reactContext, view);
+        EventDispatcher dispatcher =
+                UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.getId());
+        view.sheetView.eventDispatcher = dispatcher;
     }
 }
