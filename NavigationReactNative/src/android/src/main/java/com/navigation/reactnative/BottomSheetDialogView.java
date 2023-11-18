@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,21 +15,31 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.GuardedRunnable;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.events.Event;
+import com.facebook.react.uimanager.events.EventDispatcher;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
-import java.util.Objects;
 
 public class BottomSheetDialogView extends ReactViewGroup {
     private final BottomSheetFragment bottomSheetFragment;
     private final BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
     final SheetView sheetView;
     float defaultHalfExpandedRatio;
+    int pendingDetent;
+    int detent;
+    int nativeEventCount;
+    int mostRecentEventCount;
+
     public BottomSheetDialogView(Context context) {
         super(context);
         bottomSheetFragment = new BottomSheetFragment();
@@ -49,29 +60,64 @@ public class BottomSheetDialogView extends ReactViewGroup {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
-        FragmentManager fragmentManager = ((FragmentActivity) Objects.requireNonNull(currentActivity)).getSupportFragmentManager();
-        bottomSheetFragment.sheetView = sheetView;
-        bottomSheetFragment.bottomSheetBehavior = bottomSheetBehavior;
+        FragmentManager fragmentManager = ((FragmentActivity) currentActivity).getSupportFragmentManager();
+        bottomSheetFragment.dialogView = this;
         bottomSheetFragment.show(fragmentManager, "BottomSheetDialog");
     }
 
+    void onAfterUpdateTransaction() {
+        int eventLag = nativeEventCount - mostRecentEventCount;
+        if (eventLag == 0) {
+            detent = pendingDetent;
+        }
+        if (getBehavior().getState() != detent)
+            getBehavior().setState(detent);
+    }
+
     public static class BottomSheetFragment extends BottomSheetDialogFragment {
-        private SheetView sheetView;
-        private BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
+        private BottomSheetDialogView dialogView;
+        BottomSheetBehavior.BottomSheetCallback bottomSheetCallback;
 
         @SuppressLint("Range")
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            BottomSheetBehavior<FrameLayout> behavior = ((BottomSheetDialog) Objects.requireNonNull(getDialog())).getBehavior();
-            behavior.setPeekHeight(bottomSheetBehavior.getPeekHeight());
-            behavior.setExpandedOffset(bottomSheetBehavior.getExpandedOffset());
-            behavior.setFitToContents(bottomSheetBehavior.isFitToContents());
-            behavior.setHalfExpandedRatio(bottomSheetBehavior.getHalfExpandedRatio());
-            behavior.setHideable(bottomSheetBehavior.isHideable());
-            behavior.setSkipCollapsed(bottomSheetBehavior.getSkipCollapsed());
-            behavior.setDraggable(bottomSheetBehavior.isDraggable());
-            return sheetView != null ? sheetView : new View(getContext());
+            if (bottomSheetCallback == null) {
+                BottomSheetBehavior<FrameLayout> behavior = ((BottomSheetDialog) getDialog()).getBehavior();
+                behavior.setPeekHeight(dialogView.bottomSheetBehavior.getPeekHeight());
+                behavior.setExpandedOffset(dialogView.bottomSheetBehavior.getExpandedOffset());
+                behavior.setFitToContents(dialogView.bottomSheetBehavior.isFitToContents());
+                behavior.setHalfExpandedRatio(dialogView.bottomSheetBehavior.getHalfExpandedRatio());
+                behavior.setHideable(dialogView.bottomSheetBehavior.isHideable());
+                behavior.setSkipCollapsed(dialogView.bottomSheetBehavior.getSkipCollapsed());
+                behavior.setDraggable(dialogView.bottomSheetBehavior.isDraggable());
+                bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
+                    @Override
+                    public void onStateChanged(@NonNull View view, int i) {
+                        dialogView.nativeEventCount++;
+                        dialogView.detent = i;
+                        ReactContext reactContext = (ReactContext) dialogView.getContext();
+                        EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                        eventDispatcher.dispatchEvent(new BottomSheetDialogView.DetentChangedEvent(dialogView.getId(), dialogView.detent, dialogView.nativeEventCount));
+                    }
+
+                    @Override
+                    public void onSlide(@NonNull View view, float v) {
+                    }
+                };
+                behavior.addBottomSheetCallback(bottomSheetCallback);
+            }
+            return dialogView.sheetView != null ? dialogView.sheetView : new View(getContext());
+        }
+
+        @Override
+        public void onDismiss(@NonNull DialogInterface dialog) {
+            super.onDismiss(dialog);
+            dialogView.nativeEventCount++;
+            dialogView.detent = BottomSheetBehavior.STATE_HIDDEN;
+            ReactContext reactContext = (ReactContext) dialogView.getContext();
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(new BottomSheetDialogView.DetentChangedEvent(dialogView.getId(), dialogView.detent, dialogView.nativeEventCount));
         }
     }
 
@@ -127,6 +173,30 @@ public class BottomSheetDialogView extends ReactViewGroup {
             if (hasAdjustedSize) {
                 updateFirstChildView();
             }
+        }
+    }
+
+    static class DetentChangedEvent extends Event<BottomSheetView.DetentChangedEvent> {
+        private final int detent;
+        private final int eventCount;
+
+        public DetentChangedEvent(int viewId, int detent, int eventCount) {
+            super(viewId);
+            this.detent = detent;
+            this.eventCount = eventCount;
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnDetentChanged";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            WritableMap event = Arguments.createMap();
+            event.putInt("detent", this.detent);
+            event.putInt("eventCount", this.eventCount);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }
 }
