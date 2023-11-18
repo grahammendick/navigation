@@ -117,6 +117,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
             ReactContext reactContext = (ReactContext) dialogView.getContext();
             EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
             eventDispatcher.dispatchEvent(new BottomSheetDialogView.DetentChangedEvent(dialogView.getId(), dialogView.detent, dialogView.nativeEventCount));
+            eventDispatcher.dispatchEvent(new BottomSheetDialogView.DismissedEvent(dialogView.getId()));
         }
     }
 
@@ -247,7 +248,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
         }
     }
 
-    static class DetentChangedEvent extends Event<BottomSheetView.DetentChangedEvent> {
+    static class DetentChangedEvent extends Event<BottomSheetDialogView.DetentChangedEvent> {
         private final int detent;
         private final int eventCount;
 
@@ -268,6 +269,22 @@ public class BottomSheetDialogView extends ReactViewGroup {
             event.putInt("detent", this.detent);
             event.putInt("eventCount", this.eventCount);
             rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
+        }
+    }
+
+    static class DismissedEvent extends Event<BottomSheetDialogView.DismissedEvent> {
+        public DismissedEvent(int viewId) {
+            super(viewId);
+        }
+
+        @Override
+        public String getEventName() {
+            return "topOnDismissed";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), Arguments.createMap());
         }
     }
 }

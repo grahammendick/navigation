@@ -90,6 +90,7 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
             .put("topOnDetentChanged", MapBuilder.of("registrationName", "onDetentChanged"))
+            .put("topOnDismissed", MapBuilder.of("registrationName", "onDismissed"))
             .build();
     }
 
@@ -116,8 +117,7 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
     @Override
     protected void addEventEmitters(@NonNull ThemedReactContext reactContext, @NonNull BottomSheetDialogView view) {
         super.addEventEmitters(reactContext, view);
-        EventDispatcher dispatcher =
-                UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.getId());
+        EventDispatcher dispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.getId());
         view.sheetView.eventDispatcher = dispatcher;
     }
 }

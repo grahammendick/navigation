@@ -6,7 +6,7 @@ class BottomSheet extends React.Component<any, any> {
     private dragging = false;
     constructor(props) {
         super(props);
-        this.state = {selectedDetent: props.detent || props.defaultDetent, mostRecentEventCount: 0};
+        this.state = {selectedDetent: props.detent || props.defaultDetent, mostRecentEventCount: 0, dismissed: (props.detent || props.defaultDetent) === 'hidden'};
         this.ref = React.createRef<View>();
         this.onDetentChanged = this.onDetentChanged.bind(this);
     }
@@ -14,9 +14,9 @@ class BottomSheet extends React.Component<any, any> {
         draggable: true,
         defaultDetent: 'collapsed'
     }
-    static getDerivedStateFromProps({detent}, {selectedDetent}) {
+    static getDerivedStateFromProps({detent}, {selectedDetent, dismissed}) {
         if (detent != null && detent !== selectedDetent)
-            return {selectedDetent: detent};
+            return {selectedDetent: detent, dismissed: detent === 'hidden' && dismissed};
         return null;
     }
     onDetentChanged({nativeEvent}) {
@@ -43,6 +43,7 @@ class BottomSheet extends React.Component<any, any> {
         const { expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable, modal, children } = this.props
         const detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants?.Detent;
         const BottomSheetView = Platform.OS === 'ios' || !modal ? NVBottomSheet : NVBottomSheetDialog;
+        if (this.state.dismissed) return null;
         return (
             <BottomSheetView
                 ref={this.ref}
@@ -59,6 +60,7 @@ class BottomSheet extends React.Component<any, any> {
                 mostRecentEventCount={this.state.mostRecentEventCount}
                 onMoveShouldSetResponderCapture={() => this.dragging}
                 onDetentChanged={this.onDetentChanged}
+                onDismissed={() => this.setState({dismissed: true})}
                 style={[
                     styles.bottomSheet,
                     expandedHeight != null ? { height: expandedHeight } : null,
