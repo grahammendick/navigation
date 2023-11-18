@@ -1,5 +1,6 @@
 package com.navigation.reactnative;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -27,12 +28,14 @@ public class BottomSheetDialogView extends ReactViewGroup {
     private final BottomSheetFragment bottomSheetFragment;
     private final BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
     final SheetView sheetView;
+    float defaultHalfExpandedRatio;
     public BottomSheetDialogView(Context context) {
         super(context);
         bottomSheetFragment = new BottomSheetFragment();
         bottomSheetBehavior = new BottomSheetBehavior<>();
         bottomSheetBehavior.setFitToContents(false);
         sheetView = new SheetView(context);
+        defaultHalfExpandedRatio = bottomSheetBehavior.getHalfExpandedRatio();
     }
 
     protected BottomSheetBehavior<FrameLayout> getBehavior() {
@@ -56,6 +59,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
         private SheetView sheetView;
         private BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
 
+        @SuppressLint("Range")
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,6 +67,10 @@ public class BottomSheetDialogView extends ReactViewGroup {
             behavior.setPeekHeight(bottomSheetBehavior.getPeekHeight());
             behavior.setExpandedOffset(bottomSheetBehavior.getExpandedOffset());
             behavior.setFitToContents(bottomSheetBehavior.getExpandedOffset() == 0);
+            behavior.setHalfExpandedRatio(bottomSheetBehavior.getHalfExpandedRatio());
+            behavior.setHideable(bottomSheetBehavior.isHideable());
+            behavior.setSkipCollapsed(bottomSheetBehavior.getSkipCollapsed());
+            behavior.setDraggable(bottomSheetBehavior.isDraggable());
             return sheetView != null ? sheetView : new View(getContext());
         }
     }

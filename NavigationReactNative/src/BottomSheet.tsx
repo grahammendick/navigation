@@ -50,7 +50,7 @@ class BottomSheet extends React.Component<any, any> {
                 peekHeight={peekHeight}
                 expandedHeight={expandedHeight}
                 expandedOffset={expandedOffset}
-                fitToContents={expandedOffset == null}
+                fitToContents={expandedOffset == null && !halfExpandedRatio}
                 halfExpandedRatio={halfExpandedRatio}
                 hideable={hideable}
                 skipCollapsed={skipCollapsed}

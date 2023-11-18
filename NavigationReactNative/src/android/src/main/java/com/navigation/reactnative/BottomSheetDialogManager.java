@@ -42,6 +42,27 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
         view.getBehavior().setFitToContents(fitToContents);
     }
 
+    @ReactProp(name = "halfExpandedRatio", defaultFloat = Float.MAX_VALUE)
+    public void setHalfExpandedRatio(BottomSheetDialogView view, float halfExpandedRatio) {
+        view.getBehavior().setHalfExpandedRatio(halfExpandedRatio != Float.MAX_VALUE ? halfExpandedRatio : view.defaultHalfExpandedRatio);
+        view.requestLayout();
+    }
+
+    @ReactProp(name = "hideable")
+    public void setHideable(BottomSheetDialogView view, boolean hideable) {
+        view.getBehavior().setHideable(hideable);
+    }
+
+    @ReactProp(name = "skipCollapsed")
+    public void setSkipCollapsed(BottomSheetDialogView view, boolean skipCollapsed) {
+        view.getBehavior().setSkipCollapsed(skipCollapsed);
+    }
+
+    @ReactProp(name = "draggable")
+    public void setDraggable(BottomSheetDialogView view, boolean draggable) {
+        view.getBehavior().setDraggable(draggable);
+    }
+
     @Override
     public void addView(BottomSheetDialogView parent, View child, int index) {
         parent.sheetView.addView(child, index);
