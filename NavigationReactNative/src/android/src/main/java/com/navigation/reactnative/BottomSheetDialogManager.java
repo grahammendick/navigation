@@ -38,13 +38,13 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
 
     @ReactProp(name = "peekHeight")
     public void setPeekHeight(BottomSheetDialogView view, int peekHeight) {
-        view.getBehavior().setPeekHeight((int) PixelUtil.toPixelFromDIP(peekHeight), true);
+        view.bottomSheetBehavior.setPeekHeight((int) PixelUtil.toPixelFromDIP(peekHeight), true);
     }
 
     @ReactProp(name = "expandedOffset")
     public void setExpandedOffset(BottomSheetDialogView view, int expandedOffset) {
         int offset = (int) PixelUtil.toPixelFromDIP(expandedOffset);
-        view.getBehavior().setExpandedOffset(offset);
+        view.bottomSheetBehavior.setExpandedOffset(offset);
         view.sheetView.setExpandedOffset(offset);
         view.sheetView.requestLayout();
         if (view.sheetView.getParent() != null)
@@ -53,28 +53,28 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
 
     @ReactProp(name = "fitToContents")
     public void setFitToContents(BottomSheetDialogView view, boolean fitToContents) {
-        view.getBehavior().setFitToContents(fitToContents);
+        view.bottomSheetBehavior.setFitToContents(fitToContents);
     }
 
     @ReactProp(name = "halfExpandedRatio", defaultFloat = Float.MAX_VALUE)
     public void setHalfExpandedRatio(BottomSheetDialogView view, float halfExpandedRatio) {
-        view.getBehavior().setHalfExpandedRatio(halfExpandedRatio != Float.MAX_VALUE ? halfExpandedRatio : view.defaultHalfExpandedRatio);
+        view.bottomSheetBehavior.setHalfExpandedRatio(halfExpandedRatio != Float.MAX_VALUE ? halfExpandedRatio : view.defaultHalfExpandedRatio);
         view.requestLayout();
     }
 
     @ReactProp(name = "hideable")
     public void setHideable(BottomSheetDialogView view, boolean hideable) {
-        view.getBehavior().setHideable(hideable);
+        view.bottomSheetBehavior.setHideable(hideable);
     }
 
     @ReactProp(name = "skipCollapsed")
     public void setSkipCollapsed(BottomSheetDialogView view, boolean skipCollapsed) {
-        view.getBehavior().setSkipCollapsed(skipCollapsed);
+        view.bottomSheetBehavior.setSkipCollapsed(skipCollapsed);
     }
 
     @ReactProp(name = "draggable")
     public void setDraggable(BottomSheetDialogView view, boolean draggable) {
-        view.getBehavior().setDraggable(draggable);
+        view.bottomSheetBehavior.setDraggable(draggable);
     }
 
     @Override

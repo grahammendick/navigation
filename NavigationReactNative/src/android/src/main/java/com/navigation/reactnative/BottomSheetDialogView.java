@@ -32,7 +32,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class BottomSheetDialogView extends ReactViewGroup {
     private final BottomSheetFragment bottomSheetFragment;
-    private final BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
+    BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
     final SheetView sheetView;
     float defaultHalfExpandedRatio;
     int pendingDetent;
@@ -49,13 +49,6 @@ public class BottomSheetDialogView extends ReactViewGroup {
         defaultHalfExpandedRatio = bottomSheetBehavior.getHalfExpandedRatio();
     }
 
-    protected BottomSheetBehavior<FrameLayout> getBehavior() {
-        if (bottomSheetFragment.getDialog() != null)
-            return ((BottomSheetDialog) bottomSheetFragment.getDialog()).getBehavior();
-        else
-            return bottomSheetBehavior;
-    }
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -70,8 +63,8 @@ public class BottomSheetDialogView extends ReactViewGroup {
         if (eventLag == 0) {
             detent = pendingDetent;
         }
-        if (getBehavior().getState() != detent)
-            getBehavior().setState(detent);
+        if (bottomSheetBehavior.getState() != detent)
+            bottomSheetBehavior.setState(detent);
     }
 
     public static class BottomSheetFragment extends BottomSheetDialogFragment {
@@ -106,6 +99,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
                     }
                 };
                 behavior.addBottomSheetCallback(bottomSheetCallback);
+                dialogView.bottomSheetBehavior = behavior;
             }
             return dialogView.sheetView != null ? dialogView.sheetView : new View(getContext());
         }
