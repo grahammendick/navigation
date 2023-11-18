@@ -64,7 +64,6 @@ class BottomSheet extends React.Component<any, any> {
                     expandedOffset != null ? { top: expandedOffset } : null,
                     expandedHeight == null && expandedOffset == null ? { top: 0 } : null,
                     Platform.OS === 'ios' || modal ? { height: undefined, top: undefined } : null, 
-                    { display: this.state.selectedDetent !== 'hidden' ? 'flex' : 'none' }, 
                 ]}
             >
                 {children}
