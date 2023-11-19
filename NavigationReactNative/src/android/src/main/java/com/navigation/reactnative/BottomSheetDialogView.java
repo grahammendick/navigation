@@ -126,7 +126,6 @@ public class BottomSheetDialogView extends ReactViewGroup {
 
     static class SheetView extends ReactViewGroup implements RootView
     {
-        private boolean hasAdjustedSize = false;
         private int viewWidth;
         private int viewHeight;
         private int expandedOffset = 0;
@@ -156,7 +155,6 @@ public class BottomSheetDialogView extends ReactViewGroup {
 
         private void updateFirstChildView() {
             if (getChildCount() > 0) {
-                hasAdjustedSize = false;
                 final int viewTag = getChildAt(0).getId();
                 ThemedReactContext reactContext = (ThemedReactContext) getContext();
                 reactContext.runOnNativeModulesQueueThread(
@@ -172,17 +170,13 @@ public class BottomSheetDialogView extends ReactViewGroup {
                             uiManager.updateNodeSize(viewTag, viewWidth, viewHeight - expandedOffset);
                         }
                     });
-            } else {
-                hasAdjustedSize = true;
             }
         }
 
         @Override
         public void addView(View child, int index, LayoutParams params) {
             super.addView(child, index, params);
-            if (hasAdjustedSize) {
-                updateFirstChildView();
-            }
+            updateFirstChildView();
         }
 
         @Override
