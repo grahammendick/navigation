@@ -44,23 +44,16 @@ public class BottomSheetDialogView extends ReactViewGroup {
     int detent;
     int nativeEventCount;
     int mostRecentEventCount;
+    private boolean dismissed = true;
 
     public BottomSheetDialogView(Context context) {
         super(context);
         bottomSheetFragment = new BottomSheetFragment();
         bottomSheetBehavior = new BottomSheetBehavior<>();
+        bottomSheetFragment.dialogView = this;
         bottomSheetBehavior.setFitToContents(false);
         sheetView = new SheetView(context);
         defaultHalfExpandedRatio = bottomSheetBehavior.getHalfExpandedRatio();
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
-        FragmentManager fragmentManager = ((FragmentActivity) currentActivity).getSupportFragmentManager();
-        bottomSheetFragment.dialogView = this;
-        bottomSheetFragment.show(fragmentManager, "BottomSheetDialog");
     }
 
     void onAfterUpdateTransaction() {
@@ -68,8 +61,17 @@ public class BottomSheetDialogView extends ReactViewGroup {
         if (eventLag == 0) {
             detent = pendingDetent;
         }
-        if (bottomSheetBehavior.getState() != detent)
+        if (bottomSheetBehavior.getState() != detent && detent != BottomSheetBehavior.STATE_HIDDEN)
             bottomSheetBehavior.setState(detent);
+        if (dismissed && detent != BottomSheetBehavior.STATE_HIDDEN) {
+            Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
+            FragmentManager fragmentManager = ((FragmentActivity) currentActivity).getSupportFragmentManager();
+            bottomSheetFragment.show(fragmentManager, "BottomSheetDialog");
+            dismissed = false;
+        }
+        if (!dismissed && detent == BottomSheetBehavior.STATE_HIDDEN) {
+            bottomSheetFragment.dismiss();
+        }
     }
 
     public static class BottomSheetFragment extends BottomSheetDialogFragment {
@@ -114,6 +116,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
             super.onDismiss(dialog);
             dialogView.nativeEventCount++;
             dialogView.detent = BottomSheetBehavior.STATE_HIDDEN;
+            dialogView.dismissed = true;
             ReactContext reactContext = (ReactContext) dialogView.getContext();
             EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
             eventDispatcher.dispatchEvent(new BottomSheetDialogView.DetentChangedEvent(dialogView.getId(), dialogView.detent, dialogView.nativeEventCount));
