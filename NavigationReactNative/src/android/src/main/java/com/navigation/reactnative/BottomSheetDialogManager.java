@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,7 +12,6 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.facebook.react.uimanager.events.EventDispatcher;
 
 import java.util.Map;
 
@@ -56,6 +56,14 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
     @ReactProp(name = "fitToContents")
     public void setFitToContents(BottomSheetDialogView view, boolean fitToContents) {
         view.bottomSheetBehavior.setFitToContents(fitToContents);
+    }
+
+    @ReactProp(name = "height")
+    public void setHeight(BottomSheetDialogView view, double height) {
+        view.sheetView.setExpandedHeight(height != 0 ? (int) PixelUtil.toPixelFromDIP(height) : ViewGroup.LayoutParams.WRAP_CONTENT);
+        view.sheetView.requestLayout();
+        if (view.sheetView.getParent() != null)
+            view.sheetView.getParent().requestLayout();
     }
 
     @ReactProp(name = "halfExpandedRatio", defaultFloat = Float.MAX_VALUE)
@@ -117,7 +125,6 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
     @Override
     protected void addEventEmitters(@NonNull ThemedReactContext reactContext, @NonNull BottomSheetDialogView view) {
         super.addEventEmitters(reactContext, view);
-        EventDispatcher dispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.getId());
-        view.sheetView.eventDispatcher = dispatcher;
+        view.sheetView.eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.getId());
     }
 }

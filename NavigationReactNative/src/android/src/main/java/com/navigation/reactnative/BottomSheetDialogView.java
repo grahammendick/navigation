@@ -135,6 +135,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
 
         public SheetView(Context context) {
             super(context);
+            setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
             if (ReactFeatureFlags.dispatchPointerEvents) {
                 jsPointerDispatcher = new JSPointerDispatcher(this);
             }
@@ -142,6 +143,11 @@ public class BottomSheetDialogView extends ReactViewGroup {
 
         public void setExpandedOffset(int expandedOffset) {
             this.expandedOffset = expandedOffset;
+            updateFirstChildView();
+        }
+
+        public void setExpandedHeight(int expandedHeight) {
+            getLayoutParams().height = expandedHeight;
             updateFirstChildView();
         }
 
@@ -167,7 +173,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
                             if (uiManager == null) {
                                 return;
                             }
-                            uiManager.updateNodeSize(viewTag, viewWidth, viewHeight - expandedOffset);
+                            uiManager.updateNodeSize(viewTag, viewWidth, getLayoutParams().height > 0 ? getLayoutParams().height : viewHeight - expandedOffset);
                         }
                     });
             }

@@ -48,7 +48,7 @@ class BottomSheet extends React.Component<any, any> {
                 peekHeight={peekHeight}
                 expandedHeight={expandedHeight}
                 expandedOffset={expandedOffset}
-                fitToContents={expandedOffset == null && !halfExpandedRatio}
+                fitToContents={expandedOffset == null && (!halfExpandedRatio || !!expandedHeight)}
                 halfExpandedRatio={halfExpandedRatio}
                 hideable={hideable}
                 skipCollapsed={skipCollapsed}
@@ -63,7 +63,7 @@ class BottomSheet extends React.Component<any, any> {
                     expandedHeight != null ? { height: expandedHeight } : null,
                     expandedOffset != null ? { top: expandedOffset } : null,
                     expandedHeight == null && expandedOffset == null ? { top: 0 } : null,
-                    Platform.OS === 'ios' || modal ? { height: undefined, top: undefined } : null, 
+                    Platform.OS === 'ios' || modal ? { height: modal ? expandedHeight : undefined, top: undefined } : null, 
                 ]}
             >
                 {children}
