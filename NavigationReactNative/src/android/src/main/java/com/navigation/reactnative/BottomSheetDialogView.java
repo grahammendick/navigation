@@ -83,7 +83,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            if (bottomSheetCallback == null) {
+            if (bottomSheetCallback == null && dialogView != null) {
                 BottomSheetBehavior<FrameLayout> behavior = ((BottomSheetDialog) getDialog()).getBehavior();
                 behavior.setPeekHeight(dialogView.bottomSheetBehavior.getPeekHeight());
                 behavior.setExpandedOffset(dialogView.bottomSheetBehavior.getExpandedOffset());
@@ -109,7 +109,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
                 behavior.addBottomSheetCallback(bottomSheetCallback);
                 dialogView.bottomSheetBehavior = behavior;
             }
-            return dialogView.sheetView != null ? dialogView.sheetView : new View(getContext());
+            return dialogView != null ? dialogView.sheetView : new View(getContext());
         }
 
         @Override
