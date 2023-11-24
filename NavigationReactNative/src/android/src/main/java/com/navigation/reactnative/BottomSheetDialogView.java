@@ -50,6 +50,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
         super(context);
         bottomSheetFragment = new BottomSheetFragment();
         bottomSheetBehavior = new BottomSheetBehavior<>();
+        bottomSheetBehavior.setPeekHeight(BottomSheetBehavior.PEEK_HEIGHT_AUTO);
         bottomSheetFragment.dialogView = this;
         bottomSheetBehavior.setFitToContents(false);
         sheetView = new SheetView(context);

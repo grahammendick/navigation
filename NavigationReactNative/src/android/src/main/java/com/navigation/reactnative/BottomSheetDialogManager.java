@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.PEEK_HEIGHT_AUTO;
+
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -40,7 +42,7 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
 
     @ReactProp(name = "peekHeight")
     public void setPeekHeight(BottomSheetDialogView view, int peekHeight) {
-        view.bottomSheetBehavior.setPeekHeight((int) PixelUtil.toPixelFromDIP(peekHeight), true);
+        view.bottomSheetBehavior.setPeekHeight(peekHeight != 0 ? (int) PixelUtil.toPixelFromDIP(peekHeight) : PEEK_HEIGHT_AUTO, true);
     }
 
     @ReactProp(name = "expandedOffset")
