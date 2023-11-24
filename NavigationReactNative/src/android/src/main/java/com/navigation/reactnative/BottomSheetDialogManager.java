@@ -58,9 +58,9 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
         view.bottomSheetBehavior.setFitToContents(fitToContents);
     }
 
-    @ReactProp(name = "height")
-    public void setHeight(BottomSheetDialogView view, double height) {
-        view.sheetView.setExpandedHeight(height != 0 ? (int) PixelUtil.toPixelFromDIP(height) : ViewGroup.LayoutParams.WRAP_CONTENT);
+    @ReactProp(name = "sheetHeight")
+    public void setSheetHeight(BottomSheetDialogView view, double sheetHeight) {
+        view.sheetView.setExpandedHeight(sheetHeight != 0 ? (int) PixelUtil.toPixelFromDIP(sheetHeight) : ViewGroup.LayoutParams.WRAP_CONTENT);
         view.sheetView.requestLayout();
         if (view.sheetView.getParent() != null)
             view.sheetView.getParent().requestLayout();

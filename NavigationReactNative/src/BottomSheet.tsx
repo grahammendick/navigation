@@ -63,7 +63,7 @@ class BottomSheet extends React.Component<any, any> {
                     expandedHeight != null ? { height: expandedHeight } : null,
                     expandedOffset != null ? { top: expandedOffset } : null,
                     expandedHeight == null && expandedOffset == null ? { top: 0 } : null,
-                    Platform.OS === 'ios' || modal ? { height: modal ? expandedHeight : undefined, top: undefined } : null, 
+                    Platform.OS === 'ios' || modal ? { height: undefined, top: undefined } : null, 
                 ]}
             >
                 {children}
