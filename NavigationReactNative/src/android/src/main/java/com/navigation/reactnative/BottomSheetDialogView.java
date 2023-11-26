@@ -75,6 +75,12 @@ public class BottomSheetDialogView extends ReactViewGroup {
         }
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        bottomSheetFragment.dismiss();
+    }
+
     public static class BottomSheetFragment extends BottomSheetDialogFragment {
         private BottomSheetDialogView dialogView;
         BottomSheetBehavior.BottomSheetCallback bottomSheetCallback;
