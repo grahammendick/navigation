@@ -78,7 +78,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        bottomSheetFragment.dismiss();
+        if (!dismissed) bottomSheetFragment.dismissAllowingStateLoss();
     }
 
     public static class BottomSheetFragment extends BottomSheetDialogFragment {
@@ -119,15 +119,23 @@ public class BottomSheetDialogView extends ReactViewGroup {
         }
 
         @Override
+        public void onResume() {
+            super.onResume();
+            if (dialogView == null) this.dismissAllowingStateLoss();
+        }
+
+        @Override
         public void onDismiss(@NonNull DialogInterface dialog) {
             super.onDismiss(dialog);
-            dialogView.nativeEventCount++;
-            dialogView.detent = BottomSheetBehavior.STATE_HIDDEN;
-            dialogView.dismissed = true;
-            ReactContext reactContext = (ReactContext) dialogView.getContext();
-            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-            eventDispatcher.dispatchEvent(new BottomSheetDialogView.DetentChangedEvent(dialogView.getId(), dialogView.detent, dialogView.nativeEventCount));
-            eventDispatcher.dispatchEvent(new BottomSheetDialogView.DismissedEvent(dialogView.getId()));
+            if (dialogView != null) {
+                dialogView.nativeEventCount++;
+                dialogView.detent = BottomSheetBehavior.STATE_HIDDEN;
+                dialogView.dismissed = true;
+                ReactContext reactContext = (ReactContext) dialogView.getContext();
+                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                eventDispatcher.dispatchEvent(new BottomSheetDialogView.DetentChangedEvent(dialogView.getId(), dialogView.detent, dialogView.nativeEventCount));
+                eventDispatcher.dispatchEvent(new BottomSheetDialogView.DismissedEvent(dialogView.getId()));
+            }
         }
     }
 
