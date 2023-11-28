@@ -211,6 +211,9 @@
             @"eventCount": @(_nativeEventCount),
         });
     }
+    if (!!self.onDismissed) {
+        self.onDismissed(@{});
+    }
 }
 
 @end
