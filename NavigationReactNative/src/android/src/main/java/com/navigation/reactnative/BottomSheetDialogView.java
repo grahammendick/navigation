@@ -204,7 +204,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
         public boolean onInterceptTouchEvent(MotionEvent event) {
             jsTouchDispatcher.handleTouchEvent(event, eventDispatcher);
             if (jsPointerDispatcher != null) {
-                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher);
+                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher, true);
             }
             return super.onInterceptTouchEvent(event);
         }
@@ -213,7 +213,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
         public boolean onTouchEvent(MotionEvent event) {
             jsTouchDispatcher.handleTouchEvent(event, eventDispatcher);
             if (jsPointerDispatcher != null) {
-                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher);
+                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher, false);
             }
             super.onTouchEvent(event);
             return true;
@@ -222,7 +222,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
         @Override
         public boolean onInterceptHoverEvent(MotionEvent event) {
             if (jsPointerDispatcher != null) {
-                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher);
+                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher, true);
             }
             return super.onHoverEvent(event);
         }
@@ -230,7 +230,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
         @Override
         public boolean onHoverEvent(MotionEvent event) {
             if (jsPointerDispatcher != null) {
-                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher);
+                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher, false);
             }
             return super.onHoverEvent(event);
         }

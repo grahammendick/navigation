@@ -73,7 +73,7 @@ class BottomSheet extends React.Component<any, any> {
 } 
 
 var NVBottomSheet = global.nativeFabricUIManager ? require('./BottomSheetNativeComponent').default : requireNativeComponent('NVBottomSheet');
-var NVBottomSheetDialog = global.nativeFabricUIManager ? require('./BottomSheetNativeComponent').default : requireNativeComponent('NVBottomSheetDialog');
+var NVBottomSheetDialog = global.nativeFabricUIManager ? require('./BottomSheetDialogNativeComponent').default : requireNativeComponent('NVBottomSheetDialog');
 
 const styles = StyleSheet.create({
     bottomSheet: {
