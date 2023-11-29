@@ -16,6 +16,7 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.ViewManagerDelegate;
+import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.viewmanagers.NVBottomSheetDialogManagerDelegate;
 import com.facebook.react.viewmanagers.NVBottomSheetDialogManagerInterface;
 
@@ -46,17 +47,17 @@ public class BottomSheetDialogViewManager extends ViewGroupManager<BottomSheetDi
         return new BottomSheetDialogView(themedReactContext);
     }
 
-    @Override
+    @ReactProp(name = "detent")
     public void setDetent(BottomSheetDialogView view, @Nullable String detent) {
         view.pendingDetent = Integer.parseInt(detent);
     }
 
-    @Override
+    @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(BottomSheetDialogView view, int mostRecentEventCount) {
         view.mostRecentEventCount = mostRecentEventCount;
     }
 
-    @Override
+    @ReactProp(name = "peekHeight")
     public void setPeekHeight(BottomSheetDialogView view, int peekHeight) {
         view.bottomSheetBehavior.setPeekHeight(peekHeight != 0 ? (int) PixelUtil.toPixelFromDIP(peekHeight) : PEEK_HEIGHT_AUTO, true);
     }
@@ -66,7 +67,7 @@ public class BottomSheetDialogViewManager extends ViewGroupManager<BottomSheetDi
 
     }
 
-    @Override
+    @ReactProp(name = "expandedOffset")
     public void setExpandedOffset(BottomSheetDialogView view, int expandedOffset) {
         int offset = (int) PixelUtil.toPixelFromDIP(expandedOffset);
         view.bottomSheetBehavior.setExpandedOffset(offset);
@@ -76,33 +77,33 @@ public class BottomSheetDialogViewManager extends ViewGroupManager<BottomSheetDi
             view.sheetView.getParent().requestLayout();
     }
 
-    @Override
+    @ReactProp(name = "fitToContents")
     public void setFitToContents(BottomSheetDialogView view, boolean fitToContents) {
         view.bottomSheetBehavior.setFitToContents(fitToContents);
     }
 
-    @Override
+    @ReactProp(name = "halfExpandedRatio")
     public void setHalfExpandedRatio(BottomSheetDialogView view, float halfExpandedRatio) {
         view.bottomSheetBehavior.setHalfExpandedRatio(halfExpandedRatio != -1 ? halfExpandedRatio : view.defaultHalfExpandedRatio);
         view.requestLayout();
     }
 
-    @Override
+    @ReactProp(name = "hideable")
     public void setHideable(BottomSheetDialogView view, boolean hideable) {
         view.bottomSheetBehavior.setHideable(hideable);
     }
 
-    @Override
+    @ReactProp(name = "skipCollapsed")
     public void setSkipCollapsed(BottomSheetDialogView view, boolean skipCollapsed) {
         view.bottomSheetBehavior.setSkipCollapsed(skipCollapsed);
     }
 
-    @Override
+    @ReactProp(name = "draggable")
     public void setDraggable(BottomSheetDialogView view, boolean draggable) {
         view.bottomSheetBehavior.setDraggable(draggable);
     }
 
-    @Override
+    @ReactProp(name = "sheetHeight")
     public void setSheetHeight(BottomSheetDialogView view, double sheetHeight) {
         view.sheetView.setExpandedHeight(sheetHeight != 0 ? (int) PixelUtil.toPixelFromDIP(sheetHeight) : ViewGroup.LayoutParams.WRAP_CONTENT);
         view.sheetView.requestLayout();
