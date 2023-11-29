@@ -16,6 +16,7 @@ module.exports = {
           'NVBarButtonComponentDescriptor',
           'NVBottomAppBarComponentDescriptor',
           'NVBottomSheetComponentDescriptor',
+          'NVBottomSheetDialogComponentDescriptor',
           'NVCollapsingBarComponentDescriptor',
           'NVCoordinatorLayoutComponentDescriptor',
           'NVExtendedFloatingActionButtonComponentDescriptor',
