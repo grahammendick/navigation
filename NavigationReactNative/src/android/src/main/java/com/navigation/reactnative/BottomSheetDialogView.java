@@ -164,16 +164,12 @@ public class BottomSheetDialogView extends ReactViewGroup {
         private int viewHeight;
         private int expandedOffset = 0;
         private final JSTouchDispatcher jsTouchDispatcher = new JSTouchDispatcher(this);
-        @Nullable private JSPointerDispatcher jsPointerDispatcher;
         EventDispatcher eventDispatcher;
         private StateWrapper stateWrapper = null;
 
         public SheetView(Context context) {
             super(context);
             setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-            if (ReactFeatureFlags.dispatchPointerEvents) {
-                jsPointerDispatcher = new JSPointerDispatcher(this);
-            }
         }
 
         public void setExpandedOffset(int expandedOffset) {
@@ -254,44 +250,19 @@ public class BottomSheetDialogView extends ReactViewGroup {
         @Override
         public boolean onInterceptTouchEvent(MotionEvent event) {
             jsTouchDispatcher.handleTouchEvent(event, eventDispatcher);
-            if (jsPointerDispatcher != null) {
-                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher, true);
-            }
             return super.onInterceptTouchEvent(event);
         }
 
         @Override
         public boolean onTouchEvent(MotionEvent event) {
             jsTouchDispatcher.handleTouchEvent(event, eventDispatcher);
-            if (jsPointerDispatcher != null) {
-                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher, false);
-            }
             super.onTouchEvent(event);
             return true;
         }
 
         @Override
-        public boolean onInterceptHoverEvent(MotionEvent event) {
-            if (jsPointerDispatcher != null) {
-                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher, true);
-            }
-            return super.onHoverEvent(event);
-        }
-
-        @Override
-        public boolean onHoverEvent(MotionEvent event) {
-            if (jsPointerDispatcher != null) {
-                jsPointerDispatcher.handleMotionEvent(event, eventDispatcher, false);
-            }
-            return super.onHoverEvent(event);
-        }
-
-        @Override
         public void onChildStartedNativeGesture(View childView, MotionEvent ev) {
             jsTouchDispatcher.onChildStartedNativeGesture(ev, eventDispatcher);
-            if (jsPointerDispatcher != null) {
-                jsPointerDispatcher.onChildStartedNativeGesture(childView, ev, eventDispatcher);
-            }
         }
 
         @Override
@@ -302,9 +273,6 @@ public class BottomSheetDialogView extends ReactViewGroup {
         @Override
         public void onChildEndedNativeGesture(View childView, MotionEvent ev) {
             jsTouchDispatcher.onChildEndedNativeGesture(ev, eventDispatcher);
-            if (jsPointerDispatcher != null) {
-                jsPointerDispatcher.onChildEndedNativeGesture();
-            }
         }
 
         @Override
