@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
+import com.facebook.react.uimanager.ReactStylesDiffMap;
+import com.facebook.react.uimanager.StateWrapper;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -147,5 +149,12 @@ public class BottomSheetDialogViewManager extends ViewGroupManager<BottomSheetDi
     protected void addEventEmitters(@NonNull ThemedReactContext reactContext, @NonNull BottomSheetDialogView view) {
         super.addEventEmitters(reactContext, view);
         view.sheetView.eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.getId());
+    }
+
+    @Nullable
+    @Override
+    public Object updateState(@NonNull BottomSheetDialogView view, ReactStylesDiffMap props, StateWrapper stateWrapper) {
+        view.setStateWrapper(stateWrapper);
+        return null;
     }
 }
