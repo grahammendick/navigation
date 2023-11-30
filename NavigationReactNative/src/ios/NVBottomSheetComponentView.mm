@@ -165,8 +165,11 @@ using namespace facebook::react;
 - (void)notifyForBoundsChange:(CGRect)newBounds
 {
     if (_state != nullptr) {
-        auto newState = NVBottomSheetState{RCTSizeFromCGSize(newBounds.size)};
-        _state->updateState(std::move(newState));
+        CAAnimation *dropping = [_bottomSheetController.view.layer animationForKey:@"bounds.size"];
+        if (!dropping) {
+            auto newState = NVBottomSheetState{RCTSizeFromCGSize(newBounds.size)};
+            _state->updateState(std::move(newState));
+        }
     }
 }
 
