@@ -107,7 +107,7 @@ using namespace facebook::react;
             [sheet animateChanges:^{
                 [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[self->_collapsedDetent, self->_expandedDetent] : @[self->_collapsedDetent, self->_halfExpandedDetent, self->_expandedDetent]];
                 if (newViewProps.skipCollapsed && ![self->_detent isEqual:@"collapsed"]) {
-                    [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[ self->_expandedDetent] : @[self->_halfExpandedDetent, self->_expandedDetent]];
+                    [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[self->_expandedDetent] : @[self->_halfExpandedDetent, self->_expandedDetent]];
                 }
                 if (!newViewProps.draggable) {
                     [sheet setDetents: @[[newDetent isEqual:[self collapsedIdentifier]] ? self->_collapsedDetent : ([newDetent isEqual:[self expandedIdentifier]] ? self->_expandedDetent : self->_halfExpandedDetent)]];
