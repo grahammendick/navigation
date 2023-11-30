@@ -103,18 +103,20 @@ using namespace facebook::react;
             _bottomSheetController.presentationController.delegate = self;
             [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
         }
-        [sheet animateChanges:^{
-            [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[_collapsedDetent, _expandedDetent] : @[_collapsedDetent, _halfExpandedDetent, _expandedDetent]];
-            if (newViewProps.skipCollapsed && ![_detent isEqual:@"collapsed"]) {
-                [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[ _expandedDetent] : @[_halfExpandedDetent, _expandedDetent]];
-            }
-            if (!newViewProps.draggable) {
-                [sheet setDetents: @[[newDetent isEqual:[self collapsedIdentifier]] ? _collapsedDetent : ([newDetent isEqual:[self expandedIdentifier]] ? _expandedDetent : _halfExpandedDetent)]];
-            }
-            if (eventLag == 0 && [sheet selectedDetentIdentifier] != newDetent) {
-                sheet.selectedDetentIdentifier = newDetent;
-            }
-        }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [sheet animateChanges:^{
+                [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[self->_collapsedDetent, self->_expandedDetent] : @[self->_collapsedDetent, self->_halfExpandedDetent, self->_expandedDetent]];
+                if (newViewProps.skipCollapsed && ![self->_detent isEqual:@"collapsed"]) {
+                    [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[ self->_expandedDetent] : @[self->_halfExpandedDetent, self->_expandedDetent]];
+                }
+                if (!newViewProps.draggable) {
+                    [sheet setDetents: @[[newDetent isEqual:[self collapsedIdentifier]] ? self->_collapsedDetent : ([newDetent isEqual:[self expandedIdentifier]] ? self->_expandedDetent : self->_halfExpandedDetent)]];
+                }
+                if (eventLag == 0 && [sheet selectedDetentIdentifier] != newDetent) {
+                    sheet.selectedDetentIdentifier = newDetent;
+                }
+            }];
+        });
     } else {
         [_bottomSheetController dismissViewControllerAnimated:YES completion:nil];
         _presented = NO;
