@@ -35,5 +35,6 @@ RCT_EXPORT_VIEW_PROPERTY(draggable, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(skipCollapsed, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(mostRecentEventCount, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(onDetentChanged, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onDismissed, RCTDirectEventBlock)
 
 @end
