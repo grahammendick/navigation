@@ -745,6 +745,10 @@ export class TabBar extends Component<TabBarProps> {}
  */
 export interface BottomSheetProps {
     /**
+     * Indicates whether the bottom sheet disables the scene behind
+     */
+    modal?: boolean;
+    /**
      * The height of the bottom sheet when it is collapsed
      */
     peekHeight?: number;

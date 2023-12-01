@@ -39,7 +39,7 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
 
     @ReactProp(name = "peekHeight")
     public void setPeekHeight(BottomSheetView view, int peekHeight) {
-        view.bottomSheetBehavior.setPeekHeight((int) PixelUtil.toPixelFromDIP(peekHeight), true);
+        view.bottomSheetBehavior.setPeekHeight(peekHeight != 0 ? (int) PixelUtil.toPixelFromDIP(peekHeight) : BottomSheetBehavior.PEEK_HEIGHT_AUTO, true);
     }
 
     @ReactProp(name = "expandedOffset")
@@ -99,7 +99,7 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
     @Nullable
     @Override
     public Map<String, Object> getExportedViewConstants() {
-        return MapBuilder.<String, Object>of(
+        return MapBuilder.of(
             "Detent",
             MapBuilder.of(
                 "hidden", BottomSheetBehavior.STATE_HIDDEN,

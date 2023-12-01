@@ -16,6 +16,7 @@ API_AVAILABLE(ios(15.0))
 @property (nonatomic, assign) BOOL skipCollapsed;
 @property (nonatomic, assign) NSInteger mostRecentEventCount;
 @property (nonatomic, copy) RCTDirectEventBlock onDetentChanged;
+@property (nonatomic, copy) RCTDirectEventBlock onDismissed;
 
 -(id)initWithBridge: (RCTBridge *)bridge;
 
