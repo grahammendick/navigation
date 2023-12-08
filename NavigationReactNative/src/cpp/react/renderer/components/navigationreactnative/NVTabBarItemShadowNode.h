@@ -24,8 +24,8 @@ public:
   void setImageManager(const SharedImageManager &imageManager);
 
   static NVTabBarItemState initialStateData(
-                                           ShadowNodeFragment const &fragment,
-                                           ShadowNodeFamilyFragment const &familyFragment,
+                                           Props::Shared const &props,
+                                           ShadowNodeFamily::Shared const &family,
                                            ComponentDescriptor const &componentDescriptor) {
     auto imageSource = ImageSource{ImageSource::Type::Invalid};
     return {
