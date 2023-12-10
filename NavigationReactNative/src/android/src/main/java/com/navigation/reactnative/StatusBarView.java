@@ -22,7 +22,7 @@ public class StatusBarView extends ViewGroup {
         super(context);
         TypedValue typedValue = new TypedValue();
         setLayoutParams(new CoordinatorLayout.LayoutParams(0, 0));
-        context.getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+        context.getTheme().resolveAttribute(android.R.attr.colorPrimaryDark, typedValue, true);
         barTintColor = defaultStatusBarColor = typedValue.data;
     }
 

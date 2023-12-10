@@ -13,13 +13,13 @@ class NVBarButtonComponentDescriptor final
       : ConcreteComponentDescriptor(parameters),
         imageManager_(std::make_shared<ImageManager>(contextContainer_)){}
 
-  void adopt(ShadowNode::Unshared const &shadowNode) const override {
+  void adopt(ShadowNode& shadowNode) const override {
     ConcreteComponentDescriptor::adopt(shadowNode);
 
-    auto barButtonShadowNode =
-        std::static_pointer_cast<NVBarButtonShadowNode>(shadowNode);
+    auto &barButtonShadowNode =
+        static_cast<NVBarButtonShadowNode&>(shadowNode);
 
-    barButtonShadowNode->setImageManager(imageManager_);
+    barButtonShadowNode.setImageManager(imageManager_);
   }
 
  private:

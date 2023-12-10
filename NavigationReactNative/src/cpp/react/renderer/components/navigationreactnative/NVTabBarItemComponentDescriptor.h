@@ -13,13 +13,13 @@ class NVTabBarItemComponentDescriptor final
       : ConcreteComponentDescriptor(parameters),
         imageManager_(std::make_shared<ImageManager>(contextContainer_)){}
 
-  void adopt(ShadowNode::Unshared const &shadowNode) const override {
+  void adopt(ShadowNode& shadowNode) const override {
     ConcreteComponentDescriptor::adopt(shadowNode);
 
-    auto tabBarItemShadowNode =
-        std::static_pointer_cast<NVTabBarItemShadowNode>(shadowNode);
+    auto &tabBarItemShadowNode =
+        static_cast<NVTabBarItemShadowNode&>(shadowNode);
 
-    tabBarItemShadowNode->setImageManager(imageManager_);
+    tabBarItemShadowNode.setImageManager(imageManager_);
   }
 
  private:
