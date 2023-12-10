@@ -13,13 +13,13 @@ class NVNavigationBarComponentDescriptor final
       : ConcreteComponentDescriptor(parameters),
         imageManager_(std::make_shared<ImageManager>(contextContainer_)){}
 
-  void adopt(ShadowNode::Unshared const &shadowNode) const override {
+  void adopt(ShadowNode& shadowNode) const override {
     ConcreteComponentDescriptor::adopt(shadowNode);
 
-    auto navigationBarShadowNode =
-        std::static_pointer_cast<NVNavigationBarShadowNode>(shadowNode);
+    auto &navigationBarShadowNode =
+        static_cast<NVNavigationBarShadowNode&>(shadowNode);
 
-    navigationBarShadowNode->setImageManager(imageManager_);
+    navigationBarShadowNode.setImageManager(imageManager_);
   }
 
  private:

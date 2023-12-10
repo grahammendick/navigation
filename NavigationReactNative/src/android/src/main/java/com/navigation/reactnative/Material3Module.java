@@ -5,6 +5,7 @@ import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.R;
 
 import java.util.HashMap;
 import java.util.Map;
