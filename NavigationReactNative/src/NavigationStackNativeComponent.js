@@ -9,6 +9,14 @@ type NativeProps = $ReadOnly<{|
   keys: $ReadOnlyArray<string>,
   enterAnim: string,
   exitAnim: string,
+  enterTrans: $ReadOnly<{|
+    type: string,
+    axis?: string,
+  |}>,
+  exitTrans: $ReadOnly<{|
+    type: string,
+    axis?: string,
+  |}>,
   enterAnimOff: boolean,
   sharedElements: $ReadOnlyArray<string>,
   containerTransform: boolean,

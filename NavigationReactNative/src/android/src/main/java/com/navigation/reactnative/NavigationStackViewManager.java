@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -14,7 +15,13 @@ import com.facebook.react.uimanager.ViewManagerDelegate;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.viewmanagers.NVNavigationStackManagerDelegate;
 import com.facebook.react.viewmanagers.NVNavigationStackManagerInterface;
+import com.google.android.material.transition.Hold;
+import com.google.android.material.transition.MaterialElevationScale;
+import com.google.android.material.transition.MaterialFade;
+import com.google.android.material.transition.MaterialFadeThrough;
+import com.google.android.material.transition.MaterialSharedAxis;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -53,6 +60,64 @@ public class NavigationStackViewManager extends ViewGroupManager<NavigationStack
     @ReactProp(name = "exitAnim")
     public void setExitAnim(NavigationStackView view, String exitAnim) {
         view.exitAnim = exitAnim;
+    }
+
+    @ReactProp(name = "enterTrans")
+    public void setEnterTrans(NavigationStackView view, ReadableMap enterTrans) {
+        if (enterTrans != null) {
+            switch (enterTrans.getString("type")) {
+                case "sharedAxis" :
+                    Map<String, Integer> axisMap = new HashMap();
+                    axisMap.put("x", MaterialSharedAxis.X);
+                    axisMap.put("y", MaterialSharedAxis.Y);
+                    Integer axis = axisMap.get(enterTrans.getString("axis"));
+                    view.enterTrans = new MaterialSharedAxis(axis != null ? axis : MaterialSharedAxis.Z, true);
+                    break;
+                case "elevationScale" :
+                    view.enterTrans = new MaterialElevationScale(true);
+                    break;
+                case "fade" :
+                    view.enterTrans = new MaterialFade();
+                    break;
+                case "fadeThrough" :
+                    view.enterTrans = new MaterialFadeThrough();
+                    break;
+                case "hold" :
+                    view.enterTrans = new Hold();
+                    break;
+            }
+        } else {
+            view.enterTrans = null;
+        }
+    }
+
+    @ReactProp(name = "exitTrans")
+    public void setExitTrans(NavigationStackView view, ReadableMap exitTrans) {
+        if (exitTrans != null) {
+            switch (exitTrans.getString("type")) {
+                case "sharedAxis" :
+                    Map<String, Integer> axisMap = new HashMap();
+                    axisMap.put("x", MaterialSharedAxis.X);
+                    axisMap.put("y", MaterialSharedAxis.Y);
+                    Integer axis = axisMap.get(exitTrans.getString("axis"));
+                    view.exitTrans = new MaterialSharedAxis(axis != null ? axis : MaterialSharedAxis.Z, true);
+                    break;
+                case "elevationScale" :
+                    view.exitTrans = new MaterialElevationScale(false);
+                    break;
+                case "fade" :
+                    view.exitTrans = new MaterialFade();
+                    break;
+                case "fadeThrough" :
+                    view.exitTrans = new MaterialFadeThrough();
+                    break;
+                case "hold" :
+                    view.exitTrans = new Hold();
+                    break;
+            }
+        } else {
+            view.exitTrans = null;
+        }
     }
 
     @ReactProp(name = "sharedElements")

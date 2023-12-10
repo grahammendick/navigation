@@ -11,6 +11,14 @@ type NativeProps = $ReadOnly<{|
   title: string,
   enterAnim: string,
   exitAnim: string,
+  enterTrans: $ReadOnly<{|
+    type: string,
+    axis?: string,
+  |}>,
+  exitTrans: $ReadOnly<{|
+    type: string,
+    axis?: string,
+  |}>,
   hidesTabBar: boolean,
   landscape: boolean,
   onPopped: DirectEventHandler<null>

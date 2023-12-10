@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.transition.Transition;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.facebook.react.bridge.Arguments;
@@ -50,6 +51,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     private Activity mainActivity;
     protected String enterAnim;
     protected String exitAnim;
+    protected Transition enterTrans;
+    protected Transition exitTrans;
     protected ReadableArray sharedElementNames;
     protected Boolean startNavigation = null;
     protected boolean containerTransform = false;
@@ -102,8 +105,15 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKey);
             Pair[] sharedElements = fragment != null ? getOldSharedElements(currentCrumb, crumb, fragment) : null;
             SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(keys.getString(crumb));
-            if (sharedElements != null && prevFragment != null && prevFragment.getScene() != null)
-                prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(sharedElementNames), containerTransform);
+            if (prevFragment != null && prevFragment.getScene() != null) {
+                ViewGroup parent = (ViewGroup) prevFragment.getScene().getParent();
+                if (parent != null && parent != this) {
+                    parent.removeView(prevFragment.getScene());
+                    parent.endViewTransition(prevFragment.getScene());
+                }
+                if (sharedElements != null)
+                    prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(sharedElementNames), containerTransform);
+            }
             fragmentManager.popBackStack(String.valueOf(crumb), 0);
         }
         if (crumb > currentCrumb) {
@@ -125,8 +135,11 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 if (nextCrumb > 0) {
                     String prevKey = keys.getString(nextCrumb - 1);
                     SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(prevKey);
-                    if (prevFragment != null)
+                    if (prevFragment != null) {
+                        prevFragment.setExitTransition(exitTrans);
+                        prevFragment.setReenterTransition(scene.enterTrans);
                         sharedElements = getSharedElements(currentCrumb, crumb, prevFragment);
+                    }
                 }
                 if (sharedElements != null) {
                     for(Pair sharedElement : sharedElements) {
@@ -134,8 +147,12 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                         fragmentTransaction.addSharedElement(containerTransform ? sharedEl : sharedEl.getChildAt(0), (containerTransform ? "" : "element__") + sharedElement.second);
                     }
                 }
-                fragmentTransaction.setCustomAnimations(oldCrumb != -1 && sharedElements == null ? enter : 0, exit, sharedElements == null ? popEnter : 0, popExit);
+                boolean nonAnimatedEnter = oldCrumb == -1 || ((sharedElements != null || exitTrans != null) && enterTrans == null);
+                boolean nonAnimatedPopEnter = (sharedElements != null || scene.exitTrans != null) && scene.enterTrans == null;
+                fragmentTransaction.setCustomAnimations(!nonAnimatedEnter ? enter : 0, exit, !nonAnimatedPopEnter ? popEnter : 0, popExit);
                 SceneFragment fragment = new SceneFragment(scene, getSharedElementSet(sharedElementNames), containerTransform);
+                fragment.setEnterTransition(enterTrans);
+                fragment.setReturnTransition(scene.exitTrans);
                 fragmentTransaction.replace(getId(), fragment, key);
                 fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
                 fragmentTransaction.commit();

@@ -11,10 +11,6 @@ declare global {
  */
 export interface NavigationStackProps {
     /**
-     * The color of the background behind the Scenes
-     */
-    underlayColor?: ColorValue;
-    /**
      * The link to navigate to when Scenes in the stack are unregistered
      */
     stackInvalidatedLink?: string;
@@ -25,11 +21,13 @@ export interface NavigationStackProps {
     /**
      * The Scene's to and from crumb trail style
      */
-    crumbStyle?: (from: boolean, state: State, data: any, crumbs: Crumb[], nextState?: State, nextData?: any) => string;
+    crumbStyle?: (from: boolean, state: State, data: any, crumbs: Crumb[], nextState?: State, nextData?: any) =>
+        string | { type: 'sharedAxis', axis?: 'x' | 'y' | 'z' } | { type: 'elevationScale' | 'fade' | 'fadeThrough' | 'hold' };
     /**
      * The Scene's to and from unmount style
      */
-    unmountStyle?: (from: boolean, state: State, data: any, crumbs: Crumb[]) => string;
+    unmountStyle?: (from: boolean, state: State, data: any, crumbs: Crumb[]) =>
+        string | { type: 'sharedAxis', axis?: 'x' | 'y' | 'z' } | { type: 'elevationScale' | 'fade' | 'fadeThrough' | 'hold' };
     /**
      * Indicates whether the Scene should display the tab bar
      */
@@ -46,6 +44,10 @@ export interface NavigationStackProps {
      * The color of the Scene's background
      */
     backgroundColor?: (state: State, data: any, crumbs: Crumb[]) => ColorValue;
+    /**
+     * The color of the background behind the Scenes
+     */
+    underlayColor?: ColorValue | ((state: State, data: any, crumbs: Crumb[]) => ColorValue);
     /**
      * The Scene's orientation
      */
@@ -76,11 +78,13 @@ export class NavigationStack extends Component<NavigationStackProps> { }
     /**
      * A Scene's to and from crumb trail style
      */
-    crumbStyle?: (from: boolean, data: any, crumbs: Crumb[], nextState?: State, nextData?: any) => string;
+    crumbStyle?: (from: boolean, data: any, crumbs: Crumb[], nextState?: State, nextData?: any) =>
+        string | { type: 'sharedAxis', axis?: 'x' | 'y' | 'z' } | { type: 'elevationScale' | 'fade' | 'fadeThrough' | 'hold' };
     /**
      * A Scene's to and from unmount style
      */
-    unmountStyle?: (from: boolean, data: any, crumbs: Crumb[]) => string;
+    unmountStyle?: (from: boolean, data: any, crumbs: Crumb[]) =>
+        string | { type: 'sharedAxis', axis?: 'x' | 'y' | 'z' } | { type: 'elevationScale' | 'fade' | 'fadeThrough' | 'hold' };
     /**
      * Indicates whether a Scene should display the tab bar
      */
@@ -97,6 +101,10 @@ export class NavigationStack extends Component<NavigationStackProps> { }
      * The color of a Scene's background
      */
     backgroundColor?: ColorValue | ((data: any, crumbs: Crumb[]) => ColorValue);
+    /**
+     * The color of the background behind the Scene
+     */
+    underlayColor?: ColorValue | ((data: any, crumbs: Crumb[]) => ColorValue);
     /**
      * A Scene's orientation
      */

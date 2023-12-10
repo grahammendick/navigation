@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
+import androidx.transition.Transition;
+import androidx.transition.TransitionListenerAdapter;
 
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
@@ -54,7 +56,8 @@ public class SceneFragment extends Fragment {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+                    if (scene.getParent() instanceof NavigationStackView)
+                        ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
                 }
 
                 @Override
@@ -70,9 +73,51 @@ public class SceneFragment extends Fragment {
     }
 
     @Override
+    public void setEnterTransition(@Nullable Object transition) {
+        super.setEnterTransition(transition);
+        if (transition == null) return;
+        ((Transition) transition).addListener(new TransitionListenerAdapter(){
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                super.onTransitionEnd(transition);
+                if (scene.getParent() instanceof NavigationStackView)
+                    ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+            }
+        });
+    }
+
+    @Override
+    public void setReenterTransition(@Nullable Object transition) {
+        super.setReenterTransition(transition);
+        if (transition == null) return;
+        ((Transition) transition).addListener(new TransitionListenerAdapter(){
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                super.onTransitionEnd(transition);
+                if (scene.getParent() instanceof NavigationStackView)
+                    ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+            }
+        });
+    }
+
+    @Override
+    public void setReturnTransition(@Nullable Object transition) {
+        super.setReturnTransition(transition);
+        if (transition == null) return;
+        ((Transition) transition).addListener(new TransitionListenerAdapter(){
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                super.onTransitionEnd(transition);
+                if (scene != null)
+                  scene.popped();
+            }
+        });
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        if (scene != null)
+        if (getReturnTransition() == null && scene != null)
             scene.popped();
     }
 
