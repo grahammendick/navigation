@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableMap;
@@ -61,6 +62,11 @@ public class NavigationBarViewManager extends ViewGroupManager<NavigationBarView
             view.setBackground(view.defaultBackground);
             view.setOutlineProvider(view.defaultOutlineProvider);
         }
+    }
+
+    @ReactProp(name = "shadowColor", customType = "Color")
+    public void setShadowColor(@NonNull NavigationBarView view, @Nullable Integer shadowColor) {
+        super.setShadowColor(view, shadowColor != null ? shadowColor : view.defaultShadowColor);
     }
 
     @ReactProp(name = "hide")
