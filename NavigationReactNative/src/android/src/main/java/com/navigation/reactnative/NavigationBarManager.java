@@ -72,7 +72,7 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
 
     @Override
     public Map<String, Object> getExportedViewConstants() {
-        return MapBuilder.<String, Object>of(
+        return MapBuilder.of(
             "ShowAsAction",
             MapBuilder.of(
                 "never", MenuItem.SHOW_AS_ACTION_NEVER,
