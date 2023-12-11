@@ -145,6 +145,10 @@ export interface NavigationBarProps {
      */
     tintColor?: ColorValue | ((standard: boolean) => ColorValue);
     /**
+     * The shadow color of the navigation bar
+     */
+    shadowColor?: ColorValue;
+    /**
      * The color of the title view
      */
     titleColor?: ColorValue | ((standard: boolean) => ColorValue);
@@ -693,6 +697,10 @@ export interface TabBarProps {
      * The ripple color of the tab bar
      */
     rippleColor?: ColorValue;
+    /**
+     * The shadow color of the tab bar
+     */
+    shadowColor?: ColorValue;
     /**
      * Indicates whether the tabs should be at the bottom
      */
