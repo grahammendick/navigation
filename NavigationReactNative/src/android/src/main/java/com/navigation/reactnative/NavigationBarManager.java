@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -40,6 +42,11 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
             view.setBackground(view.defaultBackground);
             view.setOutlineProvider(view.defaultOutlineProvider);
         }
+    }
+
+    @ReactProp(name = "shadowColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setShadowColor(@NonNull NavigationBarView view, int shadowColor) {
+        super.setShadowColor(view, shadowColor != Integer.MAX_VALUE ? shadowColor : view.defaultShadowColor);
     }
 
     @ReactProp(name = "hide")
