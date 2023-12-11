@@ -25,6 +25,7 @@
 @property (nonatomic, copy) UIColor *tintColor;
 @property (nonatomic, copy) UIColor *titleColor;
 @property (nonatomic, copy) UIColor *largeTitleColor;
+@property (nonatomic, copy) UIColor *shadowColor;
 @property (nonatomic, copy) NSString *backTitle;
 @property (nonatomic, assign) BOOL backTitleOn;
 @property (nonatomic, copy) NSString *backTestID;
