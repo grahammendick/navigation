@@ -7,6 +7,8 @@ import static com.google.android.material.navigation.NavigationBarView.LABEL_VIS
 
 import android.content.res.ColorStateList;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -62,6 +64,11 @@ public class TabNavigationManager extends ViewGroupManager<TabNavigationView> {
     @ReactProp(name = "rippleColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
     public void setRippleColor(TabNavigationView view, int rippleColor) {
         view.setItemRippleColor(ColorStateList.valueOf(rippleColor != Integer.MAX_VALUE ? rippleColor : view.defaultRippleColor));
+    }
+
+    @ReactProp(name = "shadowColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setShadowColor(@NonNull TabNavigationView view, int shadowColor) {
+        super.setShadowColor(view, shadowColor != Integer.MAX_VALUE ? shadowColor : view.defaultShadowColor);
     }
 
     @Override

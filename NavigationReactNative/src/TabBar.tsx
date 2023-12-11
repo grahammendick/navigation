@@ -69,6 +69,7 @@ class TabBar extends React.Component<any, any> {
                 unselectedTintColor={unselectedTintColor}
                 activeIndicatorColor={activeIndicatorColor}
                 rippleColor={rippleColor}
+                shadowColor={shadowColor}
                 selectedIndicatorAtTop={bottomTabs}
                 tabs={tabBarItems.map(({props: {title, testID}}: any) => ({title, testID}))}
                 titles={tabBarItems.map(({props: {title = ''}}: any) => title)}
