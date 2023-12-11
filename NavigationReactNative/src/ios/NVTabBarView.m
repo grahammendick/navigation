@@ -83,6 +83,9 @@
                 [appearance configureWithOpaqueBackground];
             [appearance setBackgroundColor:_barTintColor];
         }
+        if (self.shadowColor) {
+            [appearance setShadowColor:self.shadowColor];
+        }
         UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
         NSNumber *size = !self.fontSize ? @10 : self.fontSize;
         NSString *weight = !self.fontWeight ? @"500" : self.fontWeight;
