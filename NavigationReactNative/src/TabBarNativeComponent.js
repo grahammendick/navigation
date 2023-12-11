@@ -12,6 +12,7 @@ type NativeProps = $ReadOnly<{|
   selectedTintColor: ColorValue,
   unselectedTintColor: ColorValue,
   badgeColor: ColorValue,
+  shadowColor: ColorValue,
   scrollsToTop: boolean,
   fontFamily: string,
   fontWeight: string,
