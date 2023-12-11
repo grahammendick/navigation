@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) UIColor *tintColor;
 @property (nonatomic, copy) UIColor *titleColor;
 @property (nonatomic, copy) UIColor *largeTitleColor;
+@property (nonatomic, copy) UIColor *shadowColor;
 @property (nonatomic, copy) NSString *backTitle;
 @property (nonatomic, copy) NSString *backTestID;
 @property (nonatomic, assign) BOOL backImageLoading;
