@@ -135,7 +135,9 @@ API_AVAILABLE(ios(13.0)){
     if (self.tintColor != nil) {
         attributes[NSForegroundColorAttributeName] = self.tintColor;
     }
-    if (self.shadowColor) [appearance setShadowColor:self.shadowColor];
+    if (self.shadowColor) {
+        [appearance setShadowColor:self.shadowColor];
+    }
     [appearance setBackgroundColor:color];
     [appearance.buttonAppearance.normal setTitleTextAttributes:attributes];
     [appearance.doneButtonAppearance.normal setTitleTextAttributes:attributes];
