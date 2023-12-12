@@ -11,17 +11,17 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.facebook.react.uimanager.FabricViewStateManager;
 import com.facebook.react.uimanager.PixelUtil;
+import com.facebook.react.uimanager.StateWrapper;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
-public class ActionBarView extends ViewGroup implements FabricViewStateManager.HasFabricViewStateManager {
+public class ActionBarView extends ViewGroup {
     private boolean layoutRequested = false;
-    private final FabricViewStateManager fabricViewStateManager = new FabricViewStateManager();
+    private StateWrapper stateWrapper = null;
 
     public ActionBarView(Context context) {
         super(context);
@@ -43,9 +43,13 @@ public class ActionBarView extends ViewGroup implements FabricViewStateManager.H
         eventDispatcher.dispatchEvent(new ActionBarView.CollapsedEvent(getId()));
     }
 
+    public void setStateWrapper(StateWrapper stateWrapper) {
+        this.stateWrapper = stateWrapper;
+    }
+
     void changeBounds(final int width, final int height, int oldw, int oldh) {
         super.onSizeChanged(width, height, oldw, oldh);
-        if (fabricViewStateManager.hasStateWrapper()) {
+        if (stateWrapper != null) {
             updateState(width, height);
         } else {
             final int viewTag = getId();
@@ -67,7 +71,7 @@ public class ActionBarView extends ViewGroup implements FabricViewStateManager.H
     public void updateState(final int width, final int height) {
         final float realWidth = PixelUtil.toDIPFromPixel(width);
         final float realHeight = PixelUtil.toDIPFromPixel(height);
-        ReadableMap currentState = getFabricViewStateManager().getStateData();
+        ReadableMap currentState = stateWrapper.getStateData();
         if (currentState != null) {
             float delta = (float) 0.9;
             float stateScreenHeight =
@@ -82,16 +86,12 @@ public class ActionBarView extends ViewGroup implements FabricViewStateManager.H
                 return;
             }
         }
-        fabricViewStateManager.setState(
-            new FabricViewStateManager.StateUpdateCallback() {
-                @Override
-                public WritableMap getStateUpdate() {
-                    WritableMap map = new WritableNativeMap();
-                    map.putDouble("frameWidth", realWidth);
-                    map.putDouble("frameHeight", realHeight);
-                    return map;
-                }
-            });
+        if (stateWrapper != null) {
+            WritableMap map = new WritableNativeMap();
+            map.putDouble("frameWidth", realWidth);
+            map.putDouble("frameHeight", realHeight);
+            stateWrapper.updateState(map);
+        }
     }
 
     @Override
@@ -113,11 +113,6 @@ public class ActionBarView extends ViewGroup implements FabricViewStateManager.H
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
-
-    @Override
-    public FabricViewStateManager getFabricViewStateManager() {
-        return fabricViewStateManager;
-    }
 
     static class ExpandedEvent extends Event<ActionBarView.ExpandedEvent> {
         public ExpandedEvent(int viewId) {

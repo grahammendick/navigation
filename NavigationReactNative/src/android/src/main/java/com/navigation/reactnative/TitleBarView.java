@@ -10,13 +10,13 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.facebook.react.uimanager.FabricViewStateManager;
 import com.facebook.react.uimanager.PixelUtil;
+import com.facebook.react.uimanager.StateWrapper;
 import com.facebook.react.uimanager.UIManagerModule;
 
-public class TitleBarView extends ViewGroup implements FabricViewStateManager.HasFabricViewStateManager {
+public class TitleBarView extends ViewGroup {
     private boolean layoutRequested = false;
-    private final FabricViewStateManager fabricViewStateManager = new FabricViewStateManager();
+    private StateWrapper stateWrapper = null;
 
     public TitleBarView(Context context) {
         super(context);
@@ -26,10 +26,14 @@ public class TitleBarView extends ViewGroup implements FabricViewStateManager.Ha
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
     }
 
+    public void setStateWrapper(StateWrapper stateWrapper) {
+        this.stateWrapper = stateWrapper;
+    }
+
     @Override
     protected void onSizeChanged(final int w, final int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if (fabricViewStateManager.hasStateWrapper()) {
+        if (stateWrapper != null) {
             updateState(w, h);
         } else {
             final int viewTag = getId();
@@ -50,7 +54,7 @@ public class TitleBarView extends ViewGroup implements FabricViewStateManager.Ha
     public void updateState(final int width, final int height) {
         final float realWidth = PixelUtil.toDIPFromPixel(width);
         final float realHeight = PixelUtil.toDIPFromPixel(height);
-        ReadableMap currentState = getFabricViewStateManager().getStateData();
+        ReadableMap currentState = stateWrapper.getStateData();
         if (currentState != null) {
             float delta = (float) 0.9;
             float stateScreenHeight =
@@ -65,16 +69,12 @@ public class TitleBarView extends ViewGroup implements FabricViewStateManager.Ha
                 return;
             }
         }
-        fabricViewStateManager.setState(
-            new FabricViewStateManager.StateUpdateCallback() {
-                @Override
-                public WritableMap getStateUpdate() {
-                    WritableMap map = new WritableNativeMap();
-                    map.putDouble("frameWidth", realWidth);
-                    map.putDouble("frameHeight", realHeight);
-                    return map;
-                }
-            });
+        if (stateWrapper != null) {
+            WritableMap map = new WritableNativeMap();
+            map.putDouble("frameWidth", realWidth);
+            map.putDouble("frameHeight", realHeight);
+            stateWrapper.updateState(map);
+        }
     }
 
     @Override
@@ -96,9 +96,4 @@ public class TitleBarView extends ViewGroup implements FabricViewStateManager.Ha
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
-
-    @Override
-    public FabricViewStateManager getFabricViewStateManager() {
-        return fabricViewStateManager;
-    }
 }

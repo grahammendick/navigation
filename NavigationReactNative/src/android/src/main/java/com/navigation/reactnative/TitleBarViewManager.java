@@ -43,7 +43,7 @@ public class TitleBarViewManager extends ViewGroupManager<TitleBarView> implemen
     @Override
     public Object updateState(
             TitleBarView view, ReactStylesDiffMap props, StateWrapper stateWrapper) {
-        view.getFabricViewStateManager().setStateWrapper(stateWrapper);
+        view.setStateWrapper(stateWrapper);
         return null;
     }
 }

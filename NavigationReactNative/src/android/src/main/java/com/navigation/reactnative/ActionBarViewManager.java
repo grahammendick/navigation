@@ -50,7 +50,7 @@ public class ActionBarViewManager extends ViewGroupManager<ActionBarView> implem
     @Override
     public Object updateState(
             ActionBarView view, ReactStylesDiffMap props, StateWrapper stateWrapper) {
-        view.getFabricViewStateManager().setStateWrapper(stateWrapper);
+        view.setStateWrapper(stateWrapper);
         return null;
     }
 }
