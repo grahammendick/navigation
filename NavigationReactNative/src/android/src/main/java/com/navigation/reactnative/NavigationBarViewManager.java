@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -66,7 +67,10 @@ public class NavigationBarViewManager extends ViewGroupManager<NavigationBarView
 
     @ReactProp(name = "shadowColor", customType = "Color")
     public void setShadowColor(@NonNull NavigationBarView view, @Nullable Integer shadowColor) {
-        super.setShadowColor(view, shadowColor != null ? shadowColor : view.defaultShadowColor);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            view.setOutlineAmbientShadowColor(shadowColor != null ? shadowColor : view.defaultShadowColor);
+            view.setOutlineSpotShadowColor(shadowColor != null ? shadowColor : view.defaultShadowColor);
+        }
     }
 
     @ReactProp(name = "hide")
@@ -77,8 +81,7 @@ public class NavigationBarViewManager extends ViewGroupManager<NavigationBarView
     @ReactProp(name = "barHeight")
     public void setBarHeight(NavigationBarView view, double height) {
         view.getLayoutParams().height = height != 0 ? (int) PixelUtil.toPixelFromDIP(height) : AppBarLayout.LayoutParams.WRAP_CONTENT;
-        if (view.getParent() instanceof CoordinatorLayoutView) {
-            CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) view.getParent();
+        if (view.getParent() instanceof CoordinatorLayoutView coordinatorLayoutView) {
             coordinatorLayoutView.requestLayout();
         }
     }
@@ -189,7 +192,7 @@ public class NavigationBarViewManager extends ViewGroupManager<NavigationBarView
 
     @Override
     public Map<String, Object> getExportedViewConstants() {
-        return MapBuilder.<String, Object>of(
+        return MapBuilder.of(
             "ShowAsAction",
             MapBuilder.of(
                 "never", MenuItem.SHOW_AS_ACTION_NEVER,
