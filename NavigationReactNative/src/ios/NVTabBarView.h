@@ -9,6 +9,7 @@
 @property (nonatomic, copy) UIColor *selectedTintColor;
 @property (nonatomic, copy) UIColor *unselectedTintColor;
 @property (nonatomic, copy) UIColor *badgeColor;
+@property (nonatomic, copy) UIColor *shadowColor;
 @property (nonatomic, assign) BOOL scrollsToTop;
 @property (nonatomic, copy) NSString *fontFamily;
 @property (nonatomic, copy) NSString *fontWeight;

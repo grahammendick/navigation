@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.ViewOutlineProvider;
 
 import androidx.core.util.Pools;
@@ -21,14 +22,16 @@ import com.google.android.material.appbar.AppBarLayout;
 public class NavigationBarView extends AppBarLayout {
     final ViewOutlineProvider defaultOutlineProvider;
     final Drawable defaultBackground;
+    final int defaultShadowColor;
     private boolean layoutRequested = false;
 
     public NavigationBarView(Context context) {
         super(context);
         ViewCompat.setLayoutDirection(this, !I18nUtil.getInstance().isRTL(context) ? ViewCompat.LAYOUT_DIRECTION_LTR : ViewCompat.LAYOUT_DIRECTION_RTL);
-        setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.WRAP_CONTENT));
+        setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         defaultOutlineProvider = getOutlineProvider();
         defaultBackground = getBackground();
+        defaultShadowColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? getOutlineAmbientShadowColor() : -16777216;
         addOnOffsetChangedListener((appBarLayout, offset) -> {
             ReactContext reactContext = (ReactContext) getContext();
             EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());

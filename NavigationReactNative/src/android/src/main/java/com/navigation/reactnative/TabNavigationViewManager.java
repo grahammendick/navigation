@@ -6,7 +6,9 @@ import static com.google.android.material.navigation.NavigationBarView.LABEL_VIS
 import static com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_UNLABELED;
 
 import android.content.res.ColorStateList;
+import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.common.MapBuilder;
@@ -81,6 +83,14 @@ public class TabNavigationViewManager extends ViewGroupManager<TabNavigationView
     @ReactProp(name = "rippleColor", customType = "Color")
     public void setRippleColor(TabNavigationView view, @Nullable Integer rippleColor) {
         view.setItemRippleColor(ColorStateList.valueOf(rippleColor != null ? rippleColor : view.defaultRippleColor));
+    }
+
+    @ReactProp(name = "shadowColor", customType = "Color")
+    public void setShadowColor(@NonNull TabNavigationView view, @Nullable Integer shadowColor) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            view.setOutlineAmbientShadowColor(shadowColor != null ? shadowColor : view.defaultShadowColor);
+            view.setOutlineSpotShadowColor(shadowColor != null ? shadowColor : view.defaultShadowColor);
+        }
     }
 
     @Override

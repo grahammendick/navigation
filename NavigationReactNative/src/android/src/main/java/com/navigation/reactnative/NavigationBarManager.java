@@ -2,7 +2,10 @@ package com.navigation.reactnative;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
 
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
@@ -42,6 +45,14 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
         }
     }
 
+    @ReactProp(name = "shadowColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setShadowColor(@NonNull NavigationBarView view, int shadowColor) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            view.setOutlineAmbientShadowColor(shadowColor != Integer.MAX_VALUE ? shadowColor : view.defaultShadowColor);
+            view.setOutlineSpotShadowColor(shadowColor != Integer.MAX_VALUE ? shadowColor : view.defaultShadowColor);
+        }
+    }
+
     @ReactProp(name = "hide")
     public void setHide(NavigationBarView view, boolean hide) {
         view.setExpanded(!hide, true);
@@ -65,7 +76,7 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
 
     @Override
     public Map<String, Object> getExportedViewConstants() {
-        return MapBuilder.<String, Object>of(
+        return MapBuilder.of(
             "ShowAsAction",
             MapBuilder.of(
                 "never", MenuItem.SHOW_AS_ACTION_NEVER,

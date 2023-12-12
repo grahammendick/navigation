@@ -59,7 +59,10 @@ public class TabBarViewManager extends ViewGroupManager<TabBarView> implements N
 
     @Override
     public void setBadgeColor(TabBarView view, @Nullable Integer value) {
+    }
 
+    @Override
+    public void setShadowColor(TabBarView view, @Nullable Integer value) {
     }
 
     @ReactProp(name = "mostRecentEventCount")
@@ -84,17 +87,14 @@ public class TabBarViewManager extends ViewGroupManager<TabBarView> implements N
 
     @Override
     public void setFontWeight(TabBarView view, @Nullable String value) {
-
     }
 
     @Override
     public void setFontStyle(TabBarView view, @Nullable String value) {
-
     }
 
     @Override
     public void setFontSize(TabBarView view, float value) {
-
     }
 
     @Override

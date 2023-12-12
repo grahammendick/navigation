@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     int unselectedTintColor;
     int defaultActiveIndicatorColor;
     int defaultRippleColor;
+    final int defaultShadowColor;
     private boolean layoutRequested = false;
     private boolean autoSelected = false;
 
@@ -31,6 +33,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         selectedTintColor = unselectedTintColor = defaultTextColor = tabLayout.defaultTextColor;
         defaultActiveIndicatorColor = getItemActiveIndicatorColor() != null ? getItemActiveIndicatorColor().getDefaultColor() : Color.WHITE;
         defaultRippleColor = getItemRippleColor() != null ? getItemRippleColor().getColorForState(new int[]{ android.R.attr.state_pressed }, Color.WHITE) : Color.WHITE;
+        defaultShadowColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? getOutlineAmbientShadowColor() : -16777216;
         setOnItemSelectedListener(menuItem -> {
             TabBarView tabBar = getTabBar();
             if (!autoSelected && tabBar != null && tabBar.selectedTab == menuItem.getOrder())

@@ -44,7 +44,7 @@ class TabBar extends React.Component<any, any> {
         return false;
     }
     render() {
-        var {children, labelVisibilityMode, barTintColor, selectedTintColor, unselectedTintColor, activeIndicatorColor, rippleColor, bottomTabs, scrollable, primary, scrollsToTop, onPressBack} = this.props;
+        var {children, labelVisibilityMode, barTintColor, selectedTintColor, unselectedTintColor, activeIndicatorColor, rippleColor, shadowColor, bottomTabs, scrollable, primary, scrollsToTop, onPressBack} = this.props;
         const Material3 = global.__turboModuleProxy != null ? require("./NativeMaterial3Module").default : NativeModules.Material3;
         const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
@@ -69,6 +69,7 @@ class TabBar extends React.Component<any, any> {
                 unselectedTintColor={unselectedTintColor}
                 activeIndicatorColor={activeIndicatorColor}
                 rippleColor={rippleColor}
+                shadowColor={shadowColor}
                 selectedIndicatorAtTop={bottomTabs}
                 tabs={tabBarItems.map(({props: {title, testID}}: any) => ({title, testID}))}
                 titles={tabBarItems.map(({props: {title = ''}}: any) => title)}
@@ -96,6 +97,7 @@ class TabBar extends React.Component<any, any> {
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}
                     badgeColor={badgeColor}
+                    shadowColor={shadowColor}
                     scrollsToTop={scrollsToTop}
                     fontFamily={fontFamily} fontWeight={fontWeight}
                     fontStyle={fontStyle} fontSize={fontSize}

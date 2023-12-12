@@ -12,6 +12,7 @@ type NativeProps = $ReadOnly<{|
   labelVisibilityMode: Int32,
   activeIndicatorColor: ColorValue,
   rippleColor: ColorValue,
+  shadowColor: ColorValue,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(

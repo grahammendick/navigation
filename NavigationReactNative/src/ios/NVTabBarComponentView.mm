@@ -59,6 +59,7 @@ using namespace facebook::react;
     UIColor *selectedTintColor = RCTUIColorFromSharedColor(newViewProps.selectedTintColor);
     UIColor *unselectedTintColor = RCTUIColorFromSharedColor(newViewProps.unselectedTintColor);
     UIColor *barTintColor = RCTUIColorFromSharedColor(newViewProps.barTintColor);
+    UIColor *shadowColor = RCTUIColorFromSharedColor(newViewProps.shadowColor);
     if (@available(iOS 13.0, *)) {
         UITabBarAppearance *appearance = [UITabBarAppearance new];
         [appearance configureWithDefaultBackground];
@@ -68,6 +69,9 @@ using namespace facebook::react;
             if (CGColorGetAlpha(barTintColor.CGColor) == 1)
                 [appearance configureWithOpaqueBackground];
             [appearance setBackgroundColor:barTintColor];
+        }
+        if (shadowColor) {
+            [appearance setShadowColor:shadowColor];
         }
         _fontFamily = [[NSString alloc] initWithUTF8String: newViewProps.fontFamily.c_str()];
         _fontFamily = _fontFamily.length ? _fontFamily : nil;

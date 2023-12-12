@@ -85,6 +85,7 @@ using namespace facebook::react;
     _tintColor = RCTUIColorFromSharedColor(newViewProps.tintColor);
     _titleColor = RCTUIColorFromSharedColor(newViewProps.titleColor);
     _largeTitleColor = RCTUIColorFromSharedColor(newViewProps.largeTitleColor);
+    _shadowColor = RCTUIColorFromSharedColor(newViewProps.shadowColor);
     UINavigationItem *previousNavigationItem = [self previousNavigationItem];
     if (previousNavigationItem.backBarButtonItem.title != _backTitle) {
         previousNavigationItem.backBarButtonItem = nil;
@@ -166,6 +167,9 @@ API_AVAILABLE(ios(13.0)){
     NSMutableDictionary *attributes = [NSMutableDictionary new];
     if (self.tintColor != nil) {
         attributes[NSForegroundColorAttributeName] = self.tintColor;
+    }
+    if (self.shadowColor) {
+        [appearance setShadowColor:self.shadowColor];
     }
     [appearance setBackgroundColor:color];
     [appearance.buttonAppearance.normal setTitleTextAttributes:attributes];
