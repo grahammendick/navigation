@@ -20,6 +20,7 @@ export interface NavigationStackProps {
     title?: (state: State, data: any) => string;
     /**
      * The Scene's to and from crumb trail style
+     * @platform android
      */
     crumbStyle?: (from: boolean, state: State, data: any, crumbs: Crumb[], nextState?: State, nextData?: any) =>
         string | { type: 'sharedAxis', axis?: 'x' | 'y' | 'z' } | { type: 'elevationScale' | 'fade' | 'fadeThrough' | 'hold' };
@@ -30,14 +31,17 @@ export interface NavigationStackProps {
         string | { type: 'sharedAxis', axis?: 'x' | 'y' | 'z' } | { type: 'elevationScale' | 'fade' | 'fadeThrough' | 'hold' };
     /**
      * Indicates whether the Scene should display the tab bar
+     * @platform ios
      */
     hidesTabBar?: (state: State, data: any, crumbs: Crumb[]) => boolean;
     /**
      * The Scene's shared element
+     * @platform android
      */
     sharedElement?: (state: State, data: any, crumbs: Crumb[]) => string;
     /**
      * The Scene's shared elements
+     * @platform android
      */
     sharedElements?: (state: State, data: any, crumbs: Crumb[]) => string | string[];
     /**
@@ -46,10 +50,12 @@ export interface NavigationStackProps {
     backgroundColor?: (state: State, data: any, crumbs: Crumb[]) => ColorValue;
     /**
      * The color of the background behind the Scenes
+     * @platform android
      */
     underlayColor?: ColorValue | ((state: State, data: any, crumbs: Crumb[]) => ColorValue);
     /**
      * The Scene's orientation
+     * @platform android
      */
     landscape?: (state: State, data: any, crumbs: Crumb[]) => boolean;
     /**
@@ -77,6 +83,7 @@ export class NavigationStack extends Component<NavigationStackProps> { }
     stateKey: keyof NavigationInfo & string;
     /**
      * A Scene's to and from crumb trail style
+     * @platform android
      */
     crumbStyle?: (from: boolean, data: any, crumbs: Crumb[], nextState?: State, nextData?: any) =>
         string | { type: 'sharedAxis', axis?: 'x' | 'y' | 'z' } | { type: 'elevationScale' | 'fade' | 'fadeThrough' | 'hold' };
@@ -87,14 +94,17 @@ export class NavigationStack extends Component<NavigationStackProps> { }
         string | { type: 'sharedAxis', axis?: 'x' | 'y' | 'z' } | { type: 'elevationScale' | 'fade' | 'fadeThrough' | 'hold' };
     /**
      * Indicates whether a Scene should display the tab bar
+     * @platform ios
      */
     hidesTabBar?: boolean | ((data: any, crumbs: Crumb[]) => boolean);
     /**
      * A Scene's shared element
+     * @platform android
      */
     sharedElement?: string | ((data: any, crumbs: Crumb[]) => string);
     /**
      * A Scene's shared elements
+     * @platform android
      */
     sharedElements?: string | string[] | ((data: any, crumbs: Crumb[]) => string | string[]);
     /**
@@ -103,10 +113,12 @@ export class NavigationStack extends Component<NavigationStackProps> { }
     backgroundColor?: ColorValue | ((data: any, crumbs: Crumb[]) => ColorValue);
     /**
      * The color of the background behind the Scene
+     * @platform android
      */
     underlayColor?: ColorValue | ((data: any, crumbs: Crumb[]) => ColorValue);
     /**
      * A Scene's orientation
+     * @platform android
      */
     landscape?: boolean | ((data: any, crumbs: Crumb[]) => boolean);
      /**
@@ -154,30 +166,37 @@ export interface NavigationBarProps {
     titleColor?: ColorValue | ((standard: boolean) => ColorValue);
     /**
      * Indicates whether to center the title within the navigation bar
+     * @platform android
      */
     titleCentered?: boolean;
     /**
      * The title for the back button
+     * @platform ios
      */
     backTitle?: string;
     /**
      * The back button image
+     * @platform ios
      */
     backImage?: ImageRequireSource | ImageURISource;
     /**
      * The logo
+     * @platform android
      */
     logo?: ImageRequireSource | ImageURISource;
     /**
      * The menu overflow image
+     * @platform android
      */
     overflowImage?: ImageRequireSource | ImageURISource;
     /**
      * The navigation button image
+     * @platform android
      */
     navigationImage?: ImageRequireSource | ImageURISource;
     /**
      * The accessible description of the navigation button
+     * @platform android
      */
     navigationAccessibilityLabel?: string;
     /**
@@ -200,67 +219,83 @@ export interface NavigationBarProps {
     titleFontSize?: number | ((standard: boolean) => number);
     /**
      * The back button font family
+     * @platform ios
      */
     backFontFamily?: string;
     /**
      * The back button font weight
+     * @platform ios
      */
     backFontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500'
         | '600' | '700' | '800' | '900';
     /**
      * The back button font style
+     * @platform ios
      */
     backFontStyle?: 'normal' | 'italic';
     /**
      * The back button font size
+     * @platform ios
      */
     backFontSize?: number;
     /**
      * Indicates whether to render as a bottom app bar
+     * @platform android
      */
     bottomBar?: boolean;
     /**
      * The position of the anchored floating action button
+     * @platform android
      */
     fabAlignmentMode?: 'center' | 'end';
     /**
      * The animation that runs when the floating action button changes position
+     * @platform android
      */
     fabAnimationMode?: 'slide' | 'scale';
     /**
      * The cradle margin for the floating action button cutout
+     * @platform android
      */
     fabCradleMargin?: number;
     /**
      * The rounded corner radius for the floating action button cutout
+     * @platform android
      */
     fabCradleRoundedCornerRadius?: number;
     /**
      * The vertical offset for the floating action button cutout
+     * @platform android
      */
     fabCradleVerticalOffset?: number;
     /**
      * Indicates whether to hide the bottom navigation bar when scrolling
+     * @platform android
      */
     hideOnScroll?: boolean;
     /**
      * The id of the back button in end-to-end tests
+     * @platform ios
      */
     backTestID?: string;
     /**
      * The id of the navigation button in end-to-end tests
+     * @platform android
      */
     navigationTestID?: string;
     /**
      * The id of the overflow button in end-to-end tests
+     * @platform android
      */
     overflowTestID?: string;
     /**
      * Handles navigation button press events
+     * @platform android
      */
     onNavigationPress?: () => void;
     /**
      * Handles offset change events
+     * @platform android
      */
     onOffsetChanged?: (e: NativeSyntheticEvent<{offset: number}>) => void;
     /**
@@ -280,6 +315,7 @@ export class NavigationBar extends Component<NavigationBarProps> { }
 export interface LeftBarProps {
     /**
      * Indicates whether bar buttons display in addition to the back button
+     * @platform ios
      */
     supplementBack?: boolean;
     /**
@@ -341,6 +377,7 @@ export interface BarButtonProps {
     image?: ImageRequireSource | ImageURISource;
     /**
      * The button system item
+     * @platform ios
      */
     systemItem?: 'done' | 'cancel' | 'edit' | 'save' | 'add' | 'flexibleSpace'
         | 'fixedSpace' | 'compose' | 'reply' | 'action' | 'organize'
@@ -348,10 +385,12 @@ export interface BarButtonProps {
         | 'trash' | 'play' | 'pause' | 'rewind' | 'fastForward';
     /**
      * Determines when this item should appear in the navigation bar
+     * @platform android
      */
     show?: 'ifRoom' | 'never' | 'always';
     /**
      * Indicates whether this item opens the search bar
+     * @platform android
      */
     search?: boolean;
     /**
@@ -377,6 +416,7 @@ export interface BarButtonProps {
     testID?: string;
     /**
      * The custom view size
+     * @platform android
      */
     size?: number;
     /**
@@ -400,6 +440,7 @@ export class BarButton extends Component<BarButtonProps> { }
 export interface SearchBarProps {
     /**
      * Indicates whether the search bar takes over the toolbar
+     * @platform android
      */
     toolbar?: boolean;
     /**
@@ -408,14 +449,17 @@ export interface SearchBarProps {
     active?: boolean;
     /**
      * Indicates whether to to obscure the underlying content
+     * @platform ios
      */
     obscureBackground?: boolean;
     /**
      * Indicates whether to hide the navigation bar
+     * @platform ios
      */
     hideNavigationBar?: boolean;
     /**
      * Indicates whether to hide the search bar when scrolling
+     * @platform ios
      */
     hideWhenScrolling?: boolean;
     /**
@@ -453,10 +497,12 @@ export interface SearchBarProps {
     barTintColor?: ColorValue | ((toolbar: boolean) => ColorValue);
     /**
      * The selected scope button
+     * @platform ios
      */
     scopeButton?: string;
     /**
      * The scope button titles
+     * @platform ios
      */
     scopeButtons?: string[];
     /**
@@ -477,6 +523,7 @@ export interface SearchBarProps {
     onChangeActive?: (active: boolean) => void;
     /**
      * Handles scope button change events
+     * @platform ios
      */
     onChangeScopeButton?: (scopeButton: string) => void;
 }
@@ -502,6 +549,7 @@ export interface CoordinatorLayoutProps {
 
 /**
  * Container that supports collapsing the navigation bar
+ * @platform android
  */
 export class CoordinatorLayout extends Component<CoordinatorLayoutProps> {}
 
@@ -521,6 +569,7 @@ export interface CollapsingBarProps {
 
 /**
  * Renders collapsing content inside the navigation bar
+ * @platform android
  */
 export class CollapsingBar extends Component<CollapsingBarProps> {}
 
@@ -544,6 +593,7 @@ export interface ActionBarProps {
 
 /**
  * Renders an action bar in the UI navigation bar
+ * @platform android
  */
 export class ActionBar extends Component<ActionBarProps> {}
 
@@ -561,6 +611,7 @@ export interface StatusBarProps {
     tintStyle?: 'light' | 'dark';
     /**
      * The background color of the status bar
+     * @platform android
      */
     barTintColor?: ColorValue;
 }
@@ -598,11 +649,13 @@ export interface SharedElementProps {
 
 /**
  * Shares its child UI element between scenes during navigation
+ * @platform android
  */
 export class SharedElement extends Component<SharedElementProps> {}
 
 /**
  * The context for overriding default hardware back handling
+ * @platform android
  */
 export var BackHandlerContext: Context<BackHandler>;
 
@@ -628,6 +681,7 @@ export interface TabBarItemProps {
     image?: ImageRequireSource | ImageURISource | string;
     /**
      * The tab system item
+     * @platform ios
      */
     systemItem?: 'bookmarks' | 'contacts' | 'downloads' | 'favorites'
         | 'featured' | 'history' | 'more' | 'most-recent' | 'most-viewed'
@@ -691,10 +745,12 @@ export interface TabBarProps {
     unselectedTintColor?: ColorValue;
     /**
      * The color of the active indicator within the tab bar
+     * @platform android
      */
     activeIndicatorColor?: ColorValue;
     /**
      * The ripple color of the tab bar
+     * @platform android
      */
     rippleColor?: ColorValue;
     /**
@@ -711,6 +767,7 @@ export interface TabBarProps {
     primary?: boolean;
     /**
      * Indicates whether the tab bar can be scrolled horizontally
+     * @platform android
      */
     scrollable?: boolean;
     /**
@@ -723,6 +780,7 @@ export interface TabBarProps {
     defaultTab?: number;
     /**
      * Indicates how labels should be displayed in the tab bar
+     * @platform android
      */
     labelVisibilityMode?: 'auto' | 'labeled' | 'unlabeled' | 'selected';
     /**
@@ -738,7 +796,8 @@ export interface TabBarProps {
      */
     onChangeTab?: (tab: number) => void;
     /**
-     * Handles Android back button press events
+     * Handles back button press events
+     * @platform android
      */
     onPressBack?: () => boolean;
 }
@@ -754,6 +813,7 @@ export class TabBar extends Component<TabBarProps> {}
 export interface BottomSheetProps {
     /**
      * Indicates whether the bottom sheet disables the scene behind
+     * @platform android
      */
     modal?: boolean;
     /**
@@ -886,6 +946,7 @@ export interface FloatingActionButtonStyle extends TransformsStyle {
 
 /**
  * Renders a floating action button
+ * @platform android
  */
 export class FloatingActionButton extends Component<FloatingActionButtonProps> {}
 
@@ -898,6 +959,7 @@ export interface ModalBackHandlerProps {
 
 /**
  * Handles the hardware back button inside a Modal
+ * @platform android
  */
 export class ModalBackHandler extends Component<ModalBackHandlerProps> {}
 
