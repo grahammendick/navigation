@@ -86,7 +86,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
 
     public void setStateWrapper(StateWrapper stateWrapper) {
         sheetView.setStateWrapper(stateWrapper);
-    };
+    }
 
     public void updateState(final int width, final int height) {
         sheetView.updateState(width, height);
