@@ -239,7 +239,7 @@ public class SearchToolbarView extends SearchBar {
 
         @Override
         public String getEventName() {
-            return "topOnNavigationPress";
+            return "topNavigationPress";
         }
 
         @Override
