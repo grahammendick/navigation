@@ -310,7 +310,7 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
 
         @Override
         public String getEventName() {
-            return "topOnTabSelected";
+            return "topTabSelected";
         }
 
         @Override
@@ -332,7 +332,7 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
 
         @Override
         public String getEventName() {
-            return "topOnTabSwipeStateChanged";
+            return "topTabSwipeStateChanged";
         }
 
         @Override

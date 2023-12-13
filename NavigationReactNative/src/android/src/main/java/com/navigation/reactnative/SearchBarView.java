@@ -214,7 +214,7 @@ public class SearchBarView extends ReactViewGroup {
 
         @Override
         public String getEventName() {
-            return "topOnChangeText";
+            return "topChangeText";
         }
 
         @Override
@@ -237,7 +237,7 @@ public class SearchBarView extends ReactViewGroup {
 
         @Override
         public String getEventName() {
-            return "topOnChangeActive";
+            return "topChangeActive";
         }
 
         @Override
@@ -259,7 +259,7 @@ public class SearchBarView extends ReactViewGroup {
 
         @Override
         public String getEventName() {
-            return "topOnQuery";
+            return "topQuery";
         }
 
         @Override

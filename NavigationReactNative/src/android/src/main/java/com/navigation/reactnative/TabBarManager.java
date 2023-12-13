@@ -85,7 +85,7 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("topOnTabSelected", MapBuilder.of("registrationName", "onTabSelected"))
+            .put("topTabSelected", MapBuilder.of("registrationName", "onTabSelected"))
             .build();
     }
 }

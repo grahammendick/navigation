@@ -128,7 +128,7 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("topOnNavigationPress", MapBuilder.of("registrationName", "onNavigationPress"))
+            .put("topNavigationPress", MapBuilder.of("registrationName", "onNavigationPress"))
             .build();
     }
 }

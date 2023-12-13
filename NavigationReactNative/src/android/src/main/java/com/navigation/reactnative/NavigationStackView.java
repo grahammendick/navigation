@@ -356,7 +356,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
 
         @Override
         public String getEventName() {
-            return "topOnNavigateToTop";
+            return "topNavigateToTop";
         }
 
         @Override
@@ -375,7 +375,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
 
         @Override
         public String getEventName() {
-            return "topOnRest";
+            return "topRest";
         }
 
         @Override

@@ -63,7 +63,7 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
                     WritableMap event = Arguments.createMap();
                     event.putInt("tab", position);
                     event.putInt("eventCount", tabBarPagerAdapter.nativeEventCount);
-                    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(tabBarPager.getId(), "onTabSelected", event);
+                    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(tabBarPager.getId(), "topTabSelected", event);
                 }
                 if (tabBarPagerAdapter.getTabAt(position) != null)
                     tabBarPagerAdapter.getTabAt(position).pressed();
@@ -74,7 +74,7 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
                 super.onPageScrollStateChanged(state);
                 WritableMap event = Arguments.createMap();
                 event.putBoolean("swiping", state == ViewPager2.SCROLL_STATE_DRAGGING);
-                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(tabBarPager.getId(),"onTabSwipeStateChanged", event);
+                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(tabBarPager.getId(),"topTabSwipeStateChanged", event);
             }
         });
         tabBarPager.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
@@ -155,8 +155,8 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("onTabSelected", MapBuilder.of("registrationName", "onTabSelected"))
-            .put("onTabSwipeStateChanged", MapBuilder.of("registrationName", "onTabSwipeStateChanged"))
+            .put("topTabSelected", MapBuilder.of("registrationName", "onTabSelected"))
+            .put("topTabSwipeStateChanged", MapBuilder.of("registrationName", "onTabSwipeStateChanged"))
             .build();
     }
 

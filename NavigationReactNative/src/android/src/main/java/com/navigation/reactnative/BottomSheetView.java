@@ -78,7 +78,7 @@ public class BottomSheetView extends ReactViewGroup {
 
         @Override
         public String getEventName() {
-            return "topOnDetentChanged";
+            return "topDetentChanged";
         }
 
         @Override

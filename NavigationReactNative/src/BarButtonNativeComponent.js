@@ -19,7 +19,7 @@ type NativeProps = $ReadOnly<{|
   showAsAction: Int32,
   buttonWidth: Double,
   actionBar: boolean,
-  onPress: DirectEventHandler<null>
+  onPress: BubblingEventHandler<null>
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(

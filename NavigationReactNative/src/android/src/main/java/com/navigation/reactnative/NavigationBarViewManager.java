@@ -187,7 +187,7 @@ public class NavigationBarViewManager extends ViewGroupManager<NavigationBarView
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("topOnOffsetChanged", MapBuilder.of("registrationName", "onOffsetChanged"))
+            .put("topOffsetChanged", MapBuilder.of("registrationName", "onOffsetChanged"))
             .build();
     }
 

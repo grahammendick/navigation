@@ -83,7 +83,7 @@ public class SceneView extends ReactViewGroup {
 
         @Override
         public String getEventName() {
-            return "topOnPopped";
+            return "topPopped";
         }
 
         @Override

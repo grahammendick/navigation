@@ -121,8 +121,8 @@ public class BottomSheetDialogViewManager extends ViewGroupManager<BottomSheetDi
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("topOnDetentChanged", MapBuilder.of("registrationName", "onDetentChanged"))
-            .put("topOnDismissed", MapBuilder.of("registrationName", "onDismissed"))
+            .put("topDetentChanged", MapBuilder.of("registrationName", "onDetentChanged"))
+            .put("topDismissed", MapBuilder.of("registrationName", "onDismissed"))
             .build();
     }
 

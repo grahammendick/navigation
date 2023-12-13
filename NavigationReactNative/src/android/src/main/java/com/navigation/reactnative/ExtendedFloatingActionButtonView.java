@@ -147,7 +147,7 @@ public class ExtendedFloatingActionButtonView extends ExtendedFloatingActionButt
 
         @Override
         public String getEventName() {
-            return "topOnPress";
+            return "topPress";
         }
 
         @Override

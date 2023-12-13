@@ -178,7 +178,7 @@ public class TabBarItemView extends ViewGroup {
 
         @Override
         public String getEventName() {
-            return "topOnPress";
+            return "topPress";
         }
 
         @Override

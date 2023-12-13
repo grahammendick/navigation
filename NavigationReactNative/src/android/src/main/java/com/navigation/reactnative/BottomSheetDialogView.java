@@ -304,7 +304,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
 
         @Override
         public String getEventName() {
-            return "topOnDetentChanged";
+            return "topDetentChanged";
         }
 
         @Override
@@ -323,7 +323,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
 
         @Override
         public String getEventName() {
-            return "topOnDismissed";
+            return "topDismissed";
         }
 
         @Override

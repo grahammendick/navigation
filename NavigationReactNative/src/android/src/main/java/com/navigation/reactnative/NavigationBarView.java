@@ -89,7 +89,7 @@ public class NavigationBarView extends AppBarLayout {
 
         @Override
         public String getEventName() {
-            return "topOnOffsetChanged";
+            return "topOffsetChanged";
         }
 
         @Override
