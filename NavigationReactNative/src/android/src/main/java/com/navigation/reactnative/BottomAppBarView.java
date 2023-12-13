@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -86,7 +87,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
         setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ReactContext reactContext = (ReactContext) getContext();
+                ReactContext reactContext = (ReactContext) (getContext() instanceof ReactContext ? getContext() : ((ContextWrapper) getContext()).getBaseContext());
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
                 eventDispatcher.dispatchEvent(new BottomAppBarView.NavigationPressEvent(getId()));
             }
@@ -277,7 +278,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
 
         @Override
         public String getEventName() {
-            return "topOnNavigationPress";
+            return "topNavigationPress";
         }
 
         @Override
