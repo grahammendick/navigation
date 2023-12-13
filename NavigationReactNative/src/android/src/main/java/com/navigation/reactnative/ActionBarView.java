@@ -121,7 +121,7 @@ public class ActionBarView extends ViewGroup {
 
         @Override
         public String getEventName() {
-            return "topOnExpanded";
+            return "topExpanded";
         }
 
         @Override
@@ -137,7 +137,7 @@ public class ActionBarView extends ViewGroup {
 
         @Override
         public String getEventName() {
-            return "topOnCollapsed";
+            return "topCollapsed";
         }
 
         @Override
