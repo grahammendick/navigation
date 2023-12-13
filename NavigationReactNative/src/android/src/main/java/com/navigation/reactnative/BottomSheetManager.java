@@ -92,7 +92,7 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("topOnDetentChanged", MapBuilder.of("registrationName", "onDetentChanged"))
+            .put("topDetentChanged", MapBuilder.of("registrationName", "onDetentChanged"))
             .build();
     }
 
