@@ -111,9 +111,9 @@ public class SearchBarManager extends ViewGroupManager<SearchBarView> {
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("topOnChangeText", MapBuilder.of("registrationName", "onChangeText"))
-            .put("topOnChangeActive", MapBuilder.of("registrationName", "onChangeActive"))
-            .put("topOnQuery", MapBuilder.of("registrationName", "onQuery"))
+            .put("topChangeText", MapBuilder.of("registrationName", "onChangeText"))
+            .put("topChangeActive", MapBuilder.of("registrationName", "onChangeActive"))
+            .put("topQuery", MapBuilder.of("registrationName", "onQuery"))
             .build();
     }
 
