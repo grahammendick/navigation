@@ -24,6 +24,9 @@ type NativeProps = $ReadOnly<{|
     active: boolean,
     eventCount: Int32,
   |}>>,
+  onQuery: DirectEventHandler<$ReadOnly<{|
+    text: string,
+  |}>>,
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(
