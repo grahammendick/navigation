@@ -190,7 +190,7 @@ public class SearchResultsView extends SearchView {
 
         @Override
         public String getEventName() {
-            return "topOnChangeText";
+            return "topChangeText";
         }
 
         @Override
@@ -213,7 +213,7 @@ public class SearchResultsView extends SearchView {
 
         @Override
         public String getEventName() {
-            return "topOnChangeActive";
+            return "topChangeActive";
         }
 
         @Override
@@ -235,7 +235,7 @@ public class SearchResultsView extends SearchView {
 
         @Override
         public String getEventName() {
-            return "topOnQuery";
+            return "topQuery";
         }
 
         @Override
