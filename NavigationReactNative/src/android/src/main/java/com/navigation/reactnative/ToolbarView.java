@@ -330,7 +330,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
 
         @Override
         public String getEventName() {
-            return "topOnNavigationPress";
+            return "topNavigationPress";
         }
 
         @Override

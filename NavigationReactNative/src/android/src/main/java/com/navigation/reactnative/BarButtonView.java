@@ -200,7 +200,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
 
         @Override
         public String getEventName() {
-            return "topOnPress";
+            return "topPress";
         }
 
         @Override

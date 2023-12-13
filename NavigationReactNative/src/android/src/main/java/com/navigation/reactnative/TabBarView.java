@@ -207,7 +207,7 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
 
         @Override
         public String getEventName() {
-            return "topOnTabSelected";
+            return "topTabSelected";
         }
 
         @Override
