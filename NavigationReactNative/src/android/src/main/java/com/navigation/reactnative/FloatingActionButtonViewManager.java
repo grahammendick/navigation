@@ -188,7 +188,7 @@ public class FloatingActionButtonViewManager extends SimpleViewManager<FloatingA
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("topOnPress", MapBuilder.of("registrationName", "onPress"))
+            .put("topPress", MapBuilder.of("registrationName", "onPress"))
             .build();
     }
 }
