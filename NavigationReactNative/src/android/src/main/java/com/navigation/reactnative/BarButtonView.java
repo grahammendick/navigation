@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.view.MenuItem;
@@ -39,6 +40,7 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
     private boolean showActionView;
     private MenuItem menuItem;
     private Integer tintColor;
+    private Integer tintColorOverride;
     private Drawable icon;
     private final IconResolver.IconResolverListener iconResolverListener;
 
@@ -88,6 +90,12 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
         titleChanged = true;
     }
 
+    void setTintColorOverride(Integer tintColorOverride) {
+        this.tintColorOverride = tintColorOverride;
+        setTintColor(tintColor);
+        titleChanged = true;
+    }
+
     void setIconSource(@Nullable ReadableMap source) {
         IconResolver.setIconSource(source, iconResolverListener, getContext());
     }
@@ -126,9 +134,10 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
 
     void setTintColor(Integer tintColor) {
         this.tintColor = tintColor;
+        Integer color = this.tintColorOverride != null ? this.tintColorOverride : this.tintColor;
         if (icon != null) {
-            if (tintColor != null)
-                icon.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
+            if (color != null)
+                icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
             else
                 icon.clearColorFilter();
         }
@@ -151,6 +160,8 @@ public class BarButtonView extends ViewGroup implements CollapsibleActionView {
                     titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontStyle(fontStyle)), 0, title.length(), 0);
                 if (fontSize != null)
                     titleSpannable.setSpan(new AbsoluteSizeSpan(fontSize, true), 0, title.length(), 0);
+                if (tintColorOverride != null)
+                    titleSpannable.setSpan(new ForegroundColorSpan(tintColorOverride), 0, title.length(), 0);
             }
             menuItem.setTitle(titleSpannable);
             titleChanged = false;

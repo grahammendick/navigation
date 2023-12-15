@@ -63,6 +63,11 @@ public class BarButtonManager extends ViewGroupManager<BarButtonView> {
         view.setShowAsAction(showAsAction != null ? showAsAction : MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
+    @ReactProp(name = "tintColor", customType = "Color", defaultInt = Integer.MAX_VALUE)
+    public void setTintColor(BarButtonView view, int tintColor) {
+        view.setTintColorOverride(tintColor != Integer.MAX_VALUE ? tintColor : null);
+    }
+
     @ReactProp(name = "actionBar")
     public void setActionBar(BarButtonView view, Boolean actionBar) {
         view.setActionBar(actionBar != null ? actionBar : false);
