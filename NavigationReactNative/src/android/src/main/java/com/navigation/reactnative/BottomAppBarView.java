@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -154,13 +155,13 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
 
     void setMenuItems() {
         getMenu().clear();
-        HashMap<MenuItem, String> testIDs = new HashMap<>();
+        HashMap<Integer, String> testIDs = new HashMap<>();
         for (int i = 0; i < children.size(); i++) {
             if (children.get(i) instanceof BarButtonView) {
                 BarButtonView barButton = (BarButtonView) children.get(i);
-                MenuItem menuItem = getMenu().add(Menu.NONE, Menu.NONE, i, "");
+                MenuItem menuItem = getMenu().add(Menu.NONE, barButton.getId(), i, "");
                 barButton.setMenuItem(menuItem);
-                testIDs.put(menuItem, barButton.testID);
+                testIDs.put(barButton.getId(), barButton.testID);
                 if (barButton.getSearch()) {
                     searchMenuItem = menuItem;
                     if (onSearchAddedListener != null)
@@ -187,19 +188,18 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
         requestLayout();
     }
 
-    private void setMenuTintColor(HashMap<MenuItem, String> testIDs)  {
+    private void setMenuTintColor(HashMap<Integer, String> testIDs)  {
         for (int i = 0; i < getChildCount(); i++) {
             if (getChildAt(i) instanceof ActionMenuView) {
                 ActionMenuView menu = (ActionMenuView) getChildAt(i);
                 for (int j = 0; j < menu.getChildCount(); j++) {
-                    if (menu.getChildAt(j) instanceof ActionMenuItemView) {
-                        ActionMenuItemView menuItemView = (ActionMenuItemView) menu.getChildAt(j);
+                    if (menu.getChildAt(j) instanceof TextView) {
+                        TextView menuItemView = (TextView) menu.getChildAt(j);
                         if (defaultMenuTintColor == null)
                             defaultMenuTintColor = menuItemView.getCurrentTextColor();
                         menuItemView.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
                         if (testIDs != null) {
-                            MenuItem menuItem = ((MenuView.ItemView) menuItemView).getItemData();
-                            menuItemView.setTag(testIDs.get(menuItem));
+                            menuItemView.setTag(testIDs.get(menuItemView.getId()));
                         }
                     }
                 }
