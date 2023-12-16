@@ -9,6 +9,7 @@
 @property (nonatomic, copy) NSString *fontWeight;
 @property (nonatomic, copy) NSString *fontStyle;
 @property (nonatomic, copy) NSNumber *fontSize;
+@property (nonatomic, copy) UIColor *tintColor;
 @property (nonatomic, copy) RCTBubblingEventBlock onPress;
 
 -(id)initWithBridge: (RCTBridge *)bridge;

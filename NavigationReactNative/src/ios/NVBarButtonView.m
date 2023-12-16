@@ -81,7 +81,8 @@
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     if ([changedProps containsObject:@"fontFamily"] || [changedProps containsObject:@"fontWeight"]
-        || [changedProps containsObject:@"fontStyle"] || [changedProps containsObject:@"fontSize"]) {
+        || [changedProps containsObject:@"fontStyle"] || [changedProps containsObject:@"fontSize"]
+        || [changedProps containsObject:@"tintColor"]) {
         UIFont *baseFont = !self.fontFamily ? [UIFont systemFontOfSize:UIFont.labelFontSize] : nil;
         NSNumber *size = !self.fontSize ? @(UIFont.labelFontSize) : self.fontSize;
         UIFont *font = [RCTFont updateFont:baseFont withFamily:self.fontFamily size:size weight:self.fontWeight style:self.fontStyle variant:nil scaleMultiplier:1];
@@ -89,6 +90,10 @@
         if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
             attributes[NSFontAttributeName] = font;
         }
+        if (self.tintColor) {
+            attributes[NSForegroundColorAttributeName] = self.tintColor;
+        }
+        self.button.tintColor = self.tintColor;
         [self.button setTitleTextAttributes:attributes forState:UIControlStateNormal];
         [self.button setTitleTextAttributes:attributes forState:UIControlStateSelected];
     }
