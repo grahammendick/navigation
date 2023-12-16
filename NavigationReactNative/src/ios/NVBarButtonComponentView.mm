@@ -9,6 +9,7 @@
 #import <NVBarButtonComponentDescriptor.h>
 
 #import "RCTFabricComponentsPlugins.h"
+#import <React/RCTConversions.h>
 #import <React/RCTFont.h>
 #import <React/RCTImageResponseDelegate.h>
 #import <React/RCTImageResponseObserverProxy.h>
@@ -58,6 +59,11 @@ using namespace facebook::react;
     if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
         attributes[NSFontAttributeName] = font;
     }
+    UIColor *tintColor = RCTUIColorFromSharedColor(newViewProps.tintColor);
+    if (tintColor) {
+        attributes[NSForegroundColorAttributeName] = tintColor;
+    }
+    self.button.tintColor = tintColor;
     [self.button setTitleTextAttributes:attributes forState:UIControlStateNormal];
     [self.button setTitleTextAttributes:attributes forState:UIControlStateSelected];
     NSString *testID = [[NSString alloc] initWithUTF8String: newViewProps.testID.c_str()];
