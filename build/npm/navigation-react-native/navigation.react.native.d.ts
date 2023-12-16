@@ -411,6 +411,10 @@ export interface BarButtonProps {
      */
     fontSize?: number;
     /**
+     * The button title and image color
+     */
+    tintColor?: ColorValue;
+    /**
      * The id of the button in end-to-end tests
      */
     testID?: string;
