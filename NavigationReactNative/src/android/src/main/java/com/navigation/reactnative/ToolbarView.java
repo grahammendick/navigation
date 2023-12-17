@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -198,13 +199,13 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
                         onSearchAddedListener.onSearchAdd(searchMenuItem);
                     menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                         @Override
-                        public boolean onMenuItemActionCollapse(MenuItem item) {
+                        public boolean onMenuItemActionCollapse(@NonNull MenuItem item) {
                             onSearchAddedListener.onSearchCollapse();
                             return true;
                         }
 
                         @Override
-                        public boolean onMenuItemActionExpand(MenuItem item) {
+                        public boolean onMenuItemActionExpand(@NonNull MenuItem item) {
                             onSearchAddedListener.onSearchExpand();
                             ((NavigationBarView) getParent()).setExpanded(true);
                             return true;
