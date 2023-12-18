@@ -171,7 +171,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     if (_presented) {
         if ([NSThread isMainThread]) {
-            [self->_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
+            [self->_bottomSheetController dismissViewControllerAnimated:YES completion:nil];
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self->_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
