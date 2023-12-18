@@ -75,6 +75,7 @@
             _bottomSheetController.presentationController.delegate = self;
             [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
         }
+        sheet.largestUndimmedDetentIdentifier = !self.modal ? [self expandedIdentifier] : nil;
         [sheet animateChanges:^{
             [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[_collapsedDetent, _expandedDetent] : @[_collapsedDetent, _halfExpandedDetent, _expandedDetent]];
             if (_skipCollapsed && ![_detent isEqual:@"collapsed"]) {
@@ -161,17 +162,17 @@
 - (void) destroy:(NSNotification *) notification
 {
     [self invalidate];
-    if (_presented) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self->_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
-        });
-    }
 }
 
 -(void)invalidate
 {
     [_displayLink invalidate];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if (_presented) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self->_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
+        });
+    }
 }
 
 - (void)didMoveToWindow

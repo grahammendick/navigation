@@ -1,9 +1,21 @@
 import React, {useRef, useState} from 'react';
 import { requireNativeComponent, Platform, UIManager, StyleSheet } from 'react-native';
+import useUnloaded from './useUnloaded';
 
 const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable = true, modal, onChangeDetent, children}) => {
     const [sheetState, setSheetState]  = useState({selectedDetent: detent || defaultDetent, mostRecentEventCount: 0, dismissed: (detent || defaultDetent) === 'hidden'})
     const dragging = useRef(false);
+    const changeDetent = (selectedDetent) => {
+        if (sheetState.selectedDetent !== selectedDetent) {
+            if (detent == null)
+                setSheetState({...sheetState, selectedDetent});
+            if (!!onChangeDetent)
+                onChangeDetent(selectedDetent);
+        }
+    }
+    useUnloaded(() => {
+        setSheetState({...sheetState, dismissed: true});
+    });
     if (Platform.OS === 'ios' && +Platform.Version < 15) return null;
     if (detent != null && detent !== sheetState.selectedDetent)
         setSheetState({...sheetState, selectedDetent: detent, dismissed: detent === 'hidden' && sheetState.dismissed});
@@ -18,18 +30,11 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
             setSheetState({...sheetState, mostRecentEventCount});
         }
     }
-    const changeDetent = (selectedDetent) => {
-        if (sheetState.selectedDetent !== selectedDetent) {
-            if (detent == null)
-                setSheetState({...sheetState, selectedDetent});
-            if (!!onChangeDetent)
-                onChangeDetent(selectedDetent);
-        }
-    }
     const BottomSheetView = Platform.OS === 'ios' || !modal ? NVBottomSheet : NVBottomSheetDialog;
     return (
         <BottomSheetView
             detent={Platform.OS === 'android' ? '' + detents[sheetState.selectedDetent] : sheetState.selectedDetent}
+            modal={modal}
             peekHeight={peekHeight}
             expandedHeight={expandedHeight}
             expandedOffset={expandedOffset}
