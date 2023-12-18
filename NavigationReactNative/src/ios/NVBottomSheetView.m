@@ -170,9 +170,13 @@
     [_displayLink invalidate];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     if (_presented) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+        if ([NSThread isMainThread]) {
             [self->_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
-        });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self->_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
+            });
+        }
     }
 }
 
