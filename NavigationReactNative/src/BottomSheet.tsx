@@ -1,6 +1,7 @@
 import React, {useRef, useState} from 'react';
 import { requireNativeComponent, Platform, UIManager, StyleSheet } from 'react-native';
 import useUnloaded from './useUnloaded';
+import useNavigated from './useNavigated';
 
 const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable = true, modal, onChangeDetent, children}) => {
     const [sheetState, setSheetState]  = useState({selectedDetent: detent || defaultDetent, mostRecentEventCount: 0, dismissed: (detent || defaultDetent) === 'hidden'})
@@ -8,26 +9,30 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
     const changeDetent = (selectedDetent) => {
         if (sheetState.selectedDetent !== selectedDetent) {
             if (detent == null)
-                setSheetState({...sheetState, selectedDetent});
+                setSheetState(prevSheetState => ({...prevSheetState, selectedDetent}));
             if (!!onChangeDetent)
                 onChangeDetent(selectedDetent);
         }
     }
     useUnloaded(() => {
-        setSheetState({...sheetState, dismissed: true});
+        setSheetState(prevSheetState => ({...prevSheetState, dismissed: true}));
     });
+    useNavigated(() => {
+        if (sheetState.selectedDetent !== 'hidden' && sheetState.dismissed)
+            setSheetState(prevSheetState => ({...prevSheetState, dismissed: false}));
+    })
     if (Platform.OS === 'ios' && +Platform.Version < 15) return null;
     if (detent != null && detent !== sheetState.selectedDetent)
-        setSheetState({...sheetState, selectedDetent: detent, dismissed: detent === 'hidden' && sheetState.dismissed});
+        setSheetState(prevSheetState => ({...prevSheetState, selectedDetent: detent, dismissed: detent === 'hidden' && sheetState.dismissed}));
     if (sheetState.dismissed) return null;
     const detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants?.Detent;
     const onDetentChanged = ({nativeEvent}) => {
         const {eventCount: mostRecentEventCount, detent: nativeDetent} = nativeEvent;
         const selectedDetent = Platform.OS === 'android'? Object.keys(detents).find(name => detents[name] === nativeDetent) : nativeDetent;
         dragging.current = !selectedDetent;
-        if (detent) {
+        if (selectedDetent) {
             changeDetent(selectedDetent);
-            setSheetState({...sheetState, mostRecentEventCount});
+            setSheetState(prevSheetState => ({...prevSheetState, mostRecentEventCount}));
         }
     }
     const BottomSheetView = Platform.OS === 'ios' || !modal ? NVBottomSheet : NVBottomSheetDialog;
@@ -47,7 +52,7 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
             mostRecentEventCount={sheetState.mostRecentEventCount}
             onMoveShouldSetResponderCapture={() => dragging.current}
             onDetentChanged={onDetentChanged}
-            onDismissed={() => setSheetState({...sheetState, dismissed: true})}
+            onDismissed={() => setSheetState(prevSheetState => ({...prevSheetState, dismissed: true}))}
             style={[
                 styles.bottomSheet,
                 expandedHeight != null ? { height: expandedHeight } : null,
