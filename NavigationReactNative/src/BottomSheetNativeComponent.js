@@ -7,6 +7,7 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
   detent: string,
+  modal: boolean,
   mostRecentEventCount: Int32,
   peekHeight: Int32,
   expandedHeight: Int32,

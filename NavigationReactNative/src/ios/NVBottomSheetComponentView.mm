@@ -93,6 +93,7 @@ using namespace facebook::react;
         }
     }
     _hideable = newViewProps.hideable;
+    _nativeEventCount = MAX(_nativeEventCount, newViewProps.mostRecentEventCount);
     NSInteger eventLag = _nativeEventCount - newViewProps.mostRecentEventCount;
     _detent = [[NSString alloc] initWithUTF8String: newViewProps.detent.c_str()];
     UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
@@ -103,6 +104,7 @@ using namespace facebook::react;
             _bottomSheetController.presentationController.delegate = self;
             [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
         }
+        sheet.largestUndimmedDetentIdentifier = !newViewProps.modal ? [self expandedIdentifier] : nil;
         dispatch_async(dispatch_get_main_queue(), ^{
             [sheet animateChanges:^{
                 [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[self->_collapsedDetent, self->_expandedDetent] : @[self->_collapsedDetent, self->_halfExpandedDetent, self->_expandedDetent]];
