@@ -37,7 +37,6 @@
         _bottomSheetController.boundsDidChangeBlock = ^(CGRect newBounds) {
             [weakSelf notifyForBoundsChange:newBounds];
         };
-        [[NSNotificationCenter defaultCenter] addObserver:weakSelf selector:@selector(destroy:) name:@"dismissBottomSheet" object:nil];
     }
     return self;
 }
@@ -160,34 +159,18 @@
 {
 }
 
-- (void) destroy:(NSNotification *) notification
-{
-    [self invalidate];
-}
-
--(void)invalidate
-{
-    [_displayLink invalidate];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    if (_presented) {
-        if ([NSThread isMainThread]) {
-            [self->_bottomSheetController dismissViewControllerAnimated:YES completion:nil];
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self->_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
-            });
-        }
-    }
-}
-
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    if (![_detent isEqual: @"hidden"] && !_presented) {
+    if (![_detent isEqual: @"hidden"] && !_presented && self.window) {
         _presented = YES;
         _bottomSheetController.sheetPresentationController.delegate = self;
         _bottomSheetController.presentationController.delegate = self;
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
+    }
+    if (!self.window) {
+        [_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
+        [_displayLink invalidate];
     }
 }
 

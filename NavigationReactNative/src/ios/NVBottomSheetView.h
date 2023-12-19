@@ -4,7 +4,7 @@
 #import <React/RCTInvalidating.h>
 
 API_AVAILABLE(ios(15.0))
-@interface NVBottomSheetView : UIView <UISheetPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate, RCTInvalidating>
+@interface NVBottomSheetView : UIView <UISheetPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate>
 
 @property (nonatomic, copy) NSString *detent;
 @property (nonatomic, assign) BOOL modal;
