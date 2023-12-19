@@ -15,10 +15,11 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
         }
     }
     useUnloaded(() => {
-        setSheetState(prevSheetState => ({...prevSheetState, dismissed: true}));
+        if (Platform.OS === 'ios')
+            setSheetState(prevSheetState => ({...prevSheetState, dismissed: true}));
     });
     useNavigated(() => {
-        if (sheetState.selectedDetent !== 'hidden' && sheetState.dismissed)
+        if (Platform.OS === 'ios' && sheetState.selectedDetent !== 'hidden' && sheetState.dismissed)
             setSheetState(prevSheetState => ({...prevSheetState, dismissed: false}));
     })
     if (Platform.OS === 'ios' && +Platform.Version < 15) return null;
