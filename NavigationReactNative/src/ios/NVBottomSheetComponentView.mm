@@ -158,7 +158,6 @@ using namespace facebook::react;
     [super prepareForRecycle];
     _state.reset();
     _nativeEventCount = 0;
-    [_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
     _oldBottomSheetController = _bottomSheetController;
     _bottomSheetController = nil;
     _oldSize = CGSizeZero;
@@ -190,11 +189,15 @@ using namespace facebook::react;
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    if (![_detent isEqual: @"hidden"] && !_presented) {
+    if (![_detent isEqual: @"hidden"] && !_presented && self.window) {
         _presented = YES;
         _bottomSheetController.sheetPresentationController.delegate = self;
         _bottomSheetController.presentationController.delegate = self;
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
+    }
+    if (!self.window) {
+        [_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
+        [_displayLink invalidate];
     }
 }
 
