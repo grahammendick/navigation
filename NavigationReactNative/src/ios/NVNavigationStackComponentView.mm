@@ -26,6 +26,7 @@ using namespace facebook::react;
     NSMutableDictionary *_scenes;
     NSInteger _nativeEventCount;
     UINavigationController *_oldNavigationController;
+    NSArray<UIViewController*> *_viewControllers;
     BOOL _navigated;
 }
 
@@ -113,6 +114,7 @@ using namespace facebook::react;
                 [self->_navigationController setViewControllers:allControllers animated:animate];
             }
         } waitOn:[controllers lastObject]];
+        _viewControllers = _navigationController.viewControllers;
     }
     if (crumb == currentCrumb) {
         NVSceneComponentView *scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
@@ -181,6 +183,9 @@ using namespace facebook::react;
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    [navigationController dismissViewControllerAnimated:YES completion:^{
+        self->_viewControllers = navigationController.viewControllers;
+    }];
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
     [self checkPeekability:crumb];
     if (crumb < [self.keys count] - 1) {

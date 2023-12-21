@@ -1,6 +1,5 @@
 import React, {useRef, useState} from 'react';
 import { requireNativeComponent, Platform, UIManager, StyleSheet } from 'react-native';
-import useUnloaded from './useUnloaded';
 import useNavigated from './useNavigated';
 
 const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable = true, modal, onChangeDetent, children}) => {
@@ -14,10 +13,6 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
                 onChangeDetent(selectedDetent);
         }
     }
-    useUnloaded(() => {
-        if (Platform.OS === 'ios')
-            setSheetState(prevSheetState => ({...prevSheetState, dismissed: true}));
-    });
     useNavigated(() => {
         if (Platform.OS === 'ios' && sheetState.selectedDetent !== 'hidden' && sheetState.dismissed)
             setSheetState(prevSheetState => ({...prevSheetState, dismissed: false}));
@@ -25,7 +20,6 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
     if (Platform.OS === 'ios' && +Platform.Version < 15) return null;
     if (detent != null && detent !== sheetState.selectedDetent)
         setSheetState(prevSheetState => ({...prevSheetState, selectedDetent: detent, dismissed: detent === 'hidden' && sheetState.dismissed}));
-    if (sheetState.dismissed) return null;
     const detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants?.Detent;
     const onDetentChanged = ({nativeEvent}) => {
         const {eventCount: mostRecentEventCount, detent: nativeDetent} = nativeEvent;
@@ -60,6 +54,7 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
                 expandedOffset != null ? { top: expandedOffset } : null,
                 expandedHeight == null && expandedOffset == null ? { top: 0 } : null,
                 Platform.OS === 'ios' || modal ? { height: undefined, top: undefined } : null, 
+                { zIndex: !sheetState.dismissed ? undefined : -1 },
             ]}
         >
             {children}

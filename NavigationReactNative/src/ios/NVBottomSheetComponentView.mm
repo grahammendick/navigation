@@ -61,6 +61,13 @@ using namespace facebook::react;
         _bottomSheetController.boundsDidChangeBlock = ^(CGRect newBounds) {
             [weakSelf notifyForBoundsChange:newBounds];
         };
+        _bottomSheetController.didDismiss = ^{
+            self->_presented = NO;
+            if (self->_eventEmitter != nullptr) {
+                std::static_pointer_cast<NVBottomSheetEventEmitter const>(self->_eventEmitter)
+                ->onDismissed(NVBottomSheetEventEmitter::OnDismissed{});
+            }
+        };
     }
 }
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
@@ -195,10 +202,7 @@ using namespace facebook::react;
         _bottomSheetController.presentationController.delegate = self;
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
     }
-    if (!self.window) {
-        [_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
-        [_displayLink invalidate];
-    }
+    [_displayLink setPaused:!self.window];
 }
 
 - (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(UISheetPresentationController *)sheetPresentationController

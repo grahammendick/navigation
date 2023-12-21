@@ -88,6 +88,13 @@
     }
 }
 
+- (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
+{
+    [self.navigationController dismissViewControllerAnimated:YES completion:^{
+        [super presentViewController:viewControllerToPresent animated:flag completion:completion];
+    }];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
