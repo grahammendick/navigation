@@ -190,6 +190,9 @@
 @end
 
 @implementation NVStackController
+{
+    BOOL _dismissing;
+}
 
 - (UIViewController *)childViewControllerForStatusBarStyle
 {
@@ -208,6 +211,24 @@
     if (self.viewControllers.count > crumb - 1)
         scene = ((NVSceneView *) [self.viewControllers objectAtIndex:crumb - 1].view);
     return scene ? scene.subviews.count > 0 : YES;
+}
+
+- (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion
+{
+    BOOL dismissing = NO;
+    if (!_dismissing) {
+        _dismissing = YES;
+        dismissing = YES;
+    }
+    [super dismissViewControllerAnimated:flag completion:^{
+        self->_dismissing = NO;
+        if (dismissing) {
+            self->_storedViewControllers = self.viewControllers;
+        }
+        if (completion) {
+            completion();
+        }
+    }];
 }
 
 @end
