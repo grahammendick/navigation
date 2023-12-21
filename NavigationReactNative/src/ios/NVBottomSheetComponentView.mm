@@ -55,8 +55,6 @@ using namespace facebook::react;
         [_oldBottomSheetController.view removeFromSuperview];
         [_oldBottomSheetController removeFromParentViewController];
         _bottomSheetController = [[NVBottomSheetController alloc] init];
-        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
-        [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         id __weak weakSelf = self;
         _bottomSheetController.boundsDidChangeBlock = ^(CGRect newBounds) {
             [weakSelf notifyForBoundsChange:newBounds];
@@ -70,6 +68,7 @@ using namespace facebook::react;
 -(void)sheetViewDidDismiss
 {
     _presented = NO;
+    [_displayLink invalidate];
     if (_eventEmitter != nullptr) {
         std::static_pointer_cast<NVBottomSheetEventEmitter const>(_eventEmitter)
             ->onDismissed(NVBottomSheetEventEmitter::OnDismissed{});
@@ -114,6 +113,8 @@ using namespace facebook::react;
             _presented = YES;
             _bottomSheetController.sheetPresentationController.delegate = self;
             _bottomSheetController.presentationController.delegate = self;
+            _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
+            [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
             [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
         }
         sheet.largestUndimmedDetentIdentifier = !newViewProps.modal ? [self expandedIdentifier] : nil;
@@ -134,6 +135,7 @@ using namespace facebook::react;
     } else {
         [_bottomSheetController dismissViewControllerAnimated:YES completion:nil];
         _presented = NO;
+        [_displayLink invalidate];
     }
     [super updateProps:props oldProps:oldProps];
 }
@@ -205,9 +207,10 @@ using namespace facebook::react;
         _presented = YES;
         _bottomSheetController.sheetPresentationController.delegate = self;
         _bottomSheetController.presentationController.delegate = self;
+        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
+        [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
     }
-    [_displayLink setPaused:!self.window];
 }
 
 - (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(UISheetPresentationController *)sheetPresentationController
