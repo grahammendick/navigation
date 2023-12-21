@@ -62,14 +62,20 @@ using namespace facebook::react;
             [weakSelf notifyForBoundsChange:newBounds];
         };
         _bottomSheetController.didDismiss = ^{
-            self->_presented = NO;
-            if (self->_eventEmitter != nullptr) {
-                std::static_pointer_cast<NVBottomSheetEventEmitter const>(self->_eventEmitter)
-                ->onDismissed(NVBottomSheetEventEmitter::OnDismissed{});
-            }
+            [weakSelf sheetViewDidDismiss];
         };
     }
 }
+
+-(void)sheetViewDidDismiss
+{
+    _presented = NO;
+    if (_eventEmitter != nullptr) {
+        std::static_pointer_cast<NVBottomSheetEventEmitter const>(_eventEmitter)
+            ->onDismissed(NVBottomSheetEventEmitter::OnDismissed{});
+    }
+}
+
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
     [self ensureBottomSheetController];
