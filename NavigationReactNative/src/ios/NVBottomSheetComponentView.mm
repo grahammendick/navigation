@@ -172,11 +172,17 @@ using namespace facebook::react;
     [super prepareForRecycle];
     _state.reset();
     _nativeEventCount = 0;
+    [_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
     _oldBottomSheetController = _bottomSheetController;
     _bottomSheetController = nil;
     _oldSize = CGSizeZero;
     _presented = NO;
     [_displayLink invalidate];
+}
+
+- (void)dealloc
+{
+    [_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)notifyForBoundsChange:(CGRect)newBounds
