@@ -106,7 +106,6 @@ using namespace facebook::react;
         }
     }
     _hideable = newViewProps.hideable;
-    _nativeEventCount = MAX(_nativeEventCount, newViewProps.mostRecentEventCount);
     NSInteger eventLag = _nativeEventCount - newViewProps.mostRecentEventCount;
     _detent = [[NSString alloc] initWithUTF8String: newViewProps.detent.c_str()];
     UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
