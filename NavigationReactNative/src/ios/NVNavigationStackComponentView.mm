@@ -27,6 +27,7 @@ using namespace facebook::react;
     NSInteger _nativeEventCount;
     UINavigationController *_oldNavigationController;
     BOOL _navigated;
+    BOOL _presenting;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -172,6 +173,7 @@ using namespace facebook::react;
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    _presenting = [_navigationController presentedViewController];
     NSInteger crumb = [((NVSceneComponentView *) viewController.view).crumb intValue];
     if (crumb < [self.keys count] - 1) {
         std::static_pointer_cast<NVNavigationStackEventEmitter const>(_eventEmitter)
@@ -183,7 +185,11 @@ using namespace facebook::react;
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    [navigationController dismissViewControllerAnimated:YES completion:nil];
+    if (_presenting) {
+        [navigationController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        _navigationController.storedViewControllers = navigationController.viewControllers;
+    }
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
     [self checkPeekability:crumb];
     if (crumb < [self.keys count] - 1) {
