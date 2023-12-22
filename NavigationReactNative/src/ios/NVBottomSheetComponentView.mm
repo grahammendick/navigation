@@ -246,8 +246,6 @@ using namespace facebook::react;
                 .detent = std::string([@"hidden" UTF8String]),
                 .eventCount = static_cast<int>(_nativeEventCount),
             });
-        std::static_pointer_cast<NVBottomSheetEventEmitter const>(_eventEmitter)
-            ->onDismissed(NVBottomSheetEventEmitter::OnDismissed{});
     }
 }
 
