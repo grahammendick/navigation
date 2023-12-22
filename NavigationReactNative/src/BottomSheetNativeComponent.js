@@ -8,6 +8,7 @@ type NativeProps = $ReadOnly<{|
   ...ViewProps,
   detent: string,
   modal: boolean,
+  dismissed: boolean,
   mostRecentEventCount: Int32,
   peekHeight: Int32,
   expandedHeight: Int32,

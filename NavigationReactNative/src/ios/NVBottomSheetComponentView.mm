@@ -24,6 +24,7 @@ using namespace facebook::react;
     NVBottomSheetController *_oldBottomSheetController;
     CGSize _oldSize;
     BOOL _presented;
+    BOOL _dismissed;
     NSInteger _nativeEventCount;
     NSString *_detent;
     BOOL _hideable;
@@ -68,6 +69,7 @@ using namespace facebook::react;
 -(void)sheetViewDidDismiss
 {
     _presented = NO;
+    _dismissed = YES;
     [_displayLink invalidate];
     if (_eventEmitter != nullptr) {
         std::static_pointer_cast<NVBottomSheetEventEmitter const>(_eventEmitter)
@@ -104,12 +106,13 @@ using namespace facebook::react;
             }];
         }
     }
+    _dismissed = newViewProps.dismissed;
     _hideable = newViewProps.hideable;
     NSInteger eventLag = _nativeEventCount - newViewProps.mostRecentEventCount;
     _detent = [[NSString alloc] initWithUTF8String: newViewProps.detent.c_str()];
     UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
     if (![_detent isEqual: @"hidden"]) {
-        if (self.window && !_presented) {
+        if (self.window && !_presented && !_dismissed) {
             _presented = YES;
             _bottomSheetController.sheetPresentationController.delegate = self;
             _bottomSheetController.presentationController.delegate = self;
@@ -209,7 +212,7 @@ using namespace facebook::react;
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    if (![_detent isEqual: @"hidden"] && !_presented && self.window) {
+    if (![_detent isEqual: @"hidden"] && !_presented && !_dismissed && self.window) {
         _presented = YES;
         _bottomSheetController.sheetPresentationController.delegate = self;
         _bottomSheetController.presentationController.delegate = self;

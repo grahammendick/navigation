@@ -35,6 +35,7 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
         <BottomSheetView
             detent={Platform.OS === 'android' ? '' + detents[sheetState.selectedDetent] : sheetState.selectedDetent}
             modal={modal}
+            dismissed={sheetState.dismissed}
             peekHeight={peekHeight}
             expandedHeight={expandedHeight}
             expandedOffset={expandedOffset}
