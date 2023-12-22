@@ -114,7 +114,7 @@ using namespace facebook::react;
                 [self->_navigationController setViewControllers:allControllers animated:animate];
             }
         } waitOn:[controllers lastObject]];
-        _navigationController.storedViewControllers = _navigationController.viewControllers;
+        _navigationController.retainedViewController = _navigationController.topViewController;
     }
     if (crumb == currentCrumb) {
         NVSceneComponentView *scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
@@ -129,7 +129,7 @@ using namespace facebook::react;
             completed = YES;
             [self->_navigationController setViewControllers:controllers animated:animate];
         } waitOn:controller];
-        _navigationController.storedViewControllers = _navigationController.viewControllers;
+        _navigationController.retainedViewController = _navigationController.topViewController;
     }
 }
 
@@ -188,7 +188,7 @@ using namespace facebook::react;
     if (_presenting) {
         [navigationController dismissViewControllerAnimated:YES completion:nil];
     } else {
-        _navigationController.storedViewControllers = navigationController.viewControllers;
+        _navigationController.retainedViewController = navigationController.topViewController;
     }
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
     [self checkPeekability:crumb];

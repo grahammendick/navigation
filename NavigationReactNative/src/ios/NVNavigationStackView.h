@@ -4,7 +4,7 @@
 
 @interface NVStackController : UINavigationController <UINavigationBarDelegate>
 
-@property (nonatomic, strong)  NSArray<UIViewController*> *storedViewControllers;
+@property (nonatomic, strong)  UIViewController *retainedViewController;
 
 @end
 

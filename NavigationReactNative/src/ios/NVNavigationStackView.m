@@ -223,7 +223,7 @@
     [super dismissViewControllerAnimated:flag completion:^{
         self->_dismissing = NO;
         if (dismissing) {
-            self->_storedViewControllers = self.viewControllers;
+            self->_retainedViewController = self.topViewController;
         }
         if (completion) {
             completion();
