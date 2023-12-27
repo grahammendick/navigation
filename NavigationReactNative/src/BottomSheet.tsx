@@ -55,7 +55,6 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
                 expandedOffset != null ? { top: expandedOffset } : null,
                 expandedHeight == null && expandedOffset == null ? { top: 0 } : null,
                 Platform.OS === 'ios' || modal ? { height: undefined, top: undefined } : null, 
-                { zIndex: !sheetState.dismissed ? undefined : -1 },
             ]}
         >
             {children}

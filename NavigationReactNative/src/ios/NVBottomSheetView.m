@@ -80,6 +80,7 @@
     }
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
+    [self setHidden:_dismissed];
     if (![_detent isEqual: @"hidden"]) {
         if (self.window && !_presented && !_dismissed) {
             _presented = YES;
