@@ -14,7 +14,6 @@
     UIView *_reactSubview;
     CGSize _oldSize;
     BOOL _presented;
-    BOOL _dismissed;
     NSInteger _nativeEventCount;
     CADisplayLink *_displayLink;
     RCTTouchHandler *_touchHandler;
