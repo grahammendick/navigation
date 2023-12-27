@@ -31,7 +31,6 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
         }
     }
     const BottomSheetView = Platform.OS === 'ios' || !modal ? NVBottomSheet : NVBottomSheetDialog;
-    if (sheetState.dismissed) return null;
     return (
         <BottomSheetView
             detent={Platform.OS === 'android' ? '' + detents[sheetState.selectedDetent] : sheetState.selectedDetent}
@@ -56,6 +55,7 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
                 expandedOffset != null ? { top: expandedOffset } : null,
                 expandedHeight == null && expandedOffset == null ? { top: 0 } : null,
                 Platform.OS === 'ios' || modal ? { height: undefined, top: undefined } : null, 
+                { zIndex: !sheetState.dismissed ? undefined : -1 },
             ]}
         >
             {children}
