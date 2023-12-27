@@ -16,6 +16,7 @@
     NSMutableDictionary *_scenes;
     NSInteger _nativeEventCount;
     BOOL _navigated;
+    BOOL _presenting;
 }
 
 - (id)initWithBridge:(RCTBridge *)bridge
@@ -101,6 +102,7 @@
                 [self->_navigationController setViewControllers:allControllers animated:animate];
             }
         } waitOn:[controllers lastObject]];
+        _navigationController.retainedViewController = _navigationController.topViewController;
     }
     if (crumb == currentCrumb) {
         NVSceneView *scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
@@ -115,6 +117,7 @@
             completed = YES;
             [self->_navigationController setViewControllers:controllers animated:animate];
         } waitOn:controller];
+        _navigationController.retainedViewController = _navigationController.topViewController;
     }
 }
 
@@ -168,6 +171,7 @@
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    _presenting = [_navigationController presentedViewController];
     NSInteger crumb = [((NVSceneView *) viewController.view).crumb intValue];
     if (crumb < [self.keys count] - 1) {
         self.onWillNavigateBack(@{ @"crumb": @(crumb) });
@@ -176,6 +180,11 @@
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    if (_presenting) {
+        [navigationController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        _navigationController.retainedViewController = navigationController.topViewController;
+    }
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
     [self checkPeekability:crumb];
     if (crumb < [self.keys count] - 1) {

@@ -14,6 +14,7 @@
     UIView *_reactSubview;
     CGSize _oldSize;
     BOOL _presented;
+    BOOL _dismissed;
     NSInteger _nativeEventCount;
     CADisplayLink *_displayLink;
     RCTTouchHandler *_touchHandler;
@@ -31,15 +32,28 @@
         _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
         _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
         _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
-        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
-        [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         __weak typeof(self) weakSelf = self;
         _bottomSheetController.boundsDidChangeBlock = ^(CGRect newBounds) {
             [weakSelf notifyForBoundsChange:newBounds];
         };
+        _bottomSheetController.didDismiss = ^{
+            [weakSelf sheetViewDidDismiss];
+        };
     }
     return self;
 }
+
+
+-(void)sheetViewDidDismiss
+{
+    _presented = NO;
+    _dismissed = YES;
+    [_displayLink invalidate];
+    if (!!self.onDismissed) {
+        self.onDismissed(@{});
+    }
+}
+
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
@@ -65,14 +79,15 @@
             }];
         }
     }
-    _nativeEventCount = MAX(_nativeEventCount, _mostRecentEventCount);
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
     if (![_detent isEqual: @"hidden"]) {
-        if (self.window && !_presented) {
+        if (self.window && !_presented && !_dismissed) {
             _presented = YES;
             _bottomSheetController.sheetPresentationController.delegate = self;
             _bottomSheetController.presentationController.delegate = self;
+            _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
+            [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
             [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
         }
         sheet.largestUndimmedDetentIdentifier = !self.modal ? [self expandedIdentifier] : nil;
@@ -91,6 +106,7 @@
     } else {
         [_bottomSheetController dismissViewControllerAnimated:YES completion:nil];
         _presented = NO;
+        [_displayLink invalidate];
     }
 }
 
@@ -119,6 +135,11 @@
         expandedIdentifier = _expandedDetent.identifier;
     }
     return expandedIdentifier;
+}
+
+- (void)dealloc
+{
+    [_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)notifyForBoundsChange:(CGRect)newBounds
@@ -162,15 +183,13 @@
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    if (![_detent isEqual: @"hidden"] && !_presented && self.window) {
+    if (![_detent isEqual: @"hidden"] && !_presented && !_dismissed && self.window) {
         _presented = YES;
         _bottomSheetController.sheetPresentationController.delegate = self;
         _bottomSheetController.presentationController.delegate = self;
+        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
+        [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
-    }
-    if (!self.window) {
-        [_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
-        [_displayLink invalidate];
     }
 }
 
@@ -199,9 +218,6 @@
             @"detent": @"hidden",
             @"eventCount": @(_nativeEventCount),
         });
-    }
-    if (!!self.onDismissed) {
-        self.onDismissed(@{});
     }
 }
 
