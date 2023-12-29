@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import { requireNativeComponent, Platform, UIManager, StyleSheet } from 'react-native';
 import useNavigated from './useNavigated';
 
-const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable = true, modal, onChangeDetent, children}) => {
+const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable = true, modal = Platform.OS === 'ios', onChangeDetent, children}) => {
     const [sheetState, setSheetState]  = useState({selectedDetent: detent || defaultDetent, mostRecentEventCount: 0, dismissed: (detent || defaultDetent) === 'hidden'})
     const dragging = useRef(false);
     const changeDetent = (selectedDetent) => {
