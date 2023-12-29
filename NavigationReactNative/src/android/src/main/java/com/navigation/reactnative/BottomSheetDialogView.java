@@ -61,6 +61,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
     }
 
     void onAfterUpdateTransaction() {
+        nativeEventCount = Math.max(nativeEventCount, mostRecentEventCount);
         int eventLag = nativeEventCount - mostRecentEventCount;
         if (eventLag == 0) {
             detent = pendingDetent;
@@ -102,7 +103,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
         private BottomSheetDialogView dialogView;
         BottomSheetBehavior.BottomSheetCallback bottomSheetCallback;
 
-        @SuppressLint("Range")
+        @SuppressLint({"Range", "WrongConstant"})
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -115,6 +116,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
                 behavior.setHideable(dialogView.bottomSheetBehavior.isHideable());
                 behavior.setSkipCollapsed(dialogView.bottomSheetBehavior.getSkipCollapsed());
                 behavior.setDraggable(dialogView.bottomSheetBehavior.isDraggable());
+                behavior.setState(dialogView.bottomSheetBehavior.getState());
                 bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
                     @Override
                     public void onStateChanged(@NonNull View view, int i) {

@@ -58,6 +58,7 @@ public class BottomSheetView extends ReactViewGroup {
     }
 
     void onAfterUpdateTransaction() {
+        nativeEventCount = Math.max(nativeEventCount, mostRecentEventCount);
         int eventLag = nativeEventCount - mostRecentEventCount;
         if (eventLag == 0) {
             detent = pendingDetent;
