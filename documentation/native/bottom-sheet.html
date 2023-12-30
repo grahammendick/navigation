@@ -59,11 +59,6 @@
 &lt;BottomSheet modal={true}>
   &lt;ScrollView nestedScrollEnabled={true} />
 &lt;/BottomSheet></code></pre>
-            <div class="Note">
-                <h2>Note</h2>
-                On iOS, the animation isn't completely smooth. Removing the stutter, when quickly dragging the sheet, will have to wait until React Native introduces synchronous view resizing.
-            </div>
-            <h2>Non-modal Bottom Sheet</h2>
             <p>
                 You can also have a non-modal <code>BottomSheet</code>. The <code>BottomSheet</code> is 100% native so, on Android, it must be a child of a <code>CoordinatorLayout</code>. In our email example, we make the sheet non-modal so the user can compose a reply while viewing the sender's details.
             </p>
@@ -72,6 +67,10 @@
     &lt;ScrollView nestedScrollEnabled={true} />
   &lt;/BottomSheet>
 &lt;/CoordinatorLayout></code></pre>
+            <div class="Note">
+                <h2>Note</h2>
+                On iOS, dragging the sheet isn't completely smooth. Removing the slight stutter will have to wait until React Native introduces synchronous view resizing.
+            </div>
             <h2>Controlling the Bottom Sheet</h2>
             <p>
                 The resting states of a <code>BottomSheet</code> are called detents, for example, 'collapsed' or 'expanded'. By default the <code>BottomSheet</code> is uncontrolled, where only the user can change the detent (by dragging). But it can also be controlled so you can programmatically change the detent. In our email example, when the user presses the sender's icon button we expand the <code>BottomSheet</code> to reveal the sender's details.
