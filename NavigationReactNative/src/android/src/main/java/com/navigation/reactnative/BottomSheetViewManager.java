@@ -49,6 +49,14 @@ public class BottomSheetViewManager extends ViewGroupManager<BottomSheetView> im
         view.pendingDetent = Integer.parseInt(detent);
     }
 
+    @Override
+    public void setModal(BottomSheetView view, boolean value) {
+    }
+
+    @Override
+    public void setDismissed(BottomSheetView view, boolean value) {
+    }
+
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(BottomSheetView view, int mostRecentEventCount) {
         view.mostRecentEventCount = mostRecentEventCount;

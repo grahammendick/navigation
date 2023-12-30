@@ -22,4 +22,13 @@
     }
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    if (self.didDismiss) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.didDismiss();
+        });
+    }
+}
+
 @end

@@ -27,6 +27,7 @@ using namespace facebook::react;
     NSInteger _nativeEventCount;
     UINavigationController *_oldNavigationController;
     BOOL _navigated;
+    BOOL _presenting;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -113,6 +114,7 @@ using namespace facebook::react;
                 [self->_navigationController setViewControllers:allControllers animated:animate];
             }
         } waitOn:[controllers lastObject]];
+        _navigationController.retainedViewController = _navigationController.topViewController;
     }
     if (crumb == currentCrumb) {
         NVSceneComponentView *scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
@@ -127,6 +129,7 @@ using namespace facebook::react;
             completed = YES;
             [self->_navigationController setViewControllers:controllers animated:animate];
         } waitOn:controller];
+        _navigationController.retainedViewController = _navigationController.topViewController;
     }
 }
 
@@ -170,6 +173,7 @@ using namespace facebook::react;
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    _presenting = [_navigationController presentedViewController];
     NSInteger crumb = [((NVSceneComponentView *) viewController.view).crumb intValue];
     if (crumb < [self.keys count] - 1) {
         std::static_pointer_cast<NVNavigationStackEventEmitter const>(_eventEmitter)
@@ -181,6 +185,11 @@ using namespace facebook::react;
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    if (_presenting) {
+        [navigationController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        _navigationController.retainedViewController = navigationController.topViewController;
+    }
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
     [self checkPeekability:crumb];
     if (crumb < [self.keys count] - 1) {

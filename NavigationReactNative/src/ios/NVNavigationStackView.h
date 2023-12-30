@@ -2,9 +2,15 @@
 #import <React/RCTBridge.h>
 #import <React/RCTComponent.h>
 
+@interface NVStackController : UINavigationController <UINavigationBarDelegate>
+
+@property (nonatomic, strong)  UIViewController *retainedViewController;
+
+@end
+
 @interface NVNavigationStackView : UIView <UINavigationControllerDelegate>
 
-@property (nonatomic, strong) UINavigationController *navigationController;
+@property (nonatomic, strong) NVStackController *navigationController;
 @property (nonatomic, copy) NSArray *keys;
 @property (nonatomic, copy) NSString *enterAnim;
 @property (nonatomic, assign) BOOL enterAnimOff;
@@ -13,10 +19,6 @@
 @property (nonatomic, copy) RCTDirectEventBlock onRest;
 
 -(id)initWithBridge: (RCTBridge *)bridge;
-
-@end
-
-@interface NVStackController : UINavigationController <UINavigationBarDelegate>
 
 @end
 

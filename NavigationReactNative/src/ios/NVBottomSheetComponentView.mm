@@ -24,6 +24,7 @@ using namespace facebook::react;
     NVBottomSheetController *_oldBottomSheetController;
     CGSize _oldSize;
     BOOL _presented;
+    BOOL _dismissed;
     NSInteger _nativeEventCount;
     NSString *_detent;
     BOOL _hideable;
@@ -55,14 +56,27 @@ using namespace facebook::react;
         [_oldBottomSheetController.view removeFromSuperview];
         [_oldBottomSheetController removeFromParentViewController];
         _bottomSheetController = [[NVBottomSheetController alloc] init];
-        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
-        [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         id __weak weakSelf = self;
         _bottomSheetController.boundsDidChangeBlock = ^(CGRect newBounds) {
             [weakSelf notifyForBoundsChange:newBounds];
         };
+        _bottomSheetController.didDismiss = ^{
+            [weakSelf sheetViewDidDismiss];
+        };
     }
 }
+
+-(void)sheetViewDidDismiss
+{
+    _presented = NO;
+    _dismissed = YES;
+    [_displayLink invalidate];
+    if (_eventEmitter != nullptr) {
+        std::static_pointer_cast<NVBottomSheetEventEmitter const>(_eventEmitter)
+            ->onDismissed(NVBottomSheetEventEmitter::OnDismissed{});
+    }
+}
+
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
     [self ensureBottomSheetController];
@@ -92,17 +106,21 @@ using namespace facebook::react;
             }];
         }
     }
+    _dismissed = newViewProps.dismissed;
     _hideable = newViewProps.hideable;
     NSInteger eventLag = _nativeEventCount - newViewProps.mostRecentEventCount;
     _detent = [[NSString alloc] initWithUTF8String: newViewProps.detent.c_str()];
     UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
     if (![_detent isEqual: @"hidden"]) {
-        if (self.window && !_presented) {
+        if (self.window && !_presented && !_dismissed) {
             _presented = YES;
             _bottomSheetController.sheetPresentationController.delegate = self;
             _bottomSheetController.presentationController.delegate = self;
+            _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
+            [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
             [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
         }
+        sheet.largestUndimmedDetentIdentifier = !newViewProps.modal ? [self expandedIdentifier] : nil;
         dispatch_async(dispatch_get_main_queue(), ^{
             [sheet animateChanges:^{
                 [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[self->_collapsedDetent, self->_expandedDetent] : @[self->_collapsedDetent, self->_halfExpandedDetent, self->_expandedDetent]];
@@ -120,6 +138,7 @@ using namespace facebook::react;
     } else {
         [_bottomSheetController dismissViewControllerAnimated:YES completion:nil];
         _presented = NO;
+        [_displayLink invalidate];
     }
     [super updateProps:props oldProps:oldProps];
 }
@@ -164,6 +183,11 @@ using namespace facebook::react;
     [_displayLink invalidate];
 }
 
+- (void)dealloc
+{
+    [_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
+}
+
 - (void)notifyForBoundsChange:(CGRect)newBounds
 {
     if (_state != nullptr) {
@@ -188,10 +212,12 @@ using namespace facebook::react;
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    if (![_detent isEqual: @"hidden"] && !_presented) {
+    if (![_detent isEqual: @"hidden"] && !_presented && !_dismissed && self.window) {
         _presented = YES;
         _bottomSheetController.sheetPresentationController.delegate = self;
         _bottomSheetController.presentationController.delegate = self;
+        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
+        [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
     }
 }
@@ -223,8 +249,6 @@ using namespace facebook::react;
                 .detent = std::string([@"hidden" UTF8String]),
                 .eventCount = static_cast<int>(_nativeEventCount),
             });
-        std::static_pointer_cast<NVBottomSheetEventEmitter const>(_eventEmitter)
-            ->onDismissed(NVBottomSheetEventEmitter::OnDismissed{});
     }
 }
 

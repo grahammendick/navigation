@@ -4,7 +4,7 @@
 #import <React/RCTViewManager.h>
 #import <React/RCTInvalidating.h>
 
-@interface NVBottomSheetManager : RCTViewManager <RCTInvalidating>
+@interface NVBottomSheetManager : RCTViewManager
 
 @end
 
@@ -20,12 +20,9 @@ RCT_EXPORT_MODULE()
     }
 }
 
--(void)invalidate
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissBottomSheet" object:nil];
-}
-
 RCT_EXPORT_VIEW_PROPERTY(detent, NSString)
+RCT_EXPORT_VIEW_PROPERTY(modal, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(dismissed, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(peekHeight, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(expandedHeight, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(expandedOffset, NSInteger)

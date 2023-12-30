@@ -31,16 +31,28 @@
         _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
         _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
         _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
-        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
-        [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         __weak typeof(self) weakSelf = self;
         _bottomSheetController.boundsDidChangeBlock = ^(CGRect newBounds) {
             [weakSelf notifyForBoundsChange:newBounds];
         };
-        [[NSNotificationCenter defaultCenter] addObserver:weakSelf selector:@selector(destroy:) name:@"dismissBottomSheet" object:nil];
+        _bottomSheetController.didDismiss = ^{
+            [weakSelf sheetViewDidDismiss];
+        };
     }
     return self;
 }
+
+
+-(void)sheetViewDidDismiss
+{
+    _presented = NO;
+    _dismissed = YES;
+    [_displayLink invalidate];
+    if (!!self.onDismissed) {
+        self.onDismissed(@{});
+    }
+}
+
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
@@ -69,12 +81,15 @@
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
     if (![_detent isEqual: @"hidden"]) {
-        if (self.window && !_presented) {
+        if (self.window && !_presented && !_dismissed) {
             _presented = YES;
             _bottomSheetController.sheetPresentationController.delegate = self;
             _bottomSheetController.presentationController.delegate = self;
+            _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
+            [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
             [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
         }
+        sheet.largestUndimmedDetentIdentifier = !self.modal ? [self expandedIdentifier] : nil;
         [sheet animateChanges:^{
             [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[_collapsedDetent, _expandedDetent] : @[_collapsedDetent, _halfExpandedDetent, _expandedDetent]];
             if (_skipCollapsed && ![_detent isEqual:@"collapsed"]) {
@@ -90,6 +105,7 @@
     } else {
         [_bottomSheetController dismissViewControllerAnimated:YES completion:nil];
         _presented = NO;
+        [_displayLink invalidate];
     }
 }
 
@@ -118,6 +134,11 @@
         expandedIdentifier = _expandedDetent.identifier;
     }
     return expandedIdentifier;
+}
+
+- (void)dealloc
+{
+    [_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)notifyForBoundsChange:(CGRect)newBounds
@@ -158,29 +179,15 @@
 {
 }
 
-- (void) destroy:(NSNotification *) notification
-{
-    [self invalidate];
-    if (_presented) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self->_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
-        });
-    }
-}
-
--(void)invalidate
-{
-    [_displayLink invalidate];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    if (![_detent isEqual: @"hidden"] && !_presented) {
+    if (![_detent isEqual: @"hidden"] && !_presented && !_dismissed && self.window) {
         _presented = YES;
         _bottomSheetController.sheetPresentationController.delegate = self;
         _bottomSheetController.presentationController.delegate = self;
+        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
+        [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
     }
 }
@@ -210,9 +217,6 @@
             @"detent": @"hidden",
             @"eventCount": @(_nativeEventCount),
         });
-    }
-    if (!!self.onDismissed) {
-        self.onDismissed(@{});
     }
 }
 

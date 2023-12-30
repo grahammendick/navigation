@@ -817,7 +817,6 @@ export class TabBar extends Component<TabBarProps> {}
 export interface BottomSheetProps {
     /**
      * Indicates whether the bottom sheet disables the scene behind
-     * @platform android
      */
     modal?: boolean;
     /**
