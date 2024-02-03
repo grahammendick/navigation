@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class SceneFragment extends Fragment {
     private SceneView scene;
     protected Animation enterAnimation;
+    protected Animation returnAnimation;
 
     public SceneFragment() {
         super();
@@ -70,6 +71,7 @@ public class SceneFragment extends Fragment {
         if ((nextAnim == 0 && enterAnimation == null) && enter && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
             ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
         }
+        if (nextAnim == -1 && returnAnimation != null) return returnAnimation;
         return super.onCreateAnimation(transit, enter, nextAnim);
     }
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.view.View;
+import android.view.animation.Animation;
 
 import androidx.transition.Transition;
 
@@ -22,6 +23,7 @@ public class SceneView extends ReactViewGroup {
     protected String sceneKey;
     protected String enterAnim;
     protected String exitAnim;
+    protected Animation exitAnimation;
     protected Transition enterTrans;
     protected Transition exitTrans;
     private boolean landscape;

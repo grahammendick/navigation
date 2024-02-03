@@ -1,5 +1,8 @@
 package com.navigation.reactnative;
 
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -75,10 +78,12 @@ public class SceneManager extends ViewGroupManager<SceneView> {
 
     @ReactProp(name = "exitTrans")
     public void setExitTrans(SceneView view, ReadableMap exitTrans) {
+        view.exitTrans = null;
+        view.exitAnimation = null;
         if (exitTrans != null) {
             switch (exitTrans.getString("type")) {
                 case "sharedAxis" :
-                    Map<String, Integer> axisMap = new HashMap();
+                    Map<String, Integer> axisMap = new HashMap<>();
                     axisMap.put("x", MaterialSharedAxis.X);
                     axisMap.put("y", MaterialSharedAxis.Y);
                     Integer axis = axisMap.get(exitTrans.getString("axis"));
@@ -96,9 +101,11 @@ public class SceneManager extends ViewGroupManager<SceneView> {
                 case "hold" :
                     view.exitTrans = new Hold();
                     break;
+                case "translate" :
+                    view.exitAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 1, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+                    view.exitAnimation.setDuration(300);
+                    break;
             }
-        } else {
-            view.exitTrans = null;
         }
     }
 
