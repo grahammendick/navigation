@@ -1,6 +1,8 @@
 package com.navigation.reactnative;
 
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 
 import androidx.annotation.NonNull;
 
@@ -46,10 +48,12 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
 
     @ReactProp(name = "enterTrans")
     public void setEnterTrans(NavigationStackView view, ReadableMap enterTrans) {
+        view.enterAnimation = null;
+        view.enterTrans = null;
         if (enterTrans != null) {
             switch (enterTrans.getString("type")) {
                 case "sharedAxis" :
-                    Map<String, Integer> axisMap = new HashMap();
+                    Map<String, Integer> axisMap = new HashMap<>();
                     axisMap.put("x", MaterialSharedAxis.X);
                     axisMap.put("y", MaterialSharedAxis.Y);
                     Integer axis = axisMap.get(enterTrans.getString("axis"));
@@ -67,9 +71,11 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
                 case "hold" :
                     view.enterTrans = new Hold();
                     break;
+                case "translate" :
+                    view.enterAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+                    view.enterAnimation.setDuration(300);
+                    break;
             }
-        } else {
-            view.enterTrans = null;
         }
     }
 

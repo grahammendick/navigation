@@ -10,6 +10,7 @@ import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
@@ -51,6 +52,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     private Activity mainActivity;
     protected String enterAnim;
     protected String exitAnim;
+    protected Animation enterAnimation;
     protected Transition enterTrans;
     protected Transition exitTrans;
     protected ReadableArray sharedElementNames;
@@ -149,9 +151,10 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 }
                 boolean nonAnimatedEnter = oldCrumb == -1 || ((sharedElements != null || exitTrans != null) && enterTrans == null);
                 boolean nonAnimatedPopEnter = (sharedElements != null || scene.exitTrans != null) && scene.enterTrans == null;
-                fragmentTransaction.setCustomAnimations(!nonAnimatedEnter ? enter : 0, exit, !nonAnimatedPopEnter ? popEnter : 0, popExit);
+                fragmentTransaction.setCustomAnimations(!nonAnimatedEnter ? (enterAnimation != null ? 0 : enter) : 0, exit, !nonAnimatedPopEnter ? popEnter : 0, popExit);
                 SceneFragment fragment = new SceneFragment(scene, getSharedElementSet(sharedElementNames), containerTransform);
                 fragment.setEnterTransition(enterTrans);
+                fragment.enterAnimation = !nonAnimatedEnter ? enterAnimation : null;
                 fragment.setReturnTransition(scene.exitTrans);
                 fragmentTransaction.replace(getId(), fragment, key);
                 fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
