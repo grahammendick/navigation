@@ -95,7 +95,7 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
                         }
                     }
                     view.enterAnimation = new TranslateAnimation(fromXType, fromXValue, Animation.RELATIVE_TO_SELF, 0, fromYType, fromYValue, Animation.RELATIVE_TO_SELF, 0);
-                    view.enterAnimation.setDuration(300);
+                    view.enterAnimation.setDuration(enterTrans.hasKey("duration") ? enterTrans.getInt("duration") : 300);
                     break;
             }
         }
