@@ -72,7 +72,29 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
                     view.enterTrans = new Hold();
                     break;
                 case "translate" :
-                    view.enterAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+                    String fromX = enterTrans.getString("fromX");
+                    float fromXValue = 0f;
+                    int fromXType = Animation.ABSOLUTE;
+                    if (fromX != null) {
+                        if (fromX.endsWith("%")) {
+                            fromXType = Animation.RELATIVE_TO_SELF;
+                            fromXValue = Float.parseFloat(fromX.substring(0, fromX.length() - 1)) / 100;
+                        } else {
+                            fromXValue = Float.parseFloat(fromX);
+                        }
+                    }
+                    String fromY = enterTrans.getString("fromY");
+                    float fromYValue = 0f;
+                    int fromYType = Animation.ABSOLUTE;
+                    if (fromY != null) {
+                        if (fromY.endsWith("%")) {
+                            fromYType = Animation.RELATIVE_TO_SELF;
+                            fromYValue = Float.parseFloat(fromY.substring(0, fromY.length() - 1)) / 100;
+                        } else {
+                            fromYValue = Float.parseFloat(fromY);
+                        }
+                    }
+                    view.enterAnimation = new TranslateAnimation(fromXType, fromXValue, Animation.RELATIVE_TO_SELF, 0, fromYType, fromYValue, Animation.RELATIVE_TO_SELF, 0);
                     view.enterAnimation.setDuration(300);
                     break;
             }
