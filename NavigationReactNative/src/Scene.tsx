@@ -132,32 +132,35 @@ class Scene extends React.Component<SceneProps, SceneState> {
         let enterTrans = typeof enterAnim === 'string' ? null : enterAnim;
         let exitTrans = typeof exitAnim === 'string' ? null : exitAnim;
         if (enterTrans) {
-            const {start, startX, startY, items, ...rest} = enterTrans;
+            const {start, startX, fromX, startY, fromY, pivotX, pivotY, items, ...rest} = enterTrans;
             enterTrans = {
-                from: start, fromX: startX, fromY: startY, ...rest,
-                items: items?.map(({start, startX, startY, ...rest}) => (
-                    {from: start, fromX: startX, fromY: startY, ...rest}
-                ))
+                from: start,
+                fromX: (startX ?? fromX) !== undefined ? '' + (startX ?? fromX) : undefined,
+                fromY: (startY ?? fromY) !== undefined ? '' + (startY ?? fromY) : undefined,
+                pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest,
+                items: items?.map(({start, startX, fromX, startY, fromY, pivotX, pivotY, ...rest}) => ({
+                        from: start,
+                        fromX: (startX ?? fromX) !== undefined ? '' + (startX ?? fromX) : undefined,
+                        fromY: (startY ?? fromY) !== undefined ? '' + (startY ?? fromY) : undefined,
+                        pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest
+                    }))
             };
         }
         if (exitTrans) {
-            const {start, startX, startY, items, ...rest} = exitTrans;
+            const {start, startX, startY, toX, toY, pivotX, pivotY, items, ...rest} = exitTrans;
             exitTrans = {
-                to: start, toX: startX, toY: startY, ...rest,
-                items: items?.map(({start, startX, startY, ...rest}) => (
-                    {to: start, toX: startX, toY: startY, ...rest}
-                ))
+                to: start,
+                toX: (startX ?? toX) !== undefined ? '' + (startX ?? toX) : undefined,
+                toY: (startY ?? toY) !== undefined ? '' + (startY ?? toY) : undefined,
+                pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest,
+                items: items?.map(({start, startX, startY, toX, toY, pivotX, pivotY, ...rest}) => ({
+                        to: start,
+                        toX: (startX ?? toX) !== undefined ? '' + (startX ?? toX) : undefined,
+                        toY: (startY ?? toY) !== undefined ? '' + (startY ?? toY) : undefined,
+                        pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest
+                    }))
             };
         }
-        const convertPropsToStrings = (trans) => {
-            if (!trans) return;
-            ['fromX', 'fromY', 'toX', 'toY', 'pivotX', 'pivotY'].forEach(prop => {
-                trans[prop] = trans[prop] != undefined ? '' + trans[prop] : trans[prop]
-            });
-            trans.items?.forEach(item => convertPropsToStrings(item));
-        };
-        convertPropsToStrings(enterTrans);
-        convertPropsToStrings(exitTrans);
         enterAnim = !enterTrans ? enterAnim : null;
         exitAnim = !exitTrans ? exitAnim : null;
         return {enterAnim, exitAnim, enterTrans, exitTrans, hidesTabBar, backgroundColor, landscape};
