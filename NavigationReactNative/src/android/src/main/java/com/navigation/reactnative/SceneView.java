@@ -23,6 +23,7 @@ public class SceneView extends ReactViewGroup {
     protected String sceneKey;
     protected String enterAnim;
     protected String exitAnim;
+    protected Animation enterAnimation;
     protected Animation exitAnimation;
     protected Transition enterTrans;
     protected Transition exitTrans;

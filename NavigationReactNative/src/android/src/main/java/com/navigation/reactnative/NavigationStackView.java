@@ -53,6 +53,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected String enterAnim;
     protected String exitAnim;
     protected Animation enterAnimation;
+    protected Animation exitAnimation;
     protected Transition enterTrans;
     protected Transition exitTrans;
     protected ReadableArray sharedElementNames;
@@ -139,7 +140,9 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(prevKey);
                     if (prevFragment != null) {
                         prevFragment.setExitTransition(exitTrans);
+                        prevFragment.exitAnimation = exitAnimation;
                         prevFragment.setReenterTransition(scene.enterTrans);
+                        prevFragment.reenterAnimation = scene.enterAnimation;
                         sharedElements = getSharedElements(currentCrumb, crumb, prevFragment);
                     }
                 }
@@ -151,7 +154,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 }
                 boolean nonAnimatedEnter = oldCrumb == -1 || ((sharedElements != null || exitTrans != null) && enterTrans == null);
                 boolean nonAnimatedPopEnter = (sharedElements != null || scene.exitTrans != null) && scene.enterTrans == null;
-                fragmentTransaction.setCustomAnimations(!nonAnimatedEnter ? (enterAnimation != null ? 0 : enter) : 0, exit, !nonAnimatedPopEnter ? popEnter : 0, scene.exitAnimation != null ? -1 : popExit);
+                fragmentTransaction.setCustomAnimations(!nonAnimatedEnter ? (enterAnimation != null ? 0 : enter) : 0, exitAnimation != null ? 0 : exit, !nonAnimatedPopEnter ? (scene.enterAnimation != null ? -1 : popEnter) : 0, scene.exitAnimation != null ? -1 : popExit);
                 SceneFragment fragment = new SceneFragment(scene, getSharedElementSet(sharedElementNames), containerTransform);
                 fragment.setEnterTransition(enterTrans);
                 fragment.enterAnimation = !nonAnimatedEnter ? enterAnimation : null;

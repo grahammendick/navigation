@@ -55,6 +55,7 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     @ReactProp(name = "exitTrans")
     public void setExitTrans(NavigationStackView view, ReadableMap exitTrans) {
         view.exitTrans = AnimationPropParser.getTransition(exitTrans);
+        view.exitAnimation = AnimationPropParser.getAnimation(exitTrans, false);
     }
 
     @ReactProp(name = "sharedElements")

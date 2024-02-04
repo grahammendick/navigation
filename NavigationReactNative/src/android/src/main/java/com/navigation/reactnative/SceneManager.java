@@ -49,31 +49,8 @@ public class SceneManager extends ViewGroupManager<SceneView> {
 
     @ReactProp(name = "enterTrans")
     public void setEnterTrans(SceneView view, ReadableMap enterTrans) {
-        if (enterTrans != null) {
-            switch (enterTrans.getString("type")) {
-                case "sharedAxis" :
-                    Map<String, Integer> axisMap = new HashMap();
-                    axisMap.put("x", MaterialSharedAxis.X);
-                    axisMap.put("y", MaterialSharedAxis.Y);
-                    Integer axis = axisMap.get(enterTrans.getString("axis"));
-                    view.enterTrans = new MaterialSharedAxis(axis != null ? axis : MaterialSharedAxis.Z, false);
-                    break;
-                case "elevationScale" :
-                    view.enterTrans = new MaterialElevationScale(true);
-                    break;
-                case "fade" :
-                    view.enterTrans = new MaterialFade();
-                    break;
-                case "fadeThrough" :
-                    view.enterTrans = new MaterialFadeThrough();
-                    break;
-                case "hold" :
-                    view.enterTrans = new Hold();
-                    break;
-            }
-        } else {
-            view.enterTrans = null;
-        }
+        view.exitTrans = AnimationPropParser.getTransition(enterTrans);
+        view.enterAnimation = AnimationPropParser.getAnimation(enterTrans, true);
     }
 
     @ReactProp(name = "exitTrans")
