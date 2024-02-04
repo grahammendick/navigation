@@ -149,6 +149,15 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 ))
             };
         }
+        const convertPropsToStrings = (trans) => {
+            if (!trans) return;
+            ['fromX', 'fromY', 'toX', 'toY', 'pivotX', 'pivotY'].forEach(prop => {
+                trans[prop] = trans[prop] != undefined ? '' + trans[prop] : trans[prop]
+            });
+            trans.items?.forEach(item => convertPropsToStrings(item));
+        };
+        convertPropsToStrings(enterTrans);
+        convertPropsToStrings(exitTrans);
         enterAnim = !enterTrans ? enterAnim : null;
         exitAnim = !exitTrans ? exitAnim : null;
         return {enterAnim, exitAnim, enterTrans, exitTrans, hidesTabBar, backgroundColor, landscape};
