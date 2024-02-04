@@ -106,36 +106,22 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cru
         sharedElements = containerTransform && sharedElements ? [sharedElements] : sharedElements;
         let enterTrans = typeof enterAnim === 'string' ? null : enterAnim;
         let exitTrans = typeof exitAnim === 'string' ? null : exitAnim;
-        if (enterTrans) {
-            const {start, startX, fromX, startY, fromY, pivotX, pivotY, items, ...rest} = enterTrans;
-            enterTrans = {
-                from: start,
-                fromX: (startX ?? fromX) !== undefined ? '' + (startX ?? fromX) : undefined,
-                fromY: (startY ?? fromY) !== undefined ? '' + (startY ?? fromY) : undefined,
-                pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest,
-                items: items?.map(({start, startX, fromX, startY, fromY, pivotX, pivotY, ...rest}) => ({
-                        from: start,
-                        fromX: (startX ?? fromX) !== undefined ? '' + (startX ?? fromX) : undefined,
-                        fromY: (startY ?? fromY) !== undefined ? '' + (startY ?? fromY) : undefined,
-                        pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest
-                    }))
-            };
-        }
-        if (exitTrans) {
-            const {start, startX, startY, toX, toY, pivotX, pivotY, items, ...rest} = exitTrans;
-            exitTrans = {
-                to: start,
-                toX: (startX ?? toX) !== undefined ? '' + (startX ?? toX) : undefined,
-                toY: (startY ?? toY) !== undefined ? '' + (startY ?? toY) : undefined,
-                pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest,
-                items: items?.map(({start, startX, startY, toX, toY, pivotX, pivotY, ...rest}) => ({
-                        to: start,
-                        toX: (startX ?? toX) !== undefined ? '' + (startX ?? toX) : undefined,
-                        toY: (startY ?? toY) !== undefined ? '' + (startY ?? toY) : undefined,
-                        pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest
-                    }))
-            };
-        }
+        const convertEnterTrans = ({start, startX, fromX, startY, fromY, pivotX, pivotY, items, ...rest}) => ({
+            from: start,
+            fromX: (startX ?? fromX) !== undefined ? '' + (startX ?? fromX) : undefined,
+            fromY: (startY ?? fromY) !== undefined ? '' + (startY ?? fromY) : undefined,
+            pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest,
+            items: items?.map(convertEnterTrans),
+        })
+        const convertExitTrans = ({start, startX, startY, toX, toY, pivotX, pivotY, items, ...rest}) => ({
+            to: start,
+            toX: (startX ?? toX) !== undefined ? '' + (startX ?? toX) : undefined,
+            toY: (startY ?? toY) !== undefined ? '' + (startY ?? toY) : undefined,
+            pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest,
+            items: items?.map(convertExitTrans),
+        });
+        enterTrans = enterTrans ? convertEnterTrans(enterTrans) : null;
+        exitTrans = exitTrans ? convertExitTrans(exitTrans) : null;
         enterAnim = !enterTrans ? enterAnim : null;
         exitAnim = !exitTrans ? exitAnim : null;
         const enterAnimOff = enterAnim === '';
