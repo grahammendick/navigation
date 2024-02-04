@@ -58,7 +58,7 @@ public class AnimationPropParser {
         if (animType == null) {
             ReadableArray items = anim.hasKey("items") ? anim.getArray("items") : null;
             AnimationSet animationSet = new AnimationSet(true);
-            animationSet.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
+            if (anim.hasKey("duration")) animationSet.setDuration(anim.getInt("duration"));
             if (items != null) {
                 for(int i = 0; i < items.size(); i++) {
                     animationSet.addAnimation(getAnimation(items.getMap(i), enter));
