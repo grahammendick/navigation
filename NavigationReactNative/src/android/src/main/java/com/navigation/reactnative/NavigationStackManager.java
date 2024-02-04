@@ -54,31 +54,7 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
 
     @ReactProp(name = "exitTrans")
     public void setExitTrans(NavigationStackView view, ReadableMap exitTrans) {
-        if (exitTrans != null) {
-            switch (exitTrans.getString("type")) {
-                case "sharedAxis" :
-                    Map<String, Integer> axisMap = new HashMap();
-                    axisMap.put("x", MaterialSharedAxis.X);
-                    axisMap.put("y", MaterialSharedAxis.Y);
-                    Integer axis = axisMap.get(exitTrans.getString("axis"));
-                    view.exitTrans = new MaterialSharedAxis(axis != null ? axis : MaterialSharedAxis.Z, true);
-                    break;
-                case "elevationScale" :
-                    view.exitTrans = new MaterialElevationScale(false);
-                    break;
-                case "fade" :
-                    view.exitTrans = new MaterialFade();
-                    break;
-                case "fadeThrough" :
-                    view.exitTrans = new MaterialFadeThrough();
-                    break;
-                case "hold" :
-                    view.exitTrans = new Hold();
-                    break;
-            }
-        } else {
-            view.exitTrans = null;
-        }
+        view.exitTrans = AnimationPropParser.getTransition(exitTrans);
     }
 
     @ReactProp(name = "sharedElements")

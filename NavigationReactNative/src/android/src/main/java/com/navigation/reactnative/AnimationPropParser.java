@@ -3,12 +3,14 @@ package com.navigation.reactnative;
 import android.util.Pair;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 
 import androidx.transition.Transition;
 
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.google.android.material.transition.Hold;
 import com.google.android.material.transition.MaterialElevationScale;
@@ -52,7 +54,18 @@ public class AnimationPropParser {
         Animation animation = null;
         Pair<Integer, Float> fromX, toX, fromY, toY, pivotX, pivotY;
         String animType = anim != null ? anim.getString("type") : null;
-        if (animType == null) return null;
+        if (anim == null) return null;
+        if (animType == null) {
+            ReadableArray items = anim.hasKey("items") ? anim.getArray("items") : null;
+            AnimationSet animationSet = new AnimationSet(true);
+            animationSet.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
+            if (items != null) {
+                for(int i = 0; i < items.size(); i++) {
+                    animationSet.addAnimation(getAnimation(items.getMap(i), enter));
+                }
+            }
+            return animationSet;
+        };
         switch (animType) {
             case "translate":
                 fromX = getValues(enter ? anim.getString("fromX") : null, 0);
@@ -77,6 +90,7 @@ public class AnimationPropParser {
                 toX = getValues(!enter ? anim.getString("to") : null);
                 animation = new AlphaAnimation(fromX.second, toX.second);
                 animation.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
+                break;
             case "rotate":
                 fromX = getValues(anim.getString("from"), 0);
                 toX = getValues(anim.getString("to"), 0);
@@ -84,6 +98,7 @@ public class AnimationPropParser {
                 pivotY = getValues(anim.getString("pivotY"),0.5f, Animation.RELATIVE_TO_SELF);
                 animation = new RotateAnimation(fromX.second, toX.second, pivotX.first, pivotX.second, pivotY.first, pivotY.second);
                 animation.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
+                break;
         }
         return animation;
     }
