@@ -104,8 +104,26 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cru
         }
         const containerTransform = typeof sharedElements === 'string';
         sharedElements = containerTransform && sharedElements ? [sharedElements] : sharedElements;
-        const enterTrans = typeof enterAnim === 'string' ? null : enterAnim;
-        const exitTrans = typeof exitAnim === 'string' ? null : exitAnim;
+        let enterTrans = typeof enterAnim === 'string' ? null : enterAnim;
+        let exitTrans = typeof exitAnim === 'string' ? null : exitAnim;
+        if (enterTrans) {
+            const {start, startX, startY, items, ...rest} = enterTrans;
+            enterTrans = {
+                from: start, fromX: startX, fromY: startY, ...rest,
+                items: items?.map(({start, startX, startY, ...rest}) => (
+                    {from: start, fromX: startX, fromY: startY, ...rest}
+                ))
+            };
+        }
+        if (exitTrans) {
+            const {start, startX, startY, items, ...rest} = exitTrans;
+            exitTrans = {
+                to: start, toX: startX, toY: startY, ...rest,
+                items: items?.map(({start, startX, startY, ...rest}) => (
+                    {to: start, toX: startX, toY: startY, ...rest}
+                ))
+            };
+        }
         enterAnim = !enterTrans ? enterAnim : null;
         exitAnim = !exitTrans ? exitAnim : null;
         const enterAnimOff = enterAnim === '';
