@@ -78,35 +78,8 @@ public class SceneManager extends ViewGroupManager<SceneView> {
 
     @ReactProp(name = "exitTrans")
     public void setExitTrans(SceneView view, ReadableMap exitTrans) {
-        view.exitTrans = null;
-        view.exitAnimation = null;
-        if (exitTrans != null) {
-            switch (exitTrans.getString("type")) {
-                case "sharedAxis" :
-                    Map<String, Integer> axisMap = new HashMap<>();
-                    axisMap.put("x", MaterialSharedAxis.X);
-                    axisMap.put("y", MaterialSharedAxis.Y);
-                    Integer axis = axisMap.get(exitTrans.getString("axis"));
-                    view.exitTrans = new MaterialSharedAxis(axis != null ? axis : MaterialSharedAxis.Z, false);
-                    break;
-                case "elevationScale" :
-                    view.exitTrans = new MaterialElevationScale(false);
-                    break;
-                case "fade" :
-                    view.exitTrans = new MaterialFade();
-                    break;
-                case "fadeThrough" :
-                    view.exitTrans = new MaterialFadeThrough();
-                    break;
-                case "hold" :
-                    view.exitTrans = new Hold();
-                    break;
-                case "translate" :
-                    view.exitAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 1, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
-                    view.exitAnimation.setDuration(300);
-                    break;
-            }
-        }
+        view.exitTrans = AnimationPropParser.getTransition(exitTrans);
+        view.exitAnimation = AnimationPropParser.getAnimation(exitTrans);
     }
 
     @ReactProp(name = "landscape")

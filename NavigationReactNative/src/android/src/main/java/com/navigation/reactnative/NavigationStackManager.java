@@ -48,57 +48,8 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
 
     @ReactProp(name = "enterTrans")
     public void setEnterTrans(NavigationStackView view, ReadableMap enterTrans) {
-        view.enterAnimation = null;
-        view.enterTrans = null;
-        if (enterTrans != null) {
-            switch (enterTrans.getString("type")) {
-                case "sharedAxis" :
-                    Map<String, Integer> axisMap = new HashMap<>();
-                    axisMap.put("x", MaterialSharedAxis.X);
-                    axisMap.put("y", MaterialSharedAxis.Y);
-                    Integer axis = axisMap.get(enterTrans.getString("axis"));
-                    view.enterTrans = new MaterialSharedAxis(axis != null ? axis : MaterialSharedAxis.Z, true);
-                    break;
-                case "elevationScale" :
-                    view.enterTrans = new MaterialElevationScale(true);
-                    break;
-                case "fade" :
-                    view.enterTrans = new MaterialFade();
-                    break;
-                case "fadeThrough" :
-                    view.enterTrans = new MaterialFadeThrough();
-                    break;
-                case "hold" :
-                    view.enterTrans = new Hold();
-                    break;
-                case "translate" :
-                    String fromX = enterTrans.getString("fromX");
-                    float fromXValue = 0f;
-                    int fromXType = Animation.ABSOLUTE;
-                    if (fromX != null) {
-                        if (fromX.endsWith("%")) {
-                            fromXType = Animation.RELATIVE_TO_SELF;
-                            fromXValue = Float.parseFloat(fromX.substring(0, fromX.length() - 1)) / 100;
-                        } else {
-                            fromXValue = Float.parseFloat(fromX);
-                        }
-                    }
-                    String fromY = enterTrans.getString("fromY");
-                    float fromYValue = 0f;
-                    int fromYType = Animation.ABSOLUTE;
-                    if (fromY != null) {
-                        if (fromY.endsWith("%")) {
-                            fromYType = Animation.RELATIVE_TO_SELF;
-                            fromYValue = Float.parseFloat(fromY.substring(0, fromY.length() - 1)) / 100;
-                        } else {
-                            fromYValue = Float.parseFloat(fromY);
-                        }
-                    }
-                    view.enterAnimation = new TranslateAnimation(fromXType, fromXValue, Animation.RELATIVE_TO_SELF, 0, fromYType, fromYValue, Animation.RELATIVE_TO_SELF, 0);
-                    view.enterAnimation.setDuration(enterTrans.hasKey("duration") ? enterTrans.getInt("duration") : 300);
-                    break;
-            }
-        }
+        view.enterTrans = AnimationPropParser.getTransition(enterTrans);
+        view.enterAnimation = AnimationPropParser.getAnimation(enterTrans);
     }
 
     @ReactProp(name = "exitTrans")
