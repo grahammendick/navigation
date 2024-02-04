@@ -86,17 +86,17 @@ public class AnimationPropParser {
                 animation.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
                 break;
             case "alpha":
-                fromX = getValues(enter ? anim.getString("from") : null);
-                toX = getValues(!enter ? anim.getString("to") : null);
-                animation = new AlphaAnimation(fromX.second, toX.second);
+                float fromAlpha = enter && anim.hasKey("from") ? (float) anim.getDouble("from") : 1;
+                float toAlpha = !enter && anim.hasKey("to") ? (float) anim.getDouble("to") : 1;
+                animation = new AlphaAnimation(fromAlpha, toAlpha);
                 animation.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
                 break;
             case "rotate":
-                fromX = getValues(anim.getString("from"), 0);
-                toX = getValues(anim.getString("to"), 0);
+                float fromDegrees = anim.hasKey("from") ? (float) anim.getDouble("from") : 0;
+                float toDegrees = anim.hasKey("to") ? (float) anim.getDouble("to") : 0;
                 pivotX = getValues(anim.getString("pivotX"),0.5f, Animation.RELATIVE_TO_SELF);
                 pivotY = getValues(anim.getString("pivotY"),0.5f, Animation.RELATIVE_TO_SELF);
-                animation = new RotateAnimation(fromX.second, toX.second, pivotX.first, pivotX.second, pivotY.first, pivotY.second);
+                animation = new RotateAnimation(fromDegrees, toDegrees, pivotX.first, pivotX.second, pivotY.first, pivotY.second);
                 animation.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
                 break;
         }
