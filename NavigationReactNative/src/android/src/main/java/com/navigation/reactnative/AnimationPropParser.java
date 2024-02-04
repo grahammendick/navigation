@@ -54,30 +54,38 @@ public class AnimationPropParser {
         if (animType == null) return null;
         switch (animType) {
             case "translate":
-                fromX = getValues(enter ? anim.getString("fromX") : null, 0, Animation.ABSOLUTE);
-                toX = getValues(!enter ? anim.getString("toX") : null, 0, Animation.ABSOLUTE);
-                fromY = getValues(enter ? anim.getString("fromY") : null, 0, Animation.ABSOLUTE);
-                toY = getValues(!enter ? anim.getString("toY") : null, 0, Animation.ABSOLUTE);
+                fromX = getValues(enter ? anim.getString("fromX") : null, 0);
+                toX = getValues(!enter ? anim.getString("toX") : null, 0);
+                fromY = getValues(enter ? anim.getString("fromY") : null, 0);
+                toY = getValues(!enter ? anim.getString("toY") : null, 0);
                 animation = new TranslateAnimation(fromX.first, fromX.second, toX.first, toX.second, fromY.first, fromY.second, toY.first, toY.second);
                 animation.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
                 break;
             case "scale":
-                fromX = getValues(enter ? anim.getString("fromX") : null, 1, Animation.ABSOLUTE);
-                toX = getValues(!enter ? anim.getString("toX") : null, 1, Animation.ABSOLUTE);
-                fromY = getValues(enter ? anim.getString("fromY") : null, 1, Animation.ABSOLUTE);
-                toY = getValues(!enter ? anim.getString("toY") : null, 1, Animation.ABSOLUTE);
+                fromX = getValues(enter ? anim.getString("fromX") : null);
+                toX = getValues(!enter ? anim.getString("toX") : null);
+                fromY = getValues(enter ? anim.getString("fromY") : null);
+                toY = getValues(!enter ? anim.getString("toY") : null);
                 Pair<Integer, Float> pivotX = getValues(anim.getString("pivotX"),0.5f, Animation.RELATIVE_TO_SELF);
                 Pair<Integer, Float> pivotY = getValues(anim.getString("pivotY"),0.5f, Animation.RELATIVE_TO_SELF);
                 animation = new ScaleAnimation(fromX.second, toX.second, fromY.second, toY.second, pivotX.first, pivotX.second, pivotY.first, pivotY.second);
                 animation.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
                 break;
             case "alpha":
-                fromX = getValues(enter ? anim.getString("from") : null, 1, Animation.ABSOLUTE);
-                toX = getValues(!enter ? anim.getString("to") : null, 1, Animation.ABSOLUTE);
+                fromX = getValues(enter ? anim.getString("from") : null);
+                toX = getValues(!enter ? anim.getString("to") : null);
                 animation = new AlphaAnimation(fromX.second, toX.second);
                 animation.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
         }
         return animation;
+    }
+
+    private static Pair<Integer, Float> getValues(String from) {
+        return getValues(from, 1);
+    }
+
+    private static Pair<Integer, Float> getValues(String from, float defaultFromValue) {
+        return getValues(from, defaultFromValue, Animation.ABSOLUTE);
     }
 
     private static Pair<Integer, Float> getValues(String from, float defaultFromValue, int defaultFromType) {
