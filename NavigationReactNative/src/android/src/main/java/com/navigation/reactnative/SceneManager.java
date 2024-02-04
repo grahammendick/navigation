@@ -79,7 +79,7 @@ public class SceneManager extends ViewGroupManager<SceneView> {
     @ReactProp(name = "exitTrans")
     public void setExitTrans(SceneView view, ReadableMap exitTrans) {
         view.exitTrans = AnimationPropParser.getTransition(exitTrans);
-        view.exitAnimation = AnimationPropParser.getAnimation(exitTrans);
+        view.exitAnimation = AnimationPropParser.getAnimation(exitTrans, false);
     }
 
     @ReactProp(name = "landscape")

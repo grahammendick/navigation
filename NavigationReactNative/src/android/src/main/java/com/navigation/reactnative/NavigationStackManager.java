@@ -49,7 +49,7 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     @ReactProp(name = "enterTrans")
     public void setEnterTrans(NavigationStackView view, ReadableMap enterTrans) {
         view.enterTrans = AnimationPropParser.getTransition(enterTrans);
-        view.enterAnimation = AnimationPropParser.getAnimation(enterTrans);
+        view.enterAnimation = AnimationPropParser.getAnimation(enterTrans, true);
     }
 
     @ReactProp(name = "exitTrans")
