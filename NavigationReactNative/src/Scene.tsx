@@ -138,7 +138,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
             pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest,
             items: items?.map(convertEnterTrans),
         })
-        const convertExitTrans = ({start, startX, startY, toX, toY, pivotX, pivotY, items, ...rest}) => ({
+        const convertExitTrans = ({start, startX, toX, startY, toY, pivotX, pivotY, items, ...rest}) => ({
             to: start,
             toX: (startX ?? toX) !== undefined ? '' + (startX ?? toX) : undefined,
             toY: (startY ?? toY) !== undefined ? '' + (startY ?? toY) : undefined,
