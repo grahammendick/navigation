@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.util.Pair;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
@@ -70,6 +71,11 @@ public class AnimationPropParser {
                 animation = new ScaleAnimation(fromX.second, toX.second, fromY.second, toY.second, pivotX.first, pivotX.second, pivotY.first, pivotY.second);
                 animation.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
                 break;
+            case "alpha":
+                fromX = getTranslateValues(enter ? anim.getString("from") : null, 1, Animation.ABSOLUTE);
+                toX = getTranslateValues(!enter ? anim.getString("to") : null, 1, Animation.ABSOLUTE);
+                animation = new AlphaAnimation(fromX.second, toX.second);
+                animation.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
         }
         return animation;
     }
