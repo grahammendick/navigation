@@ -70,8 +70,8 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cru
     }
     const sceneProps = ({key}: State) => firstLink ? allScenes[key].props : null;
     const returnOrCall = (item, ...args) => typeof item !== 'function' ? item : item(...args);
-    const unmountStyle = (from, state, ...rest) => sceneProps(state)?.unmountStyle ? sceneProps(state)?.unmountStyle(from, ...rest) : unmountStyleStack(from, state, ...rest);
-    const crumbStyle = (from, state, ...rest) => sceneProps(state)?.crumbStyle ? sceneProps(state)?.crumbStyle(from, ...rest) : crumbStyleStack(from, state, ...rest);
+    const unmountStyle = (from, state, ...rest) => sceneProps(state)?.unmountStyle ? returnOrCall(sceneProps(state)?.unmountStyle, from, ...rest) : returnOrCall(unmountStyleStack, from, state, ...rest);
+    const crumbStyle = (from, state, ...rest) => sceneProps(state)?.crumbStyle ? returnOrCall(sceneProps(state)?.crumbStyle, from, ...rest) : returnOrCall(crumbStyleStack, from, state, ...rest);
     const hidesTabBar = (state, ...rest) => sceneProps(state)?.hidesTabBar ? returnOrCall(sceneProps(state)?.hidesTabBar, ...rest) : hidesTabBarStack(state, ...rest);
     const getSharedElement = (state, ...rest) => sceneProps(state)?.sharedElement ? returnOrCall(sceneProps(state)?.sharedElement, ...rest) : getSharedElementStack(state, ...rest);
     const getSharedElements = (state, ...rest) => sceneProps(state)?.sharedElements ? returnOrCall(sceneProps(state)?.sharedElements, ...rest) : getSharedElementsStack(state, ...rest);

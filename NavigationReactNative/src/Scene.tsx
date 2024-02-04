@@ -123,9 +123,9 @@ class Scene extends React.Component<SceneProps, SceneState> {
         if (crumb > 0) {
             var {state: prevState, data: prevData} = crumbs[crumb - 1];
             var prevCrumbs = crumbs.slice(0, crumb - 1);
-            var enterAnim = crumbStyle(true, prevState, prevData, prevCrumbs, state, data);
+            var enterAnim = typeof crumbStyle === 'function' ? crumbStyle(true, prevState, prevData, prevCrumbs, state, data) : crumbStyle;
         }
-        var exitAnim = unmountStyle(false, state, data, currentCrumbs);
+        var exitAnim = typeof unmountStyle === 'function' ? unmountStyle(false, state, data, currentCrumbs) : unmountStyle;
         var hidesTabBar = hidesTabBar(state, data, currentCrumbs);
         var backgroundColor = backgroundColor(state, data, currentCrumbs) || '#fff';
         var landscape = landscape(state, data, currentCrumbs);
