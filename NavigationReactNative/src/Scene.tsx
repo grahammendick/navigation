@@ -131,6 +131,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var landscape = landscape(state, data, currentCrumbs);
         let enterTrans = typeof enterAnim === 'string' ? null : enterAnim;
         let exitTrans = typeof exitAnim === 'string' ? null : exitAnim;
+        enterTrans = !Array.isArray(enterTrans) ? enterTrans : {items: enterTrans};
+        exitTrans = !Array.isArray(exitTrans) ? exitTrans : {items: exitTrans};
         const convertEnterTrans = ({start, startX, fromX, startY, fromY, pivotX, pivotY, items, ...rest}) => ({
             from: start,
             fromX: (startX ?? fromX) !== undefined ? '' + (startX ?? fromX) : undefined,
