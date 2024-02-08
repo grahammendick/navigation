@@ -174,10 +174,24 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             int popEnter = getAnimationResourceId(currentActivity, scene.enterAnim, android.R.attr.activityCloseEnterAnimation);
             int popExit = getAnimationResourceId(currentActivity, scene.exitAnim, android.R.attr.activityCloseExitAnimation);
             FragmentManager fragmentManager = fragment.getChildFragmentManager();
+            SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKey);
+            if (prevFragment != null) {
+                prevFragment.setExitTransition(exitTrans);
+                prevFragment.exitAnimation = exitAnimation;
+                prevFragment.setReenterTransition(scene.enterTrans);
+                prevFragment.reenterAnimation = scene.enterAnimation;
+            }
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setReorderingAllowed(true);
-            fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
-            fragmentTransaction.replace(getId(), new SceneFragment(scene, null, containerTransform), key);
+            boolean nonAnimatedEnter = exitTrans != null && enterTrans == null;
+            boolean nonAnimatedPopEnter = scene.exitTrans != null && scene.enterTrans == null;
+            fragmentTransaction.setCustomAnimations(!nonAnimatedEnter ? (enterAnimation != null ? 0 : enter) : 0, exitAnimation != null ? 0 : exit, !nonAnimatedPopEnter ? (scene.enterAnimation != null ? -1 : popEnter) : 0, scene.exitAnimation != null ? -1 : popExit);
+            SceneFragment fragment = new SceneFragment(scene, null, containerTransform);
+            fragment.setEnterTransition(enterTrans);
+            fragment.enterAnimation = !nonAnimatedEnter ? enterAnimation : null;
+            fragment.setReturnTransition(scene.exitTrans);
+            fragment.returnAnimation = scene.exitAnimation;
+            fragmentTransaction.replace(getId(), fragment, key);
             fragmentTransaction.addToBackStack(String.valueOf(crumb));
             fragmentTransaction.commit();
         }
