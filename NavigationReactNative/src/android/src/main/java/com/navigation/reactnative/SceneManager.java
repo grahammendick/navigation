@@ -49,7 +49,7 @@ public class SceneManager extends ViewGroupManager<SceneView> {
 
     @ReactProp(name = "enterTrans")
     public void setEnterTrans(SceneView view, ReadableMap enterTrans) {
-        view.exitTrans = AnimationPropParser.getTransition(enterTrans);
+        view.enterTrans = AnimationPropParser.getTransition(enterTrans);
         view.enterAnimation = AnimationPropParser.getAnimation(enterTrans, true);
     }
 
