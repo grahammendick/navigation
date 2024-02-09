@@ -125,6 +125,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             int exit = getAnimationResourceId(currentActivity, exitAnim, android.R.attr.activityOpenExitAnimation);
             if (exit == 0 && exitAnim != null)
                 exit = getAnimationResourceId(currentActivity, null, android.R.attr.activityOpenExitAnimation);
+            SceneFragment prevFragment = null;
             for(int i = 0; i < crumb - currentCrumb; i++) {
                 int nextCrumb = currentCrumb + i + 1;
                 String key = keys.getString(nextCrumb);
@@ -137,7 +138,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 Pair[] sharedElements = null;
                 if (nextCrumb > 0) {
                     String prevKey = keys.getString(nextCrumb - 1);
-                    SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(prevKey);
+                    if (prevFragment == null)
+                        prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(prevKey);
                     if (prevFragment != null) {
                         prevFragment.setExitTransition(exitTrans);
                         prevFragment.exitAnimation = exitAnimation;
@@ -163,6 +165,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 fragmentTransaction.replace(getId(), fragment, key);
                 fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
                 fragmentTransaction.commit();
+                prevFragment = fragment;
             }
         }
         if (crumb == currentCrumb && !oldKey.equals(keys.getString(crumb))) {
