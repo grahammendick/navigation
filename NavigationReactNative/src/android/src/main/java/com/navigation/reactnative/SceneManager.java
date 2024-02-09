@@ -1,20 +1,11 @@
 package com.navigation.reactnative;
 
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.google.android.material.transition.Hold;
-import com.google.android.material.transition.MaterialElevationScale;
-import com.google.android.material.transition.MaterialFade;
-import com.google.android.material.transition.MaterialFadeThrough;
-import com.google.android.material.transition.MaterialSharedAxis;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
