@@ -66,7 +66,9 @@
     {type: 'alpha', startX: 0},
     {type: 'scale', startX: 0.8, startY: 0.8}
   ]}></code></pre>
-  
+            <p>
+                The <code>Scene</code> component also has <code>unmountStyle</code> and <code>crumbStyle</code> props so you can have different animations for different scenes. In our email application, we want every scene to slide in from the right apart from the 'compose' scene. It should slide up from the bottom of the screen so we configure a special <code>unmountStyle</code> for just the 'compose' scene.
+            </p>
             <pre><code class="language-jsx">&lt;Scene stateKey="compose" unmountStyle={{type: 'translate', startY: '100%'}}>
   &lt;Compose />
 &lt;/Scene></code></pre>
