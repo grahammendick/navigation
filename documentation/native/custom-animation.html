@@ -55,12 +55,13 @@
                 You can change the default Android animation that runs when a scene is pushed onto or popped off the stack. You provide the position of the scene when it's off the stack in the <code>unmountStyle</code> prop of the <code>NavigationStack</code>. The Navigation router uses the underlying native transition api to animate it into place. In our email application, we start the 'mail' scene off to the right of the screen. The Navigation router slides it when the user selects a mail and back out again when they return to their inbox.
             </p>
             <pre><code class="language-jsx">&lt;NavigationStack unmountStyle={{type: 'translate', startX: '100%'}}></code></pre>
-
             <p>
                 You can also specify the position of the scene when it's hidden in the stack using the <code>crumbStyle</code> prop of the <code>NavigationStack</code>. The Navigation router will animate the current scene to and from that position when a new scene is pushed and then popped. By setting the crumb's start opacity to 0, when the user opens an email the 'inbox' scene will fade out as the 'mail' scene slides in from the right.
             </p>
             <pre><code class="language-jsx">&lt;NavigationStack crumbStyle={{type: 'alpha', startX: 0}}></code></pre>
-
+            <p>
+                We can make the 'inbox' scene shrink as well as fade by passing in multiple start styles.The Navigation router will run both animations together when a user opens an email.
+            </p>
 <pre><code class="language-jsx">&lt;NavigationStack crumbStyle={[
     {type: 'alpha', startX: 0},
     {type: 'scale', startX: 0.8, startY: 0.8}
