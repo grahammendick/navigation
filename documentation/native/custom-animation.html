@@ -51,52 +51,27 @@
         </div>
         <div id="article">
             <h1>Custom Animation (Android)</h1>
-            <h2>Pushing</h2>
             <p>
-                You can change the default Android push animation by creating an Android animation resource file. In our example email application, we want the 'mail' scene to slide in from the right when a user opens an email. Inside Android Studio, we right click the root of our project and choose 'New -> Android Resource File'. In the pop-up dialog, we enter a name of 'slide_in', pick 'Animation' from the resource type dropdown and enter 'anim' for the directory name. We configure our 'slide_in' animation as a translation of the scene's x coordinate from 100% to 0.
+                You can change the default Android animation that runs when a scene is pushed onto or popped off the stack. You provide the position of the scene when it's off the stack in the <code>unmountStyle</code> prop of the <code>NavigationStack</code>. The Navigation router uses the underlying native transition api to animate it into place. In our email application, we start the 'mail' scene off to the right of the screen. The Navigation router slides it when the user selects a mail and back out again when they return to their inbox.
             </p>
-            <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
-&lt;set xmlns:android="http://schemas.android.com/apk/res/android">
-  &lt;translate
-    android:duration="300"
-    android:fromXDelta="100%"
-    android:toXDelta="0" />
-&lt;/set></code></pre>
+            <pre><code class="language-jsx">&lt;NavigationStack unmountStyle={{type: 'translate', startX: '100%'}}></code></pre>
             <p>
-                To get this animation to play when the mail scene starts mounting, we pass a function to the <code>unmountStyle</code> prop of the <code>NavigationStack</code> component in <code>App.js</code>. When we navigate to the 'mail' <code>State</code>, the Navigation router calls this function and we return the name of our animation resource file.
+                You can also specify the position of the scene when it's hidden in the stack using the <code>crumbStyle</code> prop of the <code>NavigationStack</code>. The Navigation router will animate the current scene to and from that position when a new scene is pushed and then popped. By setting the crumb's start opacity to 0, when the user opens an email the 'inbox' scene fades out as the 'mail' scene slides in from the right.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationStack unmountStyle={from => from ? 'slide_in' : null}></code></pre>
-            <h2>Popping</h2>
+            <pre><code class="language-jsx">&lt;NavigationStack crumbStyle={{type: 'alpha', startX: 0}}></code></pre>
             <p>
-                Changing the default pop animation is similar to the way you change the push animation. In our email example, we want to slide the 'mail' scene back out to the right when a user returns to their inbox. We create an animation resource file called 'slide_out'. It’s the same as 'slide_in' but with the x coordinate values reversed, so that the scene goes back out the way it came in.
+                We can make the 'inbox' scene shrink as well as fade by passing in multiple start styles.The Navigation router runs both animations together when a user opens an email.
             </p>
-            <pre><code class="language-jsx">&lt;?xml version="1.0" encoding="utf-8"?>
-&lt;set xmlns:android="http://schemas.android.com/apk/res/android">
-  &lt;translate
-    android:duration="300"
-    android:fromXDelta="0"
-    android:toXDelta="100%" />
-&lt;/set></code></pre>
+<pre><code class="language-jsx">&lt;NavigationStack crumbStyle={[
+    {type: 'alpha', startX: 0},
+    {type: 'scale', startX: 0.8, startY: 0.8}
+  ]}></code></pre>
             <p>
-                When we navigate back from the 'mail' <code>State</code>, the Navigation router calls the <code>unmountStyle</code> function again. This time the <code>from</code> parameter it passes in is false. We return our resource file name and Android slides the scene out as it unmounts.
+                The <code>Scene</code> component also has <code>unmountStyle</code> and <code>crumbStyle</code> props so you can have different animations for different scenes. In our email application, we want every scene to slide in from the right apart from the 'compose' scene. To make it slide up from the bottom of the screen we configure a special <code>unmountStyle</code> for just the 'compose' scene.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationStack unmountStyle={from => from ? 'slide_in' : 'slide_out'}></code></pre>
-            <h2>Animating Crumbs</h2>
-            <p>
-                When you push a new scene onto the stack, you can animate the outgoing scene as well as the incoming one. We want to fade out the 'inbox' scene when the user opens an email and fade it back in when they return to their inbox. We create two animation resource files. One called 'fade_out' that changes the scene's alpha value from 1 to 0, and another called 'fade_in' that changes it back again.
-            </p>
-            <p>
-                The Navigation router calls the function assigned to the <code>crumbStyle</code> prop to find out how to animate the 'inbox' scene. When the user opens an email the Navigation router calls the function passing in 'false' and, when the user returns to their inbox, it calls the function again with 'true'.
-            </p>
-            <pre><code class="language-jsx">&lt;NavigationStack
-    unmountStyle={from => from ? 'slide_in' : 'slide_out'}
-    crumbStyle={from => from ? 'fade_in' : 'fade_out'}></code></pre>
-            <h2 id="material-transitions">Material Motion Transitions</h2>
-            <p>
-                You can also use the built-in <a href="https://m3.material.io/styles/motion/transitions/transition-patterns">Motion Transitions</a> provided by Android's Material library (not supported before React Native 0.73). In our email app, we use a shared axis transition to emphasise the relationship between the inbox and the open mail. By configuring them at the <code>Scene</code> level we override the default animations we've configured for the <code>NavigationStack</code>. The other types of transition are 'elevationScale', 'fadeThrough', 'fade' and 'hold'.
-            </p>
-            <pre><code class="language-jsx">&lt;Scene stateKey="inbox" crumbStyle={from => ({type: 'sharedAxis'})}>&lt;Inbox />&lt;/Scene>
-&lt;Scene stateKey="mail" unmountStyle={from => ({type: 'sharedAxis'})}>&lt;Mail />&lt;/Scene></code></pre>
+            <pre><code class="language-jsx">&lt;Scene stateKey="compose" unmountStyle={{type: 'translate', startY: '100%'}}>
+  &lt;Compose />
+&lt;/Scene></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
