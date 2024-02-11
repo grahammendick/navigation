@@ -6,6 +6,52 @@ declare global {
     interface Location {}
 }
 
+type TranslateAnimation = {
+    type: 'translate',
+    duration?: number,
+    fromX?: number | string,
+    toX?: number | string,
+    startX?: number | string,
+    fromY?: number | string,
+    toY?: number | string,
+    startY?: number | string,
+};
+
+type ScaleAnimation = {
+    type: 'scale',
+    duration?: number,
+    fromX?: number | string,
+    toX?: number | string,
+    startX?: number | string,
+    fromY?: number | string,
+    toY?: number | string,
+    startY?: number | string,
+    pivotX?: number | string,
+    pivotY?: number | string
+};
+
+type AlphaAnimation = {
+    type: 'alpha',
+    duration?: number,
+    from?: number,
+    to?: number,
+    start?: number,
+};
+
+type RotateAnimation = {
+    type: 'rotate',
+    duration?: number,
+    from?: number,
+    to?: number,
+    start?: number,
+    pivotX?: number | string,
+    pivotY?: number | string
+};
+
+type Animation = TranslateAnimation | ScaleAnimation | AlphaAnimation | RotateAnimation;
+
+type Transition = { type: 'sharedAxis', axis?: 'x' | 'y' | 'z' } | { type: 'elevationScale' | 'fade' | 'fadeThrough' | 'hold' } | Animation | Animation[] | { duration?: number, items: Animation[] };
+
 /**
  * Defines the Navigation Stack Props contract
  */
@@ -22,13 +68,11 @@ export interface NavigationStackProps {
      * The Scene's to and from crumb trail style
      * @platform android
      */
-    crumbStyle?: (from: boolean, state: State, data: any, crumbs: Crumb[], nextState?: State, nextData?: any) =>
-        string | { type: 'sharedAxis', axis?: 'x' | 'y' | 'z' } | { type: 'elevationScale' | 'fade' | 'fadeThrough' | 'hold' };
+    crumbStyle?: ((from: boolean, state: State, data: any, crumbs: Crumb[], nextState?: State, nextData?: any) => string | Transition) | Transition;
     /**
      * The Scene's to and from unmount style
      */
-    unmountStyle?: (from: boolean, state: State, data: any, crumbs: Crumb[]) =>
-        string | { type: 'sharedAxis', axis?: 'x' | 'y' | 'z' } | { type: 'elevationScale' | 'fade' | 'fadeThrough' | 'hold' };
+    unmountStyle?: ((from: boolean, state: State, data: any, crumbs: Crumb[]) => string | Transition) | Transition;
     /**
      * Indicates whether the Scene should display the tab bar
      * @platform ios
@@ -85,13 +129,11 @@ export class NavigationStack extends Component<NavigationStackProps> { }
      * A Scene's to and from crumb trail style
      * @platform android
      */
-    crumbStyle?: (from: boolean, data: any, crumbs: Crumb[], nextState?: State, nextData?: any) =>
-        string | { type: 'sharedAxis', axis?: 'x' | 'y' | 'z' } | { type: 'elevationScale' | 'fade' | 'fadeThrough' | 'hold' };
+    crumbStyle?: ((from: boolean, data: any, crumbs: Crumb[], nextState?: State, nextData?: any) => string | Transition) | Transition;
     /**
      * A Scene's to and from unmount style
      */
-    unmountStyle?: (from: boolean, data: any, crumbs: Crumb[]) =>
-        string | { type: 'sharedAxis', axis?: 'x' | 'y' | 'z' } | { type: 'elevationScale' | 'fade' | 'fadeThrough' | 'hold' };
+    unmountStyle?: ((from: boolean, data: any, crumbs: Crumb[]) => string | Transition) | Transition;
     /**
      * Indicates whether a Scene should display the tab bar
      * @platform ios

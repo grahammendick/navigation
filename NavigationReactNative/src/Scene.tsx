@@ -123,14 +123,32 @@ class Scene extends React.Component<SceneProps, SceneState> {
         if (crumb > 0) {
             var {state: prevState, data: prevData} = crumbs[crumb - 1];
             var prevCrumbs = crumbs.slice(0, crumb - 1);
-            var enterAnim = crumbStyle(true, prevState, prevData, prevCrumbs, state, data);
+            var enterAnim = typeof crumbStyle === 'function' ? crumbStyle(true, prevState, prevData, prevCrumbs, state, data) : crumbStyle;
         }
-        var exitAnim = unmountStyle(false, state, data, currentCrumbs);
+        var exitAnim = typeof unmountStyle === 'function' ? unmountStyle(false, state, data, currentCrumbs) : unmountStyle;
         var hidesTabBar = hidesTabBar(state, data, currentCrumbs);
         var backgroundColor = backgroundColor(state, data, currentCrumbs) || '#fff';
         var landscape = landscape(state, data, currentCrumbs);
-        const enterTrans = typeof enterAnim === 'string' ? null : enterAnim;
-        const exitTrans = typeof exitAnim === 'string' ? null : exitAnim;
+        let enterTrans = typeof enterAnim === 'string' ? null : enterAnim;
+        let exitTrans = typeof exitAnim === 'string' ? null : exitAnim;
+        enterTrans = !Array.isArray(enterTrans) ? enterTrans : {items: enterTrans};
+        exitTrans = !Array.isArray(exitTrans) ? exitTrans : {items: exitTrans};
+        const convertEnterTrans = ({start, startX, fromX, startY, fromY, pivotX, pivotY, items, ...rest}) => ({
+            from: start,
+            fromX: (startX ?? fromX) !== undefined ? '' + (startX ?? fromX) : undefined,
+            fromY: (startY ?? fromY) !== undefined ? '' + (startY ?? fromY) : undefined,
+            pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest,
+            items: items?.map(convertEnterTrans),
+        })
+        const convertExitTrans = ({start, startX, toX, startY, toY, pivotX, pivotY, items, ...rest}) => ({
+            to: start,
+            toX: (startX ?? toX) !== undefined ? '' + (startX ?? toX) : undefined,
+            toY: (startY ?? toY) !== undefined ? '' + (startY ?? toY) : undefined,
+            pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest,
+            items: items?.map(convertExitTrans),
+        });
+        enterTrans = enterTrans ? convertEnterTrans(enterTrans) : null;
+        exitTrans = exitTrans ? convertExitTrans(exitTrans) : null;
         enterAnim = !enterTrans ? enterAnim : null;
         exitAnim = !exitTrans ? exitAnim : null;
         return {enterAnim, exitAnim, enterTrans, exitTrans, hidesTabBar, backgroundColor, landscape};

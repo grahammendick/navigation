@@ -70,8 +70,8 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cru
     }
     const sceneProps = ({key}: State) => firstLink ? allScenes[key].props : null;
     const returnOrCall = (item, ...args) => typeof item !== 'function' ? item : item(...args);
-    const unmountStyle = (from, state, ...rest) => sceneProps(state)?.unmountStyle ? sceneProps(state)?.unmountStyle(from, ...rest) : unmountStyleStack(from, state, ...rest);
-    const crumbStyle = (from, state, ...rest) => sceneProps(state)?.crumbStyle ? sceneProps(state)?.crumbStyle(from, ...rest) : crumbStyleStack(from, state, ...rest);
+    const unmountStyle = (from, state, ...rest) => sceneProps(state)?.unmountStyle ? returnOrCall(sceneProps(state)?.unmountStyle, from, ...rest) : returnOrCall(unmountStyleStack, from, state, ...rest);
+    const crumbStyle = (from, state, ...rest) => sceneProps(state)?.crumbStyle ? returnOrCall(sceneProps(state)?.crumbStyle, from, ...rest) : returnOrCall(crumbStyleStack, from, state, ...rest);
     const hidesTabBar = (state, ...rest) => sceneProps(state)?.hidesTabBar ? returnOrCall(sceneProps(state)?.hidesTabBar, ...rest) : hidesTabBarStack(state, ...rest);
     const getSharedElement = (state, ...rest) => sceneProps(state)?.sharedElement ? returnOrCall(sceneProps(state)?.sharedElement, ...rest) : getSharedElementStack(state, ...rest);
     const getSharedElements = (state, ...rest) => sceneProps(state)?.sharedElements ? returnOrCall(sceneProps(state)?.sharedElements, ...rest) : getSharedElementsStack(state, ...rest);
@@ -104,8 +104,26 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cru
         }
         const containerTransform = typeof sharedElements === 'string';
         sharedElements = containerTransform && sharedElements ? [sharedElements] : sharedElements;
-        const enterTrans = typeof enterAnim === 'string' ? null : enterAnim;
-        const exitTrans = typeof exitAnim === 'string' ? null : exitAnim;
+        let enterTrans = typeof enterAnim === 'string' ? null : enterAnim;
+        let exitTrans = typeof exitAnim === 'string' ? null : exitAnim;
+        enterTrans = !Array.isArray(enterTrans) ? enterTrans : {items: enterTrans};
+        exitTrans = !Array.isArray(exitTrans) ? exitTrans : {items: exitTrans};
+        const convertEnterTrans = ({start, startX, fromX, startY, fromY, pivotX, pivotY, items, ...rest}) => ({
+            from: start,
+            fromX: (startX ?? fromX) !== undefined ? '' + (startX ?? fromX) : undefined,
+            fromY: (startY ?? fromY) !== undefined ? '' + (startY ?? fromY) : undefined,
+            pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest,
+            items: items?.map(convertEnterTrans),
+        })
+        const convertExitTrans = ({start, startX, toX, startY, toY, pivotX, pivotY, items, ...rest}) => ({
+            to: start,
+            toX: (startX ?? toX) !== undefined ? '' + (startX ?? toX) : undefined,
+            toY: (startY ?? toY) !== undefined ? '' + (startY ?? toY) : undefined,
+            pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest,
+            items: items?.map(convertExitTrans),
+        });
+        enterTrans = enterTrans ? convertEnterTrans(enterTrans) : null;
+        exitTrans = exitTrans ? convertExitTrans(exitTrans) : null;
         enterAnim = !enterTrans ? enterAnim : null;
         exitAnim = !exitTrans ? exitAnim : null;
         const enterAnimOff = enterAnim === '';

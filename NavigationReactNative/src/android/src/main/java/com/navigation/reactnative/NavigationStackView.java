@@ -10,6 +10,7 @@ import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
@@ -51,6 +52,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     private Activity mainActivity;
     protected String enterAnim;
     protected String exitAnim;
+    protected Animation enterAnimation;
+    protected Animation exitAnimation;
     protected Transition enterTrans;
     protected Transition exitTrans;
     protected ReadableArray sharedElementNames;
@@ -122,6 +125,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             int exit = getAnimationResourceId(currentActivity, exitAnim, android.R.attr.activityOpenExitAnimation);
             if (exit == 0 && exitAnim != null)
                 exit = getAnimationResourceId(currentActivity, null, android.R.attr.activityOpenExitAnimation);
+            SceneFragment prevFragment = null;
             for(int i = 0; i < crumb - currentCrumb; i++) {
                 int nextCrumb = currentCrumb + i + 1;
                 String key = keys.getString(nextCrumb);
@@ -134,10 +138,13 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 Pair[] sharedElements = null;
                 if (nextCrumb > 0) {
                     String prevKey = keys.getString(nextCrumb - 1);
-                    SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(prevKey);
+                    if (prevFragment == null)
+                        prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(prevKey);
                     if (prevFragment != null) {
                         prevFragment.setExitTransition(exitTrans);
+                        prevFragment.exitAnimation = exitAnimation;
                         prevFragment.setReenterTransition(scene.enterTrans);
+                        prevFragment.reenterAnimation = scene.enterAnimation;
                         sharedElements = getSharedElements(currentCrumb, crumb, prevFragment);
                     }
                 }
@@ -149,13 +156,16 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 }
                 boolean nonAnimatedEnter = oldCrumb == -1 || ((sharedElements != null || exitTrans != null) && enterTrans == null);
                 boolean nonAnimatedPopEnter = (sharedElements != null || scene.exitTrans != null) && scene.enterTrans == null;
-                fragmentTransaction.setCustomAnimations(!nonAnimatedEnter ? enter : 0, exit, !nonAnimatedPopEnter ? popEnter : 0, popExit);
+                fragmentTransaction.setCustomAnimations(!nonAnimatedEnter ? (enterAnimation != null ? 0 : enter) : 0, exitAnimation != null ? 0 : exit, !nonAnimatedPopEnter ? (scene.enterAnimation != null ? -1 : popEnter) : 0, scene.exitAnimation != null ? -1 : popExit);
                 SceneFragment fragment = new SceneFragment(scene, getSharedElementSet(sharedElementNames), containerTransform);
                 fragment.setEnterTransition(enterTrans);
+                fragment.enterAnimation = !nonAnimatedEnter ? enterAnimation : null;
                 fragment.setReturnTransition(scene.exitTrans);
+                fragment.returnAnimation = scene.exitAnimation;
                 fragmentTransaction.replace(getId(), fragment, key);
                 fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
                 fragmentTransaction.commit();
+                prevFragment = fragment;
             }
         }
         if (crumb == currentCrumb && !oldKey.equals(keys.getString(crumb))) {
@@ -167,10 +177,24 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             int popEnter = getAnimationResourceId(currentActivity, scene.enterAnim, android.R.attr.activityCloseEnterAnimation);
             int popExit = getAnimationResourceId(currentActivity, scene.exitAnim, android.R.attr.activityCloseExitAnimation);
             FragmentManager fragmentManager = fragment.getChildFragmentManager();
+            SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKey);
+            if (prevFragment != null) {
+                prevFragment.setExitTransition(exitTrans);
+                prevFragment.exitAnimation = exitAnimation;
+                prevFragment.setReenterTransition(scene.enterTrans);
+                prevFragment.reenterAnimation = scene.enterAnimation;
+            }
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setReorderingAllowed(true);
-            fragmentTransaction.setCustomAnimations(enter, exit, popEnter, popExit);
-            fragmentTransaction.replace(getId(), new SceneFragment(scene, null, containerTransform), key);
+            boolean nonAnimatedEnter = exitTrans != null && enterTrans == null;
+            boolean nonAnimatedPopEnter = scene.exitTrans != null && scene.enterTrans == null;
+            fragmentTransaction.setCustomAnimations(!nonAnimatedEnter ? (enterAnimation != null ? 0 : enter) : 0, exitAnimation != null ? 0 : exit, !nonAnimatedPopEnter ? (scene.enterAnimation != null ? -1 : popEnter) : 0, scene.exitAnimation != null ? -1 : popExit);
+            SceneFragment fragment = new SceneFragment(scene, null, containerTransform);
+            fragment.setEnterTransition(enterTrans);
+            fragment.enterAnimation = !nonAnimatedEnter ? enterAnimation : null;
+            fragment.setReturnTransition(scene.exitTrans);
+            fragment.returnAnimation = scene.exitAnimation;
+            fragmentTransaction.replace(getId(), fragment, key);
             fragmentTransaction.addToBackStack(String.valueOf(crumb));
             fragmentTransaction.commit();
         }

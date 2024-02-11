@@ -19,6 +19,10 @@ import java.util.concurrent.TimeUnit;
 
 public class SceneFragment extends Fragment {
     private SceneView scene;
+    protected Animation enterAnimation;
+    protected Animation returnAnimation;
+    protected Animation exitAnimation;
+    protected Animation reenterAnimation;
 
     public SceneFragment() {
         super();
@@ -47,8 +51,8 @@ public class SceneFragment extends Fragment {
     @Nullable
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        if (nextAnim != 0 && enter) {
-            Animation anim = AnimationUtils.loadAnimation(getContext(), nextAnim);
+        if ((nextAnim != 0 || enterAnimation != null) && enter) {
+            Animation anim = nextAnim == 0 ? enterAnimation : (nextAnim == -1 ? reenterAnimation : AnimationUtils.loadAnimation(getContext(), nextAnim));
             anim.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -66,9 +70,11 @@ public class SceneFragment extends Fragment {
             });
             return anim;
         }
-        if (nextAnim == 0 && enter && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+        if ((nextAnim == 0 && enterAnimation == null) && enter && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
             ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
         }
+        if (nextAnim == 0 && exitAnimation != null && !enter) return exitAnimation;
+        if (nextAnim == -1 && returnAnimation != null) return returnAnimation;
         return super.onCreateAnimation(transit, enter, nextAnim);
     }
 
