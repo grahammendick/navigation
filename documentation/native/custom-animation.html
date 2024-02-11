@@ -52,7 +52,7 @@
         <div id="article">
             <h1>Custom Animation (Android)</h1>
             <p>
-                You can change the default Android animation that runs when a screen is pushed onto or popped off the stack. You provide the position of the screen when it's off the stack in the <code>unmountStyle</code> prop of the <code>NavigationStack</code>. The Navigation router uses the underlying native transition api to animate it into place. In our email application, we start the mail scene off to the right of the screen. The Navigation slides it when the user selects a mail and back out again when they return to their inbox.
+                You can change the default Android animation that runs when a scene is pushed onto or popped off the stack. You provide the position of the scene when it's off the stack in the <code>unmountStyle</code> prop of the <code>NavigationStack</code>. The Navigation router uses the underlying native transition api to animate it into place. In our email application, we start the 'mail' scene off to the right of the screen. The Navigation slides it when the user selects a mail and back out again when they return to their inbox.
             </p>
             <pre><code class="language-jsx">&lt;NavigationStack unmountStyle={{type: 'translate', startX: '100%'}}></code></pre>
 
