@@ -56,7 +56,7 @@
             </p>
             <pre><code class="language-jsx">&lt;NavigationStack unmountStyle={{type: 'translate', startX: '100%'}}></code></pre>
             <p>
-                You can also specify the position of the scene when it's hidden in the stack using the <code>crumbStyle</code> prop of the <code>NavigationStack</code>. The Navigation router will animate the current scene to and from that position when a new scene is pushed and then popped. By setting the crumb's start opacity to 0, when the user opens an email the 'inbox' scene will fade out as the 'mail' scene slides in from the right.
+                You can also specify the position of the scene when it's hidden in the stack using the <code>crumbStyle</code> prop of the <code>NavigationStack</code>. The Navigation router will animate the current scene to and from that position when a new scene is pushed and then popped. By setting the crumb's start opacity to 0, when the user opens an email the 'inbox' scene fades out as the 'mail' scene slides in from the right.
             </p>
             <pre><code class="language-jsx">&lt;NavigationStack crumbStyle={{type: 'alpha', startX: 0}}></code></pre>
             <p>
@@ -67,7 +67,7 @@
     {type: 'scale', startX: 0.8, startY: 0.8}
   ]}></code></pre>
             <p>
-                The <code>Scene</code> component also has <code>unmountStyle</code> and <code>crumbStyle</code> props so you can have different animations for different scenes. In our email application, we want every scene to slide in from the right apart from the 'compose' scene. It should slide up from the bottom of the screen so we configure a special <code>unmountStyle</code> for just the 'compose' scene.
+                The <code>Scene</code> component also has <code>unmountStyle</code> and <code>crumbStyle</code> props so you can have different animations for different scenes. In our email application, we want every scene to slide in from the right apart from the 'compose' scene. To make it slide up from the bottom of the screen we configure a special <code>unmountStyle</code> for just the 'compose' scene.
             </p>
             <pre><code class="language-jsx">&lt;Scene stateKey="compose" unmountStyle={{type: 'translate', startY: '100%'}}>
   &lt;Compose />
