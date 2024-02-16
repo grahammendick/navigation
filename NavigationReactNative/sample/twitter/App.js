@@ -1,6 +1,6 @@
 import React from 'react';
-import {StateNavigator} from 'navigation';
-import {NavigationHandler} from 'navigation-react';
+import { StateNavigator } from 'navigation';
+import { NavigationHandler } from 'navigation-react';
 import Home from './Home';
 import Notifications from './Notifications';
 import Tabs from './Tabs';
@@ -9,18 +9,22 @@ import Timeline from './Timeline';
 import { NavigationStack, Scene } from 'navigation-react-native';
 
 const stateNavigator = new StateNavigator([
-  {key: 'tabs'},
-  {key: 'home'},
-  {key: 'notifications'},
-  {key: 'tweet', trackCrumbTrail: true},
-  {key: 'timeline', trackCrumbTrail: true}
+  { key: 'tabs' },
+  { key: 'home' },
+  { key: 'notifications' },
+  { key: 'tweet', trackCrumbTrail: true },
+  { key: 'timeline', trackCrumbTrail: true }
 ]);
 
 const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
     <NavigationStack
-      crumbStyle={from => from ? 'scale_in' : 'scale_out'}
-      unmountStyle={from => from ? 'slide_in' : 'slide_out'}
+      crumbStyle={[
+        { type: 'alpha', start: 0 },
+        { type: 'scale', startX: 0.8, startY: 0.8 },
+        { type: 'translate', startX: '5%' },
+      ]}
+      unmountStyle={{ type: 'translate', startX: '100%' }}
     >
       <Scene stateKey="tabs"><Tabs /></Scene>
       <Scene stateKey="home"><Home /></Scene>
