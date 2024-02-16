@@ -19,8 +19,12 @@ const stateNavigator = new StateNavigator([
 const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
     <NavigationStack
-      crumbStyle={from => from ? 'scale_in' : 'scale_out'}
-      unmountStyle={from => from ? 'slide_in' : 'slide_out'}
+      crumbStyle={[
+        { type: 'alpha', start: 0 },
+        { type: 'scale', startX: 0.8, startY: 0.8 },
+        { type: 'translate', startX: '5%' },
+      ]}
+      unmountStyle={{ type: 'translate', startX: '100%' }}
     >
       <Scene stateKey="tabs"><Tabs /></Scene>
       <Scene stateKey="home"><Home /></Scene>

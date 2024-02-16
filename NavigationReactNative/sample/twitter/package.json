@@ -12,7 +12,7 @@
   "dependencies": {
     "navigation": "^6.1.0",
     "navigation-react": "^4.5.1",
-    "navigation-react-native": "^8.14.0",
+    "navigation-react-native": "^9.13.0",
     "react": "18.0.0",
     "react-native": "^0.69.9"
   },
