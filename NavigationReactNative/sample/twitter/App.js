@@ -1,6 +1,6 @@
 import React from 'react';
-import { StateNavigator } from 'navigation';
-import { NavigationHandler } from 'navigation-react';
+import {StateNavigator} from 'navigation';
+import {NavigationHandler} from 'navigation-react';
 import Home from './Home';
 import Notifications from './Notifications';
 import Tabs from './Tabs';
@@ -9,11 +9,11 @@ import Timeline from './Timeline';
 import { NavigationStack, Scene } from 'navigation-react-native';
 
 const stateNavigator = new StateNavigator([
-  { key: 'tabs' },
-  { key: 'home' },
-  { key: 'notifications' },
-  { key: 'tweet', trackCrumbTrail: true },
-  { key: 'timeline', trackCrumbTrail: true }
+  {key: 'tabs'},
+  {key: 'home'},
+  {key: 'notifications'},
+  {key: 'tweet', trackCrumbTrail: true},
+  {key: 'timeline', trackCrumbTrail: true}
 ]);
 
 const App = () => (
