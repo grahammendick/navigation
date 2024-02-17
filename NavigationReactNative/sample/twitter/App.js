@@ -6,7 +6,7 @@ import Notifications from './Notifications';
 import Tabs from './Tabs';
 import Tweet from './Tweet';
 import Timeline from './Timeline';
-import { NavigationStack, Scene } from 'navigation-react-native';
+import {NavigationStack, Scene} from 'navigation-react-native';
 
 const stateNavigator = new StateNavigator([
   {key: 'tabs'},
@@ -20,11 +20,11 @@ const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
     <NavigationStack
       crumbStyle={[
-        { type: 'alpha', start: 0 },
-        { type: 'scale', startX: 0.8, startY: 0.8 },
-        { type: 'translate', startX: '5%' },
+        {type: 'alpha', start: 0},
+        {type: 'scale', startX: 0.8, startY: 0.8},
+        {type: 'translate', startX: '5%'},
       ]}
-      unmountStyle={{ type: 'translate', startX: '100%' }}
+      unmountStyle={{type: 'translate', startX: '100%'}}
     >
       <Scene stateKey="tabs"><Tabs /></Scene>
       <Scene stateKey="home"><Home /></Scene>
