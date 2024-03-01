@@ -45,6 +45,29 @@
     }
 }
 
+- (void)setSystemName:(NSInteger)systemItem
+{
+    UITabBarItem *oldTab = self.tab;
+    
+    if (systemItem != NSNotFound) {
+        NSString *systemSymbolName = [self getSystemSymbolNameForSystemItem:systemItem];
+        UIImage *symbolImage = [UIImage systemImageNamed:systemSymbolName withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:30 weight:UIImageSymbolWeightRegular]];
+        self.tab = [[UITabBarItem alloc] initWithTitle:nil image:symbolImage tag:0];
+    } else {
+        self.tab = [[UITabBarItem alloc] init];
+        self.tab.image = _image;
+        self.tab.title = _title;
+    }
+    
+    self.tab.badgeValue = oldTab.badgeValue;
+    if (@available(iOS 10.0, *)) {
+        self.tab.badgeColor = oldTab.badgeColor;
+    }
+    
+    self.navigationController.tabBarItem = self.tab;
+}
+
+
 - (void)setImage:(RCTImageSource *)source
 {
     if (!!source) {
