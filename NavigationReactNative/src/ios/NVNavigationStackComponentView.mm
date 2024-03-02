@@ -26,6 +26,8 @@ using namespace facebook::react;
     NSMutableDictionary *_scenes;
     NSInteger _nativeEventCount;
     UINavigationController *_oldNavigationController;
+    NSMutableArray<NVTransition*> *_enterTransitions;
+    NSMutableArray<NVTransition*> *_exitTransitions;
     BOOL _navigated;
     BOOL _presenting;
 }
@@ -36,6 +38,8 @@ using namespace facebook::react;
         static const auto defaultProps = std::make_shared<const NVNavigationStackProps>();
         _props = defaultProps;
         _scenes = [[NSMutableDictionary alloc] init];
+        _enterTransitions = [[NSMutableArray alloc] init];
+        _exitTransitions = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -65,6 +69,20 @@ using namespace facebook::react;
     }
     self.keys = [keysArr copy];
     _enterAnimOff = newViewProps.enterAnimOff;
+    [_enterTransitions removeAllObjects];
+    [_exitTransitions removeAllObjects];
+    for (auto i = 0; i < newViewProps.enterTrans.items.size(); i++) {
+        NVNavigationStackEnterTransItemsStruct transItem = newViewProps.enterTrans.items[i];
+        NVTransition *transition = [[NVTransition alloc] init];
+        transition.type = [[NSString alloc] initWithUTF8String: transItem.type.c_str()];
+        [_enterTransitions addObject:transition];
+    }
+    for (auto i = 0; i < newViewProps.exitTrans.items.size(); i++) {
+        NVNavigationStackExitTransItemsStruct transItem = newViewProps.exitTrans.items[i];
+        NVTransition *transition = [[NVTransition alloc] init];
+        transition.type = [[NSString alloc] initWithUTF8String: transItem.type.c_str()];
+        [_exitTransitions addObject:transition];
+    }
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
     if (!_navigated) {
         [self navigate];
@@ -89,7 +107,7 @@ using namespace facebook::react;
     }
     BOOL animate = !self.enterAnimOff;
     if (crumb > currentCrumb) {
-        NSMutableArray *controllers = [[NSMutableArray alloc] init];
+        NSMutableArray<NVSceneController*> *controllers = [[NSMutableArray alloc] init];
         for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
             NSInteger nextCrumb = currentCrumb + i + 1;
             NVSceneComponentView *scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:nextCrumb]];
@@ -103,6 +121,8 @@ using namespace facebook::react;
             controller.navigationItem.title = scene.title;
             [controllers addObject:controller];
         }
+        [controllers lastObject].enterTrans = _enterTransitions;
+        ((NVSceneController *) _navigationController.topViewController).exitTrans = _exitTransitions;
         __block BOOL completed = NO;
         [self completeNavigation:^{
             if (completed) return;

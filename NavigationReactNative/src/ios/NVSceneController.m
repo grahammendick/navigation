@@ -5,6 +5,17 @@
 #import "NVStatusBarView.h"
 #import <React/UIView+React.h>
 
+@implementation NVTransition
+
+- (id)init
+{
+    if (self = [super init]) {
+    }
+    return self;
+}
+
+@end
+
 @implementation NVSceneController
 {
     UIView<NVScene> *_view;

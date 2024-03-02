@@ -12,11 +12,22 @@
 
 @end
 
+@interface NVTransition : NSObject
+
+@property (nonatomic, copy) NSString *type;
+@property (nonatomic, assign) int duration;
+@property (nonatomic, assign) float fromX;
+- (id)init;
+
+@end
+
 @interface NVSceneController : UIViewController
 
 @property (nonatomic, copy) void (^boundsDidChangeBlock)(NVSceneController *controller);
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, assign) BOOL statusBarHidden;
+@property (nonatomic, copy) NSArray<NVTransition*> *enterTrans;
+@property (nonatomic, copy) NSArray<NVTransition*> *exitTrans;
 
 - (id)initWithScene:(UIView *)view;
 - (UIView<NVNavigationBar> *) findNavigationBar;
