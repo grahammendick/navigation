@@ -18,6 +18,8 @@ using namespace facebook::react;
 {
     BOOL _notifiedPeekable;
     UIViewController *_oldViewController;
+    NSMutableArray<NVTransition*> *_enterTransitions;
+    NSMutableArray<NVTransition*> *_exitTransitions;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -25,6 +27,8 @@ using namespace facebook::react;
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const NVSceneProps>();
         _props = defaultProps;
+        _enterTransitions = [[NSMutableArray alloc] init];
+        _exitTransitions = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -48,6 +52,22 @@ using namespace facebook::react;
     _crumb = [NSNumber numberWithInt:newViewProps.crumb];
     _title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
     _hidesTabBar = newViewProps.hidesTabBar;
+    [_enterTransitions removeAllObjects];
+    [_exitTransitions removeAllObjects];
+    for (auto i = 0; i < newViewProps.enterTrans.items.size(); i++) {
+        NVSceneEnterTransItemsStruct transItem = newViewProps.enterTrans.items[i];
+        NVTransition *transition = [[NVTransition alloc] init];
+        transition.type = [[NSString alloc] initWithUTF8String: transItem.type.c_str()];
+        [_enterTransitions addObject:transition];
+    }
+    for (auto i = 0; i < newViewProps.exitTrans.items.size(); i++) {
+        NVSceneExitTransItemsStruct transItem = newViewProps.exitTrans.items[i];
+        NVTransition *transition = [[NVTransition alloc] init];
+        transition.type = [[NSString alloc] initWithUTF8String: transItem.type.c_str()];
+        [_exitTransitions addObject:transition];
+    }
+    self.enterTrans = _enterTransitions;
+    self.exitTrans = _exitTransitions;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self didUpdate];
     });

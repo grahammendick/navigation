@@ -108,9 +108,10 @@ using namespace facebook::react;
     BOOL animate = !self.enterAnimOff;
     if (crumb > currentCrumb) {
         NSMutableArray<NVSceneController*> *controllers = [[NSMutableArray alloc] init];
+        NVSceneComponentView *scene;
         for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
             NSInteger nextCrumb = currentCrumb + i + 1;
-            NVSceneComponentView *scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:nextCrumb]];
+            scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:nextCrumb]];
             if (!![scene superview])
                 return;
             NVSceneController *controller = [[NVSceneController alloc] initWithScene:scene];
@@ -122,7 +123,9 @@ using namespace facebook::react;
             [controllers addObject:controller];
         }
         [controllers lastObject].enterTrans = _enterTransitions;
+        [controllers lastObject].popExitTrans = scene.exitTrans;
         ((NVSceneController *) _navigationController.topViewController).exitTrans = _exitTransitions;
+        ((NVSceneController *) _navigationController.topViewController).popEnterTrans = scene.enterTrans;
         __block BOOL completed = NO;
         [self completeNavigation:^{
             if (completed) return;

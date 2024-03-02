@@ -28,6 +28,8 @@
 @property (nonatomic, assign) BOOL statusBarHidden;
 @property (nonatomic, copy) NSArray<NVTransition*> *enterTrans;
 @property (nonatomic, copy) NSArray<NVTransition*> *exitTrans;
+@property (nonatomic, copy) NSArray<NVTransition*> *popEnterTrans;
+@property (nonatomic, copy) NSArray<NVTransition*> *popExitTrans;
 
 - (id)initWithScene:(UIView *)view;
 - (UIView<NVNavigationBar> *) findNavigationBar;
