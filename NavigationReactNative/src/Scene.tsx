@@ -133,18 +133,24 @@ class Scene extends React.Component<SceneProps, SceneState> {
         let exitTrans = typeof exitAnim === 'string' ? null : exitAnim;
         enterTrans = !Array.isArray(enterTrans) ? enterTrans : {items: enterTrans};
         exitTrans = !Array.isArray(exitTrans) ? exitTrans : {items: exitTrans};
-        const convertEnterTrans = ({start, startX, fromX, startY, fromY, pivotX, pivotY, items, ...rest}) => ({
-            from: start,
+        const convertEnterTrans = ({type, axis, start, from, startX, fromX, startY, fromY, pivotX, pivotY, items, duration}) => ({
+            type, axis,
+            from: (start ?? from) !== undefined ? '' + (start ?? from) : undefined,
             fromX: (startX ?? fromX) !== undefined ? '' + (startX ?? fromX) : undefined,
             fromY: (startY ?? fromY) !== undefined ? '' + (startY ?? fromY) : undefined,
-            pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest,
+            pivotX: pivotX !== undefined ? '' + pivotX : undefined,
+            pivotY: pivotY !== undefined ? '' + pivotY : undefined,
+            duration: duration !== undefined ? '' + duration : undefined,
             items: items?.map(convertEnterTrans),
         })
-        const convertExitTrans = ({start, startX, toX, startY, toY, pivotX, pivotY, items, ...rest}) => ({
-            to: start,
+        const convertExitTrans = ({type, axis, start, to, startX, toX, startY, toY, pivotX, pivotY, items, duration}) => ({
+            type, axis,
+            to: (start ?? to) !== undefined ? '' + (start ?? to) : undefined,
             toX: (startX ?? toX) !== undefined ? '' + (startX ?? toX) : undefined,
             toY: (startY ?? toY) !== undefined ? '' + (startY ?? toY) : undefined,
-            pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined, ...rest,
+            pivotX: pivotX !== undefined ? '' + pivotX : undefined,
+            pivotY: pivotY !== undefined ? '' + pivotY : undefined,
+            duration: duration !== undefined ? '' + duration : undefined,
             items: items?.map(convertExitTrans),
         });
         enterTrans = enterTrans ? convertEnterTrans(enterTrans) : null;

@@ -113,7 +113,8 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cru
             from: (start ?? from) !== undefined ? '' + (start ?? from) : undefined,
             fromX: (startX ?? fromX) !== undefined ? '' + (startX ?? fromX) : undefined,
             fromY: (startY ?? fromY) !== undefined ? '' + (startY ?? fromY) : undefined,
-            pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined,
+            pivotX: pivotX !== undefined ? '' + pivotX : undefined,
+            pivotY: pivotY !== undefined ? '' + pivotY : undefined,
             duration: duration !== undefined ? '' + duration : undefined,
             items: items?.map(convertEnterTrans),
         })
@@ -122,7 +123,8 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cru
             to: (start ?? to) !== undefined ? '' + (start ?? to) : undefined,
             toX: (startX ?? toX) !== undefined ? '' + (startX ?? toX) : undefined,
             toY: (startY ?? toY) !== undefined ? '' + (startY ?? toY) : undefined,
-            pivotX: pivotX !== undefined ? '' + pivotX : undefined, pivotY: pivotY !== undefined ? '' + pivotY : undefined,
+            pivotX: pivotX !== undefined ? '' + pivotX : undefined,
+            pivotY: pivotY !== undefined ? '' + pivotY : undefined,
             duration: duration !== undefined ? '' + duration : undefined,
             items: items?.map(convertExitTrans),
         });
