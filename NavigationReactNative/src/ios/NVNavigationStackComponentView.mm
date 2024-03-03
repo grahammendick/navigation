@@ -56,6 +56,7 @@ using namespace facebook::react;
         _navigationController.navigationBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         [self addSubview:_navigationController.view];
         _navigationController.delegate = self;
+        _navigationController.interactivePopGestureRecognizer.delegate = self;
     }
 }
 
@@ -237,6 +238,11 @@ using namespace facebook::react;
         && (((NVSceneController *) fromVC).popExitTrans.count > 0 || ((NVSceneController *) toVC).popEnterTrans.count > 0))
         return [NVSceneTransitioning alloc];
     return nil;
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    return YES;
 }
 
 - (void)prepareForRecycle

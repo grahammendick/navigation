@@ -6,7 +6,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NVNavigationStackComponentView : RCTViewComponentView <UINavigationControllerDelegate>
+@interface NVNavigationStackComponentView : RCTViewComponentView <UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) NVStackController *navigationController;
 
