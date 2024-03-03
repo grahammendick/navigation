@@ -5,6 +5,7 @@
 #import "NVSceneComponentView.h"
 #import "NVSceneController.h"
 #import "NVSceneComponentView.h"
+#import "NVSceneTransitioning.h"
 #import "NVNavigationBarComponentView.h"
 
 #import <react/renderer/components/navigationreactnative/ComponentDescriptors.h>
@@ -225,6 +226,17 @@ using namespace facebook::react;
             .eventCount = static_cast<int>(eventCount)
         });
 
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC
+{
+    if (operation == UINavigationControllerOperationPush
+        && (((NVSceneController *) fromVC).exitTrans.count > 0 || ((NVSceneController *) toVC).enterTrans.count > 0))
+        return [NVSceneTransitioning alloc];
+    if (operation == UINavigationControllerOperationPop
+        && (((NVSceneController *) fromVC).popExitTrans.count > 0 || ((NVSceneController *) toVC).popEnterTrans.count > 0))
+        return [NVSceneTransitioning alloc];
+    return nil;
 }
 
 - (void)prepareForRecycle
