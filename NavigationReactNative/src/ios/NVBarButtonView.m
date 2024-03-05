@@ -53,6 +53,18 @@
     }
 }
 
+- (void)setSystemName:(UIImage *)systemName setButtonStyle:(UIBarButtonItemStyle)buttonStyle
+{
+    if (systemName != nil) {
+        if (buttonStyle == 0) {
+            buttonStyle = UIBarButtonItemStylePlain;
+        }
+        
+        self.button = [[UIBarButtonItem alloc] initWithImage:systemName style:buttonStyle target:self action:@selector(buttonPressed)];
+    }
+}
+
+
 - (void)setSystemItem:(UIBarButtonSystemItem)systemItem
 {
     if (systemItem != NSNotFound) {
