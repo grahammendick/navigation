@@ -58,28 +58,36 @@ using namespace facebook::react;
         self.tab.title = title;
     
     if (systemName.length) {
-        // Handle SF Symbols
-        if (@available(iOS 13.0, *)) {
-            UIImageSymbolConfiguration *configuration = [UIImageSymbolConfiguration configurationWithPointSize:newViewProps.fontSize weight:UIImageSymbolWeightRegular];
-            UIImage *symbolImage = [UIImage systemImageNamed:symbolName withConfiguration:configuration];
-            self.tab = [[UITabBarItem alloc] initWithTitle:title image:symbolImage tag:0];
-        } else {
-            // Fallback for earlier iOS versions or non-SF Symbols use case
-            self.tab = [[UITabBarItem alloc] init];
-            self.tab.image = _image;
+        UIImageSymbolWeight weight = UIImageSymbolWeightUnspecified;
+          UIImageSymbolScale scale = UIImageSymbolScaleDefault;
+          CGFloat size = [UIFont systemFontSize];
+        
+        UIImageSymbolConfiguration *configuration = [UIImageSymbolConfiguration configurationWithPointSize:size weight:weight scale:scale];
+
+        UIImage *symbolImage = [UIImage imageNamed:systemName inBundle:NULL withConfiguration:configuration];
+        
+        if(!symbolImage) {
+            symbolImage = [UIImage systemImageNamed:systemName withConfiguration:configuration];
         }
-    }  else if (systemItemVal.length) {
-        // Handle built-in system items
+        self.tab = [[UITabBarItem alloc] initWithTitle:title image:symbolImage tag:0];
+    } else {
+        self.tab = [[UITabBarItem alloc] init];
+        self.tab.image = _image;
+    }
+    
+    if (systemItemVal.length) {
         NSInteger systemItem = [self systemItem:systemItemVal];
         if (systemItem != -1) {
             self.tab = [[UITabBarItem alloc] initWithTabBarSystemItem:(UITabBarSystemItem) systemItem tag:0];
         }
-    } else if (![uri length]) {
-        _image = nil;
-        _tab.image = nil;
     } else {
         self.tab = [[UITabBarItem alloc] init];
         self.tab.image = _image;
+    }
+    
+    if (![uri length]) {
+        _image = nil;
+        _tab.image = nil;
     }
     
     self.navigationController.tabBarItem = self.tab;
@@ -108,11 +116,6 @@ using namespace facebook::react;
     if (self.tab.badgeValue != badge)
         self.tab.badgeValue = !!badge.length ? badge : nil;
     self.tab.badgeColor = RCTUIColorFromSharedColor(newViewProps.badgeColor);
-    NSString *uri = [[NSString alloc] initWithUTF8String:newViewProps.image.uri.c_str()];
-    if (![uri length]) {
-        _image = nil;
-        _tab.image = nil;
-    }
     [super updateProps:props oldProps:oldProps];
 }
 

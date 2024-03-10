@@ -63,22 +63,25 @@
 - (void)setSystemName:(NSString *)systemName
 {
     UITabBarItem *oldTab = self.tab;
-    UITabBarItem *newTab = nil;
     
-    if (systemName.length) {
+    if (systemName != nil) {
         if (@available(iOS 13.0, *)) {
-            UIImageSymbolConfiguration *configuration = [UIImageSymbolConfiguration configurationWithPointSize:[self.fontSize doubleValue]];
+            UIImageSymbolWeight weight = UIImageSymbolWeightUnspecified;
+            UIImageSymbolScale scale = UIImageSymbolScaleDefault;
+            CGFloat size = [UIFont systemFontSize];
+            
+            UIImageSymbolConfiguration *configuration = [UIImageSymbolConfiguration configurationWithPointSize:size weight:weight scale:scale];
+            
             UIImage *symbolImage = [UIImage systemImageNamed:systemName withConfiguration:configuration];
-            newTab = [[UITabBarItem alloc] initWithTitle:nil image:symbolImage tag:0];
+            
+            if (symbolImage) {
+                self.tab = [[UITabBarItem alloc] initWithTitle:_title image:symbolImage tag:0];
+            } else {
+                NSLog(@"Error: Unable to load image for systemName %@", systemName);
+            }
         }
     }
     
-    if (!newTab) {
-        newTab = [[UITabBarItem alloc] init];
-        newTab.image = _image;
-        newTab.title = _title;
-    }
-
     self.tab.badgeValue = oldTab.badgeValue;
     if (@available(iOS 10.0, *)) {
         self.tab.badgeColor = oldTab.badgeColor;
