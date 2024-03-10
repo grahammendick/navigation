@@ -63,6 +63,21 @@ using namespace facebook::react;
         }
         self.navigationController.tabBarItem = self.tab;
     }
+    
+    if (oldViewProps.systemName != newViewProps.systemName ) {
+        NSString *systemNameVal = [[NSString alloc] initWithUTF8String: newViewProps.systemName.c_str()];
+        
+        if (systemNameVal.length) {
+            NSInteger systemName = [self systemName:systemNameVal];
+            if (systemName != -1) {
+                self.tab = [[UITabBarItem alloc] initWithTitle:nil image:nil tag:0];
+                           self.tab.image = [UIImage systemImageNamed:systemNameVal];
+            }
+        } else {
+            self.tab = [[UITabBarItem alloc] init];
+            self.tab.image = _image;
+        }
+    }
     NSString *title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
     _fontFamily = [[NSString alloc] initWithUTF8String: newViewProps.fontFamily.c_str()];
     _fontFamily = _fontFamily.length ? _fontFamily : nil;
@@ -112,6 +127,13 @@ using namespace facebook::react;
     if ([val isEqualToString:@"downloads"]) return UITabBarSystemItemDownloads;
     if ([val isEqualToString:@"most-recent"]) return UITabBarSystemItemMostRecent;
     if ([val isEqualToString:@"most-viewed"]) return UITabBarSystemItemMostViewed;
+    return -1;
+}
+
+- (NSInteger)systemName:(NSString *)val
+{
+    if ([val length] > 0) return val;
+    
     return -1;
 }
 
