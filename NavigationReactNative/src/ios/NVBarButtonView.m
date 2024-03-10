@@ -53,17 +53,17 @@
     }
 }
 
-- (void)setSystemName:(UIImage *)systemName setButtonStyle:(UIBarButtonItemStyle)buttonStyle
+- (void)setSystemName:(NSString *)systemName
 {
-    if (systemName != nil) {
-        if (buttonStyle == 0) {
-            buttonStyle = UIBarButtonItemStylePlain;
+    if (systemName.length) {
+        if (@available(iOS 13.0, *)) {
+            UIImage *image = [UIImage systemImageNamed:systemName];
+            self.button = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(buttonPressed)];
         }
         
-        self.button = [[UIBarButtonItem alloc] initWithImage:systemName style:buttonStyle target:self action:@selector(buttonPressed)];
+        self.button.accessibilityIdentifier = _testID;
     }
 }
-
 
 - (void)setSystemItem:(UIBarButtonSystemItem)systemItem
 {

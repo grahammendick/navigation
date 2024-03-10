@@ -49,36 +49,41 @@ using namespace facebook::react;
     [self ensureTabBarItem];
     const auto &oldViewProps = *std::static_pointer_cast<NVTabBarItemProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<NVTabBarItemProps const>(props);
-    if (oldViewProps.systemItem != newViewProps.systemItem) {
-        NSString *systemItemVal = [[NSString alloc] initWithUTF8String: newViewProps.systemItem.c_str()];
-        if (systemItemVal.length) {
-            NSInteger systemItem = [self systemItem:systemItemVal];
-            if (systemItem != -1) {
-                self.tab = [[UITabBarItem alloc] initWithTabBarSystemItem:(UITabBarSystemItem) systemItem tag:0];
-            }
-        }
-        else {
+    NSString *systemItemVal = [[NSString alloc] initWithUTF8String:newViewProps.systemItem.c_str()];
+    NSString *systemName = [[NSString alloc] initWithUTF8String:newViewProps.systemName.c_str()];
+    NSString *uri = [[NSString alloc] initWithUTF8String:newViewProps.image.uri.c_str()];
+    NSString *title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
+    
+    if (self.tab.title != title)
+        self.tab.title = title;
+    
+    if (systemName.length) {
+        // Handle SF Symbols
+        if (@available(iOS 13.0, *)) {
+            UIImageSymbolConfiguration *configuration = [UIImageSymbolConfiguration configurationWithPointSize:newViewProps.fontSize weight:UIImageSymbolWeightRegular];
+            UIImage *symbolImage = [UIImage systemImageNamed:symbolName withConfiguration:configuration];
+            self.tab = [[UITabBarItem alloc] initWithTitle:title image:symbolImage tag:0];
+        } else {
+            // Fallback for earlier iOS versions or non-SF Symbols use case
             self.tab = [[UITabBarItem alloc] init];
             self.tab.image = _image;
         }
-        self.navigationController.tabBarItem = self.tab;
+    }  else if (systemItemVal.length) {
+        // Handle built-in system items
+        NSInteger systemItem = [self systemItem:systemItemVal];
+        if (systemItem != -1) {
+            self.tab = [[UITabBarItem alloc] initWithTabBarSystemItem:(UITabBarSystemItem) systemItem tag:0];
+        }
+    } else if (![uri length]) {
+        _image = nil;
+        _tab.image = nil;
+    } else {
+        self.tab = [[UITabBarItem alloc] init];
+        self.tab.image = _image;
     }
     
-    if (oldViewProps.systemName != newViewProps.systemName ) {
-        NSString *systemNameVal = [[NSString alloc] initWithUTF8String: newViewProps.systemName.c_str()];
-        
-        if (systemNameVal.length) {
-            NSInteger systemName = [self systemName:systemNameVal];
-            if (systemName != -1) {
-                self.tab = [[UITabBarItem alloc] initWithTitle:nil image:nil tag:0];
-                           self.tab.image = [UIImage systemImageNamed:systemNameVal];
-            }
-        } else {
-            self.tab = [[UITabBarItem alloc] init];
-            self.tab.image = _image;
-        }
-    }
-    NSString *title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
+    self.navigationController.tabBarItem = self.tab;
+    
     _fontFamily = [[NSString alloc] initWithUTF8String: newViewProps.fontFamily.c_str()];
     _fontFamily = _fontFamily.length ? _fontFamily : nil;
     _fontWeight = [[NSString alloc] initWithUTF8String: newViewProps.fontWeight.c_str()];
@@ -87,8 +92,6 @@ using namespace facebook::react;
     _fontStyle = _fontStyle.length ? _fontStyle : nil;
     _fontSize = @(newViewProps.fontSize);
     _fontSize = [_fontSize intValue] >= 0 ? _fontSize : nil;
-    if (self.tab.title != title)
-        self.tab.title = title;
     NSString *testID = [[NSString alloc] initWithUTF8String: newViewProps.testID.c_str()];
     if (self.tab.accessibilityIdentifier != testID)
         self.tab.accessibilityIdentifier = testID;
@@ -130,17 +133,10 @@ using namespace facebook::react;
     return -1;
 }
 
-- (NSInteger)systemName:(NSString *)val
-{
-    if ([val length] > 0) return val;
-    
-    return -1;
-}
-
 - (void)onPress
 {
     std::static_pointer_cast<NVTabBarItemEventEmitter const>(_eventEmitter)
-        ->onPress(NVTabBarItemEventEmitter::OnPress{});
+    ->onPress(NVTabBarItemEventEmitter::OnPress{});
 }
 
 - (void)prepareForRecycle
@@ -156,44 +152,44 @@ using namespace facebook::react;
 
 - (void)updateState:(const facebook::react::State::Shared &)state oldState:(const facebook::react::State::Shared &)oldState
 {
-  auto _state = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(state);
-  auto _oldState = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(oldState);
-  auto data = _state->getData();
-  bool havePreviousData = _oldState != nullptr;
-  auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
-    if (request) {
-      return &request->getObserverCoordinator();
-    } else {
-      return nullptr;
+    auto _state = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(state);
+    auto _oldState = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(oldState);
+    auto data = _state->getData();
+    bool havePreviousData = _oldState != nullptr;
+    auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
+        if (request) {
+            return &request->getObserverCoordinator();
+        } else {
+            return nullptr;
+        }
+    };
+    if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
+        self.imageCoordinator = getCoordinator(&data.getImageRequest());
     }
-  };
-  if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
-    self.imageCoordinator = getCoordinator(&data.getImageRequest());
-  }
 }
 
 - (void)setImageCoordinator:(const ImageResponseObserverCoordinator *)coordinator
 {
-  if (_imageCoordinator) {
-    _imageCoordinator->removeObserver(_imageResponseObserverProxy);
-  }
-  _imageCoordinator = coordinator;
-  if (_imageCoordinator) {
-    _imageCoordinator->addObserver(_imageResponseObserverProxy);
-  }
+    if (_imageCoordinator) {
+        _imageCoordinator->removeObserver(_imageResponseObserverProxy);
+    }
+    _imageCoordinator = coordinator;
+    if (_imageCoordinator) {
+        _imageCoordinator->addObserver(_imageResponseObserverProxy);
+    }
 }
 
 #pragma mark - RCTImageResponseDelegate
 
 - (void)didReceiveImage:(UIImage *)image metadata:(id)metadata fromObserver:(void const *)observer
 {
-  if (observer == &_imageResponseObserverProxy) {
-      if ([image isEqual:_tab.image]) {
-        return;
-      }
-      _image = image;
-      _tab.image = image;
-  }
+    if (observer == &_imageResponseObserverProxy) {
+        if ([image isEqual:_tab.image]) {
+            return;
+        }
+        _image = image;
+        _tab.image = image;
+    }
 }
 
 - (void)didReceiveProgress:(float)progress fromObserver:(void const *)observer
@@ -225,13 +221,13 @@ using namespace facebook::react;
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
-  return concreteComponentDescriptorProvider<NVTabBarItemComponentDescriptor>();
+    return concreteComponentDescriptorProvider<NVTabBarItemComponentDescriptor>();
 }
 
 @end
 
 Class<RCTComponentViewProtocol> NVTabBarItemCls(void)
 {
-  return NVTabBarItemComponentView.class;
+    return NVTabBarItemComponentView.class;
 }
 #endif

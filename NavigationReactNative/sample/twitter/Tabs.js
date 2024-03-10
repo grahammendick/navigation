@@ -31,7 +31,7 @@ export default () => {
         primary={true}
         barTintColor={Platform.OS === 'android' ? null : 'rgb(247,247,247)'}
         selectedTintColor={Platform.OS === 'android' ? '#1da1f2' : null}>
-        <TabBarItem title="Home" systemName="house">
+        <TabBarItem title="Home" systemName="homepodmini.fill">
           {Platform.OS === 'ios' ? (
             <NavigationHandler stateNavigator={homeNavigator}>
               <NavigationStack>
@@ -52,7 +52,7 @@ export default () => {
         </TabBarItem>
         <TabBarItem
           title="Notifications"
-          image={require('./notifications.png')}
+          systemName="bell.fill"
           badge={!notified ? getNotifications().length : null}
           onPress={() => {
             setNotified(true);

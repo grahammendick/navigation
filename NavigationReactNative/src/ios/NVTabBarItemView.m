@@ -60,23 +60,31 @@
     }
 }
 
-- (void)setSystemName:(UIImage *)systemName
+- (void)setSystemName:(NSString *)systemName
 {
     UITabBarItem *oldTab = self.tab;
-    if (systemName != nil) {
-        self.tab = [[UITabBarItem alloc] initWithTitle:_title image:systemName  tag:0];
-    } else {
-        self.tab = [[UITabBarItem alloc] init];
-        self.tab.image = _image;
-        self.tab.title = _title;
+    UITabBarItem *newTab = nil;
+    
+    if (systemName.length) {
+        if (@available(iOS 13.0, *)) {
+            UIImageSymbolConfiguration *configuration = [UIImageSymbolConfiguration configurationWithPointSize:[self.fontSize doubleValue]];
+            UIImage *symbolImage = [UIImage systemImageNamed:systemName withConfiguration:configuration];
+            newTab = [[UITabBarItem alloc] initWithTitle:nil image:symbolImage tag:0];
+        }
     }
+    
+    if (!newTab) {
+        newTab = [[UITabBarItem alloc] init];
+        newTab.image = _image;
+        newTab.title = _title;
+    }
+
     self.tab.badgeValue = oldTab.badgeValue;
     if (@available(iOS 10.0, *)) {
         self.tab.badgeColor = oldTab.badgeColor;
     }
     self.navigationController.tabBarItem = self.tab;
 }
-
 
 - (void)setSystemItem:(UITabBarSystemItem)systemItem
 {
