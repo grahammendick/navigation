@@ -17,7 +17,6 @@ const TabBarItem = ({
   children,
   title,
   image,
-  systemName,
   systemItem,
   badge,
   index,
@@ -42,14 +41,14 @@ const TabBarItem = ({
   }, [freeze, freezable]);
   useEffect(() => {
     setFreeze(false);
-  }, [image, systemItem, systemName, badge, title]);
+  }, [image, systemItem, badge, title]);
+
   if (!loaded && selected) setLoaded(true);
   image =
-    typeof image === "string"
-      ? Platform.OS === "ios"
-        ? null
-        : { uri: image }
+    typeof image === "string" && Platform.OS === "android"
+      ? { uri: image }
       : image;
+
   return (
     <>
       <BackButton
@@ -69,8 +68,11 @@ const TabBarItem = ({
           selected={selected}
           title={title}
           badge={badge != null ? "" + badge : undefined}
-          image={Image.resolveAssetSource(image)}
-          systemName={systemName || ""}
+          image={
+            typeof image === "string" && Platform.OS === "ios"
+              ? image
+              : Image.resolveAssetSource(image)
+          }
           systemItem={systemItem || ""}
           style={styles.tabBarItem}
           onPress={(event) => {

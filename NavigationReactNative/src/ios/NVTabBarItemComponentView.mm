@@ -50,27 +50,32 @@ using namespace facebook::react;
     const auto &oldViewProps = *std::static_pointer_cast<NVTabBarItemProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<NVTabBarItemProps const>(props);
     NSString *systemItemVal = [[NSString alloc] initWithUTF8String:newViewProps.systemItem.c_str()];
-    NSString *systemName = [[NSString alloc] initWithUTF8String:newViewProps.systemName.c_str()];
+    NSString *symbol = [[NSString alloc] initWithUTF8String:newViewProps.image.c_str()];
     NSString *uri = [[NSString alloc] initWithUTF8String:newViewProps.image.uri.c_str()];
     NSString *title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
     
     if (self.tab.title != title)
         self.tab.title = title;
     
-    if (systemName.length) {
+    if (![uri length]) {
+        _image = nil;
+        _tab.image = nil;
+    }
+    
+    if (symbol.length) {
         UIImageSymbolWeight weight = UIImageSymbolWeightUnspecified;
           UIImageSymbolScale scale = UIImageSymbolScaleDefault;
           CGFloat size = [UIFont systemFontSize];
         
         UIImageSymbolConfiguration *configuration = [UIImageSymbolConfiguration configurationWithPointSize:size weight:weight scale:scale];
 
-        UIImage *symbolImage = [UIImage imageNamed:systemName inBundle:NULL withConfiguration:configuration];
+        UIImage *symbolImage = [UIImage imageNamed:symbol inBundle:NULL withConfiguration:configuration];
         
         if(!symbolImage) {
-            symbolImage = [UIImage systemImageNamed:systemName withConfiguration:configuration];
+            symbolImage = [UIImage systemImageNamed:symbol withConfiguration:configuration];
         }
         self.tab = [[UITabBarItem alloc] initWithTitle:title image:symbolImage tag:0];
-    } else {
+    }  else {
         self.tab = [[UITabBarItem alloc] init];
         self.tab.image = _image;
     }
@@ -84,12 +89,7 @@ using namespace facebook::react;
         self.tab = [[UITabBarItem alloc] init];
         self.tab.image = _image;
     }
-    
-    if (![uri length]) {
-        _image = nil;
-        _tab.image = nil;
-    }
-    
+
     self.navigationController.tabBarItem = self.tab;
     
     _fontFamily = [[NSString alloc] initWithUTF8String: newViewProps.fontFamily.c_str()];

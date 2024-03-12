@@ -45,48 +45,38 @@
     }
 }
 
-- (void)setImage:(RCTImageSource *)source
+- (void)setImage:(id)source
 {
-    if (!!source) {
-        [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request size:source.size scale:source.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self -> _image = image;
-                self -> _tab.image = image;
-            });
-        }];
-    } else {
-        _image = nil;
-        _tab.image = nil;
-    }
-}
-
-- (void)setSystemName:(NSString *)systemName
-{
-    UITabBarItem *oldTab = self.tab;
-    
-    if (systemName != nil) {
-        if (@available(iOS 13.0, *)) {
+    if (source) {
+        if ([source isKindOfClass:[NSString class]]) {
+            // Handle SF Symbols
             UIImageSymbolWeight weight = UIImageSymbolWeightUnspecified;
             UIImageSymbolScale scale = UIImageSymbolScaleDefault;
             CGFloat size = [UIFont systemFontSize];
             
             UIImageSymbolConfiguration *configuration = [UIImageSymbolConfiguration configurationWithPointSize:size weight:weight scale:scale];
             
-            UIImage *symbolImage = [UIImage systemImageNamed:systemName withConfiguration:configuration];
+            NSString *symbolName = (NSString *)source;
+            UIImage *sfSymbol = [UIImage systemImageNamed:symbolName withConfiguration:configuration];
             
-            if (symbolImage) {
-                self.tab = [[UITabBarItem alloc] initWithTitle:_title image:symbolImage tag:0];
-            } else {
-                NSLog(@"Error: Unable to load image for systemName %@", systemName);
+            if (sfSymbol) {
+                _image = sfSymbol;
+                _tab.image = sfSymbol;
             }
+        } else if ([source isKindOfClass:[RCTImageSource class]]) {
+            // Handle images
+            RCTImageSource *imageSource = (RCTImageSource *)source;
+            [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:imageSource.request size:imageSource.size scale:imageSource.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self->_image = image;
+                    self->_tab.image = image;
+                });
+            }];
         }
+    } else {
+        _image = nil;
+        _tab.image = nil;
     }
-    
-    self.tab.badgeValue = oldTab.badgeValue;
-    if (@available(iOS 10.0, *)) {
-        self.tab.badgeColor = oldTab.badgeColor;
-    }
-    self.navigationController.tabBarItem = self.tab;
 }
 
 - (void)setSystemItem:(UITabBarSystemItem)systemItem
