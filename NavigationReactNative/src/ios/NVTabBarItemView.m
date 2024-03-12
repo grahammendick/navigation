@@ -49,15 +49,9 @@
 {
     if (source) {
         if ([source isKindOfClass:[NSString class]]) {
-            // Handle SF Symbols
-            UIImageSymbolWeight weight = UIImageSymbolWeightUnspecified;
-            UIImageSymbolScale scale = UIImageSymbolScaleDefault;
-            CGFloat size = [UIFont systemFontSize];
-            
-            UIImageSymbolConfiguration *configuration = [UIImageSymbolConfiguration configurationWithPointSize:size weight:weight scale:scale];
-            
+            // Handle SF Symbols            
             NSString *symbolName = (NSString *)source;
-            UIImage *sfSymbol = [UIImage systemImageNamed:symbolName withConfiguration:configuration];
+            UIImage *sfSymbol = [UIImage systemImageNamed:symbolName];
             
             if (sfSymbol) {
                 _image = sfSymbol;

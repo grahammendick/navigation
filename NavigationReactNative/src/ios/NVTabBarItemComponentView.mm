@@ -63,16 +63,10 @@ using namespace facebook::react;
     }
     
     if (symbol.length) {
-        UIImageSymbolWeight weight = UIImageSymbolWeightUnspecified;
-          UIImageSymbolScale scale = UIImageSymbolScaleDefault;
-          CGFloat size = [UIFont systemFontSize];
-        
-        UIImageSymbolConfiguration *configuration = [UIImageSymbolConfiguration configurationWithPointSize:size weight:weight scale:scale];
-
-        UIImage *symbolImage = [UIImage imageNamed:symbol inBundle:NULL withConfiguration:configuration];
+        UIImage *symbolImage = [UIImage imageNamed:symbol inBundle:NULL];
         
         if(!symbolImage) {
-            symbolImage = [UIImage systemImageNamed:symbol withConfiguration:configuration];
+            symbolImage = [UIImage systemImageNamed:symbol];
         }
         self.tab = [[UITabBarItem alloc] initWithTitle:title image:symbolImage tag:0];
     }  else {
