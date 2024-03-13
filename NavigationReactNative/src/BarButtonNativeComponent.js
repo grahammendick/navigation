@@ -1,8 +1,8 @@
 // @flow strict-local
 
-import type { ViewProps } from "react-native/Libraries/Components/View/ViewPropTypes";
-import type { HostComponent } from "react-native";
-import codegenNativeComponent from "react-native/Libraries/Utilities/codegenNativeComponent";
+import type {ViewProps} from 'react-native/Libraries/Components/View/ViewPropTypes';
+import type {HostComponent} from 'react-native';
+import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
@@ -15,7 +15,6 @@ type NativeProps = $ReadOnly<{|
   image: ImageSource,
   systemItem: string,
   systemName: string,
-  buttonStyle: string,
   tintColor: ColorValue,
   search: boolean,
   showActionView: boolean,
@@ -25,6 +24,7 @@ type NativeProps = $ReadOnly<{|
   onPress: BubblingEventHandler<null>,
 |}>;
 
-export default (codegenNativeComponent<NativeProps>("NVBarButton", {
-  interfaceOnly: true,
-}): HostComponent<NativeProps>);
+export default (codegenNativeComponent<NativeProps>(
+  'NVBarButton',
+  {interfaceOnly: true}
+): HostComponent<NativeProps>);
