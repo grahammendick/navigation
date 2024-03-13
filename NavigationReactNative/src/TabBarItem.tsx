@@ -27,7 +27,7 @@ const TabBarItem = ({selected, onPress, children, title, image, systemItem, badg
         setFreeze(false);
     }, [image, systemItem, badge, title]);
     if (!loaded && selected) setLoaded(true);
-    image = typeof image === 'string' && Platform.OS === 'android' ? { uri: image } : image;
+    image = typeof image === 'string' ? (Platform.OS === 'ios' ? null : {uri: image}) : image;
     return (
         <>
             <BackButton onPress={() => selected && backHandler.current.handleBack()} />
@@ -45,7 +45,7 @@ const TabBarItem = ({selected, onPress, children, title, image, systemItem, badg
                     selected={selected}
                     title={title}
                     badge={badge != null ? '' + badge : undefined}
-                    image={Platform.OS === 'ios' && typeof image === 'string' ? image : Image.resolveAssetSource(image)}
+                    image={Image.resolveAssetSource(image)}
                     systemItem={systemItem || ''}
                     style={styles.tabBarItem}
                     onPress={event => {

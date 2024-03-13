@@ -45,19 +45,16 @@
     }
 }
 
-- (void)setImage:(id)source
+- (void)setImage:(RCTImageSource *)source
 {
-    if (source) {
-        if ([source isKindOfClass:[NSString class]]) {
-            // Handle SF Symbols            
-            NSString *symbolName = (NSString *)source;
-            UIImage *sfSymbol = [UIImage systemImageNamed:symbolName];
-            
-            if (sfSymbol) {
-                _image = sfSymbol;
-                _tab.image = sfSymbol;
-            }
-        } else if ([source isKindOfClass:[RCTImageSource class]]) {
+    if (!!source) {
+        UIImage *sfSymbol = [UIImage systemImageNamed:[source.request.URL lastPathComponent]];
+        
+        if (sfSymbol) {
+            _image = sfSymbol;
+            _tab.image = sfSymbol;
+        } else {
+            NSLog(@"Loading image name, %@", source);
             // Handle images
             RCTImageSource *imageSource = (RCTImageSource *)source;
             [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:imageSource.request size:imageSource.size scale:imageSource.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
