@@ -2,13 +2,7 @@ import React, {useState, useMemo, useContext} from 'react';
 import {Platform} from 'react-native';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler, NavigationContext} from 'navigation-react';
-import {
-  NavigationStack,
-  Scene,
-  TabBar,
-  TabBarItem,
-  NavigationBar,
-} from 'navigation-react-native';
+import {NavigationStack, Scene, TabBar, TabBarItem, NavigationBar} from 'navigation-react-native';
 import Home from './Home';
 import Notifications from './Notifications';
 import Tweet from './Tweet';
@@ -17,7 +11,7 @@ import {getNotifications} from './data';
 
 const useStateNavigator = () => {
   const {stateNavigator} = useContext(NavigationContext);
-  return useMemo(() => new StateNavigator(stateNavigator), []);
+  return useMemo(() => new StateNavigator(stateNavigator), [])
 };
 
 export default () => {
@@ -27,53 +21,32 @@ export default () => {
   return (
     <>
       <NavigationBar hidden={true} />
-      <TabBar
-        primary={true}
-        barTintColor={Platform.OS === 'android' ? null : 'rgb(247,247,247)'}
-        selectedTintColor={Platform.OS === 'android' ? '#1da1f2' : null}>
-        <TabBarItem title="Home" systemName="homepodmini.fill">
-          {Platform.OS === 'ios' ? (
-            <NavigationHandler stateNavigator={homeNavigator}>
-              <NavigationStack>
-                <Scene stateKey="home">
-                  <Home />
-                </Scene>
-                <Scene stateKey="tweet">
-                  <Tweet />
-                </Scene>
-                <Scene stateKey="timeline">
-                  <Timeline />
-                </Scene>
-              </NavigationStack>
-            </NavigationHandler>
-          ) : (
-            <Home />
-          )}
+      <TabBar primary={true} barTintColor={Platform.OS === 'android' ? null : 'rgb(247,247,247)'} selectedTintColor={Platform.OS === 'android' ? '#1da1f2' : null}>
+        <TabBarItem title="Home" image={require('./home.png')}>
+          {Platform.OS === 'ios'
+            ? (<NavigationHandler stateNavigator={homeNavigator}>
+                <NavigationStack>
+                  <Scene stateKey="home"><Home /></Scene>
+                  <Scene stateKey="tweet"><Tweet /></Scene>
+                  <Scene stateKey="timeline"><Timeline /></Scene>
+                </NavigationStack>
+              </NavigationHandler>)
+            : <Home />}
         </TabBarItem>
         <TabBarItem
           title="Notifications"
-          systemName="bell.fill"
-          badge={!notified ? getNotifications().length : null}
-          onPress={() => {
-            setNotified(true);
-          }}>
-          {Platform.OS === 'ios' ? (
-            <NavigationHandler stateNavigator={notificationsNavigator}>
-              <NavigationStack>
-                <Scene stateKey="notifications">
-                  <Notifications />
-                </Scene>
-                <Scene stateKey="tweet">
-                  <Tweet />
-                </Scene>
-                <Scene stateKey="timeline">
-                  <Timeline />
-                </Scene>
-              </NavigationStack>
-            </NavigationHandler>
-          ) : (
-            <Notifications />
-          )}
+          image={require('./notifications.png')}
+          badge={!notified ? getNotifications().length : null} 
+          onPress={() => {setNotified(true)}}>
+          {Platform.OS === 'ios'
+            ? (<NavigationHandler stateNavigator={notificationsNavigator}>
+                <NavigationStack>
+                  <Scene stateKey="notifications"><Notifications /></Scene>
+                  <Scene stateKey="tweet"><Tweet /></Scene>
+                  <Scene stateKey="timeline"><Timeline /></Scene>
+                </NavigationStack>
+              </NavigationHandler>)
+            : <Notifications />}
         </TabBarItem>
       </TabBar>
     </>
