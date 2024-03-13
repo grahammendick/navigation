@@ -16,7 +16,7 @@ type NativeProps = $ReadOnly<{|
   badgeColor: ColorValue,
   image: string | ImageSource,
   systemItem: string,
-  onPress: BubblingEventHandler<null>,
+  onPress: BubblingEventHandler<null>
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(

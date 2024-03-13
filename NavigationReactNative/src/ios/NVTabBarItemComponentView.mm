@@ -133,7 +133,7 @@ using namespace facebook::react;
 - (void)onPress
 {
     std::static_pointer_cast<NVTabBarItemEventEmitter const>(_eventEmitter)
-->onPress(NVTabBarItemEventEmitter::OnPress{});
+        ->onPress(NVTabBarItemEventEmitter::OnPress{});
 }
 
 - (void)prepareForRecycle
@@ -218,7 +218,7 @@ using namespace facebook::react;
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
-return concreteComponentDescriptorProvider<NVTabBarItemComponentDescriptor>();
+  return concreteComponentDescriptorProvider<NVTabBarItemComponentDescriptor>();
 }
 
 @end
