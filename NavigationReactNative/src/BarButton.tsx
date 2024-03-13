@@ -20,7 +20,7 @@ const BarButton = React.forwardRef<any, any>(({image, systemItem, show, search =
             style={{position: 'absolute', width: actionBar ? undefined : size}}
             children={children}
             {...props} />
-      )
+    )
 })
 
 const NVBarButton = global.nativeFabricUIManager ? require('./BarButtonNativeComponent').default : requireNativeComponent('NVBarButton');
