@@ -54,7 +54,6 @@
             _image = sfSymbol;
             _tab.image = sfSymbol;
         } else {
-            NSLog(@"Loading image name, %@", source);
             // Handle images
             RCTImageSource *imageSource = (RCTImageSource *)source;
             [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:imageSource.request size:imageSource.size scale:imageSource.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
