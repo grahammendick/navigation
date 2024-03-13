@@ -14,7 +14,6 @@ type NativeProps = $ReadOnly<{|
   testID: string,
   image: ImageSource,
   systemItem: string,
-  systemName: string,
   tintColor: ColorValue,
   search: boolean,
   showActionView: boolean,

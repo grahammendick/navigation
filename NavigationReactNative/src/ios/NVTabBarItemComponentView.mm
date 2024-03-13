@@ -133,7 +133,7 @@ using namespace facebook::react;
 - (void)onPress
 {
     std::static_pointer_cast<NVTabBarItemEventEmitter const>(_eventEmitter)
-    ->onPress(NVTabBarItemEventEmitter::OnPress{});
+->onPress(NVTabBarItemEventEmitter::OnPress{});
 }
 
 - (void)prepareForRecycle
@@ -149,44 +149,44 @@ using namespace facebook::react;
 
 - (void)updateState:(const facebook::react::State::Shared &)state oldState:(const facebook::react::State::Shared &)oldState
 {
-    auto _state = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(state);
-    auto _oldState = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(oldState);
-    auto data = _state->getData();
-    bool havePreviousData = _oldState != nullptr;
-    auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
-        if (request) {
-            return &request->getObserverCoordinator();
-        } else {
-            return nullptr;
-        }
-    };
-    if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
-        self.imageCoordinator = getCoordinator(&data.getImageRequest());
+  auto _state = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(state);
+  auto _oldState = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(oldState);
+  auto data = _state->getData();
+  bool havePreviousData = _oldState != nullptr;
+  auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
+    if (request) {
+      return &request->getObserverCoordinator();
+    } else {
+      return nullptr;
     }
+  };
+  if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
+    self.imageCoordinator = getCoordinator(&data.getImageRequest());
+  }
 }
 
 - (void)setImageCoordinator:(const ImageResponseObserverCoordinator *)coordinator
 {
-    if (_imageCoordinator) {
-        _imageCoordinator->removeObserver(_imageResponseObserverProxy);
-    }
-    _imageCoordinator = coordinator;
-    if (_imageCoordinator) {
-        _imageCoordinator->addObserver(_imageResponseObserverProxy);
-    }
+  if (_imageCoordinator) {
+    _imageCoordinator->removeObserver(_imageResponseObserverProxy);
+  }
+  _imageCoordinator = coordinator;
+  if (_imageCoordinator) {
+    _imageCoordinator->addObserver(_imageResponseObserverProxy);
+  }
 }
 
 #pragma mark - RCTImageResponseDelegate
 
 - (void)didReceiveImage:(UIImage *)image metadata:(id)metadata fromObserver:(void const *)observer
 {
-    if (observer == &_imageResponseObserverProxy) {
-        if ([image isEqual:_tab.image]) {
-            return;
-        }
-        _image = image;
-        _tab.image = image;
-    }
+  if (observer == &_imageResponseObserverProxy) {
+      if ([image isEqual:_tab.image]) {
+        return;
+      }
+      _image = image;
+      _tab.image = image;
+  }
 }
 
 - (void)didReceiveProgress:(float)progress fromObserver:(void const *)observer
@@ -218,13 +218,13 @@ using namespace facebook::react;
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
-    return concreteComponentDescriptorProvider<NVTabBarItemComponentDescriptor>();
+return concreteComponentDescriptorProvider<NVTabBarItemComponentDescriptor>();
 }
 
 @end
 
 Class<RCTComponentViewProtocol> NVTabBarItemCls(void)
 {
-    return NVTabBarItemComponentView.class;
+  return NVTabBarItemComponentView.class;
 }
 #endif
