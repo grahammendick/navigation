@@ -14,7 +14,7 @@ type NativeProps = $ReadOnly<{|
   testID: string,
   badge: string,
   badgeColor: ColorValue,
-  image: string | ImageSource,
+  image: ImageSource,
   systemItem: string,
   onPress: BubblingEventHandler<null>
 |}>;
