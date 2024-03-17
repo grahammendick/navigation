@@ -94,6 +94,12 @@ using namespace facebook::react;
     if (![uri length]) {
         _image = nil;
         _tab.image = nil;
+    } else {
+        UIImage *systemSymbol = [UIImage systemImageNamed:[uri lastPathComponent]];
+        if (systemSymbol) {
+            _image = systemSymbol;
+            _tab.image = systemSymbol;
+        }
     }
     [super updateProps:props oldProps:oldProps];
 }
