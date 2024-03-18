@@ -53,18 +53,6 @@
     }
 }
 
-- (void)setSystemName:(NSString *)systemName
-{
-    if (systemName.length) {
-        if (@available(iOS 13.0, *)) {
-            UIImage *image = [UIImage systemImageNamed:systemName];
-            self.button = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(buttonPressed)];
-        }
-        
-        self.button.accessibilityIdentifier = _testID;
-    }
-}
-
 - (void)setSystemItem:(UIBarButtonSystemItem)systemItem
 {
     if (systemItem != NSNotFound) {
