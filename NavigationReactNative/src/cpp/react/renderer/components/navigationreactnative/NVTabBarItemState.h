@@ -21,6 +21,11 @@ class NVTabBarItemState final {
         imageRequest_(
             std::make_shared<ImageRequest>(std::move(imageRequest))){};
 
+  // Overloaded constructor without ImageRequest
+  NVTabBarItemState(
+      ImageSource const &imageSource)
+      : imageSource_(imageSource) {}
+
   NVTabBarItemState() = default;
 
   ImageSource getImageSource() const;

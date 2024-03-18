@@ -48,12 +48,21 @@
 - (void)setImage:(RCTImageSource *)source
 {
     if (!!source) {
-        [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request size:source.size scale:source.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self -> _image = image;
-                self -> _tab.image = image;
-            });
-        }];
+        UIImage *sfSymbol = [UIImage systemImageNamed:[source.request.URL lastPathComponent]];
+        
+        if (sfSymbol) {
+            _image = sfSymbol;
+            _tab.image = sfSymbol;
+        } else {
+            // Handle images
+            RCTImageSource *imageSource = (RCTImageSource *)source;
+            [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:imageSource.request size:imageSource.size scale:imageSource.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self->_image = image;
+                    self->_tab.image = image;
+                });
+            }];
+        }
     } else {
         _image = nil;
         _tab.image = nil;

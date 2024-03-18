@@ -26,10 +26,19 @@ void NVTabBarItemShadowNode::updateStateIfNeeded() {
 
   ensureUnsealed();
 
-  auto state = NVTabBarItemState{
-      newImageSource,
-      imageManager_->requestImage(newImageSource, getSurfaceId()),
-    };
+  if (newImageSource.uri.substr(0,5) != "file:" && newImageSource.uri.substr(0,5) != "http:" && newImageSource.uri.substr(0,6) != "https:") {
+      auto state = NVTabBarItemState{
+          newImageSource,
+        };
+      setStateData(std::move(state));
+  } else {
+      auto state = NVTabBarItemState{
+          newImageSource,
+          imageManager_->requestImage(newImageSource, getSurfaceId()),
+        };
+      setStateData(std::move(state));
+  }
+
   setStateData(std::move(state));
 }
 
