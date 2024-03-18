@@ -94,12 +94,6 @@ using namespace facebook::react;
     if (![uri length]) {
         _image = nil;
         _tab.image = nil;
-    } else {
-        UIImage *systemSymbol = [UIImage systemImageNamed:[uri lastPathComponent]];
-        if (systemSymbol) {
-            _image = systemSymbol;
-            _tab.image = systemSymbol;
-        }
     }
     [super updateProps:props oldProps:oldProps];
 }
@@ -144,15 +138,22 @@ using namespace facebook::react;
   auto _oldState = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(oldState);
   auto data = _state->getData();
   bool havePreviousData = _oldState != nullptr;
-  auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
-    if (request) {
-      return &request->getObserverCoordinator();
-    } else {
-      return nullptr;
-    }
-  };
   if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
-    self.imageCoordinator = getCoordinator(&data.getImageRequest());
+      UIImage *systemSymbol = [UIImage systemImageNamed:[[NSString alloc] initWithUTF8String:data.getImageSource().uri.c_str()]];
+      if (systemSymbol) {
+          _image = systemSymbol;
+          _tab.image = systemSymbol;
+      } else {
+          auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
+            if (request) {
+              return &request->getObserverCoordinator();
+            } else {
+              return nullptr;
+            }
+          };
+          self.imageCoordinator = getCoordinator(&data.getImageRequest());
+      }
+    
   }
 }
 
