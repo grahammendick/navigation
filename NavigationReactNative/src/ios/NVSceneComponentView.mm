@@ -56,14 +56,12 @@ using namespace facebook::react;
     [_exitTransitions removeAllObjects];
     for (auto i = 0; i < newViewProps.enterTrans.items.size(); i++) {
         NVSceneEnterTransItemsStruct transItem = newViewProps.enterTrans.items[i];
-        NVTransition *transition = [[NVTransition alloc] init];
-        transition.type = [[NSString alloc] initWithUTF8String: transItem.type.c_str()];
+        NVTransition *transition = [[NVTransition alloc] initWithType:[[NSString alloc] initWithUTF8String: transItem.type.c_str()]];
         [_enterTransitions addObject:transition];
     }
     for (auto i = 0; i < newViewProps.exitTrans.items.size(); i++) {
         NVSceneExitTransItemsStruct transItem = newViewProps.exitTrans.items[i];
-        NVTransition *transition = [[NVTransition alloc] init];
-        transition.type = [[NSString alloc] initWithUTF8String: transItem.type.c_str()];
+        NVTransition *transition = [[NVTransition alloc] initWithType:[[NSString alloc] initWithUTF8String: transItem.type.c_str()]];
         [_exitTransitions addObject:transition];
     }
     self.enterTrans = _enterTransitions;

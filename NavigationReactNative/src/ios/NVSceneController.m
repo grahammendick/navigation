@@ -7,9 +7,10 @@
 
 @implementation NVTransition
 
-- (id)init
+- (id)initWithType:(NSString *)type;
 {
     if (self = [super init]) {
+        _type = type;
     }
     return self;
 }

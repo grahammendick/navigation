@@ -17,7 +17,12 @@
 @property (nonatomic, copy) NSString *type;
 @property (nonatomic, assign) int duration;
 @property (nonatomic, assign) float fromX;
-- (id)init;
+@property (nonatomic, assign) float fromY;
+@property (nonatomic, assign) float toX;
+@property (nonatomic, assign) float toY;
+@property (nonatomic, assign) float from;
+@property (nonatomic, assign) float to;
+- (id)initWithType:(NSString *)type;
 
 @end
 
