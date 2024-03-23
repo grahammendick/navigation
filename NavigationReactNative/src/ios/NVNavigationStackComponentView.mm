@@ -76,6 +76,9 @@ using namespace facebook::react;
     for (auto i = 0; i < newViewProps.enterTrans.items.size(); i++) {
         NVNavigationStackEnterTransItemsStruct transItem = newViewProps.enterTrans.items[i];
         NVTransition *transition = [[NVTransition alloc] initWithType:[[NSString alloc] initWithUTF8String: transItem.type.c_str()]];
+        transition.x = [[[NSString alloc] initWithUTF8String: transItem.fromX.c_str()] floatValue];
+        transition.y = [[[NSString alloc] initWithUTF8String: transItem.fromY.c_str()] floatValue];
+        transition.x = [[[NSString alloc] initWithUTF8String: transItem.from.c_str()] floatValue];
         [_enterTransitions addObject:transition];
     }
     for (auto i = 0; i < newViewProps.exitTrans.items.size(); i++) {

@@ -16,12 +16,10 @@
 
 @property (nonatomic, copy) NSString *type;
 @property (nonatomic, assign) int duration;
-@property (nonatomic, assign) float fromX;
-@property (nonatomic, assign) float fromY;
-@property (nonatomic, assign) float toX;
-@property (nonatomic, assign) float toY;
-@property (nonatomic, assign) float from;
-@property (nonatomic, assign) float to;
+@property (nonatomic, assign) float x;
+@property (nonatomic, assign) BOOL xPercent;
+@property (nonatomic, assign) float y;
+@property (nonatomic, assign) BOOL yPercent;
 - (id)initWithType:(NSString *)type;
 
 @end
