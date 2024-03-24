@@ -255,9 +255,9 @@ using namespace facebook::react;
     NVSceneController *fromScene = ((NVSceneController *) fromVC);
     NVSceneController *toScene = ((NVSceneController *) toVC);
     if (operation == UINavigationControllerOperationPush && (fromScene.exitTrans.count > 0 || toScene.enterTrans.count > 0))
-        return [NVSceneTransitioning alloc];
+        return [[NVSceneTransitioning alloc] initWithDirection:YES];
     if (operation == UINavigationControllerOperationPop && (fromScene.popExitTrans.count > 0 || toScene.popEnterTrans.count > 0))
-        return [NVSceneTransitioning alloc];
+        return [[NVSceneTransitioning alloc] initWithDirection:NO];
     return nil;
 }
 

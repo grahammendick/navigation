@@ -4,22 +4,38 @@
 #import <UIKit/UIKit.h>
 
 @implementation NVSceneTransitioning
+{
+    BOOL _push;
+}
+
+- (id)initWithDirection:(BOOL)push;
+{
+    if (self = [super init]) {
+        _push = push;
+    }
+    return self;
+}
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     UIView *containerView = [transitionContext containerView];
     UIView *toScene = [transitionContext viewForKey:UITransitionContextToViewKey];
+    UIView *fromScene = [transitionContext viewForKey:UITransitionContextFromViewKey];
     NVSceneController *toSceneController = [transitionContext
                 viewControllerForKey:UITransitionContextToViewControllerKey];
     NVSceneController *fromSceneController = [transitionContext
                 viewControllerForKey:UITransitionContextFromViewControllerKey];
-    [containerView addSubview:toScene];
-    toSceneController.view.transform = [self transform:toSceneController.enterTrans sceneController:toSceneController bounds:transitionContext.containerView.bounds];
+    if (_push)
+        [containerView addSubview:toScene];
+    else
+        [containerView insertSubview:toScene belowSubview:fromScene];
+    toSceneController.view.transform = [self transform:_push ? toSceneController.enterTrans : toSceneController.popEnterTrans sceneController:toSceneController bounds:transitionContext.containerView.bounds];
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
         toSceneController.view.transform = CGAffineTransformIdentity;
         toSceneController.view.alpha = 1.0;
-        fromSceneController.view.transform = [self transform:fromSceneController.exitTrans sceneController:fromSceneController bounds:transitionContext.containerView.bounds];
+        fromSceneController.view.transform = [self transform:self->_push ? fromSceneController.exitTrans : fromSceneController.popExitTrans sceneController:fromSceneController bounds:transitionContext.containerView.bounds];
     } completion:^(BOOL finished) {
+        fromSceneController.view.transform = CGAffineTransformIdentity;
         [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
     }];
 }

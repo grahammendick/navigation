@@ -2,4 +2,6 @@
 
 @interface NVSceneTransitioning: NSObject <UIViewControllerAnimatedTransitioning>
 
+- (id)initWithDirection:(BOOL)push;
+
 @end
