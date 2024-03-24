@@ -12,14 +12,17 @@
 
 @end
 
+typedef struct {
+    float val;
+    BOOL percent;
+} NVTransitionValue;
+
 @interface NVTransition : NSObject
 
 @property (nonatomic, copy) NSString *type;
 @property (nonatomic, assign) int duration;
-@property (nonatomic, assign) float x;
-@property (nonatomic, assign) BOOL xPercent;
-@property (nonatomic, assign) float y;
-@property (nonatomic, assign) BOOL yPercent;
+@property (nonatomic, assign) NVTransitionValue x;
+@property (nonatomic, assign) NVTransitionValue y;
 - (id)initWithType:(NSString *)type;
 
 @end

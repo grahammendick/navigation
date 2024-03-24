@@ -77,10 +77,10 @@ using namespace facebook::react;
         NVNavigationStackEnterTransItemsStruct transItem = newViewProps.enterTrans.items[i];
         NVTransition *transition = [[NVTransition alloc] initWithType:[[NSString alloc] initWithUTF8String: transItem.type.c_str()]];
         transition.duration = [[[NSString alloc] initWithUTF8String: transItem.fromX.c_str()] intValue];
-        transition.x = [[[NSString alloc] initWithUTF8String: transItem.fromX.c_str()] floatValue];
-        transition.y = [[[NSString alloc] initWithUTF8String: transItem.fromY.c_str()] floatValue];
+        transition.x = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.fromX.c_str()]];
+        transition.y = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.fromY.c_str()]];
         if ([transition.type isEqualToString:@"alpha"] || [transition.type isEqualToString:@"rotate"])
-            transition.x = [[[NSString alloc] initWithUTF8String: transItem.from.c_str()] floatValue];
+            transition.x = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.from.c_str()]];
         [_enterTransitions addObject:transition];
     }
     for (auto i = 0; i < newViewProps.exitTrans.items.size(); i++) {
@@ -98,6 +98,19 @@ using namespace facebook::react;
         });
     }
     [super updateProps:props oldProps:oldProps];
+}
+
+- (NVTransitionValue)parseAnimation:(NSString *)val
+{
+    NVTransitionValue transitionValue;
+    if ([val hasSuffix:@"%"]) {
+        transitionValue.val = [[val substringToIndex:[val length] -1] floatValue];
+        transitionValue.percent = YES;
+    } else {
+        transitionValue.val = [val floatValue];
+        transitionValue.percent = NO;
+    }
+    return transitionValue;
 }
 
 - (void)navigate
