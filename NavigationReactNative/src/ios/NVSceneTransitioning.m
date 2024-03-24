@@ -36,6 +36,7 @@
         fromSceneController.view.transform = [self transform:self->_push ? fromSceneController.exitTrans : fromSceneController.popExitTrans sceneController:fromSceneController bounds:transitionContext.containerView.bounds];
     } completion:^(BOOL finished) {
         fromSceneController.view.transform = CGAffineTransformIdentity;
+        fromSceneController.view.alpha = 1.0;
         [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
     }];
 }
