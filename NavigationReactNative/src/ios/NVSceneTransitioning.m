@@ -29,11 +29,11 @@
         [containerView addSubview:toScene];
     else
         [containerView insertSubview:toScene belowSubview:fromScene];
-    toSceneController.view.transform = [self transform:_push ? toSceneController.enterTrans : toSceneController.popEnterTrans sceneController:toSceneController bounds:transitionContext.containerView.bounds];
+    [self transform:_push ? toSceneController.enterTrans : toSceneController.popEnterTrans sceneController:toSceneController bounds:transitionContext.containerView.bounds];
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
         toSceneController.view.transform = CGAffineTransformIdentity;
         toSceneController.view.alpha = 1.0;
-        fromSceneController.view.transform = [self transform:self->_push ? fromSceneController.exitTrans : fromSceneController.popExitTrans sceneController:fromSceneController bounds:transitionContext.containerView.bounds];
+        [self transform:self->_push ? fromSceneController.exitTrans : fromSceneController.popExitTrans sceneController:fromSceneController bounds:transitionContext.containerView.bounds];
     } completion:^(BOOL finished) {
         fromSceneController.view.transform = CGAffineTransformIdentity;
         fromSceneController.view.alpha = 1.0;
@@ -45,7 +45,7 @@
     return 0.5;
 }
 
-- (CGAffineTransform)transform:(NSArray<NVTransition*> *)transitions sceneController:(NVSceneController *)sceneController bounds:(CGRect)bounds
+- (void)transform:(NSArray<NVTransition*> *)transitions sceneController:(NVSceneController *)sceneController bounds:(CGRect)bounds
 {
     CGAffineTransform transform = CGAffineTransformIdentity;
     for(NSInteger i = 0; i < transitions.count; i++) {
@@ -63,7 +63,7 @@
             sceneController.view.alpha = transition.x.val;
         }
     }
-    return transform;
+    sceneController.view.transform = transform;
 }
 
 @end
