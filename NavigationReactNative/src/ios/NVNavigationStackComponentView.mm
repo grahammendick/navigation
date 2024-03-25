@@ -14,6 +14,7 @@
 #import <react/renderer/components/navigationreactnative/RCTComponentViewHelpers.h>
 
 #import "RCTFabricComponentsPlugins.h"
+#import <React/RCTConversions.h>
 #import <React/RCTI18nUtil.h>
 #import <React/UIView+React.h>
 
@@ -93,6 +94,7 @@ using namespace facebook::react;
             transition.x = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.to.c_str()]];
         [_exitTransitions addObject:transition];
     }
+    _navigationController.view.backgroundColor = RCTUIColorFromSharedColor(newViewProps.underlayColor);
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
     if (!_navigated) {
         [self navigate];
