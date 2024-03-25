@@ -94,7 +94,6 @@ export interface NavigationStackProps {
     backgroundColor?: (state: State, data: any, crumbs: Crumb[]) => ColorValue;
     /**
      * The color of the background behind the Scenes
-     * @platform android
      */
     underlayColor?: ColorValue | ((state: State, data: any, crumbs: Crumb[]) => ColorValue);
     /**
@@ -155,7 +154,6 @@ export class NavigationStack extends Component<NavigationStackProps> { }
     backgroundColor?: ColorValue | ((data: any, crumbs: Crumb[]) => ColorValue);
     /**
      * The color of the background behind the Scene
-     * @platform android
      */
     underlayColor?: ColorValue | ((data: any, crumbs: Crumb[]) => ColorValue);
     /**
