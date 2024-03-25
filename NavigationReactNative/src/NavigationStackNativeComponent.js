@@ -38,6 +38,7 @@ type NativeProps = $ReadOnly<{|
   enterAnimOff: boolean,
   sharedElements: $ReadOnlyArray<string>,
   containerTransform: boolean,
+  underlayColor: ColorValue,
   mostRecentEventCount: Int32,
   onNavigateToTop: DirectEventHandler<null>,
   onWillNavigateBack: DirectEventHandler<$ReadOnly<{|
