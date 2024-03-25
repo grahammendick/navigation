@@ -10,16 +10,10 @@ type NativeProps = $ReadOnly<{|
   enterAnim: string,
   exitAnim: string,
   enterTrans: $ReadOnly<{|
-    type: string,
-    axis?: string,
-    fromX?: string,
-    fromY?: string,
-    from?: string,
-    pivotX?: string,
-    pivotY?: string,
     duration?: string,
     items: $ReadOnlyArray<$ReadOnly<{|
       type: string,
+      axis?: string,
       fromX?: string,
       fromY?: string,
       from?: string,
@@ -29,16 +23,10 @@ type NativeProps = $ReadOnly<{|
     |}>>
   |}>,
   exitTrans: $ReadOnly<{|
-    type: string,
-    axis?: string,
-    toX?: string,
-    toY?: string,
-    to?: string,
-    pivotX?: string,
-    pivotY?: string,
     duration?: string,
     items: $ReadOnlyArray<$ReadOnly<{|
       type: string,
+      axis?: string,
       toX?: string,
       toY?: string,
       to?: string,
