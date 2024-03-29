@@ -30,19 +30,50 @@
     else
         [containerView insertSubview:toScene belowSubview:fromScene];
     [self transform:_push ? toSceneController.enterTrans : toSceneController.popEnterTrans sceneController:toSceneController bounds:transitionContext.containerView.bounds];
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
+    NSTimeInterval toDuration = [self transitionDuration:toSceneController enter:YES];
+    NSTimeInterval fromDuration = [self transitionDuration:fromSceneController enter:NO];
+    [UIView animateWithDuration:toDuration animations:^{
         toSceneController.view.transform = CGAffineTransformIdentity;
         toSceneController.view.alpha = 1.0;
+    } completion:^(BOOL finished) {
+        if (toDuration >= fromDuration) {
+            fromSceneController.view.transform = CGAffineTransformIdentity;
+            fromSceneController.view.alpha = 1.0;
+            [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+        }
+    }];
+    [UIView animateWithDuration:fromDuration animations:^{
         [self transform:self->_push ? fromSceneController.exitTrans : fromSceneController.popExitTrans sceneController:fromSceneController bounds:transitionContext.containerView.bounds];
     } completion:^(BOOL finished) {
-        fromSceneController.view.transform = CGAffineTransformIdentity;
-        fromSceneController.view.alpha = 1.0;
-        [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+        if (fromDuration > toDuration) {
+            fromSceneController.view.transform = CGAffineTransformIdentity;
+            fromSceneController.view.alpha = 1.0;
+            [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+        }
     }];
 }
 
 - (NSTimeInterval)transitionDuration:(nullable id<UIViewControllerContextTransitioning>)transitionContext {
-    return 0.5;
+    NVSceneController *toSceneController = [transitionContext
+                viewControllerForKey:UITransitionContextToViewControllerKey];
+    NVSceneController *fromSceneController = [transitionContext
+                viewControllerForKey:UITransitionContextFromViewControllerKey];
+    return MAX([self transitionDuration:toSceneController enter:YES], [self transitionDuration:fromSceneController enter:NO]);
+}
+
+- (NSTimeInterval)transitionDuration:(NVSceneController *) sceneController enter:(BOOL)enter
+{
+    NSArray<NVTransition*> *transitions;
+    if (enter) {
+        transitions = _push ? sceneController.enterTrans : sceneController.popEnterTrans;
+    } else {
+        transitions = _push ? sceneController.exitTrans : sceneController.popExitTrans;
+    }
+    float duration = 0;
+    for(NSInteger i = 0; i < transitions.count; i++) {
+        duration = MAX(duration, transitions[i].duration);
+    }
+    return duration / 1000;
 }
 
 - (void)transform:(NSArray<NVTransition*> *)transitions sceneController:(NVSceneController *)sceneController bounds:(CGRect)bounds
