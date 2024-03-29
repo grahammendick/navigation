@@ -85,7 +85,7 @@
             transform = CGAffineTransformTranslate(transform, transition.x.percent ? bounds.size.width * transition.x.val / 100 : transition.x.val, transition.y.percent ? bounds.size.height * transition.y.val / 100 : transition.y.val);
         }
         if ([transition.type isEqualToString:@"scale"]) {
-            transform = CGAffineTransformScale(transform, transition.x.val, transition.y.val);
+            transform = CGAffineTransformScale(transform, transition.x.percent ? transition.x.val / 100 : transition.x.val, transition.y.percent ? transition.y.val / 100 : transition.y.val);
         }
         if ([transition.type isEqualToString:@"rotate"]) {
             transform = CGAffineTransformRotate(transform, transition.x.val * M_PI / 360);
