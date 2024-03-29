@@ -6,6 +6,10 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		34203C772BB66B8700B1E45A /* NVUIKitWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 34203C762BB66B8700B1E45A /* NVUIKitWrapper.mm */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		7020F6BC20ECD07A00E7A74E /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -19,6 +23,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		34203C752BB66B5800B1E45A /* NVUIKitWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVUIKitWrapper.h; sourceTree = "<group>"; };
+		34203C762BB66B8700B1E45A /* NVUIKitWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVUIKitWrapper.mm; sourceTree = "<group>"; };
 		70153011229D1F4800903FA7 /* NVSearchResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSearchResultsController.m; sourceTree = "<group>"; };
 		70153013229D1F5500903FA7 /* NVSearchResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSearchResultsController.h; sourceTree = "<group>"; };
 		7020F6BE20ECD07A00E7A74E /* libNavigationReactNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNavigationReactNative.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -251,6 +257,8 @@
 				70BB329F212B2CA000DE0D13 /* NVBarButtonView.m */,
 				70BB329D212B2C9000DE0D13 /* NVBarButtonManager.m */,
 				70BB3299212B2C5100DE0D13 /* NVLeftBarManager.m */,
+				34203C752BB66B5800B1E45A /* NVUIKitWrapper.h */,
+				34203C762BB66B8700B1E45A /* NVUIKitWrapper.mm */,
 				70BB3297212B2C4000DE0D13 /* NVLeftBarView.m */,
 				70BB3296212B2C3500DE0D13 /* NVLeftBarView.h */,
 				70BB3293212B2C0A00DE0D13 /* NVRightBarManager.m */,
@@ -324,6 +332,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34203C772BB66B8700B1E45A /* NVUIKitWrapper.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

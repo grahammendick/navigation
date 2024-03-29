@@ -1,4 +1,5 @@
 #include "NVTabBarItemShadowNode.h"
+#include "NVUIKitWrapper.h"
 #include <react/renderer/core/LayoutContext.h>
 
 namespace facebook {
@@ -26,7 +27,10 @@ void NVTabBarItemShadowNode::updateStateIfNeeded() {
 
   ensureUnsealed();
 
-  if (newImageSource.uri.substr(0,5) != "file:" && newImageSource.uri.substr(0,5) != "http:" && newImageSource.uri.substr(0,6) != "https:") {
+    const std::string& uriRef = newImageSource.uri;
+    bool isSystemImageResult = isSystemImage(uriRef);
+    
+    if (isSystemImageResult) {
       auto state = NVTabBarItemState{
           newImageSource,
         };
@@ -39,7 +43,7 @@ void NVTabBarItemShadowNode::updateStateIfNeeded() {
       setStateData(std::move(state));
   }
 
-  setStateData(std::move(state));
+
 }
 
 ImageSource NVTabBarItemShadowNode::getImageSource() const {
