@@ -32,6 +32,7 @@ void NVTabBarItemShadowNode::updateStateIfNeeded() {
     if (isSystemImageResult) {
       auto state = NVTabBarItemState{
           newImageSource,
+          {newImageSource, nullptr, {}}
         };
       setStateData(std::move(state));
   } else {
