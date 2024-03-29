@@ -88,7 +88,7 @@ using namespace facebook::react;
         [_enterTransitions addObject:transition];
     }
     durationStr = [[NSString alloc] initWithUTF8String: newViewProps.enterTrans.duration.c_str()];
-    duration = [durationStr length] ? [durationStr intValue] : 300;
+    duration = [durationStr length] ? [durationStr intValue] : 350;
     for (auto i = 0; i < newViewProps.exitTrans.items.size(); i++) {
         NVNavigationStackExitTransItemsStruct transItem = newViewProps.exitTrans.items[i];
         NVTransition *transition = [[NVTransition alloc] initWithType:[[NSString alloc] initWithUTF8String: transItem.type.c_str()]];
