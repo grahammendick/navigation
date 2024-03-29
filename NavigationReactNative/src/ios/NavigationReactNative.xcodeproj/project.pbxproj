@@ -6,10 +6,6 @@
 	objectVersion = 50;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		34203C772BB66B8700B1E45A /* NVUIKitWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 34203C762BB66B8700B1E45A /* NVUIKitWrapper.mm */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		7020F6BC20ECD07A00E7A74E /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -332,7 +328,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				34203C772BB66B8700B1E45A /* NVUIKitWrapper.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
