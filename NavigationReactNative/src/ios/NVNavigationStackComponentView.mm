@@ -79,12 +79,15 @@ using namespace facebook::react;
     for (auto i = 0; i < newViewProps.enterTrans.items.size(); i++) {
         NVNavigationStackEnterTransItemsStruct transItem = newViewProps.enterTrans.items[i];
         NVTransition *transition = [[NVTransition alloc] initWithType:[[NSString alloc] initWithUTF8String: transItem.type.c_str()]];
+        NSString *defaultVal = @"0";
+        if ([transition.type isEqualToString:@"scale"] || [transition.type isEqualToString:@"alpha"])
+            defaultVal = @"1";
         durationStr = [[NSString alloc] initWithUTF8String: transItem.duration.c_str()];
         transition.duration = [durationStr length] ? [durationStr intValue] : duration;
-        transition.x = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.fromX.c_str()]];
-        transition.y = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.fromY.c_str()]];
+        transition.x = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.fromX.c_str()] defaultVal:defaultVal];
+        transition.y = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.fromY.c_str()] defaultVal:defaultVal];
         if ([transition.type isEqualToString:@"alpha"] || [transition.type isEqualToString:@"rotate"])
-            transition.x = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.from.c_str()]];
+            transition.x = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.from.c_str()] defaultVal:defaultVal];
         [_enterTransitions addObject:transition];
     }
     durationStr = [[NSString alloc] initWithUTF8String: newViewProps.enterTrans.duration.c_str()];
@@ -92,12 +95,15 @@ using namespace facebook::react;
     for (auto i = 0; i < newViewProps.exitTrans.items.size(); i++) {
         NVNavigationStackExitTransItemsStruct transItem = newViewProps.exitTrans.items[i];
         NVTransition *transition = [[NVTransition alloc] initWithType:[[NSString alloc] initWithUTF8String: transItem.type.c_str()]];
+        NSString *defaultVal = @"0";
+        if ([transition.type isEqualToString:@"scale"] || [transition.type isEqualToString:@"alpha"])
+            defaultVal = @"1";
         durationStr = [[NSString alloc] initWithUTF8String: transItem.duration.c_str()];
         transition.duration = [durationStr length] ? [durationStr intValue] : duration;
-        transition.x = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.toX.c_str()]];
-        transition.y = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.toY.c_str()]];
+        transition.x = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.toX.c_str()] defaultVal:defaultVal];
+        transition.y = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.toY.c_str()] defaultVal:defaultVal];
         if ([transition.type isEqualToString:@"alpha"] || [transition.type isEqualToString:@"rotate"])
-            transition.x = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.to.c_str()]];
+            transition.x = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.to.c_str()] defaultVal:defaultVal];
         [_exitTransitions addObject:transition];
     }
     _navigationController.view.backgroundColor = RCTUIColorFromSharedColor(newViewProps.underlayColor);
@@ -113,9 +119,10 @@ using namespace facebook::react;
     [super updateProps:props oldProps:oldProps];
 }
 
-- (NVTransitionValue)parseAnimation:(NSString *)val
+- (NVTransitionValue)parseAnimation:(NSString *)val defaultVal:(NSString *)defaultVal
 {
     NVTransitionValue transitionValue;
+    val = [val length] ? val : defaultVal;
     if ([val hasSuffix:@"%"]) {
         transitionValue.val = [[val substringToIndex:[val length] -1] floatValue];
         transitionValue.percent = YES;
