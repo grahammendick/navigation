@@ -1,4 +1,4 @@
-#import "NVUIKitWrapper.h"
+#import "NVSystemImageValidator.h"
 #import <UIKit/UIKit.h>
 
 bool isSystemImage(std::string imageName) {

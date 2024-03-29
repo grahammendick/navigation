@@ -1,5 +1,5 @@
 #include "NVTabBarItemShadowNode.h"
-#include "NVUIKitWrapper.h"
+#include "NVSystemImageValidator.h"
 #include <react/renderer/core/LayoutContext.h>
 
 namespace facebook {
