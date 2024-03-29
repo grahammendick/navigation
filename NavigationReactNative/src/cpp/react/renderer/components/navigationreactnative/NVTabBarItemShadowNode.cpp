@@ -27,8 +27,7 @@ void NVTabBarItemShadowNode::updateStateIfNeeded() {
 
   ensureUnsealed();
 
-    const std::string& uriRef = newImageSource.uri;
-    bool isSystemImageResult = isSystemImage(uriRef);
+    bool isSystemImageResult = isSystemImage(newImageSource.uri);
     
     if (isSystemImageResult) {
       auto state = NVTabBarItemState{

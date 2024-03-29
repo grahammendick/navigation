@@ -1,3 +1,3 @@
 #import <string>
 
-bool isSystemImage(const std::string& imageName);
+bool isSystemImage(std::string imageName);
