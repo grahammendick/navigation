@@ -139,16 +139,22 @@ using namespace facebook::react;
   auto _oldState = std::static_pointer_cast<NVBarButtonShadowNode::ConcreteState const>(oldState);
   auto data = _state->getData();
   bool havePreviousData = _oldState != nullptr;
-  auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
-    if (request) {
-      return &request->getObserverCoordinator();
-    } else {
-      return nullptr;
+    if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
+        UIImage *systemSymbol = [UIImage systemImageNamed:[[NSString alloc] initWithUTF8String:data.getImageSource().uri.c_str()]];
+        if (systemSymbol) {
+           _button.image = systemSymbol;
+        } else {
+            auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
+              if (request) {
+                return &request->getObserverCoordinator();
+              } else {
+                return nullptr;
+              }
+            };
+            self.imageCoordinator = getCoordinator(&data.getImageRequest());
+        }
+      
     }
-  };
-  if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
-    self.imageCoordinator = getCoordinator(&data.getImageRequest());
-  }
 }
 
 - (void)setImageCoordinator:(const ImageResponseObserverCoordinator *)coordinator

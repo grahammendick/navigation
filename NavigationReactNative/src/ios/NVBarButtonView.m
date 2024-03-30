@@ -43,11 +43,19 @@
 - (void)setImage:(RCTImageSource *)source
 {
     if (!!source) {
-        [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request size:source.size scale:source.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self -> _button.image = image;
-            });
-        }];
+        UIImage *sfSymbol = [UIImage systemImageNamed:[source.request.URL lastPathComponent]];
+        
+        if (sfSymbol) {
+            // Handle SF Symbol
+            _button.image = sfSymbol;
+        } else {
+            // Handle images
+            [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request size:source.size scale:source.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self -> _button.image = image;
+                });
+            }];
+        }
     } else {
         _button.image = nil;
     }

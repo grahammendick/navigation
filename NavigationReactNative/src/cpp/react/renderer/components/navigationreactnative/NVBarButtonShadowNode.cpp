@@ -1,4 +1,5 @@
 #include "NVBarButtonShadowNode.h"
+#include "NVSystemImageValidator.h"
 #include <react/renderer/core/LayoutContext.h>
 
 namespace facebook {
@@ -26,11 +27,21 @@ void NVBarButtonShadowNode::updateStateIfNeeded() {
 
   ensureUnsealed();
 
-  auto state = NVBarButtonState{
-      newImageSource,
-      imageManager_->requestImage(newImageSource, getSurfaceId()),
-    };
-  setStateData(std::move(state));
+  bool isSystemImageResult = isSystemImage(newImageSource.uri);
+    
+  if (isSystemImageResult) {
+    auto state = NVBarButtonState{
+        newImageSource,
+        {newImageSource, nullptr, {}}
+      };
+    setStateData(std::move(state));
+  } else {
+      auto state = NVBarButtonState{
+          newImageSource,
+          imageManager_->requestImage(newImageSource, getSurfaceId()),
+        };
+      setStateData(std::move(state));
+  }
 }
 
 ImageSource NVBarButtonShadowNode::getImageSource() const {
