@@ -27,14 +27,14 @@ void NVTabBarItemShadowNode::updateStateIfNeeded() {
 
   ensureUnsealed();
 
-    bool isSystemImageResult = isSystemImage(newImageSource.uri);
+  bool isSystemImageResult = isSystemImage(newImageSource.uri);
     
-    if (isSystemImageResult) {
-      auto state = NVTabBarItemState{
-          newImageSource,
-          {newImageSource, nullptr, {}}
-        };
-      setStateData(std::move(state));
+  if (isSystemImageResult) {
+    auto state = NVTabBarItemState{
+        newImageSource,
+        {newImageSource, nullptr, {}}
+      };
+    setStateData(std::move(state));
   } else {
       auto state = NVTabBarItemState{
           newImageSource,
