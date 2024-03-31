@@ -70,7 +70,7 @@ using namespace facebook::react;
             transition.x = [self parseAnimation:[NSString  stringWithUTF8String: transItem.from.c_str()] defaultVal:defaultVal];
         [_enterTransitions addObject:transition];
     }
-    durationStr = [NSString  stringWithUTF8String: newViewProps.enterTrans.duration.c_str()];
+    durationStr = [NSString  stringWithUTF8String: newViewProps.exitTrans.duration.c_str()];
     duration = [durationStr length] ? [durationStr intValue] : 350;
     for (auto i = 0; i < newViewProps.exitTrans.items.size(); i++) {
         NVSceneExitTransItemsStruct transItem = newViewProps.exitTrans.items[i];
