@@ -161,7 +161,7 @@ using namespace facebook::react;
             controller.enterTrans = _enterTransitions;
             controller.popExitTrans = scene.exitTrans;
             if (!prevSceneController)
-                prevSceneController = (NVSceneController*) _navigationController.topViewController;
+                prevSceneController = (NVSceneController *) _navigationController.topViewController;
             prevSceneController.exitTrans = _exitTransitions;
             prevSceneController.popEnterTrans = scene.enterTrans;
             [controllers addObject:controller];
