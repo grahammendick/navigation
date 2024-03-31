@@ -55,7 +55,7 @@ using namespace facebook::react;
     [_enterTransitions removeAllObjects];
     [_exitTransitions removeAllObjects];
     NSString *durationStr = [NSString  stringWithUTF8String: newViewProps.enterTrans.duration.c_str()];
-    int duration = [durationStr length] ? [durationStr intValue] : 300;
+    int duration = [durationStr length] ? [durationStr intValue] : 350;
     for (auto i = 0; i < newViewProps.enterTrans.items.size(); i++) {
         NVSceneEnterTransItemsStruct transItem = newViewProps.enterTrans.items[i];
         NVTransition *transition = [[NVTransition alloc] initWithType:[NSString  stringWithUTF8String: transItem.type.c_str()]];
