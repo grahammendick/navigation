@@ -146,10 +146,10 @@ using namespace facebook::react;
     BOOL animate = !self.enterAnimOff;
     if (crumb > currentCrumb) {
         NSMutableArray<NVSceneController*> *controllers = [[NSMutableArray alloc] init];
-        NVSceneComponentView *scene;
+        NVSceneController *prevSceneController = nil;
         for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
             NSInteger nextCrumb = currentCrumb + i + 1;
-            scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:nextCrumb]];
+            NVSceneComponentView *scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:nextCrumb]];
             if (!![scene superview])
                 return;
             NVSceneController *controller = [[NVSceneController alloc] initWithScene:scene];
@@ -158,12 +158,15 @@ using namespace facebook::react;
                 [weakSelf checkPeekability:[self.keys count] - 1];
             };
             controller.navigationItem.title = scene.title;
+            controller.enterTrans = _enterTransitions;
+            controller.popExitTrans = scene.exitTrans;
+            if (!prevSceneController)
+                prevSceneController = (NVSceneController*) _navigationController.topViewController;
+            prevSceneController.exitTrans = _exitTransitions;
+            prevSceneController.popEnterTrans = scene.enterTrans;
             [controllers addObject:controller];
+            prevSceneController = controller;
         }
-        [controllers lastObject].enterTrans = _enterTransitions;
-        [controllers lastObject].popExitTrans = scene.exitTrans;
-        ((NVSceneController *) _navigationController.topViewController).exitTrans = _exitTransitions;
-        ((NVSceneController *) _navigationController.topViewController).popEnterTrans = scene.enterTrans;
         __block BOOL completed = NO;
         [self completeNavigation:^{
             if (completed) return;
