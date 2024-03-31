@@ -67,43 +67,43 @@ using namespace facebook::react;
     const auto &newViewProps = *std::static_pointer_cast<NVNavigationStackProps const>(props);
     NSMutableArray *keysArr = [[NSMutableArray alloc] init];
     for (auto i = 0; i < newViewProps.keys.size(); i++) {
-        NSString *key = [[NSString alloc] initWithUTF8String: newViewProps.keys[i].c_str()];
+        NSString *key = [NSString  stringWithUTF8String: newViewProps.keys[i].c_str()];
         [keysArr addObject:key];
     }
     self.keys = [keysArr copy];
     _enterAnimOff = newViewProps.enterAnimOff;
     [_enterTransitions removeAllObjects];
     [_exitTransitions removeAllObjects];
-    NSString *durationStr = [[NSString alloc] initWithUTF8String: newViewProps.enterTrans.duration.c_str()];
+    NSString *durationStr = [NSString  stringWithUTF8String: newViewProps.enterTrans.duration.c_str()];
     int duration = [durationStr length] ? [durationStr intValue] : 300;
     for (auto i = 0; i < newViewProps.enterTrans.items.size(); i++) {
         NVNavigationStackEnterTransItemsStruct transItem = newViewProps.enterTrans.items[i];
-        NVTransition *transition = [[NVTransition alloc] initWithType:[[NSString alloc] initWithUTF8String: transItem.type.c_str()]];
+        NVTransition *transition = [[NVTransition alloc] initWithType:[NSString  stringWithUTF8String: transItem.type.c_str()]];
         NSString *defaultVal = @"0";
         if ([transition.type isEqualToString:@"scale"] || [transition.type isEqualToString:@"alpha"])
             defaultVal = @"1";
-        durationStr = [[NSString alloc] initWithUTF8String: transItem.duration.c_str()];
+        durationStr = [NSString  stringWithUTF8String: transItem.duration.c_str()];
         transition.duration = [durationStr length] ? [durationStr intValue] : duration;
-        transition.x = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.fromX.c_str()] defaultVal:defaultVal];
-        transition.y = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.fromY.c_str()] defaultVal:defaultVal];
+        transition.x = [self parseAnimation:[NSString  stringWithUTF8String: transItem.fromX.c_str()] defaultVal:defaultVal];
+        transition.y = [self parseAnimation:[NSString  stringWithUTF8String: transItem.fromY.c_str()] defaultVal:defaultVal];
         if ([transition.type isEqualToString:@"alpha"] || [transition.type isEqualToString:@"rotate"])
-            transition.x = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.from.c_str()] defaultVal:defaultVal];
+            transition.x = [self parseAnimation:[NSString  stringWithUTF8String: transItem.from.c_str()] defaultVal:defaultVal];
         [_enterTransitions addObject:transition];
     }
-    durationStr = [[NSString alloc] initWithUTF8String: newViewProps.enterTrans.duration.c_str()];
+    durationStr = [NSString  stringWithUTF8String: newViewProps.enterTrans.duration.c_str()];
     duration = [durationStr length] ? [durationStr intValue] : 350;
     for (auto i = 0; i < newViewProps.exitTrans.items.size(); i++) {
         NVNavigationStackExitTransItemsStruct transItem = newViewProps.exitTrans.items[i];
-        NVTransition *transition = [[NVTransition alloc] initWithType:[[NSString alloc] initWithUTF8String: transItem.type.c_str()]];
+        NVTransition *transition = [[NVTransition alloc] initWithType:[NSString  stringWithUTF8String: transItem.type.c_str()]];
         NSString *defaultVal = @"0";
         if ([transition.type isEqualToString:@"scale"] || [transition.type isEqualToString:@"alpha"])
             defaultVal = @"1";
-        durationStr = [[NSString alloc] initWithUTF8String: transItem.duration.c_str()];
+        durationStr = [NSString  stringWithUTF8String: transItem.duration.c_str()];
         transition.duration = [durationStr length] ? [durationStr intValue] : duration;
-        transition.x = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.toX.c_str()] defaultVal:defaultVal];
-        transition.y = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.toY.c_str()] defaultVal:defaultVal];
+        transition.x = [self parseAnimation:[NSString  stringWithUTF8String: transItem.toX.c_str()] defaultVal:defaultVal];
+        transition.y = [self parseAnimation:[NSString  stringWithUTF8String: transItem.toY.c_str()] defaultVal:defaultVal];
         if ([transition.type isEqualToString:@"alpha"] || [transition.type isEqualToString:@"rotate"])
-            transition.x = [self parseAnimation:[[NSString alloc] initWithUTF8String: transItem.to.c_str()] defaultVal:defaultVal];
+            transition.x = [self parseAnimation:[NSString  stringWithUTF8String: transItem.to.c_str()] defaultVal:defaultVal];
         [_exitTransitions addObject:transition];
     }
     _navigationController.view.backgroundColor = RCTUIColorFromSharedColor(newViewProps.underlayColor);
