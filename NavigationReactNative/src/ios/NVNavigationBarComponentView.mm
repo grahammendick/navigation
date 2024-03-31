@@ -45,12 +45,9 @@ using namespace facebook::react;
         addedListener = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveFind:) name:[@"findNavigationBar" stringByAppendingString: [_crumb stringValue]] object:nil];
     }
-    _backTitle = [[NSString alloc] initWithUTF8String: newViewProps.backTitle.c_str()];
-    _backTitle = newViewProps.backTitleOn ? _backTitle : nil;
     _isHidden = newViewProps.isHidden;
     if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
-        [self.reactViewController.navigationController setNavigationBarHidden:self.isHidden && !self.backTitle.length];
-        [self.reactViewController.navigationController.navigationBar setHidden:self.isHidden && self.backTitle.length];
+        [self.reactViewController.navigationController setNavigationBarHidden:self.isHidden];
     }
     _largeTitle = newViewProps.largeTitle;
     _title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
@@ -86,10 +83,12 @@ using namespace facebook::react;
     _titleColor = RCTUIColorFromSharedColor(newViewProps.titleColor);
     _largeTitleColor = RCTUIColorFromSharedColor(newViewProps.largeTitleColor);
     _shadowColor = RCTUIColorFromSharedColor(newViewProps.shadowColor);
+    _backTitle = [[NSString alloc] initWithUTF8String: newViewProps.backTitle.c_str()];
+    _backTitle = newViewProps.backTitleOn ? _backTitle : nil;
     UINavigationItem *previousNavigationItem = [self previousNavigationItem];
     if (previousNavigationItem.backBarButtonItem.title != _backTitle) {
         previousNavigationItem.backBarButtonItem = nil;
-        if (self.backTitle != nil && !self.isHidden) {
+        if (self.backTitle != nil) {
             previousNavigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
         }
     }
