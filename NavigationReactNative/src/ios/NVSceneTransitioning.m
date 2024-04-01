@@ -37,6 +37,7 @@
         toSceneController.view.alpha = 1.0;
     } completion:^(BOOL finished) {
         if (toDuration >= fromDuration) {
+            toSceneController.view.transform = CGAffineTransformIdentity;
             fromSceneController.view.transform = CGAffineTransformIdentity;
             fromSceneController.view.alpha = 1.0;
             [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
@@ -46,6 +47,7 @@
         [self transform:self->_push ? fromSceneController.exitTrans : fromSceneController.popExitTrans sceneController:fromSceneController bounds:transitionContext.containerView.bounds];
     } completion:^(BOOL finished) {
         if (fromDuration > toDuration) {
+            toSceneController.view.transform = CGAffineTransformIdentity;
             fromSceneController.view.transform = CGAffineTransformIdentity;
             fromSceneController.view.alpha = 1.0;
             [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
