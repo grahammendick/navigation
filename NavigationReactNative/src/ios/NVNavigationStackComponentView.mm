@@ -338,7 +338,18 @@ using namespace facebook::react;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    return gestureRecognizer == _interactiveGestureRecognizer;
+    if (gestureRecognizer == _interactiveGestureRecognizer) {
+        if ([otherGestureRecognizer.delegate isKindOfClass:[NVNavigationStackComponentView class]]) {
+            UIViewController *ancestorController = ((NVNavigationStackComponentView *) otherGestureRecognizer.delegate).navigationController;
+            while(ancestorController) {
+                ancestorController = ancestorController.parentViewController;
+                if (ancestorController == _navigationController)
+                    return NO;
+            }
+        }
+        return YES;
+    }
+    return NO;
 }
 
 - (void)prepareForRecycle
