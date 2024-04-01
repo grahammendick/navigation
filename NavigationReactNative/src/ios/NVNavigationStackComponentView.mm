@@ -295,10 +295,7 @@ using namespace facebook::react;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    if (gestureRecognizer == _navigationController.interactivePopGestureRecognizer && [[otherGestureRecognizer view] isKindOfClass:[UIScrollView class]]) {
-        return ((UIScrollView *)otherGestureRecognizer.view).panGestureRecognizer == otherGestureRecognizer;
-    }
-    return NO;
+    return gestureRecognizer == _navigationController.interactivePopGestureRecognizer;
 }
 
 - (void)prepareForRecycle
