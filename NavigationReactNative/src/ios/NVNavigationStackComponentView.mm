@@ -30,6 +30,8 @@ using namespace facebook::react;
     UINavigationController *_oldNavigationController;
     NSMutableArray<NVTransition*> *_enterTransitions;
     NSMutableArray<NVTransition*> *_exitTransitions;
+    UIScreenEdgePanGestureRecognizer *_interactiveGestureRecognizer;
+    UIPercentDrivenInteractiveTransition *_interactiveTransition;
     BOOL _navigated;
     BOOL _presenting;
 }
@@ -58,6 +60,10 @@ using namespace facebook::react;
         [self addSubview:_navigationController.view];
         _navigationController.delegate = self;
         _navigationController.interactivePopGestureRecognizer.delegate = self;
+        _interactiveGestureRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteractivePopGesture:)];
+        _interactiveGestureRecognizer.delegate = self;
+        _interactiveGestureRecognizer.edges = UIRectEdgeLeft;
+        [_navigationController.view addGestureRecognizer:_interactiveGestureRecognizer];
     }
 }
 
@@ -217,6 +223,38 @@ using namespace facebook::react;
     }
 }
 
+
+- (void)handleInteractivePopGesture:(UIPanGestureRecognizer *)gestureRecognizer
+{
+    float translation = [gestureRecognizer translationInView:gestureRecognizer.view].x;
+    float width = gestureRecognizer.view.bounds.size.width;
+    switch (gestureRecognizer.state) {
+        case UIGestureRecognizerStateBegan: {
+            _interactiveTransition = [[UIPercentDrivenInteractiveTransition alloc] init];
+            [_navigationController popViewControllerAnimated:YES];
+            break;
+        }
+        case UIGestureRecognizerStateChanged: {
+            [_interactiveTransition updateInteractiveTransition:translation / width];
+            break;
+        }
+        case UIGestureRecognizerStateCancelled: {
+            [_interactiveTransition cancelInteractiveTransition];
+            break;
+        }
+        case UIGestureRecognizerStateEnded: {
+            
+        }
+        default: {
+            float velocity = [gestureRecognizer velocityInView:gestureRecognizer.view].x;
+            if ((translation + velocity * 0.3) > (width / 2)) [_interactiveTransition finishInteractiveTransition];
+            else [_interactiveTransition cancelInteractiveTransition];
+            _interactiveTransition = nil;
+            break;
+        }
+    }
+}
+
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
@@ -288,14 +326,19 @@ using namespace facebook::react;
     return nil;
 }
 
+- (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController
+{
+    return _interactiveTransition;
+}
+
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
-    return YES;
+    return gestureRecognizer == _interactiveGestureRecognizer;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    return gestureRecognizer == _navigationController.interactivePopGestureRecognizer;
+    return gestureRecognizer == _interactiveGestureRecognizer;
 }
 
 - (void)prepareForRecycle
