@@ -1,5 +1,5 @@
 #include "NVTabBarItemShadowNode.h"
-#ifdef !ANDROID
+#if !ANDROID
 #include "NVSystemImageValidator.h"
 #endif
 #include <react/renderer/core/LayoutContext.h>
