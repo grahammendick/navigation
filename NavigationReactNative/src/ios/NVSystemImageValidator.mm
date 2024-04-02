@@ -2,7 +2,5 @@
 #import <UIKit/UIKit.h>
 
 bool isSystemImage(std::string imageName) {
-  NSString *imageNameNS = [NSString stringWithUTF8String:imageName.c_str()];
-  UIImage *image = [UIImage systemImageNamed:imageNameNS];
-  return image != nil;
+    return [UIImage systemImageNamed:[NSString stringWithUTF8String:imageName.c_str()]];
 }
