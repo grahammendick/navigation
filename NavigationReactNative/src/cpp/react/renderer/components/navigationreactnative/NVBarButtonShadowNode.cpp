@@ -1,5 +1,7 @@
 #include "NVBarButtonShadowNode.h"
+#if !ANDROID
 #include "NVSystemImageValidator.h"
+#endif
 #include <react/renderer/core/LayoutContext.h>
 
 namespace facebook {
@@ -27,7 +29,11 @@ void NVBarButtonShadowNode::updateStateIfNeeded() {
 
   ensureUnsealed();
 
+  #ifdef ANDROID
+  bool isSystemImageResult = false;
+  #else
   bool isSystemImageResult = isSystemImage(newImageSource.uri);
+  #endif
     
   if (isSystemImageResult) {
     auto state = NVBarButtonState{
