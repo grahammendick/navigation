@@ -140,20 +140,22 @@ using namespace facebook::react;
   auto data = _state->getData();
   bool havePreviousData = _oldState != nullptr;
     if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
-        UIImage *systemSymbol = [UIImage systemImageNamed:[[NSString alloc] initWithUTF8String:data.getImageSource().uri.c_str()]];
-        if (systemSymbol) {
-           _button.image = systemSymbol;
-        } else {
-            auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
-              if (request) {
-                return &request->getObserverCoordinator();
-              } else {
-                return nullptr;
-              }
-            };
-            self.imageCoordinator = getCoordinator(&data.getImageRequest());
+        if (@available(iOS 13.0, *)) {
+            UIImage *systemSymbol = [UIImage systemImageNamed:[[NSString alloc] initWithUTF8String:data.getImageSource().uri.c_str()]];
+            if (systemSymbol) {
+               _button.image = systemSymbol;
+                return;
+            }
         }
-      
+        
+        auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
+          if (request) {
+            return &request->getObserverCoordinator();
+          } else {
+            return nullptr;
+          }
+        };
+        self.imageCoordinator = getCoordinator(&data.getImageRequest());
     }
 }
 

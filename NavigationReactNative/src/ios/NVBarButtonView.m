@@ -43,17 +43,18 @@
 - (void)setImage:(RCTImageSource *)source
 {
     if (!!source) {
-        UIImage *sfSymbol = [UIImage systemImageNamed:[source.request.URL lastPathComponent]];
-        
-        if (sfSymbol) {
-            _button.image = sfSymbol;
-        } else {
-            [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request size:source.size scale:source.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self -> _button.image = image;
-                });
-            }];
+        if (@available(iOS 13.0, *)) {
+            UIImage *sfSymbol = [UIImage systemImageNamed:[source.request.URL lastPathComponent]];
+            if (sfSymbol) {
+                _button.image = sfSymbol;
+                return;
+            }
         }
+        [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request size:source.size scale:source.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self -> _button.image = image;
+            });
+        }];
     } else {
         _button.image = nil;
     }
