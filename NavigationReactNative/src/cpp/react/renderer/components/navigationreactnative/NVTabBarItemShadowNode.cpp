@@ -1,4 +1,7 @@
 #include "NVTabBarItemShadowNode.h"
+#if !ANDROID
+#include "NVSystemImageValidator.h"
+#endif
 #include <react/renderer/core/LayoutContext.h>
 
 namespace facebook {
@@ -26,11 +29,27 @@ void NVTabBarItemShadowNode::updateStateIfNeeded() {
 
   ensureUnsealed();
 
-  auto state = NVTabBarItemState{
-      newImageSource,
-      imageManager_->requestImage(newImageSource, getSurfaceId()),
-    };
-  setStateData(std::move(state));
+  #ifdef ANDROID
+  bool isSystemImageResult = false;
+  #else
+  bool isSystemImageResult = isSystemImage(newImageSource.uri);
+  #endif
+    
+  if (isSystemImageResult) {
+    auto state = NVTabBarItemState{
+        newImageSource,
+        {newImageSource, nullptr, {}}
+      };
+    setStateData(std::move(state));
+  } else {
+      auto state = NVTabBarItemState{
+          newImageSource,
+          imageManager_->requestImage(newImageSource, getSurfaceId()),
+        };
+      setStateData(std::move(state));
+  }
+
+
 }
 
 ImageSource NVTabBarItemShadowNode::getImageSource() const {

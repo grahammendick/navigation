@@ -1,6 +1,7 @@
-import { Component, Context, ReactNode } from 'react';
+import { Component, Context, ReactNode, ReactElement } from 'react';
 import { BackHandler, ImageRequireSource, ImageURISource, NativeSyntheticEvent, StyleProp, ViewStyle, TransformsStyle, ColorValue } from 'react-native';
 import { Crumb, State, StateContext } from 'navigation';
+import { SFSymbolURISource } from './sf-symbol';
 
 declare global {
     interface Location {}
@@ -51,7 +52,6 @@ type RotateAnimation = {
 type Animation = TranslateAnimation | ScaleAnimation | AlphaAnimation | RotateAnimation;
 
 type Transition = { type: 'sharedAxis', axis?: 'x' | 'y' | 'z' } | { type: 'elevationScale' | 'fade' | 'fadeThrough' | 'hold' } | Animation | Animation[] | { duration?: number, items: Animation[] };
-
 /**
  * Defines the Navigation Stack Props contract
  */
@@ -414,7 +414,7 @@ export interface BarButtonProps {
     /**
      * The button image
      */
-    image?: ImageRequireSource | ImageURISource;
+    image?: ImageRequireSource | ImageURISource | SFSymbolURISource;
     /**
      * The button system item
      * @platform ios
@@ -722,7 +722,7 @@ export interface TabBarItemProps {
     /**
      * The tab image
      */
-    image?: ImageRequireSource | ImageURISource | string;
+    image?: ImageRequireSource | ImageURISource | SFSymbolURISource | string;
     /**
      * The tab system item
      * @platform ios
@@ -834,7 +834,7 @@ export interface TabBarProps {
     /**
      * The tabs
      */
-    children: React.ReactElement<TabBarItem> | React.ReactElement<TabBarItem>[];
+    children: ReactElement<TabBarItem> | ReactElement<TabBarItem>[];
     /**
      * Handles tab change events
      */

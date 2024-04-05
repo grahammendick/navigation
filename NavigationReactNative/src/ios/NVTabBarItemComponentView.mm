@@ -134,31 +134,39 @@ using namespace facebook::react;
 
 - (void)updateState:(const facebook::react::State::Shared &)state oldState:(const facebook::react::State::Shared &)oldState
 {
-  auto _state = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(state);
-  auto _oldState = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(oldState);
-  auto data = _state->getData();
-  bool havePreviousData = _oldState != nullptr;
-  auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
-    if (request) {
-      return &request->getObserverCoordinator();
-    } else {
-      return nullptr;
+    auto _state = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(state);
+    auto _oldState = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(oldState);
+    auto data = _state->getData();
+    bool havePreviousData = _oldState != nullptr;
+    if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
+        if (@available(iOS 13.0, *)) {
+            UIImage *systemSymbol = [UIImage systemImageNamed:[[NSString alloc] initWithUTF8String:data.getImageSource().uri.c_str()]];
+            if (systemSymbol) {
+                _image = systemSymbol;
+                _tab.image = systemSymbol;
+                return;
+            }
+        }
+        auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
+            if (request) {
+                return &request->getObserverCoordinator();
+            } else {
+                return nullptr;
+            }
+        };
+        self.imageCoordinator = getCoordinator(&data.getImageRequest());
     }
-  };
-  if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
-    self.imageCoordinator = getCoordinator(&data.getImageRequest());
-  }
 }
 
 - (void)setImageCoordinator:(const ImageResponseObserverCoordinator *)coordinator
 {
-  if (_imageCoordinator) {
-    _imageCoordinator->removeObserver(_imageResponseObserverProxy);
-  }
-  _imageCoordinator = coordinator;
-  if (_imageCoordinator) {
-    _imageCoordinator->addObserver(_imageResponseObserverProxy);
-  }
+    if (_imageCoordinator) {
+        _imageCoordinator->removeObserver(_imageResponseObserverProxy);
+    }
+    _imageCoordinator = coordinator;
+    if (_imageCoordinator) {
+        _imageCoordinator->addObserver(_imageResponseObserverProxy);
+    }
 }
 
 #pragma mark - RCTImageResponseDelegate
