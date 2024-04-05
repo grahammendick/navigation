@@ -19,6 +19,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		34BC12ED2BB77F51007E3EA1 /* NVSystemImageValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSystemImageValidator.h; sourceTree = "<group>"; };
+		34BC12EF2BB77F9C007E3EA1 /* NVSystemImageValidator.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVSystemImageValidator.mm; sourceTree = "<group>"; };
 		70153011229D1F4800903FA7 /* NVSearchResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSearchResultsController.m; sourceTree = "<group>"; };
 		70153013229D1F5500903FA7 /* NVSearchResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSearchResultsController.h; sourceTree = "<group>"; };
 		7020F6BE20ECD07A00E7A74E /* libNavigationReactNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNavigationReactNative.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -251,6 +253,8 @@
 				70BB329F212B2CA000DE0D13 /* NVBarButtonView.m */,
 				70BB329D212B2C9000DE0D13 /* NVBarButtonManager.m */,
 				70BB3299212B2C5100DE0D13 /* NVLeftBarManager.m */,
+				34BC12ED2BB77F51007E3EA1 /* NVSystemImageValidator.h */,
+				34BC12EF2BB77F9C007E3EA1 /* NVSystemImageValidator.mm */,
 				70BB3297212B2C4000DE0D13 /* NVLeftBarView.m */,
 				70BB3296212B2C3500DE0D13 /* NVLeftBarView.h */,
 				70BB3293212B2C0A00DE0D13 /* NVRightBarManager.m */,
