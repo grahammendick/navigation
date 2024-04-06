@@ -335,8 +335,9 @@ using namespace facebook::react;
 {
     if (_navigationController.viewControllers.count < 2) return NO;
     if (((NVSceneController *) _navigationController.topViewController).popExitTrans.count > 0
-        || ((NVSceneController *) _navigationController.viewControllers[_navigationController.viewControllers.count - 2]).popEnterTrans.count > 0)
+        || ((NVSceneController *) _navigationController.viewControllers[_navigationController.viewControllers.count - 2]).popEnterTrans.count > 0) {
         return gestureRecognizer == _interactiveGestureRecognizer;
+    }
     return gestureRecognizer == _navigationController.interactivePopGestureRecognizer;
 }
 
