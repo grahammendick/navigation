@@ -333,23 +333,25 @@ using namespace facebook::react;
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
-    return gestureRecognizer == _interactiveGestureRecognizer;
+    if (_navigationController.viewControllers.count < 2) return NO;
+    if (((NVSceneController *) _navigationController.topViewController).popExitTrans.count > 0
+        || ((NVSceneController *) _navigationController.viewControllers[_navigationController.viewControllers.count - 2]).popEnterTrans.count > 0)
+        return gestureRecognizer == _interactiveGestureRecognizer;
+    return gestureRecognizer == _navigationController.interactivePopGestureRecognizer;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    if (gestureRecognizer == _interactiveGestureRecognizer) {
-        if ([otherGestureRecognizer.delegate isKindOfClass:[NVNavigationStackComponentView class]]) {
-            UIViewController *ancestorController = ((NVNavigationStackComponentView *) otherGestureRecognizer.delegate).navigationController;
-            while(ancestorController) {
-                ancestorController = ancestorController.parentViewController;
-                if (ancestorController == _navigationController)
-                    return NO;
-            }
+    if (_navigationController.viewControllers.count < 2) return NO;
+    if ([otherGestureRecognizer.delegate isKindOfClass:[NVNavigationStackComponentView class]]) {
+        UIViewController *ancestorController = ((NVNavigationStackComponentView *) otherGestureRecognizer.delegate).navigationController;
+        while(ancestorController) {
+            ancestorController = ancestorController.parentViewController;
+            if (ancestorController == _navigationController)
+                return NO;
         }
-        return YES;
     }
-    return NO;
+    return YES;
 }
 
 - (void)prepareForRecycle
