@@ -342,7 +342,6 @@ using namespace facebook::react;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    if (_navigationController.viewControllers.count < 2) return NO;
     if ([otherGestureRecognizer.delegate isKindOfClass:[NVNavigationStackComponentView class]]) {
         UIViewController *ancestorController = ((NVNavigationStackComponentView *) otherGestureRecognizer.delegate).navigationController;
         while(ancestorController) {
