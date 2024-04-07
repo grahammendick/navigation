@@ -303,11 +303,11 @@ using namespace facebook::react;
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC
 {
-    NVSceneController *fromScene = ((NVSceneController *) fromVC);
-    NVSceneController *toScene = ((NVSceneController *) toVC);
-    if (operation == UINavigationControllerOperationPush && (fromScene.exitTrans.count > 0 || toScene.enterTrans.count > 0))
+    NVSceneController *fromSceneController = ((NVSceneController *) fromVC);
+    NVSceneController *toSceneController = ((NVSceneController *) toVC);
+    if (operation == UINavigationControllerOperationPush && (fromSceneController.exitTrans.count > 0 || toSceneController.enterTrans.count > 0))
         return [[NVSceneTransitioning alloc] initWithDirection:YES];
-    if (operation == UINavigationControllerOperationPop && (fromScene.popExitTrans.count > 0 || toScene.popEnterTrans.count > 0))
+    if (operation == UINavigationControllerOperationPop && (fromSceneController.popExitTrans.count > 0 || toSceneController.popEnterTrans.count > 0))
         return [[NVSceneTransitioning alloc] initWithDirection:NO];
     return nil;
 }
@@ -320,10 +320,10 @@ using namespace facebook::react;
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     if (_navigationController.viewControllers.count < 2) return NO;
-    NVSceneController *previousScene = (NVSceneController *) _navigationController.viewControllers[_navigationController.viewControllers.count - 2];
-    if (previousScene.view.subviews.count == 0) return NO;
+    NVSceneController *previousSceneController = (NVSceneController *) _navigationController.viewControllers[_navigationController.viewControllers.count - 2];
+    if (previousSceneController.view.subviews.count == 0) return NO;
     if (((NVSceneController *) _navigationController.topViewController).popExitTrans.count > 0
-        || previousScene.popEnterTrans.count > 0) {
+        || previousSceneController.popEnterTrans.count > 0) {
         return gestureRecognizer == _interactiveGestureRecognizer;
     }
     return gestureRecognizer == _navigationController.interactivePopGestureRecognizer;
