@@ -16,7 +16,6 @@ using namespace facebook::react;
 
 @implementation NVSceneComponentView
 {
-    BOOL _notifiedPeekable;
     UIViewController *_oldViewController;
     NSMutableArray<NVTransition*> *_enterTransitions;
     NSMutableArray<NVTransition*> *_exitTransitions;
@@ -88,9 +87,6 @@ using namespace facebook::react;
     }
     self.enterTrans = _enterTransitions;
     self.exitTrans = _exitTransitions;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self didUpdate];
-    });
     [super updateProps:props oldProps:oldProps];
 }
 
@@ -116,21 +112,10 @@ using namespace facebook::react;
     }
 }
 
-- (void)didUpdate
-{
-    if (!_notifiedPeekable && self.subviews.count > 0) {
-        _notifiedPeekable = YES;
-        if (self.peekableDidChangeBlock) {
-            self.peekableDidChangeBlock();
-        }
-    }
-}
-
 - (void)prepareForRecycle
 {
     [super prepareForRecycle];
     _oldViewController = self.reactViewController;
-    _notifiedPeekable = NO;
 }
 
 #pragma mark - RCTComponentViewProtocol
