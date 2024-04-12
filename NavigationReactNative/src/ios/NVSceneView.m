@@ -3,7 +3,6 @@
 
 @implementation NVSceneView
 {
-    BOOL _notifiedPeekable;
     NSMutableArray<NVTransition*> *_enterTransitions;
     NSMutableArray<NVTransition*> *_exitTransitions;
 }
@@ -78,17 +77,6 @@
 -(void)didPop
 {
     self.onPopped(nil);
-}
-
-- (void)didUpdateReactSubviews
-{
-    [super didUpdateReactSubviews];
-    if (!_notifiedPeekable && self.subviews.count > 0) {
-        _notifiedPeekable = YES;
-        if (self.peekableDidChangeBlock) {
-            self.peekableDidChangeBlock();
-        }
-    }
 }
 
 @end

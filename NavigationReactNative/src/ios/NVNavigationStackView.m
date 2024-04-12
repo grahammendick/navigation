@@ -159,9 +159,6 @@
             controller.boundsDidChangeBlock = ^(NVSceneController *sceneController) {
                 [weakSelf notifyForBoundsChange:sceneController];
             };
-            scene.peekableDidChangeBlock = ^{
-                [weakSelf checkPeekability:[self.keys count] - 1];
-            };
             controller.navigationItem.title = scene.title;
             controller.enterTrans = _enterTransitions;
             controller.popExitTrans = scene.exitTransArray;
@@ -270,15 +267,6 @@
     [_bridge.uiManager setSize:controller.view.bounds.size forView:controller.view];
 }
 
-- (void)checkPeekability:(NSInteger)crumb
-{
-    NVSceneView *scene;
-    if (crumb > 1 && self.keys.count > crumb - 1) {
-        scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb - 1]];
-    }
-    _navigationController.interactivePopGestureRecognizer.enabled = scene ? scene.subviews.count > 0 : YES;
-}
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -307,7 +295,6 @@
         _navigationController.retainedViewController = navigationController.topViewController;
     }
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
-    [self checkPeekability:crumb];
     if (crumb < [self.keys count] - 1) {
         _nativeEventCount++;
     }
