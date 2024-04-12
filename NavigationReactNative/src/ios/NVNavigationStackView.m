@@ -190,6 +190,15 @@
         if (!![scene superview])
             return;
         NVSceneController *controller = [[NVSceneController alloc] initWithScene:scene];
+        controller.enterTrans = _enterTransitions;
+        controller.popExitTrans = scene.exitTransArray;
+        if (_navigationController.viewControllers.count > 1) {
+            NVSceneController *prevSceneController = (NVSceneController *) _navigationController.viewControllers[_navigationController.viewControllers.count - 2];
+            prevSceneController.exitTrans = _exitTransitions;
+            prevSceneController.popEnterTrans = scene.enterTransArray;
+        }
+        NVSceneController *topSceneController = (NVSceneController *) _navigationController.topViewController;
+        topSceneController.exitTrans = topSceneController.popExitTrans;
         NSMutableArray *controllers = [NSMutableArray arrayWithArray:_navigationController.viewControllers];
         [controllers replaceObjectAtIndex:crumb withObject:controller];
         __block BOOL completed = NO;
