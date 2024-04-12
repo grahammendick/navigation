@@ -8,7 +8,7 @@
 
 @end
 
-@interface NVNavigationStackView : UIView <UINavigationControllerDelegate>
+@interface NVNavigationStackView : UIView <UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) NVStackController *navigationController;
 @property (nonatomic, copy) NSArray *keys;
