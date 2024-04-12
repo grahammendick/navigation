@@ -55,8 +55,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveFind:) name:[@"findNavigationBar" stringByAppendingString: [_crumb stringValue]] object:nil];
     }
     if (self.reactViewController == self.reactViewController.navigationController.topViewController) {
-        [self.reactViewController.navigationController setNavigationBarHidden:self.isHidden && !self.backTitle.length];
-        [self.reactViewController.navigationController.navigationBar setHidden:self.isHidden && self.backTitle.length];
+        [self.reactViewController.navigationController setNavigationBarHidden:self.isHidden];
     }
     if ([changedProps containsObject:@"title"]) {
         [self.reactViewController.navigationItem setTitle:self.title];
@@ -64,7 +63,7 @@
     if ([changedProps containsObject:@"backTitle"]) {
         UINavigationItem *previousNavigationItem = [self previousNavigationItem];
         previousNavigationItem.backBarButtonItem = nil;
-        if (self.backTitle != nil && !self.isHidden) {
+        if (self.backTitle != nil) {
             previousNavigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
         }
     }
