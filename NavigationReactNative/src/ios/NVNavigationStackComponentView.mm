@@ -208,7 +208,7 @@ using namespace facebook::react;
     }
 }
 
--(void) completeNavigation:(void (^)(void)) completeNavigation waitOn:(NVSceneController *)sceneController
+-(void)completeNavigation:(void (^)(void)) completeNavigation waitOn:(NVSceneController *)sceneController
 {
     UIView<NVNavigationBar> *navigationBar = [sceneController findNavigationBar];
     if (!navigationBar.backImageLoading) {
@@ -305,9 +305,9 @@ using namespace facebook::react;
 {
     NVSceneController *fromSceneController = ((NVSceneController *) fromVC);
     NVSceneController *toSceneController = ((NVSceneController *) toVC);
-    if (operation == UINavigationControllerOperationPush && (fromSceneController.exitTrans.count > 0 || toSceneController.enterTrans.count > 0))
+    if (operation == UINavigationControllerOperationPush && toSceneController.enterTrans.count > 0)
         return [[NVSceneTransitioning alloc] initWithDirection:YES];
-    if (operation == UINavigationControllerOperationPop && (fromSceneController.popExitTrans.count > 0 || toSceneController.popEnterTrans.count > 0))
+    if (operation == UINavigationControllerOperationPop && fromSceneController.popExitTrans.count > 0)
         return [[NVSceneTransitioning alloc] initWithDirection:NO];
     return nil;
 }
@@ -322,8 +322,7 @@ using namespace facebook::react;
     if (_navigationController.viewControllers.count < 2) return NO;
     NVSceneController *previousSceneController = (NVSceneController *) _navigationController.viewControllers[_navigationController.viewControllers.count - 2];
     if (previousSceneController.view.subviews.count == 0) return NO;
-    if (((NVSceneController *) _navigationController.topViewController).popExitTrans.count > 0
-        || previousSceneController.popEnterTrans.count > 0) {
+    if (((NVSceneController *) _navigationController.topViewController).popExitTrans.count > 0) {
         return gestureRecognizer == _interactiveGestureRecognizer;
     }
     return gestureRecognizer == _navigationController.interactivePopGestureRecognizer;
