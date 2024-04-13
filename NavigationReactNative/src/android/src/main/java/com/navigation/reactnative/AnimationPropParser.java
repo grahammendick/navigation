@@ -58,6 +58,8 @@ public class AnimationPropParser {
         if (animType == null) {
             ReadableArray items = anim.hasKey("items") ? anim.getArray("items") : null;
             AnimationSet animationSet = new AnimationSet(true);
+            String duration = anim.getString("duration");
+            if (duration != null) animationSet.setDuration(Integer.parseInt(duration));
             if (anim.hasKey("duration")) animationSet.setDuration(anim.getInt("duration"));
             if (items != null) {
                 for(int i = 0; i < items.size(); i++) {
@@ -73,7 +75,6 @@ public class AnimationPropParser {
                 fromY = getValues(enter ? anim.getString("fromY") : null, 0);
                 toY = getValues(!enter ? anim.getString("toY") : null, 0);
                 animation = new TranslateAnimation(fromX.first, fromX.second, toX.first, toX.second, fromY.first, fromY.second, toY.first, toY.second);
-                animation.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
                 break;
             case "scale":
                 fromX = getValues(enter ? anim.getString("fromX") : null);
@@ -83,22 +84,23 @@ public class AnimationPropParser {
                 pivotX = getValues(anim.getString("pivotX"),0.5f, Animation.RELATIVE_TO_SELF);
                 pivotY = getValues(anim.getString("pivotY"),0.5f, Animation.RELATIVE_TO_SELF);
                 animation = new ScaleAnimation(fromX.second, toX.second, fromY.second, toY.second, pivotX.first, pivotX.second, pivotY.first, pivotY.second);
-                animation.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
                 break;
             case "alpha":
-                float fromAlpha = enter && anim.hasKey("from") ? (float) anim.getDouble("from") : 1;
-                float toAlpha = !enter && anim.hasKey("to") ? (float) anim.getDouble("to") : 1;
+                float fromAlpha = getValues(enter ? anim.getString("from") : null).second;
+                float toAlpha = getValues(!enter ? anim.getString("to") : null).second;
                 animation = new AlphaAnimation(fromAlpha, toAlpha);
-                animation.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
                 break;
             case "rotate":
-                float fromDegrees = anim.hasKey("from") ? (float) anim.getDouble("from") : 0;
-                float toDegrees = anim.hasKey("to") ? (float) anim.getDouble("to") : 0;
+                float fromDegrees = getValues(anim.getString("from"), 0).second;
+                float toDegrees = getValues(anim.getString("to"), 0).second;
                 pivotX = getValues(anim.getString("pivotX"),0.5f, Animation.RELATIVE_TO_SELF);
                 pivotY = getValues(anim.getString("pivotY"),0.5f, Animation.RELATIVE_TO_SELF);
                 animation = new RotateAnimation(fromDegrees, toDegrees, pivotX.first, pivotX.second, pivotY.first, pivotY.second);
-                animation.setDuration(anim.hasKey("duration") ? anim.getInt("duration") : 300);
                 break;
+        }
+        if (animation != null) {
+            String duration = anim.getString("duration");
+            animation.setDuration(duration != null ? Integer.parseInt(duration) : 300);
         }
         return animation;
     }
