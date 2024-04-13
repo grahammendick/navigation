@@ -24,7 +24,11 @@ import java.util.Map;
 public class AnimationPropParser {
     protected static Transition getTransition(ReadableMap trans) {
         Transition transition = null;
-        String transType = trans != null ? trans.getString("type") : null;
+        if (trans == null) return null;
+        ReadableArray items = trans.hasKey("items") ? trans.getArray("items") : null;
+        if (items == null || items.size() == 0) return null;
+        trans = items.getMap(0);
+        String transType = trans.getString("type");
         if (transType == null) return null;
         switch (transType) {
             case "sharedAxis":
@@ -63,10 +67,11 @@ public class AnimationPropParser {
             if (anim.hasKey("duration")) animationSet.setDuration(anim.getInt("duration"));
             if (items != null) {
                 for(int i = 0; i < items.size(); i++) {
-                    animationSet.addAnimation(getAnimation(items.getMap(i), enter));
+                    animation = getAnimation(items.getMap(i), enter);
+                    if (animation != null) animationSet.addAnimation(animation);
                 }
             }
-            return animationSet;
+            return animationSet.getAnimations().size() > 0 ? animationSet : null;
         };
         switch (animType) {
             case "translate":
