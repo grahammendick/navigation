@@ -90,7 +90,7 @@
             transform = CGAffineTransformScale(transform, transition.x.percent ? transition.x.val / 100 : transition.x.val, transition.y.percent ? transition.y.val / 100 : transition.y.val);
         }
         if ([transition.type isEqualToString:@"rotate"]) {
-            transform = CGAffineTransformRotate(transform, transition.x.val * M_PI / 360);
+            transform = CGAffineTransformRotate(transform, ((transition.x.val > 0 ? 360 : -360) + transition.x.val) * M_PI / 180);
         }
         if ([transition.type isEqualToString:@"alpha"]) {
             sceneController.view.alpha = transition.x.val;
