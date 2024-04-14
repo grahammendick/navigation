@@ -1,15 +1,15 @@
 import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect } from 'react';
-import { requireNativeComponent, StyleSheet } from 'react-native';
+import { Platform, requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import PopSync from './PopSync';
 import Scene from './Scene';
-type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, sharedElements: any, backgroundColor: any, landscape: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
+type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, customAnimation: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, sharedElements: any, backgroundColor: any, landscape: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, counter: number, mostRecentEventCount: number};
 
-const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, crumbStyle: crumbStyleStack = () => null, unmountStyle: unmountStyleStack = () => null,
-    hidesTabBar: hidesTabBarStack = () => false, sharedElement: getSharedElementStack = () => null, sharedElements: getSharedElementsStack = () => null,
-    backgroundColor: backgroundColorStack = () => null, landscape: landscapeStack = () => null, stackInvalidatedLink, renderScene, children}: NavigationStackProps) => {
+const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, customAnimation = Platform.OS === 'android', crumbStyle: crumbStyleStack = () => null, unmountStyle: unmountStyleStack = () => null,
+    hidesTabBar: hidesTabBarStack = () => false, sharedElement: getSharedElementStack = () => null, sharedElements: getSharedElementsStack = () => null, backgroundColor: backgroundColorStack = () => null,
+    landscape: landscapeStack = () => null, stackInvalidatedLink, renderScene, children}: NavigationStackProps) => {
     const resumeNavigationRef = useRef(null);
     const ref = useRef(null);
     const {stateNavigator} = useContext(NavigationContext);
@@ -134,6 +134,10 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cru
         exitTrans = exitTrans ? convertExitTrans(exitTrans) : null;
         enterAnim = !enterTrans ? enterAnim : null;
         exitAnim = !exitTrans ? exitAnim : null;
+        enterTrans = customAnimation ? enterTrans : undefined;
+        exitTrans = customAnimation ? exitTrans : undefined;
+        enterAnim = customAnimation || enterAnim === '' ? enterAnim : undefined;
+        exitAnim = customAnimation || exitAnim === '' ? exitAnim : undefined;
         const enterAnimOff = enterAnim === '';
         return {enterAnim, exitAnim, enterAnimOff, enterTrans, exitTrans, sharedElements, containerTransform, underlayColor, backgroundColor: underlayColor};
     }
@@ -172,6 +176,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cru
                         crumb={crumb}
                         sceneKey={key}
                         rest={rest}
+                        customAnimation={customAnimation}
                         unmountStyle={unmountStyle}
                         crumbStyle={crumbStyle}
                         hidesTabBar={hidesTabBar}

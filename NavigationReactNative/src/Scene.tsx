@@ -4,7 +4,7 @@ import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
 import Freeze from './Freeze';
-type SceneProps = { crumb: number, sceneKey: string, rest: boolean, renderScene: (state: State, data: any) => ReactNode, crumbStyle: any, unmountStyle: any, hidesTabBar: any, backgroundColor: any, landscape: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
+type SceneProps = { crumb: number, sceneKey: string, rest: boolean, renderScene: (state: State, data: any) => ReactNode, customAnimation: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, backgroundColor: any, landscape: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
 type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
@@ -114,7 +114,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return stateContext;
     }
     getAnimation() {
-        var {crumb, navigationEvent, unmountStyle, crumbStyle, hidesTabBar, backgroundColor, landscape} = this.props;
+        var {crumb, navigationEvent, customAnimation, unmountStyle, crumbStyle, hidesTabBar, backgroundColor, landscape} = this.props;
         var {stateNavigator} = this.state.navigationEvent || navigationEvent;
         var {crumbs, nextCrumb} = stateNavigator.stateContext;
         var {state, data} = crumbs[crumb] || nextCrumb;
@@ -159,6 +159,10 @@ class Scene extends React.Component<SceneProps, SceneState> {
         exitTrans = exitTrans ? convertExitTrans(exitTrans) : null;
         enterAnim = !enterTrans ? enterAnim : null;
         exitAnim = !exitTrans ? exitAnim : null;
+        enterTrans = customAnimation ? enterTrans : undefined;
+        exitTrans = customAnimation ? exitTrans : undefined;
+        enterAnim = customAnimation || enterAnim === '' ? enterAnim : undefined;
+        exitAnim = customAnimation || exitAnim === '' ? exitAnim : undefined;
         return {enterAnim, exitAnim, enterTrans, exitTrans, hidesTabBar, backgroundColor, landscape};
     }
     render() {
