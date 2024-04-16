@@ -62,7 +62,7 @@ using namespace facebook::react;
         _navigationController.interactivePopGestureRecognizer.delegate = self;
         _interactiveGestureRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteractivePopGesture:)];
         _interactiveGestureRecognizer.delegate = self;
-        _interactiveGestureRecognizer.edges = UIRectEdgeLeft;
+        _interactiveGestureRecognizer.edges = ![[RCTI18nUtil sharedInstance] isRTL] ? UIRectEdgeLeft : UIRectEdgeRight;
         [_navigationController.view addGestureRecognizer:_interactiveGestureRecognizer];
     }
 }
@@ -222,7 +222,8 @@ using namespace facebook::react;
 
 - (void)handleInteractivePopGesture:(UIPanGestureRecognizer *)gestureRecognizer
 {
-    float translation = [gestureRecognizer translationInView:gestureRecognizer.view].x;
+    int multiplier = ![[RCTI18nUtil sharedInstance] isRTL] ? 1 : -1;
+    float translation = multiplier * [gestureRecognizer translationInView:gestureRecognizer.view].x;
     float width = gestureRecognizer.view.bounds.size.width;
     switch (gestureRecognizer.state) {
         case UIGestureRecognizerStateBegan: {
@@ -242,7 +243,7 @@ using namespace facebook::react;
             
         }
         default: {
-            float velocity = [gestureRecognizer velocityInView:gestureRecognizer.view].x;
+            float velocity = multiplier * [gestureRecognizer velocityInView:gestureRecognizer.view].x;
             if ((translation + velocity * 0.3) > (width / 2)) [_interactiveTransition finishInteractiveTransition];
             else [_interactiveTransition cancelInteractiveTransition];
             _interactiveTransition = nil;
