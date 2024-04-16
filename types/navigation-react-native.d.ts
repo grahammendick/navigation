@@ -1,7 +1,7 @@
 import { Component, Context, ReactNode, ReactElement } from 'react';
 import { BackHandler, ImageRequireSource, ImageURISource, NativeSyntheticEvent, StyleProp, ViewStyle, TransformsStyle, ColorValue } from 'react-native';
 import { Crumb, State, StateContext } from 'navigation';
-import { SFSymbolURISource } from 'sf-symbol';
+import { SFSymbolURISource } from './sf-symbol';
 
 declare global {
     interface Location {}
@@ -61,6 +61,10 @@ export interface NavigationStackProps {
      * The link to navigate to when Scenes in the stack are unregistered
      */
     stackInvalidatedLink?: string;
+    /**
+     * Indicates whether custom enter and exit animations should run
+     */
+    customAnimation?: boolean;
      /**
      * The Scene's title
      */
