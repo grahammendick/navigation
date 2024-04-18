@@ -10,16 +10,35 @@ type NativeProps = $ReadOnly<{|
   enterAnim: string,
   exitAnim: string,
   enterTrans: $ReadOnly<{|
-    type: string,
-    axis?: string,
+    duration?: string,
+    items: $ReadOnlyArray<$ReadOnly<{|
+      type: string,
+      axis?: string,
+      fromX?: string,
+      fromY?: string,
+      from?: string,
+      pivotX?: string,
+      pivotY?: string,
+      duration?: string,
+    |}>>
   |}>,
   exitTrans: $ReadOnly<{|
-    type: string,
-    axis?: string,
+    duration?: string,
+    items: $ReadOnlyArray<$ReadOnly<{|
+      type: string,
+      axis?: string,
+      toX?: string,
+      toY?: string,
+      to?: string,
+      pivotX?: string,
+      pivotY?: string,
+      duration?: string,
+    |}>>
   |}>,
   enterAnimOff: boolean,
   sharedElements: $ReadOnlyArray<string>,
   containerTransform: boolean,
+  underlayColor: ColorValue,
   mostRecentEventCount: Int32,
   onNavigateToTop: DirectEventHandler<null>,
   onWillNavigateBack: DirectEventHandler<$ReadOnly<{|

@@ -31,6 +31,8 @@
 		7025916528269ACE00A9DD13 /* NVTabBarPagerComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVTabBarPagerComponentView.mm; sourceTree = "<group>"; };
 		7025916728269ADF00A9DD13 /* NVTabBarPagerComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTabBarPagerComponentView.h; sourceTree = "<group>"; };
 		70295FE72800768A0051A576 /* NVSceneComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVSceneComponentView.mm; sourceTree = "<group>"; };
+		702B00512B932E3300713302 /* NVSceneTransitioning.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSceneTransitioning.m; sourceTree = "<group>"; };
+		702B00522B932E3E00713302 /* NVSceneTransitioning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSceneTransitioning.h; sourceTree = "<group>"; };
 		702E38C12AFCFEAE0009E0A7 /* NVBottomSheetController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVBottomSheetController.m; sourceTree = "<group>"; };
 		702E38C22AFCFEB70009E0A7 /* NVBottomSheetController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVBottomSheetController.h; sourceTree = "<group>"; };
 		702FBDB62830F920002054B5 /* NVTitleBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVTitleBarComponentView.mm; sourceTree = "<group>"; };
@@ -148,6 +150,8 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				702B00522B932E3E00713302 /* NVSceneTransitioning.h */,
+				702B00512B932E3300713302 /* NVSceneTransitioning.m */,
 				702E38C22AFCFEB70009E0A7 /* NVBottomSheetController.h */,
 				702E38C12AFCFEAE0009E0A7 /* NVBottomSheetController.m */,
 				707C4BF82AF64BF6008FC72E /* NVBottomSheetManager.m */,

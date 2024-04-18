@@ -78,6 +78,10 @@ public class NavigationStackViewManager extends ViewGroupManager<NavigationStack
         view.containerTransform = containerTransform;
     }
 
+    @Override
+    public void setUnderlayColor(NavigationStackView view, @Nullable Integer value) {
+    }
+
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(NavigationStackView view, int mostRecentEventCount) {
     }

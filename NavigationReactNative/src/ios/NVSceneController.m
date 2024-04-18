@@ -5,6 +5,18 @@
 #import "NVStatusBarView.h"
 #import <React/UIView+React.h>
 
+@implementation NVTransition
+
+- (id)initWithType:(NSString *)type;
+{
+    if (self = [super init]) {
+        _type = type;
+    }
+    return self;
+}
+
+@end
+
 @implementation NVSceneController
 {
     UIView<NVScene> *_view;
@@ -45,20 +57,17 @@
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
     UIView<NVNavigationBar> *navigationBar = [self findNavigationBar];
     navigationBar.backImageDidLoadBlock = nil;
-    BOOL hidden = navigationBar.isHidden && !navigationBar.backTitle.length;
-    BOOL barHidden = navigationBar.isHidden && navigationBar.backTitle.length;
+    BOOL hidden = navigationBar.isHidden;
     if (@available(iOS 13.0, *)) {
     } else {
         hidden = hidden || previousController.navigationItem.searchController.active;
-        barHidden = barHidden || previousController.navigationItem.searchController.active;
     }
     [self.navigationController setNavigationBarHidden:hidden];
-    [self.navigationController.navigationBar setHidden:barHidden];
     if (navigationBar.title.length != 0) {
         [self.navigationItem setTitle:navigationBar.title];
     }
     previousController.navigationItem.backBarButtonItem = nil;
-    if (navigationBar.backTitle != nil && !navigationBar.isHidden) {
+    if (navigationBar.backTitle != nil) {
         previousController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:navigationBar.backTitle style:UIBarButtonItemStylePlain target:nil action:nil];
     }
     [navigationBar updateStyle];
@@ -83,8 +92,7 @@
     UIViewController *previousController = crumb > 0 ? [self.navigationController.viewControllers objectAtIndex:crumb - 1] : nil;
     UIView<NVNavigationBar> *navigationBar = [self findNavigationBar];
     if (previousController.navigationItem.searchController.active) {
-        [self.navigationController setNavigationBarHidden:navigationBar.isHidden && !navigationBar.backTitle.length];
-        [self.navigationController.navigationBar setHidden:navigationBar.isHidden && navigationBar.backTitle.length];
+        [self.navigationController setNavigationBarHidden:navigationBar.isHidden];
     }
 }
 

@@ -52,6 +52,7 @@ type RotateAnimation = {
 type Animation = TranslateAnimation | ScaleAnimation | AlphaAnimation | RotateAnimation;
 
 type Transition = { type: 'sharedAxis', axis?: 'x' | 'y' | 'z' } | { type: 'elevationScale' | 'fade' | 'fadeThrough' | 'hold' } | Animation | Animation[] | { duration?: number, items: Animation[] };
+
 /**
  * Defines the Navigation Stack Props contract
  */
@@ -60,6 +61,10 @@ export interface NavigationStackProps {
      * The link to navigate to when Scenes in the stack are unregistered
      */
     stackInvalidatedLink?: string;
+    /**
+     * Indicates whether custom enter and exit animations should run
+     */
+    customAnimation?: boolean;
      /**
      * The Scene's title
      */
@@ -94,7 +99,6 @@ export interface NavigationStackProps {
     backgroundColor?: (state: State, data: any, crumbs: Crumb[]) => ColorValue;
     /**
      * The color of the background behind the Scenes
-     * @platform android
      */
     underlayColor?: ColorValue | ((state: State, data: any, crumbs: Crumb[]) => ColorValue);
     /**
@@ -155,7 +159,6 @@ export class NavigationStack extends Component<NavigationStackProps> { }
     backgroundColor?: ColorValue | ((data: any, crumbs: Crumb[]) => ColorValue);
     /**
      * The color of the background behind the Scene
-     * @platform android
      */
     underlayColor?: ColorValue | ((data: any, crumbs: Crumb[]) => ColorValue);
     /**

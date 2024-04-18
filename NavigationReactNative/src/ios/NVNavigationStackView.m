@@ -1,6 +1,7 @@
 #import "NVNavigationStackView.h"
 #import "NVSceneView.h"
 #import "NVSceneController.h"
+#import "NVSceneTransitioning.h"
 #import "NVNavigationBarView.h"
 
 #import <UIKit/UIKit.h>
@@ -15,6 +16,10 @@
     __weak RCTBridge *_bridge;
     NSMutableDictionary *_scenes;
     NSInteger _nativeEventCount;
+    NSMutableArray<NVTransition*> *_enterTransitions;
+    NSMutableArray<NVTransition*> *_exitTransitions;
+    UIScreenEdgePanGestureRecognizer *_interactiveGestureRecognizer;
+    UIPercentDrivenInteractiveTransition *_interactiveTransition;
     BOOL _navigated;
     BOOL _presenting;
 }
@@ -28,7 +33,14 @@
         _navigationController.navigationBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         [self addSubview:_navigationController.view];
         _navigationController.delegate = self;
+        _navigationController.interactivePopGestureRecognizer.delegate = self;
+        _interactiveGestureRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteractivePopGesture:)];
+        _interactiveGestureRecognizer.delegate = self;
+        _interactiveGestureRecognizer.edges = ![[RCTI18nUtil sharedInstance] isRTL] ? UIRectEdgeLeft : UIRectEdgeRight;
+        [_navigationController.view addGestureRecognizer:_interactiveGestureRecognizer];
         _scenes = [[NSMutableDictionary alloc] init];
+        _enterTransitions = [[NSMutableArray alloc] init];
+        _exitTransitions = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -47,6 +59,67 @@
 
 - (void)didUpdateReactSubviews
 {
+}
+
+- (void)setUnderlayColor:(UIColor *)underlayColor
+{
+    _navigationController.view.backgroundColor = underlayColor;
+}
+
+- (void)setEnterTrans:(NSDictionary *)enterTrans
+{
+    [_enterTransitions removeAllObjects];
+    NSString *durationStr = enterTrans[@"duration"];
+    int duration = [durationStr length] ? [durationStr intValue] : 350;
+    for (int i = 0; i < ((NSArray<NSDictionary *> *) enterTrans[@"items"]).count; i++) {
+        NSDictionary *transItem = ((NSArray<NSDictionary *> *) enterTrans[@"items"])[i];
+        NVTransition *transition = [[NVTransition alloc] initWithType:transItem[@"type"]];
+        NSString *defaultVal = @"0";
+        if ([transition.type isEqualToString:@"scale"] || [transition.type isEqualToString:@"alpha"])
+            defaultVal = @"1";
+        durationStr = transItem[@"duration"];
+        transition.duration = [durationStr length] ? [durationStr intValue] : duration;
+        transition.x = [self parseAnimation:transItem[@"fromX"] defaultVal:defaultVal];
+        transition.y = [self parseAnimation:transItem[@"fromY"] defaultVal:defaultVal];
+        if ([transition.type isEqualToString:@"alpha"] || [transition.type isEqualToString:@"rotate"])
+            transition.x = [self parseAnimation:transItem[@"from"] defaultVal:defaultVal];
+        [_enterTransitions addObject:transition];
+    }
+}
+
+- (void)setExitTrans:(NSDictionary *)exitTrans
+{
+    [_exitTransitions removeAllObjects];
+    NSString *durationStr = exitTrans[@"duration"];
+    int duration = [durationStr length] ? [durationStr intValue] : 350;
+    for (int i = 0; i < ((NSArray<NSDictionary *> *) exitTrans[@"items"]).count; i++) {
+        NSDictionary *transItem = ((NSArray<NSDictionary *> *) exitTrans[@"items"])[i];
+        NVTransition *transition = [[NVTransition alloc] initWithType:transItem[@"type"]];
+        NSString *defaultVal = @"0";
+        if ([transition.type isEqualToString:@"scale"] || [transition.type isEqualToString:@"alpha"])
+            defaultVal = @"1";
+        durationStr = transItem[@"duration"];
+        transition.duration = [durationStr length] ? [durationStr intValue] : duration;
+        transition.x = [self parseAnimation:transItem[@"toX"] defaultVal:defaultVal];
+        transition.y = [self parseAnimation:transItem[@"toY"] defaultVal:defaultVal];
+        if ([transition.type isEqualToString:@"alpha"] || [transition.type isEqualToString:@"rotate"])
+            transition.x = [self parseAnimation:transItem[@"to"] defaultVal:defaultVal];
+        [_exitTransitions addObject:transition];
+    }
+}
+
+- (NVTransitionValue)parseAnimation:(NSString *)val defaultVal:(NSString *)defaultVal
+{
+    NVTransitionValue transitionValue;
+    val = [val length] ? val : defaultVal;
+    if ([val hasSuffix:@"%"]) {
+        transitionValue.val = [[val substringToIndex:[val length] -1] floatValue];
+        transitionValue.percent = YES;
+    } else {
+        transitionValue.val = [val floatValue];
+        transitionValue.percent = NO;
+    }
+    return transitionValue;
 }
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
@@ -74,7 +147,8 @@
     }
     BOOL animate = ![self.enterAnim isEqualToString:@""];
     if (crumb > currentCrumb) {
-        NSMutableArray *controllers = [[NSMutableArray alloc] init];
+        NSMutableArray<NVSceneController*> *controllers = [[NSMutableArray alloc] init];
+        NVSceneController *prevSceneController = nil;
         for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
             NSInteger nextCrumb = currentCrumb + i + 1;
             NVSceneView *scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:nextCrumb]];
@@ -85,11 +159,15 @@
             controller.boundsDidChangeBlock = ^(NVSceneController *sceneController) {
                 [weakSelf notifyForBoundsChange:sceneController];
             };
-            scene.peekableDidChangeBlock = ^{
-                [weakSelf checkPeekability:[self.keys count] - 1];
-            };
             controller.navigationItem.title = scene.title;
+            controller.enterTrans = _enterTransitions;
+            controller.popExitTrans = scene.exitTransArray;
+            if (!prevSceneController)
+                prevSceneController = (NVSceneController *) _navigationController.topViewController;
+            prevSceneController.exitTrans = _exitTransitions;
+            prevSceneController.popEnterTrans = scene.enterTransArray;
             [controllers addObject:controller];
+            prevSceneController = controller;
         }
         __block BOOL completed = NO;
         [self completeNavigation:^{
@@ -109,6 +187,15 @@
         if (!![scene superview])
             return;
         NVSceneController *controller = [[NVSceneController alloc] initWithScene:scene];
+        controller.enterTrans = _enterTransitions;
+        controller.popExitTrans = scene.exitTransArray;
+        if (_navigationController.viewControllers.count > 1) {
+            NVSceneController *prevSceneController = (NVSceneController *) _navigationController.viewControllers[_navigationController.viewControllers.count - 2];
+            prevSceneController.exitTrans = _exitTransitions;
+            prevSceneController.popEnterTrans = scene.enterTransArray;
+        }
+        NVSceneController *topSceneController = (NVSceneController *) _navigationController.topViewController;
+        topSceneController.exitTrans = topSceneController.popExitTrans;
         NSMutableArray *controllers = [NSMutableArray arrayWithArray:_navigationController.viewControllers];
         [controllers replaceObjectAtIndex:crumb withObject:controller];
         __block BOOL completed = NO;
@@ -121,7 +208,7 @@
     }
 }
 
--(void) completeNavigation:(void (^)(void)) completeNavigation waitOn:(NVSceneController *)sceneController
+-(void)completeNavigation:(void (^)(void)) completeNavigation waitOn:(NVSceneController *)sceneController
 {
     UIView<NVNavigationBar> *navigationBar = [sceneController findNavigationBar];
     if (!navigationBar.backImageLoading) {
@@ -144,18 +231,41 @@
     }
 }
 
+- (void)handleInteractivePopGesture:(UIPanGestureRecognizer *)gestureRecognizer
+{
+    int multiplier = ![[RCTI18nUtil sharedInstance] isRTL] ? 1 : -1;
+    float translation = multiplier * [gestureRecognizer translationInView:gestureRecognizer.view].x;
+    float width = gestureRecognizer.view.bounds.size.width;
+    switch (gestureRecognizer.state) {
+        case UIGestureRecognizerStateBegan: {
+            _interactiveTransition = [[UIPercentDrivenInteractiveTransition alloc] init];
+            [_navigationController popViewControllerAnimated:YES];
+            break;
+        }
+        case UIGestureRecognizerStateChanged: {
+            [_interactiveTransition updateInteractiveTransition:translation / width];
+            break;
+        }
+        case UIGestureRecognizerStateCancelled: {
+            [_interactiveTransition cancelInteractiveTransition];
+            break;
+        }
+        case UIGestureRecognizerStateEnded: {
+
+        }
+        default: {
+            float velocity = multiplier * [gestureRecognizer velocityInView:gestureRecognizer.view].x;
+            if ((translation + velocity * 0.3) > (width / 2)) [_interactiveTransition finishInteractiveTransition];
+            else [_interactiveTransition cancelInteractiveTransition];
+            _interactiveTransition = nil;
+            break;
+        }
+    }
+}
+
 - (void)notifyForBoundsChange:(NVSceneController *)controller
 {
     [_bridge.uiManager setSize:controller.view.bounds.size forView:controller.view];
-}
-
-- (void)checkPeekability:(NSInteger)crumb
-{
-    NVSceneView *scene;
-    if (crumb > 1 && self.keys.count > crumb - 1) {
-        scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb - 1]];
-    }
-    _navigationController.interactivePopGestureRecognizer.enabled = scene ? scene.subviews.count > 0 : YES;
 }
 
 - (void)layoutSubviews
@@ -186,7 +296,6 @@
         _navigationController.retainedViewController = navigationController.topViewController;
     }
     NSInteger crumb = [navigationController.viewControllers indexOfObject:viewController];
-    [self checkPeekability:crumb];
     if (crumb < [self.keys count] - 1) {
         _nativeEventCount++;
     }
@@ -194,6 +303,47 @@
         @"crumb": @(crumb),
         @"eventCount": crumb < [self.keys count] - 1 ? @(_nativeEventCount) : @0
     });
+}
+
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC
+{
+    NVSceneController *fromSceneController = ((NVSceneController *) fromVC);
+    NVSceneController *toSceneController = ((NVSceneController *) toVC);
+    if (operation == UINavigationControllerOperationPush && toSceneController.enterTrans.count > 0)
+        return [[NVSceneTransitioning alloc] initWithDirection:YES];
+    if (operation == UINavigationControllerOperationPop && fromSceneController.popExitTrans.count > 0)
+        return [[NVSceneTransitioning alloc] initWithDirection:NO];
+    return nil;
+}
+
+- (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController
+{
+    return _interactiveTransition;
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (_navigationController.viewControllers.count < 2) return NO;
+    NVSceneController *previousSceneController = (NVSceneController *) _navigationController.viewControllers[_navigationController.viewControllers.count - 2];
+    if (previousSceneController.view.subviews.count == 0) return NO;
+    if (((NVSceneController *) _navigationController.topViewController).popExitTrans.count > 0) {
+        return gestureRecognizer == _interactiveGestureRecognizer;
+    }
+    return gestureRecognizer == _navigationController.interactivePopGestureRecognizer;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    if ([otherGestureRecognizer.delegate isKindOfClass:[NVNavigationStackView class]]) {
+        UIViewController *ancestorController = ((NVNavigationStackView *) otherGestureRecognizer.delegate).navigationController;
+        while(ancestorController) {
+            ancestorController = ancestorController.parentViewController;
+            if (ancestorController == _navigationController)
+                return NO;
+        }
+    }
+    return YES;
 }
 
 @end

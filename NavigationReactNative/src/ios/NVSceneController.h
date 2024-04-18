@@ -12,11 +12,30 @@
 
 @end
 
+typedef struct {
+    float val;
+    BOOL percent;
+} NVTransitionValue;
+
+@interface NVTransition : NSObject
+
+@property (nonatomic, copy) NSString *type;
+@property (nonatomic, assign) int duration;
+@property (nonatomic, assign) NVTransitionValue x;
+@property (nonatomic, assign) NVTransitionValue y;
+- (id)initWithType:(NSString *)type;
+
+@end
+
 @interface NVSceneController : UIViewController
 
 @property (nonatomic, copy) void (^boundsDidChangeBlock)(NVSceneController *controller);
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, assign) BOOL statusBarHidden;
+@property (nonatomic, copy) NSArray<NVTransition*> *enterTrans;
+@property (nonatomic, copy) NSArray<NVTransition*> *exitTrans;
+@property (nonatomic, copy) NSArray<NVTransition*> *popEnterTrans;
+@property (nonatomic, copy) NSArray<NVTransition*> *popExitTrans;
 
 - (id)initWithScene:(UIView *)view;
 - (UIView<NVNavigationBar> *) findNavigationBar;
