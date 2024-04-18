@@ -29,7 +29,7 @@ const App = () => (
       <Scene stateKey="tabs"><Tabs /></Scene>
       <Scene stateKey="home"><Home /></Scene>
       <Scene stateKey="notifications"><Notifications /></Scene>
-      <Scene stateKey="tweet" unmountStyle={{type: 'translate', startY: '100%'}}><Tweet /></Scene>
+      <Scene stateKey="tweet"><Tweet /></Scene>
       <Scene stateKey="timeline"><Timeline /></Scene>
     </NavigationStack>
   </NavigationHandler>
