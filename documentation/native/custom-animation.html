@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Custom Animation (Android)</title>
+    <title>Custom Animation</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="../../css/prism.css">
     <link rel="stylesheet" href="../../css/navigation.css">
@@ -35,7 +35,7 @@
                 <a href="bottom-sheet.html">Bottom Sheet</a>
                 <a href="floating-action-button.html">Floating Action Button (Android)</a>
                 <a href="scene-navigation-lifecycle.html">Navigation Lifecycle</a>
-                <a href="custom-animation.html" class="selected">Custom Animation (Android)</a>
+                <a href="custom-animation.html" class="selected">Custom Animation</a>
                 <a href="shared-element-transition.html">Shared Element Transition (Android)</a>
                 <a href="deep-links.html">Deep Links</a>
                 <a href="typescript.html">TypeScript</a>
@@ -50,26 +50,26 @@
             </div>
         </div>
         <div id="article">
-            <h1>Custom Animation (Android)</h1>
+            <h1>Custom Animation</h1>
             <p>
-                You can change the default Android animation that runs when a scene is pushed onto or popped off the stack. You provide the position of the scene when it's off the stack in the <code>unmountStyle</code> prop of the <code>NavigationStack</code>. The Navigation router uses the underlying native transition api to animate it into place. In our email application, we start the 'mail' scene off to the right of the screen. The Navigation router slides it when the user selects a mail and back out again when they return to their inbox.
+                You can change the default animation that runs when a scene is pushed onto or popped off the stack. You provide the position of the scene when it's off the stack in the <code>unmountStyle</code> prop of the <code>NavigationStack</code>. The Navigation router uses the underlying native transition apis on Android and iOS to animate it into place. In our email application, we start the 'mail' scene off to the right of the screen. The Navigation router slides it in when the user selects a mail and back out again when they return to their inbox. Without the <code>customAnimation</code> prop the animation only runs on Android.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationStack unmountStyle={{type: 'translate', startX: '100%'}}></code></pre>
+            <pre><code class="language-jsx">&lt;NavigationStack customAnimation unmountStyle={{type: 'translate', startX: '100%'}}></code></pre>
             <p>
                 You can also specify the position of the scene when it's hidden in the stack using the <code>crumbStyle</code> prop of the <code>NavigationStack</code>. The Navigation router will animate the current scene to and from that position when a new scene is pushed and then popped. By setting the crumb's start opacity to 0, when the user opens an email the 'inbox' scene fades out as the 'mail' scene slides in from the right.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationStack crumbStyle={{type: 'alpha', startX: 0}}></code></pre>
+            <pre><code class="language-jsx">&lt;NavigationStack customAnimation crumbStyle={{type: 'alpha', start: 0}}></code></pre>
             <p>
                 We can make the 'inbox' scene shrink as well as fade by passing in multiple start styles.The Navigation router runs both animations together when a user opens an email.
             </p>
-<pre><code class="language-jsx">&lt;NavigationStack crumbStyle={[
-    {type: 'alpha', startX: 0},
-    {type: 'scale', startX: 0.8, startY: 0.8}
-  ]}></code></pre>
+<pre><code class="language-jsx">&lt;NavigationStack customAnimation crumbStyle={[
+  {type: 'alpha', start: 0},
+  {type: 'scale', startX: 0.8, startY: 0.8}
+]}></code></pre>
             <p>
-                The <code>Scene</code> component also has <code>unmountStyle</code> and <code>crumbStyle</code> props so you can have different animations for different scenes. In our email application, we want every scene to slide in from the right apart from the 'compose' scene. To make it slide up from the bottom of the screen we configure a special <code>unmountStyle</code> for just the 'compose' scene.
+                The <code>Scene</code> component also has <code>unmountStyle</code> and <code>crumbStyle</code> props so you can have different animations for different scenes. In our email application, we want every scene to slide in from the right apart from the 'compose' scene. To make it slide up from the bottom right of the screen we configure a special <code>unmountStyle</code> for just the 'compose' scene.
             </p>
-            <pre><code class="language-jsx">&lt;Scene stateKey="compose" unmountStyle={{type: 'translate', startY: '100%'}}>
+            <pre><code class="language-jsx">&lt;Scene stateKey="compose" unmountStyle={{type: 'translate', startX: '100%', startY: '-100%'}}>
   &lt;Compose />
 &lt;/Scene></code></pre>
         </div>
