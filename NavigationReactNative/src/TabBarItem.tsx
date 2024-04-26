@@ -34,9 +34,10 @@ const TabBarItem = ({selected, onPress, children, title, image, systemItem, badg
             <Freeze enabled={loaded && freeze}>
                 <NVTabBarItem
                     ref={(ref: any) => {
-                        if (!!React.Suspense && ref?.viewConfig?.validAttributes?.style) {
-                            ref.viewConfig.validAttributes.style = {
-                                ...ref.viewConfig.validAttributes.style,
+                        const viewConfig = ref?.viewConfig || ref?._viewConfig;
+                        if (!!React.Suspense && viewConfig?.validAttributes?.style) {
+                            viewConfig.validAttributes.style = {
+                                ...viewConfig.validAttributes.style,
                                 display: false
                             };
                         }
