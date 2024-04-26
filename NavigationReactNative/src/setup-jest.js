@@ -71,6 +71,7 @@ jest.mock('navigation-react-native', () => {
             return (
                 <ReactNative.View
                     key={state.key}
+                    accessible
                     accessibilityRole="window"
                     accessibilityState={{selected: index === length - 1}}>
                     <Scene crumb={index} renderScene={renderScene} />
@@ -83,7 +84,7 @@ jest.mock('navigation-react-native', () => {
         if (hidden) return null;
         const Left = React.Children.toArray(children).find(({type}) => type === LeftBar);
         return (
-            <ReactNative.View accessibilityRole="toolbar" {...props}>
+            <ReactNative.View accessible accessibilityRole="toolbar" {...props}>
                 {!!navigationImage && (
                     <ReactNative.Pressable accessibilityRole="imagebutton"
                         testID={navigationTestID} onPress={onNavigationPress}>
@@ -196,7 +197,7 @@ jest.mock('navigation-react-native', () => {
         return (
             <>
                 {!bottomTabs && tabLayout}
-                <ReactNative.View accessibilityRole="tablist">
+                <ReactNative.View accessible accessibilityRole="tablist">
                     {tabBarItems.map((child, index) => {
                         const selected = index === selectedTab;
                         return React.cloneElement(child, {...child.props, selected})
@@ -209,6 +210,7 @@ jest.mock('navigation-react-native', () => {
 
     const TabBarItem = ({ selected, ...props }) => (
         <ReactNative.View
+            accessible
             accessibilityRole="tabpanel"
             accessibilityState={{selected}}
             {...props} />
