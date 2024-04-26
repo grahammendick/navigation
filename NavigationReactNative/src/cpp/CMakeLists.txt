@@ -40,6 +40,7 @@ target_link_libraries(
   react_render_core
   react_render_mapbuffer
   react_render_imagemanager
+  react_render_componentregistry
   react_render_debug
   react_render_graphics
   react_utils
@@ -55,6 +56,6 @@ target_compile_options(
   -DLOG_TAG=\"ReactNative\"
   -fexceptions
   -frtti
-  -std=c++17
+  -std=c++20
   -Wall
 )
