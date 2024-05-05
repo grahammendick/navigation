@@ -59,6 +59,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected ReadableArray sharedElementNames;
     protected Boolean startNavigation = null;
     protected boolean containerTransform = false;
+    int nativeEventCount;
+    int mostRecentEventCount;
 
     public NavigationStackView(Context context) {
         super(context);
@@ -78,6 +80,9 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     }
 
     protected void onAfterUpdateTransaction() {
+        int eventLag = nativeEventCount - mostRecentEventCount;
+        if (eventLag != 0)
+            return;
         Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
         if (currentActivity == null)
             return;
@@ -95,8 +100,26 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             fragment = new StackFragment(this);
             FragmentManager fragmentManager = ((FragmentActivity) currentActivity).getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.setPrimaryNavigationFragment(fragment);
             transaction.add(fragment, "Stack" + getId());
             transaction.commitNowAllowingStateLoss();
+            fragment.getChildFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+                @Override
+                public void onBackStackChanged() {
+                }
+
+                @Override
+                public void onBackStackChangeStarted(@NonNull Fragment sceneFragment, boolean pop) {
+                    if (pop && sceneFragment.isRemoving()) {
+                        int crumb = ((SceneFragment) sceneFragment).getScene().crumb;
+                        if (crumb < keys.size() - 1) {
+                            ReactContext reactContext = (ReactContext) getContext();
+                            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                            eventDispatcher.dispatchEvent(new NavigationStackView.WillNavigateBackEvent(getId(), crumb));
+                        }
+                    }
+                }
+            });
         }
         startNavigation = startNavigation == null && keys.size() != 0;
         if (scenes.size() == 0 || !fragment.isAdded() || fragment.getChildFragmentManager().isStateSaved())
@@ -117,7 +140,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 if (sharedElements != null)
                     prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(sharedElementNames), containerTransform);
             }
-            fragmentManager.popBackStack(String.valueOf(crumb), 0);
+            fragmentManager.popBackStack(crumb > 0 ? String.valueOf(crumb) : null, crumb > 0 ? 0 : FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
         if (crumb > currentCrumb) {
             final FragmentManager fragmentManager = fragment.getChildFragmentManager();
@@ -163,7 +186,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 fragment.setReturnTransition(scene.exitTrans);
                 fragment.returnAnimation = scene.exitAnimation;
                 fragmentTransaction.replace(getId(), fragment, key);
-                fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
+                if (nextCrumb > 0) fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
                 fragmentTransaction.commit();
                 prevFragment = fragment;
             }
@@ -195,7 +218,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             fragment.setReturnTransition(scene.exitTrans);
             fragment.returnAnimation = scene.exitAnimation;
             fragmentTransaction.replace(getId(), fragment, key);
-            fragmentTransaction.addToBackStack(String.valueOf(crumb));
+            if (crumb > 0) fragmentTransaction.addToBackStack(String.valueOf(crumb));
             fragmentTransaction.commit();
         }
         oldCrumb = keys.size() - 1;
@@ -334,7 +357,9 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     void onRest(int crumb) {
         ReactContext reactContext = (ReactContext) getContext();
         EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-        eventDispatcher.dispatchEvent(new NavigationStackView.RestEvent(getId(), crumb));
+        if (crumb < keys.size() - 1)
+            nativeEventCount++;
+        eventDispatcher.dispatchEvent(new NavigationStackView.RestEvent(getId(), crumb, crumb < keys.size() - 1 ? nativeEventCount : 0));
     }
 
     @Override
@@ -389,12 +414,34 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         }
     }
 
-    static class RestEvent extends Event<NavigationStackView.RestEvent> {
+    static class WillNavigateBackEvent extends Event<NavigationStackView.WillNavigateBackEvent> {
         private final int crumb;
 
-        public RestEvent(int viewId, int crumb) {
+        public WillNavigateBackEvent(int viewId, int crumb) {
             super(viewId);
             this.crumb = crumb;
+        }
+
+        @Override
+        public String getEventName() {
+            return "topWillNavigateBack";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            WritableMap event = Arguments.createMap();
+            event.putInt("crumb", this.crumb);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
+        }
+    }
+    static class RestEvent extends Event<NavigationStackView.RestEvent> {
+        private final int crumb;
+        private final int eventCount;
+
+        public RestEvent(int viewId, int crumb, int eventCount) {
+            super(viewId);
+            this.crumb = crumb;
+            this.eventCount = eventCount;
         }
 
         @Override
@@ -406,6 +453,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         public void dispatch(RCTEventEmitter rctEventEmitter) {
             WritableMap event = Arguments.createMap();
             event.putInt("crumb", this.crumb);
+            event.putInt("eventCount", this.eventCount);
             rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }

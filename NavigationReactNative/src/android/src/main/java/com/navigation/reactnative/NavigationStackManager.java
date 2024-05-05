@@ -60,6 +60,11 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
         view.containerTransform = containerTransform;
     }
 
+    @ReactProp(name = "mostRecentEventCount")
+    public void setMostRecentEventCount(NavigationStackView view, int mostRecentEventCount) {
+        view.mostRecentEventCount = mostRecentEventCount;
+    }
+
     @Nonnull
     @Override
     protected NavigationStackView createViewInstance(@Nonnull ThemedReactContext reactContext) {
@@ -109,6 +114,7 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
             .put("topNavigateToTop", MapBuilder.of("registrationName", "onNavigateToTop"))
+            .put("topWillNavigateBack", MapBuilder.of("registrationName", "onWillNavigateBack"))
             .put("topRest", MapBuilder.of("registrationName", "onRest"))
             .build();
     }
