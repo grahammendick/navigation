@@ -3,17 +3,14 @@ package com.navigation.reactnative;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
-import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
-import androidx.annotation.AnimatorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.SharedElementCallback;
