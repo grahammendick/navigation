@@ -126,36 +126,33 @@ public class SceneFragment extends Fragment {
         AnimatorSet animatorSet = new AnimatorSet();
         if (anim.duration != null)
             animatorSet.setDuration(anim.duration);
-        AnimatorSet.Builder builder = null;
         for (int i = 0; i < anim.items.length; i++) {
             AnimationPropParser.AnimatorItem item = anim.items[i];
             if ("translate".equals(item.type)) {
-                ObjectAnimator animator = new ObjectAnimator();
-                animator.setPropertyName("translationX");
+                ObjectAnimator xAnimator = new ObjectAnimator();
+                xAnimator.setPropertyName("translationX");
                 float xVal = item.x.second ? scene.getWidth() * item.x.first / 100 : item.x.first;
-                animator.setFloatValues(from ? xVal : 0, from ? 0 : xVal);
-                animator.setDuration(item.duration != null ? item.duration : 300);
-                builder = builder == null ? animatorSet.play(animator) : builder.with(animator);
-                animator = new ObjectAnimator();
-                animator.setPropertyName("translationY");
+                xAnimator.setFloatValues(from ? xVal : 0, from ? 0 : xVal);
+                xAnimator.setDuration(item.duration != null ? item.duration : 300);
+                ObjectAnimator yAnimator = new ObjectAnimator();
+                yAnimator.setPropertyName("translationY");
                 float yVal = item.y.second ? scene.getWidth() * item.y.first / 100 : item.y.first;
-                animator.setFloatValues(from ? yVal : 0, from ? 0 : yVal);
-                animator.setDuration(item.duration != null ? item.duration : 300);
-                builder = builder.with(animator);
+                yAnimator.setFloatValues(from ? yVal : 0, from ? 0 : yVal);
+                yAnimator.setDuration(item.duration != null ? item.duration : 300);
+                animatorSet.playTogether(xAnimator, yAnimator);
             }
             if ("scale".equals(item.type)) {
-                ObjectAnimator animator = new ObjectAnimator();
-                animator.setPropertyName("scaleX");
+                ObjectAnimator xAnimator = new ObjectAnimator();
+                xAnimator.setPropertyName("scaleX");
                 float xVal = item.x.second ? item.x.first / 100 : item.x.first;
-                animator.setFloatValues(from ? xVal : 1, from ? 1 : xVal);
-                animator.setDuration(item.duration != null ? item.duration : 300);
-                builder = builder == null ? animatorSet.play(animator) : builder.with(animator);
-                animator = new ObjectAnimator();
-                animator.setPropertyName("scaleY");
+                xAnimator.setFloatValues(from ? xVal : 1, from ? 1 : xVal);
+                xAnimator.setDuration(item.duration != null ? item.duration : 300);
+                ObjectAnimator yAnimator = new ObjectAnimator();
+                yAnimator.setPropertyName("scaleY");
                 float yVal = item.y.second ? item.y.first / 100 : item.y.first;
-                animator.setFloatValues(from ? yVal : 1, from ? 1 : yVal);
-                animator.setDuration(item.duration != null ? item.duration : 300);
-                builder = builder.with(animator);
+                yAnimator.setFloatValues(from ? yVal : 1, from ? 1 : yVal);
+                yAnimator.setDuration(item.duration != null ? item.duration : 300);
+                animatorSet.playTogether(xAnimator, yAnimator);
             }
         }
         return animatorSet;
