@@ -161,6 +161,13 @@ public class SceneFragment extends Fragment {
                 alphaAnimator.setDuration(item.duration != null ? item.duration : 300);
                 animatorSet.playTogether(alphaAnimator);
             }
+            if ("rotate".equals(item.type)) {
+                ObjectAnimator rotateAnimator = new ObjectAnimator();
+                rotateAnimator.setPropertyName("rotation");
+                rotateAnimator.setFloatValues(from ? item.x.first : 0, from ? 0 : item.x.first);
+                rotateAnimator.setDuration(item.duration != null ? item.duration : 300);
+                animatorSet.playTogether(rotateAnimator);
+            }
         }
         return animatorSet;
     }
