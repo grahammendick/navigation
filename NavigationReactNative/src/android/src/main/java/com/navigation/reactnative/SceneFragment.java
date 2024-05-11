@@ -143,6 +143,20 @@ public class SceneFragment extends Fragment {
                 animator.setDuration(item.duration != null ? item.duration : 300);
                 builder = builder.with(animator);
             }
+            if ("scale".equals(item.type)) {
+                ObjectAnimator animator = new ObjectAnimator();
+                animator.setPropertyName("scaleX");
+                float xVal = item.x.second ? item.x.first / 100 : item.x.first;
+                animator.setFloatValues(from ? xVal : 1, from ? 1 : xVal);
+                animator.setDuration(item.duration != null ? item.duration : 300);
+                builder = builder == null ? animatorSet.play(animator) : builder.with(animator);
+                animator = new ObjectAnimator();
+                animator.setPropertyName("scaleY");
+                float yVal = item.y.second ? item.y.first / 100 : item.y.first;
+                animator.setFloatValues(from ? yVal : 1, from ? 1 : yVal);
+                animator.setDuration(item.duration != null ? item.duration : 300);
+                builder = builder.with(animator);
+            }
         }
         return animatorSet;
     }
