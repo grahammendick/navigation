@@ -1,12 +1,7 @@
 package com.navigation.reactnative;
 
 import android.util.Pair;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.RotateAnimation;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 
 import androidx.transition.Transition;
 
@@ -31,31 +26,24 @@ public class AnimationPropParser {
         String transType = trans.getString("type");
         if (transType == null) return null;
         switch (transType) {
-            case "sharedAxis":
+            case "sharedAxis" -> {
                 Map<String, Integer> axisMap = new HashMap<>();
                 axisMap.put("x", MaterialSharedAxis.X);
                 axisMap.put("y", MaterialSharedAxis.Y);
                 Integer axis = axisMap.get(trans.getString("axis"));
                 transition = new MaterialSharedAxis(axis != null ? axis : MaterialSharedAxis.Z, true);
-                break;
-            case "elevationScale":
-                transition = new MaterialElevationScale(true);
-                break;
-            case "fade":
-                transition = new MaterialFade();
-                break;
-            case "fadeThrough":
-                transition = new MaterialFadeThrough();
-                break;
-            case "hold":
-                transition = new Hold();
-                break;
+            }
+            case "elevationScale" -> transition = new MaterialElevationScale(true);
+            case "fade" -> transition = new MaterialFade();
+            case "fadeThrough" -> transition = new MaterialFadeThrough();
+            case "hold" -> transition = new Hold();
         }
         return transition;
     }
 
     protected static Animation getAnimation(ReadableMap anim, boolean enter) {
-        Animation animation = null;
+        return null;
+        /* Animation animation = null;
         Pair<Integer, Float> fromX, toX, fromY, toY, pivotX, pivotY;
         String animType = anim != null ? anim.getString("type") : null;
         if (anim == null) return null;
@@ -107,29 +95,53 @@ public class AnimationPropParser {
             String duration = anim.getString("duration");
             animation.setDuration(duration != null ? Integer.parseInt(duration) : 300);
         }
-        return animation;
+        return animation; */
     }
 
-    private static Pair<Integer, Float> getValues(String from) {
-        return getValues(from, 1);
-    }
-
-    private static Pair<Integer, Float> getValues(String from, float defaultFromValue) {
-        return getValues(from, defaultFromValue, Animation.ABSOLUTE);
-    }
-
-    private static Pair<Integer, Float> getValues(String from, float defaultFromValue, int defaultFromType) {
-        float fromValue = defaultFromValue;
-        int fromType = defaultFromType;
-        if (from != null) {
-            if (from.endsWith("%")) {
-                fromType = Animation.RELATIVE_TO_SELF;
-                fromValue = Float.parseFloat(from.substring(0, from.length() - 1)) / 100;
-            } else {
-                fromType = Animation.ABSOLUTE;
-                fromValue = Float.parseFloat(from);
-            }
+    protected static Animator getAnimator(ReadableMap anim, boolean enter) {
+        if (anim == null) return null;
+        Animator animator = new Animator();
+        ReadableArray items = anim.getArray("items");
+        String duration = anim.getString("duration");
+        if (duration != null) animator.duration = Integer.parseInt(duration);
+        assert items != null;
+        animator.items = new AnimatorItem[items.size()];
+        for(int i = 0; i < items.size(); i++) {
+            AnimatorItem animatorItem = new AnimatorItem();
+            ReadableMap item = items.getMap(i);
+            animatorItem.type = item.getString("type");
+            String defaultVal = "0";
+            if ("scale".equals(animatorItem.type) || "alpha".equals(animatorItem.type))
+                defaultVal = "1";
+            duration = item.getString("duration");
+            if (duration != null) animatorItem.duration = Integer.parseInt(duration);
+            animatorItem.x = parseAnimation(item.getString(enter ? "fromX" : "toX"), defaultVal);
+            animatorItem.y = parseAnimation(item.getString(enter ? "fromY" : "toY"), defaultVal);
+            if ("alpha".equals(animatorItem.type) || "rotate".equals(animatorItem.type))
+                animatorItem.x = parseAnimation(item.getString(enter ? "from" : "to"), defaultVal);
+            animator.items[i] = animatorItem;
         }
-        return new Pair<>(fromType, fromValue);
+        return animator;
+    }
+
+    private static Pair<Float, Boolean> parseAnimation(String val, String defaultValue) {
+        val = val != null && val.length() != 0 ? val : defaultValue;
+        if (val.endsWith("%")) {
+            return new Pair<>(Float.parseFloat(val.substring(0, val.length() - 1)), true);
+        } else {
+            return new Pair<>(Float.parseFloat(val), false);
+        }
+    }
+
+    static class Animator {
+        Integer duration;
+        AnimatorItem[] items;
+    }
+
+    static class AnimatorItem {
+        String type;
+        Integer duration;
+        Pair<Float, Boolean> x;
+        Pair<Float, Boolean> y;
     }
 }

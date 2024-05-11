@@ -1,5 +1,10 @@
 package com.navigation.reactnative;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +24,10 @@ import java.util.concurrent.TimeUnit;
 
 public class SceneFragment extends Fragment {
     private SceneView scene;
-    protected Animation enterAnimation;
-    protected Animation returnAnimation;
-    protected Animation exitAnimation;
-    protected Animation reenterAnimation;
+    protected AnimationPropParser.Animator enterAnimator;
+    protected AnimationPropParser.Animator returnAnimator;
+    protected AnimationPropParser.Animator exitAnimator;
+    protected AnimationPropParser.Animator reenterAnimator;
 
     public SceneFragment() {
         super();
@@ -51,8 +56,13 @@ public class SceneFragment extends Fragment {
     @Nullable
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        if ((nextAnim != 0 || enterAnimation != null) && enter) {
-            Animation anim = nextAnim == 0 ? enterAnimation : (nextAnim == -1 ? reenterAnimation : AnimationUtils.loadAnimation(getContext(), nextAnim));
+        if (nextAnim != 0 && enter) {
+            Animation anim;
+            try {
+                anim = AnimationUtils.loadAnimation(getContext(), nextAnim);
+            } catch(Resources.NotFoundException e) {
+                return null;
+            }
             anim.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -70,12 +80,72 @@ public class SceneFragment extends Fragment {
             });
             return anim;
         }
-        if ((nextAnim == 0 && enterAnimation == null) && enter && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+        return super.onCreateAnimation(transit, enter, nextAnim);
+    }
+
+    @Nullable
+    @Override
+    public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
+        if ((nextAnim != 0 || enterAnimator != null) && enter) {
+            Animator anim;
+            try {
+                anim = nextAnim == 0 ? transform(enterAnimator, true) : (nextAnim == -1 ? transform(reenterAnimator, true) : AnimatorInflater.loadAnimator(getContext(), nextAnim));
+            } catch(Resources.NotFoundException e) {
+                return null;
+            }
+            assert anim != null;
+            anim.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(@NonNull Animator animator) {
+                }
+
+                @Override
+                public void onAnimationEnd(@NonNull Animator animator) {
+                    if (scene.getParent() instanceof NavigationStackView)
+                        ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+                }
+
+                @Override
+                public void onAnimationCancel(@NonNull Animator animator) {
+                }
+
+                @Override
+                public void onAnimationRepeat(@NonNull Animator animator) {
+                }
+            });
+            return anim;
+        }
+        if ((nextAnim == 0 && enterAnimator == null) && enter && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
             ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
         }
-        if (nextAnim == 0 && exitAnimation != null && !enter) return exitAnimation;
-        if (nextAnim == -1 && returnAnimation != null) return returnAnimation;
-        return super.onCreateAnimation(transit, enter, nextAnim);
+        if (nextAnim == 0 && exitAnimator != null && !enter) return transform(exitAnimator, false);
+        if (nextAnim == -1 && returnAnimator != null) return transform(returnAnimator, false);
+        return super.onCreateAnimator(transit, enter, nextAnim);
+    }
+
+    private Animator transform(AnimationPropParser.Animator anim, boolean from) {
+        AnimatorSet animatorSet = new AnimatorSet();
+        if (anim.duration != null)
+            animatorSet.setDuration(anim.duration);
+        AnimatorSet.Builder builder = null;
+        for (int i = 0; i < anim.items.length; i++) {
+            AnimationPropParser.AnimatorItem item = anim.items[i];
+            if ("translate".equals(item.type)) {
+                ObjectAnimator animator = new ObjectAnimator();
+                animator.setPropertyName("translationX");
+                float xVal = item.x.second ? scene.getWidth() * item.x.first / 100 : item.x.first;
+                animator.setFloatValues(from ? xVal : 0, from ? 0 : xVal);
+                animator.setDuration(item.duration != null ? item.duration : 300);
+                builder = builder == null ? animatorSet.play(animator) : builder.with(animator);
+                animator = new ObjectAnimator();
+                animator.setPropertyName("translationY");
+                float yVal = item.y.second ? scene.getWidth() * item.y.first / 100 : item.y.first;
+                animator.setFloatValues(from ? yVal : 0, from ? 0 : yVal);
+                animator.setDuration(item.duration != null ? item.duration : 300);
+                builder = builder.with(animator);
+            }
+        }
+        return animatorSet;
     }
 
     @Override
