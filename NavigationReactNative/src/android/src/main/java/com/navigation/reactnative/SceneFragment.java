@@ -60,7 +60,7 @@ public class SceneFragment extends Fragment {
             Animation anim;
             try {
                 anim = AnimationUtils.loadAnimation(getContext(), nextAnim);
-            } catch(Resources.NotFoundException e) {
+            } catch(RuntimeException e) {
                 return null;
             }
             anim.setAnimationListener(new Animation.AnimationListener() {
@@ -90,7 +90,7 @@ public class SceneFragment extends Fragment {
             Animator anim;
             try {
                 anim = nextAnim == 0 ? transform(enterAnimator, true) : (nextAnim == -1 ? transform(reenterAnimator, true) : AnimatorInflater.loadAnimator(getContext(), nextAnim));
-            } catch(Resources.NotFoundException e) {
+            } catch(RuntimeException e) {
                 return null;
             }
             assert anim != null;
