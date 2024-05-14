@@ -86,7 +86,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             fragment = new StackFragment(this);
             FragmentManager fragmentManager = ((FragmentActivity) currentActivity).getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.setPrimaryNavigationFragment(fragment);
             transaction.add(fragment, "Stack" + getId());
             transaction.commitNowAllowingStateLoss();
             fragment.getChildFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
@@ -299,6 +298,11 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         super.onAttachedToWindow();
         onAfterUpdateTransaction();
         ((ThemedReactContext) getContext()).addLifecycleEventListener(this);
+        if (fragment.getParentFragmentManager().getPrimaryNavigationFragment() != fragment) {
+            FragmentTransaction transaction = fragment.getParentFragmentManager().beginTransaction();
+            transaction.setPrimaryNavigationFragment(fragment);
+            transaction.commitNowAllowingStateLoss();
+        }
     }
 
     @Override
