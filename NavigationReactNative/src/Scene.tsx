@@ -51,7 +51,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     fluentPeekable() {
         var {navigationEvent, crumb} = this.props;
         var {crumbs} = navigationEvent.stateNavigator.stateContext;
-        return Platform.OS === 'ios' && !this.state.navigationEvent && crumb === crumbs.length -1;
+        return !this.state.navigationEvent && crumb === crumbs.length -1;
     }
     backgroundPeekNavigate() {
         if (this.fluentPeekable() && !this.timer) {
