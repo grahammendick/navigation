@@ -149,11 +149,17 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     if (prevFragment == null)
                         prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(prevKey);
                     if (prevFragment != null) {
+                        sharedElements = getSharedElements(currentCrumb, crumb, prevFragment);
+                        if (sharedElements != null || enterTrans != null || exitTrans != null || scene.enterTrans != null || scene.exitTrans != null) {
+                            exitTrans = exitTrans != null ? exitTrans : new AnimationPropParser.VoidTransition();
+                            scene.enterTrans = scene.enterTrans != null ? scene.enterTrans : new AnimationPropParser.VoidTransition();
+                            enterTrans = enterTrans != null ? enterTrans : new AnimationPropParser.VoidTransition();
+                            scene.exitTrans = scene.exitTrans != null ? scene.exitTrans : new AnimationPropParser.VoidTransition();
+                        }
                         prevFragment.setExitTransition(exitTrans);
                         prevFragment.exitAnimator = exitAnimator;
                         prevFragment.setReenterTransition(scene.enterTrans);
                         prevFragment.reenterAnimator = scene.enterAnimator;
-                        sharedElements = getSharedElements(currentCrumb, crumb, prevFragment);
                     }
                 }
                 if (sharedElements != null) {
