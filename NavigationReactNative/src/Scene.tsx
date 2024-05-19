@@ -71,7 +71,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     }
     onBeforeNavigate(_state, _data, url: string, history: boolean) {
         var {crumb} = this.props;
-        if (url.split('crumb=').length - 1 === crumb && history && Platform.OS === 'ios')
+        if (url.split('crumb=').length - 1 === crumb && history)
             this.peekNavigate();
         return true;
     }
