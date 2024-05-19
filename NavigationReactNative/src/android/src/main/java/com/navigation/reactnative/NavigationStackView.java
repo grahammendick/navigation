@@ -209,7 +209,10 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             fragment.setReturnTransition(scene.exitTrans);
             fragment.returnAnimator = scene.exitAnimator;
             fragmentTransaction.replace(getId(), fragment, key);
-            if (crumb > 0) fragmentTransaction.addToBackStack(String.valueOf(crumb));
+            if (crumb > 0) {
+                fragmentManager.popBackStack();
+                fragmentTransaction.addToBackStack(String.valueOf(crumb));
+            }
             fragmentTransaction.commit();
         }
         oldCrumb = keys.size() - 1;
