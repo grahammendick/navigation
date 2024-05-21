@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
+import { requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
