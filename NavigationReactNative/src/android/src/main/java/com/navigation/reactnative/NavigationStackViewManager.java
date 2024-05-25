@@ -46,6 +46,18 @@ public class NavigationStackViewManager extends ViewGroupManager<NavigationStack
         view.keys = keys;
     }
 
+    @Override
+    @ReactProp(name = "stackId")
+    public void setStackId(NavigationStackView view, @Nullable String stackId) {
+        view.stackId = stackId;
+    }
+
+    @Override
+    @ReactProp(name = "ancestorStackIds")
+    public void setAncestorStackIds(NavigationStackView view, @Nullable ReadableArray ancestorStackIds) {
+        view.ancestorStackIds = ancestorStackIds;
+    }
+
     @ReactProp(name = "enterAnim")
     public void setEnterAnim(NavigationStackView view, String enterAnim) {
         view.enterAnim = enterAnim;
