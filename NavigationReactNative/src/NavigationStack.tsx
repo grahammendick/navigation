@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect, createContext, useId, useMemo } from 'react';
+import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect, createContext, useMemo } from 'react';
 import { Platform, requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
@@ -13,9 +13,9 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     landscape: landscapeStack = () => null, stackInvalidatedLink, renderScene, children}: NavigationStackProps) => {
     const resumeNavigationRef = useRef(null);
     const ref = useRef(null);
-    const stackId = useId();
+    const stackId = React.useId?.();
     const ancestorStackIds = useContext(StackContext);
-    const stackIds = useMemo(() => [...ancestorStackIds, stackId], [ancestorStackIds, stackId]);
+    const stackIds = useMemo(() => stackId ? [...ancestorStackIds, stackId] : [], [ancestorStackIds, stackId]);
     const {stateNavigator} = useContext(NavigationContext);
     const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0, mostRecentEventCount: 0});
     const scenes = {};
