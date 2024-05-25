@@ -28,6 +28,16 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
         view.keys = keys;
     }
 
+    @ReactProp(name = "stackId")
+    public void setStackId(NavigationStackView view, String stackId) {
+        view.stackId = stackId;
+    }
+
+    @ReactProp(name = "ancestorStackIds")
+    public void setAncestorStackIds(NavigationStackView view, ReadableArray ancestorStackIds) {
+        view.ancestorStackIds = ancestorStackIds;
+    }
+
     @ReactProp(name = "enterAnim")
     public void setEnterAnim(NavigationStackView view, String enterAnim) {
         view.enterAnim = enterAnim;

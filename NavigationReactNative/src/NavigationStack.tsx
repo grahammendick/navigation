@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect } from 'react';
+import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect, createContext, useId, useMemo } from 'react';
 import { Platform, requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
@@ -7,11 +7,15 @@ import Scene from './Scene';
 type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, customAnimation: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, sharedElements: any, backgroundColor: any, landscape: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, counter: number, mostRecentEventCount: number};
 
+const StackContext = createContext([]);
 const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, customAnimation = Platform.OS === 'android', crumbStyle: crumbStyleStack = () => null, unmountStyle: unmountStyleStack = () => null,
     hidesTabBar: hidesTabBarStack = () => false, sharedElement: getSharedElementStack = () => null, sharedElements: getSharedElementsStack = () => null, backgroundColor: backgroundColorStack = () => null,
     landscape: landscapeStack = () => null, stackInvalidatedLink, renderScene, children}: NavigationStackProps) => {
     const resumeNavigationRef = useRef(null);
     const ref = useRef(null);
+    const stackId = useId();
+    const ancestorStackIds = useContext(StackContext);
+    const stackIds = useMemo(() => [...ancestorStackIds, stackId], [ancestorStackIds, stackId]);
     const {stateNavigator} = useContext(NavigationContext);
     const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0, mostRecentEventCount: 0});
     const scenes = {};
@@ -158,36 +162,40 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     }
     const {crumbs, nextCrumb} = stateNavigator.stateContext;
     return (
-        <NVNavigationStack
-            ref={ref}
-            keys={keys}
-            mostRecentEventCount={mostRecentEventCount}
-            style={styles.stack}
-            {...getAnimation()}
-            onWillNavigateBack={onWillNavigateBack}
-            onNavigateToTop={onNavigateToTop}
-            onRest={onRest}>
-            <PopSync<{crumb: number}>
-                data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
-                getKey={({crumb}) => keys[crumb]}>
-                {(scenes, popNative) => scenes.map(({key, data: {crumb}}) => (
-                    <Scene
-                        key={key}
-                        crumb={crumb}
-                        sceneKey={key}
-                        rest={rest}
-                        customAnimation={customAnimation}
-                        unmountStyle={unmountStyle}
-                        crumbStyle={crumbStyle}
-                        hidesTabBar={hidesTabBar}
-                        backgroundColor={backgroundColor}
-                        landscape={landscape}
-                        title={title}
-                        popped={popNative}
-                        renderScene={firstLink ? ({key}) => allScenes[key] : renderScene} />
-                ))}
-            </PopSync>
-        </NVNavigationStack>
+        <StackContext.Provider value={stackIds}>
+            <NVNavigationStack
+                ref={ref}
+                keys={keys}
+                stackId={stackId}
+                ancestorStackIds={ancestorStackIds}
+                mostRecentEventCount={mostRecentEventCount}
+                style={styles.stack}
+                {...getAnimation()}
+                onWillNavigateBack={onWillNavigateBack}
+                onNavigateToTop={onNavigateToTop}
+                onRest={onRest}>
+                <PopSync<{crumb: number}>
+                    data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
+                    getKey={({crumb}) => keys[crumb]}>
+                    {(scenes, popNative) => scenes.map(({key, data: {crumb}}) => (
+                        <Scene
+                            key={key}
+                            crumb={crumb}
+                            sceneKey={key}
+                            rest={rest}
+                            customAnimation={customAnimation}
+                            unmountStyle={unmountStyle}
+                            crumbStyle={crumbStyle}
+                            hidesTabBar={hidesTabBar}
+                            backgroundColor={backgroundColor}
+                            landscape={landscape}
+                            title={title}
+                            popped={popNative}
+                            renderScene={firstLink ? ({key}) => allScenes[key] : renderScene} />
+                    ))}
+                </PopSync>
+            </NVNavigationStack>
+        </StackContext.Provider>
     );
 }
 

@@ -48,6 +48,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     private int oldCrumb = -1;
     private String oldKey;
     private Activity mainActivity;
+    protected String stackId;
+    protected ReadableArray ancestorStackIds;
     protected String enterAnim;
     protected String exitAnim;
     protected AnimationPropParser.Animator enterAnimator;
@@ -85,8 +87,13 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         if (fragment == null) {
             fragment = new StackFragment(this);
             FragmentManager fragmentManager = ((FragmentActivity) currentActivity).getSupportFragmentManager();
+            for (int i = 0; i < ancestorStackIds.size(); i++) {
+                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorStackIds.getString(i));
+                assert ancestorFragment != null : "Ancestor fragment is null";
+                fragmentManager = ancestorFragment.getChildFragmentManager();
+            }
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(fragment, "Stack" + getId());
+            transaction.add(fragment, stackId);
             transaction.commitNowAllowingStateLoss();
             fragment.getChildFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
                 @Override
@@ -313,10 +320,12 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         super.onAttachedToWindow();
         onAfterUpdateTransaction();
         ((ThemedReactContext) getContext()).addLifecycleEventListener(this);
-        if (fragment.getParentFragmentManager().getPrimaryNavigationFragment() != fragment) {
-            FragmentTransaction transaction = fragment.getParentFragmentManager().beginTransaction();
-            transaction.setPrimaryNavigationFragment(fragment);
-            transaction.commitNowAllowingStateLoss();
+        FragmentManager fragmentManager = fragment.getParentFragmentManager();
+        if (fragmentManager.getPrimaryNavigationFragment() != fragment) {
+            fragmentManager
+                .beginTransaction()
+                .setPrimaryNavigationFragment(fragment)
+                .commit();
         }
     }
 
@@ -324,6 +333,13 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         ((ThemedReactContext) getContext()).removeLifecycleEventListener(this);
+        FragmentManager fragmentManager = fragment.getParentFragmentManager();
+        if (fragmentManager.getPrimaryNavigationFragment() == fragment) {
+            fragmentManager
+                .beginTransaction()
+                .setPrimaryNavigationFragment(null)
+                .commitNowAllowingStateLoss();
+        }
     }
 
     void scrollToTop() {
@@ -351,11 +367,11 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     }
 
     void removeFragment() {
-        if (mainActivity != null && fragment != null) {
-            FragmentManager fragmentManager = ((FragmentActivity) mainActivity).getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.remove(fragment);
-            fragmentTransaction.commitAllowingStateLoss();
+        if (fragment != null) {
+            fragment.getParentFragmentManager()
+                .beginTransaction()
+                .remove(fragment)
+                .commitAllowingStateLoss();
         }
     }
 
