@@ -9,7 +9,7 @@ import Timeline from './Timeline';
 import {NavigationStack, Scene} from 'navigation-react-native';
 
 const stateNavigator = new StateNavigator([
-  {key: 'tabs', trackCrumbTrail: true},
+  {key: 'tabs'},
   {key: 'home'},
   {key: 'notifications'},
   {key: 'tweet', trackCrumbTrail: true},
