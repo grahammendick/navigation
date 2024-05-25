@@ -335,10 +335,13 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         ((ThemedReactContext) getContext()).removeLifecycleEventListener(this);
         FragmentManager fragmentManager = fragment.getParentFragmentManager();
         if (fragmentManager.getPrimaryNavigationFragment() == fragment) {
-            fragmentManager
+            FragmentTransaction transaction = fragmentManager
                 .beginTransaction()
-                .setPrimaryNavigationFragment(null)
-                .commitNowAllowingStateLoss();
+                .setPrimaryNavigationFragment(null);
+            try {
+                transaction.commitNowAllowingStateLoss();
+            } catch(IllegalStateException ignored) {
+            }
         }
     }
 
