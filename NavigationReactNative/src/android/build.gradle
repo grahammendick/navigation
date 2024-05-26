@@ -24,11 +24,11 @@ def safeExtGet(prop, fallback) {
 
 android {
     namespace "com.navigation.reactnative"
-    compileSdkVersion safeExtGet("compileSdkVersion", 28)
+    compileSdkVersion safeExtGet("compileSdkVersion", 34)
     buildToolsVersion safeExtGet("buildToolsVersion", "28.0.3")
 
     defaultConfig {
-        minSdkVersion safeExtGet("minSdkVersion", 16)
+        minSdkVersion safeExtGet("minSdkVersion", 19)
         targetSdkVersion safeExtGet("targetSdkVersion", 28)
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
         versionCode 1
@@ -62,7 +62,8 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'androidx.fragment:fragment:1.7.0'
 }
 

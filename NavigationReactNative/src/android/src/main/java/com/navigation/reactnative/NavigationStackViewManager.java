@@ -46,6 +46,18 @@ public class NavigationStackViewManager extends ViewGroupManager<NavigationStack
         view.keys = keys;
     }
 
+    @Override
+    @ReactProp(name = "stackId")
+    public void setStackId(NavigationStackView view, @Nullable String stackId) {
+        view.stackId = stackId;
+    }
+
+    @Override
+    @ReactProp(name = "ancestorStackIds")
+    public void setAncestorStackIds(NavigationStackView view, @Nullable ReadableArray ancestorStackIds) {
+        view.ancestorStackIds = ancestorStackIds;
+    }
+
     @ReactProp(name = "enterAnim")
     public void setEnterAnim(NavigationStackView view, String enterAnim) {
         view.enterAnim = enterAnim;
@@ -59,13 +71,13 @@ public class NavigationStackViewManager extends ViewGroupManager<NavigationStack
     @ReactProp(name = "enterTrans")
     public void setEnterTrans(NavigationStackView view, ReadableMap enterTrans) {
         view.enterTrans = AnimationPropParser.getTransition(enterTrans);
-        view.enterAnimation = AnimationPropParser.getAnimation(enterTrans, true);
+        view.enterAnimator = AnimationPropParser.getAnimator(enterTrans, true);
     }
 
     @ReactProp(name = "exitTrans")
     public void setExitTrans(NavigationStackView view, ReadableMap exitTrans) {
         view.exitTrans = AnimationPropParser.getTransition(exitTrans);
-        view.exitAnimation = AnimationPropParser.getAnimation(exitTrans, false);
+        view.exitAnimator = AnimationPropParser.getAnimator(exitTrans, false);
     }
 
     @ReactProp(name = "sharedElements")
@@ -84,6 +96,7 @@ public class NavigationStackViewManager extends ViewGroupManager<NavigationStack
 
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(NavigationStackView view, int mostRecentEventCount) {
+        view.mostRecentEventCount = mostRecentEventCount;
     }
 
     @ReactProp(name = "enterAnimOff")
@@ -139,6 +152,7 @@ public class NavigationStackViewManager extends ViewGroupManager<NavigationStack
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
             .put("topNavigateToTop", MapBuilder.of("registrationName", "onNavigateToTop"))
+            .put("topWillNavigateBack", MapBuilder.of("registrationName", "onWillNavigateBack"))
             .put("topRest", MapBuilder.of("registrationName", "onRest"))
             .build();
     }

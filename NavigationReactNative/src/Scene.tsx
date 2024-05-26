@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { requireNativeComponent, Platform, StyleSheet } from 'react-native';
+import { requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
@@ -51,7 +51,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     fluentPeekable() {
         var {navigationEvent, crumb} = this.props;
         var {crumbs} = navigationEvent.stateNavigator.stateContext;
-        return Platform.OS === 'ios' && !this.state.navigationEvent && crumb === crumbs.length -1;
+        return !this.state.navigationEvent && crumb === crumbs.length -1;
     }
     backgroundPeekNavigate() {
         if (this.fluentPeekable() && !this.timer) {
@@ -71,7 +71,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
     }
     onBeforeNavigate(_state, _data, url: string, history: boolean) {
         var {crumb} = this.props;
-        if (url.split('crumb=').length - 1 === crumb && history && Platform.OS === 'ios')
+        if (url.split('crumb=').length - 1 === crumb && history)
             this.peekNavigate();
         return true;
     }
