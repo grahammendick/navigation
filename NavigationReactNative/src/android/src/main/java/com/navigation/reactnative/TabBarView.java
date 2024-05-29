@@ -123,11 +123,13 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
         TabNavigationView tabNavigation = getTabNavigation();
         if (tabNavigation != null)
             tabNavigation.tabSelected(index);
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        if (tabFragments.get(index).viewChanged())
-            tabFragments.set(index, new TabFragment(tabFragments.get(index).tabBarItem));
-        transaction.replace(getId(), tabFragments.get(index));
-        transaction.commitNowAllowingStateLoss();
+        if (pendingSelectedTab == selectedTab) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            if (tabFragments.get(index).viewChanged())
+                tabFragments.set(index, new TabFragment(tabFragments.get(index).tabBarItem));
+            transaction.replace(getId(), tabFragments.get(index));
+            transaction.commitNowAllowingStateLoss();
+        }
     }
 
     void scrollToTop() {
