@@ -148,11 +148,6 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(nonnull UIViewController *)viewController
 {
-    NSInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
-    if (_selectedIndex != selectedIndex) {
-        _selectedIndex = selectedIndex;
-        [self selectTab];
-    }
     if (_firstSceneReselected && _scrollsToTop) {
         UIViewController *sceneController = ((UINavigationController *) viewController).viewControllers[0];
         UIScrollView *scrollView;
@@ -182,7 +177,11 @@
     NSInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
     NSArray *viewControllers = ((UINavigationController *) viewController).viewControllers;
     _firstSceneReselected = _selectedIndex == selectedIndex && viewControllers.count == 1;
-    return YES;
+    if (_selectedIndex != selectedIndex) {
+        _selectedIndex = selectedIndex;
+        [self selectTab];
+    }
+    return NO;
 }
 
 -(void) selectTab
