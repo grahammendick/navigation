@@ -30,6 +30,13 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
         view.pendingSelectedTab = selectedTab;
     }
 
+    @ReactProp(name = "contentSync")
+    public void setContentSync(TabBarView view, boolean contentSync) {
+        if (contentSync && !view.contentSync)
+            view.syncCounter++;
+        view.contentSync = contentSync;
+    }
+
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(TabBarView view, int mostRecentEventCount) {
         view.mostRecentEventCount = mostRecentEventCount;

@@ -31,6 +31,8 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     private FragmentManager fragmentManager;
     private TabFragment selectedTabFragment;
     private Fragment fragment;
+    int syncCounter = 0;
+    boolean contentSync;
     int pendingSelectedTab = 0;
     int selectedTab = 0;
     boolean scrollsToTop;
@@ -92,6 +94,7 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
             return;
         populateTabs();
         if (selectedTabFragment != null) {
+            selectedTabFragment.tabBarItem.syncCounter = syncCounter;
             int reselectedTab = tabFragments.indexOf(selectedTabFragment);
             selectedTab = reselectedTab != -1 ? reselectedTab : Math.min(selectedTab, tabFragments.size() - 1);
         }
@@ -119,14 +122,18 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
             tabFragments.get(index).tabBarItem.pressed();
         }
         selectedTab = selectedIndex = index;
+        boolean firstTime = selectedTabFragment == null;
         selectedTabFragment = tabFragments.get(index);
         TabNavigationView tabNavigation = getTabNavigation();
         if (tabNavigation != null)
             tabNavigation.tabSelected(index);
-        if (pendingSelectedTab == selectedTab) {
+        TabBarItemView tabBarItem = tabFragments.get(index).tabBarItem;
+        if (firstTime || tabBarItem.syncCounter == syncCounter) {
+            if (contentSync) syncCounter++;
+            tabBarItem.syncCounter = syncCounter;
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             if (tabFragments.get(index).viewChanged())
-                tabFragments.set(index, new TabFragment(tabFragments.get(index).tabBarItem));
+                tabFragments.set(index, new TabFragment(tabBarItem));
             transaction.replace(getId(), tabFragments.get(index));
             transaction.commitNowAllowingStateLoss();
         }
