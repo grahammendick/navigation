@@ -13,6 +13,7 @@
     UITabBarController *_tabBarController;
     NSInteger _selectedIndex;
     NSInteger _nativeEventCount;
+    int _syncCounter;
     bool _firstSceneReselected;
     bool _jsUpdate;
 }
@@ -73,6 +74,11 @@
         [self selectTab];
         _jsUpdate = false;
     }
+    if ([changedProps containsObject:@"contentSync"] && _contentSync)
+        _syncCounter++;
+    if (_contentSync)_syncCounter++;
+    NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[_selectedIndex];
+    tabBarItem.syncCounter = _syncCounter;
     if (@available(iOS 13.0, *)) {
         UITabBarAppearance *appearance = [UITabBarAppearance new];
         [appearance configureWithDefaultBackground];
@@ -148,6 +154,11 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(nonnull UIViewController *)viewController
 {
+    NSInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
+    if (_selectedIndex != selectedIndex) {
+        _selectedIndex = selectedIndex;
+        [self selectTab];
+    }
     if (_firstSceneReselected && _scrollsToTop) {
         UIViewController *sceneController = ((UINavigationController *) viewController).viewControllers[0];
         UIScrollView *scrollView;
@@ -175,13 +186,18 @@
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
     NSInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
-    NSArray *viewControllers = ((UINavigationController *) viewController).viewControllers;
-    _firstSceneReselected = _selectedIndex == selectedIndex && viewControllers.count == 1;
-    if (_selectedIndex != selectedIndex) {
-        _selectedIndex = selectedIndex;
-        [self selectTab];
+    NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[selectedIndex];
+    if (tabBarItem.syncCounter == _syncCounter) {
+        NSArray *viewControllers = ((UINavigationController *) viewController).viewControllers;
+        _firstSceneReselected = _selectedIndex == selectedIndex && viewControllers.count == 1;
+        return YES;
+    } else {
+        if (_selectedIndex != selectedIndex) {
+            _selectedIndex = selectedIndex;
+            [self selectTab];
+        }
+        return NO;
     }
-    return NO;
 }
 
 -(void) selectTab
