@@ -12,6 +12,7 @@
     NSMutableArray<UIViewController *> *_tabs;
     NSInteger _nativeEventCount;
     NSInteger _selectedIndex;
+    int _syncCounter;
     bool _jsUpdate;
 }
 
@@ -57,6 +58,10 @@
 {
     _nativeEventCount = MAX(_nativeEventCount, _mostRecentEventCount);
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if ([changedProps containsObject:@"contentSync"] && _contentSync)
+        _syncCounter++;
+    if ( _contentSync) _syncCounter++;
+    ((NVTabBarItemView *) _selectedTabView.view).syncCounter = _syncCounter;
     if (eventLag == 0 && _tabs.count > _selectedTab) {
         _jsUpdate = true;
         [self setCurrentTab:_selectedTab];
@@ -96,9 +101,15 @@
         }
     }
     [self getSegmentedTab].selectedSegmentIndex = index;
-    [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     _selectedTab = _selectedIndex = index;
+    BOOL firstTime = !_selectedTabView;
     _selectedTabView = _tabs[index];
+    NVTabBarItemView *tabBarItem = ((NVTabBarItemView *) _selectedTabView.view);
+    if (firstTime || tabBarItem.syncCounter == _syncCounter) {
+        if (_contentSync) _syncCounter++;
+        tabBarItem.syncCounter = _syncCounter;
+        [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    }
 }
 
 - (void)scrollToTop

@@ -6,6 +6,7 @@
 @interface NVTabBarPagerView : UIView
 
 @property (nonatomic, assign) NSInteger selectedTab;
+@property (nonatomic, assign) BOOL contentSync;
 @property (nonatomic, assign) NSInteger tabCount;
 @property (nonatomic, assign) BOOL scrollsToTop;
 @property (nonatomic, assign) NSInteger mostRecentEventCount;
