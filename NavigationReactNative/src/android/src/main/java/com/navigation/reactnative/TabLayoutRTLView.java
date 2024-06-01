@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -89,6 +90,24 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
                 return (ViewPager2) child;
         }
         return null;
+    }
+
+    @Override
+    public void selectTab(@Nullable Tab tab) {
+        ViewPager2 tabBar = getTabBar();
+        if (tabBar == null) {
+            super.selectTab(tab);
+            return;
+        }
+        TabBarPagerRTLAdapter adapter = (TabBarPagerRTLAdapter) tabBar.getAdapter();
+        assert tab != null;
+        assert adapter != null;
+        TabBarItemView tabBarItem = adapter.getTabAt(tab.getPosition());
+        if (tabBarItem.syncCounter == adapter.syncCounter) {
+            super.selectTab(tab);
+        } else {
+            adapter.onPageChangeCallback.onPageSelected(tab.getPosition());
+        }
     }
 
     @Override

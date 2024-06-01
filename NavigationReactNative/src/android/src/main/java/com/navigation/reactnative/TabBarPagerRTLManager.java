@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import static android.view.View.LAYOUT_DIRECTION_RTL;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -41,7 +42,7 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
     @Override
     protected ViewPager2 createViewInstance(@Nonnull final ThemedReactContext reactContext) {
         final ViewPager2 tabBarPager = new ViewPager2(reactContext);
-        ViewCompat.setLayoutDirection(tabBarPager, ViewCompat.LAYOUT_DIRECTION_RTL);
+        tabBarPager.setLayoutDirection(LAYOUT_DIRECTION_RTL);
         FragmentActivity activity = (FragmentActivity) reactContext.getCurrentActivity();
         Fragment fragment = new TabBarPagerFragment(tabBarPager);
         if (activity != null) {
@@ -51,7 +52,7 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
         }
         final TabBarPagerRTLAdapter tabBarPagerAdapter = new TabBarPagerRTLAdapter(fragment);
         tabBarPager.setAdapter(tabBarPagerAdapter);
-        tabBarPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        tabBarPagerAdapter.onPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 if (position == -1) return;
@@ -59,6 +60,10 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
                 if (!tabBarPagerAdapter.dataSetChanged && !tabBarPagerAdapter.jsUpdate)
                     tabBarPagerAdapter.nativeEventCount++;
                 tabBarPagerAdapter.selectedTab = position;
+                if (tabBarPagerAdapter.getTabAt(position).syncCounter == tabBarPagerAdapter.syncCounter) {
+                    if (tabBarPagerAdapter.contentSync) tabBarPagerAdapter.syncCounter++;
+                    tabBarPagerAdapter.getTabAt(position).syncCounter = tabBarPagerAdapter.syncCounter;
+                }
                 if (!tabBarPagerAdapter.jsUpdate) {
                     WritableMap event = Arguments.createMap();
                     event.putInt("tab", position);
@@ -76,10 +81,11 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
                 event.putBoolean("swiping", state == ViewPager2.SCROLL_STATE_DRAGGING);
                 reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(tabBarPager.getId(),"topTabSwipeStateChanged", event);
             }
-        });
+        };
+        tabBarPager.registerOnPageChangeCallback(tabBarPagerAdapter.onPageChangeCallback);
         tabBarPager.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
-            public void onViewAttachedToWindow(View v) {
+            public void onViewAttachedToWindow(@NonNull View v) {
                 TabLayoutRTLView tabLayout = tabBarPagerAdapter.getTabLayout(v);
                 if (tabLayout != null) {
                     tabLayout.setVisibility(View.VISIBLE);
@@ -91,7 +97,7 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
             }
 
             @Override
-            public void onViewDetachedFromWindow(View v) {
+            public void onViewDetachedFromWindow(@NonNull View v) {
             }
         });
         tabBarPagerAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -114,6 +120,13 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
     @ReactProp(name = "selectedTab")
     public void setSelectedTab(ViewPager2 view, int selectedTab) {
         getAdapter(view).pendingSelectedTab = selectedTab;
+    }
+
+    @ReactProp(name = "contentSync")
+    public void setContentSync(ViewPager2 view, boolean contentSync) {
+        if (contentSync && !getAdapter(view).contentSync)
+            getAdapter(view).syncCounter++;
+        getAdapter(view).contentSync = contentSync;
     }
 
     @ReactProp(name = "mostRecentEventCount")
