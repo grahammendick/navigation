@@ -31,10 +31,10 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     private FragmentManager fragmentManager;
     private TabFragment selectedTabFragment;
     private Fragment fragment;
-    int syncCounter = 0;
-    boolean contentSync;
     int pendingSelectedTab = 0;
     int selectedTab = 0;
+    int syncCounter = 0;
+    boolean contentSync;
     boolean scrollsToTop;
     int nativeEventCount;
     int mostRecentEventCount;
