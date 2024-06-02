@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 
-const infiniteThenable = {then(){}};
+const infiniteThenable = {then: () => {}};
 
 var Suspender = ({freeze, children}) => {
     if (freeze) throw infiniteThenable;
