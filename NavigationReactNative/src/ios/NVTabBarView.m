@@ -64,21 +64,23 @@
     if (_tabBarController.selectedIndex == NSNotFound) {
         _tabBarController.selectedIndex = 0;
     }
+    if ([changedProps containsObject:@"contentSync"] && _contentSync)
+        _syncCounter++;
+    NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[_tabBarController.selectedIndex];
+    tabBarItem.syncCounter = _syncCounter;
     if (_tabBarController.selectedIndex != _selectedIndex) {
         if ([changedProps containsObject:@"selectedTab"]) {
+            if (_contentSync)_syncCounter++;
+            NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[_selectedIndex];
+            tabBarItem.syncCounter = _syncCounter;
             _tabBarController.selectedIndex = _selectedIndex;
         } else {
             _selectedIndex = _tabBarController.selectedIndex;
         }
         _jsUpdate = true;
-        [self selectTab];
+        [self selectTab:_selectedIndex];
         _jsUpdate = false;
     }
-    if ([changedProps containsObject:@"contentSync"] && _contentSync)
-        _syncCounter++;
-    if (_contentSync)_syncCounter++;
-    NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[_selectedIndex];
-    tabBarItem.syncCounter = _syncCounter;
     if (@available(iOS 13.0, *)) {
         UITabBarAppearance *appearance = [UITabBarAppearance new];
         [appearance configureWithDefaultBackground];
@@ -157,7 +159,7 @@
     NSInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
     if (_selectedIndex != selectedIndex) {
         _selectedIndex = selectedIndex;
-        [self selectTab];
+        [self selectTab:_selectedIndex];
     }
     if (_firstSceneReselected && _scrollsToTop) {
         UIViewController *sceneController = ((UINavigationController *) viewController).viewControllers[0];
@@ -187,29 +189,26 @@
 {
     NSInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
     NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[selectedIndex];
-    if (tabBarItem.syncCounter == _syncCounter) {
+    if (tabBarItem.syncCounter == _syncCounter || _selectedIndex == selectedIndex) {
         NSArray *viewControllers = ((UINavigationController *) viewController).viewControllers;
         _firstSceneReselected = _selectedIndex == selectedIndex && viewControllers.count == 1;
         return YES;
     } else {
-        if (_selectedIndex != selectedIndex) {
-            _selectedIndex = selectedIndex;
-            [self selectTab];
-        }
+        [self selectTab:selectedIndex];
         return NO;
     }
 }
 
--(void) selectTab
+-(void) selectTab:(NSInteger)index
 {
     if (!_jsUpdate) {
         _nativeEventCount++;
         self.onTabSelected(@{
-            @"tab": @(_selectedIndex),
+            @"tab": @(index),
             @"eventCount": @(_nativeEventCount),
         });
     }
-    NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[_selectedIndex];
+    NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[index];
     if (!!tabBarItem.onPress) {
         tabBarItem.onPress(nil);
     }
