@@ -91,7 +91,7 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
             selectedTab = pendingSelectedTab;
             if (tabFragments.size() > selectedTab) {
                 setCurrentTab(selectedTab);
-                if (contentSync) syncCounter++;;
+                if (contentSync) syncCounter++;
                 selectedTabFragment.tabBarItem.syncCounter = syncCounter;
             }
         }
@@ -144,8 +144,7 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
         if (!scrollsToTop)
             return;
         View tabBarItem = tabFragments.get(selectedTab).tabBarItem.content.get(0);
-        if (tabBarItem instanceof ViewGroup) {
-            ViewGroup viewGroup = (ViewGroup) tabBarItem;
+        if (tabBarItem instanceof ViewGroup viewGroup) {
             for(int i = 0; i < viewGroup.getChildCount(); i++) {
                 if (viewGroup.getChildAt(i) instanceof NavigationBarView)
                     ((NavigationBarView) viewGroup.getChildAt(i)).setExpanded(true);

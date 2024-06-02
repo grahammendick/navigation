@@ -52,26 +52,13 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
         }
         final TabBarPagerRTLAdapter tabBarPagerAdapter = new TabBarPagerRTLAdapter(fragment);
         tabBarPager.setAdapter(tabBarPagerAdapter);
-        tabBarPagerAdapter.onPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
+        tabBarPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 if (position == -1) return;
                 super.onPageSelected(position);
-                if (!tabBarPagerAdapter.dataSetChanged && !tabBarPagerAdapter.jsUpdate)
-                    tabBarPagerAdapter.nativeEventCount++;
                 tabBarPagerAdapter.selectedTab = position;
-                if (tabBarPagerAdapter.getTabAt(position).syncCounter == tabBarPagerAdapter.syncCounter) {
-                    if (tabBarPagerAdapter.contentSync) tabBarPagerAdapter.syncCounter++;
-                    tabBarPagerAdapter.getTabAt(position).syncCounter = tabBarPagerAdapter.syncCounter;
-                }
-                if (!tabBarPagerAdapter.jsUpdate) {
-                    WritableMap event = Arguments.createMap();
-                    event.putInt("tab", position);
-                    event.putInt("eventCount", tabBarPagerAdapter.nativeEventCount);
-                    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(tabBarPager.getId(), "topTabSelected", event);
-                }
-                if (tabBarPagerAdapter.getTabAt(position) != null)
-                    tabBarPagerAdapter.getTabAt(position).pressed();
+                tabBarPagerAdapter.selectTab(tabBarPager, position);
             }
 
             @Override
@@ -81,8 +68,7 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
                 event.putBoolean("swiping", state == ViewPager2.SCROLL_STATE_DRAGGING);
                 reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(tabBarPager.getId(),"topTabSwipeStateChanged", event);
             }
-        };
-        tabBarPager.registerOnPageChangeCallback(tabBarPagerAdapter.onPageChangeCallback);
+        });
         tabBarPager.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(@NonNull View v) {

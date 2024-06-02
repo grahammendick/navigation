@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.AppBarLayout;
@@ -26,7 +25,7 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
 
     public TabLayoutRTLView(Context context) {
         super(context);
-        ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_RTL);
+        setLayoutDirection(LAYOUT_DIRECTION_RTL);
         AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.WRAP_CONTENT);
         params.setScrollFlags(0);
         setLayoutParams(params);
@@ -95,26 +94,24 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
     @Override
     public void selectTab(@Nullable Tab tab) {
         ViewPager2 tabBar = getTabBar();
-        if (tabBar == null) {
+        if (tabBar == null || tab == null) {
             super.selectTab(tab);
             return;
         }
         TabBarPagerRTLAdapter adapter = (TabBarPagerRTLAdapter) tabBar.getAdapter();
-        assert tab != null;
         assert adapter != null;
         TabBarItemView tabBarItem = adapter.getTabAt(tab.getPosition());
-        if (tabBarItem.syncCounter == adapter.syncCounter) {
+        if (getSelectedTabPosition() == tab.getPosition() || tabBarItem.syncCounter == adapter.syncCounter) {
             super.selectTab(tab);
         } else {
-            adapter.onPageChangeCallback.onPageSelected(tab.getPosition());
+            adapter.selectTab(tabBar, tab.getPosition());
         }
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if (getParent() instanceof CollapsingBarView) {
-            CollapsingBarView parent = (CollapsingBarView) getParent();
+        if (getParent() instanceof CollapsingBarView parent) {
             for(int i = 0; i < parent.getChildCount(); i++) {
                 View child = parent.getChildAt(i);
                 if (child instanceof ToolbarView) {
