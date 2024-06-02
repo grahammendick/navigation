@@ -85,16 +85,20 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     void onAfterUpdateTransaction() {
         onAfterUpdateTransactionRequested = false;
         int eventLag = nativeEventCount - mostRecentEventCount;
+        if (selectedTabFragment != null)
+            selectedTabFragment.tabBarItem.syncCounter = syncCounter;
         if (eventLag == 0 && pendingSelectedTab != selectedTab) {
             selectedTab = pendingSelectedTab;
-            if (tabFragments.size() > selectedTab)
+            if (tabFragments.size() > selectedTab) {
                 setCurrentTab(selectedTab);
+                if (contentSync) syncCounter++;;
+                selectedTabFragment.tabBarItem.syncCounter = syncCounter;
+            }
         }
         if (tabFragments.size() == 0)
             return;
         populateTabs();
         if (selectedTabFragment != null) {
-            selectedTabFragment.tabBarItem.syncCounter = syncCounter;
             int reselectedTab = tabFragments.indexOf(selectedTabFragment);
             selectedTab = reselectedTab != -1 ? reselectedTab : Math.min(selectedTab, tabFragments.size() - 1);
         }
@@ -112,31 +116,28 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     };
 
     void setCurrentTab(int index) {
-        if (index != selectedIndex) {
-            if (!jsUpdate) {
-                nativeEventCount++;
-                ReactContext reactContext = (ReactContext) getContext();
-                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                eventDispatcher.dispatchEvent(new TabBarView.TabSelectedEvent(getId(), index, nativeEventCount));
-            }
-            tabFragments.get(index).tabBarItem.pressed();
-        }
+        if (index != selectedIndex)
+            selectTab(index);
         selectedTab = selectedIndex = index;
-        boolean firstTime = selectedTabFragment == null;
         selectedTabFragment = tabFragments.get(index);
         TabNavigationView tabNavigation = getTabNavigation();
         if (tabNavigation != null)
             tabNavigation.tabSelected(index);
-        TabBarItemView tabBarItem = tabFragments.get(index).tabBarItem;
-        if (firstTime || tabBarItem.syncCounter == syncCounter) {
-            if (contentSync) syncCounter++;
-            tabBarItem.syncCounter = syncCounter;
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            if (tabFragments.get(index).viewChanged())
-                tabFragments.set(index, new TabFragment(tabBarItem));
-            transaction.replace(getId(), tabFragments.get(index));
-            transaction.commitNowAllowingStateLoss();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        if (tabFragments.get(index).viewChanged())
+            tabFragments.set(index, new TabFragment(tabFragments.get(index).tabBarItem));
+        transaction.replace(getId(), tabFragments.get(index));
+        transaction.commitNowAllowingStateLoss();
+    }
+
+    void selectTab(int index) {
+        if (!jsUpdate) {
+            nativeEventCount++;
+            ReactContext reactContext = (ReactContext) getContext();
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(new TabBarView.TabSelectedEvent(getId(), index, nativeEventCount));
         }
+        tabFragments.get(index).tabBarItem.pressed();
     }
 
     void scrollToTop() {
