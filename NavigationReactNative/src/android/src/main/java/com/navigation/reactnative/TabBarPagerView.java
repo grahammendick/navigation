@@ -36,7 +36,6 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
     int selectedTab = 0;
     int syncCounter = 0;
     boolean contentSync;
-    final TabChangeListener tabChangeListener;
     boolean scrollsToTop;
     private boolean layoutRequested = false;
     int nativeEventCount;
@@ -47,8 +46,7 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
     public TabBarPagerView(Context context) {
         super(context);
         ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_LTR);
-        tabChangeListener = new TabChangeListener();
-        addOnPageChangeListener(tabChangeListener);
+        addOnPageChangeListener(new TabChangeListener());
         FragmentActivity activity = (FragmentActivity) ((ReactContext) context).getCurrentActivity();
         fragment = new TabBarPagerFragment(this);
         if (activity != null) {
@@ -79,12 +77,14 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
 
     void onAfterUpdateTransaction() {
         int eventLag = nativeEventCount - mostRecentEventCount;
+        if (getTabsCount() > selectedTab)
+            getTabAt(selectedTab).syncCounter = syncCounter;
         if (eventLag == 0 && getCurrentItem() != pendingSelectedTab) {
             selectedTab = pendingSelectedTab;
             if (getTabsCount() > selectedTab) {
-                TabBarItemView tabBarItem = getAdapter().tabFragments.get(selectedTab).tabBarItem;
-                tabBarItem.syncCounter = syncCounter;
                 setCurrentItem(selectedTab);
+                if (contentSync) syncCounter++;
+                getTabAt(selectedTab).syncCounter = syncCounter;
             }
         }
         populateTabs();
@@ -114,16 +114,15 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
         return null;
     }
 
-    @Override
-    public void setCurrentItem(int item) {
-        TabBarItemView tabBarItem = getAdapter().tabFragments.get(item).tabBarItem;
-        if (tabBarItem.syncCounter == syncCounter) {
-            if (contentSync) syncCounter++;
-            tabBarItem.syncCounter = syncCounter;
-            super.setCurrentItem(item);
-        } else {
-            tabChangeListener.onPageSelected(item);
+    void selectTab(int index) {
+        if (!jsUpdate) {
+            if (!dataSetChanged) nativeEventCount++;
+            ReactContext reactContext = (ReactContext) getContext();
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(new TabBarPagerView.TabSelectedEvent(getId(), index, nativeEventCount));
         }
+        if (getAdapter() != null)
+            getAdapter().tabFragments.get(index).tabBarItem.pressed();
     }
 
     void scrollToTop() {
@@ -277,16 +276,8 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
 
         @Override
         public void onPageSelected(int position) {
-            if (!dataSetChanged && !jsUpdate)
-                nativeEventCount++;
             selectedTab = position;
-            if (!jsUpdate) {
-                ReactContext reactContext = (ReactContext) getContext();
-                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                eventDispatcher.dispatchEvent(new TabBarPagerView.TabSelectedEvent(getId(), position, nativeEventCount));
-            }
-            if (getAdapter() != null)
-                getAdapter().tabFragments.get(position).tabBarItem.pressed();
+            selectTab(position);
         }
 
         @Override

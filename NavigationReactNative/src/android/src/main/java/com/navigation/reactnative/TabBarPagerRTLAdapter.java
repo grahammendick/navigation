@@ -41,7 +41,7 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     void onAfterUpdateTransaction(ViewPager2 view) {
         onAfterUpdateTransactionRequested = false;
         int eventLag = nativeEventCount - mostRecentEventCount;
-        if (getTabAt(selectedTab) != null)
+        if (getTabsCount() > selectedTab)
             getTabAt(selectedTab).syncCounter = syncCounter;
         if (eventLag == 0 && view.getCurrentItem() != pendingSelectedTab) {
             selectedTab = pendingSelectedTab;
