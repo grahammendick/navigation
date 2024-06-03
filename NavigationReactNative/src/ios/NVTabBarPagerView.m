@@ -12,7 +12,6 @@
     NSMutableArray<UIViewController *> *_tabs;
     NSInteger _nativeEventCount;
     NSInteger _selectedIndex;
-    int _syncCounter;
     bool _jsUpdate;
 }
 
@@ -65,6 +64,8 @@
     if (eventLag == 0 && _tabs.count > _selectedTab) {
         _jsUpdate = true;
         [self setCurrentTab:_selectedTab];
+        if (_contentSync)_syncCounter++;
+        ((NVTabBarItemView *) _selectedTabView.view).syncCounter = _syncCounter;
         _jsUpdate = false;
     }
 }
@@ -88,28 +89,33 @@
 - (void)setCurrentTab:(NSInteger)index
 {
     if (index != _selectedIndex) {
-        if (!_jsUpdate) {
-            _nativeEventCount++;
-            self.onTabSelected(@{
-                @"tab": @(index),
-                @"eventCount": @(_nativeEventCount),
-            });
-        }
-        NVTabBarItemView *tabBarItem = ((NVTabBarItemView *) _tabs[index].view);
-        if (!!tabBarItem.onPress) {
-            tabBarItem.onPress(nil);
-        }
+        [self selectTab:index];
     }
     [self getSegmentedTab].selectedSegmentIndex = index;
+    [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     _selectedTab = _selectedIndex = index;
-    BOOL firstTime = !_selectedTabView;
     _selectedTabView = _tabs[index];
     NVTabBarItemView *tabBarItem = ((NVTabBarItemView *) _selectedTabView.view);
-    if (firstTime || tabBarItem.syncCounter == _syncCounter) {
-        if (_contentSync) _syncCounter++;
-        tabBarItem.syncCounter = _syncCounter;
-        [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+}
+
+- (void)selectTab:(NSInteger)index
+{
+    if (!_jsUpdate) {
+        _nativeEventCount++;
+        self.onTabSelected(@{
+            @"tab": @(index),
+            @"eventCount": @(_nativeEventCount),
+        });
     }
+    NVTabBarItemView *tabBarItem = (NVTabBarItemView *) _tabs[index].view;
+    if (!!tabBarItem.onPress) {
+        tabBarItem.onPress(nil);
+    }
+}
+
+- (NVTabBarItemView *)getTabAt:(NSInteger)index
+{
+    return (NVTabBarItemView *) _tabs[index].view;
 }
 
 - (void)scrollToTop

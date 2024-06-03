@@ -95,7 +95,13 @@
 
 - (void)tabPressed
 {
-    [[self getTabBarPager] setCurrentTab:self.selectedSegmentIndex];
+    NVTabBarPagerView *tabBarPager = [self getTabBarPager];
+    if ([tabBarPager selectedTab] == self.selectedSegmentIndex || [tabBarPager getTabAt:self.selectedSegmentIndex].syncCounter == tabBarPager.syncCounter) {
+        [tabBarPager setCurrentTab:self.selectedSegmentIndex];
+    } else {
+        [tabBarPager selectTab:self.selectedSegmentIndex];
+        self.selectedSegmentIndex = [tabBarPager selectedTab];
+    }
 }
 
 @end
