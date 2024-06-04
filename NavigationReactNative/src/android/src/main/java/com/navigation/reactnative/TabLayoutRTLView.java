@@ -101,7 +101,7 @@ public class TabLayoutRTLView extends TabLayout implements TabView {
         TabBarPagerRTLAdapter adapter = (TabBarPagerRTLAdapter) tabBar.getAdapter();
         assert adapter != null;
         TabBarItemView tabBarItem = adapter.getTabAt(tab.getPosition());
-        if (getSelectedTabPosition() == tab.getPosition() || tabBarItem.syncCounter == adapter.syncCounter) {
+        if (getSelectedTabPosition() == tab.getPosition() || tabBarItem.foucCounter == adapter.foucCounter) {
             super.selectTab(tab);
         } else {
             adapter.selectTab(tabBar, tab.getPosition());

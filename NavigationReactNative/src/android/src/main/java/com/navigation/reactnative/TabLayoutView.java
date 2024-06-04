@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -116,7 +115,7 @@ public class TabLayoutView extends TabLayout implements TabView {
             return;
         }
         TabBarItemView tabBarItem = tabBar.getTabAt(tab.getPosition());
-        if (getSelectedTabPosition() == tab.getPosition() || tabBarItem.syncCounter == tabBar.syncCounter) {
+        if (getSelectedTabPosition() == tab.getPosition() || tabBarItem.foucCounter == tabBar.foucCounter) {
             super.selectTab(tab);
         } else {
             tabBar.selectTab(tab.getPosition());

@@ -24,8 +24,8 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     final Fragment fragment;
     int pendingSelectedTab = 0;
     int selectedTab = 0;
-    int syncCounter = 0;
-    boolean contentSync;
+    int foucCounter = 0;
+    boolean preventFouc;
     boolean scrollsToTop;
     int nativeEventCount;
     int mostRecentEventCount;
@@ -42,13 +42,13 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
         onAfterUpdateTransactionRequested = false;
         int eventLag = nativeEventCount - mostRecentEventCount;
         if (getTabsCount() > selectedTab)
-            getTabAt(selectedTab).syncCounter = syncCounter;
+            getTabAt(selectedTab).foucCounter = foucCounter;
         if (eventLag == 0 && view.getCurrentItem() != pendingSelectedTab) {
             selectedTab = pendingSelectedTab;
             if (getTabsCount() > selectedTab) {
                 setCurrentItem(view, selectedTab);
-                if (contentSync) syncCounter++;
-                getTabAt(selectedTab).syncCounter = syncCounter;
+                if (preventFouc) foucCounter++;
+                getTabAt(selectedTab).foucCounter = foucCounter;
             }
         }
         populateTabs(getTabLayout(view));

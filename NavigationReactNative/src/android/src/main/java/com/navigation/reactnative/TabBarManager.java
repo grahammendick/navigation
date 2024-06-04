@@ -30,11 +30,11 @@ public class TabBarManager extends ViewGroupManager<TabBarView> {
         view.pendingSelectedTab = selectedTab;
     }
 
-    @ReactProp(name = "contentSync")
-    public void setContentSync(TabBarView view, boolean contentSync) {
-        if (contentSync && !view.contentSync)
-            view.syncCounter++;
-        view.contentSync = contentSync;
+    @ReactProp(name = "preventFouc")
+    public void setPreventFouc(TabBarView view, boolean preventFouc) {
+        if (preventFouc && !view.preventFouc)
+            view.foucCounter++;
+        view.preventFouc = preventFouc;
     }
 
     @ReactProp(name = "mostRecentEventCount")

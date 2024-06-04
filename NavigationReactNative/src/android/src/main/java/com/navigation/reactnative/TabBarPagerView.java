@@ -34,8 +34,8 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
     private final Fragment fragment;
     int pendingSelectedTab = 0;
     int selectedTab = 0;
-    int syncCounter = 0;
-    boolean contentSync;
+    int foucCounter = 0;
+    boolean preventFouc;
     boolean scrollsToTop;
     private boolean layoutRequested = false;
     int nativeEventCount;
@@ -78,13 +78,13 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
     void onAfterUpdateTransaction() {
         int eventLag = nativeEventCount - mostRecentEventCount;
         if (getTabsCount() > selectedTab)
-            getTabAt(selectedTab).syncCounter = syncCounter;
+            getTabAt(selectedTab).foucCounter = foucCounter;
         if (eventLag == 0 && getCurrentItem() != pendingSelectedTab) {
             selectedTab = pendingSelectedTab;
             if (getTabsCount() > selectedTab) {
                 setCurrentItem(selectedTab);
-                if (contentSync) syncCounter++;
-                getTabAt(selectedTab).syncCounter = syncCounter;
+                if (preventFouc) foucCounter++;
+                getTabAt(selectedTab).foucCounter = foucCounter;
             }
         }
         populateTabs();

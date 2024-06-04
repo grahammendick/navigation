@@ -28,7 +28,7 @@ import java.util.List;
 
 public class TabBarItemView extends ViewGroup {
     protected int index;
-    int syncCounter;
+    int foucCounter;
     CharSequence styledTitle;
     private String title;
     private String fontFamily;

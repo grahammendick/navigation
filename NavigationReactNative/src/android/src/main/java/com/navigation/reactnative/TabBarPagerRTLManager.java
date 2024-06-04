@@ -108,11 +108,11 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
         getAdapter(view).pendingSelectedTab = selectedTab;
     }
 
-    @ReactProp(name = "contentSync")
-    public void setContentSync(ViewPager2 view, boolean contentSync) {
-        if (contentSync && !getAdapter(view).contentSync)
-            getAdapter(view).syncCounter++;
-        getAdapter(view).contentSync = contentSync;
+    @ReactProp(name = "preventFouc")
+    public void setPreventFouc(ViewPager2 view, boolean preventFouc) {
+        if (preventFouc && !getAdapter(view).preventFouc)
+            getAdapter(view).foucCounter++;
+        getAdapter(view).preventFouc = preventFouc;
     }
 
     @ReactProp(name = "mostRecentEventCount")
