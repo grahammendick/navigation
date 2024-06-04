@@ -13,7 +13,7 @@
     UITabBarController *_tabBarController;
     NSInteger _selectedIndex;
     NSInteger _nativeEventCount;
-    int _syncCounter;
+    int _foucCounter;
     bool _firstSceneReselected;
     bool _jsUpdate;
 }
@@ -64,15 +64,15 @@
     if (_tabBarController.selectedIndex == NSNotFound) {
         _tabBarController.selectedIndex = 0;
     }
-    if ([changedProps containsObject:@"contentSync"] && _contentSync)
-        _syncCounter++;
+    if ([changedProps containsObject:@"preventFouc"] && _preventFouc)
+        _foucCounter++;
     NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[_tabBarController.selectedIndex];
-    tabBarItem.syncCounter = _syncCounter;
+    tabBarItem.foucCounter = _foucCounter;
     if (_tabBarController.selectedIndex != _selectedIndex) {
         if ([changedProps containsObject:@"selectedTab"]) {
-            if (_contentSync)_syncCounter++;
+            if (_preventFouc)_foucCounter++;
             NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[_selectedIndex];
-            tabBarItem.syncCounter = _syncCounter;
+            tabBarItem.foucCounter = _foucCounter;
             _tabBarController.selectedIndex = _selectedIndex;
         } else {
             _selectedIndex = _tabBarController.selectedIndex;
@@ -189,7 +189,7 @@
 {
     NSInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
     NVTabBarItemView *tabBarItem = (NVTabBarItemView *)self.reactSubviews[selectedIndex];
-    if (tabBarItem.syncCounter == _syncCounter || _selectedIndex == selectedIndex) {
+    if (tabBarItem.foucCounter == _foucCounter || _selectedIndex == selectedIndex) {
         NSArray *viewControllers = ((UINavigationController *) viewController).viewControllers;
         _firstSceneReselected = _selectedIndex == selectedIndex && viewControllers.count == 1;
         return YES;

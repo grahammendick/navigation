@@ -57,15 +57,15 @@
 {
     _nativeEventCount = MAX(_nativeEventCount, _mostRecentEventCount);
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
-    if ([changedProps containsObject:@"contentSync"] && _contentSync)
-        _syncCounter++;
-    if ( _contentSync) _syncCounter++;
-    ((NVTabBarItemView *) _selectedTabView.view).syncCounter = _syncCounter;
+    if ([changedProps containsObject:@"preventFouc"] && _preventFouc)
+        _foucCounter++;
+    if ( _preventFouc) _foucCounter++;
+    ((NVTabBarItemView *) _selectedTabView.view).foucCounter = _foucCounter;
     if (eventLag == 0 && _tabs.count > _selectedTab) {
         _jsUpdate = true;
         [self setCurrentTab:_selectedTab];
-        if (_contentSync)_syncCounter++;
-        ((NVTabBarItemView *) _selectedTabView.view).syncCounter = _syncCounter;
+        if (_preventFouc)_foucCounter++;
+        ((NVTabBarItemView *) _selectedTabView.view).foucCounter = _foucCounter;
         _jsUpdate = false;
     }
 }
