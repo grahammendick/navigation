@@ -14,6 +14,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.events.Event;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import java.util.ArrayList;
@@ -61,10 +64,9 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     void selectTab(ViewPager2 view, int index) {
         if (!jsUpdate) {
             if (!dataSetChanged) nativeEventCount++;
-            WritableMap event = Arguments.createMap();
-            event.putInt("tab", index);
-            event.putInt("eventCount", nativeEventCount);
-            ((ReactContext) view.getContext()).getJSModule(RCTEventEmitter.class).receiveEvent(view.getId(), "topTabSelected", event);
+            ReactContext reactContext = (ReactContext) view.getContext();
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.getId());
+            eventDispatcher.dispatchEvent(new TabBarPagerRTLAdapter.TabSelectedEvent(view.getId(), index, nativeEventCount));
         }
         if (getTabAt(index) != null)
             getTabAt(index).pressed();
@@ -174,5 +176,29 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     @Override
     public long getItemId(int position) {
         return tabBarItems.get(position).content.size() > 0 ? tabBarItems.get(position).content.get(0).hashCode() : RecyclerView.NO_ID;
+    }
+
+    static class TabSelectedEvent extends Event<TabBarPagerRTLAdapter.TabSelectedEvent> {
+        private final int tab;
+        private final int eventCount;
+
+        public TabSelectedEvent(int viewId, int tab, int eventCount) {
+            super(viewId);
+            this.tab = tab;
+            this.eventCount = eventCount;
+        }
+
+        @Override
+        public String getEventName() {
+            return "topTabSelected";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            WritableMap event = Arguments.createMap();
+            event.putInt("tab", this.tab);
+            event.putInt("eventCount", this.eventCount);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
+        }
     }
 }
