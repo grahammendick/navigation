@@ -136,6 +136,13 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
         getAdapter(view).pendingSelectedTab = selectedTab;
     }
 
+    @Override
+    public void setPreventFouc(ViewPager2 view, boolean preventFouc) {
+        if (preventFouc && !getAdapter(view).preventFouc)
+            getAdapter(view).foucCounter++;
+        getAdapter(view).preventFouc = preventFouc;
+    }
+
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(ViewPager2 view, int mostRecentEventCount) {
         getAdapter(view).mostRecentEventCount = mostRecentEventCount;
