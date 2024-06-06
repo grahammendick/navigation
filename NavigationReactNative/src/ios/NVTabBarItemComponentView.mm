@@ -129,6 +129,7 @@ using namespace facebook::react;
     self.imageCoordinator = nullptr;
     self.stackDidChangeBlock = nil;
     _tab = nil;
+    _foucCounter = 0;
     _image = nil;
 }
 

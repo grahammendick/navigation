@@ -95,7 +95,6 @@
     [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     _selectedTab = _selectedIndex = index;
     _selectedTabView = _tabs[index];
-    NVTabBarItemView *tabBarItem = ((NVTabBarItemView *) _selectedTabView.view);
 }
 
 - (void)selectTab:(NSInteger)index

@@ -121,7 +121,13 @@ using namespace facebook::react;
 
 - (void)tabPressed
 {
-    [[self getTabBarPager] setCurrentTab:_segmentedControl.selectedSegmentIndex];
+    NVTabBarPagerComponentView *tabBarPager = [self getTabBarPager];
+    if ([tabBarPager selectedTab] == _segmentedControl.selectedSegmentIndex || [tabBarPager getTabAt:_segmentedControl.selectedSegmentIndex].foucCounter == tabBarPager.foucCounter) {
+        [tabBarPager setCurrentTab:_segmentedControl.selectedSegmentIndex];
+    } else {
+        [tabBarPager selectTab:_segmentedControl.selectedSegmentIndex];
+        _segmentedControl.selectedSegmentIndex = [tabBarPager selectedTab];
+    }
 }
 
 #pragma mark - RCTComponentViewProtocol
