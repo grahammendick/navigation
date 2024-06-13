@@ -105,10 +105,10 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 public void onBackStackChangeStarted(@NonNull Fragment sceneFragment, boolean pop) {
                     if (pop && sceneFragment.isRemoving()) {
                         int crumb = ((SceneFragment) sceneFragment).getScene().crumb;
-                        if (crumb < keys.size() - 1) {
+                        if (crumb < keys.size()) {
                             ReactContext reactContext = (ReactContext) getContext();
                             EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                            eventDispatcher.dispatchEvent(new NavigationStackView.WillNavigateBackEvent(getId(), crumb));
+                            eventDispatcher.dispatchEvent(new NavigationStackView.WillNavigateBackEvent(getId(), keys.size() - 2));
                         }
                     }
                 }
