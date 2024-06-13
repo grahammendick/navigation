@@ -33,6 +33,7 @@ import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.google.android.material.transition.MaterialFade;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -104,10 +105,10 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 public void onBackStackChangeStarted(@NonNull Fragment sceneFragment, boolean pop) {
                     if (pop && sceneFragment.isRemoving()) {
                         int crumb = ((SceneFragment) sceneFragment).getScene().crumb;
-                        if (crumb < keys.size() - 1) {
+                        if (crumb < keys.size()) {
                             ReactContext reactContext = (ReactContext) getContext();
                             EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                            eventDispatcher.dispatchEvent(new NavigationStackView.WillNavigateBackEvent(getId(), crumb));
+                            eventDispatcher.dispatchEvent(new NavigationStackView.WillNavigateBackEvent(getId(), keys.size() - 2));
                         }
                     }
                 }
@@ -158,10 +159,10 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     if (prevFragment != null) {
                         sharedElements = getSharedElements(currentCrumb, crumb, prevFragment);
                         if (sharedElements != null || enterTrans != null || exitTrans != null || scene.enterTrans != null || scene.exitTrans != null) {
-                            exitTrans = exitTrans != null ? exitTrans : new AnimationPropParser.VoidTransition();
-                            scene.enterTrans = scene.enterTrans != null ? scene.enterTrans : new AnimationPropParser.VoidTransition();
-                            enterTrans = enterTrans != null ? enterTrans : new AnimationPropParser.VoidTransition();
-                            scene.exitTrans = scene.exitTrans != null ? scene.exitTrans : new AnimationPropParser.VoidTransition();
+                            exitTrans = exitTrans != null ? exitTrans : new MaterialFade();
+                            scene.enterTrans = scene.enterTrans != null ? scene.enterTrans : new MaterialFade();
+                            enterTrans = enterTrans != null ? enterTrans : new MaterialFade();
+                            scene.exitTrans = scene.exitTrans != null ? scene.exitTrans : new MaterialFade();
                         }
                         prevFragment.setExitTransition(exitTrans);
                         prevFragment.exitAnimator = exitAnimator;
@@ -201,10 +202,10 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKey);
             if (prevFragment != null) {
                 if (enterTrans != null || exitTrans != null || scene.enterTrans != null || scene.exitTrans != null) {
-                    exitTrans = exitTrans != null ? exitTrans : new AnimationPropParser.VoidTransition();
-                    scene.enterTrans = scene.enterTrans != null ? scene.enterTrans : new AnimationPropParser.VoidTransition();
-                    enterTrans = enterTrans != null ? enterTrans : new AnimationPropParser.VoidTransition();
-                    scene.exitTrans = scene.exitTrans != null ? scene.exitTrans : new AnimationPropParser.VoidTransition();
+                    exitTrans = exitTrans != null ? exitTrans : new MaterialFade();
+                    scene.enterTrans = scene.enterTrans != null ? scene.enterTrans : new MaterialFade();
+                    enterTrans = enterTrans != null ? enterTrans : new MaterialFade();
+                    scene.exitTrans = scene.exitTrans != null ? scene.exitTrans : new MaterialFade();
                 }
                 prevFragment.setExitTransition(exitTrans);
                 prevFragment.exitAnimator = exitAnimator;

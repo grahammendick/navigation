@@ -180,7 +180,7 @@ public class SceneFragment extends Fragment {
             @Override
             public void onTransitionEnd(@NonNull Transition transition) {
                 super.onTransitionEnd(transition);
-                if (scene.getParent() instanceof NavigationStackView)
+                if (scene.getParent() instanceof NavigationStackView && isVisible())
                     ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
             }
         });
@@ -194,7 +194,7 @@ public class SceneFragment extends Fragment {
             @Override
             public void onTransitionEnd(@NonNull Transition transition) {
                 super.onTransitionEnd(transition);
-                if (scene.getParent() instanceof NavigationStackView)
+                if (scene.getParent() instanceof NavigationStackView && isVisible())
                     ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
             }
         });
@@ -208,7 +208,7 @@ public class SceneFragment extends Fragment {
             @Override
             public void onTransitionEnd(@NonNull Transition transition) {
                 super.onTransitionEnd(transition);
-                if (scene != null)
+                if (scene != null && !isVisible())
                   scene.popped();
             }
         });

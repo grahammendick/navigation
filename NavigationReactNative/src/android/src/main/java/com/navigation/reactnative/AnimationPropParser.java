@@ -40,12 +40,6 @@ public class AnimationPropParser {
             case "fadeThrough" -> transition = new MaterialFadeThrough();
             case "hold" -> transition = new Hold();
         }
-        if (transition != null) {
-            TransitionSet transitionSet = new TransitionSet();
-            transitionSet.addTransition(transition);
-            transitionSet.addTransition(new VoidTransition());
-            return transitionSet;
-        }
         return transition;
     }
 
@@ -81,17 +75,6 @@ public class AnimationPropParser {
             return new Pair<>(Float.parseFloat(val.substring(0, val.length() - 1)), true);
         } else {
             return new Pair<>(Float.parseFloat(val), false);
-        }
-    }
-
-    static class VoidTransition extends Transition
-    {
-        @Override
-        public void captureStartValues(@NonNull TransitionValues transitionValues) {
-        }
-
-        @Override
-        public void captureEndValues(@NonNull TransitionValues transitionValues) {
         }
     }
 
