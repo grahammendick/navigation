@@ -82,7 +82,7 @@ public class DialogView extends ReactViewGroup {
             Window window = getDialog().getWindow();
             assert window != null : "Window is null";
             window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-            // window.setBackgroundDrawable(null);
+            window.setBackgroundDrawable(null);
         }
     }
 
