@@ -10,6 +10,7 @@ const Dialog = ({ show = false, children }) => {
     return (
         <FragmentContext.Provider value={stackIds}>
             <NVDialog
+                show={show}
                 stackId={stackId}
                 ancestorStackIds={ancestorStackIds}
                 style={styles.dialog}>

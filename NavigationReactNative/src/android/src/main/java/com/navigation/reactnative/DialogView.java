@@ -36,7 +36,7 @@ public class DialogView extends ReactViewGroup {
     }
 
     void onAfterUpdateTransaction() {
-        if (show) {
+        if (dismissed && show) {
             FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
             assert activity != null : "Activity is null";
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
@@ -47,12 +47,11 @@ public class DialogView extends ReactViewGroup {
             }
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             // transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.add(android.R.id.content, dialogViewFragment, stackId);//.addToBackStack(null);
+            transaction.add(dialogViewFragment, stackId);//.addToBackStack(null);
             transaction.commitNowAllowingStateLoss();
-        } else {
-            if (!dismissed)
-                dialogViewFragment.dismiss();
         }
+        if (!dismissed && !show)
+            dialogViewFragment.dismiss();
     }
 
     public static class DialogViewFragment extends DialogFragment

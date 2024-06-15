@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableArray;
@@ -33,6 +35,26 @@ public class DialogManager extends ViewGroupManager<DialogView> {
     @ReactProp(name = "ancestorStackIds")
     public void setAncestorStackIds(DialogView view, ReadableArray ancestorStackIds) {
         view.ancestorStackIds = ancestorStackIds;
+    }
+
+    @Override
+    public void addView(DialogView parent, View child, int index) {
+        parent.dialogRootView.addView(child, index);
+    }
+
+    @Override
+    public void removeViewAt(DialogView parent, int index) {
+        parent.dialogRootView.removeViewAt(index);
+    }
+
+    @Override
+    public int getChildCount(DialogView parent) {
+        return parent.dialogRootView.getChildCount();
+    }
+
+    @Override
+    public View getChildAt(DialogView parent, int index) {
+        return parent.dialogRootView.getChildAt(index);
     }
 
     @Override
