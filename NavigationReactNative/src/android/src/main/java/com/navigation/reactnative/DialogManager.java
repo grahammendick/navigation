@@ -17,4 +17,10 @@ public class DialogManager extends ViewGroupManager<DialogView> {
     protected DialogView createViewInstance(@NonNull ThemedReactContext themedReactContext) {
         return new DialogView(themedReactContext);
     }
+
+    @Override
+    protected void onAfterUpdateTransaction(@NonNull DialogView view) {
+        super.onAfterUpdateTransaction(view);
+        view.onAfterUpdateTransaction();
+    }
 }
