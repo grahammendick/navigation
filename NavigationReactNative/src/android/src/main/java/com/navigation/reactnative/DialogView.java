@@ -50,10 +50,7 @@ public class DialogView extends ReactViewGroup {
                 assert ancestorFragment != null : "Ancestor fragment is null";
                 fragmentManager = ancestorFragment.getChildFragmentManager();
             }
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            // transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.add(dialogViewFragment, stackId);//.addToBackStack(null);
-            transaction.commitNowAllowingStateLoss();
+            dialogViewFragment.showNow(fragmentManager, stackId);
         }
         if (!dismissed && !show)
             dialogViewFragment.dismiss();
