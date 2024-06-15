@@ -25,6 +25,7 @@ const NVDialog = requireNativeComponent<any>('NVDialog');
 const styles = StyleSheet.create({
     dialog: {
         position: 'absolute',
+        elevation: 5
     },
 });
 

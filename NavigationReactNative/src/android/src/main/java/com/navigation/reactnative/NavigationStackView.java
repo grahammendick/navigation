@@ -86,13 +86,13 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             }
         }
         if (fragment == null) {
-            fragment = new StackFragment(this);
             FragmentManager fragmentManager = ((FragmentActivity) currentActivity).getSupportFragmentManager();
             for (int i = 0; i < ancestorStackIds.size(); i++) {
                 Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorStackIds.getString(i));
-                assert ancestorFragment != null : "Ancestor fragment is null";
+                if (ancestorFragment == null) return;
                 fragmentManager = ancestorFragment.getChildFragmentManager();
             }
+            fragment = new StackFragment(this);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.add(fragment, stackId);
             transaction.commitNowAllowingStateLoss();

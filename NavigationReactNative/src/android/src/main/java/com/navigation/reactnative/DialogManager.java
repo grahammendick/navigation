@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 
@@ -38,6 +39,12 @@ public class DialogManager extends ViewGroupManager<DialogView> {
     }
 
     @Override
+    protected void onAfterUpdateTransaction(@NonNull DialogView view) {
+        super.onAfterUpdateTransaction(view);
+        view.onAfterUpdateTransaction();
+    }
+
+    @Override
     public void addView(DialogView parent, View child, int index) {
         parent.dialogRootView.addView(child, index);
     }
@@ -58,8 +65,8 @@ public class DialogManager extends ViewGroupManager<DialogView> {
     }
 
     @Override
-    protected void onAfterUpdateTransaction(@NonNull DialogView view) {
-        super.onAfterUpdateTransaction(view);
-        view.onAfterUpdateTransaction();
+    protected void addEventEmitters(@NonNull ThemedReactContext reactContext, @NonNull DialogView view) {
+        super.addEventEmitters(reactContext, view);
+        view.dialogRootView.eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.getId());
     }
 }
