@@ -26,6 +26,7 @@ public class DialogView extends ReactViewGroup {
     boolean show;
     protected String stackId;
     protected ReadableArray ancestorStackIds;
+    private boolean dismissed = true;
 
     public DialogView(Context context) {
         super(context);
@@ -46,10 +47,11 @@ public class DialogView extends ReactViewGroup {
             }
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             // transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.add(dialogViewFragment, stackId);//.addToBackStack(null);
+            transaction.add(android.R.id.content, dialogViewFragment, stackId);//.addToBackStack(null);
             transaction.commitNowAllowingStateLoss();
         } else {
-            dialogViewFragment.dismiss();
+            if (!dismissed)
+                dialogViewFragment.dismiss();
         }
     }
 
