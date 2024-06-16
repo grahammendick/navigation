@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -197,7 +198,7 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
     class DialogBackStackCallback extends FragmentHostCallback<DialogView> implements OnBackPressedDispatcherOwner
     {
         public DialogBackStackCallback() {
-            super(DialogView.this.getContext(), new Handler(), 0);
+            super(DialogView.this.getContext(), new Handler(Looper.getMainLooper()), 0);
         }
 
         @Override
