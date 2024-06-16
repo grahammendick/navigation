@@ -3,18 +3,27 @@ package com.navigation.reactnative;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import androidx.activity.ComponentDialog;
+import androidx.activity.OnBackPressedDispatcher;
+import androidx.activity.OnBackPressedDispatcherOwner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentController;
+import androidx.fragment.app.FragmentHostCallback;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
@@ -26,19 +35,22 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.views.view.ReactViewGroup;
 
-public class DialogView extends ReactViewGroup {
+public class DialogView extends ReactViewGroup implements LifecycleOwner {
     private final DialogViewFragment dialogViewFragment;
     final DialogRootView dialogRootView;
     boolean show;
     protected String stackId;
     protected ReadableArray ancestorStackIds;
     private boolean dismissed = true;
+    FragmentController fragmentController;
+    private final LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
 
     public DialogView(Context context) {
         super(context);
         dialogViewFragment = new DialogViewFragment();
         dialogViewFragment.dialogView = this;
         dialogRootView = new DialogRootView(context);
+        fragmentController = FragmentController.createController(new DialogBackStackCallback());
     }
 
     void onAfterUpdateTransaction() {
@@ -52,9 +64,16 @@ public class DialogView extends ReactViewGroup {
                 fragmentManager = ancestorFragment.getChildFragmentManager();
             }
             dialogViewFragment.showNow(fragmentManager, stackId);
+            dismissed = false;
         }
         if (!dismissed && !show)
             dialogViewFragment.dismiss();
+    }
+
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycleRegistry;
     }
 
     public static class DialogViewFragment extends DialogFragment
@@ -83,6 +102,12 @@ public class DialogView extends ReactViewGroup {
             assert window != null : "Window is null";
             window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             window.setBackgroundDrawable(null);
+        }
+
+        FragmentManager getSupportFragmentManager() {
+            dialogView.fragmentController.attachHost(null);
+            dialogView.fragmentController.dispatchStart();
+            return dialogView.fragmentController.getSupportFragmentManager();
         }
     }
 
@@ -166,6 +191,42 @@ public class DialogView extends ReactViewGroup {
 
         @Override
         public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+        }
+    }
+
+    class DialogBackStackCallback extends FragmentHostCallback<DialogView> implements OnBackPressedDispatcherOwner
+    {
+        public DialogBackStackCallback() {
+            super(DialogView.this.getContext(), new Handler(), 0);
+        }
+
+        @Override
+        public DialogView onGetHost() {
+            return null;
+        }
+
+        @NonNull
+        @Override
+        public Lifecycle getLifecycle() {
+            return lifecycleRegistry;
+        }
+
+        @NonNull
+        @Override
+        public LayoutInflater onGetLayoutInflater() {
+            Dialog dialog = dialogViewFragment.getDialog();
+            assert dialog != null : "Dialog is null";
+            Window window = dialog.getWindow();
+            assert window != null : "Window is null";
+            return window.getLayoutInflater().cloneInContext(DialogView.this.getContext());
+        }
+
+        @NonNull
+        @Override
+        public OnBackPressedDispatcher getOnBackPressedDispatcher() {
+            ComponentDialog componentDialog = (ComponentDialog) dialogViewFragment.getDialog();
+            assert componentDialog != null : "Dialog is null";
+            return componentDialog.getOnBackPressedDispatcher();
         }
     }
 }
