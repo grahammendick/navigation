@@ -8,6 +8,7 @@ type NativeProps = $ReadOnly<{|
   ...ViewProps,
   tabCount: Int32,
   selectedTab: Int32,
+  preventFouc: boolean,
   barTintColor: ColorValue,
   selectedTintColor: ColorValue,
   unselectedTintColor: ColorValue,

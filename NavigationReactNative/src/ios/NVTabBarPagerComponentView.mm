@@ -24,6 +24,7 @@ using namespace facebook::react;
     NSMutableArray<UIViewController *> *_tabs;
     NSInteger _nativeEventCount;
     NSInteger _selectedIndex;
+    bool _preventFouc;
     bool _jsUpdate;
 }
 
@@ -56,11 +57,18 @@ using namespace facebook::react;
     _nativeEventCount = MAX(_nativeEventCount, _mostRecentEventCount);
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
     NSInteger selectedTab = newViewProps.selectedTab;
+    if (newViewProps.preventFouc != _preventFouc && newViewProps.preventFouc)
+        _foucCounter++;
+    NVTabBarItemComponentView *tabBarItem = ((NVTabBarItemComponentView *) _tabs[_selectedTab].view);
+    tabBarItem.foucCounter = _foucCounter;
     if (eventLag == 0 && _selectedTab != selectedTab) {
         _selectedTab = selectedTab;
         dispatch_async(dispatch_get_main_queue(), ^{
             self->_jsUpdate = true;
             [self setCurrentTab:selectedTab];
+            if (self->_preventFouc)self->_foucCounter++;
+            NVTabBarItemComponentView *tabBarItem = ((NVTabBarItemComponentView *) self->_tabs[self->_selectedTab].view);
+            tabBarItem.foucCounter = self->_foucCounter;
             self->_jsUpdate = false;
         });
     }
@@ -94,24 +102,34 @@ using namespace facebook::react;
 {
     if (_tabs.count <= index) return;
     if (index != _selectedIndex) {
-        if (!_jsUpdate)
-            _nativeEventCount++;
-        if (_eventEmitter != nullptr) {
-            if (!_jsUpdate) {
-                std::static_pointer_cast<NVTabBarPagerEventEmitter const>(_eventEmitter)
-                    ->onTabSelected(NVTabBarPagerEventEmitter::OnTabSelected{
-                        .tab = static_cast<int>(index),
-                        .eventCount = static_cast<int>(_nativeEventCount)
-                    });
-            }
-            NVTabBarItemComponentView *tabBarItem = ((NVTabBarItemComponentView *) _tabs[index].view);
-            [tabBarItem onPress];
-        }
+        [self selectTab:index];
     }
     [self getSegmentedTab].segmentedControl.selectedSegmentIndex = index;
     [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     _selectedTab = _selectedIndex = index;
     _selectedTabView = _tabs[index];
+}
+
+- (void)selectTab:(NSInteger)index
+{
+    if (!_jsUpdate)
+        _nativeEventCount++;
+    if (_eventEmitter != nullptr) {
+        if (!_jsUpdate) {
+            std::static_pointer_cast<NVTabBarPagerEventEmitter const>(_eventEmitter)
+                ->onTabSelected(NVTabBarPagerEventEmitter::OnTabSelected{
+                    .tab = static_cast<int>(index),
+                    .eventCount = static_cast<int>(_nativeEventCount)
+                });
+        }
+        NVTabBarItemComponentView *tabBarItem = ((NVTabBarItemComponentView *) _tabs[index].view);
+        [tabBarItem onPress];
+    }
+}
+
+- (NVTabBarItemComponentView *)getTabAt:(NSInteger)index
+{
+    return ((NVTabBarItemComponentView *) _tabs[index].view);
 }
 
 - (void)scrollToTop
@@ -132,6 +150,8 @@ using namespace facebook::react;
     _selectedTabView = nil;
     _selectedIndex = 0;
     _selectedTab = 0;
+    _preventFouc = NO;
+    _foucCounter = 0;
 }
 
 #pragma mark - RCTComponentViewProtocol

@@ -34,9 +34,10 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
     private final Fragment fragment;
     int pendingSelectedTab = 0;
     int selectedTab = 0;
+    int foucCounter = 0;
+    boolean preventFouc;
     boolean scrollsToTop;
     private boolean layoutRequested = false;
-    private boolean measured = false;
     int nativeEventCount;
     int mostRecentEventCount;
     private boolean dataSetChanged = false;
@@ -76,10 +77,15 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
 
     void onAfterUpdateTransaction() {
         int eventLag = nativeEventCount - mostRecentEventCount;
+        if (getTabsCount() > selectedTab)
+            getTabAt(selectedTab).foucCounter = foucCounter;
         if (eventLag == 0 && getCurrentItem() != pendingSelectedTab) {
             selectedTab = pendingSelectedTab;
-            if (getTabsCount() > selectedTab)
-                setCurrentItem(selectedTab, false);
+            if (getTabsCount() > selectedTab) {
+                setCurrentItem(selectedTab);
+                if (preventFouc) foucCounter++;
+                getTabAt(selectedTab).foucCounter = foucCounter;
+            }
         }
         populateTabs();
     }
@@ -106,6 +112,17 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
                 return (TabLayoutView) child;
         }
         return null;
+    }
+
+    void selectTab(int index) {
+        if (!jsUpdate) {
+            if (!dataSetChanged) nativeEventCount++;
+            ReactContext reactContext = (ReactContext) getContext();
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(new TabBarPagerView.TabSelectedEvent(getId(), index, nativeEventCount));
+        }
+        if (getAdapter() != null)
+            getAdapter().tabFragments.get(index).tabBarItem.pressed();
     }
 
     void scrollToTop() {
@@ -259,16 +276,8 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
 
         @Override
         public void onPageSelected(int position) {
-            if (!dataSetChanged && !jsUpdate)
-                nativeEventCount++;
             selectedTab = position;
-            if (!jsUpdate) {
-                ReactContext reactContext = (ReactContext) getContext();
-                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                eventDispatcher.dispatchEvent(new TabBarPagerView.TabSelectedEvent(getId(), position, nativeEventCount));
-            }
-            if (getAdapter() != null)
-                getAdapter().tabFragments.get(position).tabBarItem.pressed();
+            selectTab(position);
         }
 
         @Override

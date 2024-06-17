@@ -17,7 +17,8 @@ class TabBar extends React.Component<any, any> {
         scrollable: false,
         primary: Platform.OS === 'ios',
         scrollsToTop: true,
-        labelVisibilityMode: 'auto'
+        labelVisibilityMode: 'auto',
+        preventFouc: false
     }
     static getDerivedStateFromProps({tab}, {selectedTab}) {
         if (tab != null && tab !== selectedTab)
@@ -44,7 +45,7 @@ class TabBar extends React.Component<any, any> {
         return false;
     }
     render() {
-        var {children, labelVisibilityMode, barTintColor, selectedTintColor, unselectedTintColor, activeIndicatorColor, rippleColor, shadowColor, bottomTabs, scrollable, primary, scrollsToTop, onPressBack} = this.props;
+        var {children, labelVisibilityMode, barTintColor, selectedTintColor, unselectedTintColor, activeIndicatorColor, rippleColor, shadowColor, bottomTabs, scrollable, primary, scrollsToTop, preventFouc, onPressBack} = this.props;
         const Material3 = global.__turboModuleProxy != null ? require("./NativeMaterial3Module").default : NativeModules.Material3;
         const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
@@ -93,6 +94,7 @@ class TabBar extends React.Component<any, any> {
                     onTabSwipeStateChanged={this.onTabSwipeStateChanged}
                     onMoveShouldSetResponderCapture={() => this.swiping}
                     selectedTab={this.state.selectedTab}
+                    preventFouc={preventFouc}
                     barTintColor={barTintColor}
                     selectedTintColor={selectedTintColor}
                     unselectedTintColor={unselectedTintColor}

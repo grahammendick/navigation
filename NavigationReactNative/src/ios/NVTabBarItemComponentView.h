@@ -7,6 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NVTabBarItemComponentView : RCTViewComponentView
 
 @property UITabBarItem *tab;
+@property (nonatomic, assign) NSInteger foucCounter;
 @property (nonatomic, copy) NSString *fontFamily;
 @property (nonatomic, copy) NSString *fontWeight;
 @property (nonatomic, copy) NSString *fontStyle;

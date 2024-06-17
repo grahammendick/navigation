@@ -26,6 +26,8 @@ using namespace facebook::react;
     UITabBarController *_oldTabBarController;
     NSInteger _selectedTab;
     NSInteger _nativeEventCount;
+    bool _preventFouc;
+    int _foucCounter;
     bool _firstSceneReselected;
     bool _jsUpdate;
 }
@@ -118,18 +120,25 @@ using namespace facebook::react;
     BOOL tabChanged = eventLag == 0 && _selectedTab != newViewProps.selectedTab;
     if (tabChanged)
         _selectedTab = newViewProps.selectedTab;
+    if (newViewProps.preventFouc != _preventFouc && newViewProps.preventFouc)
+        _foucCounter++;
+    NVTabBarItemComponentView *tabBarItem = (NVTabBarItemComponentView *)self.reactSubviews[_tabBarController.selectedIndex];
+    tabBarItem.foucCounter = _foucCounter;
     if (_tabBarController.selectedIndex != _selectedTab) {
         if (tabChanged) {
             dispatch_async(dispatch_get_main_queue(), ^{
+                if (self->_preventFouc)self->_foucCounter++;
+                NVTabBarItemComponentView *tabBarItem = (NVTabBarItemComponentView *)self.reactSubviews[self->_selectedTab];
+                tabBarItem.foucCounter = self->_foucCounter;
                 self->_tabBarController.selectedIndex = self->_selectedTab;
                 self->_jsUpdate = true;
-                [self selectTab];
+                [self selectTab:self->_selectedTab];
                 self->_jsUpdate = false;
             });
         } else {
             _selectedTab = _tabBarController.selectedIndex;
             _jsUpdate = true;
-            [self selectTab];
+            [self selectTab:_selectedTab];
             _jsUpdate = false;
         }
     }
@@ -166,7 +175,7 @@ using namespace facebook::react;
     NSInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
     if (_selectedTab != selectedIndex) {
         _selectedTab = selectedIndex;
-        [self selectTab];
+        [self selectTab:_selectedTab];
     }
     if (_firstSceneReselected && _scrollsToTop) {
         UIViewController *sceneController = ((UINavigationController *) viewController).viewControllers[0];
@@ -195,22 +204,27 @@ using namespace facebook::react;
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
     NSInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
-    NSArray *viewControllers = ((UINavigationController *) viewController).viewControllers;
-    _firstSceneReselected = _selectedTab == selectedIndex && viewControllers.count == 1;
-    return YES;
+    NVTabBarItemComponentView *tabBarItem = (NVTabBarItemComponentView *)self.reactSubviews[selectedIndex];
+    if (tabBarItem.foucCounter == _foucCounter || _selectedTab == selectedIndex) {
+        NSArray *viewControllers = ((UINavigationController *) viewController).viewControllers;
+        _firstSceneReselected = _selectedTab == selectedIndex && viewControllers.count == 1;
+        return YES;
+    } else {
+        [self selectTab:selectedIndex];
+        return NO;
+    }
 }
 
-
--(void) selectTab
+-(void)selectTab:(NSInteger)index
 {
     if (!_jsUpdate)
         _nativeEventCount++;
-    NVTabBarItemComponentView *tabBarItem = (NVTabBarItemComponentView *)self.reactSubviews[_selectedTab];
+    NVTabBarItemComponentView *tabBarItem = (NVTabBarItemComponentView *)self.reactSubviews[index];
     if (_eventEmitter != nullptr) {
         if (!_jsUpdate) {
             std::static_pointer_cast<NVTabBarEventEmitter const>(_eventEmitter)
                 ->onTabSelected(NVTabBarEventEmitter::OnTabSelected{
-                    .tab = static_cast<int>(_selectedTab),
+                    .tab = static_cast<int>(index),
                     .eventCount = static_cast<int>(_nativeEventCount)
                 });
         }
@@ -223,6 +237,8 @@ using namespace facebook::react;
     [super prepareForRecycle];
     _nativeEventCount = 0;
     _selectedTab = 0;
+    _preventFouc = NO;
+    _foucCounter = 0;
     _firstSceneReselected = NO;
     _oldTabBarController = _tabBarController;
     _tabBarController = nil;

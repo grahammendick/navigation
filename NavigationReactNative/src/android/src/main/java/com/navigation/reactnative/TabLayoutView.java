@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -65,8 +64,13 @@ public class TabLayoutView extends TabLayout implements TabView {
     }
 
     private TabBarPagerView getTabBar() {
-        for(int i = 0; getParent() != null && i < ((ViewGroup) getParent()).getChildCount(); i++) {
-            View child = ((ViewGroup) getParent()).getChildAt(i);
+        ViewGroup parent = (ViewGroup) getParent();
+        if (parent instanceof CoordinatorLayoutView)
+            return null;
+        if (parent instanceof NavigationBarView)
+            parent = (ViewGroup) parent.getParent();
+        for(int i = 0; parent != null && i < parent.getChildCount(); i++) {
+            View child = parent.getChildAt(i);
             if (child instanceof TabBarPagerView)
                 return (TabBarPagerView) child;
         }
@@ -100,6 +104,21 @@ public class TabLayoutView extends TabLayout implements TabView {
                 MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
             layout(getLeft(), getTop(), getRight(), getBottom());
             measured = true;
+        }
+    }
+
+    @Override
+    public void selectTab(@Nullable Tab tab) {
+        TabBarPagerView tabBar = getTabBar();
+        if (tabBar == null || tab == null) {
+            super.selectTab(tab);
+            return;
+        }
+        TabBarItemView tabBarItem = tabBar.getTabAt(tab.getPosition());
+        if (getSelectedTabPosition() == tab.getPosition() || tabBarItem.foucCounter == tabBar.foucCounter) {
+            super.selectTab(tab);
+        } else {
+            tabBar.selectTab(tab.getPosition());
         }
     }
 

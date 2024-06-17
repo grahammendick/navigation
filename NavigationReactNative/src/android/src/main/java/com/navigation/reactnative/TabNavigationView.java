@@ -3,16 +3,12 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.core.view.ViewCompat;
-
 import com.facebook.react.modules.i18nmanager.I18nUtil;
 import com.google.android.material.badge.BadgeDrawable;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TabNavigationView extends BottomNavigationView implements TabView {
@@ -27,19 +23,25 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
 
     public TabNavigationView(Context context) {
         super(context);
-        ViewCompat.setLayoutDirection(this, !I18nUtil.getInstance().isRTL(context) ? ViewCompat.LAYOUT_DIRECTION_LTR : ViewCompat.LAYOUT_DIRECTION_RTL);
+        setLayoutDirection(!I18nUtil.getInstance().isRTL(context) ? LAYOUT_DIRECTION_LTR : LAYOUT_DIRECTION_RTL);
         setBackground(null);
         TabLayoutView tabLayout = new TabLayoutView(context);
         selectedTintColor = unselectedTintColor = defaultTextColor = tabLayout.defaultTextColor;
         defaultActiveIndicatorColor = getItemActiveIndicatorColor() != null ? getItemActiveIndicatorColor().getDefaultColor() : Color.WHITE;
         defaultRippleColor = getItemRippleColor() != null ? getItemRippleColor().getColorForState(new int[]{ android.R.attr.state_pressed }, Color.WHITE) : Color.WHITE;
-        defaultShadowColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? getOutlineAmbientShadowColor() : -16777216;
+        defaultShadowColor = getOutlineAmbientShadowColor();
         setOnItemSelectedListener(menuItem -> {
             TabBarView tabBar = getTabBar();
             if (!autoSelected && tabBar != null && tabBar.selectedTab == menuItem.getOrder())
                 tabBar.scrollToTop();
-            if (tabBar != null && tabBar.selectedTab != menuItem.getOrder())
-                tabBar.setCurrentTab(menuItem.getOrder());
+            if (tabBar != null && tabBar.selectedTab != menuItem.getOrder()) {
+                if (tabBar.foucCounter == getTabBar().tabFragments.get(menuItem.getOrder()).tabBarItem.foucCounter) {
+                    tabBar.setCurrentTab(menuItem.getOrder());
+                } else {
+                    tabBar.selectTab(menuItem.getOrder());
+                    return false;
+                }
+            }
             return true;
         });
     }
@@ -53,6 +55,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
             else
                 getMenu().add(Menu.NONE, i, i, title);
         }
+        assert tabBar != null;
         for(int i = getMenu().size() - 1; i >= tabBar.tabFragments.size(); i--) {
             getMenu().removeItem(i);
         }
@@ -114,7 +117,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     @Override
     public void setTestID(int index, String testID) {
         if (getTouchables().size() > index) {
-            BottomNavigationItemView itemView = (BottomNavigationItemView) getTouchables().get(index);
+            View itemView = getTouchables().get(index);
             itemView.setTag(testID);
         }
     }
@@ -128,7 +131,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     public void removeBadgeIcon(int index) {
         removeBadge(index);
         if (getTouchables().size() > index) {
-            BottomNavigationItemView itemView = (BottomNavigationItemView) getTouchables().get(index);
+            ViewGroup itemView = (ViewGroup) getTouchables().get(index);
             itemView.getChildAt(0).getOverlay().clear();
         }
     }

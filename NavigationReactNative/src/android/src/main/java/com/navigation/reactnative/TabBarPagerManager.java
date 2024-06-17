@@ -32,6 +32,13 @@ public class TabBarPagerManager extends ViewGroupManager<TabBarPagerView> {
         view.pendingSelectedTab = selectedTab;
     }
 
+    @ReactProp(name = "preventFouc")
+    public void setPreventFouc(TabBarPagerView view, boolean preventFouc) {
+        if (preventFouc && !view.preventFouc)
+            view.foucCounter++;
+        view.preventFouc = preventFouc;
+    }
+
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(TabBarPagerView view, int mostRecentEventCount) {
         view.mostRecentEventCount = mostRecentEventCount;

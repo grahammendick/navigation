@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import static android.view.View.LAYOUT_DIRECTION_RTL;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -59,7 +60,7 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
     @Override
     protected ViewPager2 createViewInstance(@Nonnull final ThemedReactContext reactContext) {
         final ViewPager2 tabBarPager = new ViewPager2(reactContext);
-        ViewCompat.setLayoutDirection(tabBarPager, ViewCompat.LAYOUT_DIRECTION_RTL);
+        tabBarPager.setLayoutDirection(LAYOUT_DIRECTION_RTL);
         FragmentActivity activity = (FragmentActivity) reactContext.getCurrentActivity();
         Fragment fragment = new TabBarPagerFragment(tabBarPager);
         if (activity != null) {
@@ -74,15 +75,8 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
             public void onPageSelected(int position) {
                 if (position == -1) return;
                 super.onPageSelected(position);
-                if (!tabBarPagerAdapter.dataSetChanged && !tabBarPagerAdapter.jsUpdate)
-                    tabBarPagerAdapter.nativeEventCount++;
                 tabBarPagerAdapter.selectedTab = position;
-                if (!tabBarPagerAdapter.jsUpdate) {
-                    EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, tabBarPager.getId());
-                    eventDispatcher.dispatchEvent(new TabBarPagerRTLViewManager.TabSelectedEvent(tabBarPager.getId(), position, tabBarPagerAdapter.nativeEventCount));
-                }
-                if (tabBarPagerAdapter.getTabAt(position) != null)
-                    tabBarPagerAdapter.getTabAt(position).pressed();
+                tabBarPagerAdapter.selectTab(tabBarPager, position);
             }
 
             @Override
@@ -94,7 +88,7 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
         });
         tabBarPager.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
-            public void onViewAttachedToWindow(View v) {
+            public void onViewAttachedToWindow(@NonNull View v) {
                 TabLayoutRTLView tabLayout = tabBarPagerAdapter.getTabLayout(v);
                 if (tabLayout != null) {
                     tabLayout.setVisibility(View.VISIBLE);
@@ -111,7 +105,7 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
             }
 
             @Override
-            public void onViewDetachedFromWindow(View v) {
+            public void onViewDetachedFromWindow(@NonNull View v) {
             }
         });
         tabBarPagerAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -134,6 +128,13 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
     @ReactProp(name = "selectedTab")
     public void setSelectedTab(ViewPager2 view, int selectedTab) {
         getAdapter(view).pendingSelectedTab = selectedTab;
+    }
+
+    @Override
+    public void setPreventFouc(ViewPager2 view, boolean preventFouc) {
+        if (preventFouc && !getAdapter(view).preventFouc)
+            getAdapter(view).foucCounter++;
+        getAdapter(view).preventFouc = preventFouc;
     }
 
     @ReactProp(name = "mostRecentEventCount")
@@ -218,30 +219,6 @@ public class TabBarPagerRTLViewManager extends ViewGroupManager<ViewPager2> impl
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             return tabBarPager != null ? tabBarPager : new View(getContext());
-        }
-    }
-
-    static class TabSelectedEvent extends Event<TabBarPagerRTLViewManager.TabSelectedEvent> {
-        private final int tab;
-        private final int eventCount;
-
-        public TabSelectedEvent(int viewId, int tab, int eventCount) {
-            super(viewId);
-            this.tab = tab;
-            this.eventCount = eventCount;
-        }
-
-        @Override
-        public String getEventName() {
-            return "topTabSelected";
-        }
-
-        @Override
-        public void dispatch(RCTEventEmitter rctEventEmitter) {
-            WritableMap event = Arguments.createMap();
-            event.putInt("tab", this.tab);
-            event.putInt("eventCount", this.eventCount);
-            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }
 
