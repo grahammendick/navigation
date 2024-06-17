@@ -46,6 +46,13 @@ public class TabBarViewManager extends ViewGroupManager<TabBarView> implements N
     }
 
     @Override
+    public void setPreventFouc(TabBarView view, boolean preventFouc) {
+        if (preventFouc && !view.preventFouc)
+            view.foucCounter++;
+        view.preventFouc = preventFouc;
+    }
+
+    @Override
     public void setBarTintColor(TabBarView view, @Nullable Integer value) {
     }
 

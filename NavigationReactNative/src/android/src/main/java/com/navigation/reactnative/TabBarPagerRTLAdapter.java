@@ -11,6 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.events.Event;
+import com.facebook.react.uimanager.events.EventDispatcher;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +27,8 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     final Fragment fragment;
     int pendingSelectedTab = 0;
     int selectedTab = 0;
+    int foucCounter = 0;
+    boolean preventFouc;
     boolean scrollsToTop;
     int nativeEventCount;
     int mostRecentEventCount;
@@ -34,16 +44,33 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     void onAfterUpdateTransaction(ViewPager2 view) {
         onAfterUpdateTransactionRequested = false;
         int eventLag = nativeEventCount - mostRecentEventCount;
+        if (getTabsCount() > selectedTab)
+            getTabAt(selectedTab).foucCounter = foucCounter;
         if (eventLag == 0 && view.getCurrentItem() != pendingSelectedTab) {
             selectedTab = pendingSelectedTab;
-            if (getTabsCount() > selectedTab)
+            if (getTabsCount() > selectedTab) {
                 setCurrentItem(view, selectedTab);
+                if (preventFouc) foucCounter++;
+                getTabAt(selectedTab).foucCounter = foucCounter;
+            }
         }
         populateTabs(getTabLayout(view));
         if (getTabsCount() > 0) {
             selectedTab = Math.min(selectedTab, getTabsCount() - 1);
             setCurrentItem(view, selectedTab);
         }
+    }
+
+    void selectTab(ViewPager2 view, int index) {
+        if (!jsUpdate) {
+            if (!dataSetChanged) nativeEventCount++;
+            ReactContext reactContext = (ReactContext) view.getContext();
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.getId());
+            eventDispatcher.dispatchEvent(new TabBarPagerRTLAdapter.TabSelectedEvent(view.getId(), index, nativeEventCount));
+        }
+        if (getTabAt(index) != null)
+            getTabAt(index).pressed();
+
     }
 
     void setCurrentItem(ViewPager2 view, int selectedTab) {
@@ -53,7 +80,7 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
                 View.MeasureSpec.makeMeasureSpec(view.getHeight(), View.MeasureSpec.EXACTLY));
             view.layout(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
         });
-        view.setCurrentItem(selectedTab, false);
+        view.setCurrentItem(selectedTab, true);
     }
 
     void requestOnAfterUpdateTransaction(ViewPager2 view) {
@@ -149,5 +176,29 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     @Override
     public long getItemId(int position) {
         return tabBarItems.get(position).content.size() > 0 ? tabBarItems.get(position).content.get(0).hashCode() : RecyclerView.NO_ID;
+    }
+
+    static class TabSelectedEvent extends Event<TabBarPagerRTLAdapter.TabSelectedEvent> {
+        private final int tab;
+        private final int eventCount;
+
+        public TabSelectedEvent(int viewId, int tab, int eventCount) {
+            super(viewId);
+            this.tab = tab;
+            this.eventCount = eventCount;
+        }
+
+        @Override
+        public String getEventName() {
+            return "topTabSelected";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            WritableMap event = Arguments.createMap();
+            event.putInt("tab", this.tab);
+            event.putInt("eventCount", this.eventCount);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
+        }
     }
 }

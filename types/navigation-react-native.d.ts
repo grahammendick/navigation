@@ -837,6 +837,11 @@ export interface TabBarProps {
      */
     tab?: number;
     /**
+     * Indicates whether to prevent a flash of unstyled content. After a theme
+     * change set to true to avoid the flash and set back to false onChangeTab
+     */
+    preventFouc?: boolean;
+    /**
      * The tabs
      */
     children: ReactElement<TabBarItem> | ReactElement<TabBarItem>[];

@@ -57,9 +57,15 @@
 {
     _nativeEventCount = MAX(_nativeEventCount, _mostRecentEventCount);
     NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
+    if ([changedProps containsObject:@"preventFouc"] && _preventFouc)
+        _foucCounter++;
+    if ( _preventFouc) _foucCounter++;
+    ((NVTabBarItemView *) _selectedTabView.view).foucCounter = _foucCounter;
     if (eventLag == 0 && _tabs.count > _selectedTab) {
         _jsUpdate = true;
         [self setCurrentTab:_selectedTab];
+        if (_preventFouc)_foucCounter++;
+        ((NVTabBarItemView *) _selectedTabView.view).foucCounter = _foucCounter;
         _jsUpdate = false;
     }
 }
@@ -83,22 +89,32 @@
 - (void)setCurrentTab:(NSInteger)index
 {
     if (index != _selectedIndex) {
-        if (!_jsUpdate) {
-            _nativeEventCount++;
-            self.onTabSelected(@{
-                @"tab": @(index),
-                @"eventCount": @(_nativeEventCount),
-            });
-        }
-        NVTabBarItemView *tabBarItem = ((NVTabBarItemView *) _tabs[index].view);
-        if (!!tabBarItem.onPress) {
-            tabBarItem.onPress(nil);
-        }
+        [self selectTab:index];
     }
     [self getSegmentedTab].selectedSegmentIndex = index;
     [_pageViewController setViewControllers:@[_tabs[index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     _selectedTab = _selectedIndex = index;
     _selectedTabView = _tabs[index];
+}
+
+- (void)selectTab:(NSInteger)index
+{
+    if (!_jsUpdate) {
+        _nativeEventCount++;
+        self.onTabSelected(@{
+            @"tab": @(index),
+            @"eventCount": @(_nativeEventCount),
+        });
+    }
+    NVTabBarItemView *tabBarItem = (NVTabBarItemView *) _tabs[index].view;
+    if (!!tabBarItem.onPress) {
+        tabBarItem.onPress(nil);
+    }
+}
+
+- (NVTabBarItemView *)getTabAt:(NSInteger)index
+{
+    return (NVTabBarItemView *) _tabs[index].view;
 }
 
 - (void)scrollToTop

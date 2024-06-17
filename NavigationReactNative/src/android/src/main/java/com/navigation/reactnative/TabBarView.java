@@ -33,6 +33,8 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     private Fragment fragment;
     int pendingSelectedTab = 0;
     int selectedTab = 0;
+    int foucCounter = 0;
+    boolean preventFouc;
     boolean scrollsToTop;
     int nativeEventCount;
     int mostRecentEventCount;
@@ -83,10 +85,15 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     void onAfterUpdateTransaction() {
         onAfterUpdateTransactionRequested = false;
         int eventLag = nativeEventCount - mostRecentEventCount;
+        if (selectedTabFragment != null)
+            selectedTabFragment.tabBarItem.foucCounter = foucCounter;
         if (eventLag == 0 && pendingSelectedTab != selectedTab) {
             selectedTab = pendingSelectedTab;
-            if (tabFragments.size() > selectedTab)
+            if (tabFragments.size() > selectedTab) {
                 setCurrentTab(selectedTab);
+                if (preventFouc) foucCounter++;
+                selectedTabFragment.tabBarItem.foucCounter = foucCounter;
+            }
         }
         if (tabFragments.size() == 0)
             return;
@@ -109,15 +116,8 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     };
 
     void setCurrentTab(int index) {
-        if (index != selectedIndex) {
-            if (!jsUpdate) {
-                nativeEventCount++;
-                ReactContext reactContext = (ReactContext) getContext();
-                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                eventDispatcher.dispatchEvent(new TabBarView.TabSelectedEvent(getId(), index, nativeEventCount));
-            }
-            tabFragments.get(index).tabBarItem.pressed();
-        }
+        if (index != selectedIndex)
+            selectTab(index);
         selectedTab = selectedIndex = index;
         selectedTabFragment = tabFragments.get(index);
         TabNavigationView tabNavigation = getTabNavigation();
@@ -130,12 +130,21 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
         transaction.commitNowAllowingStateLoss();
     }
 
+    void selectTab(int index) {
+        if (!jsUpdate) {
+            nativeEventCount++;
+            ReactContext reactContext = (ReactContext) getContext();
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+            eventDispatcher.dispatchEvent(new TabBarView.TabSelectedEvent(getId(), index, nativeEventCount));
+        }
+        tabFragments.get(index).tabBarItem.pressed();
+    }
+
     void scrollToTop() {
         if (!scrollsToTop)
             return;
         View tabBarItem = tabFragments.get(selectedTab).tabBarItem.content.get(0);
-        if (tabBarItem instanceof ViewGroup) {
-            ViewGroup viewGroup = (ViewGroup) tabBarItem;
+        if (tabBarItem instanceof ViewGroup viewGroup) {
             for(int i = 0; i < viewGroup.getChildCount(); i++) {
                 if (viewGroup.getChildAt(i) instanceof NavigationBarView)
                     ((NavigationBarView) viewGroup.getChildAt(i)).setExpanded(true);

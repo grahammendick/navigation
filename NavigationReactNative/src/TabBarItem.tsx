@@ -31,7 +31,7 @@ const TabBarItem = ({selected, onPress, children, title, image, systemItem, badg
     return (
         <>
             <BackButton onPress={() => selected && backHandler.current.handleBack()} />
-            <Freeze enabled={loaded && freeze}>
+            <Freeze enabled={loaded && !selected && freeze}>
                 <NVTabBarItem
                     ref={(ref: any) => {
                         const viewConfig = ref?.viewConfig || ref?._viewConfig;
