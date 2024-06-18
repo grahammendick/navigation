@@ -42,7 +42,6 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
     final DialogRootView dialogRootView;
     boolean show;
     protected String stackId;
-    protected ReadableArray ancestorStackIds;
     private boolean dismissed = true;
     FragmentController fragmentController;
     private final LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
@@ -59,13 +58,7 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
         if (dismissed && show) {
             FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
             assert activity != null : "Activity is null";
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-            for (int i = 0; i < ancestorStackIds.size(); i++) {
-                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorStackIds.getString(i));
-                assert ancestorFragment != null : "Ancestor fragment is null";
-                fragmentManager = ancestorFragment.getChildFragmentManager();
-            }
-            dialogViewFragment.show(fragmentManager, stackId);
+            dialogViewFragment.show(activity.getSupportFragmentManager(), stackId);
             dismissed = false;
         }
         if (!dismissed && !show)
@@ -226,7 +219,7 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
 
         @Override
         public DialogView onGetHost() {
-            return null;
+            return DialogView.this;
         }
 
         @NonNull

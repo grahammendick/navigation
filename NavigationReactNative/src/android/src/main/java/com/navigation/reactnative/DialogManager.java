@@ -33,11 +33,6 @@ public class DialogManager extends ViewGroupManager<DialogView> {
         view.stackId = stackId;
     }
 
-    @ReactProp(name = "ancestorStackIds")
-    public void setAncestorStackIds(DialogView view, ReadableArray ancestorStackIds) {
-        view.ancestorStackIds = ancestorStackIds;
-    }
-
     @Override
     protected void onAfterUpdateTransaction(@NonNull DialogView view) {
         super.onAfterUpdateTransaction(view);

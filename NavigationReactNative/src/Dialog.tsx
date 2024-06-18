@@ -4,15 +4,13 @@ import FragmentContext from './FragmentContext';
 
 const Dialog = ({ show = false, children }) => {
     const stackId = React.useId?.();
-    const ancestorStackIds = useContext(FragmentContext);
-    const stackIds = useMemo(() => stackId ? [...ancestorStackIds, stackId] : [], [ancestorStackIds, stackId]);
+    const stackIds = useMemo(() => stackId ? [stackId] : [], [stackId]);
     if (!show) return null;
     return (
         <FragmentContext.Provider value={stackIds}>
             <NVDialog
                 show={show}
                 stackId={stackId}
-                ancestorStackIds={ancestorStackIds}
                 style={styles.dialog}>
                 {children}
             </NVDialog>
