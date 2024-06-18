@@ -18,7 +18,6 @@ import androidx.activity.OnBackPressedDispatcherOwner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentController;
 import androidx.fragment.app.FragmentHostCallback;
@@ -29,7 +28,6 @@ import androidx.lifecycle.LifecycleRegistry;
 
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.uimanager.JSTouchDispatcher;
 import com.facebook.react.uimanager.RootView;
 import com.facebook.react.uimanager.ThemedReactContext;
