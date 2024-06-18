@@ -2,6 +2,7 @@ package com.navigation.reactnative;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -64,7 +65,7 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
                 assert ancestorFragment != null : "Ancestor fragment is null";
                 fragmentManager = ancestorFragment.getChildFragmentManager();
             }
-            dialogViewFragment.showNow(fragmentManager, stackId);
+            dialogViewFragment.show(fragmentManager, stackId);
             dismissed = false;
         }
         if (!dismissed && !show)
@@ -103,11 +104,33 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
             assert window != null : "Window is null";
             window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             window.setBackgroundDrawable(null);
+            dialogView.fragmentController.attachHost(null);
+            dialogView.fragmentController.dispatchStart();
+            dialogView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            dialogView.fragmentController.dispatchPause();
+            dialogView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE);
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            dialogView.fragmentController.dispatchResume();
+            dialogView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
+        }
+
+        @Override
+        public void onDismiss(@NonNull DialogInterface dialog) {
+            super.onDismiss(dialog);
+            dialogView.fragmentController.dispatchStop();
+            dialogView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
         }
 
         FragmentManager getSupportFragmentManager() {
-            dialogView.fragmentController.attachHost(null);
-            dialogView.fragmentController.dispatchStart();
             return dialogView.fragmentController.getSupportFragmentManager();
         }
     }
