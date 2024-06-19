@@ -3,12 +3,16 @@ package com.navigation.reactnative;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+
+import java.util.Map;
 
 public class DialogManager extends ViewGroupManager<DialogView> {
     @NonNull
@@ -37,6 +41,14 @@ public class DialogManager extends ViewGroupManager<DialogView> {
     protected void onAfterUpdateTransaction(@NonNull DialogView view) {
         super.onAfterUpdateTransaction(view);
         view.onAfterUpdateTransaction();
+    }
+
+    @Nullable
+    @Override
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+            .put("topShowChanged", MapBuilder.of("registrationName", "onShowChanged"))
+            .build();
     }
 
     @Override

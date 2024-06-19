@@ -26,13 +26,18 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.JSTouchDispatcher;
 import com.facebook.react.uimanager.RootView;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
 
 public class DialogView extends ReactViewGroup implements LifecycleOwner {
@@ -40,6 +45,7 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
     final DialogRootView dialogRootView;
     boolean show;
     protected String stackId;
+    int nativeEventCount;
     private boolean dismissed = true;
     FragmentController fragmentController;
     private final LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
@@ -95,6 +101,10 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
             assert window != null : "Window is null";
             window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             window.setBackgroundDrawable(null);
+            dialogView.nativeEventCount++;
+            ReactContext reactContext = (ReactContext) dialogView.getContext();
+            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, dialogView.getId());
+            eventDispatcher.dispatchEvent(new DialogView.ShowChangedEvent(dialogView.getId(), true, dialogView.nativeEventCount));
             dialogView.fragmentController.attachHost(null);
             dialogView.fragmentController.dispatchStart();
             dialogView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
@@ -117,8 +127,15 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
         @Override
         public void onDismiss(@NonNull DialogInterface dialog) {
             super.onDismiss(dialog);
-            dialogView.fragmentController.dispatchStop();
-            dialogView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
+            if (dialogView != null) {
+                dialogView.nativeEventCount++;
+                dialogView.dismissed = true;
+                ReactContext reactContext = (ReactContext) dialogView.getContext();
+                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, dialogView.getId());
+                eventDispatcher.dispatchEvent(new DialogView.ShowChangedEvent(dialogView.getId(), false, dialogView.nativeEventCount));
+                dialogView.fragmentController.dispatchStop();
+                dialogView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
+            }
         }
 
         FragmentManager getSupportFragmentManager() {
@@ -242,6 +259,29 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
             ComponentDialog componentDialog = (ComponentDialog) dialogViewFragment.getDialog();
             assert componentDialog != null : "Dialog is null";
             return componentDialog.getOnBackPressedDispatcher();
+        }
+    }
+    static class ShowChangedEvent extends Event<DialogView.ShowChangedEvent> {
+        private final int eventCount;
+        private final boolean show;
+
+        public ShowChangedEvent(int viewId, boolean show, int eventCount) {
+            super(viewId);
+            this.show = show;
+            this.eventCount = eventCount;
+        }
+
+        @Override
+        public String getEventName() {
+            return "topShowChanged";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            WritableMap event = Arguments.createMap();
+            event.putBoolean("show", this.show);
+            event.putInt("eventCount", this.eventCount);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }
 }

@@ -1,16 +1,25 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { requireNativeComponent, StyleSheet } from 'react-native';
 import FragmentContext from './FragmentContext';
 
-const Dialog = ({ show = false, children }) => {
+const Dialog = ({open = false, onChangeOpen, children}) => {
     const stackId = React.useId?.();
     const stackIds = useMemo(() => stackId ? [stackId] : [], [stackId]);
-    if (!show) return null;
+    const [mostRecentEventCount, setMostRecentEventCount] = useState(0);
+    const onShowChanged = ({nativeEvent}) => {
+        const {eventCount: mostRecentEventCount, show} = nativeEvent;
+        if (show !== open)
+            onChangeOpen(show);
+        setMostRecentEventCount(mostRecentEventCount);
+    }
+    if (!open) return null;
     return (
         <FragmentContext.Provider value={stackIds}>
             <NVDialog
-                show={show}
+                show={open}
                 stackId={stackId}
+                mostRecentEventCount={mostRecentEventCount}
+                onShowChanged={onShowChanged}
                 style={styles.dialog}>
                 {children}
             </NVDialog>
