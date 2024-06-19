@@ -45,7 +45,6 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
     final DialogRootView dialogRootView;
     boolean show;
     protected String stackId;
-    int nativeEventCount;
     FragmentController fragmentController;
     private final LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
 
@@ -99,10 +98,9 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
             assert window != null : "Window is null";
             window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             window.setBackgroundDrawable(null);
-            dialogView.nativeEventCount++;
             ReactContext reactContext = (ReactContext) dialogView.getContext();
             EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, dialogView.getId());
-            eventDispatcher.dispatchEvent(new DialogView.ShowChangedEvent(dialogView.getId(), true, dialogView.nativeEventCount));
+            eventDispatcher.dispatchEvent(new DialogView.ShowChangedEvent(dialogView.getId(), true));
             dialogView.fragmentController.attachHost(null);
             dialogView.fragmentController.dispatchStart();
             dialogView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
@@ -126,10 +124,9 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
         public void onDismiss(@NonNull DialogInterface dialog) {
             super.onDismiss(dialog);
             if (dialogView != null) {
-                dialogView.nativeEventCount++;
                 ReactContext reactContext = (ReactContext) dialogView.getContext();
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, dialogView.getId());
-                eventDispatcher.dispatchEvent(new DialogView.ShowChangedEvent(dialogView.getId(), false, dialogView.nativeEventCount));
+                eventDispatcher.dispatchEvent(new DialogView.ShowChangedEvent(dialogView.getId(), false));
                 dialogView.fragmentController.dispatchStop();
                 dialogView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
             }
@@ -259,13 +256,11 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
         }
     }
     static class ShowChangedEvent extends Event<DialogView.ShowChangedEvent> {
-        private final int eventCount;
         private final boolean show;
 
-        public ShowChangedEvent(int viewId, boolean show, int eventCount) {
+        public ShowChangedEvent(int viewId, boolean show) {
             super(viewId);
             this.show = show;
-            this.eventCount = eventCount;
         }
 
         @Override
@@ -277,7 +272,6 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
         public void dispatch(RCTEventEmitter rctEventEmitter) {
             WritableMap event = Arguments.createMap();
             event.putBoolean("show", this.show);
-            event.putInt("eventCount", this.eventCount);
             rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }

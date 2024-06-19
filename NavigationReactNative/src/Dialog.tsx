@@ -5,12 +5,10 @@ import FragmentContext from './FragmentContext';
 const Dialog = ({open = false, onChangeOpen, children}) => {
     const stackId = React.useId?.();
     const stackIds = useMemo(() => stackId ? [stackId] : [], [stackId]);
-    const [mostRecentEventCount, setMostRecentEventCount] = useState(0);
     const onShowChanged = ({nativeEvent}) => {
-        const {eventCount: mostRecentEventCount, show} = nativeEvent;
+        const {show} = nativeEvent;
         if (show !== open)
             onChangeOpen(show);
-        setMostRecentEventCount(mostRecentEventCount);
     }
     if (!open) return null;
     return (
@@ -18,7 +16,6 @@ const Dialog = ({open = false, onChangeOpen, children}) => {
             <NVDialog
                 show={open}
                 stackId={stackId}
-                mostRecentEventCount={mostRecentEventCount}
                 onShowChanged={onShowChanged}
                 style={styles.dialog}>
                 {children}
