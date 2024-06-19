@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { requireNativeComponent, StyleSheet } from 'react-native';
 import FragmentContext from './FragmentContext';
 
