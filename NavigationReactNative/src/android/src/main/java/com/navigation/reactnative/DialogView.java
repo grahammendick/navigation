@@ -66,6 +66,12 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
         }
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        dialogViewFragment.dismissAllowingStateLoss();
+    }
+
     @NonNull
     @Override
     public Lifecycle getLifecycle() {
