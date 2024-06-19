@@ -46,7 +46,6 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
     boolean show;
     protected String stackId;
     int nativeEventCount;
-    private boolean dismissed = true;
     FragmentController fragmentController;
     private final LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
 
@@ -59,14 +58,13 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
     }
 
     void onAfterUpdateTransaction() {
-        if (dismissed && show) {
+        if (show) {
             FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
             assert activity != null : "Activity is null";
             dialogViewFragment.show(activity.getSupportFragmentManager(), stackId);
-            dismissed = false;
-        }
-        if (!dismissed && !show)
+        } else {
             dialogViewFragment.dismiss();
+        }
     }
 
     @NonNull
@@ -129,7 +127,6 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
             super.onDismiss(dialog);
             if (dialogView != null) {
                 dialogView.nativeEventCount++;
-                dialogView.dismissed = true;
                 ReactContext reactContext = (ReactContext) dialogView.getContext();
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, dialogView.getId());
                 eventDispatcher.dispatchEvent(new DialogView.ShowChangedEvent(dialogView.getId(), false, dialogView.nativeEventCount));
