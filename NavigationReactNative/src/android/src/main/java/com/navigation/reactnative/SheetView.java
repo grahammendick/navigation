@@ -24,6 +24,7 @@ public class SheetView extends ReactViewGroup {
     protected String stackId;
     protected ReadableArray ancestorStackIds;
     Fragment fragment;
+    View container;
 
     public SheetView(Context context) {
         super(context);
@@ -31,30 +32,30 @@ public class SheetView extends ReactViewGroup {
         sheetViewFragment.sheetView = this;
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
+    void onAfterUpdateTransaction() {
         if (show) {
-            FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
-            assert activity != null : "Activity is null";
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-            for (int i = 0; i < ancestorStackIds.size(); i++) {
-                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorStackIds.getString(i));
-                if (ancestorFragment == null) return;
-                fragmentManager = ancestorFragment.getChildFragmentManager();
+            if (container != null) {
+                FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
+                assert activity != null : "Activity is null";
+                FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                for (int i = 0; i < ancestorStackIds.size(); i++) {
+                    Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorStackIds.getString(i));
+                    if (ancestorFragment == null) return;
+                    fragmentManager = ancestorFragment.getChildFragmentManager();
+                }
+                fragment = new SheetFragment(this);
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction
+                    .add(fragment, stackId)
+                    .setPrimaryNavigationFragment(fragment)
+                    .commitNowAllowingStateLoss();
+                transaction = fragmentManager.beginTransaction();
+                transaction
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .add(this.getId(), sheetViewFragment)
+                    .addToBackStack(null)
+                    .commit();
             }
-            fragment = new SheetFragment(this);
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction
-                .add(fragment, stackId)
-                .setPrimaryNavigationFragment(fragment)
-                .commitNowAllowingStateLoss();
-            transaction = fragmentManager.beginTransaction();
-            transaction
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .add(this.getId(), sheetViewFragment)
-                .addToBackStack(null)
-                .commit();
         } else {
             sheetViewFragment.dismiss();
         }
@@ -86,12 +87,7 @@ public class SheetView extends ReactViewGroup {
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            if (sheetView != null) {
-                View view = sheetView.getChildAt(0);
-                sheetView.removeView(view);
-                return view;
-            }
-            return new View(getContext());
+            return sheetView != null ? sheetView.container : new View(getContext());
         }
     }
 
