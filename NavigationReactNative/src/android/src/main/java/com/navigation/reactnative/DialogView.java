@@ -128,9 +128,14 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
                 ReactContext reactContext = (ReactContext) dialogView.getContext();
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, dialogView.getId());
                 eventDispatcher.dispatchEvent(new DialogView.ShowChangedEvent(dialogView.getId(), false));
-                dialogView.fragmentController.dispatchStop();
-                dialogView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
             }
+        }
+
+        @Override
+        public void onDestroyView() {
+            super.onDestroyView();
+            dialogView.fragmentController.dispatchStop();
+            dialogView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
         }
 
         FragmentManager getSupportFragmentManager() {
