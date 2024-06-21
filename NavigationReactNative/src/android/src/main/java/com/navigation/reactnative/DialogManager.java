@@ -58,27 +58,21 @@ public class DialogManager extends ViewGroupManager<DialogView> {
 
     @Override
     public void addView(DialogView parent, View child, int index) {
-        parent.dialogRootView.addView(child, index);
+        parent.dialogRootView = (DialogRootView) child;
     }
 
     @Override
     public void removeViewAt(DialogView parent, int index) {
-        parent.dialogRootView.removeViewAt(index);
+        parent.dialogRootView = null;
     }
 
     @Override
     public int getChildCount(DialogView parent) {
-        return parent.dialogRootView.getChildCount();
+        return parent.dialogRootView != null ? 1 : 0;
     }
 
     @Override
     public View getChildAt(DialogView parent, int index) {
-        return parent.dialogRootView.getChildAt(index);
-    }
-
-    @Override
-    protected void addEventEmitters(@NonNull ThemedReactContext reactContext, @NonNull DialogView view) {
-        super.addEventEmitters(reactContext, view);
-        view.dialogRootView.eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.getId());
+        return parent.dialogRootView;
     }
 }

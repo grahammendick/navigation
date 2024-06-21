@@ -36,6 +36,7 @@ public class NavigationPackage implements ReactPackage {
             new ActionBarManager(),
             new StatusBarManager(),
             new DialogManager(),
+            new DialogRootManager(),
             new SheetManager(),
             new BottomSheetManager(),
             new BottomSheetDialogManager(),

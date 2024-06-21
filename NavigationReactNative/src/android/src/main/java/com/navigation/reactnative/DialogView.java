@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -28,15 +27,10 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.uimanager.JSTouchDispatcher;
-import com.facebook.react.uimanager.RootView;
-import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerHelper;
-import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
@@ -44,7 +38,7 @@ import com.facebook.react.views.view.ReactViewGroup;
 
 public class DialogView extends ReactViewGroup implements LifecycleOwner {
     private final DialogViewFragment dialogViewFragment;
-    final DialogRootView dialogRootView;
+    DialogRootView dialogRootView;
     boolean show;
     protected String stackId;
     protected ReadableArray ancestorStackIds;
@@ -55,7 +49,6 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
         super(context);
         dialogViewFragment = new DialogViewFragment();
         dialogViewFragment.dialogView = this;
-        dialogRootView = new DialogRootView(context);
         fragmentController = FragmentController.createController(new DialogBackStackCallback());
     }
 
@@ -149,89 +142,6 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
 
         FragmentManager getSupportFragmentManager() {
             return dialogView.fragmentController.getSupportFragmentManager();
-        }
-    }
-
-    static class DialogRootView extends ReactViewGroup implements RootView
-    {
-        private int viewWidth;
-        private int viewHeight;
-        private final JSTouchDispatcher jsTouchDispatcher = new JSTouchDispatcher(this);
-        EventDispatcher eventDispatcher;
-
-        public DialogRootView(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected void onSizeChanged(final int w, final int h, int oldw, int oldh) {
-            super.onSizeChanged(w, h, oldw, oldh);
-            viewWidth = w;
-            viewHeight = h;
-            updateFirstChildView();
-        }
-
-        private void updateFirstChildView() {
-            if (getChildCount() > 0) {
-                final int viewTag = getChildAt(0).getId();
-                ThemedReactContext reactContext = (ThemedReactContext) getContext();
-                reactContext.runOnNativeModulesQueueThread(
-                    new GuardedRunnable(reactContext) {
-                        @Override
-                        public void runGuarded() {
-                            UIManagerModule uiManager = ((ThemedReactContext) getContext())
-                                .getReactApplicationContext()
-                                .getNativeModule(UIManagerModule.class);
-                            if (uiManager == null) {
-                                return;
-                            }
-                            uiManager.updateNodeSize(viewTag, viewWidth, viewHeight);
-                        }
-                    });
-            }
-        }
-
-        @Override
-        public void addView(View child, int index, LayoutParams params) {
-            super.addView(child, index, params);
-            updateFirstChildView();
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(MotionEvent event) {
-            jsTouchDispatcher.handleTouchEvent(event, eventDispatcher);
-            return super.onInterceptTouchEvent(event);
-        }
-
-        @Override
-        public boolean onTouchEvent(MotionEvent event) {
-            jsTouchDispatcher.handleTouchEvent(event, eventDispatcher);
-            super.onTouchEvent(event);
-            return true;
-        }
-
-        @Override
-        public void onChildStartedNativeGesture(View view, MotionEvent motionEvent) {
-            jsTouchDispatcher.onChildStartedNativeGesture(motionEvent, eventDispatcher);
-        }
-
-        @Override
-        public void onChildStartedNativeGesture(MotionEvent motionEvent) {
-            this.onChildStartedNativeGesture(null, motionEvent);
-        }
-
-        @Override
-        public void onChildEndedNativeGesture(View view, MotionEvent motionEvent) {
-            jsTouchDispatcher.onChildEndedNativeGesture(motionEvent, eventDispatcher);
-        }
-
-        @Override
-        public void handleException(Throwable throwable) {
-            ((ThemedReactContext) getContext()).getReactApplicationContext().handleException(new RuntimeException(throwable));
-        }
-
-        @Override
-        public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
         }
     }
 

@@ -20,13 +20,16 @@ const Dialog = ({open = false, onChangeOpen, children}) => {
                 ancestorStackIds={ancestorStackIds}
                 onShowChanged={onShowChanged}
                 style={styles.dialog}>
-                {children}
+                <NVDialogRoot style={styles.dialog}>
+                    {children}
+                </NVDialogRoot>
             </NVDialog>
         </FragmentContext.Provider>
     )
 }
 
 const NVDialog = requireNativeComponent<any>('NVDialog');
+const NVDialogRoot = requireNativeComponent<any>('NVDialogRoot');
 
 const styles = StyleSheet.create({
     dialog: {
