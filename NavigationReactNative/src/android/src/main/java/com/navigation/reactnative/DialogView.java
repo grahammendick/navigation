@@ -53,6 +53,7 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
     }
 
     void onAfterUpdateTransaction() {
+        if (dialogRootView == null) return;
         if (show) {
             FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
             assert activity != null : "Activity is null";

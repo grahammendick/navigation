@@ -59,6 +59,7 @@ public class DialogManager extends ViewGroupManager<DialogView> {
     @Override
     public void addView(DialogView parent, View child, int index) {
         parent.dialogRootView = (DialogRootView) child;
+        parent.onAfterUpdateTransaction();
     }
 
     @Override
