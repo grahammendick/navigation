@@ -12,25 +12,27 @@ const Dialog = ({open = false, modal = true, onChangeOpen, children}) => {
             onChangeOpen(show);
     }
     if (!open) return null;
-    const Root = modal ? NVDialogRoot : View;
+    const RootView = modal ? NVDialogRoot : View;
+    const DialogView = modal ? NVDialog : NVSheet;
     return (
         <FragmentContext.Provider value={stackIds}>
-            <NVDialog
+            <DialogView
                 show={open}
                 stackId={stackId}
                 ancestorStackIds={ancestorStackIds}
                 onShowChanged={onShowChanged}
                 style={styles.dialog}>
-                <Root style={styles.dialog} collapsable={false}>
+                <RootView style={styles.dialog} collapsable={false}>
                     {children}
-                </Root>
-            </NVDialog>
+                </RootView>
+            </DialogView>
         </FragmentContext.Provider>
     )
 }
 
 const NVDialog = requireNativeComponent<any>('NVDialog');
 const NVDialogRoot = requireNativeComponent<any>('NVDialogRoot');
+const NVSheet = requireNativeComponent<any>('NVSheet');
 
 const styles = StyleSheet.create({
     dialog: {
