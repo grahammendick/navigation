@@ -26,7 +26,7 @@ const Dialog = ({open = false, onChangeOpen, children}) => {
     )
 }
 
-const NVDialog = requireNativeComponent<any>('NVSheet');
+const NVDialog = requireNativeComponent<any>('NVDialog');
 
 const styles = StyleSheet.create({
     dialog: {

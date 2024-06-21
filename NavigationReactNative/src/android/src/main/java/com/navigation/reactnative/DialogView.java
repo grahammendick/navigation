@@ -18,6 +18,7 @@ import androidx.activity.OnBackPressedDispatcherOwner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentController;
 import androidx.fragment.app.FragmentHostCallback;
@@ -29,6 +30,7 @@ import androidx.lifecycle.LifecycleRegistry;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.JSTouchDispatcher;
 import com.facebook.react.uimanager.RootView;
@@ -45,6 +47,7 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
     final DialogRootView dialogRootView;
     boolean show;
     protected String stackId;
+    protected ReadableArray ancestorStackIds;
     FragmentController fragmentController;
     private final LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
 
@@ -60,7 +63,13 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
         if (show) {
             FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
             assert activity != null : "Activity is null";
-            dialogViewFragment.show(activity.getSupportFragmentManager(), stackId);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            for (int i = 0; i < ancestorStackIds.size(); i++) {
+                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorStackIds.getString(i));
+                if (ancestorFragment == null) return;
+                fragmentManager = ancestorFragment.getChildFragmentManager();
+            }
+            dialogViewFragment.show(fragmentManager, stackId);
         } else {
             dialogViewFragment.dismiss();
         }
