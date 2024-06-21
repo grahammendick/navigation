@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useContext } from 'react';
 import { requireNativeComponent, StyleSheet } from 'react-native';
 import FragmentContext from './FragmentContext';
 
 const Dialog = ({open = false, onChangeOpen, children}) => {
     const stackId = React.useId?.();
-    const stackIds = useMemo(() => stackId ? [stackId] : [], [stackId]);
+    const ancestorStackIds = useContext(FragmentContext);
+    const stackIds = useMemo(() => stackId ? [...ancestorStackIds, stackId] : [], [ancestorStackIds, stackId]);
     const onShowChanged = ({nativeEvent}) => {
         const {show} = nativeEvent;
         if (show !== open)
@@ -16,6 +17,7 @@ const Dialog = ({open = false, onChangeOpen, children}) => {
             <NVDialog
                 show={open}
                 stackId={stackId}
+                ancestorStackIds={ancestorStackIds}
                 onShowChanged={onShowChanged}
                 style={styles.dialog}>
                 {children}
@@ -24,12 +26,13 @@ const Dialog = ({open = false, onChangeOpen, children}) => {
     )
 }
 
-const NVDialog = requireNativeComponent<any>('NVDialog');
+const NVDialog = requireNativeComponent<any>('NVSheet');
 
 const styles = StyleSheet.create({
     dialog: {
         position: 'absolute',
-        elevation: 5
+        elevation: 5,
+        top:0, right: 0, bottom: 0, left: 0
     },
 });
 

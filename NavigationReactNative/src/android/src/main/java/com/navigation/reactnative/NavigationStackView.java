@@ -106,7 +106,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
 
                 @Override
                 public void onBackStackChangeStarted(@NonNull Fragment sceneFragment, boolean pop) {
-                    if (pop && sceneFragment.isRemoving()) {
+                    if (pop && sceneFragment.isRemoving() && sceneFragment instanceof SceneFragment) {
                         int crumb = ((SceneFragment) sceneFragment).getScene().crumb;
                         if (crumb < keys.size()) {
                             ReactContext reactContext = (ReactContext) getContext();
