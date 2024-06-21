@@ -1,8 +1,8 @@
 import React, { useMemo, useContext } from 'react';
-import { requireNativeComponent, StyleSheet } from 'react-native';
+import { requireNativeComponent, StyleSheet, View } from 'react-native';
 import FragmentContext from './FragmentContext';
 
-const Dialog = ({open = false, onChangeOpen, children}) => {
+const Dialog = ({open = false, modal = true, onChangeOpen, children}) => {
     const stackId = React.useId?.();
     const ancestorStackIds = useContext(FragmentContext);
     const stackIds = useMemo(() => stackId ? [...ancestorStackIds, stackId] : [], [ancestorStackIds, stackId]);
@@ -12,6 +12,7 @@ const Dialog = ({open = false, onChangeOpen, children}) => {
             onChangeOpen(show);
     }
     if (!open) return null;
+    const Root = modal ? NVDialogRoot : View;
     return (
         <FragmentContext.Provider value={stackIds}>
             <NVDialog
@@ -20,9 +21,9 @@ const Dialog = ({open = false, onChangeOpen, children}) => {
                 ancestorStackIds={ancestorStackIds}
                 onShowChanged={onShowChanged}
                 style={styles.dialog}>
-                <NVDialogRoot style={styles.dialog}>
+                <Root style={styles.dialog} collapsable={false}>
                     {children}
-                </NVDialogRoot>
+                </Root>
             </NVDialog>
         </FragmentContext.Provider>
     )
