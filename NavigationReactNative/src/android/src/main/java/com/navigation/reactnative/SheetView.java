@@ -23,6 +23,7 @@ public class SheetView extends ReactViewGroup {
     boolean show;
     protected String stackId;
     protected ReadableArray ancestorStackIds;
+    protected int crumb;
     Fragment fragment;
     View container;
 
@@ -53,7 +54,7 @@ public class SheetView extends ReactViewGroup {
                 transaction
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .add(this.getId(), sheetViewFragment)
-                    .addToBackStack(null)
+                    .addToBackStack(String.valueOf(crumb))
                     .commit();
             }
         } else {
