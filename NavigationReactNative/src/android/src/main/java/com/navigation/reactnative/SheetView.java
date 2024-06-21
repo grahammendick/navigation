@@ -62,6 +62,37 @@ public class SheetView extends ReactViewGroup {
         }
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        FragmentManager fragmentManager = fragment.getParentFragmentManager();
+        if (fragmentManager.getPrimaryNavigationFragment() != fragment) {
+            FragmentTransaction transaction = fragmentManager
+                .beginTransaction()
+                .setPrimaryNavigationFragment(fragment);
+            try {
+                transaction.commitNowAllowingStateLoss();
+            } catch(IllegalStateException ignored) {
+                transaction.commit();
+            }
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        FragmentManager fragmentManager = fragment.getParentFragmentManager();
+        if (fragmentManager.getPrimaryNavigationFragment() == fragment) {
+            FragmentTransaction transaction = fragmentManager
+                .beginTransaction()
+                .setPrimaryNavigationFragment(null);
+            try {
+                transaction.commitNowAllowingStateLoss();
+            } catch(IllegalStateException ignored) {
+            }
+        }
+    }
+
     public static class SheetFragment extends Fragment {
         private SheetView sheetView;
 
