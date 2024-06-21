@@ -90,14 +90,6 @@ public class DialogView extends ReactViewGroup implements LifecycleOwner {
             return dialogView != null ? dialogView.dialogRootView : new View(getContext());
         }
 
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-            Dialog dialog = super.onCreateDialog(savedInstanceState);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            return dialog;
-        }
-
         @Override
         public void onStart() {
             super.onStart();
