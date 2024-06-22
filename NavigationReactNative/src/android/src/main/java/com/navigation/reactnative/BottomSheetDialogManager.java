@@ -55,6 +55,7 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
     public void setPeekHeight(BottomSheetDialogView view, int peekHeight) {
         view.bottomSheetBehavior.setPeekHeight(peekHeight != 0 ? (int) PixelUtil.toPixelFromDIP(peekHeight) : PEEK_HEIGHT_AUTO, true);
     }
+
     @ReactProp(name = "expandedOffset")
     public void setExpandedOffset(BottomSheetDialogView view, int expandedOffset) {
         int offset = (int) PixelUtil.toPixelFromDIP(expandedOffset);
