@@ -69,12 +69,11 @@ public class DialogManager extends ViewGroupManager<DialogView> {
 
     @Override
     public void removeViewAt(DialogView parent, int index) {
-        parent.dialogRootView = null;
     }
 
     @Override
     public int getChildCount(DialogView parent) {
-        return parent.dialogRootView != null ? 1 : 0;
+        return 1;
     }
 
     @Override

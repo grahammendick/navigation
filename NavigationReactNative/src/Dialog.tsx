@@ -14,7 +14,8 @@ const Dialog = ({detent, defaultDetent = 'collapsed', modal = true, onChangeDete
                 onChangeDetent(selectedDetent);
         }
     }
-    const stackId = React.useId?.();
+    const _stackId = React.useId?.();
+    const stackId = useMemo(() => _stackId ? `${_stackId}${modal}` : undefined, [_stackId, modal]);
     const ancestorStackIds = useContext(FragmentContext);
     const navigationEvent = useContext(NavigationContext);
     const stackIds = useMemo(() => stackId ? [...ancestorStackIds, stackId] : [], [ancestorStackIds, stackId]);
