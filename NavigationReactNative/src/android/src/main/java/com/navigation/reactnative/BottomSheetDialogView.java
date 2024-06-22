@@ -14,12 +14,15 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
@@ -41,13 +44,15 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 public class BottomSheetDialogView extends ReactViewGroup {
     private final BottomSheetFragment bottomSheetFragment;
     BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
-    final SheetView sheetView;
+    DialogRootView sheetView;
     float defaultHalfExpandedRatio;
     int pendingDetent;
     int detent;
     int nativeEventCount;
     int mostRecentEventCount;
     private boolean dismissed = true;
+    protected String stackId;
+    protected ReadableArray ancestorStackIds;
 
     public BottomSheetDialogView(Context context) {
         super(context);
@@ -56,7 +61,6 @@ public class BottomSheetDialogView extends ReactViewGroup {
         bottomSheetBehavior.setPeekHeight(BottomSheetBehavior.PEEK_HEIGHT_AUTO);
         bottomSheetFragment.dialogView = this;
         bottomSheetBehavior.setFitToContents(false);
-        sheetView = new SheetView(context);
         defaultHalfExpandedRatio = bottomSheetBehavior.getHalfExpandedRatio();
     }
 
@@ -66,31 +70,25 @@ public class BottomSheetDialogView extends ReactViewGroup {
         if (eventLag == 0) {
             detent = pendingDetent;
         }
+        if (sheetView == null) return;
         if (bottomSheetBehavior.getState() != detent && detent != BottomSheetBehavior.STATE_HIDDEN)
             bottomSheetBehavior.setState(detent);
         if (dismissed && detent != BottomSheetBehavior.STATE_HIDDEN) {
-            Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
-            FragmentManager fragmentManager = ((FragmentActivity) currentActivity).getSupportFragmentManager();
-            bottomSheetFragment.show(fragmentManager, "BottomSheetDialog");
+            FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
+            assert activity != null : "Activity is null";
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            for (int i = 0; i < ancestorStackIds.size(); i++) {
+                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorStackIds.getString(i));
+                if (ancestorFragment == null) return;
+                fragmentManager = ancestorFragment.getChildFragmentManager();
+            }
+            sheetView.dialogFragment = bottomSheetFragment;
+            bottomSheetFragment.show(fragmentManager, stackId   );
             dismissed = false;
         }
         if (!dismissed && detent == BottomSheetBehavior.STATE_HIDDEN) {
             bottomSheetFragment.dismiss();
         }
-    }
-
-
-    @Nullable
-    public StateWrapper getStateWrapper() {
-        return sheetView.getStateWrapper();
-    }
-
-    public void setStateWrapper(StateWrapper stateWrapper) {
-        sheetView.setStateWrapper(stateWrapper);
-    }
-
-    public void updateState(final int width, final int height) {
-        sheetView.updateState(width, height);
     }
 
     @Override
@@ -138,6 +136,14 @@ public class BottomSheetDialogView extends ReactViewGroup {
         }
 
         @Override
+        public void onStart() {
+            super.onStart();
+            dialogView.sheetView.fragmentController.attachHost(null);
+            dialogView.sheetView.fragmentController.dispatchStart();
+            dialogView.sheetView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
+        }
+
+        @Override
         public void onResume() {
             super.onResume();
             if (dialogView == null) this.dismissAllowingStateLoss();
@@ -156,141 +162,9 @@ public class BottomSheetDialogView extends ReactViewGroup {
                 eventDispatcher.dispatchEvent(new BottomSheetDialogView.DismissedEvent(dialogView.getId()));
             }
         }
-    }
 
-    static class SheetView extends ReactViewGroup implements RootView
-    {
-        private int viewWidth;
-        private int viewHeight;
-        private int expandedOffset = 0;
-        private final JSTouchDispatcher jsTouchDispatcher = new JSTouchDispatcher(this);
-        EventDispatcher eventDispatcher;
-        private StateWrapper stateWrapper = null;
-
-        public SheetView(Context context) {
-            super(context);
-            setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        }
-
-        public void setExpandedOffset(int expandedOffset) {
-            this.expandedOffset = expandedOffset;
-            updateFirstChildView();
-        }
-
-        public void setExpandedHeight(int expandedHeight) {
-            getLayoutParams().height = expandedHeight;
-            updateFirstChildView();
-        }
-
-        @Override
-        protected void onSizeChanged(final int w, final int h, int oldw, int oldh) {
-            super.onSizeChanged(w, h, oldw, oldh);
-            viewWidth = w;
-            viewHeight = h;
-            updateFirstChildView();
-        }
-
-        private void updateFirstChildView() {
-            if (getChildCount() > 0) {
-                final int viewTag = getChildAt(0).getId();
-                if (stateWrapper != null) {
-                    updateState(viewWidth, getLayoutParams().height > 0 ? getLayoutParams().height : viewHeight - expandedOffset);
-                } else {
-                    ThemedReactContext reactContext = (ThemedReactContext) getContext();
-                    reactContext.runOnNativeModulesQueueThread(
-                        new GuardedRunnable(reactContext) {
-                            @Override
-                            public void runGuarded() {
-                                UIManagerModule uiManager = ((ThemedReactContext) getContext())
-                                    .getReactApplicationContext()
-                                    .getNativeModule(UIManagerModule.class);
-                                if (uiManager == null) {
-                                    return;
-                                }
-                                uiManager.updateNodeSize(viewTag, viewWidth, getLayoutParams().height > 0 ? getLayoutParams().height : viewHeight - expandedOffset);
-                            }
-                        });
-                }
-            }
-        }
-
-        @UiThread
-        public void updateState(final int width, final int height) {
-            final float realWidth = PixelUtil.toDIPFromPixel(width);
-            final float realHeight = PixelUtil.toDIPFromPixel(height);
-            ReadableMap currentState = stateWrapper.getStateData();
-            if (currentState != null) {
-                float delta = (float) 0.9;
-                float stateScreenHeight =
-                        currentState.hasKey("frameHeight")
-                                ? (float) currentState.getDouble("frameHeight")
-                                : 0;
-                float stateScreenWidth =
-                        currentState.hasKey("frameWidth") ? (float) currentState.getDouble("frameWidth") : 0;
-
-                if (Math.abs(stateScreenWidth - realWidth) < delta
-                        && Math.abs(stateScreenHeight - realHeight) < delta) {
-                    return;
-                }
-            }
-            if (stateWrapper != null) {
-                WritableMap map = new WritableNativeMap();
-                map.putDouble("frameWidth", realWidth);
-                map.putDouble("frameHeight", realHeight);
-                stateWrapper.updateState(map);
-            }
-        }
-
-        @Override
-        public void addView(View child, int index, LayoutParams params) {
-            super.addView(child, index, params);
-            updateFirstChildView();
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(MotionEvent event) {
-            jsTouchDispatcher.handleTouchEvent(event, eventDispatcher);
-            return super.onInterceptTouchEvent(event);
-        }
-
-        @Override
-        public boolean onTouchEvent(MotionEvent event) {
-            jsTouchDispatcher.handleTouchEvent(event, eventDispatcher);
-            super.onTouchEvent(event);
-            return true;
-        }
-
-        @Override
-        public void onChildStartedNativeGesture(View childView, MotionEvent ev) {
-            jsTouchDispatcher.onChildStartedNativeGesture(ev, eventDispatcher);
-        }
-
-        @Override
-        public void onChildStartedNativeGesture(MotionEvent motionEvent) {
-            this.onChildStartedNativeGesture(null, motionEvent);
-        }
-
-        @Override
-        public void onChildEndedNativeGesture(View childView, MotionEvent ev) {
-            jsTouchDispatcher.onChildEndedNativeGesture(ev, eventDispatcher);
-        }
-
-        @Override
-        public void handleException(Throwable throwable) {
-            ((ThemedReactContext) getContext()).getReactApplicationContext().handleException(new RuntimeException(throwable));
-        }
-
-        @Override
-        public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-        }
-
-        @Nullable
-        public StateWrapper getStateWrapper() {
-            return this.stateWrapper;
-        }
-
-        public void setStateWrapper(StateWrapper stateWrapper) {
-            this.stateWrapper = stateWrapper;
+        FragmentManager getSupportFragmentManager() {
+            return dialogView.sheetView.fragmentController.getSupportFragmentManager();
         }
     }
 

@@ -90,7 +90,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             for (int i = 0; i < ancestorStackIds.size(); i++) {
                 Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorStackIds.getString(i));
                 if (ancestorFragment == null) return;
-                if (!(ancestorFragment instanceof DialogView.DialogViewFragment dialogViewFragment))
+                if (!(ancestorFragment instanceof BottomSheetDialogView.BottomSheetFragment dialogViewFragment))
                     fragmentManager = ancestorFragment.getChildFragmentManager();
                 else
                     fragmentManager = dialogViewFragment.getSupportFragmentManager();

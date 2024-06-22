@@ -32,7 +32,7 @@ const Dialog = ({detent, defaultDetent = 'collapsed', modal = true, onChangeDete
         }
     }
     if (sheetState.dismissed && sheetState.selectedDetent === 'hidden') return null;
-    const RootView = modal ? NVDialogRoot : View;
+    const RootView = modal ? View : View;
     const DialogView = modal ? NVDialog : NVSheet;
     const crumb = navigationEvent.stateNavigator.stateContext.crumbs.length;
     return (
@@ -57,7 +57,7 @@ const Dialog = ({detent, defaultDetent = 'collapsed', modal = true, onChangeDete
 }
 
 const NVDialog = requireNativeComponent<any>('NVDialog');
-const NVDialogRoot = requireNativeComponent<any>('NVDialogRoot');
+// const NVDialogRoot = requireNativeComponent<any>('NVDialogRoot');
 const NVSheet = requireNativeComponent<any>('NVSheet');
 
 const styles = StyleSheet.create({

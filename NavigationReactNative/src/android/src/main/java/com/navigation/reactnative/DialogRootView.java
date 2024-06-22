@@ -29,6 +29,9 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.views.view.ReactViewGroup;
 
 public class DialogRootView extends ReactViewGroup implements RootView, LifecycleOwner {
+    private int viewWidth;
+    private int viewHeight;
+    private int expandedOffset = 0;
     private final JSTouchDispatcher jsTouchDispatcher = new JSTouchDispatcher(this);
     EventDispatcher eventDispatcher;
     FragmentController fragmentController;
@@ -37,12 +40,29 @@ public class DialogRootView extends ReactViewGroup implements RootView, Lifecycl
 
     public DialogRootView(Context context) {
         super(context);
+        setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         fragmentController = FragmentController.createController(new DialogBackStackCallback());
+    }
+
+    public void setExpandedOffset(int expandedOffset) {
+        this.expandedOffset = expandedOffset;
+        updateSize();
+    }
+
+    public void setExpandedHeight(int expandedHeight) {
+        getLayoutParams().height = expandedHeight;
+        updateSize();
     }
 
     @Override
     protected void onSizeChanged(final int w, final int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        viewWidth = w;
+        viewHeight = h;
+        updateSize();
+    }
+
+    private void updateSize() {
         ThemedReactContext reactContext = (ThemedReactContext) getContext();
         reactContext.runOnNativeModulesQueueThread(
             new GuardedRunnable(reactContext) {
@@ -54,7 +74,7 @@ public class DialogRootView extends ReactViewGroup implements RootView, Lifecycl
                     if (uiManager == null) {
                         return;
                     }
-                    uiManager.updateNodeSize(getId(), w, h);
+                    uiManager.updateNodeSize(getId(), viewWidth, getLayoutParams().height > 0 ? getLayoutParams().height : viewHeight - expandedOffset);
                 }
             });
     }
