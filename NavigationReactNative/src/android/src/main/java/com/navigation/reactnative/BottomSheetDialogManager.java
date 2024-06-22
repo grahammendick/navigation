@@ -78,6 +78,7 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
         if (view.sheetView.getParent() != null)
             view.sheetView.getParent().requestLayout();
     }
+
     @ReactProp(name = "halfExpandedRatio", defaultFloat = Float.MAX_VALUE)
     public void setHalfExpandedRatio(BottomSheetDialogView view, float halfExpandedRatio) {
         view.bottomSheetBehavior.setHalfExpandedRatio(halfExpandedRatio != Float.MAX_VALUE ? halfExpandedRatio : view.defaultHalfExpandedRatio);
