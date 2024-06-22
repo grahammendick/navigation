@@ -1,38 +1,28 @@
 package com.navigation.reactnative;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.UiThread;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.WritableNativeMap;
-import com.facebook.react.uimanager.JSTouchDispatcher;
-import com.facebook.react.uimanager.PixelUtil;
-import com.facebook.react.uimanager.RootView;
-import com.facebook.react.uimanager.StateWrapper;
-import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerHelper;
-import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
@@ -44,7 +34,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 public class BottomSheetDialogView extends ReactViewGroup {
     private final BottomSheetFragment bottomSheetFragment;
     BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
-    DialogRootView sheetView;
+    final DialogRootView sheetView;
     float defaultHalfExpandedRatio;
     int pendingDetent;
     int detent;
@@ -61,6 +51,8 @@ public class BottomSheetDialogView extends ReactViewGroup {
         bottomSheetBehavior.setPeekHeight(BottomSheetBehavior.PEEK_HEIGHT_AUTO);
         bottomSheetFragment.dialogView = this;
         bottomSheetBehavior.setFitToContents(false);
+        sheetView = new DialogRootView(context);
+        sheetView.dialogFragment = bottomSheetFragment;
         defaultHalfExpandedRatio = bottomSheetBehavior.getHalfExpandedRatio();
     }
 
@@ -70,7 +62,6 @@ public class BottomSheetDialogView extends ReactViewGroup {
         if (eventLag == 0) {
             detent = pendingDetent;
         }
-        if (sheetView == null) return;
         if (bottomSheetBehavior.getState() != detent && detent != BottomSheetBehavior.STATE_HIDDEN)
             bottomSheetBehavior.setState(detent);
         if (dismissed && detent != BottomSheetBehavior.STATE_HIDDEN) {
@@ -82,7 +73,6 @@ public class BottomSheetDialogView extends ReactViewGroup {
                 if (ancestorFragment == null) return;
                 fragmentManager = ancestorFragment.getChildFragmentManager();
             }
-            sheetView.dialogFragment = bottomSheetFragment;
             bottomSheetFragment.show(fragmentManager, stackId   );
             dismissed = false;
         }
@@ -138,14 +128,29 @@ public class BottomSheetDialogView extends ReactViewGroup {
         @Override
         public void onStart() {
             super.onStart();
+            assert getDialog() != null : "Dialog is null";
+            Window window = getDialog().getWindow();
+            assert window != null : "Window is null";
+            window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            window.setBackgroundDrawable(null);
+            ((View) dialogView.sheetView.getParent()).setBackgroundColor(Color.TRANSPARENT);
             dialogView.sheetView.fragmentController.attachHost(null);
             dialogView.sheetView.fragmentController.dispatchStart();
             dialogView.sheetView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
         }
 
         @Override
+        public void onPause() {
+            super.onPause();
+            dialogView.sheetView.fragmentController.dispatchPause();
+            dialogView.sheetView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE);
+        }
+
+        @Override
         public void onResume() {
             super.onResume();
+            dialogView.sheetView.fragmentController.dispatchResume();
+            dialogView.sheetView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
             if (dialogView == null) this.dismissAllowingStateLoss();
         }
 
@@ -161,6 +166,13 @@ public class BottomSheetDialogView extends ReactViewGroup {
                 eventDispatcher.dispatchEvent(new BottomSheetDialogView.DetentChangedEvent(dialogView.getId(), dialogView.detent, dialogView.nativeEventCount));
                 eventDispatcher.dispatchEvent(new BottomSheetDialogView.DismissedEvent(dialogView.getId()));
             }
+        }
+
+        @Override
+        public void onDestroyView() {
+            super.onDestroyView();
+            dialogView.sheetView.fragmentController.dispatchStop();
+            dialogView.sheetView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
         }
 
         FragmentManager getSupportFragmentManager() {

@@ -55,12 +55,28 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
     public void setPeekHeight(BottomSheetDialogView view, int peekHeight) {
         view.bottomSheetBehavior.setPeekHeight(peekHeight != 0 ? (int) PixelUtil.toPixelFromDIP(peekHeight) : PEEK_HEIGHT_AUTO, true);
     }
+    @ReactProp(name = "expandedOffset")
+    public void setExpandedOffset(BottomSheetDialogView view, int expandedOffset) {
+        int offset = (int) PixelUtil.toPixelFromDIP(expandedOffset);
+        view.bottomSheetBehavior.setExpandedOffset(offset);
+        view.sheetView.setExpandedOffset(offset);
+        view.sheetView.requestLayout();
+        if (view.sheetView.getParent() != null)
+            view.sheetView.getParent().requestLayout();
+    }
 
     @ReactProp(name = "fitToContents")
     public void setFitToContents(BottomSheetDialogView view, boolean fitToContents) {
         view.bottomSheetBehavior.setFitToContents(fitToContents);
     }
 
+    @ReactProp(name = "sheetHeight")
+    public void setSheetHeight(BottomSheetDialogView view, double sheetHeight) {
+        view.sheetView.setExpandedHeight(sheetHeight != 0 ? (int) PixelUtil.toPixelFromDIP(sheetHeight) : ViewGroup.LayoutParams.WRAP_CONTENT);
+        view.sheetView.requestLayout();
+        if (view.sheetView.getParent() != null)
+            view.sheetView.getParent().requestLayout();
+    }
     @ReactProp(name = "halfExpandedRatio", defaultFloat = Float.MAX_VALUE)
     public void setHalfExpandedRatio(BottomSheetDialogView view, float halfExpandedRatio) {
         view.bottomSheetBehavior.setHalfExpandedRatio(halfExpandedRatio != Float.MAX_VALUE ? halfExpandedRatio : view.defaultHalfExpandedRatio);
@@ -99,21 +115,26 @@ public class BottomSheetDialogManager extends ViewGroupManager<BottomSheetDialog
 
     @Override
     public void addView(BottomSheetDialogView parent, View child, int index) {
-        parent.sheetView = (DialogRootView) child;
-        parent.onAfterUpdateTransaction();
+        parent.sheetView.addView(child, index);
     }
 
     @Override
     public void removeViewAt(BottomSheetDialogView parent, int index) {
+        parent.sheetView.removeViewAt(index);
     }
 
     @Override
     public int getChildCount(BottomSheetDialogView parent) {
-        return 1;
+        return parent.sheetView.getChildCount();
     }
 
     @Override
     public View getChildAt(BottomSheetDialogView parent, int index) {
-        return parent.sheetView;
+        return parent.sheetView.getChildAt(index);
+    }
+    @Override
+    protected void addEventEmitters(@NonNull ThemedReactContext reactContext, @NonNull BottomSheetDialogView view) {
+        super.addEventEmitters(reactContext, view);
+        view.sheetView.eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.getId());
     }
 }

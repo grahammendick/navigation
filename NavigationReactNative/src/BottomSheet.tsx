@@ -47,11 +47,13 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
                 ancestorStackIds={ancestorStackIds}
                 peekHeight={peekHeight}
                 expandedHeight={expandedHeight}
+                expandedOffset={expandedOffset}
                 fitToContents={expandedOffset == null && (!halfExpandedRatio || !!expandedHeight)}
                 halfExpandedRatio={halfExpandedRatio}
                 hideable={hideable}
                 skipCollapsed={skipCollapsed}
                 draggable={draggable}
+                sheetHeight={expandedHeight != null ? expandedHeight : 0}
                 mostRecentEventCount={sheetState.mostRecentEventCount}
                 onMoveShouldSetResponderCapture={() => dragging.current}
                 onDetentChanged={onDetentChanged}
@@ -64,11 +66,7 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
                     Platform.OS === 'ios' || modal ? { height: undefined, top: undefined } : null, 
                 ]}
             >
-                <NVDialogRoot
-                    expandedOffset={expandedOffset}
-                    sheetHeight={expandedHeight != null ? expandedHeight : 0}>
-                    {children}
-                </NVDialogRoot>
+                {children}
             </BottomSheetView>
         </FragmentContext.Provider>
     )
@@ -84,7 +82,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         right: 0,
         left: 0,
-        elevation: 5
+        elevation: 5,
     },
 });
 

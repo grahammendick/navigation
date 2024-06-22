@@ -46,12 +46,12 @@ public class DialogRootView extends ReactViewGroup implements RootView, Lifecycl
 
     public void setExpandedOffset(int expandedOffset) {
         this.expandedOffset = expandedOffset;
-        updateSize();
+        updateFirstChildView();
     }
 
     public void setExpandedHeight(int expandedHeight) {
         getLayoutParams().height = expandedHeight;
-        updateSize();
+        updateFirstChildView();
     }
 
     @Override
@@ -59,24 +59,33 @@ public class DialogRootView extends ReactViewGroup implements RootView, Lifecycl
         super.onSizeChanged(w, h, oldw, oldh);
         viewWidth = w;
         viewHeight = h;
-        updateSize();
+        updateFirstChildView();
     }
 
-    private void updateSize() {
-        ThemedReactContext reactContext = (ThemedReactContext) getContext();
-        reactContext.runOnNativeModulesQueueThread(
-            new GuardedRunnable(reactContext) {
-                @Override
-                public void runGuarded() {
-                    UIManagerModule uiManager = ((ThemedReactContext) getContext())
-                        .getReactApplicationContext()
-                        .getNativeModule(UIManagerModule.class);
-                    if (uiManager == null) {
-                        return;
+    private void updateFirstChildView() {
+        if (getChildCount() > 0) {
+            final int viewTag = getChildAt(0).getId();
+            ThemedReactContext reactContext = (ThemedReactContext) getContext();
+            reactContext.runOnNativeModulesQueueThread(
+                new GuardedRunnable(reactContext) {
+                    @Override
+                    public void runGuarded() {
+                        UIManagerModule uiManager = ((ThemedReactContext) getContext())
+                            .getReactApplicationContext()
+                            .getNativeModule(UIManagerModule.class);
+                        if (uiManager == null) {
+                            return;
+                        }
+                        uiManager.updateNodeSize(viewTag, viewWidth, getLayoutParams().height > 0 ? getLayoutParams().height : viewHeight - expandedOffset);
                     }
-                    uiManager.updateNodeSize(getId(), viewWidth, getLayoutParams().height > 0 ? getLayoutParams().height : viewHeight - expandedOffset);
-                }
-            });
+                });
+        }
+    }
+
+    @Override
+    public void addView(View child, int index, LayoutParams params) {
+        super.addView(child, index, params);
+        updateFirstChildView();
     }
 
     @Override
