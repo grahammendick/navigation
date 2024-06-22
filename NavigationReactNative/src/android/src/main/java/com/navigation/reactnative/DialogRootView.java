@@ -1,8 +1,24 @@
 package com.navigation.reactnative;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+
+import androidx.activity.ComponentDialog;
+import androidx.activity.OnBackPressedDispatcher;
+import androidx.activity.OnBackPressedDispatcherOwner;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentController;
+import androidx.fragment.app.FragmentHostCallback;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.uimanager.JSTouchDispatcher;
@@ -12,12 +28,16 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.views.view.ReactViewGroup;
 
-public class DialogRootView extends ReactViewGroup implements RootView {
+public class DialogRootView extends ReactViewGroup implements RootView, LifecycleOwner {
     private final JSTouchDispatcher jsTouchDispatcher = new JSTouchDispatcher(this);
     EventDispatcher eventDispatcher;
+    FragmentController fragmentController;
+    final LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
+    DialogFragment dialogFragment;
 
     public DialogRootView(Context context) {
         super(context);
+        fragmentController = FragmentController.createController(new DialogBackStackCallback());
     }
 
     @Override
@@ -29,8 +49,8 @@ public class DialogRootView extends ReactViewGroup implements RootView {
                 @Override
                 public void runGuarded() {
                     UIManagerModule uiManager = ((ThemedReactContext) getContext())
-                            .getReactApplicationContext()
-                            .getNativeModule(UIManagerModule.class);
+                        .getReactApplicationContext()
+                        .getNativeModule(UIManagerModule.class);
                     if (uiManager == null) {
                         return;
                     }
@@ -74,5 +94,46 @@ public class DialogRootView extends ReactViewGroup implements RootView {
 
     @Override
     public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+    }
+
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycleRegistry;
+    }
+    class DialogBackStackCallback extends FragmentHostCallback<DialogRootView> implements OnBackPressedDispatcherOwner
+    {
+        public DialogBackStackCallback() {
+            super(DialogRootView.this.getContext(), new Handler(Looper.getMainLooper()), 0);
+        }
+
+        @Override
+        public DialogRootView onGetHost() {
+            return DialogRootView.this;
+        }
+
+        @NonNull
+        @Override
+        public Lifecycle getLifecycle() {
+            return lifecycleRegistry;
+        }
+
+        @NonNull
+        @Override
+        public LayoutInflater onGetLayoutInflater() {
+            Dialog dialog = dialogFragment.getDialog();
+            assert dialog != null : "Dialog is null";
+            Window window = dialog.getWindow();
+            assert window != null : "Window is null";
+            return window.getLayoutInflater().cloneInContext(DialogRootView.this.getContext());
+        }
+
+        @NonNull
+        @Override
+        public OnBackPressedDispatcher getOnBackPressedDispatcher() {
+            ComponentDialog componentDialog = (ComponentDialog) dialogFragment.getDialog();
+            assert componentDialog != null : "Dialog is null";
+            return componentDialog.getOnBackPressedDispatcher();
+        }
     }
 }
