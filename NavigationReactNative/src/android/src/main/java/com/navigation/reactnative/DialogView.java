@@ -63,7 +63,8 @@ public class DialogView extends ReactViewGroup {
             dialogRootView.dialogFragment = dialogViewFragment;
             dialogViewFragment.show(fragmentManager, stackId);
             dismissed = false;
-        } else {
+        }
+        if (!dismissed && detent == BottomSheetBehavior.STATE_HIDDEN) {
             dialogViewFragment.dismiss();
         }
     }

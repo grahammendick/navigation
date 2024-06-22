@@ -27,7 +27,6 @@ public class DialogManager extends ViewGroupManager<DialogView> {
         return new DialogView(themedReactContext);
     }
 
-
     @ReactProp(name = "detent")
     public void setDetent(DialogView view, String detent) {
         view.pendingDetent = Integer.parseInt(detent);

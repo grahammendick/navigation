@@ -3,11 +3,15 @@ package com.navigation.reactnative;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+
+import java.util.Map;
 
 public class SheetManager extends ViewGroupManager<SheetView> {
     @NonNull
@@ -22,9 +26,14 @@ public class SheetManager extends ViewGroupManager<SheetView> {
         return new SheetView(themedReactContext);
     }
 
-    @ReactProp(name = "show")
-    public void setShow(SheetView view, boolean show) {
-        view.show = show;
+    @ReactProp(name = "detent")
+    public void setDetent(SheetView view, String detent) {
+        view.pendingDetent = Integer.parseInt(detent);
+    }
+
+    @ReactProp(name = "mostRecentEventCount")
+    public void setMostRecentEventCount(SheetView view, int mostRecentEventCount) {
+        view.mostRecentEventCount = mostRecentEventCount;
     }
 
     @ReactProp(name = "stackId")
@@ -46,6 +55,15 @@ public class SheetManager extends ViewGroupManager<SheetView> {
     protected void onAfterUpdateTransaction(@NonNull SheetView view) {
         super.onAfterUpdateTransaction(view);
         view.onAfterUpdateTransaction();
+    }
+
+    @Nullable
+    @Override
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+            .put("topDetentChanged", MapBuilder.of("registrationName", "onDetentChanged"))
+            .put("topDismissed", MapBuilder.of("registrationName", "onDismissed"))
+            .build();
     }
 
     @Override
