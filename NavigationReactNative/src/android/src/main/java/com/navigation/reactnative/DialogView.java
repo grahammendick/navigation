@@ -25,11 +25,16 @@ import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class DialogView extends ReactViewGroup {
     private final DialogViewFragment dialogViewFragment;
     DialogRootView dialogRootView;
-    boolean show;
+    int pendingDetent;
+    int detent;
+    int nativeEventCount;
+    int mostRecentEventCount;
+    private boolean dismissed = true;
     protected String stackId;
     protected ReadableArray ancestorStackIds;
 
@@ -40,8 +45,13 @@ public class DialogView extends ReactViewGroup {
     }
 
     void onAfterUpdateTransaction() {
+        nativeEventCount = Math.max(nativeEventCount, mostRecentEventCount);
+        int eventLag = nativeEventCount - mostRecentEventCount;
+        if (eventLag == 0) {
+            detent = pendingDetent;
+        }
         if (dialogRootView == null) return;
-        if (show) {
+        if (dismissed && detent != BottomSheetBehavior.STATE_HIDDEN) {
             FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
             assert activity != null : "Activity is null";
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
@@ -52,6 +62,7 @@ public class DialogView extends ReactViewGroup {
             }
             dialogRootView.dialogFragment = dialogViewFragment;
             dialogViewFragment.show(fragmentManager, stackId);
+            dismissed = false;
         } else {
             dialogViewFragment.dismiss();
         }
@@ -60,7 +71,7 @@ public class DialogView extends ReactViewGroup {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        dialogViewFragment.dismissAllowingStateLoss();
+        if (!dismissed) dialogViewFragment.dismissAllowingStateLoss();
     }
 
     public static class DialogViewFragment extends DialogFragment
@@ -81,9 +92,6 @@ public class DialogView extends ReactViewGroup {
             assert window != null : "Window is null";
             window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             window.setBackgroundDrawable(null);
-            ReactContext reactContext = (ReactContext) dialogView.getContext();
-            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, dialogView.getId());
-            eventDispatcher.dispatchEvent(new DialogView.ShowChangedEvent(dialogView.getId(), true));
             dialogView.dialogRootView.fragmentController.attachHost(null);
             dialogView.dialogRootView.fragmentController.dispatchStart();
             dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
@@ -107,9 +115,13 @@ public class DialogView extends ReactViewGroup {
         public void onDismiss(@NonNull DialogInterface dialog) {
             super.onDismiss(dialog);
             if (dialogView != null) {
+                dialogView.nativeEventCount++;
+                dialogView.detent = BottomSheetBehavior.STATE_HIDDEN;
+                dialogView.dismissed = true;
                 ReactContext reactContext = (ReactContext) dialogView.getContext();
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, dialogView.getId());
-                eventDispatcher.dispatchEvent(new DialogView.ShowChangedEvent(dialogView.getId(), false));
+                eventDispatcher.dispatchEvent(new DialogView.DetentChangedEvent(dialogView.getId(), dialogView.detent, dialogView.nativeEventCount));
+                eventDispatcher.dispatchEvent(new DialogView.DismissedEvent(dialogView.getId()));
             }
         }
 
@@ -125,24 +137,43 @@ public class DialogView extends ReactViewGroup {
         }
     }
 
-    static class ShowChangedEvent extends Event<DialogView.ShowChangedEvent> {
-        private final boolean show;
+    static class DetentChangedEvent extends Event<DialogView.DetentChangedEvent> {
+        private final int detent;
+        private final int eventCount;
 
-        public ShowChangedEvent(int viewId, boolean show) {
+        public DetentChangedEvent(int viewId, int detent, int eventCount) {
             super(viewId);
-            this.show = show;
+            this.detent = detent;
+            this.eventCount = eventCount;
         }
 
         @Override
         public String getEventName() {
-            return "topShowChanged";
+            return "topDetentChanged";
         }
 
         @Override
         public void dispatch(RCTEventEmitter rctEventEmitter) {
             WritableMap event = Arguments.createMap();
-            event.putBoolean("show", this.show);
+            event.putInt("detent", this.detent);
+            event.putInt("eventCount", this.eventCount);
             rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
+        }
+    }
+
+    static class DismissedEvent extends Event<DialogView.DismissedEvent> {
+        public DismissedEvent(int viewId) {
+            super(viewId);
+        }
+
+        @Override
+        public String getEventName() {
+            return "topDismissed";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), Arguments.createMap());
         }
     }
 }

@@ -202,8 +202,8 @@ public class BottomSheetDialogView extends ReactViewGroup {
                             @Override
                             public void runGuarded() {
                                 UIManagerModule uiManager = ((ThemedReactContext) getContext())
-                                        .getReactApplicationContext()
-                                        .getNativeModule(UIManagerModule.class);
+                                    .getReactApplicationContext()
+                                    .getNativeModule(UIManagerModule.class);
                                 if (uiManager == null) {
                                     return;
                                 }

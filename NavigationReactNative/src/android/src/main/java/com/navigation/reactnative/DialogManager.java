@@ -27,9 +27,15 @@ public class DialogManager extends ViewGroupManager<DialogView> {
         return new DialogView(themedReactContext);
     }
 
-    @ReactProp(name = "show")
-    public void setShow(DialogView view, boolean show) {
-        view.show = show;
+
+    @ReactProp(name = "detent")
+    public void setDetent(DialogView view, String detent) {
+        view.pendingDetent = Integer.parseInt(detent);
+    }
+
+    @ReactProp(name = "mostRecentEventCount")
+    public void setMostRecentEventCount(DialogView view, int mostRecentEventCount) {
+        view.mostRecentEventCount = mostRecentEventCount;
     }
 
     @ReactProp(name = "stackId")
@@ -52,7 +58,8 @@ public class DialogManager extends ViewGroupManager<DialogView> {
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-            .put("topShowChanged", MapBuilder.of("registrationName", "onShowChanged"))
+            .put("topDetentChanged", MapBuilder.of("registrationName", "onDetentChanged"))
+            .put("topDismissed", MapBuilder.of("registrationName", "onDismissed"))
             .build();
     }
 
