@@ -82,6 +82,7 @@ public class SheetView extends ReactViewGroup {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        if (fragment == null) return;
         FragmentManager fragmentManager = fragment.getParentFragmentManager();
         if (fragmentManager.getPrimaryNavigationFragment() != fragment) {
             FragmentTransaction transaction = fragmentManager
@@ -98,6 +99,7 @@ public class SheetView extends ReactViewGroup {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        if (fragment == null) return;
         FragmentManager fragmentManager = fragment.getParentFragmentManager();
         if (fragmentManager.getPrimaryNavigationFragment() == fragment) {
             FragmentTransaction transaction = fragmentManager

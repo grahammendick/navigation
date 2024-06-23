@@ -1,9 +1,10 @@
 import React, { useMemo, useContext, useState, useRef } from 'react';
 import { requireNativeComponent, Platform, UIManager, StyleSheet } from 'react-native';
+import { NavigationContext } from 'navigation-react';
 import useNavigated from './useNavigated';
 import FragmentContext from './FragmentContext';
 
-const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable = true, modal = Platform.OS === 'ios', onChangeDetent, children}) => {
+const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable = true, modal = Platform.OS === 'ios', bottom = true, onChangeDetent, children}) => {
     const [sheetState, setSheetState]  = useState({selectedDetent: detent || defaultDetent, mostRecentEventCount: 0, dismissed: (detent || defaultDetent) === 'hidden'})
     const dragging = useRef(false);
     const changeDetent = (selectedDetent) => {
@@ -18,6 +19,8 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
     const stackId = useMemo(() => _stackId ? `${_stackId}${modal}` : undefined, [_stackId, modal]);
     const ancestorStackIds = useContext(FragmentContext);
     const stackIds = useMemo(() => stackId ? [...ancestorStackIds, stackId] : [], [ancestorStackIds, stackId]);
+    const navigationEvent = useContext(NavigationContext);
+    const crumb = navigationEvent.stateNavigator.stateContext.crumbs.length;
     useNavigated(() => {
         if (Platform.OS === 'ios' && sheetState.selectedDetent !== 'hidden' && sheetState.dismissed)
             setSheetState(prevSheetState => ({...prevSheetState, dismissed: false}));
@@ -35,16 +38,18 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
             setSheetState(prevSheetState => ({...prevSheetState, mostRecentEventCount}));
         }
     }
-    const BottomSheetView = Platform.OS === 'ios' || !modal ? NVBottomSheet : NVBottomSheetDialog;
-    if ((Platform.OS === 'ios' || modal) && sheetState.dismissed && sheetState.selectedDetent === 'hidden') return null;
+    let SheetView = Platform.OS === 'ios' || !modal ? NVBottomSheet : NVBottomSheetDialog;
+    if (!bottom) SheetView = !modal ? NVSheet : NVDialog;
+    if ((Platform.OS === 'ios' || modal || !bottom) && sheetState.dismissed && sheetState.selectedDetent === 'hidden') return null;
     return (
         <FragmentContext.Provider value={stackIds}>
-            <BottomSheetView
+            <SheetView
                 detent={Platform.OS === 'android' ? '' + detents[sheetState.selectedDetent] : sheetState.selectedDetent}
                 modal={modal}
                 dismissed={sheetState.dismissed}
                 stackId={stackId}
                 ancestorStackIds={ancestorStackIds}
+                crumb={crumb}
                 peekHeight={peekHeight}
                 expandedHeight={expandedHeight}
                 expandedOffset={expandedOffset}
@@ -67,13 +72,15 @@ const BottomSheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expan
                 ]}
             >
                 {children}
-            </BottomSheetView>
+            </SheetView>
         </FragmentContext.Provider>
     )
 }
 
 const NVBottomSheet = global.nativeFabricUIManager ? require('./BottomSheetNativeComponent').default : requireNativeComponent('NVBottomSheet');
 const NVBottomSheetDialog = global.nativeFabricUIManager ? require('./BottomSheetDialogNativeComponent').default : requireNativeComponent('NVBottomSheetDialog');
+const NVDialog = requireNativeComponent<any>('NVDialog');
+const NVSheet = requireNativeComponent<any>('NVSheet');
 
 const styles = StyleSheet.create({
     bottomSheet: {
@@ -85,4 +92,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default BottomSheet;
+export const BottomSheet = props => <Sheet {...props} bottom />;
+export default Sheet;
+
+

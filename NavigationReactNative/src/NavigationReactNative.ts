@@ -15,12 +15,11 @@ import CoordinatorLayout from './CoordinatorLayout';
 import CollapsingBar from './CollapsingBar';
 import ActionBar from './ActionBar';
 import StatusBar from './StatusBar';
-import Dialog from './Dialog'
-import BottomSheet from './BottomSheet'
+import Sheet, {BottomSheet} from './Sheet'
 import FloatingActionButton from './FloatingActionButton';
 import useNavigating from './useNavigating';
 import useNavigated from './useNavigated';
 import useUnloading from './useUnloading';
 import useUnloaded from './useUnloaded';
 const Scene = NavigationStack.Scene;
-export { NavigationStack, Scene, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, SearchBar, TabBar, TabBarItem, TabBarItemContext, SharedElement, BackHandlerContext, ModalBackHandler, CoordinatorLayout, CollapsingBar, ActionBar, StatusBar, Dialog, BottomSheet, FloatingActionButton, useNavigating, useNavigated, useUnloading, useUnloaded };
+export { NavigationStack, Scene, NavigationBar, LeftBar, RightBar, BarButton, TitleBar, SearchBar, TabBar, TabBarItem, TabBarItemContext, SharedElement, BackHandlerContext, ModalBackHandler, CoordinatorLayout, CollapsingBar, ActionBar, StatusBar, Sheet, BottomSheet, FloatingActionButton, useNavigating, useNavigated, useUnloading, useUnloaded };
