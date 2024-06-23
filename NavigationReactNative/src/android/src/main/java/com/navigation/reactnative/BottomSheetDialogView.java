@@ -34,7 +34,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 public class BottomSheetDialogView extends ReactViewGroup {
     private final BottomSheetFragment bottomSheetFragment;
     BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
-    final DialogRootView sheetView;
+    final DialogRootView dialogRootView;
     float defaultHalfExpandedRatio;
     int pendingDetent;
     int detent;
@@ -51,8 +51,8 @@ public class BottomSheetDialogView extends ReactViewGroup {
         bottomSheetBehavior.setPeekHeight(BottomSheetBehavior.PEEK_HEIGHT_AUTO);
         bottomSheetFragment.dialogView = this;
         bottomSheetBehavior.setFitToContents(false);
-        sheetView = new DialogRootView(context);
-        sheetView.dialogFragment = bottomSheetFragment;
+        dialogRootView = new DialogRootView(context);
+        dialogRootView.dialogFragment = bottomSheetFragment;
         defaultHalfExpandedRatio = bottomSheetBehavior.getHalfExpandedRatio();
     }
 
@@ -122,7 +122,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
                 behavior.addBottomSheetCallback(bottomSheetCallback);
                 dialogView.bottomSheetBehavior = behavior;
             }
-            return dialogView != null ? dialogView.sheetView : new View(getContext());
+            return dialogView != null ? dialogView.dialogRootView : new View(getContext());
         }
 
         @Override
@@ -133,24 +133,24 @@ public class BottomSheetDialogView extends ReactViewGroup {
             assert window != null : "Window is null";
             window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             window.setBackgroundDrawable(null);
-            ((View) dialogView.sheetView.getParent()).setBackgroundColor(Color.TRANSPARENT);
-            dialogView.sheetView.fragmentController.attachHost(null);
-            dialogView.sheetView.fragmentController.dispatchStart();
-            dialogView.sheetView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
+            ((View) dialogView.dialogRootView.getParent()).setBackgroundColor(Color.TRANSPARENT);
+            dialogView.dialogRootView.fragmentController.attachHost(null);
+            dialogView.dialogRootView.fragmentController.dispatchStart();
+            dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
         }
 
         @Override
         public void onPause() {
             super.onPause();
-            dialogView.sheetView.fragmentController.dispatchPause();
-            dialogView.sheetView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE);
+            dialogView.dialogRootView.fragmentController.dispatchPause();
+            dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE);
         }
 
         @Override
         public void onResume() {
             super.onResume();
-            dialogView.sheetView.fragmentController.dispatchResume();
-            dialogView.sheetView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
+            dialogView.dialogRootView.fragmentController.dispatchResume();
+            dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
             if (dialogView == null) this.dismissAllowingStateLoss();
         }
 
@@ -171,12 +171,12 @@ public class BottomSheetDialogView extends ReactViewGroup {
         @Override
         public void onDestroyView() {
             super.onDestroyView();
-            dialogView.sheetView.fragmentController.dispatchStop();
-            dialogView.sheetView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
+            dialogView.dialogRootView.fragmentController.dispatchStop();
+            dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
         }
 
         public FragmentManager getSupportFragmentManager() {
-            return dialogView.sheetView.fragmentController.getSupportFragmentManager();
+            return dialogView.dialogRootView.fragmentController.getSupportFragmentManager();
         }
     }
 
