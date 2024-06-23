@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -35,6 +36,16 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(BottomSheetView view, int mostRecentEventCount) {
         view.mostRecentEventCount = mostRecentEventCount;
+    }
+
+    @ReactProp(name = "stackId")
+    public void setStackId(BottomSheetView view, String stackId) {
+        view.stackId = stackId;
+    }
+
+    @ReactProp(name = "ancestorStackIds")
+    public void setAncestorStackIds(BottomSheetView view, ReadableArray ancestorStackIds) {
+        view.ancestorStackIds = ancestorStackIds;
     }
 
     @ReactProp(name = "peekHeight")

@@ -1,13 +1,23 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
@@ -24,6 +34,9 @@ public class BottomSheetView extends ReactViewGroup {
     int detent;
     int nativeEventCount;
     int mostRecentEventCount;
+    protected String stackId;
+    protected ReadableArray ancestorStackIds;
+    Fragment fragment;
 
     public BottomSheetView(Context context) {
         super(context);
@@ -55,6 +68,17 @@ public class BottomSheetView extends ReactViewGroup {
             }
         };
         bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback);
+        FragmentManager fragmentManager = fragment.getParentFragmentManager();
+        if (fragmentManager.getPrimaryNavigationFragment() != fragment) {
+            FragmentTransaction transaction = fragmentManager
+                    .beginTransaction()
+                    .setPrimaryNavigationFragment(fragment);
+            try {
+                transaction.commitNowAllowingStateLoss();
+            } catch(IllegalStateException ignored) {
+                transaction.commit();
+            }
+        }
     }
 
     void onAfterUpdateTransaction() {
@@ -63,8 +87,58 @@ public class BottomSheetView extends ReactViewGroup {
         if (eventLag == 0) {
             detent = pendingDetent;
         }
+        if (fragment == null) {
+            FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
+            assert activity != null : "Activity is null";
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            for (int i = 0; i < ancestorStackIds.size(); i++) {
+                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorStackIds.getString(i));
+                if (ancestorFragment == null) return;
+                fragmentManager = ancestorFragment.getChildFragmentManager();
+            }
+            fragment = new BottomSheetView.BottomSheetFragment(this);
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction
+                .add(fragment, stackId)
+                .setPrimaryNavigationFragment(fragment)
+                .commitNowAllowingStateLoss();
+        }
         if (bottomSheetBehavior.getState() != detent)
             bottomSheetBehavior.setState(detent);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        FragmentManager fragmentManager = fragment.getParentFragmentManager();
+        if (fragmentManager.getPrimaryNavigationFragment() == fragment) {
+            FragmentTransaction transaction = fragmentManager
+                    .beginTransaction()
+                    .setPrimaryNavigationFragment(null);
+            try {
+                transaction.commitNowAllowingStateLoss();
+            } catch(IllegalStateException ignored) {
+            }
+        }
+    }
+
+    public static class BottomSheetFragment extends Fragment {
+        private BottomSheetView bottomSheetView;
+
+        public BottomSheetFragment() {
+            super();
+        }
+
+        BottomSheetFragment(BottomSheetView bottomSheetView) {
+            super();
+            this.bottomSheetView = bottomSheetView;
+        }
+
+        @Nullable
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            return bottomSheetView != null ? bottomSheetView : new View(getContext());
+        }
     }
 
     static class DetentChangedEvent extends Event<BottomSheetView.DetentChangedEvent> {
