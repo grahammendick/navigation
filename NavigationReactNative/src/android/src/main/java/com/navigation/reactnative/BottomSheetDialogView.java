@@ -87,7 +87,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
         if (!dismissed) bottomSheetFragment.dismissAllowingStateLoss();
     }
 
-    public static class BottomSheetFragment extends BottomSheetDialogFragment {
+    public static class BottomSheetFragment extends BottomSheetDialogFragment implements DialogFragmentController {
         private BottomSheetDialogView dialogView;
         BottomSheetBehavior.BottomSheetCallback bottomSheetCallback;
 
@@ -175,7 +175,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
             dialogView.sheetView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
         }
 
-        FragmentManager getSupportFragmentManager() {
+        public FragmentManager getSupportFragmentManager() {
             return dialogView.sheetView.fragmentController.getSupportFragmentManager();
         }
     }

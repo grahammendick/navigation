@@ -75,7 +75,7 @@ public class DialogView extends ReactViewGroup {
         if (!dismissed) dialogViewFragment.dismissAllowingStateLoss();
     }
 
-    public static class DialogViewFragment extends DialogFragment
+    public static class DialogViewFragment extends DialogFragment implements DialogFragmentController
     {
         private DialogView dialogView;
 
@@ -133,7 +133,7 @@ public class DialogView extends ReactViewGroup {
             dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
         }
 
-        FragmentManager getSupportFragmentManager() {
+        public FragmentManager getSupportFragmentManager() {
             return dialogView.dialogRootView.fragmentController.getSupportFragmentManager();
         }
     }
