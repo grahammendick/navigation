@@ -16,7 +16,7 @@ const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOff
         }
     }
     const _stackId = React.useId?.();
-    const stackId = useMemo(() => _stackId ? `${_stackId}${modal}` : undefined, [_stackId, modal]);
+    const stackId = useMemo(() => _stackId ? `${_stackId}-${modal}-${bottom}` : undefined, [_stackId, modal, bottom]);
     const ancestorStackIds = useContext(FragmentContext);
     const stackIds = useMemo(() => stackId ? [...ancestorStackIds, stackId] : [], [ancestorStackIds, stackId]);
     const navigationEvent = useContext(NavigationContext);
