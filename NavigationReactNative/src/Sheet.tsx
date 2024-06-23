@@ -79,8 +79,8 @@ const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOff
 
 const NVBottomSheet = global.nativeFabricUIManager ? require('./BottomSheetNativeComponent').default : requireNativeComponent('NVBottomSheet');
 const NVBottomSheetDialog = global.nativeFabricUIManager ? require('./BottomSheetDialogNativeComponent').default : requireNativeComponent('NVBottomSheetDialog');
-const NVDialog = requireNativeComponent<any>('NVDialog');
-const NVSheet = requireNativeComponent<any>('NVSheet');
+const NVDialog = requireNativeComponent('NVDialog');
+const NVSheet = requireNativeComponent('NVSheet');
 
 const styles = StyleSheet.create({
     bottomSheet: {
