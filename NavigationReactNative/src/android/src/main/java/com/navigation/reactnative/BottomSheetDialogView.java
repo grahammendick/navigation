@@ -73,7 +73,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
                 if (ancestorFragment == null) return;
                 fragmentManager = ancestorFragment.getChildFragmentManager();
             }
-            bottomSheetFragment.show(fragmentManager, stackId   );
+            bottomSheetFragment.show(fragmentManager, stackId);
             dismissed = false;
         }
         if (!dismissed && detent == BottomSheetBehavior.STATE_HIDDEN) {
