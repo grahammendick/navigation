@@ -130,6 +130,7 @@ public class DialogRootView extends ReactViewGroup implements RootView, Lifecycl
     public Lifecycle getLifecycle() {
         return lifecycleRegistry;
     }
+
     class DialogBackStackCallback extends FragmentHostCallback<DialogRootView> implements OnBackPressedDispatcherOwner
     {
         public DialogBackStackCallback() {

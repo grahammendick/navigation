@@ -42,6 +42,8 @@ public class DialogView extends ReactViewGroup {
         super(context);
         dialogViewFragment = new DialogViewFragment();
         dialogViewFragment.dialogView = this;
+        dialogRootView = new DialogRootView(context);
+        dialogRootView.dialogFragment = dialogViewFragment;
     }
 
     void onAfterUpdateTransaction() {
@@ -50,7 +52,6 @@ public class DialogView extends ReactViewGroup {
         if (eventLag == 0) {
             detent = pendingDetent;
         }
-        if (dialogRootView == null) return;
         if (dismissed && detent != BottomSheetBehavior.STATE_HIDDEN) {
             FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
             assert activity != null : "Activity is null";
@@ -60,7 +61,6 @@ public class DialogView extends ReactViewGroup {
                 if (ancestorFragment == null) return;
                 fragmentManager = ancestorFragment.getChildFragmentManager();
             }
-            dialogRootView.dialogFragment = dialogViewFragment;
             dialogViewFragment.show(fragmentManager, stackId);
             dismissed = false;
         }

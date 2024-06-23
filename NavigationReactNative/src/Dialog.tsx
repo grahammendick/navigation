@@ -3,7 +3,7 @@ import { requireNativeComponent, StyleSheet, View, Platform, UIManager } from 'r
 import { NavigationContext } from 'navigation-react';
 import FragmentContext from './FragmentContext';
 
-const Dialog = ({detent, defaultDetent = 'collapsed', modal = true, onChangeDetent, children}) => {
+const Dialog = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, modal = true, onChangeDetent, children}) => {
     const [sheetState, setSheetState]  = useState({selectedDetent: detent || defaultDetent, mostRecentEventCount: 0, dismissed: (detent || defaultDetent) === 'hidden'})
     const dragging = useRef(false);
     const changeDetent = (selectedDetent) => {
@@ -32,7 +32,6 @@ const Dialog = ({detent, defaultDetent = 'collapsed', modal = true, onChangeDete
         }
     }
     if (sheetState.dismissed && sheetState.selectedDetent === 'hidden') return null;
-    const RootView = modal ? View : View;
     const DialogView = modal ? NVDialog : NVSheet;
     const crumb = navigationEvent.stateNavigator.stateContext.crumbs.length;
     return (
@@ -42,22 +41,28 @@ const Dialog = ({detent, defaultDetent = 'collapsed', modal = true, onChangeDete
                 dismissed={sheetState.dismissed}
                 stackId={stackId}
                 ancestorStackIds={ancestorStackIds}
+                expandedOffset={expandedOffset}
+                sheetHeight={expandedHeight != null ? expandedHeight : 0}
                 crumb={crumb}
                 mostRecentEventCount={sheetState.mostRecentEventCount}
                 onMoveShouldSetResponderCapture={() => dragging.current}
                 onDetentChanged={onDetentChanged}
                 onDismissed={() => setSheetState(prevSheetState => ({...prevSheetState, dismissed: true}))}
-                style={styles.dialog}>
-                <RootView style={styles.dialog} collapsable={false}>
-                    {children}
-                </RootView>
+                style={[
+                    styles.dialog,
+                    expandedHeight != null ? { height: expandedHeight } : null,
+                    expandedOffset != null ? { top: expandedOffset } : null,
+                    expandedHeight == null && expandedOffset == null ? { top: 0 } : null,
+                    Platform.OS === 'ios' || modal ? { height: undefined, top: undefined } : null, 
+                ]}
+            >
+                {children}
             </DialogView>
         </FragmentContext.Provider>
     )
 }
 
 const NVDialog = requireNativeComponent<any>('NVDialog');
-// const NVDialogRoot = requireNativeComponent<any>('NVDialogRoot');
 const NVSheet = requireNativeComponent<any>('NVSheet');
 
 const styles = StyleSheet.create({
@@ -65,7 +70,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         elevation: 5,
         backgroundColor: 'transparent',
-        top:0, right: 0, bottom: 0, left: 0
+        right: 0, bottom: 0, left: 0
     },
 });
 

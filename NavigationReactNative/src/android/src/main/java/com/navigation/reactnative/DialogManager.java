@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 
@@ -63,21 +64,26 @@ public class DialogManager extends ViewGroupManager<DialogView> {
 
     @Override
     public void addView(DialogView parent, View child, int index) {
-        parent.dialogRootView = (DialogRootView) child;
-        parent.onAfterUpdateTransaction();
+        parent.dialogRootView.addView(child, index);
     }
 
     @Override
     public void removeViewAt(DialogView parent, int index) {
+        parent.dialogRootView.removeViewAt(index);
     }
 
     @Override
     public int getChildCount(DialogView parent) {
-        return 1;
+        return parent.dialogRootView.getChildCount();
     }
 
     @Override
     public View getChildAt(DialogView parent, int index) {
-        return parent.dialogRootView;
+        return parent.dialogRootView.getChildAt(index);
+    }
+    @Override
+    protected void addEventEmitters(@NonNull ThemedReactContext reactContext, @NonNull DialogView view) {
+        super.addEventEmitters(reactContext, view);
+        view.dialogRootView.eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.getId());
     }
 }
