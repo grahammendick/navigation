@@ -60,12 +60,15 @@ public class SheetView extends ReactViewGroup {
                 if (ancestorFragment == null) return;
                 fragmentManager = ancestorFragment.getChildFragmentManager();
             }
-            fragment = new SheetFragment(this);
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction
-                .add(fragment, stackId)
-                .setPrimaryNavigationFragment(fragment)
-                .commitNowAllowingStateLoss();
+            FragmentTransaction transaction;
+            if (fragment == null ) {
+                fragment = new SheetFragment(this);
+                transaction = fragmentManager.beginTransaction();
+                transaction
+                    .add(fragment, stackId)
+                    .setPrimaryNavigationFragment(fragment)
+                    .commitNowAllowingStateLoss();
+            }
             transaction = fragmentManager.beginTransaction();
             transaction
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
