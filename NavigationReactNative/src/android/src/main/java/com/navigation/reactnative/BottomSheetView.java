@@ -71,8 +71,8 @@ public class BottomSheetView extends ReactViewGroup {
         FragmentManager fragmentManager = fragment.getParentFragmentManager();
         if (fragmentManager.getPrimaryNavigationFragment() != fragment) {
             FragmentTransaction transaction = fragmentManager
-                    .beginTransaction()
-                    .setPrimaryNavigationFragment(fragment);
+                .beginTransaction()
+                .setPrimaryNavigationFragment(fragment);
             try {
                 transaction.commitNowAllowingStateLoss();
             } catch(IllegalStateException ignored) {
@@ -113,8 +113,8 @@ public class BottomSheetView extends ReactViewGroup {
         FragmentManager fragmentManager = fragment.getParentFragmentManager();
         if (fragmentManager.getPrimaryNavigationFragment() == fragment) {
             FragmentTransaction transaction = fragmentManager
-                    .beginTransaction()
-                    .setPrimaryNavigationFragment(null);
+                .beginTransaction()
+                .setPrimaryNavigationFragment(null);
             try {
                 transaction.commitNowAllowingStateLoss();
             } catch(IllegalStateException ignored) {
