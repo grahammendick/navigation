@@ -127,10 +127,23 @@ public class DialogView extends ReactViewGroup {
         }
 
         @Override
-        public void onDestroyView() {
-            super.onDestroyView();
+        public void onStop() {
+            super.onStop();
             dialogView.dialogRootView.fragmentController.dispatchStop();
             dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
+        }
+
+        @Override
+        public void onDestroyView() {
+            super.onDestroyView();
+            dialogView.dialogRootView.fragmentController.dispatchDestroyView();
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            dialogView.dialogRootView.fragmentController.dispatchDestroy();
+            dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
         }
 
         public FragmentManager getSupportFragmentManager() {

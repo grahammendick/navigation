@@ -379,10 +379,14 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
 
     void removeFragment() {
         if (fragment != null) {
-            fragment.getParentFragmentManager()
-                .beginTransaction()
-                .remove(fragment)
-                .commitAllowingStateLoss();
+            try {
+                fragment.getParentFragmentManager()
+                    .beginTransaction()
+                    .remove(fragment)
+                    .commitAllowingStateLoss();
+            } catch(IllegalStateException ignored) {
+            }
+
         }
     }
 
