@@ -58,7 +58,10 @@ public class SheetView extends ReactViewGroup {
             for (int i = 0; i < ancestorStackIds.size(); i++) {
                 Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorStackIds.getString(i));
                 if (ancestorFragment == null) return;
-                fragmentManager = ancestorFragment.getChildFragmentManager();
+                if (!(ancestorFragment instanceof DialogFragmentController dialogFragmentController))
+                    fragmentManager = ancestorFragment.getChildFragmentManager();
+                else
+                    fragmentManager = dialogFragmentController.getSupportFragmentManager();
             }
             FragmentTransaction transaction;
             if (fragment == null ) {
