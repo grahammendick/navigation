@@ -113,6 +113,18 @@ public class SheetView extends ReactViewGroup {
         }
     }
 
+    void removeFragment() {
+        if (fragment != null) {
+            try {
+                fragment.getParentFragmentManager()
+                    .beginTransaction()
+                    .remove(fragment)
+                    .commitAllowingStateLoss();
+            } catch(IllegalStateException ignored) {
+            }
+        }
+    }
+
     public static class SheetFragment extends Fragment {
         private SheetView sheetView;
 

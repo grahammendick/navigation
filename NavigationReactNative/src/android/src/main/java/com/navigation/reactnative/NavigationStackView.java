@@ -386,7 +386,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     .commitAllowingStateLoss();
             } catch(IllegalStateException ignored) {
             }
-
         }
     }
 

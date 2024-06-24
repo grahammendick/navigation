@@ -57,6 +57,12 @@ public class SheetManager extends ViewGroupManager<SheetView> {
         view.onAfterUpdateTransaction();
     }
 
+    @Override
+    public void onDropViewInstance(@NonNull SheetView view) {
+        view.removeFragment();
+        super.onDropViewInstance(view);
+    }
+
     @Nullable
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
