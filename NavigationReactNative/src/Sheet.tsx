@@ -4,7 +4,7 @@ import { NavigationContext } from 'navigation-react';
 import useNavigated from './useNavigated';
 import FragmentContext from './FragmentContext';
 
-const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable = true, modal = Platform.OS === 'ios', bottom = true, onChangeDetent, children}) => {
+const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable = true, modal = true, bottom = true, onChangeDetent, children}) => {
     const [sheetState, setSheetState]  = useState({selectedDetent: detent || defaultDetent, mostRecentEventCount: 0, dismissed: (detent || defaultDetent) === 'hidden'})
     const dragging = useRef(false);
     const changeDetent = (selectedDetent) => {
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export const BottomSheet = props => <Sheet {...props} bottom />;
+export const BottomSheet = props => <Sheet modal={Platform.OS === 'ios'} {...props} bottom />;
 export default Sheet;
 
 
