@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.facebook.react.modules.i18nmanager.I18nUtil;
@@ -29,7 +28,7 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
 
     public CoordinatorLayoutView(Context context){
         super(context);
-        ViewCompat.setLayoutDirection(this, !I18nUtil.getInstance().isRTL(context) ? ViewCompat.LAYOUT_DIRECTION_LTR : ViewCompat.LAYOUT_DIRECTION_RTL);
+        setLayoutDirection(!I18nUtil.getInstance().isRTL(context) ? LAYOUT_DIRECTION_LTR : LAYOUT_DIRECTION_RTL);
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         drawingOrderHelper = new ViewGroupDrawingOrderHelper(this);
     }
@@ -100,19 +99,18 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
         if (cannotScroll && hitTest(scrollView, this, ev)) {
             int action = ev.getAction();
             switch (action & MotionEvent.ACTION_MASK) {
-                case MotionEvent.ACTION_DOWN: {
+                case MotionEvent.ACTION_DOWN -> {
                     dragging = false;
                     lastMotionY = (int) ev.getY();
                     activePointerId = ev.getPointerId(0);
-                    break;
                 }
-                case MotionEvent.ACTION_MOVE:
+                case MotionEvent.ACTION_MOVE -> {
                     int activePointerIndex = ev.findPointerIndex(activePointerId);
                     int y = (int) ev.getY(activePointerIndex);
                     int deltaY = lastMotionY - y;
                     if (Math.abs(deltaY) > touchSlop)
                         dragging = true;
-                    break;
+                }
             }
         }
         if (dragging)
@@ -126,7 +124,7 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
             ScrollView scrollView = getScrollView();
             int action = ev.getAction();
             switch (action & MotionEvent.ACTION_MASK) {
-                case MotionEvent.ACTION_MOVE: {
+                case MotionEvent.ACTION_MOVE -> {
                     scrollView.startNestedScroll(SCROLL_AXIS_VERTICAL);
                     int activePointerIndex = ev.findPointerIndex(activePointerId);
                     int y = (int) ev.getY(activePointerIndex);
@@ -135,13 +133,11 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
                     if (scrollView.dispatchNestedPreScroll(0, deltaY, scrollConsumed, scrollOffset))
                         deltaY -= scrollConsumed[1];
                     scrollView.dispatchNestedScroll(0, 0, 0, deltaY, scrollOffset);
-                    break;
                 }
-                case MotionEvent.ACTION_CANCEL:
-                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
                     dragging = false;
                     scrollView.stopNestedScroll();
-                    break;
+                }
             }
         }
         return super.onTouchEvent(ev) || dragging;
