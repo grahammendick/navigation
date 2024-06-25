@@ -97,7 +97,7 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         ScrollView scrollView = getScrollView();
         boolean cannotScroll = scrollView != null && scrollView.getScrollY() == 0 && !scrollView.canScrollVertically(1);
-        if (cannotScroll) {
+        if (cannotScroll && hitTest(scrollView, this, ev)) {
             int action = ev.getAction();
             switch (action & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN: {
@@ -145,6 +145,26 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
             }
         }
         return super.onTouchEvent(ev) || dragging;
+    }
+
+    private boolean hitTest(ScrollView scrollView, ViewGroup parent, MotionEvent ev) {
+        for(int i = parent.getChildCount() - 1; i >= 0; i--) {
+            View view = parent.getChildAt(i);
+            int[] childLocation = new int[2];
+            view.getLocationOnScreen(childLocation);
+            float x = ev.getRawX();
+            float y = ev.getRawY();
+            int childLeft = childLocation[0];
+            int childTop = childLocation[1];
+            int childRight = childLeft + view.getWidth();
+            int childBottom = childTop + view.getHeight();
+            if (x >= childLeft && x < childRight && y >= childTop && y < childBottom) {
+                if (view instanceof BottomSheetView || view instanceof SheetView) return false;
+                if (view == scrollView) return true;
+                if (view instanceof ViewGroup viewGroup) return hitTest(scrollView, viewGroup, ev);
+            }
+        }
+        return false;
     }
 
     @Override
