@@ -136,25 +136,32 @@ public class BottomSheetDialogView extends ReactViewGroup {
             assert window != null : "Window is null";
             window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             window.setBackgroundDrawable(null);
-            ((View) dialogView.dialogRootView.getParent()).setBackgroundColor(Color.TRANSPARENT);
-            dialogView.dialogRootView.fragmentController.attachHost(null);
-            dialogView.dialogRootView.fragmentController.dispatchStart();
-            dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
+            if (dialogView != null) {
+                ((View) dialogView.dialogRootView.getParent()).setBackgroundColor(Color.TRANSPARENT);
+                dialogView.dialogRootView.fragmentController.attachHost(null);
+                dialogView.dialogRootView.fragmentController.dispatchStart();
+                dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
+            }
         }
 
         @Override
         public void onPause() {
             super.onPause();
-            dialogView.dialogRootView.fragmentController.dispatchPause();
-            dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE);
+            if (dialogView != null) {
+                dialogView.dialogRootView.fragmentController.dispatchPause();
+                dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE);
+            }
         }
 
         @Override
         public void onResume() {
             super.onResume();
-            dialogView.dialogRootView.fragmentController.dispatchResume();
-            dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
-            if (dialogView == null) this.dismissAllowingStateLoss();
+            if (dialogView != null) {
+                dialogView.dialogRootView.fragmentController.dispatchResume();
+                dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
+            } else {
+                this.dismissAllowingStateLoss();
+            }
         }
 
         @Override
@@ -174,21 +181,26 @@ public class BottomSheetDialogView extends ReactViewGroup {
         @Override
         public void onStop() {
             super.onStop();
-            dialogView.dialogRootView.fragmentController.dispatchStop();
-            dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
+            if (dialogView != null) {
+                dialogView.dialogRootView.fragmentController.dispatchStop();
+                dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
+            }
         }
 
         @Override
         public void onDestroyView() {
             super.onDestroyView();
-            dialogView.dialogRootView.fragmentController.dispatchDestroyView();
+            if (dialogView != null)
+                dialogView.dialogRootView.fragmentController.dispatchDestroyView();
         }
 
         @Override
         public void onDestroy() {
             super.onDestroy();
-            dialogView.dialogRootView.fragmentController.dispatchDestroy();
-            dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
+            if (dialogView != null) {
+                dialogView.dialogRootView.fragmentController.dispatchDestroy();
+                dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
+            }
         }
 
         public FragmentManager getSupportFragmentManager() {
