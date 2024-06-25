@@ -37,6 +37,7 @@ public class SheetView extends ReactViewGroup {
     protected int crumb;
     Fragment fragment;
     View container;
+    boolean attached;
 
     public SheetView(Context context) {
         super(context);
@@ -72,6 +73,7 @@ public class SheetView extends ReactViewGroup {
                     .setPrimaryNavigationFragment(fragment)
                     .commitNowAllowingStateLoss();
             }
+            if (!attached) return;
             transaction = fragmentManager.beginTransaction();
             transaction
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -88,6 +90,8 @@ public class SheetView extends ReactViewGroup {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        attached = true;
+        onAfterUpdateTransaction();
         FragmentManager fragmentManager = fragment.getParentFragmentManager();
         if (fragmentManager.getPrimaryNavigationFragment() != fragment) {
             FragmentTransaction transaction = fragmentManager
