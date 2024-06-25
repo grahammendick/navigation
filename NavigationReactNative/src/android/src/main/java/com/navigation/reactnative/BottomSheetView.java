@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
+import androidx.activity.BackEventCompat;
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -37,6 +40,7 @@ public class BottomSheetView extends ReactViewGroup {
     protected String stackId;
     protected ReadableArray ancestorStackIds;
     Fragment fragment;
+    OnBackPressedCallback backPressedCallback;
 
     public BottomSheetView(Context context) {
         super(context);
@@ -46,6 +50,31 @@ public class BottomSheetView extends ReactViewGroup {
         params.setBehavior(bottomSheetBehavior);
         setLayoutParams(params);
         defaultHalfExpandedRatio = bottomSheetBehavior.getHalfExpandedRatio();
+        backPressedCallback = new OnBackPressedCallback(false) {
+            @Override
+            public void handleOnBackStarted(@NonNull BackEventCompat backEvent) {
+                bottomSheetBehavior.startBackProgress(backEvent);
+            }
+
+            @Override
+            public void handleOnBackProgressed(@NonNull BackEventCompat backEvent) {
+                bottomSheetBehavior.updateBackProgress(backEvent);
+            }
+
+            @Override
+            public void handleOnBackPressed() {
+                boolean hideable = bottomSheetBehavior.isHideable();
+                bottomSheetBehavior.setHideable(false);
+                bottomSheetBehavior.handleBackInvoked();
+                bottomSheetBehavior.setHideable(hideable);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
+
+            @Override
+            public void handleOnBackCancelled() {
+                bottomSheetBehavior.cancelBackProgress();
+            }
+        };
     }
 
     @Override
@@ -61,6 +90,7 @@ public class BottomSheetView extends ReactViewGroup {
                 ReactContext reactContext = (ReactContext) getContext();
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
                 eventDispatcher.dispatchEvent(new BottomSheetView.DetentChangedEvent(getId(), detent, nativeEventCount));
+                backPressedCallback.setEnabled(detent == BottomSheetBehavior.STATE_EXPANDED || detent == BottomSheetBehavior.STATE_HALF_EXPANDED);
             }
 
             @Override
@@ -68,6 +98,21 @@ public class BottomSheetView extends ReactViewGroup {
             }
         };
         bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback);
+        ViewParent parent = getParent();
+        OnBackPressedDispatcher backPressedDispatcher = null;
+        while (parent != null && backPressedDispatcher == null) {
+            if (parent instanceof DialogRootView dialogRootView) {
+                backPressedDispatcher = dialogRootView.dialogBackStackCallback.getOnBackPressedDispatcher();
+            }
+            parent = parent.getParent();
+        }
+        if (backPressedDispatcher == null) {
+            FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
+            assert activity != null : "Activity is null";
+            backPressedDispatcher = activity.getOnBackPressedDispatcher();
+        }
+        backPressedDispatcher.addCallback(fragment, backPressedCallback);
+        backPressedCallback.setEnabled(detent == BottomSheetBehavior.STATE_EXPANDED || detent == BottomSheetBehavior.STATE_HALF_EXPANDED);
         FragmentManager fragmentManager = fragment.getParentFragmentManager();
         if (fragmentManager.getPrimaryNavigationFragment() != fragment) {
             FragmentTransaction transaction = fragmentManager
@@ -113,6 +158,7 @@ public class BottomSheetView extends ReactViewGroup {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        backPressedCallback.setEnabled(false);
         FragmentManager fragmentManager = fragment.getParentFragmentManager();
         if (fragmentManager.getPrimaryNavigationFragment() == fragment) {
             FragmentTransaction transaction = fragmentManager

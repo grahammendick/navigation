@@ -37,11 +37,12 @@ public class DialogRootView extends ReactViewGroup implements RootView, Lifecycl
     FragmentController fragmentController;
     final LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
     DialogFragment dialogFragment;
+    DialogBackStackCallback dialogBackStackCallback = new DialogBackStackCallback();
 
     public DialogRootView(Context context) {
         super(context);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        fragmentController = FragmentController.createController(new DialogBackStackCallback());
+        fragmentController = FragmentController.createController(dialogBackStackCallback);
     }
 
     public void setExpandedOffset(int expandedOffset) {
