@@ -56,6 +56,7 @@
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
+    _bottomSheetController.root = _root;
     UISheetPresentationController *sheet = _bottomSheetController.sheetPresentationController;
     _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
     _expandedDetent = UISheetPresentationControllerDetent.largeDetent;

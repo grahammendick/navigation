@@ -3,6 +3,7 @@
 #import "NVNavigationBarView.h"
 #import "NVSearchBarView.h"
 #import "NVStatusBarView.h"
+#import "NVBottomSheetController.h"
 #import <React/UIView+React.h>
 
 @implementation NVTransition
@@ -98,10 +99,14 @@
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
 {
-    // check if nested - add a field to NVBottomSheetController and check it
-    //[self.navigationController dismissViewControllerAnimated:YES completion:^{
+    if ([viewControllerToPresent isKindOfClass:[NVBottomSheetController class]]
+         && ((NVBottomSheetController *) viewControllerToPresent).root) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:^{
+            [super presentViewController:viewControllerToPresent animated:flag completion:completion];
+        }];
+    } else {
         [super presentViewController:viewControllerToPresent animated:flag completion:completion];
-    //}];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -8,6 +8,7 @@ API_AVAILABLE(ios(15.0))
 
 @property (nonatomic, copy) NSString *detent;
 @property (nonatomic, assign) BOOL modal;
+@property (nonatomic, assign) BOOL root;
 @property (nonatomic, assign) BOOL dismissed;
 @property (nonatomic, assign) NSInteger peekHeight;
 @property (nonatomic, assign) NSInteger expandedHeight;
