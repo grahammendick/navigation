@@ -98,9 +98,10 @@
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
 {
-    [self.navigationController dismissViewControllerAnimated:YES completion:^{
+    // check if nested - add a field to NVBottomSheetController and check it
+    //[self.navigationController dismissViewControllerAnimated:YES completion:^{
         [super presentViewController:viewControllerToPresent animated:flag completion:completion];
-    }];
+    //}];
 }
 
 - (void)viewDidAppear:(BOOL)animated

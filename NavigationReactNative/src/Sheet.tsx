@@ -1,11 +1,22 @@
-import React, { useMemo, useContext, useState, useRef } from 'react';
+import React, { useMemo, useContext, useState, useRef, createContext, useEffect } from 'react';
 import { requireNativeComponent, Platform, UIManager, StyleSheet } from 'react-native';
 import { NavigationContext } from 'navigation-react';
 import useNavigated from './useNavigated';
 import FragmentContext from './FragmentContext';
 
+const SheetContext = createContext({
+    root: true,
+    onNavigated: useNavigated,
+})
+
 const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable = true, modal = true, bottom = true, onChangeDetent, children}) => {
     const [sheetState, setSheetState]  = useState({selectedDetent: detent || defaultDetent, mostRecentEventCount: 0, dismissed: (detent || defaultDetent) === 'hidden'})
+    const onChildNavigated = useRef<any>();
+    const { root, onNavigated } = useContext(SheetContext);
+    const sheetHandler = useMemo(() => ({
+        root: false,
+        onNavigated: handler => onChildNavigated.current = handler,
+    }), []);
     const dragging = useRef(false);
     const changeDetent = (selectedDetent) => {
         if (sheetState.selectedDetent !== selectedDetent) {
@@ -21,10 +32,12 @@ const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOff
     const stackIds = useMemo(() => stackId ? [...ancestorStackIds, stackId] : [], [ancestorStackIds, stackId]);
     const navigationEvent = useContext(NavigationContext);
     const crumb = navigationEvent.stateNavigator.stateContext.crumbs.length;
-    useNavigated(() => {
-        if (Platform.OS === 'ios' && sheetState.selectedDetent !== 'hidden' && sheetState.dismissed)
+    onNavigated(() => {
+        if (Platform.OS === 'ios' && sheetState.selectedDetent !== 'hidden' && sheetState.dismissed) {
             setSheetState(prevSheetState => ({...prevSheetState, dismissed: false}));
-    })
+            onChildNavigated.current?.();
+        }
+    });
     if (Platform.OS === 'ios' && +Platform.Version < 15) return null;
     if (detent != null && detent !== sheetState.selectedDetent)
         setSheetState(prevSheetState => ({...prevSheetState, selectedDetent: detent, dismissed: detent === 'hidden' && sheetState.dismissed}));
@@ -43,36 +56,39 @@ const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOff
     if ((Platform.OS === 'ios' || modal || !bottom) && sheetState.dismissed && sheetState.selectedDetent === 'hidden') return null;
     return (
         <FragmentContext.Provider value={stackIds}>
-            <SheetView
-                detent={Platform.OS === 'android' ? '' + detents[sheetState.selectedDetent] : sheetState.selectedDetent}
-                modal={modal}
-                dismissed={sheetState.dismissed}
-                stackId={stackId}
-                ancestorStackIds={ancestorStackIds}
-                crumb={crumb}
-                peekHeight={peekHeight}
-                expandedHeight={expandedHeight}
-                expandedOffset={expandedOffset}
-                fitToContents={expandedOffset == null && (!halfExpandedRatio || !!expandedHeight)}
-                halfExpandedRatio={halfExpandedRatio}
-                hideable={hideable}
-                skipCollapsed={skipCollapsed}
-                draggable={draggable}
-                sheetHeight={expandedHeight != null ? expandedHeight : 0}
-                mostRecentEventCount={sheetState.mostRecentEventCount}
-                onMoveShouldSetResponderCapture={() => dragging.current}
-                onDetentChanged={onDetentChanged}
-                onDismissed={() => setSheetState(prevSheetState => ({...prevSheetState, dismissed: true}))}
-                style={[
-                    styles.bottomSheet,
-                    expandedHeight != null ? { height: expandedHeight } : null,
-                    expandedOffset != null ? { top: expandedOffset } : null,
-                    expandedHeight == null && expandedOffset == null ? { top: 0 } : null,
-                    Platform.OS === 'ios' || modal ? { height: undefined, top: undefined } : null, 
-                ]}
-            >
-                {children}
-            </SheetView>
+            <SheetContext.Provider value={sheetHandler}>
+                <SheetView
+                    detent={Platform.OS === 'android' ? '' + detents[sheetState.selectedDetent] : sheetState.selectedDetent}
+                    modal={modal}
+                    root={root}
+                    dismissed={sheetState.dismissed}
+                    stackId={stackId}
+                    ancestorStackIds={ancestorStackIds}
+                    crumb={crumb}
+                    peekHeight={peekHeight}
+                    expandedHeight={expandedHeight}
+                    expandedOffset={expandedOffset}
+                    fitToContents={expandedOffset == null && (!halfExpandedRatio || !!expandedHeight)}
+                    halfExpandedRatio={halfExpandedRatio}
+                    hideable={hideable}
+                    skipCollapsed={skipCollapsed}
+                    draggable={draggable}
+                    sheetHeight={expandedHeight != null ? expandedHeight : 0}
+                    mostRecentEventCount={sheetState.mostRecentEventCount}
+                    onMoveShouldSetResponderCapture={() => dragging.current}
+                    onDetentChanged={onDetentChanged}
+                    onDismissed={() => setSheetState(prevSheetState => ({...prevSheetState, dismissed: true}))}
+                    style={[
+                        styles.bottomSheet,
+                        expandedHeight != null ? { height: expandedHeight } : null,
+                        expandedOffset != null ? { top: expandedOffset } : null,
+                        expandedHeight == null && expandedOffset == null ? { top: 0 } : null,
+                        Platform.OS === 'ios' || modal ? { height: undefined, top: undefined } : null, 
+                    ]}
+                >
+                    {children}
+                </SheetView>
+            </SheetContext.Provider>
         </FragmentContext.Provider>
     )
 }
