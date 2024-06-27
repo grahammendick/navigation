@@ -38,7 +38,6 @@ const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOff
             onChildNavigated.current?.();
         }
     });
-    if (Platform.OS === 'ios' && +Platform.Version < 15) return null;
     if (detent != null && detent !== sheetState.selectedDetent)
         setSheetState(prevSheetState => ({...prevSheetState, selectedDetent: detent, dismissed: detent === 'hidden' && sheetState.dismissed}));
     const detents = (UIManager as any).getViewManagerConfig('NVBottomSheet').Constants?.Detent;

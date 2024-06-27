@@ -3,7 +3,6 @@
 #import <React/RCTComponent.h>
 #import <React/RCTInvalidating.h>
 
-API_AVAILABLE(ios(15.0))
 @interface NVBottomSheetView : UIView <UISheetPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate>
 
 @property (nonatomic, copy) NSString *detent;

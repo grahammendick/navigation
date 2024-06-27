@@ -13,11 +13,7 @@
 RCT_EXPORT_MODULE()
 
 - (UIView *)view {
-    if (@available(iOS 15.0, *)) {
-        return [[NVBottomSheetView alloc] initWithBridge:self.bridge];
-    } else {
-        return nil;
-    }
+    return [[NVBottomSheetView alloc] initWithBridge:self.bridge];
 }
 
 RCT_EXPORT_VIEW_PROPERTY(detent, NSString)
