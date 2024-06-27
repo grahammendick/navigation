@@ -11,11 +11,11 @@ const SheetContext = createContext({
 
 const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable = true, modal = true, bottom = true, onChangeDetent, children}) => {
     const [sheetState, setSheetState]  = useState({selectedDetent: detent || defaultDetent, mostRecentEventCount: 0, dismissed: (detent || defaultDetent) === 'hidden'})
-    const onChildNavigated = useRef<any>();
+    const onNavigatedChild = useRef<any>();
     const { root, onNavigated } = useContext(SheetContext);
     const sheetHandler = useMemo(() => ({
         root: false,
-        onNavigated: handler => onChildNavigated.current = handler,
+        onNavigated: handler => onNavigatedChild.current = handler,
     }), []);
     const dragging = useRef(false);
     const changeDetent = (selectedDetent) => {
@@ -35,7 +35,7 @@ const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOff
     onNavigated(() => {
         if (Platform.OS === 'ios' && sheetState.selectedDetent !== 'hidden' && sheetState.dismissed) {
             setSheetState(prevSheetState => ({...prevSheetState, dismissed: false}));
-            onChildNavigated.current?.();
+            onNavigatedChild.current?.();
         }
     });
     if (detent != null && detent !== sheetState.selectedDetent)
