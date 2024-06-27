@@ -37,6 +37,7 @@ public class NavigationPackage extends TurboReactPackage implements ReactPackage
             new SearchResultsViewManager(),
             new SearchToolbarViewManager(),
             new SharedElementViewManager(),
+            new SheetViewManager(),
             new StatusBarViewManager(),
             new TabBarViewManager(),
             new TabBarItemViewManager(),
