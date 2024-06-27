@@ -11,7 +11,6 @@ import android.widget.ScrollView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -45,7 +44,7 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
 
     public TabBarPagerView(Context context) {
         super(context);
-        ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_LTR);
+        setLayoutDirection(LAYOUT_DIRECTION_LTR);
         addOnPageChangeListener(new TabChangeListener());
         FragmentActivity activity = (FragmentActivity) ((ReactContext) context).getCurrentActivity();
         fragment = new TabBarPagerFragment(this);
@@ -63,7 +62,7 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
             }
         });
         setAdapter(adapter);
-        getViewTreeObserver().addOnGlobalLayoutListener(() -> requestLayout());
+        getViewTreeObserver().addOnGlobalLayoutListener(this::requestLayout);
     }
 
     @Override
@@ -129,8 +128,7 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
         if (!scrollsToTop)
             return;
         View tabBarItem = getTabAt(getCurrentItem()).content.get(0);
-        if (tabBarItem instanceof ViewGroup) {
-            ViewGroup viewGroup = (ViewGroup) tabBarItem;
+        if (tabBarItem instanceof ViewGroup viewGroup) {
             for(int i = 0; i < viewGroup.getChildCount(); i++) {
                 if (viewGroup.getChildAt(i) instanceof NavigationBarView)
                     ((NavigationBarView) viewGroup.getChildAt(i)).setExpanded(true);
