@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ReactStylesDiffMap;
@@ -50,6 +51,16 @@ public class BottomSheetDialogViewManager extends ViewGroupManager<BottomSheetDi
     @ReactProp(name = "detent")
     public void setDetent(BottomSheetDialogView view, @Nullable String detent) {
         view.pendingDetent = Integer.parseInt(detent);
+    }
+
+    @Override
+    public void setStackId(BottomSheetDialogView view, @Nullable String stackId) {
+        view.stackId = stackId;
+    }
+
+    @Override
+    public void setAncestorStackIds(BottomSheetDialogView view, @Nullable ReadableArray ancestorStackIds) {
+        view.ancestorStackIds = ancestorStackIds;
     }
 
     @ReactProp(name = "mostRecentEventCount")

@@ -22,6 +22,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.StateWrapper;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
@@ -82,6 +83,19 @@ public class BottomSheetDialogView extends ReactViewGroup {
         if (!dismissed && detent == BottomSheetBehavior.STATE_HIDDEN) {
             bottomSheetFragment.dismiss();
         }
+    }
+
+    @Nullable
+    public StateWrapper getStateWrapper() {
+        return dialogRootView.getStateWrapper();
+    }
+
+    public void setStateWrapper(StateWrapper stateWrapper) {
+        dialogRootView.setStateWrapper(stateWrapper);
+    }
+
+    public void updateState(final int width, final int height) {
+        dialogRootView.updateState(width, height);
     }
 
     @Override

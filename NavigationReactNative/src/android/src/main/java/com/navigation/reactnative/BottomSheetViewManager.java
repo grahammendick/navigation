@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -47,6 +48,16 @@ public class BottomSheetViewManager extends ViewGroupManager<BottomSheetView> im
     @ReactProp(name = "detent")
     public void setDetent(BottomSheetView view, String detent) {
         view.pendingDetent = Integer.parseInt(detent);
+    }
+
+    @Override
+    public void setStackId(BottomSheetView view, @Nullable String stackId) {
+        view.stackId = stackId;
+    }
+
+    @Override
+    public void setAncestorStackIds(BottomSheetView view, @Nullable ReadableArray ancestorStackIds) {
+        view.ancestorStackIds = ancestorStackIds;
     }
 
     @Override
