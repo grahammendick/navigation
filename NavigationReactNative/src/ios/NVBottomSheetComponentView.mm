@@ -111,6 +111,8 @@ using namespace facebook::react;
     NSInteger eventLag = _nativeEventCount - newViewProps.mostRecentEventCount;
     _detent = [[NSString alloc] initWithUTF8String: newViewProps.detent.c_str()];
     UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
+    _bottomSheetController.root = newViewProps.root;
+    _bottomSheetController.modalPresentationStyle = !newViewProps.fullScreen ? UIModalPresentationFormSheet : UIModalPresentationOverFullScreen;
     if (![_detent isEqual: @"hidden"]) {
         if (self.window && !_presented && !_dismissed) {
             _presented = YES;

@@ -10,6 +10,8 @@ type NativeProps = $ReadOnly<{|
   stackId: string,
   ancestorStackIds: $ReadOnlyArray<string>,
   modal: boolean,
+  fullScreen: boolean,
+  root: boolean,
   dismissed: boolean,
   mostRecentEventCount: Int32,
   peekHeight: Int32,
