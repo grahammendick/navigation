@@ -41,14 +41,14 @@ public class SheetManager extends ViewGroupManager<SheetView> {
         view.stackId = stackId;
     }
 
-    @ReactProp(name = "crumb")
-    public void setCrumb(SheetView view, int crumb) {
-        view.crumb = crumb;
-    }
-
     @ReactProp(name = "ancestorStackIds")
     public void setAncestorStackIds(SheetView view, ReadableArray ancestorStackIds) {
         view.ancestorStackIds = ancestorStackIds;
+    }
+
+    @ReactProp(name = "crumb")
+    public void setCrumb(SheetView view, int crumb) {
+        view.crumb = crumb;
     }
 
     @Override
