@@ -69,6 +69,7 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         requestLayout();
+        setCurrentItem(getCurrentItem());
         if (getTabLayout() != null)
             getTabLayout().setupWithViewPager(this);
         populateTabs();
