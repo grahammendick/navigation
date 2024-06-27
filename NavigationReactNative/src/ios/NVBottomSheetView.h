@@ -7,6 +7,7 @@
 
 @property (nonatomic, copy) NSString *detent;
 @property (nonatomic, assign) BOOL modal;
+@property (nonatomic, assign) BOOL fullScreen;
 @property (nonatomic, assign) BOOL root;
 @property (nonatomic, assign) BOOL dismissed;
 @property (nonatomic, assign) NSInteger peekHeight;

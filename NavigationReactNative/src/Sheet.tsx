@@ -51,7 +51,7 @@ const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOff
         }
     }
     let SheetView = Platform.OS === 'ios' || !modal ? NVBottomSheet : NVBottomSheetDialog;
-    if (!bottom) SheetView = !modal ? NVSheet : NVDialog;
+    if (!bottom && Platform.OS === 'android') SheetView = !modal ? NVSheet : NVDialog;
     if ((Platform.OS === 'ios' || modal || !bottom) && sheetState.dismissed && sheetState.selectedDetent === 'hidden') return null;
     return (
         <FragmentContext.Provider value={stackIds}>
@@ -59,6 +59,7 @@ const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOff
                 <SheetView
                     detent={Platform.OS === 'android' ? '' + detents[sheetState.selectedDetent] : sheetState.selectedDetent}
                     modal={modal}
+                    fullScreen={!bottom}
                     root={root}
                     dismissed={sheetState.dismissed}
                     stackId={stackId}

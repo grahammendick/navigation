@@ -57,6 +57,7 @@
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
     _bottomSheetController.root = _root;
+    _bottomSheetController.modalPresentationStyle = !_fullScreen ? UIModalPresentationFormSheet : UIModalPresentationOverFullScreen;
     if (![_detent isEqual: @"hidden"]) {
         if (self.window && !_presented && !_dismissed) {
             _presented = YES;
