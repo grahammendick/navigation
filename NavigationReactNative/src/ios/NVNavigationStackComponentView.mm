@@ -149,7 +149,7 @@ using namespace facebook::react;
     if (crumb < currentCrumb) {
         [_navigationController popToViewController:_navigationController.viewControllers[crumb] animated:true];
     }
-    BOOL animate = !self.enterAnimOff;
+    BOOL animate = !self.enterAnimOff && [_navigationController.viewControllers count] > 0;
     if (crumb > currentCrumb) {
         NSMutableArray<NVSceneController*> *controllers = [[NSMutableArray alloc] init];
         NVSceneController *prevSceneController = nil;
