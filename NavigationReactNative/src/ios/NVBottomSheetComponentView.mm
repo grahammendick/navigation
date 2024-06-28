@@ -21,7 +21,6 @@ using namespace facebook::react;
 @implementation NVBottomSheetComponentView
 {
     NVBottomSheetController *_bottomSheetController;
-    NVBottomSheetController *_oldBottomSheetController;
     CGSize _oldSize;
     BOOL _presented;
     BOOL _dismissed;
@@ -45,16 +44,6 @@ using namespace facebook::react;
         _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
         _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
         _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
-    }
-    return self;
-}
-
-- (void)ensureBottomSheetController
-{
-    if (!_bottomSheetController) {
-        [_oldBottomSheetController willMoveToParentViewController:nil];
-        [_oldBottomSheetController.view removeFromSuperview];
-        [_oldBottomSheetController removeFromParentViewController];
         _bottomSheetController = [[NVBottomSheetController alloc] init];
         id __weak weakSelf = self;
         _bottomSheetController.boundsDidChangeBlock = ^(CGRect newBounds) {
@@ -64,6 +53,7 @@ using namespace facebook::react;
             [weakSelf sheetViewDidDismiss];
         };
     }
+    return self;
 }
 
 -(void)sheetViewDidDismiss
@@ -73,13 +63,12 @@ using namespace facebook::react;
     [_displayLink invalidate];
     if (_eventEmitter != nullptr) {
         std::static_pointer_cast<NVBottomSheetEventEmitter const>(_eventEmitter)
-            ->onDismissed(NVBottomSheetEventEmitter::OnDismissed{});
+        ->onDismissed(NVBottomSheetEventEmitter::OnDismissed{});
     }
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    [self ensureBottomSheetController];
     const auto &newViewProps = *std::static_pointer_cast<NVBottomSheetProps const>(props);
     UISheetPresentationController *sheet = _bottomSheetController.sheetPresentationController;
     _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
@@ -172,19 +161,6 @@ using namespace facebook::react;
     return expandedIdentifier;
 }
 
-- (void)prepareForRecycle
-{
-    [super prepareForRecycle];
-    _state.reset();
-    _nativeEventCount = 0;
-    [_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
-    _oldBottomSheetController = _bottomSheetController;
-    _bottomSheetController = nil;
-    _oldSize = CGSizeZero;
-    _presented = NO;
-    [_displayLink invalidate];
-}
-
 - (void)dealloc
 {
     [_bottomSheetController dismissViewControllerAnimated:NO completion:nil];
@@ -230,10 +206,10 @@ using namespace facebook::react;
     if (_eventEmitter != nullptr) {
         UISheetPresentationControllerDetentIdentifier detentId = sheetPresentationController.selectedDetentIdentifier;
         std::static_pointer_cast<NVBottomSheetEventEmitter const>(_eventEmitter)
-            ->onDetentChanged(NVBottomSheetEventEmitter::OnDetentChanged{
-                .detent = std::string([[[self collapsedIdentifier] isEqual:detentId] ? @"collapsed" : ([[self expandedIdentifier] isEqual:detentId] ? @"expanded" : @"halfExpanded") UTF8String]),
-                .eventCount = static_cast<int>(_nativeEventCount),
-            });
+        ->onDetentChanged(NVBottomSheetEventEmitter::OnDetentChanged{
+            .detent = std::string([[[self collapsedIdentifier] isEqual:detentId] ? @"collapsed" : ([[self expandedIdentifier] isEqual:detentId] ? @"expanded" : @"halfExpanded") UTF8String]),
+            .eventCount = static_cast<int>(_nativeEventCount),
+        });
     }
 }
 
@@ -247,10 +223,10 @@ using namespace facebook::react;
     _nativeEventCount++;
     if (_eventEmitter != nullptr) {
         std::static_pointer_cast<NVBottomSheetEventEmitter const>(_eventEmitter)
-            ->onDetentChanged(NVBottomSheetEventEmitter::OnDetentChanged{
-                .detent = std::string([@"hidden" UTF8String]),
-                .eventCount = static_cast<int>(_nativeEventCount),
-            });
+        ->onDetentChanged(NVBottomSheetEventEmitter::OnDetentChanged{
+            .detent = std::string([@"hidden" UTF8String]),
+            .eventCount = static_cast<int>(_nativeEventCount),
+        });
     }
 }
 
@@ -258,7 +234,6 @@ using namespace facebook::react;
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
-    [self ensureBottomSheetController];
     [_touchHandler attachToView:childComponentView];
     [_bottomSheetController.view insertSubview:childComponentView atIndex:index];
 }
@@ -277,7 +252,12 @@ using namespace facebook::react;
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
-  return concreteComponentDescriptorProvider<NVBottomSheetComponentDescriptor>();
+    return concreteComponentDescriptorProvider<NVBottomSheetComponentDescriptor>();
+}
+
++ (BOOL)shouldBeRecycled
+{
+    return NO;
 }
 
 @end

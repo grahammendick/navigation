@@ -16,7 +16,6 @@ using namespace facebook::react;
 
 @implementation NVSceneComponentView
 {
-    UIViewController *_oldViewController;
     NSMutableArray<NVTransition*> *_enterTransitions;
     NSMutableArray<NVTransition*> *_exitTransitions;
 }
@@ -32,20 +31,8 @@ using namespace facebook::react;
     return self;
 }
 
-- (void)ensureViewController
-{
-    if (!!_oldViewController) {
-        [_oldViewController willMoveToParentViewController:nil];
-        [_oldViewController.view removeFromSuperview];
-        [_oldViewController removeFromParentViewController];
-        _oldViewController.view = nil;
-        _oldViewController = nil;
-    }
-}
-
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    [self ensureViewController];
     const auto &newViewProps = *std::static_pointer_cast<NVSceneProps const>(props);
     _sceneKey = [NSString  stringWithUTF8String: newViewProps.sceneKey.c_str()];
     _crumb = [NSNumber numberWithInt:newViewProps.crumb];
@@ -108,21 +95,20 @@ using namespace facebook::react;
 {
     if (_eventEmitter != nullptr) {
         std::static_pointer_cast<NVSceneEventEmitter const>(_eventEmitter)
-            ->onPopped(NVSceneEventEmitter::OnPopped{});
+        ->onPopped(NVSceneEventEmitter::OnPopped{});
     }
-}
-
-- (void)prepareForRecycle
-{
-    [super prepareForRecycle];
-    _oldViewController = self.reactViewController;
 }
 
 #pragma mark - RCTComponentViewProtocol
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
-  return concreteComponentDescriptorProvider<NVSceneComponentDescriptor>();
+    return concreteComponentDescriptorProvider<NVSceneComponentDescriptor>();
+}
+
++ (BOOL)shouldBeRecycled
+{
+    return NO;
 }
 
 @end

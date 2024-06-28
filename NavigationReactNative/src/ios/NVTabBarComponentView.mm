@@ -23,7 +23,6 @@ using namespace facebook::react;
 @implementation NVTabBarComponentView
 {
     UITabBarController *_tabBarController;
-    UITabBarController *_oldTabBarController;
     NSInteger _selectedTab;
     NSInteger _nativeEventCount;
     bool _preventFouc;
@@ -37,26 +36,16 @@ using namespace facebook::react;
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const NVTabBarProps>();
         _props = defaultProps;
-    }
-    return self;
-}
-
-- (void)ensureTabBarController
-{
-    if (!_tabBarController) {
-        [_oldTabBarController willMoveToParentViewController:nil];
-        [_oldTabBarController.view removeFromSuperview];
-        [_oldTabBarController removeFromParentViewController];
         _tabBarController = [[UITabBarController alloc] init];
         _tabBarController.tabBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         [self addSubview:_tabBarController.view];
         _tabBarController.delegate = self;
     }
+    return self;
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    [self ensureTabBarController];
     const auto &newViewProps = *std::static_pointer_cast<NVTabBarProps const>(props);
     UIColor *selectedTintColor = RCTUIColorFromSharedColor(newViewProps.selectedTintColor);
     UIColor *unselectedTintColor = RCTUIColorFromSharedColor(newViewProps.unselectedTintColor);
@@ -223,33 +212,19 @@ using namespace facebook::react;
     if (_eventEmitter != nullptr) {
         if (!_jsUpdate) {
             std::static_pointer_cast<NVTabBarEventEmitter const>(_eventEmitter)
-                ->onTabSelected(NVTabBarEventEmitter::OnTabSelected{
-                    .tab = static_cast<int>(index),
-                    .eventCount = static_cast<int>(_nativeEventCount)
-                });
+            ->onTabSelected(NVTabBarEventEmitter::OnTabSelected{
+                .tab = static_cast<int>(index),
+                .eventCount = static_cast<int>(_nativeEventCount)
+            });
         }
         [tabBarItem onPress];
     }
 }
 
-- (void)prepareForRecycle
-{
-    [super prepareForRecycle];
-    _nativeEventCount = 0;
-    _selectedTab = 0;
-    _preventFouc = NO;
-    _foucCounter = 0;
-    _firstSceneReselected = NO;
-    _oldTabBarController = _tabBarController;
-    _tabBarController = nil;
-}
-
-
 #pragma mark - RCTComponentViewProtocol
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
-    [self ensureTabBarController];
     [self insertReactSubview:childComponentView atIndex:index];
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[_tabBarController viewControllers]];
     [controllers insertObject:[(NVTabBarItemComponentView *) childComponentView navigationController] atIndex:index];
@@ -275,7 +250,12 @@ using namespace facebook::react;
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
-  return concreteComponentDescriptorProvider<NVTabBarComponentDescriptor>();
+    return concreteComponentDescriptorProvider<NVTabBarComponentDescriptor>();
+}
+
++ (BOOL)shouldBeRecycled
+{
+    return NO;
 }
 
 @end
