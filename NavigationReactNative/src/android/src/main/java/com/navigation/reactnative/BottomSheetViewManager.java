@@ -65,6 +65,14 @@ public class BottomSheetViewManager extends ViewGroupManager<BottomSheetView> im
     }
 
     @Override
+    public void setFullScreen(BottomSheetView view, boolean value) {
+    }
+
+    @Override
+    public void setRoot(BottomSheetView view, boolean value) {
+    }
+
+    @Override
     public void setDismissed(BottomSheetView view, boolean value) {
     }
 
