@@ -136,7 +136,7 @@ public class SceneFragment extends Fragment {
                 xAnimator.setDuration(item.duration != null ? item.duration : 300);
                 ObjectAnimator yAnimator = new ObjectAnimator();
                 yAnimator.setPropertyName("translationY");
-                float yVal = item.y.second ? scene.getWidth() * item.y.first / 100 : item.y.first;
+                float yVal = item.y.second ? scene.getHeight() * item.y.first / 100 : item.y.first;
                 yAnimator.setFloatValues(from ? yVal : 0, from ? 0 : yVal);
                 yAnimator.setDuration(item.duration != null ? item.duration : 300);
                 animatorSet.playTogether(xAnimator, yAnimator);
