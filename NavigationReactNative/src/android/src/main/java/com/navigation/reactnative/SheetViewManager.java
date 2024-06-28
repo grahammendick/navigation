@@ -46,13 +46,13 @@ public class SheetViewManager extends ViewGroupManager<SheetView> implements NVS
     }
 
     @Override
-    public void setStackId(SheetView view, @Nullable String stackId) {
-        view.stackId = stackId;
+    public void setFragmentTag(SheetView view, @Nullable String fragmentTag) {
+        view.fragmentTag = fragmentTag;
     }
 
     @Override
-    public void setAncestorStackIds(SheetView view, @Nullable ReadableArray ancestorStackIds) {
-        view.ancestorStackIds = ancestorStackIds;
+    public void setAncestorFragmentTags(SheetView view, @Nullable ReadableArray ancestorFragmentTags) {
+        view.ancestorFragmentTags = ancestorFragmentTags;
     }
 
     @Override

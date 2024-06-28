@@ -36,14 +36,14 @@ public class SheetManager extends ViewGroupManager<SheetView> {
         view.mostRecentEventCount = mostRecentEventCount;
     }
 
-    @ReactProp(name = "stackId")
-    public void setStackId(SheetView view, String stackId) {
-        view.stackId = stackId;
+    @ReactProp(name = "fragmentTag")
+    public void setFragmentTag(SheetView view, String fragmentTag) {
+        view.fragmentTag = fragmentTag;
     }
 
-    @ReactProp(name = "ancestorStackIds")
-    public void setAncestorStackIds(SheetView view, ReadableArray ancestorStackIds) {
-        view.ancestorStackIds = ancestorStackIds;
+    @ReactProp(name = "ancestorFragmentTags")
+    public void setAncestorFragmentTags(SheetView view, ReadableArray ancestorFragmentTags) {
+        view.ancestorFragmentTags = ancestorFragmentTags;
     }
 
     @ReactProp(name = "crumb")

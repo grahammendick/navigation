@@ -51,13 +51,13 @@ public class BottomSheetViewManager extends ViewGroupManager<BottomSheetView> im
     }
 
     @Override
-    public void setStackId(BottomSheetView view, @Nullable String stackId) {
-        view.stackId = stackId;
+    public void setFragmentTag(BottomSheetView view, @Nullable String fragmentTag) {
+        view.fragmentTag = fragmentTag;
     }
 
     @Override
-    public void setAncestorStackIds(BottomSheetView view, @Nullable ReadableArray ancestorStackIds) {
-        view.ancestorStackIds = ancestorStackIds;
+    public void setAncestorFragmentTags(BottomSheetView view, @Nullable ReadableArray ancestorFragmentTags) {
+        view.ancestorFragmentTags = ancestorFragmentTags;
     }
 
     @Override

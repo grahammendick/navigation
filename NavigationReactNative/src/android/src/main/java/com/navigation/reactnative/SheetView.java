@@ -32,8 +32,8 @@ public class SheetView extends ReactViewGroup {
     int nativeEventCount;
     int mostRecentEventCount;
     private boolean dismissed = true;
-    protected String stackId;
-    protected ReadableArray ancestorStackIds;
+    protected String fragmentTag;
+    protected ReadableArray ancestorFragmentTags;
     protected int crumb;
     Fragment fragment;
     View container;
@@ -56,8 +56,8 @@ public class SheetView extends ReactViewGroup {
             FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
             assert activity != null : "Activity is null";
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
-            for (int i = 0; i < ancestorStackIds.size(); i++) {
-                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorStackIds.getString(i));
+            for (int i = 0; i < ancestorFragmentTags.size(); i++) {
+                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorFragmentTags.getString(i));
                 if (ancestorFragment == null) return;
                 if (!(ancestorFragment instanceof DialogFragmentController dialogFragmentController))
                     fragmentManager = ancestorFragment.getChildFragmentManager();
@@ -69,7 +69,7 @@ public class SheetView extends ReactViewGroup {
                 fragment = new SheetFragment(this);
                 transaction = fragmentManager.beginTransaction();
                 transaction
-                    .add(fragment, stackId)
+                    .add(fragment, fragmentTag)
                     .setPrimaryNavigationFragment(fragment)
                     .commitNowAllowingStateLoss();
             }

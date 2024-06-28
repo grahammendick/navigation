@@ -7,8 +7,8 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
   detent: string,
-  stackId: string,
-  ancestorStackIds: $ReadOnlyArray<string>,
+  fragmentTag: string,
+  ancestorFragmentTags: $ReadOnlyArray<string>,
   modal: boolean,
   fullScreen: boolean,
   root: boolean,

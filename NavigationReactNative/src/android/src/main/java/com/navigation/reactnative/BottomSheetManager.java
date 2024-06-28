@@ -38,14 +38,14 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheetView> {
         view.mostRecentEventCount = mostRecentEventCount;
     }
 
-    @ReactProp(name = "stackId")
-    public void setStackId(BottomSheetView view, String stackId) {
-        view.stackId = stackId;
+    @ReactProp(name = "fragmentTag")
+    public void setFragmentTag(BottomSheetView view, String fragmentTag) {
+        view.fragmentTag = fragmentTag;
     }
 
-    @ReactProp(name = "ancestorStackIds")
-    public void setAncestorStackIds(BottomSheetView view, ReadableArray ancestorStackIds) {
-        view.ancestorStackIds = ancestorStackIds;
+    @ReactProp(name = "ancestorFragmentTags")
+    public void setAncestorFragmentTags(BottomSheetView view, ReadableArray ancestorFragmentTags) {
+        view.ancestorFragmentTags = ancestorFragmentTags;
     }
 
     @ReactProp(name = "peekHeight")

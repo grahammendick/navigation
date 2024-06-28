@@ -37,14 +37,14 @@ public class DialogManager extends ViewGroupManager<DialogView> {
         view.mostRecentEventCount = mostRecentEventCount;
     }
 
-    @ReactProp(name = "stackId")
-    public void setStackId(DialogView view, String stackId) {
-        view.stackId = stackId;
+    @ReactProp(name = "fragmentTag")
+    public void setFragmentTag(DialogView view, String fragmentTag) {
+        view.fragmentTag = fragmentTag;
     }
 
-    @ReactProp(name = "ancestorStackIds")
-    public void setAncestorStackIds(DialogView view, ReadableArray ancestorStackIds) {
-        view.ancestorStackIds = ancestorStackIds;
+    @ReactProp(name = "ancestorFragmentTags")
+    public void setAncestorFragmentTags(DialogView view, ReadableArray ancestorFragmentTags) {
+        view.ancestorFragmentTags = ancestorFragmentTags;
     }
 
     @Override

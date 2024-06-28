@@ -37,8 +37,8 @@ public class BottomSheetView extends ReactViewGroup {
     int detent;
     int nativeEventCount;
     int mostRecentEventCount;
-    protected String stackId;
-    protected ReadableArray ancestorStackIds;
+    protected String fragmentTag;
+    protected ReadableArray ancestorFragmentTags;
     Fragment fragment;
     OnBackPressedCallback backPressedCallback;
 
@@ -136,8 +136,8 @@ public class BottomSheetView extends ReactViewGroup {
             FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
             assert activity != null : "Activity is null";
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
-            for (int i = 0; i < ancestorStackIds.size(); i++) {
-                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorStackIds.getString(i));
+            for (int i = 0; i < ancestorFragmentTags.size(); i++) {
+                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorFragmentTags.getString(i));
                 if (ancestorFragment == null) return;
                 if (!(ancestorFragment instanceof DialogFragmentController dialogFragmentController))
                     fragmentManager = ancestorFragment.getChildFragmentManager();
@@ -147,7 +147,7 @@ public class BottomSheetView extends ReactViewGroup {
             fragment = new BottomSheetView.BottomSheetFragment(this);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction
-                .add(fragment, stackId)
+                .add(fragment, fragmentTag)
                 .setPrimaryNavigationFragment(fragment)
                 .commitNowAllowingStateLoss();
         }

@@ -49,8 +49,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     private int oldCrumb = -1;
     private String oldKey;
     private Activity mainActivity;
-    protected String stackId;
-    protected ReadableArray ancestorStackIds;
+    protected String fragmentTag;
+    protected ReadableArray ancestorFragmentTags;
     protected String enterAnim;
     protected String exitAnim;
     protected AnimationPropParser.Animator enterAnimator;
@@ -87,8 +87,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         }
         if (fragment == null) {
             FragmentManager fragmentManager = ((FragmentActivity) currentActivity).getSupportFragmentManager();
-            for (int i = 0; i < ancestorStackIds.size(); i++) {
-                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorStackIds.getString(i));
+            for (int i = 0; i < ancestorFragmentTags.size(); i++) {
+                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorFragmentTags.getString(i));
                 if (ancestorFragment == null) return;
                 if (!(ancestorFragment instanceof DialogFragmentController dialogFragmentController))
                     fragmentManager = ancestorFragment.getChildFragmentManager();
@@ -97,7 +97,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             }
             fragment = new StackFragment(this);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(fragment, stackId);
+            transaction.add(fragment, fragmentTag);
             transaction.commitNowAllowingStateLoss();
             fragment.getChildFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
                 @Override

@@ -13,9 +13,9 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     landscape: landscapeStack = () => null, stackInvalidatedLink, renderScene, children}: NavigationStackProps) => {
     const resumeNavigationRef = useRef(null);
     const ref = useRef(null);
-    const stackId = React.useId?.();
-    const ancestorStackIds = useContext(FragmentContext);
-    const stackIds = useMemo(() => stackId ? [...ancestorStackIds, stackId] : [], [ancestorStackIds, stackId]);
+    const fragmentTag = React.useId?.();
+    const ancestorFragmentTags = useContext(FragmentContext);
+    const fragmentTags = useMemo(() => fragmentTag ? [...ancestorFragmentTags, fragmentTag] : [], [ancestorFragmentTags, fragmentTag]);
     const {stateNavigator} = useContext(NavigationContext);
     const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0, mostRecentEventCount: 0});
     const scenes = {};
@@ -162,12 +162,12 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     }
     const {crumbs, nextCrumb} = stateNavigator.stateContext;
     return (
-        <FragmentContext.Provider value={stackIds}>
+        <FragmentContext.Provider value={fragmentTags}>
             <NVNavigationStack
                 ref={ref}
                 keys={keys}
-                stackId={stackId}
-                ancestorStackIds={ancestorStackIds}
+                fragmentTag={fragmentTag}
+                ancestorFragmentTags={ancestorFragmentTags}
                 mostRecentEventCount={mostRecentEventCount}
                 style={styles.stack}
                 {...getAnimation()}

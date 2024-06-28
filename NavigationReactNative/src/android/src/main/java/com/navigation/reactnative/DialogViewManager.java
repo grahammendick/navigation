@@ -49,13 +49,13 @@ public class DialogViewManager extends ViewGroupManager<DialogView> implements N
     }
 
     @Override
-    public void setStackId(DialogView view, @Nullable String stackId) {
-        view.stackId = stackId;
+    public void setFragmentTag(DialogView view, @Nullable String fragmentTag) {
+        view.fragmentTag = fragmentTag;
     }
 
     @Override
-    public void setAncestorStackIds(DialogView view, @Nullable ReadableArray ancestorStackIds) {
-        view.ancestorStackIds = ancestorStackIds;
+    public void setAncestorFragmentTags(DialogView view, @Nullable ReadableArray ancestorFragmentTags) {
+        view.ancestorFragmentTags = ancestorFragmentTags;
     }
 
     @Override

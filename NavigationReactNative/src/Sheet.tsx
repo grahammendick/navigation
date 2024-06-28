@@ -26,10 +26,10 @@ const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOff
                 onChangeDetent(selectedDetent);
         }
     }
-    const _stackId = React.useId?.();
-    const stackId = useMemo(() => _stackId ? `${_stackId}-${modal}-${bottom}` : undefined, [_stackId, modal, bottom]);
-    const ancestorStackIds = useContext(FragmentContext);
-    const stackIds = useMemo(() => stackId ? [...ancestorStackIds, stackId] : [], [ancestorStackIds, stackId]);
+    const _fragmentTag = React.useId?.();
+    const fragmentTag = useMemo(() => _fragmentTag ? `${_fragmentTag}-${modal}-${bottom}` : undefined, [_fragmentTag, modal, bottom]);
+    const ancestorFragmentTags = useContext(FragmentContext);
+    const fragmentTags = useMemo(() => fragmentTag ? [...ancestorFragmentTags, fragmentTag] : [], [ancestorFragmentTags, fragmentTag]);
     const navigationEvent = useContext(NavigationContext);
     const crumb = navigationEvent.stateNavigator.stateContext.crumbs.length;
     onNavigated(() => {
@@ -54,7 +54,7 @@ const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOff
     if (!bottom && Platform.OS === 'android') SheetView = !modal ? NVSheet : NVDialog;
     if ((Platform.OS === 'ios' || modal || !bottom) && sheetState.dismissed && sheetState.selectedDetent === 'hidden') return null;
     return (
-        <FragmentContext.Provider value={stackIds}>
+        <FragmentContext.Provider value={fragmentTags}>
             <SheetContext.Provider value={sheetHandler}>
                 <SheetView
                     detent={Platform.OS === 'android' ? '' + detents[sheetState.selectedDetent] : sheetState.selectedDetent}
@@ -62,8 +62,8 @@ const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOff
                     fullScreen={!bottom}
                     root={root}
                     dismissed={sheetState.dismissed}
-                    stackId={stackId}
-                    ancestorStackIds={ancestorStackIds}
+                    fragmentTag={fragmentTag}
+                    ancestorFragmentTags={ancestorFragmentTags}
                     crumb={crumb}
                     peekHeight={peekHeight}
                     expandedHeight={expandedHeight}

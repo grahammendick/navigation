@@ -42,8 +42,8 @@ public class BottomSheetDialogView extends ReactViewGroup {
     int nativeEventCount;
     int mostRecentEventCount;
     private boolean dismissed = true;
-    protected String stackId;
-    protected ReadableArray ancestorStackIds;
+    protected String fragmentTag;
+    protected ReadableArray ancestorFragmentTags;
 
     public BottomSheetDialogView(Context context) {
         super(context);
@@ -69,15 +69,15 @@ public class BottomSheetDialogView extends ReactViewGroup {
             FragmentActivity activity = (FragmentActivity) ((ReactContext) getContext()).getCurrentActivity();
             assert activity != null : "Activity is null";
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
-            for (int i = 0; i < ancestorStackIds.size(); i++) {
-                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorStackIds.getString(i));
+            for (int i = 0; i < ancestorFragmentTags.size(); i++) {
+                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorFragmentTags.getString(i));
                 if (ancestorFragment == null) return;
                 if (!(ancestorFragment instanceof DialogFragmentController dialogFragmentController))
                     fragmentManager = ancestorFragment.getChildFragmentManager();
                 else
                     fragmentManager = dialogFragmentController.getSupportFragmentManager();
             }
-            bottomSheetFragment.show(fragmentManager, stackId);
+            bottomSheetFragment.show(fragmentManager, fragmentTag);
             dismissed = false;
         }
         if (!dismissed && detent == BottomSheetBehavior.STATE_HIDDEN) {

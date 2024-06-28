@@ -54,13 +54,13 @@ public class BottomSheetDialogViewManager extends ViewGroupManager<BottomSheetDi
     }
 
     @Override
-    public void setStackId(BottomSheetDialogView view, @Nullable String stackId) {
-        view.stackId = stackId;
+    public void setFragmentTag(BottomSheetDialogView view, @Nullable String fragmentTag) {
+        view.fragmentTag = fragmentTag;
     }
 
     @Override
-    public void setAncestorStackIds(BottomSheetDialogView view, @Nullable ReadableArray ancestorStackIds) {
-        view.ancestorStackIds = ancestorStackIds;
+    public void setAncestorFragmentTags(BottomSheetDialogView view, @Nullable ReadableArray ancestorFragmentTags) {
+        view.ancestorFragmentTags = ancestorFragmentTags;
     }
 
     @ReactProp(name = "mostRecentEventCount")
