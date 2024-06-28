@@ -4,7 +4,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-API_AVAILABLE(ios(15.0))
 @interface NVBottomSheetComponentView : RCTViewComponentView <UISheetPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate>
 
 @end

@@ -29,9 +29,9 @@ using namespace facebook::react;
     BOOL _hideable;
     CADisplayLink *_displayLink;
     RCTSurfaceTouchHandler *_touchHandler;
-    UISheetPresentationControllerDetent *_collapsedDetent;
-    UISheetPresentationControllerDetent *_expandedDetent;
-    UISheetPresentationControllerDetent *_halfExpandedDetent;
+    UISheetPresentationControllerDetent *_collapsedDetent API_AVAILABLE(ios(15.0));
+    UISheetPresentationControllerDetent *_expandedDetent API_AVAILABLE(ios(15.0));
+    UISheetPresentationControllerDetent *_halfExpandedDetent API_AVAILABLE(ios(15.0));
     NVBottomSheetShadowNode::ConcreteState::Shared _state;
 }
 
@@ -41,9 +41,11 @@ using namespace facebook::react;
         static const auto defaultProps = std::make_shared<const NVBarButtonProps>();
         _props = defaultProps;
         _touchHandler = [RCTSurfaceTouchHandler new];
-        _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
-        _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
-        _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
+        if (@available(iOS 15.0, *)) {
+            _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
+            _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
+            _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
+        }
         _bottomSheetController = [[NVBottomSheetController alloc] init];
         id __weak weakSelf = self;
         _bottomSheetController.boundsDidChangeBlock = ^(CGRect newBounds) {
@@ -70,72 +72,78 @@ using namespace facebook::react;
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
     const auto &newViewProps = *std::static_pointer_cast<NVBottomSheetProps const>(props);
-    UISheetPresentationController *sheet = _bottomSheetController.sheetPresentationController;
-    _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
-    _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
-    _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
-    if (@available(iOS 16.0, *)) {
-        int peekHeight = newViewProps.peekHeight;
-        if (peekHeight > 0) {
-            _collapsedDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"collapsed" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> _Nonnull context) {
-                return peekHeight;
-            }];
-        }
-        int expandedHeight = newViewProps.expandedHeight;
-        int expandedOffset = newViewProps.expandedOffset;
-        if (expandedHeight > 0 || expandedOffset > 0) {
-            _expandedDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"expanded" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> _Nonnull context) {
-                return expandedHeight > 0 ? expandedHeight : context.maximumDetentValue - expandedOffset;
-            }];
-        }
-        float halfExpandedRatio = [@(newViewProps.halfExpandedRatio) floatValue];
-        if (halfExpandedRatio > 0) {
-            _halfExpandedDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"halfExpanded" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> _Nonnull context) {
-                return halfExpandedRatio * context.maximumDetentValue;
-            }];
-        }
-    }
     _dismissed = newViewProps.dismissed;
     _hideable = newViewProps.hideable;
-    NSInteger eventLag = _nativeEventCount - newViewProps.mostRecentEventCount;
     _detent = [[NSString alloc] initWithUTF8String: newViewProps.detent.c_str()];
-    UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
     _bottomSheetController.root = newViewProps.root;
     _bottomSheetController.modalPresentationStyle = !newViewProps.fullScreen ? UIModalPresentationFormSheet : UIModalPresentationOverFullScreen;
     if (![_detent isEqual: @"hidden"]) {
         if (self.window && !_presented && !_dismissed) {
             _presented = YES;
-            _bottomSheetController.sheetPresentationController.delegate = self;
+            if (@available(iOS 15.0, *)) {
+                _bottomSheetController.sheetPresentationController.delegate = self;
+            }
             _bottomSheetController.presentationController.delegate = self;
             _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
             [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
             [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
         }
-        sheet.largestUndimmedDetentIdentifier = !newViewProps.modal ? [self expandedIdentifier] : nil;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [sheet animateChanges:^{
-                [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[self->_collapsedDetent, self->_expandedDetent] : @[self->_collapsedDetent, self->_halfExpandedDetent, self->_expandedDetent]];
-                if (newViewProps.skipCollapsed && ![self->_detent isEqual:@"collapsed"]) {
-                    [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[self->_expandedDetent] : @[self->_halfExpandedDetent, self->_expandedDetent]];
-                }
-                if (!newViewProps.draggable) {
-                    [sheet setDetents: @[[newDetent isEqual:[self collapsedIdentifier]] ? self->_collapsedDetent : ([newDetent isEqual:[self expandedIdentifier]] ? self->_expandedDetent : self->_halfExpandedDetent)]];
-                }
-                if (eventLag == 0 && [sheet selectedDetentIdentifier] != newDetent) {
-                    sheet.selectedDetentIdentifier = newDetent;
-                }
-            }];
-        });
     } else {
         [_bottomSheetController dismissViewControllerAnimated:YES completion:nil];
         _presented = NO;
         [_displayLink invalidate];
     }
+    if (@available(iOS 15.0, *)) {
+        UISheetPresentationController *sheet = _bottomSheetController.sheetPresentationController;
+        _collapsedDetent = UISheetPresentationControllerDetent.mediumDetent;
+        _expandedDetent = UISheetPresentationControllerDetent.largeDetent;
+        _halfExpandedDetent = UISheetPresentationControllerDetent.largeDetent;
+        if (@available(iOS 16.0, *)) {
+            int peekHeight = newViewProps.peekHeight;
+            if (peekHeight > 0) {
+                _collapsedDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"collapsed" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> _Nonnull context) {
+                    return peekHeight;
+                }];
+            }
+            int expandedHeight = newViewProps.expandedHeight;
+            int expandedOffset = newViewProps.expandedOffset;
+            if (expandedHeight > 0 || expandedOffset > 0) {
+                _expandedDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"expanded" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> _Nonnull context) {
+                    return expandedHeight > 0 ? expandedHeight : context.maximumDetentValue - expandedOffset;
+                }];
+            }
+            float halfExpandedRatio = [@(newViewProps.halfExpandedRatio) floatValue];
+            if (halfExpandedRatio > 0) {
+                _halfExpandedDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"halfExpanded" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> _Nonnull context) {
+                    return halfExpandedRatio * context.maximumDetentValue;
+                }];
+            }
+        }
+        NSInteger eventLag = _nativeEventCount - newViewProps.mostRecentEventCount;
+        UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
+        if (![_detent isEqual: @"hidden"]) {
+            sheet.largestUndimmedDetentIdentifier = !newViewProps.modal ? [self expandedIdentifier] : nil;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [sheet animateChanges:^{
+                    [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[self->_collapsedDetent, self->_expandedDetent] : @[self->_collapsedDetent, self->_halfExpandedDetent, self->_expandedDetent]];
+                    if (newViewProps.skipCollapsed && ![self->_detent isEqual:@"collapsed"]) {
+                        [sheet setDetents: [[self halfExpandedIdentifier] isEqual:UISheetPresentationControllerDetentIdentifierLarge] ? @[self->_expandedDetent] : @[self->_halfExpandedDetent, self->_expandedDetent]];
+                    }
+                    if (!newViewProps.draggable) {
+                        [sheet setDetents: @[[newDetent isEqual:[self collapsedIdentifier]] ? self->_collapsedDetent : ([newDetent isEqual:[self expandedIdentifier]] ? self->_expandedDetent : self->_halfExpandedDetent)]];
+                    }
+                    if (eventLag == 0 && [sheet selectedDetentIdentifier] != newDetent) {
+                        sheet.selectedDetentIdentifier = newDetent;
+                    }
+                }];
+            });
+        }
+    }
     [super updateProps:props oldProps:oldProps];
 }
 
 - (UISheetPresentationControllerDetentIdentifier) collapsedIdentifier
-{
+API_AVAILABLE(ios(15.0)){
     UISheetPresentationControllerDetentIdentifier collapsedIdentifier = UISheetPresentationControllerDetentIdentifierMedium;
     if (@available(iOS 16.0, *)) {
         collapsedIdentifier = _collapsedDetent.identifier;
@@ -144,7 +152,7 @@ using namespace facebook::react;
 }
 
 - (UISheetPresentationControllerDetentIdentifier) halfExpandedIdentifier
-{
+API_AVAILABLE(ios(15.0)){
     UISheetPresentationControllerDetentIdentifier halfExpandedIdentifier = UISheetPresentationControllerDetentIdentifierLarge;
     if (@available(iOS 16.0, *)) {
         halfExpandedIdentifier = _halfExpandedDetent.identifier;
@@ -153,7 +161,7 @@ using namespace facebook::react;
 }
 
 - (UISheetPresentationControllerDetentIdentifier) expandedIdentifier
-{
+API_AVAILABLE(ios(15.0)){
     UISheetPresentationControllerDetentIdentifier expandedIdentifier = UISheetPresentationControllerDetentIdentifierLarge;
     if (@available(iOS 16.0, *)) {
         expandedIdentifier = _expandedDetent.identifier;
@@ -192,7 +200,9 @@ using namespace facebook::react;
     [super didMoveToWindow];
     if (![_detent isEqual: @"hidden"] && !_presented && !_dismissed && self.window) {
         _presented = YES;
-        _bottomSheetController.sheetPresentationController.delegate = self;
+        if (@available(iOS 15.0, *)) {
+            _bottomSheetController.sheetPresentationController.delegate = self;
+        }
         _bottomSheetController.presentationController.delegate = self;
         _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
         [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
@@ -201,7 +211,7 @@ using namespace facebook::react;
 }
 
 - (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(UISheetPresentationController *)sheetPresentationController
-{
+API_AVAILABLE(ios(15.0)){
     _nativeEventCount++;
     if (_eventEmitter != nullptr) {
         UISheetPresentationControllerDetentIdentifier detentId = sheetPresentationController.selectedDetentIdentifier;
@@ -264,11 +274,7 @@ using namespace facebook::react;
 
 Class<RCTComponentViewProtocol> NVBottomSheetCls(void)
 {
-    if (@available(iOS 15.0, *)) {
-        return NVBottomSheetComponentView.class;
-    } else {
-        return nil;
-    }
+    return NVBottomSheetComponentView.class;
 }
 
 #endif
