@@ -30,9 +30,8 @@
                 <a href="pop-navigation.html">Pop Navigation</a>
                 <a href="navigation-bar.html">Navigation Bar</a>
                 <a href="tab-bar.html">Tab Bar</a>
-                <a href="modal.html">Modal</a>
+                <a href="sheet.html">Sheet</a>
                 <a href="drawer.html">Drawer</a>
-                <a href="bottom-sheet.html">Bottom Sheet</a>
                 <a href="floating-action-button.html" class="selected">Floating Action Button (Android)</a>
                 <a href="scene-navigation-lifecycle.html">Navigation Lifecycle</a>
                 <a href="custom-animation.html">Custom Animation</a>
@@ -65,10 +64,10 @@
 </code></pre>
             <h2>Anchoring the Floating Action Button</h2>
             <p>
-                If you anchor the <code>FloatingActionButton</code> to another component then they will move in tandem. When the user opens an email in our example application, we anchor the floating compose button to the contact details <a href="bottom-sheet.html"><code>BottomSheet</code></a>. This prevents the sheet from obscuring the compose button. When the user expands the sheet to see the contact information then the compose button moves up, too.
+                If you anchor the <code>FloatingActionButton</code> to another component then they will move in tandem. When the user opens an email in our example application, we anchor the floating compose button to the contact details <a href="sheet.html"><code>Sheet</code></a>. This prevents the sheet from obscuring the compose button. When the user expands the sheet to see the contact information then the compose button moves up, too.
             </p>
             <pre><code class="language-jsx">&lt;CoordinatorLayout>
-  &lt;BottomSheet />
+  &lt;Sheet />
   &lt;FloatingActionButton anchor="bottomSheet" />
 &lt;/CoordinatorLayout></code></pre>
             <h2>Cradling a Floating Action Button</h2>
