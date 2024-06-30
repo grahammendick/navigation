@@ -51,7 +51,7 @@
         <div id="article">
             <h1>Sheet</h1>
             <p>
-                You...
+                You use the <code>Sheet</code> component to avoid cluttering up the main content. With a bottom sheet, for example, the sheet starts off collapsed and the user expands it by dragging. In our example application, when the user opens an email we display the sender's information in a <code>Sheet</code>.
             </p>
             <pre><code class="language-jsx">import {Sheet} from 'navigation-react-native';
 
@@ -72,7 +72,7 @@
     &lt;Button onPress={() => setDetent('hidden')} />
 &lt;/Sheet></code></pre>
             <p>
-                There are different props that set the height of the sheet when its resting in various detents. The peekHeight prop controls the height of the sheet when it's in the collapsed detent. The halfExpandedRatio prop is for the halfExpanded detent. And the expandedHeight and expandedOffset props are for the expanded detent.
+                There are props that allow you to configure the various detent heights. The <code>peekHeight</code> prop sets the height of the 'collapsed' detent. The <code>halfExpandedRatio</code> prop is for the 'halfExpanded' detent. And the height of the 'expanded' sheet is determined by the <code>expandedHeight</code> or <code>expandedOffset</code> props.
             </p>
             <h2>Making a Full-Screen Sheet</h2>
             <p>
