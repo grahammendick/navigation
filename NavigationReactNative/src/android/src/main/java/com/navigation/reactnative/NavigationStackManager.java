@@ -28,14 +28,14 @@ public class NavigationStackManager extends ViewGroupManager<NavigationStackView
         view.keys = keys;
     }
 
-    @ReactProp(name = "stackId")
-    public void setStackId(NavigationStackView view, String stackId) {
-        view.stackId = stackId;
+    @ReactProp(name = "fragmentTag")
+    public void setFragmentTag(NavigationStackView view, String fragmentTag) {
+        view.fragmentTag = fragmentTag;
     }
 
-    @ReactProp(name = "ancestorStackIds")
-    public void setAncestorStackIds(NavigationStackView view, ReadableArray ancestorStackIds) {
-        view.ancestorStackIds = ancestorStackIds;
+    @ReactProp(name = "ancestorFragmentTags")
+    public void setAncestorFragmentTags(NavigationStackView view, ReadableArray ancestorFragmentTags) {
+        view.ancestorFragmentTags = ancestorFragmentTags;
     }
 
     @ReactProp(name = "enterAnim")

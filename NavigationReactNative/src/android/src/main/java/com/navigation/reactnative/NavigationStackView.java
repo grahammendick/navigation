@@ -49,8 +49,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     private int oldCrumb = -1;
     private String oldKey;
     private Activity mainActivity;
-    protected String stackId;
-    protected ReadableArray ancestorStackIds;
+    protected String fragmentTag;
+    protected ReadableArray ancestorFragmentTags;
     protected String enterAnim;
     protected String exitAnim;
     protected AnimationPropParser.Animator enterAnimator;
@@ -86,15 +86,18 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             }
         }
         if (fragment == null) {
-            fragment = new StackFragment(this);
             FragmentManager fragmentManager = ((FragmentActivity) currentActivity).getSupportFragmentManager();
-            for (int i = 0; i < ancestorStackIds.size(); i++) {
-                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorStackIds.getString(i));
-                assert ancestorFragment != null : "Ancestor fragment is null";
-                fragmentManager = ancestorFragment.getChildFragmentManager();
+            for (int i = 0; i < ancestorFragmentTags.size(); i++) {
+                Fragment ancestorFragment = fragmentManager.findFragmentByTag(ancestorFragmentTags.getString(i));
+                if (ancestorFragment == null) return;
+                if (!(ancestorFragment instanceof DialogFragmentController dialogFragmentController))
+                    fragmentManager = ancestorFragment.getChildFragmentManager();
+                else
+                    fragmentManager = dialogFragmentController.getSupportFragmentManager();
             }
+            fragment = new StackFragment(this);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(fragment, stackId);
+            transaction.add(fragment, fragmentTag);
             transaction.commitNowAllowingStateLoss();
             fragment.getChildFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
                 @Override
@@ -103,7 +106,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
 
                 @Override
                 public void onBackStackChangeStarted(@NonNull Fragment sceneFragment, boolean pop) {
-                    if (pop && sceneFragment.isRemoving()) {
+                    if (pop && sceneFragment.isRemoving() && sceneFragment instanceof SceneFragment) {
                         int crumb = ((SceneFragment) sceneFragment).getScene().crumb;
                         if (crumb < keys.size()) {
                             ReactContext reactContext = (ReactContext) getContext();
@@ -338,15 +341,15 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         ((ThemedReactContext) getContext()).removeLifecycleEventListener(this);
-        FragmentManager fragmentManager = fragment.getParentFragmentManager();
-        if (fragmentManager.getPrimaryNavigationFragment() == fragment) {
-            FragmentTransaction transaction = fragmentManager
-                .beginTransaction()
-                .setPrimaryNavigationFragment(null);
-            try {
-                transaction.commitNowAllowingStateLoss();
-            } catch(IllegalStateException ignored) {
+        try {
+            FragmentManager fragmentManager = fragment.getParentFragmentManager();
+            if (fragmentManager.getPrimaryNavigationFragment() == fragment) {
+                FragmentTransaction transaction = fragmentManager
+                    .beginTransaction()
+                    .setPrimaryNavigationFragment(null);
+                    transaction.commitNowAllowingStateLoss();
             }
+        } catch(IllegalStateException ignored) {
         }
     }
 
@@ -376,10 +379,13 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
 
     void removeFragment() {
         if (fragment != null) {
-            fragment.getParentFragmentManager()
-                .beginTransaction()
-                .remove(fragment)
-                .commitAllowingStateLoss();
+            try {
+                fragment.getParentFragmentManager()
+                    .beginTransaction()
+                    .remove(fragment)
+                    .commitAllowingStateLoss();
+            } catch(IllegalStateException ignored) {
+            }
         }
     }
 

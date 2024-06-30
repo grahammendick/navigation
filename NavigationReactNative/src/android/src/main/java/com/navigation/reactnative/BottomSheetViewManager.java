@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -50,7 +51,25 @@ public class BottomSheetViewManager extends ViewGroupManager<BottomSheetView> im
     }
 
     @Override
+    public void setFragmentTag(BottomSheetView view, @Nullable String fragmentTag) {
+        view.fragmentTag = fragmentTag;
+    }
+
+    @Override
+    public void setAncestorFragmentTags(BottomSheetView view, @Nullable ReadableArray ancestorFragmentTags) {
+        view.ancestorFragmentTags = ancestorFragmentTags;
+    }
+
+    @Override
     public void setModal(BottomSheetView view, boolean value) {
+    }
+
+    @Override
+    public void setFullScreen(BottomSheetView view, boolean value) {
+    }
+
+    @Override
+    public void setRoot(BottomSheetView view, boolean value) {
     }
 
     @Override

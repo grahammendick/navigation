@@ -19,7 +19,6 @@ using namespace facebook::react;
 @implementation NVTabBarPagerComponentView
 {
     UIPageViewController *_pageViewController;
-    UIPageViewController *_oldPageViewController;
     UIViewController *_selectedTabView;
     NSMutableArray<UIViewController *> *_tabs;
     NSInteger _nativeEventCount;
@@ -33,25 +32,15 @@ using namespace facebook::react;
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const NVTabBarPagerProps>();
         _props = defaultProps;
-    }
-    return self;
-}
-
-- (void)ensurePageViewController
-{
-    if (!_pageViewController) {
-        [_oldPageViewController willMoveToParentViewController:nil];
-        [_oldPageViewController.view removeFromSuperview];
-        [_oldPageViewController removeFromParentViewController];
         _pageViewController = [[UIPageViewController alloc] init];
         [self addSubview:_pageViewController.view];
         _tabs = [[NSMutableArray alloc] init];
     }
+    return self;
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    [self ensurePageViewController];
     const auto &newViewProps = *std::static_pointer_cast<NVTabBarPagerProps const>(props);
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
     _nativeEventCount = MAX(_nativeEventCount, _mostRecentEventCount);
@@ -117,10 +106,10 @@ using namespace facebook::react;
     if (_eventEmitter != nullptr) {
         if (!_jsUpdate) {
             std::static_pointer_cast<NVTabBarPagerEventEmitter const>(_eventEmitter)
-                ->onTabSelected(NVTabBarPagerEventEmitter::OnTabSelected{
-                    .tab = static_cast<int>(index),
-                    .eventCount = static_cast<int>(_nativeEventCount)
-                });
+            ->onTabSelected(NVTabBarPagerEventEmitter::OnTabSelected{
+                .tab = static_cast<int>(index),
+                .eventCount = static_cast<int>(_nativeEventCount)
+            });
         }
         NVTabBarItemComponentView *tabBarItem = ((NVTabBarItemComponentView *) _tabs[index].view);
         [tabBarItem onPress];
@@ -141,24 +130,10 @@ using namespace facebook::react;
     }
 }
 
-- (void)prepareForRecycle
-{
-    [super prepareForRecycle];
-    _oldPageViewController = _pageViewController;
-    _pageViewController = nil;
-    _nativeEventCount = 0;
-    _selectedTabView = nil;
-    _selectedIndex = 0;
-    _selectedTab = 0;
-    _preventFouc = NO;
-    _foucCounter = 0;
-}
-
 #pragma mark - RCTComponentViewProtocol
 
 -(void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
-    [self ensurePageViewController];
     UIViewController *viewController = [[UIViewController alloc] init];
     viewController.view = childComponentView;
     [_tabs insertObject:viewController atIndex:index];
@@ -176,6 +151,11 @@ using namespace facebook::react;
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
   return concreteComponentDescriptorProvider<NVTabBarPagerComponentDescriptor>();
+}
+
++ (BOOL)shouldBeRecycled
+{
+    return NO;
 }
 
 @end

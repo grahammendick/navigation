@@ -1,21 +1,21 @@
-import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect, createContext, useMemo } from 'react';
+import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect, useMemo } from 'react';
 import { Platform, requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
+import FragmentContext from './FragmentContext';
 import PopSync from './PopSync';
 import Scene from './Scene';
 type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, customAnimation: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, sharedElements: any, backgroundColor: any, landscape: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, counter: number, mostRecentEventCount: number};
 
-const StackContext = createContext([]);
 const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, customAnimation = Platform.OS === 'android', crumbStyle: crumbStyleStack = () => null, unmountStyle: unmountStyleStack = () => null,
     hidesTabBar: hidesTabBarStack = () => false, sharedElement: getSharedElementStack = () => null, sharedElements: getSharedElementsStack = () => null, backgroundColor: backgroundColorStack = () => null,
     landscape: landscapeStack = () => null, stackInvalidatedLink, renderScene, children}: NavigationStackProps) => {
     const resumeNavigationRef = useRef(null);
     const ref = useRef(null);
-    const stackId = React.useId?.();
-    const ancestorStackIds = useContext(StackContext);
-    const stackIds = useMemo(() => stackId ? [...ancestorStackIds, stackId] : [], [ancestorStackIds, stackId]);
+    const fragmentTag = React.useId?.();
+    const ancestorFragmentTags = useContext(FragmentContext);
+    const fragmentTags = useMemo(() => fragmentTag ? [...ancestorFragmentTags, fragmentTag] : [], [ancestorFragmentTags, fragmentTag]);
     const {stateNavigator} = useContext(NavigationContext);
     const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0, mostRecentEventCount: 0});
     const scenes = {};
@@ -162,12 +162,12 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     }
     const {crumbs, nextCrumb} = stateNavigator.stateContext;
     return (
-        <StackContext.Provider value={stackIds}>
+        <FragmentContext.Provider value={fragmentTags}>
             <NVNavigationStack
                 ref={ref}
                 keys={keys}
-                stackId={stackId}
-                ancestorStackIds={ancestorStackIds}
+                fragmentTag={fragmentTag}
+                ancestorFragmentTags={ancestorFragmentTags}
                 mostRecentEventCount={mostRecentEventCount}
                 style={styles.stack}
                 {...getAnimation()}
@@ -195,7 +195,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
                     ))}
                 </PopSync>
             </NVNavigationStack>
-        </StackContext.Provider>
+        </FragmentContext.Provider>
     );
 }
 

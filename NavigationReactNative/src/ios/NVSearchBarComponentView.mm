@@ -21,7 +21,6 @@ using namespace facebook::react;
 
 @implementation NVSearchBarComponentView
 {
-    UISearchController *_oldSearchController;
     UIView *_reactSubview;
     UIFont *_font;
     NSInteger _nativeEventCount;
@@ -35,16 +34,6 @@ using namespace facebook::react;
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const NVSearchBarProps>();
         _props = defaultProps;
-    }
-    return self;
-}
-
-- (void)ensureSearchController
-{
-    if (!_searchController) {
-        [_oldSearchController willMoveToParentViewController:nil];
-        [_oldSearchController.view removeFromSuperview];
-        [_oldSearchController removeFromParentViewController];
         NVSearchResultsController *viewController = [[NVSearchResultsController alloc] init];
         self.searchController = [[NVSearchController alloc] initWithSearchResultsController:viewController];
         self.searchController.searchBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
@@ -55,11 +44,11 @@ using namespace facebook::react;
             [weakSelf notifyForBoundsChange:newBounds];
         };
     }
+    return self;
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    [self ensureSearchController];
     const auto &newViewProps = *std::static_pointer_cast<NVSearchBarProps const>(props);
     NSString *text = [[NSString alloc] initWithUTF8String: newViewProps.text.c_str()];
     _fontFamily = [[NSString alloc] initWithUTF8String: newViewProps.fontFamily.c_str()];
@@ -146,10 +135,10 @@ using namespace facebook::react;
     _nativeEventCount++;
     if (_eventEmitter != nullptr) {
         std::static_pointer_cast<NVSearchBarEventEmitter const>(_eventEmitter)
-            ->onChangeText(NVSearchBarEventEmitter::OnChangeText{
-                .text = std::string([_searchController.searchBar.text UTF8String]),
-                .eventCount = static_cast<int>(_nativeEventCount),
-            });
+        ->onChangeText(NVSearchBarEventEmitter::OnChangeText{
+            .text = std::string([_searchController.searchBar.text UTF8String]),
+            .eventCount = static_cast<int>(_nativeEventCount),
+        });
     }
 }
 
@@ -158,10 +147,10 @@ using namespace facebook::react;
     _nativeActiveEventCount++;
     if (_eventEmitter != nullptr) {
         std::static_pointer_cast<NVSearchBarEventEmitter const>(_eventEmitter)
-            ->onChangeActive(NVSearchBarEventEmitter::OnChangeActive{
-                .active = true,
-                .eventCount = static_cast<int>(_nativeActiveEventCount),
-            });
+        ->onChangeActive(NVSearchBarEventEmitter::OnChangeActive{
+            .active = true,
+            .eventCount = static_cast<int>(_nativeActiveEventCount),
+        });
     }
     return YES;
 }
@@ -171,10 +160,10 @@ using namespace facebook::react;
     _nativeActiveEventCount++;
     if (_eventEmitter != nullptr) {
         std::static_pointer_cast<NVSearchBarEventEmitter const>(_eventEmitter)
-            ->onChangeActive(NVSearchBarEventEmitter::OnChangeActive{
-                .active = false,
-                .eventCount = static_cast<int>(_nativeActiveEventCount),
-            });
+        ->onChangeActive(NVSearchBarEventEmitter::OnChangeActive{
+            .active = false,
+            .eventCount = static_cast<int>(_nativeActiveEventCount),
+        });
     }
 }
 
@@ -182,9 +171,9 @@ using namespace facebook::react;
 {
     if (_eventEmitter != nullptr) {
         std::static_pointer_cast<NVSearchBarEventEmitter const>(_eventEmitter)
-            ->onQuery(NVSearchBarEventEmitter::OnQuery{
-                .text = std::string([searchBar.text UTF8String]),
-            });
+        ->onQuery(NVSearchBarEventEmitter::OnQuery{
+            .text = std::string([searchBar.text UTF8String]),
+        });
     }
 }
 
@@ -193,10 +182,10 @@ using namespace facebook::react;
     _nativeButtonEventCount++;
     if (_eventEmitter != nullptr) {
         std::static_pointer_cast<NVSearchBarEventEmitter const>(_eventEmitter)
-            ->onChangeScopeButton(NVSearchBarEventEmitter::OnChangeScopeButton{
-                .scopeButton = static_cast<int>(selectedScope),
-                .eventCount = static_cast<int>(_nativeButtonEventCount),
-            });
+        ->onChangeScopeButton(NVSearchBarEventEmitter::OnChangeScopeButton{
+            .scopeButton = static_cast<int>(selectedScope),
+            .eventCount = static_cast<int>(_nativeButtonEventCount),
+        });
     }
 }
 
@@ -205,18 +194,6 @@ using namespace facebook::react;
     if (self.searchController.searchBar.text.length == 0 && !_reactSubview.isHidden) {
         _reactSubview.hidden = YES;
     }
-}
-
-- (void)prepareForRecycle
-{
-    [super prepareForRecycle];
-    _state.reset();
-    _nativeEventCount = 0;
-    _nativeActiveEventCount = 0;
-    _nativeButtonEventCount = 0;
-    _oldSearchController = _searchController;
-    _searchController = nil;
-    _reactSubview = nil;
 }
 
 - (void)notifyForBoundsChange:(CGRect)newBounds
@@ -236,7 +213,6 @@ using namespace facebook::react;
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
-    [self ensureSearchController];
     self.searchController.searchResultsController.view = childComponentView;
     _reactSubview = childComponentView;
     [_reactSubview addObserver:self forKeyPath:@"hidden" options:0 context:nil];
@@ -256,7 +232,12 @@ using namespace facebook::react;
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
-  return concreteComponentDescriptorProvider<NVSearchBarComponentDescriptor>();
+    return concreteComponentDescriptorProvider<NVSearchBarComponentDescriptor>();
+}
+
++ (BOOL)shouldBeRecycled
+{
+    return NO;
 }
 
 @end

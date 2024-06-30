@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ReactStylesDiffMap;
@@ -52,6 +53,16 @@ public class BottomSheetDialogViewManager extends ViewGroupManager<BottomSheetDi
         view.pendingDetent = Integer.parseInt(detent);
     }
 
+    @Override
+    public void setFragmentTag(BottomSheetDialogView view, @Nullable String fragmentTag) {
+        view.fragmentTag = fragmentTag;
+    }
+
+    @Override
+    public void setAncestorFragmentTags(BottomSheetDialogView view, @Nullable ReadableArray ancestorFragmentTags) {
+        view.ancestorFragmentTags = ancestorFragmentTags;
+    }
+
     @ReactProp(name = "mostRecentEventCount")
     public void setMostRecentEventCount(BottomSheetDialogView view, int mostRecentEventCount) {
         view.mostRecentEventCount = mostRecentEventCount;
@@ -71,10 +82,10 @@ public class BottomSheetDialogViewManager extends ViewGroupManager<BottomSheetDi
     public void setExpandedOffset(BottomSheetDialogView view, int expandedOffset) {
         int offset = (int) PixelUtil.toPixelFromDIP(expandedOffset);
         view.bottomSheetBehavior.setExpandedOffset(offset);
-        view.sheetView.setExpandedOffset(offset);
-        view.sheetView.requestLayout();
-        if (view.sheetView.getParent() != null)
-            view.sheetView.getParent().requestLayout();
+        view.dialogRootView.setExpandedOffset(offset);
+        view.dialogRootView.requestLayout();
+        if (view.dialogRootView.getParent() != null)
+            view.dialogRootView.getParent().requestLayout();
     }
 
     @ReactProp(name = "fitToContents")
@@ -105,10 +116,10 @@ public class BottomSheetDialogViewManager extends ViewGroupManager<BottomSheetDi
 
     @ReactProp(name = "sheetHeight")
     public void setSheetHeight(BottomSheetDialogView view, double sheetHeight) {
-        view.sheetView.setExpandedHeight(sheetHeight != 0 ? (int) PixelUtil.toPixelFromDIP(sheetHeight) : ViewGroup.LayoutParams.WRAP_CONTENT);
-        view.sheetView.requestLayout();
-        if (view.sheetView.getParent() != null)
-            view.sheetView.getParent().requestLayout();
+        view.dialogRootView.setExpandedHeight(sheetHeight != 0 ? (int) PixelUtil.toPixelFromDIP(sheetHeight) : ViewGroup.LayoutParams.WRAP_CONTENT);
+        view.dialogRootView.requestLayout();
+        if (view.dialogRootView.getParent() != null)
+            view.dialogRootView.getParent().requestLayout();
     }
 
     @Override
@@ -128,28 +139,28 @@ public class BottomSheetDialogViewManager extends ViewGroupManager<BottomSheetDi
 
     @Override
     public void addView(BottomSheetDialogView parent, View child, int index) {
-        parent.sheetView.addView(child, index);
+        parent.dialogRootView.addView(child, index);
     }
 
     @Override
     public void removeViewAt(BottomSheetDialogView parent, int index) {
-        parent.sheetView.removeViewAt(index);
+        parent.dialogRootView.removeViewAt(index);
     }
 
     @Override
     public int getChildCount(BottomSheetDialogView parent) {
-        return parent.sheetView.getChildCount();
+        return parent.dialogRootView.getChildCount();
     }
 
     @Override
     public View getChildAt(BottomSheetDialogView parent, int index) {
-        return parent.sheetView.getChildAt(index);
+        return parent.dialogRootView.getChildAt(index);
     }
 
     @Override
     protected void addEventEmitters(@NonNull ThemedReactContext reactContext, @NonNull BottomSheetDialogView view) {
         super.addEventEmitters(reactContext, view);
-        view.sheetView.eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.getId());
+        view.dialogRootView.eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.getId());
     }
 
     @Nullable

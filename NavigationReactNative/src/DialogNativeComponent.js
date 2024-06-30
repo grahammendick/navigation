@@ -10,15 +10,6 @@ type NativeProps = $ReadOnly<{|
   fragmentTag: string,
   ancestorFragmentTags: $ReadOnlyArray<string>,
   mostRecentEventCount: Int32,
-  peekHeight: Int32,
-  expandedHeight: Int32,
-  expandedOffset: Int32,
-  fitToContents: boolean,
-  halfExpandedRatio?: WithDefault<Float, -1>,
-  hideable: boolean,
-  skipCollapsed: boolean,
-  draggable: boolean,
-  sheetHeight: Double,
   onDismissed: DirectEventHandler<null>,
   onDetentChanged: DirectEventHandler<$ReadOnly<{|
     detent: string,
@@ -27,6 +18,6 @@ type NativeProps = $ReadOnly<{|
 |}>;
 
 export default (codegenNativeComponent<NativeProps>(
-   'NVBottomSheetDialog',
+   'NVDialog',
    {interfaceOnly: true}
 ): HostComponent<NativeProps>);

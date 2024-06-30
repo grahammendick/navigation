@@ -48,14 +48,14 @@ public class NavigationStackViewManager extends ViewGroupManager<NavigationStack
 
     @Override
     @ReactProp(name = "stackId")
-    public void setStackId(NavigationStackView view, @Nullable String stackId) {
-        view.stackId = stackId;
+    public void setFragmentTag(NavigationStackView view, @Nullable String fragmentTag) {
+        view.fragmentTag = fragmentTag;
     }
 
     @Override
     @ReactProp(name = "ancestorStackIds")
-    public void setAncestorStackIds(NavigationStackView view, @Nullable ReadableArray ancestorStackIds) {
-        view.ancestorStackIds = ancestorStackIds;
+    public void setAncestorFragmentTags(NavigationStackView view, @Nullable ReadableArray ancestorFragmentTags) {
+        view.ancestorFragmentTags = ancestorFragmentTags;
     }
 
     @ReactProp(name = "enterAnim")

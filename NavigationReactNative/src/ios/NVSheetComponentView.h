@@ -4,7 +4,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NVBottomSheetComponentView : RCTViewComponentView <UISheetPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate>
+@interface NVSheetComponentView : RCTViewComponentView
 
 @end
 

@@ -145,7 +145,7 @@
     if (crumb < currentCrumb) {
         [_navigationController popToViewController:_navigationController.viewControllers[crumb] animated:true];
     }
-    BOOL animate = ![self.enterAnim isEqualToString:@""];
+    BOOL animate = ![self.enterAnim isEqualToString:@""] && [_navigationController.viewControllers count] > 0;
     if (crumb > currentCrumb) {
         NSMutableArray<NVSceneController*> *controllers = [[NSMutableArray alloc] init];
         NVSceneController *prevSceneController = nil;
@@ -304,7 +304,6 @@
         @"eventCount": crumb < [self.keys count] - 1 ? @(_nativeEventCount) : @0
     });
 }
-
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC
 {

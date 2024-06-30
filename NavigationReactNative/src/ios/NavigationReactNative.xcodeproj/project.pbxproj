@@ -45,6 +45,10 @@
 		7032DA6F280D4A0800A3AD1B /* NVBarButtonComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVBarButtonComponentView.h; sourceTree = "<group>"; };
 		7032DA70280DC47A00A3AD1B /* NVLeftBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVLeftBarComponentView.mm; sourceTree = "<group>"; };
 		7032DA72280DC48300A3AD1B /* NVLeftBarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVLeftBarComponentView.h; sourceTree = "<group>"; };
+		7033352D2C2DFC7B00160A73 /* NVDialogComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVDialogComponentView.mm; sourceTree = "<group>"; };
+		7033352E2C2DFCA400160A73 /* NVDialogComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVDialogComponentView.h; sourceTree = "<group>"; };
+		7033352F2C2DFCBD00160A73 /* NVSheetComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVSheetComponentView.mm; sourceTree = "<group>"; };
+		703335302C2DFCC900160A73 /* NVSheetComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSheetComponentView.h; sourceTree = "<group>"; };
 		704B593B22A2AC14008C05C6 /* NVNavigationStackView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVNavigationStackView.m; sourceTree = "<group>"; };
 		704B593D22A2AC20008C05C6 /* NVNavigationStackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVNavigationStackView.h; sourceTree = "<group>"; };
 		704B593F22A2AC3A008C05C6 /* NVNavigationStackManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVNavigationStackManager.m; sourceTree = "<group>"; };
@@ -150,6 +154,10 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				703335302C2DFCC900160A73 /* NVSheetComponentView.h */,
+				7033352F2C2DFCBD00160A73 /* NVSheetComponentView.mm */,
+				7033352E2C2DFCA400160A73 /* NVDialogComponentView.h */,
+				7033352D2C2DFC7B00160A73 /* NVDialogComponentView.mm */,
 				702B00522B932E3E00713302 /* NVSceneTransitioning.h */,
 				702B00512B932E3300713302 /* NVSceneTransitioning.m */,
 				702E38C22AFCFEB70009E0A7 /* NVBottomSheetController.h */,

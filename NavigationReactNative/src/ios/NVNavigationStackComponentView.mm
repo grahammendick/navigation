@@ -27,7 +27,6 @@ using namespace facebook::react;
 {
     NSMutableDictionary *_scenes;
     NSInteger _nativeEventCount;
-    UINavigationController *_oldNavigationController;
     NSMutableArray<NVTransition*> *_enterTransitions;
     NSMutableArray<NVTransition*> *_exitTransitions;
     UIScreenEdgePanGestureRecognizer *_interactiveGestureRecognizer;
@@ -44,16 +43,6 @@ using namespace facebook::react;
         _scenes = [[NSMutableDictionary alloc] init];
         _enterTransitions = [[NSMutableArray alloc] init];
         _exitTransitions = [[NSMutableArray alloc] init];
-    }
-    return self;
-}
-
-- (void)ensureNavigationController
-{
-    if (!_navigationController) {
-        [_oldNavigationController willMoveToParentViewController:nil];
-        [_oldNavigationController.view removeFromSuperview];
-        [_oldNavigationController removeFromParentViewController];
         _navigationController = [[NVStackController alloc] init];
         _navigationController.view.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         _navigationController.navigationBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
@@ -65,11 +54,11 @@ using namespace facebook::react;
         _interactiveGestureRecognizer.edges = ![[RCTI18nUtil sharedInstance] isRTL] ? UIRectEdgeLeft : UIRectEdgeRight;
         [_navigationController.view addGestureRecognizer:_interactiveGestureRecognizer];
     }
+    return self;
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    [self ensureNavigationController];
     const auto &newViewProps = *std::static_pointer_cast<NVNavigationStackProps const>(props);
     NSMutableArray *keysArr = [[NSMutableArray alloc] init];
     for (auto i = 0; i < newViewProps.keys.size(); i++) {
@@ -149,7 +138,7 @@ using namespace facebook::react;
     if (crumb < currentCrumb) {
         [_navigationController popToViewController:_navigationController.viewControllers[crumb] animated:true];
     }
-    BOOL animate = !self.enterAnimOff;
+    BOOL animate = !self.enterAnimOff && [_navigationController.viewControllers count] > 0;
     if (crumb > currentCrumb) {
         NSMutableArray<NVSceneController*> *controllers = [[NSMutableArray alloc] init];
         NVSceneController *prevSceneController = nil;
@@ -342,16 +331,6 @@ using namespace facebook::react;
     return YES;
 }
 
-- (void)prepareForRecycle
-{
-    [super prepareForRecycle];
-    _nativeEventCount = 0;
-    _scenes = [[NSMutableDictionary alloc] init];
-    _oldNavigationController = _navigationController;
-    _navigationController = nil;
-    _navigated = NO;
-}
-
 #pragma mark - RCTComponentViewProtocol
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
@@ -368,6 +347,11 @@ using namespace facebook::react;
 {
     [_scenes removeObjectForKey:((NVSceneComponentView *) childComponentView).sceneKey];
     [childComponentView removeFromSuperview];
+}
+
++ (BOOL)shouldBeRecycled
+{
+  return NO;
 }
 
 @end

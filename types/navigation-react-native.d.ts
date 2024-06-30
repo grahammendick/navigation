@@ -862,63 +862,72 @@ export interface TabBarProps {
 export class TabBar extends Component<TabBarProps> {}
 
 /**
- * Defines the Bottom Sheet Props contract
+ * Defines the Sheet Props contract
  */
-export interface BottomSheetProps {
+export interface SheetProps {
     /**
-     * Indicates whether the bottom sheet disables the scene behind
+     * Indicates whether the sheet disables the scene behind
      */
     modal?: boolean;
     /**
-     * The height of the bottom sheet when it is collapsed
+     * Indicates whether the sheet is a bottom sheet
+     */
+    bottom?: boolean;
+    /**
+     * The height of the sheet when it is collapsed
      */
     peekHeight?: number;
     /**
-     * The height of the bottom sheet when it is expanded
+     * The height of the sheet when it is expanded
      */
     expandedHeight?: number;
     /**
-     * The top offset of the bottom sheet when it is expanded
+     * The top offset of the sheet when it is expanded
      */
     expandedOffset?: number;
     /**
-     * Determines the height of the bottom sheet when it is half expanded
+     * Determines the height of the sheet when it is half expanded
      */
     halfExpandedRatio?: number;
     /**
-     * Indicates whether the bottom sheet can hide when it is swiped down
+     * Indicates whether the sheet can hide when it is swiped down
      */
     hideable?: boolean;
     /**
-     * Indicates whether swipe down hides the bottom sheet after it is expanded
+     * Indicates whether swipe down hides the sheet after it is expanded
      */
     skipCollapsed?: boolean;
     /**
-     * Indicates whether the bottom sheet can be collapsed/expanded by dragging
+     * Indicates whether the sheet can be collapsed/expanded by dragging
      */
     draggable?: boolean;
     /**
-     * The default resting state of the bottom sheet
+     * The default resting state of the sheet
      */
     defaultDetent?: 'hidden' | 'collapsed' | 'halfExpanded' | 'expanded';
     /**
-     * The resting state of the bottom sheet
+     * The resting state of the sheet
      */
     detent?: 'hidden' | 'collapsed' | 'halfExpanded' | 'expanded';
     /**
-     * The bottom sheet content
+     * The sheet content
      */
     children: ReactNode;
     /**
-     * Handles the bottom sheet resting state change events
+     * Handles the sheet resting state change events
      */
     onChangeDetent?: (detent: 'hidden' | 'collapsed' | 'halfExpanded' | 'expanded') => void;
 }
 
 /**
+ * Renders a sheet
+ */
+export class Sheet extends Component<SheetProps> {}
+
+/**
  * Renders a bottom sheet
  */
-export class BottomSheet extends Component<BottomSheetProps> {}
+export class BottomSheet extends Component<Omit<SheetProps, 'bottom'>> {}
 
 /**
  * Defines the Floating Action Button Props contract
