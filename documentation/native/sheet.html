@@ -76,7 +76,7 @@
             </p>
             <h2>Interacting with the Presenting Scene</h2>
             <p>
-                You can also have a non-modal <code>Sheet</code>. The <code>Sheet</code> is 100% native so, on Android, it must be a child of a <code>CoordinatorLayout</code>. In our email example, we make the sheet non-modal so the user can compose a reply while viewing the sender's details. We turn on nested scrolling so that the sheet's content scrolls seamlessly on Android when the user expands it.
+                You can also have a non-modal <code>Sheet</code>. The <code>Sheet</code> is 100% native so, on Android, the non-modal version must be a child of a <code>CoordinatorLayout</code>. In our email example, we make the sheet non-modal so the user can compose a reply while viewing the sender's details. We turn on nested scrolling so that the sheet's content scrolls seamlessly on Android when the user expands it.
             </p>
             <pre><code class="language-jsx">&lt;CoordinatorLayout>
   &lt;Sheet modal={false}>
