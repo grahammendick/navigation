@@ -11,8 +11,8 @@ const nextDirection = {
   west: 'north',
 };
 
-const Stack = ({closeSheet}) => (
-  <NavigationStack>
+const Stack = ({closeSheet, underlayColor = '#000'}) => (
+  <NavigationStack underlayColor={() => underlayColor}>
     <Scene stateKey="north"
       crumbStyle={{ type: 'translate', startY: '-30%' }}
       unmountStyle={{ type: 'translate', startY: '-100%' }}>
@@ -77,7 +77,7 @@ const Direction = ({direction, color, closeSheet}) => {
           </TouchableHighlight>}
           <Sheet detent={detent} onChangeDetent={setDetent} hideable skipCollapsed expandedOffset={100}>
               <NavigationHandler stateNavigator={modalNavigator}>
-                <Stack closeSheet={() => setDetent('hidden')} />
+                <Stack closeSheet={() => setDetent('hidden')} underlayColor='transparent' />
               </NavigationHandler>
           </Sheet>
         </View>
