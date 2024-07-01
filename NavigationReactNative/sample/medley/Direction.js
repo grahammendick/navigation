@@ -1,8 +1,9 @@
 import React, {useState, useContext, useMemo} from 'react';
-import {StyleSheet, Modal, Text, View, TouchableHighlight} from 'react-native';
+import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 import {StateNavigator} from 'navigation';
 import {NavigationContext, NavigationHandler} from 'navigation-react';
-import {NavigationStack, NavigationBar, ModalBackHandler, BarButton, RightBar} from 'navigation-react-native';
+import {NavigationStack, NavigationBar, ModalBackHandler, BarButton, RightBar, Sheet} from 'navigation-react-native';
+import Stack from './Stack';
 
 const nextDirection = {
   north: 'east',
@@ -11,17 +12,10 @@ const nextDirection = {
   west: 'north',
 };
 
-const ModalContext = React.createContext(null);
-
-export default ({direction, color}) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const closeModal = useContext(ModalContext);
+const Direction = ({direction, color, closeSheet}) => {
+  const [detent, setDetent] = useState('hidden');
   const {stateNavigator: {stateContext: {crumbs}}, stateNavigator} = useContext(NavigationContext);
-  const modalNavigator = useMemo(() => {
-    const navigator = new StateNavigator(stateNavigator);
-    navigator.navigate('north');
-    return navigator;
-  }, [modalVisible]);
+  const modalNavigator = useMemo(() => new StateNavigator(stateNavigator), []);
   return (
       <>
         <NavigationBar
@@ -30,12 +24,12 @@ export default ({direction, color}) => {
             <RightBar>
               <BarButton
                 show="always"
-                title={!closeModal ? "Open" : "Close"}
+                title={!closeSheet ? "Open" : "Close"}
                 onPress={() => {
-                  if (!closeModal)
-                    setModalVisible(true)
+                  if (!closeSheet)
+                    setDetent('expanded')
                   else
-                    closeModal();
+                    closeSheet();
                 }} />
             </RightBar>
         </NavigationBar>
@@ -57,26 +51,11 @@ export default ({direction, color}) => {
           }}>
             <Text style={styles.text}>back</Text>
           </TouchableHighlight>}
-          <ModalBackHandler>
-            {handleBack => (
-              <Modal
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                  if (!handleBack())
-                    setModalVisible(false);
-                }}>
-                <ModalContext.Provider value={() => setModalVisible(false)}>
-                  <NavigationHandler stateNavigator={modalNavigator}>
-                    <NavigationStack
-                      underlayColor="rgba(0,0,0,0)"
-                      crumbStyle={(from, state) => state.getCrumbStyle(from)}
-                      unmountStyle={(from, state) => state.getUnmountStyle(from)} />
-                  </NavigationHandler>
-                </ModalContext.Provider>
-              </Modal>
-            )}
-          </ModalBackHandler>
+          <Sheet detent={detent} onChangeDetent={setDetent} hideable skipCollapsed expandedOffset={100}>
+              <NavigationHandler stateNavigator={modalNavigator}>
+                <Stack Direction={Direction} closeSheet={() => setDetent('hidden')} />
+              </NavigationHandler>
+          </Sheet>
         </View>
       </>
   );
@@ -94,3 +73,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export default Direction;
