@@ -2,8 +2,7 @@ import React, {useState, useContext, useMemo} from 'react';
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 import {StateNavigator} from 'navigation';
 import {NavigationContext, NavigationHandler} from 'navigation-react';
-import {NavigationStack, NavigationBar, ModalBackHandler, BarButton, RightBar, Sheet} from 'navigation-react-native';
-import Stack from './Stack';
+import {NavigationStack, Scene, NavigationBar, ModalBackHandler, BarButton, RightBar, Sheet} from 'navigation-react-native';
 
 const nextDirection = {
   north: 'east',
@@ -11,6 +10,31 @@ const nextDirection = {
   south: 'west',
   west: 'north',
 };
+
+const Stack = ({closeSheet}) => (
+  <NavigationStack>
+    <Scene stateKey="north"
+      crumbStyle={{ type: 'translate', startY: '-30%' }}
+      unmountStyle={{ type: 'translate', startY: '-100%' }}>
+      <Direction direction="north" color="blue" closeSheet={closeSheet} />
+    </Scene>
+    <Scene stateKey="east"
+      crumbStyle={{ type: 'translate', startX: '30%' }}
+      unmountStyle={{ type: 'translate', startX: '100%' }}>
+      <Direction direction="east" color="red" closeSheet={closeSheet} />
+    </Scene>
+    <Scene stateKey="south"
+      crumbStyle={{ type: 'translate', startY: '30%' }}
+      unmountStyle={{ type: 'translate', startY: '100%' }}>
+      <Direction direction="south" color="green" closeSheet={closeSheet} />
+    </Scene>
+    <Scene stateKey="west"
+      crumbStyle={{ type: 'translate', startX: '-30%' }}
+      unmountStyle={{ type: 'translate', startX: '-100%' }}>
+      <Direction direction="west" color="black" closeSheet={closeSheet} />
+    </Scene>
+  </NavigationStack>
+);
 
 const Direction = ({direction, color, closeSheet}) => {
   const [detent, setDetent] = useState('hidden');
@@ -53,7 +77,7 @@ const Direction = ({direction, color, closeSheet}) => {
           </TouchableHighlight>}
           <Sheet detent={detent} onChangeDetent={setDetent} hideable skipCollapsed expandedOffset={100}>
               <NavigationHandler stateNavigator={modalNavigator}>
-                <Stack Direction={Direction} closeSheet={() => setDetent('hidden')} />
+                <Stack closeSheet={() => setDetent('hidden')} />
               </NavigationHandler>
           </Sheet>
         </View>
@@ -74,4 +98,5 @@ const styles = StyleSheet.create({
   },
 });
 
+export {Stack};
 export default Direction;

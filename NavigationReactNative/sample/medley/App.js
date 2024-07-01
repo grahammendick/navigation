@@ -2,8 +2,7 @@ import React from 'react';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
 import {NavigationStack} from 'navigation-react-native';
-import Stack from './Stack';
-import Direction from './Direction';
+import {Stack} from './Direction';
 
 const stateNavigator = new StateNavigator([
   {key: 'north', trackCrumbTrail: true},
@@ -14,7 +13,7 @@ const stateNavigator = new StateNavigator([
 
 const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
-    <Stack Direction={Direction} />
+    <Stack />
   </NavigationHandler>
 );
 
