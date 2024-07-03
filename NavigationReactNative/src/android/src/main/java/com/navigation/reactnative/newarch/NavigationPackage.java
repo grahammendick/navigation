@@ -42,7 +42,6 @@ public class NavigationPackage extends TurboReactPackage implements ReactPackage
             new StatusBarViewManager(),
             new TabBarViewManager(),
             new TabBarItemViewManager(),
-            new TabBarPagerItemViewManager(),
             new TabBarPagerViewManager(),
             new TabBarPagerRTLViewManager(),
             new TabLayoutViewManager(),
