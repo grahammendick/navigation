@@ -51,6 +51,7 @@ public class TabBarPagerRTLManager extends ViewGroupManager<ViewPager2> {
             transaction.commitNowAllowingStateLoss();
         }
         final TabBarPagerRTLAdapter tabBarPagerAdapter = new TabBarPagerRTLAdapter(fragment);
+        tabBarPager.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         tabBarPager.setAdapter(tabBarPagerAdapter);
         tabBarPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
