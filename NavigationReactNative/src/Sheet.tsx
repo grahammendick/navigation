@@ -57,6 +57,7 @@ const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOff
         <FragmentContext.Provider value={fragmentTags}>
             <SheetContext.Provider value={sheetHandler}>
                 <SheetView
+                    key={Platform.OS === 'ios' ? `${modal}-${bottom}` : undefined}
                     detent={Platform.OS === 'android' ? '' + detents[sheetState.selectedDetent] : sheetState.selectedDetent}
                     modal={modal}
                     fullScreen={!bottom}

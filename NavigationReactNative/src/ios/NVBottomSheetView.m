@@ -97,6 +97,7 @@
                 }];
             }
         }
+        _nativeEventCount = MAX(_nativeEventCount, _mostRecentEventCount);
         NSInteger eventLag = _nativeEventCount - _mostRecentEventCount;
         UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
         if (![_detent isEqual: @"hidden"]) {
