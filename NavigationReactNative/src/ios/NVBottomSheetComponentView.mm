@@ -119,6 +119,7 @@ using namespace facebook::react;
                 }];
             }
         }
+        _nativeEventCount = MAX(_nativeEventCount, newViewProps.mostRecentEventCount);
         NSInteger eventLag = _nativeEventCount - newViewProps.mostRecentEventCount;
         UISheetPresentationControllerDetentIdentifier newDetent = [_detent isEqual: @"collapsed"] ? [self collapsedIdentifier] : ([_detent isEqual: @"expanded"] ? [self expandedIdentifier] : [self halfExpandedIdentifier]);
         if (![_detent isEqual: @"hidden"]) {
