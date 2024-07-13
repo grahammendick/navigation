@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
         top: 0,
         bottom: 0,
         elevation: 5,
+        backgroundColor: 'transparent',
     }
 });
 

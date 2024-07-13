@@ -10,6 +10,8 @@ import com.facebook.react.uimanager.events.NativeGestureUtil;
 
 public class DrawerLayoutView extends DrawerLayout {
     boolean dragging;
+    private boolean layoutRequested = false;
+
     public DrawerLayoutView(@NonNull Context context) {
         super(context);
     }
@@ -33,4 +35,27 @@ public class DrawerLayoutView extends DrawerLayout {
         }
         return super.onTouchEvent(ev);
     }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        requestLayout();
+    }
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        if (!layoutRequested) {
+            layoutRequested = true;
+            post(measureAndLayout);
+        }
+    }
+
+    private final Runnable measureAndLayout = () -> {
+        layoutRequested = false;
+        measure(
+            MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+        layout(getLeft(), getTop(), getRight(), getBottom());
+    };
 }
