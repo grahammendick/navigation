@@ -31,6 +31,11 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         return new ToolbarView(reactContext);
     }
 
+    @ReactProp(name = "showHome")
+    public void setShowHome(ToolbarView view, boolean showHome) {
+        view.setShowHome(showHome);
+    }
+
     @ReactProp(name = "title")
     public void setTitle(ToolbarView view, String title) {
         view.setPlainTitle(title);

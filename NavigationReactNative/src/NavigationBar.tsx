@@ -32,7 +32,7 @@ class NavigationBar extends React.Component<any, any> {
         }
     }
     render() {
-        var {navigationEvent, bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, backImage, titleCentered, shadowColor, children, onNavigationPress, style = {height: undefined}, ...otherProps} = this.props;
+        var {navigationEvent, actionBar, bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, backImage, titleCentered, shadowColor, children, onNavigationPress, style = {height: undefined}, ...otherProps} = this.props;
         const Material3 = global.__turboModuleProxy != null ? require("./NativeMaterial3Module").default : NativeModules.Material3;
         const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
         var scrollEdgeProps = this.getScrollEdgeProps()
@@ -51,7 +51,8 @@ class NavigationBar extends React.Component<any, any> {
         searchBarTintColor = typeof searchBarTintColor === 'function' ? searchBarTintColor(true) : searchBarTintColor;
         var toolbarTintColor = searchToolbar ? searchBarTintColor : scrollEdgeProps.barTintColor;
         var placeholder = searchBar?.props.placeholder;
-        var crumb = navigationEvent.stateNavigator.stateContext.crumbs.length;
+        var {stateNavigator} = navigationEvent;
+        var crumb = stateNavigator.stateContext.crumbs.length;
         return (
             <>
                 <NVNavigationBar
@@ -75,6 +76,7 @@ class NavigationBar extends React.Component<any, any> {
                             {collapsingBar && collapsingBar.props.children}
                             <Toolbar
                                 logo={Image.resolveAssetSource(logo)}
+                                showHome={!navigationImage && actionBar && crumb > 0}
                                 navigationImage={Image.resolveAssetSource(navigationImage)}
                                 overflowImage={Image.resolveAssetSource(overflowImage)}
                                 pin={!!collapsingBar}
@@ -89,7 +91,10 @@ class NavigationBar extends React.Component<any, any> {
                                 titleCentered={!!titleCentered}
                                 barHeight={!material3 || searchToolbar ? 56 : 64}
                                 navigationDecorative={!onNavigationPress}
-                                onNavigationPress={onNavigationPress}
+                                onNavigationPress={() => {
+                                    if (actionBar && crumb > 0) stateNavigator.navigateBack(1);
+                                    else onNavigationPress();
+                                }}
                                 style={{height: !material3 || searchToolbar ? 56 : 64, margin: searchToolbar ? 16 : undefined}}>
                                 {[
                                     !searchToolbar && childrenArray.find(({type}) => type === TitleBar),

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -79,11 +80,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
             setOverflowIcon(d);
             setTintColor(getOverflowIcon());
         };
-        setNavigationOnClickListener(view -> {
-            ReactContext reactContext = (ReactContext) getContext();
-            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-            eventDispatcher.dispatchEvent(new NavigationPressEvent(getId()));
-        });
+        setNavigationOnClickListener(this::onNavigationClick);
         setOnMenuItemClickListener(item -> {
             for (int i = 0; i < children.size(); i++) {
                 if (children.get(i) instanceof BarButtonView) {
@@ -139,6 +136,20 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
     void setTitleFontSize(Integer titleFontSize) {
         this.titleFontSize = titleFontSize;
         titleChanged = true;
+    }
+
+    void setShowHome(boolean showHome) {
+        AppCompatActivity activity = (AppCompatActivity) ((ReactContext) getContext()).getCurrentActivity();
+        assert activity != null;
+        Drawable navigationIcon = getNavigationIcon();
+        activity.setSupportActionBar(this);
+        assert activity.getSupportActionBar() != null;
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(showHome);
+        activity.setSupportActionBar(null);
+        setNavigationOnClickListener(this::onNavigationClick);
+        if (navigationIcon != null) setNavigationIcon(navigationIcon);
+        setTintColor(getNavigationIcon());
+        setTestID();
     }
 
     void setLogoSource(@Nullable ReadableMap source) {
@@ -282,6 +293,12 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
             setTitle(titleSpannable);
             titleChanged = false;
         }
+    }
+
+    private void onNavigationClick(View view) {
+        ReactContext reactContext = (ReactContext) getContext();
+        EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+        eventDispatcher.dispatchEvent(new NavigationPressEvent(getId()));
     }
 
     public void setOnSearchListener(OnSearchListener onSearchListener) {
