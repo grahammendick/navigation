@@ -20,8 +20,6 @@ public class DrawerView extends NavigationView {
     }
 
     @Override
-    public void addView(View child, int index) {
-        if (child instanceof RecyclerView) return;
-        super.addView(child, index);
+    public void addView(View child) {
     }
 }
