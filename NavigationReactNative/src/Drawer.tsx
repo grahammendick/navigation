@@ -22,7 +22,7 @@ const Drawer = ({view, open = false, onChangeOpen, children}) => {
             onChangeOpen={onChangeShow}
             style={styles.drawer}>
             {children}
-            <NVDrawer style={[styles.view, {width: 300}]}>
+            <NVDrawer style={[styles.view]}>
                 {view}
             </NVDrawer>
         </NVDrawerLayout>
@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         bottom: 0,
+        left: 0,
+        right: 64,
         elevation: 5,
         backgroundColor: 'transparent',
     }
