@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { requireNativeComponent, StyleSheet } from 'react-native';
 
-const Drawer = ({view, open = false, onChangeOpen, children}) => {
+const Drawer = ({view, open = false, onChangeOpen, onOpen, onClose, children}) => {
     const [show, setShow] = useState(false);
     const [mostRecentEventCount, setMostRecentEventCount] = useState(0);
     if (open != null && show !== open) setShow(open);
@@ -13,6 +13,8 @@ const Drawer = ({view, open = false, onChangeOpen, children}) => {
             if (!!onChangeOpen)
                 onChangeOpen(newOpen);
         }
+        if (newOpen) onOpen?.();
+        else onClose?.();
         setMostRecentEventCount(mostRecentEventCount);
     }
     return (
