@@ -21,6 +21,7 @@ public class DrawerLayoutView extends DrawerLayout {
     int nativeEventCount;
     int mostRecentEventCount;
     boolean pendingOpen;
+    int gravity;
     boolean dragging;
     private boolean layoutRequested = false;
 
@@ -48,8 +49,8 @@ public class DrawerLayoutView extends DrawerLayout {
     void onAfterUpdateTransaction() {
         int eventLag = nativeEventCount - mostRecentEventCount;
         if (eventLag == 0 && isOpen() != pendingOpen) {
-            if (pendingOpen) openDrawer(Gravity.LEFT);
-            else closeDrawer(Gravity.LEFT);
+            if (pendingOpen) openDrawer(gravity);
+            else closeDrawer(gravity);
         }
     }
 

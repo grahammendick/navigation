@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import android.view.Gravity;
+
 import androidx.annotation.NonNull;
 
 import com.facebook.react.common.MapBuilder;
@@ -19,6 +21,12 @@ public class DrawerLayoutManager extends ViewGroupManager<DrawerLayoutView> {
     @ReactProp(name = "open")
     public void setOpen(DrawerLayoutView view, boolean open) {
         view.pendingOpen = open;
+    }
+
+    @ReactProp(name = "fromRight")
+    public void setFromRight(DrawerLayoutView view, boolean fromRight) {
+        view.gravity = !fromRight ? Gravity.LEFT : Gravity.RIGHT;
+        view.requestLayout();
     }
 
     @ReactProp(name = "mostRecentEventCount")

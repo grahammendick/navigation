@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { requireNativeComponent, StyleSheet } from 'react-native';
 
-const Drawer = ({view, open = false, onChangeOpen, onOpen, onClose, children}) => {
+const Drawer = ({view, open = false, fromRight = false, onChangeOpen, onOpen, onClose, children}) => {
     const [show, setShow] = useState(false);
     const [mostRecentEventCount, setMostRecentEventCount] = useState(0);
     if (open != null && show !== open) setShow(open);
@@ -20,11 +20,12 @@ const Drawer = ({view, open = false, onChangeOpen, onOpen, onClose, children}) =
     return (
         <NVDrawerLayout
             open={open}
+            fromRight={fromRight}
             mostRecentEventCount={mostRecentEventCount}
             onChangeOpen={onChangeShow}
             style={styles.drawer}>
             {children}
-            <NVDrawer style={[styles.view]}>
+            <NVDrawer fromRight={fromRight} style={[styles.view]}>
                 {view}
             </NVDrawer>
         </NVDrawerLayout>
