@@ -2,9 +2,12 @@ package com.navigation.reactnative;
 
 import androidx.annotation.NonNull;
 
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+
+import java.util.Map;
 
 public class DrawerLayoutManager extends ViewGroupManager<DrawerLayoutView> {
     @NonNull
@@ -38,5 +41,12 @@ public class DrawerLayoutManager extends ViewGroupManager<DrawerLayoutView> {
     @Override
     public boolean needsCustomLayoutForChildren() {
         return true;
+    }
+
+    @Override
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+            .put("topChangeOpen", MapBuilder.of("registrationName", "onChangeOpen"))
+            .build();
     }
 }
