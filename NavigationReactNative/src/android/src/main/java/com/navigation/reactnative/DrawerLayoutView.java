@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
@@ -9,11 +10,22 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
 
 public class DrawerLayoutView extends DrawerLayout {
+    int nativeEventCount;
+    int mostRecentEventCount;
+    boolean pendingOpen;
     boolean dragging;
     private boolean layoutRequested = false;
 
     public DrawerLayoutView(@NonNull Context context) {
         super(context);
+    }
+
+    void onAfterUpdateTransaction() {
+        int eventLag = nativeEventCount - mostRecentEventCount;
+        if (eventLag == 0 && isOpen() != pendingOpen) {
+            if (pendingOpen) openDrawer(Gravity.LEFT);
+            else closeDrawer(Gravity.LEFT);
+        }
     }
 
     @Override
