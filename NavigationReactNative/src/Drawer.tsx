@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { requireNativeComponent, StyleSheet } from 'react-native';
 
 const Drawer = ({view, open = false, onChangeOpen, children}) => {
