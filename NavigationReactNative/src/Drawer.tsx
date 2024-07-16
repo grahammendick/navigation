@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { requireNativeComponent, StyleSheet } from 'react-native';
+import BackButton from './BackButton';
 
-const Drawer = ({view, open = false, fromRight = false, onChangeOpen, onOpen, onClose, children}) => {
+const Drawer = ({view, open, fromRight = false, onChangeOpen, onOpen, onClose, children}) => {
     const [show, setShow] = useState(false);
     const [mostRecentEventCount, setMostRecentEventCount] = useState(0);
     if (open != null && show !== open) setShow(open);
@@ -18,17 +19,29 @@ const Drawer = ({view, open = false, fromRight = false, onChangeOpen, onOpen, on
         setMostRecentEventCount(mostRecentEventCount);
     }
     return (
-        <NVDrawerLayout
-            open={open}
-            fromRight={fromRight}
-            mostRecentEventCount={mostRecentEventCount}
-            onChangeOpen={onChangeShow}
-            style={styles.drawer}>
-            {children}
-            <NVDrawer fromRight={fromRight} style={[styles.view]}>
-                {view}
-            </NVDrawer>
-        </NVDrawerLayout>
+        <>
+            <BackButton onPress={() => {
+                if (show) {
+                    if (open == null)
+                        setShow(false);
+                    if (!!onChangeOpen)
+                        onChangeOpen(false);
+                    return true;
+                }
+                return false;
+            }} />
+            <NVDrawerLayout
+                open={show}
+                fromRight={fromRight}
+                mostRecentEventCount={mostRecentEventCount}
+                onChangeOpen={onChangeShow}
+                style={styles.drawer}>
+                {children}
+                <NVDrawer fromRight={fromRight} style={[styles.view]}>
+                    {view}
+                </NVDrawer>
+            </NVDrawerLayout>
+        </>
     );
 };
 
