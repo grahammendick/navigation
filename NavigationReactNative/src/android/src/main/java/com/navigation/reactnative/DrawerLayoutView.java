@@ -78,6 +78,8 @@ public class DrawerLayoutView extends DrawerLayout implements ToolbarDrawerView 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        if (toolbarDrawerToggle != null)
+            toolbarDrawerToggle.syncState();
         ViewParent parent = this;
         while(parent != null) {
             parent = parent.getParent();
