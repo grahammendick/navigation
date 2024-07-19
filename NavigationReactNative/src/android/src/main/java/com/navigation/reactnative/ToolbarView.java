@@ -143,13 +143,11 @@ public class ToolbarView extends MaterialToolbar implements ActionView, ToolbarD
     void setShowHome(boolean showHome) {
         AppCompatActivity activity = (AppCompatActivity) ((ReactContext) getContext()).getCurrentActivity();
         assert activity != null;
-        Drawable navigationIcon = getNavigationIcon();
         activity.setSupportActionBar(this);
         assert activity.getSupportActionBar() != null;
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(showHome);
         activity.setSupportActionBar(null);
         setNavigationOnClickListener(this::onNavigationClick);
-        if (navigationIcon != null) setNavigationIcon(navigationIcon);
         setTintColor(getNavigationIcon());
         setTestID();
     }

@@ -56,12 +56,12 @@ public class SceneView extends ReactViewGroup {
 
     protected void setToolbar(Toolbar toolbar) {
         this.toolbar = new WeakReference<>(toolbar);
-        this.createToolbarDrawerToggle();
+        createToolbarDrawerToggle();
     }
 
     protected void setDrawer(DrawerLayoutView drawer) {
         this.drawer = new WeakReference<>(drawer);
-        this.createToolbarDrawerToggle();
+        createToolbarDrawerToggle();
     }
 
     private void createToolbarDrawerToggle() {
@@ -69,12 +69,10 @@ public class SceneView extends ReactViewGroup {
             Toolbar toolbarView = toolbar.get();
             DrawerLayoutView drawerView = drawer.get();
             if (toolbarView != null && drawerView != null) {
-                Drawable navigationIcon = toolbarView.getNavigationIcon();
                 Activity activity = ((ReactContext) getContext()).getCurrentActivity();
                 ActionBarDrawerToggle toolbarDrawerToggle = new ActionBarDrawerToggle(activity, drawerView, toolbarView, 0, 0);
                 toolbarDrawerToggle.setDrawerIndicatorEnabled(true);
                 toolbarDrawerToggle.syncState();
-                if (navigationIcon != null) toolbarView.setNavigationIcon(navigationIcon);
                 ((ToolbarDrawerView) toolbarView).handleToggle(toolbarDrawerToggle);
                 drawerView.handleToggle(toolbarDrawerToggle);
             }
