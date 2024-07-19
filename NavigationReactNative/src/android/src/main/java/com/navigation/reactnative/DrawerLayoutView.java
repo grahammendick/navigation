@@ -1,11 +1,12 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewParent;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.facebook.react.bridge.Arguments;
@@ -17,13 +18,14 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
-public class DrawerLayoutView extends DrawerLayout {
+public class DrawerLayoutView extends DrawerLayout implements ToolbarDrawerView {
     int nativeEventCount;
     int mostRecentEventCount;
     boolean pendingOpen;
     int gravity;
     boolean dragging;
     private boolean layoutRequested = false;
+    ActionBarDrawerToggle toolbarDrawerToggle;
 
     public DrawerLayoutView(@NonNull Context context) {
         super(context);
@@ -34,6 +36,8 @@ public class DrawerLayoutView extends DrawerLayout {
                 ReactContext reactContext = (ReactContext) getContext();
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
                 eventDispatcher.dispatchEvent(new DrawerLayoutView.ChangeOpenEvent(getId(), true, nativeEventCount));
+                if (toolbarDrawerToggle != null)
+                    toolbarDrawerToggle.onDrawerOpened(drawerView);
             }
 
             @Override
@@ -42,6 +46,23 @@ public class DrawerLayoutView extends DrawerLayout {
                 ReactContext reactContext = (ReactContext) getContext();
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
                 eventDispatcher.dispatchEvent(new DrawerLayoutView.ChangeOpenEvent(getId(), false, nativeEventCount));
+                if (toolbarDrawerToggle != null)
+                    toolbarDrawerToggle.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+                if (toolbarDrawerToggle != null)
+                    toolbarDrawerToggle.onDrawerSlide(drawerView, slideOffset);
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                super.onDrawerStateChanged(newState);
+                if (toolbarDrawerToggle != null)
+                    toolbarDrawerToggle.onDrawerStateChanged(newState);
             }
         });
     }
@@ -57,6 +78,14 @@ public class DrawerLayoutView extends DrawerLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        ViewParent parent = this;
+        while(parent != null) {
+            parent = parent.getParent();
+            if (parent instanceof SceneView sceneView) {
+                sceneView.setDrawer(this);
+                parent = null;
+            }
+        }
         requestLayout();
     }
 
@@ -95,6 +124,11 @@ public class DrawerLayoutView extends DrawerLayout {
             dragging = false;
         }
         return super.onTouchEvent(ev);
+    }
+
+    @Override
+    public void handleToggle(ActionBarDrawerToggle toolbarDrawerToggle) {
+        this.toolbarDrawerToggle = toolbarDrawerToggle;
     }
 
     static class ChangeOpenEvent extends Event<DrawerLayoutView.ChangeOpenEvent> {

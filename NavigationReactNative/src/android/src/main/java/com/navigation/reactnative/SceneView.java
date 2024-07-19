@@ -3,9 +3,11 @@ package com.navigation.reactnative;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.view.View;
-import android.view.animation.Animation;
+import android.graphics.drawable.Drawable;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.transition.Transition;
 
 import com.facebook.react.bridge.Arguments;
@@ -16,6 +18,7 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
 
+import java.lang.ref.WeakReference;
 import java.util.HashSet;
 
 public class SceneView extends ReactViewGroup {
@@ -30,6 +33,8 @@ public class SceneView extends ReactViewGroup {
     private boolean landscape;
     public final HashSet<SharedElementView> sharedElements = new HashSet<>();
     public SharedElementMotion sharedElementMotion;
+    private WeakReference<Toolbar> toolbar;
+    private WeakReference<DrawerLayoutView> drawer;
 
     public SceneView(Context context) {
         super(context);
@@ -47,6 +52,33 @@ public class SceneView extends ReactViewGroup {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         setOrientation();
+    }
+
+    protected void setToolbar(Toolbar toolbar) {
+        this.toolbar = new WeakReference<>(toolbar);
+        this.createToolbarDrawerToggle();
+    }
+
+    protected void setDrawer(DrawerLayoutView drawer) {
+        this.drawer = new WeakReference<>(drawer);
+        this.createToolbarDrawerToggle();
+    }
+
+    private void createToolbarDrawerToggle() {
+        if (toolbar != null && drawer != null) {
+            Toolbar toolbarView = toolbar.get();
+            DrawerLayoutView drawerView = drawer.get();
+            if (toolbarView != null && drawerView != null) {
+                Drawable navigationIcon = toolbarView.getNavigationIcon();
+                Activity activity = ((ReactContext) getContext()).getCurrentActivity();
+                ActionBarDrawerToggle toolbarDrawerToggle = new ActionBarDrawerToggle(activity, drawerView, toolbarView, 0, 0);
+                toolbarDrawerToggle.setDrawerIndicatorEnabled(true);
+                toolbarDrawerToggle.syncState();
+                if (navigationIcon != null) toolbarView.setNavigationIcon(navigationIcon);
+                ((ToolbarDrawerView) toolbarView).handleToggle(toolbarDrawerToggle);
+                drawerView.handleToggle(toolbarDrawerToggle);
+            }
+        }
     }
 
     private void setOrientation() {

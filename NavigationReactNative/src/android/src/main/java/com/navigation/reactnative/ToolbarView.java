@@ -14,11 +14,13 @@ import android.text.style.TypefaceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -40,7 +42,7 @@ import com.facebook.react.views.text.ReactFontManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ToolbarView extends MaterialToolbar implements ActionView {
+public class ToolbarView extends MaterialToolbar implements ActionView, ToolbarDrawerView {
     private MenuItem searchMenuItem;
     private String title;
     private String titleFontFamily;
@@ -295,6 +297,20 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
         }
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        // check if autoNavigation
+        ViewParent parent = this;
+        while(parent != null) {
+            parent = parent.getParent();
+            if (parent instanceof SceneView sceneView) {
+                sceneView.setToolbar(this);
+                parent = null;
+            }
+        }
+    }
+
     private void onNavigationClick(View view) {
         ReactContext reactContext = (ReactContext) getContext();
         EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
@@ -338,6 +354,12 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
             MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
         layout(getLeft(), getTop(), getRight(), getBottom());
     };
+
+    @Override
+    public void handleToggle(ActionBarDrawerToggle toolbarDrawerToggle) {
+        setTintColor(getNavigationIcon());
+        setTestID();
+    }
 
     static class NavigationPressEvent extends Event<ToolbarView.NavigationPressEvent> {
         public NavigationPressEvent(int viewId) {
