@@ -78,6 +78,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView, ToolbarD
         };
         navIconResolverListener = d -> {
             if (!autoNavigation) {
+                navigationIcon = d;
                 setNavigationIcon(d);
                 setTintColor(getNavigationIcon());
                 setTestID();
