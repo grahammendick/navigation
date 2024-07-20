@@ -18,14 +18,14 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
-public class DrawerLayoutView extends DrawerLayout implements ToolbarDrawerView {
+public class DrawerLayoutView extends DrawerLayout implements DrawerToggleHandler {
     int nativeEventCount;
     int mostRecentEventCount;
     boolean pendingOpen;
     int gravity;
     boolean dragging;
     private boolean layoutRequested = false;
-    ActionBarDrawerToggle toolbarDrawerToggle;
+    ActionBarDrawerToggle drawerToggle;
 
     public DrawerLayoutView(@NonNull Context context) {
         super(context);
@@ -36,8 +36,8 @@ public class DrawerLayoutView extends DrawerLayout implements ToolbarDrawerView 
                 ReactContext reactContext = (ReactContext) getContext();
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
                 eventDispatcher.dispatchEvent(new DrawerLayoutView.ChangeOpenEvent(getId(), true, nativeEventCount));
-                if (toolbarDrawerToggle != null)
-                    toolbarDrawerToggle.onDrawerOpened(drawerView);
+                if (drawerToggle != null)
+                    drawerToggle.onDrawerOpened(drawerView);
             }
 
             @Override
@@ -46,29 +46,29 @@ public class DrawerLayoutView extends DrawerLayout implements ToolbarDrawerView 
                 ReactContext reactContext = (ReactContext) getContext();
                 EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
                 eventDispatcher.dispatchEvent(new DrawerLayoutView.ChangeOpenEvent(getId(), false, nativeEventCount));
-                if (toolbarDrawerToggle != null)
-                    toolbarDrawerToggle.onDrawerClosed(drawerView);
+                if (drawerToggle != null)
+                    drawerToggle.onDrawerClosed(drawerView);
             }
 
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-                if (toolbarDrawerToggle != null)
-                    toolbarDrawerToggle.onDrawerSlide(drawerView, slideOffset);
+                if (drawerToggle != null)
+                    drawerToggle.onDrawerSlide(drawerView, slideOffset);
 
             }
 
             @Override
             public void onDrawerStateChanged(int newState) {
                 super.onDrawerStateChanged(newState);
-                if (toolbarDrawerToggle != null)
-                    toolbarDrawerToggle.onDrawerStateChanged(newState);
+                if (drawerToggle != null)
+                    drawerToggle.onDrawerStateChanged(newState);
             }
         });
     }
 
     void onAfterUpdateTransaction() {
-        setupDrawerToggle();
+        registerDrawerToggleHandler();
         int eventLag = nativeEventCount - mostRecentEventCount;
         if (eventLag == 0 && isOpen() != pendingOpen) {
             if (pendingOpen) openDrawer(gravity);
@@ -79,18 +79,18 @@ public class DrawerLayoutView extends DrawerLayout implements ToolbarDrawerView 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (toolbarDrawerToggle != null)
-            toolbarDrawerToggle.syncState();
-        setupDrawerToggle();
+        if (drawerToggle != null)
+            drawerToggle.syncState();
+        registerDrawerToggleHandler();
         requestLayout();
     }
 
-    private void setupDrawerToggle() {
+    private void registerDrawerToggleHandler() {
         ViewParent parent = this;
         while(parent != null) {
             parent = parent.getParent();
             if (parent instanceof SceneView sceneView) {
-                sceneView.setDrawer(this);
+                sceneView.registerDrawerToggleHandler(this);
                 parent = null;
             }
         }
@@ -134,8 +134,8 @@ public class DrawerLayoutView extends DrawerLayout implements ToolbarDrawerView 
     }
 
     @Override
-    public void handleToggle(ActionBarDrawerToggle toolbarDrawerToggle) {
-        this.toolbarDrawerToggle = toolbarDrawerToggle;
+    public void initDrawerToggle(ActionBarDrawerToggle drawerToggle) {
+        this.drawerToggle = drawerToggle;
     }
 
     static class ChangeOpenEvent extends Event<DrawerLayoutView.ChangeOpenEvent> {

@@ -42,7 +42,7 @@ import com.facebook.react.views.text.ReactFontManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ToolbarView extends MaterialToolbar implements ActionView, ToolbarDrawerView {
+public class ToolbarView extends MaterialToolbar implements ActionView, DrawerToggleHandler {
     private MenuItem searchMenuItem;
     int crumb;
     boolean autoNavigation;
@@ -278,7 +278,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView, ToolbarD
                 activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 activity.setSupportActionBar(null);
             }
-            setupDrawerToggle();
+            registerDrawerToggleHandler();
         } else {
             setNavigationIcon(navigationIcon);
         }
@@ -310,15 +310,15 @@ public class ToolbarView extends MaterialToolbar implements ActionView, ToolbarD
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (autoNavigation) setupDrawerToggle();
+        if (autoNavigation) registerDrawerToggleHandler();
     }
 
-    private void setupDrawerToggle() {
+    private void registerDrawerToggleHandler() {
         ViewParent parent = this;
         while(parent != null) {
             parent = parent.getParent();
             if (parent instanceof SceneView sceneView) {
-                sceneView.setToolbar(this);
+                sceneView.registerDrawerToggleHandler(this);
                 parent = null;
             }
         }
@@ -369,7 +369,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView, ToolbarD
     };
 
     @Override
-    public void handleToggle(ActionBarDrawerToggle toolbarDrawerToggle) {
+    public void initDrawerToggle(ActionBarDrawerToggle drawerToggle) {
         setTintColor(getNavigationIcon());
         setTestID();
     }

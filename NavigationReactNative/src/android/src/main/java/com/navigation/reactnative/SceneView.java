@@ -52,27 +52,25 @@ public class SceneView extends ReactViewGroup {
         setOrientation();
     }
 
-    protected void setToolbar(Toolbar toolbar) {
-        this.toolbar = new WeakReference<>(toolbar);
-        createToolbarDrawerToggle();
+    protected void registerDrawerToggleHandler(DrawerToggleHandler drawerToggleHandler) {
+        if (drawerToggleHandler instanceof Toolbar toolbarView)
+            this.toolbar = new WeakReference<>(toolbarView);
+        if (drawerToggleHandler instanceof DrawerLayoutView drawerView)
+            this.drawer = new WeakReference<>(drawerView);
+        initDrawerToggle();
     }
 
-    protected void setDrawer(DrawerLayoutView drawer) {
-        this.drawer = new WeakReference<>(drawer);
-        createToolbarDrawerToggle();
-    }
-
-    private void createToolbarDrawerToggle() {
+    private void initDrawerToggle() {
         if (toolbar != null && drawer != null) {
             Toolbar toolbarView = toolbar.get();
             DrawerLayoutView drawerView = drawer.get();
             if (toolbarView != null && drawerView != null) {
                 Activity activity = ((ReactContext) getContext()).getCurrentActivity();
-                ActionBarDrawerToggle toolbarDrawerToggle = new ActionBarDrawerToggle(activity, drawerView, toolbarView, 0, 0);
-                toolbarDrawerToggle.setDrawerIndicatorEnabled(true);
-                toolbarDrawerToggle.syncState();
-                ((ToolbarDrawerView) toolbarView).handleToggle(toolbarDrawerToggle);
-                drawerView.handleToggle(toolbarDrawerToggle);
+                ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(activity, drawerView, toolbarView, 0, 0);
+                drawerToggle.setDrawerIndicatorEnabled(true);
+                drawerToggle.syncState();
+                ((DrawerToggleHandler) toolbarView).initDrawerToggle(drawerToggle);
+                drawerView.initDrawerToggle(drawerToggle);
             }
         }
     }
