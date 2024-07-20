@@ -31,9 +31,14 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
         return new ToolbarView(reactContext);
     }
 
-    @ReactProp(name = "showHome")
-    public void setShowHome(ToolbarView view, boolean showHome) {
-        view.setShowHome(showHome);
+    @ReactProp(name = "crumb")
+    public void setCrumb(ToolbarView view, int crumb) {
+        view.crumb = crumb;
+    }
+
+    @ReactProp(name = "autoNavigation")
+    public void setAutoNavigation(ToolbarView view, boolean autoNavigation) {
+        view.autoNavigation = autoNavigation;
     }
 
     @ReactProp(name = "title")
@@ -168,7 +173,7 @@ public class ToolbarManager extends ViewGroupManager<ToolbarView> {
     @Override
     protected void onAfterUpdateTransaction(@NonNull ToolbarView view) {
         super.onAfterUpdateTransaction(view);
-        view.styleTitle();
+        view.onAfterUpdateTransaction();
     }
 
     @Override

@@ -75,9 +75,10 @@ class NavigationBar extends React.Component<any, any> {
                             {...(collapsingBar && collapsingBar.props)}>
                             {collapsingBar && collapsingBar.props.children}
                             <Toolbar
+                                crumb={crumb}
+                                autoNavigation={autoNavigation}
                                 logo={Image.resolveAssetSource(logo)}
-                                showHome={autoNavigation && crumb > 0}
-                                navigationImage={!autoNavigation ? Image.resolveAssetSource(navigationImage) : undefined}
+                                navigationImage={Image.resolveAssetSource(navigationImage)}
                                 overflowImage={Image.resolveAssetSource(overflowImage)}
                                 pin={!!collapsingBar}
                                 {...otherProps}

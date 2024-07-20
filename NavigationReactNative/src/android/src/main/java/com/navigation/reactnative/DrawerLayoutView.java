@@ -68,6 +68,7 @@ public class DrawerLayoutView extends DrawerLayout implements ToolbarDrawerView 
     }
 
     void onAfterUpdateTransaction() {
+        setupDrawerToggle();
         int eventLag = nativeEventCount - mostRecentEventCount;
         if (eventLag == 0 && isOpen() != pendingOpen) {
             if (pendingOpen) openDrawer(gravity);
@@ -80,6 +81,11 @@ public class DrawerLayoutView extends DrawerLayout implements ToolbarDrawerView 
         super.onAttachedToWindow();
         if (toolbarDrawerToggle != null)
             toolbarDrawerToggle.syncState();
+        setupDrawerToggle();
+        requestLayout();
+    }
+
+    private void setupDrawerToggle() {
         ViewParent parent = this;
         while(parent != null) {
             parent = parent.getParent();
@@ -88,7 +94,6 @@ public class DrawerLayoutView extends DrawerLayout implements ToolbarDrawerView 
                 parent = null;
             }
         }
-        requestLayout();
     }
 
     @Override

@@ -44,6 +44,8 @@ import java.util.HashMap;
 
 public class ToolbarView extends MaterialToolbar implements ActionView, ToolbarDrawerView {
     private MenuItem searchMenuItem;
+    int crumb;
+    boolean autoNavigation;
     private String title;
     private String titleFontFamily;
     private String titleFontWeight;
@@ -55,6 +57,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView, ToolbarD
     private OnSearchListener onSearchAddedListener;
     final int defaultTitleTextColor;
     final Drawable defaultOverflowIcon;
+    private Drawable navigationIcon;
     private Integer defaultMenuTintColor;
     private String navigationTestID;
     private String overflowTestID;
@@ -74,9 +77,13 @@ public class ToolbarView extends MaterialToolbar implements ActionView, ToolbarD
             setTintColor(getLogo());
         };
         navIconResolverListener = d -> {
-            setNavigationIcon(d);
-            setTintColor(getNavigationIcon());
-            setTestID();
+            if (!autoNavigation) {
+                setNavigationIcon(d);
+                setTintColor(getNavigationIcon());
+                setTestID();
+            } else {
+                navigationIcon = d;
+            }
         };
         overflowIconResolverListener = d -> {
             setOverflowIcon(d);
@@ -85,8 +92,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView, ToolbarD
         setNavigationOnClickListener(this::onNavigationClick);
         setOnMenuItemClickListener(item -> {
             for (int i = 0; i < children.size(); i++) {
-                if (children.get(i) instanceof BarButtonView) {
-                    BarButtonView barButtonView = (BarButtonView) children.get(i);
+                if (children.get(i) instanceof BarButtonView barButtonView) {
                     if (barButtonView.getMenuItem() != item)
                         barButtonView.getMenuItem().collapseActionView();
                     else
@@ -138,18 +144,6 @@ public class ToolbarView extends MaterialToolbar implements ActionView, ToolbarD
     void setTitleFontSize(Integer titleFontSize) {
         this.titleFontSize = titleFontSize;
         titleChanged = true;
-    }
-
-    void setShowHome(boolean showHome) {
-        AppCompatActivity activity = (AppCompatActivity) ((ReactContext) getContext()).getCurrentActivity();
-        assert activity != null;
-        activity.setSupportActionBar(this);
-        assert activity.getSupportActionBar() != null;
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(showHome);
-        activity.setSupportActionBar(null);
-        setNavigationOnClickListener(this::onNavigationClick);
-        setTintColor(getNavigationIcon());
-        setTestID();
     }
 
     void setLogoSource(@Nullable ReadableMap source) {
@@ -272,7 +266,24 @@ public class ToolbarView extends MaterialToolbar implements ActionView, ToolbarD
         }
     }
 
-    void styleTitle() {
+    void onAfterUpdateTransaction() {
+        AppCompatActivity activity = (AppCompatActivity) ((ReactContext) getContext()).getCurrentActivity();
+        assert activity != null;
+        if (autoNavigation) {
+            if (crumb > 0) {
+                setNavigationIcon(null);
+                activity.setSupportActionBar(this);
+                assert activity.getSupportActionBar() != null;
+                activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                activity.setSupportActionBar(null);
+            }
+            setupDrawerToggle();
+        } else {
+            setNavigationIcon(navigationIcon);
+        }
+        setNavigationOnClickListener(this::onNavigationClick);
+        setTintColor(getNavigationIcon());
+        setTestID();
         if (titleChanged) {
             SpannableString titleSpannable = null;
             if (title != null) {
@@ -298,7 +309,10 @@ public class ToolbarView extends MaterialToolbar implements ActionView, ToolbarD
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        // check if autoNavigation
+        if (autoNavigation) setupDrawerToggle();
+    }
+
+    private void setupDrawerToggle() {
         ViewParent parent = this;
         while(parent != null) {
             parent = parent.getParent();
