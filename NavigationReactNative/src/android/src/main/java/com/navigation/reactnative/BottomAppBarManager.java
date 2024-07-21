@@ -28,6 +28,16 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
         return new BottomAppBarView(reactContext);
     }
 
+    @ReactProp(name = "crumb")
+    public void setCrumb(BottomAppBarView view, int crumb) {
+        view.crumb = crumb;
+    }
+
+    @ReactProp(name = "autoNavigation")
+    public void setAutoNavigation(BottomAppBarView view, boolean autoNavigation) {
+        view.autoNavigation = autoNavigation;
+    }
+
     @ReactProp(name = "navigationImage")
     public void setNavIcon(BottomAppBarView view, ReadableMap navIcon) {
         view.setNavIconSource(navIcon);
@@ -122,7 +132,7 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
     @Override
     protected void onAfterUpdateTransaction(@NonNull BottomAppBarView view) {
         super.onAfterUpdateTransaction(view);
-        view.setFabAlignmentMode(view.fabAlignmentMode);
+        view.onAfterUpdateTransaction();
     }
 
     @Override

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -36,9 +37,12 @@ import java.util.HashMap;
 
 public class BottomAppBarView extends BottomAppBar implements ActionView {
     private MenuItem searchMenuItem;
+    int crumb;
+    boolean autoNavigation;
     private Integer tintColor;
     final int defaultBackgroundColor;
     final Drawable defaultOverflowIcon;
+    private Drawable navigationIcon;
     int fabAlignmentMode;
     int defaultFabAlignmentMode;
     int defaultFabAnimationMode;
@@ -71,9 +75,12 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
         navIconResolverListener = new IconResolver.IconResolverListener() {
             @Override
             public void setDrawable(Drawable d) {
-                setNavigationIcon(d);
-                setTintColor(getNavigationIcon());
-                setTestID();
+                navigationIcon = d;
+                if (!autoNavigation) {
+                    setNavigationIcon(d);
+                    setTintColor(getNavigationIcon());
+                    setTestID();
+                }
             }
         };
         overflowIconResolverListener = new IconResolver.IconResolverListener() {
@@ -83,14 +90,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
                 setTintColor(getOverflowIcon());
             }
         };
-        setNavigationOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ReactContext reactContext = (ReactContext) (getContext() instanceof ReactContext ? getContext() : ((ContextWrapper) getContext()).getBaseContext());
-                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                eventDispatcher.dispatchEvent(new BottomAppBarView.NavigationPressEvent(getId()));
-            }
-        });
+        setNavigationOnClickListener(this::onNavigationClick);
         setOnMenuItemClickListener(new OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -226,6 +226,32 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
                 }
             }
         }
+    }
+
+    void onAfterUpdateTransaction() {
+        AppCompatActivity activity = (AppCompatActivity) ((ReactContext) getContext()).getCurrentActivity();
+        assert activity != null;
+        if (autoNavigation) {
+            if (crumb > 0) {
+                setNavigationIcon(null);
+                activity.setSupportActionBar(this);
+                assert activity.getSupportActionBar() != null;
+                activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                activity.setSupportActionBar(null);
+            }
+        } else {
+            setNavigationIcon(navigationIcon);
+        }
+        setNavigationOnClickListener(this::onNavigationClick);
+        setTintColor(getNavigationIcon());
+        setTestID();
+        setFabAlignmentMode(fabAlignmentMode);
+    }
+
+    private void onNavigationClick(View view) {
+        ReactContext reactContext = (ReactContext) (getContext() instanceof ReactContext ? getContext() : ((ContextWrapper) getContext()).getBaseContext());
+        EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+        eventDispatcher.dispatchEvent(new BottomAppBarView.NavigationPressEvent(getId()));
     }
 
     public void setOnSearchListener(OnSearchListener onSearchListener) {
