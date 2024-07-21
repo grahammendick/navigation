@@ -10,11 +10,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -35,7 +37,7 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BottomAppBarView extends BottomAppBar implements ActionView {
+public class BottomAppBarView extends BottomAppBar implements ActionView, DrawerToggleHandler {
     private MenuItem searchMenuItem;
     int crumb;
     boolean autoNavigation;
@@ -111,6 +113,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        if (autoNavigation) registerDrawerToggleHandler();
         requestLayout();
     }
 
@@ -239,6 +242,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
                 activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 activity.setSupportActionBar(null);
             }
+            registerDrawerToggleHandler();
         } else {
             setNavigationIcon(navigationIcon);
         }
@@ -248,6 +252,16 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
         setFabAlignmentMode(fabAlignmentMode);
     }
 
+    private void registerDrawerToggleHandler() {
+        ViewParent parent = this;
+        while(parent != null) {
+            parent = parent.getParent();
+            if (parent instanceof SceneView sceneView) {
+                sceneView.registerDrawerToggleHandler(this);
+                parent = null;
+            }
+        }
+    }
     private void onNavigationClick(View view) {
         ReactContext reactContext = (ReactContext) (getContext() instanceof ReactContext ? getContext() : ((ContextWrapper) getContext()).getBaseContext());
         EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
@@ -294,6 +308,12 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
+
+    @Override
+    public void initDrawerToggle(ActionBarDrawerToggle drawerToggle) {
+        setTintColor(getNavigationIcon());
+        setTestID();
+    }
 
     static class NavigationPressEvent extends Event<BottomAppBarView.NavigationPressEvent> {
         public NavigationPressEvent(int viewId) {
