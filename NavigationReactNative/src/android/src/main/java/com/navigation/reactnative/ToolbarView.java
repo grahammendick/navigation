@@ -77,13 +77,11 @@ public class ToolbarView extends MaterialToolbar implements ActionView, DrawerTo
             setTintColor(getLogo());
         };
         navIconResolverListener = d -> {
+            navigationIcon = d;
             if (!autoNavigation) {
-                navigationIcon = d;
                 setNavigationIcon(d);
                 setTintColor(getNavigationIcon());
                 setTestID();
-            } else {
-                navigationIcon = d;
             }
         };
         overflowIconResolverListener = d -> {
