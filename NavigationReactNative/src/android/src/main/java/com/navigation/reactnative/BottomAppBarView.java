@@ -22,7 +22,6 @@ import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
@@ -63,7 +62,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView, Drawer
 
     public BottomAppBarView(@NonNull Context context) {
         super(context, null);
-        ViewCompat.setLayoutDirection(this, !I18nUtil.getInstance().isRTL(context) ? ViewCompat.LAYOUT_DIRECTION_LTR : ViewCompat.LAYOUT_DIRECTION_RTL);
+        setLayoutDirection(!I18nUtil.getInstance().isRTL(context) ? LAYOUT_DIRECTION_LTR : LAYOUT_DIRECTION_RTL);
         defaultBackgroundColor = getBackgroundTint() != null ? getBackgroundTint().getDefaultColor() : Color.WHITE;
         defaultOverflowIcon = getOverflowIcon();
         fabAlignmentMode = defaultFabAlignmentMode = getFabAlignmentMode();
@@ -97,8 +96,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView, Drawer
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 for (int i = 0; i < children.size(); i++) {
-                    if (children.get(i) instanceof BarButtonView) {
-                        BarButtonView barButtonView = (BarButtonView) children.get(i);
+                    if (children.get(i) instanceof BarButtonView barButtonView) {
                         if (barButtonView.getMenuItem() != item)
                             barButtonView.getMenuItem().collapseActionView();
                         else
@@ -158,8 +156,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView, Drawer
         getMenu().clear();
         HashMap<Integer, String> testIDs = new HashMap<>();
         for (int i = 0; i < children.size(); i++) {
-            if (children.get(i) instanceof BarButtonView) {
-                BarButtonView barButton = (BarButtonView) children.get(i);
+            if (children.get(i) instanceof BarButtonView barButton) {
                 MenuItem menuItem = getMenu().add(Menu.NONE, barButton.getId(), i, "");
                 barButton.setMenuItem(menuItem);
                 testIDs.put(barButton.getId(), barButton.testID);
@@ -191,11 +188,9 @@ public class BottomAppBarView extends BottomAppBar implements ActionView, Drawer
 
     private void setMenuTintColor(HashMap<Integer, String> testIDs)  {
         for (int i = 0; i < getChildCount(); i++) {
-            if (getChildAt(i) instanceof ActionMenuView) {
-                ActionMenuView menu = (ActionMenuView) getChildAt(i);
+            if (getChildAt(i) instanceof ActionMenuView menu) {
                 for (int j = 0; j < menu.getChildCount(); j++) {
-                    if (menu.getChildAt(j) instanceof TextView) {
-                        TextView menuItemView = (TextView) menu.getChildAt(j);
+                    if (menu.getChildAt(j) instanceof TextView menuItemView) {
                         if (defaultMenuTintColor == null)
                             defaultMenuTintColor = menuItemView.getCurrentTextColor();
                         menuItemView.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
@@ -219,11 +214,9 @@ public class BottomAppBarView extends BottomAppBar implements ActionView, Drawer
             if (child instanceof AppCompatImageButton) {
                 child.setTag(navigationTestID);
             }
-            if (child instanceof ActionMenuView) {
-                ActionMenuView menu = (ActionMenuView) child;
+            if (child instanceof ActionMenuView menu) {
                 for (int j = 0; j < menu.getChildCount(); j++) {
-                    if (menu.getChildAt(j) instanceof AppCompatImageView) {
-                        AppCompatImageView overflowButton = (AppCompatImageView) menu.getChildAt(j);
+                    if (menu.getChildAt(j) instanceof AppCompatImageView overflowButton) {
                         overflowButton.setTag(overflowTestID);
                     }
                 }
