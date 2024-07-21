@@ -255,6 +255,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView, Drawer
             }
         }
     }
+
     private void onNavigationClick(View view) {
         ReactContext reactContext = (ReactContext) (getContext() instanceof ReactContext ? getContext() : ((ContextWrapper) getContext()).getBaseContext());
         EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
