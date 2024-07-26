@@ -94,7 +94,7 @@ class NavigationBar extends React.Component<any, any> {
                                 navigationDecorative={!onNavigationPress}
                                 onNavigationPress={() => {
                                     if (autoNavigation && crumb > 0) stateNavigator.navigateBack(1);
-                                    else onNavigationPress();
+                                    if (!autoNavigation) onNavigationPress();
                                 }}
                                 style={{height: !material3 || searchToolbar ? 56 : 64, margin: searchToolbar ? 16 : undefined}}>
                                 {[
