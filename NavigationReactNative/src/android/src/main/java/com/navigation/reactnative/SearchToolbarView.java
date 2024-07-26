@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -34,6 +35,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SearchToolbarView extends SearchBar {
+    int crumb;
+    boolean autoNavigation;
+    boolean settingHomeAsUp = false;
     final Drawable defaultBackground;
     private Integer tintColor;
     private Integer defaultMenuTintColor;
@@ -47,7 +51,9 @@ public class SearchToolbarView extends SearchBar {
     private boolean placeholderFontChanged = false;
     private final Typeface defaultTypeface;
     private final float defaultFontSize;
+    boolean navigationDecorative;
     final Drawable defaultNavigationIcon;
+    private Drawable navigationIcon;
     private final IconResolver.IconResolverListener navIconResolverListener;
     private final IconResolver.IconResolverListener overflowIconResolverListener;
     final ArrayList<BarButtonView> children = new ArrayList<>();
@@ -63,12 +69,12 @@ public class SearchToolbarView extends SearchBar {
         defaultOverflowIcon = getOverflowIcon();
         defaultNavigationIcon = getNavigationIcon();
         navIconResolverListener = d -> {
-            if (d != null)
-                setNavigationIcon(d);
-            else
-                setNavigationIcon(defaultNavigationIcon);
-            setTintColor(getNavigationIcon());
-            setTestID();
+            navigationIcon = d != null ? d : defaultNavigationIcon;
+            if (!autoNavigation) {
+                setNavigationIcon(navigationIcon);
+                setTintColor(getNavigationIcon());
+                setTestID();
+            }
         };
         overflowIconResolverListener = d -> {
             setOverflowIcon(d);
@@ -170,6 +176,40 @@ public class SearchToolbarView extends SearchBar {
         setMenuTintColor(testIDs);
         setTestID();
         requestLayout();
+    }
+
+    void onAfterUpdateTransaction() {
+        ReactContext reactContext = (ReactContext) ((ContextWrapper) getContext()).getBaseContext();
+        AppCompatActivity activity = (AppCompatActivity) reactContext.getCurrentActivity();
+        assert activity != null;
+        if (autoNavigation) {
+            if (crumb > 0) {
+                settingHomeAsUp = true;
+                activity.setSupportActionBar(this);
+                assert activity.getSupportActionBar() != null;
+                activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                settingHomeAsUp = false;
+                activity.setSupportActionBar(null);
+                addNavigationListener();
+            } else {
+                setNavigationIcon(defaultNavigationIcon);
+            }
+        } else {
+            setNavigationIcon(navigationIcon);
+            if (!navigationDecorative)
+                addNavigationListener();
+            else
+                setNavigationOnClickListener(null);
+        }
+        setTintColor(getNavigationIcon());
+        setTestID();
+        stylePlaceholder();
+    }
+
+    @Nullable
+    @Override
+    public Drawable getNavigationIcon() {
+        return !settingHomeAsUp ? super.getNavigationIcon() : null;
     }
 
     void addNavigationListener() {

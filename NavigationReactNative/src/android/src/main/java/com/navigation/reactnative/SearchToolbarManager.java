@@ -21,6 +21,16 @@ public class SearchToolbarManager extends ViewGroupManager<SearchToolbarView> {
         return "NVSearchToolbar";
     }
 
+    @ReactProp(name = "crumb")
+    public void setCrumb(SearchToolbarView view, int crumb) {
+        view.crumb = crumb;
+    }
+
+    @ReactProp(name = "autoNavigation")
+    public void setAutoNavigation(SearchToolbarView view, boolean autoNavigation) {
+        view.autoNavigation = autoNavigation;
+    }
+
     @ReactProp(name = "placeholder")
     public void setPlaceholder(SearchToolbarView view, String placeholder) {
         view.setHint(placeholder);
@@ -76,6 +86,7 @@ public class SearchToolbarManager extends ViewGroupManager<SearchToolbarView> {
 
     @ReactProp(name = "navigationDecorative")
     public void setNavigationDecorative(SearchToolbarView view, boolean navigationDecorative) {
+        view.navigationDecorative = navigationDecorative;
         if (!navigationDecorative)
             view.addNavigationListener();
         else
@@ -128,7 +139,7 @@ public class SearchToolbarManager extends ViewGroupManager<SearchToolbarView> {
     @Override
     protected void onAfterUpdateTransaction(@NonNull SearchToolbarView view) {
         super.onAfterUpdateTransaction(view);
-        view.stylePlaceholder();
+        view.onAfterUpdateTransaction();
     }
 
     @Override
