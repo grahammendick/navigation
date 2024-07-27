@@ -53,9 +53,9 @@ public class SceneView extends ReactViewGroup {
     }
 
     protected void registerDrawerToggleHandler(DrawerToggleHandler drawerToggleHandler) {
-        if (drawerToggleHandler instanceof Toolbar toolbarView)
+        if (drawerToggleHandler instanceof Toolbar toolbarView && toolbar == null)
             this.toolbar = new WeakReference<>(toolbarView);
-        if (drawerToggleHandler instanceof DrawerLayoutView drawerView)
+        if (drawerToggleHandler instanceof DrawerLayoutView drawerView && drawer == null)
             this.drawer = new WeakReference<>(drawerView);
         initDrawerToggle();
     }

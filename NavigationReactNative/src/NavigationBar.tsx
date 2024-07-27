@@ -32,7 +32,7 @@ class NavigationBar extends React.Component<any, any> {
         }
     }
     render() {
-        var {navigationEvent, bottomBar, hidden, logo, autoNavigation, navigationImage, overflowImage, backTitle, backImage, titleCentered, shadowColor, children, onNavigationPress, style = {height: undefined}, ...otherProps} = this.props;
+        var {navigationEvent, bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, backImage, titleCentered, shadowColor, children, onNavigationPress, style = {height: undefined}, ...otherProps} = this.props;
         const Material3 = global.__turboModuleProxy != null ? require("./NativeMaterial3Module").default : NativeModules.Material3;
         const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
         var scrollEdgeProps = this.getScrollEdgeProps()
@@ -76,7 +76,7 @@ class NavigationBar extends React.Component<any, any> {
                             {collapsingBar && collapsingBar.props.children}
                             <Toolbar
                                 crumb={crumb}
-                                autoNavigation={autoNavigation}
+                                autoNavigation={!onNavigationPress}
                                 logo={Image.resolveAssetSource(logo)}
                                 navigationImage={Image.resolveAssetSource(navigationImage)}
                                 overflowImage={Image.resolveAssetSource(overflowImage)}
@@ -91,10 +91,10 @@ class NavigationBar extends React.Component<any, any> {
                                 fontSize={searchBar?.props.fontSize}
                                 titleCentered={!!titleCentered}
                                 barHeight={!material3 || searchToolbar ? 56 : 64}
-                                navigationDecorative={!onNavigationPress || autoNavigation}
+                                navigationDecorative={!onNavigationPress}
                                 onNavigationPress={() => {
-                                    if (autoNavigation && crumb > 0) stateNavigator.navigateBack(1);
-                                    else onNavigationPress();
+                                    if (onNavigationPress) onNavigationPress();
+                                    else if (crumb > 0) stateNavigator.navigateBack(1);
                                 }}
                                 style={{height: !material3 || searchToolbar ? 56 : 64, margin: searchToolbar ? 16 : undefined}}>
                                 {[
