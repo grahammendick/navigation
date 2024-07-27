@@ -51,7 +51,6 @@ public class SearchToolbarView extends SearchBar {
     private boolean placeholderFontChanged = false;
     private final Typeface defaultTypeface;
     private final float defaultFontSize;
-    boolean navigationDecorative;
     final Drawable searchDefaultNavigationIcon;
     Drawable defaultNavigationIcon;
     private Drawable navigationIcon;
@@ -191,14 +190,13 @@ public class SearchToolbarView extends SearchBar {
                 defaultNavigationIcon = getNavigationIcon();
                 activity.setSupportActionBar(null);
                 addNavigationListener();
+            } else {
+                setNavigationOnClickListener(null);
             }
         } else {
             defaultNavigationIcon = searchDefaultNavigationIcon;
             setNavigationIcon(navigationIcon != null ? navigationIcon : defaultNavigationIcon);
-            if (!navigationDecorative)
-                addNavigationListener();
-            else
-                setNavigationOnClickListener(null);
+            addNavigationListener();
         }
         setTintColor(getNavigationIcon());
         setTestID();
@@ -231,11 +229,9 @@ public class SearchToolbarView extends SearchBar {
 
     private void setMenuTintColor(HashMap<Integer, String> testIDs)  {
         for (int i = 0; i < getChildCount(); i++) {
-            if (getChildAt(i) instanceof ActionMenuView) {
-                ActionMenuView menu = (ActionMenuView) getChildAt(i);
+            if (getChildAt(i) instanceof ActionMenuView menu) {
                 for (int j = 0; j < menu.getChildCount(); j++) {
-                    if (menu.getChildAt(j) instanceof TextView) {
-                        TextView menuItemView = (TextView) menu.getChildAt(j);
+                    if (menu.getChildAt(j) instanceof TextView menuItemView) {
                         if (defaultMenuTintColor == null)
                             defaultMenuTintColor = menuItemView.getCurrentTextColor();
                         menuItemView.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
@@ -257,11 +253,9 @@ public class SearchToolbarView extends SearchBar {
             if (child instanceof AppCompatImageButton) {
                 child.setTag(navigationTestID);
             }
-            if (child instanceof ActionMenuView) {
-                ActionMenuView menu = (ActionMenuView) child;
+            if (child instanceof ActionMenuView menu) {
                 for (int j = 0; j < menu.getChildCount(); j++) {
-                    if (menu.getChildAt(j) instanceof AppCompatImageView) {
-                        AppCompatImageView overflowButton = (AppCompatImageView) menu.getChildAt(j);
+                    if (menu.getChildAt(j) instanceof AppCompatImageView overflowButton) {
                         overflowButton.setTag(overflowTestID);
                     }
                 }

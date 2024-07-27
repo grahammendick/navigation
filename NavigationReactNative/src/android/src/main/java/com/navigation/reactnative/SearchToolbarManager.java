@@ -84,15 +84,6 @@ public class SearchToolbarManager extends ViewGroupManager<SearchToolbarView> {
         view.setTintColor(tintColor != Integer.MAX_VALUE ? tintColor : null);
     }
 
-    @ReactProp(name = "navigationDecorative")
-    public void setNavigationDecorative(SearchToolbarView view, boolean navigationDecorative) {
-        view.navigationDecorative = navigationDecorative;
-        if (!navigationDecorative)
-            view.addNavigationListener();
-        else
-            view.setNavigationOnClickListener(null);
-    }
-
     @ReactProp(name = "navigationTestID")
     public void setNavigationTestID(SearchToolbarView view, String navigationTestID) {
         view.setNavigationTestID(navigationTestID);

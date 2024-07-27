@@ -91,7 +91,6 @@ class NavigationBar extends React.Component<any, any> {
                                 fontSize={searchBar?.props.fontSize}
                                 titleCentered={!!titleCentered}
                                 barHeight={!material3 || searchToolbar ? 56 : 64}
-                                navigationDecorative={!onNavigationPress}
                                 onNavigationPress={() => {
                                     if (onNavigationPress) onNavigationPress();
                                     else if (crumb > 0) stateNavigator.navigateBack(1);
