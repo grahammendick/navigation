@@ -3,7 +3,7 @@ import { Platform, Image, requireNativeComponent, NativeModules } from 'react-na
 import { NavigationContext } from 'navigation-react';
 import SearchBar from './SearchBar';
 
-const BottomAppBar = ({ autoNavigation, navigationImage, overflowImage, onNavigationPress, children, style, ...props }: any) => {
+const BottomAppBar = ({ navigationImage, overflowImage, onNavigationPress, children, style, ...props }: any) => {
     const navigationEvent = useContext(NavigationContext);
     var {stateNavigator} = navigationEvent;
     var crumb = stateNavigator.stateContext.crumbs.length;
@@ -17,15 +17,15 @@ const BottomAppBar = ({ autoNavigation, navigationImage, overflowImage, onNaviga
         <>
             <NVBottomAppBar
                 crumb={crumb}
-                autoNavigation={autoNavigation}
+                autoNavigation={!onNavigationPress}
                 navigationImage={Image.resolveAssetSource(navigationImage)}
                 overflowImage={Image.resolveAssetSource(overflowImage)}
                 barHeight={!material3 ? 56 : 80}
                 style={{height: !material3 ? 56 : 80}}
                 {...props}
                 onNavigationPress={() => {
-                    if (autoNavigation && crumb > 0) stateNavigator.navigateBack(1);
-                    else onNavigationPress?.();
+                    if (onNavigationPress) onNavigationPress();
+                    else if (crumb > 0) stateNavigator.navigateBack(1);
                 }}>
                 {childrenArray.filter(({type}) => type !== SearchBar)}
             </NVBottomAppBar>
