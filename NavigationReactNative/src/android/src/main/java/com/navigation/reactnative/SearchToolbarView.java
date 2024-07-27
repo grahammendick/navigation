@@ -52,7 +52,8 @@ public class SearchToolbarView extends SearchBar {
     private final Typeface defaultTypeface;
     private final float defaultFontSize;
     boolean navigationDecorative;
-    final Drawable defaultNavigationIcon;
+    final Drawable searchDefaultNavigationIcon;
+    Drawable defaultNavigationIcon;
     private Drawable navigationIcon;
     private final IconResolver.IconResolverListener navIconResolverListener;
     private final IconResolver.IconResolverListener overflowIconResolverListener;
@@ -67,14 +68,12 @@ public class SearchToolbarView extends SearchBar {
         defaultTypeface = getTextView().getTypeface();
         defaultFontSize = PixelUtil.toDIPFromPixel(getTextView().getTextSize());
         defaultOverflowIcon = getOverflowIcon();
-        defaultNavigationIcon = getNavigationIcon();
+        defaultNavigationIcon = searchDefaultNavigationIcon = getNavigationIcon();
         navIconResolverListener = d -> {
-            navigationIcon = d != null ? d : defaultNavigationIcon;
-            if (!autoNavigation) {
-                setNavigationIcon(navigationIcon);
-                setTintColor(getNavigationIcon());
-                setTestID();
-            }
+            navigationIcon = d;
+            setNavigationIcon(d != null ? d : defaultNavigationIcon);
+            setTintColor(getNavigationIcon());
+            setTestID();
         };
         overflowIconResolverListener = d -> {
             setOverflowIcon(d);
@@ -189,13 +188,13 @@ public class SearchToolbarView extends SearchBar {
                 assert activity.getSupportActionBar() != null;
                 activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 settingHomeAsUp = false;
+                defaultNavigationIcon = getNavigationIcon();
                 activity.setSupportActionBar(null);
                 addNavigationListener();
-            } else {
-                setNavigationIcon(defaultNavigationIcon);
             }
         } else {
-            setNavigationIcon(navigationIcon);
+            defaultNavigationIcon = searchDefaultNavigationIcon;
+            setNavigationIcon(navigationIcon != null ? navigationIcon : defaultNavigationIcon);
             if (!navigationDecorative)
                 addNavigationListener();
             else
@@ -209,7 +208,7 @@ public class SearchToolbarView extends SearchBar {
     @Nullable
     @Override
     public Drawable getNavigationIcon() {
-        return !settingHomeAsUp ? super.getNavigationIcon() : null;
+        return (!settingHomeAsUp || super.getNavigationIcon() != defaultNavigationIcon) ? super.getNavigationIcon() : null;
     }
 
     void addNavigationListener() {
