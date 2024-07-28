@@ -78,11 +78,9 @@ public class ToolbarView extends MaterialToolbar implements ActionView, DrawerTo
         };
         navIconResolverListener = d -> {
             navigationIcon = d;
-            if (!autoNavigation) {
-                setNavigationIcon(d);
-                setTintColor(getNavigationIcon());
-                setTestID();
-            }
+            setNavigationIcon(d);
+            setTintColor(getNavigationIcon());
+            setTestID();
         };
         overflowIconResolverListener = d -> {
             setOverflowIcon(d);
@@ -270,17 +268,18 @@ public class ToolbarView extends MaterialToolbar implements ActionView, DrawerTo
         assert activity != null;
         if (autoNavigation) {
             if (crumb > 0) {
-                setNavigationIcon(null);
                 activity.setSupportActionBar(this);
                 assert activity.getSupportActionBar() != null;
                 activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 activity.setSupportActionBar(null);
+                setNavigationOnClickListener(this::onNavigationClick);
+            } else {
+                registerDrawerToggleHandler();
             }
-            registerDrawerToggleHandler();
         } else {
             setNavigationIcon(navigationIcon);
+            setNavigationOnClickListener(this::onNavigationClick);
         }
-        setNavigationOnClickListener(this::onNavigationClick);
         setTintColor(getNavigationIcon());
         setTestID();
         if (titleChanged) {
@@ -308,7 +307,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView, DrawerTo
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (autoNavigation) registerDrawerToggleHandler();
+        if (autoNavigation && crumb == 0) registerDrawerToggleHandler();
     }
 
     private void registerDrawerToggleHandler() {
