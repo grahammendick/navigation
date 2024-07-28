@@ -66,7 +66,7 @@ public class SceneView extends ReactViewGroup {
             DrawerLayoutView drawerView = drawer.get();
             if (toolbarView != null && drawerView != null) {
                 Activity activity = ((ReactContext) getContext()).getCurrentActivity();
-                ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(activity, drawerView, toolbarView, R.string.drawer_open, R.string.drawer_close);
+                ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(activity, drawerView, toolbarView, 0, 0);
                 drawerToggle.setDrawerIndicatorEnabled(true);
                 drawerToggle.syncState();
                 ((DrawerToggleHandler) toolbarView).initDrawerToggle(drawerToggle);
