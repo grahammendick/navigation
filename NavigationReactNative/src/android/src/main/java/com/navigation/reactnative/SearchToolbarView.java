@@ -32,7 +32,6 @@ import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.text.ReactTypefaceUtils;
-import com.google.android.material.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.search.SearchBar;
@@ -290,7 +289,6 @@ public class SearchToolbarView extends SearchBar implements DrawerToggleHandler 
             for(int i = 0; i < view.getChildCount(); i++) {
                 if (view.getChildAt(i) instanceof SearchResultsView searchResultsView) {
                     DrawerArrowDrawable drawerArrowDrawable = new DrawerArrowDrawable(getContext());
-                    drawerArrowDrawable.setColor(MaterialColors.getColor(this, R.attr.colorOnSurface));
                     searchResultsView.getToolbar().setNavigationIcon(drawerArrowDrawable);
                     searchResultsView.setAnimatedNavigationIcon(true);
                     searchResultsView.getToolbar().setNavigationOnClickListener(v -> searchResultsView.hide());
