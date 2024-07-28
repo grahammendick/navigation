@@ -10,10 +10,14 @@ import android.graphics.drawable.RippleDrawable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -28,13 +32,15 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.search.SearchBar;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SearchToolbarView extends SearchBar {
+public class SearchToolbarView extends SearchBar implements DrawerToggleHandler {
     int crumb;
     boolean autoNavigation;
     boolean settingHomeAsUp = false;
@@ -121,6 +127,7 @@ public class SearchToolbarView extends SearchBar {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        if (autoNavigation && crumb == 0) registerDrawerToggleHandler();
         getParent().requestLayout();
     }
 
@@ -190,6 +197,8 @@ public class SearchToolbarView extends SearchBar {
                 defaultNavigationIcon = getNavigationIcon();
                 activity.setSupportActionBar(null);
                 addNavigationListener();
+            } else {
+                registerDrawerToggleHandler();
             }
         } else {
             defaultNavigationIcon = searchDefaultNavigationIcon;
@@ -207,6 +216,16 @@ public class SearchToolbarView extends SearchBar {
         return (!settingHomeAsUp || super.getNavigationIcon() != defaultNavigationIcon) ? super.getNavigationIcon() : null;
     }
 
+    private void registerDrawerToggleHandler() {
+        ViewParent parent = this;
+        while(parent != null) {
+            parent = parent.getParent();
+            if (parent instanceof SceneView sceneView) {
+                sceneView.registerDrawerToggleHandler(this);
+                parent = null;
+            }
+        }
+    }
     void addNavigationListener() {
         setNavigationOnClickListener(view -> {
             ReactContext reactContext = (ReactContext) ((ContextWrapper) getContext()).getBaseContext();
@@ -256,6 +275,24 @@ public class SearchToolbarView extends SearchBar {
                     if (menu.getChildAt(j) instanceof AppCompatImageView overflowButton) {
                         overflowButton.setTag(overflowTestID);
                     }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void initDrawerToggle(ActionBarDrawerToggle drawerToggle) {
+        setTintColor(getNavigationIcon());
+        setTestID();
+        ViewGroup view = getParent() != null ? (ViewGroup) getParent().getParent() : null;
+        if (view != null) {
+            for(int i = 0; i < view.getChildCount(); i++) {
+                if (view.getChildAt(i) instanceof SearchResultsView searchResultsView) {
+                    DrawerArrowDrawable drawerArrowDrawable = new DrawerArrowDrawable(getContext());
+                    drawerArrowDrawable.setColor(MaterialColors.getColor(this, R.attr.colorOnSurface));
+                    searchResultsView.getToolbar().setNavigationIcon(drawerArrowDrawable);
+                    searchResultsView.setAnimatedNavigationIcon(true);
+                    searchResultsView.getToolbar().setNavigationOnClickListener(v -> searchResultsView.hide());
                 }
             }
         }
