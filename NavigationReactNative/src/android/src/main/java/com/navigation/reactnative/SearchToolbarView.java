@@ -3,7 +3,8 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
@@ -31,11 +32,11 @@ import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.text.ReactTypefaceUtils;
+import com.google.android.material.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.search.SearchBar;
 import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -152,7 +153,7 @@ public class SearchToolbarView extends SearchBar implements DrawerToggleHandler 
     private void setTintColor(Drawable icon) {
         if (icon != null) {
             if (tintColor != null)
-                icon.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
+                icon.setColorFilter(new BlendModeColorFilter(tintColor, BlendMode.SRC_IN));
             else
                 icon.clearColorFilter();
         }
@@ -162,7 +163,7 @@ public class SearchToolbarView extends SearchBar implements DrawerToggleHandler 
         Drawable drawable = defaultBackground;
         if (defaultBackground instanceof RippleDrawable)
             drawable = ((RippleDrawable) defaultBackground).getDrawable(0);
-        if (drawable instanceof MaterialShapeDrawable) {
+        if (drawable instanceof MaterialShapeDrawable && drawable.getConstantState() != null) {
             drawable = drawable.getConstantState().newDrawable();
             ((MaterialShapeDrawable) drawable).setFillColor(ColorStateList.valueOf(barTintColor));
             setBackground(drawable);
