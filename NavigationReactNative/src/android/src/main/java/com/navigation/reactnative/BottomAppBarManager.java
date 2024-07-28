@@ -43,6 +43,11 @@ public class BottomAppBarManager extends ViewGroupManager<BottomAppBarView> {
         view.setNavIconSource(navIcon);
     }
 
+    @ReactProp(name = "navigationAccessibilityLabel")
+    public void setNavigationContentDescription(BottomAppBarView view, String navigationContentDescription) {
+        view.setNavigationContentDescription(navigationContentDescription);
+    }
+
     @ReactProp(name = "overflowImage")
     public void setOverflowIcon(BottomAppBarView view, ReadableMap overflowIcon) {
         view.setOverflowIconSource(overflowIcon);
