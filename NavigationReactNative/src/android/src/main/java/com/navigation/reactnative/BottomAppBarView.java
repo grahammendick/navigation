@@ -77,11 +77,9 @@ public class BottomAppBarView extends BottomAppBar implements ActionView, Drawer
             @Override
             public void setDrawable(Drawable d) {
                 navigationIcon = d;
-                if (!autoNavigation) {
-                    setNavigationIcon(d);
-                    setTintColor(getNavigationIcon());
-                    setTestID();
-                }
+                setNavigationIcon(d);
+                setTintColor(getNavigationIcon());
+                setTestID();
             }
         };
         overflowIconResolverListener = new IconResolver.IconResolverListener() {
@@ -111,7 +109,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView, Drawer
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (autoNavigation) registerDrawerToggleHandler();
+        if (autoNavigation && crumb == 0) registerDrawerToggleHandler();
         requestLayout();
     }
 
@@ -225,21 +223,23 @@ public class BottomAppBarView extends BottomAppBar implements ActionView, Drawer
     }
 
     void onAfterUpdateTransaction() {
-        AppCompatActivity activity = (AppCompatActivity) ((ReactContext) getContext()).getCurrentActivity();
+        ReactContext reactContext = (ReactContext) (getContext() instanceof ReactContext ? getContext() : ((ContextWrapper) getContext()).getBaseContext());
+        AppCompatActivity activity = (AppCompatActivity) reactContext.getCurrentActivity();
         assert activity != null;
         if (autoNavigation) {
             if (crumb > 0) {
-                setNavigationIcon(null);
                 activity.setSupportActionBar(this);
                 assert activity.getSupportActionBar() != null;
                 activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 activity.setSupportActionBar(null);
+                setNavigationOnClickListener(this::onNavigationClick);
+            } else {
+                registerDrawerToggleHandler();
             }
-            registerDrawerToggleHandler();
         } else {
             setNavigationIcon(navigationIcon);
+            setNavigationOnClickListener(this::onNavigationClick);
         }
-        setNavigationOnClickListener(this::onNavigationClick);
         setTintColor(getNavigationIcon());
         setTestID();
         setFabAlignmentMode(fabAlignmentMode);
