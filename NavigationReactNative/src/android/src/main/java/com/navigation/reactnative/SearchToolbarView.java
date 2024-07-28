@@ -190,8 +190,6 @@ public class SearchToolbarView extends SearchBar {
                 defaultNavigationIcon = getNavigationIcon();
                 activity.setSupportActionBar(null);
                 addNavigationListener();
-            } else {
-                setNavigationOnClickListener(null);
             }
         } else {
             defaultNavigationIcon = searchDefaultNavigationIcon;
