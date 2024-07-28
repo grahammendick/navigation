@@ -70,7 +70,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView, DrawerTo
     public ToolbarView(Context context) {
         super(context);
         setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.MATCH_PARENT));
-        defaultTitleTextColor = getDefaultTitleTextColor();
+        defaultTitleTextColor = tintColor = getDefaultTitleTextColor();
         defaultOverflowIcon = getOverflowIcon();
         logoResolverListener = d -> {
             setLogo(d);
