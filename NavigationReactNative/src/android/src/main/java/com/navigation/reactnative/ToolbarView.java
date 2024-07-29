@@ -187,8 +187,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView, DrawerTo
         getMenu().clear();
         HashMap<Integer, String> testIDs = new HashMap<>();
         for (int i = 0; i < children.size(); i++) {
-            if (children.get(i) instanceof BarButtonView) {
-                BarButtonView barButton = (BarButtonView) children.get(i);
+            if (children.get(i) instanceof BarButtonView barButton) {
                 MenuItem menuItem = getMenu().add(Menu.NONE, barButton.getId(), i, "");
                 barButton.setMenuItem(menuItem);
                 testIDs.put(barButton.getId(), barButton.testID);
@@ -220,11 +219,9 @@ public class ToolbarView extends MaterialToolbar implements ActionView, DrawerTo
 
     private void setMenuTintColor(HashMap<Integer, String> testIDs)  {
         for (int i = 0; i < getChildCount(); i++) {
-            if (getChildAt(i) instanceof ActionMenuView) {
-                ActionMenuView menu = (ActionMenuView) getChildAt(i);
+            if (getChildAt(i) instanceof ActionMenuView menu) {
                 for (int j = 0; j < menu.getChildCount(); j++) {
-                    if (menu.getChildAt(j) instanceof TextView) {
-                        TextView menuItemView = (TextView) menu.getChildAt(j);
+                    if (menu.getChildAt(j) instanceof TextView menuItemView) {
                         if (defaultMenuTintColor == null)
                             defaultMenuTintColor = menuItemView.getCurrentTextColor();
                         menuItemView.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
@@ -248,11 +245,9 @@ public class ToolbarView extends MaterialToolbar implements ActionView, DrawerTo
             if (child instanceof AppCompatImageButton) {
                 child.setTag(navigationTestID);
             }
-            if (child instanceof ActionMenuView) {
-                ActionMenuView menu = (ActionMenuView) child;
+            if (child instanceof ActionMenuView menu) {
                 for (int j = 0; j < menu.getChildCount(); j++) {
-                    if (menu.getChildAt(j) instanceof AppCompatImageView) {
-                        AppCompatImageView overflowButton = (AppCompatImageView) menu.getChildAt(j);
+                    if (menu.getChildAt(j) instanceof AppCompatImageView overflowButton) {
                         overflowButton.setTag(overflowTestID);
                     }
                 }
