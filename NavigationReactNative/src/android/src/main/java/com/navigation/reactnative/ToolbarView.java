@@ -1,5 +1,7 @@
 package com.navigation.reactnative;
 
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
 import android.os.Build;
 import android.content.Context;
 import android.content.res.Resources;
@@ -41,6 +43,7 @@ import com.facebook.react.views.text.ReactFontManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class ToolbarView extends MaterialToolbar implements ActionView, DrawerToggleHandler {
     private MenuItem searchMenuItem;
@@ -168,12 +171,8 @@ public class ToolbarView extends MaterialToolbar implements ActionView, DrawerTo
     }
 
     private void setTintColor(Drawable icon) {
-        if (icon != null) {
-            if (tintColor != null)
-                icon.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
-            else
-                icon.clearColorFilter();
-        }
+        if (icon != null)
+            icon.setColorFilter(new BlendModeColorFilter(Objects.requireNonNullElseGet(tintColor, () -> getNavigationIconTint() != null ? getNavigationIconTint() : Color.BLACK), BlendMode.SRC_IN));
     }
 
     void setNavigationTestID(String navigationTestID) {
