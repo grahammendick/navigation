@@ -222,9 +222,27 @@ jest.mock('navigation-react-native', () => {
 
     const CollapsingBar = ({children}) => children;
 
-    const BottomSheet = ({children}) => children;
+    const BottomSheet = (props) => <Sheet {...props} />
 
-    const Sheet = ({children}) => children;
+    const Sheet = ({detent, defaultDetent = 'collapsed', onChangeDetent, children}) => {
+        const [selectedDetent, setSelectedDetent] = React.useState(detent || defaultDetent);
+        if (detent != null && detent !== selectedDetent) setSelectedDetent(detent);
+        return (
+            <ReactNative.View
+                accessible
+                accessibilityRole="dialog"
+                accessibilityState={{expanded: selectedDetent !== 'hidden'}}
+                onChangeDetent={newDetent => {
+                    if (selectedDetent !== newDetent) {
+                        if (detent == null)
+                            setSelectedDetent(newDetent);
+                        onChangeDetent?.(newDetent);
+                    }
+                }}>
+                {selectedDetent !== 'hidden' ? children : null}
+            </ReactNative.View>
+        );
+    };
 
     const FloatingActionButton = ({text, image, testID, onPress}) => (
         <ReactNative.Pressable
