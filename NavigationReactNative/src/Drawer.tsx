@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { requireNativeComponent, StyleSheet } from 'react-native';
+import { requireNativeComponent, StyleSheet, Platform } from 'react-native';
 import BackButton from './BackButton';
 
 const Drawer = ({view, open, fromRight = false, onChangeOpen, onOpen, onClose, children}) => {
@@ -18,6 +18,7 @@ const Drawer = ({view, open, fromRight = false, onChangeOpen, onOpen, onClose, c
         else onClose?.();
         setMostRecentEventCount(mostRecentEventCount);
     }
+    if (Platform.OS === 'ios') return children;
     return (
         <>
             <BackButton onPress={() => {
