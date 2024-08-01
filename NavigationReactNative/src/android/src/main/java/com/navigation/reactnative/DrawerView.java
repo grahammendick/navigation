@@ -21,4 +21,8 @@ public class DrawerView extends NavigationView {
     @Override
     public void addView(View child) {
     }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    }
 }
