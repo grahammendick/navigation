@@ -46,8 +46,8 @@ const Drawer = ({view, open, fromRight = false, onChangeOpen, onOpen, onClose, c
     );
 };
 
-const NVDrawerLayout = requireNativeComponent<any>('NVDrawerLayout');
-const NVDrawer = requireNativeComponent<any>('NVDrawer');
+const NVDrawerLayout = global.nativeFabricUIManager ? require('./DrawerLayoutNativeComponent').default : requireNativeComponent('NVDrawerLayout');
+const NVDrawer = global.nativeFabricUIManager ? require('./DrawerNativeComponent').default : requireNativeComponent('NVDrawer');
 
 const styles = StyleSheet.create({
     drawer: {
