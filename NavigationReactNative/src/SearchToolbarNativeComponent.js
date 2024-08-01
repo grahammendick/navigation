@@ -15,7 +15,6 @@ type NativeProps = $ReadOnly<{|
   tintColor: ColorValue,
   navigationImage: ImageSource,
   navigationTestID: string,
-  navigationDecorative: boolean,
   navigationAccessibilityLabel: string,
   overflowImage: ImageSource,
   overflowTestID: string,

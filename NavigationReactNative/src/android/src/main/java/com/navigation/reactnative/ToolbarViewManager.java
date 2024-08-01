@@ -48,6 +48,16 @@ public class ToolbarViewManager extends ViewGroupManager<ToolbarView> implements
         return new ToolbarView(reactContext);
     }
 
+    @ReactProp(name = "crumb")
+    public void setCrumb(ToolbarView view, int crumb) {
+        view.crumb = crumb;
+    }
+
+    @ReactProp(name = "autoNavigation")
+    public void setAutoNavigation(ToolbarView view, boolean autoNavigation) {
+        view.autoNavigation = autoNavigation;
+    }
+
     @Override
     @ReactProp(name = "title")
     public void setTitle(ToolbarView view, String title) {
@@ -191,7 +201,7 @@ public class ToolbarViewManager extends ViewGroupManager<ToolbarView> implements
     @Override
     protected void onAfterUpdateTransaction(@NonNull ToolbarView view) {
         super.onAfterUpdateTransaction(view);
-        view.styleTitle();
+        view.onAfterUpdateTransaction();
     }
 
     @Override
