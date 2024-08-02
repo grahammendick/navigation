@@ -51,6 +51,10 @@
 		7033352E2C2DFCA400160A73 /* NVDialogComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVDialogComponentView.h; sourceTree = "<group>"; };
 		7033352F2C2DFCBD00160A73 /* NVSheetComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVSheetComponentView.mm; sourceTree = "<group>"; };
 		703335302C2DFCC900160A73 /* NVSheetComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSheetComponentView.h; sourceTree = "<group>"; };
+		7048AA262C5D1E20004D3427 /* NVDrawerLayoutComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVDrawerLayoutComponentView.mm; sourceTree = "<group>"; };
+		7048AA272C5D1E2C004D3427 /* NVDrawerLayoutComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVDrawerLayoutComponentView.h; sourceTree = "<group>"; };
+		7048AA282C5D1EBA004D3427 /* NVDrawerComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVDrawerComponentView.h; sourceTree = "<group>"; };
+		7048AA292C5D1EC4004D3427 /* NVDrawerComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVDrawerComponentView.mm; sourceTree = "<group>"; };
 		704B593B22A2AC14008C05C6 /* NVNavigationStackView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVNavigationStackView.m; sourceTree = "<group>"; };
 		704B593D22A2AC20008C05C6 /* NVNavigationStackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVNavigationStackView.h; sourceTree = "<group>"; };
 		704B593F22A2AC3A008C05C6 /* NVNavigationStackManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVNavigationStackManager.m; sourceTree = "<group>"; };
@@ -156,6 +160,10 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				7048AA292C5D1EC4004D3427 /* NVDrawerComponentView.mm */,
+				7048AA282C5D1EBA004D3427 /* NVDrawerComponentView.h */,
+				7048AA272C5D1E2C004D3427 /* NVDrawerLayoutComponentView.h */,
+				7048AA262C5D1E20004D3427 /* NVDrawerLayoutComponentView.mm */,
 				701EDB672C3802FB00E79704 /* NVTabBarPagerItemComponentView.mm */,
 				701EDB662C3802EF00E79704 /* NVTabBarPagerItemComponentView.h */,
 				703335302C2DFCC900160A73 /* NVSheetComponentView.h */,
