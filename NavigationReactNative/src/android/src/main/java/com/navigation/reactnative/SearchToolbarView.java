@@ -3,16 +3,22 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -27,13 +33,17 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.search.SearchBar;
 import com.google.android.material.shape.MaterialShapeDrawable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SearchToolbarView extends SearchBar {
+public class SearchToolbarView extends SearchBar implements DrawerToggleHandler {
+    int crumb;
+    boolean autoNavigation;
+    boolean settingHomeAsUp = false;
     final Drawable defaultBackground;
     private Integer tintColor;
     private Integer defaultMenuTintColor;
@@ -47,7 +57,9 @@ public class SearchToolbarView extends SearchBar {
     private boolean placeholderFontChanged = false;
     private final Typeface defaultTypeface;
     private final float defaultFontSize;
-    final Drawable defaultNavigationIcon;
+    final Drawable searchDefaultNavigationIcon;
+    Drawable defaultNavigationIcon;
+    private Drawable navigationIcon;
     private final IconResolver.IconResolverListener navIconResolverListener;
     private final IconResolver.IconResolverListener overflowIconResolverListener;
     final ArrayList<BarButtonView> children = new ArrayList<>();
@@ -61,12 +73,10 @@ public class SearchToolbarView extends SearchBar {
         defaultTypeface = getTextView().getTypeface();
         defaultFontSize = PixelUtil.toDIPFromPixel(getTextView().getTextSize());
         defaultOverflowIcon = getOverflowIcon();
-        defaultNavigationIcon = getNavigationIcon();
+        defaultNavigationIcon = searchDefaultNavigationIcon = getNavigationIcon();
         navIconResolverListener = d -> {
-            if (d != null)
-                setNavigationIcon(d);
-            else
-                setNavigationIcon(defaultNavigationIcon);
+            navigationIcon = d;
+            setNavigationIcon(d != null ? d : defaultNavigationIcon);
             setTintColor(getNavigationIcon());
             setTestID();
         };
@@ -117,6 +127,7 @@ public class SearchToolbarView extends SearchBar {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        if (autoNavigation && crumb == 0) registerDrawerToggleHandler();
         getParent().requestLayout();
     }
 
@@ -141,7 +152,7 @@ public class SearchToolbarView extends SearchBar {
     private void setTintColor(Drawable icon) {
         if (icon != null) {
             if (tintColor != null)
-                icon.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
+                icon.setColorFilter(new BlendModeColorFilter(tintColor, BlendMode.SRC_IN));
             else
                 icon.clearColorFilter();
         }
@@ -151,7 +162,7 @@ public class SearchToolbarView extends SearchBar {
         Drawable drawable = defaultBackground;
         if (defaultBackground instanceof RippleDrawable)
             drawable = ((RippleDrawable) defaultBackground).getDrawable(0);
-        if (drawable instanceof MaterialShapeDrawable) {
+        if (drawable instanceof MaterialShapeDrawable && drawable.getConstantState() != null) {
             drawable = drawable.getConstantState().newDrawable();
             ((MaterialShapeDrawable) drawable).setFillColor(ColorStateList.valueOf(barTintColor));
             setBackground(drawable);
@@ -172,6 +183,49 @@ public class SearchToolbarView extends SearchBar {
         requestLayout();
     }
 
+    void onAfterUpdateTransaction() {
+        ReactContext reactContext = (ReactContext) ((ContextWrapper) getContext()).getBaseContext();
+        AppCompatActivity activity = (AppCompatActivity) reactContext.getCurrentActivity();
+        assert activity != null;
+        if (autoNavigation) {
+            if (crumb > 0) {
+                settingHomeAsUp = true;
+                activity.setSupportActionBar(this);
+                assert activity.getSupportActionBar() != null;
+                activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                settingHomeAsUp = false;
+                defaultNavigationIcon = getNavigationIcon();
+                activity.setSupportActionBar(null);
+                addNavigationListener();
+            } else {
+                registerDrawerToggleHandler();
+            }
+        } else {
+            defaultNavigationIcon = searchDefaultNavigationIcon;
+            setNavigationIcon(navigationIcon != null ? navigationIcon : defaultNavigationIcon);
+            addNavigationListener();
+        }
+        setTintColor(getNavigationIcon());
+        setTestID();
+        stylePlaceholder();
+    }
+
+    @Nullable
+    @Override
+    public Drawable getNavigationIcon() {
+        return (!settingHomeAsUp || super.getNavigationIcon() != defaultNavigationIcon) ? super.getNavigationIcon() : null;
+    }
+
+    private void registerDrawerToggleHandler() {
+        ViewParent parent = this;
+        while(parent != null) {
+            parent = parent.getParent();
+            if (parent instanceof SceneView sceneView) {
+                sceneView.registerDrawerToggleHandler(this);
+                parent = null;
+            }
+        }
+    }
     void addNavigationListener() {
         setNavigationOnClickListener(view -> {
             ReactContext reactContext = (ReactContext) ((ContextWrapper) getContext()).getBaseContext();
@@ -192,11 +246,9 @@ public class SearchToolbarView extends SearchBar {
 
     private void setMenuTintColor(HashMap<Integer, String> testIDs)  {
         for (int i = 0; i < getChildCount(); i++) {
-            if (getChildAt(i) instanceof ActionMenuView) {
-                ActionMenuView menu = (ActionMenuView) getChildAt(i);
+            if (getChildAt(i) instanceof ActionMenuView menu) {
                 for (int j = 0; j < menu.getChildCount(); j++) {
-                    if (menu.getChildAt(j) instanceof TextView) {
-                        TextView menuItemView = (TextView) menu.getChildAt(j);
+                    if (menu.getChildAt(j) instanceof TextView menuItemView) {
                         if (defaultMenuTintColor == null)
                             defaultMenuTintColor = menuItemView.getCurrentTextColor();
                         menuItemView.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
@@ -218,13 +270,28 @@ public class SearchToolbarView extends SearchBar {
             if (child instanceof AppCompatImageButton) {
                 child.setTag(navigationTestID);
             }
-            if (child instanceof ActionMenuView) {
-                ActionMenuView menu = (ActionMenuView) child;
+            if (child instanceof ActionMenuView menu) {
                 for (int j = 0; j < menu.getChildCount(); j++) {
-                    if (menu.getChildAt(j) instanceof AppCompatImageView) {
-                        AppCompatImageView overflowButton = (AppCompatImageView) menu.getChildAt(j);
+                    if (menu.getChildAt(j) instanceof AppCompatImageView overflowButton) {
                         overflowButton.setTag(overflowTestID);
                     }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void initDrawerToggle(ActionBarDrawerToggle drawerToggle) {
+        setTintColor(getNavigationIcon());
+        setTestID();
+        ViewGroup view = getParent() != null ? (ViewGroup) getParent().getParent() : null;
+        if (view != null) {
+            for(int i = 0; i < view.getChildCount(); i++) {
+                if (view.getChildAt(i) instanceof SearchResultsView searchResultsView) {
+                    DrawerArrowDrawable drawerArrowDrawable = new DrawerArrowDrawable(getContext());
+                    searchResultsView.getToolbar().setNavigationIcon(drawerArrowDrawable);
+                    searchResultsView.setAnimatedNavigationIcon(true);
+                    searchResultsView.getToolbar().setNavigationOnClickListener(v -> searchResultsView.hide());
                 }
             }
         }

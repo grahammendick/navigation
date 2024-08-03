@@ -10,16 +10,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
@@ -34,11 +36,14 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BottomAppBarView extends BottomAppBar implements ActionView {
+public class BottomAppBarView extends BottomAppBar implements ActionView, DrawerToggleHandler {
     private MenuItem searchMenuItem;
+    int crumb;
+    boolean autoNavigation;
     private Integer tintColor;
     final int defaultBackgroundColor;
     final Drawable defaultOverflowIcon;
+    private Drawable navigationIcon;
     int fabAlignmentMode;
     int defaultFabAlignmentMode;
     int defaultFabAnimationMode;
@@ -57,7 +62,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
 
     public BottomAppBarView(@NonNull Context context) {
         super(context, null);
-        ViewCompat.setLayoutDirection(this, !I18nUtil.getInstance().isRTL(context) ? ViewCompat.LAYOUT_DIRECTION_LTR : ViewCompat.LAYOUT_DIRECTION_RTL);
+        setLayoutDirection(!I18nUtil.getInstance().isRTL(context) ? LAYOUT_DIRECTION_LTR : LAYOUT_DIRECTION_RTL);
         defaultBackgroundColor = getBackgroundTint() != null ? getBackgroundTint().getDefaultColor() : Color.WHITE;
         defaultOverflowIcon = getOverflowIcon();
         fabAlignmentMode = defaultFabAlignmentMode = getFabAlignmentMode();
@@ -71,6 +76,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
         navIconResolverListener = new IconResolver.IconResolverListener() {
             @Override
             public void setDrawable(Drawable d) {
+                navigationIcon = d;
                 setNavigationIcon(d);
                 setTintColor(getNavigationIcon());
                 setTestID();
@@ -83,20 +89,12 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
                 setTintColor(getOverflowIcon());
             }
         };
-        setNavigationOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ReactContext reactContext = (ReactContext) (getContext() instanceof ReactContext ? getContext() : ((ContextWrapper) getContext()).getBaseContext());
-                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-                eventDispatcher.dispatchEvent(new BottomAppBarView.NavigationPressEvent(getId()));
-            }
-        });
+        setNavigationOnClickListener(this::onNavigationClick);
         setOnMenuItemClickListener(new OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 for (int i = 0; i < children.size(); i++) {
-                    if (children.get(i) instanceof BarButtonView) {
-                        BarButtonView barButtonView = (BarButtonView) children.get(i);
+                    if (children.get(i) instanceof BarButtonView barButtonView) {
                         if (barButtonView.getMenuItem() != item)
                             barButtonView.getMenuItem().collapseActionView();
                         else
@@ -111,6 +109,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        if (autoNavigation && crumb == 0) registerDrawerToggleHandler();
         requestLayout();
     }
 
@@ -155,8 +154,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
         getMenu().clear();
         HashMap<Integer, String> testIDs = new HashMap<>();
         for (int i = 0; i < children.size(); i++) {
-            if (children.get(i) instanceof BarButtonView) {
-                BarButtonView barButton = (BarButtonView) children.get(i);
+            if (children.get(i) instanceof BarButtonView barButton) {
                 MenuItem menuItem = getMenu().add(Menu.NONE, barButton.getId(), i, "");
                 barButton.setMenuItem(menuItem);
                 testIDs.put(barButton.getId(), barButton.testID);
@@ -188,11 +186,9 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
 
     private void setMenuTintColor(HashMap<Integer, String> testIDs)  {
         for (int i = 0; i < getChildCount(); i++) {
-            if (getChildAt(i) instanceof ActionMenuView) {
-                ActionMenuView menu = (ActionMenuView) getChildAt(i);
+            if (getChildAt(i) instanceof ActionMenuView menu) {
                 for (int j = 0; j < menu.getChildCount(); j++) {
-                    if (menu.getChildAt(j) instanceof TextView) {
-                        TextView menuItemView = (TextView) menu.getChildAt(j);
+                    if (menu.getChildAt(j) instanceof TextView menuItemView) {
                         if (defaultMenuTintColor == null)
                             defaultMenuTintColor = menuItemView.getCurrentTextColor();
                         menuItemView.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
@@ -216,16 +212,54 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
             if (child instanceof AppCompatImageButton) {
                 child.setTag(navigationTestID);
             }
-            if (child instanceof ActionMenuView) {
-                ActionMenuView menu = (ActionMenuView) child;
+            if (child instanceof ActionMenuView menu) {
                 for (int j = 0; j < menu.getChildCount(); j++) {
-                    if (menu.getChildAt(j) instanceof AppCompatImageView) {
-                        AppCompatImageView overflowButton = (AppCompatImageView) menu.getChildAt(j);
+                    if (menu.getChildAt(j) instanceof AppCompatImageView overflowButton) {
                         overflowButton.setTag(overflowTestID);
                     }
                 }
             }
         }
+    }
+
+    void onAfterUpdateTransaction() {
+        ReactContext reactContext = (ReactContext) (getContext() instanceof ReactContext ? getContext() : ((ContextWrapper) getContext()).getBaseContext());
+        AppCompatActivity activity = (AppCompatActivity) reactContext.getCurrentActivity();
+        assert activity != null;
+        if (autoNavigation) {
+            if (crumb > 0) {
+                activity.setSupportActionBar(this);
+                assert activity.getSupportActionBar() != null;
+                activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                activity.setSupportActionBar(null);
+                setNavigationOnClickListener(this::onNavigationClick);
+            } else {
+                registerDrawerToggleHandler();
+            }
+        } else {
+            setNavigationIcon(navigationIcon);
+            setNavigationOnClickListener(this::onNavigationClick);
+        }
+        setTintColor(getNavigationIcon());
+        setTestID();
+        setFabAlignmentMode(fabAlignmentMode);
+    }
+
+    private void registerDrawerToggleHandler() {
+        ViewParent parent = this;
+        while(parent != null) {
+            parent = parent.getParent();
+            if (parent instanceof SceneView sceneView) {
+                sceneView.registerDrawerToggleHandler(this);
+                parent = null;
+            }
+        }
+    }
+
+    private void onNavigationClick(View view) {
+        ReactContext reactContext = (ReactContext) (getContext() instanceof ReactContext ? getContext() : ((ContextWrapper) getContext()).getBaseContext());
+        EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+        eventDispatcher.dispatchEvent(new BottomAppBarView.NavigationPressEvent(getId()));
     }
 
     public void setOnSearchListener(OnSearchListener onSearchListener) {
@@ -268,6 +302,12 @@ public class BottomAppBarView extends BottomAppBar implements ActionView {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
+
+    @Override
+    public void initDrawerToggle(ActionBarDrawerToggle drawerToggle) {
+        setTintColor(getNavigationIcon());
+        setTestID();
+    }
 
     static class NavigationPressEvent extends Event<BottomAppBarView.NavigationPressEvent> {
         public NavigationPressEvent(int viewId) {

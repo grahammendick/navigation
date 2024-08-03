@@ -6,6 +6,8 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
+  crumb: Int32,
+  autoNavigation: boolean,
   placeholder: string,
   fontFamily: string,
   fontWeight: string,
@@ -15,7 +17,6 @@ type NativeProps = $ReadOnly<{|
   tintColor: ColorValue,
   navigationImage: ImageSource,
   navigationTestID: string,
-  navigationDecorative: boolean,
   navigationAccessibilityLabel: string,
   overflowImage: ImageSource,
   overflowTestID: string,

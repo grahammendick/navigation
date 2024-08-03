@@ -51,7 +51,8 @@ class NavigationBar extends React.Component<any, any> {
         searchBarTintColor = typeof searchBarTintColor === 'function' ? searchBarTintColor(true) : searchBarTintColor;
         var toolbarTintColor = searchToolbar ? searchBarTintColor : scrollEdgeProps.barTintColor;
         var placeholder = searchBar?.props.placeholder;
-        var crumb = navigationEvent.stateNavigator.stateContext.crumbs.length;
+        var {stateNavigator} = navigationEvent;
+        var crumb = stateNavigator.stateContext.crumbs.length;
         return (
             <>
                 <NVNavigationBar
@@ -74,6 +75,8 @@ class NavigationBar extends React.Component<any, any> {
                             {...(collapsingBar && collapsingBar.props)}>
                             {collapsingBar && collapsingBar.props.children}
                             <Toolbar
+                                crumb={crumb}
+                                autoNavigation={!onNavigationPress}
                                 logo={Image.resolveAssetSource(logo)}
                                 navigationImage={Image.resolveAssetSource(navigationImage)}
                                 overflowImage={Image.resolveAssetSource(overflowImage)}
@@ -88,8 +91,10 @@ class NavigationBar extends React.Component<any, any> {
                                 fontSize={searchBar?.props.fontSize}
                                 titleCentered={!!titleCentered}
                                 barHeight={!material3 || searchToolbar ? 56 : 64}
-                                navigationDecorative={!onNavigationPress}
-                                onNavigationPress={onNavigationPress}
+                                onNavigationPress={() => {
+                                    if (onNavigationPress) onNavigationPress();
+                                    else if (crumb > 0) stateNavigator.navigateBack(1);
+                                }}
                                 style={{height: !material3 || searchToolbar ? 56 : 64, margin: searchToolbar ? 16 : undefined}}>
                                 {[
                                     !searchToolbar && childrenArray.find(({type}) => type === TitleBar),

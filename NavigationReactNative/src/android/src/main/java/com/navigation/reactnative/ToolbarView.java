@@ -1,12 +1,13 @@
 package com.navigation.reactnative;
 
-import android.os.Build;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
@@ -14,11 +15,14 @@ import android.text.style.TypefaceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -30,17 +34,19 @@ import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.facebook.react.views.text.ReactFontManager;
 import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.facebook.react.views.text.ReactFontManager;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
-public class ToolbarView extends MaterialToolbar implements ActionView {
+public class ToolbarView extends MaterialToolbar implements ActionView, DrawerToggleHandler {
     private MenuItem searchMenuItem;
+    int crumb;
+    boolean autoNavigation;
     private String title;
     private String titleFontFamily;
     private String titleFontWeight;
@@ -52,6 +58,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
     private OnSearchListener onSearchAddedListener;
     final int defaultTitleTextColor;
     final Drawable defaultOverflowIcon;
+    private Drawable navigationIcon;
     private Integer defaultMenuTintColor;
     private String navigationTestID;
     private String overflowTestID;
@@ -71,6 +78,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
             setTintColor(getLogo());
         };
         navIconResolverListener = d -> {
+            navigationIcon = d;
             setNavigationIcon(d);
             setTintColor(getNavigationIcon());
             setTestID();
@@ -79,15 +87,10 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
             setOverflowIcon(d);
             setTintColor(getOverflowIcon());
         };
-        setNavigationOnClickListener(view -> {
-            ReactContext reactContext = (ReactContext) getContext();
-            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-            eventDispatcher.dispatchEvent(new NavigationPressEvent(getId()));
-        });
+        setNavigationOnClickListener(this::onNavigationClick);
         setOnMenuItemClickListener(item -> {
             for (int i = 0; i < children.size(); i++) {
-                if (children.get(i) instanceof BarButtonView) {
-                    BarButtonView barButtonView = (BarButtonView) children.get(i);
+                if (children.get(i) instanceof BarButtonView barButtonView) {
                     if (barButtonView.getMenuItem() != item)
                         barButtonView.getMenuItem().collapseActionView();
                     else
@@ -166,12 +169,8 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
     }
 
     private void setTintColor(Drawable icon) {
-        if (icon != null) {
-            if (tintColor != null)
-                icon.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
-            else
-                icon.clearColorFilter();
-        }
+        if (icon != null)
+            icon.setColorFilter(new BlendModeColorFilter(Objects.requireNonNullElseGet(tintColor, () -> getNavigationIconTint() != null ? getNavigationIconTint() : Color.BLACK), BlendMode.SRC_IN));
     }
 
     void setNavigationTestID(String navigationTestID) {
@@ -188,8 +187,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
         getMenu().clear();
         HashMap<Integer, String> testIDs = new HashMap<>();
         for (int i = 0; i < children.size(); i++) {
-            if (children.get(i) instanceof BarButtonView) {
-                BarButtonView barButton = (BarButtonView) children.get(i);
+            if (children.get(i) instanceof BarButtonView barButton) {
                 MenuItem menuItem = getMenu().add(Menu.NONE, barButton.getId(), i, "");
                 barButton.setMenuItem(menuItem);
                 testIDs.put(barButton.getId(), barButton.testID);
@@ -221,11 +219,9 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
 
     private void setMenuTintColor(HashMap<Integer, String> testIDs)  {
         for (int i = 0; i < getChildCount(); i++) {
-            if (getChildAt(i) instanceof ActionMenuView) {
-                ActionMenuView menu = (ActionMenuView) getChildAt(i);
+            if (getChildAt(i) instanceof ActionMenuView menu) {
                 for (int j = 0; j < menu.getChildCount(); j++) {
-                    if (menu.getChildAt(j) instanceof TextView) {
-                        TextView menuItemView = (TextView) menu.getChildAt(j);
+                    if (menu.getChildAt(j) instanceof TextView menuItemView) {
                         if (defaultMenuTintColor == null)
                             defaultMenuTintColor = menuItemView.getCurrentTextColor();
                         menuItemView.setTextColor(tintColor != null ? tintColor : defaultMenuTintColor);
@@ -249,11 +245,9 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
             if (child instanceof AppCompatImageButton) {
                 child.setTag(navigationTestID);
             }
-            if (child instanceof ActionMenuView) {
-                ActionMenuView menu = (ActionMenuView) child;
+            if (child instanceof ActionMenuView menu) {
                 for (int j = 0; j < menu.getChildCount(); j++) {
-                    if (menu.getChildAt(j) instanceof AppCompatImageView) {
-                        AppCompatImageView overflowButton = (AppCompatImageView) menu.getChildAt(j);
+                    if (menu.getChildAt(j) instanceof AppCompatImageView overflowButton) {
                         overflowButton.setTag(overflowTestID);
                     }
                 }
@@ -261,7 +255,25 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
         }
     }
 
-    void styleTitle() {
+    void onAfterUpdateTransaction() {
+        AppCompatActivity activity = (AppCompatActivity) ((ReactContext) getContext()).getCurrentActivity();
+        assert activity != null;
+        if (autoNavigation) {
+            if (crumb > 0) {
+                activity.setSupportActionBar(this);
+                assert activity.getSupportActionBar() != null;
+                activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                activity.setSupportActionBar(null);
+                setNavigationOnClickListener(this::onNavigationClick);
+            } else {
+                registerDrawerToggleHandler();
+            }
+        } else {
+            setNavigationIcon(navigationIcon);
+            setNavigationOnClickListener(this::onNavigationClick);
+        }
+        setTintColor(getNavigationIcon());
+        setTestID();
         if (titleChanged) {
             SpannableString titleSpannable = null;
             if (title != null) {
@@ -282,6 +294,29 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
             setTitle(titleSpannable);
             titleChanged = false;
         }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (autoNavigation && crumb == 0) registerDrawerToggleHandler();
+    }
+
+    private void registerDrawerToggleHandler() {
+        ViewParent parent = this;
+        while(parent != null) {
+            parent = parent.getParent();
+            if (parent instanceof SceneView sceneView) {
+                sceneView.registerDrawerToggleHandler(this);
+                parent = null;
+            }
+        }
+    }
+
+    private void onNavigationClick(View view) {
+        ReactContext reactContext = (ReactContext) getContext();
+        EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+        eventDispatcher.dispatchEvent(new NavigationPressEvent(getId()));
     }
 
     public void setOnSearchListener(OnSearchListener onSearchListener) {
@@ -321,6 +356,12 @@ public class ToolbarView extends MaterialToolbar implements ActionView {
             MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
         layout(getLeft(), getTop(), getRight(), getBottom());
     };
+
+    @Override
+    public void initDrawerToggle(ActionBarDrawerToggle drawerToggle) {
+        setTintColor(getNavigationIcon());
+        setTestID();
+    }
 
     static class NavigationPressEvent extends Event<ToolbarView.NavigationPressEvent> {
         public NavigationPressEvent(int viewId) {

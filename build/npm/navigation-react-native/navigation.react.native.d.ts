@@ -930,6 +930,47 @@ export class Sheet extends Component<SheetProps> {}
 export class BottomSheet extends Component<Omit<SheetProps, 'bottom'>> {}
 
 /**
+ * Defines the Drawer Props contract
+ */
+export interface DrawerProps {
+    /**
+     * The drawer content
+     */
+    view: ReactNode;
+    /**
+     * Indicates whether the drawer is open
+     */
+    open?: boolean;
+    /**
+     * Indicates whether the drawer opens from the right
+     */
+    fromRight?: boolean;
+
+    /**
+     * The scene content
+     */
+    children: ReactNode;
+    /**
+     * Handles drawer open change events
+     */
+    onChangeOpen?: (open: boolean) => void;
+    /**
+     * Handles drawer open events
+     */
+    onOpen?: () => void;
+    /**
+     * Handles drawer close events
+     */
+    onClose?: () => void;
+}
+
+/**
+ * Renders a drawer
+ * @platform android
+ */
+export class Drawer extends Component<DrawerProps> {}
+
+/**
  * Defines the Floating Action Button Props contract
  */
 export interface FloatingActionButtonProps {

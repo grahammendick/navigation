@@ -9,7 +9,7 @@ import android.text.TextWatcher;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
-import androidx.core.view.ViewCompat;
+import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
@@ -42,7 +42,7 @@ public class SearchResultsView extends SearchView {
 
     public SearchResultsView(Context context) {
         super(context);
-        ViewCompat.setLayoutDirection(this, !I18nUtil.getInstance().isRTL(context) ? ViewCompat.LAYOUT_DIRECTION_LTR : ViewCompat.LAYOUT_DIRECTION_RTL);
+        setLayoutDirection(!I18nUtil.getInstance().isRTL(context) ? LAYOUT_DIRECTION_LTR : LAYOUT_DIRECTION_RTL);
         defaultBackground = getToolbar().getBackground();
         defaultTypeface = getEditText().getTypeface();
         defaultFontSize = PixelUtil.toDIPFromPixel(getEditText().getTextSize());
@@ -130,10 +130,10 @@ public class SearchResultsView extends SearchView {
         if (isShowing()) post(focusAndKeyboard);
         ViewGroup view = (ViewGroup) getParent();
         for(int i = 0; i < view.getChildCount(); i++) {
-            if (view.getChildAt(i) instanceof NavigationBarView) {
-                SearchToolbarView searchToolbarView = (SearchToolbarView) ((NavigationBarView) view.getChildAt(i)).getChildAt(0);
+            if (view.getChildAt(i) instanceof NavigationBarView navigationBarView) {
+                SearchToolbarView searchToolbarView = (SearchToolbarView) navigationBarView.getChildAt(0);
                 setupWithSearchBar(searchToolbarView);
-                setAnimatedNavigationIcon(searchToolbarView.getNavigationIcon() == searchToolbarView.defaultNavigationIcon);
+                setAnimatedNavigationIcon(searchToolbarView.getNavigationIcon() == searchToolbarView.defaultNavigationIcon || searchToolbarView.getNavigationIcon() instanceof DrawerArrowDrawable);
             }
         }
     }

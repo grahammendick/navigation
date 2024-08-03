@@ -1,4 +1,4 @@
-import React, { useMemo, useContext, useState, useRef, createContext, useEffect } from 'react';
+import React, { useMemo, useContext, useState, useRef, createContext } from 'react';
 import { requireNativeComponent, Platform, UIManager, StyleSheet } from 'react-native';
 import { NavigationContext } from 'navigation-react';
 import useNavigated from './useNavigated';

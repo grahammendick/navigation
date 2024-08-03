@@ -3,9 +3,9 @@ package com.navigation.reactnative;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.view.View;
-import android.view.animation.Animation;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
 import androidx.transition.Transition;
 
 import com.facebook.react.bridge.Arguments;
@@ -16,6 +16,7 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
 
+import java.lang.ref.WeakReference;
 import java.util.HashSet;
 
 public class SceneView extends ReactViewGroup {
@@ -30,6 +31,8 @@ public class SceneView extends ReactViewGroup {
     private boolean landscape;
     public final HashSet<SharedElementView> sharedElements = new HashSet<>();
     public SharedElementMotion sharedElementMotion;
+    private WeakReference<Toolbar> toolbar;
+    private WeakReference<DrawerLayoutView> drawer;
 
     public SceneView(Context context) {
         super(context);
@@ -47,10 +50,28 @@ public class SceneView extends ReactViewGroup {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         setOrientation();
-        View child = getChildAt(0);
-        if (child != null && child.getClass().getSimpleName().contains("DrawerLayout")) {
-            child.requestLayout();
-            post(measureAndLayoutDrawer);
+    }
+
+    protected void registerDrawerToggleHandler(DrawerToggleHandler drawerToggleHandler) {
+        if (drawerToggleHandler instanceof Toolbar toolbarView && toolbar == null)
+            this.toolbar = new WeakReference<>(toolbarView);
+        if (drawerToggleHandler instanceof DrawerLayoutView drawerView && drawer == null)
+            this.drawer = new WeakReference<>(drawerView);
+        initDrawerToggle();
+    }
+
+    private void initDrawerToggle() {
+        if (toolbar != null && drawer != null) {
+            Toolbar toolbarView = toolbar.get();
+            DrawerLayoutView drawerView = drawer.get();
+            if (toolbarView != null && drawerView != null) {
+                Activity activity = ((ReactContext) getContext()).getCurrentActivity();
+                ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(activity, drawerView, toolbarView, 0, 0);
+                drawerToggle.setDrawerIndicatorEnabled(true);
+                drawerToggle.syncState();
+                ((DrawerToggleHandler) toolbarView).initDrawerToggle(drawerToggle);
+                drawerView.initDrawerToggle(drawerToggle);
+            }
         }
     }
 
@@ -60,18 +81,6 @@ public class SceneView extends ReactViewGroup {
             activity.setRequestedOrientation(this.landscape ? ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
     }
-
-    private final Runnable measureAndLayoutDrawer = new Runnable() {
-        @Override
-        public void run() {
-            View drawer = getChildAt(0);
-            if (drawer == null) return;
-            drawer.measure(
-                MeasureSpec.makeMeasureSpec(drawer.getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(drawer.getHeight(), MeasureSpec.EXACTLY));
-            drawer.layout(drawer.getLeft(), drawer.getTop(), drawer.getRight(), drawer.getBottom());
-        }
-    };
 
     protected void popped() {
         ReactContext reactContext = (ReactContext) getContext();

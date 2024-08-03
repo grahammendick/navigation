@@ -29,6 +29,8 @@ public class NavigationPackage extends TurboReactPackage implements ReactPackage
             new CollapsingBarViewManager(),
             new CoordinatorLayoutViewManager(),
             new DialogViewManager(),
+            new DrawerLayoutViewManager(),
+            new DrawerViewManager(),
             new ExtendedFloatingActionButtonViewManager(),
             new FloatingActionButtonViewManager(),
             new NavigationBarViewManager(),

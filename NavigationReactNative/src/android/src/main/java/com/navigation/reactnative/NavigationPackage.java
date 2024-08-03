@@ -42,7 +42,9 @@ public class NavigationPackage implements ReactPackage {
             new BottomSheetDialogManager(),
             new FloatingActionButtonManager(),
             new ExtendedFloatingActionButtonManager(),
-            new BottomAppBarManager()
+            new BottomAppBarManager(),
+            new DrawerLayoutManager(),
+            new DrawerManager()
         );
     }
 
