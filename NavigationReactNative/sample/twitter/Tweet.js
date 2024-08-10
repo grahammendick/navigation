@@ -13,12 +13,8 @@ export default () => {
     <>
       <NavigationBar
         title="Tweet"
-        navigationImage={require('./arrow.png')}
         barTintColor={Platform.OS === 'android' ? '#fff' : 'rgb(247,247,247)'}
-        tintColor={Platform.OS === 'android' ? "#1da1f2" : null}
-        onNavigationPress={() => {
-          stateNavigator.navigateBack(1)
-        }} />
+        tintColor={Platform.OS === 'android' ? "#1da1f2" : null} />
       <Tweets tweets={replies} renderHeader={(
         <View>
           <View style={styles.heading}>

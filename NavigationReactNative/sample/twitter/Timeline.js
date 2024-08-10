@@ -19,14 +19,10 @@ export default () => {
       <NavigationBar
         title={name}
         onOffsetChanged={Animated.event([{nativeEvent:{offset}}], {useNativeDriver: true})}
-        navigationImage={require('./arrow.png')}
         barTintColor={Platform.OS === 'android' ? standard => standard ? colors[0] : colors[1] : 'rgb(247,247,247)'}
         tintColor={Platform.OS === 'android' ? "#fff" : null}
         titleColor={Platform.OS === 'android' ? "#fff" : null}
-        style={{height: 120}}
-        onNavigationPress={() => {
-          stateNavigator.navigateBack(1)
-        }}>
+        style={{height: 120}}>
         <CollapsingBar />
       </NavigationBar>
       <Tweets
