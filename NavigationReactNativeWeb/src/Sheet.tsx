@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, modal = true, onChangeDetent, children}) => {
+const Sheet = ({detent, defaultDetent = 'collapsed', modal = true, onChangeDetent, children}) => {
     const [selectedDetent, setSelectedDetent]  = useState(detent || defaultDetent);
     const dialogEl = useRef<HTMLDialogElement | null>(null);
     if (detent != null && detent !== selectedDetent)
@@ -25,8 +25,9 @@ const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOff
             onClose={onClose}
             style={{
                 display: selectedDetent !== 'hidden' ? 'flex' : 'none',
+                backgroundColor: 'transparent',
                 width: '100%',
-                height: expandedHeight == null ? '100%' : `${expandedHeight}px`,
+                height: '100%',
                 border: 0,
                 padding: 0,
                 zIndex: 54,
