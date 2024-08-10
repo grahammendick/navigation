@@ -20,14 +20,17 @@ const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOff
         }
     };
     return (
-        <dialog ref={dialogEl} onClose={onClose} style={{
-            display: selectedDetent !== 'hidden' ? 'flex' : 'none',
-            width: '100%',
-            height: expandedHeight == null ? '100%' : `${expandedHeight}px`,
-            border: 0,
-            padding: 0,
-            zIndex: 54,
-        }}>
+        <dialog
+            ref={dialogEl}
+            onClose={onClose}
+            style={{
+                display: selectedDetent !== 'hidden' ? 'flex' : 'none',
+                width: '100%',
+                height: expandedHeight == null ? '100%' : `${expandedHeight}px`,
+                border: 0,
+                padding: 0,
+                zIndex: 54,
+            }}>
             {children}
         </dialog>
     );
