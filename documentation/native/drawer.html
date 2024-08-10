@@ -51,47 +51,40 @@
         <div id="article">
             <h1>Drawer</h1>
             <p>
-                The Navigation router works with the built-in <code>DrawerLayoutAndroid</code> component from React Native. The <code>DrawerLayoutAndroid</code> component is 100% native on Android. You can see how it works on the <a href="https://reactnative.dev/docs/drawerlayoutandroid">the React Native website</a>, but make sure you add it at the top of the scene. We add the drawer to the 'inbox' scene so the user can view their sent email. When the user taps the 'sent' button we close the drawer and navigate to their sent email once the close animation completes.
+              The <code>Drawer</code> component renders a view that can be pulled out from the left or right edge of a scene. <a href="navigation-bar.html">The Navigation Bar</a> automatically displays a hamburger icon that toggles the drawer open and closed. In our example email application, we add a 'sent' button inside a <code>Drawer</code> so the user can switch from their 'inbox' to their 'sent' email.
             </p>
-            <pre><code class="language-jsx">import {DrawerLayoutAndroid} from 'react-native';
+            <pre><code class="language-jsx">import {Drawer} from 'navigation-react-native';
 
-&lt;DrawerLayoutAndroid
-  ref={drawer}
-  onDrawerClose={() => {
-    if (selected)
-      stateNavigator.navigate('sent');
-  }}
-  renderNavigationView={() => (
-    &lt;View>
-      &lt;TouchableHighlight
-        onPress={() => {
-          setSelected(true);
-          drawer.closeDrawer();
-      }}>
-        &lt;Text>Sent&lt;/Text>
-      &lt;/TouchableHighlight>
-    &lt;/View>
-  )}>
-  ...
-&lt;/DrawerLayoutAndroid></code></pre>
+&lt;Drawer view={&lt;Menu />}>
+  &lt;ScrollView />
+&lt;/Drawer>
+
+const Menu = () => (
+  &lt;View>
+    &lt;Button onPress={() => setSent(true)} />
+  &lt;/View>
+);</code></pre>
+            <div class="Note">
+                <h2>Note</h2>
+                The <code>Drawer</code> only shows on Android because the Navigation router is 100% native and there is no native drawer on iOS
+            </div>
             <p>
-                Remember that the Navigation router manages the stack by dropping a breadcrumb at each visited scene. You disable the breadcrumb trail by setting <code>trackCrumbTrail</code> to false (the default) against a <code>State</code>. When navigating to that <code>State</code> the stack of scenes will start from scratch. In our email example, we disable the breadcrumb trail for the 'sent' <code>State</code> so that the 'sent' scene replaces the 'inbox' scene in the stack.
+                By default the <code>Drawer</code> is uncontrolled, where only the user can open and close it (by dragging or tapping the hamburger icon). But it can also be controlled so you can programmatically open and close it. In our email example, when the user presses the 'sent' button we close the <code>Drawer</code> so they can select an email to read.
             </p>
-            <pre><code class="language-jsx">const stateNavigator = new StateNavigator([
-  {key: 'inbox'},
-  {key: 'mail', trackCrumbTrail: true},
-  {key: 'compose', trackCrumbTrail: true},
-  {key: 'sent'}
-]);</code></pre>
-            <p>
-                When one scene replaces another, the Navigation router animates the transition. We can use the <a href="custom-animation.html">custom animation API</a> to disable the animation so that the 'sent' scene immediately appears in place of the inbox. When the user taps the 'sent' button in the drawer, the Navigation router calls our <code>unmountStyle</code> prop passing in the target <code>State</code>. We return an empty string that tells the Navigation router to disable the animation.
-            </p>
-            <pre><code class="language-jsx">&lt;NavigationStack unmountStyle={(from, state) => state === sent ? '' : null}>
-  &lt;Scene stateKey="inbox">&lt;Inbox />&lt;/Scene>
-  &lt;Scene stateKey="mail">&lt;Mail />&lt;/Scene>
-  &lt;Scene stateKey="compose">&lt;Compose />&lt;/Scene>
-  &lt;Scene stateKey="sent">&lt;Sent />&lt;/Scene>
-&lt;/NavigationStack></code></pre>
+            <pre><code class="language-jsx">const [open, setOpen] = useState(false);
+
+&lt;Drawer open={open} onChangeOpen={setOpen} view={&lt;Menu setOpen={setOpen} />}>
+  &lt;ScrollView />
+&lt;/Drawer>
+
+const Menu = ({setOpen}) => (
+  &lt;View>
+    &lt;Button onPress={() => {
+      setSent(true);
+      setOpen(false);
+    }} />
+  &lt;/View>
+);</code></pre>
         </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
 </body>
