@@ -21,6 +21,7 @@ const Sheet = ({detent, defaultDetent = 'collapsed', modal = true, onChangeDeten
     };
     return (
         <dialog
+            key={'' + modal}
             ref={dialogEl}
             onClose={onClose}
             style={{
