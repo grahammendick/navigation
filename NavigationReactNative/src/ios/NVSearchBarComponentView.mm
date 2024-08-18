@@ -21,7 +21,6 @@ using namespace facebook::react;
 
 @implementation NVSearchBarComponentView
 {
-    UIView *_reactSubview;
     UIFont *_font;
     NSInteger _nativeEventCount;
     NSInteger _nativeActiveEventCount;
@@ -189,13 +188,6 @@ using namespace facebook::react;
     }
 }
 
-- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
-{
-    if (self.searchController.searchBar.text.length == 0 && !_reactSubview.isHidden) {
-        _reactSubview.hidden = YES;
-    }
-}
-
 - (void)notifyForBoundsChange:(CGRect)newBounds
 {
     if (_state != nullptr) {
@@ -204,23 +196,15 @@ using namespace facebook::react;
     }
 }
 
-- (void)dealloc
-{
-    [_reactSubview removeObserver:self forKeyPath:@"hidden"];
-}
-
 #pragma mark - RCTComponentViewProtocol
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
     self.searchController.searchResultsController.view = childComponentView;
-    _reactSubview = childComponentView;
-    [_reactSubview addObserver:self forKeyPath:@"hidden" options:0 context:nil];
 }
 
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
-    [_reactSubview removeObserver:self forKeyPath:@"hidden"];
     self.searchController.searchResultsController.view = nil;
 }
 
