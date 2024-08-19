@@ -208,8 +208,7 @@
 
 - (void)dealloc
 {
-    if (_reactSubview)
-        [_reactSubview removeObserver:self forKeyPath:@"hidden"];
+    [_reactSubview removeObserver:self forKeyPath:@"hidden"];
 }
 
 
