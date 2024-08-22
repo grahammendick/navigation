@@ -169,8 +169,10 @@ public class ToolbarView extends MaterialToolbar implements ActionView, DrawerTo
     }
 
     private void setTintColor(Drawable icon) {
-        if (icon != null)
-            icon.setColorFilter(new BlendModeColorFilter(Objects.requireNonNullElseGet(tintColor, () -> getNavigationIconTint() != null ? getNavigationIconTint() : Color.BLACK), BlendMode.SRC_IN));
+        if (icon != null) {
+            int defaultTintColor = getNavigationIconTint() != null ? getNavigationIconTint() : Color.BLACK;
+            icon.setColorFilter(new BlendModeColorFilter(tintColor != null ? tintColor : defaultTintColor, BlendMode.SRC_IN));
+        }
     }
 
     void setNavigationTestID(String navigationTestID) {
