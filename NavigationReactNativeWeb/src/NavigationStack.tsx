@@ -76,10 +76,13 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
   );
 }
 
-const renderMotion = ({translate}, scene, key) => (
+const renderMotion = ({translateX, translateX_pc, scaleX, scaleX_pc}, scene, key) => (
   <View key={key}
     style={{
-      transform: `translate(${translate}%)` as any,
+      transform: `
+        translate(${translateX ? `${translateX}px` : translateX_pc ? `${translateX_pc}%` : '0'})
+        scale(${scaleX ? `${scaleX}` : scaleX_pc ? `${scaleX_pc / 100}` : '1'})
+      ` as any,
       position: 'absolute',
       backgroundColor: '#fff',
       left: 0, right: 0, top: 0, bottom: 0,
