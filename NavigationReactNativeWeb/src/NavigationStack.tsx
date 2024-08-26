@@ -10,55 +10,40 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
   // and crumbStyle into crumbStyle
   // (what about if they're empty like in the zoom sample?)
   const returnOrCall = (item, ...args) => typeof item !== 'function' ? item : item(...args);
+  const getStyle = (trans) => {
+    trans = !Array.isArray(trans) ? trans : {items: trans};
+    const transStyle = {duration, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1};
+    const addStyle = (type: string, start: string | number) => {
+      if (start === undefined) return;
+      const percent = typeof start === 'string' && start.endsWith('%')
+      transStyle[type + (percent ? '_pc' : '')] = percent ? +(start as string).slice(0, -1) : +start;
+    }
+    const convertTrans = ({type, start, from, startX, fromX, startY, fromY, items}) => {
+      if (type === 'translate' || type === 'scale') {
+        addStyle(`${type}X`, startX ?? fromX);
+        addStyle(`${type}Y`, startY ?? fromY);
+      }
+      // can do pivot? transform origin?
+      if (type === 'alpha' || type === 'rotate') addStyle(type, start ?? from);
+      items?.forEach(convertTrans);
+    };
+    convertTrans(trans);
+    return transStyle;
+  }
   return (
       <NavigationMotion
           unmountedStyle={unmountedStyle || ((state, data, crumbs) => {
             let trans = returnOrCall(unmountStyle, true, state, data, crumbs);
             if (!trans || typeof trans === 'string')
               trans = {type: 'translate',  startX: 100};
-            trans = !Array.isArray(trans) ? trans : {items: trans};
-            const transStyle = {duration, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1};
-            const addStyle = (type: string, start: string | number) => {
-              if (start === undefined) return;
-              const percent = typeof start === 'string' && start.endsWith('%')
-              transStyle[type + (percent ? '_pc' : '')] = percent ? +(start as string).slice(0, -1) : +start;
-            }
-            const convertTrans = ({type, start, from, startX, fromX, startY, fromY, items}) => {
-              if (type === 'translate' || type === 'scale') {
-                addStyle(`${type}X`, startX ?? fromX);
-                addStyle(`${type}Y`, startY ?? fromY);
-              }
-              // can do pivot? transform origin?
-              if (type === 'alpha' || type === 'rotate') addStyle(type, start ?? from);
-              items?.forEach(convertTrans);
-            };
-            convertTrans(trans);
-            return transStyle;
+            return getStyle(trans);
           })}
-          // only return the exact ones needed
           mountedStyle={mountedStyle || {duration, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1}}
           crumbStyle={crumbedStyle || ((state, data, crumbs, nextState, nextData) => {
             let trans = returnOrCall(crumbStyle, true, state, data, crumbs, nextState, nextData);
             if (!trans || typeof trans === 'string')
               trans = {type: 'translate',  startX: 0};
-            trans = !Array.isArray(trans) ? trans : {items: trans};
-            const transStyle = {duration, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1};
-            const addStyle = (type: string, start: string | number) => {
-              if (start === undefined) return;
-              const percent = typeof start === 'string' && start.endsWith('%')
-              transStyle[type + (percent ? '_pc' : '')] = percent ? +(start as string).slice(0, -1) : +start;
-            }
-            const convertTrans = ({type, start, from, startX, fromX, startY, fromY, items}) => {
-              if (type === 'translate' || type === 'scale') {
-                addStyle(`${type}X`, startX ?? fromX);
-                addStyle(`${type}Y`, startY ?? fromY);
-              }
-              // can do pivot? transform origin?
-              if (type === 'alpha' || type === 'rotate') addStyle(type, start ?? from);
-              items?.forEach(convertTrans);
-            };
-            convertTrans(trans);
-            return transStyle;
+            return getStyle(trans);
           })}
           sharedElementMotion={sharedElementTransition}
           duration={duration}
