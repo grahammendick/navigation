@@ -17,7 +17,7 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
             if (!trans || typeof trans === 'string')
               trans = {type: 'translate',  startX: 100};
             trans = !Array.isArray(trans) ? trans : {items: trans};
-            const transStyle = {duration};
+            const transStyle = {duration, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1};
             const addStyle = (type: string, start: string | number) => {
               if (start === undefined) return;
               const percent = typeof start === 'string' && start.endsWith('%')
@@ -39,13 +39,14 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
             convertTrans(trans);
             return transStyle;
           })}
-          mountedStyle={mountedStyle || {translateX_pc: 0, alpha: 1, scaleX: 1, scaleY: 1}}
+          // only return the exact ones needed
+          mountedStyle={mountedStyle || {duration, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1}}
           crumbStyle={crumbedStyle || ((state, data, crumbs, nextState, nextData) => {
             let trans = returnOrCall(crumbStyle, true, state, data, crumbs, nextState, nextData);
             if (!trans || typeof trans === 'string')
               trans = {type: 'translate',  startX: 0};
             trans = !Array.isArray(trans) ? trans : {items: trans};
-            const transStyle = {duration};
+            const transStyle = {duration, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1};
             const addStyle = (type: string, start: string | number) => {
               if (start === undefined) return;
               const percent = typeof start === 'string' && start.endsWith('%')
@@ -76,12 +77,13 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
   );
 }
 
+// check for !== undefined instead to allow for 0 values
 const renderMotion = ({translateX, translateX_pc, scaleX, scaleX_pc}, scene, key) => (
   <View key={key}
     style={{
       transform: `
         translate(${translateX ? `${translateX}px` : translateX_pc ? `${translateX_pc}%` : '0'})
-        scale(${scaleX ? `${scaleX}` : scaleX_pc ? `${scaleX_pc / 100}` : '1'})
+        scale(${scaleX !== 1 ? `${scaleX}` : scaleX_pc ? `${scaleX_pc / 100}` : '1'})
       ` as any,
       position: 'absolute',
       backgroundColor: '#fff',
