@@ -5,7 +5,8 @@ import { MobileHistoryManager } from 'navigation-react-mobile';
 
 const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountStyle = () => null, crumbStyle = () => null,
     sharedElementTransition, duration, renderScene, renderTransition, children}) => {
-    const emptyStyle = {duration: undefined, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1, rotate: 0};
+    const emptyStyle = {duration: undefined, translateX: 0, translateX_pc: 0, translateY: 0, translateY_pc: 0,
+        scaleX: 1, scaleX_pc: 100, scaleY: 1, scaleY_pc: 100, alpha: 1, rotate: 0};
     const returnOrCall = (item, ...args) => typeof item !== 'function' ? item : item(...args);
     const getStyle = (trans) => {
         trans = !Array.isArray(trans) ? trans : {items: trans};
@@ -48,12 +49,14 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
     );
 }
 
-const renderMotion = ({translateX, translateX_pc, scaleX, scaleX_pc, alpha, rotate}, scene, key) => (
+const renderMotion = ({translateX, translateX_pc, translateY, translateY_pc, scaleX, scaleX_pc, scaleY, scaleY_pc, alpha, rotate}, scene, key) => (
     <View key={key}
         style={{
             transform: `
-                translate(${translateX ? `${translateX}px` : `${translateX_pc}%`})
-                scale(${scaleX !== 1 ? `${scaleX}` : `${scaleX_pc / 100}`})
+                translate(${translateX ? `${translateX}px` : `${translateX_pc}%`},
+                    ${translateY ? `${translateY}px` : `${translateY_pc}%`})
+                scale(${scaleX !== 1 ? `${scaleX}` : `${scaleX_pc / 100}`},
+                    ${scaleY !== 1 ? `${scaleY}` : `${scaleY_pc / 100}`})
                 rotate(${rotate}deg)
 			` as any,
             opacity: alpha,
