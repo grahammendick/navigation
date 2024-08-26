@@ -5,10 +5,6 @@ import { MobileHistoryManager } from 'navigation-react-mobile';
 
 const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountStyle = () => null, crumbStyle = () => null,
   sharedElementTransition, duration, renderScene, renderTransition, children}) => {
-  const customRender = typeof children === 'function' || renderTransition;
-  // if !customRender then turn unmountStyle into unmounted style (and mountedStyle)
-  // and crumbStyle into crumbStyle
-  // (what about if they're empty like in the zoom sample?)
   const emptyStyle = {duration, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1, rotate: 0};
   const returnOrCall = (item, ...args) => typeof item !== 'function' ? item : item(...args);
   const getStyle = (trans) => {
