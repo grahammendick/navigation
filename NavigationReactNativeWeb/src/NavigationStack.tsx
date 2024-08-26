@@ -9,7 +9,7 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
   // if !customRender then turn unmountStyle into unmounted style (and mountedStyle)
   // and crumbStyle into crumbStyle
   // (what about if they're empty like in the zoom sample?)
-  const emptyStyle = {duration, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1};
+  const emptyStyle = {duration, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1, rotate: 0};
   const returnOrCall = (item, ...args) => typeof item !== 'function' ? item : item(...args);
   const getStyle = (trans) => {
     trans = !Array.isArray(trans) ? trans : {items: trans};
@@ -55,12 +55,13 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
   );
 }
 
-const renderMotion = ({translateX, translateX_pc, scaleX, scaleX_pc, alpha}, scene, key) => (
+const renderMotion = ({translateX, translateX_pc, scaleX, scaleX_pc, alpha, rotate}, scene, key) => (
   <View key={key}
     style={{
       transform: `
         translate(${translateX ? `${translateX}px` : `${translateX_pc}%`})
         scale(${scaleX !== 1 ? `${scaleX}` : `${scaleX_pc / 100}`})
+        rotate(${rotate}deg)
       ` as any,
       opacity: alpha,
       position: 'absolute',
