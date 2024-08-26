@@ -5,7 +5,7 @@ import { MobileHistoryManager } from 'navigation-react-mobile';
 
 const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountStyle = () => null, crumbStyle = () => null,
   sharedElementTransition, duration, renderScene, renderTransition, children}) => {
-  const emptyStyle = {duration, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1, rotate: 0};
+  const emptyStyle = {duration: undefined, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1, rotate: 0};
   const returnOrCall = (item, ...args) => typeof item !== 'function' ? item : item(...args);
   const getStyle = (trans) => {
     trans = !Array.isArray(trans) ? trans : {items: trans};
@@ -15,10 +15,11 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
       const suffix = `${start}`.endsWith('%') ? '_pc' : '';
       transStyle[type + suffix] = +(suffix ? `${start}`.slice(0, -1) : start);
     }
-    const convertTrans = ({type, start, from, startX, fromX, startY, fromY, items}) => {
+    const convertTrans = ({type, start, from, startX, fromX, startY, fromY, items, duration}) => {
       if (type === 'translate' || type === 'scale') addStyle(`${type}X`, startX ?? fromX);
       if (type === 'translate' || type === 'scale') addStyle(`${type}Y`, startY ?? fromY);
       if (type === 'alpha' || type === 'rotate') addStyle(type, start ?? from);
+      if (duration !== undefined) transStyle.duration = Math.max(duration, transStyle.duration || 0);
       items?.forEach(convertTrans);
     };
     convertTrans(trans);
@@ -28,12 +29,12 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
       <NavigationMotion
           unmountedStyle={unmountedStyle || ((state, data, crumbs) => {
             let trans = returnOrCall(unmountStyle, true, state, data, crumbs);
-            return getStyle(trans && typeof trans !== 'string' ? trans : {type: 'translate',  startX: '100%'});
+            return getStyle(trans && typeof trans !== 'string' ? trans : trans ? {type: 'translate',  startX: '100%'} : {duration: 0});
           })}
           mountedStyle={mountedStyle || {...emptyStyle}}
           crumbStyle={crumbedStyle || ((state, data, crumbs, nextState, nextData) => {
             let trans = returnOrCall(crumbStyle, true, state, data, crumbs, nextState, nextData);
-            return getStyle(trans && typeof trans !== 'string' ? trans : {type: 'translate',  startX: '0%'});
+            return getStyle(trans && typeof trans !== 'string' ? trans : trans ? {type: 'translate',  startX: '0%'} : {duration: 0});
           })}
           sharedElementMotion={sharedElementTransition}
           duration={duration}
