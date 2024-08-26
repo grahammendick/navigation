@@ -16,8 +16,8 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
     const transStyle = {...emptyStyle};
     const addStyle = (type: string, start: string | number) => {
       if (start === undefined) return;
-      const percent = typeof start === 'string' && start.endsWith('%')
-      transStyle[type + (percent ? '_pc' : '')] = percent ? +(start as string).slice(0, -1) : +start;
+      const suffix = `${start}`.endsWith('%') ? '_pc' : '';
+      transStyle[type + suffix] = +(suffix ? `${start}`.slice(0, -1) : start);
     }
     const convertTrans = ({type, start, from, startX, fromX, startY, fromY, items}) => {
       if (type === 'translate' || type === 'scale') {
