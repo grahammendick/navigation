@@ -24,16 +24,12 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
               transStyle[type + (percent ? '_pc' : '')] = percent ? +(start as string).slice(0, -1) : +start;
             }
             const convertTrans = ({type, start, from, startX, fromX, startY, fromY, items}) => {
-              if (type === 'translate') {
-                addStyle('translateX', startX ?? fromX);
-                addStyle('translateY', startY ?? fromY);
+              if (type === 'translate' || type === 'scale') {
+                addStyle(`${type}X`, startX ?? fromX);
+                addStyle(`${type}Y`, startY ?? fromY);
               }
-              if (type === 'scale') {
-                addStyle('scaleX', startX ?? fromX);
-                addStyle('scaleY', startY ?? fromY);
-              }
-              if (type === 'alpha') addStyle('alpha', start ?? from);
-              if (type === 'rotate') addStyle('rotate', start ?? from); // can do pivot? transform origin?
+              // can do pivot? transform origin?
+              if (type === 'alpha' || type === 'rotate') addStyle(type, start ?? from);
               items?.forEach(convertTrans);
             };
             convertTrans(trans);
@@ -53,16 +49,12 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
               transStyle[type + (percent ? '_pc' : '')] = percent ? +(start as string).slice(0, -1) : +start;
             }
             const convertTrans = ({type, start, from, startX, fromX, startY, fromY, items}) => {
-              if (type === 'translate') {
-                addStyle('translateX', startX ?? fromX);
-                addStyle('translateY', startY ?? fromY);
+              if (type === 'translate' || type === 'scale') {
+                addStyle(`${type}X`, startX ?? fromX);
+                addStyle(`${type}Y`, startY ?? fromY);
               }
-              if (type === 'scale') {
-                addStyle('scaleX', startX ?? fromX);
-                addStyle('scaleY', startY ?? fromY);
-              }
-              if (type === 'alpha') addStyle('alpha', start ?? from);
-              if (type === 'rotate') addStyle('rotate', start ?? from); // can do pivot? transform origin?
+              // can do pivot? transform origin?
+              if (type === 'alpha' || type === 'rotate') addStyle(type, start ?? from);
               items?.forEach(convertTrans);
             };
             convertTrans(trans);
