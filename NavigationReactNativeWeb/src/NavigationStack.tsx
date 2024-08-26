@@ -9,10 +9,11 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
   // if !customRender then turn unmountStyle into unmounted style (and mountedStyle)
   // and crumbStyle into crumbStyle
   // (what about if they're empty like in the zoom sample?)
+  const emptyStyle = {duration, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1};
   const returnOrCall = (item, ...args) => typeof item !== 'function' ? item : item(...args);
   const getStyle = (trans) => {
     trans = !Array.isArray(trans) ? trans : {items: trans};
-    const transStyle = {duration, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1};
+    const transStyle = {...emptyStyle};
     const addStyle = (type: string, start: string | number) => {
       if (start === undefined) return;
       const percent = typeof start === 'string' && start.endsWith('%')
@@ -38,7 +39,7 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
               trans = {type: 'translate',  startX: 100};
             return getStyle(trans);
           })}
-          mountedStyle={mountedStyle || {duration, translateX: 0, translateX_pc: 0, scaleX: 1, scaleX_pc: 100, alpha: 1}}
+          mountedStyle={mountedStyle || {...emptyStyle}}
           crumbStyle={crumbedStyle || ((state, data, crumbs, nextState, nextData) => {
             let trans = returnOrCall(crumbStyle, true, state, data, crumbs, nextState, nextData);
             if (!trans || typeof trans === 'string')
