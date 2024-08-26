@@ -16,11 +16,8 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
       transStyle[type + suffix] = +(suffix ? `${start}`.slice(0, -1) : start);
     }
     const convertTrans = ({type, start, from, startX, fromX, startY, fromY, items}) => {
-      if (type === 'translate' || type === 'scale') {
-        addStyle(`${type}X`, startX ?? fromX);
-        addStyle(`${type}Y`, startY ?? fromY);
-      }
-      // can do pivot? transform origin?
+      if (type === 'translate' || type === 'scale') addStyle(`${type}X`, startX ?? fromX);
+      if (type === 'translate' || type === 'scale') addStyle(`${type}Y`, startY ?? fromY);
       if (type === 'alpha' || type === 'rotate') addStyle(type, start ?? from);
       items?.forEach(convertTrans);
     };
