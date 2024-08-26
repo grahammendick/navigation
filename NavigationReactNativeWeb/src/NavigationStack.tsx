@@ -35,16 +35,12 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
       <NavigationMotion
           unmountedStyle={unmountedStyle || ((state, data, crumbs) => {
             let trans = returnOrCall(unmountStyle, true, state, data, crumbs);
-            if (!trans || typeof trans === 'string')
-              trans = {type: 'translate',  startX: '100%'};
-            return getStyle(trans);
+            return getStyle(trans && typeof trans !== 'string' ? trans : {type: 'translate',  startX: '100%'});
           })}
           mountedStyle={mountedStyle || {...emptyStyle}}
           crumbStyle={crumbedStyle || ((state, data, crumbs, nextState, nextData) => {
             let trans = returnOrCall(crumbStyle, true, state, data, crumbs, nextState, nextData);
-            if (!trans || typeof trans === 'string')
-              trans = {type: 'translate',  startX: '0%'};
-            return getStyle(trans);
+            return getStyle(trans && typeof trans !== 'string' ? trans : {type: 'translate',  startX: '0%'});
           })}
           sharedElementMotion={sharedElementTransition}
           duration={duration}
