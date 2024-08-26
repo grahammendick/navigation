@@ -52,9 +52,9 @@ const renderMotion = ({ translateX, translateX_pc, scaleX, scaleX_pc, alpha, rot
     <View key={key}
         style={{
             transform: `
-				translate(${translateX ? `${translateX}px` : `${translateX_pc}%`})
-				scale(${scaleX !== 1 ? `${scaleX}` : `${scaleX_pc / 100}`})
-				rotate(${rotate}deg)
+                translate(${translateX ? `${translateX}px` : `${translateX_pc}%`})
+                scale(${scaleX !== 1 ? `${scaleX}` : `${scaleX_pc / 100}`})
+                rotate(${rotate}deg)
 			` as any,
             opacity: alpha,
             position: 'absolute',
