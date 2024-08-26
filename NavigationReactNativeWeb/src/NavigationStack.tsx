@@ -77,7 +77,6 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
   );
 }
 
-// check for !== undefined instead to allow for 0 values
 const renderMotion = ({translateX, translateX_pc, scaleX, scaleX_pc}, scene, key) => (
   <View key={key}
     style={{
