@@ -5,7 +5,7 @@ import {NavigationStack} from 'navigation-react-native';
 
 export default () => {
   const stateNavigator = new StateNavigator([
-    {key: 'tabs', route: '{tab?}', defaults: {tab: 'home'}},
+    {key: 'tabs', route: '+/tab/{tab?}', defaults: {tab: 'home'}},
     {key: 'home'},
     {key: 'notifications'},
     {key: 'tweet', route: 'tweet/{id}', trackCrumbTrail: true, defaultTypes: {id: 'number'}},
