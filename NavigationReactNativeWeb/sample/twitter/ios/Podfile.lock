@@ -7,6 +7,8 @@ PODS:
   - hermes-engine (0.74.4):
     - hermes-engine/Pre-built (= 0.74.4)
   - hermes-engine/Pre-built (0.74.4)
+  - navigation-react-native (9.21.2):
+    - React-Core
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -1174,6 +1176,7 @@ DEPENDENCIES:
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
+  - navigation-react-native (from `../node_modules/navigation-react-native`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTDeprecation (from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
@@ -1243,6 +1246,8 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2024-06-28-RNv0.74.3-7bda0c267e76d11b68a585f84cfdd65000babf85
+  navigation-react-native:
+    :path: "../node_modules/navigation-react-native"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTDeprecation:
@@ -1347,6 +1352,7 @@ SPEC CHECKSUMS:
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: fdfdfe5479092de0c4bdbebedd9056951f092c4f
   hermes-engine: 6312f669c895e05f0f6029554061593711770ea6
+  navigation-react-native: 7f8dc56ca7bf4fadf0fb6f422a5f5204e04d43c0
   RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: d83da85890d5bb18efd2809a733865c1c5c11487
   RCTRequired: e109419eacfb10fbb79a3ecb57ebcad198593d8a
