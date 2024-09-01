@@ -7,7 +7,7 @@ PODS:
   - hermes-engine (0.75.2):
     - hermes-engine/Pre-built (= 0.75.2)
   - hermes-engine/Pre-built (0.75.2)
-  - navigation-react-native (9.21.2):
+  - navigation-react-native (9.22.0):
     - React-Core
   - RCT-Folly (2024.01.01.00):
     - boost
@@ -1709,7 +1709,7 @@ SPEC CHECKSUMS:
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: 69ef571f3de08433d766d614c73a9838a06bf7eb
   hermes-engine: 3b6e0717ca847e2fc90a201e59db36caf04dee88
-  navigation-react-native: 7f8dc56ca7bf4fadf0fb6f422a5f5204e04d43c0
+  navigation-react-native: 15a4b61c41ae78a3502397360fd30d7cc43f5211
   RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
   RCTDeprecation: 34cbf122b623037ea9facad2e92e53434c5c7422
   RCTRequired: 24c446d7bcd0f517d516b6265d8df04dc3eb1219
