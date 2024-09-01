@@ -189,6 +189,15 @@ using namespace facebook::react;
 {
 }
 
+- (void)didReceiveProgress:(float)progress loaded:(int64_t)loaded total:(int64_t)total fromObserver:(nonnull const void *)observer
+{
+}
+
+- (void)didReceiveFailure:(nonnull NSError *)error fromObserver:(nonnull const void *)observer
+{
+}
+
+
 #pragma mark - RCTComponentViewProtocol
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
