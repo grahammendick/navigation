@@ -3941,9 +3941,9 @@ natural-compare@^1.4.0:
   version "1.4.0"
 
 navigation-react-native@^9.21.2:
-  version "9.21.2"
-  resolved "https://registry.npmjs.org/navigation-react-native/-/navigation-react-native-9.21.2.tgz"
-  integrity sha512-wuC+R38LcVUQJxSWZJDBrwb8N3C6reKYTsL341tUbGlDQtI2dymlIG5D5TMJv2Wow8Tks8FPaLd2I5dxsUmQXQ==
+  version "9.22.0"
+  resolved "https://registry.npmjs.org/navigation-react-native/-/navigation-react-native-9.22.0.tgz"
+  integrity sha512-AxuedvMxT8iU8Ubawg+WioN8WHiAAqRBKLme1/G0lRdnZddw3hpdhvy/SO8g1TyipkzP3uIhVdIqqr0LkcqnQg==
 
 navigation-react@*, navigation-react@^4.5.1:
   version "4.5.1"
