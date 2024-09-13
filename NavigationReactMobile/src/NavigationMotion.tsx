@@ -1,4 +1,4 @@
-import React, {useRef, useState, useContext, useEffect, ReactElement} from 'react';
+import React, {useRef, useState, useContext, useEffect, ReactElement, useLayoutEffect} from 'react';
 import { State, Crumb, StateNavigator } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import Motion from './Motion';
@@ -133,7 +133,24 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
 
 const Animator  = ({children, data: nextScenes}) => {
     const [scenes, setScenes] = useState({prev: null, all: []});
+    const container = useRef(null);
+    useLayoutEffect(() => {
+        scenes.all.forEach(({pushEnter, popExit}, i) => {
+            const scene = container.current.children[i];
+            if (pushEnter) {
+                if (!scene.pushEnter) {
+                    scene.pushEnter = scene.animate(
+                        [{transform: 'translateX(100%)'},{transform: 'translateX(0)'}],
+                        {duration: 1000, fill: 'forwards'},
+                    );
+                }
+                scene.pushEnter.play();
+            }
+            if (popExit) scene.pushEnter.reverse();
+        });
+    }, [scenes]);
     if (nextScenes !== scenes.prev) {
+        // need to add index because sorting by it
         setScenes(({all: scenes}) => {
             const scenesByKey = scenes.reduce((acc, scene) => ({...acc, [scene.key]: scene}), {});
             const nextScenesByKey = nextScenes.reduce((acc, scene) => ({...acc, [scene.key]: scene}), {});
@@ -155,9 +172,7 @@ const Animator  = ({children, data: nextScenes}) => {
             };
         });
     };
-    // run the animation on the scenes based on the flags!!
-    // assume the scenes have a keyframes prop so can create the animations
-    return children(scenes.all);
+    return <div ref={container}>{children(scenes.all)}</div>;
 }
 
 NavigationMotion.Scene = ({children}) => children;
