@@ -143,6 +143,35 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
     )
 }
 
+const Animator  = ({children, scenes: nextScenes}) => {
+    const [scenes, setScenes] = useState({prev: null, all: []});
+    if (nextScenes !== scenes.prev) {
+        setScenes(({all: scenes}) => {
+            const scenesByKey = scenes.reduce((acc, scene) => ({...acc, [scene.key]: scene}), {});
+            const nextScenesByKey = nextScenes.reduce((acc, scene) => ({...acc, [scene.key]: scene}), {});
+            const noAnim = {pushEnter: false, pushExit: false, popEnter: false, popExit: false};
+            return {
+                prev: nextScenes,
+                all: nextScenes
+                    .map((nextScene) => {
+                        const scene = scenesByKey[nextScene.key];
+                        const pushExit = nextScene.index < nextScenes.length - 1 && nextScene.index === scenes.length - 1 || scene?.pushExit;
+                        const popEnter = nextScene.index === nextScenes.length - 1 && nextScene.index < scenes.length - 1  || scene?.popEnter;
+                        return scene ? {...scene, pushExit, popEnter} : {...nextScene, ...noAnim, pushEnter: true};
+                    })
+                    .concat(scenes
+                        .filter(scene => nextScenesByKey[scene.key])
+                        .map(scene => ({...scene, ...noAnim, popExit: true}))
+                    )
+                    .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length)
+            };
+        });
+    };
+    // run the animation on the scenes based on the flags!!
+    // assume the scenes have a keyframes prop so can create the animations
+    return children(scenes);
+}
+
 NavigationMotion.Scene = ({children}) => children;
 
 export default NavigationMotion;
