@@ -148,7 +148,7 @@ const Animator  = ({children, data: nextScenes}) => {
                         return scene ? {...scene, pushExit, popEnter} : {...nextScene, ...noAnim, pushEnter: true};
                     })
                     .concat(scenes
-                        .filter(scene => nextScenesByKey[scene.key])
+                        .filter(scene => !nextScenesByKey[scene.key])
                         .map(scene => ({...scene, ...noAnim, popExit: true}))
                     )
                     .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length)
