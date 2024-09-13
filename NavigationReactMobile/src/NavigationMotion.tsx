@@ -109,41 +109,29 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
     renderScene = firstLink ? ({key}) => allScenes[key] : renderScene;
     return (stateContext.state &&
         <SharedElementContext.Provider value={sharedElementRegistry.current}>
-            <Motion<SceneContext>
-                data={getScenes()}
-                getKey={({key}) => key}
-                enter={scene => getStyle(!oldState, scene)}
-                update={scene => getStyle(true, scene)}
-                leave={scene => getStyle(false, scene)}
-                onRest={({key}) => clearScene(key)}
-                duration={duration}>
-                {styles => {
-                    const {rest, mountRest, mountDuration, mountProgress} = getMotion(styles);
+            <Animator data={getScenes()}>
+                {scenes => {
+                    // const {rest, mountRest, mountDuration, mountProgress} = getMotion(styles);
                     return (
-                        styles.map(({data: {key, state, data}, style: {duration, ...style}}) => {
+                        scenes.map(({key, state, data}) => {
                             const crumb = +key.replace(/\++$/, '');
-                            const scene = <Scene crumb={crumb} rest={rest} renderScene={renderScene} />;
+                            const scene = <Scene crumb={crumb} rest renderScene={renderScene} />;
                             return (
-                                <Freeze key={key} enabled={rest && crumb < getScenes().length - 1}>
-                                    {renderMotion(style, scene, key, crumbs.length === crumb, state, data)}
+                                <Freeze key={key} enabled={true && crumb < getScenes().length - 1}>
+                                    <div key={key} className="scene">
+                                        {scene}
+                                    </div>
                                 </Freeze>
                             );
-                        }).concat(
-                            sharedElementMotion && sharedElementMotion({
-                                key: 'sharedElements',
-                                sharedElements: !mountRest ? getSharedElements() : [],
-                                progress: mountProgress,
-                                duration: mountDuration ?? duration,
-                            })
-                        )
+                        })
                     )}
                 }
-            </Motion>
+            </Animator>
         </SharedElementContext.Provider>
     )
 }
 
-const Animator  = ({children, scenes: nextScenes}) => {
+const Animator  = ({children, data: nextScenes}) => {
     const [scenes, setScenes] = useState({prev: null, all: []});
     if (nextScenes !== scenes.prev) {
         setScenes(({all: scenes}) => {
@@ -169,7 +157,7 @@ const Animator  = ({children, scenes: nextScenes}) => {
     };
     // run the animation on the scenes based on the flags!!
     // assume the scenes have a keyframes prop so can create the animations
-    return children(scenes);
+    return children(scenes.all);
 }
 
 NavigationMotion.Scene = ({children}) => children;
