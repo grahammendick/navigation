@@ -155,8 +155,8 @@ const Animator  = ({children, scenes: nextScenes}) => {
                 all: nextScenes
                     .map((nextScene) => {
                         const scene = scenesByKey[nextScene.key];
-                        const pushExit = nextScene.index < nextScenes.length - 1 && nextScene.index === scenes.length - 1 || scene?.pushExit;
-                        const popEnter = nextScene.index === nextScenes.length - 1 && nextScene.index < scenes.length - 1  || scene?.popEnter;
+                        const pushExit = scene?.index < nextScenes.length - 1 && scene?.index === scenes.length - 1 || scene?.pushExit;
+                        const popEnter = scene?.index === nextScenes.length - 1 && scene?.index < scenes.length - 1  || scene?.popEnter;
                         return scene ? {...scene, pushExit, popEnter} : {...nextScene, ...noAnim, pushEnter: true};
                     })
                     .concat(scenes
