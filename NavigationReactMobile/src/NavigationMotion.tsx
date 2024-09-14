@@ -66,7 +66,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
             const {state: nextState, data: nextData} = crumbsAndNext[index + 1] || {state: undefined, data: undefined};
             const mount = url === nextCrumb.url;
             const fromUnmounted = mount && !backward;
-            return {key: keys[index], state, data, url, crumbs: preCrumbs, nextState, nextData, mount, fromUnmounted };
+            return {key: keys[index], index, state, data, url, crumbs: preCrumbs, nextState, nextData, mount, fromUnmounted };
         });
     }
     const sceneProps = ({key}: State) => firstLink ? allScenes[key].props : null;
@@ -117,7 +117,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
                             const crumb = +key.replace(/\++$/, '');
                             const scene = <Scene crumb={crumb} rest renderScene={renderScene} />;
                             return (
-                                <Freeze key={key} enabled={true && crumb < getScenes().length - 1}>
+                                <Freeze key={key} enabled={false && crumb < getScenes().length - 1}>
                                     <div key={key} className="scene">
                                         {scene}
                                     </div>
@@ -135,7 +135,7 @@ const Animator  = ({children, data: nextScenes}) => {
     const [scenes, setScenes] = useState({prev: null, all: []});
     const container = useRef(null);
     useLayoutEffect(() => {
-        scenes.all.forEach(({pushEnter, popExit}, i) => {
+        scenes.all.forEach(({pushEnter, popExit, pushExit, popEnter}, i) => {
             const scene = container.current.children[i];
             if (pushEnter) {
                 if (!scene.pushEnter) {
@@ -147,10 +147,19 @@ const Animator  = ({children, data: nextScenes}) => {
                 scene.pushEnter.play();
             }
             if (popExit) scene.pushEnter.reverse();
+            if (pushExit) {
+                if (!scene.pushExit) {
+                    scene.pushExit = scene.animate(
+                        [{transform: 'translateX(0)'},{transform: 'translateX(-20%)'}],
+                        {duration: 1000, fill: 'forwards'},
+                    );
+                }
+                scene.pushExit.play();
+            }
+            if (popEnter) scene.pushExit.reverse();
         });
     }, [scenes]);
     if (nextScenes !== scenes.prev) {
-        // need to add index because sorting by it
         setScenes(({all: scenes}) => {
             const scenesByKey = scenes.reduce((acc, scene) => ({...acc, [scene.key]: scene}), {});
             const nextScenesByKey = nextScenes.reduce((acc, scene) => ({...acc, [scene.key]: scene}), {});
