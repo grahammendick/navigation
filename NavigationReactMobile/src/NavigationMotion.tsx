@@ -7,7 +7,7 @@ import SharedElementContext from './SharedElementContext';
 import SharedElementRegistry from './SharedElementRegistry';
 import Freeze from './Freeze';
 import { NavigationMotionProps } from './Props';
-type NavigationMotionState = {stateNavigator: StateNavigator, keys: string[]};
+type NavigationMotionState = {stateNavigator: StateNavigator, keys: string[], rest: boolean};
 type SceneContext = {key: string, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, mount: boolean, fromUnmounted: boolean};
 type MotionStyle = {style: any, data: SceneContext, key: string, rest: boolean, progress: number, start: any, end: any };
 
@@ -15,7 +15,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
     sharedElementMotion, renderScene, children, stackInvalidatedLink, renderMotion = children}: NavigationMotionProps) => {
     const sharedElementRegistry = useRef(new SharedElementRegistry());
     const {stateNavigator} = useContext(NavigationContext);
-    const [motionState, setMotionState] = useState<NavigationMotionState>({stateNavigator: null, keys: []});
+    const [motionState, setMotionState] = useState<NavigationMotionState>({stateNavigator: null, keys: [], rest: false});
     const scenes = {};
     let firstLink;
     const findScenes = (elements = children, nested = false) => {
@@ -53,9 +53,13 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
         return [];
     }
     const clearScene = (index) => {
-        const scene = getScenes().filter(scene => scene.key === index)[0];
-        if (!scene)
-            sharedElementRegistry.current.unregisterSharedElement(index);
+        setMotionState(({rest: prevRest, stateNavigator, keys}) => {
+            const scene = getScenes().filter(scene => scene.key === index)[0];
+            if (!scene)
+                sharedElementRegistry.current.unregisterSharedElement(index);
+            var rest = prevRest || (scene && scene.mount);
+            return {rest, stateNavigator, keys};
+        });
     }
     const getScenes: () => SceneContext[] = () => {
         const {keys} = motionState;
@@ -102,14 +106,14 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
             const keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
             if (prevKeys.length === keys.length && prevState !== state)
                 keys[keys.length - 1] += '+';
-            return {keys, stateNavigator};    
+            return {keys, rest: false, stateNavigator};    
         })
     }
     const {stateContext: {crumbs, oldState}, stateContext} = stateNavigator;
     renderScene = firstLink ? ({key}) => allScenes[key] : renderScene;
     return (stateContext.state &&
         <SharedElementContext.Provider value={sharedElementRegistry.current}>
-            <Animator data={getScenes()}>
+            <Animator data={getScenes()} onRest={({key}) => clearScene(key)}>
                 {scenes => {
                     // const {rest, mountRest, mountDuration, mountProgress} = getMotion(styles);
                     return (
@@ -117,7 +121,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
                             const crumb = +key.replace(/\++$/, '');
                             const scene = <Scene crumb={crumb} rest renderScene={renderScene} />;
                             return (
-                                <Freeze key={key} enabled={false && crumb < getScenes().length - 1}>
+                                <Freeze key={key} enabled={motionState.rest && crumb < getScenes().length - 1}>
                                     <div key={key} className="scene">
                                         {scene}
                                     </div>
@@ -131,7 +135,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
     )
 }
 
-const Animator  = ({children, data: nextScenes}) => {
+const Animator  = ({children, data: nextScenes, onRest}) => {
     const [scenes, setScenes] = useState({prev: null, all: []});
     const container = useRef(null);
     // Need to animate it after finish promise resolves, for example,
@@ -140,10 +144,10 @@ const Animator  = ({children, data: nextScenes}) => {
     // Test this on twitter sample because need deep stack
     useLayoutEffect(() => {
         let cancel = false;
-        scenes.all.forEach(({pushEnter, popExit, pushExit, popEnter}, i) => {
+        scenes.all.forEach(({key, pushEnter, popExit, pushExit, popEnter}, i) => {
             const scene = container.current.children[i];
-            const oldNavState = scene.navState;
-            if (pushEnter && scene.navState !== 'pushEnter') {
+            const prevNavState = scene.navState || scene.prevNavState;
+            if (pushEnter && prevNavState !== 'pushEnter') {
                 if (!scene.pushEnter) {
                     scene.pushEnter = scene.animate(
                         [{transform: 'translateX(100%)'},{transform: 'translateX(0)'}],
@@ -151,14 +155,14 @@ const Animator  = ({children, data: nextScenes}) => {
                     );
                 }
                 scene.navState = 'pushEnter';
-                if (oldNavState !== 'popExit') scene.pushEnter.play();
+                if (prevNavState !== 'popExit') scene.pushEnter.play();
                 else scene.pushEnter.reverse();
             }
-            if (popExit && scene.navState !== 'popExit') {
+            if (popExit && prevNavState !== 'popExit') {
                 scene.navState = 'popExit';
                 scene.pushEnter.reverse();
             }
-            if (pushExit && scene.navState !== 'pushExit') {
+            if (pushExit && prevNavState !== 'pushExit') {
                 if (!scene.pushExit) {
                     scene.pushExit = scene.animate(
                         [{transform: 'translateX(-30%)'},{transform: 'translateX(0)'}],
@@ -166,16 +170,26 @@ const Animator  = ({children, data: nextScenes}) => {
                     );
                 }
                 scene.navState = 'pushExit';
-                if (oldNavState !== 'popEnter') scene.pushExit.reverse();
+                if (prevNavState !== 'popEnter') scene.pushExit.reverse();
                 else scene.pushExit.reverse();
             }
-            if (popEnter && scene.navState !== 'popEnter') {
+            if (popEnter && prevNavState !== 'popEnter') {
                 scene.navState = 'popEnter';
                 scene.pushExit.reverse();
             }
             scene.pushEnter?.finished.then(() => {
-                if (popExit && !cancel)
+                if (cancel || !scene.navState) return;
+                if (popExit)
                     setScenes(({prev, all}) => ({prev, all: all.filter((_s, index) => index !== i)}))
+                if (pushEnter || popExit) onRest({key});
+                scene.prevNavState = scene.navState;
+                scene.navState = undefined;
+            });
+            scene.pushExit?.finished.then(() => {
+                if (cancel || !scene.navState) return;
+                if (pushExit || popEnter) onRest({key});
+                scene.prevNavState = scene.navState;
+                scene.navState = undefined;
             });
         });
         return () => {cancel = true;}
