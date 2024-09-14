@@ -232,6 +232,8 @@ const Animator  = ({children, data: nextScenes, onRest}) => {
                         .map(scene => ({...scene, ...noAnim, popExit: true}))
                     )
                     .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length)
+                    // might need to fix index - test replace navigation and see if sorted correctly
+                    // maybe need to take index from scene or nextScene?
             };
         });
     };
