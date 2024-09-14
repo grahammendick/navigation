@@ -160,9 +160,12 @@ const Animator  = ({children, data: nextScenes}) => {
                 all: nextScenes
                     .map((nextScene) => {
                         const scene = scenesByKey[nextScene.key];
-                        const pushExit = scene?.index < nextScenes.length - 1 && scene?.index === scenes.length - 1 || scene?.pushExit;
-                        const popEnter = scene?.index === nextScenes.length - 1 && scene?.index < scenes.length - 1  || scene?.popEnter;
-                        return scene ? {...scene, pushExit, popEnter} : {...nextScene, ...noAnim, pushEnter: true};
+                        const pushExit = scene?.index < nextScenes.length - 1 && scene?.index === scenes.length - 1;
+                        const popEnter = scene?.index === nextScenes.length - 1 && scene?.index < scenes.length - 1;
+                        return pushExit ? {...nextScene, ...noAnim, pushExit: true}
+                            : popEnter ? {...nextScene, ...noAnim, popEnter: true}
+                            : !scene ? {...nextScene, ...noAnim, pushEnter: true}
+                            : {...scene, ...nextScene};
                     })
                     .concat(scenes
                         .filter(scene => !nextScenesByKey[scene.key])
