@@ -167,25 +167,25 @@ const Animator  = ({children, data: nextScenes, onRest}) => {
                 scene.navState = 'popExit';
                 scene.pushEnter.reverse();
             }
-            if (!scene.pushExit && (pushExit || popEnter)) {
-                scene.pushExit = scene.animate(
+            if (!scene.popEnter && (pushExit || popEnter)) {
+                scene.popEnter = scene.animate(
                     [
                         {transform: 'translateX(5%) scale(0.8)', opacity: 0},
                         {transform: 'translateX(0) scale(1)', opacity: 1}
                     ],
                     {duration: 1000, fill: 'backwards'},
                 );
-                scene.pushExit.persist();
+                scene.popEnter.persist();
             }
             if (pushExit && prevNavState !== 'pushExit') {
                 scene.navState = 'pushExit';
-                if (prevNavState !== 'popEnter') scene.pushExit.reverse();
-                else scene.pushExit.reverse();
+                if (prevNavState !== 'popEnter') scene.popEnter.reverse();
+                else scene.popEnter.reverse();
             }
             if (popEnter && prevNavState !== 'popEnter') {
                 scene.navState = 'popEnter';
-                if (prevNavState) scene.pushExit.reverse();
-                else scene.pushExit.play();
+                if (prevNavState) scene.popEnter.reverse();
+                else scene.popEnter.play();
             }
             scene.pushEnter?.finished.then(() => {
                 if (cancel || !scene.navState) return;
@@ -197,7 +197,7 @@ const Animator  = ({children, data: nextScenes, onRest}) => {
                     scene.navState = undefined;
                 }
             });
-            scene.pushExit?.finished.then(() => {
+            scene.popEnter?.finished.then(() => {
                 if (cancel || !scene.navState) return;
                 if (pushExit || popEnter) {
                     onRest({key});
