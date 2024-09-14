@@ -162,20 +162,21 @@ const Animator  = ({children, data: nextScenes, onRest}) => {
                 scene.navState = 'popExit';
                 scene.pushEnter.reverse();
             }
+            if (!scene.pushExit && (pushExit || popEnter)) {
+                scene.pushExit = scene.animate(
+                    [{transform: 'translateX(-30%)'},{transform: 'translateX(0)'}],
+                    {duration: 1000, fill: 'backwards'},
+                );
+            }
             if (pushExit && prevNavState !== 'pushExit') {
-                if (!scene.pushExit) {
-                    scene.pushExit = scene.animate(
-                        [{transform: 'translateX(-30%)'},{transform: 'translateX(0)'}],
-                        {duration: 1000, fill: 'backwards'},
-                    );
-                }
                 scene.navState = 'pushExit';
                 if (prevNavState !== 'popEnter') scene.pushExit.reverse();
                 else scene.pushExit.reverse();
             }
             if (popEnter && prevNavState !== 'popEnter') {
                 scene.navState = 'popEnter';
-                scene.pushExit.reverse();
+                if (prevNavState) scene.pushExit.reverse();
+                else scene.pushExit.play();
             }
             scene.pushEnter?.finished.then(() => {
                 if (cancel || !scene.navState) return;
