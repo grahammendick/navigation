@@ -163,7 +163,6 @@ const Animator  = ({children, data: nextScenes, onRest}) => {
                 else scene.pushEnter.reverse();
             }
             if (popExit && prevNavState !== 'popExit') {
-                console.log(scene, key, 'xxx');
                 scene.navState = 'popExit';
                 scene.pushEnter.reverse();
             }
