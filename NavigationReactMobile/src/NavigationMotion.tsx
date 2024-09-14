@@ -134,30 +134,51 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
 const Animator  = ({children, data: nextScenes}) => {
     const [scenes, setScenes] = useState({prev: null, all: []});
     const container = useRef(null);
+    // Need to animate it after finish promise resolves, for example,
+    // so can do popEnter then popExit after 2 browser backs in a row
+    // or pushEnter then pushExit after 2 browser forwards in a row
+    // Test this on twitter sample because need deep stack
     useLayoutEffect(() => {
+        let cancel = false;
         scenes.all.forEach(({pushEnter, popExit, pushExit, popEnter}, i) => {
             const scene = container.current.children[i];
-            if (pushEnter) {
+            const oldNavState = scene.navState;
+            if (pushEnter && scene.navState !== 'pushEnter') {
                 if (!scene.pushEnter) {
                     scene.pushEnter = scene.animate(
                         [{transform: 'translateX(100%)'},{transform: 'translateX(0)'}],
                         {duration: 1000, fill: 'forwards'},
                     );
                 }
-                scene.pushEnter.play();
+                scene.navState = 'pushEnter';
+                if (oldNavState !== 'popExit') scene.pushEnter.play();
+                else scene.pushEnter.reverse();
             }
-            if (popExit) scene.pushEnter.reverse();
-            if (pushExit) {
+            if (popExit && scene.navState !== 'popExit') {
+                scene.navState = 'popExit';
+                scene.pushEnter.reverse();
+            }
+            if (pushExit && scene.navState !== 'pushExit') {
                 if (!scene.pushExit) {
                     scene.pushExit = scene.animate(
-                        [{transform: 'translateX(0)'},{transform: 'translateX(-20%)'}],
+                        [{transform: 'translateX(0)'},{transform: 'translateX(-30%)'}],
                         {duration: 1000, fill: 'forwards'},
                     );
                 }
-                scene.pushExit.play();
+                scene.navState = 'pushExit';
+                if (oldNavState !== 'popEnter') scene.pushExit.play();
+                else scene.pushExit.reverse();
             }
-            if (popEnter) scene.pushExit.reverse();
+            if (popEnter && scene.navState !== 'popEnter') {
+                scene.navState = 'popEnter';
+                scene.pushExit.reverse();
+            }
+            scene.pushEnter?.finished.then(() => {
+                if (popExit && !cancel)
+                    setScenes(({prev, all}) => ({prev, all: all.filter((_s, index) => index !== i)}))
+            });
         });
+        return () => {cancel = true;}
     }, [scenes]);
     if (nextScenes !== scenes.prev) {
         setScenes(({all: scenes}) => {
@@ -169,12 +190,14 @@ const Animator  = ({children, data: nextScenes}) => {
                 all: nextScenes
                     .map((nextScene) => {
                         const scene = scenesByKey[nextScene.key];
-                        const pushExit = scene?.index < nextScenes.length - 1 && scene?.index === scenes.length - 1;
-                        const popEnter = scene?.index === nextScenes.length - 1 && scene?.index < scenes.length - 1;
-                        return pushExit ? {...nextScene, ...noAnim, pushExit: true}
-                            : popEnter ? {...nextScene, ...noAnim, popEnter: true}
-                            : !scene ? {...nextScene, ...noAnim, pushEnter: true}
-                            : {...scene, ...nextScene};
+                        const isMounted = nextScene.index === nextScenes.length - 1;
+                        const wasMounted = !!scene?.pushEnter || !!scene?.popEnter;
+                        const noAnimScene = {...nextScene, ...noAnim};
+                        if (isMounted && !wasMounted && !scene) return {...noAnimScene, pushEnter: true};
+                        if (isMounted && !wasMounted && scene && !scene.popExit) return {...noAnimScene, popEnter: true};
+                        if (isMounted && !wasMounted && scene && scene.popExit) return {...noAnimScene, pushEnter: true};
+                        if (!isMounted && wasMounted && scene) return {...noAnimScene, pushExit: true};
+                        return {...scene, ...nextScene};
                     })
                     .concat(scenes
                         .filter(scene => !nextScenesByKey[scene.key])
