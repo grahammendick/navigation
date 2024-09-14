@@ -161,12 +161,12 @@ const Animator  = ({children, data: nextScenes}) => {
             if (pushExit && scene.navState !== 'pushExit') {
                 if (!scene.pushExit) {
                     scene.pushExit = scene.animate(
-                        [{transform: 'translateX(0)'},{transform: 'translateX(-30%)'}],
-                        {duration: 1000, fill: 'forwards'},
+                        [{transform: 'translateX(-30%)'},{transform: 'translateX(0)'}],
+                        {duration: 1000, fill: 'backwards'},
                     );
                 }
                 scene.navState = 'pushExit';
-                if (oldNavState !== 'popEnter') scene.pushExit.play();
+                if (oldNavState !== 'popEnter') scene.pushExit.reverse();
                 else scene.pushExit.reverse();
             }
             if (popEnter && scene.navState !== 'popEnter') {
