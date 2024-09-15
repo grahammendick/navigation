@@ -70,7 +70,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
             const {state: nextState, data: nextData} = crumbsAndNext[index + 1] || {state: undefined, data: undefined};
             const mount = url === nextCrumb.url;
             const fromUnmounted = mount && !backward;
-            return {key: keys[index], index, state, data, url, crumbs: preCrumbs, nextState, nextData, mount, fromUnmounted };
+            return {key: keys[index], index, state, data, url, crumbs: preCrumbs, nextState, nextData, mount, fromUnmounted};
         });
     }
     const sceneProps = ({key}: State) => firstLink ? allScenes[key].props : null;
