@@ -113,7 +113,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
     renderScene = firstLink ? ({key}) => allScenes[key] : renderScene;
     return (stateContext.state &&
         <SharedElementContext.Provider value={sharedElementRegistry.current}>
-            <Animator data={getScenes()} onRest={({key}) => clearScene(key)}>
+            <Animator data={getScenes()} onRest={({key}) => clearScene(key)} oldState={!oldState}>
                 {scenes => {
                     // const {rest, mountRest, mountDuration, mountProgress} = getMotion(styles);
                     return (
@@ -135,7 +135,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
     )
 }
 
-const Animator  = ({children, data: nextScenes, onRest}) => {
+const Animator  = ({children, data: nextScenes, onRest, oldState}) => {
     const [scenes, setScenes] = useState({prev: null, all: []});
     const container = useRef(null);
     // Need to animate it after finish promise resolves, for example,
@@ -159,8 +159,12 @@ const Animator  = ({children, data: nextScenes, onRest}) => {
                     scene.pushEnter.persist();
                 }
                 scene.navState = 'pushEnter';
-                if (prevNavState !== 'popExit') scene.pushEnter.play();
-                else scene.pushEnter.reverse();
+                if (!oldState) {
+                    if (prevNavState !== 'popExit') scene.pushEnter.play();
+                    else scene.pushEnter.reverse();
+                } else {
+                    scene.pushEnter.finish();
+                }
             }
             if (popExit && prevNavState !== 'popExit') {
                 scene.navState = 'popExit';
