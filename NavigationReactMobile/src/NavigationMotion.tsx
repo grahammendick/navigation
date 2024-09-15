@@ -148,6 +148,8 @@ const Animator  = ({children, data: nextScenes, onRest, oldState}) => {
             const scene = container.current.children[i];
             const prevNavState = scene.navState || scene.prevNavState;
             if (!scene.animate) {
+                if (popExit)
+                    setScenes(({prev, all}) => ({prev, all: all.filter((_s, index) => index !== i)}))
                 if (pushEnter && prevNavState !== 'pushEnter')
                     onRest({key})
                 scene.prevNavState = pushEnter ? 'pushEnter' : popExit ? 'popExit' : 'popEnter';
@@ -237,7 +239,7 @@ const Animator  = ({children, data: nextScenes, onRest, oldState}) => {
                         return {...scene, ...nextScene};
                     })
                     .concat(scenes
-                        .filter(scene => !nextScenesByKey[scene.key] && (typeof window !== 'undefined') && window.Element['animate'])
+                        .filter(scene => !nextScenesByKey[scene.key])
                         .map(scene => ({...scene, ...noAnim, popExit: true}))
                     )
                     .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length)
