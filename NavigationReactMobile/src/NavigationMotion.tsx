@@ -122,7 +122,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
                             const scene = <Scene crumb={crumb} rest renderScene={renderScene} />;
                             return (
                                 <Freeze key={key} enabled={motionState.rest && crumb < getScenes().length - 1}>
-                                    <div key={key} className="scene">
+                                    <div id={key} key={key} className="scene">
                                         {scene}
                                     </div>
                                 </Freeze>
@@ -147,6 +147,12 @@ const Animator  = ({children, data: nextScenes, onRest, oldState}) => {
         scenes.all.forEach(({key, pushEnter, popExit, pushExit, popEnter}, i) => {
             const scene = container.current.children[i];
             const prevNavState = scene.navState || scene.prevNavState;
+            if (!scene.animate) {
+                if (pushEnter && prevNavState !== 'pushEnter')
+                    onRest({key})
+                scene.prevNavState = pushEnter ? 'pushEnter' : popExit ? 'popExit' : 'popEnter';
+                return;
+            };
             if (pushEnter && prevNavState !== 'pushEnter') {
                 if (!scene.pushEnter) {
                     scene.pushEnter = scene.animate(
@@ -231,7 +237,7 @@ const Animator  = ({children, data: nextScenes, onRest, oldState}) => {
                         return {...scene, ...nextScene};
                     })
                     .concat(scenes
-                        .filter(scene => !nextScenesByKey[scene.key])
+                        .filter(scene => !nextScenesByKey[scene.key] && (typeof window !== 'undefined') && window.Element['animate'])
                         .map(scene => ({...scene, ...noAnim, popExit: true}))
                     )
                     .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length)
