@@ -155,66 +155,74 @@ const Animator  = ({children, data: nextScenes, onRest, oldState}) => {
                 scene.prevNavState = pushEnter ? 'pushEnter' : popExit ? 'popExit' : 'popEnter';
                 return;
             };
-            if (pushEnter && prevNavState !== 'pushEnter') {
-                if (!scene.pushEnter) {
-                    scene.pushEnter = scene.animate(
-                        [
-                            {transform: 'translateX(100%)'},
-                            {transform: 'translateX(0)'}
-                        ],
-                        {duration: 1000, fill: 'forwards'},
-                    );
-                    scene.pushEnter.persist();
+            const afterPushEnter = scene.pushEnter?.finished || {then: (f) => f()};
+            const afterPopEnter = scene.popEnter?.finished || {then: (f) => f()};
+            afterPopEnter.then(() => {
+                if (cancel) return;
+                if (pushEnter && prevNavState !== 'pushEnter') {
+                    if (!scene.pushEnter) {
+                        scene.pushEnter = scene.animate(
+                            [
+                                {transform: 'translateX(100%)'},
+                                {transform: 'translateX(0)'}
+                            ],
+                            {duration: 1000, fill: 'forwards'},
+                        );
+                        scene.pushEnter.persist();
+                    }
+                    scene.navState = 'pushEnter';
+                    if (!oldState) {
+                        if (prevNavState !== 'popExit') scene.pushEnter.play();
+                        else scene.pushEnter.reverse();
+                    } else {
+                        scene.pushEnter.finish();
+                    }
                 }
-                scene.navState = 'pushEnter';
-                if (!oldState) {
-                    if (prevNavState !== 'popExit') scene.pushEnter.play();
-                    else scene.pushEnter.reverse();
-                } else {
-                    scene.pushEnter.finish();
+                if (popExit && prevNavState !== 'popExit') {
+                    scene.navState = 'popExit';
+                    scene.pushEnter.reverse();
                 }
-            }
-            if (popExit && prevNavState !== 'popExit') {
-                scene.navState = 'popExit';
-                scene.pushEnter.reverse();
-            }
-            if (!scene.popEnter && (pushExit || popEnter)) {
-                scene.popEnter = scene.animate(
-                    [
-                        {transform: 'translateX(5%) scale(0.8)', opacity: 0},
-                        {transform: 'translateX(0) scale(1)', opacity: 1}
-                    ],
-                    {duration: 1000, fill: 'backwards'},
-                );
-                scene.popEnter.persist();
-            }
-            if (pushExit && prevNavState !== 'pushExit') {
-                scene.navState = 'pushExit';
-                if (prevNavState !== 'popEnter') scene.popEnter.reverse();
-                else scene.popEnter.reverse();
-            }
-            if (popEnter && prevNavState !== 'popEnter') {
-                scene.navState = 'popEnter';
-                if (prevNavState) scene.popEnter.reverse();
-                else scene.popEnter.play();
-            }
-            scene.pushEnter?.finished.then(() => {
-                if (cancel || !scene.navState) return;
-                if (popExit)
-                    setScenes(({prev, all}) => ({prev, all: all.filter((_s, index) => index !== i)}))
-                if (pushEnter || popExit) {
-                    onRest({key});
-                    scene.prevNavState = scene.navState;
-                    scene.navState = undefined;
-                }
+                scene.pushEnter?.finished.then(() => {
+                    if (cancel || !scene.navState) return;
+                    if (popExit)
+                        setScenes(({prev, all}) => ({prev, all: all.filter((_s, index) => index !== i)}))
+                    if (pushEnter || popExit) {
+                        onRest({key});
+                        scene.prevNavState = scene.navState;
+                        scene.navState = undefined;
+                    }
+                });
             });
-            scene.popEnter?.finished.then(() => {
-                if (cancel || !scene.navState) return;
-                if (pushExit || popEnter) {
-                    onRest({key});
-                    scene.prevNavState = scene.navState;
-                    scene.navState = undefined;
+            afterPushEnter.then(() => {
+                if (cancel) return;
+                if (!scene.popEnter && (pushExit || popEnter)) {
+                    scene.popEnter = scene.animate(
+                        [
+                            {transform: 'translateX(5%) scale(0.8)', opacity: 0},
+                            {transform: 'translateX(0) scale(1)', opacity: 1}
+                        ],
+                        {duration: 1000, fill: 'backwards'},
+                    );
+                    scene.popEnter.persist();
                 }
+                if (pushExit && prevNavState !== 'pushExit') {
+                    scene.navState = 'pushExit';
+                    if (prevNavState !== 'popEnter') scene.popEnter.reverse();
+                    else scene.popEnter.reverse();
+                }
+                if (popEnter && prevNavState !== 'popEnter') {
+                    scene.navState = 'popEnter';
+                    if (prevNavState) scene.popEnter.reverse();
+                    else scene.popEnter.play();
+                }
+                scene.popEnter?.finished.then(() => {
+                    if (cancel || !scene.navState) return;
+                    if (pushExit || popEnter) {
+                        onRest({key});
+                        scene.prevNavState = scene.navState;
+                        scene.navState = undefined;
+                    }
+                });
             });
         });
         return () => {cancel = true;}
