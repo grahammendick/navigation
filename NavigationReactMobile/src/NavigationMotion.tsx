@@ -111,7 +111,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
             const keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
             if (prevKeys.length === keys.length && prevState !== state)
                 keys[keys.length - 1] += '+';
-            return {keys, rest: false, stateNavigator};    
+            return {keys, rest: false, stateNavigator};
         })
     }
     const {stateContext: {crumbs, oldState}, stateContext} = stateNavigator;
@@ -193,7 +193,7 @@ const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defa
             afterPushEnter.then(() => {
                 if (cancel) return;
                 if (!scene.popEnter && (pushExit || popEnter)) {       
-                    const {duration = defaultDuration, keyframes = crumbStyle} = crumbStyle;             
+                    const {duration = defaultDuration, keyframes = crumbStyle} = crumbStyle;
                     scene.popEnter = scene.animate(keyframes, {duration, fill: 'backwards'});
                     scene.popEnter.persist();
                 }
