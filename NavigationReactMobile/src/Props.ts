@@ -47,6 +47,7 @@ interface SharedElementMotionProps {
 interface NavigationMotionProps {
     unmountedStyle?: any;
     mountedStyle?: any;
+    unmountStyle?: any;
     crumbStyle?: any;
     duration?: number;
     stackInvalidatedLink?: string;

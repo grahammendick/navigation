@@ -11,8 +11,8 @@ type NavigationMotionState = {stateNavigator: StateNavigator, keys: string[], re
 type SceneContext = {key: string, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, mount: boolean, fromUnmounted: boolean};
 type MotionStyle = {style: any, data: SceneContext, key: string, rest: boolean, progress: number, start: any, end: any };
 
-const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mountedStyleStack, crumbStyle: crumbStyleStack, duration = 300,
-    sharedElementMotion, renderScene, children, stackInvalidatedLink, renderMotion = children}: NavigationMotionProps) => {
+const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mountedStyleStack, unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack,
+    duration = 300, sharedElementMotion, renderScene, children, stackInvalidatedLink, renderMotion = children}: NavigationMotionProps) => {
     const sharedElementRegistry = useRef(new SharedElementRegistry());
     const {stateNavigator} = useContext(NavigationContext);
     const [motionState, setMotionState] = useState<NavigationMotionState>({stateNavigator: null, keys: [], rest: false});
@@ -70,13 +70,18 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
             const {state: nextState, data: nextData} = crumbsAndNext[index + 1] || {state: undefined, data: undefined};
             const mount = url === nextCrumb.url;
             const fromUnmounted = mount && !backward;
-            return {key: keys[index], index, state, data, url, crumbs: preCrumbs, nextState, nextData, mount, fromUnmounted};
+            const x = unmountStyle(state, data, preCrumbs, nextState, nextData);
+            return {
+                key: keys[index], index, state, data, url, crumbs: preCrumbs, nextState, nextData, mount, fromUnmounted,
+                unmountStyle: unmountStyle(state, data, preCrumbs), crumbStyle: crumbStyle(state, data, preCrumbs, nextState, nextData)
+            };
         });
     }
     const sceneProps = ({key}: State) => firstLink ? allScenes[key].props : null;
     const returnOrCall = (item, ...args) => typeof item !== 'function' ? item : item(...args);
     const unmountedStyle = (state, ...rest) => sceneProps(state)?.unmountedStyle ? returnOrCall(sceneProps(state)?.unmountedStyle, ...rest) : returnOrCall(unmountedStyleStack, state, ...rest);
     const mountedStyle = (state, ...rest) => sceneProps(state)?.mountedStyle ? returnOrCall(sceneProps(state)?.mountedStyle, ...rest) : returnOrCall(mountedStyleStack, state, ...rest);
+    const unmountStyle = (state, ...rest) => sceneProps(state)?.unmountStyle ? returnOrCall(sceneProps(state)?.unmountStyle, ...rest) : returnOrCall(unmountStyleStack, state, ...rest);
     const crumbStyle = (state, ...rest) => sceneProps(state)?.crumbStyle ? returnOrCall(sceneProps(state)?.crumbStyle, ...rest) : returnOrCall(crumbStyleStack, state, ...rest);
     const getStyle = (mounted: boolean, {state, data, crumbs, nextState, nextData, mount, fromUnmounted}: SceneContext) => {
         const styleProp = !mounted ? unmountedStyle : (mount ? mountedStyle : crumbStyle);
@@ -113,7 +118,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
     renderScene = firstLink ? ({key}) => allScenes[key] : renderScene;
     return (stateContext.state &&
         <SharedElementContext.Provider value={sharedElementRegistry.current}>
-            <Animator data={getScenes()} onRest={({key}) => clearScene(key)} oldState={!oldState}>
+            <Animator data={getScenes()} onRest={({key}) => clearScene(key)} oldState={!oldState} duration={duration}>
                 {scenes => {
                     // const {rest, mountRest, mountDuration, mountProgress} = getMotion(styles);
                     return (
@@ -135,12 +140,12 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
     )
 }
 
-const Animator  = ({children, data: nextScenes, onRest, oldState}) => {
+const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defaultDuration}) => {
     const [scenes, setScenes] = useState({prev: null, all: []});
     const container = useRef(null);
     useLayoutEffect(() => {
         let cancel = false;
-        scenes.all.forEach(({key, pushEnter, popExit, pushExit, popEnter}, i) => {
+        scenes.all.forEach(({key, pushEnter, popExit, pushExit, popEnter, unmountStyle, crumbStyle}, i) => {
             const scene = container.current.children[i];
             const prevNavState = scene.navState || scene.prevNavState;
             if (!scene.animate) {
@@ -157,13 +162,8 @@ const Animator  = ({children, data: nextScenes, onRest, oldState}) => {
                 if (cancel) return;
                 if (pushEnter && prevNavState !== 'pushEnter') {
                     if (!scene.pushEnter) {
-                        scene.pushEnter = scene.animate(
-                            [
-                                {transform: 'translateX(100%)'},
-                                {transform: 'translateX(0)'}
-                            ],
-                            {duration: 1000, fill: 'forwards'},
-                        );
+                        const {duration = defaultDuration, keyframes} = unmountStyle;
+                        scene.pushEnter = scene.animate(keyframes, {duration, fill: 'forwards'});
                         scene.pushEnter.persist();
                     }
                     scene.navState = 'pushEnter';
@@ -191,14 +191,9 @@ const Animator  = ({children, data: nextScenes, onRest, oldState}) => {
             });
             afterPushEnter.then(() => {
                 if (cancel) return;
-                if (!scene.popEnter && (pushExit || popEnter)) {
-                    scene.popEnter = scene.animate(
-                        [
-                            {transform: 'translateX(5%) scale(0.8)', opacity: 0},
-                            {transform: 'translateX(0) scale(1)', opacity: 1}
-                        ],
-                        {duration: 1000, fill: 'backwards'},
-                    );
+                if (!scene.popEnter && (pushExit || popEnter)) {       
+                    const {duration = defaultDuration, keyframes} = crumbStyle;             
+                    scene.popEnter = scene.animate(keyframes, {duration, fill: 'backwards'});
                     scene.popEnter.persist();
                 }
                 if (pushExit && prevNavState !== 'pushExit') {
