@@ -118,7 +118,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
     renderScene = firstLink ? ({key}) => allScenes[key] : renderScene;
     return (stateContext.state &&
         <SharedElementContext.Provider value={sharedElementRegistry.current}>
-            <Animator data={getScenes()} onRest={({key}) => clearScene(key)} oldState={!oldState} duration={duration}>
+            <Animator data={getScenes()} onRest={({key}) => clearScene(key)} oldState={oldState} duration={duration}>
                 {scenes => {
                     // const {rest, mountRest, mountDuration, mountProgress} = getMotion(styles);
                     return (
@@ -167,9 +167,10 @@ const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defa
                         scene.pushEnter.persist();
                     }
                     scene.navState = 'pushEnter';
-                    if (!oldState) {
-                        if (prevNavState !== 'popExit') scene.pushEnter.play();
-                        else scene.pushEnter.reverse();
+                    if (oldState) {
+                        if (prevNavState === 'popExit') scene.pushEnter.reverse();
+                        else if (prevNavState) scene.pushEnter.finish();
+                        else scene.pushEnter.play();
                     } else {
                         scene.pushEnter.finish();
                     }
@@ -198,12 +199,12 @@ const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defa
                 }
                 if (pushExit && prevNavState !== 'pushExit') {
                     scene.navState = 'pushExit';
-                    if (prevNavState !== 'popEnter') scene.popEnter.reverse();
-                    else scene.popEnter.reverse();
+                    scene.popEnter.reverse();
                 }
                 if (popEnter && prevNavState !== 'popEnter') {
                     scene.navState = 'popEnter';
-                    if (prevNavState) scene.popEnter.reverse();
+                    if (prevNavState === 'pushExit') scene.popEnter.reverse();
+                    else if (prevNavState) scene.popEnter.finish();
                     else scene.popEnter.play();
                 }
                 scene.popEnter?.finished.then(() => {
