@@ -231,9 +231,8 @@ const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defa
                         const wasMounted = !!scene?.pushEnter || !!scene?.popEnter;
                         const noAnimScene = {...nextScene, ...noAnim};
                         if (!scene) return {...noAnimScene, pushEnter: true};
-                        if (isMounted && !wasMounted && scene && !scene.popExit) return {...noAnimScene, popEnter: true};
-                        if (isMounted && !wasMounted && scene && scene.popExit) return {...noAnimScene, pushEnter: true};
-                        if (!isMounted && wasMounted && scene) return {...noAnimScene, pushExit: true};
+                        if (isMounted && !wasMounted) return {...noAnimScene, popEnter: !scene.popExit, pushEnter: scene.popExit};
+                        if (!isMounted && wasMounted) return {...noAnimScene, pushExit: true};
                         return {...scene, ...nextScene};
                     })
                     .concat(scenes
