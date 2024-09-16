@@ -105,10 +105,10 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
             const {keys: prevKeys, stateNavigator: prevStateNavigator} = prevStackState;
             const {state, crumbs, nextCrumb} = stateNavigator.stateContext;
             const prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
-            // need better way to build keys in case there's - in state key
-            const currentKeys = crumbs.concat(nextCrumb).reduce((acc, crumb) => (
-                [...acc, `${acc.slice(-1)[0] || ''}-${crumb.state.key}`]
-            ), []);
+            const currentKeys = crumbs.concat(nextCrumb).reduce((arr, {state: {key}}) => {
+                const prevKey = arr[arr.length - 1];
+                return [...arr, `${prevKey ? `${prevKey}->` : ''}${key.replace(/-/g, '-|')}`]
+            }, []);
             const newKeys = currentKeys.slice(prevKeys.length);
             const keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
             if (prevKeys.length === keys.length && prevState !== state)
