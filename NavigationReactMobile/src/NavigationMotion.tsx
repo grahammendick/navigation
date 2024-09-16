@@ -162,7 +162,7 @@ const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defa
                 if (cancel) return;
                 if (pushEnter && prevNavState !== 'pushEnter') {
                     if (!scene.pushEnter) {
-                        const {duration = defaultDuration, keyframes} = unmountStyle;
+                        const {duration = defaultDuration, keyframes = unmountStyle} = unmountStyle;
                         scene.pushEnter = scene.animate(keyframes, {duration, fill: 'forwards'});
                         scene.pushEnter.persist();
                     }
@@ -193,7 +193,7 @@ const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defa
             afterPushEnter.then(() => {
                 if (cancel) return;
                 if (!scene.popEnter && (pushExit || popEnter)) {       
-                    const {duration = defaultDuration, keyframes} = crumbStyle;             
+                    const {duration = defaultDuration, keyframes = crumbStyle} = crumbStyle;             
                     scene.popEnter = scene.animate(keyframes, {duration, fill: 'backwards'});
                     scene.popEnter.persist();
                 }
