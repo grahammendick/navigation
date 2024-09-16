@@ -124,12 +124,10 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
                     return (
                         scenes.map(({key, state, data}) => {
                             const crumb = +key.replace(/\++$/, '');
-                            const scene = <Scene crumb={crumb} rest renderScene={renderScene} />;
+                            const scene = <Scene crumb={crumb} id={key} rest renderScene={renderScene} />;
                             return (
                                 <Freeze key={key} enabled={motionState.rest && crumb < getScenes().length - 1}>
-                                    <div id={key} key={key} className="scene">
-                                        {scene}
-                                    </div>
+                                    {scene}
                                 </Freeze>
                             );
                         })
@@ -232,7 +230,7 @@ const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defa
                         const isMounted = nextScene.index === nextScenes.length - 1;
                         const wasMounted = !!scene?.pushEnter || !!scene?.popEnter;
                         const noAnimScene = {...nextScene, ...noAnim};
-                        if (isMounted && !wasMounted && !scene) return {...noAnimScene, pushEnter: true};
+                        if (!scene) return {...noAnimScene, pushEnter: true};
                         if (isMounted && !wasMounted && scene && !scene.popExit) return {...noAnimScene, popEnter: true};
                         if (isMounted && !wasMounted && scene && scene.popExit) return {...noAnimScene, pushEnter: true};
                         if (!isMounted && wasMounted && scene) return {...noAnimScene, pushExit: true};

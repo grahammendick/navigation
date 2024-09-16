@@ -60,6 +60,7 @@ interface NavigationMotionProps {
 
 interface SceneProps {
     crumb: number;
+    id: string;
     rest: boolean;
     renderScene?: (state: State, data: any) => ReactNode;
 }
