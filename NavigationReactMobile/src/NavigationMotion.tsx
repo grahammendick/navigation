@@ -138,10 +138,6 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
 const Animator  = ({children, data: nextScenes, onRest, oldState}) => {
     const [scenes, setScenes] = useState({prev: null, all: []});
     const container = useRef(null);
-    // Need to animate it after finish promise resolves, for example,
-    // so can do popEnter then popExit after 2 browser backs in a row
-    // or pushEnter then pushExit after 2 browser forwards in a row
-    // Test this on twitter sample because need deep stack
     useLayoutEffect(() => {
         let cancel = false;
         scenes.all.forEach(({key, pushEnter, popExit, pushExit, popEnter}, i) => {
