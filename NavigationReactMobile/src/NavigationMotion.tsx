@@ -70,7 +70,6 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
             const {state: nextState, data: nextData} = crumbsAndNext[index + 1] || {state: undefined, data: undefined};
             const mount = url === nextCrumb.url;
             const fromUnmounted = mount && !backward;
-            const x = unmountStyle(state, data, preCrumbs, nextState, nextData);
             return {
                 key: keys[index], index, state, data, url, crumbs: preCrumbs, nextState, nextData, mount, fromUnmounted,
                 unmountStyle: unmountStyle(state, data, preCrumbs), crumbStyle: crumbStyle(state, data, preCrumbs, nextState, nextData)
@@ -106,11 +105,14 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
             const {keys: prevKeys, stateNavigator: prevStateNavigator} = prevStackState;
             const {state, crumbs, nextCrumb} = stateNavigator.stateContext;
             const prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
-            const currentKeys = crumbs.concat(nextCrumb).map((_, i) => '' + i);
+            // need better way to build keys in case there's - in state key
+            const currentKeys = crumbs.concat(nextCrumb).reduce((acc, crumb) => (
+                [...acc, `${acc.slice(-1)[0] || ''}-${crumb.state.key}`]
+            ), []);
             const newKeys = currentKeys.slice(prevKeys.length);
             const keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
             if (prevKeys.length === keys.length && prevState !== state)
-                keys[keys.length - 1] += '+';
+                keys[keys.length - 1] = currentKeys[keys.length - 1];
             return {keys, rest: false, stateNavigator};
         })
     }
@@ -122,8 +124,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
                 {scenes => {
                     // const {rest, mountRest, mountDuration, mountProgress} = getMotion(styles);
                     return (
-                        scenes.map(({key, state, data}) => {
-                            const crumb = +key.replace(/\++$/, '');
+                        scenes.map(({key, index: crumb, state, data}) => {
                             const scene = <Scene crumb={crumb} id={key} rest renderScene={renderScene} />;
                             return (
                                 <Freeze key={key} enabled={motionState.rest && crumb < getScenes().length - 1}>
