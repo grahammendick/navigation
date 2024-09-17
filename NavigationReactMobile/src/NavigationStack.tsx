@@ -4,12 +4,11 @@ import { NavigationContext } from 'navigation-react';
 import Scene from './Scene';
 import Freeze from './Freeze';
 import { NavigationMotionProps as NavigationStackProps } from './Props';
-type NavigationMotionState = {stateNavigator: StateNavigator, keys: string[], rest: boolean};
-type SceneContext = {key: string, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, mount: boolean, fromUnmounted: boolean};
+type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean};
 
 const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, duration = 300, renderScene, children, stackInvalidatedLink, renderMotion = children}: NavigationStackProps) => {
     const {stateNavigator} = useContext(NavigationContext);
-    const [motionState, setMotionState] = useState<NavigationMotionState>({stateNavigator: null, keys: [], rest: false});
+    const [motionState, setMotionState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: false});
     const scenes = {};
     let firstLink;
     const findScenes = (elements = children, nested = false) => {
@@ -45,19 +44,14 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             return {rest, stateNavigator, keys};
         });
     }
-    const getScenes: () => SceneContext[] = () => {
+    const getScenes = () => {
         const {keys} = motionState;
-        const {crumbs, nextCrumb, oldUrl} = stateNavigator.stateContext;
-        const backward = oldUrl && oldUrl.split('crumb=').length > crumbs.length + 1;
+        const {crumbs, nextCrumb} = stateNavigator.stateContext;
         return crumbs.concat(nextCrumb).map(({state, data, url}, index, crumbsAndNext) => {
             const preCrumbs = crumbsAndNext.slice(0, index);
             const {state: nextState, data: nextData} = crumbsAndNext[index + 1] || {state: undefined, data: undefined};
             const mount = url === nextCrumb.url;
-            const fromUnmounted = mount && !backward;
-            return {
-                key: keys[index], index, state, data, url, crumbs: preCrumbs, nextState, nextData, mount, fromUnmounted,
-                unmountStyle: unmountStyle(state, data, preCrumbs), crumbStyle: crumbStyle(state, data, preCrumbs, nextState, nextData)
-            };
+            return {key: keys[index], index, mount, unmountStyle: unmountStyle(state, data, preCrumbs), crumbStyle: crumbStyle(state, data, preCrumbs, nextState, nextData)};
         });
     }
     const sceneProps = ({key}: State) => firstLink ? allScenes[key].props : null;
@@ -86,14 +80,11 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     return (stateContext.state &&
         <Animator data={getScenes()} onRest={({key}) => clearScene(key)} oldState={oldState} duration={duration}>
             {scenes => (
-                scenes.map(({key, index: crumb}) => {
-                    const scene = <Scene crumb={crumb} id={key} rest renderScene={renderScene} />;
-                    return (
-                        <Freeze key={key} enabled={motionState.rest && crumb < getScenes().length - 1}>
-                            {scene}
-                        </Freeze>
-                    );
-                })
+                scenes.map(({key, index: crumb}) => (
+                    <Freeze key={key} enabled={motionState.rest && crumb < getScenes().length - 1}>
+                        <Scene crumb={crumb} id={key} rest renderScene={renderScene} />
+                    </Freeze>
+                ))
             )}
         </Animator>
     )
