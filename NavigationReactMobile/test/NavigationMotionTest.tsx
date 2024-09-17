@@ -2,7 +2,8 @@ import assert from 'assert';
 import 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationHandler } from 'navigation-react';
-import { NavigationMotion, Scene } from 'navigation-react-mobile';
+// @ts-ignore
+import { NavigationMotion, NavigationStack, Scene } from 'navigation-react-mobile';
 import React, {useState} from 'react';
 import { createRoot } from 'react-dom/client';
 import ReactDOMServer from 'react-dom/server';
@@ -68,6 +69,20 @@ describe('NavigationMotion', function () {
             });
         });
 
+        describe('Static Stack', () => {
+            it('should render', function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene" />
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+
+
         const test = () => {
             try {
                 var scenes = container.querySelectorAll(".scene");
@@ -119,6 +134,36 @@ describe('NavigationMotion', function () {
                                 )}>
                                 <Scene stateKey="sceneA"><SceneA /></Scene>
                             </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+
+        describe('Static Stack', () => {
+            it('should render', function(){
+                var {sceneA} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene" />
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+
+        describe('Dynamic Stack', () => {
+            it('should render', function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene">
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                            </NavigationStack>
                         </NavigationHandler>
                     );
                 });
