@@ -90,6 +90,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     )
 }
 
+// extract this into NavigationAnimation component
 const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defaultDuration}) => {
     const [scenes, setScenes] = useState({prev: null, all: [], count: 0});
     const container = useRef(null);
@@ -180,12 +181,11 @@ const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defa
                 all: nextScenes
                     .map((nextScene) => {
                         const scene = scenesByKey[nextScene.key];
-                        const isMounted = nextScene.index === nextScenes.length - 1;
                         const wasMounted = !!scene?.pushEnter || !!scene?.popEnter;
                         const noAnimScene = {...scene, ...nextScene, ...noAnim};
                         if (!scene) return {...noAnimScene, pushEnter: true, count};
-                        if (isMounted && !wasMounted) return {...noAnimScene, popEnter: !scene.popExit, pushEnter: scene.popExit};
-                        if (!isMounted && wasMounted) return {...noAnimScene, pushExit: true};
+                        if (nextScene.mount && !wasMounted) return {...noAnimScene, popEnter: !scene.popExit, pushEnter: scene.popExit};
+                        if (!nextScene.mount && wasMounted) return {...noAnimScene, pushExit: true};
                         return {...scene, ...nextScene};
                     })
                     .concat(scenes
