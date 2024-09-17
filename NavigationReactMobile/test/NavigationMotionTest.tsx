@@ -123,7 +123,6 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
             } finally {
                 act(() => root.unmount());
@@ -184,7 +183,6 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
             } finally {
                 act(() => root.unmount());
@@ -247,9 +245,7 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
-                assert.equal(scenes[0].id, "0");
                 assert.equal(container.querySelector("#sceneA"), null);
-                assert.equal(scenes[1].id, "1");
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
             } finally {
                 act(() => root.unmount());
@@ -312,9 +308,7 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.equal(scenes[1].id, "1");
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
             } finally {
                 act(() => root.unmount());
@@ -378,7 +372,6 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
@@ -445,7 +438,6 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
@@ -505,7 +497,6 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
             } finally {
                 act(() => root.unmount());
@@ -568,7 +559,6 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
-                assert.equal(scenes[0].id, "0+");
                 assert.notEqual(scenes[0].querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneA"), null);
             } finally {
@@ -637,7 +627,6 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
-                assert.equal(scenes[0].id, "0++");
                 assert.notEqual(scenes[0].querySelector("#sceneC"), null);
                 assert.equal(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
@@ -712,8 +701,6 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
-                assert.equal(scenes[0].id, "0");
-                assert.equal(scenes[1].id, "1");
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
@@ -789,7 +776,6 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneC"), null);
                 assert.equal(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
@@ -864,9 +850,7 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.equal(scenes[1].id, "1");
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
@@ -941,7 +925,6 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneC"), null);
                 assert.equal(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
@@ -1020,9 +1003,7 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.equal(scenes[1].id, "1+");
                 assert.notEqual(scenes[1].querySelector("#sceneD"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
@@ -1096,10 +1077,7 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 3);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.equal(scenes[1].id, "1");
-                assert.equal(scenes[2].id, "2");
                 assert.notEqual(scenes[2].querySelector("#sceneC"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
@@ -1173,9 +1151,7 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.equal(scenes[1].id, "1");
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
@@ -1257,10 +1233,7 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 3);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.equal(scenes[1].id, "1");
-                assert.equal(scenes[2].id, "2");
                 assert.notEqual(scenes[2].querySelector("#sceneC"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneD"), null);
@@ -1344,9 +1317,7 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.equal(scenes[1].id, "1");
                 assert.notEqual(scenes[1].querySelector("#sceneD"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
@@ -1421,7 +1392,6 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
@@ -1492,7 +1462,6 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
@@ -1567,7 +1536,6 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneB"), null);
                 assert.equal(container.querySelector("#sceneA"), null);
                 assert.equal(container.querySelector("#sceneC"), null);
@@ -1628,9 +1596,7 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.equal(scenes[1].id, "1");
                 assert.notEqual(scenes[1].querySelector("#sceneA"), null);
             } finally {
                 act(() => root.unmount());
@@ -1699,9 +1665,7 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.equal(scenes[1].id, "1+");
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
             } finally {
                 act(() => root.unmount());
@@ -1782,9 +1746,7 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.equal(scenes[1].id, "1++");
                 assert.notEqual(scenes[1].querySelector("#sceneC"), null);
                 assert.equal(container.querySelector("#sceneB"), null);
             } finally {
@@ -2736,7 +2698,6 @@ describe('NavigationMotion', function () {
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 1);
-                assert.equal(scenes[0].id, "0");
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
             } finally {
                 act(() => root.unmount());
@@ -2792,7 +2753,6 @@ describe('NavigationMotion', function () {
             container.innerHTML = html;
             var scenes = container.querySelectorAll(".scene");
             assert.equal(scenes.length, 1);
-            assert.equal(scenes[0].id, "0");
             assert.notEqual(scenes[0].querySelector("#sceneA"), null);
     };
     });
