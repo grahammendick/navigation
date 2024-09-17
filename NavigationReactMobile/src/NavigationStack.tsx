@@ -7,7 +7,8 @@ import NavigationAnimation from './NavigationAnimation';
 import { NavigationMotionProps as NavigationStackProps } from './Props';
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean};
 
-const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, duration = 300, renderScene, children, stackInvalidatedLink, renderMotion = children}: NavigationStackProps) => {
+const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, className: sceneClassName,
+    duration = 300, renderScene, children, stackInvalidatedLink}: NavigationStackProps) => {
     const {stateNavigator} = useContext(NavigationContext);
     const [motionState, setMotionState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: false});
     const scenes = {};
@@ -52,13 +53,16 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             const preCrumbs = crumbsAndNext.slice(0, index);
             const {state: nextState, data: nextData} = crumbsAndNext[index + 1] || {state: undefined, data: undefined};
             const mount = url === nextCrumb.url;
-            return {key: keys[index], index, mount, unmountStyle: unmountStyle(state, data, preCrumbs), crumbStyle: crumbStyle(state, data, preCrumbs, nextState, nextData)};
+            return {key: keys[index], index, mount, className: className(state, data, preCrumbs),
+                unmountStyle: unmountStyle(state, data, preCrumbs),
+                crumbStyle: crumbStyle(state, data, preCrumbs, nextState, nextData)};
         });
     }
     const sceneProps = ({key}: State) => firstLink ? allScenes[key].props : null;
     const returnOrCall = (item, ...args) => typeof item !== 'function' ? item : item(...args);
     const unmountStyle = (state, ...rest) => sceneProps(state)?.unmountStyle ? returnOrCall(sceneProps(state)?.unmountStyle, ...rest) : returnOrCall(unmountStyleStack, state, ...rest);
     const crumbStyle = (state, ...rest) => sceneProps(state)?.crumbStyle ? returnOrCall(sceneProps(state)?.crumbStyle, ...rest) : returnOrCall(crumbStyleStack, state, ...rest);
+    const className = (state, ...rest) => sceneProps(state)?.className ? returnOrCall(sceneProps(state)?.className, ...rest) : returnOrCall(sceneClassName, state, ...rest);
     const {stateNavigator: prevStateNavigator} = motionState;
     if (prevStateNavigator !== stateNavigator && stateNavigator.stateContext.state) {
         setMotionState((prevStackState) => {
@@ -81,9 +85,9 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     return (stateContext.state &&
         <NavigationAnimation data={getScenes()} onRest={clearScene} oldState={oldState} duration={duration}>
             {scenes => (
-                scenes.map(({key, index: crumb}) => (
+                scenes.map(({key, index: crumb, className}) => (
                     <Freeze key={key} enabled={motionState.rest && crumb < getScenes().length - 1}>
-                        <Scene crumb={crumb} id={key} rest renderScene={renderScene} />
+                        <Scene crumb={crumb} rest className={className} renderScene={renderScene} />
                     </Freeze>
                 ))
             )}

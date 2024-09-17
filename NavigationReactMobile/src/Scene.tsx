@@ -31,13 +31,13 @@ class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEve
     }
     render() {
         var {navigationEvent} = this.state;
-        var {crumb, id, navigationEvent: {stateNavigator}} = this.props;
+        var {crumb, navigationEvent: {stateNavigator}, className} = this.props;
         var {crumbs} = stateNavigator.stateContext;
         var stateContext = navigationEvent?.stateNavigator?.stateContext;
         var {state, data} = stateContext || crumbs[crumb] || {};
         return (
             <NavigationContext.Provider value={navigationEvent}>
-                <div style={{display: navigationEvent ? 'block' : 'none'}}>
+                <div className={className} style={{display: navigationEvent ? 'block' : 'none'}}>
                     {navigationEvent && this.props.renderScene(state, data)}
                 </div>
             </NavigationContext.Provider>
