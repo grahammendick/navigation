@@ -12,8 +12,15 @@ import { JSDOM } from 'jsdom';
 declare var global: any;
 global.IS_REACT_ACT_ENVIRONMENT = true;
 var { window } = new JSDOM('<!doctype html><html><body></body></html>');
+window.addEventListener = () => {};
 global.window = window;
 global.document = window.document;
+var now = window.performance.now()
+window.performance.now = () => now+=500;
+window.requestAnimationFrame = callback => {
+    callback(window.performance.now())
+};
+window.cancelAnimationFrame = () => {};
 React.useLayoutEffect = React.useEffect;
 
 describe('NavigationMotion', function () {

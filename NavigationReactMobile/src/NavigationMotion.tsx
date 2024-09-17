@@ -6,6 +6,7 @@ import Scene from './Scene';
 import SharedElementContext from './SharedElementContext';
 import SharedElementRegistry from './SharedElementRegistry';
 import Freeze from './Freeze';
+import NavigationStack from './NavigationStack';
 import { NavigationMotionProps } from './Props';
 type NavigationMotionState = {stateNavigator: StateNavigator, keys: string[]};
 type SceneContext = {key: string, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, mount: boolean, fromUnmounted: boolean};
@@ -21,7 +22,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
     const findScenes = (elements = children, nested = false) => {
         for(const scene of React.Children.toArray(elements) as ReactElement<any>[]) {
             const {stateKey, children} = scene.props;
-            if (scene.type === NavigationMotion.Scene) {
+            if (scene.type === NavigationStack.Scene) {
                 firstLink = firstLink || stateNavigator.fluent().navigate(stateKey).url;
                 scenes[stateKey] = scene;
             }
@@ -142,7 +143,5 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
         </SharedElementContext.Provider>
     )
 }
-
-NavigationMotion.Scene = ({children}) => children;
 
 export default NavigationMotion;
