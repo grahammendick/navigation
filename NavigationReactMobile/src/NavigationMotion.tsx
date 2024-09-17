@@ -140,7 +140,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
 }
 
 const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defaultDuration}) => {
-    const [scenes, setScenes] = useState({prev: null, all: []});
+    const [scenes, setScenes] = useState({prev: null, all: [], count: 0});
     const container = useRef(null);
     useLayoutEffect(() => {
         let cancel = false;
@@ -149,7 +149,7 @@ const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defa
             const prevNavState = scene.navState || scene.prevNavState;
             if (!scene.animate) {
                 if (popExit)
-                    setScenes(({prev, all}) => ({prev, all: all.filter((_s, index) => index !== i)}))
+                    setScenes(({all, ...rest}) => ({all: all.filter((_s, index) => index !== i), ...rest}))
                 if (pushEnter && prevNavState !== 'pushEnter')
                     onRest({key})
                 scene.prevNavState = pushEnter ? 'pushEnter' : popExit ? 'popExit' : 'popEnter';
@@ -181,7 +181,7 @@ const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defa
                 scene.pushEnter?.finished.then(() => {
                     if (cancel || !scene.navState) return;
                     if (popExit)
-                        setScenes(({prev, all}) => ({prev, all: all.filter((_s, index) => index !== i)}))
+                        setScenes(({all, ...rest}) => ({all: all.filter((_s, index) => index !== i), ...rest}))
                     if (pushEnter || popExit) {
                         onRest({key});
                         scene.prevNavState = scene.navState;
@@ -219,19 +219,20 @@ const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defa
         return () => {cancel = true;}
     }, [scenes]);
     if (nextScenes !== scenes.prev) {
-        setScenes(({all: scenes}) => {
+        setScenes(({all: scenes, count}) => {
             const scenesByKey = scenes.reduce((acc, scene) => ({...acc, [scene.key]: scene}), {});
             const nextScenesByKey = nextScenes.reduce((acc, scene) => ({...acc, [scene.key]: scene}), {});
             const noAnim = {pushEnter: false, pushExit: false, popEnter: false, popExit: false};
             return {
                 prev: nextScenes,
+                count: count + 1,
                 all: nextScenes
                     .map((nextScene) => {
                         const scene = scenesByKey[nextScene.key];
                         const isMounted = nextScene.index === nextScenes.length - 1;
                         const wasMounted = !!scene?.pushEnter || !!scene?.popEnter;
-                        const noAnimScene = {...nextScene, ...noAnim};
-                        if (!scene) return {...noAnimScene, pushEnter: true};
+                        const noAnimScene = {...scene, ...nextScene, ...noAnim};
+                        if (!scene) return {...noAnimScene, pushEnter: true, count};
                         if (isMounted && !wasMounted) return {...noAnimScene, popEnter: !scene.popExit, pushEnter: scene.popExit};
                         if (!isMounted && wasMounted) return {...noAnimScene, pushExit: true};
                         return {...scene, ...nextScene};
@@ -240,12 +241,11 @@ const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defa
                         .filter(scene => !nextScenesByKey[scene.key])
                         .map(scene => ({...scene, ...noAnim, popExit: true}))
                     )
-                    .sort((a, b) => a.index !== b.index ? a.index - b.index : a.key.length - b.key.length)
-                    // might need to fix index - test replace navigation and see if sorted correctly
-                    // maybe need to take index from scene or nextScene?
+                    .sort((a, b) => a.index !== b.index ? a.index - b.index : a.count - b.count)
             };
         });
     };
+    console.log(scenes.all)
     return <div ref={container}>{children(scenes.all)}</div>;
 }
 
