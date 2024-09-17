@@ -245,7 +245,6 @@ const Animator  = ({children, data: nextScenes, onRest, oldState, duration: defa
             };
         });
     };
-    console.log(scenes.all)
     return <div ref={container}>{children(scenes.all)}</div>;
 }
 
