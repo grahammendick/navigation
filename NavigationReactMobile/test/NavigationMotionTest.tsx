@@ -2436,7 +2436,6 @@ describe('NavigationMotion', function () {
         };
     });
 
-    // up to here
     describe('A to A -> A to A -> B to A -> B -> C to A -> B to A -> C', function () {
         var stateNavigator, root, container;
         var SceneA = () => <div id="sceneA" />;
@@ -2485,6 +2484,38 @@ describe('NavigationMotion', function () {
                                 <Scene stateKey="sceneB"><SceneB /></Scene>
                                 <Scene stateKey="sceneC"><SceneC /></Scene>
                             </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        describe('Static Stack', () => {            
+            it('should render A -> C++', async function(){
+                var {sceneA, sceneB, sceneC} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                sceneC.renderScene = () => <SceneC />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            < NavigationStack className="scene" />
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        describe('Dynamic Stack', () => {            
+            it('should render A -> C++', async function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene">
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
+                            </NavigationStack>
                         </NavigationHandler>
                     );
                 });
@@ -2574,6 +2605,36 @@ describe('NavigationMotion', function () {
                 test();
             })
         });
+        describe('Static Stack', () => {
+            it('should render', function(){
+                var {sceneA, sceneB} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack />
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            })
+        });
+        describe('Dynamic Stack', () => {
+            it('should render', function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                            </NavigationStack>
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            })
+        });
         const test = () => {
             act(() => {
                 stateNavigator.navigate('sceneB');
@@ -2595,7 +2656,7 @@ describe('NavigationMotion', function () {
         var SceneA = () => {
             var [updated, setUpdated] = useState(false)
             update = setUpdated;
-            return <div id='sceneA' data-updated={updated} />;
+            return <div id="sceneA" data-updated={updated} />;
         };
         var SceneB = () => <div id="sceneB" />;
         beforeEach(() => {
@@ -2639,6 +2700,36 @@ describe('NavigationMotion', function () {
                                 <Scene stateKey="sceneA"><SceneA /></Scene>
                                 <Scene stateKey="sceneB"><SceneB /></Scene>
                             </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            })
+        });
+        describe('Static Stack', () => {
+            it('should not render', function(){
+                var {sceneA, sceneB} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack />
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            })
+        });
+        describe('Dynamic Stack', () => {
+            it('should not render', function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                            </NavigationStack>
                         </NavigationHandler>
                     );
                 });
@@ -2666,7 +2757,7 @@ describe('NavigationMotion', function () {
         var SceneA = () => {
             var [updated, setUpdated] = useState(false)
             update = setUpdated;
-            return <div id='sceneA' data-updated={updated} />;
+            return <div id="sceneA" data-updated={updated} />;
         };
         var SceneB = () => <div id="sceneB" />;
         beforeEach(() => {
@@ -2716,6 +2807,36 @@ describe('NavigationMotion', function () {
                 await test();
             })
         });
+        describe('Static Stack', () => {
+            it('should render', async function(){
+                var {sceneA, sceneB} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack />
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            })
+        });
+        describe('Dynamic Stack', () => {
+            it('should render', async function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                            </NavigationStack>
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            })
+        });
         const test = async () => {
             await act(async () => {
                 stateNavigator.navigate('sceneB');
@@ -2733,6 +2854,7 @@ describe('NavigationMotion', function () {
         };
     });
 
+    // up to here
     describe('Re-render NavigationStack static', function () {
         it('should only re-render current scene', async function(){
             var stateNavigator = new StateNavigator([
