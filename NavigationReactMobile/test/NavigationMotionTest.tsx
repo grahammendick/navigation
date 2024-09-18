@@ -2854,8 +2854,7 @@ describe('NavigationMotion', function () {
         };
     });
 
-    // up to here
-    describe('Re-render NavigationStack static', function () {
+    describe('Re-render NavigationMotion static', function () {
         it('should only re-render current scene', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
@@ -2863,8 +2862,8 @@ describe('NavigationMotion', function () {
             ]);
             stateNavigator.navigate('sceneA');
             var {sceneA, sceneB} = stateNavigator.states;
-            var SceneA = ({updated}) => <div id='sceneA' data-updated={updated} />;
-            var SceneB = ({updated}) => <div id='sceneB' data-updated={updated} />;
+            var SceneA = ({updated}) => <div id="sceneA" data-updated={updated} />;
+            var SceneB = ({updated}) => <div id="sceneB" data-updated={updated} />;
             sceneA.renderScene = (updated) => <SceneA updated={updated} />;
             sceneB.renderScene = (updated) => <SceneB updated={updated} />;
             var update;
@@ -2901,15 +2900,57 @@ describe('NavigationMotion', function () {
         })
     });
 
-    describe('Re-render NavigationStack dynamic', function () {
+    describe('Re-render NavigationStack static', function () {
         it('should only re-render current scene', async function(){
             var stateNavigator = new StateNavigator([
                 { key: 'sceneA' },
                 { key: 'sceneB', trackCrumbTrail: true },
             ]);
             stateNavigator.navigate('sceneA');
-            var SceneA = ({updated}) => <div id='sceneA' data-updated={updated} />;
-            var SceneB = ({updated}) => <div id='sceneB' data-updated={updated} />;
+            var {sceneA, sceneB} = stateNavigator.states;
+            var SceneA = ({updated}) => <div id="sceneA" data-updated={updated} />;
+            var SceneB = ({updated}) => <div id="sceneB" data-updated={updated} />;
+            sceneA.renderScene = (updated) => <SceneA updated={updated} />;
+            sceneB.renderScene = (updated) => <SceneB updated={updated} />;
+            var update;
+            var App = () => {
+                var [updated, setUpdated] = useState(false);
+                update = setUpdated;
+                return (
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack renderScene={(state) => state.renderScene(updated)} />
+                    </NavigationHandler>
+                );
+            }
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => root.render(<App />));
+            await act(async () => {
+                stateNavigator.navigate('sceneB');
+            });
+            await act(async () => {
+                update(true);
+            });
+            try {
+                var scene = container.querySelector<HTMLDivElement>("#sceneA");
+                assert.strictEqual(scene.dataset.updated, 'false');
+                scene = container.querySelector<HTMLDivElement>("#sceneB");
+                assert.strictEqual(scene.dataset.updated, 'true');
+            } finally {
+                act(() => root.unmount());
+            }
+        })
+    });
+
+    describe('Re-render NavigationMotion dynamic', function () {
+        it('should only re-render current scene', async function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var SceneA = ({updated}) => <div id="sceneA" data-updated={updated} />;
+            var SceneB = ({updated}) => <div id="sceneB" data-updated={updated} />;
             var update;
             var App = () => {
                 var [updated, setUpdated] = useState(false);
@@ -2923,6 +2964,48 @@ describe('NavigationMotion', function () {
                             <Scene stateKey="sceneA"><SceneA updated={updated} /></Scene>
                             <Scene stateKey="sceneB"><SceneB updated={updated} /></Scene>
                         </NavigationMotion>
+                    </NavigationHandler>
+                );
+            }
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => root.render(<App />));
+            await act(async () => {
+                stateNavigator.navigate('sceneB');
+            });
+            await act(async () => {
+                update(true);
+            });
+            try {
+                var scene = container.querySelector<HTMLDivElement>("#sceneA");
+                assert.strictEqual(scene.dataset.updated, 'false');
+                scene = container.querySelector<HTMLDivElement>("#sceneB");
+                assert.strictEqual(scene.dataset.updated, 'true');
+            } finally {
+                act(() => root.unmount());
+            }
+        })
+    });
+
+    describe('Re-render NavigationStack dynamic', function () {
+        it('should only re-render current scene', async function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var SceneA = ({updated}) => <div id="sceneA" data-updated={updated} />;
+            var SceneB = ({updated}) => <div id="sceneB" data-updated={updated} />;
+            var update;
+            var App = () => {
+                var [updated, setUpdated] = useState(false);
+                update = setUpdated;
+                return (
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack>
+                            <Scene stateKey="sceneA"><SceneA updated={updated} /></Scene>
+                            <Scene stateKey="sceneB"><SceneB updated={updated} /></Scene>
+                        </NavigationStack>
                     </NavigationHandler>
                 );
             }
