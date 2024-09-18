@@ -3282,7 +3282,6 @@ describe('NavigationMotion', function () {
         })
     });
 
-    // up to here
     describe('Unregister scene not in stack', function () {
         it('should not clear stack', async function(){
             var stateNavigator = new StateNavigator([
@@ -3311,6 +3310,50 @@ describe('NavigationMotion', function () {
                             <Scene stateKey="sceneC"><SceneC /></Scene>
                             {!updated && <Scene stateKey="sceneD"><SceneD /></Scene>}
                         </NavigationMotion>
+                    </NavigationHandler>
+                );
+            }
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => root.render(<App />));
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => stateNavigator.navigate('sceneC'));
+            await act(async () => update(true));
+            try {
+                assert.notEqual(container.querySelector("#sceneA"), null);
+                assert.notEqual(container.querySelector("#sceneB"), null);
+                assert.notEqual(container.querySelector("#sceneC"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        })
+    });
+
+    describe('Unregister scene not in stack Stack', function () {
+        it('should not clear stack', async function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+                { key: 'sceneD', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var SceneA = () => <div id='sceneA' />;
+            var SceneB = () => <div id='sceneB' />;
+            var SceneC = () => <div id='sceneC' />;
+            var SceneD = () => <div id='sceneD' />;
+            var update;
+            var App = () => {
+                var [updated, setUpdated] = useState(false);
+                update = setUpdated;
+                return (
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack>
+                            <Scene stateKey="sceneA"><SceneA /></Scene>
+                            <Scene stateKey="sceneB"><SceneB /></Scene>
+                            <Scene stateKey="sceneC"><SceneC /></Scene>
+                            {!updated && <Scene stateKey="sceneD"><SceneD /></Scene>}
+                        </NavigationStack>
                     </NavigationHandler>
                 );
             }
@@ -3383,6 +3426,56 @@ describe('NavigationMotion', function () {
         })
     });
 
+    describe('Unregister stack Stack', function () {
+        it('should start new stack', async function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+                { key: 'sceneD', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var SceneA = () => <div id='sceneA' />;
+            var SceneB = () => <div id='sceneB' />;
+            var SceneC = () => <div id='sceneC' />;
+            var SceneD = () => <div id='sceneD' />;
+            var update;
+            var App = () => {
+                var [updated, setUpdated] = useState(false);
+                update = setUpdated;
+                return (
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack>
+                            {!updated ? (
+                                <>
+                                    <Scene stateKey="sceneA"><SceneA /></Scene>
+                                    <Scene stateKey="sceneB"><SceneB /></Scene>
+                                </>
+                            ) : (
+                                <>
+                                    <Scene stateKey="sceneC"><SceneC /></Scene>
+                                    <Scene stateKey="sceneD"><SceneD /></Scene>
+                                </>
+                            )}
+                        </NavigationStack>
+                    </NavigationHandler>
+                );
+            }
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => root.render(<App />));
+            act(() => stateNavigator.navigate('sceneB'));
+            await act(async () => update(true));
+            try {
+                assert.equal(container.querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+                assert.notEqual(container.querySelector("#sceneC"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        })
+    });
+
     describe('Blank state context dynamic', function () {
         it('should start stack with first scene', async function(){
             var stateNavigator = new StateNavigator([
@@ -3414,6 +3507,35 @@ describe('NavigationMotion', function () {
         })
     });
 
+    describe('Blank state context dynamic Stack', function () {
+        it('should start stack with first scene', async function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            var SceneA = () => <div id='sceneA' />;
+            var SceneB = () => <div id='sceneB' />;
+            stateNavigator.navigate('sceneA');
+            var App = () => (
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationStack>
+                            <Scene stateKey="sceneA"><SceneA /></Scene>
+                            <Scene stateKey="sceneB"><SceneB /></Scene>
+                    </NavigationStack>
+                </NavigationHandler>
+            );
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => root.render(<App />));
+            try {
+                assert.notEqual(container.querySelector("#sceneA"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        })
+    });
+
+    // up to here
     describe('Navigate unregistered scene dynamic', function () {
         it('should cancel', async function(){
             var stateNavigator = new StateNavigator([
