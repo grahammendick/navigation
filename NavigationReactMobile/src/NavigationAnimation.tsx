@@ -102,7 +102,9 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                         return {...scene, ...nextScene};
                     })
                     .concat(scenes
-                        .filter(({key, unmountStyle}) => !nextScenesByKey[key] && unmountStyle?.keyframes && (unmountStyle?.duration ?? defaultDuration))
+                        .filter(({key, unmountStyle}) => (
+                            !nextScenesByKey[key] && Array.isArray(unmountStyle?.keyframes || unmountStyle) && (unmountStyle.duration ?? defaultDuration)
+                        ))
                         .map(scene => ({...scene, ...noAnim, popExit: !scene.pushExit, popEnter: scene.pushExit}))
                     )
                     .sort((a, b) => a.index !== b.index ? a.index - b.index : a.count - b.count)
