@@ -9,12 +9,9 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
             const scene = container.current.children[i];
             const prevNavState = scene.navState || scene.prevNavState;
             if (!scene.animate) {
-                if (popExit)
-                    setScenes(({all, ...rest}) => ({all: all.filter((_s, index) => index !== i), ...rest}))
-                if (pushEnter && prevNavState !== 'pushEnter')
-                    onRest({key})
-                if (popEnter && prevNavState !== 'popEnter')
-                    onRest({key})
+                if (popExit) setScenes(({all, ...rest}) => ({all: all.filter((_s, index) => index !== i), ...rest}));
+                if (pushEnter && prevNavState !== 'pushEnter') onRest({key});
+                if (popEnter && prevNavState !== 'popEnter') onRest({key});
                 scene.prevNavState = pushEnter ? 'pushEnter' : popExit ? 'popExit' : pushExit ? 'pushExit' : 'popEnter';
                 return;
             };
