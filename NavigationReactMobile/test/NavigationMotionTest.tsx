@@ -365,7 +365,7 @@ describe('NavigationMotion', function () {
             root = createRoot(container)
         });
         describe('Static', () => {
-            it('should render A -> B', function(){
+            it('should render A -> B', async function(){
                 var {sceneA, sceneB} = stateNavigator.states;
                 sceneA.renderScene = () => <SceneA />;
                 sceneB.renderScene = () => <SceneB />;
@@ -380,11 +380,11 @@ describe('NavigationMotion', function () {
                         </NavigationHandler>
                     );
                 });
-                test();
+                await test();
             });
         });
         describe('Dynamic', () => {
-            it('should render A -> B', function(){
+            it('should render A -> B', async function(){
                 act(() => {
                     root.render(
                         <NavigationHandler stateNavigator={stateNavigator}>
@@ -398,11 +398,11 @@ describe('NavigationMotion', function () {
                         </NavigationHandler>
                     );
                 });
-                test();
+                await test();
             });
         });
         describe('Static Stack', () => {
-            it('should render A -> B', function(){
+            it('should render A -> B', async function(){
                 var {sceneA, sceneB} = stateNavigator.states;
                 sceneA.renderScene = () => <SceneA />;
                 sceneB.renderScene = () => <SceneB />;
@@ -413,11 +413,11 @@ describe('NavigationMotion', function () {
                         </NavigationHandler>
                     );
                 });
-                test();
+                await test();
             });
         });
         describe('Dynamic Stack', () => {
-            it('should render A -> B', function(){
+            it('should render A -> B', async function(){
                 act(() => {
                     root.render(
                         <NavigationHandler stateNavigator={stateNavigator}>
@@ -428,11 +428,11 @@ describe('NavigationMotion', function () {
                         </NavigationHandler>
                     );
                 });
-                test();
+                await test();
             });
         });
-        const test = () => {
-            act(() => stateNavigator.navigate('sceneB'));
+        const test = async () => {
+            await act(async () => stateNavigator.navigate('sceneB'));
             try {
                 var scenes = container.querySelectorAll(".scene");
                 assert.equal(scenes.length, 2);
@@ -4392,6 +4392,306 @@ describe('NavigationMotion', function () {
             var scenes = container.querySelectorAll(".scene");
             assert.equal(scenes.length, 1);
             assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-    };
+        };
+    });
+
+    describe('Stack class state', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+        describe('Static Stack', () => {
+            it('should render class', function(){
+                var {sceneA} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className={(state) => (
+                                state.key === 'sceneA' ? 'scene' : null
+                            )} />
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+        describe('Dynamic Stack', () => {
+            it('should render class', function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className={(state) => (
+                                state.key === 'sceneA' ? 'scene' : null
+                            )}>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                            </NavigationStack>
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+        const test = () => {
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('Dynamic Stack scene class state', function () {
+        it('should render class', function(){
+            var SceneA = () => <div id="sceneA" />;
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack>
+                            {/*@ts-ignore*/}
+                            <Scene stateKey="sceneA" className="scene"><SceneA /></Scene>
+                        </NavigationStack>
+                    </NavigationHandler>
+                );
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        });
+    });
+
+    describe('Stack class data', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA', {x: 1});
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+        describe('Static Stack', () => {
+            it('should render class', function(){
+                var {sceneA} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className={(_state, data) => (
+                                data.x === 1 ? 'scene' : null
+                            )} />
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+        describe('Dynamic Stack', () => {
+            it('should render class', function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className={(_state, data) => (
+                                data.x === 1 ? 'scene' : null
+                            )}>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                            </NavigationStack>
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+        const test = () => {
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('Dynamic Stack scene class data', function () {
+        it('should render class', function(){
+            var SceneA = () => <div id="sceneA" />;
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA', {x: 1});
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack>
+                            {/*@ts-ignore*/}
+                            <Scene stateKey="sceneA" className={(data) => (
+                                data.x === 1 ? 'scene' : null
+                            )}><SceneA /></Scene>
+                        </NavigationStack>
+                    </NavigationHandler>
+                );
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        });
+    });
+
+    describe('Stack class crumb', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+        describe('Static Stack', () => {
+            it('should render class', async function(){
+                var {sceneA, sceneB} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className={(_state, _data, crumbs) => (
+                                crumbs?.[0]?.state.key === 'sceneA' ? 'scene' : null
+                            )} />
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        describe('Dynamic Stack', () => {
+            it('should render class', async function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className={(_state, _data, crumbs) => (
+                                crumbs?.[0]?.state.key === 'sceneA' ? 'scene' : null
+                            )}>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                            </NavigationStack>
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        const test = async () => {
+            await act(async () => stateNavigator.navigate('sceneB'));
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(container.querySelector("#sceneA"), null);
+                assert.notEqual(scenes[0].querySelector("#sceneB"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('Dynamic Stack scene class crumb', function () {
+        it('should render class', async function(){
+            var SceneA = () => <div id="sceneA" />;
+            var SceneB = () => <div id="sceneB" />;
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack>
+                            <Scene stateKey="sceneA"><SceneA /></Scene>
+                            {/*@ts-ignore*/}
+                            <Scene stateKey="sceneB" className={(_data, crumbs) => (
+                                crumbs?.[0]?.state.key === 'sceneA' ? 'scene' : null
+                            )}><SceneB /></Scene>
+                        </NavigationStack>
+                    </NavigationHandler>
+                );
+            });
+            await act(async () => stateNavigator.navigate('sceneB'));
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(container.querySelector("#sceneA"), null);
+                assert.notEqual(scenes[0].querySelector("#sceneB"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        });
+    });
+
+    describe('Dynamic Stack scene class override', function () {
+        it('should render class', async function(){
+            var SceneA = () => <div id="sceneA" />;
+            var SceneB = () => <div id="sceneB" />;
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack className="scene">
+                            <Scene stateKey="sceneA"><SceneA /></Scene>
+                            {/*@ts-ignore*/}
+                            <Scene stateKey="sceneB" className="otherScene"><SceneB /></Scene>
+                        </NavigationStack>
+                    </NavigationHandler>
+                );
+            });
+            await act(async () => stateNavigator.navigate('sceneB'));
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                scenes = container.querySelectorAll(".otherScene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneB"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        });
     });
 });
