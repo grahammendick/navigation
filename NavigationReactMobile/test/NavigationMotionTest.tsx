@@ -4013,7 +4013,6 @@ describe('NavigationMotion', function () {
         })
     });
 
-    // up to here
     describe('Unregister current scene with invalidated link null', function () {
         it('should navigate to first scene', async function(){
             var stateNavigator = new StateNavigator([
@@ -4040,6 +4039,48 @@ describe('NavigationMotion', function () {
                                 {!updated && <Scene stateKey="sceneB"><SceneB /></Scene>}
                                 <Scene stateKey="sceneC"><SceneC /></Scene>
                         </NavigationMotion>
+                    </NavigationHandler>
+                );
+            };
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => root.render(<App />));
+            act(() => stateNavigator.navigate('sceneB'));
+            await act(async () => update(true));
+            try {
+                assert.notEqual(container.querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+                assert.equal(container.querySelector("#sceneC"), null);
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states.sceneA)
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0)
+            } finally {
+                act(() => root.unmount());
+            }
+        })
+    });
+
+    describe('Unregister current scene with invalidated link null Stack', function () {
+        it('should navigate to first scene', async function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var SceneA = () => <div id='sceneA' />;
+            var SceneB = () => <div id='sceneB' />;
+            var SceneC = () => <div id='sceneC' />;
+            var update;
+            var App = () => {
+                var [updated, setUpdated] = useState(false);
+                update = setUpdated;
+                return (
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack stackInvalidatedLink={null}>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                {!updated && <Scene stateKey="sceneB"><SceneB /></Scene>}
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
+                        </NavigationStack>
                     </NavigationHandler>
                 );
             };
@@ -4117,6 +4158,59 @@ describe('NavigationMotion', function () {
         })
     });
 
+    describe('Unregister stack with fluent invalidated Stack', function () {
+        it('should navigate', async function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+                { key: 'sceneD', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var SceneA = () => <div id='sceneA' />;
+            var SceneB = () => <div id='sceneB' />;
+            var SceneC = () => <div id='sceneC' />;
+            var SceneD = () => <div id='sceneD' />;
+            var update;
+            var App = () => {
+                var [updated, setUpdated] = useState(false);
+                update = setUpdated;
+                return (
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack stackInvalidatedLink={stateNavigator.fluent()
+                                .navigate('sceneC')
+                                .navigate('sceneD').url}>
+                            {!updated ? (
+                                <>
+                                    <Scene stateKey="sceneA"><SceneA /></Scene>
+                                    <Scene stateKey="sceneB"><SceneB /></Scene>
+                                </>
+                            ) : (
+                                <>
+                                    <Scene stateKey="sceneC"><SceneC /></Scene>
+                                    <Scene stateKey="sceneD"><SceneD /></Scene>
+                                </>
+                            )}
+                        </NavigationStack>
+                    </NavigationHandler>
+                );
+            };
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => root.render(<App />));
+            act(() => stateNavigator.navigate('sceneB'));
+            await act(async () => update(true));
+            try {
+                assert.equal(container.querySelector("#sceneB"), null);
+                assert.notEqual(container.querySelector("#sceneD"), null);
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states.sceneD)
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1)
+            } finally {
+                act(() => root.unmount());
+            }
+        })
+    });
+
     describe('Navigation motion without children static', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
@@ -4135,6 +4229,34 @@ describe('NavigationMotion', function () {
                             renderMotion={(_style, scene, key) =>  (
                                 <div className="scene" id={key} key={key}>{scene}</div>
                             )} />
+                    </NavigationHandler>
+                );
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        });
+    });
+
+    describe('Navigation motion without children static Stack', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var SceneA = () => <div id="sceneA" />;
+            var {sceneA} = stateNavigator.states;
+            sceneA.renderScene = () => <SceneA />;
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack className="scene" />
                     </NavigationHandler>
                 );
             });
@@ -4191,6 +4313,79 @@ describe('NavigationMotion', function () {
             });
         });
 
+        const test = () => {
+            var container = document.createElement('div');
+            container.innerHTML = html;
+            var scenes = container.querySelectorAll(".scene");
+            assert.equal(scenes.length, 1);
+            assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+    };
+    });
+
+    describe('Server A', function () {
+        var stateNavigator, html;
+        var SceneA = () => <div id="sceneA" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+        });
+        describe('Static', () => {
+            it('should render A', function(){
+                var {sceneA} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                html = ReactDOMServer.renderToString(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion>
+                            {(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}
+                        </NavigationMotion>
+                    </NavigationHandler>
+                );
+                test();
+            });
+        });
+        describe('Dynamic', () => {
+            it('should render A', function(){
+                html = ReactDOMServer.renderToString(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationMotion
+                            renderMotion={(_style, scene, key) =>  (
+                                <div className="scene" id={key} key={key}>{scene}</div>
+                            )}>
+                            <Scene stateKey="sceneA"><SceneA /></Scene>
+                        </NavigationMotion>
+                    </NavigationHandler>
+                );
+                test();
+            });
+        });
+        describe('Static Stack', () => {
+            it('should render A', function(){
+                var {sceneA} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                html = ReactDOMServer.renderToString(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack className="scene" />
+                    </NavigationHandler>
+                );
+                test();
+            });
+        });
+        describe('Dynamic Stack', () => {
+            it('should render A', function(){
+                html = ReactDOMServer.renderToString(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack className="scene">
+                            <Scene stateKey="sceneA"><SceneA /></Scene>
+                        </NavigationStack>
+                    </NavigationHandler>
+                );
+                test();
+            });
+        });
         const test = () => {
             var container = document.createElement('div');
             container.innerHTML = html;
