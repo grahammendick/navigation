@@ -124,6 +124,44 @@ export interface NavigationMotionProps {
 }
 
 /**
+ * Defines the Navigation Stack Props contract
+ */
+export interface NavigationStackProps {
+    /**
+     * A Scene's unmount animation
+     */
+    unmountStyle?: any;
+    /**
+     * A Scene's crumb trail animation
+     */
+    crumbStyle?: any;
+    /**
+     * The animation duration
+     */
+    duration?: number;
+    /**
+     * The link to navigate to when Scenes in the stack are unregistered
+     */
+    stackInvalidatedLink?: string;
+    /**
+     * A Scene's class name
+     */
+    className?: any;
+    /**
+     * A Scene's style
+     */
+    style?: any;
+    /**
+     * The Scenes
+     */
+    children?: any;
+    /**
+     * Renders the Scene for the State and data
+     */
+    renderScene?: (state: State, data: any) => ReactNode;
+}
+
+/**
  * Defines the Scene Props contract
  */
  export interface SceneProps<NavigationInfo extends { [index: string]: any } = any> {
@@ -136,13 +174,25 @@ export interface NavigationMotionProps {
      */
     unmountedStyle?: any;
     /**
+     * The Scene's unmount animation
+     */
+    unmountStyle?: any;
+    /**
      * The Scene's mounted style
      */
     mountedStyle?: any;
     /**
-     * The Scene's crumb trail style
+     * The Scene's crumb trail style or animation
      */
     crumbStyle?: any;
+    /**
+     * The Scene's class name
+     */
+    className?: any;
+    /**
+     * The Scene's style
+     */
+    style?: any;
      /**
      * The Scene content
      */
@@ -163,6 +213,11 @@ export class SharedElementMotion extends Component<SharedElementNavigationMotion
  * Animates Scenes when navigating
  */
 export class NavigationMotion extends Component<NavigationMotionProps> { }
+
+/**
+ * Renders a stack of Scenes and animates them when navigating
+ */
+export class NavigationStack extends Component<NavigationStackProps> { }
 
 /**
  * Configures the Scene for a State
