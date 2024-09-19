@@ -997,145 +997,176 @@ describe('UnloadedHook', function () {
         });
     });
 
-    // up to here
     describe('Unloaded handler context', function () {
-        it('should access current context', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 'sceneA' },
-                { key: 'sceneB', trackCrumbTrail: true }
-            ]);
-            stateNavigator.navigate('sceneA');
-            var {sceneA, sceneB} = stateNavigator.states;
-            var stateContextA;
-            var SceneA = () => {
-                var navigationEvent = useContext(NavigationContext);
-                useUnloaded(() => {
-                    var {stateContext} = navigationEvent.stateNavigator;
-                    stateContextA = stateContext;
-                })
-                return <div />;
-            };
-            var SceneB = () => <div />;
-            sceneA.renderScene = () => <SceneA />;
-            sceneB.renderScene = () => <SceneB />;
-            var container = document.createElement('div');
-            var root = createRoot(container)
-            act(() => {
-                root.render(
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationMotion>
-                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
-                        </NavigationMotion>
-                    </NavigationHandler>
-                );
+        const test = stack => {
+            it('should access current context', function(){
+                var stateNavigator = new StateNavigator([
+                    { key: 'sceneA' },
+                    { key: 'sceneB', trackCrumbTrail: true }
+                ]);
+                stateNavigator.navigate('sceneA');
+                var {sceneA, sceneB} = stateNavigator.states;
+                var stateContextA;
+                var SceneA = () => {
+                    var navigationEvent = useContext(NavigationContext);
+                    useUnloaded(() => {
+                        var {stateContext} = navigationEvent.stateNavigator;
+                        stateContextA = stateContext;
+                    })
+                    return <div />;
+                };
+                var SceneB = () => <div />;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                var container = document.createElement('div');
+                var root = createRoot(container)
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            {stack}
+                        </NavigationHandler>
+                    );
+                });
+                act(() => {
+                    stateContextA = null;
+                    stateNavigator.navigate('sceneB');
+                });
+                try {
+                    assert.equal(stateContextA.oldState, null);
+                    assert.equal(stateContextA.state, sceneA);
+                } finally {
+                    act(() => root.unmount());
+                }
             });
-            act(() => {
-                stateContextA = null;
-                stateNavigator.navigate('sceneB');
-            });
-            try {
-                assert.equal(stateContextA.oldState, null);
-                assert.equal(stateContextA.state, sceneA);
-            } finally {
-                act(() => root.unmount());
-            }
-        })
+        }
+        describe('Motion', () => {
+            test(
+                <NavigationMotion>
+                    {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                </NavigationMotion>
+            );
+        });
+        describe('Stack', () => {
+            test(<NavigationStack />);
+        });
     });
 
     describe('Unloaded handler data', function () {
-        it('should access data', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 'sceneA', defaultTypes: {x: 'number'} },
-                { key: 'sceneB', defaultTypes: {y: 'number'}, trackCrumbTrail: true },
-                { key: 'sceneC', trackCrumbTrail: true }
-            ]);
-            stateNavigator.navigate('sceneA', {x: 0});
-            var {sceneA, sceneB, sceneC} = stateNavigator.states;
-            var stateC, dataC, stateContextC;
-            var SceneA = () => <div />;
-            var SceneB = () => <div />;
-            var SceneC = () => {
-                useUnloaded((state, data, stateContext) => {
-                    stateC = state;
-                    dataC = data;
-                    stateContextC = stateContext;
-                })
-                return <div />;
-            };
-            sceneA.renderScene = () => <SceneA />;
-            sceneB.renderScene = () => <SceneB />;
-            sceneC.renderScene = () => <SceneC />;
-            var container = document.createElement('div');
-            var root = createRoot(container)
-            act(() => {
-                root.render(
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationMotion>
-                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
-                        </NavigationMotion>
-                    </NavigationHandler>
-                );
+        const test = stack => {
+            it('should access data', function(){
+                var stateNavigator = new StateNavigator([
+                    { key: 'sceneA', defaultTypes: {x: 'number'} },
+                    { key: 'sceneB', defaultTypes: {y: 'number'}, trackCrumbTrail: true },
+                    { key: 'sceneC', trackCrumbTrail: true }
+                ]);
+                stateNavigator.navigate('sceneA', {x: 0});
+                var {sceneA, sceneB, sceneC} = stateNavigator.states;
+                var stateC, dataC, stateContextC;
+                var SceneA = () => <div />;
+                var SceneB = () => <div />;
+                var SceneC = () => {
+                    useUnloaded((state, data, stateContext) => {
+                        stateC = state;
+                        dataC = data;
+                        stateContextC = stateContext;
+                    })
+                    return <div />;
+                };
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                sceneC.renderScene = () => <SceneC />;
+                var container = document.createElement('div');
+                var root = createRoot(container)
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationMotion>
+                                {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                            </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                act(() => {
+                    stateNavigator.navigate('sceneB', {y: 1});
+                    stateNavigator.navigate('sceneC');
+                });
+                act(() => {
+                    stateC = dataC = stateContextC = null;
+                    stateNavigator.navigateBack(1);
+                });
+                try {
+                    assert.equal(stateC, sceneB);
+                    assert.equal(dataC.y, 1);
+                    assert.equal(stateContextC.url, '/sceneB?y=1&crumb=%2FsceneA%3Fx%3D0');
+                    assert.equal(stateContextC.crumbs.length, 1);
+                    assert.equal(stateContextC.crumbs[0].state, sceneA);
+                    assert.equal(stateContextC.crumbs[0].data.x, 0);
+                    assert.equal(stateContextC.history, false);
+                } finally {
+                    act(() => root.unmount());
+                }
             });
-            act(() => {
-                stateNavigator.navigate('sceneB', {y: 1});
-                stateNavigator.navigate('sceneC');
-            });
-            act(() => {
-                stateC = dataC = stateContextC = null;
-                stateNavigator.navigateBack(1);
-            });
-            try {
-                assert.equal(stateC, sceneB);
-                assert.equal(dataC.y, 1);
-                assert.equal(stateContextC.url, '/sceneB?y=1&crumb=%2FsceneA%3Fx%3D0');
-                assert.equal(stateContextC.crumbs.length, 1);
-                assert.equal(stateContextC.crumbs[0].state, sceneA);
-                assert.equal(stateContextC.crumbs[0].data.x, 0);
-                assert.equal(stateContextC.history, false);
-            } finally {
-                act(() => root.unmount());
-            }
-        })
+        }
+        describe('Motion', () => {
+            test(
+                <NavigationMotion>
+                    {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                </NavigationMotion>
+            );
+        });
+        describe('Stack', () => {
+            test(<NavigationStack />);
+        });
     });
 
     describe('Unloaded set state', function () {
-        it('should render', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 'sceneA' },
-                { key: 'sceneB', trackCrumbTrail: true }
-            ]);
-            stateNavigator.navigate('sceneA');
-            var {sceneA, sceneB} = stateNavigator.states;
-            var SceneA = () => {
-                var [unloaded, setUnloaded] = useState(false)
-                useUnloaded(() => {
-                    setUnloaded(true);
-                })
-                return <div id='sceneA' data-unloaded={unloaded} />;
-            };
-            var SceneB = () => <div />;
-            sceneA.renderScene = () => <SceneA />;
-            sceneB.renderScene = () => <SceneB />;
-            var container = document.createElement('div');
-            var root = createRoot(container)
-            act(() => {
-                root.render(
-                    <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationMotion>
-                            {(_style, scene, key) =>  <div key={key}>{scene}</div>}
-                        </NavigationMotion>
-                    </NavigationHandler>
-                );
+        const test = stack => {
+            it('should render', function(){
+                var stateNavigator = new StateNavigator([
+                    { key: 'sceneA' },
+                    { key: 'sceneB', trackCrumbTrail: true }
+                ]);
+                stateNavigator.navigate('sceneA');
+                var {sceneA, sceneB} = stateNavigator.states;
+                var SceneA = () => {
+                    var [unloaded, setUnloaded] = useState(false)
+                    useUnloaded(() => {
+                        setUnloaded(true);
+                    })
+                    return <div id='sceneA' data-unloaded={unloaded} />;
+                };
+                var SceneB = () => <div />;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                var container = document.createElement('div');
+                var root = createRoot(container)
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            {stack}
+                        </NavigationHandler>
+                    );
+                });
+                act(() => {
+                    stateNavigator.navigate('sceneB');
+                });
+                try {
+                    var scene = container.querySelector<HTMLDivElement>("#sceneA");                
+                    assert.strictEqual(scene.dataset.unloaded, 'true');
+                } finally {
+                    act(() => root.unmount());
+                }
             });
-            act(() => {
-                stateNavigator.navigate('sceneB');
-            });
-            try {
-                var scene = container.querySelector<HTMLDivElement>("#sceneA");                
-                assert.strictEqual(scene.dataset.unloaded, 'true');
-            } finally {
-                act(() => root.unmount());
-            }
-        })
+        }
+        describe('Motion', () => {
+            test(
+                <NavigationMotion>
+                    {(_style, scene, key) =>  <div key={key}>{scene}</div>}
+                </NavigationMotion>
+            );
+        });
+        describe('Stack', () => {
+            test(<NavigationStack />);
+        });
     });
 });
