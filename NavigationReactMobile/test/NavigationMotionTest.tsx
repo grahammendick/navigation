@@ -4642,4 +4642,307 @@ describe('NavigationMotion', function () {
             }
         });
     });
+
+    describe('Stack style state', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+        describe('Static Stack', () => {
+            it('should render style', function(){
+                var {sceneA} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene" style={(state) => (
+                                state.key === 'sceneA' ? {backgroundColor: 'red'} : null
+                            )} />
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+        describe('Dynamic Stack', () => {
+            it('should render style', function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene" style={(state) => (
+                                state.key === 'sceneA' ? {backgroundColor: 'red'} : null
+                            )}>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                            </NavigationStack>
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+        const test = () => {
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.equal(scenes[0].style.backgroundColor, 'red');
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('Dynamic Stack scene style state', function () {
+        it('should render style', function(){
+            var SceneA = () => <div id="sceneA" />;
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack>
+                            {/*@ts-ignore*/}
+                            <Scene stateKey="sceneA" className="scene" style={{backgroundColor: 'red'}}><SceneA /></Scene>
+                        </NavigationStack>
+                    </NavigationHandler>
+                );
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene") as any;
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(scenes[0].style.backgroundColor, 'red');
+            } finally {
+                act(() => root.unmount());
+            }
+        });
+    });
+
+    describe('Stack style data', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA', {x: 1});
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+        describe('Static Stack', () => {
+            it('should render style', function(){
+                var {sceneA} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene" style={(_state, data) => (
+                                data.x === 1 ? {backgroundColor: 'red'} : null
+                            )} />
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+        describe('Dynamic Stack', () => {
+            it('should render style', function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene" style={(_state, data) => (
+                                data.x === 1 ? {backgroundColor: 'red'} : null
+                            )}>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                            </NavigationStack>
+                        </NavigationHandler>
+                    );
+                });
+                test();
+            });
+        });
+        const test = () => {
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(scenes[0].style.backgroundColor, 'red');
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('Dynamic Stack scene style data', function () {
+        it('should render style', function(){
+            var SceneA = () => <div id="sceneA" />;
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' }
+            ]);
+            stateNavigator.navigate('sceneA', {x: 1});
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack>
+                            {/*@ts-ignore*/}
+                            <Scene stateKey="sceneA" className="scene" style={(data) => (
+                                data.x === 1 ? {backgroundColor: 'red'} : null
+                            )}><SceneA /></Scene>
+                        </NavigationStack>
+                    </NavigationHandler>
+                );
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene") as any;
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(scenes[0].style.backgroundColor, 'red');
+            } finally {
+                act(() => root.unmount());
+            }
+        });
+    });
+
+    describe('Stack style crumb', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+        describe('Static Stack', () => {
+            it('should render style', async function(){
+                var {sceneA, sceneB} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene" style={(_state, _data, crumbs) => (
+                                crumbs?.[0]?.state.key === 'sceneA' ? {backgroundColor: 'red'} : null
+                            )} />
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        describe('Dynamic Stack', () => {
+            it('should render style', async function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene" style={(_state, _data, crumbs) => (
+                                crumbs?.[0]?.state.key === 'sceneA' ? {backgroundColor: 'red'} : null
+                            )}>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                            </NavigationStack>
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        const test = async () => {
+            await act(async () => stateNavigator.navigate('sceneB'));
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 2);
+                assert.notEqual(container.querySelector("#sceneA"), null);
+                assert.notEqual(container.querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.backgroundColor, 'red');
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('Dynamic Stack scene style crumb', function () {
+        it('should render style', async function(){
+            var SceneA = () => <div id="sceneA" />;
+            var SceneB = () => <div id="sceneB" />;
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack className="scene">
+                            <Scene stateKey="sceneA"><SceneA /></Scene>
+                            {/*@ts-ignore*/}
+                            <Scene stateKey="sceneB" style={(_data, crumbs) => (
+                                crumbs?.[0]?.state.key === 'sceneA' ? {backgroundColor: 'red'} : null
+                            )}><SceneB /></Scene>
+                        </NavigationStack>
+                    </NavigationHandler>
+                );
+            });
+            await act(async () => stateNavigator.navigate('sceneB'));
+            try {
+                var scenes = container.querySelectorAll(".scene") as any;
+                assert.equal(scenes.length, 2);
+                assert.notEqual(container.querySelector("#sceneA"), null);
+                assert.notEqual(container.querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.backgroundColor, 'red');
+            } finally {
+                act(() => root.unmount());
+            }
+        });
+    });
+
+    describe('Dynamic Stack scene style override', function () {
+        it('should render style', async function(){
+            var SceneA = () => <div id="sceneA" />;
+            var SceneB = () => <div id="sceneB" />;
+            var stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <NavigationStack className="scene" style={{backgroundColor: 'red'}}>
+                            <Scene stateKey="sceneA"><SceneA /></Scene>
+                            {/*@ts-ignore*/}
+                            <Scene stateKey="sceneB" style={{backgroundColor: 'blue'}}><SceneB /></Scene>
+                        </NavigationStack>
+                    </NavigationHandler>
+                );
+            });
+            await act(async () => stateNavigator.navigate('sceneB'));
+            try {
+                var scenes = container.querySelectorAll(".scene") as any;
+                assert.equal(scenes.length, 2);
+                assert.equal(scenes[0].style.backgroundColor, 'red');
+                assert.equal(scenes[1].style.backgroundColor, 'blue');
+            } finally {
+                act(() => root.unmount());
+            }
+        });
+    });
 });
