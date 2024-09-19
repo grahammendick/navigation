@@ -13,7 +13,9 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                     setScenes(({all, ...rest}) => ({all: all.filter((_s, index) => index !== i), ...rest}))
                 if (pushEnter && prevNavState !== 'pushEnter')
                     onRest({key})
-                scene.prevNavState = pushEnter ? 'pushEnter' : popExit ? 'popExit' : 'popEnter';
+                if (popEnter && prevNavState !== 'popEnter')
+                    onRest({key})
+                scene.prevNavState = pushEnter ? 'pushEnter' : popExit ? 'popExit' : pushExit ? 'pushExit' : 'popEnter';
                 return;
             };
             const afterPushEnter = scene.pushEnter?.finished || {then: (f) => f()};
