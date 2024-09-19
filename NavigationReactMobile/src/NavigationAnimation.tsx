@@ -21,9 +21,10 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
             const afterPushEnter = scene.pushEnter?.finished || {then: (f) => f()};
             const afterPopEnter = scene.popEnter?.finished || {then: (f) => f()};
             afterPopEnter.then(() => {
-                if (cancel) return;
+                if (cancel || !unmountStyle) return;
                 if (!scene.pushEnter) {
                     const {duration = defaultDuration, keyframes = unmountStyle} = unmountStyle;
+                    if (!duration || !keyframes) return;
                     scene.pushEnter = scene.animate(keyframes, {duration, fill: 'forwards'});
                     scene.pushEnter.persist();
                 }
@@ -53,9 +54,10 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                 });
             });
             afterPushEnter.then(() => {
-                if (cancel) return;
+                if (cancel || !crumbStyle) return;
                 if (!scene.popEnter && (pushExit || popEnter)) {       
                     const {duration = defaultDuration, keyframes = crumbStyle} = crumbStyle;
+                    if (!duration || !keyframes) return;
                     scene.popEnter = scene.animate(keyframes, {duration, fill: 'backwards'});
                     scene.popEnter.persist();
                 }
@@ -100,7 +102,7 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                         return {...scene, ...nextScene};
                     })
                     .concat(scenes
-                        .filter(scene => !nextScenesByKey[scene.key])
+                        .filter(({key, unmountStyle}) => !nextScenesByKey[key] && unmountStyle?.keyframes && (unmountStyle?.duration ?? defaultDuration))
                         .map(scene => ({...scene, ...noAnim, popExit: !scene.pushExit, popEnter: scene.pushExit}))
                     )
                     .sort((a, b) => a.index !== b.index ? a.index - b.index : a.count - b.count)
