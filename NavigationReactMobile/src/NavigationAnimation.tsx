@@ -99,7 +99,7 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                     })
                     .concat(scenes
                         .filter(scene => !nextScenesByKey[scene.key])
-                        .map(scene => ({...scene, ...noAnim, popExit: true}))
+                        .map(scene => ({...scene, ...noAnim, popExit: !scene.pushExit, popEnter: scene.pushExit}))
                     )
                     .sort((a, b) => a.index !== b.index ? a.index - b.index : a.count - b.count)
             };
