@@ -16,9 +16,6 @@ window.addEventListener = () => {};
 global.window = window;
 global.document = window.document;
 
-// why isn't there raf stuff?
-// why aren't the act's async/await?
-
 describe('UnloadedHook', function () {
     describe('A', function () {
         const test = stack => {
