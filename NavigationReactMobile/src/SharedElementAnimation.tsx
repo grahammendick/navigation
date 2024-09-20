@@ -11,7 +11,6 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
             const to = mountedElement.ref.getBoundingClientRect();
             const toScene = mountedElement.ref.closest('[data-scene="true"').getBoundingClientRect();
             if (action === 'play') {
-                // need to allow for the position of the scene - the transform?! how?
                 const fromLeft = from.left - fromScene.left;
                 const fromTop = from.top - fromScene.top;
                 const toLeft = to.left - toScene.left;
