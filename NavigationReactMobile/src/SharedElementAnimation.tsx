@@ -43,11 +43,7 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
             })
         ));
     }
-    return (
-        <div ref={container}>
-            {sharedElements.map(({name}) => <div key={name} style={{position: 'absolute'}} />)}
-        </div>
-    );
+    return <div ref={container}>{sharedElements.map(({name}) => <div key={name} />)}</div>;
 };
 
 export default SharedElementAnimation;
