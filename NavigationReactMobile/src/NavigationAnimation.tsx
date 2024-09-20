@@ -1,6 +1,6 @@
 import React, {useRef, useState, useLayoutEffect} from 'react';
 
-const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, duration: defaultDuration}) => {
+const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, duration: defaultDuration, pause}) => {
     const [scenes, setScenes] = useState({prev: null, all: [], count: 0});
     const container = useRef(null);
     useLayoutEffect(() => {
@@ -14,6 +14,8 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                 scene.prevNavState = pushEnter ? 'pushEnter' : popExit ? 'popExit' : pushExit ? 'pushExit' : 'popEnter';
                 return;
             };
+            if (scene.pushPlayState) scene.pushEnter.play();
+            if (scene.popPlayState) scene.popEnter.play();
             const afterPushEnter = scene.pushEnter?.finished || {then: (f) => f()};
             const afterPopEnter = scene.popEnter?.finished || {then: (f) => f()};
             afterPopEnter.then(() => {
@@ -76,7 +78,17 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                     }
                 });
             });
-        });
+            scene.pushPlayState = undefined;
+            scene.popPlayState = undefined;
+            if (pause && scene.pushEnter?.playState === 'running') {
+                scene.pushPlayState = 'running';
+                scene.pushEnter.pause();
+            }
+            if (pause && scene.popEnter?.playState === 'running') {
+                scene.popPlayState = 'running';
+                scene.popEnter.pause();
+            }
+    });
         return () => {cancel = true;}
     }, [scenes]);
     if (nextScenes !== scenes.prev) {

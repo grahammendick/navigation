@@ -9,6 +9,7 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
             const from = oldElement.ref.getBoundingClientRect();
             const to = mountedElement.ref.getBoundingClientRect();
             if (action === 'play') {
+                // need to allow for the position of the scene - the transform?! how?
                 elementContainer.appendChild(element);
                 element.style.position = 'absolute';
                 element.style.width = `${from.width}px`;

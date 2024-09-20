@@ -12,7 +12,9 @@ type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], res
 
 const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, className: sceneClassName,
     style: sceneStyle, duration = 300, renderScene, children, stackInvalidatedLink}: NavigationStackProps) => {
-    const sharedElementRegistry = useRef(new SharedElementRegistry());
+    // Move shared element cache useState here so automatically rerenders
+    const [x, setX] = useState({});
+    const sharedElementRegistry = useRef(new SharedElementRegistry(() => setX({})));
     const {stateNavigator} = useContext(NavigationContext);
     const [motionState, setMotionState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: false});
     const scenes = {};
@@ -100,7 +102,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     renderScene = firstLink ? ({key}) => allScenes[key] : renderScene;
     return (stateContext.state &&
         <SharedElementContext.Provider value={sharedElementRegistry.current}>
-            <NavigationAnimation data={getScenes()} onRest={clearScene} oldState={oldState} duration={duration}>
+            <NavigationAnimation data={getScenes()} onRest={clearScene} oldState={oldState} duration={duration} pause={stateContext.crumbs.length && !getSharedElements().length}>
                 {scenes => (
                     scenes.map(({key, index: crumb, className, style}) => (
                         <Freeze key={key} enabled={motionState.rest && crumb < getScenes().length - 1}>
