@@ -40,7 +40,6 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
             nextSharedElements.map((nextSharedElement, i) => {
                 if (nextSharedElement.oldElement.ref === sharedElements[i]?.mountedElement.ref)
                     return {...nextSharedElement, element: sharedElements[i].element, action: 'reverse'};
-                // need to remove ids to prevent duplicates?!
                 const element = nextSharedElement.oldElement.ref.cloneNode(true);
                 return {...nextSharedElement, element, action: 'play'};
             })

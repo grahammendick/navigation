@@ -12,7 +12,6 @@ type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], res
 
 const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, className: sceneClassName,
     style: sceneStyle, duration = 300, renderScene, children, stackInvalidatedLink}: NavigationStackProps) => {
-    // Move shared element cache useState here so automatically rerenders
     const [x, setX] = useState({});
     const sharedElementRegistry = useRef(new SharedElementRegistry(() => setX({})));
     const {stateNavigator} = useContext(NavigationContext);
