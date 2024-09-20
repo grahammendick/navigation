@@ -11,14 +11,14 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
             if (action === 'play') {
                 elementContainer.appendChild(element);
                 element.style.position = 'absolute';
-                element.style.width = from.width;
-                element.style.height = from.height;
-                element.style.top = from.top;
-                element.style.left = from.left;
+                element.style.width = `${from.width}px`;
+                element.style.height = `${from.height}px`;
+                element.style.top = `${from.top}px`;
+                element.style.left = `${from.left}px`;
                 element.transition = element.animate([
                     {transform: 'translate(0, 0) scale(1)'},
                     {transform: `
-                        translate(${to.left - from.left}, ${to.top - from.top})
+                        translate(${to.left - from.left}px, ${to.top - from.top}px)
                         scale(${to.width / from.width}, ${to.height / from.height})
                     `}
                 ], {duration: 1000, fill: 'forwards'});
