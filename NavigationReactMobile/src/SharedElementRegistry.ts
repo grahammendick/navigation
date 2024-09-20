@@ -17,6 +17,7 @@ class SharedElementRegistry {
                 delete this.sharedElements[scene][name];
             else
                 delete this.sharedElements[scene];
+            this.update();
         }
     }
     getSharedElements(scene: number, oldScene: number) {

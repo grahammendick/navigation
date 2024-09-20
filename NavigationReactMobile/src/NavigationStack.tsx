@@ -109,8 +109,8 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
                             <Scene crumb={crumb} rest className={className} style={style} renderScene={renderScene} />
                         </Freeze>
                     )).concat(
-                        // only show this when the shared elements are ready (delay)
-                        <SharedElementAnimation key="sharedElements-" sharedElements={getSharedElements()} />
+                        !motionState.rest &&
+                            <SharedElementAnimation key="sharedElements-" sharedElements={getSharedElements()} />
                     )
                 )}
             </NavigationAnimation>
