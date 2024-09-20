@@ -5,7 +5,7 @@ import { SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProp
 class SharedElementMotion extends React.Component<SharedElementNavigationMotionProps & SharedElementMotionProps, any> {
     static defaultProps = {
         duration: 300,
-        elementStyle: (name, ref, data) => data
+        elementStyle: (_name, _ref, data) => data
     }
     componentDidUpdate(prevProps) {
         var prevSharedElements = this.getSharedElements(prevProps.sharedElements);
@@ -32,7 +32,7 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
     }
     getStyle(name, {ref, data}) {
         var {top, left, width, height} = ref.getBoundingClientRect();
-        return this.props.elementStyle(name, ref, { top, left, width, height, ...data});
+        return this.props.elementStyle(name, ref, {top, left, width, height, ...data});
     }
     getPropValue(prop, name) {
         return typeof prop === 'function' ? prop(name) : prop;
