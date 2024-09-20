@@ -24,10 +24,8 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
                 element.style.transformOrigin = 'top left';
                 element.transition = element.animate([
                     {transform: 'translate(0, 0) scale(1)'},
-                    {transform: `
-                        translate(${toLeft - fromLeft}px, ${toTop - fromTop}px)
-                        scale(${to.width / from.width}, ${to.height / from.height})
-                    `}
+                    {transform: `translate(${toLeft - fromLeft}px, ${toTop - fromTop}px)
+                        scale(${to.width / from.width}, ${to.height / from.height})`}
                 ], {duration: 1000, fill: 'forwards'});
             } else {
                 element.transition.reverse();
