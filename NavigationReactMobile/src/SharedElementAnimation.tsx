@@ -17,7 +17,7 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
                 const toLeft = to.left - toScene.left;
                 const toTop = to.top - toScene.top;
                 elementContainer.appendChild(element);
-                element.style.position = 'absolute';
+                element.style.position = 'fixed';
                 element.style.width = `${from.width}px`;
                 element.style.height = `${from.height}px`;
                 element.style.top = `${fromTop}px`;
