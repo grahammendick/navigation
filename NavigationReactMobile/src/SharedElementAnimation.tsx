@@ -7,20 +7,26 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
         sharedElements.forEach(({oldElement, mountedElement, element, action}, i) => {
             const elementContainer = container.current.children[i];
             const from = oldElement.ref.getBoundingClientRect();
+            const fromScene = oldElement.ref.closest('[data-scene="true"').getBoundingClientRect();
             const to = mountedElement.ref.getBoundingClientRect();
+            const toScene = mountedElement.ref.closest('[data-scene="true"').getBoundingClientRect();
             if (action === 'play') {
                 // need to allow for the position of the scene - the transform?! how?
+                const fromLeft = from.left - fromScene.left;
+                const fromTop = from.top - fromScene.top;
+                const toLeft = to.left - toScene.left;
+                const toTop = to.top - toScene.top;
                 elementContainer.appendChild(element);
                 element.style.position = 'absolute';
                 element.style.width = `${from.width}px`;
                 element.style.height = `${from.height}px`;
-                element.style.top = `${from.top}px`;
-                element.style.left = `${from.left}px`;
+                element.style.top = `${fromTop}px`;
+                element.style.left = `${fromLeft}px`;
                 element.style.transformOrigin = 'top left';
                 element.transition = element.animate([
                     {transform: 'translate(0, 0) scale(1)'},
                     {transform: `
-                        translate(${to.left - from.left}px, ${to.top - from.top}px)
+                        translate(${toLeft - fromLeft}px, ${toTop - fromTop}px)
                         scale(${to.width / from.width}, ${to.height / from.height})
                     `}
                 ], {duration: 1000, fill: 'forwards'});
