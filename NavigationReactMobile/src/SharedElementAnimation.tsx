@@ -21,7 +21,7 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
                         translate(${to.left - from.left}, ${to.top - from.top})
                         scale(${to.width / from.width}, ${to.height / from.height})
                     `}
-                ]);
+                ], {duration: 1000, fill: 'forwards'});
             } else {
                 element.transition.reverse();
             }
@@ -34,7 +34,7 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
         setSharedElements(sharedElements => (
             nextSharedElements.map((nextSharedElement, i) => {
                 if (nextSharedElement.oldElement.ref === sharedElements[i]?.mountedElement.ref)
-                    return {...sharedElements[i], action: 'reverse'};
+                    return {...nextSharedElement, element: sharedElements[i].element, action: 'reverse'};
                 // need to remove ids to prevent duplicates?!
                 const element = nextSharedElement.oldElement.ref.cloneNode(true);
                 return {...nextSharedElement, element, action: 'play'};

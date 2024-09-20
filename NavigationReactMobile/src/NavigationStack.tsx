@@ -54,8 +54,8 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     const clearScene = ({key}) => {
         setMotionState(({rest: prevRest, stateNavigator, keys}) => {
             const scene = getScenes().filter(scene => scene.key === key)[0];
-            if (!scene)
-                sharedElementRegistry.current.unregisterSharedElement(scene.index);
+            //if (!scene)
+                //sharedElementRegistry.current.unregisterSharedElement(scene.index);
             var rest = prevRest || (scene && scene.mount);
             return {rest, stateNavigator, keys};
         });

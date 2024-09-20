@@ -29,7 +29,7 @@ class SharedElementRegistry {
                 });
             }
         }
-        return sharedElements;
+        return sharedElements.sort((a, b) => a.name.localeCompare(b.name));
     }
 }
 export default SharedElementRegistry;
