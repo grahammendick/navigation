@@ -5,12 +5,12 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
     const container = useRef(null);
     useLayoutEffect(() => {
         let cancel = false;
-        scenes.all.forEach(({key, pushEnter, popExit, pushExit, popEnter, unmountStyle, crumbStyle}, i) => {
+        scenes.all.forEach(({key, index, pushEnter, popExit, pushExit, popEnter, unmountStyle, crumbStyle}, i) => {
             const scene = container.current.children[i];
             const prevNavState = scene.navState || scene.prevNavState;
             if (!scene.animate) {
                 if (popExit) setScenes(({all, ...rest}) => ({all: all.filter((_s, index) => index !== i), ...rest}));
-                if ((pushEnter && prevNavState !== 'pushEnter') || (popEnter && prevNavState !== 'popEnter')) onRest({key});
+                if ((pushEnter && prevNavState !== 'pushEnter') || (popEnter && prevNavState !== 'popEnter')) onRest({key, index});
                 scene.prevNavState = pushEnter ? 'pushEnter' : popExit ? 'popExit' : pushExit ? 'pushExit' : 'popEnter';
                 return;
             };
@@ -45,7 +45,7 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                     if (popExit)
                         setScenes(({all, ...rest}) => ({all: all.filter((_s, index) => index !== i), ...rest}))
                     if (pushEnter || popExit) {
-                        onRest({key});
+                        onRest({key, index});
                         scene.prevNavState = scene.navState;
                         scene.navState = undefined;
                     }
@@ -72,7 +72,7 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                 scene.popEnter?.finished.then(() => {
                     if (cancel || !scene.navState) return;
                     if (pushExit || popEnter) {
-                        onRest({key});
+                        onRest({key, index});
                         scene.prevNavState = scene.navState;
                         scene.navState = undefined;
                     }

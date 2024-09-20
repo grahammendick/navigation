@@ -53,11 +53,11 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         }
         return [];
     }
-    const clearScene = ({key}) => {
+    const clearScene = ({key, index}) => {
         setMotionState(({rest: prevRest, stateNavigator, keys}) => {
             const scene = getScenes().filter(scene => scene.key === key)[0];
-            //if (!scene)
-                //sharedElementRegistry.current.unregisterSharedElement(scene.index);
+            if (!scene)
+                sharedElementRegistry.current.unregisterSharedElement(index);
             var rest = prevRest || (scene && scene.mount);
             return {rest, stateNavigator, keys};
         });
