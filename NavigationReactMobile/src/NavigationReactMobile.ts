@@ -1,10 +1,11 @@
 import MobileHistoryManager from './MobileHistoryManager';
 import NavigationMotion from './NavigationMotion';
+import NavigationStack from './NavigationStack';
 import SharedElement from './SharedElement';
 import SharedElementMotion from './SharedElementMotion';
 import useNavigating from './useNavigating';
 import useNavigated from './useNavigated';
 import useUnloading from './useUnloading';
 import useUnloaded from './useUnloaded';
-const Scene = NavigationMotion.Scene;
-export { MobileHistoryManager, Scene, NavigationMotion, SharedElement, SharedElementMotion, useNavigating, useNavigated, useUnloading, useUnloaded };
+const Scene = NavigationStack.Scene;
+export { MobileHistoryManager, Scene, NavigationStack, NavigationMotion, SharedElement, SharedElementMotion, useNavigating, useNavigated, useUnloading, useUnloaded };

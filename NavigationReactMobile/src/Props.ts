@@ -47,7 +47,10 @@ interface SharedElementMotionProps {
 interface NavigationMotionProps {
     unmountedStyle?: any;
     mountedStyle?: any;
+    unmountStyle?: any;
     crumbStyle?: any;
+    className?: any;
+    style?: any;
     duration?: number;
     stackInvalidatedLink?: string;
     sharedElementMotion?: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
@@ -59,7 +62,10 @@ interface NavigationMotionProps {
 
 interface SceneProps {
     crumb: number;
+    id: string;
     rest: boolean;
+    className: string;
+    style: any;
     renderScene?: (state: State, data: any) => ReactNode;
 }
 

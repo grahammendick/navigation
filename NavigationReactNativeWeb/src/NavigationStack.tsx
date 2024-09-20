@@ -38,10 +38,10 @@ const renderMotion = ({translateX, translateX_pc, translateY, translateY_pc, sca
                 rotate(${rotate}deg)
 			` as any,
             opacity: alpha,
-            position: 'absolute',
+            position: 'fixed' as any,
             backgroundColor: '#fff',
             left: 0, right: 0, top: 0, bottom: 0,
-            overflow: 'hidden',
+            overflow: 'auto' as any,
         }}>
         {scene}
     </View>
