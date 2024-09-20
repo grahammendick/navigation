@@ -16,6 +16,7 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
                 element.style.height = `${from.height}px`;
                 element.style.top = `${from.top}px`;
                 element.style.left = `${from.left}px`;
+                element.style.transformOrigin = 'top left';
                 element.transition = element.animate([
                     {transform: 'translate(0, 0) scale(1)'},
                     {transform: `
