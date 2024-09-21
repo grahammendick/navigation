@@ -49,6 +49,7 @@ interface NavigationMotionProps {
     mountedStyle?: any;
     unmountStyle?: any;
     crumbStyle?: any;
+    sharedElements?: any;
     className?: any;
     style?: any;
     duration?: number;

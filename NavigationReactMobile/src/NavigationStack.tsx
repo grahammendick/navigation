@@ -10,8 +10,8 @@ import SharedElementAnimation from './SharedElementAnimation';
 import useSharedElementRegistry from './useSharedElementRegistry';
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean};
 
-const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, className: sceneClassName,
-    style: sceneStyle, duration = 300, renderScene, children, stackInvalidatedLink}: NavigationStackProps) => {
+const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, sharedElements: sharedElementsStack,
+    className: sceneClassName, style: sceneStyle, duration = 300, renderScene, children, stackInvalidatedLink}: NavigationStackProps) => {
     const sharedElementRegistry = useSharedElementRegistry();
     const {stateNavigator} = useContext(NavigationContext);
     const [motionState, setMotionState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: false});
@@ -44,12 +44,22 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         return () => stateNavigator.offBeforeNavigate(validate);
     }, [children, stateNavigator, scenes, allScenes, stackInvalidatedLink]);
     const getSharedElements = () => {
-        const {crumbs, oldUrl} = stateNavigator.stateContext;
-        if (oldUrl !== null) {
-            const oldScene = oldUrl.split('crumb=').length - 1;
-            return sharedElementRegistry.getSharedElements(crumbs.length, oldScene);
+        const {state, data,crumbs, oldState, oldData, oldUrl} = stateNavigator.stateContext;
+        if (oldUrl) {
+            const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
+            const sharedElementNames: string[] = oldCrumbs.length < crumbs.length
+                ? sharedElements(state, data, crumbs) : crumbs.length < oldCrumbs.length
+                ? sharedElements(oldState, oldData, oldCrumbs) : null;
+            if (sharedElementNames?.length) {
+                const sharedEls = 
+                    sharedElementRegistry.getSharedElements(crumbs.length, oldCrumbs.length)
+                        .filter(({name}) => sharedElementNames.indexOf(name) >= 0);
+                const pause = sharedElementNames.length !== sharedEls.length ? crumbs.length : null;
+                return {pause, sharedEls};
+            }
+            return {pause: null, sharedEls: []};
         }
-        return [];
+        return {pause: null, sharedEls: []};
     }
     const clearScene = ({key, index}) => {
         setMotionState(({rest: prevRest, stateNavigator, keys}) => {
@@ -77,6 +87,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     const returnOrCall = (item, ...args) => typeof item !== 'function' ? item : item(...args);
     const unmountStyle = (state, ...rest) => sceneProps(state)?.unmountStyle ? returnOrCall(sceneProps(state)?.unmountStyle, ...rest) : returnOrCall(unmountStyleStack, state, ...rest);
     const crumbStyle = (state, ...rest) => sceneProps(state)?.crumbStyle ? returnOrCall(sceneProps(state)?.crumbStyle, ...rest) : returnOrCall(crumbStyleStack, state, ...rest);
+    const sharedElements = (state, ...rest) => sceneProps(state)?.sharedElements ? returnOrCall(sceneProps(state)?.sharedElements, ...rest) : returnOrCall(sharedElementsStack, state, ...rest);
     const className = (state, ...rest) => sceneProps(state)?.className ? returnOrCall(sceneProps(state)?.className, ...rest) : returnOrCall(sceneClassName, state, ...rest);
     const style = (state, ...rest) => sceneProps(state)?.style ? returnOrCall(sceneProps(state)?.style, ...rest) : returnOrCall(sceneStyle, state, ...rest);
     const {stateNavigator: prevStateNavigator} = motionState;
@@ -98,17 +109,18 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     }
     const {stateContext: {oldState}, stateContext} = stateNavigator;
     renderScene = firstLink ? ({key}) => allScenes[key] : renderScene;
+    const {pause, sharedEls} = getSharedElements();
     return (stateContext.state &&
         <SharedElementContext.Provider value={sharedElementRegistry as any}>
-            <NavigationAnimation data={getScenes()} onRest={clearScene} oldState={oldState} duration={duration} pause={stateContext.crumbs.length && !getSharedElements().length}>
+            <NavigationAnimation data={getScenes()} onRest={clearScene} oldState={oldState} duration={duration} pause={pause !== null}>
                 {scenes => (
                     scenes.map(({key, index: crumb, className, style}) => (
                         <Freeze key={key} enabled={motionState.rest && crumb < getScenes().length - 1}>
                             <Scene crumb={crumb} rest className={className} style={style} renderScene={renderScene} />
                         </Freeze>
                     )).concat(
-                        !motionState.rest &&
-                            <SharedElementAnimation key="sharedElements-" sharedElements={getSharedElements()} />
+                        !motionState.rest && !!sharedEls.length &&
+                            <SharedElementAnimation key="sharedElements-" sharedElements={sharedEls} />
                     )
                 )}
             </NavigationAnimation>
