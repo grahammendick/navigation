@@ -14,9 +14,9 @@ class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEve
         renderScene: (state: State, data: any) => state.renderScene(data)
     }
     static getDerivedStateFromProps(props: SceneProps & {navigationEvent: NavigationEvent}, {navigationEvent: prevNavigationEvent}: SceneState) {
-        var {crumb, navigationEvent} = props;
-        var {state, oldState, oldUrl, crumbs} = navigationEvent.stateNavigator.stateContext;
-        if (!state || crumbs.length !== crumb)
+        var {url, crumb, navigationEvent} = props;
+        var {url: currentUrl, state, oldState, oldUrl} = navigationEvent.stateNavigator.stateContext;
+        if (!state || url !== currentUrl)
             return null;
         if (!oldUrl || !prevNavigationEvent)
             return {navigationEvent};

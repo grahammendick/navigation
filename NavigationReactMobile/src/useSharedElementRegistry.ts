@@ -3,7 +3,7 @@ import { SharedItem } from './Props';
 
 const useSharedElementRegistry = () => {
     const [sharedElements, setSharedElements] = useState({});
-    const registerSharedElement = useCallback((scene: number, name: string, ref: HTMLElement, data) => {
+    const registerSharedElement = useCallback((scene: string, name: string, ref: HTMLElement, data) => {
         setSharedElements(prevSharedElements => {
             const nextSharedElements = {...prevSharedElements};
             nextSharedElements[scene] = nextSharedElements[scene] || {};
@@ -11,7 +11,7 @@ const useSharedElementRegistry = () => {
             return nextSharedElements;
         })
     }, []);
-    const unregisterSharedElement = useCallback((scene: number, name?: string) => {
+    const unregisterSharedElement = useCallback((scene: string, name?: string) => {
         setSharedElements(prevSharedElements => {
             if (!prevSharedElements[scene]) return prevSharedElements;
             const nextSharedElements = {...prevSharedElements};
@@ -20,7 +20,7 @@ const useSharedElementRegistry = () => {
             return nextSharedElements;
         })
     }, []);
-    const getSharedElements = useCallback((scene: number, oldScene: number) => {
+    const getSharedElements = useCallback((scene: string, oldScene: string) => {
         if (scene === oldScene)
             return [];
         var oldSharedElements = sharedElements[oldScene];

@@ -44,7 +44,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         return () => stateNavigator.offBeforeNavigate(validate);
     }, [children, stateNavigator, scenes, allScenes, stackInvalidatedLink]);
     const getSharedElements = () => {
-        const {state, data,crumbs, oldState, oldData, oldUrl} = stateNavigator.stateContext;
+        const {url, state, data, crumbs, oldUrl, oldState, oldData} = stateNavigator.stateContext;
         if (oldUrl) {
             const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
             const sharedElementNames: string[] = oldCrumbs.length < crumbs.length
@@ -52,7 +52,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
                 ? sharedElements(oldState, oldData, oldCrumbs) : null;
             if (sharedElementNames?.length) {
                 const sharedEls = 
-                    sharedElementRegistry.getSharedElements(crumbs.length, oldCrumbs.length)
+                    sharedElementRegistry.getSharedElements(url, oldUrl)
                         .filter(({name}) => sharedElementNames.indexOf(name) >= 0);
                 const pause = sharedElementNames.length !== sharedEls.length ? crumbs.length : null;
                 return {pause, sharedEls};
@@ -61,11 +61,11 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         }
         return {pause: null, sharedEls: []};
     }
-    const clearScene = ({key, index}) => {
+    const clearScene = ({key, url}) => {
         setMotionState(({rest: prevRest, stateNavigator, keys, ignorePause}) => {
             const scene = getScenes().filter(scene => scene.key === key)[0];
             if (!scene)
-                sharedElementRegistry.unregisterSharedElement(index);
+                sharedElementRegistry.unregisterSharedElement(url);
             var rest = prevRest || (scene && scene.mount);
             return {rest, stateNavigator, keys, ignorePause};
         });
@@ -77,7 +77,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             const preCrumbs = crumbsAndNext.slice(0, index);
             const {state: nextState, data: nextData} = crumbsAndNext[index + 1] || {state: undefined, data: undefined};
             const mount = url === nextCrumb.url;
-            return {key: keys[index], index, mount, style: style(state, data, preCrumbs),
+            return {key: keys[index], index, url, mount, style: style(state, data, preCrumbs),
                 className: className(state, data, preCrumbs),
                 unmountStyle: unmountStyle(state, data, preCrumbs),
                 crumbStyle: crumbStyle(state, data, preCrumbs, nextState, nextData)};
@@ -95,7 +95,6 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         setMotionState((prevStackState) => {
             const {keys: prevKeys, stateNavigator: prevStateNavigator} = prevStackState;
             const {state, crumbs, nextCrumb} = stateNavigator.stateContext;
-            sharedElementRegistry.unregisterSharedElement(crumbs.length);
             const prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
             const currentKeys = crumbs.concat(nextCrumb).reduce((arr, {state: {key}}) => {
                 const prevKey = arr[arr.length - 1];
@@ -122,9 +121,9 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         <SharedElementContext.Provider value={sharedElementRegistry as any}>
             <NavigationAnimation data={getScenes()} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null}>
                 {scenes => (
-                    scenes.map(({key, index: crumb, className, style}) => (
+                    scenes.map(({key, index: crumb, url, className, style}) => (
                         <Freeze key={key} enabled={rest && crumb < getScenes().length - 1}>
-                            <Scene crumb={crumb} rest className={className} style={style} renderScene={renderScene} />
+                            <Scene crumb={crumb} url={url} rest className={className} style={style} renderScene={renderScene} />
                         </Freeze>
                     )).concat(
                         !rest && !!sharedEls.length &&

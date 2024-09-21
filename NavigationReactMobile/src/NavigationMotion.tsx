@@ -46,17 +46,16 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
         return () => stateNavigator.offBeforeNavigate(validate);
     }, [children, stateNavigator, scenes, allScenes, stackInvalidatedLink]);
     const getSharedElements = () => {
-        const {crumbs, oldUrl} = stateNavigator.stateContext;
+        const {url, oldUrl} = stateNavigator.stateContext;
         if (oldUrl !== null) {
-            const oldScene = oldUrl.split('crumb=').length - 1;
-            return sharedElementRegistry.current.getSharedElements(crumbs.length, oldScene);
+            return sharedElementRegistry.current.getSharedElements(url, oldUrl);
         }
         return [];
     }
-    const clearScene = (index) => {
-        const scene = getScenes().filter(scene => scene.key === index)[0];
+    const clearScene = (url) => {
+        const scene = getScenes().filter(scene => scene.url === url)[0];
         if (!scene)
-            sharedElementRegistry.current.unregisterSharedElement(index);
+            sharedElementRegistry.current.unregisterSharedElement(url);
     }
     const getScenes: () => SceneContext[] = () => {
         const {keys} = motionState;
@@ -116,7 +115,7 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
                 enter={scene => getStyle(!oldState, scene)}
                 update={scene => getStyle(true, scene)}
                 leave={scene => getStyle(false, scene)}
-                onRest={({key}) => clearScene(key)}
+                onRest={({url}) => clearScene(url)}
                 duration={duration}>
                 {styles => {
                     const {rest, mountRest, mountDuration, mountProgress} = getMotion(styles);

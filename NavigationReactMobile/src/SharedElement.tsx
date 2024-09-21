@@ -14,22 +14,24 @@ class SharedElement extends React.Component<SharedElementProps, any> {
     }
     componentDidUpdate(prevProps) {
         var {stateNavigator, sharedElementRegistry} = this.props;
-        var scene = stateNavigator.stateContext.crumbs.length;
+        var scene = stateNavigator.stateContext.url;
         if (prevProps.unshare !== this.props.unshare
             || prevProps.name !== this.props.name
-            || prevProps.data !== this.props.data) {
-            sharedElementRegistry.unregisterSharedElement(scene, prevProps.name);
+            || prevProps.data !== this.props.data
+            || prevProps.stateNavigator !== this.props.stateNavigator) {
+            var prevScene = prevProps.stateNavigator.stateContext.url;
+            sharedElementRegistry.unregisterSharedElement(prevScene, prevProps.name);
             this.register();
         }
     }
     componentWillUnmount() {
         var {stateNavigator, sharedElementRegistry} = this.props;
-        var scene = stateNavigator.stateContext.crumbs.length;
+        var scene = stateNavigator.stateContext.url;
         sharedElementRegistry.unregisterSharedElement(scene, this.props.name);
     }
     register() {
         var {unshare, name, data, stateNavigator, sharedElementRegistry} = this.props;
-        var scene = stateNavigator.stateContext.crumbs.length;
+        var scene = stateNavigator.stateContext.url;
         if (!unshare)
             sharedElementRegistry.registerSharedElement(scene, name, this.ref.current, data);
         else

@@ -63,6 +63,7 @@ interface NavigationMotionProps {
 
 interface SceneProps {
     crumb: number;
+    url: string;
     id: string;
     rest: boolean;
     className: string;
