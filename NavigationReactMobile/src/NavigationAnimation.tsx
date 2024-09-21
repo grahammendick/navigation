@@ -119,7 +119,11 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
             };
         });
     };
-    return <div ref={container}>{children(scenes.all)}</div>;
+    return (
+        <div ref={container} style={{display: 'flex', flexDirection: 'column', flex: 1}}>
+            {children(scenes.all)}
+        </div>
+    );
 }
 
 export default NavigationAnimation;
