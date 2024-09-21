@@ -50,6 +50,11 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                         scene.navState = undefined;
                     }
                 });
+                scene.pushPlayState = undefined;
+                if (pause && scene.pushEnter?.playState === 'running') {
+                    scene.pushPlayState = 'running';
+                    scene.pushEnter.pause();
+                }
             });
             afterPushEnter.then(() => {
                 if (cancel || !crumbStyle) return;
@@ -77,17 +82,12 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                         scene.navState = undefined;
                     }
                 });
+                scene.popPlayState = undefined;
+                if (pause && scene.popEnter?.playState === 'running') {
+                    scene.popPlayState = 'running';
+                    scene.popEnter.pause();
+                }
             });
-            scene.pushPlayState = undefined;
-            scene.popPlayState = undefined;
-            if (pause && scene.pushEnter?.playState === 'running') {
-                scene.pushPlayState = 'running';
-                scene.pushEnter.pause();
-            }
-            if (pause && scene.popEnter?.playState === 'running') {
-                scene.popPlayState = 'running';
-                scene.popEnter.pause();
-            }
     });
         return () => {cancel = true;}
     }, [scenes]);
