@@ -11,10 +11,12 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
             const to = mountedElement.ref.getBoundingClientRect();
             const toScene = mountedElement.ref.closest('[data-scene="true"').getBoundingClientRect();
             if (action === 'play') {
+                const toWidth = mountedElement.ref.offsetWidth;
+                const toHeight = mountedElement.ref.offsetHeight;
                 const fromLeft = from.left - fromScene.left;
                 const fromTop = from.top - fromScene.top;
-                const toLeft = to.left - toScene.left;
-                const toTop = to.top - toScene.top;
+                const toLeft = (to.left - toScene.left) * (toWidth / to.width);
+                const toTop = (to.top - toScene.top) * (toHeight / to.height);
                 elementContainer.appendChild(element);
                 element.style.position = 'fixed';
                 element.style.width = `${from.width}px`;
@@ -25,7 +27,7 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
                 element.transition = element.animate([
                     {transform: 'translate(0, 0) scale(1)'},
                     {transform: `translate(${toLeft - fromLeft}px, ${toTop - fromTop}px)
-                        scale(${to.width / from.width}, ${to.height / from.height})`}
+                        scale(${toWidth / from.width}, ${toHeight / from.height})`}
                 ], {duration: 1000, fill: 'forwards'});
             } else {
                 element.transition.reverse();
