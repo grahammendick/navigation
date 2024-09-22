@@ -73,6 +73,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     const getScenes = () => {
         const {keys} = motionState;
         const {crumbs, nextCrumb} = stateNavigator.stateContext;
+        if (!nextCrumb) return null;
         return crumbs.concat(nextCrumb).map(({state, data, url}, index, crumbsAndNext) => {
             const preCrumbs = crumbsAndNext.slice(0, index);
             const {state: nextState, data: nextData} = crumbsAndNext[index + 1] || {state: undefined, data: undefined};
@@ -117,7 +118,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         }, 300);
         return () => clearTimeout(timer);
     }, [pause]);
-    const sceneData = stateContext.state ? getScenes() : [];
+    const sceneData = getScenes();
     return (stateContext.state &&
         <SharedElementContext.Provider value={sharedElementRegistry as any}>
             <NavigationAnimation data={sceneData} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null}>
