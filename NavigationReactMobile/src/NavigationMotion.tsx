@@ -120,9 +120,9 @@ const NavigationMotion = ({unmountedStyle: unmountedStyleStack, mountedStyle: mo
                 {styles => {
                     const {rest, mountRest, mountDuration, mountProgress} = getMotion(styles);
                     return (
-                        styles.map(({data: {key, state, data}, style: {duration, ...style}}) => {
+                        styles.map(({data: {key, url, state, data}, style: {duration, ...style}}) => {
                             const crumb = +key.replace(/\++$/, '');
-                            const scene = <Scene crumb={crumb} rest={rest} renderScene={renderScene} />;
+                            const scene = <Scene crumb={crumb} url={url} rest={rest} renderScene={renderScene} />;
                             return (
                                 <Freeze key={key} enabled={rest && crumb < getScenes().length - 1}>
                                     {renderMotion(style, scene, key, crumbs.length === crumb, state, data)}
