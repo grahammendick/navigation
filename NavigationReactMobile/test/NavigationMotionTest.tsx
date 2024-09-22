@@ -2,7 +2,6 @@ import assert from 'assert';
 import 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationHandler } from 'navigation-react';
-// @ts-ignore
 import { NavigationMotion, NavigationStack, Scene } from 'navigation-react-mobile';
 import React, {useState} from 'react';
 import { createRoot } from 'react-dom/client';
@@ -4410,7 +4409,6 @@ describe('NavigationMotion', function () {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationStack>
-                            {/*@ts-ignore*/}
                             <Scene stateKey="sceneA" className="scene"><SceneA /></Scene>
                         </NavigationStack>
                     </NavigationHandler>
@@ -4493,7 +4491,6 @@ describe('NavigationMotion', function () {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationStack>
-                            {/*@ts-ignore*/}
                             <Scene stateKey="sceneA" className={(data) => (
                                 data.x === 1 ? 'scene' : null
                             )}><SceneA /></Scene>
@@ -4587,7 +4584,6 @@ describe('NavigationMotion', function () {
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationStack>
                             <Scene stateKey="sceneA"><SceneA /></Scene>
-                            {/*@ts-ignore*/}
                             <Scene stateKey="sceneB" className={(_data, crumbs) => (
                                 crumbs?.[0]?.state.key === 'sceneA' ? 'scene' : null
                             )}><SceneB /></Scene>
@@ -4623,7 +4619,6 @@ describe('NavigationMotion', function () {
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationStack className="scene">
                             <Scene stateKey="sceneA"><SceneA /></Scene>
-                            {/*@ts-ignore*/}
                             <Scene stateKey="sceneB" className="otherScene"><SceneB /></Scene>
                         </NavigationStack>
                     </NavigationHandler>
@@ -4710,7 +4705,6 @@ describe('NavigationMotion', function () {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationStack>
-                            {/*@ts-ignore*/}
                             <Scene stateKey="sceneA" className="scene" style={{backgroundColor: 'red'}}><SceneA /></Scene>
                         </NavigationStack>
                     </NavigationHandler>
@@ -4795,7 +4789,6 @@ describe('NavigationMotion', function () {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationStack>
-                            {/*@ts-ignore*/}
                             <Scene stateKey="sceneA" className="scene" style={(data) => (
                                 data.x === 1 ? {backgroundColor: 'red'} : null
                             )}><SceneA /></Scene>
@@ -4891,7 +4884,6 @@ describe('NavigationMotion', function () {
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationStack className="scene">
                             <Scene stateKey="sceneA"><SceneA /></Scene>
-                            {/*@ts-ignore*/}
                             <Scene stateKey="sceneB" style={(_data, crumbs) => (
                                 crumbs?.[0]?.state.key === 'sceneA' ? {backgroundColor: 'red'} : null
                             )}><SceneB /></Scene>
@@ -4928,7 +4920,6 @@ describe('NavigationMotion', function () {
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationStack className="scene" style={{backgroundColor: 'red'}}>
                             <Scene stateKey="sceneA"><SceneA /></Scene>
-                            {/*@ts-ignore*/}
                             <Scene stateKey="sceneB" style={{backgroundColor: 'blue'}}><SceneB /></Scene>
                         </NavigationStack>
                     </NavigationHandler>
