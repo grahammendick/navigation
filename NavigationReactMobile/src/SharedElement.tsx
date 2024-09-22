@@ -34,7 +34,10 @@ class SharedElement extends React.Component<SharedElementProps, any> {
         this.resizeObserver?.unobserve(this.ref.current);
     }
     onResize() {
-        this.register();
+        if (this.ref.current.offsetWidth && this.ref.current.offsetHeight) {
+            this.register();
+            this.resizeObserver.observe(this.ref.current);
+        }
     }
     register() {
         var {unshare, name, data, stateNavigator, sharedElementRegistry} = this.props;
