@@ -117,16 +117,18 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         }, 300);
         return () => clearTimeout(timer);
     }, [pause]);
+    const sceneData = stateContext.state ? getScenes() : [];
     return (stateContext.state &&
         <SharedElementContext.Provider value={sharedElementRegistry as any}>
-            <NavigationAnimation data={getScenes()} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null}>
+            <NavigationAnimation data={sceneData} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null}>
                 {scenes => (
                     scenes.map(({key, index: crumb, url, className, style}) => (
-                        <Freeze key={key} enabled={rest && crumb < getScenes().length - 1}>
+                        <Freeze key={key} enabled={rest && crumb < sceneData.length - 1}>
                             <Scene crumb={crumb} url={url} rest={rest} className={className} style={style} renderScene={renderScene} />
                         </Freeze>
                     )).concat(
-                        <SharedElementAnimation key="sharedElements-" sharedElements={!rest ? sharedEls : []} />
+                        <SharedElementAnimation key="sharedElements-" sharedElements={!rest ? sharedEls : []}
+                            unmountStyle={sceneData[sceneData.length - 1].unmountStyle} duration={duration} />
                     )
                 )}
             </NavigationAnimation>

@@ -1,8 +1,9 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
+const SharedElementAnimation = ({sharedElements: nextSharedElements, unmountStyle, duration: defaultDuration}: any) => {
     const [sharedElements, setSharedElements] = useState([]);
     const container = useRef(null);
+    const {duration = defaultDuration, keyframes = unmountStyle} = unmountStyle || {};
     useLayoutEffect(() => {
         sharedElements.forEach(({oldElement, mountedElement, element, action}, i) => {
             const elementContainer = container.current.children[i];
@@ -31,7 +32,7 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
                     {transform: 'translate(0, 0) scale(1)'},
                     {transform: `translate(${toLeft - fromLeft}px, ${toTop - fromTop}px)
                         scale(${toWidth / from.width}, ${toHeight / from.height})`}
-                ], {duration: 1000, fill: 'forwards'});
+                ], {duration, fill: 'forwards'});
             } else {
                 element.transition.reverse();
             }
@@ -40,7 +41,7 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
     useEffect(() => {
         const changed = sharedElements.reduce((changed, {oldElement}, i) => (
             changed || oldElement.ref !== nextSharedElements[i].oldElement.ref
-        ), nextSharedElements.length !== sharedElements.length)
+        ), nextSharedElements.length !== sharedElements.length);
         if (changed) {
             if (nextSharedElements[0]?.oldElement.ref !== sharedElements[0]?.mountedElement.ref) {
                 sharedElements.forEach(({oldElement, mountedElement}) => {
@@ -48,14 +49,15 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements}: any) => {
                     mountedElement.ref.style.visibility = 'visible';
                 })
             }
-            setSharedElements(sharedElements => (
-                nextSharedElements.map((nextSharedElement, i) => {
+            setSharedElements(sharedElements => {
+                if (!duration || !keyframes) return [];
+                return nextSharedElements.map((nextSharedElement, i) => {
                     if (nextSharedElement.oldElement.ref === sharedElements[i]?.mountedElement.ref)
                         return {...nextSharedElement, element: sharedElements[i].element, action: 'reverse'};
                     const element = nextSharedElement.oldElement.ref.cloneNode(true);
                     return {...nextSharedElement, element, action: 'play'};
                 })
-            ));
+            });
         }
     }, [sharedElements, nextSharedElements])
     if (!sharedElements.length) return null;
