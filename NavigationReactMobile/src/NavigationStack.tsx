@@ -123,7 +123,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
                 {scenes => (
                     scenes.map(({key, index: crumb, url, className, style}) => (
                         <Freeze key={key} enabled={rest && crumb < getScenes().length - 1}>
-                            <Scene crumb={crumb} url={url} rest className={className} style={style} renderScene={renderScene} />
+                            <Scene crumb={crumb} url={url} rest={rest} className={className} style={style} renderScene={renderScene} />
                         </Freeze>
                     )).concat(
                         !rest && !!sharedEls.length &&
