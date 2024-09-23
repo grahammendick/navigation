@@ -21,9 +21,9 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
             var to = toSharedElements[name];
             if (!to || from.mountedElement !== to.mountedElement) {
                 if (action)
-                    action(name, from.oldElement, from.oldElement['sharedElement'].data);
+                    action(name, from.oldElement, from.oldElement['sharedElement']);
                 if (action)
-                    action(name, from.mountedElement, from.mountedElement['sharedElement'].data);
+                    action(name, from.mountedElement, from.mountedElement['sharedElement']);
             }
         }
     }
@@ -32,7 +32,7 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
     }
     getStyle(name, ref) {
         var {top, left, width, height} = ref.getBoundingClientRect();
-        return this.props.elementStyle(name, ref, {top, left, width, height, ...ref['sharedElement'].data});
+        return this.props.elementStyle(name, ref, {top, left, width, height, ...ref['sharedElement']});
     }
     getPropValue(prop, name) {
         return typeof prop === 'function' ? prop(name) : prop;
@@ -49,7 +49,7 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
                 duration={duration}>
                 {styles => (
                     styles.map(({data: {name, oldElement, mountedElement}, style, start, end}) => (
-                        children(style, name, {...start, ...oldElement['sharedElement'].data}, {...end, ...mountedElement['sharedElement'].data})
+                        children(style, name, {...start, ...oldElement['sharedElement']}, {...end, ...mountedElement['sharedElement']})
                     ))
                 )}
             </Motion>
