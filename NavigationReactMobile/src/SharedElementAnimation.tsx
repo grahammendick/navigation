@@ -55,6 +55,8 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements, unmountStyl
                     if (nextSharedElement.oldElement === sharedElements[i]?.mountedElement)
                         return {...nextSharedElement, element: sharedElements[i].element, action: 'reverse'};
                     const element = nextSharedElement.oldElement.cloneNode(true);
+                    [...element.querySelectorAll('[data-shared-element="true"')]
+                        .forEach(subSharedElement => {subSharedElement.style.visibility = 'hidden';});
                     return {...nextSharedElement, element, action: 'play'};
                 })
             });
