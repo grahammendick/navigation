@@ -73,6 +73,7 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                 if (pushExit && prevNavState !== 'pushExit') {
                     scene.navState = 'pushExit';
                     scene.popEnter.reverse();
+                    if (!oldState) scene.popEnter.finish();
                 }
                 scene.popEnter?.finished.then(() => {
                     if (cancel || !scene.navState) return;
