@@ -21,13 +21,10 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements, unmountStyl
                 elementContainer.appendChild(element);
                 oldElement.style.visibility = 'hidden';
                 mountedElement.style.visibility = 'hidden';
-                element.style.position = 'fixed';
-                element.style.visibility = 'visible';
                 element.style.width = `${from.width}px`;
                 element.style.height = `${from.height}px`;
                 element.style.top = `${fromTop}px`;
                 element.style.left = `${fromLeft}px`;
-                element.style.transformOrigin = 'top left';
                 element.transition = element.animate([
                     {transform: 'translate(0, 0) scale(1)', ...oldElement.sharedElementData},
                     {transform: `translate(${toLeft - fromLeft}px, ${toTop - fromTop}px)
@@ -55,6 +52,10 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements, unmountStyl
                     if (nextSharedElement.oldElement === sharedElements[i]?.mountedElement)
                         return {...nextSharedElement, element: sharedElements[i].element, action: 'reverse'};
                     const element = nextSharedElement.oldElement.cloneNode(true);
+                    element.style.margin = '0';
+                    element.style.position = 'fixed';
+                    element.style.visibility = 'visible';
+                    element.style.transformOrigin = 'top left';
                     [...element.querySelectorAll('[data-shared-element="true"')]
                         .forEach(subSharedElement => {subSharedElement.style.visibility = 'hidden';});
                     return {...nextSharedElement, element, action: 'play'};
