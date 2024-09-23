@@ -7,20 +7,20 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements, unmountStyl
     useLayoutEffect(() => {
         sharedElements.forEach(({oldElement, mountedElement, element, action}, i) => {
             const elementContainer = container.current.children[i];
-            const from = oldElement.ref.getBoundingClientRect();
-            const fromScene = oldElement.ref.closest('[data-scene="true"').getBoundingClientRect();
-            const to = mountedElement.ref.getBoundingClientRect();
-            const toScene = mountedElement.ref.closest('[data-scene="true"').getBoundingClientRect();
+            const from = oldElement.getBoundingClientRect();
+            const fromScene = oldElement.closest('[data-scene="true"').getBoundingClientRect();
+            const to = mountedElement.getBoundingClientRect();
+            const toScene = mountedElement.closest('[data-scene="true"').getBoundingClientRect();
             if (action === 'play') {
-                const toWidth = mountedElement.ref.offsetWidth;
-                const toHeight = mountedElement.ref.offsetHeight;
+                const toWidth = mountedElement.offsetWidth;
+                const toHeight = mountedElement.offsetHeight;
                 const fromLeft = from.left - fromScene.left;
                 const fromTop = from.top - fromScene.top;
                 const toLeft = (to.left - toScene.left) * (toWidth / to.width);
                 const toTop = (to.top - toScene.top) * (toHeight / to.height);
                 elementContainer.appendChild(element);
-                oldElement.ref.style.visibility = 'hidden';
-                mountedElement.ref.style.visibility = 'hidden';
+                oldElement.style.visibility = 'hidden';
+                mountedElement.style.visibility = 'hidden';
                 element.style.position = 'fixed';
                 element.style.visibility = 'visible';
                 element.style.width = `${from.width}px`;
@@ -40,21 +40,21 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements, unmountStyl
     }, [sharedElements]);
     useEffect(() => {
         const changed = sharedElements.reduce((changed, {oldElement}, i) => (
-            changed || oldElement.ref !== nextSharedElements[i].oldElement.ref
+            changed || oldElement !== nextSharedElements[i].oldElement
         ), nextSharedElements.length !== sharedElements.length);
         if (changed) {
-            if (nextSharedElements[0]?.oldElement.ref !== sharedElements[0]?.mountedElement.ref) {
+            if (nextSharedElements[0]?.oldElement !== sharedElements[0]?.mountedElement) {
                 sharedElements.forEach(({oldElement, mountedElement}) => {
-                    oldElement.ref.style.visibility = 'visible';
-                    mountedElement.ref.style.visibility = 'visible';
+                    oldElement.style.visibility = 'visible';
+                    mountedElement.style.visibility = 'visible';
                 })
             }
             setSharedElements(sharedElements => {
                 if (!duration || !keyframes) return [];
                 return nextSharedElements.map((nextSharedElement, i) => {
-                    if (nextSharedElement.oldElement.ref === sharedElements[i]?.mountedElement.ref)
+                    if (nextSharedElement.oldElement === sharedElements[i]?.mountedElement)
                         return {...nextSharedElement, element: sharedElements[i].element, action: 'reverse'};
-                    const element = nextSharedElement.oldElement.ref.cloneNode(true);
+                    const element = nextSharedElement.oldElement.cloneNode(true);
                     return {...nextSharedElement, element, action: 'play'};
                 })
             });

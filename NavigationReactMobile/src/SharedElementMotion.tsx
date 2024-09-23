@@ -19,20 +19,20 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
         for(var name in fromSharedElements) {
             var from = fromSharedElements[name];
             var to = toSharedElements[name];
-            if (!to || from.mountedElement.ref !== to.mountedElement.ref) {
+            if (!to || from.mountedElement !== to.mountedElement) {
                 if (action)
-                    action(name, from.oldElement.ref, from.oldElement.data);
+                    action(name, from.oldElement, from.oldElement['sharedElement'].data);
                 if (action)
-                    action(name, from.mountedElement.ref, from.mountedElement.data);
+                    action(name, from.mountedElement, from.mountedElement['sharedElement'].data);
             }
         }
     }
     getSharedElements(sharedElements: SharedItem[]): { [name: string]: SharedItem } {
         return sharedElements.reduce((elements, element) => ({...elements, [element.name]: element}), {});
     }
-    getStyle(name, {ref, data}) {
+    getStyle(name, ref) {
         var {top, left, width, height} = ref.getBoundingClientRect();
-        return this.props.elementStyle(name, ref, {top, left, width, height, ...data});
+        return this.props.elementStyle(name, ref, {top, left, width, height, ...ref['sharedElement'].data});
     }
     getPropValue(prop, name) {
         return typeof prop === 'function' ? prop(name) : prop;
@@ -49,7 +49,7 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
                 duration={duration}>
                 {styles => (
                     styles.map(({data: {name, oldElement, mountedElement}, style, start, end}) => (
-                        children(style, name, {...start, ...oldElement.data}, {...end, ...mountedElement.data})
+                        children(style, name, {...start, ...oldElement['sharedElement'].data}, {...end, ...mountedElement['sharedElement'].data})
                     ))
                 )}
             </Motion>

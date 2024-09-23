@@ -1,10 +1,10 @@
 import { SharedItem } from './Props';
 
 class SharedElementRegistry {
-    private sharedElements: { [scene: number]: { [name: string]: { ref: HTMLElement, data: any } } } = {};
-    registerSharedElement(scene: string, name: string, ref: HTMLElement, data) {
+    private sharedElements: { [scene: string]: { [name: string]: HTMLElement } } = {};
+    registerSharedElement(scene: string, name: string, ref: HTMLElement) {
         this.sharedElements[scene] = this.sharedElements[scene] || {};
-        this.sharedElements[scene][name] = {ref, data};
+        this.sharedElements[scene][name] = ref;
     }
     unregisterSharedElement(scene: string, name?: string) {
         if (this.sharedElements[scene]) {

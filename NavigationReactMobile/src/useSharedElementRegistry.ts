@@ -3,11 +3,11 @@ import { SharedItem } from './Props';
 
 const useSharedElementRegistry = () => {
     const [sharedElements, setSharedElements] = useState({});
-    const registerSharedElement = useCallback((scene: string, name: string, ref: HTMLElement, data) => {
+    const registerSharedElement = useCallback((scene: string, name: string, ref: HTMLElement) => {
         setSharedElements(prevSharedElements => {
             const nextSharedElements = {...prevSharedElements};
             nextSharedElements[scene] = nextSharedElements[scene] || {};
-            nextSharedElements[scene][name] = {ref, data};
+            nextSharedElements[scene][name] = ref;
             return nextSharedElements;
         })
     }, []);
