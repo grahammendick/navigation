@@ -28,13 +28,10 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                 }
                 if (pushEnter && prevNavState !== 'pushEnter') {
                     scene.navState = 'pushEnter';
-                    if (oldState) {
-                        if (prevNavState === 'popExit') scene.pushEnter.reverse();
-                        else if (prevNavState) scene.pushEnter.finish();
-                        else scene.pushEnter.play();
-                    } else {
-                        scene.pushEnter.finish();
-                    }
+                    if (prevNavState === 'popExit') scene.pushEnter.reverse();
+                    else if (prevNavState) scene.pushEnter.finish();
+                    else scene.pushEnter.play();
+                    if (!oldState) scene.pushEnter.finish();
                 }
                 if (popExit && prevNavState !== 'popExit') {
                     scene.navState = 'popExit';
