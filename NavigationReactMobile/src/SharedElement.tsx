@@ -18,9 +18,11 @@ class SharedElement extends React.Component<SharedElementProps, any> {
     }
     componentDidUpdate(prevProps) {
         var {sharedElementRegistry} = this.props;
+        this.ref.current['sharedElement'] = {
+            data: this.props.name
+        };
         if (prevProps.unshare !== this.props.unshare
             || prevProps.name !== this.props.name
-            || prevProps.data !== this.props.data
             || prevProps.stateNavigator !== this.props.stateNavigator) {
             var prevScene = prevProps.stateNavigator.stateContext.url;
             sharedElementRegistry.unregisterSharedElement(prevScene, prevProps.name);
@@ -40,10 +42,10 @@ class SharedElement extends React.Component<SharedElementProps, any> {
         }
     }
     register() {
-        var {unshare, name, data, stateNavigator, sharedElementRegistry} = this.props;
+        var {unshare, name, stateNavigator, sharedElementRegistry} = this.props;
         var scene = stateNavigator.stateContext.url;
         if (!unshare && this.ref.current.offsetWidth && this.ref.current.offsetHeight)
-            sharedElementRegistry.registerSharedElement(scene, name, this.ref.current, data);
+            sharedElementRegistry.registerSharedElement(scene, name, this.ref.current);
         if (unshare)
             sharedElementRegistry.unregisterSharedElement(scene, name);
     }
