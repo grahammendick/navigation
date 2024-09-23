@@ -18,7 +18,7 @@ class SharedElement extends React.Component<SharedElementProps, any> {
     }
     componentDidUpdate(prevProps) {
         var {sharedElementRegistry} = this.props;
-        this.ref.current['sharedElement'] = this.props.data;
+        this.ref.current['sharedElementData'] = this.props.data;
         if (prevProps.unshare !== this.props.unshare
             || prevProps.name !== this.props.name
             || prevProps.stateNavigator !== this.props.stateNavigator) {

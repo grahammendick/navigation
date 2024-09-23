@@ -29,9 +29,9 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements, unmountStyl
                 element.style.left = `${fromLeft}px`;
                 element.style.transformOrigin = 'top left';
                 element.transition = element.animate([
-                    {transform: 'translate(0, 0) scale(1)'},
+                    {transform: 'translate(0, 0) scale(1)', ...oldElement.sharedElementData},
                     {transform: `translate(${toLeft - fromLeft}px, ${toTop - fromTop}px)
-                        scale(${toWidth / from.width}, ${toHeight / from.height})`}
+                        scale(${toWidth / from.width}, ${toHeight / from.height})`, ...mountedElement.sharedElementData}
                 ], {duration, fill: 'forwards'});
             } else {
                 element.transition.reverse();
