@@ -64,11 +64,7 @@ const SharedElementAnimation = ({sharedElements: nextSharedElements, unmountStyl
         }
     }, [sharedElements, nextSharedElements])
     if (!sharedElements.length) return null;
-    return (
-        <div ref={container} style={{display: 'flex', flexDirection: 'column', flex: 1}}>
-            {sharedElements.map(({name}) => <div key={name} />)}
-        </div>
-    );
+    return <div ref={container}>{sharedElements.map(({name}) => <div key={name} />)}</div>;
 };
 
 export default SharedElementAnimation;

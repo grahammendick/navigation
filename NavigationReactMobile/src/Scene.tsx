@@ -31,10 +31,14 @@ class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEve
         var {state, data} = stateContext || crumbs[crumb] || {};
         return (
             <NavigationContext.Provider value={navigationEvent}>
-                <div data-scene="true" className={className}
-                    style={{...style, display: navigationEvent ? 'flex' : 'none', height: '100%', flexDirection: 'column'}}>
-                    {navigationEvent && this.props.renderScene(state, data)}
-                </div>
+                {(style || className) ? (
+                    <div data-scene="true" className={className}
+                        style={{...style, display: navigationEvent ? style?.display || undefined : 'none'}}>
+                        {navigationEvent && this.props.renderScene(state, data)}
+                    </div>
+                ) : (
+                    navigationEvent && this.props.renderScene(state, data)
+                )}
             </NavigationContext.Provider>
         );
     }
