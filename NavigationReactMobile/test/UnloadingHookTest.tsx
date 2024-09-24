@@ -2,7 +2,6 @@ import assert from 'assert';
 import 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-//@ts-ignore
 import { NavigationMotion, NavigationStack, useUnloading } from 'navigation-react-mobile';
 import React, { useState, useContext } from 'react';
 import { createRoot } from 'react-dom/client';
