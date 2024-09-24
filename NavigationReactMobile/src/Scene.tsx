@@ -25,13 +25,13 @@ class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEve
     }
     render() {
         var {navigationEvent} = this.state;
-        var {crumb, navigationEvent: {stateNavigator}, className, style} = this.props;
+        var {crumb, navigationEvent: {stateNavigator}, className, style, wrap} = this.props;
         var {crumbs} = stateNavigator.stateContext;
         var stateContext = navigationEvent?.stateNavigator?.stateContext;
         var {state, data} = stateContext || crumbs[crumb] || {};
         return (
             <NavigationContext.Provider value={navigationEvent}>
-                {(style || className) ? (
+                {wrap ? (
                     <div data-scene="true" className={className}
                         style={{...style, display: navigationEvent ? style?.display || undefined : 'none'}}>
                         {navigationEvent && this.props.renderScene(state, data)}

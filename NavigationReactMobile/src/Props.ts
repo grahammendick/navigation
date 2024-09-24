@@ -68,6 +68,7 @@ interface SceneProps {
     rest: boolean;
     className: string;
     style: any;
+    wrap?: boolean;
     renderScene?: (state: State, data: any) => ReactNode;
 }
 
