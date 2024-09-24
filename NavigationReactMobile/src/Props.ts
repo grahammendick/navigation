@@ -26,8 +26,8 @@ interface SharedElementProps {
 
 interface SharedItem {
     name: string;
-    oldElement: HTMLElement;
-    mountedElement: HTMLElement;
+    oldElement: {ref: HTMLElement; data: any};
+    mountedElement: {ref: HTMLElement; data: any};
 }
 
 interface SharedElementNavigationMotionProps {

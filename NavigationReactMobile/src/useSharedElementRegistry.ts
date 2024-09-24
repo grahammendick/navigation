@@ -30,8 +30,8 @@ const useSharedElementRegistry = () => {
             if (oldSharedElements && oldSharedElements[name]) {
                 sharedEls.push({
                     name,
-                    oldElement: oldSharedElements[name],
-                    mountedElement: mountedSharedElements[name]
+                    oldElement: {ref: oldSharedElements[name], data: oldSharedElements[name]['sharedElementData']},
+                    mountedElement: {ref: mountedSharedElements[name], data: mountedSharedElements[name]['sharedElementData']}
                 });
             }
         }

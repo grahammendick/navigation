@@ -5,7 +5,7 @@ import { SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProp
 class SharedElementMotion extends React.Component<SharedElementNavigationMotionProps & SharedElementMotionProps, any> {
     static defaultProps = {
         duration: 300,
-        elementStyle: (_name, _ref, data) => data
+        elementStyle: (name, ref, data) => data
     }
     componentDidUpdate(prevProps) {
         var prevSharedElements = this.getSharedElements(prevProps.sharedElements);
@@ -19,20 +19,20 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
         for(var name in fromSharedElements) {
             var from = fromSharedElements[name];
             var to = toSharedElements[name];
-            if (!to || from.mountedElement !== to.mountedElement) {
+            if (!to || from.mountedElement.ref !== to.mountedElement.ref) {
                 if (action)
-                    action(name, from.oldElement, from.oldElement['sharedElementData']);
+                    action(name, from.oldElement.ref, from.oldElement.data);
                 if (action)
-                    action(name, from.mountedElement, from.mountedElement['sharedElementData']);
+                    action(name, from.mountedElement.ref, from.mountedElement.data);
             }
         }
     }
     getSharedElements(sharedElements: SharedItem[]): { [name: string]: SharedItem } {
         return sharedElements.reduce((elements, element) => ({...elements, [element.name]: element}), {});
     }
-    getStyle(name, ref) {
+    getStyle(name, {ref, data}) {
         var {top, left, width, height} = ref.getBoundingClientRect();
-        return this.props.elementStyle(name, ref, {top, left, width, height, ...ref['sharedElementData']});
+        return this.props.elementStyle(name, ref, { top, left, width, height, ...data});
     }
     getPropValue(prop, name) {
         return typeof prop === 'function' ? prop(name) : prop;
@@ -49,7 +49,7 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
                 duration={duration}>
                 {styles => (
                     styles.map(({data: {name, oldElement, mountedElement}, style, start, end}) => (
-                        children(style, name, {...start, ...oldElement['sharedElementData']}, {...end, ...mountedElement['sharedElementData']})
+                        children(style, name, {...start, ...oldElement.data}, {...end, ...mountedElement.data})
                     ))
                 )}
             </Motion>

@@ -24,8 +24,8 @@ class SharedElementRegistry {
             if (oldSharedElements && oldSharedElements[name]) {
                 sharedElements.push({
                     name,
-                    oldElement: oldSharedElements[name],
-                    mountedElement: mountedSharedElements[name]
+                    oldElement: {ref: oldSharedElements[name], data: oldSharedElements[name]['sharedElementData']},
+                    mountedElement: {ref: mountedSharedElements[name], data: mountedSharedElements[name]['sharedElementData']}
                 });
             }
         }
