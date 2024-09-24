@@ -14,6 +14,8 @@ class SharedElement extends React.Component<SharedElementProps, any> {
     }
     componentDidMount() {
         this.register();
+        this.ref.current['sharedElementData'] = this.props.data;
+        this.ref.current.dataset.sharedElement = 'true';
         this.resizeObserver?.observe(this.ref.current);
     }
     componentDidUpdate(prevProps) {
