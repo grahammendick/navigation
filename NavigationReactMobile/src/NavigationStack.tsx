@@ -47,6 +47,8 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         const {url, state, data, crumbs, oldUrl, oldState, oldData} = stateNavigator.stateContext;
         if (oldUrl) {
             const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
+            if (Math.abs(oldCrumbs.length - crumbs.length) !== 1)
+                return {pause: null, sharedEls: []}; 
             const sharedElementNames: string[] = oldCrumbs.length < crumbs.length
                 ? sharedElements(state, data, crumbs) : crumbs.length < oldCrumbs.length
                 ? sharedElements(oldState, oldData, oldCrumbs) : null;
