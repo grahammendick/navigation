@@ -53,8 +53,8 @@ ReactDOM.render(
             {transform: 'translateX(0)'}
           ]}
         crumbStyle={[
-            {transform: 'translateX(5%) scale(0.8)', opacity: 0},
-            {transform: 'translateX(0) scale(1)', opacity: 1}
+            {transform: 'translateX(-60%)'},
+            {transform: 'translateX(0)'}
           ]}>
         <Scene stateKey="people" sharedElements={({id}) => [id]}><People /></Scene>
         <Scene stateKey="person"><Person /></Scene>
