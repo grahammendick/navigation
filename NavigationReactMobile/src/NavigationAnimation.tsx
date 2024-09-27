@@ -1,19 +1,21 @@
 import React, {useRef, useState, useLayoutEffect} from 'react';
 
-const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, duration: defaultDuration}) => {
+const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, duration: defaultDuration, pause}) => {
     const [scenes, setScenes] = useState({prev: null, all: [], count: 0});
     const container = useRef(null);
     useLayoutEffect(() => {
         let cancel = false;
-        scenes.all.forEach(({key, pushEnter, popExit, pushExit, popEnter, unmountStyle, crumbStyle}, i) => {
+        scenes.all.forEach(({key, url, pushEnter, popExit, pushExit, popEnter, unmountStyle, crumbStyle}, i) => {
             const scene = container.current.children[i];
             const prevNavState = scene.navState || scene.prevNavState;
             if (!scene.animate) {
                 if (popExit) setScenes(({all, ...rest}) => ({all: all.filter((_s, index) => index !== i), ...rest}));
-                if ((pushEnter && prevNavState !== 'pushEnter') || (popEnter && prevNavState !== 'popEnter')) onRest({key});
+                if ((pushEnter && prevNavState !== 'pushEnter') || (popEnter && prevNavState !== 'popEnter')) onRest({key, url});
                 scene.prevNavState = pushEnter ? 'pushEnter' : popExit ? 'popExit' : pushExit ? 'pushExit' : 'popEnter';
                 return;
             };
+            if (scene.pushPlayState) scene.pushEnter.play();
+            if (scene.popPlayState) scene.popEnter.play();
             const afterPushEnter = scene.pushEnter?.finished || {then: (f) => f()};
             const afterPopEnter = scene.popEnter?.finished || {then: (f) => f()};
             afterPopEnter.then(() => {
@@ -26,13 +28,10 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                 }
                 if (pushEnter && prevNavState !== 'pushEnter') {
                     scene.navState = 'pushEnter';
-                    if (oldState) {
-                        if (prevNavState === 'popExit') scene.pushEnter.reverse();
-                        else if (prevNavState) scene.pushEnter.finish();
-                        else scene.pushEnter.play();
-                    } else {
-                        scene.pushEnter.finish();
-                    }
+                    if (prevNavState === 'popExit') scene.pushEnter.reverse();
+                    else if (prevNavState) scene.pushEnter.finish();
+                    else scene.pushEnter.play();
+                    if (!oldState) scene.pushEnter.finish();
                 }
                 if (popExit && prevNavState !== 'popExit') {
                     scene.navState = 'popExit';
@@ -43,11 +42,16 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                     if (popExit)
                         setScenes(({all, ...rest}) => ({all: all.filter((_s, index) => index !== i), ...rest}))
                     if (pushEnter || popExit) {
-                        onRest({key});
+                        onRest({key, url});
                         scene.prevNavState = scene.navState;
                         scene.navState = undefined;
                     }
                 });
+                scene.pushPlayState = undefined;
+                if (pause && scene.pushEnter?.playState === 'running') {
+                    scene.pushPlayState = 'running';
+                    scene.pushEnter.pause();
+                }
             });
             afterPushEnter.then(() => {
                 if (cancel || !crumbStyle) return;
@@ -66,17 +70,23 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                 if (pushExit && prevNavState !== 'pushExit') {
                     scene.navState = 'pushExit';
                     scene.popEnter.reverse();
+                    if (!oldState) scene.popEnter.finish();
                 }
                 scene.popEnter?.finished.then(() => {
                     if (cancel || !scene.navState) return;
                     if (pushExit || popEnter) {
-                        onRest({key});
+                        onRest({key, url});
                         scene.prevNavState = scene.navState;
                         scene.navState = undefined;
                     }
                 });
+                scene.popPlayState = undefined;
+                if (pause && scene.popEnter?.playState === 'running') {
+                    scene.popPlayState = 'running';
+                    scene.popEnter.pause();
+                }
             });
-        });
+    });
         return () => {cancel = true;}
     }, [scenes]);
     if (nextScenes !== scenes.prev) {

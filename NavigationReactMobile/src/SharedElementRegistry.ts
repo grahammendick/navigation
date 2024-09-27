@@ -1,12 +1,12 @@
 import { SharedItem } from './Props';
 
 class SharedElementRegistry {
-    private sharedElements: { [scene: number]: { [name: string]: { ref: HTMLElement, data: any } } } = {};
-    registerSharedElement(scene: number, name: string, ref: HTMLElement, data) {
+    private sharedElements: { [scene: string]: { [name: string]: HTMLElement } } = {};
+    registerSharedElement(scene: string, name: string, ref: HTMLElement) {
         this.sharedElements[scene] = this.sharedElements[scene] || {};
-        this.sharedElements[scene][name] = {ref, data};
+        this.sharedElements[scene][name] = ref;
     }
-    unregisterSharedElement(scene: number, name?: string) {
+    unregisterSharedElement(scene: string, name?: string) {
         if (this.sharedElements[scene]) {
             if (name)
                 delete this.sharedElements[scene][name];
@@ -14,7 +14,7 @@ class SharedElementRegistry {
                 delete this.sharedElements[scene];
         }
     }
-    getSharedElements(scene: number, oldScene: number) {
+    getSharedElements(scene: string, oldScene: string) {
         if (scene === oldScene)
             return [];
         var oldSharedElements = this.sharedElements[oldScene];
@@ -24,8 +24,8 @@ class SharedElementRegistry {
             if (oldSharedElements && oldSharedElements[name]) {
                 sharedElements.push({
                     name,
-                    oldElement: oldSharedElements[name],
-                    mountedElement: mountedSharedElements[name]
+                    oldElement: {ref: oldSharedElements[name], data: oldSharedElements[name]['sharedElementData']},
+                    mountedElement: {ref: mountedSharedElements[name], data: mountedSharedElements[name]['sharedElementData']}
                 });
             }
         }

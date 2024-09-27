@@ -1,7 +1,7 @@
-// npx tsc --jsx react --target es3 --lib ES2015,DOM --esModuleInterop --baseUrl ../../types --noImplicitAny true --strict true navigation-react-mobile-tests.tsx
+// npx tsc --jsx react --target es5 --lib ES2015,DOM --esModuleInterop --baseUrl ../../types --noImplicitAny true --strict true navigation-react-mobile-tests.tsx
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationEvent, NavigationLink } from 'navigation-react';
-import { NavigationMotion, Scene, MobileHistoryManager, SharedElement, SharedElementMotion } from 'navigation-react-mobile';
+import { Scene, MobileHistoryManager, SharedElement, NavigationStack } from 'navigation-react-mobile';
 import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 
@@ -46,42 +46,18 @@ const Person = () => {
 
 stateNavigator.start();
 
-const Zoom = (props: any) => (
-    <SharedElementMotion
-        {...props}
-        onAnimating={(_, ref) => {ref.style.opacity = '0'}}
-        onAnimated={(_, ref) => {ref.style.opacity = '1'}}>
-        {({ left, top, width, height }, name, { id }) => (
-            <div
-                key={name}
-                style={{
-                    position: 'absolute',
-                    left, top, width, height,
-                }}>
-                {id}
-            </div>
-        )}
-    </SharedElementMotion>
-);
-
 ReactDOM.render(
-    <NavigationMotion
-        unmountedStyle={{opacity: 1, translate: 100}}
-        mountedStyle={{opacity: 1, translate: 0}}
-        crumbStyle={{opacity: 0, translate: 0}}
-        sharedElementMotion={props => <Zoom {...props} />}
-        renderMotion={({ opacity, translate }, scene, key) => (
-            <div
-                key={key}
-                style={{
-                    opacity,
-                    transform: `translate(${translate}%)`,
-                }}>
-                {scene}
-            </div>
-        )}>
-        <Scene stateKey="people"><People /></Scene>
+    <NavigationStack
+        unmountStyle={[
+            {transform: 'translateX(100%)'},
+            {transform: 'translateX(0)'}
+          ]}
+        crumbStyle={[
+            {transform: 'translateX(-60%)'},
+            {transform: 'translateX(0)'}
+          ]}>
+        <Scene stateKey="people" sharedElements={({id}) => [id]}><People /></Scene>
         <Scene stateKey="person"><Person /></Scene>
-    </NavigationMotion>,
+    </NavigationStack>,
     document.getElementById('root')
 );

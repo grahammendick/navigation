@@ -41,7 +41,7 @@ const renderMotion = ({translateX, translateX_pc, translateY, translateY_pc, sca
             position: 'fixed' as any,
             backgroundColor: '#fff',
             left: 0, right: 0, top: 0, bottom: 0,
-            overflow: 'auto' as any,
+            overflow: 'hidden' as any,
         }}>
         {scene}
     </View>

@@ -14,15 +14,9 @@ class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEve
         renderScene: (state: State, data: any) => state.renderScene(data)
     }
     static getDerivedStateFromProps(props: SceneProps & {navigationEvent: NavigationEvent}, {navigationEvent: prevNavigationEvent}: SceneState) {
-        var {crumb, navigationEvent} = props;
-        var {state, oldState, oldUrl, crumbs} = navigationEvent.stateNavigator.stateContext;
-        if (!state || crumbs.length !== crumb)
-            return null;
-        if (!oldUrl || !prevNavigationEvent)
-            return {navigationEvent};
-        var {crumbs: oldCrumbs} = navigationEvent.stateNavigator.parseLink(oldUrl);
-        var replace = oldCrumbs.length === crumb && oldState !== state;
-        return !replace ? {navigationEvent} : null;
+        var {url, navigationEvent} = props;
+        var {url: currentUrl, state} = navigationEvent.stateNavigator.stateContext;
+        return (!state || url !== currentUrl) ? null : {navigationEvent};
     }
     shouldComponentUpdate({crumb, rest, navigationEvent: {stateNavigator}}, nextState) {
         var {crumbs} = stateNavigator.stateContext;
@@ -31,15 +25,20 @@ class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEve
     }
     render() {
         var {navigationEvent} = this.state;
-        var {crumb, navigationEvent: {stateNavigator}, className, style} = this.props;
+        var {crumb, navigationEvent: {stateNavigator}, className, style, wrap} = this.props;
         var {crumbs} = stateNavigator.stateContext;
         var stateContext = navigationEvent?.stateNavigator?.stateContext;
         var {state, data} = stateContext || crumbs[crumb] || {};
         return (
             <NavigationContext.Provider value={navigationEvent}>
-                <div className={className} style={{...style, display: navigationEvent ? 'block' : 'none'}}>
-                    {navigationEvent && this.props.renderScene(state, data)}
-                </div>
+                {wrap ? (
+                    <div data-scene="true" className={className}
+                        style={{...style, display: navigationEvent ? style?.display || undefined : 'none'}}>
+                        {navigationEvent && this.props.renderScene(state, data)}
+                    </div>
+                ) : (
+                    navigationEvent && this.props.renderScene(state, data)
+                )}
             </NavigationContext.Provider>
         );
     }

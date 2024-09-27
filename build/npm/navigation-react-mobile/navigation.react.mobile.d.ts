@@ -156,6 +156,10 @@ export interface NavigationStackProps {
      */
     children?: any;
     /**
+     * A Scene's shared elements 
+     */
+    sharedElements?: string[] | ((state: State, data: any, crumbs: Crumb[]) => string[]);
+    /**
      * Renders the Scene for the State and data
      */
     renderScene?: (state: State, data: any) => ReactNode;
@@ -193,6 +197,10 @@ export interface NavigationStackProps {
      * The Scene's style
      */
     style?: any;
+    /**
+     * The Scene's shared elements
+     */
+    sharedElements?: string[] | ((data: any, crumbs: Crumb[]) => string[]);
      /**
      * The Scene content
      */

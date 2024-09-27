@@ -5,7 +5,7 @@
   "devDependencies": {
     "@rollup/plugin-sucrase": "^3.0.2",
     "@rollup/plugin-typescript": "^4.1.2",
-    "@types/node": "^17.0.23",
+    "@types/node": "^18.19.53",
     "del": "^6.0.0",
     "gulp": "^4.0.2",
     "gulp-cli": "^2.3.0",
@@ -22,7 +22,7 @@
     "rollup": "^2.11.2",
     "rollup-plugin-cleanup": "^3.1.1",
     "tslib": "^2.0.0",
-    "typescript": "^3.9.3"
+    "typescript": "^5.6.2"
   },
   "scripts": {
     "test": "gulp test",
