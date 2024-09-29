@@ -57,22 +57,14 @@
 ]);</code></pre>
             <h2>Animating</h2>
             <p>
-                The <code>NavigationMotion</code> component renders the scenes in the stack. It lets you animate the scenes as they progress through the stack. A scene is said to be either unmounted, mounted or a crumb. It's unmounted when it's not on the stack; it's mounted when it's at the top of the stack; and it's a crumb when it's anywhere else in the stack (in the breadcrumb trail).
+                The <code>NavigationStack</code> component renders the scenes in the stack. It lets you animate the scenes as they progress through the stack. Any scene that isn't the current one is either unmounted or a crumb. It's unmounted when it's not on the stack yet and it's a crumb when it's anywhere in the stack apart from on top (in the breadcrumb trail).
             </p>
             <p>
-                You assign a style <code>prop</code> to each of these three stages and the <code>NavigationMotion</code> component calls you back with the interpolated values so you can animate the scenes. In our email example, we'll give the unmounted and crumb styles an opacity of 0 and the mounted style an opacity of 1. When the user opens a mail, the 'inbox' scene fades out as it becomes a crumb and the 'mail' scene fades in as it's mounted.
+                You assign keyframe animations to the unmount and crumb style props. The <code>NavigationStack</code> runs the animations as the scene moves from unmounted or crumb to current and back again. In our email example, we'll make the unmount and crumb keyframes start at opacity 0 and finish at 1. When the user opens a mail, the 'inbox' scene fades out as it becomes a crumb and the 'mail' scene fades in as it's mounted.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationMotion
-  unmountedStyle={{opacity: 0}}
-  mountedStyle={{opacity: 1}}
-  crumbStyle={{opacity: 0}}
-  renderMotion={(style, scene, key) => (
-    &lt;div
-      key={key}
-      style={{...sceneStyle, opacity: style.opacity}}>
-      {scene}
-    &lt;/div>
-  )}></code></pre>
+            <pre><code class="language-jsx">&lt;NavigationStack
+  unmountStyle={[{opacity: 0}, {opacity: 1}]}
+  crumbStyle={[{opacity: 0}, {opacity: 1}]}></code></pre>
             <h2 id="navigating-back">Navigating Back</h2>
             <p>
                 You can navigate back to a visited scene using the <code>NavigationBackLink</code>. The <code>distance</code> prop indicates how many scenes to go back. In our email example, we add a <code>NavigationBackLink</code> to the 'mail' scene. A <code>distance</code> of 1 allows the user to return to their inbox. When they tap the Hyperlink, the 'mail' scene fades out as it's unmounted and the 'inbox' scene fades back in as it's mounted.

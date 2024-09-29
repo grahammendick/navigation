@@ -57,35 +57,29 @@
             <pre><code class="language-jsx">import {createRoot} from 'react-dom/client';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
-import {NavigationMotion} from 'navigation-react-mobile';
+import {NavigationStack} from 'navigation-react-mobile';
 
 const stateNavigator = new StateNavigator([
 ]);
 
 stateNavigator.start();
 
+const App = () => (
+  &lt;NavigationHandler stateNavigator={stateNavigator}>
+    &lt;NavigationStack style={sceneStyle}>
+    &lt;/NavigationStack>
+  &lt;/NavigationHandler>
+);
+
 const sceneStyle = {
   position: 'fixed',
-  overflow: 'auto',
+  overflow: 'hidden',
   backgroundColor: '#fff',
   top: 0, right: 0, bottom: 0, left: 0
 }
 
-const App = () => (
-  &lt;NavigationHandler stateNavigator={stateNavigator}>
-    &lt;NavigationMotion
-      renderMotion={(style, scene, key) => (
-        &lt;div key={key} style={sceneStyle}>
-          {scene}
-        &lt;/div>
-      )}>
-    &lt;/NavigationMotion>
-  &lt;/NavigationHandler>
-);
-
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
-
 root.render(&lt;App />);</code></pre>
         </div>
     </div>
