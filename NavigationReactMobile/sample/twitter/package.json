@@ -7,9 +7,9 @@
     "babel-plugin-transform-object-rest-spread": "^6.16.0",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
-    "navigation": "*",
-    "navigation-react": "*",
-    "navigation-react-mobile": "*",
+    "navigation": "^6.2.0",
+    "navigation-react": "^4.5.1",
+    "navigation-react-mobile": "^3.11.0",
     "react": "*",
     "react-dom": "*",
     "webpack": "^1.12.10"
