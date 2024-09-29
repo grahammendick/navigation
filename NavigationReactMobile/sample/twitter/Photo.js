@@ -21,9 +21,7 @@ const Photo = () => {
           </g>
         </svg>
       </NavigationBackLink>
-      <SharedElement
-        data={{src: photo, enable: true}}
-        name={photo}>
+      <SharedElement name={`photo${data.id}`}>
         <img src={photo}/>
       </SharedElement>
     </div>
