@@ -17,8 +17,8 @@ export default () => (
     <Scene stateKey="photo"
       unmountStyle={(data, crumbs) => !photoTweet(data, crumbs) ? [{opacity: 0}, {opacity: 1}] : [{transform: 'translateX(100%)'}, {transform: 'translateX(0)'}]}
       sharedElements={(data, crumbs) => !photoTweet(data, crumbs) ? [`photo${data.id}`] : null}>
-        <Photo />
-      </Scene>
+      <Photo />
+    </Scene>
   </NavigationStack>
 );
 
