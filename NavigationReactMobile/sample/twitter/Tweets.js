@@ -24,9 +24,7 @@ export default ({tweets, onTimeline}) => (
           className="photo"
           stateKey="photo"
           navigationData={{id}}>
-            <SharedElement
-              data={{src: photo, enable: false}}
-              name={photo}>
+            <SharedElement name={`photo${id}`}>
               <img src={photo}/>
             </SharedElement>
         </NavigationLink>}
