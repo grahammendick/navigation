@@ -5,7 +5,7 @@ import { MobileHistoryManager } from 'navigation-react-mobile';
 
 const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountStyle = () => null, crumbStyle = () => null,
     sharedElementTransition, duration, style, className, renderScene, renderTransition, children}) => {
-    const useStack = !sharedElementTransition && NavigationMobileStack;
+    const useStack = !sharedElementTransition && !!NavigationMobileStack;
     const Stack = useStack ? NavigationMobileStack : NavigationMotion as any;
     return (
         <Stack
@@ -33,7 +33,7 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
             className={className}
             renderScene={renderScene}
             renderMotion={typeof children !== 'function' ? renderTransition || renderMotion : undefined}>
-            {typeof children !== 'function' ? cloneScenes(children, typeof children === 'function' || renderTransition) : (children || renderMotion)}
+            {typeof children !== 'function' ? cloneScenes(children, !useStack && renderTransition, useStack) : (children || renderMotion)}
         </Stack>
     );
 }
@@ -66,7 +66,7 @@ const getKeyframes = (style) => ({
         {transform: `${getTransform(style)}`, opacity: style.alpha},
         {transform: 'translate(0, 0) scale(1, 1) rotate(0)', opacity: 1}
     ]
-})
+});
 
 const emptyStyle = {duration: undefined, translateX: 0, translateX_pc: 0, translateY: 0, translateY_pc: 0,
     scaleX: 1, scaleX_pc: 100, scaleY: 1, scaleY_pc: 100, alpha: 1, rotate: 0};
@@ -92,23 +92,28 @@ const getStyle = (trans) => {
     return transStyle;
 }
 
-const cloneScenes = (children, customRender, nested = false) => (
+const cloneScenes = (children, customRender, useStack, nested = false) => (
     React.Children.map(children, scene => {
         const {unmountedStyle, crumbedStyle, unmountStyle, crumbStyle, children} = scene.props;
         return (
             (scene.type === Scene || nested)
                 ? React.cloneElement(scene, {
-                    // do keyframes
                     unmountedStyle: unmountedStyle || (!customRender && unmountStyle ? ((data, crumbs) => {
                         const trans = returnOrCall(unmountStyle, true, data, crumbs);
                         return getStyle(trans && typeof trans !== 'string' ? trans : trans ? {type: 'translate', startX: '100%'} : {duration: 0});
                     }) : undefined),
+                    unmountStyle: unmountStyle ? ((state, data, crumbs) => {
+                        const trans = returnOrCall(unmountStyle, true, state, data, crumbs);
+                        const style = getStyle(trans && typeof trans !== 'string' ? trans : trans ? {type: 'translate', startX: '100%'} : {duration: 0});
+                        return getKeyframes(style);
+                    }) : undefined,
                     crumbStyle: crumbedStyle || (!customRender && crumbStyle ? ((data, crumbs, nextState, nextData) => {
                         const trans = returnOrCall(crumbStyle, true, data, crumbs, nextState, nextData);
-                        return getStyle(trans && typeof trans !== 'string' ? trans : trans ? {type: 'translate', startX: '0%'} : {duration: 0});
+                        const style = getStyle(trans && typeof trans !== 'string' ? trans : trans ? {type: 'translate', startX: '0%'} : {duration: 0});
+                        return useStack ? getKeyframes(style) : style;
                     }) : undefined),
                 })
-                : React.cloneElement(scene, null, cloneScenes(children, customRender, true))
+                : React.cloneElement(scene, null, cloneScenes(children, customRender, useStack, true))
         )
     })
 );
