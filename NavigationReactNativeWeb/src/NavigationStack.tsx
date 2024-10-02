@@ -4,7 +4,7 @@ import { NavigationMotion, NavigationStack as NavigationMobileStack, Scene, Shar
 import { MobileHistoryManager } from 'navigation-react-mobile';
 
 const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountStyle = () => null, crumbStyle = () => null,
-    sharedElementTransition, duration, style, className, renderScene, renderTransition, children}) => {
+    sharedElementTransition, sharedElement, sharedElements, duration, style, renderScene, renderTransition, children}) => {
     const useStack = !sharedElementTransition && !!NavigationMobileStack;
     const Stack = useStack ? NavigationMobileStack : NavigationMotion as any;
     return (
@@ -27,10 +27,19 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
                 const style = getStyle(trans && typeof trans !== 'string' ? trans : trans === '' ? {duration: 0} : {type: 'translate', startX: '-10%'});
                 return useStack ? getKeyframes(style) : style;
             })}
+            sharedElements={(...args) => {
+                const sharedEl = sharedElement?.(...args);
+                return sharedEl ? [sharedEl] : sharedElements?.(...args);
+            }}
             sharedElementMotion={sharedElementTransition}
             duration={duration}
-            style={style}
-            className={className}
+            style={style || {
+                position: 'fixed',
+                backgroundColor: '#fff',
+                left: 0, right: 0, top: 0, bottom: 0,
+                overflow: 'hidden',
+                display: 'flex'
+            }}
             renderScene={renderScene}
             renderMotion={typeof children !== 'function' ? renderTransition || renderMotion : undefined}>
             {typeof children !== 'function' ? cloneScenes(children, !useStack && renderTransition, useStack) : (children || renderMotion)}
@@ -94,7 +103,7 @@ const getStyle = (trans) => {
 
 const cloneScenes = (children, customRender, useStack, nested = false) => (
     React.Children.map(children, scene => {
-        const {unmountedStyle, crumbedStyle, unmountStyle, crumbStyle, children} = scene.props;
+        const {unmountedStyle, crumbedStyle, unmountStyle, crumbStyle, sharedElement, sharedElements, children} = scene.props;
         return (
             (scene.type === Scene || nested)
                 ? React.cloneElement(scene, {
@@ -112,6 +121,10 @@ const cloneScenes = (children, customRender, useStack, nested = false) => (
                         const style = getStyle(trans && typeof trans !== 'string' ? trans : trans ? {type: 'translate', startX: '0%'} : {duration: 0});
                         return useStack ? getKeyframes(style) : style;
                     }) : undefined),
+                    sharedElements: sharedElement || sharedElements ? ((...args) => {
+                        const sharedEl = sharedElement?.(...args);
+                        return sharedEl ? [sharedEl] : sharedElements?.(...args);
+                    }) : undefined
                 })
                 : React.cloneElement(scene, null, cloneScenes(children, customRender, useStack, true))
         )
