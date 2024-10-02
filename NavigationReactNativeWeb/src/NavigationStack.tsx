@@ -11,7 +11,7 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
         <Stack
             unmountedStyle={unmountedStyle || ((state, data, crumbs) => {
                 const trans = returnOrCall(unmountStyle, true, state, data, crumbs);
-                return getStyle(trans && typeof trans !== 'string' ? trans : !trans ? {type: 'translate', startX: '100%'} : {duration: 0});
+                return getStyle(trans && typeof trans !== 'string' ? trans : trans === '' ? {duration: 0} : {type: 'translate', startX: '100%'});
             })}
             mountedStyle={mountedStyle || ((state, data, crumbs, _nextState, _nextData, from) => {
                 const trans = returnOrCall(from ? unmountStyle : crumbStyle, true, state, data, crumbs);
@@ -19,12 +19,12 @@ const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountSty
             })}
             unmountStyle={unmountedStyle || ((state, data, crumbs) => {
                 const trans = returnOrCall(unmountStyle, true, state, data, crumbs);
-                const style = getStyle(trans && typeof trans !== 'string' ? trans : !trans ? {type: 'translate', startX: '100%'} : {duration: 0});
+                const style = getStyle(trans && typeof trans !== 'string' ? trans : trans === '' ? {duration: 0} : {type: 'translate', startX: '100%'});
                 return useStack ? getKeyframes(style) : style;
             })}
             crumbStyle={crumbedStyle || ((state, data, crumbs, nextState, nextData) => {
                 const trans = returnOrCall(crumbStyle, true, state, data, crumbs, nextState, nextData);
-                const style = getStyle(trans && typeof trans !== 'string' ? trans : !trans ? {type: 'translate', startX: '-10%'} : {duration: 0});
+                const style = getStyle(trans && typeof trans !== 'string' ? trans : trans === '' ? {duration: 0} : {type: 'translate', startX: '-10%'});
                 return useStack ? getKeyframes(style) : style;
             })}
             sharedElementMotion={sharedElementTransition}
