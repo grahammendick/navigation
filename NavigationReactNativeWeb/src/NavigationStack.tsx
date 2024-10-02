@@ -1,43 +1,58 @@
 import React from 'react';
 import { View } from 'react-native';
-import { NavigationMotion, Scene, SharedElementMotion } from 'navigation-react-mobile';
+import { NavigationMotion, NavigationStack as NavigationMobileStack, Scene, SharedElementMotion } from 'navigation-react-mobile';
 import { MobileHistoryManager } from 'navigation-react-mobile';
 
 const NavigationStack = ({unmountedStyle, mountedStyle, crumbedStyle, unmountStyle = () => null, crumbStyle = () => null,
-    sharedElementTransition, duration, renderScene, renderTransition, children}) => (
-    <NavigationMotion
-        unmountedStyle={unmountedStyle || ((state, data, crumbs) => {
-            const trans = returnOrCall(unmountStyle, true, state, data, crumbs);
-            return getStyle(trans && typeof trans !== 'string' ? trans : trans ? {type: 'translate', startX: '100%'} : {duration: 0});
-        })}
-        mountedStyle={mountedStyle || ((state, data, crumbs, _nextState, _nextData, from) => {
-            const trans = returnOrCall(from ? unmountStyle : crumbStyle, true, state, data, crumbs);
-            return {...emptyStyle, duration: trans && typeof trans !== 'string' ? getStyle(trans).duration : undefined};
-        })}
-        crumbStyle={crumbedStyle || ((state, data, crumbs, nextState, nextData) => {
-            const trans = returnOrCall(crumbStyle, true, state, data, crumbs, nextState, nextData);
-            return getStyle(trans && typeof trans !== 'string' ? trans : trans ? {type: 'translate', startX: '0%'} : {duration: 0});
-        })}
-        sharedElementMotion={sharedElementTransition}
-        duration={duration}
-        renderScene={renderScene}
-        renderMotion={typeof children !== 'function' ? renderTransition || renderMotion : undefined}>
-        {typeof children !== 'function' ? cloneScenes(children, typeof children === 'function' || renderTransition) : (children || renderMotion)}
-    </NavigationMotion>
-);
+    sharedElementTransition, sharedElement, sharedElements, duration, style, renderScene, renderTransition, children}) => {
+    const useStack = !sharedElementTransition && !!NavigationMobileStack;
+    const Stack = useStack ? NavigationMobileStack : NavigationMotion as any;
+    return (
+        <Stack
+            unmountedStyle={unmountedStyle || ((state, data, crumbs) => {
+                const trans = returnOrCall(unmountStyle, true, state, data, crumbs);
+                return getStyle(trans && typeof trans !== 'string' ? trans : trans === '' ? {duration: 0} : {type: 'translate', startX: '100%'});
+            })}
+            mountedStyle={mountedStyle || ((state, data, crumbs, _nextState, _nextData, from) => {
+                const trans = returnOrCall(from ? unmountStyle : crumbStyle, true, state, data, crumbs);
+                return {...emptyStyle, duration: trans && typeof trans !== 'string' ? getStyle(trans).duration : undefined};
+            })}
+            unmountStyle={unmountedStyle || ((state, data, crumbs) => {
+                const trans = returnOrCall(unmountStyle, true, state, data, crumbs);
+                const style = getStyle(trans && typeof trans !== 'string' ? trans : trans === '' ? {duration: 0} : {type: 'translate', startX: '100%'});
+                return useStack ? getKeyframes(style) : style;
+            })}
+            crumbStyle={crumbedStyle || ((state, data, crumbs, nextState, nextData) => {
+                const trans = returnOrCall(crumbStyle, true, state, data, crumbs, nextState, nextData);
+                const style = getStyle(trans && typeof trans !== 'string' ? trans : trans === '' ? {duration: 0} : {type: 'translate', startX: '-10%'});
+                return useStack ? getKeyframes(style) : style;
+            })}
+            sharedElements={(...args) => {
+                const sharedEl = sharedElement?.(...args);
+                return sharedEl ? [sharedEl] : sharedElements?.(...args);
+            }}
+            sharedElementMotion={sharedElementTransition}
+            duration={duration}
+            style={{
+                position: 'fixed',
+                backgroundColor: '#fff',
+                left: 0, right: 0, top: 0, bottom: 0,
+                overflow: 'hidden',
+                display: 'flex',
+                ...style
+            }}
+            renderScene={renderScene}
+            renderMotion={typeof children !== 'function' ? renderTransition || renderMotion : undefined}>
+            {typeof children !== 'function' ? cloneScenes(children, !useStack && renderTransition, useStack) : (children || renderMotion)}
+        </Stack>
+    );
+}
 
-
-const renderMotion = ({translateX, translateX_pc, translateY, translateY_pc, scaleX, scaleX_pc, scaleY, scaleY_pc, alpha, rotate}, scene, key) => (
+const renderMotion = (style, scene, key) => (
     <View key={key}
         style={{
-            transform: `
-                translate(${translateX ? `${translateX}px` : `${translateX_pc}%`},
-                    ${translateY ? `${translateY}px` : `${translateY_pc}%`})
-                scale(${scaleX !== 1 ? `${scaleX}` : `${scaleX_pc / 100}`},
-                    ${scaleY !== 1 ? `${scaleY}` : `${scaleY_pc / 100}`})
-                rotate(${rotate}deg)
-			` as any,
-            opacity: alpha,
+            transform: getTransform(style) as any,
+            opacity: style.alpha,
             position: 'fixed' as any,
             backgroundColor: '#fff',
             left: 0, right: 0, top: 0, bottom: 0,
@@ -46,6 +61,22 @@ const renderMotion = ({translateX, translateX_pc, translateY, translateY_pc, sca
         {scene}
     </View>
 );
+
+const getTransform = ({translateX, translateX_pc, translateY, translateY_pc, scaleX, scaleX_pc, scaleY, scaleY_pc, rotate}) => (
+    `translate(${translateX ? `${translateX}px` : `${translateX_pc}%`},
+        ${translateY ? `${translateY}px` : `${translateY_pc}%`})
+    scale(${scaleX !== 1 ? `${scaleX}` : `${scaleX_pc / 100}`},
+        ${scaleY !== 1 ? `${scaleY}` : `${scaleY_pc / 100}`})
+    rotate(${rotate}deg)`    
+);
+
+const getKeyframes = (style) => ({
+    duration: style.duration,
+    keyframes: [
+        {transform: `${getTransform(style)}`, opacity: style.alpha},
+        {transform: 'translate(0, 0) scale(1, 1) rotate(0)', opacity: 1}
+    ]
+});
 
 const emptyStyle = {duration: undefined, translateX: 0, translateX_pc: 0, translateY: 0, translateY_pc: 0,
     scaleX: 1, scaleX_pc: 100, scaleY: 1, scaleY_pc: 100, alpha: 1, rotate: 0};
@@ -71,9 +102,9 @@ const getStyle = (trans) => {
     return transStyle;
 }
 
-const cloneScenes = (children, customRender, nested = false) => (
+const cloneScenes = (children, customRender, useStack, nested = false) => (
     React.Children.map(children, scene => {
-        const {unmountedStyle, crumbedStyle, unmountStyle, crumbStyle, children} = scene.props;
+        const {unmountedStyle, crumbedStyle, unmountStyle, crumbStyle, sharedElement, sharedElements, children} = scene.props;
         return (
             (scene.type === Scene || nested)
                 ? React.cloneElement(scene, {
@@ -81,12 +112,22 @@ const cloneScenes = (children, customRender, nested = false) => (
                         const trans = returnOrCall(unmountStyle, true, data, crumbs);
                         return getStyle(trans && typeof trans !== 'string' ? trans : trans ? {type: 'translate', startX: '100%'} : {duration: 0});
                     }) : undefined),
+                    unmountStyle: unmountStyle ? ((state, data, crumbs) => {
+                        const trans = returnOrCall(unmountStyle, true, state, data, crumbs);
+                        const style = getStyle(trans && typeof trans !== 'string' ? trans : trans ? {type: 'translate', startX: '100%'} : {duration: 0});
+                        return getKeyframes(style);
+                    }) : undefined,
                     crumbStyle: crumbedStyle || (!customRender && crumbStyle ? ((data, crumbs, nextState, nextData) => {
                         const trans = returnOrCall(crumbStyle, true, data, crumbs, nextState, nextData);
-                        return getStyle(trans && typeof trans !== 'string' ? trans : trans ? {type: 'translate', startX: '0%'} : {duration: 0});
+                        const style = getStyle(trans && typeof trans !== 'string' ? trans : trans ? {type: 'translate', startX: '0%'} : {duration: 0});
+                        return useStack ? getKeyframes(style) : style;
                     }) : undefined),
+                    sharedElements: sharedElement || sharedElements ? ((...args) => {
+                        const sharedEl = sharedElement?.(...args);
+                        return sharedEl ? [sharedEl] : sharedElements?.(...args);
+                    }) : undefined
                 })
-                : React.cloneElement(scene, null, cloneScenes(children, customRender, true))
+                : React.cloneElement(scene, null, cloneScenes(children, customRender, useStack, true))
         )
     })
 );
