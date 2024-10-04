@@ -112,6 +112,7 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                     })
                     .concat(scenes
                         .filter(({key, unmountStyle}) => (
+                            // don't filter out if there's no unmount animation - suspend instead
                             !nextScenesByKey[key] && Array.isArray(unmountStyle?.keyframes || unmountStyle) && (unmountStyle.duration ?? defaultDuration)
                         ))
                         .map(scene => ({...scene, ...noAnim, popExit: !scene.pushExit, popEnter: scene.pushExit}))
