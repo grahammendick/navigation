@@ -1,6 +1,6 @@
 import React, {useRef, useState, useLayoutEffect} from 'react';
 
-const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, duration: defaultDuration, pause}) => {
+const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldState, duration: defaultDuration, pause}) => {
     const [scenes, setScenes] = useState({prev: null, all: [], count: 0});
     const container = useRef(null);
     useLayoutEffect(() => {
@@ -93,7 +93,7 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
         return () => {cancel = true;}
     }, [scenes]);
     if (nextScenes !== scenes.prev) {
-        setScenes(({all: scenes, count}) => {
+        setScenes(({all: scenes, prev, count}) => {
             const scenesByKey = scenes.reduce((acc, scene) => ({...acc, [scene.key]: scene}), {});
             const nextScenesByKey = nextScenes.reduce((acc, scene) => ({...acc, [scene.key]: scene}), {});
             const noAnim = {pushEnter: false, pushExit: false, popEnter: false, popExit: false};
@@ -111,12 +111,14 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                         return {...scene, ...nextScene, unmounted: false};
                     })
                     .concat(scenes
-                        .filter(({key, unmountStyle}) => (
-                            // don't filter out if there's no unmount animation - suspend instead
-                            !nextScenesByKey[key] && Array.isArray(unmountStyle?.keyframes || unmountStyle) && (unmountStyle.duration ?? defaultDuration)
-                        ))
-                        .map(scene => ({...scene, ...noAnim, popExit: !scene.pushExit, popEnter: scene.pushExit}))
+                        .filter(({key}) => !nextScenesByKey[key])
+                        .map(scene => {
+                            const {unmountStyle} = scene;
+                            const unmounted = scene.unmounted || !Array.isArray(unmountStyle?.keyframes || unmountStyle) || !(unmountStyle.duration ?? defaultDuration)
+                            return {...scene, ...noAnim, popExit: !scene.pushExit, popEnter: scene.pushExit, unmounted};
+                        })
                     )
+                    .filter(({unmounted}) => history || nextScenes.length <= (prev?.length || 0) || !unmounted)
                     .sort((a, b) => a.index !== b.index ? a.index - b.index : a.count - b.count)
             };
         });
