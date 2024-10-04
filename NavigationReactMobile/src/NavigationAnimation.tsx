@@ -23,7 +23,7 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
                 if (!scene.pushEnter) {
                     const {duration = defaultDuration, keyframes = unmountStyle} = unmountStyle;
                     if (!duration || !keyframes) return;
-                    scene.pushEnter = scene.animate(keyframes, {duration, fill: 'forwards'});
+                    scene.pushEnter = scene.animate(keyframes, {duration, fill: 'both'});
                     scene.pushEnter.persist();
                 }
                 if (pushEnter && prevNavState !== 'pushEnter') {
