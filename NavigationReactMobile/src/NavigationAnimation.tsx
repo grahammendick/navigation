@@ -39,8 +39,11 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                 }
                 scene.pushEnter?.finished.then(() => {
                     if (cancel || !scene.navState) return;
-                    if (popExit)
-                        setScenes(({all, ...rest}) => ({all: all.filter((_s, index) => index !== i), ...rest}))
+                    if (popExit) {
+                        setScenes(({all, ...rest}) => (
+                            {all: all.map((s, index) => index !== i ? s : {...s, unmounted: true}), ...rest}
+                        ));
+                    }
                     if (pushEnter || popExit) {
                         onRest({key, url});
                         scene.prevNavState = scene.navState;
@@ -101,11 +104,11 @@ const NavigationAnimation  = ({children, data: nextScenes, onRest, oldState, dur
                     .map((nextScene) => {
                         const scene = scenesByKey[nextScene.key];
                         const wasMounted = !!scene?.pushEnter || !!scene?.popEnter;
-                        const noAnimScene = {...scene, ...nextScene, ...noAnim};
+                        const noAnimScene = {...scene, ...nextScene, ...noAnim, unmounted: false};
                         if (!scene) return {...noAnimScene, pushEnter: true, count};
                         if (nextScene.mount && !wasMounted) return {...noAnimScene, popEnter: !scene.popExit, pushEnter: scene.popExit};
                         if (!nextScene.mount && wasMounted) return {...noAnimScene, pushExit: true};
-                        return {...scene, ...nextScene};
+                        return {...scene, ...nextScene, unmounted: false};
                     })
                     .concat(scenes
                         .filter(({key, unmountStyle}) => (
