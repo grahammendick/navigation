@@ -103,12 +103,14 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
                 all: nextScenes
                     .map((nextScene) => {
                         const scene = scenesByKey[nextScene.key];
+                        let subkey = scene?.subkey || 0;
+                        if (!history && scene?.unmounted) subkey += 1;
                         const wasMounted = !!scene?.pushEnter || !!scene?.popEnter;
-                        const noAnimScene = {...scene, ...nextScene, ...noAnim, unmounted: false};
+                        const noAnimScene = {...scene, ...nextScene, ...noAnim, unmounted: false, subkey};
                         if (!scene) return {...noAnimScene, pushEnter: true, count};
                         if (nextScene.mount && !wasMounted) return {...noAnimScene, popEnter: !scene.popExit, pushEnter: scene.popExit};
                         if (!nextScene.mount && wasMounted) return {...noAnimScene, pushExit: true};
-                        return {...scene, ...nextScene, unmounted: false};
+                        return {...scene, ...nextScene, unmounted: false, subkey};
                     })
                     .concat(scenes
                         .filter(({key}) => !nextScenesByKey[key])
