@@ -120,7 +120,7 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
                             return {...scene, ...noAnim, popExit: !scene.pushExit, popEnter: scene.pushExit, unmounted};
                         })
                     )
-                    .filter(({unmounted}) => history || nextScenes.length <= (prev?.length || 0) || !unmounted)
+                    .filter(({unmounted, index}) => history || nextScenes.length <= (prev?.length || 0) || !unmounted || index < nextScenes.length - 1)
                     .sort((a, b) => a.index !== b.index ? a.index - b.index : a.count - b.count)
             };
         });
