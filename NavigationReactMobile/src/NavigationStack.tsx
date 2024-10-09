@@ -127,7 +127,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
                             <Scene key={subkey} crumb={crumb} url={url} rest={rest} className={className} style={style} wrap renderScene={renderScene} />
                         </Freeze>
                     )).concat(
-                        <SharedElementAnimation key="sharedElements-" sharedElements={!rest ? sharedEls : []}
+                        <SharedElementAnimation key="sharedElements" sharedElements={!rest ? sharedEls : []}
                             unmountStyle={sceneData[sceneData.length - 1].unmountStyle} duration={duration} />
                     )
                 )}
