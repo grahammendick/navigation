@@ -2797,6 +2797,38 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
+        const test = async () => {
+            act(() => stateNavigator.navigate('sceneA'));
+            await act(async () => {
+                var url = stateNavigator.fluent(true)
+                    .navigateBack(1)
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 2);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('A to A -> A to A -> B', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA', trackCrumbTrail: true },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {
             it('should render A -> B+', async function(){
                 var {sceneA, sceneB} = stateNavigator.states;
@@ -2837,9 +2869,13 @@ describe('NavigationMotion', function () {
             });
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 2);
+                assert.equal(scenes.length, 3);
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneA"), null);
+                assert.equal(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[2].querySelector("#sceneB"), null);
+                assert.notEqual(scenes[2].style.display, 'none');
             } finally {
                 act(() => root.unmount());
             }
