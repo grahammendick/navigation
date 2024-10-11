@@ -3685,11 +3685,11 @@ describe('NavigationMotion', function () {
             await act(async () => update(true));
             try {
                 var scenes = container.querySelectorAll<HTMLDivElement>(".scene");
-                assert.notEqual(container.querySelector("#sceneA"), null);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
                 assert.notEqual(scenes[0].style.display, 'none');
-                assert.notEqual(container.querySelector("#sceneB"), null);
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
                 assert.equal(scenes[1].style.display, 'none');
-                assert.notEqual(container.querySelector("#sceneC"), null);
+                assert.notEqual(scenes[2].querySelector("#sceneC"), null);
                 assert.equal(scenes[2].style.display, 'none');
             } finally {
                 act(() => root.unmount());
@@ -3774,11 +3774,11 @@ describe('NavigationMotion', function () {
             await act(async () => update(true));
             try {
                 var scenes = container.querySelectorAll<HTMLDivElement>(".scene");
-                assert.notEqual(container.querySelector("#sceneA"), null);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
                 assert.notEqual(scenes[0].style.display, 'none');
-                assert.notEqual(container.querySelector("#sceneB"), null);
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
                 assert.equal(scenes[1].style.display, 'none');
-                assert.notEqual(container.querySelector("#sceneC"), null);
+                assert.notEqual(scenes[2].querySelector("#sceneC"), null);
                 assert.equal(scenes[2].style.display, 'none');
             } finally {
                 act(() => root.unmount());
