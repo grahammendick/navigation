@@ -1449,6 +1449,42 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
+        const test = async () => {
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => {
+                var url = stateNavigator.fluent()
+                    .navigate('sceneC')
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+            });
+            await act(async () => stateNavigator.navigateBack(1));
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneC"), null);
+                assert.equal(container.querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        }
+    });
+
+    describe('A to A -> B to C -> B to C', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        var SceneC = () => <div id="sceneC" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC' },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {
             it('should render C', async function(){
                 var {sceneA, sceneB, sceneC} = stateNavigator.states;
@@ -1492,10 +1528,12 @@ describe('NavigationMotion', function () {
             await act(async () => stateNavigator.navigateBack(1));
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 1);
+                assert.equal(scenes.length, 2);
                 assert.notEqual(scenes[0].querySelector("#sceneC"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
                 assert.equal(container.querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
             } finally {
                 act(() => root.unmount());
             }
