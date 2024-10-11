@@ -4589,7 +4589,7 @@ describe('NavigationMotion', function () {
                 update = setUpdated;
                 return (
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationStack stackInvalidatedLink={null}>
+                        <NavigationStack stackInvalidatedLink={null} className="scene">
                                 <Scene stateKey="sceneA"><SceneA /></Scene>
                                 {!updated && <Scene stateKey="sceneB"><SceneB /></Scene>}
                                 <Scene stateKey="sceneC"><SceneC /></Scene>
@@ -4603,8 +4603,11 @@ describe('NavigationMotion', function () {
             act(() => stateNavigator.navigate('sceneB'));
             await act(async () => update(true));
             try {
-                assert.notEqual(container.querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
+                var scenes = container.querySelectorAll<HTMLDivElement>(".scene");
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
                 assert.equal(container.querySelector("#sceneC"), null);
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states.sceneA)
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0)
