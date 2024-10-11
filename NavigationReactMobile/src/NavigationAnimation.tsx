@@ -5,11 +5,15 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
     const container = useRef(null);
     useLayoutEffect(() => {
         let cancel = false;
-        scenes.all.forEach(({key, url, pushEnter, popExit, pushExit, popEnter, unmountStyle, crumbStyle}, i) => {
+        scenes.all.forEach(({key, url, pushEnter, popExit, pushExit, popEnter, unmountStyle, crumbStyle, unmounted}, i) => {
             const scene = container.current.children[i];
             const prevNavState = scene.navState || scene.prevNavState;
             if (!scene.animate) {
-                if (popExit) setScenes(({all, ...rest}) => ({all: all.filter((_s, index) => index !== i), ...rest}));
+                if (popExit && !unmounted) {
+                    setScenes(({all, ...rest}) => (
+                        {all: all.map((s, index) => index !== i ? s : {...s, unmounted: true}), ...rest}
+                    ));
+                }
                 if ((pushEnter && prevNavState !== 'pushEnter') || (popEnter && prevNavState !== 'popEnter')) onRest({key, url});
                 scene.prevNavState = pushEnter ? 'pushEnter' : popExit ? 'popExit' : pushExit ? 'pushExit' : 'popEnter';
                 return;

@@ -494,6 +494,33 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
+        const test = async () => {
+            await act(async () => stateNavigator.navigateBack(1));
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        }
+    });
+
+    describe('A -> B to A', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            stateNavigator.navigate('sceneB');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {
             it('should render A', async function(){
                 var {sceneA, sceneB} = stateNavigator.states;
@@ -528,9 +555,11 @@ describe('NavigationMotion', function () {
             await act(async () => stateNavigator.navigateBack(1));
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 1);
+                assert.equal(scenes.length, 2);
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
             } finally {
                 act(() => root.unmount());
             }
