@@ -4695,7 +4695,7 @@ describe('NavigationMotion', function () {
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationStack stackInvalidatedLink={stateNavigator.fluent()
                                 .navigate('sceneC')
-                                .navigate('sceneD').url}>
+                                .navigate('sceneD').url} className="scene">
                             {!updated ? (
                                 <>
                                     <Scene stateKey="sceneA"><SceneA /></Scene>
@@ -4717,8 +4717,14 @@ describe('NavigationMotion', function () {
             act(() => stateNavigator.navigate('sceneB'));
             await act(async () => update(true));
             try {
-                assert.equal(container.querySelector("#sceneB"), null);
-                assert.notEqual(container.querySelector("#sceneD"), null);
+                var scenes = container.querySelectorAll<HTMLDivElement>(".scene");
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[2].querySelector("#sceneD"), null);
+                assert.notEqual(scenes[2].style.display, 'none');
+                assert.equal(container.querySelector("#sceneC"), null);
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states.sceneD)
                 assert.equal(stateNavigator.stateContext.crumbs.length, 1)
             } finally {
