@@ -833,42 +833,31 @@ describe('NavigationMotion', function () {
                 test();
             });
         });
-        describe('Static', () => {
-            it('should render B+', function(){
-                var {sceneA, sceneB} = stateNavigator.states;
-                sceneA.renderScene = () => <SceneA />;
-                sceneB.renderScene = () => <SceneB />;
-                act(() => {
-                    root.render(
-                        <NavigationHandler stateNavigator={stateNavigator}>
-                            <NavigationMotion>
-                                {(_style, scene, key) =>  (
-                                    <div className="scene" id={key} key={key}>{scene}</div>
-                                )}
-                            </NavigationMotion>
-                        </NavigationHandler>
-                    );
-                });
-                test();
-            });
-        });
-        describe('Dynamic', () => {
-            it('should render B+', function(){
-                act(() => {
-                    root.render(
-                        <NavigationHandler stateNavigator={stateNavigator}>
-                            <NavigationMotion
-                                renderMotion={(_style, scene, key) =>  (
-                                    <div className="scene" id={key} key={key}>{scene}</div>
-                                )}>
-                                <Scene stateKey="sceneA"><SceneA /></Scene>
-                                <Scene stateKey="sceneB"><SceneB /></Scene>
-                            </NavigationMotion>
-                        </NavigationHandler>
-                    );
-                });
-                test();
-            });
+        const test = () => {
+            act(() => stateNavigator.navigate('sceneB'));
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneB"), null);
+                assert.equal(container.querySelector("#sceneA"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('A to B', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB' },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
         });
         describe('Static Stack', () => {
             it('should render B+', function(){
@@ -904,9 +893,11 @@ describe('NavigationMotion', function () {
             act(() => stateNavigator.navigate('sceneB'));
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 1);
-                assert.notEqual(scenes[0].querySelector("#sceneB"), null);
-                assert.equal(container.querySelector("#sceneA"), null);
+                assert.equal(scenes.length, 2);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.notEqual(scenes[1].style.display, 'none');
             } finally {
                 act(() => root.unmount());
             }
