@@ -3669,7 +3669,7 @@ describe('NavigationMotion', function () {
                 update = setUpdated;
                 return (
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationStack>
+                        <NavigationStack className="scene">
                             <Scene stateKey="sceneA"><SceneA /></Scene>
                             <Scene stateKey="sceneB"><SceneB /></Scene>
                             {!updated && <Scene stateKey="sceneC"><SceneC /></Scene>}
@@ -3684,9 +3684,13 @@ describe('NavigationMotion', function () {
             act(() => stateNavigator.navigate('sceneC'));
             await act(async () => update(true));
             try {
+                var scenes = container.querySelectorAll<HTMLDivElement>(".scene");
                 assert.notEqual(container.querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
-                assert.equal(container.querySelector("#sceneC"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.notEqual(container.querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
+                assert.notEqual(container.querySelector("#sceneC"), null);
+                assert.equal(scenes[2].style.display, 'none');
             } finally {
                 act(() => root.unmount());
             }
