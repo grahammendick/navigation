@@ -38,6 +38,11 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
                     if (!oldState) scene.pushEnter.finish();
                 }
                 if (popExit && prevNavState !== 'popExit') {
+                    if (prevNavState === 'pushExit') {
+                        scene.prevNavState = 'popEnter';
+                        scene.popEnter.cancel();
+                        scene.popEnter = null;
+                    }
                     scene.navState = 'popExit';
                     scene.pushEnter.reverse();
                 }
@@ -111,7 +116,7 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
                         if (!history && scene?.unmounted) subkey += 1;
                         const wasMounted = !!scene?.pushEnter || !!scene?.popEnter;
                         const noAnimScene = {...scene, ...nextScene, ...noAnim, unmounted: false, subkey};
-                        if (!scene) return {...noAnimScene, pushEnter: true, count};
+                        if (!scene || scene.unmounted) return {...noAnimScene, pushEnter: true, count};
                         if (nextScene.mount && !wasMounted) return {...noAnimScene, popEnter: !scene.popExit, pushEnter: scene.popExit};
                         if (!nextScene.mount && wasMounted) return {...noAnimScene, pushExit: true};
                         return {...scene, ...nextScene, unmounted: false, subkey};
