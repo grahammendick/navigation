@@ -440,150 +440,6 @@ describe('NavigationMotionKey', function () {
         };
     });
 
-    describe('A to A -> B to A -> C history to A -> B', function () {
-        var stateNavigator, root, container, update;
-        var SceneA = () => <div id="sceneA" />;
-        var SceneB = () => {
-            var [updated, setUpdated] = useState(false)
-            update = setUpdated;
-            return <div id="sceneB" data-updated={updated} />;
-        };
-        var SceneC = () => <div id="sceneC" />;
-        beforeEach(() => {
-            update = null;
-            stateNavigator = new StateNavigator([
-                { key: 'sceneA' },
-                { key: 'sceneB', trackCrumbTrail: true },
-                { key: 'sceneC', trackCrumbTrail: true },
-            ]);
-            stateNavigator.navigate('sceneA');
-            container = document.createElement('div');
-            root = createRoot(container)
-        });
-        describe('Static Stack', () => {
-            it('should remember state', async function(){
-                var {sceneA, sceneB, sceneC} = stateNavigator.states;
-                sceneA.renderScene = () => <SceneA />;
-                sceneB.renderScene = () => <SceneB />;
-                sceneC.renderScene = () => <SceneC />;
-                act(() => {
-                    root.render(
-                        <NavigationHandler stateNavigator={stateNavigator}>
-                            <NavigationStack className="scene" />
-                        </NavigationHandler>
-                    );
-                });
-                await test();
-            });
-        });
-        describe('Dynamic Stack', () => {
-            it('should remember state', async function(){
-                act(() => {
-                    root.render(
-                        <NavigationHandler stateNavigator={stateNavigator}>
-                            <NavigationStack className="scene">
-                                <Scene stateKey="sceneA"><SceneA /></Scene>
-                                <Scene stateKey="sceneB"><SceneB /></Scene>
-                                <Scene stateKey="sceneC"><SceneC /></Scene>
-                            </NavigationStack>
-                        </NavigationHandler>
-                    );
-                });
-                await test();
-            });
-        });
-        const test = async () => {
-            await act(async () => stateNavigator.navigate('sceneB'));
-            const historyBack = stateNavigator.stateContext.url;
-            act(() => update(true));
-            await act(async () => {
-                var url = stateNavigator.fluent(true)
-                    .navigateBack(1)
-                    .navigate('sceneC').url;
-                stateNavigator.navigateLink(url);
-            });
-            await act(async () => stateNavigator.navigateLink(historyBack, undefined, true));
-            try {
-                var scene = container.querySelector('#sceneB');
-                assert.strictEqual(scene.dataset.updated, 'true');
-            } finally {
-                act(() => root.unmount());
-            }
-        };
-    });
-
-    describe('A to A -> B to A -> C link to A -> B', function () {
-        var stateNavigator, root, container, update;
-        var SceneA = () => <div id="sceneA" />;
-        var SceneB = () => {
-            var [updated, setUpdated] = useState(false)
-            update = setUpdated;
-            return <div id="sceneB" data-updated={updated} />;
-        };
-        var SceneC = () => <div id="sceneC" />;
-        beforeEach(() => {
-            update = null;
-            stateNavigator = new StateNavigator([
-                { key: 'sceneA' },
-                { key: 'sceneB', trackCrumbTrail: true },
-                { key: 'sceneC', trackCrumbTrail: true },
-            ]);
-            stateNavigator.navigate('sceneA');
-            container = document.createElement('div');
-            root = createRoot(container)
-        });
-        describe('Static Stack', () => {
-            it('should not remember state', async function(){
-                var {sceneA, sceneB, sceneC} = stateNavigator.states;
-                sceneA.renderScene = () => <SceneA />;
-                sceneB.renderScene = () => <SceneB />;
-                sceneC.renderScene = () => <SceneC />;
-                act(() => {
-                    root.render(
-                        <NavigationHandler stateNavigator={stateNavigator}>
-                            <NavigationStack className="scene" />
-                        </NavigationHandler>
-                    );
-                });
-                await test();
-            });
-        });
-        describe('Dynamic Stack', () => {
-            it('should not remember state', async function(){
-                act(() => {
-                    root.render(
-                        <NavigationHandler stateNavigator={stateNavigator}>
-                            <NavigationStack className="scene">
-                                <Scene stateKey="sceneA"><SceneA /></Scene>
-                                <Scene stateKey="sceneB"><SceneB /></Scene>
-                                <Scene stateKey="sceneC"><SceneC /></Scene>
-                            </NavigationStack>
-                        </NavigationHandler>
-                    );
-                });
-                await test();
-            });
-        });
-        const test = async () => {
-            await act(async () => stateNavigator.navigate('sceneB'));
-            const historyBack = stateNavigator.stateContext.url;
-            act(() => update(true));
-            await act(async () => {
-                var url = stateNavigator.fluent(true)
-                    .navigateBack(1)
-                    .navigate('sceneC').url;
-                stateNavigator.navigateLink(url);
-            });
-            await act(async () => stateNavigator.navigateLink(historyBack));
-            try {
-                var scene = container.querySelector('#sceneB');
-                assert.strictEqual(scene.dataset.updated, 'false');
-            } finally {
-                act(() => root.unmount());
-            }
-        };
-    });
-
     describe('A to A -> B to A history to A -> B', function () {
         var stateNavigator, root, container, update;
         var SceneA = () => <div id="sceneA" />;
@@ -764,6 +620,150 @@ describe('NavigationMotionKey', function () {
             act(() => update(true));
             await act(async () => stateNavigator.navigateBack(1));
             await act(async () => stateNavigator.navigate('sceneB'));
+            try {
+                var scene = container.querySelector('#sceneB');
+                assert.strictEqual(scene.dataset.updated, 'false');
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('A to A -> B to A -> C history to A -> B', function () {
+        var stateNavigator, root, container, update;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => {
+            var [updated, setUpdated] = useState(false)
+            update = setUpdated;
+            return <div id="sceneB" data-updated={updated} />;
+        };
+        var SceneC = () => <div id="sceneC" />;
+        beforeEach(() => {
+            update = null;
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+        describe('Static Stack', () => {
+            it('should remember state', async function(){
+                var {sceneA, sceneB, sceneC} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                sceneC.renderScene = () => <SceneC />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene" />
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        describe('Dynamic Stack', () => {
+            it('should remember state', async function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene">
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
+                            </NavigationStack>
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        const test = async () => {
+            await act(async () => stateNavigator.navigate('sceneB'));
+            const historyBack = stateNavigator.stateContext.url;
+            act(() => update(true));
+            await act(async () => {
+                var url = stateNavigator.fluent(true)
+                    .navigateBack(1)
+                    .navigate('sceneC').url;
+                stateNavigator.navigateLink(url);
+            });
+            await act(async () => stateNavigator.navigateLink(historyBack, undefined, true));
+            try {
+                var scene = container.querySelector('#sceneB');
+                assert.strictEqual(scene.dataset.updated, 'true');
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('A to A -> B to A -> C link to A -> B', function () {
+        var stateNavigator, root, container, update;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => {
+            var [updated, setUpdated] = useState(false)
+            update = setUpdated;
+            return <div id="sceneB" data-updated={updated} />;
+        };
+        var SceneC = () => <div id="sceneC" />;
+        beforeEach(() => {
+            update = null;
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+        describe('Static Stack', () => {
+            it('should not remember state', async function(){
+                var {sceneA, sceneB, sceneC} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                sceneC.renderScene = () => <SceneC />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene" />
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        describe('Dynamic Stack', () => {
+            it('should not remember state', async function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene">
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
+                            </NavigationStack>
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        const test = async () => {
+            await act(async () => stateNavigator.navigate('sceneB'));
+            const historyBack = stateNavigator.stateContext.url;
+            act(() => update(true));
+            await act(async () => {
+                var url = stateNavigator.fluent(true)
+                    .navigateBack(1)
+                    .navigate('sceneC').url;
+                stateNavigator.navigateLink(url);
+            });
+            await act(async () => stateNavigator.navigateLink(historyBack));
             try {
                 var scene = container.querySelector('#sceneB');
                 assert.strictEqual(scene.dataset.updated, 'false');
