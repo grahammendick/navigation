@@ -494,6 +494,33 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
+        const test = async () => {
+            await act(async () => stateNavigator.navigateBack(1));
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        }
+    });
+
+    describe('A -> B to A', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            stateNavigator.navigate('sceneB');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {
             it('should render A', async function(){
                 var {sceneA, sceneB} = stateNavigator.states;
@@ -528,9 +555,11 @@ describe('NavigationMotion', function () {
             await act(async () => stateNavigator.navigateBack(1));
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 1);
+                assert.equal(scenes.length, 2);
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
             } finally {
                 act(() => root.unmount());
             }
@@ -587,6 +616,37 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
+        const test = async () => {
+            await act(async () => {
+                stateNavigator.navigate('sceneB');
+            });
+            await act(async () => {
+                stateNavigator.navigateBack(1);
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('A to A -> B to A', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {
             it('should render A', async function(){
                 var {sceneA, sceneB} = stateNavigator.states;
@@ -620,13 +680,17 @@ describe('NavigationMotion', function () {
         const test = async () => {
             await act(async () => {
                 stateNavigator.navigate('sceneB');
+            });
+            await act(async () => {
                 stateNavigator.navigateBack(1);
             });
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 1);
+                assert.equal(scenes.length, 2);
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
             } finally {
                 act(() => root.unmount());
             }
@@ -769,42 +833,31 @@ describe('NavigationMotion', function () {
                 test();
             });
         });
-        describe('Static', () => {
-            it('should render B+', function(){
-                var {sceneA, sceneB} = stateNavigator.states;
-                sceneA.renderScene = () => <SceneA />;
-                sceneB.renderScene = () => <SceneB />;
-                act(() => {
-                    root.render(
-                        <NavigationHandler stateNavigator={stateNavigator}>
-                            <NavigationMotion>
-                                {(_style, scene, key) =>  (
-                                    <div className="scene" id={key} key={key}>{scene}</div>
-                                )}
-                            </NavigationMotion>
-                        </NavigationHandler>
-                    );
-                });
-                test();
-            });
-        });
-        describe('Dynamic', () => {
-            it('should render B+', function(){
-                act(() => {
-                    root.render(
-                        <NavigationHandler stateNavigator={stateNavigator}>
-                            <NavigationMotion
-                                renderMotion={(_style, scene, key) =>  (
-                                    <div className="scene" id={key} key={key}>{scene}</div>
-                                )}>
-                                <Scene stateKey="sceneA"><SceneA /></Scene>
-                                <Scene stateKey="sceneB"><SceneB /></Scene>
-                            </NavigationMotion>
-                        </NavigationHandler>
-                    );
-                });
-                test();
-            });
+        const test = () => {
+            act(() => stateNavigator.navigate('sceneB'));
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneB"), null);
+                assert.equal(container.querySelector("#sceneA"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('A to B', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB' },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
         });
         describe('Static Stack', () => {
             it('should render B+', function(){
@@ -840,9 +893,11 @@ describe('NavigationMotion', function () {
             act(() => stateNavigator.navigate('sceneB'));
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 1);
-                assert.notEqual(scenes[0].querySelector("#sceneB"), null);
-                assert.equal(container.querySelector("#sceneA"), null);
+                assert.equal(scenes.length, 2);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.notEqual(scenes[1].style.display, 'none');
             } finally {
                 act(() => root.unmount());
             }
@@ -903,6 +958,36 @@ describe('NavigationMotion', function () {
                 test();
             });
         });
+        const test = () => {
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => stateNavigator.navigate('sceneC'));
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneC"), null);
+                assert.equal(container.querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('A to B to C', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        var SceneC = () => <div id="sceneC" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB' },
+                { key: 'sceneC' },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {
             it('should render C++', function(){
                 var {sceneA, sceneB, sceneC} = stateNavigator.states;
@@ -940,10 +1025,13 @@ describe('NavigationMotion', function () {
             act(() => stateNavigator.navigate('sceneC'));
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 1);
-                assert.notEqual(scenes[0].querySelector("#sceneC"), null);
-                assert.equal(container.querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
+                assert.equal(scenes.length, 3);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[2].querySelector("#sceneC"), null);
+                assert.notEqual(scenes[2].style.display, 'none');
             } finally {
                 act(() => root.unmount());
             }
@@ -1111,6 +1199,42 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
+        const test = async () => {
+            await act(async () => {
+                var url = stateNavigator.fluent()
+                    .navigate('sceneC')
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+                stateNavigator.navigateBack(1)
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneC"), null);
+                assert.equal(container.querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        }
+    });
+
+    describe('A -> B to C -> B to C', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        var SceneC = () => <div id="sceneC" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC' },
+            ]);
+            stateNavigator.navigate('sceneA');
+            stateNavigator.navigate('sceneB');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {
             it('should render C', async function(){
                 var {sceneA, sceneB, sceneC} = stateNavigator.states;
@@ -1153,10 +1277,12 @@ describe('NavigationMotion', function () {
             });
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 1);
+                assert.equal(scenes.length, 2);
                 assert.notEqual(scenes[0].querySelector("#sceneC"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
                 assert.equal(container.querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
             } finally {
                 act(() => root.unmount());
             }
@@ -1323,6 +1449,42 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
+        const test = async () => {
+            act(() => stateNavigator.navigate('sceneB'));
+            act(() => {
+                var url = stateNavigator.fluent()
+                    .navigate('sceneC')
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+            });
+            await act(async () => stateNavigator.navigateBack(1));
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneC"), null);
+                assert.equal(container.querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        }
+    });
+
+    describe('A to A -> B to C -> B to C', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        var SceneC = () => <div id="sceneC" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC' },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {
             it('should render C', async function(){
                 var {sceneA, sceneB, sceneC} = stateNavigator.states;
@@ -1366,10 +1528,12 @@ describe('NavigationMotion', function () {
             await act(async () => stateNavigator.navigateBack(1));
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 1);
+                assert.equal(scenes.length, 2);
                 assert.notEqual(scenes[0].querySelector("#sceneC"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
                 assert.equal(container.querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
             } finally {
                 act(() => root.unmount());
             }
@@ -1434,6 +1598,44 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
+        const test = async () => {
+            act(() => stateNavigator.navigate('sceneB'));
+            await act(async () => {
+                var url = stateNavigator.fluent()
+                    .navigate('sceneC')
+                    .navigate('sceneD').url;
+                stateNavigator.navigateLink(url);
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 2);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.notEqual(scenes[1].querySelector("#sceneD"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+                assert.equal(container.querySelector("#sceneC"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        }
+    });
+
+    describe('A to A -> B to C -> D', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        var SceneC = () => <div id="sceneC" />;
+        var SceneD = () => <div id="sceneD" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC' },
+                { key: 'sceneD', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {
             it('should render A -> D+', async function(){
                 var {sceneA, sceneB, sceneC, sceneD} = stateNavigator.states;
@@ -1478,10 +1680,13 @@ describe('NavigationMotion', function () {
             });
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 2);
+                assert.equal(scenes.length, 3);
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.notEqual(scenes[1].querySelector("#sceneD"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
+                assert.equal(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[2].querySelector("#sceneD"), null);
+                assert.notEqual(scenes[2].style.display, 'none');
                 assert.equal(container.querySelector("#sceneC"), null);
             } finally {
                 act(() => root.unmount());
@@ -1648,6 +1853,43 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
+        const test = async () => {
+            await act(async () => {
+                var url = stateNavigator.fluent(true)
+                    .navigate('sceneB')
+                    .navigate('sceneC').url;
+                stateNavigator.navigateLink(url);
+            });
+            await act(async () => {
+                stateNavigator.navigateBack(1);
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 2);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(container.querySelector("#sceneC"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('A to A -> B -> C to A -> B', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        var SceneC = () => <div id="sceneC" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {
             it('should render A -> B', async function(){
                 var {sceneA, sceneB, sceneC} = stateNavigator.states;
@@ -1686,14 +1928,19 @@ describe('NavigationMotion', function () {
                     .navigate('sceneB')
                     .navigate('sceneC').url;
                 stateNavigator.navigateLink(url);
+            });
+            await act(async () => {
                 stateNavigator.navigateBack(1);
             });
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 2);
+                assert.equal(scenes.length, 3);
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(scenes[0].style.display, 'none');
                 assert.notEqual(scenes[1].querySelector("#sceneB"), null);
-                assert.equal(container.querySelector("#sceneC"), null);
+                assert.notEqual(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[2].querySelector("#sceneC"), null);
+                assert.equal(scenes[2].style.display, 'none');
             } finally {
                 act(() => root.unmount());
             }
@@ -1875,6 +2122,51 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
+        const test = async () => {
+            await act(async () => {
+                var url = stateNavigator.fluent(true)
+                    .navigate('sceneB')
+                    .navigate('sceneC').url;
+                stateNavigator.navigateLink(url);
+                url = stateNavigator.fluent(true)
+                    .navigateBack(2)
+                    .navigate('sceneD')
+                    .navigate('sceneC').url;
+                stateNavigator.navigateLink(url);
+            });
+            await act(async () => {
+                stateNavigator.navigateBack(1);
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 2);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.notEqual(scenes[1].querySelector("#sceneD"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+                assert.equal(container.querySelector("#sceneC"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('A to A -> B -> C to A -> D -> C to A -> D', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        var SceneC = () => <div id="sceneC" />;
+        var SceneD = () => <div id="sceneD" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+                { key: 'sceneD', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {
             it('should render A -> D', async function(){
                 var {sceneA, sceneB, sceneC, sceneD} = stateNavigator.states;
@@ -1920,15 +2212,20 @@ describe('NavigationMotion', function () {
                     .navigate('sceneD')
                     .navigate('sceneC').url;
                 stateNavigator.navigateLink(url);
+            });
+            await act(async () => {
                 stateNavigator.navigateBack(1);
             });
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 2);
+                assert.equal(scenes.length, 3);
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(scenes[0].style.display, 'none');
                 assert.notEqual(scenes[1].querySelector("#sceneD"), null);
+                assert.notEqual(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[2].querySelector("#sceneC"), null);
+                assert.equal(scenes[2].style.display, 'none');
                 assert.equal(container.querySelector("#sceneB"), null);
-                assert.equal(container.querySelector("#sceneC"), null);
             } finally {
                 act(() => root.unmount());
             }
@@ -1989,6 +2286,43 @@ describe('NavigationMotion', function () {
                 await test();
             })
         });
+        const test = async () => {
+            await act(async () => {
+                var url = stateNavigator.fluent(true)
+                    .navigate('sceneB')
+                    .navigate('sceneC').url;
+                stateNavigator.navigateLink(url);
+            });
+            await act(async () => {
+                stateNavigator.navigateBack(2);
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+                assert.equal(container.querySelector("#sceneC"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('A to A -> B -> C to A', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        var SceneC = () => <div id="sceneC" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {            
             it('should render A', async function(){
                 var {sceneA, sceneB, sceneC} = stateNavigator.states;
@@ -2027,14 +2361,19 @@ describe('NavigationMotion', function () {
                     .navigate('sceneB')
                     .navigate('sceneC').url;
                 stateNavigator.navigateLink(url);
+            });
+            await act(async () => {
                 stateNavigator.navigateBack(2);
             });
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 1);
+                assert.equal(scenes.length, 3);
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.equal(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[2].querySelector("#sceneC"), null);
+                assert.equal(scenes[2].style.display, 'none');
                 assert.equal(container.querySelector("#sceneB"), null);
-                assert.equal(container.querySelector("#sceneC"), null);
             } finally {
                 act(() => root.unmount());
             }
@@ -2097,6 +2436,37 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
+        const test = async () => {
+            await act(async () => stateNavigator.navigateBack(2));
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+                assert.equal(container.querySelector("#sceneC"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('A -> B -> C to A', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        var SceneC = () => <div id="sceneC" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            stateNavigator.navigate('sceneB');
+            stateNavigator.navigate('sceneC');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {
             it('should render A', async function(){
                 var {sceneA, sceneB, sceneC} = stateNavigator.states;
@@ -2133,10 +2503,13 @@ describe('NavigationMotion', function () {
             await act(async () => stateNavigator.navigateBack(2));
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 1);
+                assert.equal(scenes.length, 3);
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.equal(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[2].querySelector("#sceneC"), null);
+                assert.equal(scenes[2].style.display, 'none');
                 assert.equal(container.querySelector("#sceneB"), null);
-                assert.equal(container.querySelector("#sceneC"), null);
             } finally {
                 act(() => root.unmount());
             }
@@ -2199,6 +2572,41 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
+        const test = async () => {
+            await act(async () => {
+                var url = stateNavigator.fluent()
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 1);
+                assert.notEqual(scenes[0].querySelector("#sceneB"), null);
+                assert.equal(container.querySelector("#sceneA"), null);
+                assert.equal(container.querySelector("#sceneC"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('A -> B -> C to B', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        var SceneC = () => <div id="sceneC" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            stateNavigator.navigate('sceneB');
+            stateNavigator.navigate('sceneC');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {
             it('should render B', async function(){
                 var {sceneA, sceneB, sceneC} = stateNavigator.states;
@@ -2239,10 +2647,13 @@ describe('NavigationMotion', function () {
             });
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 1);
+                assert.equal(scenes.length, 3);
                 assert.notEqual(scenes[0].querySelector("#sceneB"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.equal(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[2].querySelector("#sceneC"), null);
+                assert.equal(scenes[2].style.display, 'none');
                 assert.equal(container.querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneC"), null);
             } finally {
                 act(() => root.unmount());
             }
@@ -2386,6 +2797,38 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
+        const test = async () => {
+            act(() => stateNavigator.navigate('sceneA'));
+            await act(async () => {
+                var url = stateNavigator.fluent(true)
+                    .navigateBack(1)
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 2);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('A to A -> A to A -> B', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA', trackCrumbTrail: true },
+                { key: 'sceneB', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {
             it('should render A -> B+', async function(){
                 var {sceneA, sceneB} = stateNavigator.states;
@@ -2426,9 +2869,13 @@ describe('NavigationMotion', function () {
             });
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 2);
+                assert.equal(scenes.length, 3);
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneA"), null);
+                assert.equal(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[2].querySelector("#sceneB"), null);
+                assert.notEqual(scenes[2].style.display, 'none');
             } finally {
                 act(() => root.unmount());
             }
@@ -2489,6 +2936,49 @@ describe('NavigationMotion', function () {
                 await test();
             });
         });
+        const test = async () => {
+            act(() => stateNavigator.navigate('sceneA'));
+            await act(async () => {
+                var url = stateNavigator.fluent(true)
+                    .navigateBack(1)
+                    .navigate('sceneB').url;
+                stateNavigator.navigateLink(url);
+            });
+            act(() => stateNavigator.navigate('sceneC'));
+            await act(async () => stateNavigator.navigateBack(1));
+            await act(async () => {
+                var url = stateNavigator.fluent(true)
+                    .navigateBack(1)
+                    .navigate('sceneC').url;
+                stateNavigator.navigateLink(url);
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 2);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.notEqual(scenes[1].querySelector("#sceneC"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('A to A -> A to A -> B to A -> B -> C to A -> B to A -> C', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        var SceneC = () => <div id="sceneC" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA', trackCrumbTrail: true },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
         describe('Static Stack', () => {            
             it('should render A -> C++', async function(){
                 var {sceneA, sceneB, sceneC} = stateNavigator.states;
@@ -2539,10 +3029,17 @@ describe('NavigationMotion', function () {
             });
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 2);
+                assert.equal(scenes.length, 5);
                 assert.notEqual(scenes[0].querySelector("#sceneA"), null);
-                assert.notEqual(scenes[1].querySelector("#sceneC"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
+                assert.equal(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneA"), null);
+                assert.equal(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[2].querySelector("#sceneB"), null);
+                assert.equal(scenes[2].style.display, 'none');
+                assert.notEqual(scenes[3].querySelector("#sceneC"), null);
+                assert.notEqual(scenes[3].style.display, 'none');
+                assert.notEqual(scenes[4].querySelector("#sceneC"), null);
+                assert.equal(scenes[4].style.display, 'none');
             } finally {
                 act(() => root.unmount());
             }
@@ -3172,7 +3669,7 @@ describe('NavigationMotion', function () {
                 update = setUpdated;
                 return (
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationStack>
+                        <NavigationStack className="scene">
                             <Scene stateKey="sceneA"><SceneA /></Scene>
                             <Scene stateKey="sceneB"><SceneB /></Scene>
                             {!updated && <Scene stateKey="sceneC"><SceneC /></Scene>}
@@ -3187,9 +3684,13 @@ describe('NavigationMotion', function () {
             act(() => stateNavigator.navigate('sceneC'));
             await act(async () => update(true));
             try {
-                assert.notEqual(container.querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
-                assert.equal(container.querySelector("#sceneC"), null);
+                var scenes = container.querySelectorAll<HTMLDivElement>(".scene");
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[2].querySelector("#sceneC"), null);
+                assert.equal(scenes[2].style.display, 'none');
             } finally {
                 act(() => root.unmount());
             }
@@ -3257,7 +3758,7 @@ describe('NavigationMotion', function () {
                 update = setUpdated;
                 return (
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationStack>
+                        <NavigationStack className="scene">
                             <Scene stateKey="sceneA"><SceneA /></Scene>
                             {!updated && <Scene stateKey="sceneB"><SceneB /></Scene>}
                             <Scene stateKey="sceneC"><SceneC /></Scene>
@@ -3272,9 +3773,13 @@ describe('NavigationMotion', function () {
             act(() => stateNavigator.navigate('sceneC'));
             await act(async () => update(true));
             try {
-                assert.notEqual(container.querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
-                assert.equal(container.querySelector("#sceneC"), null);
+                var scenes = container.querySelectorAll<HTMLDivElement>(".scene");
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[2].querySelector("#sceneC"), null);
+                assert.equal(scenes[2].style.display, 'none');
             } finally {
                 act(() => root.unmount());
             }
@@ -3444,7 +3949,7 @@ describe('NavigationMotion', function () {
                 update = setUpdated;
                 return (
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationStack>
+                        <NavigationStack className="scene">
                             {!updated ? (
                                 <>
                                     <Scene stateKey="sceneA"><SceneA /></Scene>
@@ -3466,9 +3971,12 @@ describe('NavigationMotion', function () {
             act(() => stateNavigator.navigate('sceneB'));
             await act(async () => update(true));
             try {
+                var scenes = container.querySelectorAll<HTMLDivElement>(".scene");
+                assert.notEqual(scenes[0].querySelector("#sceneC"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
                 assert.equal(container.querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
-                assert.notEqual(container.querySelector("#sceneC"), null);
             } finally {
                 act(() => root.unmount());
             }
@@ -3899,7 +4407,7 @@ describe('NavigationMotion', function () {
                 update = setUpdated;
                 return (
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationStack stackInvalidatedLink="/sceneC">
+                        <NavigationStack stackInvalidatedLink="/sceneC" className="scene">
                                 <Scene stateKey="sceneA"><SceneA /></Scene>
                                 {!updated && <Scene stateKey="sceneB"><SceneB /></Scene>}
                                 <Scene stateKey="sceneC"><SceneC /></Scene>
@@ -3913,9 +4421,12 @@ describe('NavigationMotion', function () {
             act(() => stateNavigator.navigate('sceneB'));
             await act(async () => update(true));
             try {
+                var scenes = container.querySelectorAll<HTMLDivElement>(".scene");
+                assert.notEqual(scenes[0].querySelector("#sceneC"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
                 assert.equal(container.querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
-                assert.notEqual(container.querySelector("#sceneC"), null);
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states.sceneC)
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0)
             } finally {
@@ -3987,7 +4498,7 @@ describe('NavigationMotion', function () {
                 update = setUpdated;
                 return (
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationStack stackInvalidatedLink="/sceneC">
+                        <NavigationStack stackInvalidatedLink="/sceneC" className="scene">
                                 {!updated && <Scene stateKey="sceneA"><SceneA /></Scene>}
                                 <Scene stateKey="sceneB"><SceneB /></Scene>
                                 <Scene stateKey="sceneC"><SceneC /></Scene>
@@ -4001,9 +4512,12 @@ describe('NavigationMotion', function () {
             act(() => stateNavigator.navigate('sceneB'));
             await act(async () => update(true));
             try {
+                var scenes = container.querySelectorAll<HTMLDivElement>(".scene");
+                assert.notEqual(scenes[0].querySelector("#sceneC"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
                 assert.equal(container.querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
-                assert.notEqual(container.querySelector("#sceneC"), null);
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states.sceneC)
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0)
             } finally {
@@ -4075,7 +4589,7 @@ describe('NavigationMotion', function () {
                 update = setUpdated;
                 return (
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <NavigationStack stackInvalidatedLink={null}>
+                        <NavigationStack stackInvalidatedLink={null} className="scene">
                                 <Scene stateKey="sceneA"><SceneA /></Scene>
                                 {!updated && <Scene stateKey="sceneB"><SceneB /></Scene>}
                                 <Scene stateKey="sceneC"><SceneC /></Scene>
@@ -4089,8 +4603,11 @@ describe('NavigationMotion', function () {
             act(() => stateNavigator.navigate('sceneB'));
             await act(async () => update(true));
             try {
-                assert.notEqual(container.querySelector("#sceneA"), null);
-                assert.equal(container.querySelector("#sceneB"), null);
+                var scenes = container.querySelectorAll<HTMLDivElement>(".scene");
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.notEqual(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
                 assert.equal(container.querySelector("#sceneC"), null);
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states.sceneA)
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0)
@@ -4178,7 +4695,7 @@ describe('NavigationMotion', function () {
                     <NavigationHandler stateNavigator={stateNavigator}>
                         <NavigationStack stackInvalidatedLink={stateNavigator.fluent()
                                 .navigate('sceneC')
-                                .navigate('sceneD').url}>
+                                .navigate('sceneD').url} className="scene">
                             {!updated ? (
                                 <>
                                     <Scene stateKey="sceneA"><SceneA /></Scene>
@@ -4200,8 +4717,14 @@ describe('NavigationMotion', function () {
             act(() => stateNavigator.navigate('sceneB'));
             await act(async () => update(true));
             try {
-                assert.equal(container.querySelector("#sceneB"), null);
-                assert.notEqual(container.querySelector("#sceneD"), null);
+                var scenes = container.querySelectorAll<HTMLDivElement>(".scene");
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[2].querySelector("#sceneD"), null);
+                assert.notEqual(scenes[2].style.display, 'none');
+                assert.equal(container.querySelector("#sceneC"), null);
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states.sceneD)
                 assert.equal(stateNavigator.stateContext.crumbs.length, 1)
             } finally {

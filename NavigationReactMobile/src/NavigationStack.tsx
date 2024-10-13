@@ -99,10 +99,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             const {keys: prevKeys, stateNavigator: prevStateNavigator} = prevStackState;
             const {state, crumbs, nextCrumb} = stateNavigator.stateContext;
             const prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
-            const currentKeys = crumbs.concat(nextCrumb).reduce((arr, {state: {key}}) => {
-                const prevKey = arr[arr.length - 1];
-                return [...arr, `${prevKey ? `${prevKey}->` : ''}${key.replace(/-/g, '-|')}`]
-            }, []);
+            const currentKeys = crumbs.concat(nextCrumb).map(({state: {key}}, i) => `${key}-${i}`);
             const newKeys = currentKeys.slice(prevKeys.length);
             const keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
             if (prevKeys.length === keys.length && prevState !== state)
@@ -123,14 +120,14 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     const sceneData = getScenes();
     return (stateContext.state &&
         <SharedElementContext.Provider value={sharedElementRegistry as any}>
-            <NavigationAnimation data={sceneData} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null}>
+            <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null}>
                 {scenes => (
-                    scenes.map(({key, index: crumb, url, className, style}) => (
-                        <Freeze key={key} enabled={rest && crumb < sceneData.length - 1}>
-                            <Scene crumb={crumb} url={url} rest={rest} className={className} style={style} wrap renderScene={renderScene} />
+                    scenes.map(({key, subkey, index: crumb, url, unmounted, className, style}) => (
+                        <Freeze key={key} enabled={(rest && crumb < sceneData.length - 1) || unmounted}>
+                            <Scene key={subkey} crumb={crumb} url={url} rest={rest} className={className} style={style} wrap renderScene={renderScene} />
                         </Freeze>
                     )).concat(
-                        <SharedElementAnimation key="sharedElements-" sharedElements={!rest ? sharedEls : []}
+                        <SharedElementAnimation key="sharedElements" sharedElements={!rest ? sharedEls : []}
                             unmountStyle={sceneData[sceneData.length - 1].unmountStyle} duration={duration} />
                     )
                 )}
