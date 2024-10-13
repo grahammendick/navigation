@@ -1160,4 +1160,64 @@ describe('NavigationMotionKey', function () {
             }
         };
     });
+
+    describe('A to A -> B to A to A -> C', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        var SceneC = () => <div id="sceneC" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+        describe('Static Stack', () => {
+            it('should not remember scene', async function(){
+                var {sceneA, sceneB, sceneC} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                sceneC.renderScene = () => <SceneC />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene" />
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        describe('Dynamic Stack', () => {
+            it('should not remember scene', async function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene">
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
+                            </NavigationStack>
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        const test = async () => {
+            await act(async () => stateNavigator.navigate('sceneB'));
+            await act(async () => stateNavigator.navigateBack(1));
+            await act(async () => stateNavigator.navigate('sceneC'));
+            try {
+                var scene = container.querySelector('#sceneB');
+                assert.equal(scene, null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
 });
