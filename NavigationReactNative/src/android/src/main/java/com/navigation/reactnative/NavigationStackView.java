@@ -188,8 +188,12 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 fragment.setReturnTransition(scene.exitTrans);
                 fragment.returnAnimator = scene.exitAnimator;
                 fragmentTransaction.replace(getId(), fragment, key);
-                if (nextCrumb > 0) fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
-                fragmentTransaction.commit();
+                if (nextCrumb > 0) {
+                    fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
+                    fragmentTransaction.commit();
+                } else {
+                    fragmentTransaction.commitNowAllowingStateLoss();
+                }
                 prevFragment = fragment;
             }
         }
