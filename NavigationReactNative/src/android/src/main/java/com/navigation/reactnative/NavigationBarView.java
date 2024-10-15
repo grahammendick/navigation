@@ -32,6 +32,7 @@ public class NavigationBarView extends AppBarLayout {
         defaultOutlineProvider = getOutlineProvider();
         defaultBackground = getBackground();
         defaultShadowColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? getOutlineAmbientShadowColor() : -16777216;
+        setLiftOnScroll(false);
         addOnOffsetChangedListener((appBarLayout, offset) -> {
             ReactContext reactContext = (ReactContext) getContext();
             EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
