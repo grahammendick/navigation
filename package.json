@@ -13,7 +13,7 @@
     "gulp-mocha": "^8.0.0",
     "gulp-rename": "^1.2.3",
     "gulp-terser": "^1.2.0",
-    "jsdom": "^16.5.3",
+    "jsdom": "^25.0.1",
     "navigation": "file:build/npm/navigation",
     "navigation-react": "file:build/npm/navigation-react",
     "navigation-react-mobile": "file:build/npm/navigation-react-mobile",

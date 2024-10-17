@@ -10,7 +10,7 @@ import { JSDOM } from 'jsdom';
 
 declare var global: any;
 global.IS_REACT_ACT_ENVIRONMENT = true;
-var { window } = new JSDOM('<!doctype html><html><body></body></html>', { pretendToBeVisual: true });
+var { window } = new JSDOM('<!doctype html><html><body></body></html>', { pretendToBeVisual: true, url: 'https://navigation.com' });
 window.addEventListener = () => {};
 global.window = window;
 global.document = window.document;
