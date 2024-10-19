@@ -46,8 +46,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected final HashMap<String, SceneView> scenes = new HashMap<>();
     Fragment fragment = null;
     protected ReadableArray keys;
+    protected ReadableArray oldKeys;
     private int oldCrumb = -1;
-    private String oldKey;
     private Activity mainActivity;
     protected String fragmentTag;
     protected ReadableArray ancestorFragmentTags;
@@ -124,7 +124,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         int currentCrumb = oldCrumb;
         if (crumb < currentCrumb) {
             FragmentManager fragmentManager = fragment.getChildFragmentManager();
-            SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKey);
+            SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKeys.getString(oldCrumb));
             Pair[] sharedElements = fragment != null ? getOldSharedElements(currentCrumb, crumb, fragment) : null;
             SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(keys.getString(crumb));
             if (prevFragment != null && prevFragment.getScene() != null) {
@@ -136,8 +136,16 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 if (sharedElements != null)
                     prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(sharedElementNames), containerTransform);
             }
-            fragmentManager.popBackStack(crumb > 0 ? String.valueOf(crumb) : null, crumb > 0 ? 0 : FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            currentCrumb = crumb;
+            String key = keys.getString(crumb);
+            SceneView scene = scenes.get(key);
+            assert scene != null : "Scene is null";
+            String name = crumb > 0 ? String.valueOf(crumb) : null;
+            if (scene.getParent() != null) {
+                fragmentManager.popBackStack(name, crumb > 0 ? 0 : FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            } else {
+                fragmentManager.popBackStackImmediate(name, crumb > 0 ? 0 : FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                currentCrumb = oldCrumb = crumb;
+            }
         }
         if (crumb > currentCrumb) {
             final FragmentManager fragmentManager = fragment.getChildFragmentManager();
@@ -208,7 +216,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             int popEnter = getAnimationResourceId(currentActivity, scene.enterAnim, animator.fragment_close_enter);
             int popExit = getAnimationResourceId(currentActivity, scene.exitAnim, animator.fragment_close_exit);
             FragmentManager fragmentManager = fragment.getChildFragmentManager();
-            SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKey);
+            SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKeys.getString(oldCrumb));
             if (prevFragment != null) {
                 if (enterTrans != null || exitTrans != null || scene.enterTrans != null || scene.exitTrans != null) {
                     exitTrans = exitTrans != null ? exitTrans : new MaterialFade();
@@ -239,7 +247,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             fragmentTransaction.commit();
         }
         oldCrumb = keys.size() - 1;
-        oldKey = keys.getString(oldCrumb);
+        oldKeys = keys;
     }
 
     int getAnimationResourceId(Context context, String animationName, int defaultId) {
