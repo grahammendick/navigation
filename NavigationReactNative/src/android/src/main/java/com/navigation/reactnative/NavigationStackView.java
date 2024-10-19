@@ -137,6 +137,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(sharedElementNames), containerTransform);
             }
             fragmentManager.popBackStack(crumb > 0 ? String.valueOf(crumb) : null, crumb > 0 ? 0 : FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            currentCrumb = crumb;
         }
         if (crumb > currentCrumb) {
             final FragmentManager fragmentManager = fragment.getChildFragmentManager();
@@ -197,12 +198,13 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 prevFragment = fragment;
             }
         }
-        if (crumb == currentCrumb && !oldKey.equals(keys.getString(crumb))) {
+        if (crumb == currentCrumb) {
             int enter = getAnimationResourceId(currentActivity, enterAnim, animator.fragment_open_enter);
             int exit = getAnimationResourceId(currentActivity, exitAnim, animator.fragment_open_exit);
             String key = keys.getString(crumb);
             SceneView scene = scenes.get(key);
             assert scene != null : "Scene is null";
+            if (scene.getParent() != null) return;
             int popEnter = getAnimationResourceId(currentActivity, scene.enterAnim, animator.fragment_close_enter);
             int popExit = getAnimationResourceId(currentActivity, scene.exitAnim, animator.fragment_close_exit);
             FragmentManager fragmentManager = fragment.getChildFragmentManager();
