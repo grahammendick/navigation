@@ -124,13 +124,15 @@ public class TabBarItemView extends ViewGroup {
     }
 
     void setTabView(TabView tabView, int index) {
-        this.tabView = tabView;
         this.index = index;
-        if (icon != null)
-            tabView.setIcon(index, icon);
-        setBadge(badge);
-        tabView.setTitle(index, styledTitle);
-        tabView.setTestID(index, testID);
+        if (this.tabView != tabView) {
+            this.tabView = tabView;
+            if (icon != null)
+                tabView.setIcon(index, icon);
+            setBadge(badge);
+            tabView.setTitle(index, styledTitle);
+            tabView.setTestID(index, testID);
+        }
     }
 
     void styleTitle() {
