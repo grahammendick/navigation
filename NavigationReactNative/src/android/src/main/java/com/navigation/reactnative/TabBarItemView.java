@@ -4,7 +4,7 @@ import android.os.Build;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
-import android.text.style.AbsoluteSizeSpan;
+import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.view.View;
@@ -124,13 +124,15 @@ public class TabBarItemView extends ViewGroup {
     }
 
     void setTabView(TabView tabView, int index) {
-        this.tabView = tabView;
         this.index = index;
-        if (icon != null)
-            tabView.setIcon(index, icon);
-        setBadge(badge);
-        tabView.setTitle(index, styledTitle);
-        tabView.setTestID(index, testID);
+        if (this.tabView != tabView) {
+            this.tabView = tabView;
+            if (icon != null)
+                tabView.setIcon(index, icon);
+            setBadge(badge);
+            tabView.setTitle(index, styledTitle);
+            tabView.setTestID(index, testID);
+        }
     }
 
     void styleTitle() {
@@ -149,7 +151,7 @@ public class TabBarItemView extends ViewGroup {
                 if (fontStyle != null)
                     titleSpannable.setSpan(new StyleSpan(ReactTypefaceUtils.parseFontStyle(fontStyle)), 0, title.length(), 0);
                 if (fontSize != null)
-                    titleSpannable.setSpan(new AbsoluteSizeSpan(fontSize, true), 0, title.length(), 0);
+                    titleSpannable.setSpan(new RelativeSizeSpan(fontSize / 14f), 0, title.length(), 0);
             }
             styledTitle = titleSpannable;
             if (tabView != null)

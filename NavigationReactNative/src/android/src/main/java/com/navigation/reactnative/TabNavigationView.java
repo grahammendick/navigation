@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -50,9 +51,10 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         TabBarView tabBar = getTabBar();
         for (int i = 0; tabBar != null && i < tabBar.tabFragments.size(); i++) {
             CharSequence title = getTabBar().tabFragments.get(i).tabBarItem.styledTitle;
-            if (getMenu().findItem(i) != null)
-                getMenu().findItem(i).setTitle(title);
-            else
+            MenuItem item = getMenu().findItem(i);
+            if (item != null && item.getTitle() != title)
+                item.setTitle(title);
+            if (item == null)
                 getMenu().add(Menu.NONE, i, i, title);
         }
         assert tabBar != null;
