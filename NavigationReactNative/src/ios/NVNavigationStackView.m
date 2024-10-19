@@ -144,7 +144,8 @@
     NSInteger currentCrumb = [_navigationController.viewControllers count] - 1;
     if (crumb < currentCrumb) {
         [_navigationController popToViewController:_navigationController.viewControllers[crumb] animated:true];
-        currentCrumb = crumb;
+        NVSceneView *scene = (NVSceneView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
+        if (![scene reactViewController]) currentCrumb = crumb;
     }
     BOOL animate = ![self.enterAnim isEqualToString:@""] && [_navigationController.viewControllers count] > 0;
     if (crumb > currentCrumb) {
