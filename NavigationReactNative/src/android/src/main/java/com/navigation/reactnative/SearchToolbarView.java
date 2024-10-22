@@ -84,13 +84,7 @@ public class SearchToolbarView extends SearchBar implements DrawerToggleHandler 
             setOverflowIcon(d);
             setTintColor(getOverflowIcon());
         };
-        setOnMenuItemClickListener(item -> {
-            for (int i = 0; i < children.size(); i++) {
-                if (children.get(i).getMenuItem() == item)
-                    children.get(i).press();
-            }
-            return true;
-        });
+        setOnMenuItemClickListener(this::onMenuItemClick);
     }
 
     void setFontFamily(String fontFamily) {
@@ -197,6 +191,7 @@ public class SearchToolbarView extends SearchBar implements DrawerToggleHandler 
                 defaultNavigationIcon = getNavigationIcon();
                 activity.setSupportActionBar(null);
                 addNavigationListener();
+                setOnMenuItemClickListener(this::onMenuItemClick);
             } else {
                 registerDrawerToggleHandler();
             }
@@ -204,6 +199,7 @@ public class SearchToolbarView extends SearchBar implements DrawerToggleHandler 
             defaultNavigationIcon = searchDefaultNavigationIcon;
             setNavigationIcon(navigationIcon != null ? navigationIcon : defaultNavigationIcon);
             addNavigationListener();
+            setOnMenuItemClickListener(this::onMenuItemClick);
         }
         setTintColor(getNavigationIcon());
         setTestID();
@@ -232,6 +228,14 @@ public class SearchToolbarView extends SearchBar implements DrawerToggleHandler 
             EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
             eventDispatcher.dispatchEvent(new SearchToolbarView.NavigationPressEvent(getId()));
         });
+    }
+
+    private boolean onMenuItemClick(MenuItem item) {
+        for (int i = 0; i < children.size(); i++) {
+            if (children.get(i).getMenuItem() == item)
+                children.get(i).press();
+        }
+        return true;
     }
 
     void setNavigationTestID(String navigationTestID) {
