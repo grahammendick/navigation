@@ -88,17 +88,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView, DrawerTo
             setTintColor(getOverflowIcon());
         };
         setNavigationOnClickListener(this::onNavigationClick);
-        setOnMenuItemClickListener(item -> {
-            for (int i = 0; i < children.size(); i++) {
-                if (children.get(i) instanceof BarButtonView barButtonView) {
-                    if (barButtonView.getMenuItem() != item)
-                        barButtonView.getMenuItem().collapseActionView();
-                    else
-                        barButtonView.press();
-                }
-            }
-            return true;
-        });
+        setOnMenuItemClickListener(this::onMenuItemClick);
     }
 
     private int getDefaultTitleTextColor() {
@@ -267,12 +257,14 @@ public class ToolbarView extends MaterialToolbar implements ActionView, DrawerTo
                 activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 activity.setSupportActionBar(null);
                 setNavigationOnClickListener(this::onNavigationClick);
+                setOnMenuItemClickListener(this::onMenuItemClick);
             } else {
                 registerDrawerToggleHandler();
             }
         } else {
             setNavigationIcon(navigationIcon);
             setNavigationOnClickListener(this::onNavigationClick);
+            setOnMenuItemClickListener(this::onMenuItemClick);
         }
         setTintColor(getNavigationIcon());
         setTestID();
@@ -319,6 +311,18 @@ public class ToolbarView extends MaterialToolbar implements ActionView, DrawerTo
         ReactContext reactContext = (ReactContext) getContext();
         EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
         eventDispatcher.dispatchEvent(new NavigationPressEvent(getId()));
+    }
+
+    private boolean onMenuItemClick(MenuItem item) {
+        for (int i = 0; i < children.size(); i++) {
+            if (children.get(i) instanceof BarButtonView barButtonView) {
+                if (barButtonView.getMenuItem() != item)
+                    barButtonView.getMenuItem().collapseActionView();
+                else
+                    barButtonView.press();
+            }
+        }
+        return true;
     }
 
     public void setOnSearchListener(OnSearchListener onSearchListener) {

@@ -90,20 +90,7 @@ public class BottomAppBarView extends BottomAppBar implements ActionView, Drawer
             }
         };
         setNavigationOnClickListener(this::onNavigationClick);
-        setOnMenuItemClickListener(new OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                for (int i = 0; i < children.size(); i++) {
-                    if (children.get(i) instanceof BarButtonView barButtonView) {
-                        if (barButtonView.getMenuItem() != item)
-                            barButtonView.getMenuItem().collapseActionView();
-                        else
-                            barButtonView.press();
-                    }
-                }
-                return true;
-            }
-        });
+        setOnMenuItemClickListener(this::onMenuItemClick);
     }
 
     @Override
@@ -233,12 +220,14 @@ public class BottomAppBarView extends BottomAppBar implements ActionView, Drawer
                 activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 activity.setSupportActionBar(null);
                 setNavigationOnClickListener(this::onNavigationClick);
+                setOnMenuItemClickListener(this::onMenuItemClick);
             } else {
                 registerDrawerToggleHandler();
             }
         } else {
             setNavigationIcon(navigationIcon);
             setNavigationOnClickListener(this::onNavigationClick);
+            setOnMenuItemClickListener(this::onMenuItemClick);
         }
         setTintColor(getNavigationIcon());
         setTestID();
@@ -260,6 +249,18 @@ public class BottomAppBarView extends BottomAppBar implements ActionView, Drawer
         ReactContext reactContext = (ReactContext) (getContext() instanceof ReactContext ? getContext() : ((ContextWrapper) getContext()).getBaseContext());
         EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
         eventDispatcher.dispatchEvent(new BottomAppBarView.NavigationPressEvent(getId()));
+    }
+
+    private boolean onMenuItemClick(MenuItem item) {
+        for (int i = 0; i < children.size(); i++) {
+            if (children.get(i) instanceof BarButtonView barButtonView) {
+                if (barButtonView.getMenuItem() != item)
+                    barButtonView.getMenuItem().collapseActionView();
+                else
+                    barButtonView.press();
+            }
+        }
+        return true;
     }
 
     public void setOnSearchListener(OnSearchListener onSearchListener) {
