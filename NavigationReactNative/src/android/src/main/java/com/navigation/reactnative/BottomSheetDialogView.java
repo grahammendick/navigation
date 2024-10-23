@@ -128,7 +128,7 @@ public class BottomSheetDialogView extends ReactViewGroup {
                         dialogView.nativeEventCount++;
                         dialogView.detent = i;
                         ReactContext reactContext = (ReactContext) dialogView.getContext();
-                        EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                        EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, dialogView.getId());
                         eventDispatcher.dispatchEvent(new BottomSheetDialogView.DetentChangedEvent(dialogView.getId(), dialogView.detent, dialogView.nativeEventCount));
                     }
 
