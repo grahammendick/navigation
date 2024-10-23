@@ -7,7 +7,7 @@ PODS:
   - hermes-engine (0.74.2):
     - hermes-engine/Pre-built (= 0.74.2)
   - hermes-engine/Pre-built (0.74.2)
-  - navigation-react-native (9.20.0):
+  - navigation-react-native (9.22.3):
     - React-Core
   - RCT-Folly (2024.01.01.00):
     - boost
@@ -1352,7 +1352,7 @@ SPEC CHECKSUMS:
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: fdfdfe5479092de0c4bdbebedd9056951f092c4f
   hermes-engine: 01d3e052018c2a13937aca1860fbedbccd4a41b7
-  navigation-react-native: 94721fb09295f5c3c99bdd8d9aacbe0bc116f2aa
+  navigation-react-native: 674ff92ddac4eb21ffe90bd391d355cb5bef0528
   RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: b03c35057846b685b3ccadc9bfe43e349989cdb2
   RCTRequired: 194626909cfa8d39ca6663138c417bc6c431648c
@@ -1401,7 +1401,7 @@ SPEC CHECKSUMS:
   React-utils: 4476b7fcbbd95cfd002f3e778616155241d86e31
   ReactCommon: ecad995f26e0d1e24061f60f4e5d74782f003f12
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
-  Yoga: 2f71ecf38d934aecb366e686278102a51679c308
+  Yoga: ae3c32c514802d30f687a04a6a35b348506d411f
 
 PODFILE CHECKSUM: 10d042253ca94c1ab90cdd501051e10695b985dc
 
