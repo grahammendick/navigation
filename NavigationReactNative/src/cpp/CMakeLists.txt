@@ -28,27 +28,36 @@ target_include_directories(
   ../android/build/generated/source/codegen/jni/react/renderer/components/navigationreactnative
 )
 
-target_link_libraries(
-  react_codegen_navigationreactnative
-  fbjni
-  folly_runtime
-  glog
-  jsi
-  react_codegen_rncore
-  react_debug
-  react_nativemodule_core
-  react_render_core
-  react_render_mapbuffer
-  react_render_imagemanager
-  react_render_componentregistry
-  react_render_debug
-  react_render_graphics
-  react_utils
-  rrc_image
-  rrc_view
-  turbomodulejsijni
-  yoga
-)
+if (REACTNATIVE_MERGED_SO)
+  target_link_libraries(
+    react_codegen_navigationreactnative
+    ReactAndroid::reactnative
+    ReactAndroid::jsi
+    fbjni::fbjni
+  )
+else()
+  target_link_libraries(
+    react_codegen_navigationreactnative
+    fbjni
+    folly_runtime
+    glog
+    jsi
+    react_codegen_rncore
+    react_debug
+    react_nativemodule_core
+    react_render_core
+    react_render_mapbuffer
+    react_render_imagemanager
+    react_render_componentregistry
+    react_render_debug
+    react_render_graphics
+    react_utils
+    rrc_image
+    rrc_view
+    turbomodulejsijni
+    yoga
+  )
+endif()
 
 target_compile_options(
   react_codegen_navigationreactnative
