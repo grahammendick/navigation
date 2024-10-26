@@ -66,8 +66,10 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         const mostRecentEventCount = nativeEvent.eventCount;
         if (mostRecentEventCount) {
             setStackState((prevStackState) => ({...prevStackState, mostRecentEventCount}));
-            if (resumeNavigationRef.current)
+            if (resumeNavigationRef.current) {
                 resumeNavigationRef.current();
+                resumeNavigationRef.current = null;
+            }
         } else if (crumbs.length === nativeEvent.crumb) {
             setStackState(prevStackState => ({...prevStackState, rest: true}));
         }
@@ -154,10 +156,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         setStackState((prevStackState) => {
             const {keys: prevKeys} = prevStackState;
             const {crumbs, nextCrumb, history} = stateNavigator.stateContext;
-            const currentKeys = crumbs.concat(nextCrumb).map(({state: {key}}, i) => `${key}-${i}`);
-            const newKeys = currentKeys.slice(prevKeys.length);
-            const keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
-            keys[keys.length - 1] = currentKeys[keys.length - 1]; 
+            const keys = crumbs.concat(nextCrumb).map(({state: {key}}, i) => `${key}-${i}`);
             const refresh = prevKeys.length === keys.length && prevKeys[keys.length - 1] === keys[keys.length - 1];
             return {keys, stateNavigator, rest: history || refresh, mostRecentEventCount};
         });
