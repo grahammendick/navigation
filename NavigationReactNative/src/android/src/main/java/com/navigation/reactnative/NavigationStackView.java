@@ -140,7 +140,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             SceneView scene = scenes.get(key);
             assert scene != null : "Scene is null";
             String name = crumb > 0 ? String.valueOf(crumb) : null;
-            if (scene.getParent() != null) {
+            if (scene.stacked) {
                 fragmentManager.popBackStack(name, crumb > 0 ? 0 : FragmentManager.POP_BACK_STACK_INCLUSIVE);
             } else {
                 fragmentManager.popBackStackImmediate(name, crumb > 0 ? 0 : FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -159,6 +159,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 String key = keys.getString(nextCrumb);
                 SceneView scene = scenes.get(key);
                 assert scene != null : "Scene is null";
+                scene.stacked = true;
                 int popEnter = getAnimationResourceId(currentActivity, scene.enterAnim, animator.fragment_close_enter);
                 int popExit = getAnimationResourceId(currentActivity, scene.exitAnim, animator.fragment_close_exit);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -212,7 +213,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             String key = keys.getString(crumb);
             SceneView scene = scenes.get(key);
             assert scene != null : "Scene is null";
-            if (scene.getParent() != null) return;
+            if (scene.stacked) return;
+            scene.stacked = true;
             int popEnter = getAnimationResourceId(currentActivity, scene.enterAnim, animator.fragment_close_enter);
             int popExit = getAnimationResourceId(currentActivity, scene.exitAnim, animator.fragment_close_exit);
             FragmentManager fragmentManager = fragment.getChildFragmentManager();
