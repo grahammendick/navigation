@@ -70,11 +70,10 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return true;
     }
     peekNavigate() {
-        var {crumb, url, navigationEvent} = this.props;
+        var {crumb, navigationEvent} = this.props;
         var {crumbs, nextCrumb} = navigationEvent.stateNavigator.stateContext;
         var {stateNavigator} = navigationEvent;
         var peekNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
-        if (crumbs[crumb].url !== url) return;
         peekNavigator.stateContext = Scene.createStateContext(crumbs, nextCrumb, crumb, navigationEvent);
         peekNavigator.configure = stateNavigator.configure;
         peekNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;

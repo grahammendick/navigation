@@ -155,8 +155,12 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     if (prevStateNavigator !== stateNavigator && stateNavigator.stateContext.state) {
         setStackState((prevStackState) => {
             const {keys: prevKeys} = prevStackState;
-            const {crumbs, nextCrumb, history} = stateNavigator.stateContext;
-            const keys = crumbs.concat(nextCrumb).map(({state: {key}}, i) => `${key}-${i}`);
+            const {state, crumbs, nextCrumb, history} = stateNavigator.stateContext;
+            const currentKeys = crumbs.concat(nextCrumb).map(({state: {key}}, i) => `${key}-${i}`);
+            const newKeys = currentKeys.slice(prevKeys.length);
+            const keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
+            if (prevKeys.length === keys.length || (prevKeys.length > keys.length && prevStateNavigator.stateContext.crumbs[keys.length - 1].state !== state))
+                keys[keys.length - 1] = currentKeys[keys.length - 1]; 
             const refresh = prevKeys.length === keys.length && prevKeys[keys.length - 1] === keys[keys.length - 1];
             return {keys, stateNavigator, rest: history || refresh, mostRecentEventCount};
         });
