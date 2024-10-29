@@ -1273,6 +1273,8 @@ describe('NavigationMotion', function () {
                     .navigate('sceneC')
                     .navigate('sceneB').url;
                 stateNavigator.navigateLink(url);
+            });
+            await act(async () => {
                 stateNavigator.navigateBack(1)
             });
             try {
