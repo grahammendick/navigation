@@ -2649,13 +2649,13 @@ describe('NavigationMotion', function () {
             });
             try {
                 var scenes = container.querySelectorAll(".scene");
-                assert.equal(scenes.length, 3);
-                assert.notEqual(scenes[0].querySelector("#sceneB"), null);
-                assert.notEqual(scenes[0].style.display, 'none');
-                assert.equal(scenes[1].style.display, 'none');
-                assert.notEqual(scenes[2].querySelector("#sceneC"), null);
-                assert.equal(scenes[2].style.display, 'none');
+                assert.equal(scenes.length, 4);
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.notEqual(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[3].querySelector("#sceneC"), null);
+                assert.equal(scenes[3].style.display, 'none');
                 assert.equal(container.querySelector("#sceneA"), null);
+                assert.equal(container.querySelectorAll("#sceneB").length, 1);
             } finally {
                 act(() => root.unmount());
             }
