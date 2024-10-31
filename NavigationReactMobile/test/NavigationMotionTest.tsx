@@ -839,6 +839,171 @@ describe('NavigationMotion', function () {
         };
     });
 
+    describe('A to A -> B to A -> B -> C to A -> D', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        var SceneC = () => <div id="sceneC" />;
+        var SceneD = () => <div id="sceneD" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+                { key: 'sceneD', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+        describe('Static', () => {
+            it('should render A -> D', async function(){
+                var {sceneA, sceneB, sceneC, sceneD} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                sceneC.renderScene = () => <SceneC />;
+                sceneD.renderScene = () => <SceneD />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationMotion>
+                                {(_style, scene, key) =>  (
+                                    <div className="scene" id={key} key={key}>{scene}</div>
+                                )}
+                            </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        describe('Dynamic', () => {
+            it('should render A -> D', async function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationMotion
+                                renderMotion={(_style, scene, key) =>  (
+                                    <div className="scene" id={key} key={key}>{scene}</div>
+                                )}>
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
+                                <Scene stateKey="sceneD"><SceneD /></Scene>
+                            </NavigationMotion>
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        const test = async () => {
+            await act(async () => {
+                stateNavigator.navigate('sceneB');
+            });
+            await act(async () => {
+                stateNavigator.navigate('sceneC');
+            });
+            await act(async () => {
+                var url = stateNavigator.fluent(true)
+                    .navigateBack(2)
+                    .navigate('sceneD').url;
+                stateNavigator.navigateLink(url);
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 2);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.notEqual(scenes[1].querySelector("#sceneD"), null);
+                assert.equal(container.querySelector("#sceneB"), null);
+                assert.equal(container.querySelector("#sceneC"), null);
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
+    describe('A to A -> B to A -> B -> C to A -> D', function () {
+        var stateNavigator, root, container;
+        var SceneA = () => <div id="sceneA" />;
+        var SceneB = () => <div id="sceneB" />;
+        var SceneC = () => <div id="sceneC" />;
+        var SceneD = () => <div id="sceneD" />;
+        beforeEach(() => {
+            stateNavigator = new StateNavigator([
+                { key: 'sceneA' },
+                { key: 'sceneB', trackCrumbTrail: true },
+                { key: 'sceneC', trackCrumbTrail: true },
+                { key: 'sceneD', trackCrumbTrail: true },
+            ]);
+            stateNavigator.navigate('sceneA');
+            container = document.createElement('div');
+            root = createRoot(container)
+        });
+        describe('Static Stack', () => {
+            it('should render A -> D', async function(){
+                var {sceneA, sceneB, sceneC, sceneD} = stateNavigator.states;
+                sceneA.renderScene = () => <SceneA />;
+                sceneB.renderScene = () => <SceneB />;
+                sceneC.renderScene = () => <SceneC />;
+                sceneD.renderScene = () => <SceneD />;
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene" />
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        describe('Dynamic Stack', () => {
+            it('should render A -> D', async function(){
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationStack className="scene">
+                                <Scene stateKey="sceneA"><SceneA /></Scene>
+                                <Scene stateKey="sceneB"><SceneB /></Scene>
+                                <Scene stateKey="sceneC"><SceneC /></Scene>
+                                <Scene stateKey="sceneD"><SceneD /></Scene>
+                            </NavigationStack>
+                        </NavigationHandler>
+                    );
+                });
+                await test();
+            });
+        });
+        const test = async () => {
+            await act(async () => {
+                stateNavigator.navigate('sceneB');
+            });
+            await act(async () => {
+                stateNavigator.navigate('sceneC');
+            });
+            await act(async () => {
+                var url = stateNavigator.fluent(true)
+                    .navigateBack(2)
+                    .navigate('sceneD').url;
+                stateNavigator.navigateLink(url);
+            });
+            try {
+                var scenes = container.querySelectorAll(".scene");
+                assert.equal(scenes.length, 4);
+                assert.notEqual(scenes[0].querySelector("#sceneA"), null);
+                assert.equal(scenes[0].style.display, 'none');
+                assert.notEqual(scenes[1].querySelector("#sceneB"), null);
+                assert.equal(scenes[1].style.display, 'none');
+                assert.notEqual(scenes[2].querySelector("#sceneD"), null);
+                assert.notEqual(scenes[2].style.display, 'none');
+                assert.notEqual(scenes[3].querySelector("#sceneC"), null);
+                assert.equal(scenes[3].style.display, 'none');
+            } finally {
+                act(() => root.unmount());
+            }
+        };
+    });
+
     describe('A to A', function () {
         var stateNavigator, root, container;
         var SceneA = () => <div id="sceneA" />;
