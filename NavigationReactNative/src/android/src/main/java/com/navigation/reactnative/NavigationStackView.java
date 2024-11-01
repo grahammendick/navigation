@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -108,7 +109,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 public void onBackStackChangeStarted(@NonNull Fragment sceneFragment, boolean pop) {
                     if (pop && sceneFragment.isRemoving() && sceneFragment instanceof SceneFragment) {
                         int popCrumb = ((SceneFragment) sceneFragment).getScene().crumb;
-                        int crumb = fragment.getChildFragmentManager().getBackStackEntryCount() - 1;
+                        int crumb = fragment.getChildFragmentManager().getBackStackEntryCount();
+                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) crumb--;
                         if (popCrumb <= crumb + 1) {
                             ReactContext reactContext = (ReactContext) getContext();
                             EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
