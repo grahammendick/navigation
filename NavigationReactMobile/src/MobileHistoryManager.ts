@@ -2,7 +2,7 @@ import { HTML5HistoryManager, StateContext } from 'navigation';
 
 class MobileHistoryManager extends HTML5HistoryManager {
     private navigateHistory: (e: PopStateEvent) => void = null;
-    private backCrumb: number = null;
+    private backCrumb: {crumbs: number, url: string} | null = null;
     private hash = false;
     private buildCurrentUrl: (url: string) => string;
     private rewriteUrl: (url: string) => string | undefined;
@@ -18,14 +18,15 @@ class MobileHistoryManager extends HTML5HistoryManager {
         if (!this.disabled && !this.navigateHistory) {
             this.navigateHistory = e => {
                 var link = e.state?.navigationLink;
-                if (link && this.backCrumb !== null) {
-                    var distance = this.backCrumb - link.split('crumb=').length + 1;
+                if (this.backCrumb !== null) {
+                    var distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
                     if (distance < 0)
                         window.history.go(distance);
-                    else
+                    else {
+                        super.addHistory(this.backCrumb.url, true);
                         this.backCrumb = null;
+                    }
                 } else {
-                    this.backCrumb = null;
                     navigateHistory(link);
                 }
             };
@@ -48,7 +49,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
                     document.title = state.title;
             }
             if (!this.disabled && distance < 0) {
-                this.backCrumb = crumbs.length;
+                this.backCrumb = {crumbs: crumbs.length, url};
                 window.history.go(distance);
             }
         }

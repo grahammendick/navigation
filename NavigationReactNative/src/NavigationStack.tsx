@@ -6,7 +6,7 @@ import FragmentContext from './FragmentContext';
 import PopSync from './PopSync';
 import Scene from './Scene';
 type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, customAnimation: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, sharedElements: any, backgroundColor: any, landscape: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
-type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, counter: number, mostRecentEventCount: number};
+type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, mostRecentEventCount: number};
 
 const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, customAnimation = Platform.OS === 'android', crumbStyle: crumbStyleStack = () => null, unmountStyle: unmountStyleStack = () => null,
     hidesTabBar: hidesTabBarStack = () => false, sharedElement: getSharedElementStack = () => null, sharedElements: getSharedElementsStack = () => null, backgroundColor: backgroundColorStack = () => null,
@@ -17,7 +17,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     const ancestorFragmentTags = useContext(FragmentContext);
     const fragmentTags = useMemo(() => fragmentTag ? [...ancestorFragmentTags, fragmentTag] : [], [ancestorFragmentTags, fragmentTag]);
     const {stateNavigator} = useContext(NavigationContext);
-    const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0, mostRecentEventCount: 0});
+    const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, mostRecentEventCount: 0});
     const scenes = {};
     let firstLink;
     const findScenes = (elements = children, nested = false) => {
@@ -66,8 +66,10 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         const mostRecentEventCount = nativeEvent.eventCount;
         if (mostRecentEventCount) {
             setStackState((prevStackState) => ({...prevStackState, mostRecentEventCount}));
-            if (resumeNavigationRef.current)
+            if (resumeNavigationRef.current) {
                 resumeNavigationRef.current();
+                resumeNavigationRef.current = null;
+            }
         } else if (crumbs.length === nativeEvent.crumb) {
             setStackState(prevStackState => ({...prevStackState, rest: true}));
         }
@@ -101,6 +103,10 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
             enterAnim = crumbStyle(true, state, data, crumbs, nextState, nextData);
             exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs);
             sharedElements = getSharedElement(oldState, oldData, oldCrumbs) || getSharedElements(oldState, oldData, oldCrumbs);
+            if (oldCrumbs[crumbs.length].state !== state) {
+                enterAnim = unmountStyle(true, state, data, crumbs);
+                exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs, state, data);
+            }
         }
         if (crumbs.length === oldCrumbs.length) {
             enterAnim = unmountStyle(true, state, data, crumbs);
@@ -148,16 +154,15 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     const {stateNavigator: prevStateNavigator, keys, rest, mostRecentEventCount} = stackState;
     if (prevStateNavigator !== stateNavigator && stateNavigator.stateContext.state) {
         setStackState((prevStackState) => {
-            const {keys: prevKeys, stateNavigator: prevStateNavigator, counter} = prevStackState;
+            const {keys: prevKeys} = prevStackState;
             const {state, crumbs, nextCrumb, history} = stateNavigator.stateContext;
-            const prevState = prevStateNavigator && prevStateNavigator.stateContext.state;
-            const currentKeys = crumbs.concat(nextCrumb).map((_, i) => `${counter}-${i}`);
+            const currentKeys = crumbs.concat(nextCrumb).map(({state: {key}}, i) => `${key}-${i}`);
             const newKeys = currentKeys.slice(prevKeys.length);
             const keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
-            if (prevKeys.length === keys.length && prevState !== state)
-                keys[keys.length - 1] = `${counter}-${keys.length - 1}`;
-            const refresh = prevKeys.length === keys.length && prevState === state;
-            return {keys, stateNavigator, rest: history || refresh, counter: (counter + 1) % 1000, mostRecentEventCount};
+            if (prevKeys.length === keys.length || (prevKeys.length > keys.length && prevStateNavigator.stateContext.crumbs[keys.length - 1].state !== state))
+                keys[keys.length - 1] = currentKeys[keys.length - 1];
+            const refresh = prevKeys.length === keys.length && prevKeys[keys.length - 1] === keys[keys.length - 1];
+            return {keys, stateNavigator, rest: history || refresh, mostRecentEventCount};
         });
     }
     const {crumbs, nextCrumb} = stateNavigator.stateContext;
@@ -174,12 +179,13 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
                 onWillNavigateBack={onWillNavigateBack}
                 onNavigateToTop={onNavigateToTop}
                 onRest={onRest}>
-                <PopSync<{crumb: number}>
-                    data={crumbs.concat(nextCrumb || []).map((_, crumb) => ({crumb}))}
+                <PopSync<{crumb: number, url: string}>
+                    data={crumbs.concat(nextCrumb || []).map(({url}, crumb) => ({crumb, url}))}
                     getKey={({crumb}) => keys[crumb]}>
-                    {(scenes, popNative) => scenes.map(({key, data: {crumb}}) => (
+                    {(scenes, popNative) => scenes.map(({key, data: {crumb, url}}) => (
                         <Scene
                             key={key}
+                            url={url}
                             crumb={crumb}
                             sceneKey={key}
                             rest={rest}

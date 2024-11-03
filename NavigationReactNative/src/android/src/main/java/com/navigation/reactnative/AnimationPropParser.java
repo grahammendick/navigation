@@ -2,10 +2,7 @@ package com.navigation.reactnative;
 
 import android.util.Pair;
 
-import androidx.annotation.NonNull;
 import androidx.transition.Transition;
-import androidx.transition.TransitionSet;
-import androidx.transition.TransitionValues;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
@@ -70,7 +67,7 @@ public class AnimationPropParser {
     }
 
     private static Pair<Float, Boolean> parseAnimation(String val, String defaultValue) {
-        val = val != null && val.length() != 0 ? val : defaultValue;
+        val = val != null && !val.isEmpty() ? val : defaultValue;
         if (val.endsWith("%")) {
             return new Pair<>(Float.parseFloat(val.substring(0, val.length() - 1)), true);
         } else {
@@ -78,7 +75,7 @@ public class AnimationPropParser {
         }
     }
 
-    static class Animator {
+    public static class Animator {
         Integer duration;
         AnimatorItem[] items;
     }

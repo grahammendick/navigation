@@ -21,6 +21,7 @@ import java.util.HashSet;
 
 public class SceneView extends ReactViewGroup {
     protected int crumb;
+    protected boolean stacked;
     protected String sceneKey;
     protected String enterAnim;
     protected String exitAnim;

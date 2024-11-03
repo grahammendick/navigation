@@ -4,7 +4,7 @@ import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
 import Freeze from './Freeze';
-type SceneProps = { crumb: number, sceneKey: string, rest: boolean, renderScene: (state: State, data: any) => ReactNode, customAnimation: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, backgroundColor: any, landscape: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
+type SceneProps = { crumb: number, url: string, sceneKey: string, rest: boolean, renderScene: (state: State, data: any) => ReactNode, customAnimation: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, backgroundColor: any, landscape: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
 type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
@@ -24,16 +24,10 @@ class Scene extends React.Component<SceneProps, SceneState> {
         stateNavigator.onBeforeNavigate(this.onBeforeNavigate);
         this.backgroundPeekNavigate();
     }
-    static getDerivedStateFromProps(props: SceneProps, {navigationEvent: prevNavigationEvent}: SceneState) {
-        var {crumb, navigationEvent} = props;
-        var {state, oldState, oldUrl, crumbs} = navigationEvent.stateNavigator.stateContext;
-        if (!state || crumbs.length !== crumb)
-            return null;
-        if (!oldUrl || !prevNavigationEvent)
-            return {navigationEvent};
-        var {crumbs: oldCrumbs} = navigationEvent.stateNavigator.parseLink(oldUrl);
-        var replace = oldCrumbs.length === crumb && oldState !== state;
-        return !replace ? {navigationEvent} : null;
+    static getDerivedStateFromProps(props: SceneProps) {
+        var {url, navigationEvent} = props;
+        var {url: currentUrl, state} = navigationEvent.stateNavigator.stateContext;
+        return (!state || url !== currentUrl) ? null : {navigationEvent};
     }
     shouldComponentUpdate({crumb, rest, navigationEvent: {stateNavigator}}: SceneProps, {navigationEvent}: SceneState) {
         var {crumbs} = stateNavigator.stateContext;
