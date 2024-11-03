@@ -136,7 +136,9 @@ using namespace facebook::react;
     NSInteger crumb = [self.keys count] - 1;
     NSInteger currentCrumb = [_navigationController.viewControllers count] - 1;
     if (crumb < currentCrumb) {
-        [_navigationController popToViewController:_navigationController.viewControllers[crumb] animated:true];
+        NVSceneComponentView *scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
+        [_navigationController popToViewController:_navigationController.viewControllers[crumb] animated:scene.stacked];
+        if (!scene.stacked) currentCrumb = crumb;
     }
     BOOL animate = !self.enterAnimOff && [_navigationController.viewControllers count] > 0;
     if (crumb > currentCrumb) {
@@ -145,8 +147,9 @@ using namespace facebook::react;
         for(NSInteger i = 0; i < crumb - currentCrumb; i++) {
             NSInteger nextCrumb = currentCrumb + i + 1;
             NVSceneComponentView *scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:nextCrumb]];
-            if (!![scene superview])
+            if (scene.stacked)
                 return;
+            scene.stacked = YES;
             NVSceneController *controller = [[NVSceneController alloc] initWithScene:scene];
             controller.navigationItem.title = scene.title;
             controller.enterTrans = _enterTransitions;
@@ -173,8 +176,9 @@ using namespace facebook::react;
     }
     if (crumb == currentCrumb) {
         NVSceneComponentView *scene = (NVSceneComponentView *) [_scenes objectForKey:[self.keys objectAtIndex:crumb]];
-        if (!![scene superview])
+        if (scene.stacked)
             return;
+        scene.stacked = YES;
         NVSceneController *controller = [[NVSceneController alloc] initWithScene:scene];
         controller.enterTrans = _enterTransitions;
         controller.popExitTrans = scene.exitTrans;

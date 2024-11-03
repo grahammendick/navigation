@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSNumber *crumb;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, assign) BOOL hidesTabBar;
+@property (nonatomic, assign) BOOL stacked;
 @property (nonatomic, copy) NSArray<NVTransition*> *enterTrans;
 @property (nonatomic, copy) NSArray<NVTransition*> *exitTrans;
 
