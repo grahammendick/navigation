@@ -9,6 +9,7 @@ import CollapsingBar from './CollapsingBar';
 import TabBar from './TabBar';
 import StatusBar from './StatusBar';
 import BottomAppBar from './BottomAppBar';
+import InsetsContext from './InsetsContext';
 
 class NavigationBar extends React.Component<any, any> {
     constructor(props) {
@@ -32,7 +33,7 @@ class NavigationBar extends React.Component<any, any> {
         }
     }
     render() {
-        var {navigationEvent, bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, backImage, titleCentered, shadowColor, children, onNavigationPress, style = {height: undefined}, ...otherProps} = this.props;
+        var {navigationEvent, bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, backImage, titleCentered, shadowColor, insets, children, onNavigationPress, style = {height: undefined}, ...otherProps} = this.props;
         const Material3 = global.__turboModuleProxy != null ? require("./NativeMaterial3Module").default : NativeModules.Material3;
         const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
         var scrollEdgeProps = this.getScrollEdgeProps()
@@ -53,6 +54,7 @@ class NavigationBar extends React.Component<any, any> {
         var placeholder = searchBar?.props.placeholder;
         var {stateNavigator} = navigationEvent;
         var crumb = stateNavigator.stateContext.crumbs.length;
+        const barHeight = !material3 || searchToolbar ? 56 : 64;
         return (
             <>
                 <NVNavigationBar
@@ -62,7 +64,7 @@ class NavigationBar extends React.Component<any, any> {
                     backTitleOn={backTitle !== undefined}
                     backImage={Image.resolveAssetSource(backImage)}
                     barHeight={!!collapsingBar ? style.height : 0}
-                    style={{height: !!collapsingBar ? style.height : null}}
+                    style={{height: !!collapsingBar ? style.height : Platform.OS === 'android' ? barHeight + insets.top : null}}
                     {...otherProps}
                     {...scrollEdgeProps}
                     shadowColor={shadowColor}
@@ -90,12 +92,12 @@ class NavigationBar extends React.Component<any, any> {
                                 fontStyle={searchBar?.props.fontStyle}
                                 fontSize={searchBar?.props.fontSize}
                                 titleCentered={!!titleCentered}
-                                barHeight={!material3 || searchToolbar ? 56 : 64}
+                                barHeight={barHeight}
                                 onNavigationPress={() => {
                                     if (onNavigationPress) onNavigationPress();
                                     else if (crumb > 0) stateNavigator.navigateBack(1);
                                 }}
-                                style={{height: !material3 || searchToolbar ? 56 : 64, margin: searchToolbar ? 16 : undefined}}>
+                                style={{height: barHeight, margin: searchToolbar ? 16 : undefined}}>
                                 {[
                                     !searchToolbar && childrenArray.find(({type}) => type === TitleBar),
                                     childrenArray.find(({type}) => type === LeftBar),
@@ -125,7 +127,11 @@ var NVSearchToolbar = global.nativeFabricUIManager ? require('./SearchToolbarNat
 const AnimatedNavigationBar =  Animated.createAnimatedComponent(NavigationBar);
 
 export default props => (
-    <NavigationContext.Consumer>
-        {(navigationEvent) => <AnimatedNavigationBar navigationEvent={navigationEvent} {...props} />}
-    </NavigationContext.Consumer>
+    <InsetsContext.Consumer>
+        {(insets) => (
+            <NavigationContext.Consumer>
+                {(navigationEvent) => <AnimatedNavigationBar navigationEvent={navigationEvent} insets={insets} {...props} />}
+            </NavigationContext.Consumer>
+        )}
+    </InsetsContext.Consumer>
 );
