@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewParent;
+import android.view.WindowInsets;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -292,6 +293,13 @@ public class ToolbarView extends MaterialToolbar implements ActionView, DrawerTo
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (autoNavigation && crumb == 0) registerDrawerToggleHandler();
+    }
+
+    @Override
+    public WindowInsets onApplyWindowInsets(WindowInsets insets) {
+        insets = super.onApplyWindowInsets(insets);
+        ((NavigationBarView) getParent()).applyWindowInsets(insets);
+        return insets;
     }
 
     private void registerDrawerToggleHandler() {
