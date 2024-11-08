@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.view.WindowInsets;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
@@ -31,9 +32,10 @@ public class SceneView extends ReactViewGroup {
     protected Transition exitTrans;
     private boolean landscape;
     public final HashSet<SharedElementView> sharedElements = new HashSet<>();
-    public SharedElementMotion sharedElementMotion;
+    SharedElementMotion sharedElementMotion;
     private WeakReference<Toolbar> toolbar;
     private WeakReference<DrawerLayoutView> drawer;
+    private final HashSet<WindowInsetsListener> windowInsetsListeners = new HashSet<>();
 
     public SceneView(Context context) {
         super(context);
@@ -47,10 +49,25 @@ public class SceneView extends ReactViewGroup {
         }
     }
 
+    protected void addWindowInsetsListener(WindowInsetsListener windowInsetsListener) {
+        if (!windowInsetsListeners.contains(windowInsetsListener)) {
+            windowInsetsListeners.add(windowInsetsListener);
+            requestApplyInsets();
+        }
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         setOrientation();
+    }
+
+    @Override
+    public WindowInsets onApplyWindowInsets(WindowInsets insets) {
+        insets = super.onApplyWindowInsets(insets);
+        for(WindowInsetsListener listener : windowInsetsListeners)
+            listener.handleWindowInsets(insets);
+        return insets;
     }
 
     protected void registerDrawerToggleHandler(DrawerToggleHandler drawerToggleHandler) {
@@ -103,5 +120,10 @@ public class SceneView extends ReactViewGroup {
         public void dispatch(RCTEventEmitter rctEventEmitter) {
             rctEventEmitter.receiveEvent(getViewTag(), getEventName(), Arguments.createMap());
         }
+    }
+
+    protected interface WindowInsetsListener
+    {
+        void handleWindowInsets(WindowInsets insets);
     }
 }

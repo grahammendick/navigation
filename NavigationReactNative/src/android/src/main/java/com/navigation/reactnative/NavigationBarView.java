@@ -5,7 +5,7 @@ import android.graphics.Insets;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.ViewOutlineProvider;
-import android.view.WindowInsets;
+import android.view.ViewParent;
 
 import androidx.core.util.Pools;
 import androidx.core.view.WindowInsetsCompat;
@@ -27,6 +27,8 @@ public class NavigationBarView extends AppBarLayout {
     final int defaultShadowColor;
     private boolean layoutRequested = false;
     private int topInset = 0;
+    private boolean insetsChanged = false;
+    private final SceneView.WindowInsetsListener windowInsetsListener;
 
     public NavigationBarView(Context context) {
         super(context);
@@ -42,28 +44,44 @@ public class NavigationBarView extends AppBarLayout {
             EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
             eventDispatcher.dispatchEvent(OffsetChangedEvent.obtain(getId(), offset));
         });
+        windowInsetsListener = insets -> {
+            int newTopInset = insets.getSystemWindowInsetTop();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                Insets barInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                newTopInset = barInsets.top;
+            }
+            if (topInset != newTopInset) {
+                topInset = newTopInset;
+                insetsChanged = true;
+                // update native size
+            }
+        };
     }
 
-    protected void applyWindowInsets(WindowInsets insets) {
-        int newTopInset = insets.getSystemWindowInsetTop();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Insets barInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            newTopInset = barInsets.top;
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        ViewParent parent = getParent();
+        while (parent != null) {
+            if (parent instanceof SceneView)
+                break;
+            parent = parent.getParent();
         }
-        if (topInset != newTopInset) {
-            topInset = newTopInset;
-            // update native size
-            if (measureAndLayout != null)
-                measureAndLayout.run();
-        }
+        if (parent == null) return;
+        ((SceneView) parent).addWindowInsetsListener(windowInsetsListener);
     }
 
     @Override
     public void requestLayout() {
         super.requestLayout();
-        if (!layoutRequested) {
-            layoutRequested = true;
-            post(measureAndLayout);
+        if (!insetsChanged) {
+            if (!layoutRequested) {
+                layoutRequested = true;
+                post(measureAndLayout);
+            }
+        } else {
+            insetsChanged = false;
+            measureAndLayout.run();
         }
     }
 
