@@ -3,9 +3,8 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.BlendMode;
-import android.graphics.BlendModeColorFilter;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.SpannableString;
@@ -41,7 +40,6 @@ import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class ToolbarView extends MaterialToolbar implements ActionView, DrawerToggleHandler {
     private MenuItem searchMenuItem;
@@ -161,7 +159,7 @@ public class ToolbarView extends MaterialToolbar implements ActionView, DrawerTo
     private void setTintColor(Drawable icon) {
         if (icon != null) {
             int defaultTintColor = getNavigationIconTint() != null ? getNavigationIconTint() : Color.BLACK;
-            icon.setColorFilter(new BlendModeColorFilter(tintColor != null ? tintColor : defaultTintColor, BlendMode.SRC_IN));
+            icon.setColorFilter(tintColor != null ? tintColor : defaultTintColor, PorterDuff.Mode.SRC_IN);
         }
     }
 
