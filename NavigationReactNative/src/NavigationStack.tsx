@@ -17,7 +17,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     const fragmentTag = React.useId?.();
     const ancestorFragmentTags = useContext(FragmentContext);
     const fragmentTags = useMemo(() => fragmentTag ? [...ancestorFragmentTags, fragmentTag] : [], [ancestorFragmentTags, fragmentTag]);
-    const insets = useRef({top: 41.42857, bottom: 0});
+    const insets = useRef({top: 0, bottom: 0});
     const {stateNavigator} = useContext(NavigationContext);
     const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, mostRecentEventCount: 0});
     const scenes = {};
