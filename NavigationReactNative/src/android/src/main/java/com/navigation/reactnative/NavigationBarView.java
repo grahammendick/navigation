@@ -11,11 +11,13 @@ import androidx.core.util.Pools;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.i18nmanager.I18nUtil;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
@@ -53,7 +55,18 @@ public class NavigationBarView extends AppBarLayout {
             if (topInset != newTopInset) {
                 topInset = newTopInset;
                 insetsChanged = true;
-                // update native size
+                final int viewTag = getId();
+                final ReactContext reactContext = (ReactContext) getContext();
+                reactContext.runOnNativeModulesQueueThread(
+                    new GuardedRunnable(reactContext) {
+                        @Override
+                        public void runGuarded() {
+                            UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
+                            if (uiManager != null)
+                                uiManager.updateNodeSize(viewTag, getWidth(), (int) PixelUtil.toPixelFromDIP(56) + topInset);
+                            getLayoutParams().height = (int) PixelUtil.toPixelFromDIP(56) + topInset;
+                        }
+                    });
             }
         };
     }
