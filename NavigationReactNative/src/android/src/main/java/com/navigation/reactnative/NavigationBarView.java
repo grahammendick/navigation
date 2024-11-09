@@ -1,14 +1,12 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
-import android.graphics.Insets;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.ViewOutlineProvider;
 import android.view.ViewParent;
 
 import androidx.core.util.Pools;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.GuardedRunnable;
