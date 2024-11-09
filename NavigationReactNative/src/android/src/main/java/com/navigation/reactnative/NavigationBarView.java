@@ -63,8 +63,7 @@ public class NavigationBarView extends AppBarLayout {
                         public void runGuarded() {
                             UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
                             if (uiManager != null)
-                                uiManager.updateNodeSize(viewTag, getWidth(), (int) PixelUtil.toPixelFromDIP(56) + topInset);
-                            getLayoutParams().height = (int) PixelUtil.toPixelFromDIP(56) + topInset;
+                                uiManager.updateNodeSize(viewTag, -1, (int) PixelUtil.toPixelFromDIP(56) + topInset);
                         }
                     });
             }
@@ -102,9 +101,14 @@ public class NavigationBarView extends AppBarLayout {
         layoutRequested = false;
         measure(
             MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+            MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.UNSPECIFIED));
         layout(getLeft(), getTop(), getRight(), getBottom());
     };
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.UNSPECIFIED));
+    }
 
     static class OffsetChangedEvent extends Event<OffsetChangedEvent> {
         private int offset;
