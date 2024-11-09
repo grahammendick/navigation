@@ -96,7 +96,7 @@ public class NavigationBarView extends AppBarLayout {
         layoutRequested = false;
         measure(
             MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.UNSPECIFIED));
+            MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
         layout(getLeft(), getTop(), getRight(), getBottom());
     };
 
