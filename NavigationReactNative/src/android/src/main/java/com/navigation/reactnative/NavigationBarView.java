@@ -50,6 +50,7 @@ public class NavigationBarView extends AppBarLayout {
                 topInset = newTopInset;
                 insetsChanged = true;
                 final int viewTag = getId();
+                final int newHeight = getLayoutParams().height + topInset;
                 final ReactContext reactContext = (ReactContext) getContext();
                 reactContext.runOnNativeModulesQueueThread(
                     new GuardedRunnable(reactContext) {
@@ -57,7 +58,7 @@ public class NavigationBarView extends AppBarLayout {
                         public void runGuarded() {
                             UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
                             if (uiManager != null)
-                                uiManager.updateNodeSize(viewTag, -1, getLayoutParams().height + topInset);
+                                uiManager.updateNodeSize(viewTag, -1, newHeight);
                         }
                     });
             }
