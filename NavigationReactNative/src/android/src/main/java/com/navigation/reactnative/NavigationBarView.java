@@ -102,7 +102,9 @@ public class NavigationBarView extends AppBarLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.UNSPECIFIED));
+        if (getChildAt(0) instanceof ToolbarView)
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.UNSPECIFIED);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     static class OffsetChangedEvent extends Event<OffsetChangedEvent> {

@@ -64,7 +64,7 @@ class NavigationBar extends React.Component<any, any> {
                     backTitleOn={backTitle !== undefined}
                     backImage={Image.resolveAssetSource(backImage)}
                     barHeight={!!collapsingBar ? style.height : barHeight}
-                    style={{height: !!collapsingBar ? style.height : Platform.OS === 'android' ? barHeight + insets.top : null}}
+                    style={{height: !!collapsingBar ? style.height + insets.top : Platform.OS === 'android' ? barHeight + insets.top : null}}
                     {...otherProps}
                     {...scrollEdgeProps}
                     shadowColor={shadowColor}
