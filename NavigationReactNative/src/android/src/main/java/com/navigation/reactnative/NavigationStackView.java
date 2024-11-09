@@ -380,11 +380,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     public WindowInsets onApplyWindowInsets(WindowInsets insets) {
         int top = insets.getSystemWindowInsetTop();
         int bottom = insets.getSystemWindowInsetBottom();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Insets barInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            top = barInsets.top;
-            bottom = barInsets.bottom;
-        }
         ReactContext reactContext = (ReactContext) getContext();
         EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
         eventDispatcher.dispatchEvent(new NavigationStackView.ApplyInsetsEvent(getId(), top, bottom));

@@ -48,10 +48,6 @@ public class NavigationBarView extends AppBarLayout {
         });
         windowInsetsListener = insets -> {
             int newTopInset = insets.getSystemWindowInsetTop();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                Insets barInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                newTopInset = barInsets.top;
-            }
             if (topInset != newTopInset) {
                 topInset = newTopInset;
                 insetsChanged = true;
