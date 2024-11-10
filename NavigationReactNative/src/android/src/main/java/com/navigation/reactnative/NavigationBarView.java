@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.ViewOutlineProvider;
 import android.view.ViewParent;
+import android.view.ViewTreeObserver;
 
 import androidx.core.util.Pools;
 
@@ -27,7 +28,6 @@ public class NavigationBarView extends AppBarLayout {
     final int defaultShadowColor;
     private boolean layoutRequested = false;
     private int topInset = 0;
-    private boolean insetsChanged = false;
     private final SceneView.WindowInsetsListener windowInsetsListener;
 
     public NavigationBarView(Context context) {
@@ -48,8 +48,6 @@ public class NavigationBarView extends AppBarLayout {
             int newTopInset = insets.getSystemWindowInsetTop();
             if (topInset != newTopInset) {
                 topInset = newTopInset;
-                insetsChanged = true;
-                if (!(getChildAt(0) instanceof ToolbarView)) return;
                 final int viewTag = getId();
                 final int newHeight = getLayoutParams().height + topInset;
                 final ReactContext reactContext = (ReactContext) getContext();
@@ -64,6 +62,14 @@ public class NavigationBarView extends AppBarLayout {
                     });
             }
         };
+        getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                getViewTreeObserver().removeOnPreDrawListener(this);
+                measureAndLayout.run();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -82,14 +88,9 @@ public class NavigationBarView extends AppBarLayout {
     @Override
     public void requestLayout() {
         super.requestLayout();
-        if (!insetsChanged) {
-            if (!layoutRequested) {
-                layoutRequested = true;
-                post(measureAndLayout);
-            }
-        } else {
-            insetsChanged = false;
-            measureAndLayout.run();
+        if (!layoutRequested) {
+            layoutRequested = true;
+            post(measureAndLayout);
         }
     }
 
