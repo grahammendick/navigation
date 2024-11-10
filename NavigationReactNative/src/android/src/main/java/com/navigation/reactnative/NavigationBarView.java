@@ -49,6 +49,7 @@ public class NavigationBarView extends AppBarLayout {
             if (topInset != newTopInset) {
                 topInset = newTopInset;
                 insetsChanged = true;
+                if (!(getChildAt(0) instanceof ToolbarView)) return;
                 final int viewTag = getId();
                 final int newHeight = getLayoutParams().height + topInset;
                 final ReactContext reactContext = (ReactContext) getContext();
