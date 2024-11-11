@@ -1,6 +1,7 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -58,7 +59,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
                 bottomInset = newBottomInset;
                 final int viewTag = getId();
                 final int newHeight = getMinimumHeight() + bottomInset;
-                final ReactContext reactContext = (ReactContext) getContext();
+                final ReactContext reactContext = (ReactContext) (getContext() instanceof ReactContext ? getContext() : ((ContextWrapper) getContext()).getBaseContext());;
                 reactContext.runOnNativeModulesQueueThread(
                     new GuardedRunnable(reactContext) {
                         @Override
