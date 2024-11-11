@@ -3,12 +3,17 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
+import com.facebook.react.bridge.GuardedRunnable;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.modules.i18nmanager.I18nUtil;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -21,6 +26,8 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     final int defaultShadowColor;
     private boolean layoutRequested = false;
     private boolean autoSelected = false;
+    private int bottomInset = 0;
+    private final SceneView.WindowInsetsListener windowInsetsListener;
 
     public TabNavigationView(Context context) {
         super(context);
@@ -30,7 +37,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         selectedTintColor = unselectedTintColor = defaultTextColor = tabLayout.defaultTextColor;
         defaultActiveIndicatorColor = getItemActiveIndicatorColor() != null ? getItemActiveIndicatorColor().getDefaultColor() : Color.WHITE;
         defaultRippleColor = getItemRippleColor() != null ? getItemRippleColor().getColorForState(new int[]{ android.R.attr.state_pressed }, Color.WHITE) : Color.WHITE;
-        defaultShadowColor = getOutlineAmbientShadowColor();
+        defaultShadowColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? getOutlineAmbientShadowColor() : Color.WHITE;
         setOnItemSelectedListener(menuItem -> {
             TabBarView tabBar = getTabBar();
             if (!autoSelected && tabBar != null && tabBar.selectedTab == menuItem.getOrder())
@@ -45,6 +52,24 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
             }
             return true;
         });
+        windowInsetsListener = insets -> {
+            int newBottomInset = insets.getSystemWindowInsetBottom();
+            if (bottomInset != newBottomInset) {
+                bottomInset = newBottomInset;
+                final int viewTag = getId();
+                final int newHeight = getMinimumHeight() + bottomInset;
+                final ReactContext reactContext = (ReactContext) getContext();
+                reactContext.runOnNativeModulesQueueThread(
+                    new GuardedRunnable(reactContext) {
+                        @Override
+                        public void runGuarded() {
+                            UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
+                            if (uiManager != null)
+                                uiManager.updateNodeSize(viewTag, -1, newHeight);
+                        }
+                    });
+            }
+        };
     }
 
     void setTitles() {
@@ -73,6 +98,14 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
             autoSelected = false;
             tabBar.populateTabs();
         }
+        ViewParent parent = getParent();
+        while (parent != null) {
+            if (parent instanceof SceneView)
+                break;
+            parent = parent.getParent();
+        }
+        if (parent == null) return;
+        ((SceneView) parent).addWindowInsetsListener(windowInsetsListener);
     }
 
     private TabBarView getTabBar() {
