@@ -66,7 +66,10 @@ public class NavigationBarView extends AppBarLayout {
             @Override
             public boolean onPreDraw() {
                 getViewTreeObserver().removeOnPreDrawListener(this);
-                measureAndLayout.run();
+                if (getParent() instanceof CoordinatorLayoutView coordinatorLayoutView)
+                    coordinatorLayoutView.measureAndLayout.run();
+                else
+                    measureAndLayout.run();
                 return true;
             }
         });
