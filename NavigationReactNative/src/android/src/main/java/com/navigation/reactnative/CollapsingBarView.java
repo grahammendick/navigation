@@ -46,6 +46,7 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
         defaultTitleCollapseMode = getTitleCollapseMode();
         setFitsSystemWindows(true);
         setStatusBarScrim(new ColorDrawable(Color.TRANSPARENT));
+        setForceApplySystemWindowInsetTop(false);
     }
 
     void setTitleFontFamily(String titleFontFamily) {
