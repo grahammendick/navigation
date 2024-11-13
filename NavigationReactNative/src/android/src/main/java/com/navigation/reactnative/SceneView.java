@@ -50,10 +50,12 @@ public class SceneView extends ReactViewGroup {
     }
 
     protected void addWindowInsetsListener(WindowInsetsListener windowInsetsListener) {
-        if (!windowInsetsListeners.contains(windowInsetsListener)) {
-            windowInsetsListeners.add(windowInsetsListener);
-            requestApplyInsets();
-        }
+        windowInsetsListeners.add(windowInsetsListener);
+        requestApplyInsets();
+    }
+
+    protected void removeWindowInsetsListener(WindowInsetsListener windowInsetsListener) {
+        windowInsetsListeners.remove(windowInsetsListener);
     }
 
     @Override

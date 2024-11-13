@@ -99,14 +99,27 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
             autoSelected = false;
             tabBar.populateTabs();
         }
+        SceneView scene = getScene();
+        if (scene != null)
+            scene.addWindowInsetsListener(windowInsetsListener);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        SceneView scene = getScene();
+        if (scene != null)
+            scene.removeWindowInsetsListener(windowInsetsListener);
+    }
+
+    private SceneView getScene() {
         ViewParent parent = getParent();
         while (parent != null) {
-            if (parent instanceof SceneView)
-                break;
+            if (parent instanceof SceneView sceneView)
+                return sceneView;
             parent = parent.getParent();
         }
-        if (parent == null) return;
-        ((SceneView) parent).addWindowInsetsListener(windowInsetsListener);
+        return null;
     }
 
     private TabBarView getTabBar() {
