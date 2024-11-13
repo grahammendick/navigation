@@ -80,7 +80,7 @@ public class DialogView extends ReactViewGroup {
 
     @Override
     public WindowInsets onApplyWindowInsets(WindowInsets insets) {
-        dialogViewFragment.setEdgeToEdge(insets.hasSystemWindowInsets());
+        dialogViewFragment.setEdgeToEdge(true);
         return super.onApplyWindowInsets(insets);
     }
 
