@@ -1,15 +1,20 @@
 package com.navigation.reactnative;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowInsets;
 
+import androidx.activity.ComponentDialog;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.WindowCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -73,6 +78,12 @@ public class DialogView extends ReactViewGroup {
         }
     }
 
+    @Override
+    public WindowInsets onApplyWindowInsets(WindowInsets insets) {
+        dialogViewFragment.setEdgeToEdge(insets.hasSystemWindowInsets());
+        return super.onApplyWindowInsets(insets);
+    }
+
     @Nullable
     public StateWrapper getStateWrapper() {
         return dialogRootView.getStateWrapper();
@@ -95,11 +106,18 @@ public class DialogView extends ReactViewGroup {
     public static class DialogViewFragment extends DialogFragment implements DialogFragmentController
     {
         private DialogView dialogView;
+        private boolean edgeToEdge;
 
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             return dialogView != null ? dialogView.dialogRootView : new View(getContext());
+        }
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+            return new ComponentDialog(requireContext(), R.style.ModalSheet);
         }
 
         @Override
@@ -108,12 +126,25 @@ public class DialogView extends ReactViewGroup {
             assert getDialog() != null : "Dialog is null";
             Window window = getDialog().getWindow();
             assert window != null : "Window is null";
+            setEdgeToEdge(this.edgeToEdge);
             window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             window.setBackgroundDrawable(null);
             if (dialogView != null) {
                 dialogView.dialogRootView.fragmentController.attachHost(null);
                 dialogView.dialogRootView.fragmentController.dispatchStart();
                 dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
+            }
+        }
+
+        void setEdgeToEdge(boolean edgeToEdge) {
+            this.edgeToEdge = edgeToEdge;
+            if (edgeToEdge && getDialog() != null) {
+                Window window = getDialog().getWindow();
+                assert window != null : "Window is null";
+                WindowCompat.setDecorFitsSystemWindows(window, false);
+                window.setStatusBarColor(Color.TRANSPARENT);
+                window.setNavigationBarColor(Color.TRANSPARENT);
+
             }
         }
 
