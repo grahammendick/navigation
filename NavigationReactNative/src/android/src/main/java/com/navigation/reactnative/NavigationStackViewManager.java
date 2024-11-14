@@ -154,6 +154,7 @@ public class NavigationStackViewManager extends ViewGroupManager<NavigationStack
             .put("topNavigateToTop", MapBuilder.of("registrationName", "onNavigateToTop"))
             .put("topWillNavigateBack", MapBuilder.of("registrationName", "onWillNavigateBack"))
             .put("topRest", MapBuilder.of("registrationName", "onRest"))
+            .put("topApplyInsets", MapBuilder.of("registrationName", "onApplyInsets"))
             .build();
     }
 }
