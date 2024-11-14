@@ -21,6 +21,12 @@ class JSI_EXPORT NVNavigationBarShadowNode final: public ConcreteViewShadowNode<
 public:
   using ConcreteViewShadowNode::ConcreteViewShadowNode;
 
+  static ShadowNodeTraits BaseTraits() {
+    auto traits = ConcreteViewShadowNode::BaseTraits();
+    traits.set(ShadowNodeTraits::Trait::RootNodeKind);
+    return traits;
+  }
+
   void setImageManager(const SharedImageManager &imageManager);
 
   static NVNavigationBarState initialStateData(

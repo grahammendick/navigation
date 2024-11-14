@@ -7,14 +7,18 @@ import android.view.ViewOutlineProvider;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 
+import androidx.annotation.UiThread;
 import androidx.core.util.Pools;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.i18nmanager.I18nUtil;
 import com.facebook.react.uimanager.PixelUtil;
+import com.facebook.react.uimanager.StateWrapper;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.Event;
@@ -29,6 +33,7 @@ public class NavigationBarView extends AppBarLayout {
     private boolean layoutRequested = false;
     private int topInset = 0;
     private final SceneView.WindowInsetsListener windowInsetsListener;
+    private StateWrapper stateWrapper = null;
 
     public NavigationBarView(Context context) {
         super(context);
@@ -48,18 +53,22 @@ public class NavigationBarView extends AppBarLayout {
             int newTopInset = insets.getSystemWindowInsetTop();
             if (topInset != newTopInset) {
                 topInset = newTopInset;
-                final int viewTag = getId();
                 final int newHeight = getLayoutParams().height + topInset;
-                final ReactContext reactContext = (ReactContext) getContext();
-                reactContext.runOnNativeModulesQueueThread(
-                    new GuardedRunnable(reactContext) {
-                        @Override
-                        public void runGuarded() {
-                            UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
-                            if (uiManager != null)
-                                uiManager.updateNodeSize(viewTag, -1, newHeight);
-                        }
-                    });
+                if (stateWrapper != null) {
+                    updateState(-1, newHeight);
+                } else {
+                    final int viewTag = getId();
+                    final ReactContext reactContext = (ReactContext) getContext();
+                    reactContext.runOnNativeModulesQueueThread(
+                            new GuardedRunnable(reactContext) {
+                                @Override
+                                public void runGuarded() {
+                                    UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
+                                    if (uiManager != null)
+                                        uiManager.updateNodeSize(viewTag, -1, newHeight);
+                                }
+                            });
+                }
             }
         };
         getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -73,6 +82,37 @@ public class NavigationBarView extends AppBarLayout {
                 return true;
             }
         });
+    }
+
+    public void setStateWrapper(StateWrapper stateWrapper) {
+        this.stateWrapper = stateWrapper;
+    }
+
+    @UiThread
+    public void updateState(final int width, final int height) {
+        final float realWidth = PixelUtil.toDIPFromPixel(width);
+        final float realHeight = PixelUtil.toDIPFromPixel(height);
+        ReadableMap currentState = stateWrapper.getStateData();
+        if (currentState != null) {
+            float delta = (float) 0.9;
+            float stateScreenHeight =
+                    currentState.hasKey("frameHeight")
+                            ? (float) currentState.getDouble("frameHeight")
+                            : 0;
+            float stateScreenWidth =
+                    currentState.hasKey("frameWidth") ? (float) currentState.getDouble("frameWidth") : 0;
+
+            if (Math.abs(stateScreenWidth - realWidth) < delta
+                    && Math.abs(stateScreenHeight - realHeight) < delta) {
+                return;
+            }
+        }
+        if (stateWrapper != null) {
+            WritableMap map = new WritableNativeMap();
+            map.putDouble("frameWidth", realWidth);
+            map.putDouble("frameHeight", realHeight);
+            stateWrapper.updateState(map);
+        }
     }
 
     @Override

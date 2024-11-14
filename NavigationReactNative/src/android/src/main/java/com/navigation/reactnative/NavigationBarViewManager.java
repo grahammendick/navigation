@@ -12,6 +12,8 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.PixelUtil;
+import com.facebook.react.uimanager.ReactStylesDiffMap;
+import com.facebook.react.uimanager.StateWrapper;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.ViewManagerDelegate;
@@ -198,5 +200,12 @@ public class NavigationBarViewManager extends ViewGroupManager<NavigationBarView
                 "never", MenuItem.SHOW_AS_ACTION_NEVER,
                 "always", MenuItem.SHOW_AS_ACTION_ALWAYS,
                 "ifRoom", MenuItem.SHOW_AS_ACTION_IF_ROOM));
+    }
+
+    @Nullable
+    @Override
+    public Object updateState(@NonNull NavigationBarView view, ReactStylesDiffMap props, StateWrapper stateWrapper) {
+        view.setStateWrapper(stateWrapper);
+        return null;
     }
 }

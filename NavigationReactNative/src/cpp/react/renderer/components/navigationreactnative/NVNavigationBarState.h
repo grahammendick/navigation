@@ -6,14 +6,18 @@
 #include <react/renderer/mapbuffer/MapBufferBuilder.h>
 #endif
 
+#include <react/renderer/graphics/Float.h>
+#include <react/renderer/core/graphicsConversions.h>
 #include <react/renderer/imagemanager/ImageRequest.h>
 #include <react/renderer/imagemanager/primitives.h>
 
 namespace facebook {
 namespace react {
 
-class NVNavigationBarState final {
+class JSI_EXPORT NVNavigationBarState final {
  public:
+  using Shared = std::shared_ptr<const NVNavigationBarState>;
+
   NVNavigationBarState(
       ImageSource const &imageSource,
       ImageRequest imageRequest)
@@ -27,11 +31,16 @@ class NVNavigationBarState final {
   ImageRequest const &getImageRequest() const;
 
 #ifdef ANDROID
-  NVNavigationBarState(NVNavigationBarState const &previousState, folly::dynamic data){};
+  NVNavigationBarState(
+      NVNavigationBarState const &previousState,
+      folly::dynamic data)
+      : frameSize(Size{
+            (Float)data["frameWidth"].getDouble(),
+            (Float)data["frameHeight"].getDouble()}){};
 
-  folly::dynamic getDynamic() const {
-    return {};
-  };
+  const Size frameSize{};
+
+  folly::dynamic getDynamic() const;
   MapBuffer getMapBuffer() const {
     return MapBufferBuilder::EMPTY();
   };

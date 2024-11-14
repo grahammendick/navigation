@@ -16,10 +16,22 @@ class NVNavigationBarComponentDescriptor final
   void adopt(ShadowNode& shadowNode) const override {
     ConcreteComponentDescriptor::adopt(shadowNode);
 
-    auto &navigationBarShadowNode =
+    auto &screenShadowNode =
         static_cast<NVNavigationBarShadowNode&>(shadowNode);
+    auto& layoutableShadowNode =
+        dynamic_cast<YogaLayoutableShadowNode&>(screenShadowNode);
 
-    navigationBarShadowNode.setImageManager(imageManager_);
+    screenShadowNode.setImageManager(imageManager_);
+
+    auto state =
+        std::static_pointer_cast<const NVNavigationBarShadowNode::ConcreteState>(
+            shadowNode.getState());
+    auto stateData = state->getData();
+
+    if (stateData.frameSize.width != 0 && stateData.frameSize.height != 0) {
+      layoutableShadowNode.setSize(
+          Size{stateData.frameSize.width, stateData.frameSize.height});
+    }
   }
 
  private:
