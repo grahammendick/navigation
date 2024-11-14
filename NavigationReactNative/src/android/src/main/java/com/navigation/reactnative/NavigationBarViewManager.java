@@ -81,8 +81,7 @@ public class NavigationBarViewManager extends ViewGroupManager<NavigationBarView
     @ReactProp(name = "barHeight")
     public void setBarHeight(NavigationBarView view, double height) {
         view.getLayoutParams().height = height != 0 ? (int) PixelUtil.toPixelFromDIP(height) : AppBarLayout.LayoutParams.WRAP_CONTENT;
-        if (view.getParent() instanceof CoordinatorLayoutView) {
-            CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) view.getParent();
+        if (view.getParent() instanceof CoordinatorLayoutView coordinatorLayoutView) {
             coordinatorLayoutView.requestLayout();
         }
     }
