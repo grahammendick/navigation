@@ -17,4 +17,5 @@ type NativeProps = $ReadOnly<{|
 
 export default (codegenNativeComponent<NativeProps>(
    'NVTabNavigation',
+   {interfaceOnly: true}
 ): HostComponent<NativeProps>);

@@ -60,14 +60,14 @@ public class NavigationBarView extends AppBarLayout {
                     final int viewTag = getId();
                     final ReactContext reactContext = (ReactContext) getContext();
                     reactContext.runOnNativeModulesQueueThread(
-                            new GuardedRunnable(reactContext) {
-                                @Override
-                                public void runGuarded() {
-                                    UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
-                                    if (uiManager != null)
-                                        uiManager.updateNodeSize(viewTag, -1, newHeight);
-                                }
-                            });
+                        new GuardedRunnable(reactContext) {
+                            @Override
+                            public void runGuarded() {
+                                UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
+                                if (uiManager != null)
+                                    uiManager.updateNodeSize(viewTag, -1, newHeight);
+                            }
+                        });
                 }
             }
         };

@@ -5,6 +5,7 @@
 #import <react/renderer/components/navigationreactnative/EventEmitters.h>
 #import <react/renderer/components/navigationreactnative/Props.h>
 #import <react/renderer/components/navigationreactnative/RCTComponentViewHelpers.h>
+#import <NVTabNavigationComponentDescriptor.h>
 
 #import "RCTFabricComponentsPlugins.h"
 

@@ -11,9 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.UiThread;
+
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.i18nmanager.I18nUtil;
+import com.facebook.react.uimanager.PixelUtil;
+import com.facebook.react.uimanager.StateWrapper;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,6 +36,7 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
     private boolean autoSelected = false;
     private int bottomInset = 0;
     private final SceneView.WindowInsetsListener windowInsetsListener;
+    private StateWrapper stateWrapper = null;
 
     public TabNavigationView(Context context) {
         super(context);
@@ -57,20 +65,55 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
             int newBottomInset = insets.getSystemWindowInsetBottom();
             if (bottomInset != newBottomInset) {
                 bottomInset = newBottomInset;
-                final int viewTag = getId();
                 final int newHeight = getMinimumHeight() + bottomInset;
-                final ReactContext reactContext = (ReactContext) (getContext() instanceof ReactContext ? getContext() : ((ContextWrapper) getContext()).getBaseContext());;
-                reactContext.runOnNativeModulesQueueThread(
-                    new GuardedRunnable(reactContext) {
-                        @Override
-                        public void runGuarded() {
-                            UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
-                            if (uiManager != null)
-                                uiManager.updateNodeSize(viewTag, -1, newHeight);
-                        }
-                    });
+                if (stateWrapper != null) {
+                    updateState(-1, newHeight);
+                } else {
+                    final int viewTag = getId();
+                    final ReactContext reactContext = (ReactContext) (getContext() instanceof ReactContext ? getContext() : ((ContextWrapper) getContext()).getBaseContext());
+                    reactContext.runOnNativeModulesQueueThread(
+                        new GuardedRunnable(reactContext) {
+                            @Override
+                            public void runGuarded() {
+                                UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
+                                if (uiManager != null)
+                                    uiManager.updateNodeSize(viewTag, -1, newHeight);
+                            }
+                        });
+                }
             }
         };
+    }
+
+    public void setStateWrapper(StateWrapper stateWrapper) {
+        this.stateWrapper = stateWrapper;
+    }
+
+    @UiThread
+    public void updateState(final int width, final int height) {
+        final float realWidth = PixelUtil.toDIPFromPixel(width);
+        final float realHeight = PixelUtil.toDIPFromPixel(height);
+        ReadableMap currentState = stateWrapper.getStateData();
+        if (currentState != null) {
+            float delta = (float) 0.9;
+            float stateScreenHeight =
+                    currentState.hasKey("frameHeight")
+                            ? (float) currentState.getDouble("frameHeight")
+                            : 0;
+            float stateScreenWidth =
+                    currentState.hasKey("frameWidth") ? (float) currentState.getDouble("frameWidth") : 0;
+
+            if (Math.abs(stateScreenWidth - realWidth) < delta
+                    && Math.abs(stateScreenHeight - realHeight) < delta) {
+                return;
+            }
+        }
+        if (stateWrapper != null) {
+            WritableMap map = new WritableNativeMap();
+            map.putDouble("frameWidth", realWidth);
+            map.putDouble("frameHeight", realHeight);
+            stateWrapper.updateState(map);
+        }
     }
 
     void setTitles() {
