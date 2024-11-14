@@ -11,6 +11,7 @@ import android.view.WindowInsets;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.facebook.react.bridge.ReactContext;
@@ -63,6 +64,10 @@ public class StatusBarView extends ViewGroup {
         if (edgeToEdge) {
             WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(window, window.getDecorView());
             insetsController.setAppearanceLightStatusBars("dark".equals(tintStyle));
+            if (hidden)
+                insetsController.hide(WindowInsetsCompat.Type.statusBars());
+            else
+                insetsController.show(WindowInsetsCompat.Type.statusBars());
         } else {
             window.setStatusBarColor(barTintColor);
             int systemUiVisibilityFlags = getSystemUiVisibility();
