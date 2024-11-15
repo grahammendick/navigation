@@ -20,32 +20,12 @@ class JSI_EXPORT NVTabBarItemShadowNode final: public ConcreteViewShadowNode<
 
 public:
   using ConcreteViewShadowNode::ConcreteViewShadowNode;
+  using StateData = ConcreteViewShadowNode::ConcreteStateData;
 
-  void setImageManager(const SharedImageManager &imageManager);
+  void setImageLoader(std::weak_ptr<void> imageLoader);
 
-  static NVTabBarItemState initialStateData(
-                                           Props::Shared const &props,
-                                           ShadowNodeFamily::Shared const &family,
-                                           ComponentDescriptor const &componentDescriptor) {
-    auto imageSource = ImageSource{ImageSource::Type::Invalid};
-    return {
-      imageSource,
-      {imageSource, nullptr, {}}};
-  }
+  StateData &getStateDataMutable();
 
-#pragma mark - LayoutableShadowNode
-
-  Size measureContent(
-                      LayoutContext const &layoutContext,
-                      LayoutConstraints const &layoutConstraints) const override;
-  void layout(LayoutContext layoutContext) override;
-
-private:
-  void updateStateIfNeeded();
-
-  ImageSource getImageSource() const;
-
-  SharedImageManager imageManager_;
 };
 
 } // namespace react

@@ -7,13 +7,16 @@
 #import <react/renderer/components/navigationreactnative/Props.h>
 #import <react/renderer/components/navigationreactnative/RCTComponentViewHelpers.h>
 #import <react/renderer/imagemanager/ImageResponseObserverCoordinator.h>
+#import <react/utils/ManagedObjectWrapper.h>
 #import <NVTabBarItemComponentDescriptor.h>
 
 #import "RCTFabricComponentsPlugins.h"
+#import "RCTImagePrimitivesConversions.h"
 #import <React/RCTConversions.h>
 #import <React/RCTFont.h>
 #import <React/RCTImageResponseDelegate.h>
 #import <React/RCTImageResponseObserverProxy.h>
+#import <React/RCTImageLoader.h>
 
 using namespace facebook::react;
 
@@ -23,6 +26,7 @@ using namespace facebook::react;
 @implementation NVTabBarItemComponentView
 {
     UIImage *_image;
+    ImageSource _imageSource;
     ImageResponseObserverCoordinator const *_imageCoordinator;
     RCTImageResponseObserverProxy _imageResponseObserverProxy;
 }
@@ -90,6 +94,7 @@ using namespace facebook::react;
     if (self.tab.badgeValue != badge)
         self.tab.badgeValue = !!badge.length ? badge : nil;
     self.tab.badgeColor = RCTUIColorFromSharedColor(newViewProps.badgeColor);
+    _imageSource = newViewProps.image;
     NSString *uri = [[NSString alloc] initWithUTF8String:newViewProps.image.uri.c_str()];
     if (![uri length]) {
         _image = nil;
@@ -139,7 +144,16 @@ using namespace facebook::react;
     auto _oldState = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(oldState);
     auto data = _state->getData();
     bool havePreviousData = _oldState != nullptr;
-    if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
+    if (auto imgLoaderPtr = _state.get()->getData().getImageLoader().lock()) {
+        RCTImageLoader *imageLoader = facebook::react::unwrapManagedObject(imgLoaderPtr);
+        [imageLoader loadImageWithURLRequest:NSURLRequestFromImageSource(_imageSource) size:CGSizeMake(_imageSource.size.width, _imageSource.size.height) scale:_imageSource.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self->_image = image;
+                self->_tab.image = image;
+            });
+        }];
+    }
+    /*if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
         if (@available(iOS 13.0, *)) {
             UIImage *systemSymbol = [UIImage systemImageNamed:[[NSString alloc] initWithUTF8String:data.getImageSource().uri.c_str()]];
             if (systemSymbol) {
@@ -156,7 +170,7 @@ using namespace facebook::react;
             }
         };
         self.imageCoordinator = getCoordinator(&data.getImageRequest());
-    }
+    }*/
 }
 
 - (void)setImageCoordinator:(const ImageResponseObserverCoordinator *)coordinator

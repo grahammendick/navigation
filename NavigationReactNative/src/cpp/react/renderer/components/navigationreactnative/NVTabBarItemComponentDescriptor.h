@@ -19,7 +19,9 @@ class NVTabBarItemComponentDescriptor final
     auto &tabBarItemShadowNode =
         static_cast<NVTabBarItemShadowNode&>(shadowNode);
 
-    tabBarItemShadowNode.setImageManager(imageManager_);
+    std::weak_ptr<void> imageLoader =
+        contextContainer_->at<std::shared_ptr<void>>("RCTImageLoader");
+    tabBarItemShadowNode.setImageLoader(imageLoader);    
   }
 
  private:

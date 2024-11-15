@@ -14,17 +14,10 @@ namespace react {
 
 class NVTabBarItemState final {
  public:
-  NVTabBarItemState(
-      ImageSource const &imageSource,
-      ImageRequest imageRequest)
-      : imageSource_(imageSource),
-        imageRequest_(
-            std::make_shared<ImageRequest>(std::move(imageRequest))){};
-
   NVTabBarItemState() = default;
 
-  ImageSource getImageSource() const;
-  ImageRequest const &getImageRequest() const;
+  void setImageLoader(std::weak_ptr<void> imageLoader);
+  std::weak_ptr<void> getImageLoader() const noexcept;  
 
 #ifdef ANDROID
   NVTabBarItemState(NVTabBarItemState const &previousState, folly::dynamic data){};
@@ -38,8 +31,7 @@ class NVTabBarItemState final {
 #endif
 
  private:
-  ImageSource imageSource_;
-  std::shared_ptr<ImageRequest> imageRequest_;
+  std::weak_ptr<void> imageLoader_;
 };
 
 } // namespace react
