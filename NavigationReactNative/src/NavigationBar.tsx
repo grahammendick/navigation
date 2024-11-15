@@ -54,7 +54,8 @@ class NavigationBar extends React.Component<any, any> {
         var placeholder = searchBar?.props.placeholder;
         var {stateNavigator} = navigationEvent;
         var crumb = stateNavigator.stateContext.crumbs.length;
-        const barHeight = !material3 || searchToolbar ? 56 : 64;
+        const toolbarHeight = !material3 || searchToolbar ? 56 : 64;
+        const barHeight = toolbarHeight + (searchToolbar ? 32 : 0);
         return (
             <>
                 <NVNavigationBar
@@ -92,12 +93,12 @@ class NavigationBar extends React.Component<any, any> {
                                 fontStyle={searchBar?.props.fontStyle}
                                 fontSize={searchBar?.props.fontSize}
                                 titleCentered={!!titleCentered}
-                                barHeight={barHeight}
+                                barHeight={toolbarHeight}
                                 onNavigationPress={() => {
                                     if (onNavigationPress) onNavigationPress();
                                     else if (crumb > 0) stateNavigator.navigateBack(1);
                                 }}
-                                style={{height: barHeight, margin: searchToolbar ? 16 : undefined}}>
+                                style={{height: toolbarHeight, margin: searchToolbar ? 16 : undefined}}>
                                 {[
                                     !searchToolbar && childrenArray.find(({type}) => type === TitleBar),
                                     childrenArray.find(({type}) => type === LeftBar),
