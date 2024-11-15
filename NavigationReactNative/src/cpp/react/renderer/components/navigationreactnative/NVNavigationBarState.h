@@ -29,6 +29,7 @@ class JSI_EXPORT NVNavigationBarState final {
 
   ImageSource getImageSource() const;
   ImageRequest const &getImageRequest() const;
+  const Size frameSize{};
 
 #ifdef ANDROID
   NVNavigationBarState(
@@ -38,7 +39,6 @@ class JSI_EXPORT NVNavigationBarState final {
             (Float)data["frameWidth"].getDouble(),
             (Float)data["frameHeight"].getDouble()}){};
 
-  const Size frameSize{};
 
   folly::dynamic getDynamic() const;
   MapBuffer getMapBuffer() const {
