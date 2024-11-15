@@ -21,6 +21,7 @@
 #include <react/renderer/components/navigationreactnative/NVNavigationBarComponentDescriptor.h>
 #include <react/renderer/components/navigationreactnative/NVSearchBarComponentDescriptor.h>
 #include <react/renderer/components/navigationreactnative/NVTabBarItemComponentDescriptor.h>
+#include <react/renderer/components/navigationreactnative/NVTabNavigationComponentDescriptor.h>
 #include <react/renderer/components/navigationreactnative/NVTitleBarComponentDescriptor.h>
 
 namespace facebook {

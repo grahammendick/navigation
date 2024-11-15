@@ -20,7 +20,7 @@ class FloatingActionButton extends React.Component<any, any> {
             fontStyle: fabFontStyle,
             fontSize: fabFontSize,
             elevation: fabElevation,
-        } = style;
+        } = style || {};
         return (
             <NativeFAB
                 text={text}

@@ -3,8 +3,7 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.ColorStateList;
-import android.graphics.BlendMode;
-import android.graphics.BlendModeColorFilter;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
@@ -33,7 +32,6 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.text.ReactTypefaceUtils;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.search.SearchBar;
 import com.google.android.material.shape.MaterialShapeDrawable;
 
@@ -146,7 +144,7 @@ public class SearchToolbarView extends SearchBar implements DrawerToggleHandler 
     private void setTintColor(Drawable icon) {
         if (icon != null) {
             if (tintColor != null)
-                icon.setColorFilter(new BlendModeColorFilter(tintColor, BlendMode.SRC_IN));
+                icon.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
             else
                 icon.clearColorFilter();
         }

@@ -49,6 +49,10 @@ type NativeProps = $ReadOnly<{|
   onRest: DirectEventHandler<$ReadOnly<{|
     crumb: Int32,
     eventCount: Int32,
+  |}>>,
+  onApplyInsets: DirectEventHandler<$ReadOnly<{|
+    top: Float,
+    bottom: Float,
   |}>>
 |}>;
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { requireNativeComponent, Platform, StyleSheet, View, I18nManager , UIManager, NativeModules } from 'react-native';
 import BackButton from './BackButton';
+import InsetsContext from './InsetsContext';
 
 class TabBar extends React.Component<any, any> {
     private ref: React.RefObject<View>;
@@ -45,7 +46,7 @@ class TabBar extends React.Component<any, any> {
         return false;
     }
     render() {
-        var {children, labelVisibilityMode, barTintColor, selectedTintColor, unselectedTintColor, activeIndicatorColor, rippleColor, shadowColor, bottomTabs, scrollable, primary, scrollsToTop, preventFouc, onPressBack} = this.props;
+        var {children, labelVisibilityMode, barTintColor, selectedTintColor, unselectedTintColor, activeIndicatorColor, rippleColor, shadowColor, bottomTabs, scrollable, primary, scrollsToTop, preventFouc, insets, onPressBack} = this.props;
         const Material3 = global.__turboModuleProxy != null ? require("./NativeMaterial3Module").default : NativeModules.Material3;
         const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
         bottomTabs = bottomTabs != null ? bottomTabs : primary;
@@ -55,6 +56,7 @@ class TabBar extends React.Component<any, any> {
         (tabBarItems[0] as any)?.props || {};
         var tabViewHeight = !primary ? (titleOnly ? 48 : 72) : (!material3 ? 56 : 80);
         tabViewHeight = Platform.OS === 'android' ? tabViewHeight : 28;
+        tabViewHeight += Platform.OS === 'android' && primary && bottomTabs ? insets.bottom : 0;
         var TabBarPager = (Platform.OS === 'ios' || !I18nManager.isRTL) ? NVTabBarPager : NVTabBarPagerRTL;
         var TabBar = primary ? NVTabBar : TabBarPager;
         var TabView = primary ? NVTabNavigation : (!I18nManager.isRTL ? NVTabLayout : NVTabLayoutRTL);
@@ -134,4 +136,10 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TabBar;
+export default props => (
+    <InsetsContext.Consumer>
+        {(insets) => (
+            <TabBar insets={insets} {...props} />
+        )}
+    </InsetsContext.Consumer>
+);

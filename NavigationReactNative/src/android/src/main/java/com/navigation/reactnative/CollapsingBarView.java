@@ -1,8 +1,11 @@
 package com.navigation.reactnative;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.views.text.ReactTypefaceUtils;
@@ -41,6 +44,9 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
         defaultCollapsedTitleFontSize = getCollapsedTitleTextSize();
         defaultExpandedTitleFontSize = getExpandedTitleTextSize();
         defaultTitleCollapseMode = getTitleCollapseMode();
+        setFitsSystemWindows(true);
+        setStatusBarScrim(new ColorDrawable(Color.TRANSPARENT));
+        setForceApplySystemWindowInsetTop(false);
     }
 
     void setTitleFontFamily(String titleFontFamily) {
@@ -100,6 +106,13 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
             }
             setExpandedTitleTextSize(largeTitleFontSize != null ? PixelUtil.toPixelFromDIP(largeTitleFontSize) : defaultExpandedTitleFontSize);
         }
+    }
+
+    @Override
+    public void onViewAdded(View child) {
+        if (!(child instanceof ToolbarView))
+            child.setFitsSystemWindows(true);
+        super.onViewAdded(child);
     }
 
     @Override

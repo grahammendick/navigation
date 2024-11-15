@@ -10,6 +10,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
@@ -372,6 +374,16 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         }
     }
 
+    @Override
+    public WindowInsets onApplyWindowInsets(WindowInsets insets) {
+        int top = insets.getSystemWindowInsetTop();
+        int bottom = insets.getSystemWindowInsetBottom();
+        ReactContext reactContext = (ReactContext) getContext();
+        EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+        eventDispatcher.dispatchEvent(new NavigationStackView.ApplyInsetsEvent(getId(), top, bottom));
+        return super.onApplyWindowInsets(insets);
+    }
+
     void scrollToTop() {
         if (keys.size() > 1) {
             ReactContext reactContext = (ReactContext) getContext();
@@ -488,6 +500,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }
+
     static class RestEvent extends Event<NavigationStackView.RestEvent> {
         private final int crumb;
         private final int eventCount;
@@ -508,6 +521,30 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             WritableMap event = Arguments.createMap();
             event.putInt("crumb", this.crumb);
             event.putInt("eventCount", this.eventCount);
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
+        }
+    }
+
+    static class ApplyInsetsEvent extends Event<NavigationStackView.ApplyInsetsEvent> {
+        private final float top;
+        private final float bottom;
+
+        public ApplyInsetsEvent(int viewId, int top, int bottom) {
+            super(viewId);
+            this.top = PixelUtil.toDIPFromPixel(top);
+            this.bottom = PixelUtil.toDIPFromPixel(bottom);
+        }
+
+        @Override
+        public String getEventName() {
+            return "topApplyInsets";
+        }
+
+        @Override
+        public void dispatch(RCTEventEmitter rctEventEmitter) {
+            WritableMap event = Arguments.createMap();
+            event.putDouble("top", this.top);
+            event.putDouble("bottom", this.bottom);
             rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }

@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.ReactStylesDiffMap;
+import com.facebook.react.uimanager.StateWrapper;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.ViewManagerDelegate;
@@ -108,5 +110,12 @@ public class TabNavigationViewManager extends ViewGroupManager<TabNavigationView
     @Override
     protected TabNavigationView createViewInstance(@Nonnull ThemedReactContext reactContext) {
         return new TabNavigationView(reactContext);
+    }
+
+    @Nullable
+    @Override
+    public Object updateState(@NonNull TabNavigationView view, ReactStylesDiffMap props, StateWrapper stateWrapper) {
+        view.setStateWrapper(stateWrapper);
+        return null;
     }
 }

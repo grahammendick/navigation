@@ -3,6 +3,7 @@ import { Platform, requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, Crumb, State } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import FragmentContext from './FragmentContext';
+import InsetsContext from './InsetsContext';
 import PopSync from './PopSync';
 import Scene from './Scene';
 type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, customAnimation: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, sharedElements: any, backgroundColor: any, landscape: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
@@ -16,6 +17,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     const fragmentTag = React.useId?.();
     const ancestorFragmentTags = useContext(FragmentContext);
     const fragmentTags = useMemo(() => fragmentTag ? [...ancestorFragmentTags, fragmentTag] : [], [ancestorFragmentTags, fragmentTag]);
+    const insets = useRef({top: 0, bottom: 0});
     const {stateNavigator} = useContext(NavigationContext);
     const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, mostRecentEventCount: 0});
     const scenes = {};
@@ -60,6 +62,9 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         const {crumbs} = stateNavigator.stateContext;
         if (crumbs.length > 0)
             stateNavigator.navigateBack(crumbs.length);
+    }
+    const onApplyInsets = ({nativeEvent: {top, bottom}}) => {
+        insets.current = {top, bottom};
     }
     const onRest = ({nativeEvent}) => {
         const {crumbs} = stateNavigator.stateContext;
@@ -168,39 +173,42 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     const {crumbs, nextCrumb} = stateNavigator.stateContext;
     return (
         <FragmentContext.Provider value={fragmentTags}>
-            <NVNavigationStack
-                ref={ref}
-                keys={keys}
-                fragmentTag={fragmentTag}
-                ancestorFragmentTags={ancestorFragmentTags}
-                mostRecentEventCount={mostRecentEventCount}
-                style={styles.stack}
-                {...getAnimation()}
-                onWillNavigateBack={onWillNavigateBack}
-                onNavigateToTop={onNavigateToTop}
-                onRest={onRest}>
-                <PopSync<{crumb: number, url: string}>
-                    data={crumbs.concat(nextCrumb || []).map(({url}, crumb) => ({crumb, url}))}
-                    getKey={({crumb}) => keys[crumb]}>
-                    {(scenes, popNative) => scenes.map(({key, data: {crumb, url}}) => (
-                        <Scene
-                            key={key}
-                            url={url}
-                            crumb={crumb}
-                            sceneKey={key}
-                            rest={rest}
-                            customAnimation={customAnimation}
-                            unmountStyle={unmountStyle}
-                            crumbStyle={crumbStyle}
-                            hidesTabBar={hidesTabBar}
-                            backgroundColor={backgroundColor}
-                            landscape={landscape}
-                            title={title}
-                            popped={popNative}
-                            renderScene={firstLink ? ({key}) => allScenes[key] : renderScene} />
-                    ))}
-                </PopSync>
-            </NVNavigationStack>
+            <InsetsContext.Provider value={insets.current}>
+                <NVNavigationStack
+                    ref={ref}
+                    keys={keys}
+                    fragmentTag={fragmentTag}
+                    ancestorFragmentTags={ancestorFragmentTags}
+                    mostRecentEventCount={mostRecentEventCount}
+                    style={styles.stack}
+                    {...getAnimation()}
+                    onWillNavigateBack={onWillNavigateBack}
+                    onNavigateToTop={onNavigateToTop}
+                    onApplyInsets={onApplyInsets}
+                    onRest={onRest}>
+                    <PopSync<{crumb: number, url: string}>
+                        data={crumbs.concat(nextCrumb || []).map(({url}, crumb) => ({crumb, url}))}
+                        getKey={({crumb}) => keys[crumb]}>
+                        {(scenes, popNative) => scenes.map(({key, data: {crumb, url}}) => (
+                            <Scene
+                                key={key}
+                                url={url}
+                                crumb={crumb}
+                                sceneKey={key}
+                                rest={rest}
+                                customAnimation={customAnimation}
+                                unmountStyle={unmountStyle}
+                                crumbStyle={crumbStyle}
+                                hidesTabBar={hidesTabBar}
+                                backgroundColor={backgroundColor}
+                                landscape={landscape}
+                                title={title}
+                                popped={popNative}
+                                renderScene={firstLink ? ({key}) => allScenes[key] : renderScene} />
+                        ))}
+                    </PopSync>
+                </NVNavigationStack>
+            </InsetsContext.Provider>
         </FragmentContext.Provider>
     );
 }

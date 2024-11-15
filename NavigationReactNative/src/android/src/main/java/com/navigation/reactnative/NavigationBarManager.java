@@ -58,11 +58,10 @@ public class NavigationBarManager extends ViewGroupManager<NavigationBarView> {
         view.setExpanded(!hide, true);
     }
 
-    @ReactProp(name = "height")
-    public void setHeight(NavigationBarView view, double height) {
-        view.getLayoutParams().height = height != 0 ? (int) PixelUtil.toPixelFromDIP(height) : AppBarLayout.LayoutParams.WRAP_CONTENT;
-        if (view.getParent() instanceof CoordinatorLayoutView) {
-            CoordinatorLayoutView coordinatorLayoutView = (CoordinatorLayoutView) view.getParent();
+    @ReactProp(name = "barHeight")
+    public void setBarHeight(NavigationBarView view, double barHeight) {
+        view.getLayoutParams().height = barHeight != 0 ? (int) PixelUtil.toPixelFromDIP(barHeight) : AppBarLayout.LayoutParams.WRAP_CONTENT;
+        if (view.getParent() instanceof CoordinatorLayoutView coordinatorLayoutView) {
             coordinatorLayoutView.requestLayout();
         }
     }
