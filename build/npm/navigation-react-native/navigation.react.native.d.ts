@@ -223,7 +223,7 @@ export interface NavigationBarProps {
      * The back button image
      * @platform ios
      */
-    backImage?: ImageRequireSource | ImageURISource;
+    backImage?: ImageRequireSource | ImageURISource | SFSymbolURISource;
     /**
      * The logo
      * @platform android
