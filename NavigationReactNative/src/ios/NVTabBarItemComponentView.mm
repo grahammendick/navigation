@@ -93,11 +93,6 @@ using namespace facebook::react;
         self.tab.badgeValue = !!badge.length ? badge : nil;
     self.tab.badgeColor = RCTUIColorFromSharedColor(newViewProps.badgeColor);
     _imageSource = newViewProps.image;
-    NSString *uri = [[NSString alloc] initWithUTF8String:newViewProps.image.uri.c_str()];
-    if (![uri length]) {
-        _image = nil;
-        _tab.image = nil;
-    }
     [super updateProps:props oldProps:oldProps];
 }
 
@@ -138,17 +133,31 @@ using namespace facebook::react;
 
 - (void)updateState:(const facebook::react::State::Shared &)state oldState:(const facebook::react::State::Shared &)oldState
 {
-    auto _state = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(state);
-    auto _oldState = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(oldState);
-    auto data = _state->getData();
-    if (auto imgLoaderPtr = _state.get()->getData().getImageLoader().lock()) {
-        RCTImageLoader *imageLoader = facebook::react::unwrapManagedObject(imgLoaderPtr);
-        [imageLoader loadImageWithURLRequest:NSURLRequestFromImageSource(_imageSource) size:CGSizeMake(_imageSource.size.width, _imageSource.size.height) scale:_imageSource.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self->_image = image;
-                self->_tab.image = image;
-            });
-        }];
+    NSString *uri = [[NSString alloc] initWithUTF8String:_imageSource.uri.c_str()];
+    if ([uri length]) {
+        if (@available(iOS 13.0, *)) {
+            UIImage *sfSymbol = [UIImage systemImageNamed:[uri lastPathComponent]];
+            if (sfSymbol) {
+                _image = sfSymbol;
+                _tab.image = sfSymbol;
+                return;
+            }
+        }
+        auto _state = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(state);
+        auto _oldState = std::static_pointer_cast<NVTabBarItemShadowNode::ConcreteState const>(oldState);
+        auto data = _state->getData();
+        if (auto imgLoaderPtr = _state.get()->getData().getImageLoader().lock()) {
+            RCTImageLoader *imageLoader = facebook::react::unwrapManagedObject(imgLoaderPtr);
+            [imageLoader loadImageWithURLRequest:NSURLRequestFromImageSource(_imageSource) size:CGSizeMake(_imageSource.size.width, _imageSource.size.height) scale:_imageSource.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:nil partialLoadBlock:nil completionBlock:^(NSError *error, UIImage *image) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self->_image = image;
+                    self->_tab.image = image;
+                });
+            }];
+        }
+    } else {
+        _image = nil;
+        _tab.image = nil;
     }
 }
 
