@@ -19,7 +19,9 @@ class NVTabBarItemState final {
   std::weak_ptr<void> getImageLoader() const noexcept;  
 
 #ifdef ANDROID
-  NVTabBarItemState(NVTabBarItemState const &previousState, folly::dynamic data){};
+  NVTabBarItemState(
+    NVTabBarItemState const &previousState,
+    folly::dynamic data){};
 
   folly::dynamic getDynamic() const {
     return {};
