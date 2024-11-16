@@ -124,11 +124,12 @@ using namespace facebook::react;
     [super prepareForRecycle];
     _navigationController.tabBarItem = nil;
     _navigationController = nil;
-    _imageSource = {};
     self.stackDidChangeBlock = nil;
     _tab = nil;
     _foucCounter = 0;
     _image = nil;
+    _imageSource = {};
+    _imageLoader = nil;
 }
 
 - (void)updateState:(const facebook::react::State::Shared &)state oldState:(const facebook::react::State::Shared &)oldState
