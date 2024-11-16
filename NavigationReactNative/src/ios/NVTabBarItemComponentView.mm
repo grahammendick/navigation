@@ -92,7 +92,9 @@ using namespace facebook::react;
         self.tab.badgeValue = !!badge.length ? badge : nil;
     self.tab.badgeColor = RCTUIColorFromSharedColor(newViewProps.badgeColor);
     _imageSource = newViewProps.image;
-    [self loadImage];
+    if (![[[NSString alloc] initWithUTF8String:_imageSource.uri.c_str()] isEqual:[[NSString alloc] initWithUTF8String:oldViewProps.image.uri.c_str()]]
+        || _imageSource.size != oldViewProps.image.size || _imageSource.scale != oldViewProps.image.scale)
+        [self loadImage];
     [super updateProps:props oldProps:oldProps];
 }
 
