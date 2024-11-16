@@ -5,25 +5,25 @@
 #import <react/renderer/components/navigationreactnative/EventEmitters.h>
 #import <react/renderer/components/navigationreactnative/Props.h>
 #import <react/renderer/components/navigationreactnative/RCTComponentViewHelpers.h>
-#import <react/renderer/imagemanager/ImageResponseObserverCoordinator.h>
+#import <react/utils/ManagedObjectWrapper.h>
 #import <NVNavigationBarComponentDescriptor.h>
 
 #import "RCTFabricComponentsPlugins.h"
+#import "RCTImagePrimitivesConversions.h"
 #import <React/RCTConversions.h>
 #import <React/RCTFont.h>
-#import <React/RCTImageResponseDelegate.h>
-#import <React/RCTImageResponseObserverProxy.h>
 #import <React/UIView+React.h>
+#import <React/RCTImageLoader.h>
 
 using namespace facebook::react;
 
-@interface NVNavigationBarComponentView () <RCTNVNavigationBarViewProtocol, RCTImageResponseDelegate>
+@interface NVNavigationBarComponentView () <RCTNVNavigationBarViewProtocol>
 @end
 
 @implementation NVNavigationBarComponentView {
-    ImageResponseObserverCoordinator const *_imageCoordinator;
-    RCTImageResponseObserverProxy _imageResponseObserverProxy;
     UIImage *_backImage;
+    ImageSource _imageSource;
+    RCTImageLoader *_imageLoader;
     BOOL addedListener;
 }
 
@@ -32,13 +32,13 @@ using namespace facebook::react;
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const NVNavigationBarProps>();
         _props = defaultProps;
-        _imageResponseObserverProxy = RCTImageResponseObserverProxy(self);
     }
     return self;
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
+    const auto &oldViewProps = *std::static_pointer_cast<NVNavigationBarProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<NVNavigationBarProps const>(props);
     _crumb = [NSNumber numberWithInt:newViewProps.crumb];
     if (!addedListener) {
@@ -93,11 +93,10 @@ using namespace facebook::react;
         }
     }
     _backTestID = [[NSString alloc] initWithUTF8String: newViewProps.backTestID.c_str()];
-    NSString *uri = [[NSString alloc] initWithUTF8String:newViewProps.backImage.uri.c_str()];
-    _backImageLoading = !![uri length];
-    if (![uri length]) {
-        _backImage = nil;
-    }
+    _imageSource = newViewProps.backImage;
+    if (![[[NSString alloc] initWithUTF8String:_imageSource.uri.c_str()] isEqual:[[NSString alloc] initWithUTF8String:oldViewProps.backImage.uri.c_str()]]
+        || _imageSource.size != oldViewProps.backImage.size || _imageSource.scale != oldViewProps.backImage.scale)
+        [self loadImage];
     [self updateStyle];
     [super updateProps:props oldProps:oldProps];
 }
@@ -235,7 +234,8 @@ API_AVAILABLE(ios(13.0)){
 - (void)prepareForRecycle
 {
     [super prepareForRecycle];
-    self.imageCoordinator = nullptr;
+    _imageSource = {};
+    _imageLoader = nil;
     _backImageLoading = NO;
     _backImage = nil;
     addedListener = NO;
@@ -247,62 +247,40 @@ API_AVAILABLE(ios(13.0)){
   auto _state = std::static_pointer_cast<NVNavigationBarShadowNode::ConcreteState const>(state);
   auto _oldState = std::static_pointer_cast<NVNavigationBarShadowNode::ConcreteState const>(oldState);
   auto data = _state->getData();
-  bool havePreviousData = _oldState != nullptr;
-  auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
-    if (request) {
-      return &request->getObserverCoordinator();
-    } else {
-      return nullptr;
+    if (auto imgLoaderPtr = _state.get()->getData().getImageLoader().lock()) {
+        _imageLoader = facebook::react::unwrapManagedObject(imgLoaderPtr);
+        [self loadImage];
     }
-  };
-  if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
-    self.imageCoordinator = getCoordinator(&data.getImageRequest());
-  }
 }
 
-- (void)setImageCoordinator:(const ImageResponseObserverCoordinator *)coordinator
+- (void)loadImage
 {
-  if (_imageCoordinator) {
-    _imageCoordinator->removeObserver(_imageResponseObserverProxy);
-  }
-  _imageCoordinator = coordinator;
-  if (_imageCoordinator) {
-    _imageCoordinator->addObserver(_imageResponseObserverProxy);
-  }
-}
-
-#pragma mark - RCTImageResponseDelegate
-
-- (void)didReceiveImage:(UIImage *)image metadata:(id)metadata fromObserver:(void const *)observer
-{
-  if (observer == &_imageResponseObserverProxy) {
-      if ([image isEqual:_backImage]) {
-        return;
-      }
-      if (self.backImageDidLoadBlock) {
-          self.backImageDidLoadBlock();
-          self.backImageDidLoadBlock = nil;
-      }
-      _backImageLoading = NO;
-      _backImage = image;
-      [self updateStyle];
-  }
-}
-
-- (void)didReceiveProgress:(float)progress fromObserver:(void const *)observer
-{
-}
-
-- (void)didReceiveFailureFromObserver:(void const *)observer
-{
-}
-
-- (void)didReceiveProgress:(float)progress loaded:(int64_t)loaded total:(int64_t)total fromObserver:(nonnull const void *)observer
-{
-}
-
-- (void)didReceiveFailure:(nonnull NSError *)error fromObserver:(nonnull const void *)observer
-{
+    NSString *uri = [[NSString alloc] initWithUTF8String:_imageSource.uri.c_str()];
+    if ([uri length]) {
+        if (@available(iOS 13.0, *)) {
+            UIImage *sfSymbol = [UIImage systemImageNamed:[uri lastPathComponent]];
+            if (sfSymbol) {
+                _backImage = sfSymbol;
+                [self updateStyle];
+                return;
+            }
+        }
+        _backImageLoading = !![uri length];
+        [_imageLoader loadImageWithURLRequest:NSURLRequestFromImageSource(_imageSource) size:CGSizeMake(_imageSource.size.width, _imageSource.size.height) scale:_imageSource.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:^(int64_t progress, int64_t total){} partialLoadBlock:^(UIImage *image){} completionBlock:^(NSError *error, UIImage *image) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (self.backImageDidLoadBlock) {
+                    self.backImageDidLoadBlock();
+                    self.backImageDidLoadBlock = nil;
+                }
+                self ->_backImageLoading = NO;
+                self ->_backImage = image;
+                [self updateStyle];
+            });
+        }];
+    } else {
+        _backImage = nil;
+        [self updateStyle];
+    }
 }
 
 #pragma mark - RCTComponentViewProtocol
