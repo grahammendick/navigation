@@ -5,7 +5,6 @@
 #import <react/renderer/components/navigationreactnative/EventEmitters.h>
 #import <react/renderer/components/navigationreactnative/Props.h>
 #import <react/renderer/components/navigationreactnative/RCTComponentViewHelpers.h>
-#import <react/renderer/imagemanager/ImageResponseObserverCoordinator.h>
 #import <react/utils/ManagedObjectWrapper.h>
 #import <NVBarButtonComponentDescriptor.h>
 
