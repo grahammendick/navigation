@@ -19,7 +19,9 @@ class NVBarButtonState final {
   std::weak_ptr<void> getImageLoader() const noexcept;  
 
 #ifdef ANDROID
-  NVBarButtonState(NVBarButtonState const &previousState, folly::dynamic data){};
+  NVBarButtonState(
+    NVBarButtonState const &previousState,
+    folly::dynamic data){};
 
   folly::dynamic getDynamic() const {
     return {};

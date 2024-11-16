@@ -8,7 +8,6 @@
 
 #include <react/renderer/graphics/Float.h>
 #include <react/renderer/core/graphicsConversions.h>
-#include <react/renderer/imagemanager/ImageRequest.h>
 #include <react/renderer/imagemanager/primitives.h>
 
 namespace facebook {
@@ -16,19 +15,10 @@ namespace react {
 
 class JSI_EXPORT NVNavigationBarState final {
  public:
-  using Shared = std::shared_ptr<const NVNavigationBarState>;
-
-  NVNavigationBarState(
-      ImageSource const &imageSource,
-      ImageRequest imageRequest)
-      : imageSource_(imageSource),
-        imageRequest_(
-            std::make_shared<ImageRequest>(std::move(imageRequest))){};
-
   NVNavigationBarState() = default;
 
-  ImageSource getImageSource() const;
-  ImageRequest const &getImageRequest() const;
+  void setImageLoader(std::weak_ptr<void> imageLoader);
+  std::weak_ptr<void> getImageLoader() const noexcept;  
   const Size frameSize{};
 
 #ifdef ANDROID
@@ -47,8 +37,7 @@ class JSI_EXPORT NVNavigationBarState final {
 #endif
 
  private:
-  ImageSource imageSource_;
-  std::shared_ptr<ImageRequest> imageRequest_;
+  std::weak_ptr<void> imageLoader_;
 };
 
 } // namespace react
