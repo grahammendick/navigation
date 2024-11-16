@@ -6,7 +6,6 @@
 #include <react/renderer/mapbuffer/MapBufferBuilder.h>
 #endif
 
-#include <react/renderer/imagemanager/ImageRequest.h>
 #include <react/renderer/imagemanager/primitives.h>
 
 namespace facebook {

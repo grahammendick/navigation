@@ -9,9 +9,7 @@ namespace react {
 class NVTabBarItemComponentDescriptor final
     : public ConcreteComponentDescriptor<NVTabBarItemShadowNode> {
  public:
-    NVTabBarItemComponentDescriptor(ComponentDescriptorParameters const &parameters)
-      : ConcreteComponentDescriptor(parameters),
-        imageManager_(std::make_shared<ImageManager>(contextContainer_)){}
+  using ConcreteComponentDescriptor::ConcreteComponentDescriptor;
 
   void adopt(ShadowNode& shadowNode) const override {
     ConcreteComponentDescriptor::adopt(shadowNode);
@@ -23,9 +21,6 @@ class NVTabBarItemComponentDescriptor final
         contextContainer_->at<std::shared_ptr<void>>("RCTImageLoader");
     tabBarItemShadowNode.setImageLoader(imageLoader);    
   }
-
- private:
-  const SharedImageManager imageManager_;
 };
 
 } // namespace react
