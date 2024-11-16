@@ -14,12 +14,14 @@ class NVTabBarItemComponentDescriptor final
   void adopt(ShadowNode& shadowNode) const override {
     ConcreteComponentDescriptor::adopt(shadowNode);
 
+#if !defined(ANDROID)
     auto &tabBarItemShadowNode =
         static_cast<NVTabBarItemShadowNode&>(shadowNode);
 
     std::weak_ptr<void> imageLoader =
         contextContainer_->at<std::shared_ptr<void>>("RCTImageLoader");
-    tabBarItemShadowNode.setImageLoader(imageLoader);    
+    tabBarItemShadowNode.setImageLoader(imageLoader);
+#endif
   }
 };
 
