@@ -13,8 +13,6 @@
 #import "RCTImagePrimitivesConversions.h"
 #import <React/RCTConversions.h>
 #import <React/RCTFont.h>
-#import <React/RCTImageResponseDelegate.h>
-#import <React/RCTImageResponseObserverProxy.h>
 #import <React/RCTImageLoader.h>
 
 using namespace facebook::react;

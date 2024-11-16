@@ -6,22 +6,23 @@
 #import <react/renderer/components/navigationreactnative/Props.h>
 #import <react/renderer/components/navigationreactnative/RCTComponentViewHelpers.h>
 #import <react/renderer/imagemanager/ImageResponseObserverCoordinator.h>
+#import <react/utils/ManagedObjectWrapper.h>
 #import <NVBarButtonComponentDescriptor.h>
 
 #import "RCTFabricComponentsPlugins.h"
+#import "RCTImagePrimitivesConversions.h"
 #import <React/RCTConversions.h>
 #import <React/RCTFont.h>
-#import <React/RCTImageResponseDelegate.h>
-#import <React/RCTImageResponseObserverProxy.h>
+#import <React/RCTImageLoader.h>
 
 using namespace facebook::react;
 
-@interface NVBarButtonComponentView () <RCTNVBarButtonViewProtocol, RCTImageResponseDelegate>
+@interface NVBarButtonComponentView () <RCTNVBarButtonViewProtocol>
 @end
 
 @implementation NVBarButtonComponentView {
-    ImageResponseObserverCoordinator const *_imageCoordinator;
-    RCTImageResponseObserverProxy _imageResponseObserverProxy;
+    ImageSource _imageSource;
+    RCTImageLoader *_imageLoader;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -33,13 +34,13 @@ using namespace facebook::react;
         self.button.style = UIBarButtonItemStylePlain;
         self.button.target = self;
         self.button.action = @selector(buttonPressed);
-        _imageResponseObserverProxy = RCTImageResponseObserverProxy(self);
     }
     return self;
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
+    const auto &oldViewProps = *std::static_pointer_cast<NVBarButtonProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<NVBarButtonProps const>(props);
     NSString *title = [[NSString alloc] initWithUTF8String: newViewProps.title.c_str()];
     _fontFamily = [[NSString alloc] initWithUTF8String: newViewProps.fontFamily.c_str()];
@@ -77,10 +78,10 @@ using namespace facebook::react;
             self.button.accessibilityIdentifier = testID;
         }
     }
-    NSString *uri = [[NSString alloc] initWithUTF8String:newViewProps.image.uri.c_str()];
-    if (![uri length]) {
-        _button.image = nil;
-    }
+    _imageSource = newViewProps.image;
+    if (![[[NSString alloc] initWithUTF8String:_imageSource.uri.c_str()] isEqual:[[NSString alloc] initWithUTF8String:oldViewProps.image.uri.c_str()]]
+        || _imageSource.size != oldViewProps.image.size || _imageSource.scale != oldViewProps.image.scale)
+        [self loadImage];
     [super updateProps:props oldProps:oldProps];
 }
 
@@ -130,7 +131,8 @@ using namespace facebook::react;
     self.button.style = UIBarButtonItemStylePlain;
     self.button.target = self;
     self.button.action = @selector(buttonPressed);
-    self.imageCoordinator = nullptr;
+    _imageSource = {};
+    _imageLoader = nil;
 }
 
 - (void)updateState:(const facebook::react::State::Shared &)state oldState:(const facebook::react::State::Shared &)oldState
@@ -138,65 +140,32 @@ using namespace facebook::react;
     auto _state = std::static_pointer_cast<NVBarButtonShadowNode::ConcreteState const>(state);
     auto _oldState = std::static_pointer_cast<NVBarButtonShadowNode::ConcreteState const>(oldState);
     auto data = _state->getData();
-    bool havePreviousData = _oldState != nullptr;
-    if (!havePreviousData || data.getImageSource() != _oldState->getData().getImageSource()) {
+    if (auto imgLoaderPtr = _state.get()->getData().getImageLoader().lock()) {
+        _imageLoader = facebook::react::unwrapManagedObject(imgLoaderPtr);
+        [self loadImage];
+    }
+}
+
+- (void)loadImage
+{
+    NSString *uri = [[NSString alloc] initWithUTF8String:_imageSource.uri.c_str()];
+    if ([uri length]) {
         if (@available(iOS 13.0, *)) {
-            UIImage *systemSymbol = [UIImage systemImageNamed:[[NSString alloc] initWithUTF8String:data.getImageSource().uri.c_str()]];
-            if (systemSymbol) {
-               _button.image = systemSymbol;
+            UIImage *sfSymbol = [UIImage systemImageNamed:[uri lastPathComponent]];
+            if (sfSymbol) {
+                _button.image = sfSymbol;
                 return;
             }
         }
-        auto getCoordinator = [](ImageRequest const *request) -> ImageResponseObserverCoordinator const * {
-            if (request) {
-                return &request->getObserverCoordinator();
-            } else {
-                return nullptr;
-            }
-        };
-        self.imageCoordinator = getCoordinator(&data.getImageRequest());
+        [_imageLoader loadImageWithURLRequest:NSURLRequestFromImageSource(_imageSource) size:CGSizeMake(_imageSource.size.width, _imageSource.size.height) scale:_imageSource.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:^(int64_t progress, int64_t total){} partialLoadBlock:^(UIImage *image){} completionBlock:^(NSError *error, UIImage *image) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self->_button.image = image;
+            });
+        }];
+    } else {
+        _button.image = nil;
     }
 }
-
-- (void)setImageCoordinator:(const ImageResponseObserverCoordinator *)coordinator
-{
-    if (_imageCoordinator) {
-        _imageCoordinator->removeObserver(_imageResponseObserverProxy);
-    }
-    _imageCoordinator = coordinator;
-    if (_imageCoordinator) {
-        _imageCoordinator->addObserver(_imageResponseObserverProxy);
-    }
-}
-
-#pragma mark - RCTImageResponseDelegate
-
-- (void)didReceiveImage:(UIImage *)image metadata:(id)metadata fromObserver:(void const *)observer
-{
-  if (observer == &_imageResponseObserverProxy) {
-      if ([image isEqual:_button.image]) {
-        return;
-      }
-      _button.image = image;
-  }
-}
-
-- (void)didReceiveProgress:(float)progress fromObserver:(void const *)observer
-{
-}
-
-- (void)didReceiveFailureFromObserver:(void const *)observer
-{
-}
-
-- (void)didReceiveProgress:(float)progress loaded:(int64_t)loaded total:(int64_t)total fromObserver:(nonnull const void *)observer
-{
-}
-
-- (void)didReceiveFailure:(nonnull NSError *)error fromObserver:(nonnull const void *)observer
-{
-}
-
 
 #pragma mark - RCTComponentViewProtocol
 
