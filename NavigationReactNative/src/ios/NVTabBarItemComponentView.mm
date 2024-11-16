@@ -164,8 +164,9 @@ using namespace facebook::react;
             });
         }];
     } else {
+        if (_tab.image == _image)
+            _tab.image = nil;
         _image = nil;
-        _tab.image = nil;
     }
 }
 
