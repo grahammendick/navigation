@@ -6,7 +6,6 @@
 #include <react/renderer/mapbuffer/MapBufferBuilder.h>
 #endif
 
-#include <react/renderer/imagemanager/ImageRequest.h>
 #include <react/renderer/imagemanager/primitives.h>
 
 namespace facebook {
@@ -14,20 +13,15 @@ namespace react {
 
 class NVBarButtonState final {
  public:
-  NVBarButtonState(
-      ImageSource const &imageSource,
-      ImageRequest imageRequest)
-      : imageSource_(imageSource),
-        imageRequest_(
-            std::make_shared<ImageRequest>(std::move(imageRequest))){};
-
   NVBarButtonState() = default;
 
-  ImageSource getImageSource() const;
-  ImageRequest const &getImageRequest() const;
+  void setImageLoader(std::weak_ptr<void> imageLoader);
+  std::weak_ptr<void> getImageLoader() const noexcept;  
 
 #ifdef ANDROID
-  NVBarButtonState(NVBarButtonState const &previousState, folly::dynamic data){};
+  NVBarButtonState(
+    NVBarButtonState const &previousState,
+    folly::dynamic data){};
 
   folly::dynamic getDynamic() const {
     return {};
@@ -38,8 +32,7 @@ class NVBarButtonState final {
 #endif
 
  private:
-  ImageSource imageSource_;
-  std::shared_ptr<ImageRequest> imageRequest_;
+  std::weak_ptr<void> imageLoader_;
 };
 
 } // namespace react

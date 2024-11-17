@@ -3,12 +3,14 @@
 namespace facebook {
 namespace react {
 
-ImageSource NVBarButtonState::getImageSource() const {
-  return imageSource_;
+void NVBarButtonState::setImageLoader(
+    std::weak_ptr<void> imageLoader) {
+  imageLoader_ = imageLoader;
 }
 
-ImageRequest const &NVBarButtonState::getImageRequest() const {
-  return *imageRequest_;
+std::weak_ptr<void> NVBarButtonState::getImageLoader()
+    const noexcept {
+  return imageLoader_;
 }
 
 } // namespace react

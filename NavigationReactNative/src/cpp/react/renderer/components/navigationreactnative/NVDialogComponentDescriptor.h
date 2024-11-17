@@ -1,6 +1,5 @@
 #pragma once
 
-#include <react/debug/react_native_assert.h>
 #include "NVDialogShadowNode.h"
 #include <react/renderer/core/ConcreteComponentDescriptor.h>
 
@@ -13,13 +12,9 @@ class NVDialogComponentDescriptor final
   using ConcreteComponentDescriptor::ConcreteComponentDescriptor;
 
   void adopt(ShadowNode& shadowNode) const override {
-    react_native_assert(
-        dynamic_cast<NVDialogShadowNode*>(&shadowNode));
     auto& screenShadowNode =
         static_cast<NVDialogShadowNode&>(shadowNode);
 
-    react_native_assert(
-        dynamic_cast<YogaLayoutableShadowNode*>(&screenShadowNode));
     auto& layoutableShadowNode =
         dynamic_cast<YogaLayoutableShadowNode&>(screenShadowNode);
 

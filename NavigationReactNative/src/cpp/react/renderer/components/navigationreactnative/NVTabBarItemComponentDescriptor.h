@@ -9,21 +9,20 @@ namespace react {
 class NVTabBarItemComponentDescriptor final
     : public ConcreteComponentDescriptor<NVTabBarItemShadowNode> {
  public:
-    NVTabBarItemComponentDescriptor(ComponentDescriptorParameters const &parameters)
-      : ConcreteComponentDescriptor(parameters),
-        imageManager_(std::make_shared<ImageManager>(contextContainer_)){}
+  using ConcreteComponentDescriptor::ConcreteComponentDescriptor;
 
   void adopt(ShadowNode& shadowNode) const override {
     ConcreteComponentDescriptor::adopt(shadowNode);
 
+#if !defined(ANDROID)
     auto &tabBarItemShadowNode =
         static_cast<NVTabBarItemShadowNode&>(shadowNode);
 
-    tabBarItemShadowNode.setImageManager(imageManager_);
+    std::weak_ptr<void> imageLoader =
+        contextContainer_->at<std::shared_ptr<void>>("RCTImageLoader");
+    tabBarItemShadowNode.setImageLoader(imageLoader);
+#endif
   }
-
- private:
-  const SharedImageManager imageManager_;
 };
 
 } // namespace react

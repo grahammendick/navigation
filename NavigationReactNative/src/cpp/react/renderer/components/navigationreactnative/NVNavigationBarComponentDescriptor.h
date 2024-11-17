@@ -9,19 +9,21 @@ namespace react {
 class NVNavigationBarComponentDescriptor final
     : public ConcreteComponentDescriptor<NVNavigationBarShadowNode> {
  public:
-    NVNavigationBarComponentDescriptor(ComponentDescriptorParameters const &parameters)
-      : ConcreteComponentDescriptor(parameters),
-        imageManager_(std::make_shared<ImageManager>(contextContainer_)){}
+    using ConcreteComponentDescriptor::ConcreteComponentDescriptor;
 
   void adopt(ShadowNode& shadowNode) const override {
     ConcreteComponentDescriptor::adopt(shadowNode);
 
-    auto &screenShadowNode =
+    auto &navigationBarShadowNode =
         static_cast<NVNavigationBarShadowNode&>(shadowNode);
     auto& layoutableShadowNode =
-        dynamic_cast<YogaLayoutableShadowNode&>(screenShadowNode);
+        dynamic_cast<YogaLayoutableShadowNode&>(navigationBarShadowNode);
 
-    screenShadowNode.setImageManager(imageManager_);
+#if !defined(ANDROID)
+    std::weak_ptr<void> imageLoader =
+        contextContainer_->at<std::shared_ptr<void>>("RCTImageLoader");
+    navigationBarShadowNode.setImageLoader(imageLoader);
+#endif
 
     auto state =
         std::static_pointer_cast<const NVNavigationBarShadowNode::ConcreteState>(
@@ -33,9 +35,6 @@ class NVNavigationBarComponentDescriptor final
           Size{stateData.frameSize.width, stateData.frameSize.height});
     }
   }
-
- private:
-  const SharedImageManager imageManager_;
 };
 
 } // namespace react

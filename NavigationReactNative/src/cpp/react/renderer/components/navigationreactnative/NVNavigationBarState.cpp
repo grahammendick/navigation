@@ -10,12 +10,14 @@ folly::dynamic NVNavigationBarState::getDynamic() const {
 }
 #endif
 
-ImageSource NVNavigationBarState::getImageSource() const {
-  return imageSource_;
+void NVNavigationBarState::setImageLoader(
+    std::weak_ptr<void> imageLoader) {
+  imageLoader_ = imageLoader;
 }
 
-ImageRequest const &NVNavigationBarState::getImageRequest() const {
-  return *imageRequest_;
+std::weak_ptr<void> NVNavigationBarState::getImageLoader()
+    const noexcept {
+  return imageLoader_;
 }
 
 } // namespace react
