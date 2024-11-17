@@ -265,7 +265,7 @@ API_AVAILABLE(ios(13.0)){
                 return;
             }
         }
-        _backImageLoading = !![uri length];
+        _backImageLoading = YES;
         [_imageLoader loadImageWithURLRequest:NSURLRequestFromImageSource(_imageSource) size:CGSizeMake(_imageSource.size.width, _imageSource.size.height) scale:_imageSource.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:^(int64_t progress, int64_t total){} partialLoadBlock:^(UIImage *image){} completionBlock:^(NSError *error, UIImage *image) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (self.backImageDidLoadBlock) {

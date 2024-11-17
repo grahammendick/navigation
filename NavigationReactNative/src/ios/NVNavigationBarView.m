@@ -28,8 +28,16 @@
 
 - (void)setBackImage:(RCTImageSource *)source
 {
-    _backImageLoading = !!source;
     if (!!source) {
+        if (@available(iOS 13.0, *)) {
+            UIImage *sfSymbol = [UIImage systemImageNamed:[source.request.URL lastPathComponent]];
+            if (sfSymbol) {
+                _backImage = sfSymbol;
+                [self updateStyle];
+                return;
+            }
+        }
+        _backImageLoading = YES;
         [[_bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:source.request size:source.size scale:source.scale clipped:NO resizeMode:RCTResizeModeCover progressBlock:^(int64_t progress, int64_t total){} partialLoadBlock:^(UIImage *image){} completionBlock:^(NSError *error, UIImage *image) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (self.backImageDidLoadBlock) {
