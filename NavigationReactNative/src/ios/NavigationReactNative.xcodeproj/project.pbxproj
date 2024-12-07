@@ -139,6 +139,9 @@
 		70E99F2C24461152004B520A /* NVSegmentedTabManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSegmentedTabManager.m; sourceTree = "<group>"; };
 		70F11C852800BD5600033C5F /* NVSceneComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSceneComponentView.h; sourceTree = "<group>"; };
 		70F11C862800BD6900033C5F /* NVNavigationStackComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVNavigationStackComponentView.h; sourceTree = "<group>"; };
+		70F1854C2D04B3FF0094022B /* NVSharedElementView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSharedElementView.m; sourceTree = "<group>"; };
+		70F1854D2D04B40A0094022B /* NVSharedElementView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVSharedElementView.h; sourceTree = "<group>"; };
+		70F1854E2D04B4210094022B /* NVSharedElementManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVSharedElementManager.m; sourceTree = "<group>"; };
 		EE17B6DB231E85C000C62B81 /* NVTitleBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVTitleBarView.h; sourceTree = "<group>"; };
 		EE17B6DC231E85C000C62B81 /* NVTitleBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTitleBarView.m; sourceTree = "<group>"; };
 		EE17B6DF231E86B800C62B81 /* NVTitleBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVTitleBarManager.m; sourceTree = "<group>"; };
@@ -158,6 +161,9 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				70F1854E2D04B4210094022B /* NVSharedElementManager.m */,
+				70F1854D2D04B40A0094022B /* NVSharedElementView.h */,
+				70F1854C2D04B3FF0094022B /* NVSharedElementView.m */,
 				7048AA292C5D1EC4004D3427 /* NVDrawerComponentView.mm */,
 				7048AA282C5D1EBA004D3427 /* NVDrawerComponentView.h */,
 				7048AA272C5D1E2C004D3427 /* NVDrawerLayoutComponentView.h */,
