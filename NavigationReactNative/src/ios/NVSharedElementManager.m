@@ -13,4 +13,6 @@ RCT_EXPORT_MODULE()
     return [[NVSharedElementView alloc] init];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(name, NSString)
+
 @end
