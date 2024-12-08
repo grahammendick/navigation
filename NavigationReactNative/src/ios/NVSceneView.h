@@ -10,7 +10,7 @@
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, assign) BOOL hidesTabBar;
 @property (nonatomic, assign) BOOL stacked;
-@property NSMutableArray<NVSharedElementView*> *sharedElements;
+@property NSMutableSet<NVSharedElementView*> *sharedElements;
 @property (nonatomic, copy) NSArray<NVTransition*> *enterTransArray;
 @property (nonatomic, copy) NSArray<NVTransition*> *exitTransArray;
 @property (nonatomic, copy) RCTDirectEventBlock onPopped;
