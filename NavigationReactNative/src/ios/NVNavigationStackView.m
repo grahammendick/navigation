@@ -2,6 +2,7 @@
 #import "NVSceneView.h"
 #import "NVSceneController.h"
 #import "NVSceneTransitioning.h"
+#import "NVSharedElementView.h"
 #import "NVNavigationBarView.h"
 
 #import <UIKit/UIKit.h>
@@ -18,6 +19,7 @@
     NSInteger _nativeEventCount;
     NSMutableArray<NVTransition*> *_enterTransitions;
     NSMutableArray<NVTransition*> *_exitTransitions;
+    NSString *_sharedElement;
     UIScreenEdgePanGestureRecognizer *_interactiveGestureRecognizer;
     UIPercentDrivenInteractiveTransition *_interactiveTransition;
     BOOL _navigated;
@@ -59,6 +61,11 @@
 
 - (void)didUpdateReactSubviews
 {
+}
+
+- (void)setSharedElements:(NSArray *)sharedElements
+{
+    _sharedElement = [sharedElements objectAtIndex:0];
 }
 
 - (void)setUnderlayColor:(UIColor *)underlayColor
@@ -167,6 +174,18 @@
             controller.popExitTrans = scene.exitTransArray;
             if (!prevSceneController)
                 prevSceneController = (NVSceneController *) _navigationController.topViewController;
+            if (_sharedElement && prevSceneController) {
+                if (@available(iOS 18.0, *)) {
+                    [controller setPreferredTransition:[UIViewControllerTransition zoomWithOptions:nil sourceViewProvider:^(UIZoomTransitionSourceViewProviderContext *context) {
+                        NSSet *sharedElements = ((NVSceneView *) prevSceneController.view).sharedElements;
+                        for (NVSharedElementView *sharedElementView in sharedElements) {
+                            if ([sharedElementView.name isEqual:self->_sharedElement])
+                                return (UIView *) sharedElementView;
+                        }
+                        return (UIView *) nil;
+                    }]];
+                }
+            }
             prevSceneController.exitTrans = _exitTransitions;
             prevSceneController.popEnterTrans = scene.enterTransArray;
             [controllers addObject:controller];
