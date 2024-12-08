@@ -116,6 +116,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         if (crumbs.length === oldCrumbs.length) {
             enterAnim = unmountStyle(true, state, data, crumbs);
             exitAnim = unmountStyle(false, oldState, oldData, oldCrumbs, state, data);
+            sharedElements = getSharedElement(state, data, crumbs) || getSharedElements(state, data, crumbs);
         }
         const containerTransform = typeof sharedElements === 'string';
         sharedElements = containerTransform && sharedElements ? [sharedElements] : sharedElements;
