@@ -7,7 +7,7 @@ import InsetsContext from './InsetsContext';
 import PopSync from './PopSync';
 import Scene from './Scene';
 type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, customAnimation: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, sharedElements: any, backgroundColor: any, landscape: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
-type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, mostRecentEventCount: number};
+type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, counter: number, mostRecentEventCount: number};
 
 const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, customAnimation = Platform.OS === 'android', crumbStyle: crumbStyleStack = () => null, unmountStyle: unmountStyleStack = () => null,
     hidesTabBar: hidesTabBarStack = () => false, sharedElement: getSharedElementStack = () => null, sharedElements: getSharedElementsStack = () => null, backgroundColor: backgroundColorStack = () => null,
@@ -19,7 +19,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     const fragmentTags = useMemo(() => fragmentTag ? [...ancestorFragmentTags, fragmentTag] : [], [ancestorFragmentTags, fragmentTag]);
     const insets = useRef({top: 0, bottom: 0});
     const {stateNavigator} = useContext(NavigationContext);
-    const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, mostRecentEventCount: 0});
+    const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0, mostRecentEventCount: 0});
     const scenes = {};
     let firstLink;
     const findScenes = (elements = children, nested = false) => {
@@ -160,15 +160,16 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     const {stateNavigator: prevStateNavigator, keys, rest, mostRecentEventCount} = stackState;
     if (prevStateNavigator !== stateNavigator && stateNavigator.stateContext.state) {
         setStackState((prevStackState) => {
-            const {keys: prevKeys} = prevStackState;
+            const {keys: prevKeys, counter} = prevStackState;
             const {state, crumbs, nextCrumb, history} = stateNavigator.stateContext;
-            const currentKeys = crumbs.concat(nextCrumb).map(({state: {key}}, i) => `${key}-${i}`);
+            const currentKeys = crumbs.concat(nextCrumb).map((_, i) => `${counter}-${i}`);
             const newKeys = currentKeys.slice(prevKeys.length);
             const keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
-            if (prevKeys.length === keys.length || (prevKeys.length > keys.length && prevStateNavigator.stateContext.crumbs[keys.length - 1].state !== state))
+            if ((prevKeys.length === keys.length && prevStateNavigator.stateContext.state !== state) || 
+                (prevKeys.length > keys.length && prevStateNavigator.stateContext.crumbs[keys.length - 1].state !== state))
                 keys[keys.length - 1] = currentKeys[keys.length - 1];
             const refresh = prevKeys.length === keys.length && prevKeys[keys.length - 1] === keys[keys.length - 1];
-            return {keys, stateNavigator, rest: history || refresh, mostRecentEventCount};
+            return {keys, stateNavigator, rest: history || refresh, counter: (counter + 1) % 1000, mostRecentEventCount};
         });
     }
     const {crumbs, nextCrumb} = stateNavigator.stateContext;
