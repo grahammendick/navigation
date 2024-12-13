@@ -174,15 +174,10 @@
             controller.popExitTrans = scene.exitTransArray;
             if (!prevSceneController)
                 prevSceneController = (NVSceneController *) _navigationController.topViewController;
-            if (_sharedElement && prevSceneController && crumb - currentCrumb == 1) {
+            if ([self sharedElementView:prevSceneController] && prevSceneController && crumb - currentCrumb == 1) {
                 if (@available(iOS 18.0, *)) {
                     [controller setPreferredTransition:[UIViewControllerTransition zoomWithOptions:nil sourceViewProvider:^(UIZoomTransitionSourceViewProviderContext *context) {
-                        NSSet *sharedElements = ((NVSceneView *) prevSceneController.view).sharedElements;
-                        for (NVSharedElementView *sharedElementView in sharedElements) {
-                            if ([sharedElementView.name isEqual:self->_sharedElement])
-                                return (UIView *) sharedElementView;
-                        }
-                        return (UIView *) nil;
+                        return [self sharedElementView:prevSceneController];
                     }]];
                 }
             }
@@ -229,6 +224,17 @@
         } waitOn:controller];
         _navigationController.retainedViewController = _navigationController.topViewController;
     }
+}
+
+- (NVSharedElementView *)sharedElementView:(NVSceneController *)sceneController
+{
+    if (!_sharedElement) return nil;
+    NSSet *sharedElements = ((NVSceneView *) sceneController.view).sharedElements;
+    for (NVSharedElementView *sharedElementView in sharedElements) {
+        if ([sharedElementView.name isEqual:self->_sharedElement])
+            return sharedElementView;
+    }
+    return nil;
 }
 
 -(void)completeNavigation:(void (^)(void)) completeNavigation waitOn:(NVSceneController *)sceneController
