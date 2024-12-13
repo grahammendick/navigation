@@ -174,7 +174,7 @@
             controller.popExitTrans = scene.exitTransArray;
             if (!prevSceneController)
                 prevSceneController = (NVSceneController *) _navigationController.topViewController;
-            if (_sharedElement && prevSceneController) {
+            if (_sharedElement && prevSceneController && crumb - currentCrumb == 1) {
                 if (@available(iOS 18.0, *)) {
                     [controller setPreferredTransition:[UIViewControllerTransition zoomWithOptions:nil sourceViewProvider:^(UIZoomTransitionSourceViewProviderContext *context) {
                         NSSet *sharedElements = ((NVSceneView *) prevSceneController.view).sharedElements;
