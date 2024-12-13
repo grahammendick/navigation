@@ -174,7 +174,7 @@
             controller.popExitTrans = scene.exitTransArray;
             if (!prevSceneController)
                 prevSceneController = (NVSceneController *) _navigationController.topViewController;
-            if ([self sharedElementView:prevSceneController] && prevSceneController && crumb - currentCrumb == 1) {
+            if (crumb - currentCrumb == 1 && [self sharedElementView:prevSceneController]) {
                 if (@available(iOS 18.0, *)) {
                     [controller setPreferredTransition:[UIViewControllerTransition zoomWithOptions:nil sourceViewProvider:^(UIZoomTransitionSourceViewProviderContext *context) {
                         return [self sharedElementView:prevSceneController];
@@ -228,7 +228,7 @@
 
 - (NVSharedElementView *)sharedElementView:(NVSceneController *)sceneController
 {
-    if (!_sharedElement) return nil;
+    if (!_sharedElement || !sceneController) return nil;
     NSSet *sharedElements = ((NVSceneView *) sceneController.view).sharedElements;
     for (NVSharedElementView *sharedElementView in sharedElements) {
         if ([sharedElementView.name isEqual:self->_sharedElement])
