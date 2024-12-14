@@ -2,6 +2,7 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTViewComponentView.h>
 #import "NVSceneController.h"
+#import "NVSharedElementComponentView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -12,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, assign) BOOL hidesTabBar;
 @property (nonatomic, assign) BOOL stacked;
+@property NSMutableSet<NVSharedElementComponentView*> *sharedElements;
 @property (nonatomic, copy) NSArray<NVTransition*> *enterTrans;
 @property (nonatomic, copy) NSArray<NVTransition*> *exitTrans;
 
