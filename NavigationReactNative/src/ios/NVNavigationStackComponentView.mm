@@ -6,6 +6,7 @@
 #import "NVSceneController.h"
 #import "NVSceneComponentView.h"
 #import "NVSceneTransitioning.h"
+#import "NVSharedElementComponentView.h"
 #import "NVNavigationBarComponentView.h"
 
 #import <react/renderer/components/navigationreactnative/ComponentDescriptors.h>
@@ -29,6 +30,7 @@ using namespace facebook::react;
     NSInteger _nativeEventCount;
     NSMutableArray<NVTransition*> *_enterTransitions;
     NSMutableArray<NVTransition*> *_exitTransitions;
+    NSString *_sharedElement;
     UIScreenEdgePanGestureRecognizer *_interactiveGestureRecognizer;
     UIPercentDrivenInteractiveTransition *_interactiveTransition;
     BOOL _navigated;
@@ -101,6 +103,7 @@ using namespace facebook::react;
             transition.x = [self parseAnimation:[NSString  stringWithUTF8String: transItem.to.c_str()] defaultVal:defaultVal];
         [_exitTransitions addObject:transition];
     }
+    _sharedElement = newViewProps.sharedElements.size() > 0 ? [NSString stringWithUTF8String: newViewProps.sharedElements[0].c_str()] : nil;
     _navigationController.view.backgroundColor = RCTUIColorFromSharedColor(newViewProps.underlayColor);
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
     if (!_navigated) {
@@ -156,6 +159,13 @@ using namespace facebook::react;
             controller.popExitTrans = scene.exitTrans;
             if (!prevSceneController)
                 prevSceneController = (NVSceneController *) _navigationController.topViewController;
+            if (crumb - currentCrumb == 1 && [self sharedElementView:prevSceneController]) {
+                if (@available(iOS 18.0, *)) {
+                    [controller setPreferredTransition:[UIViewControllerTransition zoomWithOptions:nil sourceViewProvider:^(UIZoomTransitionSourceViewProviderContext *context) {
+                        return [self sharedElementView:prevSceneController];
+                    }]];
+                }
+            }
             prevSceneController.exitTrans = _exitTransitions;
             prevSceneController.popEnterTrans = scene.enterTrans;
             [controllers addObject:controller];
@@ -199,6 +209,17 @@ using namespace facebook::react;
         } waitOn:controller];
         _navigationController.retainedViewController = _navigationController.topViewController;
     }
+}
+
+- (NVSharedElementComponentView *)sharedElementView:(NVSceneController *)sceneController
+{
+    if (!_sharedElement || !sceneController) return nil;
+    NSSet *sharedElements = ((NVSceneComponentView *) sceneController.view).sharedElements;
+    for (NVSharedElementComponentView *sharedElementView in sharedElements) {
+        if ([sharedElementView.name isEqual:self->_sharedElement])
+            return sharedElementView;
+    }
+    return nil;
 }
 
 -(void)completeNavigation:(void (^)(void)) completeNavigation waitOn:(NVSceneController *)sceneController
