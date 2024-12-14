@@ -23,6 +23,12 @@ using namespace facebook::react;
     return self;
 }
 
+- (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
+{
+    const auto &newViewProps = *std::static_pointer_cast<NVSharedElementProps const>(props);
+    _name = [NSString  stringWithUTF8String: newViewProps.name.c_str()];
+    [super updateProps:props oldProps:oldProps];
+}
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
