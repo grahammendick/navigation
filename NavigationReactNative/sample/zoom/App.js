@@ -40,9 +40,7 @@ Linking.addEventListener('url', ({url}) => openLink(url));
 const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
     <NavigationStack
-      sharedElement={(_, {color, search}) => !search ? color : null}
-      crumbStyle={from => from ? 'enter_crumb' : 'exit_crumb'}
-      unmountStyle={from => from ? 'enter_mount' : 'exit_mount'} />
+      sharedElement={(_, {color, search}) => !search ? color : null} />
   </NavigationHandler>
 );
 export default App;
