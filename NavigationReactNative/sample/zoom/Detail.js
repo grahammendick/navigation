@@ -3,8 +3,8 @@ import {Platform, StyleSheet, ScrollView, Text, View, TouchableHighlight} from '
 import {NavigationContext} from 'navigation-react';
 import {NavigationBar, RightBar, BarButton, TitleBar, SharedElement} from 'navigation-react-native';
 
-const Detail = ({colors, color, search}) => {
-  const {stateNavigator} = useContext(NavigationContext);
+const Detail = ({colors}) => {
+  const {stateNavigator, data: {color, search}} = useContext(NavigationContext);
   return (
     <>
       <NavigationBar

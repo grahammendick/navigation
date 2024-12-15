@@ -1,7 +1,7 @@
 import React from 'react';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
-import {NavigationStack} from 'navigation-react-native';
+import {NavigationStack, Scene} from 'navigation-react-native';
 import {Linking} from 'react-native';
 import Grid from './Grid';
 import Detail from './Detail';
@@ -15,12 +15,6 @@ const stateNavigator = new StateNavigator([
   {key: 'grid'},
   {key: 'detail', trackCrumbTrail: true},
 ]);
-
-const { grid, detail } = stateNavigator.states;
-grid.renderScene = () => <Grid colors={colors}/>;
-detail.renderScene = (data) => <Detail colors={colors} {...data}/>;
-
-stateNavigator.navigate('grid');
 
 const openLink = (url) => {
   if (url) {
@@ -40,9 +34,10 @@ Linking.addEventListener('url', ({url}) => openLink(url));
 const App = () => (
   <NavigationHandler stateNavigator={stateNavigator}>
     <NavigationStack
-      sharedElement={(_, {color, search}) => !search ? color : null}
-      crumbStyle={from => from ? 'enter_crumb' : 'exit_crumb'}
-      unmountStyle={from => from ? 'enter_mount' : 'exit_mount'} />
+      sharedElement={(_, {color, search}) => !search ? color : null}>
+        <Scene stateKey="grid"><Grid colors={colors}/></Scene>
+        <Scene stateKey="detail"><Detail colors={colors} /></Scene>
+    </NavigationStack>
   </NavigationHandler>
 );
 export default App;
