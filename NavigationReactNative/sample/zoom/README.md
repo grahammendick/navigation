@@ -6,7 +6,7 @@ Because Navigation uses the underlying native APIs you can handle deep links out
 Once you've cloned the repository, you can install the dependencies and start the Zoom example:
 
     npm install
-    cd ios && pod install && cd ..
+    cd ios && bundle exec pod install && cd ..
     npx react-native start
     npx react-native run-android
     npx react-native run-ios
