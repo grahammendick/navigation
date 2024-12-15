@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Shared Element Transition (Android)</title>
+    <title>Shared Element Transition</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="../../css/prism.css">
     <link rel="stylesheet" href="../../css/navigation.css">
@@ -35,7 +35,7 @@
                 <a href="floating-action-button.html">Floating Action Button</a>
                 <a href="scene-navigation-lifecycle.html">Navigation Lifecycle</a>
                 <a href="custom-animation.html">Custom Animation</a>
-                <a href="shared-element-transition.html" class="selected">Shared Element Transition (Android)</a>
+                <a href="shared-element-transition.html" class="selected">Shared Element Transition</a>
                 <a href="deep-links.html">Deep Links</a>
                 <a href="typescript.html">TypeScript</a>
                 <a href="examples.html">Examples</a>
@@ -47,13 +47,13 @@
             </div>
         </div>
         <div id="article">
-            <h1>Shared Element Transition (Android)</h1>
+            <h1>Shared Element Transition</h1>
             <p>
-                Android supports shared element transitions, where you can smoothly animate changes between related Views across two scenes. The Navigation router exposes this functionality to React using the <code>SharedElement</code> component. To identify a pair of shareable elements, you wrap each one in a <code>SharedElement</code> component and give them both the same <code>name</code>.
+                Android and iOS both support shared element transitions, where you can smoothly animate between related Views across two scenes. The Navigation router exposes this functionality to React using the <code>SharedElement</code> component. To identify a pair of shareable elements, you wrap each one in a <code>SharedElement</code> component and give them both the same <code>name</code>.
             </p>
             <div class="Note">
                 <h2>Note</h2>
-                Shared element transitions disable the predictive back gesture
+                On Android, shared element transitions disable the predictive back gesture
             </div>
             <p>
                 In our email example app, we smooth out the transition when a user opens an email by visually connecting the subject line on the 'inbox' scene with the open email on the 'mail' scene. We wrap the views on each scene inside a <code>SharedElement</code> component and give them both the same name.
@@ -77,11 +77,11 @@
             </p>
             <pre><code class="language-jsx">&lt;Scene stateKey="mail" sharedElements={data => 'email' + data.id}>&lt;Mail />&lt;/Scene></code></pre>
             <p>
-                There's an untidy overlap as the outgoing subject line turns into the incoming email. We neaten it up by setting the <code>fadeMode</code> prop to 'through'. This fades out the subject and fades in the email. We apply the prop to both <code>SharedElement</code> components so that the fade reverses when the user returns to their inbox.
+                On Android, there's an untidy overlap as the outgoing subject line turns into the incoming email. We neaten it up by setting the <code>fadeMode</code> prop to 'through'. This fades out the subject and fades in the email. We apply the prop to both <code>SharedElement</code> components so that the fade reverses when the user returns to their inbox.
             </p>
             <pre><code class="language-jsx">&lt;SharedElement name={'email' + id} fadeMode="through"></code></pre>
             <p>
-                Not all <a href="custom-animation.html">custom animations</a> work with shared element transitions. Try the 'elevationScale' or 'hold' transitions on the the outgoing scene.
+                Not all <a href="custom-animation.html">custom animations</a> work with shared element transitions. On Android, try the 'elevationScale' or 'hold' transitions on the the outgoing scene.
             </p>
             <pre><code class="language-jsx">&lt;Scene stateKey="inbox" unmountStyle={{type: 'elevationScale'}}>&lt;Inbox />&lt;/Scene></code></pre>
         </div>
