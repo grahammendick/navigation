@@ -1,5 +1,5 @@
 # Navigation Native Zoom
-Navigation uses the underlying native API to provide shared element transitions on Android.
+Navigation uses the underlying native API to provide shared element transitions on Android and iOS.
 Because Navigation uses the underlying native APIs you can handle deep links outside of components.
 
 ## Run
