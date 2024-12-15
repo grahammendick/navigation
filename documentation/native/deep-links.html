@@ -77,17 +77,17 @@ Linking.addEventListener('url', ({url}) => openLink(url));</code></pre>
             <h2 id="configuring">Configuring</h2>
             <h3>Android</h3>
             <p>
-                Locate the <code>AndroidManifest.xml</code> in the Android project and add the following, replacing the scheme and host strings to match your URI pattern:
+                Locate the '.MainActivity' in <code>AndroidManifest.xml</code> in the Android project and add the following, replacing the scheme and host strings to match your URI pattern:
             </p>
             <pre><code class="language-jsx">&lt;activity
-  android:name="com.navigation.reactnative.LinkActivity"
-  android:launchMode="singleTask"
-  android:exported="true">
+  android:name=".MainActivity"
+  ...>
     &lt;intent-filter>
-    &lt;action android:name="android.intent.action.VIEW" />
-    &lt;category android:name="android.intent.category.DEFAULT" />
-    &lt;category android:name="android.intent.category.BROWSABLE" />
-    &lt;data android:scheme="email" android:host="app" />
+      ...
+      &lt;action android:name="android.intent.action.VIEW" />
+      &lt;category android:name="android.intent.category.DEFAULT" />
+      &lt;category android:name="android.intent.category.BROWSABLE" />
+      &lt;data android:scheme="email" android:host="app" />
   &lt;/intent-filter>
 &lt;/activity></code></pre>
             <h3>iOS</h3>
@@ -99,8 +99,9 @@ Linking.addEventListener('url', ({url}) => openLink(url));</code></pre>
             </p>
             <pre><code class="language-jsx">#import &lt;React/RCTLinkingManager.h>
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+- (BOOL)application:(UIApplication *)application
+   openURL:(NSURL *)url
+   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
   return [RCTLinkingManager application:application openURL:url options:options];
 }</code></pre>
