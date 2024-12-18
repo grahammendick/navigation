@@ -320,7 +320,11 @@
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if (_presenting) {
-        [navigationController dismissViewControllerAnimated:YES completion:nil];
+        BOOL zoomed = NO;
+        if (@available(iOS 18.0, *)) {
+            zoomed = !!navigationController.visibleViewController.preferredTransition;
+        }
+        [navigationController dismissViewControllerAnimated:!zoomed completion:nil];
     } else {
         _navigationController.retainedViewController = navigationController.topViewController;
     }
