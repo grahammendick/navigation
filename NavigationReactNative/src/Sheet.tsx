@@ -9,7 +9,7 @@ const SheetContext = createContext({
     onNavigated: useNavigated,
 })
 
-const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable = true, modal = true, bottom = true, onChangeDetent, children}) => {
+const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable = true, modal = true, bottom = true, sharedElement, onChangeDetent, children}) => {
     const [sheetState, setSheetState]  = useState({selectedDetent: detent || defaultDetent, mostRecentEventCount: 0, dismissed: (detent || defaultDetent) === 'hidden'})
     const onNavigatedChild = useRef<any>();
     const { root, onNavigated } = useContext(SheetContext);
@@ -75,6 +75,7 @@ const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOff
                     skipCollapsed={skipCollapsed}
                     draggable={draggable}
                     sheetHeight={expandedHeight != null ? expandedHeight : 0}
+                    sharedElement={sharedElement}
                     mostRecentEventCount={sheetState.mostRecentEventCount}
                     onMoveShouldSetResponderCapture={() => dragging.current}
                     onDetentChanged={onDetentChanged}
