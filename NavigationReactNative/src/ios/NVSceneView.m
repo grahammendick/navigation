@@ -12,7 +12,6 @@
     if (self = [super init]) {
         _enterTransitions = [[NSMutableArray alloc] init];
         _exitTransitions = [[NSMutableArray alloc] init];
-        _sharedElements = [[NSMutableSet alloc] init];
     }
     return self;
 }

@@ -28,6 +28,7 @@
 {
     if (self = [super init]) {
         _view = view;
+        _sharedElements = [[NSMutableSet alloc] init];
     }
     return self;
 }

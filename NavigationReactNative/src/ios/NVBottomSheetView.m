@@ -1,6 +1,6 @@
 #import "NVBottomSheetView.h"
 #import "NVBottomSheetController.h"
-#import "NVSceneView.h"
+#import "NVSceneController.h"
 #import "NVSharedElementView.h"
 
 #import <UIKit/UIKit.h>
@@ -215,16 +215,7 @@ API_AVAILABLE(ios(15.0)){
 - (NVSharedElementView *)sharedElementView
 {
     if (!_sharedElement) return nil;
-    UIView *parentView = (UIView *) self.superview;
-    NVSceneView *sceneView;
-    while (parentView) {
-        if ([parentView isKindOfClass:[NVSceneView class]]) {
-            sceneView = (NVSceneView *) parentView;
-            break;
-        }
-        parentView = parentView.superview;
-    }
-    NSSet *sharedElements = sceneView.sharedElements;
+    NSSet *sharedElements = ((NVSharedElementController *) self.reactViewController).sharedElements;
     for (NVSharedElementView *sharedElementView in sharedElements) {
         if ([sharedElementView.name isEqual:self->_sharedElement])
             return sharedElementView;

@@ -229,7 +229,7 @@
 - (NVSharedElementView *)sharedElementView:(NVSceneController *)sceneController
 {
     if (!_sharedElement || !sceneController) return nil;
-    NSSet *sharedElements = ((NVSceneView *) sceneController.view).sharedElements;
+    NSSet *sharedElements = sceneController.sharedElements;
     for (NVSharedElementView *sharedElementView in sharedElements) {
         if ([sharedElementView.name isEqual:self->_sharedElement])
             return sharedElementView;

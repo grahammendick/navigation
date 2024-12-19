@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import "NVSharedElementView.h"
 
 @protocol NVNavigationBar
 
@@ -27,6 +28,12 @@ typedef struct {
 
 @end
 
+@interface NVSharedElementController : NSObject
+
+@property NSMutableSet<NVSharedElementView*> *sharedElements;
+
+@end
+
 @interface NVSceneController : UIViewController
 
 @property (nonatomic, copy) void (^boundsDidChangeBlock)(NVSceneController *controller);
@@ -34,6 +41,7 @@ typedef struct {
 @property (nonatomic, assign) BOOL statusBarHidden;
 @property (nonatomic, copy) NSArray<NVTransition*> *enterTrans;
 @property (nonatomic, copy) NSArray<NVTransition*> *exitTrans;
+@property NSMutableSet<NVSharedElementView*> *sharedElements;
 @property (nonatomic, copy) NSArray<NVTransition*> *popEnterTrans;
 @property (nonatomic, copy) NSArray<NVTransition*> *popExitTrans;
 
