@@ -28,13 +28,13 @@ typedef struct {
 
 @end
 
-@interface NVSharedElementController : NSObject
+@protocol NVSharedElementController
 
 @property NSMutableSet<NVSharedElementView*> *sharedElements;
 
 @end
 
-@interface NVSceneController : UIViewController
+@interface NVSceneController : UIViewController <NVSharedElementController>
 
 @property (nonatomic, copy) void (^boundsDidChangeBlock)(NVSceneController *controller);
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;

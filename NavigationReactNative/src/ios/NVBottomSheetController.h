@@ -1,8 +1,10 @@
 #import <UIKit/UIKit.h>
+#import "NVSceneController.h"
 
-@interface NVBottomSheetController : UIViewController
+@interface NVBottomSheetController : UIViewController <NVSharedElementController>
 
 @property (nonatomic, assign) BOOL root;
+@property NSMutableSet<NVSharedElementView*> *sharedElements;
 @property (nonatomic, copy) void (^boundsDidChangeBlock)(CGRect newBounds);
 @property (nonatomic, copy) void (^didDismiss)(void);
 
