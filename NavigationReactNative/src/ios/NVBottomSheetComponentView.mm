@@ -1,6 +1,8 @@
 #ifdef RCT_NEW_ARCH_ENABLED
 #import "NVBottomSheetComponentView.h"
 #import "NVBottomSheetController.h"
+#import "NVSceneController.h"
+#import "NVSharedElementView.h"
 
 #import <react/renderer/components/navigationreactnative/ComponentDescriptors.h>
 #import <react/renderer/components/navigationreactnative/EventEmitters.h>
@@ -27,6 +29,7 @@ using namespace facebook::react;
     NSInteger _nativeEventCount;
     NSString *_detent;
     BOOL _hideable;
+    NSString *_sharedElement;
     CADisplayLink *_displayLink;
     RCTSurfaceTouchHandler *_touchHandler;
     UISheetPresentationControllerDetent *_collapsedDetent API_AVAILABLE(ios(15.0));
@@ -74,7 +77,8 @@ using namespace facebook::react;
     const auto &newViewProps = *std::static_pointer_cast<NVBottomSheetProps const>(props);
     _dismissed = newViewProps.dismissed;
     _hideable = newViewProps.hideable;
-    _detent = [[NSString alloc] initWithUTF8String: newViewProps.detent.c_str()];
+    _detent = [[NSString alloc] initWithUTF8String:newViewProps.detent.c_str()];
+    _sharedElement = [[NSString alloc] initWithUTF8String:newViewProps.sharedElement.c_str()];
     _bottomSheetController.root = newViewProps.root;
     _bottomSheetController.modalPresentationStyle = !newViewProps.fullScreen ? UIModalPresentationFormSheet : UIModalPresentationOverFullScreen;
     if (![_detent isEqual: @"hidden"]) {
@@ -207,8 +211,26 @@ API_AVAILABLE(ios(15.0)){
         _bottomSheetController.presentationController.delegate = self;
         _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
         [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        if ([self sharedElementView]) {
+            if (@available(iOS 18.0, *)) {
+                [_bottomSheetController setPreferredTransition:[UIViewControllerTransition zoomWithOptions:nil sourceViewProvider:^(UIZoomTransitionSourceViewProviderContext *context) {
+                    return [self sharedElementView];
+                }]];
+            }
+        }
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
     }
+}
+
+- (NVSharedElementView *)sharedElementView
+{
+    if (!_sharedElement) return nil;
+    NSSet *sharedElements = ((UIViewController<NVSharedElementController> *) self.reactViewController).sharedElements;
+    for (NVSharedElementView *sharedElementView in sharedElements) {
+        if ([sharedElementView.name isEqual:self->_sharedElement])
+            return sharedElementView;
+    }
+    return nil;
 }
 
 - (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(UISheetPresentationController *)sheetPresentationController

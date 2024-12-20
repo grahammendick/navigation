@@ -27,7 +27,6 @@ using namespace facebook::react;
         _props = defaultProps;
         _enterTransitions = [[NSMutableArray alloc] init];
         _exitTransitions = [[NSMutableArray alloc] init];
-        _sharedElements = [[NSMutableSet alloc] init];
     }
     return self;
 }

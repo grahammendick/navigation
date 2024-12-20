@@ -28,9 +28,15 @@ typedef struct {
 
 @end
 
+@protocol NVSharedElement
+
+@property (nonatomic, copy) NSString *name;
+
+@end
+
 @protocol NVSharedElementController
 
-@property NSMutableSet<NVSharedElementView*> *sharedElements;
+@property NSMutableSet<UIView<NVSharedElement>*> *sharedElements;
 
 @end
 
@@ -41,7 +47,7 @@ typedef struct {
 @property (nonatomic, assign) BOOL statusBarHidden;
 @property (nonatomic, copy) NSArray<NVTransition*> *enterTrans;
 @property (nonatomic, copy) NSArray<NVTransition*> *exitTrans;
-@property NSMutableSet<NVSharedElementView*> *sharedElements;
+@property NSMutableSet<UIView<NVSharedElement>*> *sharedElements;
 @property (nonatomic, copy) NSArray<NVTransition*> *popEnterTrans;
 @property (nonatomic, copy) NSArray<NVTransition*> *popExitTrans;
 

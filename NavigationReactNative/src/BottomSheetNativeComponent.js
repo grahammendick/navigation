@@ -23,6 +23,7 @@ type NativeProps = $ReadOnly<{|
   skipCollapsed: boolean,
   draggable: boolean,
   sheetHeight: Double,
+  sharedElement: string,
   onDismissed: DirectEventHandler<null>,
   onDetentChanged: DirectEventHandler<$ReadOnly<{|
     detent: string,

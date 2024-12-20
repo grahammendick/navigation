@@ -214,7 +214,7 @@ using namespace facebook::react;
 - (NVSharedElementComponentView *)sharedElementView:(NVSceneController *)sceneController
 {
     if (!_sharedElement || !sceneController) return nil;
-    NSSet *sharedElements = ((NVSceneComponentView *) sceneController.view).sharedElements;
+    NSSet *sharedElements = sceneController.sharedElements;
     for (NVSharedElementComponentView *sharedElementView in sharedElements) {
         if ([sharedElementView.name isEqual:self->_sharedElement])
             return sharedElementView;
@@ -299,7 +299,7 @@ using namespace facebook::react;
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if (_presenting) {
-        [navigationController dismissViewControllerAnimated:YES completion:nil];
+        [navigationController dismissViewControllerAnimated:NO completion:nil];
     } else {
         _navigationController.retainedViewController = navigationController.topViewController;
     }
