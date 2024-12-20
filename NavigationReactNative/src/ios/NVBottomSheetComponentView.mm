@@ -2,7 +2,7 @@
 #import "NVBottomSheetComponentView.h"
 #import "NVBottomSheetController.h"
 #import "NVSceneController.h"
-#import "NVSharedElementView.h"
+#import "NVSharedElementComponentView.h"
 
 #import <react/renderer/components/navigationreactnative/ComponentDescriptors.h>
 #import <react/renderer/components/navigationreactnative/EventEmitters.h>
@@ -222,11 +222,11 @@ API_AVAILABLE(ios(15.0)){
     }
 }
 
-- (NVSharedElementView *)sharedElementView
+- (NVSharedElementComponentView *)sharedElementView
 {
     if (!_sharedElement) return nil;
     NSSet *sharedElements = ((UIViewController<NVSharedElementController> *) self.reactViewController).sharedElements;
-    for (NVSharedElementView *sharedElementView in sharedElements) {
+    for (NVSharedElementComponentView *sharedElementView in sharedElements) {
         if ([sharedElementView.name isEqual:self->_sharedElement])
             return sharedElementView;
     }
