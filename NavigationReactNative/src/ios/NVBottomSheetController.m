@@ -7,8 +7,8 @@
 
 - (id)init
 {
-    if (!(self = [super init])) {
-        return nil;
+    if (self = [super init]) {
+        _sharedElements = [[NSMutableSet alloc] init];
     }
     return self;
 }

@@ -1,8 +1,4 @@
 #import "NVSceneController.h"
-#import "NVSceneView.h"
-#import "NVNavigationBarView.h"
-#import "NVSearchBarView.h"
-#import "NVStatusBarView.h"
 #import "NVBottomSheetController.h"
 #import <React/UIView+React.h>
 
@@ -28,6 +24,7 @@
 {
     if (self = [super init]) {
         _view = view;
+        _sharedElements = [[NSMutableSet alloc] init];
     }
     return self;
 }

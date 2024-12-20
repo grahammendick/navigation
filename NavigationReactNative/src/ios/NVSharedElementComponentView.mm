@@ -1,6 +1,7 @@
 #ifdef RCT_NEW_ARCH_ENABLED
 #import "NVSharedElementComponentView.h"
-#import "NVSceneComponentView.h"
+#import "NVSceneController.h"
+#import <React/UIView+React.h>
 
 #import <react/renderer/components/navigationreactnative/ComponentDescriptors.h>
 #import <react/renderer/components/navigationreactnative/EventEmitters.h>
@@ -32,28 +33,16 @@ using namespace facebook::react;
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
-    if (![[self getScene].sharedElements containsObject:self])
-        [[self getScene].sharedElements addObject:self];
+    [((UIViewController<NVSharedElementController> *) self.reactViewController).sharedElements addObject:self];
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview
 {
     [super willMoveToSuperview:newSuperview];
     if (!newSuperview)
-        [[self getScene].sharedElements removeObject:self];
+        [((UIViewController<NVSharedElementController> *) self.reactViewController).sharedElements removeObject:self];
 }
 
-- (NVSceneComponentView*) getScene
-{
-    UIView *parentView = (UIView *)self.superview;
-    while (parentView) {
-        if ([parentView isKindOfClass:[NVSceneComponentView class]]) {
-            return (NVSceneComponentView*) parentView;;
-        }
-        parentView = parentView.superview;
-    }
-    return nil;
-}
 
 
 #pragma mark - RCTComponentViewProtocol

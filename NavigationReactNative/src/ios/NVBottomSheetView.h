@@ -17,6 +17,7 @@
 @property (nonatomic, assign) BOOL hideable;
 @property (nonatomic, assign) BOOL draggable;
 @property (nonatomic, assign) BOOL skipCollapsed;
+@property (nonatomic, copy) NSString *sharedElement;
 @property (nonatomic, assign) NSInteger mostRecentEventCount;
 @property (nonatomic, copy) RCTDirectEventBlock onDetentChanged;
 @property (nonatomic, copy) RCTDirectEventBlock onDismissed;

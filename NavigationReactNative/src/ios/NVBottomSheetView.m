@@ -1,5 +1,7 @@
 #import "NVBottomSheetView.h"
 #import "NVBottomSheetController.h"
+#import "NVSceneController.h"
+#import "NVSharedElementView.h"
 
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
@@ -199,8 +201,26 @@ API_AVAILABLE(ios(15.0)){
         _bottomSheetController.presentationController.delegate = self;
         _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
         [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        if ([self sharedElementView]) {
+            if (@available(iOS 18.0, *)) {
+                [_bottomSheetController setPreferredTransition:[UIViewControllerTransition zoomWithOptions:nil sourceViewProvider:^(UIZoomTransitionSourceViewProviderContext *context) {
+                    return [self sharedElementView];
+                }]];
+            }
+        }
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
     }
+}
+
+- (NVSharedElementView *)sharedElementView
+{
+    if (!_sharedElement) return nil;
+    NSSet *sharedElements = ((UIViewController<NVSharedElementController> *) self.reactViewController).sharedElements;
+    for (NVSharedElementView *sharedElementView in sharedElements) {
+        if ([sharedElementView.name isEqual:self->_sharedElement])
+            return sharedElementView;
+    }
+    return nil;
 }
 
 - (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(UISheetPresentationController *)sheetPresentationController

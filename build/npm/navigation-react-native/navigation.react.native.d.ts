@@ -85,12 +85,10 @@ export interface NavigationStackProps {
     hidesTabBar?: (state: State, data: any, crumbs: Crumb[]) => boolean;
     /**
      * The Scene's shared element
-     * @platform android
      */
     sharedElement?: (state: State, data: any, crumbs: Crumb[]) => string;
     /**
      * The Scene's shared elements
-     * @platform android
      */
     sharedElements?: (state: State, data: any, crumbs: Crumb[]) => string | string[];
     /**
@@ -145,12 +143,10 @@ export class NavigationStack extends Component<NavigationStackProps> { }
     hidesTabBar?: boolean | ((data: any, crumbs: Crumb[]) => boolean);
     /**
      * A Scene's shared element
-     * @platform android
      */
     sharedElement?: string | ((data: any, crumbs: Crumb[]) => string);
     /**
      * A Scene's shared elements
-     * @platform android
      */
     sharedElements?: string | string[] | ((data: any, crumbs: Crumb[]) => string | string[]);
     /**
@@ -698,7 +694,6 @@ export interface SharedElementProps {
 
 /**
  * Shares its child UI element between scenes during navigation
- * @platform android
  */
 export class SharedElement extends Component<SharedElementProps> {}
 
@@ -909,6 +904,11 @@ export interface SheetProps {
      * The resting state of the sheet
      */
     detent?: 'hidden' | 'collapsed' | 'halfExpanded' | 'expanded';
+    /**
+     * The Sheet's shared element
+     * @platform ios
+     */
+    sharedElement?: string;
     /**
      * The sheet content
      */

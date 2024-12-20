@@ -27,13 +27,26 @@ typedef struct {
 
 @end
 
-@interface NVSceneController : UIViewController
+@protocol NVSharedElement
+
+@property (nonatomic, copy) NSString *name;
+
+@end
+
+@protocol NVSharedElementController
+
+@property NSMutableSet<UIView<NVSharedElement>*> *sharedElements;
+
+@end
+
+@interface NVSceneController : UIViewController <NVSharedElementController>
 
 @property (nonatomic, copy) void (^boundsDidChangeBlock)(NVSceneController *controller);
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, assign) BOOL statusBarHidden;
 @property (nonatomic, copy) NSArray<NVTransition*> *enterTrans;
 @property (nonatomic, copy) NSArray<NVTransition*> *exitTrans;
+@property NSMutableSet<UIView<NVSharedElement>*> *sharedElements;
 @property (nonatomic, copy) NSArray<NVTransition*> *popEnterTrans;
 @property (nonatomic, copy) NSArray<NVTransition*> *popExitTrans;
 
