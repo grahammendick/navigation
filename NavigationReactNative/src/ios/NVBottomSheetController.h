@@ -4,7 +4,7 @@
 @interface NVBottomSheetController : UIViewController <NVSharedElementController>
 
 @property (nonatomic, assign) BOOL root;
-@property NSMutableSet<NVSharedElementView*> *sharedElements;
+@property NSMutableSet<UIView<NVSharedElement>*> *sharedElements;
 @property (nonatomic, copy) void (^boundsDidChangeBlock)(CGRect newBounds);
 @property (nonatomic, copy) void (^didDismiss)(void);
 
