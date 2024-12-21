@@ -84,6 +84,17 @@
                 Not all <a href="custom-animation.html">custom animations</a> work with shared element transitions. On Android, try the 'elevationScale' or 'hold' transitions on the the outgoing scene.
             </p>
             <pre><code class="language-jsx">&lt;Scene stateKey="inbox" crumbStyle={{type: 'elevationScale'}}>&lt;Inbox />&lt;/Scene></code></pre>
+            <h2>Opening Sheets on iOS</h2>
+            <p>
+                Fluid shared transitions also work when <a href="sheet.html">opening sheets</a> on iOS. You specify the name in the 'sharedElement' prop of the <code>Sheet</code>. You don't need to wrap the target view in a <code>SharedElement</code> because iOS fluid transitions target the whole sheet. In our email example, when a user taps a sender's icon we bring up their details in a sheet. We wrap the icon in a <code>SharedElement</code> so that iOS zooms the sheet out from the sender button.
+            </p>
+            <pre><code class="language-jsx">&lt;Button onPress={() => setDetent('expanded')}>
+  &lt;SharedElement name="sender">
+    &lt;Image />
+  &lt;/SharedElement>
+&lt;/Button>
+&lt;Sheet sharedElement="sender" detent={detent}>
+&lt;/Sheet></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
