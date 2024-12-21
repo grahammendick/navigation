@@ -67,7 +67,7 @@
 
 &lt;Button onPress={() => setDetent('expanded')} />
 &lt;Sheet detent={detent} onChangeDetent={setDetent} hideable={true}>
-    &lt;Button onPress={() => setDetent('hidden')} />
+  &lt;Button onPress={() => setDetent('hidden')} />
 &lt;/Sheet></code></pre>
             <p>
                 There are props that allow you to configure the various detent heights. The <code>peekHeight</code> prop sets the height of the 'collapsed' detent. The <code>halfExpandedRatio</code> prop is for the 'halfExpanded' detent. And the height of the 'expanded' sheet is determined by the <code>expandedHeight</code> or <code>expandedOffset</code> props.
@@ -86,7 +86,7 @@
                 You can make a full-screen <code>Sheet</code> by setting <code>bottom</code> to false. Because the <code>Sheet</code> is 100% native, a full-screen sheet can't be dismissed by dragging on iOS. Instead, you have to programatically close it by setting the detent to 'hidden'. In our email example, we add a 'Create Contact' button to the contacts list. When pressed, we display a sheet to collect the contact's name and number.
             </p>
             <pre><code class="language-jsx">&lt;Sheet bottom={false} detent={detent} onChangeDetent={setDetent}>
-    &lt;Contact />
+  &lt;Contact />
 &lt;/Sheet></code></pre>
             <h2>Navigating in a Sheet</h2>
             <p>
