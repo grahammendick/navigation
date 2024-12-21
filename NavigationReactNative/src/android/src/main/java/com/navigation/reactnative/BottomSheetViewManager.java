@@ -131,6 +131,10 @@ public class BottomSheetViewManager extends ViewGroupManager<BottomSheetView> im
     }
 
     @Override
+    public void setSharedElement(BottomSheetView view, @Nullable String sharedElement) {
+    }
+
+    @Override
     protected void onAfterUpdateTransaction(@NonNull BottomSheetView view) {
         super.onAfterUpdateTransaction(view);
         view.onAfterUpdateTransaction();
