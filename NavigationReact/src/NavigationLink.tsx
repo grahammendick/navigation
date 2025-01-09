@@ -1,4 +1,5 @@
-﻿import LinkUtility from './LinkUtility';
+﻿'use client'
+import LinkUtility from './LinkUtility';
 import withStateNavigator from './withStateNavigator';
 import { NavigationLinkProps } from './Props';
 import * as React from 'react';
