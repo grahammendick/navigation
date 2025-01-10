@@ -1,5 +1,5 @@
-import { getNavigationContext } from "./NavigationRSCContext";
+import NavigationContext from "./NavigationContext.server";
 
-const useNavigationEvent = () => getNavigationContext().navigationEvent;
+const useNavigationEvent = () => NavigationContext.getCache().navigationEvent;
 
 export default useNavigationEvent;

@@ -12,7 +12,7 @@ import {renderToReadableStream as renderHTMLToReadableStream} from 'react-dom/se
 import ReactClient, {ReactElement} from 'react' with {env: 'react-client'};
 
 import { StateNavigator } from 'navigation';
-import { NavigationRSCContext } from 'navigation-react';
+import { NavigationContext } from 'navigation-react';
 import stateNavigator from './stateNavigator';
 
 // Page components. These must have "use server-entry" so they are treated as code splitting entry points.
@@ -46,10 +46,12 @@ app.get('*', async (req, res) => {
     navigator.navigateLink(req.body.oldLink);
     navigator.navigateLink(req.body.link);
   }
+  const {oldState, state, data, asyncData} = navigator.stateContext;
+  const navigationEvent = {oldState, state, data, asyncData, stateNavigator: navigator};
   await render(req, res, (
-    <NavigationRSCContext stateNavigator={navigator}>
+    <NavigationContext.Provider value={navigationEvent}>
       <View />
-    </NavigationRSCContext>
+    </NavigationContext.Provider>
   ));
 });
 
