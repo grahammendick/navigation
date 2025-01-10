@@ -15,7 +15,6 @@ type NativeKeyboardEvent = KeyboardEvent;
 type NativeMouseEvent = MouseEvent;
 type NativeTouchEvent = TouchEvent;
 type NativePointerEvent = PointerEvent;
-type NativeToggleEvent = ToggleEvent;
 type NativeTransitionEvent = TransitionEvent;
 type NativeUIEvent = UIEvent;
 type NativeWheelEvent = WheelEvent;
@@ -1744,6 +1743,19 @@ declare namespace React {
      * @see {@link https://react.dev/reference/react/useRef}
      */
     function useRef<T>(initialValue: T | undefined): RefObject<T | undefined>;
+    // convenience overload for potentially undefined initialValue / call with 0 arguments
+    // has a default to stop it from defaulting to {} instead
+    /**
+     * `useRef` returns a mutable ref object whose `.current` property is initialized to the passed argument
+     * (`initialValue`). The returned object will persist for the full lifetime of the component.
+     *
+     * Note that `useRef()` is useful for more than the `ref` attribute. It’s handy for keeping any mutable
+     * value around similar to how you’d use instance fields in classes.
+     *
+     * @version 16.8.0
+     * @see https://reactjs.org/docs/hooks-reference.html#useref
+     */
+    function useRef<T = undefined>(): RefObject<T | undefined>;
     /**
      * The signature is identical to `useEffect`, but it fires synchronously after all DOM mutations.
      * Use this to read layout from the DOM and synchronously re-render. Updates scheduled inside
@@ -2102,11 +2114,6 @@ declare namespace React {
         pseudoElement: string;
     }
 
-    interface ToggleEvent<T = Element> extends SyntheticEvent<T, NativeToggleEvent> {
-        oldState: "closed" | "open";
-        newState: "closed" | "open";
-    }
-
     interface TransitionEvent<T = Element> extends SyntheticEvent<T, NativeTransitionEvent> {
         elapsedTime: number;
         propertyName: string;
@@ -2134,7 +2141,6 @@ declare namespace React {
     type UIEventHandler<T = Element> = EventHandler<UIEvent<T>>;
     type WheelEventHandler<T = Element> = EventHandler<WheelEvent<T>>;
     type AnimationEventHandler<T = Element> = EventHandler<AnimationEvent<T>>;
-    type ToggleEventHandler<T = Element> = EventHandler<ToggleEvent<T>>;
     type TransitionEventHandler<T = Element> = EventHandler<TransitionEvent<T>>;
 
     //
@@ -2347,10 +2353,6 @@ declare namespace React {
         onAnimationEndCapture?: AnimationEventHandler<T> | undefined;
         onAnimationIteration?: AnimationEventHandler<T> | undefined;
         onAnimationIterationCapture?: AnimationEventHandler<T> | undefined;
-
-        // Toggle Events
-        onToggle?: ToggleEventHandler<T> | undefined;
-        onBeforeToggle?: ToggleEventHandler<T> | undefined;
 
         // Transition Events
         onTransitionCancel?: TransitionEventHandler<T> | undefined;
@@ -4177,7 +4179,6 @@ declare namespace React {
             polyline: React.SVGProps<SVGPolylineElement>;
             radialGradient: React.SVGProps<SVGRadialGradientElement>;
             rect: React.SVGProps<SVGRectElement>;
-            set: React.SVGProps<SVGSetElement>;
             stop: React.SVGProps<SVGStopElement>;
             switch: React.SVGProps<SVGSwitchElement>;
             symbol: React.SVGProps<SVGSymbolElement>;
