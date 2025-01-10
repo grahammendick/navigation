@@ -1,0 +1,46 @@
+{
+  "name": "rsc",
+  "description": "",
+  "version": "1.0.0",
+  "server": "dist/server.js",
+  "targets": {
+    "server": {
+      "source": "server.tsx",
+      "context": "react-server",
+      "outputFormat": "commonjs",
+      "includeNodeModules": {
+        "express": false
+      }
+    }
+  },
+  "scripts": {
+    "watch": "parcel watch",
+    "build": "parcel build",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@parcel/config-default": "dev",
+    "@parcel/runtime-rsc": "dev",
+    "@types/express": "*",
+    "@types/node": "^22.10.1",
+    "@types/parcel-env": "^0.0.6",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "express": "^4.18.2",
+    "navigation": "^6.2.0",
+    "navigation-react": "^4.5.1",
+    "parcel": "dev",
+    "process": "^0.11.10",
+    "react": "^19",
+    "react-dom": "^19",
+    "react-server-dom-parcel": "^0.0.1",
+    "rsc-html-stream": "^0.0.4",
+    "ws": "^8.8.1"
+  },
+  "@parcel/resolver-default": {
+    "packageExports": true
+  },
+  "@parcel/bundler-default": {
+    "minBundleSize": 0
+  }
+}
