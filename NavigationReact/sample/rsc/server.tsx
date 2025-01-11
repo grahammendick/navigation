@@ -40,12 +40,9 @@ const sceneViews: any = {
 app.get('*', async (req, res) => {
   const View = sceneViews[req.body.sceneView] || App;
   const navigator = new StateNavigator(stateNavigator);
-  if (req.accepts('text/html')) {
-    navigator.navigateLink(req.url);
-  } else {
+  if (!req.accepts('text/html'))
     navigator.navigateLink(req.body.oldLink);
-    navigator.navigateLink(req.body.link);
-  }
+  navigator.navigateLink(req.url);
   const {oldState, state, data, asyncData} = navigator.stateContext;
   const navigationEvent = {oldState, state, data, asyncData, stateNavigator: navigator};
   await render(req, res, (
