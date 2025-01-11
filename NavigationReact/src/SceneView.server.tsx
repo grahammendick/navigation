@@ -1,5 +1,5 @@
 import { SceneViewProps } from './Props';
-import useNavigationEvent from './useNavigationEvent';
+import useNavigationEvent from './useNavigationEvent.server';
 import SceneRSCView from './SceneRSCView';
 
 const SceneView = ({active, children}: SceneViewProps) => {
