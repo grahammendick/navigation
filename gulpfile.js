@@ -60,8 +60,9 @@ function buildTask(name, input, file, globals, details) {
                 .pipe(dest('.'))
         ));
 }
-var cleanNative = () => {
+var cleanPackage = () => {
     return del([
+        './build/npm/navigation-react/*.js',
         './build/npm/navigation-react-native/android',
         './build/npm/navigation-react-native/ios',
         './build/npm/navigation-react-native/cpp',
@@ -161,5 +162,5 @@ var packageDeps = parallel(
     itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigationReactMobile')
 );
 exports.build = parallel(...itemTasks.buildTasks);
-exports.package = series(cleanNative, parallel(packageNative, ...itemTasks.packageTasks));
+exports.package = series(cleanPackage, parallel(packageNative, ...itemTasks.packageTasks));
 exports.test = series(packageDeps, parallel(...testTasks));
