@@ -37,8 +37,13 @@ const sceneViews: any = {
   person: Person,
 };
 
+app.get('/favicon.ico', function(req, res) {
+  res.statusCode = 404;
+  res.end();
+});
+
 app.get('*', async (req, res) => {
-  const View = sceneViews[req.body.sceneView] || App;
+  const View = sceneViews[req.body?.sceneView] || App;
   const navigator = new StateNavigator(stateNavigator);
   if (!req.accepts('text/html'))
     navigator.navigateLink(req.body.oldUrl);
