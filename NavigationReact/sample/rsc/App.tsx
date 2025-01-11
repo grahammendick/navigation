@@ -3,14 +3,13 @@
 import "./client";
 import React from "react";
 import { Resources } from "@parcel/runtime-rsc";
-import { NavigationHandler, SceneView } from "navigation-react";
-import stateNavigator from "./stateNavigator";
+import { SceneView } from "navigation-react";
+import NavigationProvider from "./NavigationProvider";
 const People = React.lazy(() => import("./People"));
 const Person = React.lazy(() => import("./Person"));
 
-stateNavigator.start();
 
-const App = () => {
+const App = async ({url}: any) => {
   return (
     <html>
       <head>
@@ -18,14 +17,14 @@ const App = () => {
         <Resources />
       </head>
       <body>
-        <NavigationHandler stateNavigator={stateNavigator}>
+        <NavigationProvider url={url}>
           <SceneView active="people">
             <People />
           </SceneView>
           <SceneView active="person">
             <Person />
           </SceneView>
-        </NavigationHandler>
+        </NavigationProvider>
       </body>
     </html>
   );

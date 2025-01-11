@@ -52,7 +52,7 @@ app.get('*', async (req, res) => {
   const navigationEvent = {oldState, state, data, asyncData, stateNavigator: navigator};
   await render(req, res, (
     <NavigationContext.Provider value={navigationEvent}>
-      <View />
+      <View url={req.url} />
     </NavigationContext.Provider>
   ));
 });
