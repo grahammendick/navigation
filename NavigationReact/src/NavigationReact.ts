@@ -6,5 +6,6 @@ import NavigationLink from './NavigationLink';
 import RefreshLink from './RefreshLink';
 import FluentLink from './FluentLink';
 import SceneView from './SceneView';
+import SceneRSCView from './SceneRSCView';
 
-export { AsyncStateNavigator, NavigationContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView };
+export { AsyncStateNavigator, NavigationContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, SceneRSCView };
