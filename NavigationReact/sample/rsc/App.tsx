@@ -8,7 +8,6 @@ import NavigationProvider from "./NavigationProvider";
 const People = React.lazy(() => import("./People"));
 const Person = React.lazy(() => import("./Person"));
 
-
 const App = async ({url}: any) => {
   return (
     <html>
