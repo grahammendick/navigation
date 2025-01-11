@@ -1,10 +1,11 @@
+'use client'
+import { Component } from 'react';
 import AsyncStateNavigator from './AsyncStateNavigator';
 import NavigationContext from './NavigationContext';
 import { StateNavigator, State } from 'navigation';
-import * as React from 'react';
 type NavigationHandlerState = { context: { oldState: State, state: State, data: any, asyncData: any, stateNavigator: AsyncStateNavigator } };
 
-class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator, children: any }, NavigationHandlerState> {
+class NavigationHandler extends Component<{ stateNavigator: StateNavigator, children: any }, NavigationHandlerState> {
     constructor(props) {
         super(props);
         var { stateNavigator } = this.props;

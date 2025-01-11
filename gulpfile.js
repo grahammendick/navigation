@@ -9,6 +9,7 @@ var rename = require('gulp-rename');
 var rollup = require('rollup');
 var sucrase = require('@rollup/plugin-sucrase');
 var terser = require('gulp-terser');
+var ts = require('gulp-typescript');
 var typescript = require('@rollup/plugin-typescript');
 
 events.EventEmitter.defaultMaxListeners = 0;
@@ -16,7 +17,7 @@ events.EventEmitter.defaultMaxListeners = 0;
 var items = [
     require('./build/npm/navigation/package.json'),
     Object.assign({ globals: { navigation: 'Navigation', react: 'React',
-            'react-dom': 'ReactDOM' } }, 
+            'react-dom': 'ReactDOM', 'react/jsx-runtime': '_jsx' } }, 
         require('./build/npm/navigation-react/package.json')),
     Object.assign({ globals: { navigation: 'Navigation',
             'navigation-react': 'NavigationReact', react: 'React' } },
@@ -97,9 +98,21 @@ var itemTasks = items.reduce((tasks, item) => {
     var { globals = {}, format = 'cjs' } = item;
     tasks.buildTasks.push(
         nameFunc(() => buildTask(name, tsFrom, jsTo, globals, item), 'build' + name));
-    tasks.packageTasks.push(
-        nameFunc(() => rollupTask(name, tsFrom, jsPackageTo, globals, format), 'package' + name)
-    );
+    if (!item.exports) {
+        tasks.packageTasks.push(
+            nameFunc(() => rollupTask(name, tsFrom, jsPackageTo, globals, format), 'package' + name)
+        );
+    } else {
+        var include = tsFrom.replace(name + '.ts', '**/*.{ts,tsx}');
+        var tsconfig = tsFrom.replace(name + '.ts', 'tsconfig.json');
+        tasks.packageTasks.push(
+            nameFunc(() => (
+                src(include)
+                    .pipe(ts.createProject(tsconfig)())
+                    .pipe(dest(`./build/npm/${packageName}`))
+            ), 'package' + name)
+        );
+    }
     return tasks;
 }, { buildTasks: [], packageTasks: [] });
 

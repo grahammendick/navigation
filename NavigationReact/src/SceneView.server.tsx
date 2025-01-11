@@ -1,4 +1,3 @@
-import React from 'react';
 import { SceneViewProps } from './Props';
 import useNavigationEvent from './useNavigationEvent';
 import SceneRSCView from './SceneRSCView';

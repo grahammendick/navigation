@@ -1,5 +1,5 @@
 build/dist
-build/npm/**/navigation*.js
+build/npm/**/*.js
 build/npm/**/android
 build/npm/**/ios
 build/npm/**/cpp
