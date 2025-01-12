@@ -1,5 +1,5 @@
 import { searchPeople } from './data';
-import { NavigationLink } from './Links';
+import { NavigationLink } from 'navigation-react';
 
 const People = async () => {
   const people: any = await searchPeople(1);
