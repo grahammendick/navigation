@@ -109,7 +109,7 @@ var itemTasks = items.reduce((tasks, item) => {
         tasks.packageTasks.push(
             nameFunc(() => (
                 src(include)
-                    .pipe(ts.createProject(tsconfig)())
+                    .pipe(ts.createProject(tsconfig, {module: 'nodenext'})())
                     .pipe(dest(`./build/npm/${packageName}`))
             ), 'package' + name)
         );
