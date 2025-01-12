@@ -17,7 +17,6 @@ import stateNavigator from './stateNavigator';
 
 // Page components. These must have "use server-entry" so they are treated as code splitting entry points.
 import App from './App';
-
 import Person from './Person';
 import People from './People';
 
