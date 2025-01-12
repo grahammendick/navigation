@@ -1,9 +1,10 @@
 'use client'
-import { use, useMemo } from "react";
+import { use, useState } from "react";
 import { createFromFetch } from "react-server-dom-parcel/client";
 import useNavigationEvent from "./useNavigationEvent";
 
 const SceneRSCView = ({active, children}) => {
+    const [cache, setCache] = useState({});
     const {state, stateNavigator: {stateContext}} = useNavigationEvent();
     const show = active != null && state && (
         typeof active === 'string'
@@ -14,17 +15,22 @@ const SceneRSCView = ({active, children}) => {
             : active.indexOf(state.key) !== -1
         ));
     const {url, oldUrl} = stateContext;
-    const rsc = useMemo(() => {
-        if (!oldUrl || !show) return null;
+    let rsc = cache[url];
+    if (!rsc && oldUrl && show) {
         const res = fetch(url, {
-            headers: {Accept: "text/x-component"},
+            method: 'post',
+            headers: {
+                Accept: 'text/x-component',
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
                 oldUrl,
                 sceneView: active
             })
         });
-        return createFromFetch(res);
-    }, [show, oldUrl, url]);
+        rsc = createFromFetch(res);
+        cache[url] = rsc;
+    }
     if (!show) return null;
     else return !oldUrl ? children : use(rsc);
 };

@@ -30,6 +30,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(express.static('dist'));
+app.use(express.json());
 
 const sceneViews: any = {
   people: People,
@@ -42,16 +43,28 @@ app.get('/favicon.ico', function(req, res) {
 });
 
 app.get('*', async (req, res) => {
-  const View = sceneViews[req.body?.sceneView] || App;
   const navigator = new StateNavigator(stateNavigator);
-  if (!req.accepts('text/html'))
-    navigator.navigateLink(req.body.oldUrl);
   navigator.navigateLink(req.url);
   const {oldState, state, data, asyncData} = navigator.stateContext;
   const navigationEvent = {oldState, state, data, asyncData, stateNavigator: navigator};
   await render(req, res, (
     <NavigationContext.Provider value={navigationEvent}>
-      <View url={req.url} />
+      <App url={req.url} />
+    </NavigationContext.Provider>
+  ));
+});
+
+app.post('*', async (req, res) => {
+  console.log(req.body.oldUrl, 'xxxx')
+  const View = sceneViews[req.body?.sceneView];
+  const navigator = new StateNavigator(stateNavigator);
+  navigator.navigateLink(req.body.oldUrl);
+  navigator.navigateLink(req.url);
+  const {oldState, state, data, asyncData} = navigator.stateContext;
+  const navigationEvent = {oldState, state, data, asyncData, stateNavigator: navigator};
+  await render(req, res, (
+    <NavigationContext.Provider value={navigationEvent}>
+      <View />
     </NavigationContext.Provider>
   ));
 });
