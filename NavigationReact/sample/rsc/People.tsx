@@ -1,8 +1,9 @@
 import { searchPeople } from './data';
-import { NavigationLink } from 'navigation-react';
+import { NavigationLink, useNavigationEvent } from 'navigation-react';
 
 const People = async () => {
-  const people: any = await searchPeople(1);
+  const {data} = useNavigationEvent();
+  const people: any = await searchPeople(data.page);
   return (
     <>
       <h1>People</h1>

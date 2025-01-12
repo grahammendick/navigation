@@ -175,3 +175,6 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
  * View that shows when the State is active
  */
 export class SceneView<NavigationInfo extends { [index: string]: any } = any> extends Component<SceneViewProps<NavigationInfo>> {}
+
+// needs generics so can type!!
+export var useNavigationEvent: () => NavigationEvent<any, string>;
