@@ -24,7 +24,7 @@ const SceneRSCView = ({active, children}) => {
             })
         });
         return createFromFetch(res);
-    }, [show, oldUrl, url])
+    }, [show, oldUrl, url]);
     if (!show) return null;
     else return !oldUrl ? children : use(rsc);
 };
