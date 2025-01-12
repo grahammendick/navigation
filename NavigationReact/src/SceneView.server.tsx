@@ -12,7 +12,11 @@ const SceneView = ({active, children}: SceneViewProps) => {
             ? active(stateNavigator.stateContext)
             : active.indexOf(state.key) !== -1
         ));
-    return show ? <SceneRSCView>{children}</SceneRSCView> : null;
+    return (
+        <SceneRSCView active={active}> 
+            {show ? children : null}
+        </SceneRSCView>
+    );
 }
 
 export default SceneView;
