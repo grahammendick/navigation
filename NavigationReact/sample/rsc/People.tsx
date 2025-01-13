@@ -2,7 +2,7 @@ import { searchPeople } from './data';
 import { NavigationLink, RefreshLink, useNavigationEvent } from 'navigation-react';
 
 const People = async () => {
-  const { data } = useNavigationEvent();
+  const {data} = useNavigationEvent();
   const people: any = await searchPeople(data.pageNumber);
   return (
     <>

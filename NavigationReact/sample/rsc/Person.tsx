@@ -2,7 +2,7 @@ import { getPerson } from './data';
 import { NavigationBackLink, useNavigationEvent } from 'navigation-react';
 
 const Person = async () => {
-  const { data } = useNavigationEvent();
+  const {data} = useNavigationEvent();
   const person: any = await getPerson(data.id);
   return (
     <>
