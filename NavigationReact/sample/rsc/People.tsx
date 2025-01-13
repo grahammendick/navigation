@@ -1,8 +1,8 @@
 import { searchPeople } from './data';
-import { NavigationLink, useNavigationEvent } from 'navigation-react';
+import { NavigationLink, RefreshLink, useNavigationEvent } from 'navigation-react';
 
 const People = async () => {
-  const {data} = useNavigationEvent();
+  const { data } = useNavigationEvent();
   const people: any = await searchPeople(data.pageNumber);
   return (
     <>
@@ -29,6 +29,19 @@ const People = async () => {
           ))}
         </tbody>
       </table>
+      <div>
+        Go to page
+        <RefreshLink
+          navigationData={{ pageNumber: 1 }}
+          disableActive={true}>
+          1
+        </RefreshLink>
+        <RefreshLink
+          navigationData={{ pageNumber: 2 }}
+          disableActive={true}>
+          2
+        </RefreshLink>
+      </div>
     </>
   );
 }
