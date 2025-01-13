@@ -33,12 +33,12 @@ const People = async () => {
         Go to page
         <RefreshLink
           navigationData={{ pageNumber: 1 }}
-          disableActive={true}>
+          disableActive>
           1
         </RefreshLink>
         <RefreshLink
           navigationData={{ pageNumber: 2 }}
-          disableActive={true}>
+          disableActive>
           2
         </RefreshLink>
       </div>
