@@ -38,11 +38,13 @@ const People = async () => {
         Go to page
         <RefreshLink
           navigationData={{ page: 1 }}
+          includeCurrentData
           disableActive>
           1
         </RefreshLink>
         <RefreshLink
           navigationData={{ page: 2 }}
+          includeCurrentData
           disableActive>
           2
         </RefreshLink>
