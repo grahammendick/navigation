@@ -1,5 +1,6 @@
 import { searchPeople } from './data';
 import { NavigationLink, RefreshLink, useNavigationEvent } from 'navigation-react';
+import Filter from './Filter';
 
 const People = async () => {
   const {data: {page, sort}} = useNavigationEvent();
@@ -7,6 +8,7 @@ const People = async () => {
   return (
     <>
       <h1>People</h1>
+      <Filter />
       <table>
         <thead>
           <tr>

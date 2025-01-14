@@ -7,6 +7,6 @@ import RefreshLink from './RefreshLink';
 import FluentLink from './FluentLink';
 import SceneView from './SceneView';
 import SceneRSCView from './SceneRSCView';
-import useNavigationEvent from './useNavigationEvent.server';
+import useNavigationEvent from './useNavigationEvent';
 
 export { AsyncStateNavigator, NavigationContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, SceneRSCView, useNavigationEvent };
