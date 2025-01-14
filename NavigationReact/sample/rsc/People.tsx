@@ -2,7 +2,7 @@ import { searchPeople } from './data';
 import { NavigationLink, RefreshLink, useNavigationEvent } from 'navigation-react';
 
 const People = async () => {
-  const { data: { page, sort } } = useNavigationEvent();
+  const {data: {page, sort}} = useNavigationEvent();
   const people: any = await searchPeople(page, sort);
   return (
     <>
@@ -12,7 +12,7 @@ const People = async () => {
           <tr>
             <th>
               <RefreshLink
-                navigationData={{ sort: sort === 'asc' ? 'desc' : 'asc' }}
+                navigationData={{sort: sort === 'asc' ? 'desc' : 'asc'}}
                 includeCurrentData>
                 Name
               </RefreshLink></th>
@@ -20,16 +20,16 @@ const People = async () => {
           </tr>
         </thead>
         <tbody>
-          {people.map((person: any) => (
-            <tr key={person.id}>
+          {people.map(({id, name, dateOfBirth}: any) => (
+            <tr key={id}>
               <td>
                 <NavigationLink
                   stateKey="person"
-                  navigationData={{ id: person.id }}>
-                  {person.name}
+                  navigationData={{id: id}}>
+                  {name}
                 </NavigationLink>
               </td>
-              <td>{person.dateOfBirth}</td>
+              <td>{dateOfBirth}</td>
             </tr>
           ))}
         </tbody>
@@ -37,13 +37,13 @@ const People = async () => {
       <div>
         Go to page
         <RefreshLink
-          navigationData={{ page: 1 }}
+          navigationData={{page: 1}}
           includeCurrentData
           disableActive>
           1
         </RefreshLink>
         <RefreshLink
-          navigationData={{ page: 2 }}
+          navigationData={{page: 2}}
           includeCurrentData
           disableActive>
           2
