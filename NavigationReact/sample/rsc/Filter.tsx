@@ -8,17 +8,17 @@ const Filter = () => {
             <div>
                 <label htmlFor="name">Name</label>
                 <input id="name" value={data.name || ''} onChange={({target}) => {
-                    stateNavigator.refresh({...data, name: target.value, startRowIndex: null});
+                    stateNavigator.refresh({...data, name: target.value, page: null});
                 }} />
             </div>
             Page size
             <RefreshLink
-                navigationData={{maximumRows: 5, startRowIndex: null}}
+                navigationData={{size: 5, page: null}}
                 includeCurrentData>
                 5
             </RefreshLink>
             <RefreshLink
-                navigationData={{maximumRows: 10, startRowIndex: null}}
+                navigationData={{size: 10, page: null}}
                 includeCurrentData
             >
                 10

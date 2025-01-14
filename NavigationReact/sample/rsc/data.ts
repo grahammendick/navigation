@@ -15,15 +15,15 @@ var people = [
     {id: 12, name: 'Emelie Lueilwitz', dateOfBirth: '01/12/1980', email: 'emelie@navigation.com', phone: '555 0012'}
 ];
 
-const searchPeople = async (pageNumber: number, sortExpression: string) => {
-    return new Promise((res: ((people: Person[]) => void)) => {
-        var start = (pageNumber - 1) * 10;
+const searchPeople = async (pageNumber: number, pageSize: number, sortExpression: string) => {
+    return new Promise((res: ((data: {people: Person[], count: number}) => void)) => {
+        var start = (pageNumber - 1) * pageSize;
         var page = people.sort((personA, personB) => {
             var mult = sortExpression.indexOf('desc') === -1 ? -1 : 1;
             return mult * (personA.name < personB.name ? 1 : -1);
-        }).slice(start, start + 10);
+        }).slice(start, start + pageSize);
         setTimeout(() => {
-            res(page);
+            res({people: page, count: people.length});
         }, 10);
     })
 };

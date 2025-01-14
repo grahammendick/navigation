@@ -3,10 +3,11 @@
 import { searchPeople } from './data';
 import { NavigationLink, RefreshLink, useNavigationEvent } from 'navigation-react';
 import Filter from './Filter';
+import Pager from './Pager';
 
 const People = async () => {
-  const {data: {page, sort}} = useNavigationEvent();
-  const people = await searchPeople(page, sort);
+  const {data: {page, size, sort}} = useNavigationEvent();
+  const {people, count} = await searchPeople(page, size, sort);
   return (
     <>
       <h1>People</h1>
@@ -38,21 +39,7 @@ const People = async () => {
           ))}
         </tbody>
       </table>
-      <div>
-        Go to page
-        <RefreshLink
-          navigationData={{page: 1}}
-          includeCurrentData
-          disableActive>
-          1
-        </RefreshLink>
-        <RefreshLink
-          navigationData={{page: 2}}
-          includeCurrentData
-          disableActive>
-          2
-        </RefreshLink>
-      </div>
+      <Pager totalRowCount={count} />
     </>
   );
 }
