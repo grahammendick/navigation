@@ -1,3 +1,5 @@
+type Person = {id: number, name: string, dateOfBirth: string, email: string, phone: string};
+
 var people = [
     {id: 1, name: 'Bell Halvorson', dateOfBirth: '01/01/1980', email: 'bell@navigation.com', phone: '555 0001'},
     {id: 2, name: 'Aditya Larson', dateOfBirth: '01/02/1980', email: 'aditya@navigation.com', phone: '555 0002'},
@@ -14,7 +16,7 @@ var people = [
 ];
 
 const searchPeople = async (pageNumber: number, sortExpression: string) => {
-    return new Promise((res => {
+    return new Promise((res: ((people: Person[]) => void)) => {
         var start = (pageNumber - 1) * 10;
         var page = people.sort((personA, personB) => {
             var mult = sortExpression.indexOf('desc') === -1 ? -1 : 1;
@@ -23,16 +25,16 @@ const searchPeople = async (pageNumber: number, sortExpression: string) => {
         setTimeout(() => {
             res(page);
         }, 10);
-    }))
+    })
 };
 
 const getPerson = async (id: number) => {
-    return new Promise((res => {
-        const person = people.find(({id: personId}) => personId == id)
+    return new Promise((res: ((person: Person) => void)) => {
+        const person = people.find(({id: personId}) => personId == id)!
         setTimeout(() => {
             res(person);
         }, 10);
-    }))
+    })
 }
 
 export { searchPeople, getPerson }

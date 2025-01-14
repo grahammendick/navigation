@@ -3,7 +3,7 @@ import { NavigationBackLink, useNavigationEvent } from 'navigation-react';
 
 const Person = async () => {
   const {data} = useNavigationEvent();
-  const person: any = await getPerson(data.id);
+  const {name, dateOfBirth, email, phone} = await getPerson(data.id);
   return (
     <>
       <h1>Person</h1>
@@ -12,13 +12,13 @@ const Person = async () => {
           Person Search
         </NavigationBackLink>
         <div>
-          <h2>{person.name}</h2>
+          <h2>{name}</h2>
           <div>Date of Birth</div>
-          <div>{person.dateOfBirth}</div>
+          <div>{dateOfBirth}</div>
           <div>Email</div>
-          <div>{person.email}</div>
+          <div>{email}</div>
           <div>Phone</div>
-          <div>{person.phone}</div>
+          <div>{phone}</div>
         </div>
       </div>
     </>

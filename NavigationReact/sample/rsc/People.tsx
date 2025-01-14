@@ -3,7 +3,7 @@ import { NavigationLink, RefreshLink, useNavigationEvent } from 'navigation-reac
 
 const People = async () => {
   const {data: {page, sort}} = useNavigationEvent();
-  const people: any = await searchPeople(page, sort);
+  const people = await searchPeople(page, sort);
   return (
     <>
       <h1>People</h1>
@@ -20,7 +20,7 @@ const People = async () => {
           </tr>
         </thead>
         <tbody>
-          {people.map(({id, name, dateOfBirth}: any) => (
+          {people.map(({id, name, dateOfBirth}) => (
             <tr key={id}>
               <td>
                 <NavigationLink
