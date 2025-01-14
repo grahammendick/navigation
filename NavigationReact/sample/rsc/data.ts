@@ -13,10 +13,13 @@ var people = [
     {id: 12, name: 'Emelie Lueilwitz', dateOfBirth: '01/12/1980', email: 'emelie@navigation.com', phone: '555 0012'}
 ];
 
-const searchPeople = async (pageNumber: number) => {
+const searchPeople = async (pageNumber: number, sortExpression: string) => {
     return new Promise((res => {
         var start = (pageNumber - 1) * 10;
-        var page = people.slice(start, start + 10);
+        var page = people.sort((personA, personB) => {
+            var mult = sortExpression.indexOf('desc') === -1 ? -1 : 1;
+            return mult * (personA.name < personB.name ? 1 : -1);
+        }).slice(start, start + 10);
         setTimeout(() => {
             res(page);
         }, 10);

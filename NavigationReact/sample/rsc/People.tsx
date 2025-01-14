@@ -2,15 +2,20 @@ import { searchPeople } from './data';
 import { NavigationLink, RefreshLink, useNavigationEvent } from 'navigation-react';
 
 const People = async () => {
-  const {data} = useNavigationEvent();
-  const people: any = await searchPeople(data.pageNumber);
+  const { data: { page, sort } } = useNavigationEvent();
+  const people: any = await searchPeople(page, sort);
   return (
     <>
       <h1>People</h1>
       <table>
         <thead>
           <tr>
-            <th>Name</th>
+            <th>
+              <RefreshLink
+                navigationData={{ sort: sort === 'asc' ? 'desc' : 'asc' }}
+                includeCurrentData>
+                Name
+              </RefreshLink></th>
             <th>Date of Birth</th>
           </tr>
         </thead>
@@ -32,12 +37,12 @@ const People = async () => {
       <div>
         Go to page
         <RefreshLink
-          navigationData={{ pageNumber: 1 }}
+          navigationData={{ page: 1 }}
           disableActive>
           1
         </RefreshLink>
         <RefreshLink
-          navigationData={{ pageNumber: 2 }}
+          navigationData={{ page: 2 }}
           disableActive>
           2
         </RefreshLink>
