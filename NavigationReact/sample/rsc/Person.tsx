@@ -1,3 +1,5 @@
+'use server-entry'
+
 import { getPerson } from './data';
 import { NavigationBackLink, useNavigationEvent } from 'navigation-react';
 

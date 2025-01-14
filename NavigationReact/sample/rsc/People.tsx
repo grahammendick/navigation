@@ -1,3 +1,5 @@
+'use server-entry'
+
 import { searchPeople } from './data';
 import { NavigationLink, RefreshLink, useNavigationEvent } from 'navigation-react';
 import Filter from './Filter';
