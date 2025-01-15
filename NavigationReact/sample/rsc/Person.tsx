@@ -10,9 +10,7 @@ const Person = async () => {
     <>
       <h1>Person</h1>
       <div>
-        <NavigationBackLink distance={1}>
-          Person Search
-        </NavigationBackLink>
+        <NavigationBackLink distance={1}>Person Search</NavigationBackLink>
         <div>
           <h2>{name}</h2>
           <div>Date of Birth</div>
