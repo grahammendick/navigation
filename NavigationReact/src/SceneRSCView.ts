@@ -3,8 +3,9 @@ import { use, useState } from "react";
 import { createFromFetch } from "react-server-dom-parcel/client";
 import useNavigationEvent from "./useNavigationEvent";
 
+const rscCache = new Map();
+
 const SceneRSCView = ({active, children}) => {
-    const [cache, setCache] = useState(new Map());
     const {state, stateNavigator: {stateContext}} = useNavigationEvent();
     const show = active != null && state && (
         typeof active === 'string'
@@ -15,7 +16,7 @@ const SceneRSCView = ({active, children}) => {
             : active.indexOf(state.key) !== -1
         ));
     const {url, oldUrl} = stateContext;
-    if (!cache.get(stateContext) && oldUrl && show) {
+    if (!rscCache.get(stateContext) && oldUrl && show) {
         const res = fetch(url, {
             method: 'post',
             headers: {
@@ -27,10 +28,10 @@ const SceneRSCView = ({active, children}) => {
                 sceneView: active
             })
         });
-        cache.set(stateContext, createFromFetch(res));
+        rscCache.set(stateContext, createFromFetch(res));
     }
     if (!show) return null;
-    else return !oldUrl ? children : use(cache.get(stateContext));
+    else return !oldUrl ? children : use(rscCache.get(stateContext));
 };
 
 export default SceneRSCView;
