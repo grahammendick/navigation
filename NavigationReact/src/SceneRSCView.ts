@@ -1,5 +1,5 @@
 'use client'
-import { use, useState } from "react";
+import { use } from "react";
 import { createFromFetch } from "react-server-dom-parcel/client";
 import useNavigationEvent from "./useNavigationEvent";
 
