@@ -14,7 +14,7 @@
     }
   },
   "scripts": {
-    "build": "parcel build --no-cache",
+    "build": "rm -rf .parcel-cache && rm -rf dist && parcel build --no-cache",
     "start": "node dist/server.js"
   },
   "dependencies": {
