@@ -16,11 +16,8 @@ const People = async () => {
         <thead>
           <tr>
             <th>
-              <RefreshLink
-                navigationData={{sort: sort === 'asc' ? 'desc' : 'asc'}}
-                includeCurrentData>
-                Name
-              </RefreshLink></th>
+              <RefreshLink navigationData={{sort: sort === 'asc' ? 'desc' : 'asc'}} includeCurrentData>Name</RefreshLink>
+            </th>
             <th>Date of Birth</th>
           </tr>
         </thead>
@@ -28,11 +25,7 @@ const People = async () => {
           {people.map(({id, name, dateOfBirth}) => (
             <tr key={id}>
               <td>
-                <NavigationLink
-                  stateKey="person"
-                  navigationData={{id: id}}>
-                  {name}
-                </NavigationLink>
+                <NavigationLink stateKey="person" navigationData={{id: id}}>{name}</NavigationLink>
               </td>
               <td>{dateOfBirth}</td>
             </tr>
