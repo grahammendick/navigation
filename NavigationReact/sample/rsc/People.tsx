@@ -6,8 +6,8 @@ import Filter from './Filter';
 import Pager from './Pager';
 
 const People = async () => {
-  const {data: {page, size, sort}} = useNavigationEvent();
-  const {people, count} = await searchPeople(page, size, sort);
+  const {data: {name, page, size, sort}} = useNavigationEvent();
+  const {people, count} = await searchPeople(name, page, size, sort);
   return (
     <>
       <h1>People</h1>

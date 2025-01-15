@@ -15,16 +15,19 @@ var people = [
     {id: 12, name: 'Emelie Lueilwitz', dateOfBirth: '01/12/1980', email: 'emelie@navigation.com', phone: '555 0012'}
 ];
 
-const searchPeople = async (pageNumber: number, pageSize: number, sortExpression: string) => {
+const searchPeople = async (name: string, pageNumber: number, pageSize: number, sortExpression: string) => {
     return new Promise((res: ((data: {people: Person[], count: number}) => void)) => {
         var start = (pageNumber - 1) * pageSize;
-        var page = people.sort((personA, personB) => {
+        var filteredPeople = people.sort((personA, personB) => {
             var mult = sortExpression.indexOf('desc') === -1 ? -1 : 1;
             return mult * (personA.name < personB.name ? 1 : -1);
-        }).slice(start, start + pageSize);
+        }).filter(person => !name || person.name.toUpperCase().indexOf(name.toUpperCase()) !== -1)
         setTimeout(() => {
-            res({people: page, count: people.length});
-        }, 10);
+            res({
+                people: filteredPeople.slice(start, start + pageSize),
+                count: filteredPeople.length
+            });
+        }, 1000);
     })
 };
 
