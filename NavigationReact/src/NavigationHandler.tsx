@@ -2,10 +2,11 @@
 import { Component } from 'react';
 import AsyncStateNavigator from './AsyncStateNavigator';
 import NavigationContext from './NavigationContext';
+import RSCContext from './RSCContext';
 import { StateNavigator, State } from 'navigation';
 type NavigationHandlerState = { context: { oldState: State, state: State, data: any, asyncData: any, stateNavigator: AsyncStateNavigator } };
 
-class NavigationHandler extends Component<{ stateNavigator: StateNavigator, children: any }, NavigationHandlerState> {
+class NavigationHandler extends Component<{ stateNavigator: StateNavigator, createFromFetch: any, children: any }, NavigationHandlerState> {
     constructor(props) {
         super(props);
         var { stateNavigator } = this.props;
@@ -37,7 +38,9 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, chil
     render() {
         return (
             <NavigationContext.Provider value={this.state.context}>
-                {this.props.children}
+                <RSCContext.Provider value={this.props.createFromFetch}>
+                    {this.props.children}
+                </RSCContext.Provider>
             </NavigationContext.Provider>
         );
     }

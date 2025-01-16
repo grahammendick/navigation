@@ -1,12 +1,13 @@
 'use client'
-import { use, useDeferredValue } from "react";
-import { createFromFetch } from "react-server-dom-parcel/client";
+import { use, useDeferredValue, useContext } from "react";
 import useNavigationEvent from "./useNavigationEvent";
+import RSCContext from "./RSCContext";
 
 const rscCache = new Map();
 
 const SceneRSCView = ({active, children}) => {
     const {state, stateNavigator: {stateContext: nextStateContext}} = useNavigationEvent();
+    const createFromFetch = useContext(RSCContext);
     const oldStateContext = useDeferredValue(nextStateContext);
     const stateContext = oldStateContext.crumbs.length === nextStateContext.crumbs.length
         && oldStateContext.state === nextStateContext.state ? oldStateContext : nextStateContext;
