@@ -40,4 +40,4 @@ const getPerson = async (id: number) => {
     })
 }
 
-export { searchPeople, getPerson }
+export {searchPeople, getPerson};
