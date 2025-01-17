@@ -19,6 +19,7 @@ import stateNavigator from './stateNavigator';
 import App from './App';
 import Person from './Person';
 import People from './People';
+import Friends from './Friends';
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use(express.json());
 const sceneViews: any = {
   people: People,
   person: Person,
+  friends: Friends
 };
 
 app.get('/favicon.ico', function(req, res) {

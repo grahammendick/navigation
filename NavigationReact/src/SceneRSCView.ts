@@ -5,19 +5,21 @@ import BundlerContext from "./BundlerContext";
 
 const rscCache = new Map();
 
-const SceneRSCView = ({active, children}) => {
+const SceneRSCView = ({active, name, children}) => {
     const {state, stateNavigator: {stateContext}} = useNavigationEvent();
     const createFromFetch = useContext(BundlerContext);
-    const show = active != null && state && (
+    const sceneView = name || active;
+    const show = active != 'null' && state && (
         typeof active === 'string'
         ? state.key === active
-        : (
-            typeof active === 'function'
-            ? active(stateContext)
-            : active.indexOf(state.key) !== -1
-        ));
+        : typeof active !== 'function'
+        ? active.indexOf(state.key) !== -1
+        : false
+    );
     const {url, oldUrl} = stateContext;
-    if (!rscCache.get(stateContext) && oldUrl && show) {
+    if (!rscCache.get(stateContext)) rscCache.set(stateContext, {});
+    const cachedSceneViews = rscCache.get(stateContext);
+    if (!cachedSceneViews[sceneView] && oldUrl && show) {
         const res = fetch(url, {
             method: 'post',
             headers: {
@@ -26,13 +28,13 @@ const SceneRSCView = ({active, children}) => {
             },
             body: JSON.stringify({
                 oldUrl,
-                sceneView: active
+                sceneView,
             })
         });
-        rscCache.set(stateContext, createFromFetch(res));
+        cachedSceneViews[sceneView] = createFromFetch(res);
     }
     if (!show) return null;
-    else return !oldUrl ? children : use(rscCache.get(stateContext));
+    else return !oldUrl ? children : use(cachedSceneViews[sceneView]);
 };
 
 export default SceneRSCView;

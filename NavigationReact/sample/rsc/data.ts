@@ -1,18 +1,18 @@
 type Person = {id: number, name: string, dateOfBirth: string, email: string, phone: string};
 
 var people = [
-    {id: 1, name: 'Bell Halvorson', dateOfBirth: '01/01/1980', email: 'bell@navigation.com', phone: '555 0001'},
-    {id: 2, name: 'Aditya Larson', dateOfBirth: '01/02/1980', email: 'aditya@navigation.com', phone: '555 0002'},
-    {id: 3, name: 'Rashawn Schamberger', dateOfBirth: '01/03/1980', email: 'rashawn@navigation.com', phone: '555 0003'},
-    {id: 4, name: 'Rupert Grant', dateOfBirth: '01/04/1980', email: 'rupert@navigation.com', phone: '555 0004'},
-    {id: 5, name: 'Opal Carter', dateOfBirth: '01/05/1980', email: 'opal@navigation.com', phone: '555 0005'},
-    {id: 6, name: 'Candida Christiansen', dateOfBirth: '01/06/1980', email: 'candida@navigation.com', phone: '555 0006'},
-    {id: 7, name: 'Haven Stroman', dateOfBirth: '01/07/1980', email: 'haven@navigation.com', phone: '555 0007'},
-    {id: 8, name: 'Celine Leannon', dateOfBirth: '01/08/1980', email: 'celine@navigation.com', phone: '555 0008'},
-    {id: 9, name: 'Ryan Ruecker', dateOfBirth: '01/09/1980', email: 'ryan@navigation.com', phone: '555 0009'},
-    {id: 10, name: 'Kaci Hoppe', dateOfBirth: '01/10/1980', email: 'kaci@navigation.com', phone: '555 0010'},
-    {id: 11, name: 'Fernando Dietrich', dateOfBirth: '01/11/1980', email: 'fernando@navigation.com', phone: '555 0011'},
-    {id: 12, name: 'Emelie Lueilwitz', dateOfBirth: '01/12/1980', email: 'emelie@navigation.com', phone: '555 0012'}
+    {id: 1, name: 'Bell Halvorson', dateOfBirth: '01/01/1980', email: 'bell@navigation.com', phone: '555 0001', friends: [2,3,4,5]},
+    {id: 2, name: 'Aditya Larson', dateOfBirth: '01/02/1980', email: 'aditya@navigation.com', phone: '555 0002', friends: [3,4,5,6]},
+    {id: 3, name: 'Rashawn Schamberger', dateOfBirth: '01/03/1980', email: 'rashawn@navigation.com', phone: '555 0003', friends: [4,5,6,7]},
+    {id: 4, name: 'Rupert Grant', dateOfBirth: '01/04/1980', email: 'rupert@navigation.com', phone: '555 0004', friends: [5,6,7,8]},
+    {id: 5, name: 'Opal Carter', dateOfBirth: '01/05/1980', email: 'opal@navigation.com', phone: '555 0005', friends: [6,7,8,9]},
+    {id: 6, name: 'Candida Christiansen', dateOfBirth: '01/06/1980', email: 'candida@navigation.com', phone: '555 0006', friends: [7,8,9,10]},
+    {id: 7, name: 'Haven Stroman', dateOfBirth: '01/07/1980', email: 'haven@navigation.com', phone: '555 0007', friends: [8,9,10,11]},
+    {id: 8, name: 'Celine Leannon', dateOfBirth: '01/08/1980', email: 'celine@navigation.com', phone: '555 0008', friends: [9,10,11,12]},
+    {id: 9, name: 'Ryan Ruecker', dateOfBirth: '01/09/1980', email: 'ryan@navigation.com', phone: '555 0009', friends: [10,11,12,1]},
+    {id: 10, name: 'Kaci Hoppe', dateOfBirth: '01/10/1980', email: 'kaci@navigation.com', phone: '555 0010', friends: [11,12,1,2]},
+    {id: 11, name: 'Fernando Dietrich', dateOfBirth: '01/11/1980', email: 'fernando@navigation.com', phone: '555 0011', friends: [12,1,2,3]},
+    {id: 12, name: 'Emelie Lueilwitz', dateOfBirth: '01/12/1980', email: 'emelie@navigation.com', phone: '555 0012', friends: [1,2,3,4]}
 ];
 
 const searchPeople = async (name: string, pageNumber: number, pageSize: number, sortExpression: string) => {
@@ -33,11 +33,22 @@ const searchPeople = async (name: string, pageNumber: number, pageSize: number, 
 
 const getPerson = async (id: number) => {
     return new Promise((res: ((person: Person) => void)) => {
-        const person = people.find(({id: personId}) => personId == id)!
+        const person = people.find(({id: personId}) => personId === id)!
         setTimeout(() => {
             res(person);
         }, 10);
     })
 }
 
-export {searchPeople, getPerson};
+const getFriends = async (id: number) => {
+    return new Promise((res: ((friends: Person[]) => void)) => {
+        const person = people.find(({id: personId}) => personId == id)!
+        setTimeout(() => {
+            res(person.friends.map((id) => (
+                people.find(({id: personId}) => personId === id)!
+            )));
+        }, 10);
+    })
+}
+
+export {searchPeople, getPerson, getFriends};

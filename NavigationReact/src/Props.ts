@@ -34,6 +34,7 @@ interface FluentLinkProps extends LinkProps {
 
 interface SceneViewProps {
     active: string | string[] | ((stateContext: StateContext) => boolean);
+    name: string;
     children: any;
 }
 
