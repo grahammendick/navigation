@@ -1,14 +1,18 @@
 'use client'
-import {RefreshLink, useNavigationEvent} from 'navigation-react';
+import { RefreshLink, useNavigationEvent } from 'navigation-react';
+import { useOptimistic } from 'react';
 
 const Filter = () => {
     const {data, stateNavigator} = useNavigationEvent();
+    const {name} = data;
+    const [optimisticName, setOptimisticName] = useOptimistic(name || '', (_, newName) => newName);
     return (
         <div>
             <div>
                 <label htmlFor="name">Name</label>
-                <input id="name" value={data.name || ''} onChange={({target}) => {
-                    stateNavigator.refresh({...data, name: target.value, page: 1});
+                <input id="name" value={optimisticName || ''} onChange={({target: {value}}) => {
+                    setOptimisticName(value);
+                    stateNavigator.refresh({...data, name: value, page: 1});
                 }} />
             </div>
             Page size
