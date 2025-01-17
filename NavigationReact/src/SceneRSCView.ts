@@ -1,13 +1,13 @@
 'use client'
 import { use, useContext } from "react";
 import useNavigationEvent from "./useNavigationEvent";
-import RSCContext from "./RSCContext";
+import BundlerContext from "./BundlerContext";
 
 const rscCache = new Map();
 
 const SceneRSCView = ({active, children}) => {
     const {state, stateNavigator: {stateContext}} = useNavigationEvent();
-    const createFromFetch = useContext(RSCContext);
+    const createFromFetch = useContext(BundlerContext);
     const show = active != null && state && (
         typeof active === 'string'
         ? state.key === active

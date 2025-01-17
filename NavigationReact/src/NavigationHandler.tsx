@@ -2,7 +2,7 @@
 import { Component } from 'react';
 import AsyncStateNavigator from './AsyncStateNavigator';
 import NavigationContext from './NavigationContext';
-import RSCContext from './RSCContext';
+import BundlerContext from './BundlerContext';
 import { StateNavigator, State } from 'navigation';
 type NavigationHandlerState = { context: { oldState: State, state: State, data: any, asyncData: any, stateNavigator: AsyncStateNavigator } };
 
@@ -38,9 +38,9 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, crea
     render() {
         return (
             <NavigationContext.Provider value={this.state.context}>
-                <RSCContext.Provider value={this.props.createFromFetch}>
+                <BundlerContext.Provider value={this.props.createFromFetch}>
                     {this.props.children}
-                </RSCContext.Provider>
+                </BundlerContext.Provider>
             </NavigationContext.Provider>
         );
     }
