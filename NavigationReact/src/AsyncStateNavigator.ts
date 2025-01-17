@@ -1,3 +1,4 @@
+import { startTransition } from 'react';
 import NavigationHandler from './NavigationHandler';
 import { StateNavigator, StateContext } from 'navigation';
 
@@ -26,11 +27,13 @@ class AsyncStateNavigator extends StateNavigator {
             suspendNavigation(stateContext, () => {
                 var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext);
                 var { oldState, state, data, url, asyncData } = asyncNavigator.stateContext;
-                this.navigationHandler.setState(() => (
-                    { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } }
-                ), () => {
-                    if (stateContext === this.navigationHandler.state.context.stateNavigator.stateContext)
-                        resumeNavigation();
+                startTransition(() => {
+                    this.navigationHandler.setState(() => (
+                        { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } }
+                    ), () => {
+                        if (stateContext === this.navigationHandler.state.context.stateNavigator.stateContext)
+                            resumeNavigation();
+                    });    
                 });
             })
         }, currentContext);

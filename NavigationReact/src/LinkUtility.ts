@@ -1,4 +1,5 @@
-﻿import AsyncStateNavigator from './AsyncStateNavigator';
+﻿import React from 'react';
+import AsyncStateNavigator from './AsyncStateNavigator';
 import { LinkProps } from './Props';
 
 class LinkUtility {
@@ -66,7 +67,7 @@ class LinkUtility {
                 var { navigating, historyAction, startTransition } = props;
                 if (!navigating || navigating(e, link)) {
                     e.preventDefault();
-                    startTransition = startTransition || ((transition) => transition())
+                    startTransition = startTransition || React.startTransition || ((transition) => transition())
                     startTransition(() => {
                         stateNavigator.navigateLink(link, historyAction, false, undefined, undefined);
                     })
