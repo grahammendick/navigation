@@ -12,7 +12,12 @@ const Person = async () => {
       <h1>Person</h1>
       <div>
         <NavigationBackLink distance={1}>Person Search</NavigationBackLink>
-        <RefreshLink navigationData={{id: 1}} includeCurrentData>Test</RefreshLink>
+        <div>
+          <RefreshLink navigationData={{id: 1}} includeCurrentData>Bell</RefreshLink>
+        </div>
+        <div>
+          <RefreshLink navigationData={{id: 2}} includeCurrentData>Aditya</RefreshLink>
+        </div>
         <div>
           <h2>{name}</h2>
           <div>Date of Birth</div>
@@ -22,6 +27,9 @@ const Person = async () => {
           <div>Phone</div>
           <div>{phone}</div>
         </div>
+        <SceneView active="person" name="friends" dataDeps={['id', 'show']}>
+          <Friends />
+        </SceneView>
       </div>
     </>
   )
