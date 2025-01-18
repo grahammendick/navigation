@@ -6,9 +6,9 @@ import BundlerContext from "./BundlerContext";
 const rscCache = new Map();
 
 const SceneRSCView = ({active, name, dataDeps, children}) => {
-    const {state, stateNavigator: {stateContext}} = useNavigationEvent();
+    const {state, oldState, data, stateNavigator: {stateContext}} = useNavigationEvent();
     const createFromFetch = useContext(BundlerContext);
-    const sceneView = name || active;
+    const sceneViewKey = name || active;
     const show = active != 'null' && state && (
         typeof active === 'string'
         ? state.key === active
@@ -16,23 +16,23 @@ const SceneRSCView = ({active, name, dataDeps, children}) => {
         ? active.indexOf(state.key) !== -1
         : false
     );
+    const {url, oldUrl, oldData} = stateContext;
     const navigationDataChanged = () => {
-        if (stateContext.state !== stateContext.oldState || dataDeps == null) return true;
+        if (state !== oldState || !dataDeps) return true;
         for(let i = 0; i < dataDeps.length; i++) {
-            if (stateContext.data[dataDeps[i]] !== stateContext.oldData[dataDeps[i]])
+            if (data[dataDeps[i]] !== oldData[dataDeps[i]])
                 return true;
         }
         return false;
     }
-    const {url, oldUrl} = stateContext;
     if (!rscCache.get(stateContext)) rscCache.set(stateContext, {});
     const cachedSceneViews = rscCache.get(stateContext);
-    const sceneViewCurrent = useRef();
+    const renderedSceneView = useRef(undefined);
+    let fetchedSceneView = cachedSceneViews[sceneViewKey];
     useLayoutEffect(() => {
-        if (cachedSceneViews[sceneView])
-            sceneViewCurrent.current = cachedSceneViews[sceneView]
-    }, [cachedSceneViews[sceneView]])
-    if (!cachedSceneViews[sceneView] && oldUrl && show && navigationDataChanged()) {
+        if (fetchedSceneView) renderedSceneView.current = fetchedSceneView;
+    }, [fetchedSceneView])
+    if (!fetchedSceneView && oldUrl && show && navigationDataChanged()) {
         const res = fetch(url, {
             method: 'post',
             headers: {
@@ -41,14 +41,14 @@ const SceneRSCView = ({active, name, dataDeps, children}) => {
             },
             body: JSON.stringify({
                 oldUrl,
-                sceneView,
+                sceneView: sceneViewKey,
             })
         });
-        cachedSceneViews[sceneView] = createFromFetch(res);
+        cachedSceneViews[sceneViewKey] = createFromFetch(res);
+        fetchedSceneView = cachedSceneViews[sceneViewKey];
     }
-    const cachedSceneView = cachedSceneViews[sceneView] || sceneViewCurrent.current;
-    if (!show) return null;
-    else return !oldUrl || !cachedSceneView ? children : use(cachedSceneView);
+    const sceneView = fetchedSceneView || renderedSceneView.current;
+    return !show ? null : !sceneView ? children : use(sceneView);
 };
 
 export default SceneRSCView;
