@@ -2,7 +2,7 @@ import { SceneViewProps } from './Props';
 import useNavigationEvent from './useNavigationEvent.server';
 import SceneRSCView from './SceneRSCView';
 
-const SceneView = ({active, name, children}: SceneViewProps) => {
+const SceneView = ({active, dataDeps, name, children}: SceneViewProps) => {
     const {state} = useNavigationEvent();
     const show = active != null && state && (
         typeof active === 'string'
@@ -12,7 +12,7 @@ const SceneView = ({active, name, children}: SceneViewProps) => {
         : false
     );
     return (
-        <SceneRSCView active={active} name={name}> 
+        <SceneRSCView active={active} dataDeps={dataDeps} name={name}> 
             {show ? children : null}
         </SceneRSCView>
     );

@@ -1,11 +1,11 @@
 'use client'
-import { use, useContext } from "react";
+import { use, useContext, useLayoutEffect, useRef } from "react";
 import useNavigationEvent from "./useNavigationEvent";
 import BundlerContext from "./BundlerContext";
 
 const rscCache = new Map();
 
-const SceneRSCView = ({active, name, children}) => {
+const SceneRSCView = ({active, name, dataDeps, children}) => {
     const {state, stateNavigator: {stateContext}} = useNavigationEvent();
     const createFromFetch = useContext(BundlerContext);
     const sceneView = name || active;
@@ -16,10 +16,23 @@ const SceneRSCView = ({active, name, children}) => {
         ? active.indexOf(state.key) !== -1
         : false
     );
+    const navigationDataChanged = () => {
+        if (stateContext.state !== stateContext.oldState || dataDeps == null) return true;
+        for(let i = 0; i < dataDeps.length; i++) {
+            if (stateContext.data[dataDeps[i]] !== stateContext.oldData[dataDeps[i]])
+                return true;
+        }
+        return false;
+    }
     const {url, oldUrl} = stateContext;
     if (!rscCache.get(stateContext)) rscCache.set(stateContext, {});
     const cachedSceneViews = rscCache.get(stateContext);
-    if (!cachedSceneViews[sceneView] && oldUrl && show) {
+    const sceneViewCurrent = useRef();
+    useLayoutEffect(() => {
+        if (cachedSceneViews[sceneView])
+            sceneViewCurrent.current = cachedSceneViews[sceneView]
+    }, [cachedSceneViews[sceneView]])
+    if (!cachedSceneViews[sceneView] && oldUrl && show && navigationDataChanged()) {
         const res = fetch(url, {
             method: 'post',
             headers: {
@@ -33,8 +46,9 @@ const SceneRSCView = ({active, name, children}) => {
         });
         cachedSceneViews[sceneView] = createFromFetch(res);
     }
+    const cachedSceneView = cachedSceneViews[sceneView] || sceneViewCurrent.current;
     if (!show) return null;
-    else return !oldUrl ? children : use(cachedSceneViews[sceneView]);
+    else return !oldUrl || !cachedSceneView ? children : use(cachedSceneView);
 };
 
 export default SceneRSCView;

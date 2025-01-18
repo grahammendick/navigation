@@ -1,7 +1,7 @@
 'use server-entry'
 
 import { getPerson } from './data';
-import { SceneView, NavigationBackLink, useNavigationEvent } from 'navigation-react';
+import { SceneView, NavigationBackLink, useNavigationEvent, RefreshLink } from 'navigation-react';
 import Friends from "./Friends";
 
 const Person = async () => {
@@ -12,6 +12,7 @@ const Person = async () => {
       <h1>Person</h1>
       <div>
         <NavigationBackLink distance={1}>Person Search</NavigationBackLink>
+        <RefreshLink navigationData={{id: 1}} includeCurrentData>Test</RefreshLink>
         <div>
           <h2>{name}</h2>
           <div>Date of Birth</div>
@@ -20,9 +21,6 @@ const Person = async () => {
           <div>{email}</div>
           <div>Phone</div>
           <div>{phone}</div>
-          <SceneView active="person" name="friends">
-            <Friends />
-          </SceneView>
         </div>
       </div>
     </>
