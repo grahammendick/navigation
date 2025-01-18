@@ -10,7 +10,7 @@ const SceneRSCView = ({active, name, dataDeps, children}) => {
     const {state, oldState, data, stateNavigator: {stateContext}} = useNavigationEvent();
     const createFromFetch = useContext(BundlerContext);
     const {url, oldUrl, oldData} = stateContext;
-    const ancestorFetching = useContext(RSCContext);
+    const ancestorFetching = useContext(RSCContext)();
     const dataChanged = useCallback(() => {
         if (state !== oldState || !dataDeps) return true;
         for(let i = 0; i < dataDeps.length; i++) {
@@ -20,7 +20,7 @@ const SceneRSCView = ({active, name, dataDeps, children}) => {
         return false;
     }, [stateContext, dataDeps]);
     const fetching = useCallback(() => (
-        ancestorFetching() || dataChanged()
+        ancestorFetching || dataChanged()
     ), [ancestorFetching, dataChanged]);
     const sceneViewKey = name || active;
     const show = active != 'null' && state && (
@@ -36,9 +36,9 @@ const SceneRSCView = ({active, name, dataDeps, children}) => {
     let fetchedSceneView = cachedSceneViews[sceneViewKey];
     useLayoutEffect(() => {
         if (fetchedSceneView) renderedSceneView.current = fetchedSceneView;
-        if (ancestorFetching()) renderedSceneView.current = null;
-    }, [fetchedSceneView, ancestorFetching()])
-    if (!fetchedSceneView && oldUrl && show && !ancestorFetching() && dataChanged()) {
+        if (ancestorFetching) renderedSceneView.current = null;
+    }, [fetchedSceneView, ancestorFetching])
+    if (!fetchedSceneView && oldUrl && show && !ancestorFetching && dataChanged()) {
         const res = fetch(url, {
             method: 'post',
             headers: {
@@ -53,7 +53,7 @@ const SceneRSCView = ({active, name, dataDeps, children}) => {
         cachedSceneViews[sceneViewKey] = createFromFetch(res);
         fetchedSceneView = cachedSceneViews[sceneViewKey];
     }
-    const sceneView = !ancestorFetching() ? fetchedSceneView || renderedSceneView.current : null;
+    const sceneView = !ancestorFetching ? fetchedSceneView || renderedSceneView.current : null;
     return (
         <RSCContext.Provider value={fetching}>
             {!show ? null : !sceneView ? children : use(sceneView)}
