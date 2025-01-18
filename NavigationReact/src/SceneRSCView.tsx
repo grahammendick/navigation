@@ -1,27 +1,15 @@
 'use client'
-import { createContext, use, useCallback, useContext, useLayoutEffect, useRef } from "react";
+import { createContext, use, useContext, useLayoutEffect, useRef } from "react";
 import useNavigationEvent from "./useNavigationEvent";
 import BundlerContext from "./BundlerContext";
 
 const rscCache = new Map();
-const RSCContext = createContext<() => boolean>(() => false);
+const RSCContext = createContext(false);
 
 const SceneRSCView = ({active, name, dataDeps, children}) => {
     const {state, oldState, data, stateNavigator: {stateContext}} = useNavigationEvent();
     const createFromFetch = useContext(BundlerContext);
-    const {url, oldUrl, oldData} = stateContext;
-    const ancestorFetching = useContext(RSCContext)();
-    const dataChanged = useCallback(() => {
-        if (state !== oldState || !dataDeps) return true;
-        for(let i = 0; i < dataDeps.length; i++) {
-            if (data[dataDeps[i]] !== oldData[dataDeps[i]])
-                return true;
-        }
-        return false;
-    }, [stateContext, dataDeps]);
-    const fetching = useCallback(() => (
-        ancestorFetching || dataChanged()
-    ), [ancestorFetching, dataChanged]);
+    const ancestorFetching = useContext(RSCContext);
     const sceneViewKey = name || active;
     const show = active != 'null' && state && (
         typeof active === 'string'
@@ -38,6 +26,15 @@ const SceneRSCView = ({active, name, dataDeps, children}) => {
         if (fetchedSceneView) renderedSceneView.current = fetchedSceneView;
         if (ancestorFetching) renderedSceneView.current = null;
     }, [fetchedSceneView, ancestorFetching])
+    const {url, oldUrl, oldData} = stateContext;
+    const dataChanged = () => {
+        if (state !== oldState || !dataDeps) return true;
+        for(let i = 0; i < dataDeps.length; i++) {
+            if (data[dataDeps[i]] !== oldData[dataDeps[i]])
+                return true;
+        }
+        return false;
+    };
     if (!fetchedSceneView && oldUrl && show && !ancestorFetching && dataChanged()) {
         const res = fetch(url, {
             method: 'post',
@@ -53,10 +50,11 @@ const SceneRSCView = ({active, name, dataDeps, children}) => {
         cachedSceneViews[sceneViewKey] = createFromFetch(res);
         fetchedSceneView = cachedSceneViews[sceneViewKey];
     }
+    if (!show) return null;
     const sceneView = !ancestorFetching ? fetchedSceneView || renderedSceneView.current : null;
     return (
-        <RSCContext.Provider value={fetching}>
-            {!show ? null : !sceneView ? children : use(sceneView)}
+        <RSCContext.Provider value={ancestorFetching || dataChanged()}>
+            {!sceneView ? children : use(sceneView)}
         </RSCContext.Provider>
     );
 };
