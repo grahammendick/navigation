@@ -63,6 +63,7 @@ function buildTask(name, input, file, globals, details) {
 var cleanPackage = () => {
     return del([
         './build/npm/navigation-react/*.js',
+        './build/npm/navigation-react/cjs/*.js',
         './build/npm/navigation-react-native/android',
         './build/npm/navigation-react-native/ios',
         './build/npm/navigation-react-native/cpp',
@@ -111,7 +112,7 @@ var itemTasks = items.reduce((tasks, item) => {
                 src(include)
                     .pipe(ts.createProject(tsconfig, {module: 'nodenext'})())
                     .pipe(dest(`./build/npm/${packageName}`))
-            ), 'package' + name)
+            ), 'packageEsm' + name)
         );
         tasks.packageTasks.push(
             nameFunc(() => (
@@ -170,4 +171,4 @@ var packageDeps = parallel(
 );
 exports.build = parallel(...itemTasks.buildTasks);
 exports.package = series(cleanPackage, parallel(packageNative, ...itemTasks.packageTasks));
-exports.test = series(packageDeps, parallel(...testTasks));
+exports.test = series(cleanPackage, packageDeps, parallel(...testTasks));
