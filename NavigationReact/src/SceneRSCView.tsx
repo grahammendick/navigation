@@ -1,24 +1,22 @@
 'use client'
 import { createContext, use, useContext, useLayoutEffect, useRef } from "react";
+import { SceneViewProps } from './Props';
 import useNavigationEvent from "./useNavigationEvent";
 import BundlerContext from "./BundlerContext";
 
 const rscCache = new Map();
 const RSCContext = createContext(false);
 
-const SceneRSCView = ({active, name, dataDeps, children}) => {
+const SceneRSCView = ({active, name, dataDeps, children}: SceneViewProps & {active: string | string[]}) => {
     const {state, oldState, data, stateNavigator: {stateContext}} = useNavigationEvent();
     const createFromFetch = useContext(BundlerContext);
     const ancestorFetching = useContext(RSCContext);
-    const sceneViewKey = name || active;
-    const getShow = (stateKey: string) => {
-        if (active == null || !stateKey) return false;
-        return typeof active === 'string'
-            ? stateKey === active
-            : typeof active !== 'function'
-            ? active.indexOf(stateKey) !== -1
-            : false;
-    }
+    const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
+    const getShow = (stateKey: string) => (
+        active != null && state && (
+            typeof active === 'string' ? stateKey === active : active.indexOf(stateKey) !== -1
+        )
+    );
     const show = getShow(state?.key);
     if (!rscCache.get(stateContext)) rscCache.set(stateContext, {});
     const cachedSceneViews = rscCache.get(stateContext);
