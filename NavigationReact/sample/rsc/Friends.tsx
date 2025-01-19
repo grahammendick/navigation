@@ -1,12 +1,22 @@
 'use server-entry'
 
+import { Suspense } from 'react';
 import { getFriends } from './data';
 import { RefreshLink, useNavigationEvent } from 'navigation-react';
 
 const Friends = async () => {
-  const {data: {id, show}} = useNavigationEvent();
+  const {data: {show}} = useNavigationEvent();
   if (!show)
     return <RefreshLink navigationData={{show: true}} includeCurrentData>Show Friends</RefreshLink>
+  return (
+    <Suspense fallback={<><RefreshLink navigationData={{show: true}} includeCurrentData>Show Friends</RefreshLink><h2>Loading...</h2></>}>
+      <List />
+    </Suspense>
+  );
+}
+
+const List = async () => {
+  const {data: {id}} = useNavigationEvent();
   const friends = await getFriends(id);
   return (
     <>
