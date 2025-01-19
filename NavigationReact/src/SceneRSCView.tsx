@@ -11,13 +11,15 @@ const SceneRSCView = ({active, name, dataDeps, children}) => {
     const createFromFetch = useContext(BundlerContext);
     const ancestorFetching = useContext(RSCContext);
     const sceneViewKey = name || active;
-    const show = active != 'null' && state && (
-        typeof active === 'string'
-        ? state.key === active
-        : typeof active !== 'function'
-        ? active.indexOf(state.key) !== -1
-        : false
-    );
+    const getShow = (stateKey: string) => {
+        if (active == null || !stateKey) return false;
+        return typeof active === 'string'
+            ? stateKey === active
+            : typeof active !== 'function'
+            ? active.indexOf(stateKey) !== -1
+            : false;
+    }
+    const show = getShow(state?.key);
     if (!rscCache.get(stateContext)) rscCache.set(stateContext, {});
     const cachedSceneViews = rscCache.get(stateContext);
     const renderedSceneView = useRef(undefined);
@@ -28,7 +30,7 @@ const SceneRSCView = ({active, name, dataDeps, children}) => {
     }, [fetchedSceneView, ancestorFetching])
     const {url, oldUrl, oldData} = stateContext;
     const dataChanged = () => {
-        if (state !== oldState || !dataDeps) return true;
+        if (!getShow(oldState?.key) || !dataDeps) return true;
         for(let i = 0; i < dataDeps.length; i++) {
             if (data[dataDeps[i]] !== oldData[dataDeps[i]])
                 return true;
