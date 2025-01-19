@@ -1,5 +1,5 @@
-import NavigationContext from "./NavigationContext.server";
+import { getCache } from "./NavigationHandler.server";
 
-const useNavigationEvent = () => NavigationContext.getCache().navigationEvent;
+const useNavigationEvent = () => getCache().navigationEvent;
 
 export default useNavigationEvent;

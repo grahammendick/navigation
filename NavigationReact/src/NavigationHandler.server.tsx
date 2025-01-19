@@ -1,13 +1,12 @@
+import { cache } from 'react';
 import { StateNavigator } from 'navigation';
-import NavigationContext from './NavigationContext.server';
+
+export const getCache = cache(() => ({navigationEvent: null}));
 
 const NavigationHandler = ({ stateNavigator, children }: { stateNavigator: StateNavigator, children: any }) => {
     const { oldState, state, data, asyncData } = stateNavigator.stateContext;
     const navigationEvent = { oldState, state, data, asyncData, stateNavigator: navigator };
-      return (
-        <NavigationContext.Provider value={navigationEvent}>
-            {children}
-        </NavigationContext.Provider>
-    );
+    getCache().navigationEvent = navigationEvent;
+    return children;
 };
 export default NavigationHandler;
