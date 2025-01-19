@@ -5,8 +5,7 @@ export const getCache = cache(() => ({navigationEvent: null}));
 
 const NavigationHandler = ({ stateNavigator, children }: { stateNavigator: StateNavigator, children: any }) => {
     const { oldState, state, data, asyncData } = stateNavigator.stateContext;
-    const navigationEvent = { oldState, state, data, asyncData, stateNavigator: navigator };
-    getCache().navigationEvent = navigationEvent;
+    getCache().navigationEvent = { oldState, state, data, asyncData, stateNavigator: navigator };
     return children;
 };
 export default NavigationHandler;
