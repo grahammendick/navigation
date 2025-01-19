@@ -12,7 +12,9 @@ const Friends = async () => {
     <>
       <RefreshLink navigationData={{show: false}} includeCurrentData>Hide Friends</RefreshLink>
       <ul>
-        {friends.map(({name}) => <li>{name}</li>)}
+        {friends.map(({id, name}) => (
+          <li><RefreshLink navigationData={{id}} includeCurrentData>{name}</RefreshLink></li>
+        ))}
       </ul>
     </>
   );
