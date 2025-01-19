@@ -19,8 +19,8 @@ const Friends = async () => {
 }
 
 const List = async () => {
-  const {data: {id}} = useNavigationEvent();
-  const friends = await getFriends(id);
+  const {data} = useNavigationEvent();
+  const friends = await getFriends(data.id);
   return (
     <ul>
       {friends.map(({id, name}) => (
