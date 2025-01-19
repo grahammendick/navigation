@@ -33,6 +33,11 @@ export interface NavigationEvent<NavigationInfo extends { [index: string]: any }
 export var NavigationContext: Context<NavigationEvent<any, any>> & Context<NavigationEvent<any, string>>;
 
 /**
+ * 
+ */
+export function useNavigationEvent<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string>() : NavigationEvent<NavigationInfo, Key>;
+
+/**
  * Defines the Navigation Handler Props contract
  */
 export interface NavigationHandlerProps {
@@ -40,6 +45,10 @@ export interface NavigationHandlerProps {
      * The state navigator that triggers navigation events
      */
     stateNavigator: StateNavigator;
+    /**
+     * 
+     */
+    createFromFetch?: (res: Promise<Response>) => Promise<any>;
     /**
      * The rendered content
      */
@@ -166,6 +175,14 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
      */
     active: (keyof NavigationInfo & string) | (keyof NavigationInfo & string)[] | ((stateContext: StateContext) => boolean);
     /**
+     * 
+     */
+    name?: string;
+    /**
+     * 
+     */
+    dataKeyDeps?: string[];
+    /**
      * The view
      */
     children: ReactNode;
@@ -175,6 +192,3 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
  * View that shows when the State is active
  */
 export class SceneView<NavigationInfo extends { [index: string]: any } = any> extends Component<SceneViewProps<NavigationInfo>> {}
-
-// needs generics so can type!!
-export var useNavigationEvent: () => NavigationEvent<any, string>;

@@ -20,7 +20,7 @@ const App = async ({url}: any) => {
           <SceneView active="people">
             <People />
           </SceneView>
-          <SceneView active="person" dataDeps={['id']}>
+          <SceneView active="person" dataKeyDeps={['id']}>
             <Person />
           </SceneView>
         </RootProvider>

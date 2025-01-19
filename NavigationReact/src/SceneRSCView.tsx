@@ -7,7 +7,7 @@ import BundlerContext from "./BundlerContext";
 const rscCache = new Map();
 const RSCContext = createContext(false);
 
-const SceneRSCView = ({active, name, dataDeps, children}: SceneViewProps & {active: string | string[]}) => {
+const SceneRSCView = ({active, name, dataKeyDeps, children}: SceneViewProps & {active: string | string[]}) => {
     const {state, oldState, data, stateNavigator: {stateContext}} = useNavigationEvent();
     const createFromFetch = useContext(BundlerContext);
     const ancestorFetching = useContext(RSCContext);
@@ -28,9 +28,9 @@ const SceneRSCView = ({active, name, dataDeps, children}: SceneViewProps & {acti
     }, [fetchedSceneView, ancestorFetching])
     const {url, oldUrl, oldData} = stateContext;
     const dataChanged = () => {
-        if (!getShow(oldState?.key) || !dataDeps) return true;
-        for(let i = 0; i < dataDeps.length; i++) {
-            if (data[dataDeps[i]] !== oldData[dataDeps[i]])
+        if (!getShow(oldState?.key) || !dataKeyDeps) return true;
+        for(let i = 0; i < dataKeyDeps.length; i++) {
+            if (data[dataKeyDeps[i]] !== oldData[dataKeyDeps[i]])
                 return true;
         }
         return false;
