@@ -12,7 +12,7 @@ import {renderToReadableStream as renderHTMLToReadableStream} from 'react-dom/se
 import ReactClient, {ReactElement} from 'react' with {env: 'react-client'};
 
 import { StateNavigator } from 'navigation';
-import { NavigationContext } from 'navigation-react';
+import { NavigationHandler } from 'navigation-react';
 import stateNavigator from './stateNavigator';
 
 // Page components. These must have "use server-entry" so they are treated as code splitting entry points.
@@ -47,12 +47,10 @@ app.get('/favicon.ico', function(req, res) {
 app.get('*', async (req, res) => {
   const navigator = new StateNavigator(stateNavigator);
   navigator.navigateLink(req.url);
-  const {oldState, state, data, asyncData} = navigator.stateContext;
-  const navigationEvent = {oldState, state, data, asyncData, stateNavigator: navigator};
   await render(req, res, (
-    <NavigationContext.Provider value={navigationEvent}>
+    <NavigationHandler stateNavigator={navigator}>
       <App url={req.url} />
-    </NavigationContext.Provider>
+    </NavigationHandler>
   ));
 });
 
@@ -61,12 +59,10 @@ app.post('*', async (req, res) => {
   const navigator = new StateNavigator(stateNavigator);
   navigator.navigateLink(req.body.oldUrl);
   navigator.navigateLink(req.url);
-  const {oldState, state, data, asyncData} = navigator.stateContext;
-  const navigationEvent = {oldState, state, data, asyncData, stateNavigator: navigator};
   await render(req, res, (
-    <NavigationContext.Provider value={navigationEvent}>
+    <NavigationHandler stateNavigator={navigator}>
       <View />
-    </NavigationContext.Provider>
+    </NavigationHandler>
   ));
 });
 

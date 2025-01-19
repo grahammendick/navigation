@@ -1,6 +1,6 @@
 ﻿import AsyncStateNavigator from './AsyncStateNavigator';
 import NavigationContext from './NavigationContext.server';
-import NavigationHandler from './NavigationHandler';
+import NavigationHandler from './NavigationHandler.server';
 import NavigationBackLink from './NavigationBackLink';
 import NavigationLink from './NavigationLink';
 import RefreshLink from './RefreshLink';
