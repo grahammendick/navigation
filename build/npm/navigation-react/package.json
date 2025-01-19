@@ -10,7 +10,16 @@
   },
   "exports": {
     ".": {
-      "require": "./cjs/NavigationReact.js",
+      "require": {
+        "react-server": {
+          "browser": "./cjs/NavigationReact.server.js",
+          "node": "./cjs/NavigationReact.server.js"
+        },
+        "default": {
+          "browser": "./cjs/NavigationReact.js",
+          "node": "./cjs/NavigationReact.js"
+        }
+      },
       "import": {
         "react-server": {
           "browser": "./NavigationReact.server.js",
