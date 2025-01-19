@@ -113,6 +113,13 @@ var itemTasks = items.reduce((tasks, item) => {
                     .pipe(dest(`./build/npm/${packageName}`))
             ), 'package' + name)
         );
+        tasks.packageTasks.push(
+            nameFunc(() => (
+                src(include)
+                    .pipe(ts.createProject(tsconfig)())
+                    .pipe(dest(`./build/npm/${packageName}/cjs`))
+            ), 'package' + name)
+        );
     }
     return tasks;
 }, { buildTasks: [], packageTasks: [] });

@@ -2,7 +2,7 @@
   "name": "navigation-react",
   "version": "4.5.1",
   "description": "React plugin for the Navigation router",
-  "main": "NavigationReact.js",
+  "main": "cjs/NavigationReact.js",
   "types": "navigation.react.d.ts",
   "repository": {
     "type": "git",
@@ -10,13 +10,16 @@
   },
   "exports": {
     ".": {
-      "react-server": {
-        "browser": "./NavigationReact.server.js",
-        "node": "./NavigationReact.server.js"
-      },
-      "default": {
-        "browser": "./NavigationReact.js",
-        "node": "./NavigationReact.js"
+      "require": "./cjs/NavigationReact.js",
+      "import": {
+        "react-server": {
+          "browser": "./NavigationReact.server.js",
+          "node": "./NavigationReact.server.js"
+        },
+        "default": {
+          "browser": "./NavigationReact.js",
+          "node": "./NavigationReact.js"
+        }
       }
     }
   },
