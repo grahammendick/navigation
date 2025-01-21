@@ -1,6 +1,6 @@
 'use client'
 import { useMemo } from "react";
-import { createFromFetch } from "react-server-dom-parcel/client";
+import {fetchRSC} from '@parcel/rsc/client';
 import { StateNavigator, HTML5HistoryManager } from 'navigation';
 import { NavigationHandler } from "navigation-react";
 import stateNavigator from "./stateNavigator";
@@ -12,7 +12,7 @@ const NavigationProvider = ({url, children}: any) => {
     return navigator;
   }, []);
   return (
-    <NavigationHandler stateNavigator={navigator} createFromFetch={createFromFetch}>
+    <NavigationHandler stateNavigator={navigator} createFromFetch={fetchRSC}>
       {children}
     </NavigationHandler>
   )

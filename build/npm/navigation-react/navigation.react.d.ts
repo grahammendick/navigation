@@ -48,7 +48,7 @@ export interface NavigationHandlerProps {
     /**
      * 
      */
-    createFromFetch?: (res: Promise<Response>) => Promise<any>;
+    createFromFetch?: any;
     /**
      * The rendered content
      */

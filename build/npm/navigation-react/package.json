@@ -12,20 +12,24 @@
     ".": {
       "require": {
         "react-server": {
+          "types": "./navigation.react.d.ts",
           "browser": "./cjs/NavigationReact.server.js",
           "node": "./cjs/NavigationReact.server.js"
         },
         "default": {
+          "types": "./navigation.react.d.ts",
           "browser": "./cjs/NavigationReact.js",
           "node": "./cjs/NavigationReact.js"
         }
       },
       "import": {
         "react-server": {
+          "types": "./navigation.react.d.ts",
           "browser": "./NavigationReact.server.js",
           "node": "./NavigationReact.server.js"
         },
         "default": {
+          "types": "./navigation.react.d.ts",
           "browser": "./NavigationReact.js",
           "node": "./NavigationReact.js"
         }

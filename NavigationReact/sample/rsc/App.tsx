@@ -2,7 +2,6 @@
 
 import "./client";
 import React from "react";
-import { Resources } from "@parcel/runtime-rsc";
 import { SceneView } from "navigation-react";
 import RootProvider from "./RootProvider";
 const People = React.lazy(() => import("./People"));
@@ -13,7 +12,6 @@ const App = async ({url}: any) => {
     <html>
       <head>
         <title>RSC Example</title>
-        <Resources />
       </head>
       <body>
         <RootProvider url={url}>

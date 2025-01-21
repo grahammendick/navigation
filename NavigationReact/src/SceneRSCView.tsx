@@ -36,7 +36,7 @@ const SceneRSCView = ({active, name, dataKeyDeps, children}: SceneViewProps & {a
         return false;
     };
     if (!fetchedSceneView && oldUrl && show && !ancestorFetching && dataChanged()) {
-        const res = fetch(url, {
+        cachedSceneViews[sceneViewKey] = createFromFetch(url, {
             method: 'post',
             headers: {
                 Accept: 'text/x-component',
@@ -47,7 +47,6 @@ const SceneRSCView = ({active, name, dataKeyDeps, children}: SceneViewProps & {a
                 sceneView: sceneViewKey,
             })
         });
-        cachedSceneViews[sceneViewKey] = createFromFetch(res);
         fetchedSceneView = cachedSceneViews[sceneViewKey];
     }
     if (!show) return null;
