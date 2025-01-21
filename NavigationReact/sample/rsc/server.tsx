@@ -50,5 +50,5 @@ app.post('*', async (req, res) => {
   stream.pipe(res);
 });
 
-let server = app.listen(3001);
+app.listen(3001);
 console.log('Server listening on port 3001');
