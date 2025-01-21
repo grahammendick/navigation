@@ -13,12 +13,6 @@ const app = express();
 app.use(express.static('dist'));
 app.use(express.json());
 
-const sceneViews: any = {
-  people: People,
-  person: Person,
-  friends: Friends
-};
-
 app.get('/favicon.ico', function (req, res) {
   res.statusCode = 404;
   res.end();
@@ -35,6 +29,11 @@ app.get('*', async (req, res) => {
 });
 
 app.post('*', async (req, res) => {
+  const sceneViews: any = {
+    people: People,
+    person: Person,
+    friends: Friends
+  };
   const View = sceneViews[req.body.sceneViewKey];
   const navigator = new StateNavigator(stateNavigator);
   navigator.navigateLink(req.body.oldUrl);
