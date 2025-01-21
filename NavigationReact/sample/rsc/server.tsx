@@ -35,7 +35,7 @@ app.get('*', async (req, res) => {
 });
 
 app.post('*', async (req, res) => {
-  const View = sceneViews[req.body.sceneView];
+  const View = sceneViews[req.body.sceneViewKey];
   const navigator = new StateNavigator(stateNavigator);
   navigator.navigateLink(req.body.oldUrl);
   navigator.navigateLink(req.url);
