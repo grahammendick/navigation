@@ -1,5 +1,4 @@
 'use server-entry'
-
 import { Suspense } from 'react';
 import { RefreshLink, useNavigationEvent } from 'navigation-react';
 import { getFriends } from './data';

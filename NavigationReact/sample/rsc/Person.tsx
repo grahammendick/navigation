@@ -1,5 +1,4 @@
 'use server-entry'
-
 import { getPerson } from './data';
 import { SceneView, NavigationBackLink, useNavigationEvent } from 'navigation-react';
 import Friends from "./Friends";

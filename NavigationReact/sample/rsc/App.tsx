@@ -1,5 +1,4 @@
-"use server-entry";
-
+'use server-entry';
 import "./client";
 import React from "react";
 import { SceneView } from "navigation-react";
