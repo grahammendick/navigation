@@ -1,10 +1,8 @@
 import express from 'express';
 import { renderRequest, renderRSC } from '@parcel/rsc/node';
-
 import { StateNavigator } from 'navigation';
 import { NavigationHandler } from 'navigation-react';
 import stateNavigator from './stateNavigator';
-
 import App from './App';
 import Person from './Person';
 import People from './People';
