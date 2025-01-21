@@ -12,13 +12,6 @@ import Friends from './Friends';
 
 const app = express();
 
-app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,POST');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'rsc-action');
-  next();
-});
-
 app.use(express.static('dist'));
 app.use(express.json());
 
