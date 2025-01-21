@@ -42,10 +42,10 @@ const SceneRSCView = ({active, name, dataKeyDeps, children}: SceneViewProps & {a
                 Accept: 'text/x-component',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
+            body: {
                 oldUrl,
                 sceneView: sceneViewKey,
-            })
+            }
         });
         fetchedSceneView = cachedSceneViews[sceneViewKey];
     }
