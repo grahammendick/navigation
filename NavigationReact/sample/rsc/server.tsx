@@ -40,7 +40,7 @@ app.get('*', async (req, res) => {
     <NavigationHandler stateNavigator={navigator}>
       <App url={req.url} />
     </NavigationHandler>
-  ));
+  ), {component: App});
 });
 
 app.post('*', async (req, res) => {
