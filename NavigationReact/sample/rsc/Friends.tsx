@@ -27,7 +27,7 @@ const List = async () => {
       <Gender />
       <ul>
         {friends.map(({ id, name }) => (
-          <li><RefreshLink navigationData={{ id }} includeCurrentData>{name}</RefreshLink></li>
+          <li key={id}><RefreshLink navigationData={{ id }} includeCurrentData>{name}</RefreshLink></li>
         ))}
       </ul>
     </>
