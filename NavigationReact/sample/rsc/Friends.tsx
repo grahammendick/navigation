@@ -1,14 +1,15 @@
 'use server-entry'
 
 import { Suspense } from 'react';
-import { getFriends } from './data';
 import { RefreshLink, useNavigationEvent } from 'navigation-react';
+import { getFriends } from './data';
+import Gender from './Gender';
 
 const Friends = async () => {
-  const {data: {show}} = useNavigationEvent();
+  const { data: { show } } = useNavigationEvent();
   return (
     <>
-      <RefreshLink navigationData={{show: !show}} includeCurrentData>{`${!show ? 'Show' : 'Hide'} Friends`}</RefreshLink>
+      <RefreshLink navigationData={{ show: !show }} includeCurrentData>{`${!show ? 'Show' : 'Hide'} Friends`}</RefreshLink>
       {show && (
         <Suspense fallback={<h2>Loading...</h2>}>
           <List />
@@ -19,14 +20,17 @@ const Friends = async () => {
 }
 
 const List = async () => {
-  const {data} = useNavigationEvent();
-  const friends = await getFriends(data.id);
+  const { data: { id, gender } } = useNavigationEvent();
+  const friends = await getFriends(id, gender);
   return (
-    <ul>
-      {friends.map(({id, name}) => (
-        <li><RefreshLink navigationData={{id}} includeCurrentData>{name}</RefreshLink></li>
-      ))}
-    </ul>
+    <>
+      <Gender />
+      <ul>
+        {friends.map(({ id, name }) => (
+          <li><RefreshLink navigationData={{ id }} includeCurrentData>{name}</RefreshLink></li>
+        ))}
+      </ul>
+    </>
   );
 }
 

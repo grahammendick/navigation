@@ -10,7 +10,7 @@ const Filter = () => {
         <div>
             <div>
                 <label htmlFor="name">Name</label>
-                <input id="name" value={optimisticName || ''} onChange={({target: {value}}) => {
+                <input id="name" value={optimisticName} onChange={({target: {value}}) => {
                     setOptimisticName(value);
                     stateNavigator.refresh({...data, name: value, page: null});
                 }} />
