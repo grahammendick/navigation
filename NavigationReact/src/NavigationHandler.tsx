@@ -6,7 +6,7 @@ import BundlerContext from './BundlerContext';
 import { StateNavigator, State } from 'navigation';
 type NavigationHandlerState = { context: { oldState: State, state: State, data: any, asyncData: any, stateNavigator: AsyncStateNavigator } };
 
-class NavigationHandler extends Component<{ stateNavigator: StateNavigator, createFromFetch: any, children: any }, NavigationHandlerState> {
+class NavigationHandler extends Component<{ stateNavigator: StateNavigator, fetchRSC: any, children: any }, NavigationHandlerState> {
     constructor(props) {
         super(props);
         var { stateNavigator } = this.props;
@@ -38,7 +38,7 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, crea
     render() {
         return (
             <NavigationContext.Provider value={this.state.context}>
-                <BundlerContext.Provider value={this.props.createFromFetch}>
+                <BundlerContext.Provider value={this.props.fetchRSC}>
                     {this.props.children}
                 </BundlerContext.Provider>
             </NavigationContext.Provider>

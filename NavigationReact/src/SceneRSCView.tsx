@@ -9,7 +9,7 @@ const RSCContext = createContext(false);
 
 const SceneRSCView = ({active, name, dataKeyDeps, children}: SceneViewProps & {active: string | string[]}) => {
     const {state, oldState, data, stateNavigator: {stateContext}} = useNavigationEvent();
-    const createFromFetch = useContext(BundlerContext);
+    const fetchRSC = useContext(BundlerContext);
     const ancestorFetching = useContext(RSCContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
     const getShow = (stateKey: string) => (
@@ -36,7 +36,7 @@ const SceneRSCView = ({active, name, dataKeyDeps, children}: SceneViewProps & {a
         return false;
     };
     if (!fetchedSceneView && oldUrl && show && !ancestorFetching && dataChanged()) {
-        cachedSceneViews[sceneViewKey] = createFromFetch(url, {
+        cachedSceneViews[sceneViewKey] = fetchRSC(url, {
             method: 'post',
             headers: {
                 Accept: 'text/x-component',

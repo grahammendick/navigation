@@ -48,7 +48,7 @@ export interface NavigationHandlerProps {
     /**
      * 
      */
-    createFromFetch?: any;
+    fetchRSC?: any;
     /**
      * The rendered content
      */
