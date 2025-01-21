@@ -4,16 +4,16 @@ import { useNavigationEvent } from 'navigation-react';
 import { useOptimistic } from 'react';
 
 const Gender = () => {
-    const { data, stateNavigator } = useNavigationEvent();
-    const { gender } = data;
+    const {data, stateNavigator} = useNavigationEvent();
+    const {gender} = data;
     const [optimisticGender, setOptimisticGender] = useOptimistic(gender || '', (_, newGender) => newGender);
     return (
         <div>
             <label htmlFor="gender">Gender</label>
-            <select id="gender" value={optimisticGender} onChange={({ target: { value } }) => {
+            <select id="gender" value={optimisticGender} onChange={({target: {value}}) => {
                 startTransition(() => {
                     setOptimisticGender(value);
-                    stateNavigator.refresh({ ...data, gender: value });
+                    stateNavigator.refresh({...data, gender: value});
                 });
             }}>
                 <option value=""></option>
