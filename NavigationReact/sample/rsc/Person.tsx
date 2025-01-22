@@ -20,7 +20,7 @@ const Person = async () => {
           <div>Phone</div>
           <div>{phone}</div>
         </div>
-        <SceneView active="person" name="friends" dataKeyDeps={['id', 'show', 'gender']}>
+        <SceneView active="person" name="friends">
           <Friends />
         </SceneView>
       </div>
