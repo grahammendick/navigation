@@ -10,7 +10,7 @@ const App = async ({url}: any) => {
   return (
     <html>
       <head>
-        <title>RSC Example</title>
+        <title>Navigation React</title>
       </head>
       <body>
         <RootProvider url={url}>
