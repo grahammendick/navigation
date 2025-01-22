@@ -1,26 +1,15 @@
 'use server-entry'
-import { Suspense } from 'react';
 import { searchPeople } from './data';
 import { NavigationLink, RefreshLink, useNavigationEvent } from 'navigation-react';
 import Filter from './Filter';
 import Pager from './Pager';
 
 const People = async () => {
-  return (
-    <>
-      <h1>People</h1>
-      <Suspense fallback={<h2>Loading...</h2>}>
-        <Search />
-      </Suspense>
-    </>
-  );
-}
-
-const Search = async () => {
   const {data: {name, page, size, sort}} = useNavigationEvent();
   const {people, count} = await searchPeople(name, page, size, sort);
   return (
     <>
+      <h1>People</h1>
       <Filter />
       <table>
         <thead>
