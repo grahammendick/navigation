@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@testing-library/react-native": "^13.0.1",
     "navigation": "^6.2.0",
     "navigation-react": "^4.5.1",
     "navigation-react-native": "^9.28.0",
