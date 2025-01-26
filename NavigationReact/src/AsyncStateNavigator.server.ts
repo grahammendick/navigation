@@ -7,7 +7,7 @@ class AsyncStateNavigator extends StateNavigator {
     }
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'replace') {
-        throw Error(`__rscNavigationLink;${url};${historyAction}`);
+        throw Error(`navigateLink;${url};${historyAction}`);
     }
 }
 export default AsyncStateNavigator;

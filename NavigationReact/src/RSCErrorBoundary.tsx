@@ -27,7 +27,7 @@ class RSCErrorBoundary extends Component<{stateNavigator: StateNavigator, errorF
             if (typeof message === 'string') {
                 const parts = message.split(';');
                 const [name, url, historyAction] = parts;
-                if (name === '__rscNavigationLink') {
+                if (name === 'navigateLink') {
                     return <NavigationEffect url={url} historyAction={historyAction} />
                 }
             }
