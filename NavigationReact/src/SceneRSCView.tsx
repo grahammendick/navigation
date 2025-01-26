@@ -1,5 +1,5 @@
 'use client'
-import { createContext, use, useContext, useLayoutEffect, useRef, Component } from "react";
+import { createContext, use, useContext, useLayoutEffect, useRef, Component, useEffect } from "react";
 import { StateNavigator } from "navigation";
 import { SceneViewProps } from './Props';
 import useNavigationEvent from "./useNavigationEvent";
@@ -58,24 +58,43 @@ const SceneRSCView = ({active, name, dataKeyDeps, children}: SceneViewProps & {a
         </RSCNavigation>
     );
 };
+export default SceneRSCView;
 
-class RSCNavigationBoundary extends Component<{stateNavigator: StateNavigator, children: any}> {
-    constructor(props) {
-      super(props);
-    }
-  
-    componentDidCatch(error: Error) {
-        const {stateNavigator} = this.props;
-        stateNavigator.navigateLink(error.message);
-        // rethrow if not navigation link
-    }
-  
-    render() {
-        const {children} = this.props;
-        return children;
-    }
+const RSCNavigationEffect = ({url, historyAction}: {url: string, historyAction: string}) => {
+    const {stateNavigator} = useNavigationEvent();
+    useEffect(() => {
+        if (url) stateNavigator.navigateLink(url, historyAction as 'add' | 'replace' | 'none');
+    }, [url, historyAction])
+    return null;
 }
 
+class RSCNavigationBoundary extends Component<{stateNavigator: StateNavigator, children: any}, {error: Error}> {
+    constructor(props) {
+      super(props);
+      this.state = {error: null};
+    }
+    static getDerivedStateFromError(error) {
+        return {error};
+    }
+    render() {        
+        const {children} = this.props;
+        const {error} = this.state;
+        if (error) {
+            const {message} = this.state.error;
+            if (typeof message === 'string') {
+                const parts = message.split(';');
+                const [name, url, historyAction] = parts;
+                if (name === '__rscNavigationLink') {
+                    return <RSCNavigationEffect url={url} historyAction={historyAction} />
+                } else {
+                    throw error;
+                }
+            } else {
+                throw error;
+            }
+        }
+        return !error ? children : null;
+    }
+}
 const RSCNavigation = withStateNavigator(RSCNavigationBoundary);
 
-export default SceneRSCView;

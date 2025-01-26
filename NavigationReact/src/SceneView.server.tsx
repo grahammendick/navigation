@@ -13,5 +13,4 @@ const SceneView = ({active, dataKeyDeps, name, children}: SceneViewProps & {acti
         </SceneRSCView>
     );
 }
-
 export default SceneView;
