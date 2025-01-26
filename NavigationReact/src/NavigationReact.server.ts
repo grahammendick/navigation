@@ -1,5 +1,4 @@
-﻿import AsyncStateNavigator from './AsyncStateNavigator';
-import NavigationHandler from './NavigationHandler.server';
+﻿import NavigationHandler from './NavigationHandler.server';
 import NavigationBackLink from './NavigationBackLink';
 import NavigationLink from './NavigationLink';
 import RefreshLink from './RefreshLink';
@@ -8,4 +7,4 @@ import SceneView from './SceneView.server';
 import SceneRSCView from './SceneRSCView';
 import useNavigationEvent from './useNavigationEvent.server';
 
-export { AsyncStateNavigator, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, SceneRSCView, useNavigationEvent };
+export { NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, SceneRSCView, useNavigationEvent };
