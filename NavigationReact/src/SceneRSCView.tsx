@@ -1,8 +1,10 @@
 'use client'
-import { createContext, use, useContext, useLayoutEffect, useRef } from "react";
+import { createContext, use, useContext, useLayoutEffect, useRef, Component } from "react";
+import { StateNavigator } from "navigation";
 import { SceneViewProps } from './Props';
 import useNavigationEvent from "./useNavigationEvent";
 import BundlerContext from "./BundlerContext";
+import withStateNavigator from "./withStateNavigator";
 
 const rscCache = new Map();
 const RSCContext = createContext(false);
@@ -49,10 +51,31 @@ const SceneRSCView = ({active, name, dataKeyDeps, children}: SceneViewProps & {a
     if (!show) return null;
     const sceneView = !ancestorFetching ? fetchedSceneView || renderedSceneView.current : null;
     return (
-        <RSCContext.Provider value={ancestorFetching || dataChanged()}>
-            {!sceneView ? children : use(sceneView)}
-        </RSCContext.Provider>
+        <RSCNavigation>
+            <RSCContext.Provider value={ancestorFetching || dataChanged()}>
+                {!sceneView ? children : use(sceneView)}
+            </RSCContext.Provider>
+        </RSCNavigation>
     );
 };
+
+class RSCNavigationBoundary extends Component<{stateNavigator: StateNavigator, children: any}> {
+    constructor(props) {
+      super(props);
+    }
+  
+    componentDidCatch(error: Error) {
+        const {stateNavigator} = this.props;
+        stateNavigator.navigateLink(error.message);
+        // rethrow if not navigation link
+    }
+  
+    render() {
+        const {children} = this.props;
+        return children;
+    }
+}
+
+const RSCNavigation = withStateNavigator(RSCNavigationBoundary);
 
 export default SceneRSCView;
