@@ -1,15 +1,14 @@
 'use client'
-import { createContext, use, useContext, useLayoutEffect, useRef, Component, useEffect } from "react";
-import { StateNavigator } from "navigation";
+import { createContext, use, useContext, useLayoutEffect, useRef } from "react";
 import { SceneViewProps } from './Props';
 import useNavigationEvent from "./useNavigationEvent";
 import BundlerContext from "./BundlerContext";
-import withStateNavigator from "./withStateNavigator";
+import RSCErrorBoundary from "./RSCErrorBoundary";
 
 const rscCache = new Map();
 const RSCContext = createContext(false);
 
-const SceneRSCView = ({active, name, dataKeyDeps, children}: SceneViewProps & {active: string | string[]}) => {
+const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
     const {state, oldState, data, stateNavigator: {stateContext}} = useNavigationEvent();
     const fetchRSC = useContext(BundlerContext);
     const ancestorFetching = useContext(RSCContext);
@@ -51,50 +50,11 @@ const SceneRSCView = ({active, name, dataKeyDeps, children}: SceneViewProps & {a
     if (!show) return null;
     const sceneView = !ancestorFetching ? fetchedSceneView || renderedSceneView.current : null;
     return (
-        <RSCNavigation>
+        <RSCErrorBoundary errorFallback={errorFallback}>
             <RSCContext.Provider value={ancestorFetching || dataChanged()}>
                 {!sceneView ? children : use(sceneView)}
             </RSCContext.Provider>
-        </RSCNavigation>
+        </RSCErrorBoundary>
     );
 };
 export default SceneRSCView;
-
-const RSCNavigationEffect = ({url, historyAction}: {url: string, historyAction: string}) => {
-    const {stateNavigator} = useNavigationEvent();
-    useEffect(() => {
-        if (url) stateNavigator.navigateLink(url, historyAction as 'add' | 'replace' | 'none');
-    }, [url, historyAction])
-    return null;
-}
-
-class RSCNavigationBoundary extends Component<{stateNavigator: StateNavigator, children: any}, {error: Error}> {
-    constructor(props) {
-      super(props);
-      this.state = {error: null};
-    }
-    static getDerivedStateFromError(error) {
-        return {error};
-    }
-    render() {        
-        const {children} = this.props;
-        const {error} = this.state;
-        if (error) {
-            const {message} = this.state.error;
-            if (typeof message === 'string') {
-                const parts = message.split(';');
-                const [name, url, historyAction] = parts;
-                if (name === '__rscNavigationLink') {
-                    return <RSCNavigationEffect url={url} historyAction={historyAction} />
-                } else {
-                    throw error;
-                }
-            } else {
-                throw error;
-            }
-        }
-        return !error ? children : null;
-    }
-}
-const RSCNavigation = withStateNavigator(RSCNavigationBoundary);
-

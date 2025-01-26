@@ -1,5 +1,5 @@
 import AsyncStateNavigator from './AsyncStateNavigator';
-import { AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent } from 'react';
+import { AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode } from 'react';
 import { FluentNavigator, StateContext } from 'navigation';
 
 interface LinkProps extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
@@ -36,6 +36,7 @@ interface SceneViewProps {
     active: string | string[] | ((stateContext: StateContext) => boolean);
     dataKeyDeps: string[];
     name: string;
+    errorFallback: ReactNode;
     children: any;
 }
 
