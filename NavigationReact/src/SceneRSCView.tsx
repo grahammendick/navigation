@@ -5,11 +5,12 @@ import useNavigationEvent from "./useNavigationEvent";
 import BundlerContext from "./BundlerContext";
 import RSCErrorBoundary from "./RSCErrorBoundary";
 
-const rscCache = new Map();
+const rscCache = {};
 const RSCContext = createContext(false);
 
 const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
     const {state, oldState, data, stateNavigator: {stateContext}} = useNavigationEvent();
+    const {url, oldUrl, oldData} = stateContext;
     const fetchRSC = useContext(BundlerContext);
     const ancestorFetching = useContext(RSCContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -19,15 +20,14 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         )
     );
     const show = getShow(state?.key);
-    if (!rscCache.get(stateContext)) rscCache.set(stateContext, {});
-    const cachedSceneViews = rscCache.get(stateContext);
+    if (rscCache[url]?.stateContext !== stateContext) rscCache[url] = {stateContext};
+    const cachedSceneViews = rscCache[url];
     const renderedSceneView = useRef(undefined);
     let fetchedSceneView = cachedSceneViews[sceneViewKey];
     useLayoutEffect(() => {
         if (fetchedSceneView) renderedSceneView.current = fetchedSceneView;
         if (ancestorFetching) renderedSceneView.current = null;
     }, [fetchedSceneView, ancestorFetching])
-    const {url, oldUrl, oldData} = stateContext;
     const dataChanged = () => {
         if (!getShow(oldState?.key) || !dataKeyDeps) return true;
         for(let i = 0; i < dataKeyDeps.length; i++) {
@@ -43,7 +43,7 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
                 Accept: 'text/x-component',
                 'Content-Type': 'application/json'
             },
-            body: {oldUrl, sceneViewKey}
+            body: {sceneViewKey}
         });
         fetchedSceneView = cachedSceneViews[sceneViewKey];
     }
