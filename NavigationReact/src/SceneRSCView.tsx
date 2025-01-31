@@ -34,7 +34,6 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         return renderedSceneView.current;
     }
     useLayoutEffect(() => {
-        if (cachedHistory) return;
         if (!historyCache[url]) historyCache[url] = {};
         historyCache[url][sceneViewKey] = renderedSceneView.current = getSceneView();
     });
