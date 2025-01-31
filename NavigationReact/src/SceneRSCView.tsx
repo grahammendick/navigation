@@ -26,6 +26,14 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     const cachedSceneViews = rscCache[url];
     const renderedSceneView = useRef(undefined);
     let fetchedSceneView = cachedSceneViews[sceneViewKey];
+    const dataChanged = () => {
+        if (!getShow(oldState?.key) || !dataKeyDeps) return true;
+        for(let i = 0; i < dataKeyDeps.length; i++) {
+            if (data[dataKeyDeps[i]] !== oldData[dataKeyDeps[i]])
+                return true;
+        }
+        return false;
+    };
     const getSceneView = () => {
         if (!show) return null;
         if (cachedHistory) return historyCache[url][sceneViewKey];
@@ -37,14 +45,6 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         if (!historyCache[url]) historyCache[url] = {};
         historyCache[url][sceneViewKey] = renderedSceneView.current = getSceneView();
     });
-    const dataChanged = () => {
-        if (!getShow(oldState?.key) || !dataKeyDeps) return true;
-        for(let i = 0; i < dataKeyDeps.length; i++) {
-            if (data[dataKeyDeps[i]] !== oldData[dataKeyDeps[i]])
-                return true;
-        }
-        return false;
-    };
     if (!fetchedSceneView && !cachedHistory && oldUrl && show && !ancestorFetching && dataChanged()) {
         cachedSceneViews[sceneViewKey] = fetchRSC(url, {
             method: 'post',
