@@ -6,11 +6,12 @@ import BundlerContext from "./BundlerContext";
 import RSCErrorBoundary from "./RSCErrorBoundary";
 
 const rscCache = {};
+const historyCache = {};
 const RSCContext = createContext(false);
 
 const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
     const {state, oldState, data, stateNavigator: {stateContext}} = useNavigationEvent();
-    const {url, oldUrl, oldData} = stateContext;
+    const {url, oldUrl, oldData, history} = stateContext;
     const fetchRSC = useContext(BundlerContext);
     const ancestorFetching = useContext(RSCContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -20,14 +21,23 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         )
     );
     const show = getShow(state?.key);
+    const cachedHistory = history && historyCache[url];
     if (rscCache[url]?.stateContext !== stateContext) rscCache[url] = {stateContext};
     const cachedSceneViews = rscCache[url];
     const renderedSceneView = useRef(undefined);
     let fetchedSceneView = cachedSceneViews[sceneViewKey];
+    const getSceneView = () => {
+        if (!show) return null;
+        if (cachedHistory) return historyCache[url][sceneViewKey];
+        if (!oldUrl || ancestorFetching) return children;
+        if (dataChanged()) return fetchedSceneView;
+        return renderedSceneView.current;
+    }
     useLayoutEffect(() => {
-        if (fetchedSceneView) renderedSceneView.current = fetchedSceneView;
-        if (ancestorFetching) renderedSceneView.current = null;
-    }, [fetchedSceneView, ancestorFetching])
+        if (cachedHistory) return;
+        if (!historyCache[url]) historyCache[url] = {};
+        historyCache[url][sceneViewKey] = renderedSceneView.current = getSceneView();
+    });
     const dataChanged = () => {
         if (!getShow(oldState?.key) || !dataKeyDeps) return true;
         for(let i = 0; i < dataKeyDeps.length; i++) {
@@ -36,7 +46,7 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         }
         return false;
     };
-    if (!fetchedSceneView && oldUrl && show && !ancestorFetching && dataChanged()) {
+    if (!fetchedSceneView && !cachedHistory && oldUrl && show && !ancestorFetching && dataChanged()) {
         cachedSceneViews[sceneViewKey] = fetchRSC(url, {
             method: 'post',
             headers: {
@@ -47,12 +57,11 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         });
         fetchedSceneView = cachedSceneViews[sceneViewKey];
     }
-    if (!show) return null;
-    const sceneView = !ancestorFetching ? fetchedSceneView || renderedSceneView.current : null;
+    const sceneView = getSceneView();
     return (
         <RSCErrorBoundary errorFallback={errorFallback}>
             <RSCContext.Provider value={ancestorFetching || dataChanged()}>
-                {!sceneView ? children : use(sceneView)}
+                {sceneView?.then ? use(sceneView) : sceneView}
             </RSCContext.Provider>
         </RSCErrorBoundary>
     );
