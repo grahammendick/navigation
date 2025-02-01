@@ -22,7 +22,7 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         )
     );
     const show = getShow(state?.key);
-    const cachedHistory = history && historyCache[url];
+    const cachedHistory = history && historyCache[url]?.[sceneViewKey];
     if (!rscCache[url]) rscCache[url] = new Map();
     if (!rscCache[url].get(stateContext)) rscCache[url].set(stateContext, {});
     const cachedSceneViews = rscCache[url].get(stateContext);
