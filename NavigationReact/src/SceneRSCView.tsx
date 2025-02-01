@@ -1,11 +1,12 @@
 'use client'
 import { createContext, use, useContext, useLayoutEffect, useRef } from "react";
+import { StateContext } from "navigation";
 import { SceneViewProps } from './Props';
 import useNavigationEvent from "./useNavigationEvent";
 import BundlerContext from "./BundlerContext";
 import RSCErrorBoundary from "./RSCErrorBoundary";
 
-const rscCache = {};
+const rscCache: Record<string, Map<StateContext, Record<string, any>>> = {};
 const historyCache = {};
 const RSCContext = createContext(false);
 
@@ -22,8 +23,9 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     );
     const show = getShow(state?.key);
     const cachedHistory = history && historyCache[url];
-    if (rscCache[url]?.stateContext !== stateContext) rscCache[url] = {stateContext};
-    const cachedSceneViews = rscCache[url];
+    if (!rscCache[url]) rscCache[url] = new Map();
+    if (!rscCache[url].get(stateContext)) rscCache[url].set(stateContext, {});
+    const cachedSceneViews = rscCache[url].get(stateContext);
     const renderedSceneView = useRef(undefined);
     let fetchedSceneView = cachedSceneViews[sceneViewKey];
     const dataChanged = () => {
