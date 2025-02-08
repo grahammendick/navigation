@@ -1,12 +1,11 @@
 'use client'
 import { createContext, use, useContext, useLayoutEffect, useRef } from "react";
-import { StateContext } from "navigation";
 import { SceneViewProps } from './Props';
 import useNavigationEvent from "./useNavigationEvent";
 import BundlerContext from "./BundlerContext";
 import RSCErrorBoundary from "./RSCErrorBoundary";
 
-const rscCache: Record<string, Map<any, Record<string, any>>> = {};
+const rscCache: Map<string, Map<any, Record<string, any>>> = new Map();
 const historyCache = {};
 const RSCContext = createContext(false);
 
@@ -25,9 +24,9 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     const show = getShow(state.key);
     const ignoreCache = !!navigationEvent['ignoreCache'];
     const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey];
-    if (!rscCache[url]) rscCache[url] = new Map();
-    if (!rscCache[url].get(navigationEvent)) rscCache[url].set(navigationEvent, {});
-    const cachedSceneViews = rscCache[url].get(navigationEvent);
+    if (!rscCache.get(url)) rscCache.set(url, new Map());
+    if (!rscCache.get(url).get(navigationEvent)) rscCache.get(url).set(navigationEvent, {});
+    const cachedSceneViews = rscCache.get(url).get(navigationEvent);
     const renderedSceneView = useRef(undefined);
     let fetchedSceneView = cachedSceneViews[sceneViewKey];
     const dataChanged = () => {
@@ -49,6 +48,9 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     useLayoutEffect(() => {
         if (!historyCache[url]) historyCache[url] = {};
         historyCache[url][sceneViewKey] = renderedSceneView.current = getSceneView();
+        rscCache.clear();
+        rscCache.set(url, new Map());
+        rscCache.get(url).set(navigationEvent, cachedSceneViews);
     });
     if (!fetchedSceneView && !cachedHistory && !firstScene && show && !ancestorFetching && dataChanged()) {
         cachedSceneViews[sceneViewKey] = fetchRSC(url, {
