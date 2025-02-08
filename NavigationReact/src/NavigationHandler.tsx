@@ -26,11 +26,12 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, fetc
 
     onNavigate() {
         const { stateNavigator } = this.props;
-        if (this.state.context.stateNavigator.stateContext !== stateNavigator.stateContext) {
-            const { oldState, state, data, asyncData } = stateNavigator.stateContext;
-            const asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
+        const { stateContext } = stateNavigator;
+        if (this.state.context.stateNavigator.stateContext !== stateContext) {
+            const { history, oldState, state, data, asyncData } = stateContext;
+            const asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateContext);
             this.setState({ context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } }, () => {
-                if (stateNavigator.stateContext.history) {
+                if (stateNavigator.stateContext === stateContext && history) {
                     startTransition(() => {
                         this.setState({ context: { ignoreCache: true, oldState, state, data, asyncData, stateNavigator: asyncNavigator } });
                     });
