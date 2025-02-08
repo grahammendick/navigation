@@ -1,5 +1,5 @@
 'use client'
-import { Component } from 'react';
+import { startTransition, Component } from 'react';
 import AsyncStateNavigator from './AsyncStateNavigator';
 import NavigationContext from './NavigationContext';
 import BundlerContext from './BundlerContext';
@@ -9,9 +9,9 @@ type NavigationHandlerState = { context: { ignoreCache?: boolean, oldState: Stat
 class NavigationHandler extends Component<{ stateNavigator: StateNavigator, fetchRSC: any, children: any }, NavigationHandlerState> {
     constructor(props) {
         super(props);
-        var { stateNavigator } = this.props;
-        var { oldState, state, data, asyncData } = stateNavigator.stateContext;
-        var asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
+        const { stateNavigator } = this.props;
+        const { oldState, state, data, asyncData } = stateNavigator.stateContext;
+        const asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
         this.state = { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } };
         this.onNavigate = this.onNavigate.bind(this);
     }
@@ -25,12 +25,16 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, fetc
     }
 
     onNavigate() {
-        var { stateNavigator } = this.props;
+        const { stateNavigator } = this.props;
         if (this.state.context.stateNavigator.stateContext !== stateNavigator.stateContext) {
-            this.setState(() => {
-                var { oldState, state, data, asyncData } = stateNavigator.stateContext;
-                var asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
-                return { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } };
+            const { history, oldState, state, data, asyncData } = stateNavigator.stateContext;
+            const asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
+            this.setState({ context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } }, () => {
+                if (history) {
+                    startTransition(() => {
+                        this.setState({ context: { ignoreCache: true, oldState, state, data, asyncData, stateNavigator: asyncNavigator } });
+                    });
+                }
             });
         }
     }

@@ -29,10 +29,9 @@ class AsyncStateNavigator extends StateNavigator {
         if (!equal)
             super.refresh(navigationData, historyAction);
         else {
+            const { oldState, state, data, asyncData } = this.stateContext;
             startTransition(() => {
-                const asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, this.stateContext);
-                const { oldState, state, data, asyncData } = asyncNavigator.stateContext;
-                this.navigationHandler.setState({ context: { ignoreCache: true, oldState, state, data, asyncData, stateNavigator: asyncNavigator } });
+                this.navigationHandler.setState({ context: { ignoreCache: true, oldState, state, data, asyncData, stateNavigator: this } });
             });
         }
     }
@@ -40,12 +39,12 @@ class AsyncStateNavigator extends StateNavigator {
     private static areEqual(val: any, currentVal: any): boolean {
         if (currentVal == null)
             return val == null || val === '';
-        var valType = Object.prototype.toString.call(val);
+        const valType = Object.prototype.toString.call(val);
         if (valType !== Object.prototype.toString.call(currentVal))
             return false;
         if (valType === '[object Array]') {
-            var active = val.length === currentVal.length;
-            for(var i = 0; active && i < val.length; i++) {
+            let active = val.length === currentVal.length;
+            for(let i = 0; active && i < val.length; i++) {
                 active = this.areEqual(val[i], currentVal[i]);
             }
             return active;
