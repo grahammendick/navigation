@@ -13,7 +13,7 @@ const RSCContext = createContext(false);
 const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
     const navigationEvent = useNavigationEvent();
     const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
-    const {url, oldUrl, oldData, history} = stateContext;
+    const {nextCrumb: {crumblessUrl: url}, oldUrl, oldData, history} = stateContext;
     const fetchRSC = useContext(BundlerContext);
     const ancestorFetching = useContext(RSCContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -22,7 +22,7 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
             typeof active === 'string' ? stateKey === active : active.indexOf(stateKey) !== -1
         )
     );
-    const show = getShow(state?.key);
+    const show = getShow(state.key);
     const ignoreCache = !!navigationEvent['ignoreCache'];
     const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey];
     if (!rscCache[url]) rscCache[url] = new Map();
