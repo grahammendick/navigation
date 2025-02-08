@@ -49,8 +49,7 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         if (!historyCache[url]) historyCache[url] = {};
         historyCache[url][sceneViewKey] = renderedSceneView.current = getSceneView();
         rscCache.clear();
-        rscCache.set(url, new Map());
-        rscCache.get(url).set(navigationEvent, cachedSceneViews);
+        rscCache.set(url, new Map([[navigationEvent, cachedSceneViews]]));
     });
     if (!fetchedSceneView && !cachedHistory && !firstScene && show && !ancestorFetching && dataChanged()) {
         cachedSceneViews[sceneViewKey] = fetchRSC(url, {
