@@ -19,7 +19,7 @@ class AsyncStateNavigator extends StateNavigator {
     }
 
     refresh(navigationData?: any, historyAction?: 'add' | 'replace' | 'none') {
-        const refreshData = {...this.stateContext.state.defaults, ...navigationData};
+        const refreshData = { ...this.stateContext.state.defaults, ...navigationData };
         const refreshKeys = Object.keys(refreshData);
         let equal = refreshKeys.length === Object.keys(this.stateContext.data).length;
         for (let i = 0; i < refreshKeys.length && equal; i++) {
