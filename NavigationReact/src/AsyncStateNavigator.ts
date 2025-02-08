@@ -18,6 +18,42 @@ class AsyncStateNavigator extends StateNavigator {
         this.offNavigate = stateNavigator.offNavigate.bind(stateNavigator);
     }
 
+    refresh(navigationData?: any, historyAction?: 'add' | 'replace' | 'none') {
+        const refreshData = {...this.stateContext.state.defaults, ...navigationData};
+        const refreshKeys = Object.keys(refreshData);
+        let equal = refreshKeys.length === Object.keys(this.stateContext.data).length;
+        for (let i = 0; i < refreshKeys.length && equal; i++) {
+            const key = refreshKeys[i];
+            equal = equal && AsyncStateNavigator.areEqual(refreshData[key], this.stateContext.data[key]);
+        }
+        if (!equal)
+            super.refresh(navigationData, historyAction);
+        else {
+            startTransition(() => {
+                const asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, this.stateContext);
+                const { oldState, state, data, asyncData } = asyncNavigator.stateContext;
+                this.navigationHandler.setState({ context: { ignoreCache: true, oldState, state, data, asyncData, stateNavigator: asyncNavigator } });
+            });
+        }
+    }
+
+    private static areEqual(val: any, currentVal: any): boolean {
+        if (currentVal == null)
+            return val == null || val === '';
+        var valType = Object.prototype.toString.call(val);
+        if (valType !== Object.prototype.toString.call(currentVal))
+            return false;
+        if (valType === '[object Array]') {
+            var active = val.length === currentVal.length;
+            for(var i = 0; active && i < val.length; i++) {
+                active = this.areEqual(val[i], currentVal[i]);
+            }
+            return active;
+        } else {
+            return isNaN(val) ? val === currentVal : +val === +currentVal;
+        }
+    }
+
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false,
         suspendNavigation?: (stateContext: StateContext, resumeNavigation: () => void) => void,
         currentContext = this.stateContext) {
@@ -28,9 +64,7 @@ class AsyncStateNavigator extends StateNavigator {
                 var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext);
                 var { oldState, state, data, asyncData } = asyncNavigator.stateContext;
                 startTransition(() => {
-                    this.navigationHandler.setState(() => (
-                        { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } }
-                    ), () => {
+                    this.navigationHandler.setState({ context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } }, () => {
                         if (stateContext === this.navigationHandler.state.context.stateNavigator.stateContext)
                             resumeNavigation();
                     });    

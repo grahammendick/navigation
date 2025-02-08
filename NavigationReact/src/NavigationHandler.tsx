@@ -4,7 +4,7 @@ import AsyncStateNavigator from './AsyncStateNavigator';
 import NavigationContext from './NavigationContext';
 import BundlerContext from './BundlerContext';
 import { StateNavigator, State } from 'navigation';
-type NavigationHandlerState = { context: { oldState: State, state: State, data: any, asyncData: any, stateNavigator: AsyncStateNavigator } };
+type NavigationHandlerState = { context: { ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: AsyncStateNavigator } };
 
 class NavigationHandler extends Component<{ stateNavigator: StateNavigator, fetchRSC: any, children: any }, NavigationHandlerState> {
     constructor(props) {
