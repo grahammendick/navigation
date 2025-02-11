@@ -31,8 +31,8 @@ var items = [
         require('./build/npm/navigation-react-native-web/package.json')),
 ];
 function rollupTask(name, input, file, globals, format) {
-    var include = input.replace('server.ts', 'ts').replace(name + '.ts', '**');
-    var tsconfig = input.replace('server.ts', 'ts').replace(name + '.ts', 'tsconfig.json');
+    var include = input.replace(/server.ts$/, 'ts').replace(name + '.ts', '**');
+    var tsconfig = input.replace(/server.ts$/, 'ts').replace(name + '.ts', 'tsconfig.json');
     return rollup.rollup({
         input,
         external: Array.isArray(globals) ? globals : Object.keys(globals),
