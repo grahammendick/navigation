@@ -1,5 +1,5 @@
 'use client'
-import { createContext, use, useContext, useLayoutEffect, useRef } from "react";
+import React, { createContext, use, useContext, useLayoutEffect, useRef } from "react";
 import { SceneViewProps } from './Props';
 import useNavigationEvent from "./useNavigationEvent";
 import BundlerContext from "./BundlerContext";

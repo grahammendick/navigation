@@ -1,4 +1,4 @@
-import { cache } from 'react';
+import React, { cache } from 'react';
 import { StateNavigator } from 'navigation';
 import AsyncStateNavigator from './AsyncStateNavigator.server';
 
