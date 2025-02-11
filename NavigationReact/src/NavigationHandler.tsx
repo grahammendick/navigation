@@ -1,5 +1,5 @@
 'use client'
-import React, { startTransition, Component } from 'react';
+import { startTransition, Component } from 'react';
 import AsyncStateNavigator from './AsyncStateNavigator';
 import NavigationContext from './NavigationContext';
 import BundlerContext from './BundlerContext';

@@ -2,7 +2,6 @@
 import LinkUtility from './LinkUtility';
 import withStateNavigator from './withStateNavigator';
 import { NavigationBackLinkProps } from './Props';
-import * as React from 'react';
 
 var NavigationBackLink = (props: NavigationBackLinkProps) => {
     var htmlProps = LinkUtility.toHtmlProps(props);

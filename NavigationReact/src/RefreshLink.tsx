@@ -2,7 +2,6 @@
 import LinkUtility from './LinkUtility';
 import withStateNavigator from './withStateNavigator';
 import { RefreshLinkProps } from './Props';
-import * as React from 'react';
 
 var RefreshLink = (props: RefreshLinkProps) => {
     var htmlProps = LinkUtility.toHtmlProps(props);

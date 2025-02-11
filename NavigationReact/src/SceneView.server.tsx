@@ -1,7 +1,6 @@
 import { SceneViewProps } from './Props';
 import useNavigationEvent from './useNavigationEvent.server';
 import SceneRSCView from './SceneRSCView';
-import * as React from 'react';
 
 const SceneView = ({active, dataKeyDeps, name, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
     const {state} = useNavigationEvent();
