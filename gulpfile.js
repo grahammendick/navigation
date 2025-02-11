@@ -61,8 +61,6 @@ function buildTask(name, input, file, globals, details) {
 }
 var cleanNative = () => {
     return del([
-        './build/npm/navigation-react/*.js',
-        './build/npm/navigation-react/cjs/*.js',
         './build/npm/navigation-react-native/android',
         './build/npm/navigation-react-native/ios',
         './build/npm/navigation-react-native/cpp',
