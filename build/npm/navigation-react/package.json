@@ -2,7 +2,7 @@
   "name": "navigation-react",
   "version": "4.5.1-rsc.1",
   "description": "React plugin for the Navigation router",
-  "main": "cjs/NavigationReact.js",
+  "main": "navigation.react.js",
   "types": "navigation.react.d.ts",
   "repository": {
     "type": "git",
@@ -13,25 +13,25 @@
       "require": {
         "react-server": {
           "types": "./navigation.react.d.ts",
-          "browser": "./cjs/NavigationReact.server.js",
-          "node": "./cjs/NavigationReact.server.js"
+          "browser": "./navigation.react.server.js",
+          "node": "./navigation.react.server.js"
         },
         "default": {
           "types": "./navigation.react.d.ts",
-          "browser": "./cjs/NavigationReact.js",
-          "node": "./cjs/NavigationReact.js"
+          "browser": "./navigation.react.js",
+          "node": "./navigation.react.js"
         }
       },
       "import": {
         "react-server": {
           "types": "./navigation.react.d.ts",
-          "browser": "./NavigationReact.server.js",
-          "node": "./NavigationReact.server.js"
+          "browser": "./navigation.react.esm.server.js",
+          "node": "./navigation.react.esm.server.js"
         },
         "default": {
           "types": "./navigation.react.d.ts",
-          "browser": "./NavigationReact.js",
-          "node": "./NavigationReact.js"
+          "browser": "./navigation.react.esm.js",
+          "node": "./navigation.react.esm.js"
         }
       }
     }

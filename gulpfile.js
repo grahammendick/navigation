@@ -31,8 +31,8 @@ var items = [
         require('./build/npm/navigation-react-native-web/package.json')),
 ];
 function rollupTask(name, input, file, globals, format) {
-    var include = input.replace(name + '.ts', '**');
-    var tsconfig = input.replace(name + '.ts', 'tsconfig.json');
+    var include = input.replace('server.ts', 'ts').replace(name + '.ts', '**');
+    var tsconfig = input.replace('server.ts', 'ts').replace(name + '.ts', 'tsconfig.json');
     return rollup.rollup({
         input,
         external: Array.isArray(globals) ? globals : Object.keys(globals),
@@ -102,21 +102,21 @@ var itemTasks = items.reduce((tasks, item) => {
     tasks.packageTasks.push(
         nameFunc(() => rollupTask(name, tsFrom, jsPackageTo, globals, format), 'package' + name)
     );
-    /* if (item.exports) {
+    if (item.exports) {
         var exports = [
             { server: true, ext: 'server.ts', format: 'cjs' },
             { server: false, format: 'es' },
             { server: true, format: 'es' },
         ];
         for(var i = 0; i < exports.length; i++) {
-            var { server, format } = exports[i];
-            var tsFromExport = tsFrom.replace(/ts$/, server ? 'server.ts' : 'ts');
-            var jsPackageToExport = jsPackageTo.replace(/js$/, format === 'cjs' ? 'server.js' : server ? 'esm.server.js' : 'esm.js');
+            let { server, format } = exports[i];
+            let tsFromExport = tsFrom.replace(/ts$/, server ? 'server.ts' : 'ts');
+            let jsPackageToExport = jsPackageTo.replace(/js$/, format === 'cjs' ? 'server.js' : server ? 'esm.server.js' : 'esm.js');
             tasks.packageTasks.push(
-                nameFunc(() => rollupTask(name, tsFrom, jsPackageTo, globals, format), `package${format}${server ? 'server' : ''}${name}`)
+                nameFunc(() => rollupTask(name, tsFromExport, jsPackageToExport, globals, format), `package${format}${server ? 'server' : ''}${name}`)
             );
         }
-    } */
+    }
     return tasks;
 }, { buildTasks: [], packageTasks: [] });
 
