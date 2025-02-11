@@ -2,6 +2,7 @@
 import LinkUtility from './LinkUtility';
 import withStateNavigator from './withStateNavigator';
 import { FluentLinkProps } from './Props';
+import * as React from 'react';
 
 var FluentLink = (props: FluentLinkProps) => {
     var htmlProps = LinkUtility.toHtmlProps(props);

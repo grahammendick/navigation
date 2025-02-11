@@ -1,4 +1,4 @@
-import { startTransition } from 'react';
+import React, { startTransition } from 'react';
 import NavigationHandler from './NavigationHandler';
 import { StateNavigator, StateContext } from 'navigation';
 
