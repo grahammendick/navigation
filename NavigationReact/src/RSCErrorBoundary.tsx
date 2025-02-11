@@ -1,4 +1,4 @@
-import React, { useContext, Component, useEffect, ReactNode } from "react";
+import { useContext, Component, useEffect, ReactNode } from "react";
 import { StateNavigator } from "navigation";
 import withStateNavigator from "./withStateNavigator";
 import NavigationContext from "./NavigationContext";
