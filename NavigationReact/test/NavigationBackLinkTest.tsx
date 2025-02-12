@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationBackLink, NavigationHandler, NavigationContext } from 'navigation-react';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import { act, Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
@@ -851,20 +851,14 @@ describe('NavigationBackLinkTest', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
             ]);
-            class FirstContext extends React.Component<any> {
-                static contextType = NavigationContext;                
-                private mountContext: any;
-                constructor(props, context) {
-                    super(props, context);
-                    this.mountContext = this.context;
-                }
-                render() {
-                    return (
-                        <NavigationContext.Provider value={this.mountContext}>
-                            {this.props.children}
-                        </NavigationContext.Provider>
-                    );
-                }
+            const FirstContext = ({children}: any) => {
+                const context = useContext(NavigationContext);
+                const mountContext = useMemo(() => context, []);
+                return (
+                    <NavigationContext.Provider value={mountContext}>
+                        {children}
+                    </NavigationContext.Provider>
+                );
             }
             stateNavigator.navigate('s0', {x: 'a'});
             stateNavigator.navigate('s1', {y: 'b'});
