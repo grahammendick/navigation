@@ -1,5 +1,5 @@
 'use client'
-import { createContext, use, useContext, useLayoutEffect, useRef } from "react";
+import { createContext, use, useContext, useEffect, useRef } from "react";
 import { SceneViewProps } from './Props';
 import useNavigationEvent from "./useNavigationEvent";
 import BundlerContext from "./BundlerContext";
@@ -45,9 +45,20 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         if (dataChanged()) return fetchedSceneView;
         return renderedSceneView.current;
     }
-    useLayoutEffect(() => {
-        if (!historyCache[url]) historyCache[url] = {};
+    const sceneCount = !firstScene ? (window.history.state?.sceneCount || 0) + 1 : 1;
+    useEffect(() => {
+        if (!historyCache[url]) historyCache[url] = {count: sceneCount};
         historyCache[url][sceneViewKey] = renderedSceneView.current = getSceneView();
+        historyCache[url].count = Math.min(historyCache[url].count, sceneCount);
+        const historyUrls = Object.keys(historyCache);
+        if (!window.history.state?.sceneCount) {
+            for(let i = 0; i < historyUrls.length; i++) {
+                const historyUrl = historyUrls[i];
+                if (historyUrl !== url && historyCache[historyUrl].count >= sceneCount)
+                    delete historyCache[historyUrl];
+            }
+            window.history.replaceState({...window.history.state, sceneCount}, null);
+        }
         rscCache.clear();
         rscCache.set(url, new Map([[navigationEvent, cachedSceneViews]]));
     });
