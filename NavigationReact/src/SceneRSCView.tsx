@@ -45,21 +45,20 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         if (dataChanged()) return fetchedSceneView;
         return renderedSceneView.current;
     }
-    const sceneCount = !firstScene ? (window.history.state?.sceneCount || 0) + 1 : 1;
+    let sceneCount = 1;
+    if (typeof window !== 'undefined' && window.history.state?.sceneCount)
+        sceneCount = window.history.state.sceneCount + (!history && !firstScene ? 1 : 0);
     useEffect(() => {
         if (!historyCache[url]) historyCache[url] = {count: sceneCount};
         historyCache[url][sceneViewKey] = renderedSceneView.current = getSceneView();
         historyCache[url].count = Math.min(historyCache[url].count, sceneCount);
         const historyUrls = Object.keys(historyCache);
-        if (!history) {
-            for(let i = 0; i < historyUrls.length; i++) {
-                const historyUrl = historyUrls[i];
-                if (historyUrl !== url && historyCache[historyUrl].count >= sceneCount)
-                    delete historyCache[historyUrl];
-            }
-            if (!window.history.state?.sceneCount)
-                window.history.replaceState({...window.history.state, sceneCount}, null);
+        for(let i = 0; i < historyUrls.length && !history; i++) {
+            const historyUrl = historyUrls[i];
+            if (historyUrl !== url && historyCache[historyUrl].count >= sceneCount)
+                delete historyCache[historyUrl];
         }
+        window.history.replaceState({...window.history.state, sceneCount}, null);
         rscCache.clear();
         rscCache.set(url, new Map([[navigationEvent, cachedSceneViews]]));
     });
