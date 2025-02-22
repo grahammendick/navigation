@@ -51,13 +51,14 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         historyCache[url][sceneViewKey] = renderedSceneView.current = getSceneView();
         historyCache[url].count = Math.min(historyCache[url].count, sceneCount);
         const historyUrls = Object.keys(historyCache);
-        if (!window.history.state?.sceneCount) {
+        if (!history) {
             for(let i = 0; i < historyUrls.length; i++) {
                 const historyUrl = historyUrls[i];
                 if (historyUrl !== url && historyCache[historyUrl].count >= sceneCount)
                     delete historyCache[historyUrl];
             }
-            window.history.replaceState({...window.history.state, sceneCount}, null);
+            if (!window.history.state?.sceneCount)
+                window.history.replaceState({...window.history.state, sceneCount}, null);
         }
         rscCache.clear();
         rscCache.set(url, new Map([[navigationEvent, cachedSceneViews]]));
