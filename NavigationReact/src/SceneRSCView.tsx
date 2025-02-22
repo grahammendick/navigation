@@ -45,10 +45,9 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         if (dataChanged()) return fetchedSceneView;
         return renderedSceneView.current;
     }
-    let sceneCount = 1;
-    if (typeof window !== 'undefined' && window.history.state?.sceneCount)
-        sceneCount = window.history.state.sceneCount + (!history && !firstScene ? 1 : 0);
+    const oldSceneCount = (typeof window !== 'undefined' && window.history.state?.sceneCount) || 0;
     useEffect(() => {
+        const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
         if (!historyCache[url]) historyCache[url] = {count: sceneCount};
         historyCache[url][sceneViewKey] = renderedSceneView.current = getSceneView();
         historyCache[url].count = Math.min(historyCache[url].count, sceneCount);
