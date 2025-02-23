@@ -377,6 +377,10 @@ export class StateContext<Key extends string = string, Data extends object = any
      */
     history: boolean;
     /**
+     * Gets a value determining the effect on browser history
+     */
+    historyAction: 'add' | 'replace' | 'none';
+    /**
      * Gets a Crumb collection representing the crumb trail, ordered oldest
      * Crumb first
      */

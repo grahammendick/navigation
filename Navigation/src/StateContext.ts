@@ -17,6 +17,7 @@ class StateContext {
     asyncData: any = undefined;
     title: string = null;
     history = false;
+    historyAction: 'add' | 'replace' | 'none' = null;
     crumbs: Crumb[] = [];
     nextCrumb: Crumb = null;
 
