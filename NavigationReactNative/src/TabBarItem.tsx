@@ -39,7 +39,7 @@ const TabBarItem = ({selected, onPress, children, title, image, systemItem, badg
                         if (!!React.Suspense && viewConfig?.validAttributes?.style) {
                             viewConfig.validAttributes.style = {
                                 ...viewConfig.validAttributes.style,
-                                display: false
+                                display: null
                             };
                         }
                     }}
