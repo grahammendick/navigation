@@ -1,7 +1,7 @@
 import { useContext, Component, useEffect, ReactNode } from "react";
 import { StateNavigator } from "navigation";
-import withStateNavigator from "./withStateNavigator";
-import NavigationContext from "./NavigationContext";
+import withStateNavigator from "./withStateNavigator.js";
+import NavigationContext from "./NavigationContext.js";
 
 const NavigationEffect = ({url, historyAction}: {url: string, historyAction: string}) => {
     const {stateNavigator} = useContext(NavigationContext);

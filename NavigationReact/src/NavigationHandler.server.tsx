@@ -1,6 +1,6 @@
 import { cache } from 'react';
 import { StateNavigator } from 'navigation';
-import AsyncStateNavigator from './AsyncStateNavigator.server';
+import AsyncStateNavigator from './AsyncStateNavigator.server.js';
 
 export const getCache = cache(() => ({navigationEvent: null}));
 

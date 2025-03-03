@@ -1,9 +1,9 @@
 'use client'
 import { startTransition, Component } from 'react';
-import AsyncStateNavigator from './AsyncStateNavigator';
-import NavigationContext from './NavigationContext';
-import BundlerContext from './BundlerContext';
 import { StateNavigator, State } from 'navigation';
+import AsyncStateNavigator from './AsyncStateNavigator.js';
+import NavigationContext from './NavigationContext.js';
+import BundlerContext from './BundlerContext.js';
 type NavigationHandlerState = { context: { ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: AsyncStateNavigator } };
 
 class NavigationHandler extends Component<{ stateNavigator: StateNavigator, fetchRSC: any, children: any }, NavigationHandlerState> {
