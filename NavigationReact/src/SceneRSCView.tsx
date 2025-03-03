@@ -1,9 +1,9 @@
 'use client'
-import { createContext, use, useContext, useEffect, useRef } from "react";
+import { createContext, use, useContext, useEffect, useRef } from 'react';
 import { SceneViewProps } from './Props.js';
-import useNavigationEvent from "./useNavigationEvent.js";
-import BundlerContext from "./BundlerContext.js";
-import RSCErrorBoundary from "./RSCErrorBoundary.js";
+import useNavigationEvent from './useNavigationEvent.js';
+import BundlerContext from './BundlerContext.js';
+import RSCErrorBoundary from './RSCErrorBoundary.js';
 
 const rscCache: Map<string, Map<any, Record<string, any>>> = new Map();
 const historyCache = {};

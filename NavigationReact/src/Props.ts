@@ -1,5 +1,5 @@
-import AsyncStateNavigator from './AsyncStateNavigator';
 import { AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode } from 'react';
+import AsyncStateNavigator from './AsyncStateNavigator';
 import { FluentNavigator, StateContext } from 'navigation';
 
 interface LinkProps extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
