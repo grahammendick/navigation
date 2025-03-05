@@ -1,5 +1,5 @@
 {
-  "name": "rsc",
+  "name": "rsc-parcel",
   "description": "",
   "version": "1.0.0",
   "source": "src/server.tsx",
