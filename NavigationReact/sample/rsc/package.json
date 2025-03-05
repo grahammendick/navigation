@@ -2,7 +2,7 @@
   "name": "rsc",
   "description": "",
   "version": "1.0.0",
-  "source": "server.tsx",
+  "source": "src/server.tsx",
   "server": "dist/server.js",
   "targets": {
     "server": {
@@ -13,8 +13,8 @@
     }
   },
   "scripts": {
-    "build": "rm -rf .parcel-cache && rm -rf dist && parcel build --no-cache",
-    "start": "parcel"
+    "build": "rm -rf .parcel-cache && rm -rf dist && parcel build --no-cache --cache-dir .parcel-cache",
+    "start": "parcel --no-cache --cache-dir .parcel-cache"
   },
   "dependencies": {
     "@parcel/config-default": "canary",
