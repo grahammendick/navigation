@@ -11,9 +11,5 @@ function Shell() {
 }
 
 startTransition(() => {
-    ReactDOM.hydrateRoot(
-        document,
-        <Shell />,
-        {}
-    );
+    ReactDOM.hydrateRoot(document, <Shell />);
 });
