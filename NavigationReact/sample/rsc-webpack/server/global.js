@@ -42,6 +42,10 @@ const {PassThrough} = require('stream');
 const app = express();
 
 app.use(compress());
+app.get('/favicon.ico', function (req, res) {
+  res.statusCode = 404;
+  res.end();
+});
 
 if (process.env.NODE_ENV === 'development') {
   // In development we host the Webpack server for live bundling.
