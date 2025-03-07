@@ -40,9 +40,10 @@ app.post('*', async (req, res) => {
     person: Person,
     friends: Friends
   };
-  const View = sceneViews[req.body.sceneViewKey];
+  const {url, sceneViewKey} = req.body;
+  const View = sceneViews[sceneViewKey];
   const navigator = new StateNavigator(stateNavigator);
-  navigator.navigateLink(req.url);
+  navigator.navigateLink(url);
   const stream = renderRSC(
     <NavigationHandler stateNavigator={navigator}>
       <View />

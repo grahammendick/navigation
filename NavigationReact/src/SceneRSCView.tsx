@@ -11,7 +11,7 @@ const RSCContext = createContext(false);
 
 const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
     const navigationEvent = useNavigationEvent();
-    const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
+    const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
     const {nextCrumb: {crumblessUrl: url}, oldUrl, oldData, history, historyAction} = stateContext;
     const fetchRSC = useContext(BundlerContext);
     const ancestorFetching = useContext(RSCContext);
@@ -65,10 +65,13 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         window.history.replaceState({...window.history.state, sceneCount}, null);
     });
     if (!fetchedSceneView && !cachedHistory && !firstScene && show && !ancestorFetching && dataChanged()) {
-        cachedSceneViews[sceneViewKey] = fetchRSC(url, {
+        cachedSceneViews[sceneViewKey] = fetchRSC(historyManager.getHref(url), {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
-            body: {sceneViewKey}
+            body: {
+                url,
+                sceneViewKey
+            }
         });
         fetchedSceneView = cachedSceneViews[sceneViewKey];
     }
