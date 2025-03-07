@@ -6,9 +6,10 @@ import stateNavigator from "./stateNavigator";
 const updateRoot = hydrate({
     onHmrReload() {
         const navigator = new StateNavigator(stateNavigator, new HTML5HistoryManager());
+        navigator.historyManager.stop();
         navigator.start();
-        const {stateContext: {state, data, crumbs}} = navigator;
-        const root = fetchRSC(navigator.historyManager.getCurrentUrl(), {
+        const {stateContext: {state, data, crumbs, nextCrumb: {crumblessUrl}}} = navigator;
+        const root = fetchRSC(navigator.historyManager.getHref(crumblessUrl), {
             method: 'put',
             headers: {
                 Accept: 'text/x-component',
