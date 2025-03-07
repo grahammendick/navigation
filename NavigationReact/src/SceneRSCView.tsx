@@ -67,10 +67,7 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         cachedSceneViews[sceneViewKey] = fetchRSC(historyManager.getHref(url), {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
-            body: {
-                url,
-                sceneViewKey
-            }
+            body: {url, sceneViewKey}
         });
         fetchedSceneView = cachedSceneViews[sceneViewKey];
     }
