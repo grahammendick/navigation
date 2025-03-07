@@ -42,7 +42,7 @@ const React = require('react');
 const {StateNavigator} = require('navigation');
 const stateNavigator = require('../src/stateNavigator.js');
 
-async function renderApp(req, res, el) {
+async function renderApp(req, res, el, url = req.url) {
   const {renderToPipeableStream} = await import(
     'react-server-dom-webpack/server'
   );
@@ -76,7 +76,7 @@ async function renderApp(req, res, el) {
   }
   const {NavigationHandler} = await import('navigation-react');
   const navigator = new StateNavigator(stateNavigator.default);
-  navigator.navigateLink(req.url);
+  navigator.navigateLink(url);
   const root = React.createElement(
     React.Fragment,
     null,
@@ -111,8 +111,9 @@ app.post('*', async function (req, res) {
     person: await import('../src/Person.js'),
     friends: await import('../src/Friends.js')
   };
-  const View = sceneViews[req.body.sceneViewKey].default;
-  await renderApp(req, res, React.createElement(View));
+  const {url, sceneViewKey} = req.body;
+  const View = sceneViews[sceneViewKey].default;
+  await renderApp(req, res, React.createElement(View), url);
 });
 
 app.listen(3001, () => {
