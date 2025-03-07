@@ -7,7 +7,11 @@ import HmrContext from './HmrContext';
 
 function Shell() {
     let [root, setRoot] = useState(() => createFromReadableStream(rscStream));
-    return <HmrContext.Provider value={setRoot}>{root}</HmrContext.Provider>;
+    return (
+        <HmrContext.Provider value={setRoot}>
+            {root}
+        </HmrContext.Provider>
+    );
 }
 
 startTransition(() => {
