@@ -5,7 +5,7 @@ import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
 import RSCErrorBoundary from './RSCErrorBoundary.js';
 
-const rscCache: Map<string, Map<any, Record<string, any>>> = new Map();
+const rscCache: Map<any, Record<string, any>> = new Map();
 const historyCache = {};
 const RSCContext = createContext(false);
 
@@ -24,9 +24,8 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     const show = getShow(state.key);
     const ignoreCache = !!navigationEvent['ignoreCache'];
     const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey];
-    if (!rscCache.get(url)) rscCache.set(url, new Map());
-    if (!rscCache.get(url).get(navigationEvent)) rscCache.get(url).set(navigationEvent, {});
-    const cachedSceneViews = rscCache.get(url).get(navigationEvent);
+    if (!rscCache.get(navigationEvent)) rscCache.set(navigationEvent, {});
+    const cachedSceneViews = rscCache.get(navigationEvent);
     const renderedSceneView = useRef(undefined);
     let fetchedSceneView = cachedSceneViews[sceneViewKey];
     const dataChanged = () => {
@@ -48,7 +47,7 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     const oldSceneCount = (typeof window !== 'undefined' && window.history.state?.sceneCount) || 0;
     useEffect(() => {
         rscCache.clear();
-        rscCache.set(url, new Map([[navigationEvent, cachedSceneViews]]));
+        rscCache.set(navigationEvent, cachedSceneViews);
         renderedSceneView.current = getSceneView();
         if (historyAction === 'none') return;
         const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
