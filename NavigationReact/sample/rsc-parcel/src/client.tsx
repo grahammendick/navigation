@@ -14,6 +14,7 @@ function Shell() {
     useEffect(() => {
         const onHmrReload = (e: any) => {
             e.preventDefault();
+            // remove app appPath!
             const navigator = new StateNavigator(stateNavigator, new HTML5HistoryManager('app'));
             navigator.historyManager.stop();
             navigator.start();
