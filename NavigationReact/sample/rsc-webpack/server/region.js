@@ -1,0 +1,139 @@
+'use strict';
+
+// This is a server to host data-local resources like databases and RSC
+
+const path = require('path');
+const url = require('url');
+
+const register = require('react-server-dom-webpack/node-register');
+register();
+
+const babelRegister = require('@babel/register');
+babelRegister({
+  babelrc: false,
+  ignore: [
+    /\/(build|node_modules)\//,
+    function (file) {
+      if ((path.dirname(file) + '/').startsWith(__dirname + '/')) {
+        // Ignore everything in this folder
+        // because it's a mix of CJS and ESM
+        // and working with raw code is easier.
+        return true;
+      }
+      return false;
+    },
+  ],
+  presets: ['@babel/preset-react'],
+  plugins: ['@babel/transform-modules-commonjs'],
+  sourceMaps: process.env.NODE_ENV === 'development' ? 'inline' : false,
+});
+
+const express = require('express');
+const app = express();
+const compress = require('compression');
+
+
+app.use(compress());
+app.use(express.json());
+
+const {readFile} = require('fs').promises;
+
+const React = require('react');
+const {StateNavigator} = require('navigation');
+const stateNavigator = require('../src/stateNavigator.js');
+
+async function renderApp(req, res, el) {
+  const {renderToPipeableStream} = await import(
+    'react-server-dom-webpack/server'
+  );
+
+  let moduleMap;
+  let mainCSSChunks;
+  if (process.env.NODE_ENV === 'development') {
+    // Read the module map from the HMR server in development.
+    moduleMap = await (
+      await fetch('http://localhost:3000/react-client-manifest.json')
+    ).json();
+    mainCSSChunks = (
+      await (
+        await fetch('http://localhost:3000/entrypoint-manifest.json')
+      ).json()
+    ).main.css;
+  } else {
+    // Read the module map from the static build in production.
+    moduleMap = JSON.parse(
+      await readFile(
+        path.resolve(__dirname, `../build/react-client-manifest.json`),
+        'utf8'
+      )
+    );
+    mainCSSChunks = JSON.parse(
+      await readFile(
+        path.resolve(__dirname, `../build/entrypoint-manifest.json`),
+        'utf8'
+      )
+    ).main.css;
+  }
+  const {NavigationHandler} = await import('navigation-react');
+  const navigator = new StateNavigator(stateNavigator.default);
+  navigator.navigateLink(req.url);
+  const root = React.createElement(
+    React.Fragment,
+    null,
+    // Prepend the App's tree with stylesheets required for this entrypoint.
+    mainCSSChunks.map(filename =>
+      React.createElement('link', {
+        rel: 'stylesheet',
+        href: '/' + filename,
+        precedence: 'default',
+        key: filename,
+      })
+    ),
+    React.createElement(
+      NavigationHandler,
+      {stateNavigator: navigator},
+      el)
+  );
+  const {pipe} = renderToPipeableStream(req.accepts('text/html') ? {root} : root, moduleMap);
+  pipe(res);
+}
+
+app.get('*', async function (req, res) {
+  const m = await import('../src/App.js');
+  const App = m.default.default || m.default;
+  await renderApp(req, res, React.createElement(App, {url: req.url}));
+});
+
+
+app.post('*', async function (req, res) {
+  const sceneViews = {
+    people: await import('../src/People.js'),
+    person: await import('../src/Person.js'),
+    friends: await import('../src/Friends.js')
+  };
+  const View = sceneViews[req.body.sceneViewKey].default;
+  await renderApp(req, res, React.createElement(View));
+});
+
+app.listen(3001, () => {
+  console.log('Regional Flight Server listening on port 3001...');
+});
+
+app.on('error', function (error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  switch (error.code) {
+    case 'EACCES':
+      console.error('port 3001 requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error('Port 3001 is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+});
