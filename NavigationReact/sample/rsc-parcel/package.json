@@ -27,7 +27,7 @@
     "@types/react-dom": "^19",
     "express": "^4.18.2",
     "navigation": "^6.2.0",
-    "navigation-react": "^4.5.1",
+    "navigation-react": "^4.5.1-rsc.3",
     "parcel": "canary",
     "process": "^0.11.10",
     "react": "canary",
