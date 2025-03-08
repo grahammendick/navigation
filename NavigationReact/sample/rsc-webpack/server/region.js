@@ -48,17 +48,11 @@ async function renderApp(req, res, el, url = req.url) {
   );
 
   let moduleMap;
-  let mainCSSChunks;
   if (process.env.NODE_ENV === 'development') {
     // Read the module map from the HMR server in development.
     moduleMap = await (
       await fetch('http://localhost:3000/react-client-manifest.json')
     ).json();
-    mainCSSChunks = (
-      await (
-        await fetch('http://localhost:3000/entrypoint-manifest.json')
-      ).json()
-    ).main.css;
   } else {
     // Read the module map from the static build in production.
     moduleMap = JSON.parse(
@@ -67,12 +61,6 @@ async function renderApp(req, res, el, url = req.url) {
         'utf8'
       )
     );
-    mainCSSChunks = JSON.parse(
-      await readFile(
-        path.resolve(__dirname, `../build/entrypoint-manifest.json`),
-        'utf8'
-      )
-    ).main.css;
   }
   const {NavigationHandler} = await import('navigation-react');
   const navigator = new StateNavigator(stateNavigator.default);
@@ -80,15 +68,6 @@ async function renderApp(req, res, el, url = req.url) {
   const root = React.createElement(
     React.Fragment,
     null,
-    // Prepend the App's tree with stylesheets required for this entrypoint.
-    mainCSSChunks.map(filename =>
-      React.createElement('link', {
-        rel: 'stylesheet',
-        href: '/' + filename,
-        precedence: 'default',
-        key: filename,
-      })
-    ),
     React.createElement(
       NavigationHandler,
       {stateNavigator: navigator},
@@ -129,24 +108,5 @@ app.put('*', async (req, res) => {
 });
 
 app.listen(3001, () => {
-  console.log('Regional Flight Server listening on port 3001...');
-});
-
-app.on('error', function (error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-
-  switch (error.code) {
-    case 'EACCES':
-      console.error('port 3001 requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error('Port 3001 is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
+  console.log('Server listening on port 3001...');
 });

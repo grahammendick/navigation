@@ -210,24 +210,5 @@ if (process.env.NODE_ENV === 'development') {
 app.all('*', renderApp);
 
 app.listen(3000, () => {
-  console.log('Global Fizz/Webpack Server listening on port 3000...');
-});
-
-app.on('error', function (error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-
-  switch (error.code) {
-    case 'EACCES':
-      console.error('port 3000 requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error('Port 3000 is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
+  console.log('Webpack Server listening on port 3000...');
 });
