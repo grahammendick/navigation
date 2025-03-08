@@ -42,7 +42,7 @@ const React = require('react');
 const {StateNavigator} = require('navigation');
 const stateNavigator = require('../src/stateNavigator.js');
 
-async function renderApp(req, res, el, url = req.url) {
+async function renderApp(req, res, el, navigator) {
   const {renderToPipeableStream} = await import(
     'react-server-dom-webpack/server'
   );
@@ -63,8 +63,6 @@ async function renderApp(req, res, el, url = req.url) {
     );
   }
   const {NavigationHandler} = await import('navigation-react');
-  const navigator = new StateNavigator(stateNavigator.default);
-  navigator.navigateLink(url);
   const root = React.createElement(
     React.Fragment,
     null,
@@ -80,7 +78,9 @@ async function renderApp(req, res, el, url = req.url) {
 app.get('*', async function (req, res) {
   const m = await import('../src/App.js');
   const App = m.default.default || m.default;
-  await renderApp(req, res, React.createElement(App, {url: req.url}));
+  const navigator = new StateNavigator(stateNavigator.default);
+  navigator.navigateLink(req.url);
+  await renderApp(req, res, React.createElement(App, {url: req.url}), navigator);
 });
 
 app.post('*', async function (req, res) {
@@ -91,7 +91,9 @@ app.post('*', async function (req, res) {
   };
   const {url, sceneViewKey} = req.body;
   const View = sceneViews[sceneViewKey].default;
-  await renderApp(req, res, React.createElement(View), url);
+  const navigator = new StateNavigator(stateNavigator.default);
+  navigator.navigateLink(url);
+  await renderApp(req, res, React.createElement(View), navigator);
 });
 
 app.put('*', async (req, res) => {
@@ -104,7 +106,8 @@ app.put('*', async (req, res) => {
     fluentNavigator = fluentNavigator.navigate(crumbs[i].state, crumbs[i].data);
   }
   fluentNavigator = fluentNavigator.navigate(state, data);
-  await renderApp(req, res, React.createElement(App, {url: fluentNavigator.url}), fluentNavigator.url);
+  navigator.navigateLink(fluentNavigator.url);
+  await renderApp(req, res, React.createElement(App, {url: fluentNavigator.url}), navigator);
 });
 
 app.listen(3001, () => {
