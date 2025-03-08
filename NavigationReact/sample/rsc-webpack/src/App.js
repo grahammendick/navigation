@@ -4,7 +4,7 @@ import RootProvider from "./RootProvider.js";
 import Person from './Person.js';
 import People from './People.js';
 
-export default async function App({url}) {
+const App = async ({url}) => {
   return (
     <html>
       <head>
@@ -23,3 +23,5 @@ export default async function App({url}) {
     </html>
   );
 }
+
+export default App;
