@@ -1,10 +1,10 @@
 'use client'
 import * as React from 'react';
-import { useMemo, useEffect, useContext } from "react";
+import { useMemo, useEffect, useContext } from 'react';
 import ReactServerDomWebpackClient from 'react-server-dom-webpack/client';
 import { StateNavigator, HTML5HistoryManager } from 'navigation';
-import { NavigationHandler } from "navigation-react";
-import stateNavigator from "./stateNavigator.js";
+import { NavigationHandler } from 'navigation-react';
+import stateNavigator from './stateNavigator.js';
 import HmrContext from './HmrContext.js';
 
 const fetchRSC = async (url, options) => {
