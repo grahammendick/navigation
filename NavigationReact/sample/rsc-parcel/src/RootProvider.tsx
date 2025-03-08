@@ -9,8 +9,7 @@ import HmrContext from "./HmrContext";
 const RootProvider = ({url, children}: any) => {
   const setRoot = useContext(HmrContext);
   const navigator = useMemo(() => {
-    // remove app appPath!
-    const navigator = new StateNavigator(stateNavigator, new HTML5HistoryManager('app'));
+    const navigator = new StateNavigator(stateNavigator, new HTML5HistoryManager());
     navigator.navigateLink(url);
     return navigator;
   }, []);
