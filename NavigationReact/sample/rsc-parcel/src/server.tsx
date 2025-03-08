@@ -53,7 +53,6 @@ app.post('*', async (req, res) => {
   stream.pipe(res);
 });
 
-
 app.put('*', async (req, res) => {
   const navigator = new StateNavigator(stateNavigator);
   const {state, data, crumbs} = req.body;
