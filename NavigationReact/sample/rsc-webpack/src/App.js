@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { SceneView } from "navigation-react";
 import RootProvider from "./RootProvider.js";
-import Person from './Person.js';
 import People from './People.js';
+import Person from './Person.js';
 
 const App = async ({url}) => {
   return (
