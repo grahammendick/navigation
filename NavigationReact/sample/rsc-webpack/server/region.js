@@ -104,7 +104,6 @@ app.get('*', async function (req, res) {
   await renderApp(req, res, React.createElement(App, {url: req.url}));
 });
 
-
 app.post('*', async function (req, res) {
   const sceneViews = {
     people: await import('../src/People.js'),
@@ -114,6 +113,19 @@ app.post('*', async function (req, res) {
   const {url, sceneViewKey} = req.body;
   const View = sceneViews[sceneViewKey].default;
   await renderApp(req, res, React.createElement(View), url);
+});
+
+app.put('*', async (req, res) => {
+  const m = await import('../src/App.js');
+  const App = m.default.default || m.default;
+  const navigator = new StateNavigator(stateNavigator.default);
+  const {state, data, crumbs} = req.body;
+  let fluentNavigator = navigator.fluent();
+  for (let i = 0; i < crumbs.length; i++) {
+    fluentNavigator = fluentNavigator.navigate(crumbs[i].state, crumbs[i].data);
+  }
+  fluentNavigator = fluentNavigator.navigate(state, data);
+  await renderApp(req, res, React.createElement(App, {url: fluentNavigator.url}), fluentNavigator.url);
 });
 
 app.listen(3001, () => {
