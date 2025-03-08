@@ -25,6 +25,7 @@ const fetchRSC = async (url, options) => {
 const RootProvider = ({url, children}) => {
   const setRoot = useContext(HmrContext);
   const navigator = useMemo(() => {
+    // remove app appPath!
     const navigator = new StateNavigator(stateNavigator, new HTML5HistoryManager('app'));
     navigator.navigateLink(url);
     return navigator;
