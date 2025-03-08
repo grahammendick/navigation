@@ -106,7 +106,8 @@ public class BottomSheetDialogView extends ReactViewGroup {
 
     public static class BottomSheetFragment extends BottomSheetDialogFragment implements DialogFragmentController {
         private BottomSheetDialogView dialogView;
-        BottomSheetBehavior.BottomSheetCallback bottomSheetCallback;
+        private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback;
+        private boolean hostAttached = false;
 
         @SuppressLint({"Range", "WrongConstant"})
         @Nullable
@@ -150,7 +151,8 @@ public class BottomSheetDialogView extends ReactViewGroup {
             assert window != null : "Window is null";
             window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             window.setBackgroundDrawable(null);
-            if (dialogView != null) {
+            if (!hostAttached && dialogView != null) {
+                hostAttached = true;
                 ((View) dialogView.dialogRootView.getParent()).setBackgroundColor(Color.TRANSPARENT);
                 dialogView.dialogRootView.fragmentController.attachHost(null);
                 dialogView.dialogRootView.fragmentController.dispatchStart();
