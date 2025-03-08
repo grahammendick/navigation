@@ -175,7 +175,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                         if (!!React.Suspense && viewConfig?.validAttributes?.style) {
                             viewConfig.validAttributes.style = {
                                 ...viewConfig.validAttributes.style,
-                                display: false
+                                display: null
                             };
                         }
                     }}

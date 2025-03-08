@@ -107,6 +107,7 @@ public class DialogView extends ReactViewGroup {
     {
         private DialogView dialogView;
         private boolean edgeToEdge;
+        private boolean hostAttached = false;
 
         @Nullable
         @Override
@@ -129,7 +130,8 @@ public class DialogView extends ReactViewGroup {
             setEdgeToEdge(this.edgeToEdge);
             window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             window.setBackgroundDrawable(null);
-            if (dialogView != null) {
+            if (!hostAttached && dialogView != null) {
+                hostAttached = true;
                 dialogView.dialogRootView.fragmentController.attachHost(null);
                 dialogView.dialogRootView.fragmentController.dispatchStart();
                 dialogView.dialogRootView.lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
