@@ -202,7 +202,6 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         layout(getLeft(), getTop(), getRight(), getBottom());
     };
 
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.UNSPECIFIED);
