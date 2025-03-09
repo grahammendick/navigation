@@ -5,6 +5,7 @@ import android.content.ContextWrapper;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.annotation.UiThread;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactContext;
@@ -47,6 +49,9 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         defaultActiveIndicatorColor = getItemActiveIndicatorColor() != null ? getItemActiveIndicatorColor().getDefaultColor() : Color.WHITE;
         defaultRippleColor = getItemRippleColor() != null ? getItemRippleColor().getColorForState(new int[]{ android.R.attr.state_pressed }, Color.WHITE) : Color.WHITE;
         defaultShadowColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? getOutlineAmbientShadowColor() : Color.WHITE;
+        CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        setLayoutParams(params);
+        params.gravity = Gravity.BOTTOM;
         setOnItemSelectedListener(menuItem -> {
             TabBarView tabBar = getTabBar();
             if (!autoSelected && tabBar != null && tabBar.selectedTab == menuItem.getOrder())
@@ -189,6 +194,13 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
         }
     }
 
+    @Override
+    public void setPaddingRelative(int start, int top, int end, int bottom) {
+        super.setPaddingRelative(start, top, end, bottom);
+        if (getParent() instanceof CoordinatorLayoutView coordinatorLayoutView)
+            coordinatorLayoutView.measureAndLayout.run();
+    }
+
     private final Runnable measureAndLayout = () -> {
         layoutRequested = false;
         measure(
@@ -196,6 +208,14 @@ public class TabNavigationView extends BottomNavigationView implements TabView {
             MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
         layout(getLeft(), getTop(), getRight(), getBottom());
     };
+
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.UNSPECIFIED);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
 
     @Override
     public void setTitle(int index, CharSequence title) {

@@ -2,7 +2,7 @@ import React, {useState, useMemo, useContext} from 'react';
 import {Platform} from 'react-native';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler, NavigationContext} from 'navigation-react';
-import {NavigationStack, Scene, TabBar, TabBarItem, NavigationBar} from 'navigation-react-native';
+import {NavigationStack, Scene, TabBar, TabBarItem, NavigationBar, CoordinatorLayout} from 'navigation-react-native';
 import Home from './Home';
 import Notifications from './Notifications';
 import Tweet from './Tweet';
@@ -19,9 +19,9 @@ export default () => {
   const homeNavigator = useStateNavigator();
   const notificationsNavigator = useStateNavigator();
   return (
-    <>
+    <CoordinatorLayout>
       <NavigationBar hidden={true} />
-      <TabBar primary={true} barTintColor={Platform.OS === 'android' ? null : 'rgb(247,247,247)'} selectedTintColor={Platform.OS === 'android' ? '#1da1f2' : null}>
+      <TabBar primary={true} barTintColor={Platform.OS === 'android' ? 'white' : 'rgb(247,247,247)'} selectedTintColor={Platform.OS === 'android' ? '#1da1f2' : null}>
         <TabBarItem title="Home" image={require('./home.png')}>
           {Platform.OS === 'ios'
             ? (<NavigationHandler stateNavigator={homeNavigator}>
@@ -49,6 +49,6 @@ export default () => {
             : <Notifications />}
         </TabBarItem>
       </TabBar>
-    </>
+    </CoordinatorLayout>
   );
 }
