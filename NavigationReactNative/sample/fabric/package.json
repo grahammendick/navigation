@@ -13,7 +13,7 @@
     "@testing-library/react-native": "^13.1.0",
     "navigation": "^6.2.0",
     "navigation-react": "^4.5.1",
-    "navigation-react-native": "^9.29.0",
+    "navigation-react-native": "^9.30.2",
     "react": "19.0.0",
     "react-native": "0.78.0"
   },
