@@ -26,7 +26,6 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
                 if (cancel || !unmountStyle) return;
                 if (!scene.pushEnter) {
                     const {duration = defaultDuration, keyframes = unmountStyle} = unmountStyle;
-                    if (!duration || !keyframes) return;
                     scene.pushEnter = scene.animate(keyframes, {duration, fill: 'both'});
                     scene.pushEnter.persist();
                 }
@@ -69,7 +68,6 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
                 if (cancel || !crumbStyle) return;
                 if (!scene.popEnter && (pushExit || popEnter)) {       
                     const {duration = defaultDuration, keyframes = crumbStyle} = crumbStyle;
-                    if (!duration || !keyframes) return;
                     scene.popEnter = scene.animate(keyframes, {duration, fill: 'backwards'});
                     scene.popEnter.persist();
                 }
