@@ -13,15 +13,15 @@ class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEve
     static defaultProps = {
         renderScene: (state: State, data: any) => state.renderScene(data)
     }
-    static getDerivedStateFromProps(props: SceneProps & {navigationEvent: NavigationEvent}, {navigationEvent: prevNavigationEvent}: SceneState) {
+    static getDerivedStateFromProps(props: SceneProps & {navigationEvent: NavigationEvent}) {
         var {url, navigationEvent} = props;
         var {url: currentUrl, state} = navigationEvent.stateNavigator.stateContext;
         return (!state || url !== currentUrl) ? null : {navigationEvent};
     }
-    shouldComponentUpdate({crumb, rest, navigationEvent: {stateNavigator}}, nextState) {
-        var {crumbs} = stateNavigator.stateContext;
-        var freezableOrCurrent = rest && (!!React.Suspense || crumbs.length === crumb);
-        return freezableOrCurrent || nextState.navigationEvent !== this.state.navigationEvent;
+    shouldComponentUpdate({crumb, rest, navigationEvent}, nextState) {
+        var {crumbs} = navigationEvent.stateNavigator.stateContext;
+        var freezableOrCurrent = (rest && (!!React.Suspense || crumbs.length === crumb));
+        return freezableOrCurrent || navigationEvent !== this.props.navigationEvent || nextState.navigationEvent !== this.state.navigationEvent;
     }
     render() {
         var {navigationEvent} = this.state;
