@@ -18,10 +18,10 @@ class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEve
         var {url: currentUrl, state} = navigationEvent.stateNavigator.stateContext;
         return (!state || url !== currentUrl) ? null : {navigationEvent};
     }
-    shouldComponentUpdate({crumb, rest, navigationEvent}, nextState) {
+    shouldComponentUpdate({crumb, rest, navigationEvent}) {
         var {crumbs} = navigationEvent.stateNavigator.stateContext;
-        var freezableOrCurrent = (rest && (!!React.Suspense || crumbs.length === crumb));
-        return freezableOrCurrent || navigationEvent !== this.props.navigationEvent || nextState.navigationEvent !== this.state.navigationEvent;
+        var freezableOrCurrent = rest && (!!React.Suspense || crumbs.length === crumb);
+        return freezableOrCurrent || navigationEvent !== this.props.navigationEvent;
     }
     render() {
         var {navigationEvent} = this.state;
