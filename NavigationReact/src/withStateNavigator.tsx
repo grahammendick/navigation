@@ -1,4 +1,4 @@
-import { ComponentType } from 'react';
+import React, { ComponentType } from 'react';
 import NavigationContext from './NavigationContext.js';
 import { LinkProps } from './Props.js';
 

@@ -17,7 +17,7 @@ events.EventEmitter.defaultMaxListeners = 0;
 var items = [
     require('./build/npm/navigation/package.json'),
     Object.assign({ globals: { navigation: 'Navigation', react: 'React',
-            'react-dom': 'ReactDOM', 'react/jsx-runtime': '_jsx' } }, 
+            'react-dom': 'ReactDOM' } }, 
         require('./build/npm/navigation-react/package.json')),
     Object.assign({ globals: { navigation: 'Navigation',
             'navigation-react': 'NavigationReact', react: 'React' } },

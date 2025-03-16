@@ -1,4 +1,4 @@
-import { startTransition } from 'react';
+import * as React from 'react';
 import NavigationHandler from './NavigationHandler';
 import { StateNavigator, StateContext } from 'navigation';
 
@@ -30,6 +30,7 @@ class AsyncStateNavigator extends StateNavigator {
             super.refresh(navigationData, historyAction);
         else {
             const { oldState, state, data, asyncData } = this.stateContext;
+            const startTransition = React.startTransition || ((transition) => transition());
             startTransition(() => {
                 this.navigationHandler.setState({ context: { ignoreCache: true, oldState, state, data, asyncData, stateNavigator: this } });
             });
@@ -62,6 +63,7 @@ class AsyncStateNavigator extends StateNavigator {
             suspendNavigation(stateContext, () => {
                 var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext);
                 var { oldState, state, data, asyncData } = asyncNavigator.stateContext;
+                const startTransition = React.startTransition || ((transition) => transition());
                 startTransition(() => {
                     this.navigationHandler.setState({ context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } }, () => {
                         if (stateContext === this.navigationHandler.state.context.stateNavigator.stateContext)

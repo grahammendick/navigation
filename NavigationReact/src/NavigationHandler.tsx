@@ -1,5 +1,5 @@
 'use client'
-import { startTransition, Component } from 'react';
+import React, { Component } from 'react';
 import { StateNavigator, State } from 'navigation';
 import AsyncStateNavigator from './AsyncStateNavigator.js';
 import NavigationContext from './NavigationContext.js';
@@ -30,6 +30,7 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, fetc
         if (this.state.context.stateNavigator.stateContext !== stateContext) {
             const { history, oldState, state, data, asyncData } = stateContext;
             const asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateContext);
+            const startTransition = React.startTransition || ((transition) => transition());
             this.setState({ context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } }, () => {
                 if (stateNavigator.stateContext === stateContext && history) {
                     startTransition(() => {

@@ -1,4 +1,5 @@
 'use client'
+import * as React from 'react';
 import LinkUtility from './LinkUtility.js';
 import withStateNavigator from './withStateNavigator.js';
 import { FluentLinkProps } from './Props.js';

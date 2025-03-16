@@ -1,4 +1,4 @@
-import { useContext, Component, useEffect, ReactNode } from 'react';
+import React, { useContext, Component, useEffect, ReactNode } from 'react';
 import { StateNavigator } from 'navigation';
 import withStateNavigator from './withStateNavigator.js';
 import NavigationContext from './NavigationContext.js';
