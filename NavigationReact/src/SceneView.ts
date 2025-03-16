@@ -14,5 +14,4 @@ const SceneView = ({active, children}: SceneViewProps) => {
         ));
     return show ? children : null;
 }
-
 export default SceneView;
