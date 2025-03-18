@@ -3,7 +3,6 @@ import React, { createContext, use, useContext, useEffect, useRef } from 'react'
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
-import RSCErrorBoundary from './RSCErrorBoundary.js';
 
 const rscCache: Map<any, Record<string, any>> = new Map();
 const historyCache = {};
@@ -73,11 +72,9 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     }
     const sceneView = getSceneView();
     return (
-        <RSCErrorBoundary errorFallback={errorFallback}>
-            <RSCContext.Provider value={ancestorFetching || dataChanged()}>
-                {sceneView?.then ? use(sceneView) : sceneView}
-            </RSCContext.Provider>
-        </RSCErrorBoundary>
+        <RSCContext.Provider value={ancestorFetching || dataChanged()}>
+            {sceneView?.then ? use(sceneView) : sceneView}
+        </RSCContext.Provider>
     );
 };
 export default SceneRSCView;
