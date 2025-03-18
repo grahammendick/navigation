@@ -1,6 +1,4 @@
 import React, { useContext, Component, useEffect, ReactNode } from 'react';
-import { StateNavigator } from 'navigation';
-import withStateNavigator from './withStateNavigator.js';
 import NavigationContext from './NavigationContext.js';
 
 const NavigationEffect = ({url, historyAction}: {url: string, historyAction: string}) => {
@@ -11,12 +9,12 @@ const NavigationEffect = ({url, historyAction}: {url: string, historyAction: str
     return null;
 }
 
-class RSCErrorBoundary extends Component<{stateNavigator: StateNavigator, errorFallback: ReactNode, children: any}, {error: Error}> {
+class RSCErrorBoundary extends Component<{errorFallback: ReactNode, children: any}, {error: Error}> {
     constructor(props) {
       super(props);
       this.state = {error: null};
     }
-    static getDerivedStateFromError(error) {
+    static getDerivedStateFromError(error: any) {
         return {error};
     }
     render() {        
@@ -36,4 +34,4 @@ class RSCErrorBoundary extends Component<{stateNavigator: StateNavigator, errorF
         return !error ? children : errorFallback;
     }
 }
-export default withStateNavigator(RSCErrorBoundary);
+export default RSCErrorBoundary;

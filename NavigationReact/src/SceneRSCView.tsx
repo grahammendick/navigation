@@ -9,6 +9,8 @@ const rscCache: Map<any, Record<string, any>> = new Map();
 const historyCache = {};
 const RSCContext = createContext(false);
 
+const Content = ({sceneView}) => sceneView?.then ? use(sceneView) : sceneView;
+
 const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
     const navigationEvent = useNavigationEvent();
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
@@ -73,9 +75,9 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     }
     const sceneView = getSceneView();
     return (
-        <RSCErrorBoundary errorFallback={errorFallback}>
+        <RSCErrorBoundary key={stateContext.url} errorFallback={errorFallback}>
             <RSCContext.Provider value={ancestorFetching || dataChanged()}>
-                {sceneView?.then ? use(sceneView) : sceneView}
+                <Content sceneView={sceneView} />
             </RSCContext.Provider>
         </RSCErrorBoundary>
     );
