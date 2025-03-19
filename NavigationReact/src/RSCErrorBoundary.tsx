@@ -1,5 +1,7 @@
 import React, { useContext, Component, useEffect, ReactNode } from 'react';
+import { StateContext, StateNavigator } from 'navigation';
 import NavigationContext from './NavigationContext.js';
+import withStateNavigator from './withStateNavigator.js';
 
 const NavigationEffect = ({url, historyAction}: {url: string, historyAction: string}) => {
     const {stateNavigator} = useContext(NavigationContext);
@@ -9,18 +11,25 @@ const NavigationEffect = ({url, historyAction}: {url: string, historyAction: str
     return null;
 }
 
-class RSCErrorBoundary extends Component<{errorFallback: ReactNode, children: any}, {error: Error}> {
+type RSCErrorBoundaryProps = {stateNavigator: StateNavigator, errorFallback: ReactNode, children: any}
+type RSCErrorBoundaryState = {error: Error, stateContext: StateContext};
+
+class RSCErrorBoundary extends Component<RSCErrorBoundaryProps, RSCErrorBoundaryState> {
     constructor(props) {
       super(props);
-      this.state = {error: null};
+      this.state = {error: null, stateContext: null};
+    }
+    static getDerivedStateFromProps({stateNavigator: {stateContext}}: RSCErrorBoundaryProps, {error, stateContext: errorContext}: RSCErrorBoundaryState) {
+        if (errorContext && errorContext !== stateContext) return {error: null, stateContext: null};
+        return {stateContext: error ? stateContext : null};
     }
     static getDerivedStateFromError(error: any) {
         return {error};
     }
     render() {        
-        const {errorFallback, children} = this.props;
-        const {error} = this.state;
-        if (error) {
+        const {stateNavigator: {stateContext}, errorFallback, children} = this.props;
+        const {error, stateContext: errorContext} = this.state;
+        if (error && errorContext === stateContext) {
             const {message} = this.state.error;
             if (typeof message === 'string') {
                 const parts = message.split(';');
@@ -34,4 +43,4 @@ class RSCErrorBoundary extends Component<{errorFallback: ReactNode, children: an
         return !error ? children : errorFallback;
     }
 }
-export default RSCErrorBoundary;
+export default withStateNavigator(RSCErrorBoundary);

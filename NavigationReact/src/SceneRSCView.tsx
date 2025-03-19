@@ -74,7 +74,7 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         fetchedSceneView = cachedSceneViews[sceneViewKey];
     }
     return (
-        <RSCErrorBoundary key={stateContext.url} errorFallback={errorFallback}>
+        <RSCErrorBoundary errorFallback={errorFallback}>
             <RSCContext.Provider value={ancestorFetching || dataChanged()}>
                 <SceneView>{getSceneView()}</SceneView>
             </RSCContext.Provider>
