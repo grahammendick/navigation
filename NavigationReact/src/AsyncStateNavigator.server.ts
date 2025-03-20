@@ -1,9 +1,11 @@
-import { StateNavigator } from 'navigation';
+import { StateContext, StateNavigator, State } from 'navigation';
 
-class AsyncStateNavigator extends StateNavigator {
+class AsyncStateNavigator {
+    stateContext: StateContext;
+    states: { [index: string]: State };
     constructor(stateNavigator: StateNavigator) {
-        super(stateNavigator, stateNavigator.historyManager);
         this.stateContext = stateNavigator.stateContext;
+        this.states = stateNavigator.states;
     }
 }
 export default AsyncStateNavigator;
