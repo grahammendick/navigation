@@ -21,17 +21,11 @@ app.get('/favicon.ico', function (req, res) {
 app.get('*', async (req, res) => {
   const navigator = new StateNavigator(stateNavigator);
   navigator.navigateLink(req.url);
-  try {
-    await renderRequest(req, res, (
-      <NavigationHandler stateNavigator={navigator}>
-        <App url={req.url} />
-      </NavigationHandler>
-    ), {component: App});
-  } catch(e) {
-    const [name, url] = (e as Error).message.split(';');
-    if (name === 'navigateLink') res.redirect(url);
-    else throw e;
-  }
+  await renderRequest(req, res, (
+    <NavigationHandler stateNavigator={navigator}>
+      <App url={req.url} />
+    </NavigationHandler>
+  ), {component: App});
 });
 
 app.post('*', async (req, res) => {
