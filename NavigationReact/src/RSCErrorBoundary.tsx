@@ -15,7 +15,7 @@ type RSCErrorBoundaryProps = {stateNavigator: StateNavigator, errorFallback: Rea
 type RSCErrorBoundaryState = {error: Error, stateContext: StateContext};
 
 class RSCErrorBoundary extends Component<RSCErrorBoundaryProps, RSCErrorBoundaryState> {
-    constructor(props) {
+    constructor(props: RSCErrorBoundaryProps) {
       super(props);
       this.state = {error: null, stateContext: null};
     }
@@ -27,16 +27,31 @@ class RSCErrorBoundary extends Component<RSCErrorBoundaryProps, RSCErrorBoundary
         return {error};
     }
     render() {        
-        const {stateNavigator: {stateContext}, errorFallback, children} = this.props;
+        const {stateNavigator, errorFallback, children} = this.props;
         const {error, stateContext: errorContext} = this.state;
-        if (error && errorContext === stateContext) {
+        if (error?.message && errorContext === stateNavigator.stateContext) {
             const {message} = this.state.error;
-            if (typeof message === 'string') {
-                const parts = message.split(';');
-                const [name, url, historyAction] = parts;
-                if (name === 'navigateLink') {
-                    return <NavigationEffect url={url} historyAction={historyAction} />
+            if (typeof message === 'string' && message.match(/^(navigate|navigateBack|refresh);/)) {
+                const sep1 = message.indexOf(';');
+                const sep2 = message.lastIndexOf(';');
+                const navigate = message.substring(0, sep1);
+                const historyAction = message.substring(sep2 + 1); 
+                let url = '';
+                if (navigate === 'navigate') {
+                    const link = message.substring(sep1 + 1, sep2);
+                    const {state, data} = stateNavigator.parseLink(link);
+                    url = stateNavigator.getNavigationLink(state.key, data);
                 }
+                if (navigate === 'navigateBack') {
+                    const distance = +message.substring(sep1 + 1, sep2);
+                    url = stateNavigator.getNavigationBackLink(distance);
+                }
+                if (navigate === 'refresh') {
+                    const link = message.substring(sep1 + 1, sep2);
+                    const {data} = stateNavigator.parseLink(link);
+                    url = stateNavigator.getRefreshLink(data);
+                }
+                return <NavigationEffect url={url} historyAction={historyAction} />
             }
         }
         if (error && !errorFallback) throw error;

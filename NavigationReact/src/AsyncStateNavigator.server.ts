@@ -6,8 +6,18 @@ class AsyncStateNavigator extends StateNavigator {
         this.stateContext = stateNavigator.stateContext;
     }
 
-    navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'replace') {
-        throw Error(`navigateLink;${url};${historyAction}`);
+    navigate<StateKey extends string>(stateKey: StateKey, navigationData?: any, historyAction: 'add' | 'replace' | 'none' = 'replace'): void {
+        const url = super.getNavigationLink(stateKey, navigationData)
+        throw Error(`navigate;${url};${historyAction}`);
+    }
+
+    navigateBack(distance: number, historyAction: 'add' | 'replace' | 'none' = 'replace'): void {
+        throw Error(`navigateBack;${distance};${historyAction}`);
+    }
+
+    refresh(navigationData?: any, historyAction: 'add' | 'replace' | 'none' = 'replace'): void {
+        const url = super.getRefreshLink(navigationData)
+        throw Error(`refresh;${url};${historyAction}`);
     }
 }
 export default AsyncStateNavigator;
