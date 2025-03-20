@@ -18,9 +18,9 @@ class RSCErrorBoundary extends Component<RSCErrorBoundaryProps, RSCErrorBoundary
         return {error};
     }
     render() {        
-        const {stateNavigator, errorFallback, children} = this.props;
-        const {error, stateContext: errorContext} = this.state;
-        if (error && errorContext === stateNavigator.stateContext) {
+        const {errorFallback, children} = this.props;
+        const {error} = this.state;
+        if (error) {
             if (!errorFallback) throw error;
             return errorFallback;
         }
