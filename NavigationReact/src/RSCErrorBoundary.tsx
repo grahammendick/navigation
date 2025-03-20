@@ -1,15 +1,6 @@
-import React, { useContext, Component, useEffect, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { StateContext, StateNavigator } from 'navigation';
-import NavigationContext from './NavigationContext.js';
 import withStateNavigator from './withStateNavigator.js';
-
-const NavigationEffect = ({url, historyAction}: {url: string, historyAction: string}) => {
-    const {stateNavigator} = useContext(NavigationContext);
-    useEffect(() => {
-        if (url) stateNavigator.navigateLink(url, historyAction as 'add' | 'replace' | 'none');
-    }, [url, historyAction])
-    return null;
-}
 
 type RSCErrorBoundaryProps = {stateNavigator: StateNavigator, errorFallback: ReactNode, children: any}
 type RSCErrorBoundaryState = {error: Error, stateContext: StateContext};
@@ -29,33 +20,11 @@ class RSCErrorBoundary extends Component<RSCErrorBoundaryProps, RSCErrorBoundary
     render() {        
         const {stateNavigator, errorFallback, children} = this.props;
         const {error, stateContext: errorContext} = this.state;
-        if (error?.message && errorContext === stateNavigator.stateContext) {
-            const {message} = this.state.error;
-            if (typeof message === 'string' && message.match(/^(navigate|navigateBack|refresh);/)) {
-                const sep1 = message.indexOf(';');
-                const sep2 = message.lastIndexOf(';');
-                const navigate = message.substring(0, sep1);
-                const historyAction = message.substring(sep2 + 1); 
-                let url = '';
-                if (navigate === 'navigate') {
-                    const link = message.substring(sep1 + 1, sep2);
-                    const {state, data} = stateNavigator.parseLink(link);
-                    url = stateNavigator.getNavigationLink(state.key, data);
-                }
-                if (navigate === 'navigateBack') {
-                    const distance = +message.substring(sep1 + 1, sep2);
-                    url = stateNavigator.getNavigationBackLink(distance);
-                }
-                if (navigate === 'refresh') {
-                    const link = message.substring(sep1 + 1, sep2);
-                    const {data} = stateNavigator.parseLink(link);
-                    url = stateNavigator.getRefreshLink(data);
-                }
-                return <NavigationEffect url={url} historyAction={historyAction} />
-            }
+        if (error && errorContext === stateNavigator.stateContext) {
+            if (!errorFallback) throw error;
+            return errorFallback;
         }
-        if (error && !errorFallback) throw error;
-        return !error ? children : errorFallback;
+        return children;
     }
 }
 export default withStateNavigator(RSCErrorBoundary);
