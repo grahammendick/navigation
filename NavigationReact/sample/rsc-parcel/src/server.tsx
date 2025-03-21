@@ -19,10 +19,10 @@ app.get('/favicon.ico', function (req, res) {
 });
 
 app.get('*', async (req, res) => {
-  const navigator = new StateNavigator(stateNavigator);
-  navigator.navigateLink(req.url);
+  const serverNavigator = new StateNavigator(stateNavigator);
+  serverNavigator.navigateLink(req.url);
   await renderRequest(req, res, (
-    <NavigationHandler stateNavigator={navigator}>
+    <NavigationHandler stateNavigator={serverNavigator}>
       <App url={req.url} />
     </NavigationHandler>
   ), {component: App});
@@ -36,10 +36,10 @@ app.post('*', async (req, res) => {
   };
   const {url, sceneViewKey} = req.body;
   const View = sceneViews[sceneViewKey];
-  const navigator = new StateNavigator(stateNavigator);
-  navigator.navigateLink(url);
+  const serverNavigator = new StateNavigator(stateNavigator);
+  serverNavigator.navigateLink(url);
   const stream = renderRSC(
-    <NavigationHandler stateNavigator={navigator}>
+    <NavigationHandler stateNavigator={serverNavigator}>
       <View />
     </NavigationHandler>
   );
@@ -48,16 +48,16 @@ app.post('*', async (req, res) => {
 });
 
 app.put('*', async (req, res) => {
-  const navigator = new StateNavigator(stateNavigator);
+  const serverNavigator = new StateNavigator(stateNavigator);
   const {state, data, crumbs} = req.body;
-  let fluentNavigator = navigator.fluent();
+  let fluentNavigator = serverNavigator.fluent();
   for (let i = 0; i < crumbs.length; i++) {
     fluentNavigator = fluentNavigator.navigate(crumbs[i].state, crumbs[i].data);
   }
   fluentNavigator = fluentNavigator.navigate(state, data);
-  navigator.navigateLink(fluentNavigator.url);
+  serverNavigator.navigateLink(fluentNavigator.url);
   const stream = renderRSC(
-    <NavigationHandler stateNavigator={navigator}>
+    <NavigationHandler stateNavigator={serverNavigator}>
       <App url={fluentNavigator.url} />
     </NavigationHandler>
   );
