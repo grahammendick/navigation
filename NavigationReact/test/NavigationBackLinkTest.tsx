@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as mocha from 'mocha';
 import { StateNavigator } from 'navigation';
-import { NavigationBackLink, NavigationHandler, NavigationContext } from 'navigation-react';
+import { NavigationBackLink, NavigationHandler, NavigationContext, useNavigationEvent } from 'navigation-react';
 import React, { useContext, useState, useEffect, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import { act, Simulate } from 'react-dom/test-utils';
@@ -1002,6 +1002,46 @@ describe('NavigationBackLinkTest', function () {
                 assert.equal(stateNavigator.stateContext.data.x, 1);
                 done()
             })
+        })
+    });
+
+    describe('Use Navigation Event', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            stateNavigator.navigate('s1', {y: 'b'});
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            let context;
+            const Scene = () => {
+                const {stateNavigator: {stateContext}} = useNavigationEvent();
+                context = stateContext;
+                return (
+                    <NavigationBackLink distance={1}>
+                        link text
+                    </NavigationBackLink>
+                )
+            }
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <Scene />
+                    </NavigationHandler>
+                );
+            });
+            assert.equal(context, stateNavigator.stateContext);
+            assert.equal(context.state, stateNavigator.states.s1);
+            assert.equal(context.data.x, undefined);
+            assert.equal(context.data.y, 'b');
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            act(() => Simulate.click(link));
+            assert.equal(context, stateNavigator.stateContext);
+            assert.equal(context.state, stateNavigator.states.s0);
+            assert.equal(context.data.x, 'a');
+            assert.equal(context.data.y, undefined);
         })
     });
 });
