@@ -33,7 +33,7 @@ export interface NavigationEvent<NavigationInfo extends { [index: string]: any }
 export var NavigationContext: Context<NavigationEvent<any, any>> & Context<NavigationEvent<any, string>>;
 
 /**
- * 
+ * The hook that provides the current navigation event data
  */
 export function useNavigationEvent<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string>() : NavigationEvent<NavigationInfo, Key>;
 
@@ -46,9 +46,9 @@ export interface NavigationHandlerProps {
      */
     stateNavigator: StateNavigator;
     /**
-     * 
+     * Streams react server components
      */
-    fetchRSC?: any;
+    fetchRSC?: (url: string, options: any) => Promise<any>;
     /**
      * The rendered content
      */
@@ -175,15 +175,19 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
      */
     active: (keyof NavigationInfo & string) | (keyof NavigationInfo & string)[] | ((stateContext: StateContext) => boolean);
     /**
-     * 
+     * The name identifying the View when fetching RSCs
      */
     name?: string;
     /**
-     * 
+     * The NavigationData keys that determine when to refetch the RSC View
      */
     dataKeyDeps?: string[];
     /**
-     * The view
+     * The content to show when the RSC fetch errors
+     */
+    errorFallback?: ReactNode;
+    /**
+     * The View
      */
     children: ReactNode;
 }
