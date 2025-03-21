@@ -1,10 +1,9 @@
 'use server-entry';
 import "./client";
-import React from "react";
 import { SceneView } from "navigation-react";
 import RootProvider from "./RootProvider";
-const People = React.lazy(() => import("./People"));
-const Person = React.lazy(() => import("./Person"));
+import People from "./People";
+import Person from "./Person";
 
 const App = async ({url}: any) => {
   return (
