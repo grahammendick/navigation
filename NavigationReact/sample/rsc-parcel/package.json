@@ -2,10 +2,10 @@
   "name": "rsc-parcel",
   "description": "",
   "version": "1.0.0",
-  "source": "src/server.tsx",
   "server": "dist/server.js",
   "targets": {
     "server": {
+      "source": "src/server.tsx",
       "context": "react-server",
       "includeNodeModules": {
         "express": false
@@ -17,9 +17,7 @@
     "start": "parcel --no-cache --cache-dir .parcel-cache"
   },
   "dependencies": {
-    "@parcel/config-default": "canary",
-    "@parcel/rsc": "canary",
-    "@parcel/runtime-rsc": "canary",
+    "@parcel/rsc": "^2.14.1",
     "@types/express": "*",
     "@types/node": "^22.10.1",
     "@types/parcel-env": "^0.0.6",
@@ -28,7 +26,7 @@
     "express": "^4.18.2",
     "navigation": "^6.2.0",
     "navigation-react": "^4.5.1-rsc.3",
-    "parcel": "canary",
+    "parcel": "^2.14.1",
     "process": "^0.11.10",
     "react": "canary",
     "react-dom": "canary"
@@ -38,5 +36,9 @@
   },
   "@parcel/bundler-default": {
     "minBundleSize": 0
+  },
+  "devDependencies": {
+    "@parcel/packager-react-static": "^2.14.1",
+    "@parcel/transformer-react-static": "^2.14.1"
   }
 }
