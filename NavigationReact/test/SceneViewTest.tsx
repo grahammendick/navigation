@@ -470,5 +470,39 @@ describe('SceneViewTest', function () {
             assert.equal(container.innerHTML, '<div>scene</div>');
         })
     });
+
+    describe('Scene View Error No Fallback', function () {
+        it('should throw', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's' }
+            ]);
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            const Scene = () => {
+                throw Error('scene error');
+            }
+            let message;
+            const err = console.error;
+            console.error = () => {};
+            try {
+                act(() => {
+                    root.render(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <SceneView active="s">
+                                <Scene />
+                            </SceneView>
+                        </NavigationHandler>
+                    );
+                });
+            } catch(e) {
+                message = e.message;
+            }
+            finally {
+                console.error = err;
+            }
+            assert.equal(message, 'scene error');
+        })
+    });
 });
 
