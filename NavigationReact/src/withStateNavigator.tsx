@@ -6,4 +6,3 @@ export default (Comp: ComponentType<any>) => (props: any) => (
         {({ stateNavigator }) => <Comp {...props} stateNavigator={stateNavigator} />}
     </NavigationContext.Consumer>
 );
-  
