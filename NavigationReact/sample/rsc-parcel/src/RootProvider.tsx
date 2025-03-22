@@ -8,16 +8,16 @@ import HmrContext from "./HmrContext";
 
 const RootProvider = ({url, children}: any) => {
   const setRoot = useContext(HmrContext);
-  const navigator = useMemo(() => {
-    const navigator = new StateNavigator(stateNavigator, new HTML5HistoryManager());
-    navigator.navigateLink(url);
-    return navigator;
+  const clientNavigator = useMemo(() => {
+    const clientNavigator = new StateNavigator(stateNavigator, new HTML5HistoryManager());
+    clientNavigator.navigateLink(url);
+    return clientNavigator;
   }, []);
   useEffect(() => {
     const onHmrReload = (e: any) => {
       e.preventDefault();
-      const {stateContext: {state, data, crumbs, nextCrumb: {crumblessUrl}}} = navigator;
-      const root = fetchRSC(navigator.historyManager.getHref(crumblessUrl), {
+      const {stateContext: {state, data, crumbs, nextCrumb: {crumblessUrl}}} = clientNavigator;
+      const root = fetchRSC(clientNavigator.historyManager.getHref(crumblessUrl), {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: {
@@ -32,7 +32,7 @@ const RootProvider = ({url, children}: any) => {
     return () => window.removeEventListener('parcelhmrreload', onHmrReload);
   });
   return (
-    <NavigationHandler stateNavigator={navigator} fetchRSC={fetchRSC}>
+    <NavigationHandler stateNavigator={clientNavigator} fetchRSC={fetchRSC}>
       {children}
     </NavigationHandler>
   )

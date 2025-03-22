@@ -24,16 +24,16 @@ const fetchRSC = async (url, options) => {
 
 const RootProvider = ({url, children}) => {
   const setRoot = useContext(HmrContext);
-  const navigator = useMemo(() => {
-    const navigator = new StateNavigator(stateNavigator, new HTML5HistoryManager());
-    navigator.navigateLink(url);
-    return navigator;
+  const clientNavigator = useMemo(() => {
+    const clientNavigator = new StateNavigator(stateNavigator, new HTML5HistoryManager());
+    clientNavigator.navigateLink(url);
+    return clientNavigator;
   }, []);
   useEffect(() => {
     const onHmrReload = (status) => {
       if (status !== 'idle') return;
-      const {stateContext: {state, data, crumbs, nextCrumb: {crumblessUrl}}} = navigator;
-      const root = fetchRSC(navigator.historyManager.getHref(crumblessUrl), {
+      const {stateContext: {state, data, crumbs, nextCrumb: {crumblessUrl}}} = clientNavigator;
+      const root = fetchRSC(clientNavigator.historyManager.getHref(crumblessUrl), {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: {
@@ -48,7 +48,7 @@ const RootProvider = ({url, children}) => {
     return () => import.meta.webpackHot?.removeStatusHandler(onHmrReload);
   });
   return (
-    <NavigationHandler stateNavigator={navigator} fetchRSC={fetchRSC}>
+    <NavigationHandler stateNavigator={clientNavigator} fetchRSC={fetchRSC}>
       {children}
     </NavigationHandler>
   )
