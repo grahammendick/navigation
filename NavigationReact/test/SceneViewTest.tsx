@@ -4,7 +4,7 @@ import { StateNavigator } from 'navigation';
 import { SceneView, NavigationHandler, useNavigationEvent } from 'navigation-react';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { act } from 'react-dom/test-utils';
+import { act, Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
 declare var global: any;
@@ -393,6 +393,80 @@ describe('SceneViewTest', function () {
             act(() => {
                 stateNavigator.navigate('s', {x: 'b'})
             });
+            assert.equal(container.innerHTML, '<div>scene</div>');
+        })
+    });
+
+    describe('Scene View Click Error', function () {
+        it('should render fallback', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's' }
+            ]);
+            stateNavigator.navigate('s');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            const Scene = () => {
+                const {stateNavigator, data: {x}} = useNavigationEvent();
+                if (x === 'a') throw Error();
+                return (
+                    <button onClick={() => {
+                        stateNavigator.navigate('s', {x: 'a'})
+                    }}>scene</button>
+                )
+            }
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView active="s" errorFallback={<h1>error</h1>}>
+                            <Scene />
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            var button = container.querySelector<HTMLButtonElement>('button');
+            const err = console.error;
+            console.error = () => {};
+            act(() => Simulate.click(button));
+            console.error = err;            
+            assert.equal(container.innerHTML, '<h1>error</h1>');
+        })
+    });
+
+    describe('Scene View Click Error Off', function () {
+        it('should hide fallback', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a'});
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            const Scene = () => {
+                const {data: {x}} = useNavigationEvent();
+                if (x === 'a') throw Error();
+                return <div>scene</div>;
+            }
+            const ErrorScene = () => {
+                const {stateNavigator} = useNavigationEvent();
+                return (
+                    <button onClick={() => {
+                        stateNavigator.navigate('s', {x: 'b'})
+                    }} />
+                )
+            }
+            const err = console.error;
+            console.error = () => {};
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView active="s" errorFallback={<ErrorScene />}>
+                            <Scene />
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            console.error = err;            
+            var button = container.querySelector<HTMLButtonElement>('button');
+            act(() => Simulate.click(button));
             assert.equal(container.innerHTML, '<div>scene</div>');
         })
     });
