@@ -183,7 +183,7 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
      */
     dataKeyDeps?: string[];
     /**
-     * The content to show when the RSC fetch errors
+     * The content to show when the View errors
      */
     errorFallback?: ReactNode;
     /**

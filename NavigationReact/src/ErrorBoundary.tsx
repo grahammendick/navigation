@@ -2,15 +2,15 @@ import React, { Component, ReactNode } from 'react';
 import { StateContext, StateNavigator } from 'navigation';
 import withStateNavigator from './withStateNavigator.js';
 
-type RSCErrorBoundaryProps = {stateNavigator: StateNavigator, errorFallback: ReactNode, children: any}
-type RSCErrorBoundaryState = {error: Error, stateContext: StateContext};
+type ErrorBoundaryProps = {stateNavigator: StateNavigator, errorFallback: ReactNode, children: any}
+type ErrorBoundaryState = {error: Error, stateContext: StateContext};
 
-class RSCErrorBoundary extends Component<RSCErrorBoundaryProps, RSCErrorBoundaryState> {
-    constructor(props: RSCErrorBoundaryProps) {
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+    constructor(props: ErrorBoundaryProps) {
       super(props);
       this.state = {error: null, stateContext: null};
     }
-    static getDerivedStateFromProps({stateNavigator: {stateContext}}: RSCErrorBoundaryProps, {error, stateContext: errorContext}: RSCErrorBoundaryState) {
+    static getDerivedStateFromProps({stateNavigator: {stateContext}}: ErrorBoundaryProps, {error, stateContext: errorContext}: ErrorBoundaryState) {
         if (errorContext && errorContext !== stateContext) return {error: null, stateContext: null};
         return {stateContext: error ? stateContext : null};
     }
@@ -27,4 +27,4 @@ class RSCErrorBoundary extends Component<RSCErrorBoundaryProps, RSCErrorBoundary
         return children;
     }
 }
-export default withStateNavigator(RSCErrorBoundary);
+export default withStateNavigator(ErrorBoundary);
