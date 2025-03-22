@@ -504,5 +504,40 @@ describe('SceneViewTest', function () {
             assert.equal(message, 'scene error');
         })
     });
+
+    describe('Scene View Error Error', function () {
+        it('should render fallbacks', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0' },
+                { key: 's1' }
+            ]);
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            const Scene = () => {
+                throw Error();
+            }
+            const err = console.error;
+            console.error = () => {};
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView active="s0" errorFallback={<h1>error 0</h1>}>
+                            <Scene />
+                        </SceneView>
+                        <SceneView active="s1" errorFallback={<h1>error 1</h1>}>
+                            <Scene />
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            assert.equal(container.innerHTML, '<h1>error 0</h1>');
+            act(() => {
+                stateNavigator.navigate('s1')
+            });
+            console.error = err;
+            assert.equal(container.innerHTML, '<h1>error 1</h1>');
+        })
+    });
 });
 
