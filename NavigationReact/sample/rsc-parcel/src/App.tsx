@@ -1,9 +1,9 @@
 'use server-entry';
-import "./client";
-import { SceneView } from "navigation-react";
-import RootProvider from "./RootProvider";
-import People from "./People";
-import Person from "./Person";
+import './client';
+import { SceneView } from 'navigation-react';
+import RootProvider from './RootProvider';
+import People from './People';
+import Person from './Person';
 
 const App = async ({url}: any) => {
   return (
