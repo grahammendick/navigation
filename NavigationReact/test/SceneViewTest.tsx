@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { SceneView, NavigationHandler, useNavigationEvent } from 'navigation-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { act, Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
@@ -349,12 +349,13 @@ describe('SceneViewTest', function () {
             const Scene = () => {
                 throw Error();
             }
+            const ErrorScene = () => <h1>error</h1>;
             const err = console.error;
             console.error = () => {};
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView active="s" errorFallback={<h1>error</h1>}>
+                        <SceneView active="s" errorFallback={<ErrorScene />}>
                             <Scene />
                         </SceneView>
                     </NavigationHandler>
@@ -414,10 +415,11 @@ describe('SceneViewTest', function () {
                     }}>scene</button>
                 )
             }
+            const ErrorScene = () => <h1>error</h1>;
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView active="s" errorFallback={<h1>error</h1>}>
+                        <SceneView active="s" errorFallback={<ErrorScene />}>
                             <Scene />
                         </SceneView>
                     </NavigationHandler>
@@ -517,15 +519,16 @@ describe('SceneViewTest', function () {
             const Scene = () => {
                 throw Error();
             }
+            const ErrorScene = ({count}) => <h1>{`error ${count}`}</h1>;
             const err = console.error;
             console.error = () => {};
             act(() => {
                 root.render(
                     <NavigationHandler stateNavigator={stateNavigator}>
-                        <SceneView active="s0" errorFallback={<h1>error 0</h1>}>
+                        <SceneView active="s0" errorFallback={<ErrorScene count={0}/>}>
                             <Scene />
                         </SceneView>
-                        <SceneView active="s1" errorFallback={<h1>error 1</h1>}>
+                        <SceneView active="s1" errorFallback={<ErrorScene count={1}/>}>
                             <Scene />
                         </SceneView>
                     </NavigationHandler>
@@ -537,6 +540,45 @@ describe('SceneViewTest', function () {
             });
             console.error = err;
             assert.equal(container.innerHTML, '<h1>error 1</h1>');
+        })
+    });
+
+    describe('Scene View Error Navigate', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0' },
+                { key: 's1' }
+            ]);
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            const Scene = () => {
+                throw Error('s1');
+            }
+            const ErrorScene = ({error}) => {
+                const {stateNavigator} = useNavigationEvent();
+                useEffect(() => {
+                    if (error?.message === 's1')
+                        stateNavigator.navigate('s1');
+                });
+                return null;
+            };
+            const err = console.error;
+            console.error = () => {};
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <SceneView active="s0" errorFallback={ErrorScene}>
+                            <Scene />
+                        </SceneView>
+                        <SceneView active="s1" errorFallback={ErrorScene}>
+                            <div>scene 1</div>
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            });
+            console.error = err;
+            assert.equal(container.innerHTML, '<div>scene 1</div>');
         })
     });
 });

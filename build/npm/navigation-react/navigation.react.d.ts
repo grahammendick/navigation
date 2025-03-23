@@ -1,5 +1,5 @@
 import { State, StateNavigator, FluentNavigator, StateContext } from 'navigation';
-import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode } from 'react';
+import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode, ComponentType } from 'react';
 
 /**
  * Navigation event data
@@ -185,7 +185,7 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
     /**
      * The content to show when the View errors
      */
-    errorFallback?: ReactNode;
+    errorFallback?: ReactNode | ComponentType;
     /**
      * The View
      */

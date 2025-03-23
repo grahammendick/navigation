@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react';
+import React, { Component, ReactNode, cloneElement, createElement } from 'react';
 import { StateContext, StateNavigator } from 'navigation';
 import withStateNavigator from './withStateNavigator.js';
 
@@ -22,7 +22,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
         const {error} = this.state;
         if (error) {
             if (!errorFallback) throw error;
-            return errorFallback;
+            return typeof errorFallback !== 'function' ? cloneElement(errorFallback as any, {error}) : createElement(errorFallback, {error});
         }
         return children;
     }
