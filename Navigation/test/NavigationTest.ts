@@ -203,6 +203,54 @@ describe('Navigation', function () {
         }
     });
 
+    describe('History Action State', function() {
+        it('should populate context', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var link = stateNavigator.getNavigationLink('s');
+            stateNavigator.navigateLink(link);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+            assert.equal(stateNavigator.stateContext.historyAction, 'add');
+        });
+    });
+
+    describe('History Action Add State', function() {
+        it('should populate context', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var link = stateNavigator.getNavigationLink('s');
+            stateNavigator.navigateLink(link, 'add');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+            assert.equal(stateNavigator.stateContext.historyAction, 'add');
+        });
+    });
+
+    describe('History Action Replace State', function() {
+        it('should populate context', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var link = stateNavigator.getNavigationLink('s');
+            stateNavigator.navigateLink(link, 'replace');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+            assert.equal(stateNavigator.stateContext.historyAction, 'replace');
+        });
+    });
+
+    describe('History Action None State', function() {
+        it('should populate context', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var link = stateNavigator.getNavigationLink('s');
+            stateNavigator.navigateLink(link, 'none');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+            assert.equal(stateNavigator.stateContext.historyAction, 'none');
+        });
+    });
+
     describe('Invalid State', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {

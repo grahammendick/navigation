@@ -1,5 +1,5 @@
 import { State, StateNavigator, FluentNavigator, StateContext } from 'navigation';
-import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode } from 'react';
+import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode, ComponentType } from 'react';
 
 /**
  * Navigation event data
@@ -33,6 +33,11 @@ export interface NavigationEvent<NavigationInfo extends { [index: string]: any }
 export var NavigationContext: Context<NavigationEvent<any, any>> & Context<NavigationEvent<any, string>>;
 
 /**
+ * The hook that provides the current navigation event data
+ */
+export function useNavigationEvent<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string>() : NavigationEvent<NavigationInfo, Key>;
+
+/**
  * Defines the Navigation Handler Props contract
  */
 export interface NavigationHandlerProps {
@@ -40,6 +45,10 @@ export interface NavigationHandlerProps {
      * The state navigator that triggers navigation events
      */
     stateNavigator: StateNavigator;
+    /**
+     * Streams react server components
+     */
+    fetchRSC?: (url: string, options: any) => Promise<any>;
     /**
      * The rendered content
      */
@@ -166,7 +175,19 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
      */
     active: (keyof NavigationInfo & string) | (keyof NavigationInfo & string)[] | ((stateContext: StateContext) => boolean);
     /**
-     * The view
+     * The name identifying the View when fetching RSCs
+     */
+    name?: string;
+    /**
+     * The NavigationData keys that determine when to refetch the RSC View
+     */
+    dataKeyDeps?: string[];
+    /**
+     * The content to show when the View errors
+     */
+    errorFallback?: ReactNode | ComponentType;
+    /**
+     * The View
      */
     children: ReactNode;
 }

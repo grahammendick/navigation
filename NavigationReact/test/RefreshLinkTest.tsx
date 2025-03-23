@@ -1,8 +1,8 @@
 import * as assert from 'assert';
 import * as mocha from 'mocha';
 import { StateNavigator } from 'navigation';
-import { RefreshLink, NavigationHandler, NavigationContext } from 'navigation-react';
-import React, { useContext, useState, useEffect } from 'react';
+import { RefreshLink, NavigationHandler, NavigationContext, useNavigationEvent } from 'navigation-react';
+import React, { useContext, useState, useEffect, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import { act, Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
@@ -3113,20 +3113,14 @@ describe('RefreshLinkTest', function () {
                 { key: 's0', route: 'r0', trackCrumbTrail: true },
                 { key: 's1', route: 'r1' },
             ]);
-            class FirstContext extends React.Component<any> {
-                static contextType = NavigationContext;                
-                private mountContext: any;
-                constructor(props, context) {
-                    super(props, context);
-                    this.mountContext = this.context;
-                }
-                render() {
-                    return (
-                        <NavigationContext.Provider value={this.mountContext}>
-                            {this.props.children}
-                        </NavigationContext.Provider>
-                    );
-                }
+            const FirstContext = ({children}: any) => {
+                const context = useContext(NavigationContext);
+                const mountContext = useMemo(() => context, []);
+                return (
+                    <NavigationContext.Provider value={mountContext}>
+                        {children}
+                    </NavigationContext.Provider>
+                );
             }
             stateNavigator.navigate('s0', {x: 'a'});
             var container = document.createElement('div');
@@ -3259,6 +3253,45 @@ describe('RefreshLinkTest', function () {
                 assert.equal(stateNavigator.stateContext.data.x, 1);
                 done()
             })
+        })
+    });
+
+    describe('Use Navigation Event', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var container = document.createElement('div');
+            var root = createRoot(container)
+            let context;
+            const Scene = () => {
+                const {stateNavigator: {stateContext}} = useNavigationEvent();
+                context = stateContext;
+                return (
+                    <RefreshLink
+                        navigationData={{y: 'b'}}>
+                        link text
+                    </RefreshLink>
+                )
+            }
+            act(() => {
+                root.render(
+                    <NavigationHandler stateNavigator={stateNavigator}>
+                        <Scene />
+                    </NavigationHandler>
+                );
+            });
+            assert.equal(context, stateNavigator.stateContext);
+            assert.equal(context.state, stateNavigator.states.s0);
+            assert.equal(context.data.x, 'a');
+            assert.equal(context.data.y, undefined);
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            act(() => Simulate.click(link));
+            assert.equal(context, stateNavigator.stateContext);
+            assert.equal(context.state, stateNavigator.states.s0);
+            assert.equal(context.data.x, undefined);
+            assert.equal(context.data.y, 'b');
         })
     });
 });

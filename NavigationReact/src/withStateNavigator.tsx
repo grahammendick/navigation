@@ -1,10 +1,8 @@
-import NavigationContext from './NavigationContext';
-import * as React from 'react';
-import { LinkProps } from './Props';
+import React, { ComponentType } from 'react';
+import NavigationContext from './NavigationContext.js';
 
-export default <T extends LinkProps>(Link: React.ComponentType<T>) => (props: T) => (
+export default (Comp: ComponentType<any>) => (props: any) => (
     <NavigationContext.Consumer>
-        {({ stateNavigator }) => <Link {...props} stateNavigator={stateNavigator} />}
+        {({ stateNavigator }) => <Comp {...props} stateNavigator={stateNavigator} />}
     </NavigationContext.Consumer>
 );
-  

@@ -23,7 +23,7 @@ class HTML5HistoryManager implements HistoryManager {
             if (!replace)            
                 window.history.pushState({navigationLink: url}, null, this.getHref(url));
             else
-                window.history.replaceState({navigationLink: url}, null, this.getHref(url));
+                window.history.replaceState({...window.history.state, navigationLink: url}, null, this.getHref(url));
         }
     }
 

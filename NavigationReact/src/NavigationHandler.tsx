@@ -1,15 +1,17 @@
-import AsyncStateNavigator from './AsyncStateNavigator';
-import NavigationContext from './NavigationContext';
+'use client'
+import React, { Component } from 'react';
 import { StateNavigator, State } from 'navigation';
-import * as React from 'react';
-type NavigationHandlerState = { context: { oldState: State, state: State, data: any, asyncData: any, stateNavigator: AsyncStateNavigator } };
+import AsyncStateNavigator from './AsyncStateNavigator.js';
+import NavigationContext from './NavigationContext.js';
+import BundlerContext from './BundlerContext.js';
+type NavigationHandlerState = { context: { ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: AsyncStateNavigator } };
 
-class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator, children: any }, NavigationHandlerState> {
+class NavigationHandler extends Component<{ stateNavigator: StateNavigator, fetchRSC: any, children: any }, NavigationHandlerState> {
     constructor(props) {
         super(props);
-        var { stateNavigator } = this.props;
-        var { oldState, state, data, asyncData } = stateNavigator.stateContext;
-        var asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
+        const { stateNavigator } = this.props;
+        const { oldState, state, data, asyncData } = stateNavigator.stateContext;
+        const asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
         this.state = { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } };
         this.onNavigate = this.onNavigate.bind(this);
     }
@@ -23,12 +25,18 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
     }
 
     onNavigate() {
-        var { stateNavigator } = this.props;
-        if (this.state.context.stateNavigator.stateContext !== stateNavigator.stateContext) {
-            this.setState(() => {
-                var { oldState, state, data, asyncData } = stateNavigator.stateContext;
-                var asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
-                return { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } };
+        const { stateNavigator } = this.props;
+        const { stateContext } = stateNavigator;
+        if (this.state.context.stateNavigator.stateContext !== stateContext) {
+            const { history, oldState, state, data, asyncData } = stateContext;
+            const asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateContext);
+            const startTransition = React.startTransition || ((transition) => transition());
+            this.setState({ context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } }, () => {
+                if (stateNavigator.stateContext === stateContext && history) {
+                    startTransition(() => {
+                        this.setState({ context: { ignoreCache: true, oldState, state, data, asyncData, stateNavigator: asyncNavigator } });
+                    });
+                }
             });
         }
     }
@@ -36,7 +44,9 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
     render() {
         return (
             <NavigationContext.Provider value={this.state.context}>
-                {this.props.children}
+                <BundlerContext.Provider value={this.props.fetchRSC}>
+                    {this.props.children}
+                </BundlerContext.Provider>
             </NavigationContext.Provider>
         );
     }

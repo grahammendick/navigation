@@ -9,6 +9,7 @@ var rename = require('gulp-rename');
 var rollup = require('rollup');
 var sucrase = require('@rollup/plugin-sucrase');
 var terser = require('gulp-terser');
+var ts = require('gulp-typescript');
 var typescript = require('@rollup/plugin-typescript');
 
 events.EventEmitter.defaultMaxListeners = 0;
@@ -59,8 +60,10 @@ function buildTask(name, input, file, globals, details) {
                 .pipe(dest('.'))
         ));
 }
-var cleanNative = () => {
+var cleanPackage = () => {
     return del([
+        './build/npm/navigation-react/*.js',
+        './build/npm/navigation-react/cjs/*.js',
         './build/npm/navigation-react-native/android',
         './build/npm/navigation-react-native/ios',
         './build/npm/navigation-react-native/cpp',
@@ -97,9 +100,28 @@ var itemTasks = items.reduce((tasks, item) => {
     var { globals = {}, format = 'cjs' } = item;
     tasks.buildTasks.push(
         nameFunc(() => buildTask(name, tsFrom, jsTo, globals, item), 'build' + name));
-    tasks.packageTasks.push(
-        nameFunc(() => rollupTask(name, tsFrom, jsPackageTo, globals, format), 'package' + name)
-    );
+    if (!item.exports) {
+        tasks.packageTasks.push(
+            nameFunc(() => rollupTask(name, tsFrom, jsPackageTo, globals, format), 'package' + name)
+        );
+    } else {
+        var include = tsFrom.replace(name + '.ts', '**/*.{ts,tsx}');
+        var tsconfig = tsFrom.replace(name + '.ts', 'tsconfig.json');
+        tasks.packageTasks.push(
+            nameFunc(() => (
+                src(include)
+                    .pipe(ts.createProject(tsconfig, {module: 'nodenext'})())
+                    .pipe(dest(`./build/npm/${packageName}`))
+            ), 'packageEsm' + name)
+        );
+        tasks.packageTasks.push(
+            nameFunc(() => (
+                src(include)
+                    .pipe(ts.createProject(tsconfig)())
+                    .pipe(dest(`./build/npm/${packageName}/cjs`))
+            ), 'package' + name)
+        );
+    }
     return tasks;
 }, { buildTasks: [], packageTasks: [] });
 
@@ -148,5 +170,5 @@ var packageDeps = parallel(
     itemTasks.packageTasks.find(({displayName}) => displayName === 'packageNavigationReactMobile')
 );
 exports.build = parallel(...itemTasks.buildTasks);
-exports.package = series(cleanNative, parallel(packageNative, ...itemTasks.packageTasks));
-exports.test = series(packageDeps, parallel(...testTasks));
+exports.package = series(cleanPackage, parallel(packageNative, ...itemTasks.packageTasks));
+exports.test = series(cleanPackage, packageDeps, parallel(...testTasks));

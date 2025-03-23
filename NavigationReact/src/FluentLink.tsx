@@ -1,7 +1,8 @@
-import LinkUtility from './LinkUtility';
-import withStateNavigator from './withStateNavigator';
-import { FluentLinkProps } from './Props';
-import * as React from 'react';
+'use client'
+import React from 'react';
+import LinkUtility from './LinkUtility.js';
+import withStateNavigator from './withStateNavigator.js';
+import { FluentLinkProps } from './Props.js';
 
 var FluentLink = (props: FluentLinkProps) => {
     var htmlProps = LinkUtility.toHtmlProps(props);

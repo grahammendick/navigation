@@ -34,7 +34,7 @@ class SharedElement extends React.Component<SharedElementProps, any> {
         var {stateNavigator, sharedElementRegistry} = this.props;
         var scene = stateNavigator.stateContext.url;
         sharedElementRegistry.unregisterSharedElement(scene, this.props.name);
-        this.resizeObserver?.unobserve(this.ref.current);
+        if (this.ref.current) this.resizeObserver?.unobserve(this.ref.current);
     }
     onResize() {
         if (this.ref.current.offsetWidth && this.ref.current.offsetHeight) {

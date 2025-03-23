@@ -51,7 +51,7 @@ class StateNavigator {
         return !(stateInfos as StateNavigator).stateHandler;
     };
 
-    private createStateContext(state: State, data: any, hash: string, crumbs: Crumb[], url: string, asyncData: any, history: boolean, currentContext: StateContext): StateContext {
+    private createStateContext(state: State, data: any, hash: string, crumbs: Crumb[], url: string, asyncData: any, history: boolean, historyAction: 'add' | 'replace' | 'none', currentContext: StateContext): StateContext {
         var stateContext = new StateContext();
         stateContext.oldState = currentContext.state;
         stateContext.oldData = currentContext.data;
@@ -62,6 +62,7 @@ class StateNavigator {
         stateContext.asyncData = asyncData;
         stateContext.title = state.title;
         stateContext.history = history;
+        stateContext.historyAction = historyAction;
         stateContext.crumbs = crumbs;
         stateContext.data = data;
         stateContext.hash = hash;
@@ -136,7 +137,7 @@ class StateNavigator {
                 return;
         }
         var navigateContinuation = (asyncData?: any) => {
-            var nextContext = this.createStateContext(state, data, hash, crumbs, url, asyncData, history, currentContext);
+            var nextContext = this.createStateContext(state, data, hash, crumbs, url, asyncData, history, historyAction, currentContext);
             if (context === this.stateContext) {
                 suspendNavigation(nextContext, () => {
                     if (context === this.stateContext)
