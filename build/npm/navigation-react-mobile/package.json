@@ -1,6 +1,6 @@
 {
   "name": "navigation-react-mobile",
-  "version": "3.13.0",
+  "version": "3.14.0",
   "description": "React Mobile plugin for the Navigation router",
   "main": "navigation.react.mobile.js",
   "types": "navigation.react.mobile.d.ts",
