@@ -1,9 +1,10 @@
-# The Navigation router
+# [The Navigation router](https://grahammendick.github.io/navigation/)
 Scene-Based Navigation for React and React Native
 * **Scene-Based Navigation** Native apps have always had scene-based navigation. The Navigation router is the first to bring it to the web. You give the Navigation router a list of your scenes. After you navigate to a scene, the Navigation router gets out of your way so you can build your UI however you want.
 * **React and React Native** You don't need a different routing library for React and React Native anymore. The Navigation router works on both. What's more, it doesn't compromise the UX. On React Native, the navigation is 100% native on Android and iOS. On React, you can have whatever URLs you want.
 
 ## [React](https://grahammendick.github.io/navigation/documentation/hello-world.html)
+`npm install navigation navigation-react`
 ### Define Your States
 ```js
 import { StateNavigator } from 'navigation';
@@ -54,6 +55,7 @@ const World = () => {
 In the next scene, you access the data from the `NavigationContext`. The Navigation router passes strongly-typed data. Here, the size is a number.
 
 ## [React Native](https://grahammendick.github.io/navigation/documentation/native/hello-world.html)
+`npm install navigation navigation-react navigation-react-native`
 ### Define Your States
 ```js
 import { StateNavigator } from 'navigation';
