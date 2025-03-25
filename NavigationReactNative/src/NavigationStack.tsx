@@ -1,6 +1,6 @@
 import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect, useMemo } from 'react';
 import { Platform, requireNativeComponent, StyleSheet } from 'react-native';
-import { StateNavigator, Crumb, State } from 'navigation';
+import { StateNavigator, Crumb, State, StateContext } from 'navigation';
 import { NavigationContext } from 'navigation-react';
 import FragmentContext from './FragmentContext';
 import InsetsContext from './InsetsContext';
@@ -18,7 +18,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     const ancestorFragmentTags = useContext(FragmentContext);
     const fragmentTags = useMemo(() => fragmentTag ? [...ancestorFragmentTags, fragmentTag] : [], [ancestorFragmentTags, fragmentTag]);
     const insets = useRef({top: 0, bottom: 0});
-    const {stateNavigator} = useContext(NavigationContext);
+    const navigationEvent = useContext(NavigationContext);
     const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0, mostRecentEventCount: 0});
     const scenes = {};
     let firstLink;
@@ -26,7 +26,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         for(const scene of React.Children.toArray(elements) as ReactElement<any>[]) {
             const {stateKey, children} = scene.props;
             if (scene.type === NavigationStack.Scene) {
-                firstLink = firstLink || stateNavigator.fluent().navigate(stateKey).url;
+                firstLink = firstLink || navigationEvent.stateNavigator.fluent().navigate(stateKey).url;
                 scenes[stateKey] = scene;
             }
             else if (!nested) findScenes(children, true)
@@ -35,8 +35,17 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     findScenes();
     const prevScenes = useRef({});
     const allScenes = {...prevScenes.current, ...scenes};
+    const firstNavigationEvent = useMemo(() => {
+        const {stateNavigator} = navigationEvent;
+        if (!firstLink || stateNavigator.stateContext.state) return null;
+        const firstNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
+        firstNavigator.navigateLink(firstLink);
+        const {oldState, state, data, asyncData} = firstNavigator.stateContext;
+        return {oldState, state, data, asyncData, stateNavigator: firstNavigator};
+    }, [firstLink, navigationEvent]);
     useEffect(() => {
         prevScenes.current = allScenes;
+        const {stateNavigator} = navigationEvent;
         const {state, crumbs, nextCrumb} = stateNavigator.stateContext;
         const validate = ({key}) => !!scenes[key];
         if (firstLink) {
@@ -47,7 +56,8 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
             if (resetLink != null) stateNavigator.navigateLink(resetLink);
         }
         return () => stateNavigator.offBeforeNavigate(validate);
-    }, [children, stateNavigator, scenes, allScenes, stackInvalidatedLink]);
+    }, [children, navigationEvent, scenes, allScenes, stackInvalidatedLink]);
+    const stateNavigator = firstNavigationEvent?.stateNavigator || navigationEvent.stateNavigator;
     const onWillNavigateBack = ({nativeEvent}) => {
         const distance = stateNavigator.stateContext.crumbs.length - nativeEvent.crumb;
         resumeNavigationRef.current = null;
@@ -176,40 +186,42 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     return (
         <FragmentContext.Provider value={fragmentTags}>
             <InsetsContext.Provider value={insets.current}>
-                <NVNavigationStack
-                    ref={ref}
-                    keys={keys}
-                    fragmentTag={fragmentTag}
-                    ancestorFragmentTags={ancestorFragmentTags}
-                    mostRecentEventCount={mostRecentEventCount}
-                    style={styles.stack}
-                    {...getAnimation()}
-                    onWillNavigateBack={onWillNavigateBack}
-                    onNavigateToTop={onNavigateToTop}
-                    onApplyInsets={onApplyInsets}
-                    onRest={onRest}>
-                    <PopSync<{crumb: number, url: string}>
-                        data={crumbs.concat(nextCrumb || []).map(({url}, crumb) => ({crumb, url}))}
-                        getKey={({crumb}) => keys[crumb]}>
-                        {(scenes, popNative) => scenes.map(({key, data: {crumb, url}}) => (
-                            <Scene
-                                key={key}
-                                url={url}
-                                crumb={crumb}
-                                sceneKey={key}
-                                rest={rest}
-                                customAnimation={customAnimation}
-                                unmountStyle={unmountStyle}
-                                crumbStyle={crumbStyle}
-                                hidesTabBar={hidesTabBar}
-                                backgroundColor={backgroundColor}
-                                landscape={landscape}
-                                title={title}
-                                popped={popNative}
-                                renderScene={firstLink ? ({key}) => allScenes[key] : renderScene} />
-                        ))}
-                    </PopSync>
-                </NVNavigationStack>
+                <NavigationContext.Provider value={firstNavigationEvent || navigationEvent}>
+                    <NVNavigationStack
+                        ref={ref}
+                        keys={keys}
+                        fragmentTag={fragmentTag}
+                        ancestorFragmentTags={ancestorFragmentTags}
+                        mostRecentEventCount={mostRecentEventCount}
+                        style={styles.stack}
+                        {...getAnimation()}
+                        onWillNavigateBack={onWillNavigateBack}
+                        onNavigateToTop={onNavigateToTop}
+                        onApplyInsets={onApplyInsets}
+                        onRest={onRest}>
+                        <PopSync<{crumb: number, url: string}>
+                            data={crumbs.concat(nextCrumb || []).map(({url}, crumb) => ({crumb, url}))}
+                            getKey={({crumb}) => keys[crumb]}>
+                            {(scenes, popNative) => scenes.map(({key, data: {crumb, url}}) => (
+                                <Scene
+                                    key={key}
+                                    url={url}
+                                    crumb={crumb}
+                                    sceneKey={key}
+                                    rest={rest}
+                                    customAnimation={customAnimation}
+                                    unmountStyle={unmountStyle}
+                                    crumbStyle={crumbStyle}
+                                    hidesTabBar={hidesTabBar}
+                                    backgroundColor={backgroundColor}
+                                    landscape={landscape}
+                                    title={title}
+                                    popped={popNative}
+                                    renderScene={firstLink ? ({key}) => allScenes[key] : renderScene} />
+                            ))}
+                        </PopSync>
+                    </NVNavigationStack>
+                </NavigationContext.Provider>
             </InsetsContext.Provider>
         </FragmentContext.Provider>
     );
