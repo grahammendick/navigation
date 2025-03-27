@@ -71,41 +71,13 @@ class Scene extends React.Component<SceneProps, SceneState> {
     }
     peekNavigate() {
         var {crumb, navigationEvent} = this.props;
-        var {crumbs, nextCrumb} = navigationEvent.stateNavigator.stateContext;
+        var {crumbs} = navigationEvent.stateNavigator.stateContext;
         var {stateNavigator} = navigationEvent;
         var peekNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
-        peekNavigator.stateContext = Scene.createStateContext(crumbs, nextCrumb, crumb, navigationEvent);
-        peekNavigator.configure = stateNavigator.configure;
-        peekNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
-        peekNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
-        peekNavigator.onNavigate = stateNavigator.onNavigate;
-        peekNavigator.offNavigate = stateNavigator.offNavigate;
-        peekNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
+        peekNavigator.navigateLink(crumbs[crumb].url);
+        peekNavigator.stateContext['peek'] = navigationEvent;
         var {oldState, state, data, asyncData} = peekNavigator.stateContext;
         this.setState({navigationEvent: {oldState, state, data, asyncData, stateNavigator: peekNavigator}});
-    }
-    static createStateContext(crumbs: Crumb[], nextCrumb: Crumb, crumb: number, navigationEvent: NavigationEvent) {
-        var stateContext = new StateContext();
-        var {state, data, url, title} = crumbs[crumb];
-        stateContext['peek'] = navigationEvent;
-        stateContext.state = state;
-        stateContext.data = data;
-        stateContext.url = url;
-        stateContext.title = title;
-        stateContext.history = true;
-        stateContext.crumbs = crumbs.slice(0, crumb);
-        stateContext.nextCrumb = crumbs[crumb];
-        var {state, data, url} = nextCrumb;
-        stateContext.oldState = state;
-        stateContext.oldData = data;
-        stateContext.oldUrl = url;
-        if (crumb > 1) {
-            var {state, data, url} = crumbs[crumb - 1];
-            stateContext.previousState = state;
-            stateContext.previousData = data;
-            stateContext.previousUrl = url;
-        }
-        return stateContext;
     }
     getAnimation() {
         var {crumb, navigationEvent, customAnimation, unmountStyle, crumbStyle, hidesTabBar, backgroundColor, landscape} = this.props;
