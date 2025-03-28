@@ -62,8 +62,8 @@ class AsyncStateNavigator extends StateNavigator {
         this.stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
             suspendNavigation(stateContext, () => {
                 var asyncNavigator = new AsyncStateNavigator(this.navigationHandler, this.stateNavigator, stateContext);
-                var { oldState, state, data, asyncData } = asyncNavigator.stateContext;
-                const startTransition = React.startTransition || ((transition) => transition());
+                var { oldState, state, data, asyncData, history } = asyncNavigator.stateContext;
+                const startTransition = (!history && React.startTransition) || ((transition) => transition());
                 startTransition(() => {
                     this.navigationHandler.setState({ context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } }, () => {
                         if (stateContext === this.navigationHandler.state.context.stateNavigator.stateContext)
