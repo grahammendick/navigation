@@ -17,7 +17,7 @@
     "start": "parcel --no-cache --cache-dir .parcel-cache"
   },
   "dependencies": {
-    "@parcel/rsc": "^2.14.1",
+    "@parcel/rsc": "^2.14.4",
     "@types/express": "*",
     "@types/node": "^22.10.1",
     "@types/parcel-env": "^0.0.6",
@@ -28,8 +28,8 @@
     "navigation-react": "^4.6.0",
     "parcel": "^2.14.1",
     "process": "^0.11.10",
-    "react": "canary",
-    "react-dom": "canary"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "@parcel/resolver-default": {
     "packageExports": true
@@ -38,7 +38,7 @@
     "minBundleSize": 0
   },
   "devDependencies": {
-    "@parcel/packager-react-static": "^2.14.1",
-    "@parcel/transformer-react-static": "^2.14.1"
+    "@parcel/packager-react-static": "^2.14.4",
+    "@parcel/transformer-react-static": "^2.14.4"
   }
 }
