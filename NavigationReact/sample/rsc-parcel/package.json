@@ -13,8 +13,8 @@
     }
   },
   "scripts": {
-    "build": "rm -rf .parcel-cache && rm -rf dist && parcel build --no-cache --cache-dir .parcel-cache",
-    "start": "parcel --no-cache --cache-dir .parcel-cache"
+    "build": "rm -rf .parcel-cache && rm -rf dist && parcel build --no-cache",
+    "start": "parcel --no-cache"
   },
   "dependencies": {
     "@parcel/rsc": "^2.14.4",
