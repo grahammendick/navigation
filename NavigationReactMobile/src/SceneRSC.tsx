@@ -1,5 +1,5 @@
 'use client'
-import { useContext } from 'react';
+import { use, useContext } from 'react';
 import { useNavigationEvent, BundlerContext } from 'navigation-react';
 
 const rscCache: Map<any, Record<string, any>> = new Map();
@@ -16,11 +16,11 @@ const SceneRSC = ({stateKey, children}) => {
         cachedSceneViews[stateKey] = fetchRSC(historyManager.getHref(url), {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
-            body: {url, stateKey}
+            body: {url, sceneViewKey: stateKey}
         });
         fetchedSceneView = cachedSceneViews[stateKey];
     }
-    return fetchedSceneView || children;
+    return fetchedSceneView ? use(fetchedSceneView) : children;
 }
 
 export default SceneRSC;
