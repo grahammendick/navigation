@@ -1,3 +1,4 @@
+'use client'
 import * as React from 'react';
 import withStateNavigator from './withStateNavigator';
 import SharedElementContext from './SharedElementContext';

@@ -1,3 +1,4 @@
+'use client'
 import * as React from 'react';
 import Motion from './Motion';
 import { SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProps } from './Props';

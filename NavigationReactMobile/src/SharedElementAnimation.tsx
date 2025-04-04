@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 const SharedElementAnimation = ({sharedElements: nextSharedElements, unmountStyle, duration: defaultDuration}: any) => {
