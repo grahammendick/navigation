@@ -64,6 +64,8 @@ var cleanPackage = () => {
     return del([
         './build/npm/navigation-react/*.js',
         './build/npm/navigation-react/cjs/*.js',
+        './build/npm/navigation-react-mobile/*.js',
+        './build/npm/navigation-react-mobile/cjs/*.js',
         './build/npm/navigation-react-native/android',
         './build/npm/navigation-react-native/ios',
         './build/npm/navigation-react-native/cpp',
