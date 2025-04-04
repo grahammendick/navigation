@@ -8,7 +8,7 @@ var Suspender = ({freeze, children}) => {
 };
 
 var Freeze = ({enabled, children}) => {
-    const suspendable = !!React.Suspense && typeof window !== 'undefined';
+    const suspendable = !!React.Suspense;
     const suspender = <Suspender freeze={enabled && suspendable}>{children}</Suspender>;
     return suspendable ? <Suspense fallback={null}>{suspender}</Suspense> : suspender;
 };
