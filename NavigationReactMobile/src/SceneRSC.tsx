@@ -12,7 +12,7 @@ const SceneRSC = ({stateKey, children}) => {
     if (!rscCache.get(navigationEvent)) rscCache.set(navigationEvent, {});
     const cachedSceneViews = rscCache.get(navigationEvent);
     let fetchedSceneView = cachedSceneViews[stateKey];
-    if (!fetchedSceneView && !oldUrl) {
+    if (!fetchedSceneView && oldUrl) {
         cachedSceneViews[stateKey] = fetchRSC(historyManager.getHref(url), {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
