@@ -1,3 +1,4 @@
+'use client'
 import React, {useRef, useState, useContext, useEffect, ReactElement} from 'react';
 import { State, Crumb, StateNavigator } from 'navigation';
 import { NavigationContext } from 'navigation-react';
