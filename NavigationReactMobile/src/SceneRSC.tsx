@@ -1,5 +1,5 @@
 'use client'
-import React, { use, useContext } from 'react';
+import { use, useContext } from 'react';
 import { useNavigationEvent, BundlerContext } from 'navigation-react';
 
 const rscCache: Map<any, Record<string, any>> = new Map();
