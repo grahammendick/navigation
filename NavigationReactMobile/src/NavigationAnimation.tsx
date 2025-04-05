@@ -100,7 +100,7 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
             });
         };
         const scenesObserver = new MutationObserver(moveScenes);
-        scenesObserver.observe(container.current, {childList: true})
+        scenesObserver.observe(container.current, {attributes: true, childList: true})
         return () => {
             cancel = true;
             scenesObserver.disconnect();
@@ -139,7 +139,7 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
             };
         });
     };
-    return <div ref={container}>{children(scenes.all)}</div>;
+    return <div ref={container} data-count={scenes.count}>{children(scenes.all)}</div>;
 }
 
 export default NavigationAnimation;
