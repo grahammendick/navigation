@@ -125,7 +125,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
                     scenes.map(({key, subkey, index: crumb, url, unmounted, className, style}) => (
                         <Freeze key={key} enabled={rest && ((crumb < sceneData.length - 1) || unmounted)}>
                             <Scene key={subkey} crumb={crumb} url={url} rest={rest} className={className}
-                                style={{...style, display: unmounted ? 'none' : style?.display}} wrap renderScene={renderScene} />
+                                style={{...style, display: unmounted ? 'none' : style?.display}} wrap={false} renderScene={renderScene} />
                         </Freeze>
                     )).concat(
                         <SharedElementAnimation key="sharedElements" sharedElements={!rest ? sharedEls : []}

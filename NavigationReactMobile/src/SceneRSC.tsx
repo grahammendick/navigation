@@ -1,5 +1,5 @@
 'use client'
-import { use, useContext } from 'react';
+import React, { use, useContext } from 'react';
 import { useNavigationEvent, BundlerContext } from 'navigation-react';
 
 const rscCache: Map<any, Record<string, any>> = new Map();
@@ -20,7 +20,11 @@ const SceneRSC = ({stateKey, children}) => {
         });
         fetchedSceneView = cachedSceneViews[stateKey];
     }
-    return fetchedSceneView ? use(fetchedSceneView) : children;
+    return (
+        <div data-scene="true">
+            {fetchedSceneView ? use(fetchedSceneView) : children}
+        </div>
+    );
 }
 
 export default SceneRSC;

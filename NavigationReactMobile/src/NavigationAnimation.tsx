@@ -5,6 +5,7 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
     const container = useRef(null);
     useLayoutEffect(() => {
         let cancel = false;
+        if (scenes.all.length !== container.current.children.length) return;
         scenes.all.forEach(({key, url, pushEnter, popExit, pushExit, popEnter, unmountStyle, crumbStyle, unmounted}, i) => {
             const scene = container.current.children[i];
             const prevNavState = scene.navState || scene.prevNavState;
