@@ -5,6 +5,7 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
     const [move, setMove] = useState(null);
     const container = useRef(null);
     useEffect(() => {
+        let cancel = false;
         if (scenes.all.length !== container.current.children.length) return;
         scenes.all.forEach(({key, url, pushEnter, popExit, pushExit, popEnter, unmountStyle, crumbStyle, unmounted}, i) => {
             const scene = container.current.children[i];
@@ -24,7 +25,7 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
             const afterPushEnter = scene.pushEnter?.finished || {then: (f) => f()};
             const afterPopEnter = scene.popEnter?.finished || {then: (f) => f()};
             afterPopEnter.then(() => {
-                if (!unmountStyle) return;
+                if (cancel || !unmountStyle) return;
                 if (!scene.pushEnter) {
                     const {duration = defaultDuration, keyframes = unmountStyle} = unmountStyle;
                     scene.pushEnter = scene.animate(keyframes, {duration, fill: 'both'});
@@ -47,7 +48,7 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
                     scene.pushEnter.reverse();
                 }
                 scene.pushEnter?.finished.then(() => {
-                    if (!scene.navState) return;
+                    if (cancel || !scene.navState) return;
                     if (popExit) {
                         setScenes(({all, ...rest}) => (
                             {all: all.map((s, index) => index !== i ? s : {...s, unmounted: true}), ...rest}
@@ -66,7 +67,7 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
                 }
             });
             afterPushEnter.then(() => {
-                if (!crumbStyle) return;
+                if (cancel || !crumbStyle) return;
                 if (!scene.popEnter && (pushExit || popEnter)) {       
                     const {duration = defaultDuration, keyframes = crumbStyle} = crumbStyle;
                     scene.popEnter = scene.animate(keyframes, {duration, fill: 'backwards'});
@@ -84,7 +85,7 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
                     if (!oldState) scene.popEnter.finish();
                 }
                 scene.popEnter?.finished.then(() => {
-                    if (!scene.navState) return;
+                    if (cancel || !scene.navState) return;
                     if (pushExit || popEnter) {
                         onRest({key, url});
                         scene.prevNavState = scene.navState;
@@ -98,6 +99,9 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
                 }
             });
         });
+        return () => {
+            cancel = true;
+        };
     }, [move, scenes])
     useEffect(() => {
         let cancel = false;
