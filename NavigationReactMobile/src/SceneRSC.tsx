@@ -20,11 +20,7 @@ const SceneRSC = ({stateKey, children}) => {
         });
         fetchedSceneView = cachedSceneViews[stateKey];
     }
-    return (
-        <div data-scene="true">
-            {fetchedSceneView ? use(fetchedSceneView) : children}
-        </div>
-    );
+    return fetchedSceneView ? use(fetchedSceneView) : children;
 }
 
 export default SceneRSC;
