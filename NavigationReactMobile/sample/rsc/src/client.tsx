@@ -5,9 +5,8 @@ import { createFromReadableStream } from 'react-server-dom-parcel/client';
 import { rscStream } from 'rsc-html-stream/client';
 import HmrContext from './HmrContext';
 
-let initialRSCPayload: any = createFromReadableStream(rscStream);
 function Shell() {
-    let [root, setRoot] = useState(initialRSCPayload);
+    let [root, setRoot] = useState(() => createFromReadableStream(rscStream));
     return (
         <HmrContext.Provider value={setRoot}>
             {root}
