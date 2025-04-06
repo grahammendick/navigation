@@ -1,4 +1,5 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useContext } from 'react';
+import { BundlerContext } from 'navigation-react';
 
 const infiniteThenable = {then: () => {}};
 
@@ -8,7 +9,8 @@ var Suspender = ({freeze, children}) => {
 };
 
 var Freeze = ({enabled, children}) => {
-    const suspendable = !!React.Suspense;
+    const fetchRSC = useContext(BundlerContext);
+    const suspendable = !!React.Suspense && !fetchRSC;
     const suspender = <Suspender freeze={enabled && suspendable}>{children}</Suspender>;
     return suspendable ? <Suspense fallback={null}>{suspender}</Suspense> : suspender;
 };
