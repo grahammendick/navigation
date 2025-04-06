@@ -1,12 +1,10 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useLayoutEffect} from 'react';
 
 const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldState, duration: defaultDuration, pause}) => {
     const [scenes, setScenes] = useState({prev: null, all: [], count: 0});
-    const [move, setMove] = useState(null);
     const container = useRef(null);
-    useEffect(() => {
+    useLayoutEffect(() => {
         let cancel = false;
-        if (scenes.all.length !== container.current.children.length) return;
         scenes.all.forEach(({key, url, pushEnter, popExit, pushExit, popEnter, unmountStyle, crumbStyle, unmounted}, i) => {
             const scene = container.current.children[i];
             const prevNavState = scene.navState || scene.prevNavState;
@@ -98,22 +96,8 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
                     scene.popEnter.pause();
                 }
             });
-        });
-        return () => {
-            cancel = true;
-        };
-    }, [move, scenes])
-    useEffect(() => {
-        let cancel = false;
-        const moveScenes = () => {
-            if (!cancel) setMove({});
-        };
-        const scenesObserver = new MutationObserver(moveScenes);
-        scenesObserver.observe(container.current, {attributes: true, childList: true});
-        return () => {
-            cancel = true;
-            scenesObserver.disconnect();
-        };
+    });
+        return () => {cancel = true;}
     }, [scenes]);
     if (nextScenes !== scenes.prev) {
         setScenes(({all: scenes, prev, count}) => {
@@ -148,7 +132,7 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
             };
         });
     };
-    return <div ref={container} data-count={scenes.count}>{children(scenes.all)}</div>;
+    return <div ref={container}>{children(scenes.all)}</div>;
 }
 
 export default NavigationAnimation;
