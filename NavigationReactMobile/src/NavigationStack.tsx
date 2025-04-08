@@ -2,13 +2,13 @@
 import React, {useRef, useState, useContext, useEffect, ReactElement} from 'react';
 import { State, StateNavigator } from 'navigation';
 import { NavigationContext } from 'navigation-react';
-import Scene from './Scene';
-import Freeze from './Freeze';
-import SharedElementContext from './SharedElementContext';
-import NavigationAnimation from './NavigationAnimation';
-import { NavigationMotionProps as NavigationStackProps } from './Props';
-import SharedElementAnimation from './SharedElementAnimation';
-import useSharedElementRegistry from './useSharedElementRegistry';
+import Scene from './Scene.js';
+import Freeze from './Freeze.js';
+import SharedElementContext from './SharedElementContext.js';
+import NavigationAnimation from './NavigationAnimation.js';
+import { NavigationMotionProps as NavigationStackProps } from './Props.js';
+import SharedElementAnimation from './SharedElementAnimation.js';
+import useSharedElementRegistry from './useSharedElementRegistry.js';
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, ignorePause: boolean};
 
 const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, sharedElements: sharedElementsStack,

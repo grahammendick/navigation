@@ -1,8 +1,8 @@
 'use client'
-import * as React from 'react';
-import withStateNavigator from './withStateNavigator';
-import SharedElementContext from './SharedElementContext';
-import { SharedElementProps } from './Props';
+import React from 'react';
+import withStateNavigator from './withStateNavigator.js';
+import SharedElementContext from './SharedElementContext.js';
+import { SharedElementProps } from './Props.js';
 
 class SharedElement extends React.Component<SharedElementProps, any> {
     private ref: React.RefObject<HTMLElement>;

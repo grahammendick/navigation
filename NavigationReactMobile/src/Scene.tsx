@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { State } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
-import withStateNavigator from './withStateNavigator';
-import { SceneProps } from './Props';
+import withStateNavigator from './withStateNavigator.js';
+import { SceneProps } from './Props.js';
 type SceneState = { navigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEvent}, SceneState> {
