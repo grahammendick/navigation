@@ -11,7 +11,11 @@ const RootProvider = ({url, children}: any) => {
   const setRoot = useContext(HmrContext);
   const clientNavigator = useMemo(() => {
     const clientNavigator = new StateNavigator(stateNavigator, new MobileHistoryManager(null, ''));
-    clientNavigator.navigateLink(url);
+    var {state, data} = stateNavigator.parseLink<any>(url);
+    const link = stateNavigator.fluent()
+        .navigate('people')
+        .navigate(state.key, data).url;
+    clientNavigator.navigateLink(link);
     return clientNavigator;
   }, []);
   useEffect(() => {
