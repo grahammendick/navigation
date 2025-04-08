@@ -1,4 +1,3 @@
-'use client'
 import { useContext, useEffect } from 'react';
 import { NavigationContext } from 'navigation-react';
 
