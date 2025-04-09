@@ -10,17 +10,17 @@ const SceneRSC = ({stateKey, children}) => {
     const {nextCrumb: {crumblessUrl: url}, oldUrl} = stateContext;
     const fetchRSC = useContext(BundlerContext);
     if (!rscCache.get(navigationEvent)) rscCache.set(navigationEvent, {});
-    const cachedSceneViews = rscCache.get(navigationEvent);
-    let fetchedSceneView = cachedSceneViews[stateKey];
-    if (!fetchedSceneView && oldUrl) {
-        cachedSceneViews[stateKey] = fetchRSC(historyManager.getHref(url), {
+    const cachedScenes = rscCache.get(navigationEvent);
+    let fetchedScene = cachedScenes[stateKey];
+    if (!fetchedScene && oldUrl) {
+        cachedScenes[stateKey] = fetchRSC(historyManager.getHref(url), {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: {url, sceneViewKey: stateKey}
         });
-        fetchedSceneView = cachedSceneViews[stateKey];
+        fetchedScene = cachedScenes[stateKey];
     }
-    return fetchedSceneView ? use(fetchedSceneView) : children;
+    return fetchedScene ? use(fetchedScene) : children;
 }
 
 export default SceneRSC;
