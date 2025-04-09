@@ -198,5 +198,10 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
 export class SceneView<NavigationInfo extends { [index: string]: any } = any> extends Component<SceneViewProps<NavigationInfo>> {}
 
 /**
+ * 
+ */
+export class SceneRSCView<NavigationInfo extends { [index: string]: any } = any> extends Component<SceneViewProps<NavigationInfo>> {}
+
+/**
  */
 export var BundlerContext: Context<(url: string, options: any) => Promise<any>>;
