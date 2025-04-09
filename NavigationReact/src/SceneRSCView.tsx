@@ -48,8 +48,6 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     }
     const oldSceneCount = (typeof window !== 'undefined' && window.history.state?.sceneCount) || 0;
     useEffect(() => {
-        rscCache.clear();
-        rscCache.set(navigationEvent, cachedSceneViews);
         renderedSceneView.current = getSceneView();
         if (historyAction === 'none') return;
         const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
