@@ -7,10 +7,13 @@ import { MobileHistoryManager } from 'navigation-react-mobile';
 import stateNavigator from "./stateNavigator";
 import HmrContext from "./HmrContext";
 
+const historyManager = new MobileHistoryManager(null, '');
+
 const RootProvider = ({url, children}: any) => {
   const setRoot = useContext(HmrContext);
   const clientNavigator = useMemo(() => {
-    const clientNavigator = new StateNavigator(stateNavigator, new MobileHistoryManager(null, ''));
+    historyManager.stop();
+    const clientNavigator = new StateNavigator(stateNavigator, historyManager);
     var {state, data} = stateNavigator.parseLink<any>(url);
     const link = stateNavigator.fluent()
         .navigate('people')
@@ -31,6 +34,7 @@ const RootProvider = ({url, children}: any) => {
               data
           }
       });
+      historyManager.stop();
       setRoot(root);
     }
     window.addEventListener('parcelhmrreload', onHmrReload);
