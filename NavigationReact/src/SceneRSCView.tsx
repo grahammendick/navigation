@@ -14,7 +14,7 @@ const SceneViewInner = ({children}) => children?.then ? use(children) : children
 const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: SceneViewProps & {active: string | string[], __scene?: boolean, stateKey?: string}) => {
     const navigationEvent = useNavigationEvent();
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
-    const {url: fullUrl, nextCrumb: {crumblessUrl: url}, oldUrl, oldData, history, historyAction} = stateContext;
+    const {nextCrumb: {crumblessUrl: url}, oldUrl, oldData, history, historyAction} = stateContext;
     const fetchRSC = useContext(BundlerContext);
     const ancestorFetching = useContext(RSCContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -49,7 +49,7 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     const oldSceneCount = (typeof window !== 'undefined' && window.history.state?.sceneCount) || 0;
     useEffect(() => {
         renderedSceneView.current = getSceneView();
-        if (historyAction === 'none' || historyManager.getCurrentUrl() !== fullUrl) return;
+        if (historyAction === 'none' || historyManager.getCurrentUrl() !== stateContext.url) return;
         const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
         if (!historyCache[url]) historyCache[url] = {count: sceneCount};
         historyCache[url][sceneViewKey] = renderedSceneView.current;
