@@ -23,7 +23,8 @@ const App = async ({url}: any) => {
               top: '0',
               bottom: '0',
               overflow: 'auto',
-              backgroundColor: '#fff',      
+              backgroundColor: '#fff',
+              margin: '8px',
             }}>
             <Scene stateKey="people"><People /></Scene>
             <Scene stateKey="person"><Person /></Scene>
