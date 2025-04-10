@@ -7,6 +7,8 @@ import { NavigationHandler } from 'navigation-react';
 import stateNavigator from './stateNavigator.js';
 import HmrContext from './HmrContext.js';
 
+const historyManager = new HTML5HistoryManager();
+
 const fetchRSC = async (url, options) => {
   const {encodeReply, createFromFetch} = ReactServerDomWebpackClient;
   const response = fetch(url, {
@@ -25,7 +27,8 @@ const fetchRSC = async (url, options) => {
 const RootProvider = ({url, children}) => {
   const setRoot = useContext(HmrContext);
   const clientNavigator = useMemo(() => {
-    const clientNavigator = new StateNavigator(stateNavigator, new HTML5HistoryManager());
+    historyManager.stop();
+    const clientNavigator = new StateNavigator(stateNavigator, historyManager);
     clientNavigator.navigateLink(url);
     return clientNavigator;
   }, []);
@@ -42,6 +45,7 @@ const RootProvider = ({url, children}) => {
               data
           }
       });
+      historyManager.stop();
       setRoot(root);
     }
     import.meta.webpackHot?.addStatusHandler(onHmrReload);

@@ -6,10 +6,13 @@ import { NavigationHandler } from "navigation-react";
 import stateNavigator from "./stateNavigator";
 import HmrContext from "./HmrContext";
 
+const historyManager = new HTML5HistoryManager();
+
 const RootProvider = ({url, children}: any) => {
   const setRoot = useContext(HmrContext);
   const clientNavigator = useMemo(() => {
-    const clientNavigator = new StateNavigator(stateNavigator, new HTML5HistoryManager());
+    historyManager.stop();
+    const clientNavigator = new StateNavigator(stateNavigator, historyManager);
     clientNavigator.navigateLink(url);
     return clientNavigator;
   }, []);
@@ -26,6 +29,7 @@ const RootProvider = ({url, children}: any) => {
               data
           }
       });
+      historyManager.stop();
       setRoot(root);
     }
     window.addEventListener('parcelhmrreload', onHmrReload);
