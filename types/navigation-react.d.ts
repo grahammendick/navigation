@@ -196,8 +196,3 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
  * View that shows when the State is active
  */
 export class SceneView<NavigationInfo extends { [index: string]: any } = any> extends Component<SceneViewProps<NavigationInfo>> {}
-
-/**
- * 
- */
-export class SceneRSCView<NavigationInfo extends { [index: string]: any } = any> extends Component<SceneViewProps<NavigationInfo>> {}
