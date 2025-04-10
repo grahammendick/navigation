@@ -20,8 +20,8 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     let firstLink;
     const findScenes = (elements = children, nested = false) => {
         for(const scene of React.Children.toArray(elements) as ReactElement<any>[]) {
-            const {stateKey, children} = scene.props;
-            if (stateKey) {
+            const {stateKey, children, __scene} = scene.props;
+            if (scene.type === NavigationStack.Scene || __scene) {
                 firstLink = firstLink || stateNavigator.fluent().navigate(stateKey).url;
                 scenes[stateKey] = scene;
             }

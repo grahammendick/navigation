@@ -1,12 +1,12 @@
 import React from 'react';
-import { useNavigationEvent, SceneRSCView } from 'navigation-react';
+import { useNavigationEvent, SceneView } from 'navigation-react';
 
-const Scene = ({stateKey, children}) => {
+const Scene = ({stateKey, dataKeyDeps, errorFallback, children}) => {
     const {state} = useNavigationEvent();
     return (
-        <SceneRSCView {...{stateKey}} active={stateKey} name={stateKey}>
+        <SceneView active={stateKey} name={stateKey} dataKeyDeps={dataKeyDeps} errorFallback={errorFallback}>
             {stateKey === state.key ? children : null}
-        </SceneRSCView>
+        </SceneView>
     );
 }
 

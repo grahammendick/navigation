@@ -9,7 +9,7 @@ const SceneView = ({active, dataKeyDeps, name, errorFallback, children}: SceneVi
         typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
     );
     return (
-        <SceneRSCView active={active} dataKeyDeps={dataKeyDeps} name={name} errorFallback={errorFallback}>
+        <SceneRSCView __scene stateKey={name} active={active} dataKeyDeps={dataKeyDeps} name={name} errorFallback={errorFallback}>
             {show ? children : null}
         </SceneRSCView>
     );
