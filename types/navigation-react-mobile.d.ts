@@ -1,5 +1,5 @@
 import { Crumb, State, StateContext, HTML5HistoryManager } from 'navigation';
-import { Component, ReactElement, ReactNode } from 'react';
+import { Component, ReactElement, ReactNode, ComponentType } from 'react';
 
 /**
  * Defines the Shared Element Props contract
@@ -173,6 +173,14 @@ export interface NavigationStackProps {
      * The key of the corresponding State
      */
     stateKey: keyof NavigationInfo & string;
+    /**
+     * The NavigationData keys that determine when to refetch the RSC Scene
+     */
+    dataKeyDeps?: string[];
+    /**
+     * The content to show when the Scene errors
+     */
+    errorFallback?: ReactNode | ComponentType;
     /**
      * The Scene's unmounted style
      */
