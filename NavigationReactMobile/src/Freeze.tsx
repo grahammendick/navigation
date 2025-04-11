@@ -1,5 +1,5 @@
 import React, { Suspense, useContext } from 'react';
-import RSCContext from './RSCContext';
+import RSCContext from './RSCContext.js';
 
 const infiniteThenable = {then: () => {}};
 
