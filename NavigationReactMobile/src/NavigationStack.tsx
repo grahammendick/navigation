@@ -9,7 +9,7 @@ import NavigationAnimation from './NavigationAnimation.js';
 import { NavigationMotionProps as NavigationStackProps } from './Props.js';
 import SharedElementAnimation from './SharedElementAnimation.js';
 import useSharedElementRegistry from './useSharedElementRegistry.js';
-import RSCContext from './RSCContext.js';
+import FreezeContext from './FreezeContext.js';
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, ignorePause: boolean};
 
 const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, sharedElements: sharedElementsStack,
@@ -122,7 +122,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     }, [pause]);
     const sceneData = getScenes();
     return (stateContext.state &&
-        <RSCContext.Provider value={rsc}>
+        <FreezeContext.Provider value={!rsc}>
             <SharedElementContext.Provider value={sharedElementRegistry as any}>
                 <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null}>
                     {scenes => (
@@ -138,7 +138,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
                     )}
                 </NavigationAnimation>
             </SharedElementContext.Provider>
-        </RSCContext.Provider>
+        </FreezeContext.Provider>
     )
 }
 

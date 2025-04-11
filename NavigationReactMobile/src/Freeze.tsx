@@ -1,5 +1,5 @@
 import React, { Suspense, useContext } from 'react';
-import RSCContext from './RSCContext.js';
+import FreezeContext from './FreezeContext.js';
 
 const infiniteThenable = {then: () => {}};
 
@@ -9,8 +9,7 @@ var Suspender = ({freeze, children}) => {
 };
 
 var Freeze = ({enabled, children}) => {
-    const fetchRSC = useContext(RSCContext);
-    const suspendable = !!React.Suspense && !fetchRSC;
+    const suspendable = !!React.Suspense && useContext(FreezeContext);
     const suspender = <Suspender freeze={enabled && suspendable}>{children}</Suspender>;
     return suspendable ? <Suspense fallback={null}>{suspender}</Suspense> : suspender;
 };
