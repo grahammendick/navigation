@@ -13,8 +13,9 @@ const SceneViewInner = ({children}) => children?.then ? use(children) : children
 
 const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: SceneViewProps & {active: string | string[], __scene?: boolean, stateKey?: string}) => {
     const navigationEvent = useNavigationEvent();
-    const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
-    const {nextCrumb: {crumblessUrl: url}, oldUrl, oldData, history, historyAction} = stateContext;
+    const {state, oldState, data, stateNavigator} = navigationEvent;
+    const {stateContext, historyManager} = stateNavigator;
+    const {crumbs, nextCrumb: {crumblessUrl: url}, oldUrl, oldData, history, historyAction} = stateContext;
     const fetchRSC = useContext(BundlerContext);
     const ancestorFetching = useContext(RSCContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -32,6 +33,10 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     let fetchedSceneView = cachedSceneViews[sceneViewKey];
     const dataChanged = () => {
         if (!getShow(oldState?.key) || !dataKeyDeps || ignoreCache) return true;
+        if (oldUrl) {
+            const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
+            if (oldCrumbs.length !== crumbs.length) return true;
+        }
         for(let i = 0; i < dataKeyDeps.length; i++) {
             if (data[dataKeyDeps[i]] !== oldData[dataKeyDeps[i]])
                 return true;
