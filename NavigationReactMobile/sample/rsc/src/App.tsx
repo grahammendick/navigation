@@ -27,7 +27,7 @@ const App = async ({url}: any) => {
               margin: '8px',
             }}>
             <Scene stateKey="people"><People /></Scene>
-            <Scene stateKey="person"><Person /></Scene>
+            <Scene stateKey="person" dataKeyDeps={['id']}><Person /></Scene>
           </NavigationStack>
         </RootProvider>
       </body>
