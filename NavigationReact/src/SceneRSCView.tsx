@@ -11,7 +11,7 @@ const RSCContext = createContext(false);
 
 const SceneViewInner = ({children}) => children?.then ? use(children) : children;
 
-const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: SceneViewProps & {active: string | string[], __scene?: boolean, stateKey?: string}) => {
+const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
     const navigationEvent = useNavigationEvent();
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
     const {crumbs, nextCrumb: {crumblessUrl: url}, oldUrl, oldData, history, historyAction} = stateContext;
