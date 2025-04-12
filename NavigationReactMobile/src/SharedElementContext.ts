@@ -1,4 +1,4 @@
-import * as React from 'react';
-import SharedElementRegistry from './SharedElementRegistry';
+import React from 'react';
+import SharedElementRegistry from './SharedElementRegistry.js';
 
 export default React.createContext(new SharedElementRegistry());

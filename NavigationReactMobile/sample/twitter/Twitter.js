@@ -1,6 +1,5 @@
 import React from 'react';
 import {NavigationStack, Scene} from 'navigation-react-mobile';
-import PhotoZoom from './PhotoZoom';
 import Home from './Home';
 import Tweet from './Tweet';
 import Timeline from './Timeline';

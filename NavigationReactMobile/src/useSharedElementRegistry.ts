@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { SharedItem } from './Props';
+import { SharedItem } from './Props.js';
 
 const useSharedElementRegistry = () => {
     const [sharedElements, setSharedElements] = useState({});

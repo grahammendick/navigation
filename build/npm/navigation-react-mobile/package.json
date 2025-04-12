@@ -2,11 +2,39 @@
   "name": "navigation-react-mobile",
   "version": "3.14.0",
   "description": "React Mobile plugin for the Navigation router",
-  "main": "navigation.react.mobile.js",
+  "main": "cjs/NavigationReactMobile.js",
   "types": "navigation.react.mobile.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/grahammendick/navigation.git"
+  },
+  "exports": {
+    ".": {
+      "require": {
+        "react-server": {
+          "types": "./navigation.react.mobile.d.ts",
+          "browser": "./cjs/NavigationReactMobile.server.js",
+          "node": "./cjs/NavigationReactMobile.server.js"
+        },
+        "default": {
+          "types": "./navigation.react.mobile.d.ts",
+          "browser": "./cjs/NavigationReactMobile.js",
+          "node": "./cjs/NavigationReactMobile.js"
+        }
+      },
+      "import": {
+        "react-server": {
+          "types": "./navigation.react.mobile.d.ts",
+          "browser": "./NavigationReactMobile.server.js",
+          "node": "./NavigationReactMobile.server.js"
+        },
+        "default": {
+          "types": "./navigation.react.mobile.d.ts",
+          "browser": "./NavigationReactMobile.js",
+          "node": "./NavigationReactMobile.js"
+        }
+      }
+    }
   },
   "keywords": [
     "router",

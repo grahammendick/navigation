@@ -14,7 +14,7 @@ const SceneViewInner = ({children}) => children?.then ? use(children) : children
 const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
     const navigationEvent = useNavigationEvent();
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
-    const {nextCrumb: {crumblessUrl: url}, oldUrl, oldData, history, historyAction} = stateContext;
+    const {crumbs, nextCrumb: {crumblessUrl: url}, oldUrl, oldData, history, historyAction} = stateContext;
     const fetchRSC = useContext(BundlerContext);
     const ancestorFetching = useContext(RSCContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -32,6 +32,7 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     let fetchedSceneView = cachedSceneViews[sceneViewKey];
     const dataChanged = () => {
         if (!getShow(oldState?.key) || !dataKeyDeps || ignoreCache) return true;
+        if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
         for(let i = 0; i < dataKeyDeps.length; i++) {
             if (data[dataKeyDeps[i]] !== oldData[dataKeyDeps[i]])
                 return true;
@@ -48,22 +49,25 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     }
     const oldSceneCount = (typeof window !== 'undefined' && window.history.state?.sceneCount) || 0;
     useEffect(() => {
-        rscCache.clear();
-        rscCache.set(navigationEvent, cachedSceneViews);
         renderedSceneView.current = getSceneView();
-        if (historyAction === 'none') return;
-        const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
-        if (!historyCache[url]) historyCache[url] = {count: sceneCount};
-        historyCache[url][sceneViewKey] = renderedSceneView.current;
-        historyCache[url].count = Math.min(historyCache[url].count, sceneCount);
-        const historyUrls = Object.keys(historyCache);
-        for(let i = 0; i < historyUrls.length && !history; i++) {
-            const historyUrl = historyUrls[i];
-            const gap = historyCache[historyUrl].count - sceneCount;
-            if (historyUrl !== url && (gap === 0 || (historyAction === 'add' && gap > 0)))
-                delete historyCache[historyUrl];
+        const cacheHistory = () => {
+            if (historyAction === 'none' || historyManager.getCurrentUrl() !== stateContext.url) return;
+            const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
+            if (!historyCache[url]) historyCache[url] = {count: sceneCount};
+            historyCache[url][sceneViewKey] = renderedSceneView.current;
+            historyCache[url].count = Math.min(historyCache[url].count, sceneCount);
+            const historyUrls = Object.keys(historyCache);
+            for(let i = 0; i < historyUrls.length && !history; i++) {
+                const historyUrl = historyUrls[i];
+                const gap = historyCache[historyUrl].count - sceneCount;
+                if (historyUrl !== url && (gap === 0 || (historyAction === 'add' && gap > 0)))
+                    delete historyCache[historyUrl];
+            }
+            window.history.replaceState({...window.history.state, sceneCount}, null);
         }
-        window.history.replaceState({...window.history.state, sceneCount}, null);
+        cacheHistory();
+        window.addEventListener('popstate', cacheHistory);
+        return () => window.removeEventListener('popstate', cacheHistory);
     });
     if (!fetchedSceneView && !cachedHistory && !firstScene && show && !ancestorFetching && dataChanged()) {
         cachedSceneViews[sceneViewKey] = fetchRSC(historyManager.getHref(url), {

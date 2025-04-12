@@ -1,19 +1,24 @@
 'use client'
 import { useMemo, useContext, useEffect } from "react";
 import { fetchRSC } from '@parcel/rsc/client';
-import { StateNavigator, HTML5HistoryManager } from 'navigation';
+import { StateNavigator } from 'navigation';
 import { NavigationHandler } from "navigation-react";
+import { MobileHistoryManager } from 'navigation-react-mobile';
 import stateNavigator from "./stateNavigator";
 import HmrContext from "./HmrContext";
 
-const historyManager = new HTML5HistoryManager();
+const historyManager = new MobileHistoryManager(null, '');
 
 const RootProvider = ({url, children}: any) => {
   const setRoot = useContext(HmrContext);
   const clientNavigator = useMemo(() => {
     historyManager.stop();
     const clientNavigator = new StateNavigator(stateNavigator, historyManager);
-    clientNavigator.navigateLink(url);
+    var {state, data} = stateNavigator.parseLink<any>(url);
+    const link = stateNavigator.fluent()
+        .navigate('people')
+        .navigate(state.key, data).url;
+    clientNavigator.navigateLink(link);
     return clientNavigator;
   }, []);
   useEffect(() => {
