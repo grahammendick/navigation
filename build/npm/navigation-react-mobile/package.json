@@ -11,28 +11,12 @@
   "exports": {
     ".": {
       "require": {
-        "react-server": {
-          "types": "./navigation.react.mobile.d.ts",
-          "browser": "./cjs/NavigationReactMobile.server.js",
-          "node": "./cjs/NavigationReactMobile.server.js"
-        },
-        "default": {
-          "types": "./navigation.react.mobile.d.ts",
-          "browser": "./cjs/NavigationReactMobile.js",
-          "node": "./cjs/NavigationReactMobile.js"
-        }
+        "react-server": "./cjs/NavigationReactMobile.server.js",
+        "default": "./cjs/NavigationReactMobile.js"
       },
       "import": {
-        "react-server": {
-          "types": "./navigation.react.mobile.d.ts",
-          "browser": "./NavigationReactMobile.server.js",
-          "node": "./NavigationReactMobile.server.js"
-        },
-        "default": {
-          "types": "./navigation.react.mobile.d.ts",
-          "browser": "./NavigationReactMobile.js",
-          "node": "./NavigationReactMobile.js"
-        }
+        "react-server": "./NavigationReactMobile.server.js",
+        "default": "./NavigationReactMobile.js"
       }
     }
   },
