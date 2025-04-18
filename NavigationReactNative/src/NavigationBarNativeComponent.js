@@ -30,7 +30,12 @@ type NativeProps = $ReadOnly<{|
   shadowColor: ColorValue,
   backTitle: string,
   backTitleOn: boolean,
-  backImage: ImageSource,
+  backImage: $ReadOnly<{|
+    height: Int32,
+    width: Int32,
+    scale: Int32,
+    uri: string,
+  |}>,
   backTestID: string,
   barHeight: Double,
   onOffsetChanged: DirectEventHandler<$ReadOnly<{|

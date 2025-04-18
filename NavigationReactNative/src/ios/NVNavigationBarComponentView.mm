@@ -93,9 +93,13 @@ using namespace facebook::react;
         }
     }
     _backTestID = [[NSString alloc] initWithUTF8String: newViewProps.backTestID.c_str()];
-    _imageSource = newViewProps.backImage;
+    _imageSource = ImageSource{};
+    _imageSource.uri = newViewProps.backImage.uri;
+    _imageSource.scale = newViewProps.backImage.scale;
+    _imageSource.size = {static_cast<double>(newViewProps.backImage.width), static_cast<double>(newViewProps.backImage.height)};
     if (![[[NSString alloc] initWithUTF8String:_imageSource.uri.c_str()] isEqual:[[NSString alloc] initWithUTF8String:oldViewProps.backImage.uri.c_str()]]
-        || _imageSource.size != oldViewProps.backImage.size || _imageSource.scale != oldViewProps.backImage.scale)
+        || _imageSource.size.width != oldViewProps.backImage.width || _imageSource.size.height != oldViewProps.backImage.height
+        || _imageSource.scale != oldViewProps.backImage.scale)
         [self loadImage];
     [self updateStyle];
     [super updateProps:props oldProps:oldProps];
