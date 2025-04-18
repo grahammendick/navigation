@@ -18,6 +18,8 @@ import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,7 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     int nativeEventCount;
     int mostRecentEventCount;
     boolean dataSetChanged = false;
+    private ViewPager2 viewPager;
     private boolean onAfterUpdateTransactionRequested = false;
     boolean jsUpdate = false;
 
@@ -105,6 +108,14 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
                 return (TabLayoutRTLView) child;
         }
         return null;
+    }
+
+    void attach(TabLayout tabLayout, ViewPager2 viewPager) {
+        if (viewPager == this.viewPager) return;
+        this.viewPager = viewPager;
+        new TabLayoutMediator(tabLayout, viewPager,
+            (tab, position) -> tab.setText(this.getTabAt(position).styledTitle)
+        ).attach();
     }
 
     void populateTabs(TabLayoutRTLView tabView) {
