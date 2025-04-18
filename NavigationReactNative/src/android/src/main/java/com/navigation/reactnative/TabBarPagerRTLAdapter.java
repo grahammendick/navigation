@@ -35,7 +35,7 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     int nativeEventCount;
     int mostRecentEventCount;
     boolean dataSetChanged = false;
-    private ViewPager2 viewPager;
+    private boolean connected = false;
     private boolean onAfterUpdateTransactionRequested = false;
     boolean jsUpdate = false;
 
@@ -111,8 +111,8 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     }
 
     void attach(TabLayout tabLayout, ViewPager2 viewPager) {
-        if (viewPager == this.viewPager) return;
-        this.viewPager = viewPager;
+        if (this.connected) return;
+        this.connected = true;
         new TabLayoutMediator(tabLayout, viewPager,
             (tab, position) -> tab.setText(this.getTabAt(position).styledTitle)
         ).attach();

@@ -23,7 +23,7 @@ public class TabLayoutView extends TabLayout implements TabView {
     int defaultRippleColor;
     private boolean layoutRequested = false;
     private boolean measured = false;
-    private ViewPager viewPager;
+    private boolean connected = false;
     private OnTabSelectedListener tabSelectedListener;
 
     public TabLayoutView(Context context) {
@@ -80,8 +80,8 @@ public class TabLayoutView extends TabLayout implements TabView {
 
     @Override
     public void setupWithViewPager(@Nullable final ViewPager viewPager) {
-        if (viewPager == this.viewPager) return;
-        this.viewPager = viewPager;
+        if (this.connected) return;
+        this.connected = true;
         super.setupWithViewPager(viewPager);
         if (tabSelectedListener != null)
             removeOnTabSelectedListener(tabSelectedListener);
