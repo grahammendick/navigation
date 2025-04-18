@@ -15,10 +15,20 @@ type NativeProps = $ReadOnly<{|
   fontSize?: WithDefault<Float, -1>,
   barTintColor: ColorValue,
   tintColor: ColorValue,
-  navigationImage: ImageSource,
+  navigationImage: $ReadOnly<{|
+    height: Int32,
+    width: Int32,
+    scale: Int32,
+    uri: string,
+  |}>,
   navigationTestID: string,
   navigationAccessibilityLabel: string,
-  overflowImage: ImageSource,
+  overflowImage: $ReadOnly<{|
+    height: Int32,
+    width: Int32,
+    scale: Int32,
+    uri: string,
+  |}>,
   overflowTestID: string,
   onNavigationPress: DirectEventHandler<null>,
 |}>;
