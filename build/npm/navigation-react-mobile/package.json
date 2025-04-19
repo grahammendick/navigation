@@ -12,10 +12,12 @@
     ".": {
       "require": {
         "react-server": "./cjs/NavigationReactMobile.server.js",
+        "types": "./navigation.react.mobile.d.ts",
         "default": "./cjs/NavigationReactMobile.js"
       },
       "import": {
         "react-server": "./NavigationReactMobile.server.js",
+        "types": "./navigation.react.mobile.d.ts",
         "default": "./NavigationReactMobile.js"
       }
     }

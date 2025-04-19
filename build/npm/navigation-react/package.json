@@ -12,10 +12,12 @@
     ".": {
       "require": {
         "react-server": "./cjs/NavigationReact.server.js",
+        "types": "./navigation.react.d.ts",
         "default": "./cjs/NavigationReact.js"
       },
       "import": {
         "react-server": "./NavigationReact.server.js",
+        "types": "./navigation.react.d.ts",
         "default": "./NavigationReact.js"
       }
     }
