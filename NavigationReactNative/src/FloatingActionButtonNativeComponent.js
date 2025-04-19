@@ -6,7 +6,12 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
-  image: ImageSource,
+  image: $ReadOnly<{|
+    height: Int32,
+    width: Int32,
+    scale: Int32,
+    uri: string,
+  |}>,
   gravity: string,
   anchor: string,
   anchorGravity: string,

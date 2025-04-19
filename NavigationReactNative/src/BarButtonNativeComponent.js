@@ -12,7 +12,12 @@ type NativeProps = $ReadOnly<{|
   fontStyle: string,
   fontSize?: WithDefault<Float, -1>,
   testID: string,
-  image: ImageSource,
+  image: $ReadOnly<{|
+    height: Int32,
+    width: Int32,
+    scale: Int32,
+    uri: string,
+  |}>,
   systemItem: string,
   tintColor: ColorValue,
   search: boolean,

@@ -58,7 +58,7 @@ class IconResolver {
         String uri = source != null ? source.getString(PROP_ICON_URI) : null;
         if (uri == null) {
             iconResolverListener.setDrawable(null);
-        } else if (uri.startsWith("http://") || uri.startsWith("https://") || uri.startsWith("file://")) {
+        } else if (uri.startsWith("http://") || uri.startsWith("https://") || uri.startsWith("file://") || uri.startsWith("data:image")) {
             ImagePipeline imagePipeline = Fresco.getImagePipeline();
             ImageRequestBuilder builder = ImageRequestBuilder.newBuilderWithSource(Uri.parse(uri));
             ImageRequest request = builder.build();
