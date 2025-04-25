@@ -28,7 +28,7 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey];
     if (!rscCache.get(navigationEvent)) rscCache.set(navigationEvent, {});
     const cachedSceneViews = rscCache.get(navigationEvent);
-    const renderedSceneView = useRef(undefined);
+    const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
     let fetchedSceneView = cachedSceneViews[sceneViewKey];
     const dataChanged = () => {
         if (!getShow(oldState?.key) || !dataKeyDeps || ignoreCache) return true;
@@ -45,16 +45,24 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         if (cachedHistory) return historyCache[url][sceneViewKey];
         if (firstScene || ancestorFetching) return children;
         if (dataChanged()) return fetchedSceneView;
-        return renderedSceneView.current;
+        return renderedSceneView.current.sceneView;
     }
     const oldSceneCount = (typeof window !== 'undefined' && window.history.state?.sceneCount) || 0;
     useEffect(() => {
-        renderedSceneView.current = getSceneView();
+        const {navigationEvent: oldNavigationEvent} = renderedSceneView.current;
+        renderedSceneView.current = {sceneView: getSceneView(), navigationEvent};
+        if (oldNavigationEvent !== navigationEvent) rscCache.delete(oldNavigationEvent);
+        if (!cachedSceneViews.__committed) {
+            cachedSceneViews.__committed = true;
+            rscCache.forEach(({__committed}, key) => {
+                if (!__committed) rscCache.delete(key);
+            });
+        }
         const cacheHistory = () => {
             if (historyAction === 'none' || historyManager.getCurrentUrl() !== stateContext.url) return;
             const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
             if (!historyCache[url]) historyCache[url] = {count: sceneCount};
-            historyCache[url][sceneViewKey] = renderedSceneView.current;
+            historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
             historyCache[url].count = Math.min(historyCache[url].count, sceneCount);
             const historyUrls = Object.keys(historyCache);
             for(let i = 0; i < historyUrls.length && !history; i++) {
