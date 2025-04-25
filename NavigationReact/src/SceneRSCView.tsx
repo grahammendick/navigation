@@ -77,6 +77,12 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         window.addEventListener('popstate', cacheHistory);
         return () => window.removeEventListener('popstate', cacheHistory);
     });
+    useEffect(() => {
+        return () => {
+            delete cachedSceneViews[sceneViewKey];
+            if (Object.keys(cachedSceneViews).length <= 1) rscCache.delete(navigationEvent);
+        };
+    }, [])
     if (!fetchedSceneView && !cachedHistory && !firstScene && show && !ancestorFetching && dataChanged()) {
         cachedSceneViews[sceneViewKey] = fetchRSC(historyManager.getHref(url), {
             method: 'post',
