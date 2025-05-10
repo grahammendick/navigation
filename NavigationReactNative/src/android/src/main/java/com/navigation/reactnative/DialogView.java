@@ -52,6 +52,12 @@ public class DialogView extends ReactViewGroup {
         dialogRootView.dialogFragment = dialogViewFragment;
     }
 
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+        dialogRootView.setId(id);
+    }
+
     void onAfterUpdateTransaction() {
         nativeEventCount = Math.max(nativeEventCount, mostRecentEventCount);
         int eventLag = nativeEventCount - mostRecentEventCount;

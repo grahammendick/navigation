@@ -57,6 +57,12 @@ public class BottomSheetDialogView extends ReactViewGroup {
         defaultHalfExpandedRatio = bottomSheetBehavior.getHalfExpandedRatio();
     }
 
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+        dialogRootView.setId(id);
+    }
+
     void onAfterUpdateTransaction() {
         nativeEventCount = Math.max(nativeEventCount, mostRecentEventCount);
         int eventLag = nativeEventCount - mostRecentEventCount;
