@@ -41,7 +41,8 @@ type NativeProps = $ReadOnly<{|
   includeInset: boolean,
   overlap: Int32,
   onOffsetChanged: DirectEventHandler<$ReadOnly<{|
-    offset: Double
+    offset: Double,
+    totalScrollRange: Double,
   |}>>,
 |}>;
 

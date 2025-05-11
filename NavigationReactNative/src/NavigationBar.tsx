@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { requireNativeComponent, Image, Platform, Animated, NativeModules } from 'react-native';
+import { requireNativeComponent, Image, Platform, Animated, NativeModules, PixelRatio } from 'react-native';
 import { NavigationContext } from 'navigation-react';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
@@ -13,6 +13,8 @@ import InsetsContext from './InsetsContext';
 import OverlapContext from './OverlapContext';
 
 class NavigationBar extends React.Component<any, any> {
+    private offset = 0;
+    private totalScrollRange = 0;
     constructor(props) {
         super(props);
     }
@@ -34,7 +36,7 @@ class NavigationBar extends React.Component<any, any> {
         }
     }
     render() {
-        var {navigationEvent, bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, backImage, titleCentered, shadowColor, insets, overlap, children, onNavigationPress, style = {height: undefined}, ...otherProps} = this.props;
+        var {navigationEvent, bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, backImage, titleCentered, shadowColor, insets, overlap, children, onNavigationPress, onOffsetChanged, style = {height: undefined}, ...otherProps} = this.props;
         const Material3 = global.__turboModuleProxy != null ? require("./NativeMaterial3Module").default : NativeModules.Material3;
         const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
         var scrollEdgeProps = this.getScrollEdgeProps()
@@ -57,6 +59,7 @@ class NavigationBar extends React.Component<any, any> {
         var crumb = stateNavigator.stateContext.crumbs.length;
         const toolbarHeight = !material3 || searchToolbar ? 56 : 64;
         const barHeight = toolbarHeight + (searchToolbar ? 32 : 0);
+        const overlapRatio = Math.round(1 + this.offset / (this.totalScrollRange * PixelRatio.getPixelSizeForLayoutSize(1))) * overlap;
         return (
             <>
                 <NVNavigationBar
@@ -68,11 +71,16 @@ class NavigationBar extends React.Component<any, any> {
                     barHeight={!!collapsingBar ? style.height : barHeight}
                     includeInset={!collapsingBar}
                     overlap={overlap}
-                    style={{height: !!collapsingBar ? style.height - overlap : Platform.OS === 'android' ? barHeight + insets.top : null}}
+                    style={{height: !!collapsingBar ? style.height - overlapRatio + this.offset : Platform.OS === 'android' ? barHeight + insets.top + this.offset : null}}
                     {...otherProps}
                     {...scrollEdgeProps}
                     shadowColor={shadowColor}
-                    barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : scrollEdgeProps.largeBarTintColor}>
+                    barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : scrollEdgeProps.largeBarTintColor}
+                    onOffsetChanged={e => {
+                        onOffsetChanged?.(e);
+                        this.offset = e.nativeEvent.offset;
+                        this.totalScrollRange = e.nativeEvent.totalScrollRange
+                    }}>
                     {Platform.OS === 'ios' ? !hidden && children :
                         <Container
                             collapse={!!collapsingBar}
