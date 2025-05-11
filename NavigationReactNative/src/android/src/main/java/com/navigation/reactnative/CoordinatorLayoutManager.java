@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.view.View;
 import android.widget.ScrollView;
 
+import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -39,7 +40,7 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
     }
 
     @Override
-    public void addView(CoordinatorLayoutView parent, View child, int index) {
+    public void addView(@NonNull CoordinatorLayoutView parent, @NonNull View child, int index) {
         super.addView(parent, child, index);
         if (child instanceof ScrollView || child instanceof ViewPager || child instanceof ViewPager2) {
             CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
