@@ -1,9 +1,10 @@
 import React, { ReactNode } from 'react';
 import { requireNativeComponent, StyleSheet } from 'react-native';
-import { StateNavigator, StateContext, State, Crumb } from 'navigation';
+import { StateNavigator, State } from 'navigation';
 import { NavigationContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
 import Freeze from './Freeze';
+import OverlapContext from './OverlapContext';
 type SceneProps = { crumb: number, url: string, sceneKey: string, rest: boolean, renderScene: (state: State, data: any) => ReactNode, customAnimation: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, backgroundColor: any, landscape: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
 type SceneState = { navigationEvent: NavigationEvent };
 
@@ -159,7 +160,9 @@ class Scene extends React.Component<SceneProps, SceneState> {
                     onPopped={() => popped(sceneKey)}>
                     <BackButton onPress={this.handleBack} />
                     <NavigationContext.Provider value={navigationEvent}>
-                        {navigationEvent && this.props.renderScene(state, data)}
+                        <OverlapContext.Provider value={0}>
+                            {navigationEvent && this.props.renderScene(state, data)}
+                        </OverlapContext.Provider>
                     </NavigationContext.Provider>
                 </NVScene>
             </Freeze>

@@ -88,6 +88,16 @@ public class NavigationBarViewManager extends ViewGroupManager<NavigationBarView
         }
     }
 
+    @ReactProp(name = "includeInset")
+    public void setIncludeInset(NavigationBarView view, boolean includeInset) {
+        view.includeInset = includeInset;
+    }
+
+    @ReactProp(name = "overlap")
+    public void setOverlap(NavigationBarView view, int overlap) {
+        view.overlap = overlap;
+    }
+
     @Override
     public void setCrumb(NavigationBarView view, int value) {
     }

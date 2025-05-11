@@ -38,6 +38,8 @@ type NativeProps = $ReadOnly<{|
   |}>,
   backTestID: string,
   barHeight: Double,
+  includeInset: boolean,
+  overlap: Int32,
   onOffsetChanged: DirectEventHandler<$ReadOnly<{|
     offset: Double
   |}>>,

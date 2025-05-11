@@ -30,6 +30,8 @@ public class NavigationBarView extends AppBarLayout {
     final ViewOutlineProvider defaultOutlineProvider;
     final Drawable defaultBackground;
     final int defaultShadowColor;
+    boolean includeInset;
+    int overlap = 0;
     private boolean layoutRequested = false;
     private int topInset = 0;
     private final SceneView.WindowInsetsListener windowInsetsListener;
@@ -53,7 +55,7 @@ public class NavigationBarView extends AppBarLayout {
             int newTopInset = insets.getSystemWindowInsetTop();
             if (topInset != newTopInset) {
                 topInset = newTopInset;
-                final int newHeight = getLayoutParams().height + topInset;
+                final int newHeight = getLayoutParams().height + (includeInset ? topInset : 0) - this.overlap;
                 if (stateWrapper != null) {
                     updateState(-1, newHeight);
                 } else {
