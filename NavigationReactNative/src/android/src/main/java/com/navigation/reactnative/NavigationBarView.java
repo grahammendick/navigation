@@ -58,7 +58,7 @@ public class NavigationBarView extends AppBarLayout {
                 eventDispatcher.dispatchEvent(OffsetChangedEvent.obtain(getId(), offset, getTotalScrollRange()));
                 handler.removeCallbacks(afterOffsetChangedRunnable);
                 afterOffsetChangedRunnable = this::resize;
-                handler.postDelayed(afterOffsetChangedRunnable, 100);
+                handler.postDelayed(afterOffsetChangedRunnable, 200);
             }
         });
         windowInsetsListener = insets -> {
@@ -82,7 +82,7 @@ public class NavigationBarView extends AppBarLayout {
     }
 
     private void resize() {
-        final int newHeight = getLayoutParams().height + (includeInset ? topInset : 0) - ((int) (1f + (float) offset * overlap / getTotalScrollRange())) + offset;
+        final int newHeight = getLayoutParams().height + (includeInset ? topInset : 0) - ((int) (1f + (float) offset / getTotalScrollRange())) * overlap + offset;
         if (stateWrapper != null) {
             updateState(-1, newHeight);
         } else {
