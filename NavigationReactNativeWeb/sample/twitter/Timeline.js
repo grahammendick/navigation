@@ -29,7 +29,7 @@ export default () => {
         navigationHref={stateNavigator.historyManager.getHref(
           stateNavigator.getNavigationBackLink(1)
         )}
-        style={{height: 120}}
+        style={{height: 140}}
         onNavigationPress={() => stateNavigator.navigateBack(1)}>
         <CollapsingBar>
           <View style={{backgroundColor: colors[1], flex: 1}} />
