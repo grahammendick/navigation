@@ -59,7 +59,7 @@ class NavigationBar extends React.Component<any, any> {
         var crumb = stateNavigator.stateContext.crumbs.length;
         const toolbarHeight = !material3 || searchToolbar ? 56 : 64;
         const barHeight = toolbarHeight + (searchToolbar ? 32 : 0);
-        const overlapRatio = Math.round(1 + this.offset / (this.totalScrollRange * PixelRatio.getPixelSizeForLayoutSize(1))) * overlap;
+        const overlapRatio = Math.round(1 + (this.totalScrollRange ? this.offset / (this.totalScrollRange * PixelRatio.getPixelSizeForLayoutSize(1)) : 0) * (overlap || 0));
         return (
             <>
                 <NVNavigationBar
@@ -68,10 +68,10 @@ class NavigationBar extends React.Component<any, any> {
                     backTitle={backTitle}
                     backTitleOn={backTitle !== undefined}
                     backImage={Image.resolveAssetSource(backImage)}
-                    barHeight={!!collapsingBar ? style.height : barHeight}
+                    barHeight={!!collapsingBar ? style.height || 0 : barHeight}
                     includeInset={!collapsingBar}
                     overlap={overlap}
-                    style={{height: !!collapsingBar ? style.height - overlapRatio + this.offset : Platform.OS === 'android' ? barHeight + insets.top + this.offset : null}}
+                    style={{height: !!collapsingBar ? (style.height || 0) - overlapRatio + this.offset : Platform.OS === 'android' ? barHeight + insets.top + this.offset : null}}
                     {...otherProps}
                     {...scrollEdgeProps}
                     shadowColor={shadowColor}

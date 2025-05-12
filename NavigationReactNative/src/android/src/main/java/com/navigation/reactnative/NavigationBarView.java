@@ -82,7 +82,8 @@ public class NavigationBarView extends AppBarLayout {
     }
 
     private void resize() {
-        final int newHeight = getLayoutParams().height + (includeInset ? topInset : 0) - ((int) (1f + (float) offset / getTotalScrollRange())) * overlap + offset;
+        int overlapRatio = (int) ((1f + (getTotalScrollRange() > 0 ? (float) offset / getTotalScrollRange() : 0)) * overlap);
+        final int newHeight = getLayoutParams().height + (includeInset ? topInset : 0) - overlapRatio + offset;
         if (stateWrapper != null) {
             updateState(-1, newHeight);
         } else {
