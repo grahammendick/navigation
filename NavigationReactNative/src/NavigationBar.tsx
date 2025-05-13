@@ -59,7 +59,7 @@ class NavigationBar extends React.Component<any, any> {
         var crumb = stateNavigator.stateContext.crumbs.length;
         const toolbarHeight = !material3 || searchToolbar ? 56 : 64;
         const barHeight = toolbarHeight + (searchToolbar ? 32 : 0);
-        const overlapRatio = Math.round(1 + (this.totalScrollRange ? this.offset / (this.totalScrollRange * PixelRatio.getPixelSizeForLayoutSize(1)) : 0) * (overlap || 0));
+        const overlapRatio = Math.round((1 + (this.totalScrollRange ? this.offset / this.totalScrollRange : 0)) * (overlap || 0) / PixelRatio.getPixelSizeForLayoutSize(1));
         return (
             <>
                 <NVNavigationBar
