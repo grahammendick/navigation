@@ -3,6 +3,7 @@ package com.navigation.reactnative;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Handler;
 import android.view.ViewOutlineProvider;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
@@ -30,10 +31,15 @@ public class NavigationBarView extends AppBarLayout {
     final ViewOutlineProvider defaultOutlineProvider;
     final Drawable defaultBackground;
     final int defaultShadowColor;
+    boolean includeInset;
+    int overlap = 0;
     private boolean layoutRequested = false;
+    private int offset = 0;
     private int topInset = 0;
     private final SceneView.WindowInsetsListener windowInsetsListener;
     private StateWrapper stateWrapper = null;
+    private final Handler handler = new Handler();
+    private Runnable afterOffsetChangedRunnable;
 
     public NavigationBarView(Context context) {
         super(context);
@@ -45,30 +51,21 @@ public class NavigationBarView extends AppBarLayout {
         setLiftOnScroll(false);
         setFitsSystemWindows(true);
         addOnOffsetChangedListener((appBarLayout, offset) -> {
-            ReactContext reactContext = (ReactContext) getContext();
-            EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-            eventDispatcher.dispatchEvent(OffsetChangedEvent.obtain(getId(), offset));
+            if (this.offset != offset) {
+                this.offset = offset;
+                ReactContext reactContext = (ReactContext) getContext();
+                EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                eventDispatcher.dispatchEvent(OffsetChangedEvent.obtain(getId(), offset, getTotalScrollRange()));
+                handler.removeCallbacks(afterOffsetChangedRunnable);
+                afterOffsetChangedRunnable = this::resize;
+                handler.postDelayed(afterOffsetChangedRunnable, 200);
+            }
         });
         windowInsetsListener = insets -> {
             int newTopInset = insets.getSystemWindowInsetTop();
             if (topInset != newTopInset) {
                 topInset = newTopInset;
-                final int newHeight = getLayoutParams().height + topInset;
-                if (stateWrapper != null) {
-                    updateState(-1, newHeight);
-                } else {
-                    final int viewTag = getId();
-                    final ReactContext reactContext = (ReactContext) getContext();
-                    reactContext.runOnNativeModulesQueueThread(
-                        new GuardedRunnable(reactContext) {
-                            @Override
-                            public void runGuarded() {
-                                UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
-                                if (uiManager != null)
-                                    uiManager.updateNodeSize(viewTag, -1, newHeight);
-                            }
-                        });
-                }
+                resize();
             }
         };
         getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -82,6 +79,26 @@ public class NavigationBarView extends AppBarLayout {
                 return true;
             }
         });
+    }
+
+    private void resize() {
+        int overlapRatio = (int) ((1f + (getTotalScrollRange() > 0 ? (float) offset / getTotalScrollRange() : 0)) * overlap);
+        final int newHeight = getLayoutParams().height + (includeInset ? topInset : 0) - overlapRatio + offset;
+        if (stateWrapper != null) {
+            updateState(-1, newHeight);
+        } else {
+            final int viewTag = getId();
+            final ReactContext reactContext = (ReactContext) getContext();
+            reactContext.runOnNativeModulesQueueThread(
+                new GuardedRunnable(reactContext) {
+                    @Override
+                    public void runGuarded() {
+                        UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
+                        if (uiManager != null)
+                            uiManager.updateNodeSize(viewTag, -1, newHeight);
+                    }
+                });
+        }
     }
 
     public void setStateWrapper(StateWrapper stateWrapper) {
@@ -167,17 +184,19 @@ public class NavigationBarView extends AppBarLayout {
 
     static class OffsetChangedEvent extends Event<OffsetChangedEvent> {
         private int offset;
+        private int totalScrollRange;
         private static final Pools.SynchronizedPool<OffsetChangedEvent> pool = new Pools.SynchronizedPool<>(3);
 
         private OffsetChangedEvent() {
         }
 
-        private static OffsetChangedEvent obtain(int viewTag, int offset) {
+        private static OffsetChangedEvent obtain(int viewTag, int offset, int totalScrollRange) {
             OffsetChangedEvent event = pool.acquire();
             if (event == null)
                 event = new OffsetChangedEvent();
             event.init(viewTag);
             event.offset = offset;
+            event.totalScrollRange = totalScrollRange;
             return event;
         }
 
@@ -205,6 +224,7 @@ public class NavigationBarView extends AppBarLayout {
         public void dispatch(RCTEventEmitter rctEventEmitter) {
             WritableMap event = Arguments.createMap();
             event.putDouble("offset", PixelUtil.toDIPFromPixel(offset));
+            event.putDouble("totalScrollRange", PixelUtil.toDIPFromPixel(totalScrollRange));
             rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
         }
     }

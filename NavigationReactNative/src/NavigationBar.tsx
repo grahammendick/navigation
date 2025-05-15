@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { requireNativeComponent, Image, Platform, Animated, NativeModules } from 'react-native';
+import { requireNativeComponent, Image, Platform, Animated, NativeModules, PixelRatio } from 'react-native';
 import { NavigationContext } from 'navigation-react';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
@@ -10,8 +10,11 @@ import TabBar from './TabBar';
 import StatusBar from './StatusBar';
 import BottomAppBar from './BottomAppBar';
 import InsetsContext from './InsetsContext';
+import OverlapContext from './OverlapContext';
 
 class NavigationBar extends React.Component<any, any> {
+    private offset = 0;
+    private totalScrollRange = 0;
     constructor(props) {
         super(props);
     }
@@ -33,7 +36,7 @@ class NavigationBar extends React.Component<any, any> {
         }
     }
     render() {
-        var {navigationEvent, bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, backImage, titleCentered, shadowColor, insets, children, onNavigationPress, style = {height: undefined}, ...otherProps} = this.props;
+        var {navigationEvent, bottomBar, hidden, logo, navigationImage, overflowImage, backTitle, backImage, titleCentered, shadowColor, insets, overlap, children, onNavigationPress, onOffsetChanged, style = {height: undefined}, ...otherProps} = this.props;
         const Material3 = global.__turboModuleProxy != null ? require("./NativeMaterial3Module").default : NativeModules.Material3;
         const { on: material3 } = Platform.OS === 'android' ? Material3.getConstants() : { on: false };
         var scrollEdgeProps = this.getScrollEdgeProps()
@@ -56,6 +59,7 @@ class NavigationBar extends React.Component<any, any> {
         var crumb = stateNavigator.stateContext.crumbs.length;
         const toolbarHeight = !material3 || searchToolbar ? 56 : 64;
         const barHeight = toolbarHeight + (searchToolbar ? 32 : 0);
+        const overlapRatio = Math.round((1 + (this.totalScrollRange ? this.offset / this.totalScrollRange : 0)) * (overlap || 0) / PixelRatio.getPixelSizeForLayoutSize(1));
         return (
             <>
                 <NVNavigationBar
@@ -64,12 +68,19 @@ class NavigationBar extends React.Component<any, any> {
                     backTitle={backTitle}
                     backTitleOn={backTitle !== undefined}
                     backImage={Image.resolveAssetSource(backImage)}
-                    barHeight={!!collapsingBar ? style.height : barHeight}
-                    style={{height: !!collapsingBar ? style.height : Platform.OS === 'android' ? barHeight + insets.top : null}}
+                    barHeight={!!collapsingBar ? style.height || 0 : barHeight}
+                    includeInset={!collapsingBar}
+                    overlap={overlap}
+                    style={{height: !!collapsingBar ? (style.height || 0) - overlapRatio + this.offset : Platform.OS === 'android' ? barHeight + insets.top + this.offset : null}}
                     {...otherProps}
                     {...scrollEdgeProps}
                     shadowColor={shadowColor}
-                    barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : scrollEdgeProps.largeBarTintColor}>
+                    barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : scrollEdgeProps.largeBarTintColor}
+                    onOffsetChanged={e => {
+                        onOffsetChanged?.(e);
+                        this.offset = e.nativeEvent.offset;
+                        this.totalScrollRange = e.nativeEvent.totalScrollRange
+                    }}>
                     {Platform.OS === 'ios' ? !hidden && children :
                         <Container
                             collapse={!!collapsingBar}
@@ -130,9 +141,16 @@ const AnimatedNavigationBar =  Animated.createAnimatedComponent(NavigationBar);
 export default props => (
     <InsetsContext.Consumer>
         {(insets) => (
-            <NavigationContext.Consumer>
-                {(navigationEvent) => <AnimatedNavigationBar navigationEvent={navigationEvent} insets={insets} {...props} />}
-            </NavigationContext.Consumer>
+            <OverlapContext.Consumer>
+                {(overlap) => (
+                    <NavigationContext.Consumer>
+                        {(navigationEvent) => (
+                            <AnimatedNavigationBar
+                                navigationEvent={navigationEvent} insets={insets} overlap={overlap} {...props} />
+                        )}
+                    </NavigationContext.Consumer>
+                )}
+            </OverlapContext.Consumer>
         )}
     </InsetsContext.Consumer>
 );

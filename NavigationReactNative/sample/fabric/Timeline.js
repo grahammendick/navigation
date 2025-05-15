@@ -22,7 +22,7 @@ export default () => {
         barTintColor={Platform.OS === 'android' ? standard => standard ? colors[0] : colors[1] : 'rgb(247,247,247)'}
         tintColor={Platform.OS === 'android' ? "#fff" : null}
         titleColor={Platform.OS === 'android' ? "#fff" : null}
-        style={{height: 120}}>
+        style={{height: 140}}>
         <CollapsingBar />
       </NavigationBar>
       <Tweets
