@@ -42,7 +42,7 @@ const {PassThrough} = require('stream');
 const app = express();
 
 app.use(compress());
-app.get('/favicon.ico', function (req, res) {
+app.get(['/favicon.ico', '/.well-known/*.json'], function (req, res) {
   res.statusCode = 404;
   res.end();
 });
@@ -97,8 +97,9 @@ async function renderApp(req, res, next) {
     'X-Forwarded-For': req.ips,
     'X-Forwarded-Port': 3000,
     'X-Forwarded-Proto': req.protocol,
-    'Accept': req.get('Accept'),
   };
+  if (req.get('Accept'))
+    proxiedHeaders['Accept'] = req.get('Accept');
   if (req.get('Content-type'))
     proxiedHeaders['Content-type'] = req.get('Content-type');
 

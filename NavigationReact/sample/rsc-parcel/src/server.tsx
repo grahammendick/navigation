@@ -13,7 +13,7 @@ const app = express();
 app.use(express.static('dist'));
 app.use(express.json());
 
-app.get('/favicon.ico', function (req, res) {
+app.get(['/favicon.ico', '/.well-known/*.json'], function (req, res) {
   res.statusCode = 404;
   res.end();
 });
