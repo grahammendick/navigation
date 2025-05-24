@@ -3,7 +3,7 @@ import { useMemo, useContext, useEffect } from "react";
 import { fetchRSC } from '@parcel/rsc/client';
 import { StateNavigator } from 'navigation';
 import { NavigationHandler } from "navigation-react";
-import { MobileHistoryManager } from 'navigation-react-mobile';
+import { NavigationStack, MobileHistoryManager } from 'navigation-react-mobile';
 import stateNavigator from "./stateNavigator";
 import HmrContext from "./HmrContext";
 
@@ -42,7 +42,21 @@ const RootProvider = ({url, children}: any) => {
   });
   return (
     <NavigationHandler stateNavigator={clientNavigator} fetchRSC={fetchRSC}>
-      {children}
+      <NavigationStack
+        unmountStyle={[{transform: 'translateX(100%)'}, {transform: 'translateX(0)'}]}
+        crumbStyle={[{transform: 'translateX(5%) scale(0.9)', opacity: 0},{transform: 'translateX(0) scale(1)', opacity: 1}]}
+        style={{
+          position: 'fixed',
+          left: '0',
+          right: '0',
+          top: '0',
+          bottom: '0',
+          overflow: 'auto',
+          backgroundColor: '#fff',
+          margin: '8px',
+        }}>
+        {children}
+      </NavigationStack>
     </NavigationHandler>
   )
 }
