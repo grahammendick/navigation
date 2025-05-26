@@ -53,9 +53,24 @@
             </p>
             <h2>Setting up the Client and Server </h2>
             <p>
-
             </p>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx">'use server-entry'
+
+const Mail = async () => {
+  const {data} = useNavigationEvent()
+  const {id, expand} = data;
+  const mail = await fetchMail(id);
+};</code></pre>
+            <p>
+            </p>
+            <pre><code class="language-js">app.post('*', async (req, res) => {
+  const sceneViews: any = {
+    inbox: Inbox,
+    mail: Mail,
+    compose: Compose
+  };
+  const {url, sceneViewKey} = req.body;
+  const View = sceneViews[sceneViewKey];</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>
