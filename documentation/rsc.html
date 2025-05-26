@@ -76,7 +76,7 @@ const Mail = async () => {
             </p>
             <pre><code class="language-jsx">'use client'
 
-const Thread = async ({mail}) => {
+const Thread = ({mail}) => {
   const {data} = useNavigationEvent();
   const {expand} = data;
   if (!expand) return null;
