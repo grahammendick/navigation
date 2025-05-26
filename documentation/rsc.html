@@ -77,12 +77,12 @@ const Mail = async () => {
             <pre><code class="language-jsx">'use client'
 
 const Thread = async ({mail}) => {
-  const {data} = useNavigationEvent()
+  const {data} = useNavigationEvent();
   const {expand} = data;
   if (!expand) return null;
   return (
     &lt;ul>
-      {mail.thread.map({content, id}) => (
+      {mail.thread.map({id, content}) => (
         &lt;li key={id}>{content}&lt;/li>
       )}
     &lt;/ul>
