@@ -8,8 +8,11 @@ body {
   width: 95%;
   padding: 15px 0;
 }
-p {
+p, li {
   line-height: 1.4em;
+}
+li {
+  padding-bottom: 0.2em;
 }
 code {
   font-family: source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;

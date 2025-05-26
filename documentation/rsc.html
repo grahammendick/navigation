@@ -53,6 +53,24 @@
             </p>
             <h2>Setting up the Bundler</h2>
             <p>
+                The Navigation router has <a href="">Parcel</a> and <a href="">Webpack</a> RSC samples you can compare. Although their setup code is very different, the application code is identical. The following covers the files from Parcel setup since Webpack's RSC support isn't production-ready.
+                <ul>
+                  <li>
+                      <a href="">server.ts</a> - runs the express web server. The <code>get</code> handler returns the initial RSC stream; <code>post</code> handler streams RSC for client side navigation; and <code>put</code> handler is for HMR (hot module replacement) updates.
+                  </li>
+                  <li>
+                      <a href="">client.ts</a> - hydrates the App from the initial RSC stream
+                  </li>
+                  <li>
+                      <a href="">HmrContext.ts</a> - supports HMR updates
+                  </li>
+                  <li>
+                      <a href="">RootProvider.ts</a> - client component that hosts the <code>NavigationHandler</code> and where you render your custom providers
+                  </li>
+                  <li>
+                      <a href="">App.ts</a> - server component that renders the application shell and where you configure your scenes
+                  </li>
+                </ul>
             </p>
             <pre><code class="language-jsx">'use server-entry'
 
