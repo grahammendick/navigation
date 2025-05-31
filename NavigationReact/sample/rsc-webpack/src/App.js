@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { SceneView } from 'navigation-react';
-import RootProvider from './RootProvider.js';
+import NavigationProvider from './NavigationProvider.js';
+import HmrProvider from './HmrProvider.js';
 import People from './People.js';
 import Person from './Person.js';
 
@@ -11,14 +12,16 @@ const App = async ({url}) => {
         <title>Navigation React</title>
       </head>
       <body>
-        <RootProvider url={url}>
-          <SceneView active="people">
-            <People />
-          </SceneView>
-          <SceneView active="person" dataKeyDeps={['id']}>
-            <Person />
-          </SceneView>
-        </RootProvider>
+        <NavigationProvider url={url}>
+          <HmrProvider>
+            <SceneView active="people">
+              <People />
+            </SceneView>
+            <SceneView active="person" dataKeyDeps={['id']}>
+              <Person />
+            </SceneView>
+          </HmrProvider>
+        </NavigationProvider>
       </body>
     </html>
   );

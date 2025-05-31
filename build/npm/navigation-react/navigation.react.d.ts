@@ -1,5 +1,5 @@
 import { State, StateNavigator, FluentNavigator, StateContext } from 'navigation';
-import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode, ComponentType } from 'react';
+import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode, ComponentType, Dispatch, SetStateAction } from 'react';
 
 /**
  * Navigation event data
@@ -33,6 +33,20 @@ export interface NavigationEvent<NavigationInfo extends { [index: string]: any }
 export var NavigationContext: Context<NavigationEvent<any, any>> & Context<NavigationEvent<any, string>>;
 
 /**
+ * The RSC bundler context
+ */
+export var BundlerContext: Context<{
+    /**
+     * Streams RSC
+     */
+    deserialize: (url: string, options: any) => Promise<any>;
+    /**
+     * Updates the root RSC content
+     */
+    setRoot: Dispatch<SetStateAction<Promise<any>>>;
+}>;
+
+/**
  * The hook that provides the current navigation event data
  */
 export function useNavigationEvent<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string>() : NavigationEvent<NavigationInfo, Key>;
@@ -45,10 +59,6 @@ export interface NavigationHandlerProps {
      * The state navigator that triggers navigation events
      */
     stateNavigator: StateNavigator;
-    /**
-     * Streams react server components
-     */
-    fetchRSC?: (url: string, options: any) => Promise<any>;
     /**
      * The rendered content
      */
@@ -175,7 +185,7 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
      */
     active: (keyof NavigationInfo & string) | (keyof NavigationInfo & string)[] | ((stateContext: StateContext) => boolean);
     /**
-     * The name identifying the View when fetching RSCs
+     * The name identifying the View when fetching RSC
      */
     name?: string;
     /**

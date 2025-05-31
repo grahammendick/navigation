@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 import { StateNavigator, State } from 'navigation';
 import AsyncStateNavigator from './AsyncStateNavigator.js';
 import NavigationContext from './NavigationContext.js';
-import BundlerContext from './BundlerContext.js';
 type NavigationHandlerState = { context: { ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: AsyncStateNavigator } };
 
-class NavigationHandler extends Component<{ stateNavigator: StateNavigator, fetchRSC: any, children: any }, NavigationHandlerState> {
+class NavigationHandler extends Component<{ stateNavigator: StateNavigator, children: any }, NavigationHandlerState> {
     constructor(props) {
         super(props);
         const { stateNavigator } = this.props;
@@ -44,9 +43,7 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, fetc
     render() {
         return (
             <NavigationContext.Provider value={this.state.context}>
-                <BundlerContext.Provider value={this.props.fetchRSC}>
-                    {this.props.children}
-                </BundlerContext.Provider>
+                {this.props.children}
             </NavigationContext.Provider>
         );
     }
