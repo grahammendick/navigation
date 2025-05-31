@@ -7,13 +7,13 @@ import stateNavigator from './stateNavigator';
 
 const historyManager = new MobileHistoryManager(null, '');
 
-const NavigationProvider = ({url, children}: any) => {
+const NavigationProvider = ({url, start, children}: any) => {
   const clientNavigator = useMemo(() => {
     historyManager.stop();
     const clientNavigator = new StateNavigator(stateNavigator, historyManager);
     var {state, data} = clientNavigator.parseLink<any>(url);
     const link = clientNavigator.fluent()
-        .navigate('people')
+        .navigate(start)
         .navigate(state.key, data).url;
     clientNavigator.navigateLink(link);
     return clientNavigator;
