@@ -28,13 +28,7 @@ function Shell({data}) {
   );
 }
 
-const root = await createFromFetch(
-  fetch(window.location.pathname + window.location.search, {
-    headers: {
-      Accept: 'text/x-component',
-    },
-  })
-);
+const root = await fetchRSC(window.location.pathname + window.location.search);
 
 ReactDOM.hydrateRoot(document, <Shell data={root} />);
 
