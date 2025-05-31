@@ -1,16 +1,15 @@
 'use client'
 import { useContext, useEffect } from 'react';
-import { fetchRSC } from '@parcel/rsc/client';
 import { BundlerContext, useNavigationEvent } from 'navigation-react';
 
 const HmrProvider = ({children}: any) => {
-  const {setRoot} = useContext(BundlerContext);
+  const {setRoot, deserialize} = useContext(BundlerContext);
   const {stateNavigator} = useNavigationEvent();
   useEffect(() => {
     const onHmrReload = (e: any) => {
       e.preventDefault();
       const {stateContext: {state, data, crumbs, nextCrumb: {crumblessUrl}}} = stateNavigator;
-      const root = fetchRSC(stateNavigator.historyManager.getHref(crumblessUrl), {
+      const root = deserialize(stateNavigator.historyManager.getHref(crumblessUrl), {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: {
