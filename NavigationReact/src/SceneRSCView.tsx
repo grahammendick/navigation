@@ -15,7 +15,7 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     const navigationEvent = useNavigationEvent();
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
     const {crumbs, nextCrumb: {crumblessUrl: url}, oldUrl, oldData, history, historyAction} = stateContext;
-    const fetchRSC = useContext(BundlerContext);
+    const {deserialize} = useContext(BundlerContext);
     const ancestorFetching = useContext(RSCContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
     const getShow = (stateKey: string) => (
@@ -84,7 +84,7 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
         };
     }, [])
     if (!fetchedSceneView && !cachedHistory && !firstScene && show && !ancestorFetching && dataChanged()) {
-        cachedSceneViews[sceneViewKey] = fetchRSC(historyManager.getHref(url), {
+        cachedSceneViews[sceneViewKey] = deserialize(historyManager.getHref(url), {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: {url, sceneViewKey}

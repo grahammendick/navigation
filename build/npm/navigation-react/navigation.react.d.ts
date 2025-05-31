@@ -1,5 +1,5 @@
 import { State, StateNavigator, FluentNavigator, StateContext } from 'navigation';
-import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode, ComponentType } from 'react';
+import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode, ComponentType, Dispatch, SetStateAction } from 'react';
 
 /**
  * Navigation event data
@@ -31,6 +31,20 @@ export interface NavigationEvent<NavigationInfo extends { [index: string]: any }
  * The context for providers and consumers of navigation event data
  */
 export var NavigationContext: Context<NavigationEvent<any, any>> & Context<NavigationEvent<any, string>>;
+
+/**
+ * The RSC bundler context
+ */
+export var BundlerContext: Context<{
+    /**
+     * Streams react server components
+     */
+    deserialize: (url: string, options: any) => Promise<any>;
+    /**
+     * Updates the root RSC content
+     */
+    setRoot: Dispatch<SetStateAction<Promise<any>>>;
+}>;
 
 /**
  * The hook that provides the current navigation event data
