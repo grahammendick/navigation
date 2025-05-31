@@ -1,16 +1,18 @@
 'use client-entry';
-import { useState, startTransition } from 'react';
+import { useState, useMemo, startTransition } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createFromReadableStream } from 'react-server-dom-parcel/client';
 import { rscStream } from 'rsc-html-stream/client';
-import HmrContext from './HmrContext';
+import { fetchRSC } from '@parcel/rsc/client';
+import { BundlerContext } from 'navigation-react';
 
 function Shell() {
-    let [root, setRoot] = useState(() => createFromReadableStream(rscStream));
+    const [root, setRoot] = useState(() => createFromReadableStream(rscStream));
+    const bundler = useMemo(() => ({setRoot, deserialize: fetchRSC}), []);
     return (
-        <HmrContext.Provider value={setRoot}>
+        <BundlerContext.Provider value={bundler}>
             {root}
-        </HmrContext.Provider>
+        </BundlerContext.Provider>
     );
 }
 
