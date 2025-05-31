@@ -60,10 +60,6 @@ export interface NavigationHandlerProps {
      */
     stateNavigator: StateNavigator;
     /**
-     * Streams react server components
-     */
-    fetchRSC?: (url: string, options: any) => Promise<any>;
-    /**
      * The rendered content
      */
     children: ReactNode;
