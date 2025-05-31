@@ -37,7 +37,7 @@ export var NavigationContext: Context<NavigationEvent<any, any>> & Context<Navig
  */
 export var BundlerContext: Context<{
     /**
-     * Streams react server components
+     * Streams RSC
      */
     deserialize: (url: string, options: any) => Promise<any>;
     /**
@@ -185,7 +185,7 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
      */
     active: (keyof NavigationInfo & string) | (keyof NavigationInfo & string)[] | ((stateContext: StateContext) => boolean);
     /**
-     * The name identifying the View when fetching RSCs
+     * The name identifying the View when fetching RSC
      */
     name?: string;
     /**
