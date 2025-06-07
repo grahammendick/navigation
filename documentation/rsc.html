@@ -115,9 +115,9 @@ const Thread = ({mail}) => {
   )
 };</code></pre>
             <p>
-                Although the expansion happens on the client, it still has to wait for a server round-trip. By default, the <code>SceneView</code> refetches on every navigation. But it has a <code>dataKeyDeps</code> prop that tells it to only refetch when specific navigation data changes. We pass an empty array to prevent the 'Mail' scene refetching and remove the redundant server round-trip.
+                Although the expansion happens on the client, it still has to wait for a server round-trip. By default, the <code>SceneView</code> refetches on every navigation. But it has a <code>dataKeyDeps</code> prop that tells it to only refetch when specific navigation data changes. We pass 'id' so the 'mail' scene only refetches when the email changes, removing the unnecessary round-trip when the email expands.
             </p>
-            <pre><code class="language-jsx">&lt;SceneView active="mail" dataKeyDeps={[]}>
+            <pre><code class="language-jsx">&lt;SceneView active="mail" dataKeyDeps={['id']}>
   &lt;Mail />
 &lt;/SceneView></code></pre>
         </div>
