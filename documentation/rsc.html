@@ -98,6 +98,7 @@ const Mail = async () => {
 };</code></pre>
             <h2>Refetching Scenes</h2>
             <p>
+                Our email app loads fast because we've removed the data-fetching waterfalls. But we've accidentally made it slower when the user expands an email. We used to handle this client-side but now we're expanding the email on the server. We move this back to the client by extracting the expansion code into a client component.
             </p>
             <pre><code class="language-jsx">'use client'
 
@@ -114,6 +115,7 @@ const Thread = ({mail}) => {
   )
 };</code></pre>
             <p>
+                Although the expansion happens on the client, it still has to wait for a server round-trip. By default, the <code>SceneView</code> refetches on every navigation. But it has a <code>dataKeyDeps</code> prop that tells it to only refetch when specific navigation data changes. We pass an empty array to prevent the 'Mail' scene refetching and remove the redundant server round-trip.
             </p>
             <pre><code class="language-jsx">&lt;SceneView active="mail" dataKeyDeps={[]}>
   &lt;Mail />
