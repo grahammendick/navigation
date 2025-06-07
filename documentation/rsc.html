@@ -76,7 +76,7 @@
                 </ul>
             </p>
             <p>
-                To rsc-ify our email app example, we copy these files over and make the changes outlined above. In the server.ts file, for example, we add our 3 scenes to the <code>sceneViews</code> lookup in the post handler. We also copy over the typescript setup and all the dependencies from the package.json of the Parcel sample and run npm install.
+                To RSC-ify our email app example, we copy these files over and make the changes outlined above. In the server.ts file, for example, we add our 3 scenes to the <code>sceneViews</code> lookup in the post handler. We also copy over the typescript setup and all the dependencies from the package.json of the Parcel sample and run npm install.
             </p>
             <pre><code class="language-js">app.post('*', async (req, res) => {
   const sceneViews: any = {
