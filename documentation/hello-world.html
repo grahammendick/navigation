@@ -89,12 +89,12 @@ const World = () => &lt;div>World&lt;/div>;</code></pre>
   &lt;/NavigationLink>
 );</code></pre>
             <p>
-                We'll change the <code>World</code> component to retrieve the data from the <code>NavigationContext</code> and use the number to set the div's font-size.
+                We'll change the <code>World</code> component to retrieve the data from the <code>useNavigationEvent</code> hook and use the number to set the div's font-size.
             </p>
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+            <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react';
 
 const World = () => {
-  const {data} = useContext(NavigationContext);
+  const {data} = useNavigationEvent();
   return &lt;div style={{fontSize: data.size}}>World&lt;/div>;
 };</code></pre>
             <h2>Routes Last</h2>
