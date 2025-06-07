@@ -69,14 +69,14 @@
 &lt;/NavigationStack></code></pre>
             <h2>Push</h2>
             <p>
-                The <code>NavigationStack</code> renders the 'hello' scene first because we added it as the first child. The scene consists of a button that says 'Hello'. When pressed, we want to push the 'world' scene onto the stack. We push scenes onto the stack by navigating to <code>States</code>. We'll access the <code>stateNavigator</code> using the React Context API and navigate to the 'world' <code>State</code> inside the <code>onPress</code> handler. The <code>navigate</code> function accepts navigation data as the second parameter. We’ll use it to pass across a size of 20 to the 'world' scene.
+                The <code>NavigationStack</code> renders the 'hello' scene first because we added it as the first child. The scene consists of a button that says 'Hello'. When pressed, we want to push the 'world' scene onto the stack. We push scenes onto the stack by navigating to <code>States</code>. We'll access the <code>stateNavigator</code> from the <code>NavigationEvent</code> and navigate to the 'world' <code>State</code> inside the <code>onPress</code> handler. The <code>navigate</code> function accepts navigation data as the second parameter. We'll use it to pass across a size of 20 to the 'world' scene.
             </p>
 
 
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+            <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react';
 
 const Hello = () => {
-  const {stateNavigator} = useContext(NavigationContext);
+  const {stateNavigator} = useNavigationEvent();
   return (
     &lt;Button
       title="Hello"
@@ -86,12 +86,12 @@ const Hello = () => {
   );
 };</code></pre>
             <p>
-                In the 'world' scene we'll get the size from the <code>NavigationContext</code> and assign it to <code>Text</code> component’s font size.
+                In the 'world' scene we'll get the size from the <code>useNavigationEvent</code> hook and assign it to <code>Text</code> component's font size.
             </p>
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+            <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react';
 
 const World = () => {
-  const {data} = useContext(NavigationContext);
+  const {data} = useNavigationEvent();
   return &lt;Text style={{fontSize: data.size}}>World&lt;/Text>;
 };</code></pre>
             <h2>Pop</h2>
@@ -99,7 +99,7 @@ const World = () => {
                 We pop scenes off the stack by navigating backwards. How far we navigate back determines the number of scenes popped. We'll change the 'world' scene so that it renders a button instead of plain text. Inside the <code>onPress</code> handler, we'll call the <code>navigateBack</code> function passing in a distance of 1. Because the Navigation router uses the underlying native APIs, you can also return to the 'hello' scene using the back button on Android or by swiping/pressing back on iOS.
             </p>
             <pre><code class="language-jsx">const World = () => {
-  const {data, stateNavigator} = useContext(NavigationContext);
+  const {data, stateNavigator} = useNavigationEvent();
   return (
     &lt;Button
       title="World"

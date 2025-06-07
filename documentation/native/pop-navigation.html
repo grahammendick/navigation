@@ -52,10 +52,10 @@
             <p>
                 Because the Navigation router pushes scenes using the native APIs, the user can pop them via the Android back button or swiping/pressing back on iOS. You can also programmatically pop scenes by calling the <code>navigateBack</code> function on the <code>StateNavigator</code>. The number you pass in indicates the number of scenes to pop. In our email example, we can add a button to the 'compose' scene that returns the user to the inbox.
             </p>
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+            <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react';
 
 const Compose = () => {
-  const {stateNavigator} = useContext(NavigationContext);
+  const {stateNavigator} = useNavigationEvent();
   return (
     &lt;Button
       title="Back to Inbox"

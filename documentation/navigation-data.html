@@ -65,9 +65,9 @@
             <p>
                 For navigating without Hyperlinks, you can pass data in the second parameter of the <code>navigate</code> function on the <code>stateNavigator</code>.
             </p>
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react'
+            <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react'
 
-const {stateNavigator} = useContext(NavigationContext);
+const {stateNavigator} = useNavigationEvent();
 
 &lt;div onClick={() => {
   stateNavigator.navigate('mail', {id: 12, expand: false})
@@ -79,17 +79,17 @@ const {stateNavigator} = useContext(NavigationContext);
             </p>
             <h2>Receiving Data</h2>
             <p>
-                You can access the data from the <code>NavigationContext</code>. In the email example, when the 'mail' scene is active we get the <code>id</code> and <code>expand</code> data items passed by the Hyperlink. We don't have to convert the data from strings because the Navigation router remembers their original types.
+                You can access the data from the <code>useNavigationEvent</code> hook. In the email example, when the 'mail' scene is active we get the <code>id</code> and <code>expand</code> data items passed by the Hyperlink. We don't have to convert the data from strings because the Navigation router remembers their original types.
             </p>
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react'
+            <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react'
               
 const Mail = () => {
-  const {data} = useContext(NavigationContext)
+  const {data} = useNavigationEvent();
   const {id, expand} = data;
 };</code></pre>
             <h2>Setting Default Values</h2>
             <p>
-                The Navigation router lets you define default navigation data values for each scene. The data available on the <code>NavigationContext</code> includes these default values for any item that you don't supply with a value when navigating. If we give the <code>expand</code> item in the email example a default value of false then we don't have to explicitly pass it in navigation data when the mail's opened.
+                The Navigation router lets you define default navigation data values for each scene. The data available from <code>useNavigationEvent</code> includes these default values for any item that you don't supply with a value when navigating. If we give the <code>expand</code> item in the email example a default value of false then we don't have to explicitly pass it in navigation data when the mail's opened.
             </p>
             <pre><code class="language-jsx">const stateNavigator = new StateNavigator([
   {key: 'inbox', route: ''},

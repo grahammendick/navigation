@@ -76,20 +76,20 @@
   Open Mail
 &lt;/NavigationLink></code></pre>
             <p>
-                TypeScript will also check our programmatic navigation if we use the <code>EmailNavigation</code> type when accessing the <code>NavigationContext</code>.
+                TypeScript will also check our programmatic navigation if we use the <code>EmailNavigation</code> type when we <code>useNavigationEvent</code>.
             </p>
-            <pre><code class="language-jsx">import {NavigationEvent} from 'navigation-react'
+            <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react'
 
-const {stateNavigator} = useContext&lt;NavigationEvent&lt;EmailNavigation>>(NavigationContext);
+const {stateNavigator} = useNavigationEvent&lt;NavigationEvent&lt;EmailNavigation>>();
 
 // Error because id is a string
 &lt;div onClick={() => stateNavigator.navigate('mail', {id: '12'})}>
   Open Mail
 &lt;/div></code></pre>
             <p>
-                TypeScript will validate the navigation data you receive as long as you tell it the current scene. You pass this as the second generic parameter when using the <code>NavigationContext</code>. In our email example, when we're on the mail scene, TypeScript will point out any mistypings and it knows that 'id' is a number and that 'expand' is a boolean.
+                TypeScript will validate the navigation data you receive as long as you tell it the current scene. You pass this as the second generic parameter when you  <code>useNavigationEvent</code>. In our email example, when we're on the mail scene, TypeScript will point out any mistypings and it knows that 'id' is a number and that 'expand' is a boolean.
             </p>
-            <pre><code class="language-jsx">const {data} = useContext&lt;NavigationEvent&lt;EmailNavigation, 'mail'>>(NavigationContext);
+            <pre><code class="language-jsx">const {data} = useNavigationEvent&lt;NavigationEvent&lt;EmailNavigation, 'mail'>>();
 // Error because expand is mistyped
 const {id, expad} = data;</code></pre>
         </div>

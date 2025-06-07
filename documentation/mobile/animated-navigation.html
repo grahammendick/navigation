@@ -78,9 +78,9 @@
             <p>
                 You can also navigate back programmatically by passing the distance into the <code>navigateBack</code> function on the <code>stateNavigator</code>.
             </p>
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+            <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react';
 
-const {stateNavigator} = useContext(NavigationContext);
+const {stateNavigator} = useNavigationEvent();
 
 &lt;div onClick={() => stateNavigator.navigateBack(1}>
   Back to Inbox

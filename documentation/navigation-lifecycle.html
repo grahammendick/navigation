@@ -52,9 +52,9 @@
             <p>
                 The <code>onBeforeNavigate</code> event gives you a chance to cancel a navigation. You're passed in details of the <code>State</code> being navigated to as well as a <code>history</code> flag that indicates whether the navigation was caused by the browser back button. In our email example, we can add an <code>onBeforeNavigate</code> listener that prompts the user to confirm they want to leave without sending their email.
             </p>
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+            <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react';
 
-const {stateNavigator} = useContext(NavigationContext);
+const {stateNavigator} = useNavigationEvent();
 useEffect(() => {
   const beforeNavigate = (state, data, url, history) => (
     history || confirm('You\'ve not sent your email. Continue?')

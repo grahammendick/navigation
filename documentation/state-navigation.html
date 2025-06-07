@@ -77,11 +77,11 @@
   Compose Mail
 &lt;/NavigationLink></code></pre>
             <p>
-                When Hyperlinks aren't appropriate, you can navigate programmatically by passing the <code>State key</code> into the <code>navigate</code> function on the <code>stateNavigator</code>. You can access the <code>stateNavigator</code> from the <code>NavigationContext</code>.
+                When Hyperlinks aren't appropriate, you can navigate programmatically by passing the <code>State key</code> into the <code>navigate</code> function on the <code>stateNavigator</code>. You can access the <code>stateNavigator</code> from the <code>useNavigationEvent</code> hook.
             </p>
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react'
+            <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react'
 
-const {stateNavigator} = useContext(NavigationContext);
+const {stateNavigator} = useNavigationEvent();
 
 &lt;div onClick={() => stateNavigator.navigate('compose')}>
   Compose Mail

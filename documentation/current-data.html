@@ -63,9 +63,9 @@
             <p>
                 Alternatively, you can programmatically pass the new data into the <code>refresh</code> function on the <code>stateNavigator</code>.
             </p>
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+            <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react';
 
-const {stateNavigator} = useContext(NavigationContext);
+const {stateNavigator} = useNavigationEvent();
 
 &lt;div onClick={() => stateNavigator.refresh({id: 12, expand: false})}>
   Expand Thread

@@ -93,10 +93,10 @@ const Hello = () => (
       </li>
       <li>
         <h3>Use the Data</h3>
-        <pre><code class="language-jsx">import { NavigationContext } from 'navigation-react';
+        <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react';
 
 const World = () => {
-  const { data } = useContext(NavigationContext);
+  const { data } = useNavigationEvent();
   return (
     &lt;div style={{ fontSize: data.size }}>
       World
@@ -104,7 +104,7 @@ const World = () => {
   );
 };</code></pre>
         <p>
-          In the next scene, you access the data from the <code>NavigationContext</code>. The Navigation router passes strongly-typed data. Here, the size is a number.
+          In the next scene, you access the data from the <code>NavigationEvent</code>. The Navigation router passes strongly-typed data. Here, the size is a number.
         </p>
       </li>
     </ol>
