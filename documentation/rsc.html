@@ -87,11 +87,12 @@
   const {url, sceneViewKey} = req.body;
   const View = sceneViews[sceneViewKey];</code></pre>
             <p>
+                With RSC, we fetch data on the server, instead of in <code>useEffects</code> on the client. The shift to the server enables SSR and avoids waterfalls. We turn on data-fetching in our <code>Inbox</code> and <code>Mail</code> components by marking them as <code>async</code>. We also add the <code>use server-entry</code> directive to our 3 scenes so that Parcel knows where to bundle-split.
             </p>
             <pre><code class="language-jsx">'use server-entry'
 
 const Mail = async () => {
-  const {data} = useNavigationEvent()
+  const {data} = useNavigationEvent();
   const {id, expand} = data;
   const mail = await fetchMail(id);
 };</code></pre>
