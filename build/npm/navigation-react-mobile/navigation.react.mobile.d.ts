@@ -176,7 +176,7 @@ export interface NavigationStackProps {
     /**
      * The NavigationData keys that determine when to refetch the RSC Scene
      */
-    dataKeyDeps?: string[];
+    refetch?: string[];
     /**
      * The content to show when the Scene errors
      */
