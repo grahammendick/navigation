@@ -31,7 +31,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     const cachedSceneViews = rscCache.get(navigationEvent);
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
     let fetchedSceneView = cachedSceneViews[sceneViewKey];
-    const dataChanged = () => {
+    const dataChanged = (() => {
         const refetch = refetchRef.current;
         if (!getShow(oldState?.key) || !refetch || ignoreCache) return true;
         if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
@@ -40,13 +40,13 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
             if (data[refetch[i]] !== oldData[refetch[i]]) return true;
         }
         return false;
-    };
+    })();
     const firstScene = !oldUrl && !ignoreCache;
     const getSceneView = () => {
         if (!show) return null;
         if (cachedHistory) return historyCache[url][sceneViewKey];
         if (firstScene || ancestorFetching) return children;
-        if (dataChanged()) return fetchedSceneView;
+        if (dataChanged) return fetchedSceneView;
         return renderedSceneView.current.sceneView;
     }
     const oldSceneCount = (typeof window !== 'undefined' && window.history.state?.sceneCount) || 0;
@@ -85,7 +85,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
             if (Object.keys(cachedSceneViews).length <= 1) rscCache.delete(navigationEvent);
         };
     }, [])
-    if (!fetchedSceneView && !cachedHistory && !firstScene && show && !ancestorFetching && dataChanged()) {
+    if (!fetchedSceneView && !cachedHistory && !firstScene && show && !ancestorFetching && dataChanged) {
         cachedSceneViews[sceneViewKey] = deserialize(historyManager.getHref(url), {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
@@ -93,7 +93,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
         });
         fetchedSceneView = cachedSceneViews[sceneViewKey];
     }
-    const fetching = ancestorFetching || dataChanged();
+    const fetching = ancestorFetching || dataChanged;
     const rscContextVal = useMemo(() => (
         {fetching, setRefetch: (refetch: any) => refetchRef.current = refetch !== undefined ? refetch : serverRefetch}
     ), [fetching]);
