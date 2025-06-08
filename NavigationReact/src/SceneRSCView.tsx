@@ -95,7 +95,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     }
     const fetching = ancestorFetching || dataChanged();
     const rscContextVal = useMemo(() => (
-        {fetching, setRefetch: (refetch) => refetchRef.current = refetch !== undefined ? refetch : serverRefetch}
+        {fetching, setRefetch: (refetch: any) => refetchRef.current = refetch !== undefined ? refetch : serverRefetch}
     ), [fetching]);
     return (
         <ErrorBoundary errorFallback={errorFallback}>
