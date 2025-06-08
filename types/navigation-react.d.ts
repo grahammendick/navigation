@@ -47,6 +47,11 @@ export var BundlerContext: Context<{
 }>;
 
 /**
+ * The context that determines when to refetch the RSC View
+ */
+export var SceneViewContext: Context<{refetch: string[] | ((stateContext: StateContext) => boolean)}>;
+
+/**
  * The hook that provides the current navigation event data
  */
 export function useNavigationEvent<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string>() : NavigationEvent<NavigationInfo, Key>;
