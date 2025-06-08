@@ -32,14 +32,12 @@ interface FluentLinkProps extends LinkProps {
     navigate: (fluentNavigator: FluentNavigator) => FluentNavigator;
 }
 
-type Refetch = string[] | ((stateContext: StateContext) => boolean);
-
 interface SceneViewProps {
     active: string | string[] | ((stateContext: StateContext) => boolean);
-    refetch: Refetch;
+    refetch: string[] | ((stateContext: StateContext) => boolean);
     name: string;
     errorFallback: ReactNode;
     children: any;
 }
 
-export { LinkProps, RefreshLinkProps, NavigationLinkProps, NavigationBackLinkProps, FluentLinkProps, Refetch, SceneViewProps }
+export { LinkProps, RefreshLinkProps, NavigationLinkProps, NavigationBackLinkProps, FluentLinkProps, SceneViewProps }
