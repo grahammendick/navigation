@@ -13,7 +13,7 @@ const SceneViewInner = ({children}) => children?.then ? use(children) : children
 
 const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
     const navigationEvent = useNavigationEvent();
-    const [refetch, setRefetch] = useState<Refetch>(serverRefetch);
+    const refetchRef = useRef(serverRefetch);
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
     const {crumbs, nextCrumb: {crumblessUrl: url}, oldUrl, oldData, history, historyAction} = stateContext;
     const {deserialize} = useContext(BundlerContext);
@@ -32,6 +32,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
     let fetchedSceneView = cachedSceneViews[sceneViewKey];
     const dataChanged = () => {
+        const refetch = refetchRef.current;
         if (!getShow(oldState?.key) || !refetch || ignoreCache) return true;
         if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
         if (typeof refetch === 'function') return refetch(stateContext);
@@ -93,7 +94,9 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
         fetchedSceneView = cachedSceneViews[sceneViewKey];
     }
     const fetching = ancestorFetching || dataChanged();
-    const rscContextVal = useMemo(() => ({fetching, setRefetch}), [fetching]);
+    const rscContextVal = useMemo(() => (
+        {fetching, setRefetch: (refetch) => refetchRef.current = refetch}
+    ), [fetching]);
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <RSCContext.Provider value={rscContextVal}>
