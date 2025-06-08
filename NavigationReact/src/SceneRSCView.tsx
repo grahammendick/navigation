@@ -30,7 +30,6 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     if (!rscCache.get(navigationEvent)) rscCache.set(navigationEvent, {});
     const cachedSceneViews = rscCache.get(navigationEvent);
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
-    let fetchedSceneView = cachedSceneViews[sceneViewKey];
     const dataChanged = (() => {
         const refetch = refetchRef.current;
         if (!getShow(oldState?.key) || !refetch || ignoreCache) return true;
@@ -42,17 +41,30 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
         return false;
     })();
     const firstScene = !oldUrl && !ignoreCache;
-    const getSceneView = () => {
+    const oldSceneCount = (typeof window !== 'undefined' && window.history.state?.sceneCount) || 0;
+    useEffect(() => {
+        return () => {
+            delete cachedSceneViews[sceneViewKey];
+            if (Object.keys(cachedSceneViews).length <= 1) rscCache.delete(navigationEvent);
+        };
+    }, [])
+    if (!cachedSceneViews[sceneViewKey] && !cachedHistory && !firstScene && show && !ancestorFetching && dataChanged) {
+        cachedSceneViews[sceneViewKey] = deserialize(historyManager.getHref(url), {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: {url, sceneViewKey}
+        });
+    }
+    const sceneView = (() => {
         if (!show) return null;
         if (cachedHistory) return historyCache[url][sceneViewKey];
         if (firstScene || ancestorFetching) return children;
-        if (dataChanged) return fetchedSceneView;
+        if (dataChanged) return cachedSceneViews[sceneViewKey];
         return renderedSceneView.current.sceneView;
-    }
-    const oldSceneCount = (typeof window !== 'undefined' && window.history.state?.sceneCount) || 0;
+    })();
     useEffect(() => {
         const {navigationEvent: oldNavigationEvent} = renderedSceneView.current;
-        renderedSceneView.current = {sceneView: getSceneView(), navigationEvent};
+        renderedSceneView.current = {sceneView, navigationEvent};
         if (oldNavigationEvent !== navigationEvent) rscCache.delete(oldNavigationEvent);
         if (!cachedSceneViews.__committed) {
             cachedSceneViews.__committed = true;
@@ -79,20 +91,6 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
         window.addEventListener('popstate', cacheHistory);
         return () => window.removeEventListener('popstate', cacheHistory);
     });
-    useEffect(() => {
-        return () => {
-            delete cachedSceneViews[sceneViewKey];
-            if (Object.keys(cachedSceneViews).length <= 1) rscCache.delete(navigationEvent);
-        };
-    }, [])
-    if (!fetchedSceneView && !cachedHistory && !firstScene && show && !ancestorFetching && dataChanged) {
-        cachedSceneViews[sceneViewKey] = deserialize(historyManager.getHref(url), {
-            method: 'post',
-            headers: {'Content-Type': 'application/json'},
-            body: {url, sceneViewKey}
-        });
-        fetchedSceneView = cachedSceneViews[sceneViewKey];
-    }
     const fetching = ancestorFetching || dataChanged;
     const rscContextVal = useMemo(() => (
         {fetching, setRefetch: (refetch: any) => refetchRef.current = refetch !== undefined ? refetch : serverRefetch}
@@ -100,7 +98,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <RSCContext.Provider value={rscContextVal}>
-                <SceneViewInner>{getSceneView()}</SceneViewInner>
+                <SceneViewInner>{sceneView}</SceneViewInner>
             </RSCContext.Provider>
         </ErrorBoundary>
     );
