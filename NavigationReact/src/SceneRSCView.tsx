@@ -1,9 +1,10 @@
 'use client'
-import React, { createContext, use, useContext, useEffect, useRef } from 'react';
-import { SceneViewProps } from './Props.js';
+import React, { createContext, use, useContext, useEffect, useRef, useState, useMemo } from 'react';
+import { Refetch, SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
+import SceneViewContext from './SceneViewContext.js';
 
 const rscCache: Map<any, Record<string, any>> = new Map();
 const historyCache = {};
@@ -11,8 +12,10 @@ const RSCContext = createContext(false);
 
 const SceneViewInner = ({children}) => children?.then ? use(children) : children;
 
-const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
+const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
     const navigationEvent = useNavigationEvent();
+    const [refetch, setRefetch] = useState<Refetch>(serverRefetch);
+    const refetchContext = useMemo(() => ({setRefetch}), []);
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
     const {crumbs, nextCrumb: {crumblessUrl: url}, oldUrl, oldData, history, historyAction} = stateContext;
     const {deserialize} = useContext(BundlerContext);
@@ -31,11 +34,11 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
     let fetchedSceneView = cachedSceneViews[sceneViewKey];
     const dataChanged = () => {
-        if (!getShow(oldState?.key) || !dataKeyDeps || ignoreCache) return true;
+        if (!getShow(oldState?.key) || !refetch || ignoreCache) return true;
         if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
-        for(let i = 0; i < dataKeyDeps.length; i++) {
-            if (data[dataKeyDeps[i]] !== oldData[dataKeyDeps[i]])
-                return true;
+        if (typeof refetch === 'function') return refetch(stateContext);
+        for(let i = 0; i < refetch.length; i++) {
+            if (data[refetch[i]] !== oldData[refetch[i]]) return true;
         }
         return false;
     };
@@ -94,7 +97,9 @@ const SceneRSCView = ({active, name, dataKeyDeps, errorFallback, children}: Scen
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <RSCContext.Provider value={ancestorFetching || dataChanged()}>
-                <SceneViewInner>{getSceneView()}</SceneViewInner>
+                <SceneViewContext.Provider value={refetchContext}>
+                    <SceneViewInner>{getSceneView()}</SceneViewInner>
+                </SceneViewContext.Provider>
             </RSCContext.Provider>
         </ErrorBoundary>
     );
