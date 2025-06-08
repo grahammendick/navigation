@@ -1,7 +1,7 @@
 'use server-entry'
 import { getPerson } from './data';
 import { SceneView, NavigationBackLink, useNavigationEvent } from 'navigation-react';
-import Friends from "./Friends";
+import Friends from './Friends';
 
 const Person = async () => {
   const {data} = useNavigationEvent();
