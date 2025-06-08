@@ -1,25 +1,23 @@
 'use client'
-import React, { createContext, use, useContext, useEffect, useRef, useState, useMemo } from 'react';
+import React, { use, useContext, useEffect, useRef, useState, useMemo } from 'react';
 import { Refetch, SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
+import RSCContext from './RSCContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
-import SceneViewContext from './SceneViewContext.js';
 
 const rscCache: Map<any, Record<string, any>> = new Map();
 const historyCache = {};
-const RSCContext = createContext(false);
 
 const SceneViewInner = ({children}) => children?.then ? use(children) : children;
 
 const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
     const navigationEvent = useNavigationEvent();
     const [refetch, setRefetch] = useState<Refetch>(serverRefetch);
-    const refetchContext = useMemo(() => ({setRefetch}), []);
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
     const {crumbs, nextCrumb: {crumblessUrl: url}, oldUrl, oldData, history, historyAction} = stateContext;
     const {deserialize} = useContext(BundlerContext);
-    const ancestorFetching = useContext(RSCContext);
+    const {fetching: ancestorFetching} = useContext(RSCContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
     const getShow = (stateKey: string) => (
         active != null && state && (
@@ -94,12 +92,12 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
         });
         fetchedSceneView = cachedSceneViews[sceneViewKey];
     }
+    const fetching = ancestorFetching || dataChanged();
+    const rscContextVal = useMemo(() => ({fetching, setRefetch}), [fetching]);
     return (
         <ErrorBoundary errorFallback={errorFallback}>
-            <RSCContext.Provider value={ancestorFetching || dataChanged()}>
-                <SceneViewContext.Provider value={refetchContext}>
-                    <SceneViewInner>{getSceneView()}</SceneViewInner>
-                </SceneViewContext.Provider>
+            <RSCContext.Provider value={rscContextVal}>
+                <SceneViewInner>{getSceneView()}</SceneViewInner>
             </RSCContext.Provider>
         </ErrorBoundary>
     );
