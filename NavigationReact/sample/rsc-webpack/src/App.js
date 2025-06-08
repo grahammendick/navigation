@@ -17,7 +17,7 @@ const App = async ({url}) => {
             <SceneView active="people">
               <People />
             </SceneView>
-            <SceneView active="person" dataKeyDeps={['id']}>
+            <SceneView active="person" refetch={['id']}>
               <Person />
             </SceneView>
           </HmrProvider>
