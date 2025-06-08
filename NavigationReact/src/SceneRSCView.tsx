@@ -1,6 +1,6 @@
 'use client'
 import React, { use, useContext, useEffect, useRef, useState, useMemo } from 'react';
-import { Refetch, SceneViewProps } from './Props.js';
+import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
 import RSCContext from './RSCContext.js';
