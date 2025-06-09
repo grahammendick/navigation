@@ -30,8 +30,9 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     if (!rscCache.get(navigationEvent)) rscCache.set(navigationEvent, {});
     const cachedSceneViews = rscCache.get(navigationEvent);
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
-    const dataChanged = (() => {
+    const fetching = (() => {
         const refetch = refetchRef.current;
+        if (!show) return false;
         if (!getShow(oldState?.key) || !refetch || ignoreCache) return true;
         if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
         if (typeof refetch === 'function') return refetch(stateContext);
@@ -48,7 +49,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
             if (Object.keys(cachedSceneViews).length <= 1) rscCache.delete(navigationEvent);
         };
     }, [])
-    if (!cachedSceneViews[sceneViewKey] && !cachedHistory && !firstScene && show && !ancestorFetching && dataChanged) {
+    if (!cachedSceneViews[sceneViewKey] && !cachedHistory && !firstScene && !ancestorFetching && fetching) {
         cachedSceneViews[sceneViewKey] = deserialize(historyManager.getHref(url), {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
@@ -59,7 +60,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
         if (!show) return null;
         if (cachedHistory) return historyCache[url][sceneViewKey];
         if (firstScene || ancestorFetching) return children;
-        if (dataChanged) return cachedSceneViews[sceneViewKey];
+        if (fetching) return cachedSceneViews[sceneViewKey];
         return renderedSceneView.current.sceneView;
     })();
     useEffect(() => {
@@ -91,10 +92,10 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
         window.addEventListener('popstate', cacheHistory);
         return () => window.removeEventListener('popstate', cacheHistory);
     });
-    const fetching = ancestorFetching || dataChanged;
-    const rscContextVal = useMemo(() => (
-        {fetching, setRefetch: (refetch: any) => refetchRef.current = refetch !== undefined ? refetch : serverRefetch}
-    ), [fetching]);
+    const rscContextVal = useMemo(() => ({
+        fetching: ancestorFetching || fetching,
+        setRefetch: (refetch: any) => refetchRef.current = refetch !== undefined ? refetch : serverRefetch
+    }), [ancestorFetching || fetching]);
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <RSCContext.Provider value={rscContextVal}>
