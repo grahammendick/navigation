@@ -1,5 +1,5 @@
 'use client'
-import React, { use, useContext, useEffect, useRef, useState, useMemo } from 'react';
+import React, { use, useContext, useEffect, useRef, useMemo } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
