@@ -1,4 +1,4 @@
-import React, { Component, ReactNode, cloneElement, createElement } from 'react';
+import { Component, ReactNode, cloneElement, createElement } from 'react';
 import { StateContext, StateNavigator } from 'navigation';
 import withStateNavigator from './withStateNavigator.js';
 

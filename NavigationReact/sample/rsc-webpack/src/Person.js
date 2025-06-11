@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SceneView, NavigationBackLink, useNavigationEvent } from 'navigation-react';
 import { getPerson } from './data.js';
-import Friends from "./Friends.js";
+import Friends from './Friends.js';
 
 const Person = async () => {
   const {data} = useNavigationEvent();

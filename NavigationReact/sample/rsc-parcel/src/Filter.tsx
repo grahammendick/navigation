@@ -1,7 +1,6 @@
 'use client'
-import { startTransition } from 'react';
+import { startTransition, useOptimistic } from 'react';
 import { RefreshLink, useNavigationEvent } from 'navigation-react';
-import { useOptimistic } from 'react';
 
 const Filter = () => {
     const {data, stateNavigator} = useNavigationEvent();

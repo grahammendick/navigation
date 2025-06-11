@@ -22,7 +22,7 @@ const App = async ({url}: any) => {
                 <Scene stateKey="people">
                   <People />
                 </Scene>
-                <Scene stateKey="person" dataKeyDeps={['id']}>
+                <Scene stateKey="person" refetch={['id']}>
                   <Person />
                 </Scene>
             </NavigationStack>

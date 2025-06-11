@@ -7,5 +7,6 @@ import RefreshLink from './RefreshLink.js';
 import FluentLink from './FluentLink.js';
 import SceneView from './SceneView.js';
 import useNavigationEvent from './useNavigationEvent.js';
+import useRefetch from './useRefetch.js';
 
-export { NavigationContext, BundlerContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent };
+export { NavigationContext, BundlerContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useRefetch };

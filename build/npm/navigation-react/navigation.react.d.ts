@@ -1,5 +1,5 @@
 import { State, StateNavigator, FluentNavigator, StateContext } from 'navigation';
-import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode, ComponentType, Dispatch, SetStateAction } from 'react';
+import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode, ComponentType } from 'react';
 
 /**
  * Navigation event data
@@ -43,13 +43,18 @@ export var BundlerContext: Context<{
     /**
      * Updates the root RSC content
      */
-    setRoot: Dispatch<SetStateAction<Promise<any>>>;
+    setRoot: (root: any) => void;
 }>;
 
 /**
  * The hook that provides the current navigation event data
  */
 export function useNavigationEvent<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string>() : NavigationEvent<NavigationInfo, Key>;
+
+/**
+ * The hook that determines when to refetch the RSC View
+ */
+export function useRefetch(refetch?: string[] | ((stateContext: StateContext) => boolean) | null) : void;
 
 /**
  * Defines the Navigation Handler Props contract
@@ -189,9 +194,9 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
      */
     name?: string;
     /**
-     * The NavigationData keys that determine when to refetch the RSC View
+     * A function or the data keys that determine when to refetch the RSC View
      */
-    dataKeyDeps?: string[];
+    refetch?: string[];
     /**
      * The content to show when the View errors
      */

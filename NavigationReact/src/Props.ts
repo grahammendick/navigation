@@ -34,7 +34,7 @@ interface FluentLinkProps extends LinkProps {
 
 interface SceneViewProps {
     active: string | string[] | ((stateContext: StateContext) => boolean);
-    dataKeyDeps: string[];
+    refetch: string[] | ((stateContext: StateContext) => boolean);
     name: string;
     errorFallback: ReactNode;
     children: any;
