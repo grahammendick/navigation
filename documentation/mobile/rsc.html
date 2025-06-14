@@ -55,14 +55,27 @@
             </p>
             <h2>Handling Scene function props</h2>
             <p>
+                We follow the setup guide for our email example but when we run it we get an error. We're passing a function from a server component to a client component, something disallowed by RSC. The culprit is the <code>sharedElements</code> prop on the Scene. Instead, we switch to the equivalent prop on the <code>NavigationStack</code>. It has an extra parameter that provides the current scene. Then we create a <code>Stack</code> client component wrapper so we can safely pass the function in.
             </p>
-            <pre><code class="language-js"></code></pre>
+            <pre><code class="language-jsx">'use client'
+
+const Stack = ({children}) => (
+  &lt;NavigationStack
+    sharedElements={(scene, data) => scene.key === 'mail' ? [`mail${data.id}`] : undefined}>
+    {children}
+  &lt;/NavigationStack>
+)</code></pre>
+            <p>
+                As soon as we render our new <code>Stack</code> component in place of the <code>NavigationStack</code>, our email example starts working. Server-rendered and bundle-split all thanks to RSC.
+            </p>
+            <pre><code class="language-jsx">&lt;Stack>
+  &lt;Scene stateKey="inbox">&lt;Inbox />&lt;/Scene>
+  &lt;Scene stateKey="mail">&lt;Mail />&lt;/Scene>
+  &lt;Scene stateKey="compose">&lt;Compose />&lt;/Scene>
+&lt;/Stack>
+</code></pre>
             <p>
             </p>
-            <pre><code class="language-js"></code></pre>
-            <p>
-            </p>
-            <pre><code class="language-js"></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
