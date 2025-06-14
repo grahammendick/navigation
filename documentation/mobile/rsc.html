@@ -55,7 +55,7 @@
             </p>
             <h2>Handling Scene function props</h2>
             <p>
-                We follow the setup guide for our email example but when we run it we get an error. We're passing a function from a server component to a client component, something disallowed by RSC. The culprit is the <code>sharedElements</code> prop on the Scene. Instead, we switch to the equivalent prop on the <code>NavigationStack</code>. It has an extra parameter that provides the current scene. Then we create a <code>Stack</code> client component wrapper so we can safely pass the function in.
+                We follow the setup guide for our email example but when we run it we get an error. We're passing a function from a server component to a client component, something disallowed by RSC. The culprit is the <a href="shared-element-navigation.html"><code>sharedElements</code> prop on the Scene</a>. Instead, we switch to the equivalent prop on the <code>NavigationStack</code>. It has an extra parameter that provides the current scene. Then we create a <code>Stack</code> client component wrapper so we can safely pass the function in.
             </p>
             <pre><code class="language-jsx">'use client'
 
