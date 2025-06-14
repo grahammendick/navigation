@@ -53,9 +53,10 @@
             <p>
                 The Navigation router has a <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReactMobile/sample/rsc">Parcel RSC mobile sample</a> that you can clone. The only files you need to change are <a href="https://github.com/grahammendick/navigation/blob/master/NavigationReactMobile/sample/rsc/src/App.tsx">App.tsx</a>, <a href="https://github.com/grahammendick/navigation/blob/master/NavigationReactMobile/sample/rsc/src/stateNavigator.ts">stateNavigator.ts</a> and <a href="https://github.com/grahammendick/navigation/blob/master/NavigationReactMobile/sample/rsc/src/server.tsx">server.tsx</a>. Replace the people/person scenes and components with your own ones. Add <code>use-server entry</code> to each scene component so that Parcel splits the bundle there. Also mark them as <code>async</code> to enable data-fetching on the server.
             </p>
+            <!-- add warning -->
             <h2>Handling Scene function props</h2>
             <p>
-                We follow the setup guide for our email example but when we run it we get an error. We're passing a function from a server component to a client component, something disallowed by RSC. The culprit is the <a href="shared-element-navigation.html"><code>sharedElements</code> prop on the Scene</a>. Instead, we switch to the equivalent prop on the <code>NavigationStack</code>. It has an extra parameter that provides the current scene. Then we create a <code>Stack</code> client component wrapper so we can safely pass the function in.
+                We implement the setup guide for our email example but when we run it we get an error. We're passing a function from a server component to a client component, something disallowed by RSC. The culprit is the <a href="shared-element-navigation.html"><code>sharedElements</code> prop on the Scene</a>. Instead, we switch to the equivalent prop on the <code>NavigationStack</code>. It has an extra parameter that provides the current scene. Then we create a <code>Stack</code> client component wrapper so we can safely pass the function in.
             </p>
             <pre><code class="language-jsx">'use client'
 
