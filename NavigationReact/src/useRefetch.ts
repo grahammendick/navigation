@@ -3,7 +3,8 @@ import { StateContext } from 'navigation';
 import RSCContext from './RSCContext.js';
 
 const useRefetch = (refetch?: string[] | ((stateContext: StateContext) => boolean) | null) => {
-    const {setRefetch} = useContext(RSCContext);
+    const {setRefetch, refetcher} = useContext(RSCContext);
     setRefetch(refetch);
+    return refetcher;
 }
 export default useRefetch;
