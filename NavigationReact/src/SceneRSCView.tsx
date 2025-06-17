@@ -102,7 +102,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
                 refetcher();
             })
         }
-    }), [ancestorFetching || fetching, refetcher]);
+    }), [ancestorFetching || fetching, cachedSceneViews, refetcher]);
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <RSCContext.Provider value={rscContextVal}>
