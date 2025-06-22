@@ -1,8 +1,9 @@
 'use client'
-import React, { Component } from 'react';
+import React, { Component, startTransition } from 'react';
 import { StateNavigator, State } from 'navigation';
 import AsyncStateNavigator from './AsyncStateNavigator.js';
 import NavigationContext from './NavigationContext.js';
+import SceneRSCContext from './SceneRSCContext.js';
 type NavigationHandlerState = { context: { ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: AsyncStateNavigator } };
 
 class NavigationHandler extends Component<{ stateNavigator: StateNavigator, children: any }, NavigationHandlerState> {
@@ -13,6 +14,7 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, chil
         const asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
         this.state = { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } };
         this.onNavigate = this.onNavigate.bind(this);
+        this.refetch = this.refetch.bind(this);
     }
 
     componentDidMount() {
@@ -33,10 +35,18 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, chil
         }
     }
 
+    refetch() {
+        startTransition(() => {
+            this.setState({ context: { ...this.state.context, ignoreCache: true } });
+        });
+    }
+
     render() {
         return (
             <NavigationContext.Provider value={this.state.context}>
-                {this.props.children}
+                <SceneRSCContext.Provider value={this.refetch}>
+                    {this.props.children}
+                </SceneRSCContext.Provider>
             </NavigationContext.Provider>
         );
     }

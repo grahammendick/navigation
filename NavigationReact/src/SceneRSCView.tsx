@@ -1,5 +1,5 @@
 'use client'
-import React, { use, useContext, useEffect, useRef, useMemo } from 'react';
+import React, { use, useContext, useEffect, useRef, useMemo, useOptimistic, startTransition } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
@@ -17,7 +17,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
     const {crumbs, nextCrumb: {crumblessUrl: url}, oldUrl, oldData, history, historyAction} = stateContext;
     const {deserialize} = useContext(BundlerContext);
-    const {fetching: ancestorFetching} = useContext(RSCContext);
+    const rscContext = useContext(RSCContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
     const getShow = (stateKey: string) => (
         active != null && state && (
@@ -25,7 +25,8 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
         )
     );
     const show = getShow(state.key);
-    const ignoreCache = !!navigationEvent['ignoreCache'];
+    const refetcherState = {ancestorFetching: rscContext.fetching, ignoreCache: !!navigationEvent['ignoreCache']};
+    const [{ancestorFetching, ignoreCache}, refetcher] = useOptimistic<any, void>(refetcherState, () => ({ancestorFetching: false, ignoreCache: true}));
     const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey];
     if (!rscCache.get(navigationEvent)) rscCache.set(navigationEvent, {});
     const cachedSceneViews = rscCache.get(navigationEvent);
@@ -59,8 +60,8 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     const sceneView = (() => {
         if (!show) return null;
         if (cachedHistory) return historyCache[url][sceneViewKey];
+        if (cachedSceneViews[sceneViewKey]) return cachedSceneViews[sceneViewKey];
         if (firstScene || ancestorFetching) return children;
-        if (fetching) return cachedSceneViews[sceneViewKey];
         return renderedSceneView.current.sceneView;
     })();
     useEffect(() => {
@@ -94,8 +95,14 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     });
     const rscContextVal = useMemo(() => ({
         fetching: ancestorFetching || fetching,
-        setRefetch: (refetch: any) => refetchRef.current = refetch !== undefined ? refetch : serverRefetch
-    }), [ancestorFetching || fetching]);
+        setRefetch: (refetch: any) => refetchRef.current = refetch !== undefined ? refetch : serverRefetch,
+        refetcher: () => {
+            startTransition(() => {
+                delete cachedSceneViews[sceneViewKey];
+                refetcher();
+            })
+        }
+    }), [ancestorFetching || fetching, cachedSceneViews, refetcher]);
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <RSCContext.Provider value={rscContextVal}>
