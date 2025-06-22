@@ -121,9 +121,19 @@ const Thread = ({mail}) => {
             <pre><code class="language-jsx">&lt;SceneView active="mail" refetch={['id']}>
   &lt;Mail />
 &lt;/SceneView></code></pre>
+            <h2>Handling Mutations</h2>
             <p>
-                There's a <code>useRefetch</code> hook when you need even more control over when server round-trips happen. You pass it a function and return false to prevent the refetch. The function accepts a parameter of the upcoming <code>StateContext</code> so you can compare old and new navigation data.
+                The Navigation router doesn't support server actions. Instead, create a client component and call your api mutation endpoints as you would in a traditional SPA. The <code>useRefetch</code> hook returns a function you can use to update the  whole scene after the mutation completes. In our example app, we refetch the 'mail' scene when the user sends a reply so that the new reply is appended to the email thread.
             </p>
+            <pre><code class="language-jsx">import {useRefetch} from 'navigation-react';
+
+const refetch = useRefetch();
+
+onClick={() => {
+  // send reply
+  refetch();
+}}
+</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>
