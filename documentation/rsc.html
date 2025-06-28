@@ -1,0 +1,141 @@
+<html>
+<head>
+    <title>RSC</title>
+    <meta name="viewport" content="width=device-width">
+    <style>
+      :root {
+        --primary-color: #f9858b;
+        --secondary-color: #ed335f;
+      }    
+    </style>
+    <link rel="stylesheet" href="../css/prism.css">
+    <link rel="stylesheet" href="../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+      <a href=".."><img alt="logo" src="../img/logo.png" /></a>
+      <a href="native/setup.html">React Native</a>
+      <a href="https://github.com/grahammendick/navigation">GitHub</a>
+    </div>
+    <div id="content">
+        <div id="menu">
+          <h2>
+            <img alt="web" src="../img/web.png" />
+            React
+          </h2>
+          <div id="items">
+            <a href="setup.html">Setup</a>
+            <a href="hello-world.html">Hello World</a>
+            <a href="state-navigation.html">State Navigation</a>
+            <a href="navigation-data.html">Navigation Data</a>
+            <a href="routes.html">Routes</a>
+            <a href="current-data.html">Current Data</a>
+            <a href="html5-history.html">HTML5 History</a>
+            <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="reusable-components.html">Reusable Components</a>
+            <a href="typescript.html">TypeScript</a>
+            <a href="rsc.html" class="selected">RSC</a>
+            <a href="examples.html">Examples</a>
+            <h3>Mobile</h3>
+            <a href="mobile/setup.html">Setup</a>
+            <a href="mobile/hello-world.html">Hello World</a>
+            <a href="mobile/animated-navigation.html">Animated Navigation</a>
+            <a href="mobile/clean-urls.html">Clean Urls</a>
+            <a href="mobile/scene-navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="mobile/shared-element-navigation.html">Shared Element Navigation</a>
+            <a href="mobile/rsc.html">RSC</a>
+            <a href="mobile/examples.html">Examples</a>
+          </div>
+        </div>
+        <div id="article">
+            <h1>RSC</h1>
+            <p>
+                The App router from Next.js introduced a lot of weird rules, for example, around partial page updates and access to the URL on the server. But they have nothing to do with RSC (React Server Components) and everything to do with Next.js. There are actually very few rules when it comes to RSC, as you can see with the Navigation router. All the Navigation router documentation, apart from the setup, works the same whether you're using RSC or not.
+            </p>
+            <h2>Setting up the Bundler</h2>
+            <p>
+                The Navigation router has <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReact/sample/rsc-parcel">Parcel</a> and <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReact/sample/rsc-webpack">Webpack</a> RSC samples you can compare. Although their setup code is very different, the application code is identical. The following covers the setup files from the Parcel example since Webpack's RSC support isn't production-ready. The 3 items marked with * are the ones you edit with your scenes.
+                <ul>
+                    <li>
+                        <a href="https://github.com/grahammendick/navigation/blob/master/NavigationReact/sample/rsc-parcel/src/App.tsx">App.tsx</a>* - server component shell where you render your scenes
+                    </li>
+                    <li>
+                        <a href="https://github.com/grahammendick/navigation/blob/master/NavigationReact/sample/rsc-parcel/src/stateNavigator.ts">stateNavigator.ts</a>* - returns a <code>StateNavigator</code> you configure with your scenes
+                    </li>
+                    <li>
+                        <a href="https://github.com/grahammendick/navigation/blob/master/NavigationReact/sample/rsc-parcel/src/server.tsx">server.tsx</a>* - web server that streams RSC. You list your scenes inside the <code>post</code> handler
+                    </li>
+                    <li>
+                        <a href="https://github.com/grahammendick/navigation/blob/master/NavigationReact/sample/rsc-parcel/src/client.tsx">client.tsx</a> - hydrates the App from the initial RSC stream
+                    </li>
+                    <li>
+                        <a href="https://github.com/grahammendick/navigation/blob/master/NavigationReact/sample/rsc-parcel/src/NavigationProvider.tsx">NavigationProvider.tsx</a> - renders the <code>NavigationHandler</code>
+                    </li>
+                    <li>
+                        <a href="https://github.com/grahammendick/navigation/blob/master/NavigationReact/sample/rsc-parcel/src/HmrProvider.tsx">HmrProvider.tsx</a> - supports hot module reoloading
+                    </li>
+                </ul>
+            </p>
+            <p>
+                To RSC-ify our email app example, we copy these files over and make the changes outlined above. In the server.ts file, for example, we add our 3 scenes to the <code>sceneViews</code> lookup in the post handler. We also copy over the typescript setup and all the dependencies from the package.json of the Parcel sample and run npm install.
+            </p>
+            <pre><code class="language-js">app.post('*', async (req, res) => {
+  const sceneViews: any = {
+    inbox: Inbox,
+    mail: Mail,
+    compose: Compose
+  };
+  const {url, sceneViewKey} = req.body;
+  const View = sceneViews[sceneViewKey];</code></pre>
+            <p>
+                With RSC, we fetch data on the server instead of in <code>useEffects</code> on the client. The shift to the server enables SSR and avoids waterfalls. We turn on data-fetching in our <code>Inbox</code> and <code>Mail</code> components by marking them as <code>async</code>. We also add the <code>use server-entry</code> directive to our 3 scenes to tell Parcel where to bundle-split.
+            </p>
+            <pre><code class="language-jsx">'use server-entry'
+
+const Mail = async () => {
+  const {data} = useNavigationEvent();
+  const {id, expand} = data;
+  const mail = await fetchMail(id);
+};</code></pre>
+            <h2>Refetching Scenes</h2>
+            <p>
+                Our email app loads fast because we've removed the data-fetching waterfalls. But we've accidentally made it slower when the user expands an email. We used to handle this client-side but now we're expanding the email on the server. We move this back to the client by extracting the expansion code into a client component.
+            </p>
+            <pre><code class="language-jsx">'use client'
+
+const Thread = ({mail}) => {
+  const {data} = useNavigationEvent();
+  const {expand} = data;
+  if (!expand) return null;
+  return (
+    &lt;ul>
+      {mail.thread.map({id, content}) => (
+        &lt;li key={id}>{content}&lt;/li>
+      )}
+    &lt;/ul>
+  )
+};</code></pre>
+            <p>
+                Although the expansion happens on the client, it still has to wait for a server round-trip. By default, the <code>SceneView</code> refetches on every navigation. But it has a <code>refetch</code> prop that tells it to only refetch when specific navigation data changes. We pass 'id' so the 'mail' scene only refetches when the email changes, removing the unnecessary round-trip when the email expands.
+            </p>
+            <pre><code class="language-jsx">&lt;SceneView active="mail" refetch={['id']}>
+  &lt;Mail />
+&lt;/SceneView></code></pre>
+            <h2>Handling Mutations</h2>
+            <p>
+                The Navigation router doesn't support server actions. Instead, create a client component and call your api mutation endpoints as you would in a traditional SPA. The <code>useRefetch</code> hook returns a function you can use to update the  whole scene after the mutation completes. In our example app, we refetch the 'mail' scene when the user sends a reply so that the new reply is appended to the email thread.
+            </p>
+            <pre><code class="language-jsx">import {useRefetch} from 'navigation-react';
+
+const refetch = useRefetch();
+
+onClick={() => {
+  // send reply
+  refetch();
+}}
+</code></pre>
+        </div>
+    </div>
+    <script type="text/javascript" src="../js/prism.js"></script>
+</body>
+</html>

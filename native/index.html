@@ -79,10 +79,10 @@ const stateNavigator = new StateNavigator([
       </li>
       <li>
           <h3>Navigate to a Scene</h3>
-          <pre><code class="language-jsx">import { NavigationContext } from 'navigation-react';
+          <pre><code class="language-jsx">import { useNavigationEvent } from 'navigation-react';
 
 const Hello = () => {
-  const { stateNavigator } = useContext(NavigationContext);
+  const { stateNavigator } = useNavigationEvent();
   return (
     &lt;Button title="Hello"
       onPress={() => {
@@ -91,16 +91,16 @@ const Hello = () => {
   );
 };</code></pre>
         <p>
-          You use the <code>stateNavigator</code> from the <code>NavigationContext</code> to change scenes. You pass the name of the scene and the data. The navigation is 100% native on Android and iOS.
+          You use the <code>stateNavigator</code> from the <code>NavigationEvent</code> to change scenes. You pass the name of the scene and the data. The navigation is 100% native on Android and iOS.
         </p>
         <img class="arrow" alt="Next - use the data" src="../img/arrow.png" />
       </li>
       <li>
         <h3>Use the Data</h3>
-        <pre><code class="language-jsx">import { NavigationContext } from 'navigation-react';
+        <pre><code class="language-jsx">import { useNavigationEvent } from 'navigation-react';
 
 const World = () => {
-  const { data } = useContext(NavigationContext);
+  const { data } = useNavigationEvent();
   return (
     &lt;Text style={{ fontSize: data.size }}>
       World
@@ -108,7 +108,7 @@ const World = () => {
   );
 };</code></pre>
         <p>
-          In the next scene, you access the data from the <code>NavigationContext</code>. You can return to the 'hello' scene via the Android back button or swiping/pressing back on iOS.
+          In the next scene, you access the data from the <code>NavigationEvent</code>. You can return to the 'hello' scene via the Android back button or swiping/pressing back on iOS.
         </p>
       </li>
     </ol>

@@ -73,12 +73,12 @@
 &lt;/NavigationStack></code></pre>
             <h2>Pushing</h2>
             <p>
-                <code>States</code> become active by navigating to them. You navigate to a <code>State</code> by passing the <code>State key</code> to the <code>navigate</code> function of the <code>StateNavigator</code>. You can access the <code>StateNavigator</code> inside any component using the React Context API. In our email example, we can add a button to the 'inbox' scene that navigates to the 'compose' <code>State</code>. Pressing the button pushes the 'compose' scene onto the stack. The user can return to their inbox using the Android back button or by pressing/swiping back on iOS.
+                <code>States</code> become active by navigating to them. You navigate to a <code>State</code> by passing the <code>State key</code> to the <code>navigate</code> function of the <code>StateNavigator</code>. You can access the <code>StateNavigator</code> inside any component from the <code>NavigationEvent</code>. In our email example, we can add a button to the 'inbox' scene that navigates to the 'compose' <code>State</code>. Pressing the button pushes the 'compose' scene onto the stack. The user can return to their inbox using the Android back button or by pressing/swiping back on iOS.
             </p>
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+            <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react';
 
 const Inbox = () => {
-  const {stateNavigator} = useContext(NavigationContext);
+  const {stateNavigator} = useNavigationEvent();
   return (
     &lt;Button
       title="Compose Mail"
@@ -97,12 +97,12 @@ const Inbox = () => {
     stateNavigator.navigate('mail', {id: 12});
   }} /></code></pre>
             <p>
-                In the 'mail' scene we get the selected id from the <code>NavigationContext</code>.
+                In the 'mail' scene we get the selected id from the <code>NavigationEvent</code>.
             </p>
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+            <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react';
 
 const Mail = () => {
-  const {data} = useContext(NavigationContext); 
+  const {data} = useNavigationEvent(); 
   const {id} = data;
 }</code></pre>
             <div class="Note">

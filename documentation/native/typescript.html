@@ -70,20 +70,20 @@
 &lt;/NavigationStack></code></pre>
             <h2>Navigating and Passing Data</h2>
             <p>
-                You can use this same type when you navigate to make sure that the navigation is valid. TypeScript checks the target scene exists and that the navigation data matches up with what that scene expects. The <code>NavigationEvent</code> returned from <code>useContext</code> accepts the type as a generic parameter. When we navigate to the mail scene, for example, TypeScript will tell us if we accidentally pass the id as a string instead of a number.
+                You can use this same type when you navigate to make sure that the navigation is valid. TypeScript checks the target scene exists and that the navigation data matches up with what that scene expects. The <code>NavigationEvent</code> returned from <code>useNavigationEvent</code> accepts the type as a generic parameter. When we navigate to the mail scene, for example, TypeScript will tell us if we accidentally pass the id as a string instead of a number.
             </p>
-            <pre><code class="language-jsx">import {NavigationEvent} from 'navigation-react'
+            <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react'
 
-const {stateNavigator} = useContext&lt;NavigationEvent&lt;EmailNavigation>>(NavigationContext);
+const {stateNavigator} = useNavigationEvent&lt;NavigationEvent&lt;EmailNavigation>>();
 
 // Error because id is a string
 &lt;div onClick={() => stateNavigator.navigate('mail', {id: '12'})}>
   Open Mail
 &lt;/div></code></pre>
             <p>
-                TypeScript will validate the navigation data you receive as long as you tell it the current scene. You pass this as the second generic parameter when using the <code>NavigationContext</code>. In our email example, when we're on the mail scene, TypeScript will point out any mistypings and it knows that 'id' is a number and that 'expand' is a boolean.
+                TypeScript will validate the navigation data you receive as long as you tell it the current scene. You pass this as the second generic parameter when you <code>useNavigationEvent</code>. In our email example, when we're on the mail scene, TypeScript will point out any mistypings and it knows that 'id' is a number and that 'expand' is a boolean.
             </p>
-            <pre><code class="language-jsx">const {data} = useContext&lt;NavigationEvent&lt;EmailNavigation, 'mail'>>(NavigationContext);
+            <pre><code class="language-jsx">const {data} = useNavigationEvent&lt;NavigationEvent&lt;EmailNavigation, 'mail'>>();
 // Error because expand is mistyped
 const {id, expad} = data;</code></pre>
           </div>

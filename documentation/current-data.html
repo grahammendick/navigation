@@ -34,6 +34,7 @@
             <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
             <a href="reusable-components.html">Reusable Components</a>
             <a href="typescript.html">TypeScript</a>
+            <a href="rsc.html">RSC</a>
             <a href="examples.html">Examples</a>
             <h3>Mobile</h3>
             <a href="mobile/setup.html">Setup</a>
@@ -42,6 +43,7 @@
             <a href="mobile/clean-urls.html">Clean Urls</a>
             <a href="mobile/scene-navigation-lifecycle.html">Navigation Lifecycle</a>
             <a href="mobile/shared-element-navigation.html">Shared Element Navigation</a>
+            <a href="mobile/rsc.html">RSC</a>
             <a href="mobile/examples.html">Examples</a>
           </div>
         </div>
@@ -62,9 +64,9 @@
             <p>
                 Alternatively, you can programmatically pass the new data into the <code>refresh</code> function on the <code>stateNavigator</code>.
             </p>
-            <pre><code class="language-jsx">import {NavigationContext} from 'navigation-react';
+            <pre><code class="language-jsx">import {useNavigationEvent} from 'navigation-react';
 
-const {stateNavigator} = useContext(NavigationContext);
+const {stateNavigator} = useNavigationEvent();
 
 &lt;div onClick={() => stateNavigator.refresh({id: 12, expand: false})}>
   Expand Thread
