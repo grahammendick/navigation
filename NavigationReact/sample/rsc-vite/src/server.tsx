@@ -1,6 +1,6 @@
 import * as ReactServer from '@vitejs/plugin-rsc/rsc';
-import { StateNavigator } from 'navigation'
-import stateNavigator from './stateNavigator.ts'
+import { StateNavigator } from 'navigation';
+import stateNavigator from './stateNavigator.ts';
 
 export default async function handler(request: Request): Promise<Response> {
   let url: string = '';
@@ -35,11 +35,11 @@ export default async function handler(request: Request): Promise<Response> {
     view = <App url={url} />;
   }
   try {
-    serverNavigator.navigateLink(url)
+    serverNavigator.navigateLink(url);
   } catch(e) {
     return new Response('Not Found', { status: 404 });
   }
-  const { NavigationHandler } = await import('navigation-react');
+  const {NavigationHandler} = await import('navigation-react');
   const root = (
     <>
       <NavigationHandler stateNavigator={serverNavigator}>
@@ -47,7 +47,7 @@ export default async function handler(request: Request): Promise<Response> {
       </NavigationHandler>
     </>
   );
-  const rscStream = ReactServer.renderToReadableStream({ root });
+  const rscStream = ReactServer.renderToReadableStream({root});
   if (request.method !== 'GET') {
     return new Response(rscStream, {headers: {'Content-type': 'text/x-component'}});
   }
