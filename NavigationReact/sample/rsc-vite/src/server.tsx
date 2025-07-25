@@ -6,12 +6,14 @@ export default async function handler(request: Request): Promise<Response> {
   let url: string;
   let view: any;
   const serverNavigator = new StateNavigator(stateNavigator);
+  let isRscRequest = false;
   if (request.method === 'GET') {
     let reqUrl = new URL(request.url);
     url = `${reqUrl.pathname}${reqUrl.search}`;
     const App = (await import('./App.tsx')).default;
     view = <App url={url} />;
   } else {    
+    isRscRequest = true;
     const sceneViews: any = {
       people: await import('./People.tsx'),
       person: await import('./Person.tsx'),
@@ -47,7 +49,6 @@ export default async function handler(request: Request): Promise<Response> {
     </>
   );
   const rscStream = ReactServer.renderToReadableStream({ root });
-  const isRscRequest = false;
   if (isRscRequest) {
     return new Response(rscStream, {
       headers: {
