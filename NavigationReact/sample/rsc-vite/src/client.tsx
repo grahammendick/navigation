@@ -40,7 +40,7 @@ async function hydrate() {
     ReactDOM.hydrateRoot(document, <Shell />);
 }
 async function fetchRSC(url: string, {body, ...options}: any) {
-    const payload = await createFromFetch(fetch(url, {...options, body: JSON.stringify(body), method: 'PUT'})) as any;
+    const payload = await createFromFetch(fetch(url, {...options, body: JSON.stringify(body)})) as any;
     return payload.root;
 }
 hydrate();
