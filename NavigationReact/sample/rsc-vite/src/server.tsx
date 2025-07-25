@@ -1,4 +1,4 @@
-import { renderRequest } from '@vitejs/plugin-rsc/extra/rsc'
+import * as ReactServer from '@vitejs/plugin-rsc/rsc';
 import { StateNavigator } from 'navigation'
 import stateNavigator from './stateNavigator.ts'
 
@@ -46,7 +46,26 @@ export default async function handler(request: Request): Promise<Response> {
       </NavigationHandler>
     </>
   );
-  return renderRequest(request, root);
+  const rscStream = ReactServer.renderToReadableStream({ root });
+  const isRscRequest = false;
+  if (isRscRequest) {
+    return new Response(rscStream, {
+      headers: {
+        'content-type': 'text/x-component;charset=utf-8',
+        vary: 'accept',
+      },
+    })
+  }
+  const ssrEntryModule = await import.meta.viteRsc.loadModule<
+    typeof import('./server.ssr.tsx')
+  >('ssr', 'index');
+  const htmlStream = await ssrEntryModule.renderHTML(rscStream);
+  return new Response(htmlStream, {
+    headers: {
+      'Content-type': 'text/html',
+      vary: 'accept',
+    },
+  });
 }
 
 if (import.meta.hot) {
