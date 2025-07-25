@@ -5,9 +5,8 @@ import { rscStream } from 'rsc-html-stream/client'
 import { createFromFetch } from "@vitejs/plugin-rsc/browser";
 import { BundlerContext } from 'navigation-react';
 
-
 async function hydrate() {
-    const initialPayload = await ReactClient.createFromReadableStream<any>(rscStream)
+    const initialPayload = await ReactClient.createFromReadableStream<{root: React.ReactNode}>(rscStream)
     function Shell() {
         const [root, setRoot] = useState(initialPayload.root);
         const bundler = useMemo(() => ({setRoot, deserialize: fetchRSC}), []);

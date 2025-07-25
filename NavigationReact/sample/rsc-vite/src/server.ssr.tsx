@@ -8,8 +8,8 @@ type RscPayload = {
 }
 export async function renderHTML(
   rscStream: ReadableStream<Uint8Array>) {
-  const [rscStream1, rscStream2] = rscStream.tee()
-  let payload: Promise<RscPayload>
+  const [rscStream1, rscStream2] = rscStream.tee();
+  let payload: Promise<RscPayload>;
   function SsrRoot() {
     payload ??= ReactClient.createFromReadableStream<RscPayload>(rscStream1)
     return React.use(payload).root
