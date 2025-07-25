@@ -1,33 +1,13 @@
+import * as ReactClient from '@vitejs/plugin-rsc/browser'
 import { useState, useMemo } from "react";
 import ReactDOM from "react-dom/client";
-import { hydrate as _hydrate } from '@vitejs/plugin-rsc/extra/browser'
-import { createFromFetch, createFromReadableStream } from "@vitejs/plugin-rsc/browser";
+import { rscStream } from 'rsc-html-stream/client'
+import { createFromFetch } from "@vitejs/plugin-rsc/browser";
 import { BundlerContext } from 'navigation-react';
 
-declare global{interface Window { __FLIGHT_DATA: any;}}
-
-let encoder = new TextEncoder();
-let streamController: any;
-let rscStream = new ReadableStream({ start(controller) {
-	if (typeof window === "undefined") return;
-	let handleChunk = (chunk: any) => {
-		if (typeof chunk === "string") controller.enqueue(encoder.encode(chunk));
-		else controller.enqueue(chunk);
-	};
-	window.__FLIGHT_DATA ||= [];
-	window.__FLIGHT_DATA.forEach(handleChunk);
-	window.__FLIGHT_DATA.push = (chunk: any) => {
-		handleChunk(chunk);
-	};
-	streamController = controller;
-} });
-if (typeof document !== "undefined" && document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => {
-	streamController?.close();
-});
-else streamController?.close();
 
 async function hydrate() {
-    const initialPayload = await createFromReadableStream(rscStream) as any;
+    const initialPayload = await ReactClient.createFromReadableStream<any>(rscStream)
     function Shell() {
         const [root, setRoot] = useState(initialPayload.root);
         const bundler = useMemo(() => ({setRoot, deserialize: fetchRSC}), []);
