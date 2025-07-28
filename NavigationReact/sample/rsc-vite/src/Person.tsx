@@ -1,14 +1,11 @@
-import {
-  SceneView,
-  NavigationBackLink,
-  useNavigationEvent,
-} from 'navigation-react'
-import { getPerson } from './data'
-import Friends from './Friends'
+'use server-entry'
+import { SceneView, NavigationBackLink, useNavigationEvent } from 'navigation-react';
+import { getPerson } from './data';
+import Friends from './Friends';
 
 const Person = async () => {
-  const { data } = useNavigationEvent()
-  const { name, dateOfBirth, email, phone } = await getPerson(data.id)
+  const {data} = useNavigationEvent();
+  const {name, dateOfBirth, email, phone} = await getPerson(data.id);
   return (
     <>
       <h1>Person</h1>
@@ -31,4 +28,4 @@ const Person = async () => {
   )
 }
 
-export default Person
+export default Person;

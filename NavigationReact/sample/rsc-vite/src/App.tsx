@@ -23,7 +23,7 @@ const App = async ({ url }: any) => {
         </NavigationProvider>
       </body>
     </html>
-  )
+  );
 }
 
 export default App;
