@@ -13,9 +13,9 @@ const HmrProvider = ({children}: any) => {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: {
-              crumbs: crumbs.map(({state, data}) => ({state: state.key, data})),
-              state: state.key,
-              data
+            crumbs: crumbs.map(({state, data}) => ({state: state.key, data})),
+            state: state.key,
+            data
           }
       });
       stateNavigator.historyManager.stop();
