@@ -21,6 +21,15 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, chil
         this.props.stateNavigator.onNavigate(this.onNavigate);
     }
 
+    componentDidUpdate({ stateNavigator: prevStateNavigator }: { stateNavigator: StateNavigator }) {
+        const { stateNavigator } = this.props;
+        if (stateNavigator !== prevStateNavigator) {
+            const { oldState, state, data, asyncData } = stateNavigator.stateContext;
+            const asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
+            this.setState({ context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } });
+        }
+    }
+
     componentWillUnmount() {
         this.props.stateNavigator.offNavigate(this.onNavigate);
     }
