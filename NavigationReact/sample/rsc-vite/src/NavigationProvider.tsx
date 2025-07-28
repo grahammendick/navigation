@@ -10,7 +10,10 @@ const NavigationProvider = ({ url, children }: any) => {
   const clientNavigator = useMemo(() => {
     historyManager.stop()
     const clientNavigator = new StateNavigator(stateNavigator, historyManager)
-    clientNavigator.navigateLink(url)
+    try {
+      clientNavigator.navigateLink(url);
+    } catch(e) {
+    }
     return clientNavigator
   }, [])
   return (
