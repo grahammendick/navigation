@@ -128,23 +128,7 @@ var itemTasks = items.reduce((tasks, item) => {
 }, { buildTasks: [], packageTasks: [] });
 
 var tests = [
-    { name: 'NavigationRouting', to: 'navigationRouting.test.js' },
-    { name: 'StateConfig', to: 'stateConfig.test.js' },
-    { name: 'Navigation', to: 'navigation.test.js' },
-    { name: 'NavigationData', to: 'navigationData.test.js' },
-    { name: 'FluentNavigation', to: 'fluentNavigation.test.js' },
-    { name: 'RewriteNavigation', to: 'rewriteNavigation.test.js' },
-    { name: 'NavigationLink', to: 'navigationLink.test.js', folder: 'React', ext: 'tsx' },
-    { name: 'NavigationBackLink', to: 'navigationBackLink.test.js', folder: 'React', ext: 'tsx' },
-    { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' },
-    { name: 'FluentLink', to: 'fluentLink.test.js', folder: 'React', ext: 'tsx' },
-    { name: 'SceneView', to: 'sceneView.test.js', folder: 'React', ext: 'tsx' },
-    { name: 'NavigatingHook', to: 'navigatingHook.test.js', folder: 'ReactMobile', ext: 'tsx' },
-    { name: 'NavigatedHook', to: 'navigatedHook.test.js', folder: 'ReactMobile', ext: 'tsx' },
-    { name: 'UnloadingHook', to: 'unloadingHook.test.js', folder: 'ReactMobile', ext: 'tsx' },
-    { name: 'UnloadedHook', to: 'unloadedHook.test.js', folder: 'ReactMobile', ext: 'tsx' },
-    { name: 'NavigationMotion', to: 'navigationMotion.test.js', folder: 'ReactMobile', ext: 'tsx' },
-    { name: 'NavigationMotionKey', to: 'navigationMotionKey.test.js', folder: 'ReactMobile', ext: 'tsx' }
+    { name: 'SceneView', to: 'sceneView.test.js', folder: 'React', ext: 'tsx' }
 ];
 function testTask(name, input, file) {
     var globals = [

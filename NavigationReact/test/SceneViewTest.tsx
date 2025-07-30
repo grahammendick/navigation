@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { SceneView, NavigationHandler, useNavigationEvent } from 'navigation-react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { act, Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
@@ -578,6 +578,42 @@ describe('SceneViewTest', function () {
                 );
             });
             console.error = err;
+            assert.equal(container.innerHTML, '<div>scene 1</div>');
+        })
+    });
+
+    describe('Scene View Change State Navigator', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0'},
+                { key: 's1'},
+            ]);
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            var root = createRoot(container);
+            var updateStateNavigator;
+            var App = () => {
+                var [_stateNavigator, setStateNavigator] = useState(stateNavigator);
+                updateStateNavigator = setStateNavigator;
+                return (
+                    <NavigationHandler stateNavigator={_stateNavigator}>
+                        <SceneView active="s0">
+                            <div>scene 0</div>
+                        </SceneView>
+                        <SceneView active="s1">
+                            <div>scene 1</div>
+                        </SceneView>
+                    </NavigationHandler>
+                );
+            }
+            act(() => {
+                root.render(<App />);
+            });
+            act(() => {
+                var anotherStateNavigator = new StateNavigator(stateNavigator);
+                anotherStateNavigator.navigate('s1');
+                updateStateNavigator(anotherStateNavigator);
+            });
             assert.equal(container.innerHTML, '<div>scene 1</div>');
         })
     });
