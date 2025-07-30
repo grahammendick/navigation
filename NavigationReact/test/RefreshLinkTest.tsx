@@ -3294,4 +3294,41 @@ describe('RefreshLinkTest', function () {
             assert.equal(context.data.y, 'b');
         })
     });
+
+    describe('Change State Navigator Refresh Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            stateNavigator.navigate('s0');
+            var container = document.createElement('div');
+            var root = createRoot(container);
+            var updateStateNavigator;
+            var App = () => {
+                var [_stateNavigator, setStateNavigator] = useState(stateNavigator);
+                updateStateNavigator = setStateNavigator;
+                return (
+                    <NavigationHandler stateNavigator={_stateNavigator}>
+                        <RefreshLink
+                            navigationData={{x: 'a'}}
+                            includeCurrentData={true}>
+                            link text
+                        </RefreshLink>
+                    </NavigationHandler>
+                );
+            }
+            act(() => {
+                root.render(<App />);
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r0?x=a');
+            act(() => {
+                var anotherStateNavigator = new StateNavigator(stateNavigator);
+                anotherStateNavigator.navigate('s1', {y: 'b'})
+                updateStateNavigator(anotherStateNavigator);
+            });
+            assert.equal(link.hash, '#/r1?y=b&x=a');
+        })
+    });
 });
