@@ -1044,4 +1044,42 @@ describe('NavigationBackLinkTest', function () {
             assert.equal(context.data.y, undefined);
         })
     });
+
+    describe('Change State Navigator Navigation Back Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            var container = document.createElement('div');
+            var root = createRoot(container);
+            var updateStateNavigator;
+            var App = () => {
+                var [_stateNavigator, setStateNavigator] = useState(stateNavigator);
+                updateStateNavigator = setStateNavigator;
+                return (
+                    <NavigationHandler stateNavigator={_stateNavigator}>
+                        <NavigationBackLink distance={1}>
+                            link text
+                        </NavigationBackLink>
+                    </NavigationHandler>
+                );
+            }
+            act(() => {
+                root.render(<App />);
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r0');
+            act(() => {
+                var anotherStateNavigator = new StateNavigator(stateNavigator);
+                anotherStateNavigator.navigate('s0');
+                anotherStateNavigator.navigate('s1');
+                anotherStateNavigator.navigate('s1');
+                updateStateNavigator(anotherStateNavigator);
+            });
+            assert.equal(link.hash, '#/r1?crumb=%2Fr0');
+        })
+    });
 });
