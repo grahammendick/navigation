@@ -1104,4 +1104,43 @@ describe('FluentLinkTest', function () {
             assert.equal(context.data.y, 'b');
         })
     });
+
+    describe('Change State Navigator Fluent Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var container = document.createElement('div');
+            var root = createRoot(container);
+            var updateStateNavigator;
+            var App = () => {
+                var [_stateNavigator, setStateNavigator] = useState(stateNavigator);
+                updateStateNavigator = setStateNavigator;
+                return (
+                    <NavigationHandler stateNavigator={_stateNavigator}>
+                        <FluentLink
+                            withContext={true}
+                            navigate={fluentNavigator => (
+                            fluentNavigator
+                                .navigate('s1')
+                        )}>
+                            link text
+                        </FluentLink>
+                    </NavigationHandler>
+                );
+            }
+            act(() => {
+                root.render(<App />);
+            });
+            var link = container.querySelector<HTMLAnchorElement>('a');
+            assert.equal(link.hash, '#/r1');
+            act(() => {
+                var anotherStateNavigator = new StateNavigator(stateNavigator);
+                anotherStateNavigator.navigate('s0');
+                updateStateNavigator(anotherStateNavigator);
+            });
+            assert.equal(link.hash, '#/r1?crumb=%2Fr0');
+        })
+    });
 });

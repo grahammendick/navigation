@@ -15,7 +15,8 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     const navigationEvent = useNavigationEvent();
     const refetchRef = useRef(serverRefetch);
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
-    const {crumbs, nextCrumb: {crumblessUrl: url}, oldUrl, oldData, history, historyAction} = stateContext;
+    const {crumbs, nextCrumb, oldUrl, oldData, history, historyAction} = stateContext;
+    const url = nextCrumb?.crumblessUrl;
     const {deserialize} = useContext(BundlerContext);
     const rscContext = useContext(RSCContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -24,7 +25,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
             typeof active === 'string' ? stateKey === active : active.indexOf(stateKey) !== -1
         )
     );
-    const show = getShow(state.key);
+    const show = getShow(state?.key);
     const refetcherState = {ancestorFetching: rscContext.fetching, ignoreCache: !!navigationEvent['ignoreCache']};
     const [{ancestorFetching, ignoreCache}, refetcher] = useOptimistic<any, void>(refetcherState, () => ({ancestorFetching: false, ignoreCache: true}));
     const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey];
