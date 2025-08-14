@@ -59,7 +59,7 @@ else()
   )
 endif()
 
-if(ReactAndroid_VERSION_MINOR GREATER_EQUAL 81)
+if(ReactAndroid_VERSION_MINOR GREATER_EQUAL 80)
   target_compile_reactnative_options(react_codegen_navigationreactnative PRIVATE)
 else()
   target_compile_options(
