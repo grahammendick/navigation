@@ -1,15 +1,20 @@
 import React, {useContext} from 'react';
-import {StyleSheet, SafeAreaView, Text, Image, FlatList, View, TouchableHighlight, Platform} from 'react-native';
+import {StyleSheet, Text, Image, FlatList, View, TouchableHighlight, Platform} from 'react-native';
+import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context'
 import {NavigationContext} from 'navigation-react';
 import {CoordinatorLayout, NavigationBar, TabBar, TabBarItem} from 'navigation-react-native';
 import TweetItem from './TweetItem';
 import {getNotifications} from './data';
 
+const Container = ({children}) => (
+  Platform.OS === 'ios' ? <SafeAreaProvider><SafeAreaView style={{flex: 1}}>{children}</SafeAreaView></SafeAreaProvider> : children
+);
+
 export default () => {
   const {stateNavigator} = useContext(NavigationContext);
   const notifications = getNotifications();
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <Container>
       <CoordinatorLayout>
         <NavigationBar
           title="Notifications"
@@ -53,7 +58,7 @@ export default () => {
           </TabBarItem>
         </TabBar>
       </CoordinatorLayout>
-    </SafeAreaView>
+    </Container>
   );
 };
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StateNavigator} from 'navigation';
 import {NavigationHandler} from 'navigation-react';
 import Home from './Home';
@@ -17,22 +18,24 @@ const stateNavigator = new StateNavigator([
 ]);
 
 const App = () => (
-  <NavigationHandler stateNavigator={stateNavigator}>
-    <NavigationStack
-      crumbStyle={[
-        {type: 'alpha', start: 0},
-        {type: 'scale', startX: 0.8, startY: 0.8},
-        {type: 'translate', startX: '5%'},
-      ]}
-      unmountStyle={{type: 'translate', startX: '100%'}}
-    >
-      <Scene stateKey="tabs"><Tabs /></Scene>
-      <Scene stateKey="home"><Home /></Scene>
-      <Scene stateKey="notifications"><Notifications /></Scene>
-      <Scene stateKey="tweet"><Tweet /></Scene>
-      <Scene stateKey="timeline"><Timeline /></Scene>
-    </NavigationStack>
-  </NavigationHandler>
+  <SafeAreaProvider>
+    <NavigationHandler stateNavigator={stateNavigator}>
+      <NavigationStack
+        crumbStyle={[
+          {type: 'alpha', start: 0},
+          {type: 'scale', startX: 0.8, startY: 0.8},
+          {type: 'translate', startX: '5%'},
+        ]}
+        unmountStyle={{type: 'translate', startX: '100%'}}
+      >
+        <Scene stateKey="tabs"><Tabs /></Scene>
+        <Scene stateKey="home"><Home /></Scene>
+        <Scene stateKey="notifications"><Notifications /></Scene>
+        <Scene stateKey="tweet"><Tweet /></Scene>
+        <Scene stateKey="timeline"><Timeline /></Scene>
+      </NavigationStack>
+    </NavigationHandler>
+  </SafeAreaProvider>
 );
 
 export default App;
