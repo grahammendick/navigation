@@ -59,12 +59,16 @@ else()
   )
 endif()
 
-target_compile_options(
-  react_codegen_navigationreactnative
-  PRIVATE
-  -DLOG_TAG=\"ReactNative\"
-  -fexceptions
-  -frtti
-  -std=c++20
-  -Wall
-)
+if(ReactAndroid_VERSION_MINOR GREATER_EQUAL 80)
+  target_compile_reactnative_options(react_codegen_navigationreactnative PRIVATE)
+else()
+  target_compile_options(
+    react_codegen_navigationreactnative
+    PRIVATE
+    -DLOG_TAG=\"ReactNative\"
+    -fexceptions
+    -frtti
+    -std=c++20
+    -Wall
+  )
+endif()
