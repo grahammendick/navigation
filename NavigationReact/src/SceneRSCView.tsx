@@ -2,12 +2,12 @@
 import React, { use, useContext, useEffect, useRef, useMemo, useOptimistic, startTransition } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
+import historyCache from './historyCache.js';
 import BundlerContext from './BundlerContext.js';
 import RSCContext from './RSCContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
 
 const rscCache: Map<any, Record<string, any>> = new Map();
-const historyCache = {};
 
 const SceneViewInner = ({children}) => children?.then ? use(children) : children;
 
@@ -28,7 +28,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     const show = getShow(state?.key);
     const refetcherState = {ancestorFetching: rscContext.fetching, ignoreCache: !!navigationEvent['ignoreCache']};
     const [{ancestorFetching, ignoreCache}, refetcher] = useOptimistic<any, void>(refetcherState, () => ({ancestorFetching: false, ignoreCache: true}));
-    const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey];
+    const cachedHistory = !ignoreCache && history && !!historyCache[url]?.scenes[sceneViewKey];
     if (!rscCache.get(navigationEvent)) rscCache.set(navigationEvent, {});
     const cachedSceneViews = rscCache.get(navigationEvent);
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
@@ -60,7 +60,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     }
     const sceneView = (() => {
         if (!show) return null;
-        if (cachedHistory) return historyCache[url][sceneViewKey];
+        if (cachedHistory) return historyCache[url].scenes[sceneViewKey];
         if (cachedSceneViews[sceneViewKey]) return cachedSceneViews[sceneViewKey];
         if (firstScene || ancestorFetching) return children;
         return renderedSceneView.current.sceneView;
@@ -78,9 +78,10 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
         const cacheHistory = () => {
             if (historyAction === 'none' || historyManager.getCurrentUrl() !== stateContext.url) return;
             const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
-            if (!historyCache[url]) historyCache[url] = {count: sceneCount};
-            historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
+            if (!historyCache[url]) historyCache[url] = {count: sceneCount, scenes: {}, state, data, expired: false};
+            historyCache[url].scenes[sceneViewKey] = renderedSceneView.current.sceneView;
             historyCache[url].count = Math.min(historyCache[url].count, sceneCount);
+            historyCache[url].expired = !cachedHistory && fetching ? false : historyCache[url].expired;
             const historyUrls = Object.keys(historyCache);
             for(let i = 0; i < historyUrls.length && !history; i++) {
                 const historyUrl = historyUrls[i];

@@ -4,6 +4,7 @@ import { StateNavigator, State } from 'navigation';
 import AsyncStateNavigator from './AsyncStateNavigator.js';
 import NavigationContext from './NavigationContext.js';
 import SceneRSCContext from './SceneRSCContext.js';
+import historyCache from './historyCache.js';
 type NavigationHandlerState = { context: { ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: AsyncStateNavigator } };
 
 class NavigationHandler extends Component<{ stateNavigator: StateNavigator, children: any }, NavigationHandlerState> {
@@ -38,9 +39,12 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, chil
         const { stateNavigator } = this.props;
         const { stateContext } = stateNavigator;
         if (this.state.context.stateNavigator.stateContext !== stateContext) {
-            const { oldState, state, data, asyncData } = stateContext;
+            const { oldState, state, data, asyncData, nextCrumb } = stateContext;
             const asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateContext);
-            this.setState({ context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } });
+            this.setState({ context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } }, () => {
+                if (stateNavigator.stateContext === stateContext && history && historyCache[nextCrumb.crumblessUrl]?.expired)
+                    this.refetch();
+            });
         }
     }
 

@@ -8,5 +8,6 @@ import FluentLink from './FluentLink.js';
 import SceneView from './SceneView.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import useRefetch from './useRefetch.js';
+import useExpire from './useExpire.js';
 
-export { NavigationContext, BundlerContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useRefetch };
+export { NavigationContext, BundlerContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useRefetch, useExpire };
