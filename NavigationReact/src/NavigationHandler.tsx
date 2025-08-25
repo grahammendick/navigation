@@ -39,7 +39,7 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, chil
         const { stateNavigator } = this.props;
         const { stateContext } = stateNavigator;
         if (this.state.context.stateNavigator.stateContext !== stateContext) {
-            const { oldState, state, data, asyncData, nextCrumb } = stateContext;
+            const { history, oldState, state, data, asyncData, nextCrumb } = stateContext;
             const asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateContext);
             this.setState({ context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } }, () => {
                 if (stateNavigator.stateContext === stateContext && history && historyCache[nextCrumb.crumblessUrl]?.expired)
