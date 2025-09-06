@@ -1,10 +1,19 @@
 'use client'
-import React, { Component, startTransition } from 'react';
+import React, { Component, startTransition, useDeferredValue, useMemo } from 'react';
 import { StateNavigator, State } from 'navigation';
 import AsyncStateNavigator from './AsyncStateNavigator.js';
 import NavigationContext from './NavigationContext.js';
 import SceneRSCContext from './SceneRSCContext.js';
+import NavigationRSCContext from './NavigationRSCContext.js';
 type NavigationHandlerState = { context: { ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: AsyncStateNavigator } };
+
+const NavigationHandlerInner = ({ context, children }: any) => {
+    const deferredContext = useDeferredValue(context);
+    const contextValue = useMemo(() => ({current: context, deferred: deferredContext}), [context]);
+    return (
+        <NavigationRSCContext.Provider value={contextValue}>{children}</NavigationRSCContext.Provider>
+    );
+}
 
 class NavigationHandler extends Component<{ stateNavigator: StateNavigator, children: any }, NavigationHandlerState> {
     constructor(props) {
@@ -54,7 +63,9 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, chil
         return (
             <NavigationContext.Provider value={this.state.context}>
                 <SceneRSCContext.Provider value={this.refetch}>
-                    {this.props.children}
+                    <NavigationHandlerInner context={this.state.context}>
+                        {this.props.children}
+                    </NavigationHandlerInner>
                 </SceneRSCContext.Provider>
             </NavigationContext.Provider>
         );
