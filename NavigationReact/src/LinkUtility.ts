@@ -67,7 +67,7 @@ class LinkUtility {
                 var { navigating, historyAction, startTransition } = props;
                 if (!navigating || navigating(e, link)) {
                     e.preventDefault();
-                    startTransition = startTransition || React.startTransition || ((transition) => transition())
+                    startTransition = startTransition || ((transition) => transition())
                     startTransition(() => {
                         stateNavigator.navigateLink(link, historyAction, false, undefined, undefined);
                     })
