@@ -9,7 +9,7 @@ type NavigationHandlerState = { context: { ignoreCache?: boolean, oldState: Stat
 
 const NavigationHandlerInner = ({ context, children }: any) => {
     const deferredContext = useDeferredValue(context);
-    const contextValue = useMemo(() => ({current: context, deferred: deferredContext}), [context]);
+    const contextValue = useMemo(() => ({current: context, deferred: deferredContext}), [context, deferredContext]);
     return (
         <NavigationRSCContext.Provider value={contextValue}>{children}</NavigationRSCContext.Provider>
     );
