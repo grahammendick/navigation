@@ -5,13 +5,15 @@ import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
 import RSCContext from './RSCContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
+import NavigationRSCContext from './NavigationRSCContext.js';
+import NavigationContext from './NavigationContext.js';
 
 const rscCache: Map<any, Record<string, any>> = new Map();
 const historyCache = {};
 
 const SceneViewInner = ({children}) => children?.then ? use(children) : children;
 
-const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
+const SceneView = ({active, name, refetch: serverRefetch, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
     const navigationEvent = useNavigationEvent();
     const refetchRef = useRef(serverRefetch);
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
@@ -112,4 +114,16 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
         </ErrorBoundary>
     );
 };
+
+const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
+    const {refetch} = props;
+    const {current, deferred} = useContext(NavigationRSCContext);
+    const context = typeof refetch !== 'function' && refetch?.length === 0 ? current : deferred;
+    return (
+        <NavigationContext.Provider value={context}>
+            <SceneView {...props} />
+        </NavigationContext.Provider>
+    )
+}
+
 export default SceneRSCView;
