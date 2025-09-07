@@ -13,7 +13,7 @@ const historyCache = {};
 
 const SceneViewInner = ({children}) => children?.then ? use(children) : children;
 
-const SceneView = ({active, name, refetch: serverRefetch, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
+const SceneView = ({active, name, refetch: serverRefetch, deferred, errorFallback, children}: SceneViewProps & {active: string | string[], deferred: boolean}) => {
     const navigationEvent = useNavigationEvent();
     const refetchRef = useRef(serverRefetch);
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
@@ -70,7 +70,7 @@ const SceneView = ({active, name, refetch: serverRefetch, errorFallback, childre
     useEffect(() => {
         const {navigationEvent: oldNavigationEvent} = renderedSceneView.current;
         renderedSceneView.current = {sceneView, navigationEvent};
-        // if (oldNavigationEvent !== navigationEvent) rscCache.delete(oldNavigationEvent);
+        if (!deferred && oldNavigationEvent !== navigationEvent) rscCache.delete(oldNavigationEvent);
         if (!cachedSceneViews.__committed) {
             cachedSceneViews.__committed = true;
             rscCache.forEach(({__committed}, key) => {
@@ -121,7 +121,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const context = typeof refetch !== 'function' && refetch?.length === 0 ? current : deferred;
     return (
         <NavigationContext.Provider value={context}>
-            <SceneView {...props} />
+            <SceneView {...props} deferred={current !== deferred} />
         </NavigationContext.Provider>
     )
 }
