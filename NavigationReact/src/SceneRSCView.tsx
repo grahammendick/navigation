@@ -13,8 +13,8 @@ const historyCache = {};
 
 const SceneViewInner = ({children}) => children?.then ? use(children) : children;
 
-const SceneView = ({active, name, refetch: serverRefetch, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
-    const navigationEvent = useNavigationEvent();
+const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
+    const {deferred: navigationEvent} = useContext(NavigationRSCContext);
     const refetchRef = useRef(serverRefetch);
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
     const {crumbs, nextCrumb, oldUrl, oldData, history, historyAction} = stateContext;
@@ -107,23 +107,14 @@ const SceneView = ({active, name, refetch: serverRefetch, errorFallback, childre
         }
     }), [ancestorFetching || fetching, cachedSceneViews, refetcher]);
     return (
-        <ErrorBoundary errorFallback={errorFallback}>
-            <RSCContext.Provider value={rscContextVal}>
-                <SceneViewInner>{sceneView}</SceneViewInner>
-            </RSCContext.Provider>
-        </ErrorBoundary>
+        <NavigationContext.Provider value={navigationEvent}>
+            <ErrorBoundary errorFallback={errorFallback}>
+                <RSCContext.Provider value={rscContextVal}>
+                    <SceneViewInner>{sceneView}</SceneViewInner>
+                </RSCContext.Provider>
+            </ErrorBoundary>
+        </NavigationContext.Provider>
     );
 };
-
-const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
-    const {refetch} = props;
-    const {current, deferred} = useContext(NavigationRSCContext);
-    const context = typeof refetch !== 'function' && refetch?.length === 0 ? current : deferred;
-    return (
-        <NavigationContext.Provider value={context}>
-            <SceneView {...props} />
-        </NavigationContext.Provider>
-    )
-}
 
 export default SceneRSCView;
