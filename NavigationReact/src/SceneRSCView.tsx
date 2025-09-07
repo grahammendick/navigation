@@ -70,13 +70,13 @@ const SceneView = ({active, name, refetch: serverRefetch, errorFallback, childre
     useEffect(() => {
         const {navigationEvent: oldNavigationEvent} = renderedSceneView.current;
         renderedSceneView.current = {sceneView, navigationEvent};
-        if (oldNavigationEvent !== navigationEvent) rscCache.delete(oldNavigationEvent);
+        /* if (oldNavigationEvent !== navigationEvent) rscCache.delete(oldNavigationEvent);
         if (!cachedSceneViews.__committed) {
             cachedSceneViews.__committed = true;
             rscCache.forEach(({__committed}, key) => {
                 if (!__committed) rscCache.delete(key);
             });
-        }
+        } */
         const cacheHistory = () => {
             if (historyAction === 'none' || historyManager.getCurrentUrl() !== stateContext.url) return;
             const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
