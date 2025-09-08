@@ -71,7 +71,7 @@ const SceneView = ({active, name, refetch: serverRefetch, deferred, errorFallbac
         const {navigationEvent: oldNavigationEvent} = renderedSceneView.current;
         renderedSceneView.current = {sceneView, navigationEvent};
         if (!deferred && oldNavigationEvent !== navigationEvent) rscCache.delete(oldNavigationEvent);
-        if (!cachedSceneViews.__committed) {
+        if (!deferred && !cachedSceneViews.__committed) {
             cachedSceneViews.__committed = true;
             rscCache.forEach(({__committed}, key) => {
                 if (!__committed) rscCache.delete(key);
