@@ -4,14 +4,15 @@ import { StateNavigator, State } from 'navigation';
 import AsyncStateNavigator from './AsyncStateNavigator.js';
 import NavigationContext from './NavigationContext.js';
 import SceneRSCContext from './SceneRSCContext.js';
-import NavigationRSCContext from './NavigationRSCContext.js';
+import NavigationDeferredContext from './NavigationDeferredContext.js';
+import useNavigationEvent from './useNavigationEvent.js';
 type NavigationHandlerState = { context: { ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: AsyncStateNavigator } };
 
-const NavigationHandlerInner = ({ context, children }: any) => {
-    const deferredContext = useDeferredValue(context);
-    const contextValue = useMemo(() => ({current: context, deferred: deferredContext}), [context, deferredContext]);
+const NavigationHandlerInner = ({ children }: any) => {
+    const navigationEvent = useNavigationEvent();
+    const deferredNavigationEvent = useDeferredValue(navigationEvent);
     return (
-        <NavigationRSCContext.Provider value={contextValue}>{children}</NavigationRSCContext.Provider>
+        <NavigationDeferredContext.Provider value={deferredNavigationEvent}>{children}</NavigationDeferredContext.Provider>
     );
 }
 
@@ -63,7 +64,7 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, chil
         return (
             <NavigationContext.Provider value={this.state.context}>
                 <SceneRSCContext.Provider value={this.refetch}>
-                    <NavigationHandlerInner context={this.state.context}>
+                    <NavigationHandlerInner>
                         {this.props.children}
                     </NavigationHandlerInner>
                 </SceneRSCContext.Provider>

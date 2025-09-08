@@ -5,7 +5,7 @@ import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
 import RSCContext from './RSCContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
-import NavigationRSCContext from './NavigationRSCContext.js';
+import NavigationRSCContext from './NavigationDeferredContext.js';
 import NavigationContext from './NavigationContext.js';
 
 const rscCache: Map<any, Record<string, any>> = new Map();
@@ -117,11 +117,12 @@ const SceneView = ({active, name, refetch: serverRefetch, deferred, errorFallbac
 
 const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {refetch} = props;
-    const {current, deferred} = useContext(NavigationRSCContext);
-    const context = typeof refetch !== 'function' && refetch?.length === 0 ? current : deferred;
+    const navigationEvent = useNavigationEvent();
+    const deferredNavigationEvent = useContext(NavigationRSCContext);
+    const fetching = !(typeof refetch !== 'function' && refetch?.length === 0);
     return (
-        <NavigationContext.Provider value={context}>
-            <SceneView {...props} deferred={current !== deferred} />
+        <NavigationContext.Provider value={!fetching ? navigationEvent : deferredNavigationEvent}>
+            <SceneView {...props} deferred={navigationEvent !== deferredNavigationEvent} />
         </NavigationContext.Provider>
     )
 }
