@@ -10,9 +10,9 @@ type NavigationHandlerState = { context: { ignoreCache?: boolean, oldState: Stat
 
 const NavigationHandlerInner = ({ children }: any) => {
     const navigationEvent = useNavigationEvent();
-    const deferredNavigationEvent = useDeferredValue(navigationEvent);
+    const navigationDeferredEvent = useDeferredValue(navigationEvent);
     return (
-        <NavigationDeferredContext.Provider value={deferredNavigationEvent}>{children}</NavigationDeferredContext.Provider>
+        <NavigationDeferredContext.Provider value={navigationDeferredEvent}>{children}</NavigationDeferredContext.Provider>
     );
 }
 

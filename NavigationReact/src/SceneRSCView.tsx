@@ -13,7 +13,7 @@ const historyCache = {};
 
 const SceneViewInner = ({children}) => children?.then ? use(children) : children;
 
-const SceneView = ({active, name, refetch: serverRefetch, deferred, errorFallback, children}: SceneViewProps & {active: string | string[], deferred: boolean}) => {
+const SceneView = ({active, name, refetch: serverRefetch, pending, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean}) => {
     const navigationEvent = useNavigationEvent();
     const refetchRef = useRef(serverRefetch);
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
@@ -70,8 +70,8 @@ const SceneView = ({active, name, refetch: serverRefetch, deferred, errorFallbac
     useEffect(() => {
         const {navigationEvent: oldNavigationEvent} = renderedSceneView.current;
         renderedSceneView.current = {sceneView, navigationEvent};
-        if (!deferred && oldNavigationEvent !== navigationEvent) rscCache.delete(oldNavigationEvent);
-        if (!deferred && !cachedSceneViews.__committed) {
+        if (!pending && oldNavigationEvent !== navigationEvent) rscCache.delete(oldNavigationEvent);
+        if (!pending && !cachedSceneViews.__committed) {
             cachedSceneViews.__committed = true;
             rscCache.forEach(({__committed}, key) => {
                 if (!__committed) rscCache.delete(key);
@@ -118,11 +118,11 @@ const SceneView = ({active, name, refetch: serverRefetch, deferred, errorFallbac
 const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {refetch} = props;
     const navigationEvent = useNavigationEvent();
-    const deferredNavigationEvent = useContext(NavigationRSCContext);
+    const navigationDeferredEvent = useContext(NavigationRSCContext);
     const fetching = !(typeof refetch !== 'function' && refetch?.length === 0);
     return (
-        <NavigationContext.Provider value={!fetching ? navigationEvent : deferredNavigationEvent}>
-            <SceneView {...props} deferred={navigationEvent !== deferredNavigationEvent} />
+        <NavigationContext.Provider value={!fetching ? navigationEvent : navigationDeferredEvent}>
+            <SceneView {...props} pending={navigationEvent !== navigationDeferredEvent} />
         </NavigationContext.Provider>
     )
 }
