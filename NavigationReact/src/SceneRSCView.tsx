@@ -5,7 +5,7 @@ import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
 import RefetchContext from './RefetchContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
-import NavigationRSCContext from './NavigationDeferredContext.js';
+import NavigationDeferredContext from './NavigationDeferredContext.js';
 import NavigationContext from './NavigationContext.js';
 
 const rscCache: Map<any, Record<string, any>> = new Map();
@@ -109,7 +109,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {refetcher} = useContext(RefetchContext);
     const navigationEvent = useNavigationEvent();
     const [navigationRefetchEvent, setNavigationRefetchEvent] = useState<typeof navigationEvent & {ignoreCache?: boolean}>();
-    const navigationDeferredEvent = useContext(NavigationRSCContext);
+    const navigationDeferredEvent = useContext(NavigationDeferredContext);
     const fetching = !(typeof refetch !== 'function' && refetch?.length === 0);
     const refetchContextVal = useMemo(() => ({
         setRefetch: (clientRefetch: any) => refetchRef.current = clientRefetch !== undefined ? clientRefetch : refetch,
