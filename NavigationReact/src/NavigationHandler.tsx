@@ -1,5 +1,5 @@
 'use client'
-import React, { Component, startTransition, useDeferredValue, useMemo } from 'react';
+import React, { Component, startTransition, useDeferredValue } from 'react';
 import { StateNavigator, State } from 'navigation';
 import AsyncStateNavigator from './AsyncStateNavigator.js';
 import NavigationContext from './NavigationContext.js';
