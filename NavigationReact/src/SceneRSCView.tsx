@@ -123,10 +123,9 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
             }
         }
     }), [navigationEvent, refetcher]);
-    const navEvent = navigationRefetchEvent?.stateNavigator === navigationEvent.stateNavigator
-        ? navigationRefetchEvent : !fetching ? navigationEvent : navigationDeferredEvent;
+    const refetching = navigationRefetchEvent?.stateNavigator === navigationEvent.stateNavigator;
     return (
-        <NavigationContext.Provider value={navEvent}>
+        <NavigationContext.Provider value={refetching ? navigationRefetchEvent : fetching ? navigationDeferredEvent : navigationEvent}>
             <RefetchContext.Provider value={refetchControl}>
                 <SceneView {...props} refetch={refetchRef.current} pending={navigationEvent !== navigationDeferredEvent} />
             </RefetchContext.Provider>
