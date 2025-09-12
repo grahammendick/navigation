@@ -4,6 +4,7 @@ import { StateNavigator } from 'navigation';
 import { NavigationHandler } from 'navigation-react';
 import stateNavigator from './stateNavigator';
 import App from './App';
+import People from './People';
 import Person from './Person';
 import List from './List';
 import Friends from './Friends';
@@ -30,6 +31,7 @@ app.get('*', async (req, res) => {
 
 app.post('*', async (req, res) => {
   const sceneViews: any = {
+    people: People,
     list: List,
     person: Person,
     friends: Friends
