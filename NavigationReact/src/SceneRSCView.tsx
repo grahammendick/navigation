@@ -10,7 +10,7 @@ import NavigationContext from './NavigationContext.js';
 
 const rscCache: Map<any, Record<string, any>> = new Map();
 const historyCache = {};
-const RSCContext = createContext(false);
+const FetchingContext = createContext(false);
 
 const SceneViewInner = ({children}) => children?.then ? use(children) : children;
 
@@ -20,7 +20,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     const {crumbs, nextCrumb, oldUrl, oldData, history, historyAction} = stateContext;
     const url = nextCrumb?.crumblessUrl;
     const {deserialize} = useContext(BundlerContext);
-    const ancestorFetching = useContext(RSCContext);
+    const ancestorFetching = useContext(FetchingContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
     const getShow = (stateKey: string) => (
         active != null && state && (
@@ -96,9 +96,9 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     });
     return (
         <ErrorBoundary errorFallback={errorFallback}>
-            <RSCContext.Provider value={ancestorFetching || fetching}>
+            <FetchingContext.Provider value={ancestorFetching || fetching}>
                 <SceneViewInner>{sceneView}</SceneViewInner>
-            </RSCContext.Provider>
+            </FetchingContext.Provider>
         </ErrorBoundary>
     );
 };
