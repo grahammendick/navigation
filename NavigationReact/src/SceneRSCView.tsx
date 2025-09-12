@@ -1,5 +1,5 @@
 'use client'
-import React, { use, createContext, useContext, useEffect, useRef, useMemo, useOptimistic, startTransition, useState } from 'react';
+import React, { use, createContext, useContext, useEffect, useRef, useMemo, startTransition, useState } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
@@ -123,7 +123,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
             }
         }
     }), [navigationEvent, refetcher]);
-    const navEvent = navigationRefetchEvent.stateNavigator === navigationEvent.stateNavigator
+    const navEvent = navigationRefetchEvent?.stateNavigator === navigationEvent.stateNavigator
         ? navigationRefetchEvent : !fetching ? navigationEvent : navigationDeferredEvent;
     return (
         <NavigationContext.Provider value={navEvent}>
