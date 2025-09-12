@@ -3,7 +3,7 @@ import React, { Component, startTransition, useDeferredValue, useMemo } from 're
 import { StateNavigator, State } from 'navigation';
 import AsyncStateNavigator from './AsyncStateNavigator.js';
 import NavigationContext from './NavigationContext.js';
-import SceneRSCContext from './SceneRSCContext.js';
+import RefetchContext from './RefetchContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import useNavigationEvent from './useNavigationEvent.js';
 type NavigationHandlerState = { context: { ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: AsyncStateNavigator } };
@@ -17,6 +17,7 @@ const NavigationHandlerInner = ({ children }: any) => {
 }
 
 class NavigationHandler extends Component<{ stateNavigator: StateNavigator, children: any }, NavigationHandlerState> {
+    private refetcher;
     constructor(props) {
         super(props);
         const { stateNavigator } = this.props;
@@ -25,6 +26,7 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, chil
         this.state = { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } };
         this.onNavigate = this.onNavigate.bind(this);
         this.refetch = this.refetch.bind(this);
+        this.refetcher = {refetcher: this.refetch};
     }
 
     componentDidMount() {
@@ -63,11 +65,11 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, chil
     render() {
         return (
             <NavigationContext.Provider value={this.state.context}>
-                <SceneRSCContext.Provider value={this.refetch}>
+                <RefetchContext.Provider value={this.refetcher}>
                     <NavigationHandlerInner>
                         {this.props.children}
                     </NavigationHandlerInner>
-                </SceneRSCContext.Provider>
+                </RefetchContext.Provider>
             </NavigationContext.Provider>
         );
     }

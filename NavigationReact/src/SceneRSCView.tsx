@@ -1,26 +1,26 @@
 'use client'
-import React, { use, useContext, useEffect, useRef, useMemo, useOptimistic, startTransition } from 'react';
+import React, { use, createContext, useContext, useEffect, useRef, useMemo, useOptimistic, startTransition, useState } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
-import RSCContext from './RSCContext.js';
+import RefetchContext from './RefetchContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
 import NavigationRSCContext from './NavigationDeferredContext.js';
 import NavigationContext from './NavigationContext.js';
 
 const rscCache: Map<any, Record<string, any>> = new Map();
 const historyCache = {};
+const RSCContext = createContext(false);
 
 const SceneViewInner = ({children}) => children?.then ? use(children) : children;
 
-const SceneView = ({active, name, refetch: serverRefetch, pending, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean}) => {
+const SceneView = ({active, name, refetch, pending, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean}) => {
     const navigationEvent = useNavigationEvent();
-    const refetchRef = useRef(serverRefetch);
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
     const {crumbs, nextCrumb, oldUrl, oldData, history, historyAction} = stateContext;
     const url = nextCrumb?.crumblessUrl;
     const {deserialize} = useContext(BundlerContext);
-    const {fetching: ancestorFetching} = useContext(RSCContext);
+    const ancestorFetching = useContext(RSCContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
     const getShow = (stateKey: string) => (
         active != null && state && (
@@ -34,7 +34,6 @@ const SceneView = ({active, name, refetch: serverRefetch, pending, errorFallback
     const cachedSceneViews = rscCache.get(navigationEvent);
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
     const fetching = (() => {
-        const refetch = refetchRef.current;
         if (!show) return false;
         if (!getShow(oldState?.key) || !refetch || ignoreCache) return true;
         if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
@@ -95,13 +94,9 @@ const SceneView = ({active, name, refetch: serverRefetch, pending, errorFallback
         window.addEventListener('popstate', cacheHistory);
         return () => window.removeEventListener('popstate', cacheHistory);
     });
-    const rscContextVal = useMemo(() => ({
-        fetching: ancestorFetching || fetching,
-        setRefetch: (refetch: any) => refetchRef.current = refetch !== undefined ? refetch : serverRefetch,
-    }), [ancestorFetching || fetching]);
     return (
         <ErrorBoundary errorFallback={errorFallback}>
-            <RSCContext.Provider value={rscContextVal}>
+            <RSCContext.Provider value={ancestorFetching || fetching}>
                 <SceneViewInner>{sceneView}</SceneViewInner>
             </RSCContext.Provider>
         </ErrorBoundary>
@@ -110,12 +105,31 @@ const SceneView = ({active, name, refetch: serverRefetch, pending, errorFallback
 
 const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {refetch} = props;
+    const refetchRef = useRef(refetch);
+    const {refetcher} = useContext(RefetchContext);
     const navigationEvent = useNavigationEvent();
+    const [navigationRefetchEvent, setNavigationRefetchEvent] = useState<typeof navigationEvent & {ignoreCache?: boolean}>();
     const navigationDeferredEvent = useContext(NavigationRSCContext);
     const fetching = !(typeof refetch !== 'function' && refetch?.length === 0);
+    const refetchContextVal = useMemo(() => ({
+        setRefetch: (clientRefetch: any) => refetchRef.current = clientRefetch !== undefined ? clientRefetch : refetch,
+        refetcher: (scene: boolean) => {
+            if (!scene) {
+                startTransition(() => {
+                    setNavigationRefetchEvent({...navigationEvent, ignoreCache: true});
+                });
+            } else {
+                refetcher(true);
+            }
+        }
+    }), [navigationEvent, refetcher]);
+    const navEvent = navigationRefetchEvent.stateNavigator === navigationEvent.stateNavigator
+        ? navigationRefetchEvent : !fetching ? navigationEvent : navigationDeferredEvent;
     return (
-        <NavigationContext.Provider value={!fetching ? navigationEvent : navigationDeferredEvent}>
-            <SceneView {...props} pending={navigationEvent !== navigationDeferredEvent} />
+        <NavigationContext.Provider value={navEvent}>
+            <RefetchContext.Provider value={refetchContextVal}>
+                <SceneView {...props} refetch={refetchRef.current} pending={navigationEvent !== navigationDeferredEvent} />
+            </RefetchContext.Provider>
         </NavigationContext.Provider>
     )
 }
