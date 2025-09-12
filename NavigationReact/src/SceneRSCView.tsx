@@ -111,7 +111,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const navigationDeferredEvent = useContext(NavigationDeferredContext);
     const [navigationRefetchEvent, setNavigationRefetchEvent] = useState<typeof navigationEvent & {ignoreCache?: boolean}>();
     const fetching = !(typeof refetch !== 'function' && refetch?.length === 0);
-    const refetchContextVal = useMemo(() => ({
+    const refetchControl = useMemo(() => ({
         setRefetch: (clientRefetch: any) => refetchRef.current = clientRefetch !== undefined ? clientRefetch : refetch,
         refetcher: (scene: boolean) => {
             if (!scene) {
@@ -127,7 +127,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
         ? navigationRefetchEvent : !fetching ? navigationEvent : navigationDeferredEvent;
     return (
         <NavigationContext.Provider value={navEvent}>
-            <RefetchContext.Provider value={refetchContextVal}>
+            <RefetchContext.Provider value={refetchControl}>
                 <SceneView {...props} refetch={refetchRef.current} pending={navigationEvent !== navigationDeferredEvent} />
             </RefetchContext.Provider>
         </NavigationContext.Provider>
