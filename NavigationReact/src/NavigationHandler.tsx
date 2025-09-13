@@ -4,10 +4,10 @@ import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
-type NavigationHandlerState = {ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator};
+type NavigationHandlerState = { ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
 
-const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
-    const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, resumeNavigation?: () => void}>();
+const NavigationHandler = ({ stateNavigator, children }: { stateNavigator: StateNavigator, children: any }) => {
+    const [navigationEvent, setNavigationEvent] = useState<{ data: NavigationHandlerState, stateNavigator: StateNavigator, resumeNavigation?: () => void }>();
     const navigationDeferredEvent = useDeferredValue(navigationEvent);
     const [isPending, startTransition] = useTransition();
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void) => {
@@ -28,7 +28,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     suspendNavigation = (_stateContext, resumeNavigation) => resumeNavigation();
                 stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
                     suspendNavigation(stateContext, () => {
-                        const {oldState, state, history, crumbs} = stateContext;
+                        const { oldState, state, history, crumbs } = stateContext;
                         const refresh = oldState === state && crumbs.length === this.stateContext.crumbs.length;
                         const startTran = (!history && !refresh && startTransition) || ((transition) => transition());
                         startTran(() => {
@@ -39,15 +39,15 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }
         }
         const asyncNavigator = new AsyncStateNavigator()
-        const {oldState, state, data, asyncData} = asyncNavigator.stateContext;
-        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator}, stateNavigator, resumeNavigation});
+        const { oldState, state, data, asyncData } = asyncNavigator.stateContext;
+        setNavigationEvent({data: { oldState, state, data, asyncData, stateNavigator: asyncNavigator}, stateNavigator, resumeNavigation });
     }, [stateNavigator]);
     if (!navigationEvent) raiseNavigationEvent();
     const refetchControl = useMemo(() => ({
         setRefetch: () => {},
         refetcher: () => {
             startTransition(() => {
-                setNavigationEvent(({data, stateNavigator}) => ({data: {...data, ignoreCache: true}, stateNavigator}));
+                setNavigationEvent(({ data, stateNavigator }) => ({ data: { ...data, ignoreCache: true }, stateNavigator }));
             })
         },
     }), []);
