@@ -62,8 +62,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             navigationEvent.resumeNavigation?.();
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
-        raiseNavigationEvent();
-    }, [stateNavigator])
+        if (stateNavigator !== navigationEvent.stateNavigator)
+            raiseNavigationEvent();
+    }, [navigationEvent, stateNavigator])
     return (
         <NavigationContext.Provider value={navigationEvent?.data}>
             <RefetchContext.Provider value={refetchControl}>
