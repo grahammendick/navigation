@@ -11,7 +11,7 @@ const NavigationHandler = ({ stateNavigator, children }: { stateNavigator: State
     const navigationDeferredEvent = useDeferredValue(navigationEvent);
     const [isPending, startTransition] = useTransition();
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void) => {
-        const AsyncStateNavigator = class AsyncStateNavigator extends StateNavigator {
+        class AsyncStateNavigator extends StateNavigator {
             constructor() {
                 super(stateNavigator, stateNavigator.historyManager);
                 this.stateContext = stateContext;
