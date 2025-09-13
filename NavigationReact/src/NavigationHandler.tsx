@@ -10,9 +10,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, resumeNavigation?: () => void}>();
     const navigationDeferredEvent = useDeferredValue(navigationEvent);
     const [isPending, startTransition] = useTransition();
-    const createNavigationEvent = useCallback(() => {
+    const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void) => {
         const AsyncStateNavigator = class AsyncStateNavigator extends StateNavigator {
-            constructor(stateContext: StateContext = stateNavigator.stateContext) {
+            constructor() {
                 super(stateNavigator, stateNavigator.historyManager);
                 this.stateContext = stateContext;
                 this.configure = stateNavigator.configure.bind(stateNavigator);
@@ -32,9 +32,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                         const refresh = oldState === state && crumbs.length === this.stateContext.crumbs.length;
                         const startTran = (!history && !refresh && startTransition) || ((transition) => transition());
                         startTran(() => {
-                            const asyncNavigator = new AsyncStateNavigator(stateContext)
-                            const {oldState, state, data, asyncData} = asyncNavigator.stateContext;
-                            setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator}, stateNavigator, resumeNavigation});
+                            raiseNavigationEvent(stateContext, resumeNavigation);
                         });
                     })
                 }, currentContext);
@@ -42,9 +40,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
         const asyncNavigator = new AsyncStateNavigator()
         const {oldState, state, data, asyncData} = asyncNavigator.stateContext;
-        return {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator}, stateNavigator};
+        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator}, stateNavigator, resumeNavigation});
     }, [stateNavigator]);
-    if (!navigationEvent) setNavigationEvent(createNavigationEvent());
+    if (!navigationEvent) raiseNavigationEvent();
     const refetch = useCallback(() => {
         startTransition(() => {
             setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true}, stateNavigator: navigationEvent.stateNavigator});
@@ -54,17 +52,17 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useEffect(() => {
         const onNavigate = () => {
             if (navigationEvent.data.stateNavigator.stateContext !== stateNavigator.stateContext)
-                setNavigationEvent(createNavigationEvent());
+                raiseNavigationEvent();
         };
         stateNavigator.onNavigate(onNavigate);
         return () => stateNavigator.offNavigate(onNavigate);
-    }, [stateNavigator, navigationEvent, createNavigationEvent]);
+    }, [stateNavigator, navigationEvent, raiseNavigationEvent]);
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent)
             navigationEvent.resumeNavigation?.();
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
-        setNavigationEvent(createNavigationEvent());
+        raiseNavigationEvent();
     }, [stateNavigator])
     return (
         <NavigationContext.Provider value={navigationEvent?.data}>
