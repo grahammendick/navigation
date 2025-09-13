@@ -45,9 +45,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     if (!navigationEvent) raiseNavigationEvent();
     const refetch = useCallback(() => {
         startTransition(() => {
-            setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true}, stateNavigator: navigationEvent.stateNavigator});
+            setNavigationEvent(({data, stateNavigator}) => ({data: {...data, ignoreCache: true}, stateNavigator}));
         });
-    }, [navigationEvent]);
+    }, []);
     const refetchControl = useMemo(() => ({setRefetch: () => {}, refetcher: refetch}), [refetch]);
     useEffect(() => {
         const onNavigate = () => {
