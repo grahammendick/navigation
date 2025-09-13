@@ -7,7 +7,7 @@ import NavigationDeferredContext from './NavigationDeferredContext.js';
 type NavigationHandlerState = {ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator};
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
-    const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, resumeNavigation?: () => void}>();
+    const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, resumeNavigation?: () => void}>();
     const navigationDeferredEvent = useDeferredValue(navigationEvent);
     const [isPending, startTransition] = useTransition();
     const createNavigationEvent = useCallback(() => {
@@ -34,7 +34,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                         startTran(() => {
                             const asyncNavigator = new AsyncStateNavigator(stateContext)
                             const {oldState, state, data, asyncData} = asyncNavigator.stateContext;
-                            setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator}, resumeNavigation});
+                            setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator}, stateNavigator, resumeNavigation});
                         });
                     })
                 }, currentContext);
@@ -42,12 +42,12 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
         const asyncNavigator = new AsyncStateNavigator()
         const {oldState, state, data, asyncData} = asyncNavigator.stateContext;
-        return {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator}};
+        return {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator}, stateNavigator};
     }, [stateNavigator]);
     if (!navigationEvent) setNavigationEvent(createNavigationEvent());
     const refetch = useCallback(() => {
         startTransition(() => {
-            setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true}});
+            setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true}, stateNavigator: navigationEvent.stateNavigator});
         });
     }, [navigationEvent]);
     const refetchControl = useMemo(() => ({setRefetch: () => {}, refetcher: refetch}), [refetch]);
@@ -63,6 +63,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         if (!isPending && navigationEvent === navigationDeferredEvent)
             navigationEvent.resumeNavigation?.();
     }, [isPending, navigationEvent, navigationDeferredEvent]);
+    useEffect(() => {
+        setNavigationEvent(createNavigationEvent());
+    }, [stateNavigator])
     return (
         <NavigationContext.Provider value={navigationEvent?.data}>
             <RefetchContext.Provider value={refetchControl}>
@@ -73,71 +76,4 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         </NavigationContext.Provider>
     )
 }
-
-/* const NavigationHandlerInner = ({ children }: any) => {
-    const navigationEvent = useNavigationEvent();
-    const navigationDeferredEvent = useDeferredValue(navigationEvent);
-    return (
-        <NavigationDeferredContext.Provider value={navigationDeferredEvent}>{children}</NavigationDeferredContext.Provider>
-    );
-}
-
-class NavigationHandler extends Component<{ stateNavigator: StateNavigator, children: any }, NavigationHandlerState> {
-    private refetchControl = {setRefetch: () => {}, refetcher: () => {}};
-    constructor(props) {
-        super(props);
-        const { stateNavigator } = this.props;
-        const { oldState, state, data, asyncData } = stateNavigator.stateContext;
-        const asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
-        this.state = { context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } };
-        this.onNavigate = this.onNavigate.bind(this);
-        this.refetch = this.refetch.bind(this);
-        this.refetchControl.refetcher = this.refetch;
-    }
-
-    componentDidMount() {
-        this.props.stateNavigator.onNavigate(this.onNavigate);
-    }
-
-    componentDidUpdate({ stateNavigator: prevStateNavigator }: { stateNavigator: StateNavigator }) {
-        const { stateNavigator } = this.props;
-        if (stateNavigator !== prevStateNavigator) {
-            const { oldState, state, data, asyncData } = stateNavigator.stateContext;
-            const asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateNavigator.stateContext);
-            this.setState({ context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } });
-        }
-    }
-
-    componentWillUnmount() {
-        this.props.stateNavigator.offNavigate(this.onNavigate);
-    }
-
-    onNavigate() {
-        const { stateNavigator } = this.props;
-        const { stateContext } = stateNavigator;
-        if (this.state.context.stateNavigator.stateContext !== stateContext) {
-            const { oldState, state, data, asyncData } = stateContext;
-            const asyncNavigator = new AsyncStateNavigator(this, stateNavigator, stateContext);
-            this.setState({ context: { oldState, state, data, asyncData, stateNavigator: asyncNavigator } });
-        }
-    }
-
-    refetch() {
-        startTransition(() => {
-            this.setState({ context: { ...this.state.context, ignoreCache: true } });
-        });
-    }
-
-    render() {
-        return (
-            <NavigationContext.Provider value={this.state.context}>
-                <RefetchContext.Provider value={this.refetchControl}>
-                    <NavigationHandlerInner>
-                        {this.props.children}
-                    </NavigationHandlerInner>
-                </RefetchContext.Provider>
-            </NavigationContext.Provider>
-        );
-    }
-} */
 export default NavigationHandler;
