@@ -7,13 +7,12 @@ import NavigationDeferredContext from './NavigationDeferredContext.js';
 type NavigationHandlerState = {ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator};
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
-    const [navigationEvent, setNavigationEvent] = useState<NavigationHandlerState>();
-    const [resume, setResume] = useState<() => void>();
+    const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, resumeNavigation?: () => void}>();
     const navigationDeferredEvent = useDeferredValue(navigationEvent);
     const [isPending, startTransition] = useTransition();
-    const createNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext) => {
+    const createNavigationEvent = useCallback(() => {
         const AsyncStateNavigator = class AsyncStateNavigator extends StateNavigator {
-            constructor() {
+            constructor(stateContext: StateContext = stateNavigator.stateContext) {
                 super(stateNavigator, stateNavigator.historyManager);
                 this.stateContext = stateContext;
                 this.configure = stateNavigator.configure.bind(stateNavigator);
@@ -33,8 +32,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                         const refresh = oldState === state && crumbs.length === this.stateContext.crumbs.length;
                         const startTran = (!history && !refresh && startTransition) || ((transition) => transition());
                         startTran(() => {
-                            setResume(resumeNavigation);
-                            setNavigationEvent(createNavigationEvent(stateContext));
+                            const asyncNavigator = new AsyncStateNavigator(stateContext)
+                            const {oldState, state, data, asyncData} = asyncNavigator.stateContext;
+                            setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator}, resumeNavigation});
                         });
                     })
                 }, currentContext);
@@ -42,30 +42,31 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
         const asyncNavigator = new AsyncStateNavigator()
         const {oldState, state, data, asyncData} = asyncNavigator.stateContext;
-        return {oldState, state, data, asyncData, stateNavigator: asyncNavigator};
+        return {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator}};
     }, [stateNavigator]);
     if (!navigationEvent) setNavigationEvent(createNavigationEvent());
     const refetch = useCallback(() => {
         startTransition(() => {
-            setNavigationEvent({...navigationEvent, ignoreCache: true});
+            setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true}});
         });
     }, [navigationEvent]);
     const refetchControl = useMemo(() => ({setRefetch: () => {}, refetcher: refetch}), [refetch]);
     useEffect(() => {
         const onNavigate = () => {
-            if (navigationEvent.stateNavigator.stateContext !== stateNavigator.stateContext)
+            if (navigationEvent.data.stateNavigator.stateContext !== stateNavigator.stateContext)
                 setNavigationEvent(createNavigationEvent());
         };
         stateNavigator.onNavigate(onNavigate);
         return () => stateNavigator.offNavigate(onNavigate);
     }, [stateNavigator, navigationEvent, createNavigationEvent]);
     useEffect(() => {
-        if (!isPending && navigationEvent === navigationDeferredEvent && resume) resume();
-    }, [isPending, navigationEvent, navigationDeferredEvent, resume]);
+        if (!isPending && navigationEvent === navigationDeferredEvent)
+            navigationEvent.resumeNavigation?.();
+    }, [isPending, navigationEvent, navigationDeferredEvent]);
     return (
-        <NavigationContext.Provider value={navigationEvent}>
+        <NavigationContext.Provider value={navigationEvent?.data}>
             <RefetchContext.Provider value={refetchControl}>
-                <NavigationDeferredContext.Provider value={navigationDeferredEvent}>
+                <NavigationDeferredContext.Provider value={navigationDeferredEvent?.data}>
                     {children}
                 </NavigationDeferredContext.Provider>
             </RefetchContext.Provider>
