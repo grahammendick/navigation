@@ -9,6 +9,7 @@ type NavigationHandlerState = {ignoreCache?: boolean, oldState: State, state: St
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<NavigationHandlerState>();
+    const navigationDeferredEvent = useDeferredValue(navigationEvent);
     const createNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext) => {
         const AsyncStateNavigator = class AsyncStateNavigator extends StateNavigator {
             constructor() {
@@ -60,9 +61,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     return (
         <NavigationContext.Provider value={navigationEvent}>
             <RefetchContext.Provider value={refetchControl}>
-                <NavigationHandlerInner>
+                <NavigationDeferredContext.Provider value={navigationDeferredEvent}>
                     {children}
-                </NavigationHandlerInner>
+                </NavigationDeferredContext.Provider>
             </RefetchContext.Provider>
         </NavigationContext.Provider>
     )
