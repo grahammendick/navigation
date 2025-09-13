@@ -43,12 +43,14 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator}, stateNavigator, resumeNavigation});
     }, [stateNavigator]);
     if (!navigationEvent) raiseNavigationEvent();
-    const refetch = useCallback(() => {
-        startTransition(() => {
-            setNavigationEvent(({data, stateNavigator}) => ({data: {...data, ignoreCache: true}, stateNavigator}));
-        });
-    }, []);
-    const refetchControl = useMemo(() => ({setRefetch: () => {}, refetcher: refetch}), [refetch]);
+    const refetchControl = useMemo(() => ({
+        setRefetch: () => {},
+        refetcher: () => {
+            startTransition(() => {
+                setNavigationEvent(({data, stateNavigator}) => ({data: {...data, ignoreCache: true}, stateNavigator}));
+            })
+        },
+    }), []);
     useEffect(() => {
         const onNavigate = () => {
             if (navigationEvent.data.stateNavigator.stateContext !== stateNavigator.stateContext)
