@@ -1,5 +1,5 @@
 'use client'
-import React, { Component, startTransition, useDeferredValue, useEffect, useRef, useState } from 'react';
+import React, { Component, startTransition, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
@@ -9,7 +9,7 @@ type NavigationHandlerState = {ignoreCache?: boolean, oldState: State, state: St
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<NavigationHandlerState>();
-    const createNavigationEvent = (stateContext: StateContext = stateNavigator.stateContext) => {
+    const createNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext) => {
         const AsyncStateNavigator = class AsyncStateNavigator extends StateNavigator {
             constructor() {
                 super(stateNavigator, stateNavigator.historyManager);
@@ -41,8 +41,14 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const asyncNavigator = new AsyncStateNavigator()
         const {oldState, state, data, asyncData} = asyncNavigator.stateContext;
         return {oldState, state, data, asyncData, stateNavigator: asyncNavigator};
-    }
+    }, [stateNavigator]);
     if (!navigationEvent) setNavigationEvent(createNavigationEvent());
+    const refetch = useCallback(() => {
+        startTransition(() => {
+            setNavigationEvent({...navigationEvent, ignoreCache: true});
+        });
+    }, [navigationEvent]);
+    const refetchControl = useMemo(() => ({setRefetch: () => {}, refetcher: refetch}), [refetch]);
     useEffect(() => {
         const onNavigate = () => {
             if (navigationEvent.stateNavigator.stateContext !== stateNavigator.stateContext)
@@ -50,10 +56,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         };
         stateNavigator.onNavigate(onNavigate);
         return () => stateNavigator.offNavigate(onNavigate);
-    }, [stateNavigator, navigationEvent]);
+    }, [stateNavigator, navigationEvent, createNavigationEvent]);
     return (
         <NavigationContext.Provider value={navigationEvent}>
-            <RefetchContext.Provider value={this.refetchControl}>
+            <RefetchContext.Provider value={refetchControl}>
                 <NavigationHandlerInner>
                     {children}
                 </NavigationHandlerInner>
