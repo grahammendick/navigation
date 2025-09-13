@@ -3,10 +3,10 @@ import NavigationHandler from './NavigationHandler';
 import { StateNavigator, StateContext } from 'navigation';
 
 class AsyncStateNavigator extends StateNavigator {
-    private navigationHandler: NavigationHandler;
+    private navigationHandler: any;
     private stateNavigator: StateNavigator;
 
-    constructor(navigationHandler: NavigationHandler, stateNavigator: StateNavigator, stateContext: StateContext) {
+    constructor(navigationHandler: any, stateNavigator: StateNavigator, stateContext: StateContext) {
         super(stateNavigator, stateNavigator.historyManager);
         this.navigationHandler = navigationHandler;
         this.stateNavigator = stateNavigator;

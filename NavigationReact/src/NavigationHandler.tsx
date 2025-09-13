@@ -73,7 +73,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     )
 }
 
-const NavigationHandlerInner = ({ children }: any) => {
+/* const NavigationHandlerInner = ({ children }: any) => {
     const navigationEvent = useNavigationEvent();
     const navigationDeferredEvent = useDeferredValue(navigationEvent);
     return (
@@ -138,5 +138,5 @@ class NavigationHandler extends Component<{ stateNavigator: StateNavigator, chil
             </NavigationContext.Provider>
         );
     }
-}
+} */
 export default NavigationHandler;
