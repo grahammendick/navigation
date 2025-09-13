@@ -1,15 +1,16 @@
 'use client'
-import React, { Component, startTransition, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
-import useNavigationEvent from './useNavigationEvent.js';
 type NavigationHandlerState = {ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator};
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<NavigationHandlerState>();
+    const [resume, setResume] = useState<() => void>();
     const navigationDeferredEvent = useDeferredValue(navigationEvent);
+    const [isPending, startTransition] = useTransition();
     const createNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext) => {
         const AsyncStateNavigator = class AsyncStateNavigator extends StateNavigator {
             constructor() {
@@ -21,7 +22,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 this.onNavigate = stateNavigator.onNavigate.bind(stateNavigator);
                 this.offNavigate = stateNavigator.offNavigate.bind(stateNavigator);
             }
-        
             navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false,
                 suspendNavigation?: (stateContext: StateContext, resumeNavigation: () => void) => void,
                 currentContext = this.stateContext) {
@@ -31,8 +31,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     suspendNavigation(stateContext, () => {
                         const {oldState, state, history, crumbs} = stateContext;
                         const refresh = oldState === state && crumbs.length === this.stateContext.crumbs.length;
-                        const startTransition = (!history && !refresh && React.startTransition) || ((transition) => transition());
-                        startTransition(() => {
+                        const startTran = (!history && !refresh && startTransition) || ((transition) => transition());
+                        startTran(() => {
+                            setResume(resumeNavigation);
                             setNavigationEvent(createNavigationEvent(stateContext));
                         });
                     })
@@ -58,6 +59,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         stateNavigator.onNavigate(onNavigate);
         return () => stateNavigator.offNavigate(onNavigate);
     }, [stateNavigator, navigationEvent, createNavigationEvent]);
+    useEffect(() => {
+        if (!isPending && navigationEvent === navigationDeferredEvent && resume) resume();
+    }, [isPending, navigationEvent, navigationDeferredEvent, resume]);
     return (
         <NavigationContext.Provider value={navigationEvent}>
             <RefetchContext.Provider value={refetchControl}>
@@ -68,6 +72,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         </NavigationContext.Provider>
     )
 }
+
 const NavigationHandlerInner = ({ children }: any) => {
     const navigationEvent = useNavigationEvent();
     const navigationDeferredEvent = useDeferredValue(navigationEvent);
