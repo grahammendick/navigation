@@ -47,7 +47,7 @@ const getFriends = async (id: number, gender: 'male' | 'female' | 'other') => {
             res(person.friends.map((id) => (
                 people.find(({id: personId}) => personId === id)!
             )).filter(({gender: personGender}) => !gender || personGender === gender));
-        }, 10);
+        }, 2000);
     })
 }
 
