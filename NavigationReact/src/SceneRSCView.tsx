@@ -34,7 +34,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     const cachedSceneViews = rscCache.get(navigationEvent);
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
     const fetching = (() => {
-        if (!show) return false;
+        if (!show || !cachedSceneViews.__committed) return false;
         if (!getShow(oldState?.key) || !refetch || ignoreCache) return true;
         if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
         if (typeof refetch === 'function') return refetch(stateContext);
@@ -104,15 +104,14 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
 };
 
 const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
-    const {refetch} = props;
-    const refetchRef = useRef(refetch);
+    const {refetch: serverRefetch, active} = props;
+    const refetchRef = useRef(serverRefetch);
     const {refetcher} = useContext(RefetchContext);
     const navigationEvent = useNavigationEvent();
     const navigationDeferredEvent = useContext(NavigationDeferredContext);
     const [navigationRefetchEvent, setNavigationRefetchEvent] = useState<typeof navigationEvent & {ignoreCache?: boolean}>();
-    const fetching = !(typeof refetch !== 'function' && refetch?.length === 0);
     const refetchControl = useMemo(() => ({
-        setRefetch: (clientRefetch: any) => refetchRef.current = clientRefetch !== undefined ? clientRefetch : refetch,
+        setRefetch: (clientRefetch: any) => refetchRef.current = clientRefetch !== undefined ? clientRefetch : serverRefetch,
         refetcher: (scene: boolean) => {
             if (!scene) {
                 startTransition(() => {
@@ -123,6 +122,22 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
             }
         }
     }), [navigationEvent, refetcher]);
+    const {state, data, stateNavigator: {stateContext}} = navigationEvent;
+    const {oldData} = stateContext;
+    const show =  active != null && state && (
+        typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
+    );
+    const fetching = (() => {
+        if (show && navigationDeferredEvent !== navigationEvent) {
+            const refetch = refetchRef.current;
+            if (!refetch) return true;
+            if (typeof refetch === 'function') return refetch(stateContext);
+            for(let i = 0; i < refetch.length; i++) {
+                if (data[refetch[i]] !== oldData[refetch[i]]) return true;
+            }
+        }
+        return false;
+    })();
     const refetching = navigationRefetchEvent?.stateNavigator === navigationEvent.stateNavigator;
     return (
         <NavigationContext.Provider value={refetching ? navigationRefetchEvent : fetching ? navigationDeferredEvent : navigationEvent}>
