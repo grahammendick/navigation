@@ -4,12 +4,12 @@ import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
 import RefetchContext from './RefetchContext.js';
+import HistoryCacheContext from './HistoryCacheContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import NavigationContext from './NavigationContext.js';
 
 const rscCache: Map<any, Record<string, any>> = new Map();
-const historyCache = {};
 const FetchingContext = createContext(false);
 
 const SceneViewInner = ({children}) => children?.then ? use(children) : children;
@@ -19,6 +19,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
     const {crumbs, nextCrumb, oldUrl, oldData, history, historyAction} = stateContext;
     const url = nextCrumb?.crumblessUrl;
+    const historyCache = useContext(HistoryCacheContext);
     const {deserialize} = useContext(BundlerContext);
     const ancestorFetching = useContext(FetchingContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -44,7 +45,6 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
         return false;
     })();
     const firstScene = !oldUrl && !ignoreCache;
-    const oldSceneCount = (typeof window !== 'undefined' && window.history.state?.sceneCount) || 0;
     useEffect(() => {
         return () => {
             delete cachedSceneViews[sceneViewKey];
@@ -68,31 +68,17 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     useEffect(() => {
         const {navigationEvent: oldNavigationEvent} = renderedSceneView.current;
         renderedSceneView.current = {sceneView, navigationEvent};
-        if (!pending && oldNavigationEvent !== navigationEvent) rscCache.delete(oldNavigationEvent);
-        if (!pending && !cachedSceneViews.__committed) {
+        if (pending) return;
+        if (oldNavigationEvent !== navigationEvent) rscCache.delete(oldNavigationEvent);
+        if (!cachedSceneViews.__committed) {
             cachedSceneViews.__committed = true;
             rscCache.forEach(({__committed}, key) => {
                 if (!__committed) rscCache.delete(key);
             });
         }
-        const cacheHistory = () => {
-            if (historyAction === 'none' || historyManager.getCurrentUrl() !== stateContext.url) return;
-            const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
-            if (!historyCache[url]) historyCache[url] = {count: sceneCount};
-            historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
-            historyCache[url].count = Math.min(historyCache[url].count, sceneCount);
-            const historyUrls = Object.keys(historyCache);
-            for(let i = 0; i < historyUrls.length && !history; i++) {
-                const historyUrl = historyUrls[i];
-                const gap = historyCache[historyUrl].count - sceneCount;
-                if (historyUrl !== url && (gap === 0 || (historyAction === 'add' && gap > 0)))
-                    delete historyCache[historyUrl];
-            }
-            window.history.replaceState({...window.history.state, sceneCount}, null);
-        }
-        cacheHistory();
-        window.addEventListener('popstate', cacheHistory);
-        return () => window.removeEventListener('popstate', cacheHistory);
+        if (historyAction === 'none') return;
+        if (!historyCache[url]) historyCache[url] = {};
+        historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
     });
     return (
         <ErrorBoundary errorFallback={errorFallback}>
