@@ -67,7 +67,7 @@ const NavigationHandler = ({ stateNavigator, children }: { stateNavigator: State
             navigationEvent.resumeNavigation?.();
             const { stateContext: { nextCrumb, historyAction, history } } = navigationEvent.stateNavigator;
             const url = nextCrumb?.crumblessUrl;
-            if (historyAction === 'none') return;
+            if (historyAction === 'none' || typeof window === 'undefined') return;
             const historyCache = historyCacheRef.current;
             const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
             if (!historyCache[url]) historyCache[url] = {};
