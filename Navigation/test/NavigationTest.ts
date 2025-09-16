@@ -5898,6 +5898,28 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Resume Resume', function() {
+        it('should not navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var navigated = 0;
+            stateNavigator.onNavigate(() => navigated++);
+            var link = stateNavigator.getNavigationLink('s1', {y: 'b'});
+            stateNavigator.navigateLink(link, 'add', false, (_stateContext, resume) => {
+                resume();
+                resume();
+            });
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+            assert.equal(stateNavigator.stateContext.data.y, 'b');
+            assert.equal(stateNavigator.stateContext.oldData.x, 'a');
+            assert.equal(navigated, 1);
+        });
+    });
+
     describe('Resume Suspend Navigate', function() {
         it('should not navigate', function() {
             var stateNavigator = new StateNavigator([
