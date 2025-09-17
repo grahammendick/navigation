@@ -49,10 +49,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         setRefetch: () => {},
         refetcher: () => {
             startTransition(() => {
-                setNavigationEvent(({data, stateNavigator}) => ({data: {...data, ignoreCache: true}, stateNavigator}));
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true}, stateNavigator: navigationEvent.stateNavigator});
             })
         },
-    }), []);
+    }), [navigationEvent]);
     useEffect(() => {
         const onNavigate = () => {
             if (navigationEvent.data.stateNavigator.stateContext !== stateNavigator.stateContext)
