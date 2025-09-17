@@ -1,5 +1,4 @@
 'use client'
-import { startTransition, useOptimistic } from 'react';
 import { RefreshLink, useNavigationEvent } from 'navigation-react';
 
 const Filter = () => {
