@@ -4,8 +4,8 @@ import { StateNavigator } from 'navigation';
 import { NavigationHandler } from 'navigation-react';
 import stateNavigator from './stateNavigator';
 import App from './App';
-import People from './People';
 import Person from './Person';
+import People from './People';
 import List from './List';
 import Friends from './Friends';
 
