@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { searchPeople } from './data.js';
 import { NavigationLink, RefreshLink, useNavigationEvent } from 'navigation-react';
+import { searchPeople } from './data.js';
 import Pager from './Pager.js';
 
 const List = async () => {
