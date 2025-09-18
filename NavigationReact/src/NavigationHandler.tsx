@@ -61,13 +61,13 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         stateNavigator.onNavigate(onNavigate);
         return () => stateNavigator.offNavigate(onNavigate);
     }, [stateNavigator, navigationEvent, raiseNavigationEvent]);
-    const oldSceneCount = (typeof window !== 'undefined' && window.history.state?.sceneCount) || 0;
+    const oldSceneCount = (typeof window !== 'undefined' && window.history?.state?.sceneCount) || 0;
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             navigationEvent.resumeNavigation?.();
             const {stateContext: {nextCrumb, historyAction, history}} = navigationEvent.stateNavigator;
             const url = nextCrumb?.crumblessUrl;
-            if (historyAction === 'none' || typeof window === 'undefined') return;
+            if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
             const historyCache = historyCacheRef.current;
             const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
             if (!historyCache[url]) historyCache[url] = {};
