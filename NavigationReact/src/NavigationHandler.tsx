@@ -9,8 +9,8 @@ type NavigationHandlerState = { ignoreCache?: boolean, oldState: State, state: S
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, resumeNavigation?: () => void}>();
-    const navigationDeferredEvent = useDeferredValue?.(navigationEvent);
-    const [isPending, startTransition] = useTransition?.() || [];
+    const navigationDeferredEvent = useDeferredValue?.(navigationEvent) || navigationEvent;
+    const [isPending, startTransition] = useTransition?.() || [false];
     const historyCacheRef = useRef({});
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void) => {
         class AsyncStateNavigator extends StateNavigator {
