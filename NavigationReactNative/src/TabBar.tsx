@@ -81,6 +81,7 @@ class TabBar extends React.Component<any, any> {
                 fontStyle={fontStyle} fontSize={fontSize}
                 scrollable={scrollable}
                 style={{
+                    width: '100%',
                     height: tabViewHeight,
                     backgroundColor: barTintColor
                 }} />
