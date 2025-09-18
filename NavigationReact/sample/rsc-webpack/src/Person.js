@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { SceneView, NavigationBackLink, useNavigationEvent } from 'navigation-react';
+import { SceneView, NavigationBackLink, RefreshLink, useNavigationEvent } from 'navigation-react';
 import { getPerson } from './data.js';
+import Gender from './Gender.js';
 import Friends from './Friends.js';
 
 const Person = async () => {
-  const {data} = useNavigationEvent();
-  const {name, dateOfBirth, email, phone} = await getPerson(data.id);
+  const {data: {id, show}} = useNavigationEvent();
+  const {name, dateOfBirth, email, phone} = await getPerson(id);
   return (
     <>
       <h1>Person</h1>
@@ -20,6 +21,8 @@ const Person = async () => {
           <div>Phone</div>
           <div>{phone}</div>
         </div>
+        <RefreshLink navigationData={{show: !show}} includeCurrentData>{`${!show ? 'Show' : 'Hide'} Friends`}</RefreshLink>
+        <Gender />
         <SceneView active="person" name="friends">
           <Friends />
         </SceneView>
