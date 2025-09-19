@@ -5,7 +5,7 @@ import withStateNavigator from './withStateNavigator.js';
 import { SceneProps } from './Props.js';
 type SceneState = { navigationEvent: NavigationEvent, navigationDeferredEvent: NavigationEvent };
 
-class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEvent}, SceneState> {
+class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEvent, navigationDeferredEvent: NavigationEvent}, SceneState> {
     constructor(props) {
         super(props);
         this.state = {navigationEvent: null, navigationDeferredEvent: null};
@@ -18,10 +18,10 @@ class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEve
         var {url: currentUrl, state} = navigationEvent.stateNavigator.stateContext;
         return (!state || url !== currentUrl) ? null : {navigationEvent, navigationDeferredEvent};
     }
-    shouldComponentUpdate({crumb, rest, navigationEvent}) {
+    shouldComponentUpdate({crumb, rest, navigationEvent, navigationDeferredEvent}) {
         var {crumbs} = navigationEvent.stateNavigator.stateContext;
         var freezableOrCurrent = rest && (!!React.Suspense || crumbs.length === crumb);
-        return freezableOrCurrent || navigationEvent !== this.props.navigationEvent;
+        return freezableOrCurrent || navigationEvent !== this.props.navigationEvent || navigationDeferredEvent !== this.props.navigationDeferredEvent;
     }
     render() {
         var {navigationEvent, navigationDeferredEvent} = this.state;
