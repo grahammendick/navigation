@@ -85,10 +85,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useEffect(() => {
         if (stateNavigator !== navigationEvent.stateNavigator)
             raiseNavigationEvent();
-    }, [navigationEvent, stateNavigator])
+    }, [navigationEvent, stateNavigator]);
+    const history = navigationEvent?.stateNavigator.stateContext.history;
     return (
         <NavigationContext.Provider value={navigationEvent?.data}>
-            <NavigationDeferredContext.Provider value={navigationDeferredEvent?.data}>
+            <NavigationDeferredContext.Provider value={!history ? navigationDeferredEvent?.data : navigationEvent?.data}>
                 <RefetchContext.Provider value={refetchControl}>
                     <HistoryCacheContext.Provider value={historyCacheRef.current}>
                         {children}
