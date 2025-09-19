@@ -33,6 +33,11 @@ export interface NavigationEvent<NavigationInfo extends { [index: string]: any }
 export var NavigationContext: Context<NavigationEvent<any, any>> & Context<NavigationEvent<any, string>>;
 
 /**
+ * The context for providers and consumers of deferred navigation event data
+ */
+export var NavigationDeferredContext: Context<NavigationEvent<any, any>> & Context<NavigationEvent<any, string>>;
+
+/**
  * The RSC bundler context
  */
 export var BundlerContext: Context<{
