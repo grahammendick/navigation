@@ -1,4 +1,3 @@
-'use server-entry'
 import { NavigationLink, RefreshLink, useNavigationEvent } from 'navigation-react';
 import { searchPeople } from './data';
 import Pager from './Pager';

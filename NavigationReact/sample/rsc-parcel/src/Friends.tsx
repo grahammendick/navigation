@@ -1,4 +1,3 @@
-'use server-entry'
 import { RefreshLink, useNavigationEvent } from 'navigation-react';
 import { getFriends } from './data';
 
