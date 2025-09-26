@@ -1,11 +1,11 @@
 'use server-entry'
-import { SceneView, NavigationBackLink, RefreshLink, useNavigationEvent } from 'navigation-react';
+import { SceneView, NavigationBackLink, useNavigationEvent } from 'navigation-react';
 import { getPerson } from './data';
 import Gender from './Gender';
 import Friends from './Friends';
 
 const Person = async () => {
-  const {data: {id, show}} = useNavigationEvent();
+  const {data: {id}} = useNavigationEvent();
   const {name, dateOfBirth, email, phone} = await getPerson(id);
   return (
     <>
@@ -20,8 +20,7 @@ const Person = async () => {
           <div>{email}</div>
           <div>Phone</div>
           <div>{phone}</div>
-        </div>
-        <RefreshLink navigationData={{show: !show}} includeCurrentData>{`${!show ? 'Show' : 'Hide'} Friends`}</RefreshLink>
+        </div>        
         <Gender />
         <SceneView active="person" name="friends">
           <Friends />
