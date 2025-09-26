@@ -6,6 +6,7 @@ import stateNavigator from './stateNavigator';
 import App from './App';
 import Person from './Person';
 import People from './People';
+import List from './List';
 import Friends from './Friends';
 
 const app = express();
@@ -31,6 +32,7 @@ app.get('*', async (req, res) => {
 app.post('*', async (req, res) => {
   const sceneViews: any = {
     people: People,
+    list: List,
     person: Person,
     friends: Friends,
   };

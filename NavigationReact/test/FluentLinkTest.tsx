@@ -1043,23 +1043,25 @@ describe('FluentLinkTest', function () {
                 );
             });
             var link = container.querySelector<HTMLAnchorElement>('a');
-            var error = console.error;
-            console.error = () => {};
-            try {
-                Simulate.click(link);
-            } finally {
-                console.error = error;
-            }
-            stateNavigator.onNavigate(() => {
-                var div = container.querySelector<HTMLDivElement>('div');
-                assert.equal(yVal, 'a');
-                assert.equal(div.innerHTML, 'b');
-                assert.equal(stateContextVal.state, s0)
-                assert.equal(stateContextVal.data.x, undefined)
-                assert.equal(stateNavigator.stateContext.state, s1);
-                assert.equal(stateNavigator.stateContext.data.x, 1);
-                done()
-            })
+            act(() => {
+                var error = console.error;
+                console.error = () => {};
+                try {
+                    Simulate.click(link);
+                } finally {
+                    console.error = error;
+                }
+                stateNavigator.onNavigate(() => {
+                    var div = container.querySelector<HTMLDivElement>('div');
+                    assert.equal(yVal, 'a');
+                    assert.equal(div.innerHTML, 'b');
+                    assert.equal(stateContextVal.state, s0)
+                    assert.equal(stateContextVal.data.x, undefined)
+                    assert.equal(stateNavigator.stateContext.state, s1);
+                    assert.equal(stateNavigator.stateContext.data.x, 1);
+                    done()
+                })
+            });
         })
     });
 

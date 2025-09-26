@@ -33,6 +33,11 @@ export interface NavigationEvent<NavigationInfo extends { [index: string]: any }
 export var NavigationContext: Context<NavigationEvent<any, any>> & Context<NavigationEvent<any, string>>;
 
 /**
+ * The context for providers and consumers of deferred navigation event data
+ */
+export var NavigationDeferredContext: Context<NavigationEvent<any, any>> & Context<NavigationEvent<any, string>>;
+
+/**
  * The RSC bundler context
  */
 export var BundlerContext: Context<{
@@ -54,7 +59,7 @@ export function useNavigationEvent<NavigationInfo extends { [index: string]: any
 /**
  * The hook that determines when to refetch the RSC View
  */
-export function useRefetch(refetch?: string[] | ((stateContext: StateContext) => boolean) | null) : void;
+export function useRefetch(refetch?: string[] | ((stateContext: StateContext) => boolean) | null) : (scene?: boolean) => void;
 
 /**
  * Defines the Navigation Handler Props contract

@@ -1,20 +1,14 @@
 'use client'
-import { startTransition } from 'react';
 import { useNavigationEvent } from 'navigation-react';
-import { useOptimistic } from 'react';
 
 const Gender = () => {
     const {data, stateNavigator} = useNavigationEvent();
-    const {gender} = data;
-    const [optimisticGender, setOptimisticGender] = useOptimistic(gender || '', (_, newGender) => newGender);
-    return (
+    const {gender, show} = data;
+    return show && (
         <div>
             <label htmlFor="gender">Gender</label>
-            <select id="gender" value={optimisticGender} onChange={({target: {value}}) => {
-                startTransition(() => {
-                    setOptimisticGender(value);
-                    stateNavigator.refresh({...data, gender: value});
-                });
+            <select id="gender" value={gender || ''} onChange={({target: {value}}) => {
+                stateNavigator.refresh({...data, gender: value});
             }}>
                 <option value=""></option>
                 <option value="male">Male</option>

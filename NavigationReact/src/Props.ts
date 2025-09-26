@@ -1,11 +1,10 @@
 import { AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode } from 'react';
-import AsyncStateNavigator from './AsyncStateNavigator';
-import { FluentNavigator, StateContext } from 'navigation';
+import { FluentNavigator, StateContext, StateNavigator } from 'navigation';
 
 interface LinkProps extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
     historyAction?: 'add' | 'replace' | 'none';
     navigating?: (e: MouseEvent<HTMLAnchorElement>, link: string) => boolean;
-    stateNavigator?: AsyncStateNavigator;
+    stateNavigator?: StateNavigator;
     startTransition?: (transition: () => void) => void;
 }
 

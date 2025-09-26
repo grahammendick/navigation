@@ -1,9 +1,8 @@
-﻿import React from 'react';
-import AsyncStateNavigator from './AsyncStateNavigator.js';
-import { LinkProps } from './Props.js';
+﻿import { LinkProps } from './Props.js';
+import { StateNavigator } from 'navigation.js';
 
 class LinkUtility {
-    static getData(stateNavigator: AsyncStateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string | string[]): any {
+    static getData(stateNavigator: StateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string | string[]): any {
         if (currentDataKeys || includeCurrentData) {
             var keys = typeof currentDataKeys === 'string' ? currentDataKeys.trim().split(/\s*,\s*/) : currentDataKeys;
             navigationData = stateNavigator.stateContext.includeCurrentData(navigationData, keys);
@@ -11,7 +10,7 @@ class LinkUtility {
         return navigationData;
     }
 
-    static isActive(stateNavigator: AsyncStateNavigator, navigationData: any): boolean {
+    static isActive(stateNavigator: StateNavigator, navigationData: any): boolean {
         var active = true;
         for (var key in navigationData) {
             var val = navigationData[key];
@@ -61,13 +60,13 @@ class LinkUtility {
         return htmlProps;
     }
 
-    static getOnClick(stateNavigator: AsyncStateNavigator, props: LinkProps, link: string) {
+    static getOnClick(stateNavigator: StateNavigator, props: LinkProps, link: string) {
         return e => {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 var { navigating, historyAction, startTransition } = props;
                 if (!navigating || navigating(e, link)) {
                     e.preventDefault();
-                    startTransition = startTransition || React.startTransition || ((transition) => transition())
+                    startTransition = startTransition || ((transition) => transition())
                     startTransition(() => {
                         stateNavigator.navigateLink(link, historyAction, false, undefined, undefined);
                     })

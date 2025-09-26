@@ -86,6 +86,7 @@ app.get('*', async function (req, res) {
 app.post('*', async function (req, res) {
   const sceneViews = {
     people: await import('../src/People.js'),
+    list: await import('../src/List.js'),
     person: await import('../src/Person.js'),
     friends: await import('../src/Friends.js')
   };

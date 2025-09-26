@@ -15,6 +15,7 @@ export default async function handler(request: Request): Promise<Response> {
   if (request.method === 'POST') {
     const sceneViews: any = {
       people: await import('./People.tsx'),
+      list: await import('./List.tsx'),
       person: await import('./Person.tsx'),
       friends: await import('./Friends.tsx')
     };
