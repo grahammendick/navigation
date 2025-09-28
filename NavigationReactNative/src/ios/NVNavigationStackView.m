@@ -21,6 +21,7 @@
     NSMutableArray<NVTransition*> *_exitTransitions;
     NSString *_sharedElement;
     UIScreenEdgePanGestureRecognizer *_interactiveGestureRecognizer;
+    UIPanGestureRecognizer *_interactiveContentGestureRecognizer;
     UIPercentDrivenInteractiveTransition *_interactiveTransition;
     BOOL _navigated;
     BOOL _presenting;
@@ -40,6 +41,12 @@
         _interactiveGestureRecognizer.delegate = self;
         _interactiveGestureRecognizer.edges = ![[RCTI18nUtil sharedInstance] isRTL] ? UIRectEdgeLeft : UIRectEdgeRight;
         [_navigationController.view addGestureRecognizer:_interactiveGestureRecognizer];
+        if (@available(iOS 26.0, *)) {
+            _navigationController.interactiveContentPopGestureRecognizer.delegate = self;
+            _interactiveContentGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteractivePopGesture:)];
+            _interactiveContentGestureRecognizer.delegate = self;
+            [_navigationController.view addGestureRecognizer:_interactiveContentGestureRecognizer];
+        }
         _scenes = [[NSMutableDictionary alloc] init];
         _enterTransitions = [[NSMutableArray alloc] init];
         _exitTransitions = [[NSMutableArray alloc] init];
@@ -356,9 +363,17 @@
     NVSceneController *previousSceneController = (NVSceneController *) _navigationController.viewControllers[_navigationController.viewControllers.count - 2];
     if (previousSceneController.view.subviews.count == 0) return NO;
     if (((NVSceneController *) _navigationController.topViewController).popExitTrans.count > 0) {
-        return gestureRecognizer == _interactiveGestureRecognizer;
+        if (@available(iOS 26.0, *)) {
+            return gestureRecognizer == _interactiveGestureRecognizer || gestureRecognizer == _interactiveContentGestureRecognizer;
+        } else {
+            return gestureRecognizer == _interactiveGestureRecognizer;
+        }
     }
-    return gestureRecognizer == _navigationController.interactivePopGestureRecognizer;
+    if (@available(iOS 26.0, *)) {
+        return gestureRecognizer == _navigationController.interactivePopGestureRecognizer || gestureRecognizer == _navigationController.interactiveContentPopGestureRecognizer;
+    } else {
+        return gestureRecognizer == _navigationController.interactivePopGestureRecognizer;
+    }
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
