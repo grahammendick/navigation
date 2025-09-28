@@ -19,7 +19,7 @@ export default () => {
       <NavigationBar
         title={name}
         onOffsetChanged={Animated.event([{nativeEvent:{offset}}], {useNativeDriver: true})}
-        barTintColor={Platform.OS === 'android' ? standard => standard ? colors[0] : colors[1] : 'rgb(247,247,247)'}
+        barTintColor={Platform.OS === 'android' ? standard => standard ? colors[0] : colors[1] : null}
         tintColor={Platform.OS === 'android' ? "#fff" : null}
         titleColor={Platform.OS === 'android' ? "#fff" : null}
         style={{height: 140}}>

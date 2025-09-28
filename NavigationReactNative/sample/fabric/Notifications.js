@@ -7,7 +7,11 @@ import TweetItem from './TweetItem';
 import {getNotifications} from './data';
 
 const Container = ({children}) => (
-  Platform.OS === 'ios' ? <SafeAreaProvider><SafeAreaView style={{flex: 1}}>{children}</SafeAreaView></SafeAreaProvider> : children
+  Platform.OS === 'ios' ? (
+    <SafeAreaProvider>
+      <SafeAreaView style={{flex: 1}} edges={+Platform.Version >= 26 ? ['top'] : ['top', 'bottom']}>{children}</SafeAreaView>
+    </SafeAreaProvider>
+   ) : children
 );
 
 export default () => {
@@ -18,7 +22,7 @@ export default () => {
       <CoordinatorLayout>
         <NavigationBar
           title="Notifications"
-          barTintColor={Platform.OS === 'android' ? 'rgba(255,255,255, 0)' : 'rgb(247,247,247)'}>
+          barTintColor={Platform.OS === 'android' ? 'rgba(255,255,255, 0)' : null}>
           <TabBar selectedTintColor="#1da1f2" />
         </NavigationBar>
         <TabBar primary={false}>

@@ -13,7 +13,7 @@ export default () => {
     <>
       <NavigationBar
         title="Tweet"
-        barTintColor={Platform.OS === 'android' ? '#fff' : 'rgb(247,247,247)'}
+        barTintColor={Platform.OS === 'android' ? '#fff' : null}
         tintColor={Platform.OS === 'android' ? "#1da1f2" : null} />
       <Tweets tweets={replies} renderHeader={(
         <View>
