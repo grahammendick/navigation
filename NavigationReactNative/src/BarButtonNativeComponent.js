@@ -25,7 +25,7 @@ type NativeProps = $ReadOnly<{|
   showAsAction: Int32,
   buttonWidth: Double,
   actionBar: boolean,
-  sharedElementName: string,
+  sharedElement: string,
   onPress: BubblingEventHandler<null>
 |}>;
 
