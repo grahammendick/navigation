@@ -33,6 +33,7 @@ using namespace facebook::react;
         self.button.style = UIBarButtonItemStylePlain;
         self.button.target = self;
         self.button.action = @selector(buttonPressed);
+        self.name = @"eraser";
     }
     return self;
 }
