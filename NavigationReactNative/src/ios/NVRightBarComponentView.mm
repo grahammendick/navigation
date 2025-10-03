@@ -40,6 +40,9 @@ using namespace facebook::react;
 {
     [super willMoveToSuperview:newSuperview];
     if (!newSuperview) {
+        for (NVBarButtonComponentView *button in self.buttons) {
+            [((UIViewController<NVSharedElementController> *) self.reactViewController).sharedElements removeObject:button];
+        }
         [self setBarButtons:nil];
     }
 }
