@@ -39,6 +39,9 @@ using namespace facebook::react;
 {
     [super didMoveToWindow];
     [self setBarButtons:self.buttons];
+    for (NVBarButtonComponentView *button in self.buttons) {
+        [((UIViewController<NVSharedElementController> *) self.reactViewController).sharedElements addObject:button];
+    }
     [self.reactViewController.navigationItem setLeftItemsSupplementBackButton:_supplementBack];
 }
 
@@ -46,27 +49,36 @@ using namespace facebook::react;
 {
     [super willMoveToSuperview:newSuperview];
     if (!newSuperview) {
+        for (NVBarButtonComponentView *button in self.buttons) {
+            [((UIViewController<NVSharedElementController> *) self.reactViewController).sharedElements removeObject:button];
+        }
         [self setBarButtons:nil];
     }
 }
 
 -(void)setBarButtons:(NSMutableArray *)buttons
 {
-    [self.reactViewController.navigationItem setLeftBarButtonItems:buttons];
+    NSMutableArray *barButtons = [NSMutableArray arrayWithCapacity:buttons.count];
+    for (NVBarButtonComponentView *button in buttons) {
+        [barButtons addObject:button.button];
+    }
+    [self.reactViewController.navigationItem setLeftBarButtonItems:barButtons];
 }
 
 #pragma mark - RCTComponentViewProtocol
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
-    [self.buttons insertObject:((NVBarButtonComponentView *) childComponentView).button atIndex:index];
+    [self.buttons insertObject:((NVBarButtonComponentView *) childComponentView) atIndex:index];
     [self setBarButtons:self.buttons];
+    [((UIViewController<NVSharedElementController> *) self.reactViewController).sharedElements addObject:(NVBarButtonComponentView *) childComponentView];
 }
 
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index
 {
-    [self.buttons removeObject:((NVBarButtonComponentView *) childComponentView).button];
+    [self.buttons removeObject:((NVBarButtonComponentView *) childComponentView)];
     [self setBarButtons:self.buttons];
+    [((UIViewController<NVSharedElementController> *) self.reactViewController).sharedElements removeObject:(NVBarButtonComponentView *) childComponentView];
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
