@@ -33,7 +33,6 @@ using namespace facebook::react;
         self.button.style = UIBarButtonItemStylePlain;
         self.button.target = self;
         self.button.action = @selector(buttonPressed);
-        self.name = @"eraser";
     }
     return self;
 }
@@ -60,6 +59,7 @@ using namespace facebook::react;
     if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
         attributes[NSFontAttributeName] = font;
     }
+    _name = [[NSString alloc] initWithUTF8String: newViewProps.sharedElementName.c_str()];
     UIColor *tintColor = RCTUIColorFromSharedColor(newViewProps.tintColor);
     if (tintColor) {
         attributes[NSForegroundColorAttributeName] = tintColor;
