@@ -34,6 +34,11 @@
     self.button.title = title;
 }
 
+- (void)setSharedElement:(NSString *)sharedElement
+{
+    self.name = sharedElement;
+}
+
 - (void)setTestID:(NSString *)testID
 {
     _testID = testID;

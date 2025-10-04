@@ -59,6 +59,7 @@ using namespace facebook::react;
     if (self.fontFamily || self.fontWeight || self.fontStyle || self.fontSize) {
         attributes[NSFontAttributeName] = font;
     }
+    _name = [[NSString alloc] initWithUTF8String: newViewProps.sharedElement.c_str()];
     UIColor *tintColor = RCTUIColorFromSharedColor(newViewProps.tintColor);
     if (tintColor) {
         attributes[NSForegroundColorAttributeName] = tintColor;

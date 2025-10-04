@@ -1,12 +1,17 @@
 #import "NVLeftBarView.h"
 
 #import <React/UIView+React.h>
+#import "NVBarButtonView.h"
 
 @implementation NVLeftBarView
 
 -(void)setBarButtons:(NSMutableArray *)buttons
 {
-    [self.reactViewController.navigationItem setLeftBarButtonItems:buttons];
+    NSMutableArray *barButtons = [NSMutableArray arrayWithCapacity:buttons.count];
+    for (NVBarButtonView *button in buttons) {
+        [barButtons addObject:button.button];
+    }
+    [self.reactViewController.navigationItem setLeftBarButtonItems:barButtons];
 }
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps

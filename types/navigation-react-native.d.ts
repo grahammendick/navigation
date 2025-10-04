@@ -456,6 +456,11 @@ export interface BarButtonProps {
      */
     tintColor?: ColorValue;
     /**
+     * The Sheet's shared element
+     * @platform ios
+     */    
+    sharedElement?: string;
+    /**
      * The id of the button in end-to-end tests
      */
     testID?: string;

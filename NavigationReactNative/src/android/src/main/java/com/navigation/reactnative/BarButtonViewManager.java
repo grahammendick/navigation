@@ -92,6 +92,10 @@ public class BarButtonViewManager extends ViewGroupManager<BarButtonView> implem
         view.setActionBar(actionBar);
     }
 
+    @Override
+    public void setSharedElement(BarButtonView view, @Nullable String value) {
+    }
+
     @ReactProp(name = "tintColor", customType = "Color")
     public void setTintColor(BarButtonView view, @Nullable Integer tintColor) {
         view.setTintColorOverride(tintColor);
