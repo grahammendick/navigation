@@ -108,6 +108,8 @@
 		70BB32A3212B2D4100DE0D13 /* NVBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVBarView.m; sourceTree = "<group>"; };
 		70CCAAC42B18F9B200747AFF /* NVBottomSheetDialogComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVBottomSheetDialogComponentView.h; sourceTree = "<group>"; };
 		70CCAAC52B18F9C500747AFF /* NVBottomSheetDialogComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVBottomSheetDialogComponentView.mm; sourceTree = "<group>"; };
+		70DB41D82E9943F100D6D676 /* NVStackControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVStackControllerDelegate.h; sourceTree = "<group>"; };
+		70DB41D92E99455F00D6D676 /* NVStackControllerDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVStackControllerDelegate.m; sourceTree = "<group>"; };
 		70DC9BDC2843AA930047EEF4 /* NVActionBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVActionBarComponentView.mm; sourceTree = "<group>"; };
 		70DC9BDD2843AAA00047EEF4 /* NVActionBarComponentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVActionBarComponentView.h; sourceTree = "<group>"; };
 		70DC9BDE2843AB800047EEF4 /* NVCollapsingBarComponentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NVCollapsingBarComponentView.mm; sourceTree = "<group>"; };
@@ -161,6 +163,8 @@
 		7020F6B520ECD07A00E7A74E = {
 			isa = PBXGroup;
 			children = (
+				70DB41D92E99455F00D6D676 /* NVStackControllerDelegate.m */,
+				70DB41D82E9943F100D6D676 /* NVStackControllerDelegate.h */,
 				70F1854E2D04B4210094022B /* NVSharedElementManager.m */,
 				70F1854D2D04B40A0094022B /* NVSharedElementView.h */,
 				70F1854C2D04B3FF0094022B /* NVSharedElementView.m */,
