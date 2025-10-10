@@ -30,5 +30,26 @@
 
 
 @implementation NVStackControllerTransitionDelegate
+{
+    __weak id<UINavigationControllerDelegate> _del;
+}
+
+- (id)initWithDel:(id<UINavigationControllerDelegate>)del
+{
+    if (self = [super init]) {
+        _del = del;
+    }
+    return self;
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC
+{
+    return [_del navigationController:navigationController animationControllerForOperation:operation fromViewController:fromVC toViewController:toVC];
+}
+
+- (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController
+{
+    return [_del navigationController:navigationController interactionControllerForAnimationController:animationController];
+}
 
 @end

@@ -52,18 +52,18 @@ using namespace facebook::react;
         _navigationController.view.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         _navigationController.navigationBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         [self addSubview:_navigationController.view];
-        _del = [[NVStackControllerDelegate alloc] initWithDel:self];
+        _del = [[NVStackControllerTransitionDelegate alloc] initWithDel:self];
         _navigationController.delegate = _del;
         //_navigationController.interactivePopGestureRecognizer.delegate = self;
         _interactiveGestureRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteractivePopGesture:)];
         _interactiveGestureRecognizer.delegate = self;
         _interactiveGestureRecognizer.edges = ![[RCTI18nUtil sharedInstance] isRTL] ? UIRectEdgeLeft : UIRectEdgeRight;
-        //[_navigationController.view addGestureRecognizer:_interactiveGestureRecognizer];
+        [_navigationController.view addGestureRecognizer:_interactiveGestureRecognizer];
         if (@available(iOS 26.0, *)) {
             //_navigationController.interactiveContentPopGestureRecognizer.delegate = self;
             _interactiveContentGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteractivePopGesture:)];
             _interactiveContentGestureRecognizer.delegate = self;
-            //[_navigationController.view addGestureRecognizer:_interactiveContentGestureRecognizer];
+            [_navigationController.view addGestureRecognizer:_interactiveContentGestureRecognizer];
         }
     }
     return self;
