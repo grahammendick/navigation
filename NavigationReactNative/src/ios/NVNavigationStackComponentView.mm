@@ -52,6 +52,8 @@ using namespace facebook::react;
         _navigationController.view.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         _navigationController.navigationBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         [self addSubview:_navigationController.view];
+        _stackControllerDelegate = [[NVStackControllerDelegate alloc] initWithStackView:self];
+        _navigationController.delegate = _stackControllerDelegate;
         _interactiveGestureRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteractivePopGesture:)];
         _interactiveGestureRecognizer.delegate = self;
         _interactiveGestureRecognizer.edges = ![[RCTI18nUtil sharedInstance] isRTL] ? UIRectEdgeLeft : UIRectEdgeRight;
@@ -106,10 +108,6 @@ using namespace facebook::react;
         [_exitTransitions addObject:transition];
     }
     _sharedElement = newViewProps.sharedElements.size() > 0 ? [NSString stringWithUTF8String: newViewProps.sharedElements[0].c_str()] : nil;
-    if (!_navigationController.delegate) {
-        _stackControllerDelegate = !newViewProps.customAnimation ? [[NVStackControllerDelegate alloc] initWithStackView:self] : [[NVStackControllerTransitionDelegate alloc] initWithStackView:self];
-        _navigationController.delegate = _stackControllerDelegate;
-    }
     if (newViewProps.customAnimation) {
         if (_navigationController.interactivePopGestureRecognizer.delegate != self) {
             _stackControllerDelegate = [[NVStackControllerTransitionDelegate alloc] initWithStackView:self];
