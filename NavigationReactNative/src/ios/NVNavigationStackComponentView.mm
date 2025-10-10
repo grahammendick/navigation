@@ -52,19 +52,11 @@ using namespace facebook::react;
         _navigationController.view.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         _navigationController.navigationBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         [self addSubview:_navigationController.view];
-        _del = [[NVStackControllerTransitionDelegate alloc] initWithDel:self];
-        _navigationController.delegate = _del;
-        //_navigationController.interactivePopGestureRecognizer.delegate = self;
         _interactiveGestureRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteractivePopGesture:)];
         _interactiveGestureRecognizer.delegate = self;
         _interactiveGestureRecognizer.edges = ![[RCTI18nUtil sharedInstance] isRTL] ? UIRectEdgeLeft : UIRectEdgeRight;
-        [_navigationController.view addGestureRecognizer:_interactiveGestureRecognizer];
-        if (@available(iOS 26.0, *)) {
-            //_navigationController.interactiveContentPopGestureRecognizer.delegate = self;
-            _interactiveContentGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteractivePopGesture:)];
-            _interactiveContentGestureRecognizer.delegate = self;
-            [_navigationController.view addGestureRecognizer:_interactiveContentGestureRecognizer];
-        }
+        _interactiveContentGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteractivePopGesture:)];
+        _interactiveContentGestureRecognizer.delegate = self;
     }
     return self;
 }
@@ -114,6 +106,32 @@ using namespace facebook::react;
         [_exitTransitions addObject:transition];
     }
     _sharedElement = newViewProps.sharedElements.size() > 0 ? [NSString stringWithUTF8String: newViewProps.sharedElements[0].c_str()] : nil;
+    if (!_navigationController.delegate) {
+        _del = !newViewProps.customAnimation ? [[NVStackControllerDelegate alloc] initWithDel:self] : [[NVStackControllerTransitionDelegate alloc] initWithDel:self];
+        _navigationController.delegate = _del;
+    }
+    if (newViewProps.customAnimation) {
+        if (_navigationController.interactivePopGestureRecognizer.delegate != self) {
+            _del = [[NVStackControllerTransitionDelegate alloc] initWithDel:self];
+            _navigationController.delegate = _del;
+            _navigationController.interactivePopGestureRecognizer.delegate = self;
+            [_navigationController.view addGestureRecognizer:_interactiveGestureRecognizer];
+            if (@available(iOS 26.0, *)) {
+                _navigationController.interactiveContentPopGestureRecognizer.delegate = self;
+                [_navigationController.view addGestureRecognizer:_interactiveContentGestureRecognizer];
+            }
+        }
+    } else {
+        if (_navigationController.interactivePopGestureRecognizer.delegate == self) {
+            _del = [[NVStackControllerDelegate alloc] initWithDel:self];
+            _navigationController.delegate = _del;
+            [_navigationController.view removeGestureRecognizer:_interactiveGestureRecognizer];
+            [_navigationController.view removeGestureRecognizer:_interactiveContentGestureRecognizer];
+            _navigationController.interactivePopGestureRecognizer.delegate = nil;
+            if (@available(iOS 26.0, *))
+                _navigationController.interactiveContentPopGestureRecognizer.delegate = nil;
+        }
+    }
     _navigationController.view.backgroundColor = RCTUIColorFromSharedColor(newViewProps.underlayColor);
     _mostRecentEventCount = newViewProps.mostRecentEventCount;
     if (!_navigated) {
