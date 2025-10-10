@@ -8,6 +8,7 @@
 #import "NVSceneTransitioning.h"
 #import "NVSharedElementComponentView.h"
 #import "NVNavigationBarComponentView.h"
+#import "NVStackControllerDelegate.h"
 
 #import <react/renderer/components/navigationreactnative/ComponentDescriptors.h>
 #import <react/renderer/components/navigationreactnative/EventEmitters.h>
@@ -34,6 +35,7 @@ using namespace facebook::react;
     UIScreenEdgePanGestureRecognizer *_interactiveGestureRecognizer;
     UIPanGestureRecognizer *_interactiveContentGestureRecognizer;
     UIPercentDrivenInteractiveTransition *_interactiveTransition;
+    NVStackControllerDelegate *_del;
     BOOL _navigated;
     BOOL _presenting;
 }
@@ -50,17 +52,18 @@ using namespace facebook::react;
         _navigationController.view.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         _navigationController.navigationBar.semanticContentAttribute = ![[RCTI18nUtil sharedInstance] isRTL] ? UISemanticContentAttributeForceLeftToRight : UISemanticContentAttributeForceRightToLeft;
         [self addSubview:_navigationController.view];
-        _navigationController.delegate = self;
-        _navigationController.interactivePopGestureRecognizer.delegate = self;
+        _del = [[NVStackControllerDelegate alloc] initWithDel:self];
+        _navigationController.delegate = _del;
+        //_navigationController.interactivePopGestureRecognizer.delegate = self;
         _interactiveGestureRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteractivePopGesture:)];
         _interactiveGestureRecognizer.delegate = self;
         _interactiveGestureRecognizer.edges = ![[RCTI18nUtil sharedInstance] isRTL] ? UIRectEdgeLeft : UIRectEdgeRight;
-        [_navigationController.view addGestureRecognizer:_interactiveGestureRecognizer];
+        //[_navigationController.view addGestureRecognizer:_interactiveGestureRecognizer];
         if (@available(iOS 26.0, *)) {
-            _navigationController.interactiveContentPopGestureRecognizer.delegate = self;
+            //_navigationController.interactiveContentPopGestureRecognizer.delegate = self;
             _interactiveContentGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteractivePopGesture:)];
             _interactiveContentGestureRecognizer.delegate = self;
-            [_navigationController.view addGestureRecognizer:_interactiveContentGestureRecognizer];
+            //[_navigationController.view addGestureRecognizer:_interactiveContentGestureRecognizer];
         }
     }
     return self;

@@ -1,13 +1,11 @@
-//
-//  NVStackControllerDelegate.h
-//  NavigationReactNative
-//
-//  Created by Graham Mendick on 10/10/2025.
-//  Copyright © 2025 Graham Mendick. All rights reserved.
-//
+#import <UIKit/UIKit.h>
 
-#ifndef NVStackControllerDelegate_h
-#define NVStackControllerDelegate_h
+@interface NVStackControllerDelegate : NSObject <UINavigationControllerDelegate>
 
+-(id)initWithDel: (id<UINavigationControllerDelegate>)del;
 
-#endif /* NVStackControllerDelegate_h */
+@end
+
+@interface NVStackControllerTransitionDelegate : NVStackControllerDelegate
+
+@end
