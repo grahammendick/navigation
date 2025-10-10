@@ -34,9 +34,9 @@
     __weak id<UINavigationControllerDelegate> _stackView;
 }
 
-- (id)initWithDel:(id<UINavigationControllerDelegate>)stackView
+- (id)initWithStackView:(id<UINavigationControllerDelegate>)stackView
 {
-    if (self = [super init]) {
+    if (self = [super initWithStackView:stackView]) {
         _stackView = stackView;
     }
     return self;
