@@ -5,25 +5,25 @@
 
 @implementation NVStackControllerDelegate
 {
-    __weak id<UINavigationControllerDelegate> _del;
+    __weak id<UINavigationControllerDelegate> _stackView;
 }
 
-- (id)initWithDel:(id<UINavigationControllerDelegate>)del
+- (id)initWithStackView:(id<UINavigationControllerDelegate>)stackView
 {
     if (self = [super init]) {
-        _del = del;
+        _stackView = stackView;
     }
     return self;
 }
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    [_del navigationController:navigationController willShowViewController:viewController animated:animated];
+    [_stackView navigationController:navigationController willShowViewController:viewController animated:animated];
 }
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    [_del navigationController:navigationController didShowViewController:viewController animated:animated];
+    [_stackView navigationController:navigationController didShowViewController:viewController animated:animated];
 }
 
 @end
@@ -31,25 +31,25 @@
 
 @implementation NVStackControllerTransitionDelegate
 {
-    __weak id<UINavigationControllerDelegate> _del;
+    __weak id<UINavigationControllerDelegate> _stackView;
 }
 
-- (id)initWithDel:(id<UINavigationControllerDelegate>)del
+- (id)initWithDel:(id<UINavigationControllerDelegate>)stackView
 {
     if (self = [super init]) {
-        _del = del;
+        _stackView = stackView;
     }
     return self;
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC
 {
-    return [_del navigationController:navigationController animationControllerForOperation:operation fromViewController:fromVC toViewController:toVC];
+    return [_stackView navigationController:navigationController animationControllerForOperation:operation fromViewController:fromVC toViewController:toVC];
 }
 
 - (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController
 {
-    return [_del navigationController:navigationController interactionControllerForAnimationController:animationController];
+    return [_stackView navigationController:navigationController interactionControllerForAnimationController:animationController];
 }
 
 @end

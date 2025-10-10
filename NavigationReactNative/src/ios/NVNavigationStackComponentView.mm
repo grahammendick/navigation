@@ -35,7 +35,7 @@ using namespace facebook::react;
     UIScreenEdgePanGestureRecognizer *_interactiveGestureRecognizer;
     UIPanGestureRecognizer *_interactiveContentGestureRecognizer;
     UIPercentDrivenInteractiveTransition *_interactiveTransition;
-    NVStackControllerDelegate *_del;
+    NVStackControllerDelegate *_stackControllerDelegate;
     BOOL _navigated;
     BOOL _presenting;
 }
@@ -107,13 +107,13 @@ using namespace facebook::react;
     }
     _sharedElement = newViewProps.sharedElements.size() > 0 ? [NSString stringWithUTF8String: newViewProps.sharedElements[0].c_str()] : nil;
     if (!_navigationController.delegate) {
-        _del = !newViewProps.customAnimation ? [[NVStackControllerDelegate alloc] initWithDel:self] : [[NVStackControllerTransitionDelegate alloc] initWithDel:self];
-        _navigationController.delegate = _del;
+        _stackControllerDelegate = !newViewProps.customAnimation ? [[NVStackControllerDelegate alloc] initWithStackView:self] : [[NVStackControllerTransitionDelegate alloc] initWithStackView:self];
+        _navigationController.delegate = _stackControllerDelegate;
     }
     if (newViewProps.customAnimation) {
         if (_navigationController.interactivePopGestureRecognizer.delegate != self) {
-            _del = [[NVStackControllerTransitionDelegate alloc] initWithDel:self];
-            _navigationController.delegate = _del;
+            _stackControllerDelegate = [[NVStackControllerTransitionDelegate alloc] initWithStackView:self];
+            _navigationController.delegate = _stackControllerDelegate;
             _navigationController.interactivePopGestureRecognizer.delegate = self;
             [_navigationController.view addGestureRecognizer:_interactiveGestureRecognizer];
             if (@available(iOS 26.0, *)) {
@@ -123,8 +123,8 @@ using namespace facebook::react;
         }
     } else {
         if (_navigationController.interactivePopGestureRecognizer.delegate == self) {
-            _del = [[NVStackControllerDelegate alloc] initWithDel:self];
-            _navigationController.delegate = _del;
+            _stackControllerDelegate = [[NVStackControllerDelegate alloc] initWithStackView:self];
+            _navigationController.delegate = _stackControllerDelegate;
             [_navigationController.view removeGestureRecognizer:_interactiveGestureRecognizer];
             [_navigationController.view removeGestureRecognizer:_interactiveContentGestureRecognizer];
             _navigationController.interactivePopGestureRecognizer.delegate = nil;

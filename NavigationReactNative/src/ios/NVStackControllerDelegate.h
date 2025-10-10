@@ -2,7 +2,7 @@
 
 @interface NVStackControllerDelegate : NSObject <UINavigationControllerDelegate>
 
--(id)initWithDel: (id<UINavigationControllerDelegate>)del;
+-(id)initWithStackView: (id<UINavigationControllerDelegate>)stackView;
 
 @end
 
