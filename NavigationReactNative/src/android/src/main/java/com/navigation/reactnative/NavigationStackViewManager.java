@@ -91,6 +91,10 @@ public class NavigationStackViewManager extends ViewGroupManager<NavigationStack
     }
 
     @Override
+    public void setCustomAnimation(NavigationStackView view, boolean value) {
+    }
+
+    @Override
     public void setUnderlayColor(NavigationStackView view, @Nullable Integer value) {
     }
 
