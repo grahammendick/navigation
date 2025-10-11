@@ -25,6 +25,7 @@
     UIPanGestureRecognizer *_interactiveContentGestureRecognizer;
     UIPercentDrivenInteractiveTransition *_interactiveTransition;
     NVStackControllerDelegate *_stackControllerDelegate;
+    id<UIGestureRecognizerDelegate> _interactiveGestureRecognizerDelegate;
     BOOL _navigated;
     BOOL _presenting;
 }
@@ -41,6 +42,7 @@
         _navigationController.delegate = _stackControllerDelegate;
         _interactiveGestureRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteractivePopGesture:)];
         _interactiveGestureRecognizer.delegate = self;
+        _interactiveGestureRecognizerDelegate = _navigationController.interactivePopGestureRecognizer.delegate;
         _interactiveGestureRecognizer.edges = ![[RCTI18nUtil sharedInstance] isRTL] ? UIRectEdgeLeft : UIRectEdgeRight;
         _interactiveContentGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteractivePopGesture:)];
         _interactiveContentGestureRecognizer.delegate = self;
@@ -91,9 +93,9 @@
             _navigationController.delegate = _stackControllerDelegate;
             [_navigationController.view removeGestureRecognizer:_interactiveGestureRecognizer];
             [_navigationController.view removeGestureRecognizer:_interactiveContentGestureRecognizer];
-            _navigationController.interactivePopGestureRecognizer.delegate = nil;
+            _navigationController.interactivePopGestureRecognizer.delegate = _interactiveGestureRecognizerDelegate;
             if (@available(iOS 26.0, *))
-                _navigationController.interactiveContentPopGestureRecognizer.delegate = nil;
+                _navigationController.interactiveContentPopGestureRecognizer.delegate = _interactiveGestureRecognizerDelegate;
         }
     }
 }
