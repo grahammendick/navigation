@@ -193,6 +193,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
                         fragmentTag={fragmentTag}
                         ancestorFragmentTags={ancestorFragmentTags}
                         mostRecentEventCount={mostRecentEventCount}
+                        customAnimation={customAnimation}
                         style={styles.stack}
                         {...getAnimation()}
                         onWillNavigateBack={onWillNavigateBack}
