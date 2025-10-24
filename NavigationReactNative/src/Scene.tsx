@@ -144,7 +144,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 && (!stateContext['peek'] || stateContext['peek'] !== this.props.navigationEvent)}>
                 <NVScene
                     ref={(ref: any) => {
-                        const viewConfig = ref?.viewConfig || ref?._viewConfig;
+                        const viewConfig = ref?.viewConfig || ref?._viewConfig || ref?.__viewConfig;
                         if (!!React.Suspense && viewConfig?.validAttributes?.style) {
                             viewConfig.validAttributes.style = {
                                 ...viewConfig.validAttributes.style,
