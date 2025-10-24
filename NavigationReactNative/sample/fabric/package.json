@@ -14,7 +14,7 @@
     "@testing-library/react-native": "^13.3.3",
     "navigation": "^6.3.0",
     "navigation-react": "^4.14.0",
-    "navigation-react-native": "^9.34.1",
+    "navigation-react-native": "^9.35.0",
     "react": "19.1.1",
     "react-native": "0.82.1",
     "react-native-safe-area-context": "^5.5.2"
