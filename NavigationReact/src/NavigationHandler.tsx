@@ -18,7 +18,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const bundler = useMemo(() => ({
         deserialize: async (url: string, options: any) => {
             const res = await deserialize(url, {...options, body: {...options.body, sceneViews: sceneViews.current}});
-            if (res.url === url) return res.view;
+            if (res.url === options.body.url) return res.view;
             return null;
         },
         setRoot,
@@ -80,8 +80,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             navigationEvent.resumeNavigation?.();
-            const {stateContext: {nextCrumb, historyAction, history}} = navigationEvent.stateNavigator;
-            const url = nextCrumb?.crumblessUrl;
+            const {stateContext: {url, historyAction, history}} = navigationEvent.stateNavigator;
             if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
             const historyCache = historyCacheRef.current;
             const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
