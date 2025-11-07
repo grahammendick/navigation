@@ -16,9 +16,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const sceneViews = useRef({});
     const {deserialize, setRoot} = useContext(BundlerContext);
     const bundler = useMemo(() => ({
-        deserialize: async (url: string, options: any) => {
-            const res = await deserialize(url, {...options, body: {...options.body, sceneViews: sceneViews.current}});
-            if (res.url === options.body.url) return res.view;
+        deserialize: async (url: string, {body, ...options}: any) => {
+            const res = await deserialize(url, {...options, body: {...body, sceneViews: sceneViews.current}});
+            if (res.url === body.url) return res.view;
             return null;
         },
         setRoot,
