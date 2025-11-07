@@ -12,6 +12,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const navigationDeferredEvent = useDeferredValue?.(navigationEvent) || navigationEvent;
     const [isPending, startTransition] = useTransition?.() || [false];
     const historyCacheRef = useRef({});
+    const sceneViews = useRef({});
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
@@ -51,6 +52,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             startTransition(() => {
                 setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true}, stateNavigator: navigationEvent.stateNavigator});
             })
+        },
+        registerSceneView: (key: string, active: string | string[]) => {
+            sceneViews.current[key] = active;
+            return () => delete sceneViews.current[key];
         },
     }), [navigationEvent]);
     useEffect(() => {
