@@ -1,10 +1,11 @@
 'use client'
-import React, { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, useTransition } from 'react';
+import React, { useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
+import BundlerContext from './BundlerContext.js';
 type NavigationHandlerState = { ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
@@ -13,6 +14,13 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const [isPending, startTransition] = useTransition?.() || [false];
     const historyCacheRef = useRef({});
     const sceneViews = useRef({});
+    const {deserialize, setRoot} = useContext(BundlerContext);
+    const bundler = useMemo(() => ({
+        deserialize: async (url: string, options: any) => (
+            deserialize(url, {...options, body: {...options.body, sceneViews: sceneViews.current}})
+        ),
+        setRoot,
+    }), [deserialize, setRoot])
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
@@ -97,7 +105,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             <NavigationDeferredContext.Provider value={!history ? navigationDeferredEvent?.data : navigationEvent?.data}>
                 <RefetchContext.Provider value={refetchControl}>
                     <HistoryCacheContext.Provider value={historyCacheRef.current}>
-                        {children}
+                        <BundlerContext.Provider value={bundler}>
+                            {children}
+                        </BundlerContext.Provider>
                     </HistoryCacheContext.Provider>
                 </RefetchContext.Provider>
             </NavigationDeferredContext.Provider>
