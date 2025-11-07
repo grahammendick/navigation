@@ -40,11 +40,14 @@ app.post('*', async (req, res) => {
   const View = sceneViews[sceneViewKey];
   const serverNavigator = new StateNavigator(stateNavigator);
   serverNavigator.navigateLink(url);
-  const stream = renderRSC(
-    <NavigationHandler stateNavigator={serverNavigator}>
-      <View />
-    </NavigationHandler>
-  );
+  const stream = renderRSC({
+    url,
+    view: (
+      <NavigationHandler stateNavigator={serverNavigator}>
+        <View />
+      </NavigationHandler>
+    )
+  });
   res.set('Content-Type', 'text/x-component');
   stream.pipe(res);
 });
