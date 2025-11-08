@@ -9,7 +9,7 @@ import ErrorBoundary from './ErrorBoundary.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import NavigationContext from './NavigationContext.js';
 
-const rscCache: Map<any, Record<string, any>> = new Map();
+const rscCache: Map<any, {[index: string]: any}> = new Map();
 const FetchingContext = createContext(false);
 
 const SceneViewInner = ({children}) => children?.then ? use(children) : children;
