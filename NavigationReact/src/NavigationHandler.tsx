@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, useState, useTransition } from 'react';
+import React, { use, useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
@@ -30,6 +30,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         },
         setRoot,
     }), [deserialize, setRoot, navigationDeferredEvent])
+    if (rscNavigateCache.get(navigationDeferredEvent?.data))
+        use(rscNavigateCache.get(navigationDeferredEvent.data).view._payload);
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
@@ -88,7 +90,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             if (rscNavigateCache.get(navigationEvent.data)) {
                 const {url, view} = rscNavigateCache.get(navigationEvent.data);
-                navigationEvent.stateNavigator.navigateLink(url, 'add', false, (stateContext, resume) => {
+                navigationEvent.data.stateNavigator.navigateLink(url, 'add', false, (stateContext, resume) => {
                     rscNavigateContext.current = {stateContext, view};
                     resume();
                 });
