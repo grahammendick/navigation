@@ -8,21 +8,28 @@ import NavigationDeferredContext from './NavigationDeferredContext.js';
 import BundlerContext from './BundlerContext.js';
 type NavigationHandlerState = { ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
 
+const rscNavigateCache: Map<any, any> = new Map();
+
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, resumeNavigation?: () => void}>();
     const navigationDeferredEvent = useDeferredValue?.(navigationEvent) || navigationEvent;
     const [isPending, startTransition] = useTransition?.() || [false];
     const historyCacheRef = useRef({});
     const sceneViews = useRef({});
+    const rscNavigateContext = useRef(null);
     const {deserialize, setRoot} = useContext(BundlerContext);
     const bundler = useMemo(() => ({
         deserialize: async (url: string, {body, ...options}: any) => {
+            if (rscNavigateContext.current && rscNavigateContext.current.stateContext === navigationDeferredEvent.data.stateNavigator.stateContext) {
+                return rscNavigateContext.current.view;
+            }
             const res = await deserialize(url, {...options, body: {...body, sceneViews: sceneViews.current}});
             if (res.url === body.url) return res.view;
+            rscNavigateCache.set(navigationDeferredEvent.data, res);
             return null;
         },
         setRoot,
-    }), [deserialize, setRoot])
+    }), [deserialize, setRoot, navigationDeferredEvent])
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
@@ -79,6 +86,14 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const oldSceneCount = (typeof window !== 'undefined' && window.history?.state?.sceneCount) || 0;
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
+            if (rscNavigateCache.get(navigationEvent.data)) {
+                const {url, view} = rscNavigateCache.get(navigationEvent.data);
+                navigationEvent.stateNavigator.navigateLink(url, 'add', false, (stateContext, resume) => {
+                    rscNavigateContext.current = {stateContext, view};
+                    resume();
+                });
+                return;
+            }
             navigationEvent.resumeNavigation?.();
             const {stateContext: {url, historyAction, history}} = navigationEvent.stateNavigator;
             if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;

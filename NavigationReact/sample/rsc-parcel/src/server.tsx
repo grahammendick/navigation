@@ -40,8 +40,9 @@ app.post('*', async (req, res) => {
   const View = sceneViews[sceneViewKey];
   const serverNavigator = new StateNavigator(stateNavigator);
   serverNavigator.navigateLink(url);
+  serverNavigator.refresh({id: 2});
   const stream = renderRSC({
-    url,
+    url: serverNavigator.stateContext.url,
     view: (
       <NavigationHandler stateNavigator={serverNavigator}>
         <View />
