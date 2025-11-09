@@ -36,11 +36,19 @@ app.post('*', async (req, res) => {
     person: Person,
     friends: Friends
   };
-  const {url, sceneViewKey} = req.body;
-  const View = sceneViews[sceneViewKey];
+  const {url, sceneViewKey, sceneViews: rootSceneViews} = req.body;
+  // const View = sceneViews[sceneViewKey];
   const serverNavigator = new StateNavigator(stateNavigator);
   serverNavigator.navigateLink(url);
   serverNavigator.refresh({id: 2});
+  const {state} = serverNavigator.stateContext;
+  const View = Object.keys(rootSceneViews).reduce((root, key) => {
+      const active = rootSceneViews[key]
+      const show =  active != null && (
+          typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
+      );
+      return show ? sceneViews[key] : root;
+  }, null);
   const stream = renderRSC({
     url: serverNavigator.stateContext.url,
     view: (
