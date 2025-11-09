@@ -21,7 +21,7 @@ const HmrProvider = ({children}: any) => {
       stateNavigator.historyManager.stop();
       setRoot(root);
     }
-    window.addEventListener('parcelhmrreload', onHmrReload);
+    // window.addEventListener('parcelhmrreload', onHmrReload);
     return () => window.removeEventListener('parcelhmrreload', onHmrReload);
   });
   return children;
