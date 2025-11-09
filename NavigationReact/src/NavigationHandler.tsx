@@ -74,7 +74,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         },
         registerSceneView: (key: string, active: string | string[]) => {
             sceneViews.current[key] = active;
-            return () => delete sceneViews.current[key];
         },
     }), [navigationEvent]);
     useEffect(() => {

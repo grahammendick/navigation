@@ -96,9 +96,9 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const navigationDeferredEvent = useContext(NavigationDeferredContext);
     const [navigationRefetchEvent, setNavigationRefetchEvent] = useState<typeof navigationEvent & {ignoreCache?: boolean}>();
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
-    useEffect(() => (
+    useEffect(() => {
         registerSceneView(sceneViewKey, active)
-    ), [registerSceneView, sceneViewKey, active]);
+    }, [registerSceneView, sceneViewKey, active]);
     const refetchControl = useMemo(() => ({
         setRefetch: (clientRefetch: any) => refetchRef.current = clientRefetch !== undefined ? clientRefetch : serverRefetch,
         refetcher: (scene: boolean) => {
@@ -110,7 +110,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
                 refetcher(true);
             }
         },
-        registerSceneView: () => () => {},
+        registerSceneView: () => {},
     }), [navigationEvent, refetcher]);
     const {state, data, stateNavigator: {stateContext}} = navigationEvent;
     const {oldData} = stateContext;
