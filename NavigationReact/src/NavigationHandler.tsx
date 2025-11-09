@@ -92,7 +92,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 navigationEvent.data.stateNavigator.navigateLink(url, 'add', false, (stateContext, resume) => {
                     rscNavigateContext.current = {stateContext, view};
                     resume();
-                });
+                }, stateNavigator.stateContext);
                 return;
             }
             navigationEvent.resumeNavigation?.();
