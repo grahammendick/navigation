@@ -48,7 +48,7 @@ app.post('*', async (req, res) => {
           typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
       );
       return show ? sceneViews[key] : root;
-  }, null);
+  }, null) as any;
   const stream = renderRSC({
     url: serverNavigator.stateContext.url,
     view: (
