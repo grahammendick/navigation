@@ -20,16 +20,16 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const {deserialize, setRoot} = useContext(BundlerContext);
     const bundler = useMemo(() => ({
         deserialize: async (url: string, {body, ...options}: any) => {
-            if (rscNavigateContext.current && rscNavigateContext.current.stateContext === navigationDeferredEvent.data.stateNavigator.stateContext) {
+            if (rscNavigateContext.current && rscNavigateContext.current.stateContext === navigationEvent.data.stateNavigator.stateContext) {
                 return rscNavigateContext.current.view;
             }
             const res = await deserialize(url, {...options, body: {...body, sceneViews: sceneViews.current}});
             if (res.url === body.url) return res.view;
-            rscNavigateCache.set(navigationDeferredEvent.data, res);
+            rscNavigateCache.set(navigationEvent.data, res);
             return null;
         },
         setRoot,
-    }), [deserialize, setRoot, navigationDeferredEvent])
+    }), [deserialize, setRoot, navigationEvent])
     if (rscNavigateCache.get(navigationDeferredEvent?.data))
         use(rscNavigateCache.get(navigationDeferredEvent.data).view._payload);
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void) => {
@@ -62,7 +62,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
         const asyncNavigator = new AsyncStateNavigator()
         const {oldState, state, data, asyncData} = asyncNavigator.stateContext;
-        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator}, stateNavigator, resumeNavigation});
+        const ignoreCache = rscNavigateContext.current?.stateContext === asyncNavigator.stateContext;
+        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, ignoreCache}, stateNavigator, resumeNavigation});
     }, [stateNavigator]);
     if (!navigationEvent) raiseNavigationEvent();
     const refetchControl = useMemo(() => ({
