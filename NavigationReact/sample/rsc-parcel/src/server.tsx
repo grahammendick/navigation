@@ -42,6 +42,7 @@ app.post('*', async (req, res) => {
   serverNavigator.navigateLink(url);
   serverNavigator.refresh({id: 2});
   const {state} = serverNavigator.stateContext;
+  // check if old state to decide whether redirect has happened
   const View = Object.keys(rootSceneViews).reduce((root, key) => {
       const active = rootSceneViews[key]
       const show =  active != null && (
