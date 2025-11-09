@@ -97,7 +97,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const [navigationRefetchEvent, setNavigationRefetchEvent] = useState<typeof navigationEvent & {ignoreCache?: boolean}>();
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
     useEffect(() => {
-        registerSceneView(sceneViewKey, active)
+        registerSceneView(sceneViewKey, active);
     }, [registerSceneView, sceneViewKey, active]);
     const refetchControl = useMemo(() => ({
         setRefetch: (clientRefetch: any) => refetchRef.current = clientRefetch !== undefined ? clientRefetch : serverRefetch,
