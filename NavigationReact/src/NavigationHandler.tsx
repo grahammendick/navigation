@@ -90,10 +90,12 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             if (rscNavigationCache.get(navigationEvent.data)) {
                 const {url, sceneView} = rscNavigationCache.get(navigationEvent.data);
-                navigationEvent.data.stateNavigator.navigateLink(url, 'add', false, (stateContext, resume) => {
-                    rscNavigation.current = {stateContext, sceneView};
-                    resume();
-                }, stateNavigator.stateContext);
+                startTransition(() => {
+                    navigationEvent.data.stateNavigator.navigateLink(url, 'add', false, (stateContext, resume) => {
+                        rscNavigation.current = {stateContext, sceneView};
+                        resume();
+                    }, stateNavigator.stateContext);
+                });
                 return;
             }
             navigationEvent.resumeNavigation?.();
