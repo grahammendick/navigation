@@ -37,25 +37,23 @@ app.post('*', async (req, res) => {
     friends: Friends
   };
   const {url, sceneViewKey, sceneViews: rootSceneViews} = req.body;
-  // const View = sceneViews[sceneViewKey];
   const serverNavigator = new StateNavigator(stateNavigator);
   serverNavigator.navigateLink(url);
   const id = serverNavigator.stateContext.data.id || 1;
   serverNavigator.refresh({...serverNavigator.stateContext.data, id: id + 1});
-  const {state} = serverNavigator.stateContext;
-  // check if old state to decide whether redirect has happened
-  const View = Object.keys(rootSceneViews).reduce((root, key) => {
-      const active = rootSceneViews[key]
-      const show =  active != null && (
-          typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
-      );
-      return show ? sceneViews[key] : root;
-  }, null) as any;
+  const {state, oldState} = serverNavigator.stateContext;
+  const SceneView = Object.keys(oldState ? rootSceneViews : []).reduce((sceneView, key) => {
+    const active = rootSceneViews[key];
+    const show =  active != null && (
+        typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
+    );
+    return show ? sceneViews[key] : sceneView;
+  }, sceneViews[sceneViewKey]) as any;
   const stream = renderRSC({
-    url: serverNavigator.stateContext.url,
-    view: (
+    url: oldState ? serverNavigator.stateContext.url : undefined,
+    sceneView: (
       <NavigationHandler stateNavigator={serverNavigator}>
-        <View />
+        <SceneView />
       </NavigationHandler>
     )
   });
