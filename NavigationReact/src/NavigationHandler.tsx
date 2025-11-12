@@ -6,7 +6,7 @@ import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import BundlerContext from './BundlerContext.js';
-type NavigationHandlerState = { ignoreCache?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
+type NavigationHandlerState = { ignoreCache?: boolean | string, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
 
 const rscNavigationCache: Map<any, any> = new Map();
 
@@ -68,10 +68,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     if (!navigationEvent) raiseNavigationEvent();
     const refetchControl = useMemo(() => ({
         setRefetch: () => {},
-        refetcher: () => {
+        refetcher: (sceneViewKey: string | boolean = true) => {
             startTransition(() => {
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true}, stateNavigator: navigationEvent.stateNavigator});
-            })
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey}, stateNavigator: navigationEvent.stateNavigator});
+            });
         },
         registerSceneView: (key: string, active: string | string[]) => {
             sceneViews.current[key] = active;
