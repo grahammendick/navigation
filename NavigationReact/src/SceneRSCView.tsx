@@ -28,14 +28,15 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
         )
     );
     const show = getShow(state?.key);
-    const ignoreCache = navigationEvent['ignoreCache'] === true || navigationEvent['ignoreCache'] === sceneViewKey;
+    const cacheIgnorable = navigationEvent['ignoreCache'];
+    const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
     const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey];
     if (!rscCache.get(navigationEvent)) rscCache.set(navigationEvent, {});
     const cachedSceneViews = rscCache.get(navigationEvent);
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
     const fetching = (() => {
         if (!show || cachedSceneViews.__committed) return false;
-        if ((!getShow(oldState?.key) && !navigationEvent['ignoreCache']) || !refetch || ignoreCache) return true;
+        if ((!getShow(oldState?.key) && !cacheIgnorable) || !refetch || ignoreCache) return true;
         if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
         if (typeof refetch === 'function') return refetch(stateContext);
         for(let i = 0; i < refetch.length; i++) {
