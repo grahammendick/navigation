@@ -6,7 +6,7 @@ import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import BundlerContext from './BundlerContext.js';
-type NavigationHandlerState = { ignoreCache?: boolean | string, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
+type NavigationHandlerState = { ignoreCache?: boolean | string, rscNavigation?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
 
 const rscNavigationCache: Map<any, any> = new Map();
 
@@ -20,7 +20,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const {deserialize, setRoot} = useContext(BundlerContext);
     const bundler = useMemo(() => ({
         deserialize: async (url: string, options: any) => {
-            if (rscNavigation.current?.stateContext === navigationEvent.data.stateNavigator.stateContext) {
+            if (navigationEvent.data.rscNavigation && rscNavigation.current?.stateContext === navigationEvent.data.stateNavigator.stateContext) {
                 return rscNavigation.current.sceneView;
             }
             const res = await deserialize(url, {...options, body: {...options.body, sceneViews: sceneViews.current}});
@@ -63,14 +63,14 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const asyncNavigator = new AsyncStateNavigator()
         const {oldState, state, data, asyncData} = asyncNavigator.stateContext;
         const ignoreCache = rscNavigation.current?.stateContext === asyncNavigator.stateContext;
-        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, ignoreCache}, stateNavigator, resumeNavigation});
+        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, ignoreCache, rscNavigation: ignoreCache}, stateNavigator, resumeNavigation});
     }, [stateNavigator]);
     if (!navigationEvent) raiseNavigationEvent();
     const refetchControl = useMemo(() => ({
         setRefetch: () => {},
         refetcher: (sceneViewKey: string | boolean = true) => {
             startTransition(() => {
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey}, stateNavigator: navigationEvent.stateNavigator});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey, rscNavigation: false}, stateNavigator: navigationEvent.stateNavigator});
             });
         },
         registerSceneView: (key: string, active: string | string[]) => {
