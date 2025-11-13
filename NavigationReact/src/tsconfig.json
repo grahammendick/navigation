@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "target": "es5",
+        "lib": ["ES2015", "dom"],
         "jsx": "react",
         "esModuleInterop": true,
         "baseUrl": "../../types"
