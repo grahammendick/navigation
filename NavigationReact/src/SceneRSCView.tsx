@@ -77,6 +77,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
             });
         }
         if (historyAction === 'none') return;
+        if (historyCache[url]?.rscNavigation?.get(navigationEvent)) return;
         if (!historyCache[url]) historyCache[url] = {};
         historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
     });

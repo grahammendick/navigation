@@ -26,6 +26,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const res = await deserialize(url, {...options, body: {...options.body, sceneViews: sceneViews.current}});
             if (!res.url) return res.sceneView;
             rscNavigationCache.set(navigationEvent.data, res);
+            const historyCache = historyCacheRef.current;
+            if (!historyCache[url]) historyCache[url] = {};
+            if (!historyCache[url].rscNavigation) historyCache[url].rscNavigation = new Map();
+            historyCache[url].rscNavigation.set(navigationEvent.data, true);
             return null;
         },
         setRoot,
@@ -109,7 +113,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             for(let i = 0; i < historyUrls.length && !history; i++) {
                 const historyUrl = historyUrls[i];
                 const gap = historyCache[historyUrl].count - sceneCount;
-                if (historyUrl !== url && (gap === 0 || (historyAction === 'add' && gap > 0)))
+                if (historyUrl !== url && (gap === 0 || isNaN(gap) || (historyAction === 'add' && gap > 0)))
                     delete historyCache[historyUrl];
             }
             window.history.replaceState({...window.history.state, sceneCount}, null);
