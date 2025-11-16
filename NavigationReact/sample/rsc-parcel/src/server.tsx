@@ -61,24 +61,6 @@ app.post('*', async (req, res) => {
   stream.pipe(res);
 });
 
-app.put('*', async (req, res) => {
-  const serverNavigator = new StateNavigator(stateNavigator);
-  const {state, data, crumbs} = req.body;
-  let fluentNavigator = serverNavigator.fluent();
-  for (let i = 0; i < crumbs.length; i++) {
-    fluentNavigator = fluentNavigator.navigate(crumbs[i].state, crumbs[i].data);
-  }
-  fluentNavigator = fluentNavigator.navigate(state, data);
-  serverNavigator.navigateLink(fluentNavigator.url);
-  const stream = renderRSC(
-    <NavigationHandler stateNavigator={serverNavigator}>
-      <App url={fluentNavigator.url} />
-    </NavigationHandler>
-  );
-  res.set('Content-Type', 'text/x-component');
-  stream.pipe(res);
-});
-
 app.listen(3001, () => {
   console.log('Server listening on port 3001...');
 });
