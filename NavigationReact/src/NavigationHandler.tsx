@@ -17,7 +17,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const historyCacheRef = useRef({});
     const sceneViews = useRef({});
     const rscNavigation = useRef(null);
-    const {deserialize, setRoot} = useContext(BundlerContext);
+    const {deserialize, onHmrReload} = useContext(BundlerContext);
     const bundler = useMemo(() => ({
         deserialize: async (url: string, options: any) => {
             if (navigationEvent.data.rscNavigation && rscNavigation.current?.stateContext === navigationEvent.data.stateNavigator.stateContext) {
@@ -32,8 +32,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             historyCache[url].rscNavigation.set(navigationEvent.data, true);
             return null;
         },
-        setRoot,
-    }), [deserialize, setRoot, navigationEvent])
+        onHmrReload,
+    }), [deserialize, onHmrReload, navigationEvent])
     if (rscNavigationCache.get(navigationDeferredEvent?.data))
         use(rscNavigationCache.get(navigationDeferredEvent.data).sceneView._payload);
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void) => {
@@ -123,6 +123,14 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         if (stateNavigator !== navigationEvent.stateNavigator)
             raiseNavigationEvent();
     }, [navigationEvent, stateNavigator]);
+    useEffect(() => {
+        const offHmrReload = onHmrReload(() => {
+            startTransition(() => {
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscNavigation: false}, stateNavigator: navigationEvent.stateNavigator});
+            });
+        });
+        return offHmrReload;
+    }, [navigationEvent, onHmrReload]);
     const history = navigationEvent?.stateNavigator.stateContext.history;
     return (
         <NavigationContext.Provider value={navigationEvent?.data}>
