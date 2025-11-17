@@ -8,6 +8,7 @@ import Person from './Person';
 import People from './People';
 import List from './List';
 import Friends from './Friends';
+import Banner from './Banner';
 
 const app = express();
 
@@ -34,7 +35,8 @@ app.post('*', async (req, res) => {
     people: People,
     list: List,
     person: Person,
-    friends: Friends
+    friends: Friends,
+    banner: Banner
   };
   const {url, sceneViewKey, sceneViews: rootSceneViews} = req.body;
   const serverNavigator = new StateNavigator(stateNavigator);
@@ -42,20 +44,25 @@ app.post('*', async (req, res) => {
   const id = serverNavigator.stateContext.data.id || 1;
   serverNavigator.refresh({...serverNavigator.stateContext.data, id: id + 1});
   const {state, oldState} = serverNavigator.stateContext;
-  const SceneView = Object.keys(oldState ? rootSceneViews : []).reduce((sceneView, key) => {
-    const active = rootSceneViews[key];
-    const show =  active != null && (
-        typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
-    );
-    return show ? sceneViews[key] : sceneView;
-  }, sceneViews[sceneViewKey]) as any;
+  const activeSceneViews = oldState ? Object.keys(rootSceneViews).reduce((activeRoots, rootKey) => {
+      const active = rootSceneViews[rootKey];
+      const show =  active != null && (
+          typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
+      );
+      if (show) activeRoots.push(rootKey);
+      return activeRoots;
+    }, [] as string[]) : [sceneViewKey];
   const stream = renderRSC({
     url: oldState ? serverNavigator.stateContext.url : undefined,
-    sceneView: (
-      <NavigationHandler stateNavigator={serverNavigator}>
-        <SceneView />
-      </NavigationHandler>
-    )
+    sceneViews: activeSceneViews.reduce((SceneViews, activeSceneViewKey) => {
+      const SceneView = sceneViews[activeSceneViewKey];
+      SceneViews[activeSceneViewKey] = (
+        <NavigationHandler stateNavigator={serverNavigator}>
+          <SceneView />
+        </NavigationHandler>
+      );
+      return SceneViews;
+    }, {})
   });
   res.set('Content-Type', 'text/x-component');
   stream.pipe(res);

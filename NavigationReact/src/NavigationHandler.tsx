@@ -21,10 +21,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const bundler = useMemo(() => ({
         deserialize: async (url: string, options: any) => {
             if (navigationEvent.data.rscNavigation && rscNavigation.current?.stateContext === navigationEvent.data.stateNavigator.stateContext) {
-                return rscNavigation.current.sceneView;
+                return rscNavigation.current.sceneViews[options.body.sceneViewKey];
             }
             const res = await deserialize(url, {...options, body: {...options.body, sceneViews: sceneViews.current}});
-            if (!res.url) return res.sceneView;
+            if (!res.url) return res.sceneViews[options.body.sceneViewKey];
             rscNavigationCache.set(navigationEvent.data, res);
             const historyCache = historyCacheRef.current;
             if (!historyCache[url]) historyCache[url] = {};
@@ -34,8 +34,12 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         },
         onHmrReload,
     }), [deserialize, onHmrReload, navigationEvent])
-    if (rscNavigationCache.get(navigationDeferredEvent?.data))
-        use(rscNavigationCache.get(navigationDeferredEvent.data).sceneView._payload);
+    if (rscNavigationCache.get(navigationDeferredEvent?.data)) {
+        const {sceneViews} = rscNavigationCache.get(navigationDeferredEvent.data);
+        for (const sceneView of Object.values(sceneViews)) {
+            use((sceneView as any)._payload)
+        };
+    }
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
@@ -93,10 +97,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             if (rscNavigationCache.get(navigationEvent.data)) {
-                const {url, sceneView} = rscNavigationCache.get(navigationEvent.data);
+                const {url, sceneViews} = rscNavigationCache.get(navigationEvent.data);
                 startTransition(() => {
                     navigationEvent.data.stateNavigator.navigateLink(url, 'add', false, (stateContext, resume) => {
-                        rscNavigation.current = {stateContext, sceneView};
+                        rscNavigation.current = {stateContext, sceneViews};
                         resume();
                     }, stateNavigator.stateContext);
                 });
