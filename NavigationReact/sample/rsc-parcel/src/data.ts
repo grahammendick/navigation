@@ -27,7 +27,7 @@ const searchPeople = async (name: string, pageNumber: number, pageSize: number, 
                 people: filteredPeople.slice(start, start + pageSize),
                 count: filteredPeople.length
             });
-        }, 10);
+        }, 1000);
     })
 };
 

@@ -34,8 +34,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         },
         onHmrReload,
     }), [deserialize, onHmrReload, navigationEvent])
-    if (rscNavigationCache.get(navigationDeferredEvent?.data)) {
-        const {sceneViews} = rscNavigationCache.get(navigationDeferredEvent.data);
+    if (rscNavigationCache.get(navigationEvent?.data)) {
+        const {sceneViews} = rscNavigationCache.get(navigationEvent.data);
         for (const sceneView of Object.values(sceneViews)) {
             use((sceneView as any)._payload)
         };
