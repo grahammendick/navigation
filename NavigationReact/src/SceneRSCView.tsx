@@ -12,7 +12,7 @@ import NavigationContext from './NavigationContext.js';
 const rscCache: Map<any, {[index: string]: any}> = new Map();
 const FetchingContext = createContext(false);
 
-const SceneViewInner = ({children}) => children?.then ? use(children) : children;
+const SceneViewInner = ({children}) => children;
 
 const SceneView = ({active, name, refetch, pending, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean}) => {
     const navigationEvent = useNavigationEvent();
