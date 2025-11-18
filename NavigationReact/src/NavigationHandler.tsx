@@ -35,15 +35,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         },
         onHmrReload,
     }), [deserialize, onHmrReload, navigationEvent])
-    // this doesn't work when people delayed?!
-    // think it's because people returns something immediately from the promise
-    // but want it to wait until content rendered till first suspense (or all content in this case)
-    /* if (rscNavigationCache.get(navigationEvent?.data)) {
-        const {sceneViews} = rscNavigationCache.get(navigationEvent.data);
-        for (const sceneView of Object.values(sceneViews)) {
-            use((sceneView as any)._payload)
-        };
-    } */
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
