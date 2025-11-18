@@ -58,7 +58,9 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
             body: {url, sceneViewKey}
         });
     }
+    const rscNavigation = historyCache[url]?.rscNavigation?.get(navigationEvent);
     const sceneView = (() => {
+        if (rscNavigation) return rscNavigation.sceneViews[sceneViewKey] || children;
         if (!show) return null;
         if (cachedHistory) return historyCache[url][sceneViewKey];
         if (cachedSceneViews[sceneViewKey]) return cachedSceneViews[sceneViewKey];
@@ -77,7 +79,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
             });
         }
         if (historyAction === 'none') return;
-        if (historyCache[url]?.rscNavigation?.get(navigationEvent)) return;
+        if (rscNavigation) return;
         if (!historyCache[url]) historyCache[url] = {};
         historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
     });

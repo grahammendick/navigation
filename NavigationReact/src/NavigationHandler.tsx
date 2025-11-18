@@ -19,27 +19,31 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const rscNavigation = useRef(null);
     const {deserialize, onHmrReload} = useContext(BundlerContext);
     const bundler = useMemo(() => ({
-        deserialize: async (url: string, options: any) => {
+        deserialize: async (crumblessUrl: string, options: any) => {
             if (navigationEvent.data.rscNavigation && rscNavigation.current?.stateContext === navigationEvent.data.stateNavigator.stateContext) {
                 return rscNavigation.current.sceneViews[options.body.sceneViewKey];
             }
-            const res = await deserialize(url, {...options, body: {...options.body, sceneViews: sceneViews.current}});
+            const res = await deserialize(crumblessUrl, {...options, body: {...options.body, sceneViews: sceneViews.current}});
             if (!res.url) return res.sceneViews[options.body.sceneViewKey];
             rscNavigationCache.set(navigationEvent.data, res);
             const historyCache = historyCacheRef.current;
+            const {url} = options.body;
             if (!historyCache[url]) historyCache[url] = {};
             if (!historyCache[url].rscNavigation) historyCache[url].rscNavigation = new Map();
-            historyCache[url].rscNavigation.set(navigationEvent.data, true);
+            historyCache[url].rscNavigation.set(navigationEvent.data, res);
             return null;
         },
         onHmrReload,
     }), [deserialize, onHmrReload, navigationEvent])
-    if (rscNavigationCache.get(navigationEvent?.data)) {
+    // this doesn't work when people delayed?!
+    // think it's because people returns something immediately from the promise
+    // but want it to wait until content rendered till first suspense (or all content in this case)
+    /* if (rscNavigationCache.get(navigationEvent?.data)) {
         const {sceneViews} = rscNavigationCache.get(navigationEvent.data);
         for (const sceneView of Object.values(sceneViews)) {
             use((sceneView as any)._payload)
         };
-    }
+    } */
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
