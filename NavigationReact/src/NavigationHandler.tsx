@@ -20,14 +20,14 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const {deserialize, onHmrReload} = useContext(BundlerContext);
     const bundler = useMemo(() => ({
         deserialize: async (crumblessUrl: string, options: any) => {
+            const {url, sceneViewKey} = options.body;
             if (navigationEvent.data.rscNavigation && rscNavigation.current?.stateContext === navigationEvent.data.stateNavigator.stateContext) {
-                return rscNavigation.current.sceneViews[options.body.sceneViewKey];
+                return rscNavigation.current.sceneViews[sceneViewKey];
             }
             const res = await deserialize(crumblessUrl, {...options, body: {...options.body, sceneViews: sceneViews.current}});
-            if (!res.url) return res.sceneViews[options.body.sceneViewKey];
+            if (!res.url) return res.sceneViews[sceneViewKey];
             rscNavigationCache.set(navigationEvent.data, res);
             const historyCache = historyCacheRef.current;
-            const {url} = options.body;
             if (!historyCache[url]) historyCache[url] = {};
             if (!historyCache[url].rscNavigation) historyCache[url].rscNavigation = new Map();
             historyCache[url].rscNavigation.set(navigationEvent.data, res);
