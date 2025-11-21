@@ -9,7 +9,6 @@ import ErrorBoundary from './ErrorBoundary.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import NavigationContext from './NavigationContext.js';
 
-const rscCache: Map<any, {[index: string]: any}> = new Map();
 const FetchingContext = createContext(false);
 
 const SceneViewInner = ({children}) => children;
@@ -31,8 +30,8 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     const cacheIgnorable = navigationEvent['ignoreCache'];
     const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
     const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey];
-    if (!rscCache.get(navigationEvent)) rscCache.set(navigationEvent, {});
-    const cachedSceneViews = rscCache.get(navigationEvent);
+    if (!navigationEvent['rscCache']) navigationEvent['rscCache'] = new Map();
+    const cachedSceneViews = navigationEvent['rscCache'];
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
     const fetching = (() => {
         if (!show || cachedSceneViews.__committed || stateContext['rsc']) return false;
@@ -45,12 +44,6 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
         return false;
     })();
     const firstScene = !oldUrl && !ignoreCache;
-    useEffect(() => {
-        return () => {
-            delete cachedSceneViews[sceneViewKey];
-            if (Object.keys(cachedSceneViews).length <= 1) rscCache.delete(navigationEvent);
-        };
-    }, [])
     if (!cachedSceneViews[sceneViewKey] && !cachedHistory && !firstScene && !ancestorFetching && fetching) {
         cachedSceneViews[sceneViewKey] = deserialize(historyManager.getHref(nextCrumb.crumblessUrl), {
             method: 'post',
@@ -67,16 +60,9 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
         return renderedSceneView.current.sceneView;
     })();
     useEffect(() => {
-        const {navigationEvent: oldNavigationEvent} = renderedSceneView.current;
         renderedSceneView.current = {sceneView, navigationEvent};
         if (pending) return;
-        if (oldNavigationEvent !== navigationEvent) rscCache.delete(oldNavigationEvent);
-        if (!cachedSceneViews.__committed) {
-            cachedSceneViews.__committed = true;
-            rscCache.forEach(({__committed}, key) => {
-                if (!__committed) rscCache.delete(key);
-            });
-        }
+        cachedSceneViews.__committed = true;
         if (historyAction === 'none') return;
         if (stateContext['rsc']) return;
         if (!historyCache[url]) historyCache[url] = {};
