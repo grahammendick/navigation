@@ -6,7 +6,7 @@ import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import BundlerContext from './BundlerContext.js';
-type NavigationHandlerState = { ignoreCache?: boolean | string, rscNavigation?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
+type NavigationHandlerState = { ignoreCache?: boolean | string, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, resumeNavigation?: () => void}>();
@@ -129,7 +129,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useEffect(() => {
         const offHmrReload = onHmrReload(() => {
             startTransition(() => {
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscNavigation: false}, stateNavigator: navigationEvent.stateNavigator});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true}, stateNavigator: navigationEvent.stateNavigator});
             });
         });
         return offHmrReload;
