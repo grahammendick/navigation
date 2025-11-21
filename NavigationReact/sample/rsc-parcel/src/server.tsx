@@ -38,15 +38,15 @@ app.post('*', async (req, res) => {
     friends: Friends,
     banner: Banner
   };
-  const {url, sceneViewKey, sceneViews: rootSceneViews} = req.body;
+  const {url, sceneViewKey, rootViews} = req.body;
   const serverNavigator = new StateNavigator(stateNavigator);
   serverNavigator.navigateLink(url);
   const id = serverNavigator.stateContext.data.id || 1;
-  // serverNavigator.refresh({...serverNavigator.stateContext.data, id: id + 1});
-  serverNavigator.navigate('people');
+  serverNavigator.refresh({...serverNavigator.stateContext.data, id: id + 1});
+  // serverNavigator.navigate('people');
   const {state, oldState} = serverNavigator.stateContext;
-  const activeSceneViews = oldState ? Object.keys(rootSceneViews).reduce((activeRoots, rootKey) => {
-      const active = rootSceneViews[rootKey];
+  const activeViews = oldState ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
+      const active = rootViews[rootKey];
       const show =  active != null && (
           typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
       );
@@ -55,9 +55,9 @@ app.post('*', async (req, res) => {
     }, [] as string[]) : [sceneViewKey];
   const stream = renderRSC({
     url: oldState ? serverNavigator.stateContext.url : undefined,
-    sceneViews: activeSceneViews.reduce((SceneViews, activeSceneViewKey) => {
-      const SceneView = sceneViews[activeSceneViewKey];
-      SceneViews[activeSceneViewKey] = (
+    sceneViews: activeViews.reduce((SceneViews, activeKey) => {
+      const SceneView = sceneViews[activeKey];
+      SceneViews[activeKey] = (
         <NavigationHandler stateNavigator={serverNavigator}>
           <SceneView />
         </NavigationHandler>

@@ -13,12 +13,12 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const navigationDeferredEvent = useDeferredValue?.(navigationEvent) || navigationEvent;
     const [isPending, startTransition] = useTransition?.() || [false];
     const historyCacheRef = useRef({});
-    const sceneViews = useRef({});
+    const rootViews = useRef({});
     const {deserialize, onHmrReload} = useContext(BundlerContext);
     const bundler = useMemo(() => ({
         deserialize: async (crumblessUrl: string, options: any) => {
             const {sceneViewKey} = options.body;
-            const res = await deserialize(crumblessUrl, {...options, body: {...options.body, sceneViews: sceneViews.current}});
+            const res = await deserialize(crumblessUrl, {...options, body: {...options.body, rootViews: rootViews.current}});
             if (!res.url) return res.sceneViews[sceneViewKey];
             navigationEvent.data.stateNavigator.navigateLink(res.url, 'add', false, (rscStateContext, resume) => {
                 const {stateContext} = navigationEvent.data.stateNavigator;
@@ -78,8 +78,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey}, stateNavigator: navigationEvent.stateNavigator});
             });
         },
-        registerSceneView: (key: string, active: string | string[]) => {
-            sceneViews.current[key] = active;
+        registerRootView: (sceneViewKey: string, active: string | string[]) => {
+            rootViews.current[sceneViewKey] = active;
         },
     }), [navigationEvent]);
     useEffect(() => {
