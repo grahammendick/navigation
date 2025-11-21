@@ -35,7 +35,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     const cachedSceneViews = rscCache.get(navigationEvent);
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
     const fetching = (() => {
-        if (!show || cachedSceneViews.__committed) return false;
+        if (!show || cachedSceneViews.__committed || stateContext['rsc']) return false;
         if ((!getShow(oldState?.key) && !cacheIgnorable) || !refetch || ignoreCache) return true;
         if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
         if (typeof refetch === 'function') return refetch(stateContext);
@@ -58,10 +58,9 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
             body: {url, sceneViewKey}
         });
     }
-    const rscNavigation = historyCache[url]?.rscNavigation?.get(navigationEvent);
     const sceneView = (() => {
-        if (rscNavigation) return rscNavigation.sceneViews[sceneViewKey] || children;
         if (!show) return null;
+        if (stateContext['rsc']) return stateContext['rsc'].sceneViews[sceneViewKey] || children;
         if (cachedHistory) return historyCache[url][sceneViewKey];
         if (cachedSceneViews[sceneViewKey]) return cachedSceneViews[sceneViewKey];
         if (firstScene || ancestorFetching) return children;
@@ -79,7 +78,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
             });
         }
         if (historyAction === 'none') return;
-        if (rscNavigation) return;
+        if (stateContext['rsc']) return;
         if (!historyCache[url]) historyCache[url] = {};
         historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
     });

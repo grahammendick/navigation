@@ -42,7 +42,8 @@ app.post('*', async (req, res) => {
   const serverNavigator = new StateNavigator(stateNavigator);
   serverNavigator.navigateLink(url);
   const id = serverNavigator.stateContext.data.id || 1;
-  serverNavigator.refresh({...serverNavigator.stateContext.data, id: id + 1});
+  // serverNavigator.refresh({...serverNavigator.stateContext.data, id: id + 1});
+  serverNavigator.navigate('people');
   const {state, oldState} = serverNavigator.stateContext;
   const activeSceneViews = oldState ? Object.keys(rootSceneViews).reduce((activeRoots, rootKey) => {
       const active = rootSceneViews[rootKey];
