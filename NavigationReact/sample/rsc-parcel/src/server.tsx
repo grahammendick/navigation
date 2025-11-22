@@ -9,6 +9,7 @@ import People from './People';
 import List from './List';
 import Friends from './Friends';
 import Banner from './Banner';
+import { getPerson } from './data';
 
 const app = express();
 
@@ -28,6 +29,12 @@ app.get('*', async (req, res) => {
       <App url={req.url} />
     </NavigationHandler>
   ), {component: App});
+});
+
+app.post('/test', async (req, res) => {
+  (await getPerson(1)).name = 'Bill Halvorson';
+  console.log('xxx');
+  res.sendStatus(200);
 });
 
 app.post('*', async (req, res) => {

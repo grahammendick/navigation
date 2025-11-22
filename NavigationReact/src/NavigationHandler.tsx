@@ -1,12 +1,12 @@
 'use client'
-import React, { use, useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, useState, useTransition } from 'react';
+import React, { useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import BundlerContext from './BundlerContext.js';
-type NavigationHandlerState = { ignoreCache?: boolean | string, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
+type NavigationHandlerState = { ignoreCache?: boolean | string, rsc?: any, rscCache?: any, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, resumeNavigation?: () => void}>();
@@ -68,14 +68,16 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
         const asyncNavigator = new AsyncStateNavigator()
         const {oldState, state, data, asyncData} = asyncNavigator.stateContext;
-        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator}, stateNavigator, resumeNavigation});
+        const rsc = stateContext['rsc'];
+        stateContext['rsc'] = undefined;
+        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rsc}, stateNavigator, resumeNavigation});
     }, [stateNavigator]);
     if (!navigationEvent) raiseNavigationEvent();
     const refetchControl = useMemo(() => ({
         setRefetch: () => {},
         refetcher: (sceneViewKey: string | boolean = true) => {
             startTransition(() => {
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey}, stateNavigator: navigationEvent.stateNavigator});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey, rsc: undefined, rscCache: undefined}, stateNavigator: navigationEvent.stateNavigator});
             });
         },
         registerRootView: (sceneViewKey: string, active: string | string[]) => {
@@ -94,7 +96,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             const {stateContext} = navigationEvent.data.stateNavigator;
-            if (stateContext['rsc']?.url) {
+            if (stateContext['rsc']) {
                 const {url, sceneViews} = stateContext['rsc'];
                 startTransition(() => {
                     navigationEvent.data.stateNavigator.navigateLink(url, 'add', false, (stateContext, resume) => {
@@ -128,7 +130,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useEffect(() => {
         const offHmrReload = onHmrReload(() => {
             startTransition(() => {
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true}, stateNavigator: navigationEvent.stateNavigator});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rsc: undefined, rscCache: undefined}, stateNavigator: navigationEvent.stateNavigator});
             });
         });
         return offHmrReload;

@@ -1,5 +1,5 @@
 'use client'
-import React, { use, createContext, useContext, useEffect, useRef, useMemo, startTransition, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useMemo } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
@@ -33,8 +33,9 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     if (!navigationEvent['rscCache']) navigationEvent['rscCache'] = new Map();
     const cachedSceneViews = navigationEvent['rscCache'];
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
+    const rscNavigate = navigationEvent['rsc'] || stateContext['rsc'];
     const fetching = (() => {
-        if (!show || cachedSceneViews.__committed || stateContext['rsc']) return false;
+        if (!show || cachedSceneViews.__committed || rscNavigate) return false;
         if ((!getShow(oldState?.key) && !cacheIgnorable) || !refetch || ignoreCache) return true;
         if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
         if (typeof refetch === 'function') return refetch(stateContext);
@@ -53,7 +54,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     }
     const sceneView = (() => {
         if (!show) return null;
-        if (stateContext['rsc']) return stateContext['rsc'].sceneViews[sceneViewKey] || children;
+        if (rscNavigate) return rscNavigate.sceneViews[sceneViewKey] || children;
         if (cachedHistory) return historyCache[url][sceneViewKey];
         if (cachedSceneViews[sceneViewKey]) return cachedSceneViews[sceneViewKey];
         if (firstScene || ancestorFetching) return children;
