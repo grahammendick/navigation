@@ -24,6 +24,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 body: {url, sceneViewKey, historyAction, rootViews: rootViews.current}
             });
             if (!res.url) return res.sceneViews[sceneViewKey];
+            navigationEvent.data.ignoreCache = true;
+            navigationEvent.data.rscCache = res.sceneViews;
             navigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, rscStateContext => {
                 const {stateContext} = navigationEvent.data.stateNavigator;
                 stateContext.url = rscStateContext.url;
@@ -37,7 +39,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 stateContext.previousHash = rscStateContext.previousHash;
                 stateContext.nextCrumb = rscStateContext.nextCrumb;
                 stateContext.historyAction = rscStateContext.historyAction;
-                stateContext['rsc'] = res;
+                navigationEvent.data.state = rscStateContext.state;
+                navigationEvent.data.data = rscStateContext.data;
+                navigationEvent.data.oldState = rscStateContext.oldState;
             }, navigationEvent.stateNavigator.stateContext);
             return null;
         },
@@ -73,9 +77,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
         const asyncNavigator = new AsyncStateNavigator()
         const {oldState, state, data, asyncData} = asyncNavigator.stateContext;
-        const rsc = stateContext['rsc'];
-        stateContext['rsc'] = undefined;
-        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rsc}, stateNavigator, resumeNavigation});
+        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator}, stateNavigator, resumeNavigation});
     }, [stateNavigator]);
     if (!navigationEvent) raiseNavigationEvent();
     const refetchControl = useMemo(() => ({
@@ -100,9 +102,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const oldSceneCount = (typeof window !== 'undefined' && window.history?.state?.sceneCount) || 0;
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
-            const {stateContext} = navigationEvent.data.stateNavigator;
-            navigationEvent.data['rsc'] = stateContext['rsc'];
-            stateContext['rsc'] = undefined;
             navigationEvent.resumeNavigation?.();
             const {stateContext: {url, historyAction, history}} = navigationEvent.stateNavigator;
             if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;

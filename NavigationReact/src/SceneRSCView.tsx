@@ -30,12 +30,11 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     const cacheIgnorable = navigationEvent['ignoreCache'];
     const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
     const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey];
-    if (!navigationEvent['rscCache']) navigationEvent['rscCache'] = new Map();
+    if (!navigationEvent['rscCache']) navigationEvent['rscCache'] = {};
     const cachedSceneViews = navigationEvent['rscCache'];
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
-    const rscNavigate = navigationEvent['rsc'] || stateContext['rsc'];
     const fetching = (() => {
-        if (!show || cachedSceneViews.__committed || rscNavigate) return false;
+        if (!show || cachedSceneViews.__committed) return false;
         if ((!getShow(oldState?.key) && !cacheIgnorable) || !refetch || ignoreCache) return true;
         if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
         if (typeof refetch === 'function') return refetch(stateContext);
@@ -50,7 +49,6 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     }
     const sceneView = (() => {
         if (!show) return null;
-        if (rscNavigate) return rscNavigate.sceneViews[sceneViewKey] || children;
         if (cachedHistory) return historyCache[url][sceneViewKey];
         if (cachedSceneViews[sceneViewKey]) return cachedSceneViews[sceneViewKey];
         if (firstScene || ancestorFetching) return children;
