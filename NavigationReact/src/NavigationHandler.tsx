@@ -26,22 +26,22 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             if (!res.url) return res.sceneViews[sceneViewKey];
             navigationEvent.data.ignoreCache = true;
             navigationEvent.data.rscCache = res.sceneViews;
-            navigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, rscStateContext => {
+            navigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, rscContext => {
                 const {stateContext} = navigationEvent.data.stateNavigator;
-                stateContext.url = rscStateContext.url;
-                stateContext.state = rscStateContext.state;
-                stateContext.data = rscStateContext.data;
-                stateContext.hash = rscStateContext.hash;
-                stateContext.crumbs = rscStateContext.crumbs;
-                stateContext.previousUrl = rscStateContext.previousUrl;
-                stateContext.previousState = rscStateContext.previousState;
-                stateContext.previousData = rscStateContext.previousData;
-                stateContext.previousHash = rscStateContext.previousHash;
-                stateContext.nextCrumb = rscStateContext.nextCrumb;
-                stateContext.historyAction = rscStateContext.historyAction;
-                navigationEvent.data.state = rscStateContext.state;
-                navigationEvent.data.data = rscStateContext.data;
-                navigationEvent.data.oldState = rscStateContext.oldState;
+                stateContext.url = rscContext.url;
+                stateContext.state = rscContext.state;
+                stateContext.data = rscContext.data;
+                stateContext.hash = rscContext.hash;
+                stateContext.crumbs = rscContext.crumbs;
+                stateContext.previousUrl = rscContext.previousUrl;
+                stateContext.previousState = rscContext.previousState;
+                stateContext.previousData = rscContext.previousData;
+                stateContext.previousHash = rscContext.previousHash;
+                stateContext.nextCrumb = rscContext.nextCrumb;
+                stateContext.historyAction = rscContext.historyAction;
+                navigationEvent.data.state = rscContext.state;
+                navigationEvent.data.data = rscContext.data;
+                navigationEvent.data.oldState = rscContext.oldState;
             }, navigationEvent.stateNavigator.stateContext);
             return null;
         },
