@@ -96,10 +96,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             const {stateContext} = navigationEvent.data.stateNavigator;
-            if (stateContext['rsc']) {
-                navigationEvent.data['rsc'] = stateContext['rsc'];
-                stateContext['rsc'] = undefined;
-            }
+            navigationEvent.data['rsc'] = stateContext['rsc'];
+            stateContext['rsc'] = undefined;
             navigationEvent.resumeNavigation?.();
             const {stateContext: {url, historyAction, history}} = navigationEvent.stateNavigator;
             if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
