@@ -43,7 +43,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 navigationEvent.data.data = rscContext.data;
                 navigationEvent.data.oldState = rscContext.oldState;
             }, navigationEvent.stateNavigator.stateContext);
-            return null;
+            return new Promise(res => setTimeout(res, 0));
         },
         onHmrReload,
     }), [deserialize, onHmrReload, navigationEvent])
