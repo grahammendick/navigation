@@ -65,7 +65,6 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
         if (pending) return;
         cachedSceneViews.__committed = true;
         if (historyAction === 'none') return;
-        if (stateContext['rsc']) return;
         if (!historyCache[url]) historyCache[url] = {};
         historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
     });

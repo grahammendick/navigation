@@ -97,14 +97,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             const {stateContext} = navigationEvent.data.stateNavigator;
             if (stateContext['rsc']) {
-                const {url, sceneViews} = stateContext['rsc'];
-                startTransition(() => {
-                    navigationEvent.data.stateNavigator.navigateLink(url, 'add', false, (stateContext, resume) => {
-                        stateContext['rsc'] = {sceneViews};
-                        resume();
-                    }, stateNavigator.stateContext);
-                });
-                return;
+                navigationEvent.data['rsc'] = stateContext['rsc'];
+                stateContext['rsc'] = undefined;
             }
             navigationEvent.resumeNavigation?.();
             const {stateContext: {url, historyAction, history}} = navigationEvent.stateNavigator;
