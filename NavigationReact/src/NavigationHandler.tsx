@@ -80,7 +80,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey, rsc: undefined, rscCache: undefined}, stateNavigator: navigationEvent.stateNavigator});
             });
         },
-        registerRootView: (sceneViewKey: string, active: string | string[]) => {
+        registerSceneView: (sceneViewKey: string, active: string | string[]) => {
             rootViews.current[sceneViewKey] = active;
         },
     }), [navigationEvent]);

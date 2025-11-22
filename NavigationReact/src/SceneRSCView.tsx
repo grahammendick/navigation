@@ -80,17 +80,17 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
 const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {refetch: serverRefetch, active, name} = props;
     const refetchRef = useRef(serverRefetch);
-    const {refetcher, registerRootView} = useContext(RefetchContext);
+    const {refetcher, registerSceneView} = useContext(RefetchContext);
     const navigationEvent = useNavigationEvent();
     const navigationDeferredEvent = useContext(NavigationDeferredContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
     useEffect(() => {
-        registerRootView(sceneViewKey, active);
-    }, [registerRootView, sceneViewKey, active]);
+        registerSceneView(sceneViewKey, active);
+    }, [registerSceneView, sceneViewKey, active]);
     const refetchControl = useMemo(() => ({
         setRefetch: (clientRefetch: any) => refetchRef.current = clientRefetch !== undefined ? clientRefetch : serverRefetch,
         refetcher: (scene: boolean) => refetcher(scene || sceneViewKey),
-        registerRootView: () => {},
+        registerSceneView: () => {},
     }), [navigationEvent, refetcher]);
     const {state, data, stateNavigator: {stateContext}} = navigationEvent;
     const {oldData} = stateContext;
