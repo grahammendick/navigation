@@ -45,11 +45,12 @@ app.post('*', async (req, res) => {
     friends: Friends,
     banner: Banner
   };
-  const {url, sceneViewKey, rootViews} = req.body;
+  const {url, sceneViewKey, historyAction, rootViews} = req.body;
   const serverNavigator = new StateNavigator(stateNavigator);
-  serverNavigator.navigateLink(url);
+  console.log(historyAction, 'xxx');
+  serverNavigator.navigateLink(url, historyAction);
   const id = serverNavigator.stateContext.data.id || 1;
-  serverNavigator.refresh({...serverNavigator.stateContext.data, id: id + 1});
+  serverNavigator.refresh({...serverNavigator.stateContext.data, id: id + 1}, 'replace');
   // serverNavigator.navigate('people');
   const {state, oldState} = serverNavigator.stateContext;
   const activeViews = oldState ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
@@ -62,6 +63,7 @@ app.post('*', async (req, res) => {
     }, [] as string[]) : [sceneViewKey];
   const stream = renderRSC({
     url: oldState ? serverNavigator.stateContext.url : undefined,
+    historyAction: oldState ? serverNavigator.stateContext.historyAction : undefined,
     sceneViews: activeViews.reduce((SceneViews, activeKey) => {
       const SceneView = sceneViews[activeKey];
       SceneViews[activeKey] = (

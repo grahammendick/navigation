@@ -15,8 +15,8 @@ const SceneViewInner = ({children}) => children;
 
 const SceneView = ({active, name, refetch, pending, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean}) => {
     const navigationEvent = useNavigationEvent();
-    const {state, oldState, data, stateNavigator: {stateContext, historyManager}} = navigationEvent;
-    const {url, crumbs, nextCrumb, oldUrl, oldData, history, historyAction} = stateContext;
+    const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
+    const {url, crumbs, oldUrl, oldData, history, historyAction} = stateContext;
     const historyCache = useContext(HistoryCacheContext);
     const {deserialize} = useContext(BundlerContext);
     const ancestorFetching = useContext(FetchingContext);
@@ -46,11 +46,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     })();
     const firstScene = !oldUrl && !ignoreCache;
     if (!cachedSceneViews[sceneViewKey] && !cachedHistory && !firstScene && !ancestorFetching && fetching) {
-        cachedSceneViews[sceneViewKey] = deserialize(historyManager.getHref(nextCrumb.crumblessUrl), {
-            method: 'post',
-            headers: {'Content-Type': 'application/json'},
-            body: {url, sceneViewKey}
-        });
+        cachedSceneViews[sceneViewKey] = deserialize(sceneViewKey, null);
     }
     const sceneView = (() => {
         if (!show) return null;

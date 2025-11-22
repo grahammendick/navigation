@@ -16,11 +16,15 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const rootViews = useRef({});
     const {deserialize, onHmrReload} = useContext(BundlerContext);
     const bundler = useMemo(() => ({
-        deserialize: async (crumblessUrl: string, options: any) => {
-            const {sceneViewKey} = options.body;
-            const res = await deserialize(crumblessUrl, {...options, body: {...options.body, rootViews: rootViews.current}});
+        deserialize: async (sceneViewKey: string) => {
+            const {stateContext: {url, nextCrumb, historyAction}, historyManager} = navigationEvent.data.stateNavigator;
+            const res = await deserialize(historyManager.getHref(nextCrumb.crumblessUrl), {
+                method: 'post',
+                headers: {'Content-Type': 'application/json'},
+                body: {url, sceneViewKey, historyAction, rootViews: rootViews.current}
+            });
             if (!res.url) return res.sceneViews[sceneViewKey];
-            navigationEvent.data.stateNavigator.navigateLink(res.url, 'add', false, (rscStateContext, resume) => {
+            navigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, rscStateContext => {
                 const {stateContext} = navigationEvent.data.stateNavigator;
                 stateContext.url = rscStateContext.url;
                 stateContext.state = rscStateContext.state;
@@ -32,6 +36,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 stateContext.previousData = rscStateContext.previousData;
                 stateContext.previousHash = rscStateContext.previousHash;
                 stateContext.nextCrumb = rscStateContext.nextCrumb;
+                stateContext.historyAction = rscStateContext.historyAction;
                 stateContext['rsc'] = res;
             }, navigationEvent.stateNavigator.stateContext);
             return null;
