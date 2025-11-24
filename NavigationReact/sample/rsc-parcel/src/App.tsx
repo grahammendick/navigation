@@ -4,7 +4,6 @@ import { SceneView } from 'navigation-react';
 import NavigationProvider from './NavigationProvider';
 import People from './People';
 import Person from './Person';
-import Banner from './Banner';
 
 const App = async ({url}: any) => {
   return (
@@ -16,9 +15,6 @@ const App = async ({url}: any) => {
         <NavigationProvider url={url}>
           <SceneView active="people" refetch={[]}>
             <People />
-          </SceneView>
-          <SceneView active="person" refetch={['id']} name="banner">
-            <Banner />
           </SceneView>
           <SceneView active="person" refetch={['id']}>
             <Person />

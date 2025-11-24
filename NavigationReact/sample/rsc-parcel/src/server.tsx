@@ -8,8 +8,6 @@ import Person from './Person';
 import People from './People';
 import List from './List';
 import Friends from './Friends';
-import Banner from './Banner';
-import { getPerson } from './data';
 
 const app = express();
 
@@ -31,26 +29,16 @@ app.get('*', async (req, res) => {
   ), {component: App});
 });
 
-app.post('/test', async (req, res) => {
-  (await getPerson(1)).name = 'Bill Halvorson';
-  console.log('xxx');
-  res.sendStatus(200);
-});
-
 app.post('*', async (req, res) => {
   const sceneViews: any = {
     people: People,
     list: List,
     person: Person,
     friends: Friends,
-    banner: Banner
   };
   const {url, sceneViewKey, historyAction, rootViews} = req.body;
   const serverNavigator = new StateNavigator(stateNavigator);
   serverNavigator.navigateLink(url, historyAction);
-  const id = serverNavigator.stateContext.data.id || 1;
-  serverNavigator.refresh({...serverNavigator.stateContext.data, id: id + 1});
-  // serverNavigator.navigate('people');
   const {state, oldState} = serverNavigator.stateContext;
   const activeViews = oldState ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
       const active = rootViews[rootKey];

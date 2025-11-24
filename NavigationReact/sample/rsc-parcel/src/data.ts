@@ -27,7 +27,7 @@ const searchPeople = async (name: string, pageNumber: number, pageSize: number, 
                 people: filteredPeople.slice(start, start + pageSize),
                 count: filteredPeople.length
             });
-        }, 1000);
+        }, 10);
     })
 };
 
@@ -36,7 +36,7 @@ const getPerson = async (id: number) => {
         const person = people.find(({id: personId}) => personId === id)!
         setTimeout(() => {
             res(person);
-        }, 1000);
+        }, 10);
     })
 }
 

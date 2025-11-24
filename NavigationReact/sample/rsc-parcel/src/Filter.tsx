@@ -1,14 +1,9 @@
 'use client'
 import { RefreshLink, useNavigationEvent } from 'navigation-react';
-import { useEffect } from 'react';
 
 const Filter = () => {
-  const { state, data, stateNavigator } = useNavigationEvent();
+  const { data, stateNavigator } = useNavigationEvent();
   const { name } = data;
-  useEffect(() => {
-    // if (state.key === 'person') throw Error('aargh')
-    console.log(state.key);
-  }, [state]);
   return (
     <div>
       <div>

@@ -1,14 +1,12 @@
 import { NavigationLink, RefreshLink, useNavigationEvent } from 'navigation-react';
 import { searchPeople } from './data';
 import Pager from './Pager';
-import Test from './Test';
 
 const List = async () => {
   const {data: {name, page, size, sort}} = useNavigationEvent();
   const {people, count} = await searchPeople(name, page, size, sort);
   return (
     <>
-    <Test />
       <table>
         <thead>
           <tr>
