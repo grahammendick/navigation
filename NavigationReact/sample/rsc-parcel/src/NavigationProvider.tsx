@@ -17,7 +17,7 @@ const NavigationProvider = ({url, children}: any) => {
     const clientNavigator = new StateNavigator(stateNavigator, historyManager);
     try {
       clientNavigator.navigateLink(url);
-    }catch(e) {
+    } catch(e) {
       if (typeof window !== 'undefined' && window.oldStateNavigator) {
         const {state, data, crumbs} = window.oldStateNavigator.stateContext;
         let fluentNavigator = clientNavigator.fluent() as FluentNavigator;
