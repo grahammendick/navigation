@@ -34,7 +34,7 @@ app.post('*', async (req, res) => {
     people: People,
     list: List,
     person: Person,
-    friends: Friends,
+    friends: Friends
   };
   const {url, sceneViewKey, historyAction, rootViews} = req.body;
   const serverNavigator = new StateNavigator(stateNavigator);
