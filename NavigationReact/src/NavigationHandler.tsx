@@ -24,30 +24,13 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 body: {url, sceneViewKey, historyAction, rootViews: rootViews.current}
             });
             if (!res.url) return res.sceneViews[sceneViewKey];
-            navigationEvent.data.ignoreCache = true;
-            navigationEvent.data.rscCache = res.sceneViews;
-            navigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, rscContext => {
-                const {stateContext} = navigationEvent.data.stateNavigator;
-                stateContext.url = rscContext.url;
-                stateContext.state = rscContext.state;
-                stateContext.data = rscContext.data;
-                stateContext.hash = rscContext.hash;
-                stateContext.crumbs = rscContext.crumbs;
-                stateContext.previousUrl = rscContext.previousUrl;
-                stateContext.previousState = rscContext.previousState;
-                stateContext.previousData = rscContext.previousData;
-                stateContext.previousHash = rscContext.previousHash;
-                stateContext.nextCrumb = rscContext.nextCrumb;
-                stateContext.historyAction = rscContext.historyAction;
-                navigationEvent.data.state = rscContext.state;
-                navigationEvent.data.data = rscContext.data;
-                navigationEvent.data.oldState = rscContext.oldState;
-            }, navigationEvent.stateNavigator.stateContext);
-            return new Promise(res => setTimeout(res, 0));
+            navigationEvent.data.stateNavigator.stateContext['rscCache'] = res.sceneViews;
+            navigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, undefined, stateNavigator.stateContext);
+            return new Promise(() => {});
         },
         onHmrReload,
     }), [deserialize, onHmrReload, navigationEvent])
-    const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void) => {
+    const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void, rscCache?: any) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
                 super(stateNavigator, stateNavigator.historyManager);
@@ -69,7 +52,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                         const refresh = oldState === state && crumbs.length === this.stateContext.crumbs.length;
                         const startTran = (!history && !refresh && startTransition) || ((transition) => transition());
                         startTran(() => {
-                            raiseNavigationEvent(stateContext, resumeNavigation);
+                            raiseNavigationEvent(stateContext, resumeNavigation, this.stateContext['rscCache']);
                         });
                     })
                 }, currentContext);
@@ -77,7 +60,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
         const asyncNavigator = new AsyncStateNavigator()
         const {oldState, state, data, asyncData} = asyncNavigator.stateContext;
-        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator}, stateNavigator, resumeNavigation});
+        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache}, stateNavigator, resumeNavigation});
     }, [stateNavigator]);
     if (!navigationEvent) raiseNavigationEvent();
     const refetchControl = useMemo(() => ({
