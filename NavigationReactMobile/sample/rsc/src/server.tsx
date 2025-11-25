@@ -39,6 +39,8 @@ app.post('*', async (req, res) => {
   const {url, sceneViewKey, historyAction, rootViews} = req.body;
   const serverNavigator = new StateNavigator(stateNavigator);
   serverNavigator.navigateLink(url, historyAction);
+  serverNavigator.navigate('person', {id: 1});
+  // serverNavigator.refresh({id: 1});
   const {state, oldState} = serverNavigator.stateContext;
   const activeViews = oldState ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
       const active = rootViews[rootKey];

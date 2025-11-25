@@ -1,7 +1,7 @@
 'use client'
 import React, {useRef, useState, useContext, useEffect, ReactElement} from 'react';
 import { State, StateNavigator } from 'navigation';
-import { NavigationContext } from 'navigation-react';
+import { NavigationContext, useRootViewRegistry } from 'navigation-react';
 import Scene from './Scene.js';
 import Freeze from './Freeze.js';
 import SharedElementContext from './SharedElementContext.js';
@@ -15,6 +15,7 @@ type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], res
 const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, sharedElements: sharedElementsStack,
     className: sceneClassName, style: sceneStyle, duration = 300, renderScene, children, stackInvalidatedLink}: NavigationStackProps) => {
     const sharedElementRegistry = useSharedElementRegistry();
+    const registerRootView = useRootViewRegistry();
     const {stateNavigator} = useContext(NavigationContext);
     const [motionState, setMotionState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: false, ignorePause: false});
     const scenes = {};
@@ -120,6 +121,11 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         }, 300);
         return () => clearTimeout(timer);
     }, [pause]);
+    useEffect(() => {
+        for(const {props: {stateKey}} of Object.values(allScenes) as any) {
+            registerRootView(stateKey, stateKey);
+        }
+    }, [registerRootView, allScenes]);
     const sceneData = getScenes();
     return (stateContext.state &&
         <FreezeContext.Provider value={!rsc}>

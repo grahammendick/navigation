@@ -2,7 +2,7 @@ type Person = {id: number, name: string, gender: 'male' | 'female' | 'other', da
 
 var people: Person[] = [
     {id: 1, name: 'Bell Halvorson', gender: 'female', dateOfBirth: '01/01/1980', email: 'bell@navigation.com', phone: '555 0001', friends: [2,3,4,5]},
-    {id: 2, name: 'Adit Larson', gender: 'male', dateOfBirth: '01/02/1980', email: 'aditya@navigation.com', phone: '555 0002', friends: [3,4,5,6]},
+    {id: 2, name: 'Aditya Larson', gender: 'male', dateOfBirth: '01/02/1980', email: 'aditya@navigation.com', phone: '555 0002', friends: [3,4,5,6]},
     {id: 3, name: 'Rashawn Schamberger', gender: 'male', dateOfBirth: '01/03/1980', email: 'rashawn@navigation.com', phone: '555 0003', friends: [4,5,6,7]},
     {id: 4, name: 'Rupert Grant', gender: 'male', dateOfBirth: '01/04/1980', email: 'rupert@navigation.com', phone: '555 0004', friends: [5,6,7,8]},
     {id: 5, name: 'Opal Carter', gender: 'female', dateOfBirth: '01/05/1980', email: 'opal@navigation.com', phone: '555 0005', friends: [6,7,8,9]},
@@ -27,7 +27,7 @@ const searchPeople = async (name: string, pageNumber: number, pageSize: number, 
                 people: filteredPeople.slice(start, start + pageSize),
                 count: filteredPeople.length
             });
-        }, 10);
+        }, 100);
     })
 };
 
@@ -36,7 +36,7 @@ const getPerson = async (id: number) => {
         const person = people.find(({id: personId}) => personId === id)!
         setTimeout(() => {
             res(person);
-        }, 10);
+        }, 1000);
     })
 }
 

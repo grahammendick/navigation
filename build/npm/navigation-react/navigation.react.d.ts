@@ -46,9 +46,9 @@ export var BundlerContext: Context<{
      */
     deserialize: (url: string, options: any) => Promise<any>;
     /**
-     * Updates the root RSC content
+     * Registers a Hot Module Replacement reload listener
      */
-    setRoot: (root: any) => void;
+    onHmrReload: (hmrReload: () => void) => () => void;
 }>;
 
 /**
@@ -60,6 +60,11 @@ export function useNavigationEvent<NavigationInfo extends { [index: string]: any
  * The hook that determines when to refetch the RSC View
  */
 export function useRefetch(refetch?: string[] | ((stateContext: StateContext) => boolean) | null) : (scene?: boolean) => void;
+
+/**
+ * The hook for registering top-level RSC Views
+ */
+export function useRootViewRegistry() : (sceneViewKey: string, active: string | string[]) => void;
 
 /**
  * Defines the Navigation Handler Props contract
