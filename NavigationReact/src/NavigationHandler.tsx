@@ -26,7 +26,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             if (!res.url) return res.sceneViews[sceneViewKey];
             navigationEvent.data.stateNavigator.stateContext['rscCache'] = res.sceneViews;
             navigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, undefined, stateNavigator.stateContext);
-            return null;
+            return new Promise(() => {});
         },
         onHmrReload,
     }), [deserialize, onHmrReload, navigationEvent])
