@@ -16,7 +16,7 @@ const NavigationProvider = ({url, children}: any) => {
     if (typeof oldStateNavigator !== 'undefined') oldStateNavigator.historyManager.stop();
     const clientNavigator = new StateNavigator(stateNavigator, new HTML5HistoryManager());
     try {
-      clientNavigator.navigateLink(typeof oldStateNavigator === 'undefined' ? url : oldStateNavigator.stateContext.url);
+      clientNavigator.navigateLink(typeof oldStateNavigator === 'undefined' ? url : oldStateNavigator.stateContext.url, 'replace');
     } catch(e) {
       if (typeof oldStateNavigator !== 'undefined') {
         const {state, data, crumbs} = oldStateNavigator.stateContext;

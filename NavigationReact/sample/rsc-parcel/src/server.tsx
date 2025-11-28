@@ -24,7 +24,7 @@ app.get('*', async (req, res) => {
   serverNavigator.navigateLink(req.url);
   await renderRequest(req, res, (
     <NavigationHandler stateNavigator={serverNavigator}>
-      <App url={req.url} />
+      <App url={serverNavigator.stateContext.url} />
     </NavigationHandler>
   ), {component: App});
 });
