@@ -10,12 +10,11 @@ declare global {
         oldStateNavigator: StateNavigator;
     }
 }
-const historyManager = new HTML5HistoryManager();
 
 const NavigationProvider = ({url, children}: any) => {
   const clientNavigator = useMemo(() => {
     if (typeof oldStateNavigator !== 'undefined') oldStateNavigator.historyManager.stop();
-    const clientNavigator = new StateNavigator(stateNavigator, historyManager);
+    const clientNavigator = new StateNavigator(stateNavigator, new HTML5HistoryManager());
     try {
       clientNavigator.navigateLink(typeof oldStateNavigator === 'undefined' ? url : oldStateNavigator.stateContext.url);
     } catch(e) {

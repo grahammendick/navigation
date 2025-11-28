@@ -11,12 +11,11 @@ declare global {
         oldStateNavigator: StateNavigator;
     }
 }
-const historyManager = new MobileHistoryManager(null, '');
 
 const NavigationProvider = ({url, start, children}: any) => {
   const clientNavigator = useMemo(() => {
     if (typeof oldStateNavigator !== 'undefined') oldStateNavigator.historyManager.stop();
-    const clientNavigator = new StateNavigator(stateNavigator, historyManager);
+    const clientNavigator = new StateNavigator(stateNavigator, new MobileHistoryManager(null, ''));
     var {state, data} = clientNavigator.parseLink<any>(url);
     const link = clientNavigator.fluent()
         .navigate(start)
