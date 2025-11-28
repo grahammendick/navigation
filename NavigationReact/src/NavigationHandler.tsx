@@ -104,7 +104,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
         if (stateNavigator !== navigationEvent.stateNavigator)
-            raiseNavigationEvent();
+            raiseNavigationEvent(undefined, undefined, {});
     }, [navigationEvent, stateNavigator]);
     useEffect(() => {
         const offHmrReload = onHmrReload(() => {
