@@ -21,7 +21,11 @@ app.get(['/favicon.ico', '/.well-known/*.json'], (_req, res) => {
 
 app.get('*', async (req, res) => {
   const serverNavigator = new StateNavigator(stateNavigator);
-  serverNavigator.navigateLink(req.url);
+  const {state, data} = serverNavigator.parseLink<any>(req.url);
+  const url = serverNavigator.fluent()
+      .navigate('people')
+      .navigate(state.key, data).url;
+  serverNavigator.navigateLink(url);
   await renderRequest(req, res, (
     <NavigationHandler stateNavigator={serverNavigator}>
       <App url={serverNavigator.stateContext.url} />

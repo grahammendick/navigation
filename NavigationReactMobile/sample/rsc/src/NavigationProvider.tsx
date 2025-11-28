@@ -12,16 +12,12 @@ declare global {
     }
 }
 
-const NavigationProvider = ({url, start, children}: any) => {
+const NavigationProvider = ({url, children}: any) => {
   const clientNavigator = useMemo(() => {
     if (typeof oldStateNavigator !== 'undefined') oldStateNavigator.historyManager.stop();
     const clientNavigator = new StateNavigator(stateNavigator, new MobileHistoryManager(null, ''));
-    var {state, data} = clientNavigator.parseLink<any>(url);
-    const link = clientNavigator.fluent()
-        .navigate(start)
-        .navigate(state.key, data).url;
     try {
-      clientNavigator.navigateLink(typeof oldStateNavigator === 'undefined' ? link : oldStateNavigator.stateContext.url);
+      clientNavigator.navigateLink(typeof oldStateNavigator === 'undefined' ? url : oldStateNavigator.stateContext.url);
     } catch(e) {
       if (typeof oldStateNavigator !== 'undefined') {
         const {state, data, crumbs} = oldStateNavigator.stateContext;

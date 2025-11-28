@@ -12,7 +12,7 @@ const App = async ({url}: any) => {
         <title>Navigation React Mobile</title>
       </head>
       <body>
-        <NavigationProvider url={url} start="people">
+        <NavigationProvider url={url}>
           <NavigationStack
             unmountStyle={[{transform: 'translateX(100%)'}, {transform: 'translateX(0)'}]}
             crumbStyle={[{transform: 'translateX(5%) scale(0.9)', opacity: 0},{transform: 'translateX(0) scale(1)', opacity: 1}]}
