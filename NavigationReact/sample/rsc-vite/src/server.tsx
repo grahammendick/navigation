@@ -1,4 +1,4 @@
-import * as ReactServer from '@vitejs/plugin-rsc/rsc';
+import { renderToReadableStream } from '@vitejs/plugin-rsc/rsc';
 import { StateNavigator } from 'navigation';
 import stateNavigator from './stateNavigator.ts';
 
@@ -17,7 +17,7 @@ const get = async (request: Request) => {
     return new Response('Not Found', { status: 404 });
   }
   const {NavigationHandler} = await import('navigation-react');
-  const rscStream = ReactServer.renderToReadableStream((
+  const rscStream = renderToReadableStream((
     <NavigationHandler stateNavigator={serverNavigator}>
       <App url={url} />
     </NavigationHandler>
@@ -39,7 +39,7 @@ const post = async (request: Request) => {
     const serverNavigator = new StateNavigator(stateNavigator);
     serverNavigator.navigateLink(url);
     const {NavigationHandler} = await import('navigation-react');
-    const rscStream = ReactServer.renderToReadableStream((
+    const rscStream = renderToReadableStream((
       <NavigationHandler stateNavigator={serverNavigator}>
         <SceneView />
       </NavigationHandler>
