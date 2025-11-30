@@ -1,8 +1,8 @@
-import { useMemo } from "react";
-import ReactDOM from "react-dom/client";
+import { useMemo } from 'react';
+import ReactDOM from 'react-dom/client';
 import { createFromReadableStream } from '@vitejs/plugin-rsc/browser'
 import { rscStream } from 'rsc-html-stream/client'
-import { createFromFetch } from "@vitejs/plugin-rsc/browser";
+import { createFromFetch } from '@vitejs/plugin-rsc/browser';
 import { BundlerContext } from 'navigation-react';
 
 async function fetchRSC(url: string, {body, ...options}: any) {
