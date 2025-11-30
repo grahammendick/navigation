@@ -3,38 +3,14 @@ import { StateNavigator } from 'navigation';
 import stateNavigator from './stateNavigator.ts';
 
 export default async function handler(request: Request): Promise<Response> {
-  let url: string = '';
-  let view: any;
+  return request.method === 'GET' ? get(request) : post(request);
+}
+
+const get = async (request: Request) => {
   const serverNavigator = new StateNavigator(stateNavigator);
-  if (request.method === 'GET') {
-    let reqUrl = new URL(request.url);
-    url = `${reqUrl.pathname}${reqUrl.search}`;
-    const App = (await import('./App.tsx')).default;
-    view = <App url={url} />;
-  }
-  if (request.method === 'POST') {
-    const sceneViews: any = {
-      people: await import('./People.tsx'),
-      list: await import('./List.tsx'),
-      person: await import('./Person.tsx'),
-      friends: await import('./Friends.tsx')
-    };
-    const {url: reqUrl, sceneViewKey} = await request.json();
-    url = reqUrl;
-    const SceneView = sceneViews[sceneViewKey].default;
-    view = <SceneView />;
-  }
-  if (request.method === 'PUT') {
-    const {state, data, crumbs} = await request.json();
-    let fluentNavigator = serverNavigator.fluent();
-    for (let i = 0; i < crumbs.length; i++) {
-      fluentNavigator = fluentNavigator.navigate(crumbs[i].state, crumbs[i].data);
-    }
-    fluentNavigator = fluentNavigator.navigate(state, data);
-    url = fluentNavigator.url;
-    const App = (await import('./App.tsx')).default;
-    view = <App url={url} />;
-  }
+  const reqUrl = new URL(request.url);
+  const url = `${reqUrl.pathname}${reqUrl.search}`;
+  const App = (await import('./App.tsx')).default;
   try {
     serverNavigator.navigateLink(url);
   } catch(e) {
@@ -42,18 +18,33 @@ export default async function handler(request: Request): Promise<Response> {
   }
   const {NavigationHandler} = await import('navigation-react');
   const rscStream = ReactServer.renderToReadableStream((
-    <>
-      <NavigationHandler stateNavigator={serverNavigator}>
-        {view}
-      </NavigationHandler>
-    </>
+    <NavigationHandler stateNavigator={serverNavigator}>
+      <App url={url} />
+    </NavigationHandler>
   ));
-  if (request.method !== 'GET') {
-    return new Response(rscStream, {headers: {'Content-type': 'text/x-component'}});
-  }
   const ssrEntryModule = await import.meta.viteRsc.loadModule<typeof import('./server.ssr.tsx')>('ssr', 'index');
   const htmlStream = await ssrEntryModule.renderHTML(rscStream);
   return new Response(htmlStream, {headers: {'Content-type': 'text/html'}});
+}
+
+const post = async (request: Request) => {
+    const sceneViews: any = {
+      people: await import('./People.tsx'),
+      list: await import('./List.tsx'),
+      person: await import('./Person.tsx'),
+      friends: await import('./Friends.tsx')
+    };
+    const {url, sceneViewKey} = await request.json();
+    const SceneView = sceneViews[sceneViewKey].default;
+    const serverNavigator = new StateNavigator(stateNavigator);
+    serverNavigator.navigateLink(url);
+    const {NavigationHandler} = await import('navigation-react');
+    const rscStream = ReactServer.renderToReadableStream((
+      <NavigationHandler stateNavigator={serverNavigator}>
+        <SceneView />
+      </NavigationHandler>
+    ));
+    return new Response(rscStream, {headers: {'Content-type': 'text/x-component'}});
 }
 
 if (import.meta.hot) {
