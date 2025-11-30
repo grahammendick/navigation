@@ -1,19 +1,19 @@
-import * as ReactClient from '@vitejs/plugin-rsc/ssr';
-import React from 'react';
-import * as ReactDOMServer from 'react-dom/server.edge';
+import { use, type ReactNode } from 'react';
+import { createFromReadableStream } from '@vitejs/plugin-rsc/ssr';
+import { renderToReadableStream } from 'react-dom/server.edge';
 import { injectRSCPayload } from 'rsc-html-stream/server';
 
 export async function renderHTML(
   rscStream: ReadableStream<Uint8Array>) {
   const [rscStream1, rscStream2] = rscStream.tee();
-  let payload: Promise<React.ReactNode>;
+  let payload: Promise<ReactNode>;
   function SsrRoot() {
-    payload ??= ReactClient.createFromReadableStream<React.ReactNode>(rscStream1);
-    return React.use(payload);
+    payload ??= createFromReadableStream<ReactNode>(rscStream1);
+    return use(payload);
   }
   const bootstrapScriptContent =
     await import.meta.viteRsc.loadBootstrapScriptContent('index');
-  const htmlStream = await ReactDOMServer.renderToReadableStream(<SsrRoot />, {
+  const htmlStream = await renderToReadableStream(<SsrRoot />, {
     bootstrapScriptContent,
   });
   let responseStream: ReadableStream<Uint8Array> = htmlStream;
