@@ -19,7 +19,7 @@ const get = async (request: Request) => {
   const {NavigationHandler} = await import('navigation-react');
   const rscStream = renderToReadableStream((
     <NavigationHandler stateNavigator={serverNavigator}>
-      <App url={url} />
+      <App url={serverNavigator.stateContext.url} />
     </NavigationHandler>
   ));
   const ssrEntryModule = await import.meta.viteRsc.loadModule<typeof import('./server.ssr.tsx')>('ssr', 'index');
