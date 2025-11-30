@@ -41,14 +41,13 @@ export default async function handler(request: Request): Promise<Response> {
     return new Response('Not Found', { status: 404 });
   }
   const {NavigationHandler} = await import('navigation-react');
-  const root = (
+  const rscStream = ReactServer.renderToReadableStream((
     <>
       <NavigationHandler stateNavigator={serverNavigator}>
         {view}
       </NavigationHandler>
     </>
-  );
-  const rscStream = ReactServer.renderToReadableStream({root});
+  ));
   if (request.method !== 'GET') {
     return new Response(rscStream, {headers: {'Content-type': 'text/x-component'}});
   }

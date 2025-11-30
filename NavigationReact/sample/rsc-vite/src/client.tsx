@@ -6,13 +6,12 @@ import { createFromFetch } from "@vitejs/plugin-rsc/browser";
 import { BundlerContext } from 'navigation-react';
 
 async function fetchRSC(url: string, {body, ...options}: any) {
-    const payload = await createFromFetch(fetch(url, {...options, body: JSON.stringify(body)})) as any;
-    return payload.root;
+    return createFromFetch(fetch(url, {...options, body: JSON.stringify(body)}));
 }
 
-const initialPayload = await ReactClient.createFromReadableStream<{root: React.ReactNode}>(rscStream)
+const initialPayload = ReactClient.createFromReadableStream<any>(rscStream)
 function Shell() {
-    const [root, setRoot] = useState(initialPayload.root);
+    const [root, setRoot] = useState(initialPayload);
     const bundler = useMemo(() => ({setRoot, deserialize: fetchRSC}), []);
     return (
         <BundlerContext.Provider value={bundler}>

@@ -3,16 +3,13 @@ import React from 'react';
 import * as ReactDOMServer from 'react-dom/server.edge';
 import { injectRSCPayload } from 'rsc-html-stream/server';
 
-type RscPayload = {
-  root: React.ReactNode
-}
 export async function renderHTML(
   rscStream: ReadableStream<Uint8Array>) {
   const [rscStream1, rscStream2] = rscStream.tee();
-  let payload: Promise<RscPayload>;
+  let payload: Promise<React.ReactNode>;
   function SsrRoot() {
-    payload ??= ReactClient.createFromReadableStream<RscPayload>(rscStream1);
-    return React.use(payload).root;
+    payload ??= ReactClient.createFromReadableStream<React.ReactNode>(rscStream1);
+    return React.use(payload);
   }
   const bootstrapScriptContent =
     await import.meta.viteRsc.loadBootstrapScriptContent('index');
