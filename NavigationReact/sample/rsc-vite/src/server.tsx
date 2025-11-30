@@ -8,8 +8,8 @@ export default async function handler(request: Request): Promise<Response> {
 
 const get = async (request: Request) => {
   const serverNavigator = new StateNavigator(stateNavigator);
-  const reqUrl = new URL(request.url);
-  const url = `${reqUrl.pathname}${reqUrl.search}`;
+  const {pathname, search} = new URL(request.url);
+  const url = `${pathname}${search}`;
   const App = (await import('./App.tsx')).default;
   try {
     serverNavigator.navigateLink(url);
