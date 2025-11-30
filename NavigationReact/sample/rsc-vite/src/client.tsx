@@ -12,7 +12,13 @@ async function fetchRSC(url: string, {body, ...options}: any) {
 const initialPayload = createFromReadableStream<any>(rscStream)
 function Shell() {
     const root = useMemo(() => initialPayload, []);
-    const bundler = useMemo(() => ({setRoot: () => {}, deserialize: fetchRSC}), []);
+    const bundler = useMemo(() => ({
+        deserialize: fetchRSC,
+        onHmrReload: (hmrReload: () => void) => {
+            import.meta.hot?.on("rsc:update", hmrReload);
+            return () => import.meta.hot?.off("rsc:update", hmrReload);
+        }
+    }), []);
     return (
         <BundlerContext.Provider value={bundler}>
             {root}

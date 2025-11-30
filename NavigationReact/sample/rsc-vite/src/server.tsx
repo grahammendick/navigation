@@ -28,23 +28,39 @@ const get = async (request: Request) => {
 }
 
 const post = async (request: Request) => {
-    const sceneViews: any = {
-      people: await import('./People.tsx'),
-      list: await import('./List.tsx'),
-      person: await import('./Person.tsx'),
-      friends: await import('./Friends.tsx')
-    };
-    const {url, sceneViewKey} = await request.json();
-    const SceneView = sceneViews[sceneViewKey].default;
-    const serverNavigator = new StateNavigator(stateNavigator);
-    serverNavigator.navigateLink(url);
-    const {NavigationHandler} = await import('navigation-react');
-    const rscStream = renderToReadableStream((
-      <NavigationHandler stateNavigator={serverNavigator}>
-        <SceneView />
-      </NavigationHandler>
-    ));
-    return new Response(rscStream, {headers: {'Content-type': 'text/x-component'}});
+  const sceneViews: any = {
+    people: await import('./People.tsx'),
+    list: await import('./List.tsx'),
+    person: await import('./Person.tsx'),
+    friends: await import('./Friends.tsx')
+  };
+  const {url, sceneViewKey, historyAction, rootViews} = await request.json();
+  const serverNavigator = new StateNavigator(stateNavigator);
+  serverNavigator.navigateLink(url, historyAction);
+  const {state, oldState} = serverNavigator.stateContext;
+  const activeViews = oldState ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
+    const active = rootViews[rootKey];
+    const show =  active != null && (
+        typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
+    );
+    if (show) activeRoots.push(rootKey);
+    return activeRoots;
+  }, [] as string[]) : [sceneViewKey];
+  const {NavigationHandler} = await import('navigation-react');
+  const stream = renderToReadableStream({
+    url: oldState ? serverNavigator.stateContext.url : undefined,
+    historyAction: oldState ? serverNavigator.stateContext.historyAction : undefined,
+    sceneViews: activeViews.reduce((SceneViews, activeKey) => {
+      const SceneView = sceneViews[activeKey].default;
+      SceneViews[activeKey] = (
+        <NavigationHandler stateNavigator={serverNavigator}>
+          <SceneView />
+        </NavigationHandler>
+      );
+      return SceneViews;
+    }, {})
+  });
+  return new Response(stream, {headers: {'Content-type': 'text/x-component'}});
 }
 
 if (import.meta.hot) {

@@ -1,6 +1,5 @@
 import { SceneView } from 'navigation-react'
 import NavigationProvider from './NavigationProvider'
-import HmrProvider from './HmrProvider'
 import People from './People'
 import Person from './Person'
 
@@ -12,14 +11,12 @@ const App = async ({ url }: any) => {
       </head>
       <body>
         <NavigationProvider url={url}>
-          <HmrProvider>
-            <SceneView active="people" refetch={[]}>
-              <People />
-            </SceneView>
-            <SceneView active="person" refetch={['id']}>
-              <Person />
-            </SceneView>
-          </HmrProvider>
+          <SceneView active="people" refetch={[]}>
+            <People />
+          </SceneView>
+          <SceneView active="person" refetch={['id']}>
+            <Person />
+          </SceneView>
         </NavigationProvider>
       </body>
     </html>
