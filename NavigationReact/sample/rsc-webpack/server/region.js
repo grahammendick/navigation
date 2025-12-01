@@ -71,7 +71,7 @@ async function renderApp(req, res, el, navigator) {
       {stateNavigator: navigator},
       el)
   );
-  const {pipe} = renderToPipeableStream(req.accepts('text/html') ? {root} : root, moduleMap);
+  const {pipe} = renderToPipeableStream(root, moduleMap);
   pipe(res);
 }
 
