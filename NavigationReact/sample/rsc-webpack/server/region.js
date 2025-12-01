@@ -97,20 +97,6 @@ app.post('*', async function (req, res) {
   await renderApp(req, res, React.createElement(View), serverNavigator);
 });
 
-app.put('*', async (req, res) => {
-  const m = await import('../src/App.js');
-  const App = m.default.default || m.default;
-  const serverNavigator = new StateNavigator(stateNavigator.default);
-  const {state, data, crumbs} = req.body;
-  let fluentNavigator = serverNavigator.fluent();
-  for (let i = 0; i < crumbs.length; i++) {
-    fluentNavigator = fluentNavigator.navigate(crumbs[i].state, crumbs[i].data);
-  }
-  fluentNavigator = fluentNavigator.navigate(state, data);
-  serverNavigator.navigateLink(fluentNavigator.url);
-  await renderApp(req, res, React.createElement(App, {url: fluentNavigator.url}), serverNavigator);
-});
-
 app.listen(3001, () => {
   console.log('Server listening on port 3001...');
 });
