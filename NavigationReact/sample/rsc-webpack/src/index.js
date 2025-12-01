@@ -24,7 +24,7 @@ function Shell() {
   const bundler = useMemo(() => ({
     deserialize: fetchRSC,
     onHmrReload: (hmrReload) => {
-      onHmrReload = (status) => {
+      const onHmrReload = (status) => {
           if (status !== 'idle') return;
           hmrReload();
       };
