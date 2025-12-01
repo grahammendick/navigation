@@ -42,28 +42,24 @@ const React = require('react');
 const {StateNavigator} = require('navigation');
 const stateNavigator = require('../src/stateNavigator.js');
 
-async function renderApp(req, res, el, navigator) {
-  const {renderToPipeableStream} = await import(
-    'react-server-dom-webpack/server'
-  );
-
-  let moduleMap;
+async function getModuleMap() {
   if (process.env.NODE_ENV === 'development') {
-    // Read the module map from the HMR server in development.
-    moduleMap = await (
+    return await (
       await fetch('http://localhost:3000/react-client-manifest.json')
     ).json();
   } else {
-    // Read the module map from the static build in production.
-    moduleMap = JSON.parse(
+    return JSON.parse(
       await readFile(
         path.resolve(__dirname, `../build/react-client-manifest.json`),
         'utf8'
       )
     );
   }
+}
+
+async function renderSceneView(el, navigator) {
   const {NavigationHandler} = await import('navigation-react');
-  const root = React.createElement(
+  return React.createElement(
     React.Fragment,
     null,
     React.createElement(
@@ -71,8 +67,7 @@ async function renderApp(req, res, el, navigator) {
       {stateNavigator: navigator},
       el)
   );
-  const {pipe} = renderToPipeableStream(root, moduleMap);
-  pipe(res);
+
 }
 
 app.get('*', async function (req, res) {
@@ -80,7 +75,13 @@ app.get('*', async function (req, res) {
   const App = m.default.default || m.default;
   const serverNavigator = new StateNavigator(stateNavigator.default);
   serverNavigator.navigateLink(req.url);
-  await renderApp(req, res, React.createElement(App, {url: req.url}), serverNavigator);
+  const {renderToPipeableStream} = await import(
+    'react-server-dom-webpack/server'
+  );
+  const moduleMap = await getModuleMap();
+  const root = renderSceneView(React.createElement(App, {url: req.url}), serverNavigator);
+  const {pipe} = renderToPipeableStream(root, moduleMap);
+  pipe(res);
 });
 
 app.post('*', async function (req, res) {
@@ -94,7 +95,13 @@ app.post('*', async function (req, res) {
   const View = sceneViews[sceneViewKey].default;
   const serverNavigator = new StateNavigator(stateNavigator.default);
   serverNavigator.navigateLink(url);
-  await renderApp(req, res, React.createElement(View), serverNavigator);
+  const {renderToPipeableStream} = await import(
+    'react-server-dom-webpack/server'
+  );
+  const moduleMap = await getModuleMap();
+  const root = renderSceneView(React.createElement(View), serverNavigator);
+  const {pipe} = renderToPipeableStream(root, moduleMap);
+  pipe(res);
 });
 
 app.listen(3001, () => {
