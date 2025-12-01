@@ -91,16 +91,33 @@ app.post('*', async function (req, res) {
     person: await import('../src/Person.js'),
     friends: await import('../src/Friends.js')
   };
-  const {url, sceneViewKey} = req.body;
-  const View = sceneViews[sceneViewKey].default;
+  const {url, sceneViewKey, historyAction, rootViews} = req.body;
   const serverNavigator = new StateNavigator(stateNavigator.default);
-  serverNavigator.navigateLink(url);
+  serverNavigator.navigateLink(url, historyAction);
+  const {state, oldState} = serverNavigator.stateContext;
+  const activeViews = oldState ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
+      const active = rootViews[rootKey];
+      const show =  active != null && (
+          typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
+      );
+      if (show) activeRoots.push(rootKey);
+      return activeRoots;
+    }, []) : [sceneViewKey];
   const {renderToPipeableStream} = await import(
     'react-server-dom-webpack/server'
   );
   const moduleMap = await getModuleMap();
-  const root = renderSceneView(React.createElement(View), serverNavigator);
-  const {pipe} = renderToPipeableStream(root, moduleMap);
+  const {pipe} = renderToPipeableStream({
+    url: oldState ? serverNavigator.stateContext.url : undefined,
+    historyAction: oldState ? serverNavigator.stateContext.historyAction : undefined,
+    sceneViews: activeViews.reduce((SceneViews, activeKey) => {
+      const SceneView = sceneViews[activeKey].default;
+      SceneViews[activeKey] = (
+        renderSceneView(React.createElement(SceneView), serverNavigator)
+      );
+      return SceneViews;
+    }, {})
+  }, moduleMap);
   pipe(res);
 });
 
