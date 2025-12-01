@@ -43,23 +43,15 @@ async function getModuleMap() {
     ).json();
   } else {
     return JSON.parse(
-      await readFile(
-        path.resolve(__dirname, `../build/react-client-manifest.json`),
-        'utf8'
-      )
+      await readFile(path.resolve(__dirname, `../build/react-client-manifest.json`), 'utf8')
     );
   }
 }
 
 async function renderSceneView(el, navigator) {
   const {NavigationHandler} = await import('navigation-react');
-  return React.createElement(
-    React.Fragment,
-    null,
-    React.createElement(
-      NavigationHandler,
-      {stateNavigator: navigator},
-      el)
+  return React.createElement(React.Fragment, null,
+    React.createElement(NavigationHandler, {stateNavigator: navigator}, el)
   );
 }
 
@@ -72,7 +64,7 @@ app.get('*', async function (req, res) {
     'react-server-dom-webpack/server'
   );
   const moduleMap = await getModuleMap();
-  const root = renderSceneView(React.createElement(App, {url: req.url}), serverNavigator);
+  const root = renderSceneView(React.createElement(App, {url: serverNavigator.stateContext.url}), serverNavigator);
   const {pipe} = renderToPipeableStream(root, moduleMap);
   pipe(res);
 });
