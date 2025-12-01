@@ -1,9 +1,6 @@
 'use strict';
 
-// This is a server to host data-local resources like databases and RSC
-
 const path = require('path');
-const url = require('url');
 
 const register = require('react-server-dom-webpack/node-register');
 register();
@@ -15,9 +12,6 @@ babelRegister({
     /\/(build|node_modules)\//,
     function (file) {
       if ((path.dirname(file) + '/').startsWith(__dirname + '/')) {
-        // Ignore everything in this folder
-        // because it's a mix of CJS and ESM
-        // and working with raw code is easier.
         return true;
       }
       return false;
@@ -67,7 +61,6 @@ async function renderSceneView(el, navigator) {
       {stateNavigator: navigator},
       el)
   );
-
 }
 
 app.get('*', async function (req, res) {
