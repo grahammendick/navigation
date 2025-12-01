@@ -29,7 +29,7 @@ const NavigationProvider = ({url, children}: any) => {
       }
     }
     return clientNavigator;
-  }, []);
+  }, [stateNavigator]);
   useEffect(() => {
     window.oldStateNavigator = clientNavigator;
   }, [clientNavigator])
