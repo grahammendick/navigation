@@ -9,11 +9,10 @@ import { BundlerContext } from 'navigation-react';
 function Shell() {
     const root = useMemo(() => createFromReadableStream(rscStream), []);
     const bundler = useMemo(() => {
-        let onHmrReload: (e: any) => void;
         return {
             deserialize: fetchRSC,
             onHmrReload: (hmrReload: () => void) => {
-                onHmrReload = (e: any) => {
+                const onHmrReload = (e: any) => {
                     e.preventDefault();
                     hmrReload();
                 };
