@@ -1,6 +1,6 @@
 {
   "name": "navigation",
-  "version": "6.3.0",
+  "version": "6.3.1",
   "description": "The scene-based JavaScript router",
   "main": "navigation.js",
   "types": "navigation.d.ts",
