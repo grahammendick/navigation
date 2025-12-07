@@ -1,18 +1,38 @@
 'use client'
-import { useMemo } from 'react';
-import { StateNavigator, HTML5HistoryManager } from 'navigation';
+import { useEffect, useMemo } from 'react';
+import { StateNavigator, HTML5HistoryManager, FluentNavigator } from 'navigation';
 import { NavigationHandler } from 'navigation-react';
 import stateNavigator from './stateNavigator';
 
-const historyManager = new HTML5HistoryManager();
+declare global {
+    let oldStateNavigator: StateNavigator;
+    interface Window {
+        oldStateNavigator: StateNavigator;
+    }
+}
 
 const NavigationProvider = ({url, children}: any) => {
   const clientNavigator = useMemo(() => {
-    historyManager.stop();
-    const clientNavigator = new StateNavigator(stateNavigator, historyManager);
-    clientNavigator.navigateLink(url);
+    if (typeof oldStateNavigator !== 'undefined') oldStateNavigator.historyManager.stop();
+    const clientNavigator = new StateNavigator(stateNavigator, new HTML5HistoryManager());
+    try {
+      clientNavigator.navigateLink(typeof oldStateNavigator === 'undefined' ? url : oldStateNavigator.stateContext.url, 'replace');
+    } catch(e) {
+      if (typeof oldStateNavigator !== 'undefined') {
+        const {state, data, crumbs} = oldStateNavigator.stateContext;
+        let fluentNavigator = clientNavigator.fluent() as FluentNavigator;
+        for (let i = 0; i < crumbs.length; i++) {
+          fluentNavigator = fluentNavigator.navigate(crumbs[i].state.key, crumbs[i].data);
+        }
+        fluentNavigator = fluentNavigator.navigate(state.key, data);
+        clientNavigator.navigateLink(fluentNavigator.url);
+      }
+    }
     return clientNavigator;
-  }, []);
+  }, [stateNavigator]);
+  useEffect(() => {
+    window.oldStateNavigator = clientNavigator;
+  }, [clientNavigator])
   return (
     <NavigationHandler stateNavigator={clientNavigator}>
       {children}

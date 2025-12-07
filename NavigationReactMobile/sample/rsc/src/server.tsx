@@ -14,17 +14,21 @@ const app = express();
 app.use(express.static('dist'));
 app.use(express.json());
 
-app.get(['/favicon.ico', '/.well-known/*.json'], function (req, res) {
+app.get(['/favicon.ico', '/.well-known/*.json'], (_req, res) => {
   res.statusCode = 404;
   res.end();
 });
 
 app.get('*', async (req, res) => {
   const serverNavigator = new StateNavigator(stateNavigator);
-  serverNavigator.navigateLink(req.url);
+  const {state, data} = serverNavigator.parseLink<any>(req.url);
+  const url = serverNavigator.fluent()
+      .navigate('people')
+      .navigate(state.key, data).url;
+  serverNavigator.navigateLink(url);
   await renderRequest(req, res, (
     <NavigationHandler stateNavigator={serverNavigator}>
-      <App url={req.url} />
+      <App url={serverNavigator.stateContext.url} />
     </NavigationHandler>
   ), {component: App});
 });
@@ -36,33 +40,31 @@ app.post('*', async (req, res) => {
     person: Person,
     friends: Friends,
   };
-  const {url, sceneViewKey} = req.body;
-  const View = sceneViews[sceneViewKey];
+  const {url, sceneViewKey, historyAction, rootViews} = req.body;
   const serverNavigator = new StateNavigator(stateNavigator);
-  serverNavigator.navigateLink(url);
-  const stream = renderRSC(
-    <NavigationHandler stateNavigator={serverNavigator}>
-      <View />
-    </NavigationHandler>
-  );
-  res.set('Content-Type', 'text/x-component');
-  stream.pipe(res);
-});
-
-app.put('*', async (req, res) => {
-  const serverNavigator = new StateNavigator(stateNavigator);
-  const {state, data, crumbs} = req.body;
-  let fluentNavigator = serverNavigator.fluent();
-  for (let i = 0; i < crumbs.length; i++) {
-    fluentNavigator = fluentNavigator.navigate(crumbs[i].state, crumbs[i].data);
-  }
-  fluentNavigator = fluentNavigator.navigate(state, data);
-  serverNavigator.navigateLink(fluentNavigator.url);
-  const stream = renderRSC(
-    <NavigationHandler stateNavigator={serverNavigator}>
-      <App url={fluentNavigator.url} />
-    </NavigationHandler>
-  );
+  serverNavigator.navigateLink(url, historyAction);
+  const {state, oldState} = serverNavigator.stateContext;
+  const activeViews = oldState ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
+      const active = rootViews[rootKey];
+      const show =  active != null && (
+          typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
+      );
+      if (show) activeRoots.push(rootKey);
+      return activeRoots;
+    }, [] as string[]) : [sceneViewKey];
+  const stream = renderRSC({
+    url: oldState ? serverNavigator.stateContext.url : undefined,
+    historyAction: oldState ? serverNavigator.stateContext.historyAction : undefined,
+    sceneViews: activeViews.reduce((SceneViews, activeKey) => {
+      const SceneView = sceneViews[activeKey];
+      SceneViews[activeKey] = (
+        <NavigationHandler stateNavigator={serverNavigator}>
+          <SceneView />
+        </NavigationHandler>
+      );
+      return SceneViews;
+    }, {})
+  });
   res.set('Content-Type', 'text/x-component');
   stream.pipe(res);
 });

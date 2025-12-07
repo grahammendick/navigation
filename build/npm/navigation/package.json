@@ -1,7 +1,7 @@
 {
   "name": "navigation",
   "version": "6.3.0",
-  "description": "The data-first JavaScript router",
+  "description": "The scene-based JavaScript router",
   "main": "navigation.js",
   "types": "navigation.d.ts",
   "repository": {

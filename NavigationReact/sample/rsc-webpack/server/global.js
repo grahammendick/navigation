@@ -157,7 +157,7 @@ async function renderApp(req, res, next) {
             serverConsumerManifest
           );
         }
-        return React.use(cachedResult).root;
+        return React.use(cachedResult);
       };
       // Render it into HTML by resolving the client components
       res.set('Content-type', 'text/html');

@@ -141,7 +141,7 @@ class StateNavigator {
             if (context === this.stateContext) {
                 suspendNavigation(nextContext, () => {
                     if (context === this.stateContext)
-                        this.resumeNavigation(nextContext, historyAction);
+                        this.resumeNavigation(nextContext);
                 });
             }
         };
@@ -155,9 +155,9 @@ class StateNavigator {
             state.navigating(data, url, navigateContinuation, history);
     }
     
-    private resumeNavigation(stateContext: StateContext, historyAction: 'add' | 'replace' | 'none') {
+    private resumeNavigation(stateContext: StateContext) {
         this.stateContext = stateContext;
-        var { oldState, state, data, asyncData, url, crumbs } = stateContext;
+        var { oldState, state, data, asyncData, url, crumbs, historyAction } = stateContext;
         this.rewriteCache.rewrites = {};
         this.rewrite(url, state, data, crumbs);
         if (this.stateContext.oldState && this.stateContext.oldState !== state)

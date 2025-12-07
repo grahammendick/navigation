@@ -9,5 +9,6 @@ import FluentLink from './FluentLink.js';
 import SceneView from './SceneView.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import useRefetch from './useRefetch.js';
+import useRootViewRegistry from './useRootViewRegistry.js';
 
-export { NavigationContext, NavigationDeferredContext, BundlerContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useRefetch };
+export { NavigationContext, NavigationDeferredContext, BundlerContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useRefetch, useRootViewRegistry };

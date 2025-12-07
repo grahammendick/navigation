@@ -18,9 +18,20 @@ const fetchRSC = async (url, options) => {
   return createFromFetch(response);
 }
 
-function Shell({data}) {
-  const [root, setRoot] = useState(data);
-  const bundler = useMemo(() => ({setRoot, deserialize: fetchRSC}), []);
+const initialPayload = fetchRSC(window.location.pathname + window.location.search);
+function Shell() {
+  const root = useMemo(() => initialPayload, []);
+  const bundler = useMemo(() => ({
+    deserialize: fetchRSC,
+    onHmrReload: (hmrReload) => {
+      const onHmrReload = (status) => {
+          if (status !== 'idle') return;
+          hmrReload();
+      };
+      import.meta.webpackHot?.addStatusHandler(onHmrReload);
+      return () => import.meta.webpackHot?.removeStatusHandler(onHmrReload);
+    },
+  }), []);
   return (
     <BundlerContext.Provider value={bundler}>
       {root}
@@ -28,7 +39,6 @@ function Shell({data}) {
   );
 }
 
-const root = await fetchRSC(window.location.pathname + window.location.search);
 
-ReactDOM.hydrateRoot(document, <Shell data={root} />);
+ReactDOM.hydrateRoot(document, <Shell />);
 

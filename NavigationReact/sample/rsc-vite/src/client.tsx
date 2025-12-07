@@ -1,19 +1,24 @@
-import * as ReactClient from '@vitejs/plugin-rsc/browser'
-import { useState, useMemo } from "react";
-import ReactDOM from "react-dom/client";
+import { useMemo } from 'react';
+import ReactDOM from 'react-dom/client';
+import { createFromReadableStream } from '@vitejs/plugin-rsc/browser'
 import { rscStream } from 'rsc-html-stream/client'
-import { createFromFetch } from "@vitejs/plugin-rsc/browser";
+import { createFromFetch } from '@vitejs/plugin-rsc/browser';
 import { BundlerContext } from 'navigation-react';
 
 async function fetchRSC(url: string, {body, ...options}: any) {
-    const payload = await createFromFetch(fetch(url, {...options, body: JSON.stringify(body)})) as any;
-    return payload.root;
+    return createFromFetch(fetch(url, {...options, body: JSON.stringify(body)}));
 }
 
-const initialPayload = await ReactClient.createFromReadableStream<{root: React.ReactNode}>(rscStream)
+const initialPayload = createFromReadableStream<any>(rscStream)
 function Shell() {
-    const [root, setRoot] = useState(initialPayload.root);
-    const bundler = useMemo(() => ({setRoot, deserialize: fetchRSC}), []);
+    const root = useMemo(() => initialPayload, []);
+    const bundler = useMemo(() => ({
+        deserialize: fetchRSC,
+        onHmrReload: (hmrReload: () => void) => {
+            import.meta.hot?.on("rsc:update", hmrReload);
+            return () => import.meta.hot?.off("rsc:update", hmrReload);
+        }
+    }), []);
     return (
         <BundlerContext.Provider value={bundler}>
             {root}
