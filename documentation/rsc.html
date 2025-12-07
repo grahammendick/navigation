@@ -71,9 +71,6 @@
                     <li>
                         <a href="https://github.com/grahammendick/navigation/blob/master/NavigationReact/sample/rsc-parcel/src/NavigationProvider.tsx">NavigationProvider.tsx</a> - renders the <code>NavigationHandler</code>
                     </li>
-                    <li>
-                        <a href="https://github.com/grahammendick/navigation/blob/master/NavigationReact/sample/rsc-parcel/src/HmrProvider.tsx">HmrProvider.tsx</a> - supports hot module reoloading
-                    </li>
                 </ul>
             </p>
             <p>
@@ -84,9 +81,7 @@
     inbox: Inbox,
     mail: Mail,
     compose: Compose
-  };
-  const {url, sceneViewKey} = req.body;
-  const View = sceneViews[sceneViewKey];</code></pre>
+  };</code></pre>
             <p>
                 With RSC, we fetch data on the server instead of in <code>useEffects</code> on the client. The shift to the server enables SSR and avoids waterfalls. We turn on data-fetching in our <code>Inbox</code> and <code>Mail</code> components by marking them as <code>async</code>. We also add the <code>use server-entry</code> directive to our 3 scenes to tell Parcel where to bundle-split.
             </p>
