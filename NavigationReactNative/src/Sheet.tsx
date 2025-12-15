@@ -11,7 +11,7 @@ const SheetContext = createContext({
 
 const Sheet = ({detent, defaultDetent = 'collapsed', expandedHeight, expandedOffset, peekHeight, halfExpandedRatio, hideable, skipCollapsed, draggable = true, modal = true, bottom = true, sharedElement, onChangeDetent, children}) => {
     const [sheetState, setSheetState]  = useState({selectedDetent: detent || defaultDetent, mostRecentEventCount: 0, dismissed: (detent || defaultDetent) === 'hidden'})
-    const onNavigatedChild = useRef<any>();
+    const onNavigatedChild = useRef<any>(undefined);
     const { root, onNavigated } = useContext(SheetContext);
     const sheetHandler = useMemo(() => ({
         root: false,

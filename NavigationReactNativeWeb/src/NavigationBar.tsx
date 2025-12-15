@@ -13,7 +13,7 @@ declare module 'react-native' {
 
 const NavigationBar = ({hidden = false, navigationImage, onNavigationPress, navigationHref, navigationTestID, navigationAccessibilityLabel,
     barTintColor, tintColor, title, titleColor, titleFontFamily, titleFontWeight, titleFontStyle, titleFontSize, children}) => {
-    const barRef = useRef<any>();
+    const barRef = useRef<any>(undefined);
     useLayoutEffect(() => {
         const content = barRef.current?.nextElementSibling;
         if (content && !content.style.paddingTop)
