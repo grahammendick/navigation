@@ -1,5 +1,4 @@
-import React, { Suspense, useContext } from 'react';
-import FreezeContext from './FreezeContext.js';
+import React, { Suspense, useContext, Activity } from 'react';
 
 const infiniteThenable = {then: () => {}};
 
@@ -9,7 +8,9 @@ var Suspender = ({freeze, children}) => {
 };
 
 var Freeze = ({enabled, children}) => {
-    const suspendable = !!React.Suspense && useContext(FreezeContext);
+    if (!!React.Activity)
+        return <Activity mode={!enabled ? 'visible' : 'hidden'}>{children}</Activity>;
+    const suspendable = !!React.Suspense;
     const suspender = <Suspender freeze={enabled && suspendable}>{children}</Suspender>;
     return suspendable ? <Suspense fallback={null}>{suspender}</Suspense> : suspender;
 };
