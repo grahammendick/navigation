@@ -1,4 +1,4 @@
-import React, { Suspense, useContext, Activity } from 'react';
+import React, { Suspense, Activity } from 'react';
 
 const infiniteThenable = {then: () => {}};
 
