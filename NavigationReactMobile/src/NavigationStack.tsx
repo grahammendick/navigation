@@ -105,7 +105,8 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             const keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
             if (prevKeys.length === keys.length || (prevKeys.length > keys.length && prevStateNavigator.stateContext.crumbs[keys.length - 1].state !== state))
                 keys[keys.length - 1] = currentKeys[keys.length - 1];
-            return {keys, rest: false, stateNavigator, ignorePause: false};
+            const refresh = prevKeys.length === keys.length && prevKeys[keys.length - 1] === keys[keys.length - 1];
+            return {keys, rest: refresh, stateNavigator, ignorePause: false};
         })
     }
     const {stateContext: {oldState}, stateContext} = stateNavigator;
