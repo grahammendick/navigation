@@ -9,7 +9,6 @@ import NavigationAnimation from './NavigationAnimation.js';
 import { NavigationMotionProps as NavigationStackProps } from './Props.js';
 import SharedElementAnimation from './SharedElementAnimation.js';
 import useSharedElementRegistry from './useSharedElementRegistry.js';
-import FreezeContext from './FreezeContext.js';
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, ignorePause: boolean};
 
 const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, sharedElements: sharedElementsStack,
@@ -19,12 +18,10 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     const {stateNavigator} = useContext(NavigationContext);
     const [motionState, setMotionState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: false, ignorePause: false});
     const scenes = {};
-    let rsc = false;
     let firstLink;
     const findScenes = (elements = children, nested = false) => {
         for(const scene of React.Children.toArray(elements) as ReactElement<any>[]) {
             const {stateKey, children, __scene} = scene.props;
-            rsc = rsc || __scene;
             if (scene.type === NavigationStack.Scene || __scene) {
                 firstLink = firstLink || stateNavigator.fluent().navigate(stateKey).url;
                 scenes[stateKey] = scene;
@@ -108,7 +105,8 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             const keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
             if (prevKeys.length === keys.length || (prevKeys.length > keys.length && prevStateNavigator.stateContext.crumbs[keys.length - 1].state !== state))
                 keys[keys.length - 1] = currentKeys[keys.length - 1];
-            return {keys, rest: false, stateNavigator, ignorePause: false};
+            const refresh = prevKeys.length === keys.length && prevKeys[keys.length - 1] === keys[keys.length - 1];
+            return {keys, rest: refresh, stateNavigator, ignorePause: false};
         })
     }
     const {stateContext: {oldState}, stateContext} = stateNavigator;
@@ -128,23 +126,21 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     }, [registerRootView, allScenes]);
     const sceneData = getScenes();
     return (stateContext.state &&
-        <FreezeContext.Provider value={!rsc}>
-            <SharedElementContext.Provider value={sharedElementRegistry as any}>
-                <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null}>
-                    {scenes => (
-                        scenes.map(({key, subkey, index: crumb, url, unmounted, className, style}) => (
-                            <Freeze key={key} enabled={rest && ((crumb < sceneData.length - 1) || unmounted)}>
-                                <Scene key={subkey} crumb={crumb} url={url} rest={rest} className={className}
-                                    style={{...style, display: unmounted ? 'none' : style?.display}} wrap renderScene={renderScene} />
-                            </Freeze>
-                        )).concat(
-                            <SharedElementAnimation key="sharedElements" sharedElements={!rest ? sharedEls : []}
-                                unmountStyle={sceneData[sceneData.length - 1].unmountStyle} duration={duration} />
-                        )
-                    )}
-                </NavigationAnimation>
-            </SharedElementContext.Provider>
-        </FreezeContext.Provider>
+        <SharedElementContext.Provider value={sharedElementRegistry as any}>
+            <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null}>
+                {scenes => (
+                    scenes.map(({key, subkey, index: crumb, url, unmounted, className, style}) => (
+                        <Freeze key={key} enabled={rest && ((crumb < sceneData.length - 1) || unmounted)}>
+                            <Scene key={subkey} crumb={crumb} url={url} rest={rest} className={className}
+                                style={{...style, display: unmounted ? 'none' : style?.display}} wrap renderScene={renderScene} />
+                        </Freeze>
+                    )).concat(
+                        <SharedElementAnimation key="sharedElements" sharedElements={!rest ? sharedEls : []}
+                            unmountStyle={sceneData[sceneData.length - 1].unmountStyle} duration={duration} />
+                    )
+                )}
+            </NavigationAnimation>
+        </SharedElementContext.Provider>
     )
 }
 
