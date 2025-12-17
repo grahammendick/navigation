@@ -26,11 +26,11 @@
     "express": "^4.18.2",
     "navigation": "^6.3.0",
     "navigation-react": "^4.7.0",
-    "navigation-react-mobile": "^3.15.0",
+    "navigation-react-mobile": "^3.17.0",
     "parcel": "^2.14.1",
     "process": "^0.11.10",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "@parcel/resolver-default": {
     "packageExports": true
