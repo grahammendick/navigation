@@ -65,6 +65,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected boolean containerTransform = false;
     int nativeEventCount;
     int mostRecentEventCount;
+    private boolean layoutRequested = false;
 
     public NavigationStackView(Context context) {
         super(context);
@@ -427,6 +428,23 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             nativeEventCount++;
         eventDispatcher.dispatchEvent(new NavigationStackView.RestEvent(getId(), crumb, crumb < keys.size() - 1 ? nativeEventCount : 0));
     }
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        if (!layoutRequested) {
+            layoutRequested = true;
+            post(measureAndLayout);
+        }
+    }
+
+    private final Runnable measureAndLayout = () -> {
+        layoutRequested = false;
+        measure(
+            MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+        layout(getLeft(), getTop(), getRight(), getBottom());
+    };
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
